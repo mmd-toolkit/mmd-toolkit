@@ -112,6 +112,8 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/quadrant-chart/parser/quadrant.jison": ["parser"],
   "diagrams/kanban/parser/kanban.jison": ["parser"],
   "diagrams/kanban/kanbanDb.js": ["default"],
+  "diagrams/c4/parser/c4Diagram.jison": ["default"],
+  "diagrams/c4/c4Db.js": ["default"],
   "diagrams/block/parser/block.jison": ["default"],
   "diagrams/block/blockDB.js": ["default"],
   "diagrams/block/styles.js": ["default"],
@@ -301,6 +303,14 @@ export async function recordSpecFile(
 
   describe.skip = describe
   describe.only = describe
+  describe.each = (rows: readonly unknown[]) => {
+    return (title: string, body: (...args: unknown[]) => unknown): void => {
+      for (const row of rows) {
+        const args = Array.isArray(row) ? row : [row]
+        describe(formatTitle(title, args), () => body(...args))
+      }
+    }
+  }
 
   /**
    * `it(title, body)`: registers one test.
@@ -423,6 +433,12 @@ export async function recordSpecFile(
       parser: { parse: record, yy: anything },
     },
     "diagrams/kanban/kanbanDb.js": { default: anything },
+    "diagrams/c4/parser/c4Diagram.jison": {
+      default: { parser: { parse: record, yy: anything } },
+    },
+    "diagrams/c4/c4Db.js": {
+      default: withRecorders({ getC4ShapeArray: () => [anything] }),
+    },
     "diagrams/block/parser/block.jison": {
       default: { parser: { parse: record, yy: anything }, parse: record },
     },

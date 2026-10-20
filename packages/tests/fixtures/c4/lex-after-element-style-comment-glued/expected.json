@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A element style comment glued suffix after the call or boundary body is accepted; title is \"\", and shapes[0] is {\"alias\":\"a\",\"label\":{\"text\":\"A\"},\"descr\":{\"text\":\"\"},\"typeC4Shape\":{\"text\":\"person\"},\"parentBoundary\":\"global\",\"bgColor\":\"red\",\"fontColor\":\"white\",\"borderColor\":\"black\",\"shadowing\":\"yes\",\"shape\":\"box\",\"sprite\":\"sprite\",\"techn\":\"Java\",\"legendText\":\"Legend\",\"legendSprite\":\"star\"}, and boundaries[1] is absent, and rels[0] is absent."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global",
+        "bgColor": "red",
+        "fontColor": "white",
+        "borderColor": "black",
+        "shadowing": "yes",
+        "shape": "box",
+        "sprite": "sprite",
+        "techn": "Java",
+        "legendText": "Legend",
+        "legendSprite": "star"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

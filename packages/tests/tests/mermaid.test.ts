@@ -1427,7 +1427,7 @@ describe("withoutDivergences: c4-keyword-anywhere", () => {
   it("leaves a C4 diagram, which starts with its keyword, as mermaid.js reads it [fixture: common/detect-minimal-c4]", async () => {
     const input = await inputOf("common", "detect-minimal-c4")
     const asIs = await runMermaid(input)
-    expect(asIs).toEqual({ accepted: true, diagramType: "c4", db: null })
+    expect(asIs).toMatchObject({ accepted: true, diagramType: "c4" })
     expect(await runMermaid(input, withoutC4Anywhere)).toEqual(asIs)
   })
 
@@ -1441,10 +1441,9 @@ describe("withoutDivergences: c4-keyword-anywhere", () => {
     ]) {
       const text = `  \n%% c\n ${keyword}\ntitle T\n`
       const asIs = await runMermaid(text)
-      expect(asIs, keyword).toEqual({
+      expect(asIs, keyword).toMatchObject({
         accepted: true,
         diagramType: "c4",
-        db: null,
       })
       expect(await runMermaid(text, withoutC4Anywhere), keyword).toEqual(asIs)
     }

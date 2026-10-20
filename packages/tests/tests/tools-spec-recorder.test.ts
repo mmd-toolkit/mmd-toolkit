@@ -415,6 +415,32 @@ describe("recordSpecFile: the functions that take a text", () => {
     expect(textsOf(recording)).toEqual(["block-beta\n  A"])
   })
 
+  it("records C4 default parser exports in parameterized suites with scoped hooks", async () => {
+    const recording = await recordSource(
+      [
+        `import c4 from "./c4Diagram.jison"`,
+        `import db from "../c4Db.js"`,
+        `import { setConfig } from "../../../config.js"`,
+        `setConfig({ securityLevel: "strict" })`,
+        `describe.each(["Person", ["System", "S"]])("%s", (keyword, label = "P") => {`,
+        `  beforeEach(() => { c4.parser.yy = db; c4.parser.yy.clear() })`,
+        `  it("parses", () => c4.parser.parse('C4Context\\n' + keyword + '(a, "' + label + '")'))`,
+        `  it("reads the parsed shape", () => { const [shape] = c4.parser.yy.getC4ShapeArray(); expect(shape.tags).toBe("tag") })`,
+        `})`,
+        ``,
+      ].join("\n"),
+      "diagrams/c4/parser/c4Diagram.spec.ts",
+    )
+    expect(textsOf(recording)).toEqual([
+      'C4Context\nPerson(a, "P")',
+      'C4Context\nSystem(a, "S")',
+    ])
+    expect(recording.inputs.map((input) => input.test)).toEqual([
+      "Person > parses",
+      "System > parses",
+    ])
+  })
+
   it("records the kanban parser with its Db and diagram API stubbed", async () => {
     const recording = await recordSource(
       [

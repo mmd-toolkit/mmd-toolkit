@@ -11052,3 +11052,3831 @@ The grid cases at `metadata-shape-quoted` have the following readings.
 | `style-rule`       | Keeps `[{"id":"S","label":"S","level":1,"isGroup":true},{"id":"I","label":"I","level":3,"isGroup":false,"parentId":"S"}]` in `nodes`. [fixture: kanban/db-grid-style-rule-metadata-shape-quoted]       |
 | `tab`              | Keeps `[{"id":"S","label":"S","level":1,"isGroup":true},{"id":"I","label":"I","level":3,"isGroup":false,"parentId":"S"}]` in `nodes`. [fixture: kanban/db-grid-tab-metadata-shape-quoted]              |
 | `vt`               | Rejected with `YAMLException`. [fixture: kanban/gram-grid-vt-metadata-shape-quoted]                                                                                                                    |
+
+## c4
+
+`normalizeC4()` (`src/normalizers/c4.ts`) reads the shared C4 Db immediately
+after parsing, before rendering. [fixture: c4/db-all-fields]
+
+The summary keeps `type` from
+[`getC4Type()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L76-L78).
+[fixture: c4/db-all-fields]
+
+The summary keeps `title` from
+[`getTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L722-L724).
+[fixture: c4/db-all-fields]
+
+The summary keeps `accTitle` from
+[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20).
+[fixture: c4/db-acc-title]
+
+The summary keeps `accDescr` from
+[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26).
+[fixture: c4/db-all-fields]
+
+`shapes`, `boundaries`, and `rels` are the complete own attribute bags from
+[`getC4ShapeArray()`, `getBoundaries()`, and `getRels()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L684-L720),
+in first-insertion order. [fixture: c4/db-shape-three-definitions] [fixture:
+c4/db-boundary-three-definitions] [fixture: c4/db-rel-three-definitions]
+
+A shape keeps `alias`, `label`, `descr`, `techn`, `typeC4Shape`,
+`parentBoundary`, `wrap`, `sprite`, `tags`, `link`, and every other assigned
+attribute, with undefined fields omitted. [fixture: c4/db-all-fields] [fixture:
+c4/db-named-text-fields] [fixture: c4/db-style-layout-key-attributes]
+
+A boundary keeps `alias`, `label`, `type`, `parentBoundary`, `wrap`, `tags`,
+`link`, and every other assigned attribute; deployment nodes also keep
+`nodeType` and their assigned description. [fixture: c4/db-all-fields] [fixture:
+c4/db-keyword-node-l] [fixture: c4/db-keyword-node-r]
+
+The first boundary is the initial `global` boundary, whose label and type are
+`{ text: "global" }`, whose parent is the empty text, and whose tags and link
+are null; declarations and style updates can update this entry. [fixture:
+c4/db-number-layout-zero] [fixture: c4/gram-boundary-global-alias]
+
+`parentBoundary` is the alias selected by the parsing stack at the declaration,
+including repeated aliases, object-valued aliases, and aliases shared with a
+shape; the summary does not rebuild a hierarchy. [fixture:
+c4/gram-boundary-nested] [fixture: c4/db-boundary-alias-named-change] [fixture:
+c4/gram-boundary-reused-alias]
+
+A relationship keeps `type`, `from`, `to`, `label`, `techn`, `descr`, `wrap`,
+`sprite`, `tags`, `link`, its assigned style and offset fields, and every other
+assigned attribute, without resolving its endpoints. [fixture: c4/db-all-fields]
+[fixture: c4/db-alias-constructor] [fixture: c4/db-rel-named-endpoints]
+[fixture: c4/db-rel-self]
+
+Shape and boundary aliases use strict equality, while relationships use the
+ordered pair of endpoints; repeated definitions update the first matching entry
+without moving it, and separate object-valued aliases or endpoints remain
+separate entries. [fixture: c4/db-shape-three-definitions] [fixture:
+c4/db-boundary-three-definitions] [fixture: c4/db-rel-three-definitions]
+[fixture: c4/db-required-named-alias-repeat] [fixture:
+c4/db-rel-object-endpoint-repeat]
+
+A repeated shape resets its label, shape kind, parent and wrap; absent optional
+technology, description and other attributes keep their earlier values.
+[fixture: c4/db-shape-three-definitions]
+
+A repeated boundary resets its label, type, parent and wrap, while absent tags,
+links and deployment descriptions keep their earlier values. [fixture:
+c4/db-boundary-three-definitions]
+
+A repeated relationship resets type, endpoints, label and wrap, while absent
+optional attributes keep their earlier values. [fixture:
+c4/db-rel-three-definitions]
+
+The grammar trims positional strings and named keys and values, including quoted
+strings, and preserves their internal text; an empty positional string is an
+empty argument, while an empty named value is rejected. [fixture:
+c4/db-named-key-whitespace] [fixture: c4/db-required-label-empty] [fixture:
+c4/db-required-alias-empty] [fixture: c4/gram-named-empty-value]
+
+Named arguments in required slots remain object-valued aliases or endpoints, or
+the object inside a label's `text`; optional slots dispatch by the named key.
+[fixture: c4/db-named-person-unknown-slot-1] [fixture:
+c4/db-named-person-unknown-slot-2] [fixture: c4/db-rel-named-endpoints]
+[fixture: c4/db-named-repeat]
+
+Optional named `label`, `descr`, `techn`, and `type` values are stored as
+`{ text }`, while other named values are plain strings, and later assignments to
+the same key replace earlier assignments. [fixture: c4/db-named-text-fields]
+[fixture: c4/db-named-repeat] [fixture: c4/db-named-case-sensitive]
+
+Fixed boundary keywords insert their type before the optional written arguments,
+and a later named `$type` can replace it. [fixture:
+c4/db-boundary-style-named-type]
+
+The deployment node's positional sprite slot is ignored, including a named
+attribute in that slot, while a `$sprite` in another consumed optional slot can
+set the sprite. [fixture: c4/db-node-sprite] [fixture:
+c4/db-named-node-sprite-slot-3] [fixture: c4/db-named-node-sprite-slot-5]
+
+`RelIndex` drops its first written argument and otherwise uses the ordinary
+relationship arguments and type. [fixture: c4/db-keyword-relindex]
+
+[`UpdateElementStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)
+updates the first matching shape, or the first matching boundary when no shape
+matches, and a missing target changes nothing. [fixture:
+c4/gram-boundary-reused-alias] [fixture: c4/db-style-boundary] [fixture:
+c4/db-style-before-definition]
+
+Element styles keep `bgColor`, `fontColor`, `borderColor`, `shadowing`, `shape`,
+`sprite`, `techn`, `legendText`, and `legendSprite`; named style arguments write
+plain values even for text fields and arbitrary keys, and later updates replace
+only the supplied fields. [fixture: c4/db-all-fields] [fixture:
+c4/db-style-text-replacement] [fixture: c4/db-style-three-updates]
+
+`UpdateRelStyle` updates only an already stored ordered endpoint pair, retaining
+`textColor`, `lineColor`, `offsetX`, `offsetY`, and arbitrary named fields, with
+later updates replacing only supplied fields. [fixture:
+c4/db-style-before-definition] [fixture: c4/db-update-rel-style-three-times]
+[fixture: c4/db-update-rel-style-named-text]
+
+Offset slots use `parseInt()` on the supplied value, even when the named key
+selects another field; non-finite numbers are recorded as `"NaN"`, `"Infinity"`,
+or `"-Infinity"`, and negative zero as zero. [fixture:
+c4/db-number-rel-style-negative-zero] [fixture: c4/db-number-rel-style-nan]
+[fixture: c4/db-number-rel-style-overflow] [fixture:
+c4/db-update-rel-style-named-number-key]
+
+`c4ShapeInRow` and `c4BoundaryInRow` come from their Db getters, start at 4 and
+2, and change independently when the corresponding `UpdateLayoutConfig`
+argument's `parseInt()` value is at least one; argument position selects the
+counter even for named arguments. [fixture: c4/db-number-layout-zero] [fixture:
+c4/db-named-layout-order] [fixture: c4/db-named-layout-key] [fixture:
+c4/db-update-layout-three-times]
+
+The grammar accepts an unbounded sequence of attributes; the Db ignores those
+past the called function's parameters. [fixture: c4/gram-arguments-person-above]
+[fixture: c4/gram-arguments-rel-above] [fixture:
+c4/gram-arguments-element-style-above]
+
+The five exact header words set `type`, require a line break before statements,
+and require a nonempty statement list. [fixture: c4/header-context-minimal]
+[fixture: c4/header-container-minimal] [fixture: c4/header-component-minimal]
+[fixture: c4/header-dynamic-minimal] [fixture: c4/header-deployment-minimal]
+[fixture: c4/db-empty-board] [fixture:
+c4/header-context-statement-on-header-line]
+
+All five headers use the same statement grammar, including every element,
+boundary, node, relationship and update family. [fixture:
+c4/db-keyword-person-ext] [fixture: c4/db-keyword-systemqueue-ext] [fixture:
+c4/db-keyword-containerqueue-ext] [fixture: c4/db-keyword-componentqueue-ext]
+[fixture: c4/db-keyword-rel-back]
+
+`title` takes the text after its first separator, keeping additional leading and
+trailing spaces; `accTitle:` trims its value and sets the same title, leaving
+`accTitle` empty, and the last such statement wins. [fixture:
+c4/db-title-whitespace] [fixture: c4/db-acc-title] [fixture:
+c4/db-title-acc-order]
+
+`accDescription` keeps the text after its first separator, while `accDescr:`
+trims its value and a nonempty `accDescr { ... }` trims the block; all three set
+`accDescr`, whose setter removes whitespace following line feeds. [fixture:
+c4/db-acc-description-whitespace] [fixture: c4/db-acc-description-order]
+[fixture: c4/gram-acc-descr-block-text]
+
+An empty description block emits no statement and keeps the preceding value when
+inline with a diagram statement, while a line break after it can leave an extra
+newline that the grammar rejects. [fixture:
+c4/db-empty-block-inline-before-shape] [fixture:
+c4/db-empty-block-inline-after-shape] [fixture: c4/db-empty-block-inline-two]
+[fixture: c4/db-empty-description-block-after-value]
+
+Frontmatter title and accessibility fields do not set these C4 getters.
+[fixture: c4/db-title-frontmatter] [fixture: c4/db-frontmatter-drawing-config]
+
+The root `wrap` configuration is copied to shapes, boundaries and relationships;
+undefined wrap and a null configuration value are omitted, false and other
+supplied values are kept, and `wrap:` and `nowrap:` in labels remain literal
+text. [fixture: c4/db-wrap-directive] [fixture: c4/config-wrap-true] [fixture:
+c4/config-wrap-false] [fixture: c4/config-wrap-null] [fixture:
+c4/config-wrap-text] [fixture: c4/db-wrap-frontmatter] [fixture:
+c4/db-wrap-init-directive]
+
+Theme settings, `c4.wrap`, and C4 row settings do not change the parse-time Db
+fields, while an unsupported `securityLevel` with HTML labels enabled replaces
+characters in title and accessibility text; root `htmlLabels` takes precedence
+over `flowchart.htmlLabels`. [fixture: c4/db-directive-drawing-config] [fixture:
+c4/db-frontmatter-drawing-config] [fixture: c4/config-security-level-other]
+[fixture: c4/config-security-level-other-html-labels-false] [fixture:
+c4/config-security-level-other-flowchart-html-labels-false] [fixture:
+c4/config-security-level-other-root-overrides-flowchart]
+
+The summary drops the configuration object, renderer constants, redundant shape
+keys, and the boundary parsing stack; renderer geometry is not populated during
+parsing, and geometry-like named attributes remain written attributes. [fixture:
+c4/db-number-layout-zero] [fixture: c4/gram-boundary-nested] [fixture:
+c4/db-style-layout-key-attributes]
+
+`patchC4Db()` clears the shared accessibility texts through their setters when
+C4 clears its own fields, so each input starts with empty accessibility texts.
+[fixture: c4/db-all-fields] [fixture: c4/header-context-minimal]
+
+C4 has no `@{ ... }` data block production. [fixture: c4/gram-data-block]
+
+The unanchored direction lexer rule can consume arbitrary preceding text on the
+same line; a direction token inside a diagram's statement list is rejected, and
+one that replaces the header calls the absent `setDirection` method and throws a
+TypeError. [fixture: c4/gram-direction-tb-prefix] [fixture:
+c4/gram-header-direction-tb] [fixture: c4/gram-header-direction-bt] [fixture:
+c4/gram-header-direction-rl] [fixture: c4/gram-header-direction-lr]
+
+The following readings retain the exact string contents, including entity
+placeholders, removed directive fragments and the shared style-line
+preprocessing results. [fixture: c4/db-preprocessing-style] [fixture:
+c4/db-preprocessing-classdef] [fixture: c4/db-preprocessing-upper] [fixture:
+c4/db-preprocessing-space] [fixture: c4/db-preprocessing-no-hash] [fixture:
+c4/db-preprocessing-two-semicolons] [fixture: c4/db-preprocessing-other-line]
+[fixture: c4/db-preprocessing-quoted-line]
+
+### Statement readings
+
+Fields omitted in this table retain the initial C4Context summary: empty title,
+accessibility texts, shapes and relationships, the initial global boundary, and
+row counts 4 and 2. [fixture: c4/db-number-layout-zero]
+
+#### config-security
+
+| Fixture                                                               | Reading                                                                                                                                                                                                                                              |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/config-security-level-other]                             | Keeps `{"title":"&lt;b&gt;T&lt;/b&gt; &equals; value","accDescr":"&lt;i&gt;D&lt;/i&gt; &equals; value","shapes":[{"alias":"a","label":{"text":"<b>A</b> = value"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/config-security-level-other-flowchart-html-labels-false] | Keeps `{"title":"<b>T</b> = value","accDescr":"<i>D</i> = value","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                      |
+| [fixture: c4/config-security-level-other-html-labels-false]           | Keeps `{"title":"<b>T</b> = value","accDescr":"<i>D</i> = value","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                      |
+| [fixture: c4/config-security-level-other-root-overrides-flowchart]    | Keeps `{"title":"&lt;b&gt;T&lt;/b&gt; &equals; value","accDescr":"&lt;i&gt;D&lt;/i&gt; &equals; value","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                |
+
+#### config-wrap
+
+| Fixture                         | Reading                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/config-wrap-false] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b","wrap":false}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global","wrap":false}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"wrap":false}]}`. |
+| [fixture: c4/config-wrap-null]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                        |
+| [fixture: c4/config-wrap-text]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b","wrap":"yes"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global","wrap":"yes"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"wrap":"yes"}]}`. |
+| [fixture: c4/config-wrap-true]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","wrap":true}]}`.                                                                                                                                                                                                                                                                                                                                                          |
+
+#### db-acc
+
+| Fixture                                       | Reading                                                                                                                                                           |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-acc-descr-tab-before-colon]   | Keeps `{"accDescr":"Value"}`.                                                                                                                                     |
+| [fixture: c4/db-acc-description-order]        | Keeps `{"accDescr":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.         |
+| [fixture: c4/db-acc-description-spaces-only]  | Keeps `{"accDescr":"  "}`.                                                                                                                                        |
+| [fixture: c4/db-acc-description-whitespace]   | Keeps `{"accDescr":"   D   ","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.       |
+| [fixture: c4/db-acc-title]                    | Keeps `{"title":"Accessible title","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-acc-title-space-before-colon] | Keeps `{"title":"Value"}`.                                                                                                                                        |
+
+#### db-accdescr
+
+| Fixture                               | Reading                                                                                                                                                                                  |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-accdescr-comment]     | Keeps `{"accDescr":"T %% comment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-accdescr-empty]       | Keeps `{"accDescr":"Person(a, \"A\")"}`.                                                                                                                                                 |
+| [fixture: c4/db-accdescr-entity]      | Keeps `{"accDescr":"T \ufb02\u00b0\u00b035\u00b6\u00df U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-accdescr-hash]        | Keeps `{"accDescr":"T # U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-accdescr-html]        | Keeps `{"accDescr":"<b>T</b>","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                             |
+| [fixture: c4/db-accdescr-non-ascii]   | Keeps `{"accDescr":"\u65e5\u672c\u8a9e","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                   |
+| [fixture: c4/db-accdescr-plain]       | Keeps `{"accDescr":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-accdescr-quotes]      | Keeps `{"accDescr":"\"T\"","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-accdescr-semicolon]   | Keeps `{"accDescr":"T; U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                 |
+| [fixture: c4/db-accdescr-spaces]      | Keeps `{"accDescr":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-accdescr-tab]         | Keeps `{"accDescr":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-accdescr-three-times] | Keeps `{"accDescr":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+
+#### db-accdescription
+
+| Fixture                                     | Reading                                                                                                                                                                                  |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-accdescription-comment]     | Keeps `{"accDescr":"T %% comment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-accdescription-empty]       | Rejected with `Error`.                                                                                                                                                                   |
+| [fixture: c4/db-accdescription-entity]      | Keeps `{"accDescr":"T \ufb02\u00b0\u00b035\u00b6\u00df U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-accdescription-hash]        | Rejected with `Error`.                                                                                                                                                                   |
+| [fixture: c4/db-accdescription-html]        | Keeps `{"accDescr":"<b>T</b>","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                             |
+| [fixture: c4/db-accdescription-non-ascii]   | Keeps `{"accDescr":"\u65e5\u672c\u8a9e","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                   |
+| [fixture: c4/db-accdescription-plain]       | Keeps `{"accDescr":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-accdescription-quotes]      | Keeps `{"accDescr":"\"T\"","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-accdescription-semicolon]   | Rejected with `Error`.                                                                                                                                                                   |
+| [fixture: c4/db-accdescription-spaces]      | Keeps `{"accDescr":"  T  ","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-accdescription-tab]         | Keeps `{"accDescr":"\tT\t","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-accdescription-three-times] | Keeps `{"accDescr":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+
+#### db-acctitle
+
+| Fixture                               | Reading                                                                                                                                                                               |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-acctitle-comment]     | Keeps `{"title":"T %% comment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-acctitle-empty]       | Keeps `{"title":"Person(a, \"A\")"}`.                                                                                                                                                 |
+| [fixture: c4/db-acctitle-entity]      | Keeps `{"title":"T \ufb02\u00b0\u00b035\u00b6\u00df U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-acctitle-hash]        | Keeps `{"title":"T # U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-acctitle-html]        | Keeps `{"title":"<b>T</b>","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                             |
+| [fixture: c4/db-acctitle-non-ascii]   | Keeps `{"title":"\u65e5\u672c\u8a9e","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                   |
+| [fixture: c4/db-acctitle-plain]       | Keeps `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-acctitle-quotes]      | Keeps `{"title":"\"T\"","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-acctitle-semicolon]   | Keeps `{"title":"T; U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                 |
+| [fixture: c4/db-acctitle-spaces]      | Keeps `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-acctitle-tab]         | Keeps `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-acctitle-three-times] | Keeps `{"title":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+
+#### db-alias
+
+| Fixture                               | Reading                                                                                                                                                                                                                                                                            |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-alias-c4container]    | Keeps `{"shapes":[{"alias":"C4Container","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"C4Container","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.       |
+| [fixture: c4/db-alias-c4context]      | Keeps `{"shapes":[{"alias":"C4Context","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"C4Context","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.           |
+| [fixture: c4/db-alias-constructor]    | Keeps `{"shapes":[{"alias":"constructor","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"constructor","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.       |
+| [fixture: c4/db-alias-global]         | Keeps `{"shapes":[{"alias":"global","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"global","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                 |
+| [fixture: c4/db-alias-hasownproperty] | Keeps `{"shapes":[{"alias":"hasOwnProperty","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"hasOwnProperty","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`. |
+| [fixture: c4/db-alias-person]         | Keeps `{"shapes":[{"alias":"Person","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"Person","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                 |
+| [fixture: c4/db-alias-proto]          | Keeps `{"shapes":[{"alias":"__proto__","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"__proto__","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.           |
+| [fixture: c4/db-alias-title]          | Keeps `{"shapes":[{"alias":"title","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"title","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                   |
+| [fixture: c4/db-alias-tostring]       | Keeps `{"shapes":[{"alias":"toString","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"toString","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.             |
+
+#### db-all
+
+| Fixture                     | Reading                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-all-fields] | Keeps `{"title":"All fields","accDescr":"Accessible description","shapes":[{"alias":"a","label":{"text":"A"},"techn":"Changed technology","descr":{"text":"Description"},"sprite":"changed sprite","tags":"tags","link":"javascript:alert(1)","typeC4Shape":{"text":"container"},"parentBoundary":"inner","bgColor":"red","fontColor":"white","borderColor":"blue","shadowing":"yes","shape":"box","legendText":"Legend","legendSprite":"Legend sprite"},{"alias":"b","label":{"text":"B"},"descr":{"text":"Person description"},"custom":"own","typeC4Shape":{"text":"person"},"parentBoundary":"inner"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"outer","label":{"text":"Outer"},"type":{"text":"company"},"tags":"bt","link":"bl","parentBoundary":"global"},{"alias":"inner","label":{"text":"Inner"},"type":{"text":"machine"},"descr":{"text":"Node description"},"tags":"nt","link":"nl","nodeType":"node","parentBoundary":"outer"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"Relationship"},"sprite":"rel sprite","tags":"rt","link":"rl","textColor":"green","lineColor":"black","offsetX":-4,"offsetY":7}],"c4ShapeInRow":3,"c4BoundaryInRow":1}`. |
+
+#### db-boundary
+
+| Fixture                                      | Reading                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-boundary-alias-named-change] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"c","label":{"text":"B"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-boundary-named-descr]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"descr":{"text":"Description"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-boundary-style-named-type]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":"Raw","link":"L","parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-boundary-three-definitions]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"},{"alias":"d","label":{"text":"D"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"c"},{"alias":"e","label":{"text":"E"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"},{"alias":"f","label":{"text":"F"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"Third"},"type":{"text":"system"},"tags":"tags","link":"link","parentBoundary":"c"},{"alias":"c","label":{"text":"Other"},"type":{"text":"system"},"parentBoundary":"global"}]}`. |
+
+#### db-directive
+
+| Fixture                                   | Reading                                                                                                                                |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-directive-drawing-config] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+
+#### db-empty
+
+| Fixture                                              | Reading                                                                                                                                                    |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-empty-block-inline-after-shape]      | Keeps `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-empty-block-inline-before-shape]     | Keeps `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-empty-block-inline-blank-lines]      | Keeps `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-empty-block-inline-spaces]           | Keeps `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-empty-block-inline-two]              | Keeps `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-empty-board]                         | Rejected with `Error`.                                                                                                                                     |
+| [fixture: c4/db-empty-description-block-after-value] | Rejected with `Error`.                                                                                                                                     |
+
+#### db-frontmatter
+
+| Fixture                                     | Reading                                                                                                                                |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-frontmatter-drawing-config] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+
+#### db-keyword
+
+| Fixture                                      | Reading                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-keyword-birel]               | Keeps `{"rels":[{"type":"birel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-boundary]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                         |
+| [fixture: c4/db-keyword-component]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                           |
+| [fixture: c4/db-keyword-component-ext]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                  |
+| [fixture: c4/db-keyword-componentdb]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component_db"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                        |
+| [fixture: c4/db-keyword-componentdb-ext]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_component_db"},"parentBoundary":"global"}]}`.                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-componentqueue]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component_queue"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                     |
+| [fixture: c4/db-keyword-componentqueue-ext]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_component_queue"},"parentBoundary":"global"}]}`.                                                                                                                                                                                            |
+| [fixture: c4/db-keyword-container]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                           |
+| [fixture: c4/db-keyword-container-boundary]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-keyword-container-ext]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                  |
+| [fixture: c4/db-keyword-containerdb]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container_db"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                        |
+| [fixture: c4/db-keyword-containerdb-ext]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_container_db"},"parentBoundary":"global"}]}`.                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-containerqueue]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container_queue"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                     |
+| [fixture: c4/db-keyword-containerqueue-ext]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_container_queue"},"parentBoundary":"global"}]}`.                                                                                                                                                                                            |
+| [fixture: c4/db-keyword-deployment-node]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.  |
+| [fixture: c4/db-keyword-enterprise-boundary] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                   |
+| [fixture: c4/db-keyword-node]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.  |
+| [fixture: c4/db-keyword-node-l]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"nodeL","parentBoundary":"global"}]}`. |
+| [fixture: c4/db-keyword-node-r]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"nodeR","parentBoundary":"global"}]}`. |
+| [fixture: c4/db-keyword-person]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/db-keyword-person-ext]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                             |
+| [fixture: c4/db-keyword-rel]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-keyword-rel-back]            | Keeps `{"rels":[{"type":"rel_b","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-d]               | Keeps `{"rels":[{"type":"rel_d","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-down]            | Keeps `{"rels":[{"type":"rel_d","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-l]               | Keeps `{"rels":[{"type":"rel_l","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-left]            | Keeps `{"rels":[{"type":"rel_l","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-r]               | Keeps `{"rels":[{"type":"rel_r","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-right]           | Keeps `{"rels":[{"type":"rel_r","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-u]               | Keeps `{"rels":[{"type":"rel_u","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-up]              | Keeps `{"rels":[{"type":"rel_u","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-relindex]            | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-keyword-system]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"system"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/db-keyword-system-boundary]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                       |
+| [fixture: c4/db-keyword-system-ext]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_system"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                             |
+| [fixture: c4/db-keyword-systemdb]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"system_db"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                   |
+| [fixture: c4/db-keyword-systemdb-ext]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_system_db"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                          |
+| [fixture: c4/db-keyword-systemqueue]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"system_queue"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                |
+| [fixture: c4/db-keyword-systemqueue-ext]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_system_queue"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                       |
+| [fixture: c4/db-keyword-updateelementstyle]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                              |
+| [fixture: c4/db-keyword-updatelayoutconfig]  | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-keyword-updaterelstyle]      | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                       |
+
+#### db-named
+
+| Fixture                                                   | Reading                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-named-boundary-link-slot-1]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                              |
+| [fixture: c4/db-named-boundary-link-slot-2]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                       |
+| [fixture: c4/db-named-boundary-link-slot-3]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"link":"link","tags":"tags","parentBoundary":"global"}]}`.                                                                                       |
+| [fixture: c4/db-named-boundary-link-slot-4]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"link":"link","parentBoundary":"global"}]}`.                                                                              |
+| [fixture: c4/db-named-boundary-link-slot-5]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"V","parentBoundary":"global"}]}`.                                                                   |
+| [fixture: c4/db-named-boundary-sprite-slot-1]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                          |
+| [fixture: c4/db-named-boundary-sprite-slot-2]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                     |
+| [fixture: c4/db-named-boundary-sprite-slot-3]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"sprite":"V","tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                                          |
+| [fixture: c4/db-named-boundary-sprite-slot-4]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"sprite":"V","link":"link","parentBoundary":"global"}]}`.                                                                 |
+| [fixture: c4/db-named-boundary-sprite-slot-5]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","sprite":"V","parentBoundary":"global"}]}`.                                                                 |
+| [fixture: c4/db-named-boundary-tags-slot-1]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                              |
+| [fixture: c4/db-named-boundary-tags-slot-2]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                       |
+| [fixture: c4/db-named-boundary-tags-slot-3]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                                                       |
+| [fixture: c4/db-named-boundary-tags-slot-4]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"V","link":"link","parentBoundary":"global"}]}`.                                                                   |
+| [fixture: c4/db-named-boundary-tags-slot-5]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"V","parentBoundary":"global"}]}`.                                                                                 |
+| [fixture: c4/db-named-boundary-unknown-slot-1]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/db-named-boundary-unknown-slot-2]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                    |
+| [fixture: c4/db-named-boundary-unknown-slot-3]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"unknown":"V","tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                                         |
+| [fixture: c4/db-named-boundary-unknown-slot-4]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"unknown":"V","link":"link","parentBoundary":"global"}]}`.                                                                |
+| [fixture: c4/db-named-boundary-unknown-slot-5]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","unknown":"V","parentBoundary":"global"}]}`.                                                                |
+| [fixture: c4/db-named-case-sensitive]                     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"Tags":"Upper","tags":"Lower","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-component-link-slot-1]              | Keeps `{"shapes":[{"alias":{"link":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-link-slot-2]              | Keeps `{"shapes":[{"alias":"a","label":{"text":{"link":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-link-slot-3]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"link":"link","descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-component-link-slot-4]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"link":"link","sprite":"sprite","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-link-slot-5]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"link":"link","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-component-link-slot-6]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-component-link-slot-7]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-component-sprite-slot-1]            | Keeps `{"shapes":[{"alias":{"sprite":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-sprite-slot-2]            | Keeps `{"shapes":[{"alias":"a","label":{"text":{"sprite":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-sprite-slot-3]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"sprite":"sprite","descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-component-sprite-slot-4]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-sprite-slot-5]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-sprite-slot-6]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-component-sprite-slot-7]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-component-tags-slot-1]              | Keeps `{"shapes":[{"alias":{"tags":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-tags-slot-2]              | Keeps `{"shapes":[{"alias":"a","label":{"text":{"tags":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-tags-slot-3]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"tags":"tags","descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-component-tags-slot-4]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"tags":"tags","sprite":"sprite","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-tags-slot-5]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-component-tags-slot-6]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-component-tags-slot-7]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-component-unknown-slot-1]           | Keeps `{"shapes":[{"alias":{"unknown":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-component-unknown-slot-2]           | Keeps `{"shapes":[{"alias":"a","label":{"text":{"unknown":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-component-unknown-slot-3]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"unknown":"V","descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-component-unknown-slot-4]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-unknown-slot-5]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-component-unknown-slot-6]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-component-unknown-slot-7]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-container-boundary-link-slot-1]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                         |
+| [fixture: c4/db-named-container-boundary-link-slot-2]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                  |
+| [fixture: c4/db-named-container-boundary-link-slot-3]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"link":"link","parentBoundary":"global"}]}`.                                                                         |
+| [fixture: c4/db-named-container-boundary-link-slot-4]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"V","parentBoundary":"global"}]}`.                                                              |
+| [fixture: c4/db-named-container-boundary-sprite-slot-1]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                     |
+| [fixture: c4/db-named-container-boundary-sprite-slot-2]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                |
+| [fixture: c4/db-named-container-boundary-sprite-slot-3]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"sprite":"V","link":"link","parentBoundary":"global"}]}`.                                                            |
+| [fixture: c4/db-named-container-boundary-sprite-slot-4]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","sprite":"V","parentBoundary":"global"}]}`.                                                            |
+| [fixture: c4/db-named-container-boundary-tags-slot-1]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                         |
+| [fixture: c4/db-named-container-boundary-tags-slot-2]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                  |
+| [fixture: c4/db-named-container-boundary-tags-slot-3]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"V","link":"link","parentBoundary":"global"}]}`.                                                              |
+| [fixture: c4/db-named-container-boundary-tags-slot-4]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"V","parentBoundary":"global"}]}`.                                                                            |
+| [fixture: c4/db-named-container-boundary-type-slot-1]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"type":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"type":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                         |
+| [fixture: c4/db-named-container-boundary-type-slot-2]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"type":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                  |
+| [fixture: c4/db-named-container-boundary-type-slot-3]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"link":"link","parentBoundary":"global"}]}`.                                                                                 |
+| [fixture: c4/db-named-container-boundary-type-slot-4]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"tags":"tags","parentBoundary":"global"}]}`.                                                                                 |
+| [fixture: c4/db-named-container-boundary-unknown-slot-1]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                   |
+| [fixture: c4/db-named-container-boundary-unknown-slot-2]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                               |
+| [fixture: c4/db-named-container-boundary-unknown-slot-3]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"unknown":"V","link":"link","parentBoundary":"global"}]}`.                                                           |
+| [fixture: c4/db-named-container-boundary-unknown-slot-4]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","unknown":"V","parentBoundary":"global"}]}`.                                                           |
+| [fixture: c4/db-named-container-link-slot-1]              | Keeps `{"shapes":[{"alias":{"link":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-link-slot-2]              | Keeps `{"shapes":[{"alias":"a","label":{"text":{"link":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-link-slot-3]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"link":"link","descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-container-link-slot-4]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"link":"link","sprite":"sprite","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-link-slot-5]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"link":"link","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-container-link-slot-6]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-container-link-slot-7]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-container-sprite-slot-1]            | Keeps `{"shapes":[{"alias":{"sprite":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-sprite-slot-2]            | Keeps `{"shapes":[{"alias":"a","label":{"text":{"sprite":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-sprite-slot-3]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"sprite":"sprite","descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-container-sprite-slot-4]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-sprite-slot-5]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-sprite-slot-6]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-container-sprite-slot-7]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-container-tags-slot-1]              | Keeps `{"shapes":[{"alias":{"tags":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-tags-slot-2]              | Keeps `{"shapes":[{"alias":"a","label":{"text":{"tags":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-tags-slot-3]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"tags":"tags","descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-container-tags-slot-4]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"tags":"tags","sprite":"sprite","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-tags-slot-5]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-container-tags-slot-6]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-container-tags-slot-7]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-container-unknown-slot-1]           | Keeps `{"shapes":[{"alias":{"unknown":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-container-unknown-slot-2]           | Keeps `{"shapes":[{"alias":"a","label":{"text":{"unknown":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-container-unknown-slot-3]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"unknown":"V","descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-container-unknown-slot-4]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-unknown-slot-5]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-container-unknown-slot-6]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-container-unknown-slot-7]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-element-style-link-slot-1]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-element-style-link-slot-10]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","link":"V"}]}`.                                                                                                                                                |
+| [fixture: c4/db-named-element-style-link-slot-2]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","link":"V","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                          |
+| [fixture: c4/db-named-element-style-link-slot-3]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","link":"V","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                              |
+| [fixture: c4/db-named-element-style-link-slot-4]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","link":"V","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                                |
+| [fixture: c4/db-named-element-style-link-slot-5]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","link":"V","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                            |
+| [fixture: c4/db-named-element-style-link-slot-6]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","link":"V","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                        |
+| [fixture: c4/db-named-element-style-link-slot-7]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","link":"V","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                            |
+| [fixture: c4/db-named-element-style-link-slot-8]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","link":"V","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                         |
+| [fixture: c4/db-named-element-style-link-slot-9]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","link":"V","legendSprite":"star"}]}`.                                                                                                                                                |
+| [fixture: c4/db-named-element-style-sprite-slot-1]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-element-style-sprite-slot-10]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"V","techn":"Java","legendText":"Legend"}]}`.                                                                                                                                                                |
+| [fixture: c4/db-named-element-style-sprite-slot-2]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","sprite":"sprite","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                                     |
+| [fixture: c4/db-named-element-style-sprite-slot-3]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","sprite":"sprite","borderColor":"black","shadowing":"yes","shape":"box","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                                         |
+| [fixture: c4/db-named-element-style-sprite-slot-4]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","sprite":"sprite","shadowing":"yes","shape":"box","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                                           |
+| [fixture: c4/db-named-element-style-sprite-slot-5]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","sprite":"sprite","shape":"box","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                                       |
+| [fixture: c4/db-named-element-style-sprite-slot-6]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                                   |
+| [fixture: c4/db-named-element-style-sprite-slot-7]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"V","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                          |
+| [fixture: c4/db-named-element-style-sprite-slot-8]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"V","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                                         |
+| [fixture: c4/db-named-element-style-sprite-slot-9]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"V","techn":"Java","legendSprite":"star"}]}`.                                                                                                                                                                |
+| [fixture: c4/db-named-element-style-tags-slot-1]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-element-style-tags-slot-10]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","tags":"V"}]}`.                                                                                                                                                |
+| [fixture: c4/db-named-element-style-tags-slot-2]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","tags":"V","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                          |
+| [fixture: c4/db-named-element-style-tags-slot-3]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","tags":"V","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                              |
+| [fixture: c4/db-named-element-style-tags-slot-4]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","tags":"V","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                                |
+| [fixture: c4/db-named-element-style-tags-slot-5]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","tags":"V","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                            |
+| [fixture: c4/db-named-element-style-tags-slot-6]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","tags":"V","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                        |
+| [fixture: c4/db-named-element-style-tags-slot-7]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","tags":"V","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                            |
+| [fixture: c4/db-named-element-style-tags-slot-8]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","tags":"V","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                         |
+| [fixture: c4/db-named-element-style-tags-slot-9]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","tags":"V","legendSprite":"star"}]}`.                                                                                                                                                |
+| [fixture: c4/db-named-element-style-unknown-slot-1]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-element-style-unknown-slot-10]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","unknown":"V"}]}`.                                                                                                                                             |
+| [fixture: c4/db-named-element-style-unknown-slot-2]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","unknown":"V","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                       |
+| [fixture: c4/db-named-element-style-unknown-slot-3]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","unknown":"V","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                           |
+| [fixture: c4/db-named-element-style-unknown-slot-4]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","unknown":"V","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                             |
+| [fixture: c4/db-named-element-style-unknown-slot-5]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","unknown":"V","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                         |
+| [fixture: c4/db-named-element-style-unknown-slot-6]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","unknown":"V","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                     |
+| [fixture: c4/db-named-element-style-unknown-slot-7]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","unknown":"V","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                         |
+| [fixture: c4/db-named-element-style-unknown-slot-8]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","unknown":"V","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                                                      |
+| [fixture: c4/db-named-element-style-unknown-slot-9]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","unknown":"V","legendSprite":"star"}]}`.                                                                                                                                             |
+| [fixture: c4/db-named-enterprise-boundary-link-slot-1]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/db-named-enterprise-boundary-link-slot-2]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                 |
+| [fixture: c4/db-named-enterprise-boundary-link-slot-3]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"link":"link","parentBoundary":"global"}]}`.                                                                        |
+| [fixture: c4/db-named-enterprise-boundary-link-slot-4]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"V","parentBoundary":"global"}]}`.                                                             |
+| [fixture: c4/db-named-enterprise-boundary-sprite-slot-1]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-named-enterprise-boundary-sprite-slot-2]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                               |
+| [fixture: c4/db-named-enterprise-boundary-sprite-slot-3]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"sprite":"V","link":"link","parentBoundary":"global"}]}`.                                                           |
+| [fixture: c4/db-named-enterprise-boundary-sprite-slot-4]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","sprite":"V","parentBoundary":"global"}]}`.                                                           |
+| [fixture: c4/db-named-enterprise-boundary-tags-slot-1]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/db-named-enterprise-boundary-tags-slot-2]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                 |
+| [fixture: c4/db-named-enterprise-boundary-tags-slot-3]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"V","link":"link","parentBoundary":"global"}]}`.                                                             |
+| [fixture: c4/db-named-enterprise-boundary-tags-slot-4]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"V","parentBoundary":"global"}]}`.                                                                           |
+| [fixture: c4/db-named-enterprise-boundary-type-slot-1]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"type":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"type":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/db-named-enterprise-boundary-type-slot-2]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"type":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                 |
+| [fixture: c4/db-named-enterprise-boundary-type-slot-3]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"link":"link","parentBoundary":"global"}]}`.                                                                                 |
+| [fixture: c4/db-named-enterprise-boundary-type-slot-4]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"tags":"tags","parentBoundary":"global"}]}`.                                                                                 |
+| [fixture: c4/db-named-enterprise-boundary-unknown-slot-1] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                  |
+| [fixture: c4/db-named-enterprise-boundary-unknown-slot-2] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                              |
+| [fixture: c4/db-named-enterprise-boundary-unknown-slot-3] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"unknown":"V","link":"link","parentBoundary":"global"}]}`.                                                          |
+| [fixture: c4/db-named-enterprise-boundary-unknown-slot-4] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","unknown":"V","parentBoundary":"global"}]}`.                                                          |
+| [fixture: c4/db-named-index-link-slot-1]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-link-slot-2]                  | Keeps `{"rels":[{"type":"rel","from":{"link":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-link-slot-3]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":{"link":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-link-slot-4]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"link":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-index-link-slot-5]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"link":"link","descr":{"text":"D"},"sprite":"sprite","tags":"tags"}]}`.                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-index-link-slot-6]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"link":"link","sprite":"sprite","tags":"tags"}]}`.                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-link-slot-7]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"link":"link","tags":"tags"}]}`.                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-index-link-slot-8]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","link":"link"}]}`.                                                                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-index-link-slot-9]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V"}]}`.                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-index-sprite-slot-1]                | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-sprite-slot-2]                | Keeps `{"rels":[{"type":"rel","from":{"sprite":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-sprite-slot-3]                | Keeps `{"rels":[{"type":"rel","from":"a","to":{"sprite":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-sprite-slot-4]                | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"sprite":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-index-sprite-slot-5]                | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"sprite":"sprite","descr":{"text":"D"},"tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-index-sprite-slot-6]                | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-sprite-slot-7]                | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-sprite-slot-8]                | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","link":"link"}]}`.                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-index-sprite-slot-9]                | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","tags":"tags"}]}`.                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-index-tags-slot-1]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-tags-slot-2]                  | Keeps `{"rels":[{"type":"rel","from":{"tags":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-tags-slot-3]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":{"tags":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-tags-slot-4]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"tags":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-index-tags-slot-5]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"tags":"tags","descr":{"text":"D"},"sprite":"sprite","link":"link"}]}`.                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-index-tags-slot-6]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"tags":"tags","sprite":"sprite","link":"link"}]}`.                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-tags-slot-7]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-index-tags-slot-8]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link"}]}`.                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-index-tags-slot-9]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"V"}]}`.                                                                                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-index-unknown-slot-1]               | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-unknown-slot-2]               | Keeps `{"rels":[{"type":"rel","from":{"unknown":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-index-unknown-slot-3]               | Keeps `{"rels":[{"type":"rel","from":"a","to":{"unknown":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-index-unknown-slot-4]               | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"unknown":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-unknown-slot-5]               | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"unknown":"V","descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-index-unknown-slot-6]               | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-unknown-slot-7]               | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-index-unknown-slot-8]               | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link"}]}`.                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-unknown-slot-9]               | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V"}]}`.                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-key-whitespace]                     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"tags":"T","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-layout-key]                         | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-layout-link-slot-1]                 | Keeps `{"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-layout-link-slot-2]                 | Keeps `{"c4ShapeInRow":3}`.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-layout-order]                       | Keeps `{"c4ShapeInRow":7,"c4BoundaryInRow":3}`.                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-layout-sprite-slot-1]               | Keeps `{"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-layout-sprite-slot-2]               | Keeps `{"c4ShapeInRow":3}`.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-layout-tags-slot-1]                 | Keeps `{"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-layout-tags-slot-2]                 | Keeps `{"c4ShapeInRow":3}`.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-layout-unknown-slot-1]              | Keeps `{"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-layout-unknown-slot-2]              | Keeps `{"c4ShapeInRow":3}`.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-node-link-slot-1]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.       |
+| [fixture: c4/db-named-node-link-slot-2]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                |
+| [fixture: c4/db-named-node-link-slot-3]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"link":"link","descr":{"text":"D"},"tags":"tags","nodeType":"node","parentBoundary":"global"}]}`.                                                |
+| [fixture: c4/db-named-node-link-slot-4]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"link":"link","tags":"tags","nodeType":"node","parentBoundary":"global"}]}`.                                              |
+| [fixture: c4/db-named-node-link-slot-5]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-named-node-link-slot-6]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"link":"link","nodeType":"node","parentBoundary":"global"}]}`.                                       |
+| [fixture: c4/db-named-node-link-slot-7]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"V","nodeType":"node","parentBoundary":"global"}]}`.                            |
+| [fixture: c4/db-named-node-sprite-slot-1]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.   |
+| [fixture: c4/db-named-node-sprite-slot-2]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.              |
+| [fixture: c4/db-named-node-sprite-slot-3]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"sprite":"V","descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                                   |
+| [fixture: c4/db-named-node-sprite-slot-4]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"sprite":"V","tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                                 |
+| [fixture: c4/db-named-node-sprite-slot-5]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-named-node-sprite-slot-6]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"sprite":"V","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                          |
+| [fixture: c4/db-named-node-sprite-slot-7]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","sprite":"V","nodeType":"node","parentBoundary":"global"}]}`.                          |
+| [fixture: c4/db-named-node-tags-slot-1]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.       |
+| [fixture: c4/db-named-node-tags-slot-2]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                |
+| [fixture: c4/db-named-node-tags-slot-3]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"tags":"tags","descr":{"text":"D"},"link":"link","nodeType":"node","parentBoundary":"global"}]}`.                                                |
+| [fixture: c4/db-named-node-tags-slot-4]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                                              |
+| [fixture: c4/db-named-node-tags-slot-5]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-named-node-tags-slot-6]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"V","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                            |
+| [fixture: c4/db-named-node-tags-slot-7]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"V","nodeType":"node","parentBoundary":"global"}]}`.                                          |
+| [fixture: c4/db-named-node-unknown-slot-1]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`. |
+| [fixture: c4/db-named-node-unknown-slot-2]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.             |
+| [fixture: c4/db-named-node-unknown-slot-3]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"unknown":"V","descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                                  |
+| [fixture: c4/db-named-node-unknown-slot-4]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"unknown":"V","tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-named-node-unknown-slot-5]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-named-node-unknown-slot-6]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"unknown":"V","link":"link","nodeType":"node","parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-named-node-unknown-slot-7]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","unknown":"V","nodeType":"node","parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-named-person-link-slot-1]                 | Keeps `{"shapes":[{"alias":{"link":"V"},"label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-link-slot-2]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":{"link":"V"}},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-link-slot-3]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"link":"link","sprite":"sprite","tags":"tags","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-link-slot-4]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"link":"link","tags":"tags","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-person-link-slot-5]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-person-link-slot-6]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-person-sprite-slot-1]               | Keeps `{"shapes":[{"alias":{"sprite":"V"},"label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-sprite-slot-2]               | Keeps `{"shapes":[{"alias":"a","label":{"text":{"sprite":"V"}},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-sprite-slot-3]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-sprite-slot-4]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-sprite-slot-5]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"V","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-person-sprite-slot-6]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"V","tags":"tags","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-person-tags-slot-1]                 | Keeps `{"shapes":[{"alias":{"tags":"V"},"label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-tags-slot-2]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":{"tags":"V"}},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-tags-slot-3]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"tags":"tags","sprite":"sprite","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-tags-slot-4]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-person-tags-slot-5]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-person-tags-slot-6]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                              |
+| [fixture: c4/db-named-person-unknown-slot-1]              | Keeps `{"shapes":[{"alias":{"unknown":"V"},"label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-person-unknown-slot-2]              | Keeps `{"shapes":[{"alias":"a","label":{"text":{"unknown":"V"}},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-person-unknown-slot-3]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-unknown-slot-4]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-person-unknown-slot-5]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-person-unknown-slot-6]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-link-slot-1]                    | Keeps `{"rels":[{"type":"rel","from":{"link":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-link-slot-2]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":{"link":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-link-slot-3]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"link":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-rel-link-slot-4]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"link":"link","descr":{"text":"D"},"sprite":"sprite","tags":"tags"}]}`.                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-rel-link-slot-5]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"link":"link","sprite":"sprite","tags":"tags"}]}`.                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-link-slot-6]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"link":"link","tags":"tags"}]}`.                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-rel-link-slot-7]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","link":"link"}]}`.                                                                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-rel-link-slot-8]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V"}]}`.                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-sprite-slot-1]                  | Keeps `{"rels":[{"type":"rel","from":{"sprite":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-sprite-slot-2]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":{"sprite":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-sprite-slot-3]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"sprite":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-rel-sprite-slot-4]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"sprite":"sprite","descr":{"text":"D"},"tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-rel-sprite-slot-5]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-sprite-slot-6]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-sprite-slot-7]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","link":"link"}]}`.                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-sprite-slot-8]                  | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","tags":"tags"}]}`.                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-style-link-slot-1]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-link-slot-2]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-link-slot-3]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"link":"V","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-rel-style-link-slot-4]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","link":"V","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-rel-style-link-slot-5]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","link":"NaN","offsetY":5}]}`.                                                                                                                                                                                                                                                              |
+| [fixture: c4/db-named-rel-style-link-slot-6]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"link":"NaN"}]}`.                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-style-sprite-slot-1]            | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-sprite-slot-2]            | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-sprite-slot-3]            | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"sprite":"V","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-rel-style-sprite-slot-4]            | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","sprite":"V","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-rel-style-sprite-slot-5]            | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","sprite":"NaN","offsetY":5}]}`.                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-sprite-slot-6]            | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"sprite":"NaN"}]}`.                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-style-tags-slot-1]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-tags-slot-2]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-tags-slot-3]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"tags":"V","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-rel-style-tags-slot-4]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","tags":"V","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-rel-style-tags-slot-5]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","tags":"NaN","offsetY":5}]}`.                                                                                                                                                                                                                                                              |
+| [fixture: c4/db-named-rel-style-tags-slot-6]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"tags":"NaN"}]}`.                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-style-unknown-slot-1]           | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-unknown-slot-2]           | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-unknown-slot-3]           | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"unknown":"V","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-rel-style-unknown-slot-4]           | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","unknown":"V","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-rel-style-unknown-slot-5]           | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","unknown":"NaN","offsetY":5}]}`.                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-style-unknown-slot-6]           | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"unknown":"NaN"}]}`.                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-rel-tags-slot-1]                    | Keeps `{"rels":[{"type":"rel","from":{"tags":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-tags-slot-2]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":{"tags":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-tags-slot-3]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"tags":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-rel-tags-slot-4]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"tags":"tags","descr":{"text":"D"},"sprite":"sprite","link":"link"}]}`.                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-rel-tags-slot-5]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"tags":"tags","sprite":"sprite","link":"link"}]}`.                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-tags-slot-6]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-rel-tags-slot-7]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link"}]}`.                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-tags-slot-8]                    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"V"}]}`.                                                                                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-rel-unknown-slot-1]                 | Keeps `{"rels":[{"type":"rel","from":{"unknown":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-unknown-slot-2]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":{"unknown":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-unknown-slot-3]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"unknown":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-unknown-slot-4]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"unknown":"V","descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-rel-unknown-slot-5]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-unknown-slot-6]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-unknown-slot-7]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link"}]}`.                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-rel-unknown-slot-8]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V"}]}`.                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-repeat]                             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"Third"},"typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-system-boundary-link-slot-1]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                            |
+| [fixture: c4/db-named-system-boundary-link-slot-2]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                     |
+| [fixture: c4/db-named-system-boundary-link-slot-3]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"link":"link","parentBoundary":"global"}]}`.                                                                            |
+| [fixture: c4/db-named-system-boundary-link-slot-4]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"V","parentBoundary":"global"}]}`.                                                                 |
+| [fixture: c4/db-named-system-boundary-sprite-slot-1]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/db-named-system-boundary-sprite-slot-2]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                   |
+| [fixture: c4/db-named-system-boundary-sprite-slot-3]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"sprite":"V","link":"link","parentBoundary":"global"}]}`.                                                               |
+| [fixture: c4/db-named-system-boundary-sprite-slot-4]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","sprite":"V","parentBoundary":"global"}]}`.                                                               |
+| [fixture: c4/db-named-system-boundary-tags-slot-1]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                            |
+| [fixture: c4/db-named-system-boundary-tags-slot-2]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                     |
+| [fixture: c4/db-named-system-boundary-tags-slot-3]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"V","link":"link","parentBoundary":"global"}]}`.                                                                 |
+| [fixture: c4/db-named-system-boundary-tags-slot-4]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"V","parentBoundary":"global"}]}`.                                                                               |
+| [fixture: c4/db-named-system-boundary-type-slot-1]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"type":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"type":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                            |
+| [fixture: c4/db-named-system-boundary-type-slot-2]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"type":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                     |
+| [fixture: c4/db-named-system-boundary-type-slot-3]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"link":"link","parentBoundary":"global"}]}`.                                                                                 |
+| [fixture: c4/db-named-system-boundary-type-slot-4]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"tags":"tags","parentBoundary":"global"}]}`.                                                                                 |
+| [fixture: c4/db-named-system-boundary-unknown-slot-1]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                      |
+| [fixture: c4/db-named-system-boundary-unknown-slot-2]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                                  |
+| [fixture: c4/db-named-system-boundary-unknown-slot-3]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"unknown":"V","link":"link","parentBoundary":"global"}]}`.                                                              |
+| [fixture: c4/db-named-system-boundary-unknown-slot-4]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","unknown":"V","parentBoundary":"global"}]}`.                                                              |
+| [fixture: c4/db-named-text-fields]                        | Keeps `{"shapes":[{"alias":"a","label":{"text":"Label"},"techn":{"text":"Tech"},"descr":{"text":"Description"},"type":{"text":"Kind"},"tags":"Tag","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                              |
+
+#### db-node
+
+| Fixture                      | Reading                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-node-sprite] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"n"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"n","label":{"text":"Node"},"type":{"text":"type"},"descr":{"text":"Description"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`. |
+
+#### db-number
+
+| Fixture                                            | Reading                                                                                                                                                                                               |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-number-layout-exponent]            | Keeps `{"c4ShapeInRow":1,"c4BoundaryInRow":1}`.                                                                                                                                                       |
+| [fixture: c4/db-number-layout-fraction]            | Keeps `{"c4ShapeInRow":7,"c4BoundaryInRow":7}`.                                                                                                                                                       |
+| [fixture: c4/db-number-layout-fullwidth]           | Keeps the initial summary.                                                                                                                                                                            |
+| [fixture: c4/db-number-layout-hex]                 | Keeps `{"c4ShapeInRow":16,"c4BoundaryInRow":16}`.                                                                                                                                                     |
+| [fixture: c4/db-number-layout-infinity]            | Keeps the initial summary.                                                                                                                                                                            |
+| [fixture: c4/db-number-layout-nan]                 | Keeps the initial summary.                                                                                                                                                                            |
+| [fixture: c4/db-number-layout-negative]            | Keeps the initial summary.                                                                                                                                                                            |
+| [fixture: c4/db-number-layout-negative-zero]       | Keeps the initial summary.                                                                                                                                                                            |
+| [fixture: c4/db-number-layout-non-ascii]           | Keeps the initial summary.                                                                                                                                                                            |
+| [fixture: c4/db-number-layout-overflow]            | Keeps `{"c4ShapeInRow":"Infinity","c4BoundaryInRow":"Infinity"}`.                                                                                                                                     |
+| [fixture: c4/db-number-layout-plus]                | Keeps `{"c4ShapeInRow":7,"c4BoundaryInRow":7}`.                                                                                                                                                       |
+| [fixture: c4/db-number-layout-space-text-after]    | Keeps `{"c4ShapeInRow":12,"c4BoundaryInRow":12}`.                                                                                                                                                     |
+| [fixture: c4/db-number-layout-text-after]          | Keeps `{"c4ShapeInRow":12,"c4BoundaryInRow":12}`.                                                                                                                                                     |
+| [fixture: c4/db-number-layout-zero]                | Keeps the initial summary.                                                                                                                                                                            |
+| [fixture: c4/db-number-rel-style-empty]            | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}`.           |
+| [fixture: c4/db-number-rel-style-exponent]         | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":1,"offsetY":1}]}`.                   |
+| [fixture: c4/db-number-rel-style-fraction]         | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":7,"offsetY":7}]}`.                   |
+| [fixture: c4/db-number-rel-style-fullwidth]        | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}`.           |
+| [fixture: c4/db-number-rel-style-hex]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":16,"offsetY":16}]}`.                 |
+| [fixture: c4/db-number-rel-style-infinity]         | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}`.           |
+| [fixture: c4/db-number-rel-style-nan]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}`.           |
+| [fixture: c4/db-number-rel-style-negative]         | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-3,"offsetY":-3}]}`.                 |
+| [fixture: c4/db-number-rel-style-negative-zero]    | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":0,"offsetY":0}]}`.                   |
+| [fixture: c4/db-number-rel-style-non-ascii]        | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}`.           |
+| [fixture: c4/db-number-rel-style-overflow]         | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"Infinity","offsetY":"Infinity"}]}`. |
+| [fixture: c4/db-number-rel-style-plus]             | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":7,"offsetY":7}]}`.                   |
+| [fixture: c4/db-number-rel-style-space-text-after] | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":12,"offsetY":12}]}`.                 |
+| [fixture: c4/db-number-rel-style-text-after]       | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":12,"offsetY":12}]}`.                 |
+| [fixture: c4/db-number-rel-style-zero]             | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":0,"offsetY":0}]}`.                   |
+
+#### db-parent
+
+| Fixture                                | Reading                                                                                                                                                                                                                                                                                                                                                                            |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-parent-c4container]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"C4Container"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"C4Container","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.       |
+| [fixture: c4/db-parent-c4context]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"C4Context"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"C4Context","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.           |
+| [fixture: c4/db-parent-constructor]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"constructor"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"constructor","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.       |
+| [fixture: c4/db-parent-global]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"boundaries":[{"alias":"global","label":{"text":"B"},"type":{"text":"system"},"tags":null,"link":null,"parentBoundary":"global"}]}`.                                                                                                           |
+| [fixture: c4/db-parent-hasownproperty] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"hasOwnProperty"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"hasOwnProperty","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-parent-person]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"Person"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"Person","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.                 |
+| [fixture: c4/db-parent-proto]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"__proto__"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"__proto__","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.           |
+| [fixture: c4/db-parent-title]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"title"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"title","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.                   |
+| [fixture: c4/db-parent-tostring]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"toString"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"toString","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.             |
+
+#### db-preprocessing
+
+| Fixture                                       | Reading                                                                                                                                                                      |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-preprocessing-classdef]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"classDef:#xy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                            |
+| [fixture: c4/db-preprocessing-no-hash]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"style:x;y"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                               |
+| [fixture: c4/db-preprocessing-other-line]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"style:\n\ufb02\u00b0x\u00b6\u00dfy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.      |
+| [fixture: c4/db-preprocessing-quoted-line]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"first\nstyle:#xy\nlast"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                  |
+| [fixture: c4/db-preprocessing-space]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"style: \ufb02\u00b0x\u00b6\u00dfy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.       |
+| [fixture: c4/db-preprocessing-style]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"style:#xy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                               |
+| [fixture: c4/db-preprocessing-two-semicolons] | Keeps `{"shapes":[{"alias":"a","label":{"text":"style:\ufb02\u00b0\u00b035\u00b6\u00dfy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-preprocessing-upper]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"Style:\ufb02\u00b0x\u00b6\u00dfy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.        |
+
+#### db-rel
+
+| Fixture                                     | Reading                                                                                                                                                                                                                                                                                     |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-rel-endpoint-named-change]  | Keeps `{"rels":[{"type":"rel","from":"c","to":"b","label":{"text":"First"},"descr":{"text":""}},{"type":"rel","from":"a","to":"b","label":{"text":"Second"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                    |
+| [fixture: c4/db-rel-named-endpoints]        | Keeps `{"rels":[{"type":"rel","from":{"from":"a"},"to":{"to":"b"},"label":{"text":{"label":"Uses"}},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                            |
+| [fixture: c4/db-rel-object-endpoint-repeat] | Keeps `{"rels":[{"type":"rel","from":{"from":"a"},"to":"b","label":{"text":"First"},"techn":{"text":""},"descr":{"text":""}},{"type":"rel","from":{"from":"a"},"to":"b","label":{"text":"Second"},"techn":{"text":""},"descr":{"text":""}}]}`.                                              |
+| [fixture: c4/db-rel-self]                   | Keeps `{"rels":[{"type":"rel","from":"a","to":"a","label":{"text":"Self"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                      |
+| [fixture: c4/db-rel-three-definitions]      | Keeps `{"rels":[{"type":"rel_r","from":"a","to":"b","label":{"text":"Third"},"techn":{"text":"RPC"},"descr":{"text":"Description"},"sprite":"sprite","tags":"tags","link":"link"},{"type":"rel","from":"b","to":"a","label":{"text":"Partner"},"techn":{"text":""},"descr":{"text":""}}]}`. |
+
+#### db-required
+
+| Fixture                                      | Reading                                                                                                                                                                                                                                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [fixture: c4/db-required-alias-empty]        | Keeps `{"shapes":[{"alias":"","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                |
+| [fixture: c4/db-required-label-empty]        | Keeps `{"shapes":[{"alias":"a","label":{"text":""},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                |
+| [fixture: c4/db-required-named-alias-repeat] | Keeps `{"shapes":[{"alias":{"alias":"a"},"label":{"text":"First"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":{"alias":"a"},"label":{"text":"Second"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+
+#### db-shape
+
+| Fixture                                   | Reading                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-shape-alias-named-change] | Keeps `{"shapes":[{"alias":"b","label":{"text":"Third"},"typeC4Shape":{"text":"person"},"parentBoundary":"global","descr":{"text":""}},{"alias":"a","label":{"text":"Second"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-shape-case-sensitive]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"Lower"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"A","label":{"text":"Upper"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-shape-three-definitions]  | Keeps `{"shapes":[{"alias":"a","label":{"text":"Third"},"techn":{"text":"Java"},"descr":{"text":"Third D"},"tags":"first","typeC4Shape":{"text":"system"},"parentBoundary":"c"},{"alias":"b","label":{"text":"Partner"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"c","label":{"text":"C"},"type":{"text":"system"},"parentBoundary":"global"}]}`. |
+
+#### db-style
+
+| Fixture                                      | Reading                                                                                                                                                                                                                                                                                                                                                                                      |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-style-before-definition]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                           |
+| [fixture: c4/db-style-boundary]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global","bgColor":"red","fontColor":"white"}]}`. |
+| [fixture: c4/db-style-layout-key-attributes] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"x":"17","width":"20","constructor":"own","hasOwnProperty":"yes","typeC4Shape":{"text":"container"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"startPoint":"written","descr":{"text":""}}]}`.                                                                                        |
+| [fixture: c4/db-style-required-named-target] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-style-text-replacement]      | Keeps `{"shapes":[{"alias":"a","label":"Changed","descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","techn":"Tech","custom":"Own"}]}`.                                                                                                                                                                                                                            |
+| [fixture: c4/db-style-three-updates]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"green","fontColor":"blue","borderColor":"black"}]}`.                                                                                                                                                                                            |
+
+#### db-title
+
+| Fixture                            | Reading                                                                                                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-title-acc-order]   | Keeps `{"title":"Third","accDescr":"Description","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.       |
+| [fixture: c4/db-title-comment]     | Keeps `{"title":"T %% comment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                         |
+| [fixture: c4/db-title-empty]       | Rejected with `Error`.                                                                                                                                                                |
+| [fixture: c4/db-title-entity]      | Keeps `{"title":"T \ufb02\u00b0\u00b035\u00b6\u00df U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/db-title-frontmatter] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                |
+| [fixture: c4/db-title-hash]        | Rejected with `Error`.                                                                                                                                                                |
+| [fixture: c4/db-title-html]        | Keeps `{"title":"<b>T</b>","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                             |
+| [fixture: c4/db-title-non-ascii]   | Keeps `{"title":"\u65e5\u672c\u8a9e","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                   |
+| [fixture: c4/db-title-plain]       | Keeps `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                    |
+| [fixture: c4/db-title-quotes]      | Keeps `{"title":"\"T\"","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-title-semicolon]   | Rejected with `Error`.                                                                                                                                                                |
+| [fixture: c4/db-title-spaces]      | Keeps `{"title":"  T  ","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-title-spaces-only] | Keeps `{"title":"  "}`.                                                                                                                                                               |
+| [fixture: c4/db-title-tab]         | Keeps `{"title":"\tT\t","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-title-tab-only]    | Keeps `{"title":"\t"}`.                                                                                                                                                               |
+| [fixture: c4/db-title-three-times] | Keeps `{"title":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                |
+| [fixture: c4/db-title-whitespace]  | Keeps `{"title":"   T   ","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                              |
+
+#### db-unclosed
+
+| Fixture                                    | Reading                                                                                                                                |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-unclosed-directive-at-end] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+
+#### db-update
+
+| Fixture                                            | Reading                                                                                                                                                                                  |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-update-layout-three-times]         | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":7}`.                                                                                                                                          |
+| [fixture: c4/db-update-rel-style-named-number-key] | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","custom":"NaN","unknown":-9}]}`.  |
+| [fixture: c4/db-update-rel-style-named-text]       | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":"Raw","techn":{"text":""},"descr":{"text":""},"custom":"Own"}]}`.                                                              |
+| [fixture: c4/db-update-rel-style-three-times]      | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"green","lineColor":"blue","offsetX":3,"offsetY":"-7"}]}`. |
+
+#### db-wrap
+
+| Fixture                              | Reading                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-wrap-directive]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"wrap: A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","wrap":true}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"nowrap: B"},"techn":{"text":""},"descr":{"text":""},"wrap":true}]}`.                                                                                                                                                                                                                    |
+| [fixture: c4/db-wrap-frontmatter]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","wrap":true}]}`.                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-wrap-init-directive] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b","wrap":true}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global","wrap":true}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"wrap":true}]}`. |
+
+#### gram-acc
+
+| Fixture                                                             | Reading                                                                                                                                                           |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-acc-descr-block-after-text-blank-lines]           | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-after-text-braces-inside]         | Keeps `{"accDescr":"D { E","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.         |
+| [fixture: c4/gram-acc-descr-block-after-text-comment-line]          | Keeps `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/gram-acc-descr-block-after-text-directive-line]        | Keeps `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/gram-acc-descr-block-after-text-next-line]             | Keeps `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.             |
+| [fixture: c4/gram-acc-descr-block-after-text-same-line]             | Keeps `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.             |
+| [fixture: c4/gram-acc-descr-block-after-text-space]                 | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-after-text-statement-after-brace] | Keeps `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.             |
+| [fixture: c4/gram-acc-descr-block-after-text-tab]                   | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-after-text-text]                  | Keeps `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/gram-acc-descr-block-after-text-text-after-brace]      | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-after-text-two-empty]             | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-after-text-unclosed]              | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-blank-lines]                      | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-braces-inside]                    | Keeps `{"accDescr":"D { E","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.         |
+| [fixture: c4/gram-acc-descr-block-comment-line]                     | Keeps `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/gram-acc-descr-block-directive-line]                   | Keeps `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/gram-acc-descr-block-empty]                            | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-next-line]                        | Keeps `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.             |
+| [fixture: c4/gram-acc-descr-block-same-line]                        | Keeps `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.             |
+| [fixture: c4/gram-acc-descr-block-space]                            | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-statement-after-brace]            | Keeps `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.             |
+| [fixture: c4/gram-acc-descr-block-tab]                              | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-text]                             | Keeps `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/gram-acc-descr-block-text-after-brace]                 | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-two-empty]                        | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-descr-block-unclosed]                         | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-description-block]                            | Rejected with `Error`.                                                                                                                                            |
+| [fixture: c4/gram-acc-title-block]                                  | Rejected with `Error`.                                                                                                                                            |
+
+#### gram-arguments
+
+| Fixture                                                  | Reading                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-arguments-bare-final]                  | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-bare-final-before-comma]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/gram-arguments-boundary-above]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/gram-arguments-boundary-bare]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-boundary-below]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","parentBoundary":"global"}]}`.                                                      |
+| [fixture: c4/gram-arguments-boundary-empty]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":""}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"","label":{"text":""},"type":{"text":""},"tags":"","link":"","parentBoundary":"global"}]}`.                                                       |
+| [fixture: c4/gram-arguments-boundary-missing-close]      | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-boundary-none]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-boundary-one]                | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-component-above]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-component-bare]              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-component-below]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                        |
+| [fixture: c4/gram-arguments-component-empty]             | Keeps `{"shapes":[{"alias":"","label":{"text":""},"techn":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":"","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                               |
+| [fixture: c4/gram-arguments-component-missing-close]     | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-component-none]              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-component-one]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-container-above]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-container-bare]              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-container-below]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                        |
+| [fixture: c4/gram-arguments-container-empty]             | Keeps `{"shapes":[{"alias":"","label":{"text":""},"techn":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":"","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                               |
+| [fixture: c4/gram-arguments-container-missing-close]     | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-container-none]              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-container-one]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-element-style-above]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                             |
+| [fixture: c4/gram-arguments-element-style-bare]          | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-element-style-below]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend"}]}`.                                                                                                                                   |
+| [fixture: c4/gram-arguments-element-style-empty]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-element-style-missing-close] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"UpdateElementStyle(a"},"sprite":"red","tags":"white","link":"black","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                   |
+| [fixture: c4/gram-arguments-element-style-none]          | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-element-style-one]           | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-index-above]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/gram-arguments-index-bare]                  | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-index-below]                 | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags"}]}`.                                                                                                                                                                                                                                                              |
+| [fixture: c4/gram-arguments-index-empty]                 | Keeps `{"rels":[{"type":"rel","from":"","to":"","label":{"text":""},"techn":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":""}]}`.                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-index-missing-close]         | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-index-none]                  | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-index-one]                   | Keeps the initial summary.                                                                                                                                                                                                                                                                                                                                                                                                |
+| [fixture: c4/gram-arguments-layout-above]                | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/gram-arguments-layout-bare]                 | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-layout-empty]                | Keeps the initial summary.                                                                                                                                                                                                                                                                                                                                                                                                |
+| [fixture: c4/gram-arguments-layout-missing-close]        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-layout-none]                 | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-layout-one]                  | Keeps `{"c4ShapeInRow":3}`.                                                                                                                                                                                                                                                                                                                                                                                               |
+| [fixture: c4/gram-arguments-node-above]                  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`. |
+| [fixture: c4/gram-arguments-node-bare]                   | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-node-below]                  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","nodeType":"node","parentBoundary":"global"}]}`.               |
+| [fixture: c4/gram-arguments-node-empty]                  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":""}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"","label":{"text":""},"type":{"text":""},"descr":{"text":""},"tags":"","link":"","nodeType":"node","parentBoundary":"global"}]}`.                 |
+| [fixture: c4/gram-arguments-node-missing-close]          | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-node-none]                   | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-node-one]                    | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-person-above]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/gram-arguments-person-bare]                 | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-person-below]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                   |
+| [fixture: c4/gram-arguments-person-empty]                | Keeps `{"shapes":[{"alias":"","label":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":"","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                      |
+| [fixture: c4/gram-arguments-person-missing-close]        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-person-none]                 | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-person-one]                  | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-above]                   | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/gram-arguments-rel-bare]                    | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-below]                   | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags"}]}`.                                                                                                                                                                                                                                                              |
+| [fixture: c4/gram-arguments-rel-empty]                   | Keeps `{"rels":[{"type":"rel","from":"","to":"","label":{"text":""},"techn":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":""}]}`.                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-missing-close]           | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-none]                    | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-one]                     | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-style-above]             | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/gram-arguments-rel-style-bare]              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-style-below]             | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4}]}`.                                                                                                                                                                                                                                                  |
+| [fixture: c4/gram-arguments-rel-style-empty]             | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}`.                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-style-missing-close]     | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"UpdateRelStyle(a"},"descr":{"text":"b"},"sprite":"red","tags":"blue","link":"-4"}]}`.                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-style-none]              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-style-one]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+
+#### gram-boundary
+
+| Fixture                                            | Reading                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-boundary-empty]                  | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [fixture: c4/gram-boundary-empty-same-line]        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [fixture: c4/gram-boundary-global-alias]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"boundaries":[{"alias":"global","label":{"text":"Written"},"type":{"text":"system"},"tags":null,"link":null,"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/gram-boundary-nested]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"d"},{"alias":"e","label":{"text":"E"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"c"},{"alias":"f","label":{"text":"F"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"},{"alias":"g","label":{"text":"G"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"},{"alias":"c","label":{"text":"C"},"type":{"text":"node"},"descr":{"text":""},"nodeType":"node","parentBoundary":"b"},{"alias":"d","label":{"text":"D"},"type":{"text":"CONTAINER"},"parentBoundary":"c"}]}`. |
+| [fixture: c4/gram-boundary-next-line]              | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/gram-boundary-next-line-inline-child] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/gram-boundary-no-brace]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [fixture: c4/gram-boundary-only-title]             | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [fixture: c4/gram-boundary-reused-alias]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"},{"alias":"b","label":{"text":"Shape B"},"descr":{"text":""},"typeC4Shape":{"text":"system"},"parentBoundary":"global","bgColor":"red"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/gram-boundary-same-line]              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [fixture: c4/gram-boundary-unclosed]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+
+#### gram-data
+
+| Fixture                       | Reading                |
+| ----------------------------- | ---------------------- |
+| [fixture: c4/gram-data-block] | Rejected with `Error`. |
+
+#### gram-direction
+
+| Fixture                                      | Reading                |
+| -------------------------------------------- | ---------------------- |
+| [fixture: c4/gram-direction-bt-inside-label] | Rejected with `Error`. |
+| [fixture: c4/gram-direction-bt-line]         | Rejected with `Error`. |
+| [fixture: c4/gram-direction-bt-lower-value]  | Rejected with `Error`. |
+| [fixture: c4/gram-direction-bt-prefix]       | Rejected with `Error`. |
+| [fixture: c4/gram-direction-bt-upper]        | Rejected with `Error`. |
+| [fixture: c4/gram-direction-lr-inside-label] | Rejected with `Error`. |
+| [fixture: c4/gram-direction-lr-line]         | Rejected with `Error`. |
+| [fixture: c4/gram-direction-lr-lower-value]  | Rejected with `Error`. |
+| [fixture: c4/gram-direction-lr-prefix]       | Rejected with `Error`. |
+| [fixture: c4/gram-direction-lr-upper]        | Rejected with `Error`. |
+| [fixture: c4/gram-direction-rl-inside-label] | Rejected with `Error`. |
+| [fixture: c4/gram-direction-rl-line]         | Rejected with `Error`. |
+| [fixture: c4/gram-direction-rl-lower-value]  | Rejected with `Error`. |
+| [fixture: c4/gram-direction-rl-prefix]       | Rejected with `Error`. |
+| [fixture: c4/gram-direction-rl-upper]        | Rejected with `Error`. |
+| [fixture: c4/gram-direction-tb]              | Rejected with `Error`. |
+| [fixture: c4/gram-direction-tb-inside-label] | Rejected with `Error`. |
+| [fixture: c4/gram-direction-tb-line]         | Rejected with `Error`. |
+| [fixture: c4/gram-direction-tb-lower-value]  | Rejected with `Error`. |
+| [fixture: c4/gram-direction-tb-prefix]       | Rejected with `Error`. |
+| [fixture: c4/gram-direction-tb-upper]        | Rejected with `Error`. |
+
+#### gram-header
+
+| Fixture                                | Reading                    |
+| -------------------------------------- | -------------------------- |
+| [fixture: c4/gram-header-direction-bt] | Rejected with `TypeError`. |
+| [fixture: c4/gram-header-direction-lr] | Rejected with `TypeError`. |
+| [fixture: c4/gram-header-direction-rl] | Rejected with `TypeError`. |
+| [fixture: c4/gram-header-direction-tb] | Rejected with `TypeError`. |
+
+#### gram-named
+
+| Fixture                               | Reading                    |
+| ------------------------------------- | -------------------------- |
+| [fixture: c4/gram-named-bare-value]   | Rejected with `Error`.     |
+| [fixture: c4/gram-named-empty-value]  | Rejected with `Error`.     |
+| [fixture: c4/gram-named-proto]        | Rejected with `TypeError`. |
+| [fixture: c4/gram-named-single-quote] | Rejected with `Error`.     |
+
+#### gram-other
+
+| Fixture                                         | Reading                                                                                                                                                           |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-other-statements-after-shape] | Keeps `{"title":"A","accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+
+#### gram-statement
+
+| Fixture                                      | Reading                |
+| -------------------------------------------- | ---------------------- |
+| [fixture: c4/gram-statement-newline-in-call] | Rejected with `Error`. |
+
+#### gram-title
+
+| Fixture                                  | Reading                                                                                                                                                                                                                                                                                                                                                              |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-title-inside-boundary] | Keeps `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}`. |
+
+#### gram-two
+
+| Fixture                                   | Reading                |
+| ----------------------------------------- | ---------------------- |
+| [fixture: c4/gram-two-statements-on-line] | Rejected with `Error`. |
+
+#### gram-unclosed
+
+| Fixture                                    | Reading                |
+| ------------------------------------------ | ---------------------- |
+| [fixture: c4/gram-unclosed-accdescr]       | Rejected with `Error`. |
+| [fixture: c4/gram-unclosed-accdescription] | Rejected with `Error`. |
+| [fixture: c4/gram-unclosed-acctitle]       | Rejected with `Error`. |
+| [fixture: c4/gram-unclosed-title]          | Rejected with `Error`. |
+
+#### header-after
+
+| Fixture                                            | Reading                                                                                                                                |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-after-bare-percent-line]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-after-blank-lines]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-after-comment-line]            | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-after-directive-line]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-after-empty-braces-line]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-after-frontmatter-and-comment] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-after-hash-line]               | Rejected with `UnknownDiagramError`.                                                                                                   |
+| [fixture: c4/header-after-semicolon-line]          | Rejected with `UnknownDiagramError`.                                                                                                   |
+| [fixture: c4/header-after-whitespace-line]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+
+#### header-component
+
+| Fixture                                                     | Reading                                                                                                                                                     |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-component-comment-glued]                | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-comment-on-header-line]       | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-dash-suffix]                  | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-digit-suffix]                 | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-glued-keyword-suffix]         | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-lower]                        | Rejected with `UnknownDiagramError`.                                                                                                                        |
+| [fixture: c4/header-component-minimal]                      | Keeps `{"type":"C4Component","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-component-mixed]                        | Rejected with `UnknownDiagramError`.                                                                                                                        |
+| [fixture: c4/header-component-non-ascii-suffix]             | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-only]                         | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-only-lf]                      | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-statement-on-header-line]     | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-tab-statement-on-header-line] | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-title-on-header-line]         | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-twice]                        | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-underscore-suffix]            | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-component-upper]                        | Rejected with `UnknownDiagramError`.                                                                                                                        |
+| [fixture: c4/header-component-word-suffix]                  | Rejected with `Error`.                                                                                                                                      |
+
+#### header-container
+
+| Fixture                                                     | Reading                                                                                                                                                     |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-container-comment-glued]                | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-comment-on-header-line]       | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-dash-suffix]                  | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-digit-suffix]                 | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-glued-keyword-suffix]         | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-lower]                        | Rejected with `UnknownDiagramError`.                                                                                                                        |
+| [fixture: c4/header-container-minimal]                      | Keeps `{"type":"C4Container","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-container-mixed]                        | Rejected with `UnknownDiagramError`.                                                                                                                        |
+| [fixture: c4/header-container-non-ascii-suffix]             | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-only]                         | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-only-lf]                      | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-statement-on-header-line]     | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-tab-statement-on-header-line] | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-title-on-header-line]         | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-twice]                        | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-underscore-suffix]            | Rejected with `Error`.                                                                                                                                      |
+| [fixture: c4/header-container-upper]                        | Rejected with `UnknownDiagramError`.                                                                                                                        |
+| [fixture: c4/header-container-word-suffix]                  | Rejected with `Error`.                                                                                                                                      |
+
+#### header-context
+
+| Fixture                                                   | Reading                                                                                                                                |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-context-comment-glued]                | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-comment-on-header-line]       | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-dash-suffix]                  | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-digit-suffix]                 | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-glued-keyword-suffix]         | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-lower]                        | Rejected with `UnknownDiagramError`.                                                                                                   |
+| [fixture: c4/header-context-minimal]                      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-context-mixed]                        | Rejected with `UnknownDiagramError`.                                                                                                   |
+| [fixture: c4/header-context-non-ascii-suffix]             | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-only]                         | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-statement-on-header-line]     | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-tab-statement-on-header-line] | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-title-on-header-line]         | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-twice]                        | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-underscore-suffix]            | Rejected with `Error`.                                                                                                                 |
+| [fixture: c4/header-context-upper]                        | Rejected with `UnknownDiagramError`.                                                                                                   |
+| [fixture: c4/header-context-word-suffix]                  | Rejected with `Error`.                                                                                                                 |
+
+#### header-deployment
+
+| Fixture                                                      | Reading                                                                                                                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [fixture: c4/header-deployment-comment-glued]                | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-comment-on-header-line]       | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-dash-suffix]                  | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-digit-suffix]                 | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-glued-keyword-suffix]         | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-lower]                        | Rejected with `UnknownDiagramError`.                                                                                                                         |
+| [fixture: c4/header-deployment-minimal]                      | Keeps `{"type":"C4Deployment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-deployment-mixed]                        | Rejected with `UnknownDiagramError`.                                                                                                                         |
+| [fixture: c4/header-deployment-non-ascii-suffix]             | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-only]                         | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-only-lf]                      | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-statement-on-header-line]     | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-tab-statement-on-header-line] | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-title-on-header-line]         | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-twice]                        | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-underscore-suffix]            | Rejected with `Error`.                                                                                                                                       |
+| [fixture: c4/header-deployment-upper]                        | Rejected with `UnknownDiagramError`.                                                                                                                         |
+| [fixture: c4/header-deployment-word-suffix]                  | Rejected with `Error`.                                                                                                                                       |
+
+#### header-dynamic
+
+| Fixture                                                   | Reading                                                                                                                                                   |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-dynamic-comment-glued]                | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-comment-on-header-line]       | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-dash-suffix]                  | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-digit-suffix]                 | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-glued-keyword-suffix]         | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-lower]                        | Rejected with `UnknownDiagramError`.                                                                                                                      |
+| [fixture: c4/header-dynamic-minimal]                      | Keeps `{"type":"C4Dynamic","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/header-dynamic-mixed]                        | Rejected with `UnknownDiagramError`.                                                                                                                      |
+| [fixture: c4/header-dynamic-non-ascii-suffix]             | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-only]                         | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-only-lf]                      | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-statement-on-header-line]     | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-tab-statement-on-header-line] | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-title-on-header-line]         | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-twice]                        | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-underscore-suffix]            | Rejected with `Error`.                                                                                                                                    |
+| [fixture: c4/header-dynamic-upper]                        | Rejected with `UnknownDiagramError`.                                                                                                                      |
+| [fixture: c4/header-dynamic-word-suffix]                  | Rejected with `Error`.                                                                                                                                    |
+
+#### lex-after
+
+| Fixture                                                       | Reading                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-after-boundary-call]                         | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-boundary-comment]                      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/lex-after-boundary-comment-glued]                | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/lex-after-boundary-directive]                    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/lex-after-boundary-directive-unclosed]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/lex-after-boundary-directive-word-unclosed]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}`.                                        |
+| [fixture: c4/lex-after-boundary-double-close]                 | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-boundary-double-semicolon]             | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-boundary-semicolon]                    | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-boundary-semicolon-spaced]             | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-boundary-word]                         | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-component-call]                        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-component-comment]                     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-comment-glued]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-directive]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-directive-unclosed]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-directive-word-unclosed]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-double-close]                | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-component-double-semicolon]            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-component-semicolon]                   | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-component-semicolon-spaced]            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-component-word]                        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-container-call]                        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-container-comment]                     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-comment-glued]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-directive]                   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-directive-unclosed]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-directive-word-unclosed]     | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-double-close]                | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-container-double-semicolon]            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-container-semicolon]                   | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-container-semicolon-spaced]            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-container-word]                        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-element-style-call]                    | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-element-style-comment]                 | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                             |
+| [fixture: c4/lex-after-element-style-comment-glued]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                             |
+| [fixture: c4/lex-after-element-style-directive]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                             |
+| [fixture: c4/lex-after-element-style-directive-unclosed]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                             |
+| [fixture: c4/lex-after-element-style-directive-word-unclosed] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}`.                                                                                                             |
+| [fixture: c4/lex-after-element-style-double-close]            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-element-style-double-semicolon]        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-element-style-semicolon]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-element-style-semicolon-spaced]        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-element-style-word]                    | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-index-call]                            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-index-comment]                         | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-comment-glued]                   | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-directive]                       | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-directive-unclosed]              | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-directive-word-unclosed]         | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-double-close]                    | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-index-double-semicolon]                | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-index-semicolon]                       | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-index-semicolon-spaced]                | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-index-word]                            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-layout-call]                           | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-layout-comment]                        | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-comment-glued]                  | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-directive]                      | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-directive-unclosed]             | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-directive-word-unclosed]        | Keeps `{"c4ShapeInRow":3,"c4BoundaryInRow":1}`.                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-double-close]                   | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-layout-double-semicolon]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-layout-semicolon]                      | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-layout-semicolon-spaced]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-layout-word]                           | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-node-call]                             | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-node-comment]                          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-after-node-comment-glued]                    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-after-node-directive]                        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-after-node-directive-unclosed]               | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-after-node-directive-word-unclosed]          | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-after-node-double-close]                     | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-node-double-semicolon]                 | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-node-semicolon]                        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-node-semicolon-spaced]                 | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-node-word]                             | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-person-call]                           | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-person-comment]                        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-comment-glued]                  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-directive]                      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-directive-unclosed]             | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-directive-word-unclosed]        | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-double-close]                   | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-person-double-semicolon]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-person-semicolon]                      | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-person-semicolon-spaced]               | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-person-word]                           | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-call]                              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-comment]                           | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-comment-glued]                     | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-directive]                         | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-directive-unclosed]                | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-directive-word-unclosed]           | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}`.                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-double-close]                      | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-double-semicolon]                  | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-semicolon]                         | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-semicolon-spaced]                  | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-style-call]                        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-style-comment]                     | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-comment-glued]               | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-directive]                   | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-directive-unclosed]          | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-directive-word-unclosed]     | Keeps `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}`.                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-double-close]                | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-style-double-semicolon]            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-style-semicolon]                   | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-style-semicolon-spaced]            | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-style-word]                        | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/lex-after-rel-word]                              | Rejected with `Error`.                                                                                                                                                                                                                                                                                                                                                                                                    |
+
+#### lex-bom
+
+| Fixture                                  | Reading                                                                                                                                                                                                                                                 |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-bom-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-bom-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-bom-between-statements] | Rejected with `Error`.                                                                                                                                                                                                                                  |
+| [fixture: c4/lex-bom-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-bom-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-bom-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-bom-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-bom-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-bom-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-comment
+
+| Fixture                                  | Reading                                                                                                                                            |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-comment-hash]           | Rejected with `Error`.                                                                                                                             |
+| [fixture: c4/lex-comment-inline]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A%% comment"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.   |
+| [fixture: c4/lex-comment-line]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"first\nsecond"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-comment-single-percent] | Rejected with `Error`.                                                                                                                             |
+
+#### lex-cr
+
+| Fixture                                 | Reading                                                                                                                                                                                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-cr-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-cr-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-cr-between-statements] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-cr-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-cr-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-cr-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-cr-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-cr-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-cr-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-crlf
+
+| Fixture                                   | Reading                                                                                                                                                                                                                                                 |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-crlf-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-crlf-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-crlf-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-crlf-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-crlf-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-crlf-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-crlf-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-directive
+
+| Fixture                                              | Reading                                                                                                                                              |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-directive-colon-unclosed-next-line] | Rejected with `Error`.                                                                                                                               |
+| [fixture: c4/lex-directive-end]                      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.               |
+| [fixture: c4/lex-directive-keyword]                  | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.               |
+| [fixture: c4/lex-directive-line]                     | Keeps `{"shapes":[{"alias":"a","label":{"text":"first\n\nsecond"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-directive-start]                    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.               |
+| [fixture: c4/lex-directive-unclosed-next-line]       | Rejected with `Error`.                                                                                                                               |
+
+#### lex-double
+
+| Fixture                        | Reading                                                                                                                                |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-double-comma] | Keeps `{"shapes":[{"alias":"a","label":{"text":""},"descr":{"text":"D"},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+
+#### lex-empty
+
+| Fixture                         | Reading                                                                                                                               |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-empty-comma]   | Keeps `{"shapes":[{"alias":"","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-empty-strings] | Keeps `{"shapes":[{"alias":"","label":{"text":""},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.  |
+
+#### lex-ff
+
+| Fixture                                 | Reading                                                                                                                                                                                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-ff-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ff-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ff-between-statements] | Rejected with `Error`.                                                                                                                                                                                                                                  |
+| [fixture: c4/lex-ff-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-ff-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ff-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ff-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-ff-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ff-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-ideographic
+
+| Fixture                                          | Reading                                                                                                                                                                                                                                                 |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-ideographic-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ideographic-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ideographic-between-statements] | Rejected with `Error`.                                                                                                                                                                                                                                  |
+| [fixture: c4/lex-ideographic-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-ideographic-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ideographic-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ideographic-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-ideographic-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ideographic-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-keyword
+
+| Fixture                                                          | Reading                                  |
+| ---------------------------------------------------------------- | ---------------------------------------- |
+| [fixture: c4/lex-keyword-accdescr-dash]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescr-digit]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescr-letter]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescr-lower]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescr-non-ascii]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescr-underscore]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescr-upper]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescription-dash]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescription-digit]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescription-letter]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescription-lower]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescription-non-ascii]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescription-underscore]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-accdescription-upper]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-acctitle-dash]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-acctitle-digit]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-acctitle-letter]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-acctitle-lower]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-acctitle-non-ascii]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-acctitle-underscore]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-acctitle-upper]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-birel-dash]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-birel-digit]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-birel-letter]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-birel-lower]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-birel-non-ascii]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-birel-underscore]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-birel-upper]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-boundary-dash]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-boundary-digit]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-boundary-letter]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-boundary-lower]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-boundary-non-ascii]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-boundary-underscore]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-boundary-upper]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-dash]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-digit]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-ext-dash]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-ext-digit]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-ext-letter]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-ext-lower]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-ext-non-ascii]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-ext-underscore]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-ext-upper]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-letter]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-lower]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-non-ascii]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-underscore]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-component-upper]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-dash]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-digit]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-ext-dash]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-ext-digit]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-ext-letter]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-ext-lower]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-ext-non-ascii]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-ext-underscore]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-ext-upper]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-letter]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-lower]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-non-ascii]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-underscore]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentdb-upper]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-dash]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-digit]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-ext-dash]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-ext-digit]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-ext-letter]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-ext-lower]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-ext-non-ascii]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-ext-underscore]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-ext-upper]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-letter]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-lower]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-non-ascii]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-underscore]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-componentqueue-upper]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-boundary-dash]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-boundary-digit]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-boundary-letter]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-boundary-lower]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-boundary-non-ascii]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-boundary-underscore]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-boundary-upper]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-dash]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-digit]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-ext-dash]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-ext-digit]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-ext-letter]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-ext-lower]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-ext-non-ascii]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-ext-underscore]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-ext-upper]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-letter]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-lower]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-non-ascii]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-underscore]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-container-upper]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-dash]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-digit]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-ext-dash]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-ext-digit]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-ext-letter]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-ext-lower]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-ext-non-ascii]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-ext-underscore]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-ext-upper]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-letter]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-lower]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-non-ascii]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-underscore]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerdb-upper]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-dash]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-digit]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-ext-dash]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-ext-digit]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-ext-letter]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-ext-lower]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-ext-non-ascii]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-ext-underscore]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-ext-upper]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-letter]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-lower]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-non-ascii]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-underscore]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-containerqueue-upper]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-deployment-node-dash]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-deployment-node-digit]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-deployment-node-letter]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-deployment-node-lower]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-deployment-node-non-ascii]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-deployment-node-underscore]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-deployment-node-upper]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-enterprise-boundary-dash]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-enterprise-boundary-digit]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-enterprise-boundary-letter]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-enterprise-boundary-lower]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-enterprise-boundary-non-ascii]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-enterprise-boundary-underscore]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-enterprise-boundary-upper]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-accdescr-blank-line]                | Keeps `{"accDescr":"Person(a, \"A\")"}`. |
+| [fixture: c4/lex-keyword-gap-accdescr-comment-line]              | Keeps `{"accDescr":"Person(a, \"A\")"}`. |
+| [fixture: c4/lex-keyword-gap-accdescr-directive-line]            | Keeps `{"accDescr":"Person(a, \"A\")"}`. |
+| [fixture: c4/lex-keyword-gap-accdescr-lf]                        | Keeps `{"accDescr":"Person(a, \"A\")"}`. |
+| [fixture: c4/lex-keyword-gap-accdescription-blank-line]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-accdescription-comment-line]        | Keeps `{"accDescr":"Person(a, \"A\")"}`. |
+| [fixture: c4/lex-keyword-gap-accdescription-directive-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-accdescription-lf]                  | Keeps `{"accDescr":"Person(a, \"A\")"}`. |
+| [fixture: c4/lex-keyword-gap-acctitle-blank-line]                | Keeps `{"title":"Person(a, \"A\")"}`.    |
+| [fixture: c4/lex-keyword-gap-acctitle-comment-line]              | Keeps `{"title":"Person(a, \"A\")"}`.    |
+| [fixture: c4/lex-keyword-gap-acctitle-directive-line]            | Keeps `{"title":"Person(a, \"A\")"}`.    |
+| [fixture: c4/lex-keyword-gap-acctitle-lf]                        | Keeps `{"title":"Person(a, \"A\")"}`.    |
+| [fixture: c4/lex-keyword-gap-birel-blank-line]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-birel-comment-line]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-birel-directive-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-birel-lf]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-birel-space]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-birel-tab]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-boundary-blank-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-boundary-comment-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-boundary-directive-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-boundary-lf]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-boundary-space]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-boundary-tab]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-blank-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-comment-line]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-directive-line]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-ext-blank-line]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-ext-comment-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-ext-directive-line]       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-ext-lf]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-ext-space]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-ext-tab]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-lf]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-space]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-component-tab]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-blank-line]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-comment-line]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-directive-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-blank-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-comment-line]       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-directive-line]     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-lf]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-space]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-tab]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-lf]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-space]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentdb-tab]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-blank-line]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-comment-line]        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-directive-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-blank-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-comment-line]    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-directive-line]  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-lf]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-space]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-tab]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-lf]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-space]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-componentqueue-tab]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-blank-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-boundary-blank-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-boundary-comment-line]    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-boundary-directive-line]  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-boundary-lf]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-boundary-space]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-boundary-tab]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-comment-line]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-directive-line]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-ext-blank-line]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-ext-comment-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-ext-directive-line]       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-ext-lf]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-ext-space]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-ext-tab]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-lf]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-space]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-container-tab]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-blank-line]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-comment-line]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-directive-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-blank-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-comment-line]       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-directive-line]     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-lf]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-space]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-tab]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-lf]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-space]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerdb-tab]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-blank-line]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-comment-line]        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-directive-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-blank-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-comment-line]    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-directive-line]  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-lf]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-space]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-tab]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-lf]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-space]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-containerqueue-tab]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-deployment-node-blank-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-deployment-node-comment-line]       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-deployment-node-directive-line]     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-deployment-node-lf]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-deployment-node-space]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-deployment-node-tab]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-blank-line]     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-comment-line]   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-directive-line] | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-lf]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-space]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-tab]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-blank-line]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-comment-line]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-directive-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-l-blank-line]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-l-comment-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-l-directive-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-l-lf]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-l-space]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-l-tab]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-lf]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-r-blank-line]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-r-comment-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-r-directive-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-r-lf]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-r-space]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-r-tab]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-space]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-node-tab]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-blank-line]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-comment-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-directive-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-ext-blank-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-ext-comment-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-ext-directive-line]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-ext-lf]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-ext-space]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-ext-tab]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-lf]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-space]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-person-tab]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-back-blank-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-back-comment-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-back-directive-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-back-lf]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-back-space]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-back-tab]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-blank-line]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-comment-line]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-d-blank-line]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-d-comment-line]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-d-directive-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-d-lf]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-d-space]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-d-tab]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-directive-line]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-down-blank-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-down-comment-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-down-directive-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-down-lf]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-down-space]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-down-tab]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-l-blank-line]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-l-comment-line]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-l-directive-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-l-lf]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-l-space]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-l-tab]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-left-blank-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-left-comment-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-left-directive-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-left-lf]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-left-space]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-left-tab]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-lf]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-r-blank-line]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-r-comment-line]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-r-directive-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-r-lf]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-r-space]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-r-tab]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-right-blank-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-right-comment-line]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-right-directive-line]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-right-lf]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-right-space]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-right-tab]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-space]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-tab]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-u-blank-line]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-u-comment-line]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-u-directive-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-u-lf]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-u-space]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-u-tab]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-up-blank-line]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-up-comment-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-up-directive-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-up-lf]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-up-space]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-rel-up-tab]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-relindex-blank-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-relindex-comment-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-relindex-directive-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-relindex-lf]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-relindex-space]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-relindex-tab]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-blank-line]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-boundary-blank-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-boundary-comment-line]       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-boundary-directive-line]     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-boundary-lf]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-boundary-space]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-boundary-tab]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-comment-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-directive-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-ext-blank-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-ext-comment-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-ext-directive-line]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-ext-lf]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-ext-space]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-ext-tab]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-lf]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-space]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-system-tab]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-blank-line]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-comment-line]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-directive-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-blank-line]            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-comment-line]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-directive-line]        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-lf]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-space]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-tab]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-lf]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-space]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemdb-tab]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-blank-line]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-comment-line]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-directive-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-blank-line]         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-comment-line]       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-directive-line]     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-lf]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-space]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-tab]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-lf]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-space]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-systemqueue-tab]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-title-blank-line]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-title-comment-line]                 | Keeps `{"title":"Person(a, \"A\")"}`.    |
+| [fixture: c4/lex-keyword-gap-title-directive-line]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-title-lf]                           | Keeps `{"title":"Person(a, \"A\")"}`.    |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-blank-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-comment-line]    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-directive-line]  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-lf]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-space]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-tab]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-blank-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-comment-line]    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-directive-line]  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-lf]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-space]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-tab]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-blank-line]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-comment-line]        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-directive-line]      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-lf]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-space]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-tab]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-dash]                              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-digit]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-l-dash]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-l-digit]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-l-letter]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-l-lower]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-l-non-ascii]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-l-underscore]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-l-upper]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-letter]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-lower]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-non-ascii]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-r-dash]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-r-digit]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-r-letter]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-r-lower]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-r-non-ascii]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-r-underscore]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-r-upper]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-underscore]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-node-upper]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-dash]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-digit]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-ext-dash]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-ext-digit]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-ext-letter]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-ext-lower]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-ext-non-ascii]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-ext-underscore]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-ext-upper]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-letter]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-lower]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-non-ascii]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-underscore]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-person-upper]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-back-dash]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-back-digit]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-back-letter]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-back-lower]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-back-non-ascii]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-back-underscore]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-back-upper]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-d-dash]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-d-digit]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-d-letter]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-d-lower]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-d-non-ascii]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-d-underscore]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-d-upper]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-dash]                               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-digit]                              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-down-dash]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-down-digit]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-down-letter]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-down-lower]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-down-non-ascii]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-down-underscore]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-down-upper]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-l-dash]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-l-digit]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-l-letter]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-l-lower]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-l-non-ascii]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-l-underscore]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-l-upper]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-left-dash]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-left-digit]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-left-letter]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-left-lower]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-left-non-ascii]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-left-underscore]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-left-upper]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-letter]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-lower]                              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-non-ascii]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-r-dash]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-r-digit]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-r-letter]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-r-lower]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-r-non-ascii]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-r-underscore]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-r-upper]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-right-dash]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-right-digit]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-right-letter]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-right-lower]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-right-non-ascii]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-right-underscore]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-right-upper]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-u-dash]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-u-digit]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-u-letter]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-u-lower]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-u-non-ascii]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-u-underscore]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-u-upper]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-underscore]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-up-dash]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-up-digit]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-up-letter]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-up-lower]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-up-non-ascii]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-up-underscore]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-up-upper]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-rel-upper]                              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-relindex-dash]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-relindex-digit]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-relindex-letter]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-relindex-lower]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-relindex-non-ascii]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-relindex-underscore]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-relindex-upper]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-boundary-dash]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-boundary-digit]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-boundary-letter]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-boundary-lower]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-boundary-non-ascii]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-boundary-underscore]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-boundary-upper]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-dash]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-digit]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-ext-dash]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-ext-digit]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-ext-letter]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-ext-lower]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-ext-non-ascii]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-ext-underscore]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-ext-upper]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-letter]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-lower]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-non-ascii]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-underscore]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-system-upper]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-dash]                          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-digit]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-ext-dash]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-ext-digit]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-ext-letter]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-ext-lower]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-ext-non-ascii]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-ext-underscore]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-ext-upper]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-letter]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-lower]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-non-ascii]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-underscore]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemdb-upper]                         | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-dash]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-digit]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-ext-dash]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-ext-digit]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-ext-letter]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-ext-lower]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-ext-non-ascii]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-ext-underscore]             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-ext-upper]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-letter]                     | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-lower]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-non-ascii]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-underscore]                 | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-systemqueue-upper]                      | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-title-dash]                             | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-title-digit]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-title-letter]                           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-title-non-ascii]                        | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-title-underscore]                       | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-title-upper]                            | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updateelementstyle-dash]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updateelementstyle-digit]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updateelementstyle-letter]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updateelementstyle-lower]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updateelementstyle-non-ascii]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updateelementstyle-underscore]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updateelementstyle-upper]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updatelayoutconfig-dash]                | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updatelayoutconfig-digit]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updatelayoutconfig-letter]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updatelayoutconfig-lower]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updatelayoutconfig-non-ascii]           | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updatelayoutconfig-underscore]          | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updatelayoutconfig-upper]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updaterelstyle-dash]                    | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updaterelstyle-digit]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updaterelstyle-letter]                  | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updaterelstyle-lower]                   | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updaterelstyle-non-ascii]               | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updaterelstyle-underscore]              | Rejected with `Error`.                   |
+| [fixture: c4/lex-keyword-updaterelstyle-upper]                   | Rejected with `Error`.                   |
+
+#### lex-ls
+
+| Fixture                                 | Reading                                                                                                                                                                                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-ls-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ls-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ls-between-statements] | Rejected with `Error`.                                                                                                                                                                                                                                  |
+| [fixture: c4/lex-ls-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-ls-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ls-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ls-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-ls-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ls-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-missing
+
+| Fixture                         | Reading                |
+| ------------------------------- | ---------------------- |
+| [fixture: c4/lex-missing-comma] | Rejected with `Error`. |
+| [fixture: c4/lex-missing-open]  | Rejected with `Error`. |
+
+#### lex-nbsp
+
+| Fixture                                   | Reading                                                                                                                                                                                                                                                 |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-nbsp-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-nbsp-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-nbsp-between-statements] | Rejected with `Error`.                                                                                                                                                                                                                                  |
+| [fixture: c4/lex-nbsp-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-nbsp-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-nbsp-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-nbsp-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-nbsp-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-nbsp-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-nel
+
+| Fixture                                  | Reading                              |
+| ---------------------------------------- | ------------------------------------ |
+| [fixture: c4/lex-nel-after-header]       | Rejected with `Error`.               |
+| [fixture: c4/lex-nel-before-header]      | Rejected with `UnknownDiagramError`. |
+| [fixture: c4/lex-nel-between-statements] | Rejected with `Error`.               |
+| [fixture: c4/lex-nel-line-end]           | Rejected with `Error`.               |
+| [fixture: c4/lex-nel-line-start]         | Rejected with `Error`.               |
+| [fixture: c4/lex-nel-text-end]           | Rejected with `Error`.               |
+| [fixture: c4/lex-nel-whitespace-between] | Rejected with `Error`.               |
+| [fixture: c4/lex-nel-whitespace-first]   | Rejected with `Error`.               |
+| [fixture: c4/lex-nel-whitespace-last]    | Rejected with `Error`.               |
+
+#### lex-ps
+
+| Fixture                                 | Reading                                                                                                                                                                                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-ps-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ps-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ps-between-statements] | Rejected with `Error`.                                                                                                                                                                                                                                  |
+| [fixture: c4/lex-ps-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-ps-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ps-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ps-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-ps-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-ps-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-tab
+
+| Fixture                                  | Reading                                                                                                                                                                                                                                                 |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-tab-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-tab-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-tab-between-statements] | Rejected with `Error`.                                                                                                                                                                                                                                  |
+| [fixture: c4/lex-tab-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-tab-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-tab-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-tab-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-tab-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-tab-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+#### lex-trailing
+
+| Fixture                          | Reading                                                                                                                                |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-trailing-comma] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+
+#### lex-unclosed
+
+| Fixture                                | Reading                |
+| -------------------------------------- | ---------------------- |
+| [fixture: c4/lex-unclosed-named]       | Rejected with `Error`. |
+| [fixture: c4/lex-unclosed-parenthesis] | Rejected with `Error`. |
+| [fixture: c4/lex-unclosed-quote]       | Rejected with `Error`. |
+
+#### lex-vt
+
+| Fixture                                 | Reading                                                                                                                                                                                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-vt-after-header]       | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-vt-before-header]      | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-vt-between-statements] | Rejected with `Error`.                                                                                                                                                                                                                                  |
+| [fixture: c4/lex-vt-line-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-vt-line-start]         | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-vt-text-end]           | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-vt-whitespace-between] | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`. |
+| [fixture: c4/lex-vt-whitespace-first]   | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+| [fixture: c4/lex-vt-whitespace-last]    | Keeps `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}`.                                                                                                                  |
+
+### Positional argument mappings
+
+Each row numbers the written positional arguments from one, without named
+arguments. [fixture: c4/db-keyword-person]
+
+| Keyword               | Slot-to-field mapping and fixture                                                                                                                                                                                                   |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Person_Ext`          | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link`. [fixture: c4/db-keyword-person-ext]                                                                                         |
+| `Person`              | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link`. [fixture: c4/db-keyword-person]                                                                                             |
+| `SystemQueue_Ext`     | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link`. [fixture: c4/db-keyword-systemqueue-ext]                                                                                    |
+| `SystemDb_Ext`        | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link`. [fixture: c4/db-keyword-systemdb-ext]                                                                                       |
+| `System_Ext`          | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link`. [fixture: c4/db-keyword-system-ext]                                                                                         |
+| `SystemQueue`         | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link`. [fixture: c4/db-keyword-systemqueue]                                                                                        |
+| `SystemDb`            | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link`. [fixture: c4/db-keyword-systemdb]                                                                                           |
+| `System`              | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link`. [fixture: c4/db-keyword-system]                                                                                             |
+| `Boundary`            | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `tags`, 5 → `link`. [fixture: c4/db-keyword-boundary]                                                                                                          |
+| `Enterprise_Boundary` | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `tags`, 4 → `link`. [fixture: c4/db-keyword-enterprise-boundary]                                                                                                                |
+| `System_Boundary`     | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `tags`, 4 → `link`. [fixture: c4/db-keyword-system-boundary]                                                                                                                    |
+| `ContainerQueue_Ext`  | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-containerqueue-ext]                                                               |
+| `ContainerDb_Ext`     | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-containerdb-ext]                                                                  |
+| `Container_Ext`       | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-container-ext]                                                                    |
+| `ContainerQueue`      | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-containerqueue]                                                                   |
+| `ContainerDb`         | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-containerdb]                                                                      |
+| `Container`           | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-container]                                                                        |
+| `Container_Boundary`  | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `tags`, 4 → `link`. [fixture: c4/db-keyword-container-boundary]                                                                                                                 |
+| `ComponentQueue_Ext`  | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-componentqueue-ext]                                                               |
+| `ComponentDb_Ext`     | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-componentdb-ext]                                                                  |
+| `Component_Ext`       | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-component-ext]                                                                    |
+| `ComponentQueue`      | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-componentqueue]                                                                   |
+| `ComponentDb`         | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-componentdb]                                                                      |
+| `Component`           | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-component]                                                                        |
+| `Deployment_Node`     | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `descr.text`, 5 → `ignored sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-deployment-node]                                                           |
+| `Node`                | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `descr.text`, 5 → `ignored sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-node]                                                                      |
+| `Node_L`              | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `descr.text`, 5 → `ignored sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-node-l]                                                                    |
+| `Node_R`              | The slots map to 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `descr.text`, 5 → `ignored sprite`, 6 → `tags`, 7 → `link`. [fixture: c4/db-keyword-node-r]                                                                    |
+| `Rel`                 | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel]                                                                     |
+| `BiRel`               | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-birel]                                                                   |
+| `Rel_Up`              | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-up]                                                                  |
+| `Rel_U`               | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-u]                                                                   |
+| `Rel_Down`            | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-down]                                                                |
+| `Rel_D`               | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-d]                                                                   |
+| `Rel_Left`            | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-left]                                                                |
+| `Rel_L`               | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-l]                                                                   |
+| `Rel_Right`           | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-right]                                                               |
+| `Rel_R`               | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-r]                                                                   |
+| `Rel_Back`            | The slots map to 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link`. [fixture: c4/db-keyword-rel-back]                                                                |
+| `RelIndex`            | The slots map to 1 → `discarded index`, 2 → `from`, 3 → `to`, 4 → `label.text`, 5 → `techn.text`, 6 → `descr.text`, 7 → `sprite`, 8 → `tags`, 9 → `link`. [fixture: c4/db-keyword-relindex]                                         |
+| `UpdateElementStyle`  | The slots map to 1 → `target alias`, 2 → `bgColor`, 3 → `fontColor`, 4 → `borderColor`, 5 → `shadowing`, 6 → `shape`, 7 → `sprite`, 8 → `techn`, 9 → `legendText`, 10 → `legendSprite`. [fixture: c4/db-keyword-updateelementstyle] |
+| `UpdateRelStyle`      | The slots map to 1 → `target from`, 2 → `target to`, 3 → `textColor`, 4 → `lineColor`, 5 → `offsetX`, 6 → `offsetY`. [fixture: c4/db-keyword-updaterelstyle]                                                                        |
+| `UpdateLayoutConfig`  | The slots map to 1 → `c4ShapeInRow`, 2 → `c4BoundaryInRow`. [fixture: c4/db-keyword-updatelayoutconfig]                                                                                                                             |
+
+### Text-position readings
+
+Each position is a pair of lexer rules and Db value handling; keywords and slots
+sharing both use one representative. [fixture: c4/db-keyword-person] [fixture:
+c4/db-keyword-container]
+
+Arguments share the `attribute`, `string`, and `string_kv*` lexer states in
+[`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L164-L187),
+and the grammar trims positional strings and named keys and values. [fixture:
+c4/db-named-key-whitespace]
+
+Each row gives acceptance and the selected field at that position; absence means
+the attribute is not an own property. [fixture:
+c4/db-style-required-named-target]
+
+#### header-line
+
+The header-line position uses `C4Context` followed by the tested text and the
+required newline; all five headers share this handling. [fixture:
+c4/gram-grid-digits-header-line]
+
+| Kind               | Reading and fixture                                                         |
+| ------------------ | --------------------------------------------------------------------------- |
+| `ampersand-entity` | Rejected with `Error`. [fixture: c4/gram-grid-ampersand-entity-header-line] |
+| `arrow`            | Rejected with `Error`. [fixture: c4/gram-grid-arrow-header-line]            |
+| `arrow-spaced`     | Rejected with `Error`. [fixture: c4/gram-grid-arrow-spaced-header-line]     |
+| `backslash`        | Rejected with `Error`. [fixture: c4/gram-grid-backslash-header-line]        |
+| `backtick`         | Rejected with `Error`. [fixture: c4/gram-grid-backtick-header-line]         |
+| `bom`              | Rejected with `Error`. [fixture: c4/gram-grid-bom-header-line]              |
+| `classdef-rule`    | Rejected with `Error`. [fixture: c4/gram-grid-classdef-rule-header-line]    |
+| `close-brace`      | Rejected with `Error`. [fixture: c4/gram-grid-close-brace-header-line]      |
+| `close-round`      | Rejected with `Error`. [fixture: c4/gram-grid-close-round-header-line]      |
+| `close-square`     | Rejected with `Error`. [fixture: c4/gram-grid-close-square-header-line]     |
+| `colon`            | Rejected with `Error`. [fixture: c4/gram-grid-colon-header-line]            |
+| `comma`            | Rejected with `Error`. [fixture: c4/gram-grid-comma-header-line]            |
+| `comment`          | Rejected with `Error`. [fixture: c4/gram-grid-comment-header-line]          |
+| `comment-line`     | Rejected with `Error`. [fixture: c4/gram-grid-comment-line-header-line]     |
+| `constructor`      | Rejected with `Error`. [fixture: c4/gram-grid-constructor-header-line]      |
+| `cr`               | Rejected with `Error`. [fixture: c4/gram-grid-cr-header-line]               |
+| `crlf`             | Rejected with `Error`. [fixture: c4/gram-grid-crlf-header-line]             |
+| `dash`             | Rejected with `Error`. [fixture: c4/gram-grid-dash-header-line]             |
+| `digits`           | Rejected with `Error`. [fixture: c4/gram-grid-digits-header-line]           |
+| `directive`        | Rejected with `Error`. [fixture: c4/gram-grid-directive-header-line]        |
+| `directive-line`   | Rejected with `Error`. [fixture: c4/gram-grid-directive-line-header-line]   |
+| `emoji`            | Rejected with `Error`. [fixture: c4/gram-grid-emoji-header-line]            |
+| `empty`            | `type` is `"C4Context"`. [fixture: c4/db-grid-empty-header-line]            |
+| `entity`           | Rejected with `Error`. [fixture: c4/gram-grid-entity-header-line]           |
+| `entity-named`     | Rejected with `Error`. [fixture: c4/gram-grid-entity-named-header-line]     |
+| `equals`           | Rejected with `Error`. [fixture: c4/gram-grid-equals-header-line]           |
+| `ff`               | Rejected with `Error`. [fixture: c4/gram-grid-ff-header-line]               |
+| `greater-than`     | Rejected with `Error`. [fixture: c4/gram-grid-greater-than-header-line]     |
+| `hash`             | Rejected with `Error`. [fixture: c4/gram-grid-hash-header-line]             |
+| `html`             | Rejected with `Error`. [fixture: c4/gram-grid-html-header-line]             |
+| `html-attribute`   | Rejected with `Error`. [fixture: c4/gram-grid-html-attribute-header-line]   |
+| `html-br`          | Rejected with `Error`. [fixture: c4/gram-grid-html-br-header-line]          |
+| `ideographic`      | Rejected with `Error`. [fixture: c4/gram-grid-ideographic-header-line]      |
+| `keyword`          | Rejected with `Error`. [fixture: c4/gram-grid-keyword-header-line]          |
+| `keyword-block`    | Rejected with `Error`. [fixture: c4/gram-grid-keyword-block-header-line]    |
+| `keyword-class`    | Rejected with `Error`. [fixture: c4/gram-grid-keyword-class-header-line]    |
+| `keyword-classdef` | Rejected with `Error`. [fixture: c4/gram-grid-keyword-classdef-header-line] |
+| `keyword-columns`  | Rejected with `Error`. [fixture: c4/gram-grid-keyword-columns-header-line]  |
+| `keyword-end`      | Rejected with `Error`. [fixture: c4/gram-grid-keyword-end-header-line]      |
+| `keyword-header`   | Rejected with `Error`. [fixture: c4/gram-grid-keyword-header-header-line]   |
+| `keyword-space`    | Rejected with `Error`. [fixture: c4/gram-grid-keyword-space-header-line]    |
+| `keyword-style`    | Rejected with `Error`. [fixture: c4/gram-grid-keyword-style-header-line]    |
+| `less-than`        | Rejected with `Error`. [fixture: c4/gram-grid-less-than-header-line]        |
+| `lf`               | Rejected with `Error`. [fixture: c4/gram-grid-lf-header-line]               |
+| `ls`               | Rejected with `Error`. [fixture: c4/gram-grid-ls-header-line]               |
+| `nbsp`             | Rejected with `Error`. [fixture: c4/gram-grid-nbsp-header-line]             |
+| `nel`              | Rejected with `Error`. [fixture: c4/gram-grid-nel-header-line]              |
+| `nonascii`         | Rejected with `Error`. [fixture: c4/gram-grid-nonascii-header-line]         |
+| `open-brace`       | Rejected with `Error`. [fixture: c4/gram-grid-open-brace-header-line]       |
+| `open-round`       | Rejected with `Error`. [fixture: c4/gram-grid-open-round-header-line]       |
+| `open-square`      | Rejected with `Error`. [fixture: c4/gram-grid-open-square-header-line]      |
+| `percent`          | Rejected with `Error`. [fixture: c4/gram-grid-percent-header-line]          |
+| `pipe`             | Rejected with `Error`. [fixture: c4/gram-grid-pipe-header-line]             |
+| `proto`            | Rejected with `Error`. [fixture: c4/gram-grid-proto-header-line]            |
+| `ps`               | Rejected with `Error`. [fixture: c4/gram-grid-ps-header-line]               |
+| `punct`            | Rejected with `Error`. [fixture: c4/gram-grid-punct-header-line]            |
+| `quote`            | Rejected with `Error`. [fixture: c4/gram-grid-quote-header-line]            |
+| `root`             | Rejected with `Error`. [fixture: c4/gram-grid-root-header-line]             |
+| `semicolon`        | Rejected with `Error`. [fixture: c4/gram-grid-semicolon-header-line]        |
+| `single-quote`     | Rejected with `Error`. [fixture: c4/gram-grid-single-quote-header-line]     |
+| `spaces`           | Rejected with `Error`. [fixture: c4/gram-grid-spaces-header-line]           |
+| `style-rule`       | Rejected with `Error`. [fixture: c4/gram-grid-style-rule-header-line]       |
+| `tab`              | Rejected with `Error`. [fixture: c4/gram-grid-tab-header-line]              |
+| `vt`               | Rejected with `Error`. [fixture: c4/gram-grid-vt-header-line]               |
+
+#### title
+
+The title position uses the text after `title` and its dedicated lexer rule,
+storing the result in `title`. [fixture: c4/db-grid-digits-title]
+
+| Kind               | Reading and fixture                                                                    |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| `ampersand-entity` | Rejected with `Error`. [fixture: c4/gram-grid-ampersand-entity-title]                  |
+| `arrow`            | `title` is `"a-->b"`. [fixture: c4/db-grid-arrow-title]                                |
+| `arrow-spaced`     | `title` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-title]                       |
+| `backslash`        | `title` is `"a\\b"`. [fixture: c4/db-grid-backslash-title]                             |
+| `backtick`         | `title` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-title]                          |
+| `bom`              | `title` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-title]                               |
+| `classdef-rule`    | Rejected with `Error`. [fixture: c4/gram-grid-classdef-rule-title]                     |
+| `close-brace`      | `title` is `"a}b"`. [fixture: c4/db-grid-close-brace-title]                            |
+| `close-round`      | `title` is `"a)b"`. [fixture: c4/db-grid-close-round-title]                            |
+| `close-square`     | `title` is `"a]b"`. [fixture: c4/db-grid-close-square-title]                           |
+| `colon`            | `title` is `"a:b"`. [fixture: c4/db-grid-colon-title]                                  |
+| `comma`            | `title` is `"a,b"`. [fixture: c4/db-grid-comma-title]                                  |
+| `comment`          | `title` is `"a%% cb"`. [fixture: c4/db-grid-comment-title]                             |
+| `comment-line`     | Rejected with `Error`. [fixture: c4/gram-grid-comment-line-title]                      |
+| `constructor`      | `title` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-title]                  |
+| `cr`               | Rejected with `Error`. [fixture: c4/gram-grid-cr-title]                                |
+| `crlf`             | Rejected with `Error`. [fixture: c4/gram-grid-crlf-title]                              |
+| `dash`             | `title` is `"a-b"`. [fixture: c4/db-grid-dash-title]                                   |
+| `digits`           | `title` is `"a123b"`. [fixture: c4/db-grid-digits-title]                               |
+| `directive`        | `title` is `"ab"`. [fixture: c4/db-grid-directive-title]                               |
+| `directive-line`   | Rejected with `Error`. [fixture: c4/gram-grid-directive-line-title]                    |
+| `emoji`            | `title` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-title]                       |
+| `empty`            | Rejected with `Error`. [fixture: c4/db-title-empty]                                    |
+| `entity`           | `title` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-title]  |
+| `entity-named`     | `title` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-title] |
+| `equals`           | `title` is `"a=b"`. [fixture: c4/db-grid-equals-title]                                 |
+| `ff`               | `title` is `"a\fb"`. [fixture: c4/db-grid-ff-title]                                    |
+| `greater-than`     | `title` is `"a>b"`. [fixture: c4/db-grid-greater-than-title]                           |
+| `hash`             | Rejected with `Error`. [fixture: c4/gram-grid-hash-title]                              |
+| `html`             | `title` is `"a<b>b"`. [fixture: c4/db-grid-html-title]                                 |
+| `html-attribute`   | `title` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-title]              |
+| `html-br`          | `title` is `"a<br>b"`. [fixture: c4/db-grid-html-br-title]                             |
+| `ideographic`      | `title` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-title]                       |
+| `keyword`          | `title` is `"aPersonb"`. [fixture: c4/db-grid-keyword-title]                           |
+| `keyword-block`    | `title` is `"a block b"`. [fixture: c4/db-grid-keyword-block-title]                    |
+| `keyword-class`    | `title` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-title]                |
+| `keyword-classdef` | `title` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-title]   |
+| `keyword-columns`  | `title` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-title]              |
+| `keyword-end`      | `title` is `"a end b"`. [fixture: c4/db-grid-keyword-end-title]                        |
+| `keyword-header`   | `title` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-title]                 |
+| `keyword-space`    | `title` is `"a space b"`. [fixture: c4/db-grid-keyword-space-title]                    |
+| `keyword-style`    | `title` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-title]         |
+| `less-than`        | `title` is `"a<b"`. [fixture: c4/db-grid-less-than-title]                              |
+| `lf`               | Rejected with `Error`. [fixture: c4/gram-grid-lf-title]                                |
+| `ls`               | `title` is `"a\u2028b"`. [fixture: c4/db-grid-ls-title]                                |
+| `nbsp`             | `title` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-title]                              |
+| `nel`              | `title` is `"a\u0085b"`. [fixture: c4/db-grid-nel-title]                               |
+| `nonascii`         | `title` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-title]                          |
+| `open-brace`       | `title` is `"a{b"`. [fixture: c4/db-grid-open-brace-title]                             |
+| `open-round`       | `title` is `"a(b"`. [fixture: c4/db-grid-open-round-title]                             |
+| `open-square`      | `title` is `"a[b"`. [fixture: c4/db-grid-open-square-title]                            |
+| `percent`          | `title` is `"a%b"`. [fixture: c4/db-grid-percent-title]                                |
+| `pipe`             | `title` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-title]                              |
+| `proto`            | `title` is `"a__proto__b"`. [fixture: c4/db-grid-proto-title]                          |
+| `ps`               | `title` is `"a\u2029b"`. [fixture: c4/db-grid-ps-title]                                |
+| `punct`            | `title` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-title]                     |
+| `quote`            | `title` is `"a\"b"`. [fixture: c4/db-grid-quote-title]                                 |
+| `root`             | `title` is `"arootb"`. [fixture: c4/db-grid-root-title]                                |
+| `semicolon`        | Rejected with `Error`. [fixture: c4/gram-grid-semicolon-title]                         |
+| `single-quote`     | `title` is `"a'b"`. [fixture: c4/db-grid-single-quote-title]                           |
+| `spaces`           | `title` is `"a  b"`. [fixture: c4/db-grid-spaces-title]                                |
+| `style-rule`       | Rejected with `Error`. [fixture: c4/gram-grid-style-rule-title]                        |
+| `tab`              | `title` is `"a\tb"`. [fixture: c4/db-grid-tab-title]                                   |
+| `vt`               | `title` is `"a\u000bb"`. [fixture: c4/db-grid-vt-title]                                |
+
+#### acc-description
+
+The acc-description position uses the text after `accDescription` and its
+dedicated lexer rule, storing the result in `accDescr`. [fixture:
+c4/db-grid-digits-acc-description]
+
+| Kind               | Reading and fixture                                                                                 |
+| ------------------ | --------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | Rejected with `Error`. [fixture: c4/gram-grid-ampersand-entity-acc-description]                     |
+| `arrow`            | `accDescr` is `"a-->b"`. [fixture: c4/db-grid-arrow-acc-description]                                |
+| `arrow-spaced`     | `accDescr` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-acc-description]                       |
+| `backslash`        | `accDescr` is `"a\\b"`. [fixture: c4/db-grid-backslash-acc-description]                             |
+| `backtick`         | `accDescr` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-acc-description]                          |
+| `bom`              | `accDescr` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-acc-description]                               |
+| `classdef-rule`    | Rejected with `Error`. [fixture: c4/gram-grid-classdef-rule-acc-description]                        |
+| `close-brace`      | `accDescr` is `"a}b"`. [fixture: c4/db-grid-close-brace-acc-description]                            |
+| `close-round`      | `accDescr` is `"a)b"`. [fixture: c4/db-grid-close-round-acc-description]                            |
+| `close-square`     | `accDescr` is `"a]b"`. [fixture: c4/db-grid-close-square-acc-description]                           |
+| `colon`            | `accDescr` is `"a:b"`. [fixture: c4/db-grid-colon-acc-description]                                  |
+| `comma`            | `accDescr` is `"a,b"`. [fixture: c4/db-grid-comma-acc-description]                                  |
+| `comment`          | `accDescr` is `"a%% cb"`. [fixture: c4/db-grid-comment-acc-description]                             |
+| `comment-line`     | Rejected with `Error`. [fixture: c4/gram-grid-comment-line-acc-description]                         |
+| `constructor`      | `accDescr` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-acc-description]                  |
+| `cr`               | Rejected with `Error`. [fixture: c4/gram-grid-cr-acc-description]                                   |
+| `crlf`             | Rejected with `Error`. [fixture: c4/gram-grid-crlf-acc-description]                                 |
+| `dash`             | `accDescr` is `"a-b"`. [fixture: c4/db-grid-dash-acc-description]                                   |
+| `digits`           | `accDescr` is `"a123b"`. [fixture: c4/db-grid-digits-acc-description]                               |
+| `directive`        | `accDescr` is `"ab"`. [fixture: c4/db-grid-directive-acc-description]                               |
+| `directive-line`   | Rejected with `Error`. [fixture: c4/gram-grid-directive-line-acc-description]                       |
+| `emoji`            | `accDescr` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-acc-description]                       |
+| `empty`            | Rejected with `Error`. [fixture: c4/db-accdescription-empty]                                        |
+| `entity`           | `accDescr` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-acc-description]  |
+| `entity-named`     | `accDescr` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-acc-description] |
+| `equals`           | `accDescr` is `"a=b"`. [fixture: c4/db-grid-equals-acc-description]                                 |
+| `ff`               | `accDescr` is `"a\fb"`. [fixture: c4/db-grid-ff-acc-description]                                    |
+| `greater-than`     | `accDescr` is `"a>b"`. [fixture: c4/db-grid-greater-than-acc-description]                           |
+| `hash`             | Rejected with `Error`. [fixture: c4/gram-grid-hash-acc-description]                                 |
+| `html`             | `accDescr` is `"a<b>b"`. [fixture: c4/db-grid-html-acc-description]                                 |
+| `html-attribute`   | `accDescr` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-acc-description]              |
+| `html-br`          | `accDescr` is `"a<br>b"`. [fixture: c4/db-grid-html-br-acc-description]                             |
+| `ideographic`      | `accDescr` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-acc-description]                       |
+| `keyword`          | `accDescr` is `"aPersonb"`. [fixture: c4/db-grid-keyword-acc-description]                           |
+| `keyword-block`    | `accDescr` is `"a block b"`. [fixture: c4/db-grid-keyword-block-acc-description]                    |
+| `keyword-class`    | `accDescr` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-acc-description]                |
+| `keyword-classdef` | `accDescr` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-acc-description]   |
+| `keyword-columns`  | `accDescr` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-acc-description]              |
+| `keyword-end`      | `accDescr` is `"a end b"`. [fixture: c4/db-grid-keyword-end-acc-description]                        |
+| `keyword-header`   | `accDescr` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-acc-description]                 |
+| `keyword-space`    | `accDescr` is `"a space b"`. [fixture: c4/db-grid-keyword-space-acc-description]                    |
+| `keyword-style`    | `accDescr` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-acc-description]         |
+| `less-than`        | `accDescr` is `"a<b"`. [fixture: c4/db-grid-less-than-acc-description]                              |
+| `lf`               | Rejected with `Error`. [fixture: c4/gram-grid-lf-acc-description]                                   |
+| `ls`               | `accDescr` is `"a\u2028b"`. [fixture: c4/db-grid-ls-acc-description]                                |
+| `nbsp`             | `accDescr` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-acc-description]                              |
+| `nel`              | `accDescr` is `"a\u0085b"`. [fixture: c4/db-grid-nel-acc-description]                               |
+| `nonascii`         | `accDescr` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-acc-description]                          |
+| `open-brace`       | `accDescr` is `"a{b"`. [fixture: c4/db-grid-open-brace-acc-description]                             |
+| `open-round`       | `accDescr` is `"a(b"`. [fixture: c4/db-grid-open-round-acc-description]                             |
+| `open-square`      | `accDescr` is `"a[b"`. [fixture: c4/db-grid-open-square-acc-description]                            |
+| `percent`          | `accDescr` is `"a%b"`. [fixture: c4/db-grid-percent-acc-description]                                |
+| `pipe`             | `accDescr` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-acc-description]                              |
+| `proto`            | `accDescr` is `"a__proto__b"`. [fixture: c4/db-grid-proto-acc-description]                          |
+| `ps`               | `accDescr` is `"a\u2029b"`. [fixture: c4/db-grid-ps-acc-description]                                |
+| `punct`            | `accDescr` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-acc-description]                     |
+| `quote`            | `accDescr` is `"a\"b"`. [fixture: c4/db-grid-quote-acc-description]                                 |
+| `root`             | `accDescr` is `"arootb"`. [fixture: c4/db-grid-root-acc-description]                                |
+| `semicolon`        | Rejected with `Error`. [fixture: c4/gram-grid-semicolon-acc-description]                            |
+| `single-quote`     | `accDescr` is `"a'b"`. [fixture: c4/db-grid-single-quote-acc-description]                           |
+| `spaces`           | `accDescr` is `"a  b"`. [fixture: c4/db-grid-spaces-acc-description]                                |
+| `style-rule`       | Rejected with `Error`. [fixture: c4/gram-grid-style-rule-acc-description]                           |
+| `tab`              | `accDescr` is `"a\tb"`. [fixture: c4/db-grid-tab-acc-description]                                   |
+| `vt`               | `accDescr` is `"a\u000bb"`. [fixture: c4/db-grid-vt-acc-description]                                |
+
+#### acc-title
+
+The acc-title position uses the `acc_title` state after `accTitle:`, trims the
+value, and stores it in `title`. [fixture: c4/db-grid-digits-acc-title]
+
+| Kind               | Reading and fixture                                                                        |
+| ------------------ | ------------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `title` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-acc-title]                   |
+| `arrow`            | `title` is `"a-->b"`. [fixture: c4/db-grid-arrow-acc-title]                                |
+| `arrow-spaced`     | `title` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-acc-title]                       |
+| `backslash`        | `title` is `"a\\b"`. [fixture: c4/db-grid-backslash-acc-title]                             |
+| `backtick`         | `title` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-acc-title]                          |
+| `bom`              | `title` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-acc-title]                               |
+| `classdef-rule`    | `title` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-acc-title]               |
+| `close-brace`      | `title` is `"a}b"`. [fixture: c4/db-grid-close-brace-acc-title]                            |
+| `close-round`      | `title` is `"a)b"`. [fixture: c4/db-grid-close-round-acc-title]                            |
+| `close-square`     | `title` is `"a]b"`. [fixture: c4/db-grid-close-square-acc-title]                           |
+| `colon`            | `title` is `"a:b"`. [fixture: c4/db-grid-colon-acc-title]                                  |
+| `comma`            | `title` is `"a,b"`. [fixture: c4/db-grid-comma-acc-title]                                  |
+| `comment`          | `title` is `"a%% cb"`. [fixture: c4/db-grid-comment-acc-title]                             |
+| `comment-line`     | Rejected with `Error`. [fixture: c4/gram-grid-comment-line-acc-title]                      |
+| `constructor`      | `title` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-acc-title]                  |
+| `cr`               | Rejected with `Error`. [fixture: c4/gram-grid-cr-acc-title]                                |
+| `crlf`             | Rejected with `Error`. [fixture: c4/gram-grid-crlf-acc-title]                              |
+| `dash`             | `title` is `"a-b"`. [fixture: c4/db-grid-dash-acc-title]                                   |
+| `digits`           | `title` is `"a123b"`. [fixture: c4/db-grid-digits-acc-title]                               |
+| `directive`        | `title` is `"ab"`. [fixture: c4/db-grid-directive-acc-title]                               |
+| `directive-line`   | Rejected with `Error`. [fixture: c4/gram-grid-directive-line-acc-title]                    |
+| `emoji`            | `title` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-acc-title]                       |
+| `empty`            | `title` is `"Person(a, \"A\")"`. [fixture: c4/db-acctitle-empty]                           |
+| `entity`           | `title` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-acc-title]  |
+| `entity-named`     | `title` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-acc-title] |
+| `equals`           | `title` is `"a=b"`. [fixture: c4/db-grid-equals-acc-title]                                 |
+| `ff`               | `title` is `"a\fb"`. [fixture: c4/db-grid-ff-acc-title]                                    |
+| `greater-than`     | `title` is `"a>b"`. [fixture: c4/db-grid-greater-than-acc-title]                           |
+| `hash`             | `title` is `"a#b"`. [fixture: c4/db-grid-hash-acc-title]                                   |
+| `html`             | `title` is `"a<b>b"`. [fixture: c4/db-grid-html-acc-title]                                 |
+| `html-attribute`   | `title` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-acc-title]              |
+| `html-br`          | `title` is `"a<br>b"`. [fixture: c4/db-grid-html-br-acc-title]                             |
+| `ideographic`      | `title` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-acc-title]                       |
+| `keyword`          | `title` is `"aPersonb"`. [fixture: c4/db-grid-keyword-acc-title]                           |
+| `keyword-block`    | `title` is `"a block b"`. [fixture: c4/db-grid-keyword-block-acc-title]                    |
+| `keyword-class`    | `title` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-acc-title]                |
+| `keyword-classdef` | `title` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-acc-title]   |
+| `keyword-columns`  | `title` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-acc-title]              |
+| `keyword-end`      | `title` is `"a end b"`. [fixture: c4/db-grid-keyword-end-acc-title]                        |
+| `keyword-header`   | `title` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-acc-title]                 |
+| `keyword-space`    | `title` is `"a space b"`. [fixture: c4/db-grid-keyword-space-acc-title]                    |
+| `keyword-style`    | `title` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-acc-title]         |
+| `less-than`        | `title` is `"a<b"`. [fixture: c4/db-grid-less-than-acc-title]                              |
+| `lf`               | Rejected with `Error`. [fixture: c4/gram-grid-lf-acc-title]                                |
+| `ls`               | `title` is `"a\u2028b"`. [fixture: c4/db-grid-ls-acc-title]                                |
+| `nbsp`             | `title` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-acc-title]                              |
+| `nel`              | `title` is `"a\u0085b"`. [fixture: c4/db-grid-nel-acc-title]                               |
+| `nonascii`         | `title` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-acc-title]                          |
+| `open-brace`       | `title` is `"a{b"`. [fixture: c4/db-grid-open-brace-acc-title]                             |
+| `open-round`       | `title` is `"a(b"`. [fixture: c4/db-grid-open-round-acc-title]                             |
+| `open-square`      | `title` is `"a[b"`. [fixture: c4/db-grid-open-square-acc-title]                            |
+| `percent`          | `title` is `"a%b"`. [fixture: c4/db-grid-percent-acc-title]                                |
+| `pipe`             | `title` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-acc-title]                              |
+| `proto`            | `title` is `"a__proto__b"`. [fixture: c4/db-grid-proto-acc-title]                          |
+| `ps`               | `title` is `"a\u2029b"`. [fixture: c4/db-grid-ps-acc-title]                                |
+| `punct`            | `title` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-acc-title]                     |
+| `quote`            | `title` is `"a\"b"`. [fixture: c4/db-grid-quote-acc-title]                                 |
+| `root`             | `title` is `"arootb"`. [fixture: c4/db-grid-root-acc-title]                                |
+| `semicolon`        | `title` is `"a;b"`. [fixture: c4/db-grid-semicolon-acc-title]                              |
+| `single-quote`     | `title` is `"a'b"`. [fixture: c4/db-grid-single-quote-acc-title]                           |
+| `spaces`           | `title` is `"a  b"`. [fixture: c4/db-grid-spaces-acc-title]                                |
+| `style-rule`       | `title` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-acc-title]                     |
+| `tab`              | `title` is `"a\tb"`. [fixture: c4/db-grid-tab-acc-title]                                   |
+| `vt`               | `title` is `"a\u000bb"`. [fixture: c4/db-grid-vt-acc-title]                                |
+
+#### acc-descr
+
+The acc-descr position uses the `acc_descr` state after `accDescr:`, trims the
+value, and stores it in `accDescr`. [fixture: c4/db-grid-digits-acc-descr]
+
+| Kind               | Reading and fixture                                                                           |
+| ------------------ | --------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `accDescr` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-acc-descr]                   |
+| `arrow`            | `accDescr` is `"a-->b"`. [fixture: c4/db-grid-arrow-acc-descr]                                |
+| `arrow-spaced`     | `accDescr` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-acc-descr]                       |
+| `backslash`        | `accDescr` is `"a\\b"`. [fixture: c4/db-grid-backslash-acc-descr]                             |
+| `backtick`         | `accDescr` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-acc-descr]                          |
+| `bom`              | `accDescr` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-acc-descr]                               |
+| `classdef-rule`    | `accDescr` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-acc-descr]               |
+| `close-brace`      | `accDescr` is `"a}b"`. [fixture: c4/db-grid-close-brace-acc-descr]                            |
+| `close-round`      | `accDescr` is `"a)b"`. [fixture: c4/db-grid-close-round-acc-descr]                            |
+| `close-square`     | `accDescr` is `"a]b"`. [fixture: c4/db-grid-close-square-acc-descr]                           |
+| `colon`            | `accDescr` is `"a:b"`. [fixture: c4/db-grid-colon-acc-descr]                                  |
+| `comma`            | `accDescr` is `"a,b"`. [fixture: c4/db-grid-comma-acc-descr]                                  |
+| `comment`          | `accDescr` is `"a%% cb"`. [fixture: c4/db-grid-comment-acc-descr]                             |
+| `comment-line`     | Rejected with `Error`. [fixture: c4/gram-grid-comment-line-acc-descr]                         |
+| `constructor`      | `accDescr` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-acc-descr]                  |
+| `cr`               | Rejected with `Error`. [fixture: c4/gram-grid-cr-acc-descr]                                   |
+| `crlf`             | Rejected with `Error`. [fixture: c4/gram-grid-crlf-acc-descr]                                 |
+| `dash`             | `accDescr` is `"a-b"`. [fixture: c4/db-grid-dash-acc-descr]                                   |
+| `digits`           | `accDescr` is `"a123b"`. [fixture: c4/db-grid-digits-acc-descr]                               |
+| `directive`        | `accDescr` is `"ab"`. [fixture: c4/db-grid-directive-acc-descr]                               |
+| `directive-line`   | Rejected with `Error`. [fixture: c4/gram-grid-directive-line-acc-descr]                       |
+| `emoji`            | `accDescr` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-acc-descr]                       |
+| `empty`            | `accDescr` is `"Person(a, \"A\")"`. [fixture: c4/db-accdescr-empty]                           |
+| `entity`           | `accDescr` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-acc-descr]  |
+| `entity-named`     | `accDescr` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-acc-descr] |
+| `equals`           | `accDescr` is `"a=b"`. [fixture: c4/db-grid-equals-acc-descr]                                 |
+| `ff`               | `accDescr` is `"a\fb"`. [fixture: c4/db-grid-ff-acc-descr]                                    |
+| `greater-than`     | `accDescr` is `"a>b"`. [fixture: c4/db-grid-greater-than-acc-descr]                           |
+| `hash`             | `accDescr` is `"a#b"`. [fixture: c4/db-grid-hash-acc-descr]                                   |
+| `html`             | `accDescr` is `"a<b>b"`. [fixture: c4/db-grid-html-acc-descr]                                 |
+| `html-attribute`   | `accDescr` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-acc-descr]              |
+| `html-br`          | `accDescr` is `"a<br>b"`. [fixture: c4/db-grid-html-br-acc-descr]                             |
+| `ideographic`      | `accDescr` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-acc-descr]                       |
+| `keyword`          | `accDescr` is `"aPersonb"`. [fixture: c4/db-grid-keyword-acc-descr]                           |
+| `keyword-block`    | `accDescr` is `"a block b"`. [fixture: c4/db-grid-keyword-block-acc-descr]                    |
+| `keyword-class`    | `accDescr` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-acc-descr]                |
+| `keyword-classdef` | `accDescr` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-acc-descr]   |
+| `keyword-columns`  | `accDescr` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-acc-descr]              |
+| `keyword-end`      | `accDescr` is `"a end b"`. [fixture: c4/db-grid-keyword-end-acc-descr]                        |
+| `keyword-header`   | `accDescr` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-acc-descr]                 |
+| `keyword-space`    | `accDescr` is `"a space b"`. [fixture: c4/db-grid-keyword-space-acc-descr]                    |
+| `keyword-style`    | `accDescr` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-acc-descr]         |
+| `less-than`        | `accDescr` is `"a<b"`. [fixture: c4/db-grid-less-than-acc-descr]                              |
+| `lf`               | Rejected with `Error`. [fixture: c4/gram-grid-lf-acc-descr]                                   |
+| `ls`               | `accDescr` is `"a\u2028b"`. [fixture: c4/db-grid-ls-acc-descr]                                |
+| `nbsp`             | `accDescr` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-acc-descr]                              |
+| `nel`              | `accDescr` is `"a\u0085b"`. [fixture: c4/db-grid-nel-acc-descr]                               |
+| `nonascii`         | `accDescr` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-acc-descr]                          |
+| `open-brace`       | `accDescr` is `"a{b"`. [fixture: c4/db-grid-open-brace-acc-descr]                             |
+| `open-round`       | `accDescr` is `"a(b"`. [fixture: c4/db-grid-open-round-acc-descr]                             |
+| `open-square`      | `accDescr` is `"a[b"`. [fixture: c4/db-grid-open-square-acc-descr]                            |
+| `percent`          | `accDescr` is `"a%b"`. [fixture: c4/db-grid-percent-acc-descr]                                |
+| `pipe`             | `accDescr` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-acc-descr]                              |
+| `proto`            | `accDescr` is `"a__proto__b"`. [fixture: c4/db-grid-proto-acc-descr]                          |
+| `ps`               | `accDescr` is `"a\u2029b"`. [fixture: c4/db-grid-ps-acc-descr]                                |
+| `punct`            | `accDescr` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-acc-descr]                     |
+| `quote`            | `accDescr` is `"a\"b"`. [fixture: c4/db-grid-quote-acc-descr]                                 |
+| `root`             | `accDescr` is `"arootb"`. [fixture: c4/db-grid-root-acc-descr]                                |
+| `semicolon`        | `accDescr` is `"a;b"`. [fixture: c4/db-grid-semicolon-acc-descr]                              |
+| `single-quote`     | `accDescr` is `"a'b"`. [fixture: c4/db-grid-single-quote-acc-descr]                           |
+| `spaces`           | `accDescr` is `"a  b"`. [fixture: c4/db-grid-spaces-acc-descr]                                |
+| `style-rule`       | `accDescr` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-acc-descr]                     |
+| `tab`              | `accDescr` is `"a\tb"`. [fixture: c4/db-grid-tab-acc-descr]                                   |
+| `vt`               | `accDescr` is `"a\u000bb"`. [fixture: c4/db-grid-vt-acc-descr]                                |
+
+#### acc-descr-block
+
+The acc-descr-block position uses the `acc_descr_multiline` state inside
+`accDescr { ... }`, trims the block, and stores it in `accDescr`. [fixture:
+c4/db-grid-digits-acc-descr-block]
+
+| Kind               | Reading and fixture                                                                                 |
+| ------------------ | --------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `accDescr` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-acc-descr-block]                   |
+| `arrow`            | `accDescr` is `"a-->b"`. [fixture: c4/db-grid-arrow-acc-descr-block]                                |
+| `arrow-spaced`     | `accDescr` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-acc-descr-block]                       |
+| `backslash`        | `accDescr` is `"a\\b"`. [fixture: c4/db-grid-backslash-acc-descr-block]                             |
+| `backtick`         | `accDescr` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-acc-descr-block]                          |
+| `bom`              | `accDescr` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-acc-descr-block]                               |
+| `classdef-rule`    | `accDescr` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-acc-descr-block]               |
+| `close-brace`      | Rejected with `Error`. [fixture: c4/gram-grid-close-brace-acc-descr-block]                          |
+| `close-round`      | `accDescr` is `"a)b"`. [fixture: c4/db-grid-close-round-acc-descr-block]                            |
+| `close-square`     | `accDescr` is `"a]b"`. [fixture: c4/db-grid-close-square-acc-descr-block]                           |
+| `colon`            | `accDescr` is `"a:b"`. [fixture: c4/db-grid-colon-acc-descr-block]                                  |
+| `comma`            | `accDescr` is `"a,b"`. [fixture: c4/db-grid-comma-acc-descr-block]                                  |
+| `comment`          | `accDescr` is `"a%% cb"`. [fixture: c4/db-grid-comment-acc-descr-block]                             |
+| `comment-line`     | `accDescr` is `"a\nb"`. [fixture: c4/db-grid-comment-line-acc-descr-block]                          |
+| `constructor`      | `accDescr` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-acc-descr-block]                  |
+| `cr`               | `accDescr` is `"a\nb"`. [fixture: c4/db-grid-cr-acc-descr-block]                                    |
+| `crlf`             | `accDescr` is `"a\nb"`. [fixture: c4/db-grid-crlf-acc-descr-block]                                  |
+| `dash`             | `accDescr` is `"a-b"`. [fixture: c4/db-grid-dash-acc-descr-block]                                   |
+| `digits`           | `accDescr` is `"a123b"`. [fixture: c4/db-grid-digits-acc-descr-block]                               |
+| `directive`        | `accDescr` is `"ab"`. [fixture: c4/db-grid-directive-acc-descr-block]                               |
+| `directive-line`   | `accDescr` is `"a\nb"`. [fixture: c4/db-grid-directive-line-acc-descr-block]                        |
+| `emoji`            | `accDescr` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-acc-descr-block]                       |
+| `empty`            | Rejected with `Error`. [fixture: c4/gram-grid-empty-acc-descr-block]                                |
+| `entity`           | `accDescr` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-acc-descr-block]  |
+| `entity-named`     | `accDescr` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-acc-descr-block] |
+| `equals`           | `accDescr` is `"a=b"`. [fixture: c4/db-grid-equals-acc-descr-block]                                 |
+| `ff`               | `accDescr` is `"a\fb"`. [fixture: c4/db-grid-ff-acc-descr-block]                                    |
+| `greater-than`     | `accDescr` is `"a>b"`. [fixture: c4/db-grid-greater-than-acc-descr-block]                           |
+| `hash`             | `accDescr` is `"a#b"`. [fixture: c4/db-grid-hash-acc-descr-block]                                   |
+| `html`             | `accDescr` is `"a<b>b"`. [fixture: c4/db-grid-html-acc-descr-block]                                 |
+| `html-attribute`   | `accDescr` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-acc-descr-block]              |
+| `html-br`          | `accDescr` is `"a<br>b"`. [fixture: c4/db-grid-html-br-acc-descr-block]                             |
+| `ideographic`      | `accDescr` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-acc-descr-block]                       |
+| `keyword`          | `accDescr` is `"aPersonb"`. [fixture: c4/db-grid-keyword-acc-descr-block]                           |
+| `keyword-block`    | `accDescr` is `"a block b"`. [fixture: c4/db-grid-keyword-block-acc-descr-block]                    |
+| `keyword-class`    | `accDescr` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-acc-descr-block]                |
+| `keyword-classdef` | `accDescr` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-acc-descr-block]   |
+| `keyword-columns`  | `accDescr` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-acc-descr-block]              |
+| `keyword-end`      | `accDescr` is `"a end b"`. [fixture: c4/db-grid-keyword-end-acc-descr-block]                        |
+| `keyword-header`   | `accDescr` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-acc-descr-block]                 |
+| `keyword-space`    | `accDescr` is `"a space b"`. [fixture: c4/db-grid-keyword-space-acc-descr-block]                    |
+| `keyword-style`    | `accDescr` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-acc-descr-block]         |
+| `less-than`        | `accDescr` is `"a<b"`. [fixture: c4/db-grid-less-than-acc-descr-block]                              |
+| `lf`               | `accDescr` is `"a\nb"`. [fixture: c4/db-grid-lf-acc-descr-block]                                    |
+| `ls`               | `accDescr` is `"a\u2028b"`. [fixture: c4/db-grid-ls-acc-descr-block]                                |
+| `nbsp`             | `accDescr` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-acc-descr-block]                              |
+| `nel`              | `accDescr` is `"a\u0085b"`. [fixture: c4/db-grid-nel-acc-descr-block]                               |
+| `nonascii`         | `accDescr` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-acc-descr-block]                          |
+| `open-brace`       | `accDescr` is `"a{b"`. [fixture: c4/db-grid-open-brace-acc-descr-block]                             |
+| `open-round`       | `accDescr` is `"a(b"`. [fixture: c4/db-grid-open-round-acc-descr-block]                             |
+| `open-square`      | `accDescr` is `"a[b"`. [fixture: c4/db-grid-open-square-acc-descr-block]                            |
+| `percent`          | `accDescr` is `"a%b"`. [fixture: c4/db-grid-percent-acc-descr-block]                                |
+| `pipe`             | `accDescr` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-acc-descr-block]                              |
+| `proto`            | `accDescr` is `"a__proto__b"`. [fixture: c4/db-grid-proto-acc-descr-block]                          |
+| `ps`               | `accDescr` is `"a\u2029b"`. [fixture: c4/db-grid-ps-acc-descr-block]                                |
+| `punct`            | `accDescr` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-acc-descr-block]                     |
+| `quote`            | `accDescr` is `"a\"b"`. [fixture: c4/db-grid-quote-acc-descr-block]                                 |
+| `root`             | `accDescr` is `"arootb"`. [fixture: c4/db-grid-root-acc-descr-block]                                |
+| `semicolon`        | `accDescr` is `"a;b"`. [fixture: c4/db-grid-semicolon-acc-descr-block]                              |
+| `single-quote`     | `accDescr` is `"a'b"`. [fixture: c4/db-grid-single-quote-acc-descr-block]                           |
+| `spaces`           | `accDescr` is `"a  b"`. [fixture: c4/db-grid-spaces-acc-descr-block]                                |
+| `style-rule`       | `accDescr` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-acc-descr-block]                     |
+| `tab`              | `accDescr` is `"a\tb"`. [fixture: c4/db-grid-tab-acc-descr-block]                                   |
+| `vt`               | `accDescr` is `"a\u000bb"`. [fixture: c4/db-grid-vt-acc-descr-block]                                |
+
+#### direction-line
+
+The direction-line position uses the text before `direction TB`; the four
+unanchored direction rules consume the preceding text and the rest of the line.
+[fixture: c4/gram-grid-digits-direction-line]
+
+| Kind               | Reading and fixture                                                            |
+| ------------------ | ------------------------------------------------------------------------------ |
+| `ampersand-entity` | Rejected with `Error`. [fixture: c4/gram-grid-ampersand-entity-direction-line] |
+| `arrow`            | Rejected with `Error`. [fixture: c4/gram-grid-arrow-direction-line]            |
+| `arrow-spaced`     | Rejected with `Error`. [fixture: c4/gram-grid-arrow-spaced-direction-line]     |
+| `backslash`        | Rejected with `Error`. [fixture: c4/gram-grid-backslash-direction-line]        |
+| `backtick`         | Rejected with `Error`. [fixture: c4/gram-grid-backtick-direction-line]         |
+| `bom`              | Rejected with `Error`. [fixture: c4/gram-grid-bom-direction-line]              |
+| `classdef-rule`    | Rejected with `Error`. [fixture: c4/gram-grid-classdef-rule-direction-line]    |
+| `close-brace`      | Rejected with `Error`. [fixture: c4/gram-grid-close-brace-direction-line]      |
+| `close-round`      | Rejected with `Error`. [fixture: c4/gram-grid-close-round-direction-line]      |
+| `close-square`     | Rejected with `Error`. [fixture: c4/gram-grid-close-square-direction-line]     |
+| `colon`            | Rejected with `Error`. [fixture: c4/gram-grid-colon-direction-line]            |
+| `comma`            | Rejected with `Error`. [fixture: c4/gram-grid-comma-direction-line]            |
+| `comment`          | Rejected with `Error`. [fixture: c4/gram-grid-comment-direction-line]          |
+| `comment-line`     | Rejected with `Error`. [fixture: c4/gram-grid-comment-line-direction-line]     |
+| `constructor`      | Rejected with `Error`. [fixture: c4/gram-grid-constructor-direction-line]      |
+| `cr`               | Rejected with `Error`. [fixture: c4/gram-grid-cr-direction-line]               |
+| `crlf`             | Rejected with `Error`. [fixture: c4/gram-grid-crlf-direction-line]             |
+| `dash`             | Rejected with `Error`. [fixture: c4/gram-grid-dash-direction-line]             |
+| `digits`           | Rejected with `Error`. [fixture: c4/gram-grid-digits-direction-line]           |
+| `directive`        | Rejected with `Error`. [fixture: c4/gram-grid-directive-direction-line]        |
+| `directive-line`   | Rejected with `Error`. [fixture: c4/gram-grid-directive-line-direction-line]   |
+| `emoji`            | Rejected with `Error`. [fixture: c4/gram-grid-emoji-direction-line]            |
+| `empty`            | Rejected with `Error`. [fixture: c4/gram-grid-empty-direction-line]            |
+| `entity`           | Rejected with `Error`. [fixture: c4/gram-grid-entity-direction-line]           |
+| `entity-named`     | Rejected with `Error`. [fixture: c4/gram-grid-entity-named-direction-line]     |
+| `equals`           | Rejected with `Error`. [fixture: c4/gram-grid-equals-direction-line]           |
+| `ff`               | Rejected with `Error`. [fixture: c4/gram-grid-ff-direction-line]               |
+| `greater-than`     | Rejected with `Error`. [fixture: c4/gram-grid-greater-than-direction-line]     |
+| `hash`             | Rejected with `Error`. [fixture: c4/gram-grid-hash-direction-line]             |
+| `html`             | Rejected with `Error`. [fixture: c4/gram-grid-html-direction-line]             |
+| `html-attribute`   | Rejected with `Error`. [fixture: c4/gram-grid-html-attribute-direction-line]   |
+| `html-br`          | Rejected with `Error`. [fixture: c4/gram-grid-html-br-direction-line]          |
+| `ideographic`      | Rejected with `Error`. [fixture: c4/gram-grid-ideographic-direction-line]      |
+| `keyword`          | Rejected with `Error`. [fixture: c4/gram-grid-keyword-direction-line]          |
+| `keyword-block`    | Rejected with `Error`. [fixture: c4/gram-grid-keyword-block-direction-line]    |
+| `keyword-class`    | Rejected with `Error`. [fixture: c4/gram-grid-keyword-class-direction-line]    |
+| `keyword-classdef` | Rejected with `Error`. [fixture: c4/gram-grid-keyword-classdef-direction-line] |
+| `keyword-columns`  | Rejected with `Error`. [fixture: c4/gram-grid-keyword-columns-direction-line]  |
+| `keyword-end`      | Rejected with `Error`. [fixture: c4/gram-grid-keyword-end-direction-line]      |
+| `keyword-header`   | Rejected with `Error`. [fixture: c4/gram-grid-keyword-header-direction-line]   |
+| `keyword-space`    | Rejected with `Error`. [fixture: c4/gram-grid-keyword-space-direction-line]    |
+| `keyword-style`    | Rejected with `Error`. [fixture: c4/gram-grid-keyword-style-direction-line]    |
+| `less-than`        | Rejected with `Error`. [fixture: c4/gram-grid-less-than-direction-line]        |
+| `lf`               | Rejected with `Error`. [fixture: c4/gram-grid-lf-direction-line]               |
+| `ls`               | Rejected with `Error`. [fixture: c4/gram-grid-ls-direction-line]               |
+| `nbsp`             | Rejected with `Error`. [fixture: c4/gram-grid-nbsp-direction-line]             |
+| `nel`              | Rejected with `Error`. [fixture: c4/gram-grid-nel-direction-line]              |
+| `nonascii`         | Rejected with `Error`. [fixture: c4/gram-grid-nonascii-direction-line]         |
+| `open-brace`       | Rejected with `Error`. [fixture: c4/gram-grid-open-brace-direction-line]       |
+| `open-round`       | Rejected with `Error`. [fixture: c4/gram-grid-open-round-direction-line]       |
+| `open-square`      | Rejected with `Error`. [fixture: c4/gram-grid-open-square-direction-line]      |
+| `percent`          | Rejected with `Error`. [fixture: c4/gram-grid-percent-direction-line]          |
+| `pipe`             | Rejected with `Error`. [fixture: c4/gram-grid-pipe-direction-line]             |
+| `proto`            | Rejected with `Error`. [fixture: c4/gram-grid-proto-direction-line]            |
+| `ps`               | Rejected with `Error`. [fixture: c4/gram-grid-ps-direction-line]               |
+| `punct`            | Rejected with `Error`. [fixture: c4/gram-grid-punct-direction-line]            |
+| `quote`            | Rejected with `Error`. [fixture: c4/gram-grid-quote-direction-line]            |
+| `root`             | Rejected with `Error`. [fixture: c4/gram-grid-root-direction-line]             |
+| `semicolon`        | Rejected with `Error`. [fixture: c4/gram-grid-semicolon-direction-line]        |
+| `single-quote`     | Rejected with `Error`. [fixture: c4/gram-grid-single-quote-direction-line]     |
+| `spaces`           | Rejected with `Error`. [fixture: c4/gram-grid-spaces-direction-line]           |
+| `style-rule`       | Rejected with `Error`. [fixture: c4/gram-grid-style-rule-direction-line]       |
+| `tab`              | Rejected with `Error`. [fixture: c4/gram-grid-tab-direction-line]              |
+| `vt`               | Rejected with `Error`. [fixture: c4/gram-grid-vt-direction-line]               |
+
+#### text-argument-bare
+
+The bare text-argument position uses `Person` argument 2: `attribute` emits
+`STR`, and the trimmed label is stored as `{ text }`. [fixture:
+c4/db-grid-digits-text-argument-bare]
+
+| Kind               | Reading and fixture                                                                                                |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `shapes[0].label.text` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-text-argument-bare]                   |
+| `arrow`            | `shapes[0].label.text` is `"a-->b"`. [fixture: c4/db-grid-arrow-text-argument-bare]                                |
+| `arrow-spaced`     | `shapes[0].label.text` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-text-argument-bare]                       |
+| `backslash`        | `shapes[0].label.text` is `"a\\b"`. [fixture: c4/db-grid-backslash-text-argument-bare]                             |
+| `backtick`         | `shapes[0].label.text` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-text-argument-bare]                          |
+| `bom`              | `shapes[0].label.text` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-text-argument-bare]                               |
+| `classdef-rule`    | `shapes[0].label.text` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-text-argument-bare]               |
+| `close-brace`      | `shapes[0].label.text` is `"a}b"`. [fixture: c4/db-grid-close-brace-text-argument-bare]                            |
+| `close-round`      | `shapes[0].label.text` is `"a)b"`. [fixture: c4/db-grid-close-round-text-argument-bare]                            |
+| `close-square`     | `shapes[0].label.text` is `"a]b"`. [fixture: c4/db-grid-close-square-text-argument-bare]                           |
+| `colon`            | `shapes[0].label.text` is `"a:b"`. [fixture: c4/db-grid-colon-text-argument-bare]                                  |
+| `comma`            | `shapes[0].label.text` is `"a"`. [fixture: c4/db-grid-comma-text-argument-bare]                                    |
+| `comment`          | `shapes[0].label.text` is `"a%% cb"`. [fixture: c4/db-grid-comment-text-argument-bare]                             |
+| `comment-line`     | `shapes[0].label.text` is `"a\nb"`. [fixture: c4/db-grid-comment-line-text-argument-bare]                          |
+| `constructor`      | `shapes[0].label.text` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-text-argument-bare]                  |
+| `cr`               | `shapes[0].label.text` is `"a\nb"`. [fixture: c4/db-grid-cr-text-argument-bare]                                    |
+| `crlf`             | `shapes[0].label.text` is `"a\nb"`. [fixture: c4/db-grid-crlf-text-argument-bare]                                  |
+| `dash`             | `shapes[0].label.text` is `"a-b"`. [fixture: c4/db-grid-dash-text-argument-bare]                                   |
+| `digits`           | `shapes[0].label.text` is `"a123b"`. [fixture: c4/db-grid-digits-text-argument-bare]                               |
+| `directive`        | `shapes[0].label.text` is `"ab"`. [fixture: c4/db-grid-directive-text-argument-bare]                               |
+| `directive-line`   | `shapes[0].label.text` is `"a\n\nb"`. [fixture: c4/db-grid-directive-line-text-argument-bare]                      |
+| `emoji`            | `shapes[0].label.text` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-text-argument-bare]                       |
+| `empty`            | `shapes[0].label.text` is `""`. [fixture: c4/db-grid-empty-text-argument-bare]                                     |
+| `entity`           | `shapes[0].label.text` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-text-argument-bare]  |
+| `entity-named`     | `shapes[0].label.text` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-text-argument-bare] |
+| `equals`           | `shapes[0].label.text` is `"a=b"`. [fixture: c4/db-grid-equals-text-argument-bare]                                 |
+| `ff`               | `shapes[0].label.text` is `"a\fb"`. [fixture: c4/db-grid-ff-text-argument-bare]                                    |
+| `greater-than`     | `shapes[0].label.text` is `"a>b"`. [fixture: c4/db-grid-greater-than-text-argument-bare]                           |
+| `hash`             | `shapes[0].label.text` is `"a#b"`. [fixture: c4/db-grid-hash-text-argument-bare]                                   |
+| `html`             | `shapes[0].label.text` is `"a<b>b"`. [fixture: c4/db-grid-html-text-argument-bare]                                 |
+| `html-attribute`   | `shapes[0].label.text` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-text-argument-bare]              |
+| `html-br`          | `shapes[0].label.text` is `"a<br>b"`. [fixture: c4/db-grid-html-br-text-argument-bare]                             |
+| `ideographic`      | `shapes[0].label.text` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-text-argument-bare]                       |
+| `keyword`          | `shapes[0].label.text` is `"aPersonb"`. [fixture: c4/db-grid-keyword-text-argument-bare]                           |
+| `keyword-block`    | `shapes[0].label.text` is `"a block b"`. [fixture: c4/db-grid-keyword-block-text-argument-bare]                    |
+| `keyword-class`    | `shapes[0].label.text` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-text-argument-bare]                |
+| `keyword-classdef` | `shapes[0].label.text` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-text-argument-bare]   |
+| `keyword-columns`  | `shapes[0].label.text` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-text-argument-bare]              |
+| `keyword-end`      | `shapes[0].label.text` is `"a end b"`. [fixture: c4/db-grid-keyword-end-text-argument-bare]                        |
+| `keyword-header`   | `shapes[0].label.text` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-text-argument-bare]                 |
+| `keyword-space`    | `shapes[0].label.text` is `"a space b"`. [fixture: c4/db-grid-keyword-space-text-argument-bare]                    |
+| `keyword-style`    | `shapes[0].label.text` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-text-argument-bare]         |
+| `less-than`        | `shapes[0].label.text` is `"a<b"`. [fixture: c4/db-grid-less-than-text-argument-bare]                              |
+| `lf`               | `shapes[0].label.text` is `"a\nb"`. [fixture: c4/db-grid-lf-text-argument-bare]                                    |
+| `ls`               | `shapes[0].label.text` is `"a\u2028b"`. [fixture: c4/db-grid-ls-text-argument-bare]                                |
+| `nbsp`             | `shapes[0].label.text` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-text-argument-bare]                              |
+| `nel`              | `shapes[0].label.text` is `"a\u0085b"`. [fixture: c4/db-grid-nel-text-argument-bare]                               |
+| `nonascii`         | `shapes[0].label.text` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-text-argument-bare]                          |
+| `open-brace`       | `shapes[0].label.text` is `"a{b"`. [fixture: c4/db-grid-open-brace-text-argument-bare]                             |
+| `open-round`       | `shapes[0].label.text` is `"a(b"`. [fixture: c4/db-grid-open-round-text-argument-bare]                             |
+| `open-square`      | `shapes[0].label.text` is `"a[b"`. [fixture: c4/db-grid-open-square-text-argument-bare]                            |
+| `percent`          | `shapes[0].label.text` is `"a%b"`. [fixture: c4/db-grid-percent-text-argument-bare]                                |
+| `pipe`             | `shapes[0].label.text` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-text-argument-bare]                              |
+| `proto`            | `shapes[0].label.text` is `"a__proto__b"`. [fixture: c4/db-grid-proto-text-argument-bare]                          |
+| `ps`               | `shapes[0].label.text` is `"a\u2029b"`. [fixture: c4/db-grid-ps-text-argument-bare]                                |
+| `punct`            | `shapes[0].label.text` is `"a!$&*+."`. [fixture: c4/db-grid-punct-text-argument-bare]                              |
+| `quote`            | `shapes[0].label.text` is `"a\"b"`. [fixture: c4/db-grid-quote-text-argument-bare]                                 |
+| `root`             | `shapes[0].label.text` is `"arootb"`. [fixture: c4/db-grid-root-text-argument-bare]                                |
+| `semicolon`        | `shapes[0].label.text` is `"a;b"`. [fixture: c4/db-grid-semicolon-text-argument-bare]                              |
+| `single-quote`     | `shapes[0].label.text` is `"a'b"`. [fixture: c4/db-grid-single-quote-text-argument-bare]                           |
+| `spaces`           | `shapes[0].label.text` is `"a  b"`. [fixture: c4/db-grid-spaces-text-argument-bare]                                |
+| `style-rule`       | `shapes[0].label.text` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-text-argument-bare]                     |
+| `tab`              | `shapes[0].label.text` is `"a\tb"`. [fixture: c4/db-grid-tab-text-argument-bare]                                   |
+| `vt`               | `shapes[0].label.text` is `"a\u000bb"`. [fixture: c4/db-grid-vt-text-argument-bare]                                |
+
+#### alias-argument-bare
+
+The bare alias-argument position uses `Person` argument 1: `attribute` emits
+`STR`, and the trimmed alias selects entries by strict equality. [fixture:
+c4/db-grid-digits-alias-argument-bare]
+
+| Kind               | Reading and fixture                                                                                            |
+| ------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].alias` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-alias-argument-bare]                   |
+| `arrow`            | `shapes[0].alias` is `"a-->b"`. [fixture: c4/db-grid-arrow-alias-argument-bare]                                |
+| `arrow-spaced`     | `shapes[0].alias` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-alias-argument-bare]                       |
+| `backslash`        | `shapes[0].alias` is `"a\\b"`. [fixture: c4/db-grid-backslash-alias-argument-bare]                             |
+| `backtick`         | `shapes[0].alias` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-alias-argument-bare]                          |
+| `bom`              | `shapes[0].alias` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-alias-argument-bare]                               |
+| `classdef-rule`    | `shapes[0].alias` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-alias-argument-bare]               |
+| `close-brace`      | `shapes[0].alias` is `"a}b"`. [fixture: c4/db-grid-close-brace-alias-argument-bare]                            |
+| `close-round`      | `shapes[0].alias` is `"a)b"`. [fixture: c4/db-grid-close-round-alias-argument-bare]                            |
+| `close-square`     | `shapes[0].alias` is `"a]b"`. [fixture: c4/db-grid-close-square-alias-argument-bare]                           |
+| `colon`            | `shapes[0].alias` is `"a:b"`. [fixture: c4/db-grid-colon-alias-argument-bare]                                  |
+| `comma`            | `shapes[0].alias` is `"a"`. [fixture: c4/db-grid-comma-alias-argument-bare]                                    |
+| `comment`          | `shapes[0].alias` is `"a%% cb"`. [fixture: c4/db-grid-comment-alias-argument-bare]                             |
+| `comment-line`     | `shapes[0].alias` is `"a\nb"`. [fixture: c4/db-grid-comment-line-alias-argument-bare]                          |
+| `constructor`      | `shapes[0].alias` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-alias-argument-bare]                  |
+| `cr`               | `shapes[0].alias` is `"a\nb"`. [fixture: c4/db-grid-cr-alias-argument-bare]                                    |
+| `crlf`             | `shapes[0].alias` is `"a\nb"`. [fixture: c4/db-grid-crlf-alias-argument-bare]                                  |
+| `dash`             | `shapes[0].alias` is `"a-b"`. [fixture: c4/db-grid-dash-alias-argument-bare]                                   |
+| `digits`           | `shapes[0].alias` is `"a123b"`. [fixture: c4/db-grid-digits-alias-argument-bare]                               |
+| `directive`        | `shapes[0].alias` is `"ab"`. [fixture: c4/db-grid-directive-alias-argument-bare]                               |
+| `directive-line`   | `shapes[0].alias` is `"a\n\nb"`. [fixture: c4/db-grid-directive-line-alias-argument-bare]                      |
+| `emoji`            | `shapes[0].alias` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-alias-argument-bare]                       |
+| `empty`            | `shapes[0].alias` is `""`. [fixture: c4/db-grid-empty-alias-argument-bare]                                     |
+| `entity`           | `shapes[0].alias` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-alias-argument-bare]  |
+| `entity-named`     | `shapes[0].alias` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-alias-argument-bare] |
+| `equals`           | `shapes[0].alias` is `"a=b"`. [fixture: c4/db-grid-equals-alias-argument-bare]                                 |
+| `ff`               | `shapes[0].alias` is `"a\fb"`. [fixture: c4/db-grid-ff-alias-argument-bare]                                    |
+| `greater-than`     | `shapes[0].alias` is `"a>b"`. [fixture: c4/db-grid-greater-than-alias-argument-bare]                           |
+| `hash`             | `shapes[0].alias` is `"a#b"`. [fixture: c4/db-grid-hash-alias-argument-bare]                                   |
+| `html`             | `shapes[0].alias` is `"a<b>b"`. [fixture: c4/db-grid-html-alias-argument-bare]                                 |
+| `html-attribute`   | `shapes[0].alias` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-alias-argument-bare]              |
+| `html-br`          | `shapes[0].alias` is `"a<br>b"`. [fixture: c4/db-grid-html-br-alias-argument-bare]                             |
+| `ideographic`      | `shapes[0].alias` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-alias-argument-bare]                       |
+| `keyword`          | `shapes[0].alias` is `"aPersonb"`. [fixture: c4/db-grid-keyword-alias-argument-bare]                           |
+| `keyword-block`    | `shapes[0].alias` is `"a block b"`. [fixture: c4/db-grid-keyword-block-alias-argument-bare]                    |
+| `keyword-class`    | `shapes[0].alias` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-alias-argument-bare]                |
+| `keyword-classdef` | `shapes[0].alias` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-alias-argument-bare]   |
+| `keyword-columns`  | `shapes[0].alias` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-alias-argument-bare]              |
+| `keyword-end`      | `shapes[0].alias` is `"a end b"`. [fixture: c4/db-grid-keyword-end-alias-argument-bare]                        |
+| `keyword-header`   | `shapes[0].alias` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-alias-argument-bare]                 |
+| `keyword-space`    | `shapes[0].alias` is `"a space b"`. [fixture: c4/db-grid-keyword-space-alias-argument-bare]                    |
+| `keyword-style`    | `shapes[0].alias` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-alias-argument-bare]         |
+| `less-than`        | `shapes[0].alias` is `"a<b"`. [fixture: c4/db-grid-less-than-alias-argument-bare]                              |
+| `lf`               | `shapes[0].alias` is `"a\nb"`. [fixture: c4/db-grid-lf-alias-argument-bare]                                    |
+| `ls`               | `shapes[0].alias` is `"a\u2028b"`. [fixture: c4/db-grid-ls-alias-argument-bare]                                |
+| `nbsp`             | `shapes[0].alias` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-alias-argument-bare]                              |
+| `nel`              | `shapes[0].alias` is `"a\u0085b"`. [fixture: c4/db-grid-nel-alias-argument-bare]                               |
+| `nonascii`         | `shapes[0].alias` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-alias-argument-bare]                          |
+| `open-brace`       | `shapes[0].alias` is `"a{b"`. [fixture: c4/db-grid-open-brace-alias-argument-bare]                             |
+| `open-round`       | `shapes[0].alias` is `"a(b"`. [fixture: c4/db-grid-open-round-alias-argument-bare]                             |
+| `open-square`      | `shapes[0].alias` is `"a[b"`. [fixture: c4/db-grid-open-square-alias-argument-bare]                            |
+| `percent`          | `shapes[0].alias` is `"a%b"`. [fixture: c4/db-grid-percent-alias-argument-bare]                                |
+| `pipe`             | `shapes[0].alias` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-alias-argument-bare]                              |
+| `proto`            | `shapes[0].alias` is `"a__proto__b"`. [fixture: c4/db-grid-proto-alias-argument-bare]                          |
+| `ps`               | `shapes[0].alias` is `"a\u2029b"`. [fixture: c4/db-grid-ps-alias-argument-bare]                                |
+| `punct`            | `shapes[0].alias` is `"a!$&*+."`. [fixture: c4/db-grid-punct-alias-argument-bare]                              |
+| `quote`            | `shapes[0].alias` is `"a\"b"`. [fixture: c4/db-grid-quote-alias-argument-bare]                                 |
+| `root`             | `shapes[0].alias` is `"arootb"`. [fixture: c4/db-grid-root-alias-argument-bare]                                |
+| `semicolon`        | `shapes[0].alias` is `"a;b"`. [fixture: c4/db-grid-semicolon-alias-argument-bare]                              |
+| `single-quote`     | `shapes[0].alias` is `"a'b"`. [fixture: c4/db-grid-single-quote-alias-argument-bare]                           |
+| `spaces`           | `shapes[0].alias` is `"a  b"`. [fixture: c4/db-grid-spaces-alias-argument-bare]                                |
+| `style-rule`       | `shapes[0].alias` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-alias-argument-bare]                     |
+| `tab`              | `shapes[0].alias` is `"a\tb"`. [fixture: c4/db-grid-tab-alias-argument-bare]                                   |
+| `vt`               | `shapes[0].alias` is `"a\u000bb"`. [fixture: c4/db-grid-vt-alias-argument-bare]                                |
+
+#### plain-argument-bare
+
+The bare plain-argument position uses `Person` argument 4, sprite: `attribute`
+emits `STR`, and the trimmed value stays a plain string, as do tags, link, and
+positional style strings. [fixture: c4/db-grid-digits-plain-argument-bare]
+
+| Kind               | Reading and fixture                                                                                             |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].sprite` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-plain-argument-bare]                   |
+| `arrow`            | `shapes[0].sprite` is `"a-->b"`. [fixture: c4/db-grid-arrow-plain-argument-bare]                                |
+| `arrow-spaced`     | `shapes[0].sprite` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-plain-argument-bare]                       |
+| `backslash`        | `shapes[0].sprite` is `"a\\b"`. [fixture: c4/db-grid-backslash-plain-argument-bare]                             |
+| `backtick`         | `shapes[0].sprite` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-plain-argument-bare]                          |
+| `bom`              | `shapes[0].sprite` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-plain-argument-bare]                               |
+| `classdef-rule`    | `shapes[0].sprite` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-plain-argument-bare]               |
+| `close-brace`      | `shapes[0].sprite` is `"a}b"`. [fixture: c4/db-grid-close-brace-plain-argument-bare]                            |
+| `close-round`      | `shapes[0].sprite` is `"a)b"`. [fixture: c4/db-grid-close-round-plain-argument-bare]                            |
+| `close-square`     | `shapes[0].sprite` is `"a]b"`. [fixture: c4/db-grid-close-square-plain-argument-bare]                           |
+| `colon`            | `shapes[0].sprite` is `"a:b"`. [fixture: c4/db-grid-colon-plain-argument-bare]                                  |
+| `comma`            | `shapes[0].sprite` is `"a"`. [fixture: c4/db-grid-comma-plain-argument-bare]                                    |
+| `comment`          | `shapes[0].sprite` is `"a%% cb"`. [fixture: c4/db-grid-comment-plain-argument-bare]                             |
+| `comment-line`     | `shapes[0].sprite` is `"a\nb"`. [fixture: c4/db-grid-comment-line-plain-argument-bare]                          |
+| `constructor`      | `shapes[0].sprite` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-plain-argument-bare]                  |
+| `cr`               | `shapes[0].sprite` is `"a\nb"`. [fixture: c4/db-grid-cr-plain-argument-bare]                                    |
+| `crlf`             | `shapes[0].sprite` is `"a\nb"`. [fixture: c4/db-grid-crlf-plain-argument-bare]                                  |
+| `dash`             | `shapes[0].sprite` is `"a-b"`. [fixture: c4/db-grid-dash-plain-argument-bare]                                   |
+| `digits`           | `shapes[0].sprite` is `"a123b"`. [fixture: c4/db-grid-digits-plain-argument-bare]                               |
+| `directive`        | `shapes[0].sprite` is `"ab"`. [fixture: c4/db-grid-directive-plain-argument-bare]                               |
+| `directive-line`   | `shapes[0].sprite` is `"a\n\nb"`. [fixture: c4/db-grid-directive-line-plain-argument-bare]                      |
+| `emoji`            | `shapes[0].sprite` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-plain-argument-bare]                       |
+| `empty`            | `shapes[0].sprite` is `""`. [fixture: c4/db-grid-empty-plain-argument-bare]                                     |
+| `entity`           | `shapes[0].sprite` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-plain-argument-bare]  |
+| `entity-named`     | `shapes[0].sprite` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-plain-argument-bare] |
+| `equals`           | `shapes[0].sprite` is `"a=b"`. [fixture: c4/db-grid-equals-plain-argument-bare]                                 |
+| `ff`               | `shapes[0].sprite` is `"a\fb"`. [fixture: c4/db-grid-ff-plain-argument-bare]                                    |
+| `greater-than`     | `shapes[0].sprite` is `"a>b"`. [fixture: c4/db-grid-greater-than-plain-argument-bare]                           |
+| `hash`             | `shapes[0].sprite` is `"a#b"`. [fixture: c4/db-grid-hash-plain-argument-bare]                                   |
+| `html`             | `shapes[0].sprite` is `"a<b>b"`. [fixture: c4/db-grid-html-plain-argument-bare]                                 |
+| `html-attribute`   | `shapes[0].sprite` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-plain-argument-bare]              |
+| `html-br`          | `shapes[0].sprite` is `"a<br>b"`. [fixture: c4/db-grid-html-br-plain-argument-bare]                             |
+| `ideographic`      | `shapes[0].sprite` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-plain-argument-bare]                       |
+| `keyword`          | `shapes[0].sprite` is `"aPersonb"`. [fixture: c4/db-grid-keyword-plain-argument-bare]                           |
+| `keyword-block`    | `shapes[0].sprite` is `"a block b"`. [fixture: c4/db-grid-keyword-block-plain-argument-bare]                    |
+| `keyword-class`    | `shapes[0].sprite` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-plain-argument-bare]                |
+| `keyword-classdef` | `shapes[0].sprite` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-plain-argument-bare]   |
+| `keyword-columns`  | `shapes[0].sprite` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-plain-argument-bare]              |
+| `keyword-end`      | `shapes[0].sprite` is `"a end b"`. [fixture: c4/db-grid-keyword-end-plain-argument-bare]                        |
+| `keyword-header`   | `shapes[0].sprite` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-plain-argument-bare]                 |
+| `keyword-space`    | `shapes[0].sprite` is `"a space b"`. [fixture: c4/db-grid-keyword-space-plain-argument-bare]                    |
+| `keyword-style`    | `shapes[0].sprite` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-plain-argument-bare]         |
+| `less-than`        | `shapes[0].sprite` is `"a<b"`. [fixture: c4/db-grid-less-than-plain-argument-bare]                              |
+| `lf`               | `shapes[0].sprite` is `"a\nb"`. [fixture: c4/db-grid-lf-plain-argument-bare]                                    |
+| `ls`               | `shapes[0].sprite` is `"a\u2028b"`. [fixture: c4/db-grid-ls-plain-argument-bare]                                |
+| `nbsp`             | `shapes[0].sprite` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-plain-argument-bare]                              |
+| `nel`              | `shapes[0].sprite` is `"a\u0085b"`. [fixture: c4/db-grid-nel-plain-argument-bare]                               |
+| `nonascii`         | `shapes[0].sprite` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-plain-argument-bare]                          |
+| `open-brace`       | `shapes[0].sprite` is `"a{b"`. [fixture: c4/db-grid-open-brace-plain-argument-bare]                             |
+| `open-round`       | `shapes[0].sprite` is `"a(b"`. [fixture: c4/db-grid-open-round-plain-argument-bare]                             |
+| `open-square`      | `shapes[0].sprite` is `"a[b"`. [fixture: c4/db-grid-open-square-plain-argument-bare]                            |
+| `percent`          | `shapes[0].sprite` is `"a%b"`. [fixture: c4/db-grid-percent-plain-argument-bare]                                |
+| `pipe`             | `shapes[0].sprite` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-plain-argument-bare]                              |
+| `proto`            | `shapes[0].sprite` is `"a__proto__b"`. [fixture: c4/db-grid-proto-plain-argument-bare]                          |
+| `ps`               | `shapes[0].sprite` is `"a\u2029b"`. [fixture: c4/db-grid-ps-plain-argument-bare]                                |
+| `punct`            | `shapes[0].sprite` is `"a!$&*+."`. [fixture: c4/db-grid-punct-plain-argument-bare]                              |
+| `quote`            | `shapes[0].sprite` is `"a\"b"`. [fixture: c4/db-grid-quote-plain-argument-bare]                                 |
+| `root`             | `shapes[0].sprite` is `"arootb"`. [fixture: c4/db-grid-root-plain-argument-bare]                                |
+| `semicolon`        | `shapes[0].sprite` is `"a;b"`. [fixture: c4/db-grid-semicolon-plain-argument-bare]                              |
+| `single-quote`     | `shapes[0].sprite` is `"a'b"`. [fixture: c4/db-grid-single-quote-plain-argument-bare]                           |
+| `spaces`           | `shapes[0].sprite` is `"a  b"`. [fixture: c4/db-grid-spaces-plain-argument-bare]                                |
+| `style-rule`       | `shapes[0].sprite` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-plain-argument-bare]                     |
+| `tab`              | `shapes[0].sprite` is `"a\tb"`. [fixture: c4/db-grid-tab-plain-argument-bare]                                   |
+| `vt`               | `shapes[0].sprite` is `"a\u000bb"`. [fixture: c4/db-grid-vt-plain-argument-bare]                                |
+
+#### text-argument-quoted
+
+The quoted text-argument position uses `Person` argument 2: `string` emits
+`STR`, and the trimmed label is stored as `{ text }`. [fixture:
+c4/db-grid-digits-text-argument-quoted]
+
+| Kind               | Reading and fixture                                                                                                  |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].label.text` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-text-argument-quoted]                   |
+| `arrow`            | `shapes[0].label.text` is `"a-->b"`. [fixture: c4/db-grid-arrow-text-argument-quoted]                                |
+| `arrow-spaced`     | `shapes[0].label.text` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-text-argument-quoted]                       |
+| `backslash`        | `shapes[0].label.text` is `"a\\b"`. [fixture: c4/db-grid-backslash-text-argument-quoted]                             |
+| `backtick`         | `shapes[0].label.text` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-text-argument-quoted]                          |
+| `bom`              | `shapes[0].label.text` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-text-argument-quoted]                               |
+| `classdef-rule`    | `shapes[0].label.text` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-text-argument-quoted]               |
+| `close-brace`      | `shapes[0].label.text` is `"a}b"`. [fixture: c4/db-grid-close-brace-text-argument-quoted]                            |
+| `close-round`      | `shapes[0].label.text` is `"a)b"`. [fixture: c4/db-grid-close-round-text-argument-quoted]                            |
+| `close-square`     | `shapes[0].label.text` is `"a]b"`. [fixture: c4/db-grid-close-square-text-argument-quoted]                           |
+| `colon`            | `shapes[0].label.text` is `"a:b"`. [fixture: c4/db-grid-colon-text-argument-quoted]                                  |
+| `comma`            | `shapes[0].label.text` is `"a,b"`. [fixture: c4/db-grid-comma-text-argument-quoted]                                  |
+| `comment`          | `shapes[0].label.text` is `"a%% cb"`. [fixture: c4/db-grid-comment-text-argument-quoted]                             |
+| `comment-line`     | `shapes[0].label.text` is `"a\nb"`. [fixture: c4/db-grid-comment-line-text-argument-quoted]                          |
+| `constructor`      | `shapes[0].label.text` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-text-argument-quoted]                  |
+| `cr`               | `shapes[0].label.text` is `"a\nb"`. [fixture: c4/db-grid-cr-text-argument-quoted]                                    |
+| `crlf`             | `shapes[0].label.text` is `"a\nb"`. [fixture: c4/db-grid-crlf-text-argument-quoted]                                  |
+| `dash`             | `shapes[0].label.text` is `"a-b"`. [fixture: c4/db-grid-dash-text-argument-quoted]                                   |
+| `digits`           | `shapes[0].label.text` is `"a123b"`. [fixture: c4/db-grid-digits-text-argument-quoted]                               |
+| `directive`        | `shapes[0].label.text` is `"ab"`. [fixture: c4/db-grid-directive-text-argument-quoted]                               |
+| `directive-line`   | `shapes[0].label.text` is `"a\n\nb"`. [fixture: c4/db-grid-directive-line-text-argument-quoted]                      |
+| `emoji`            | `shapes[0].label.text` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-text-argument-quoted]                       |
+| `empty`            | `shapes[0].label.text` is `""`. [fixture: c4/db-grid-empty-text-argument-quoted]                                     |
+| `entity`           | `shapes[0].label.text` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-text-argument-quoted]  |
+| `entity-named`     | `shapes[0].label.text` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-text-argument-quoted] |
+| `equals`           | `shapes[0].label.text` is `"a=b"`. [fixture: c4/db-grid-equals-text-argument-quoted]                                 |
+| `ff`               | `shapes[0].label.text` is `"a\fb"`. [fixture: c4/db-grid-ff-text-argument-quoted]                                    |
+| `greater-than`     | `shapes[0].label.text` is `"a>b"`. [fixture: c4/db-grid-greater-than-text-argument-quoted]                           |
+| `hash`             | `shapes[0].label.text` is `"a#b"`. [fixture: c4/db-grid-hash-text-argument-quoted]                                   |
+| `html`             | `shapes[0].label.text` is `"a<b>b"`. [fixture: c4/db-grid-html-text-argument-quoted]                                 |
+| `html-attribute`   | `shapes[0].label.text` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-text-argument-quoted]              |
+| `html-br`          | `shapes[0].label.text` is `"a<br>b"`. [fixture: c4/db-grid-html-br-text-argument-quoted]                             |
+| `ideographic`      | `shapes[0].label.text` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-text-argument-quoted]                       |
+| `keyword`          | `shapes[0].label.text` is `"aPersonb"`. [fixture: c4/db-grid-keyword-text-argument-quoted]                           |
+| `keyword-block`    | `shapes[0].label.text` is `"a block b"`. [fixture: c4/db-grid-keyword-block-text-argument-quoted]                    |
+| `keyword-class`    | `shapes[0].label.text` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-text-argument-quoted]                |
+| `keyword-classdef` | `shapes[0].label.text` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-text-argument-quoted]   |
+| `keyword-columns`  | `shapes[0].label.text` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-text-argument-quoted]              |
+| `keyword-end`      | `shapes[0].label.text` is `"a end b"`. [fixture: c4/db-grid-keyword-end-text-argument-quoted]                        |
+| `keyword-header`   | `shapes[0].label.text` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-text-argument-quoted]                 |
+| `keyword-space`    | `shapes[0].label.text` is `"a space b"`. [fixture: c4/db-grid-keyword-space-text-argument-quoted]                    |
+| `keyword-style`    | `shapes[0].label.text` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-text-argument-quoted]         |
+| `less-than`        | `shapes[0].label.text` is `"a<b"`. [fixture: c4/db-grid-less-than-text-argument-quoted]                              |
+| `lf`               | `shapes[0].label.text` is `"a\nb"`. [fixture: c4/db-grid-lf-text-argument-quoted]                                    |
+| `ls`               | `shapes[0].label.text` is `"a\u2028b"`. [fixture: c4/db-grid-ls-text-argument-quoted]                                |
+| `nbsp`             | `shapes[0].label.text` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-text-argument-quoted]                              |
+| `nel`              | `shapes[0].label.text` is `"a\u0085b"`. [fixture: c4/db-grid-nel-text-argument-quoted]                               |
+| `nonascii`         | `shapes[0].label.text` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-text-argument-quoted]                          |
+| `open-brace`       | `shapes[0].label.text` is `"a{b"`. [fixture: c4/db-grid-open-brace-text-argument-quoted]                             |
+| `open-round`       | `shapes[0].label.text` is `"a(b"`. [fixture: c4/db-grid-open-round-text-argument-quoted]                             |
+| `open-square`      | `shapes[0].label.text` is `"a[b"`. [fixture: c4/db-grid-open-square-text-argument-quoted]                            |
+| `percent`          | `shapes[0].label.text` is `"a%b"`. [fixture: c4/db-grid-percent-text-argument-quoted]                                |
+| `pipe`             | `shapes[0].label.text` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-text-argument-quoted]                              |
+| `proto`            | `shapes[0].label.text` is `"a__proto__b"`. [fixture: c4/db-grid-proto-text-argument-quoted]                          |
+| `ps`               | `shapes[0].label.text` is `"a\u2029b"`. [fixture: c4/db-grid-ps-text-argument-quoted]                                |
+| `punct`            | `shapes[0].label.text` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-text-argument-quoted]                     |
+| `quote`            | `shapes[0].label.text` is `"a"`. [fixture: c4/db-grid-quote-text-argument-quoted]                                    |
+| `root`             | `shapes[0].label.text` is `"arootb"`. [fixture: c4/db-grid-root-text-argument-quoted]                                |
+| `semicolon`        | `shapes[0].label.text` is `"a;b"`. [fixture: c4/db-grid-semicolon-text-argument-quoted]                              |
+| `single-quote`     | `shapes[0].label.text` is `"a'b"`. [fixture: c4/db-grid-single-quote-text-argument-quoted]                           |
+| `spaces`           | `shapes[0].label.text` is `"a  b"`. [fixture: c4/db-grid-spaces-text-argument-quoted]                                |
+| `style-rule`       | `shapes[0].label.text` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-text-argument-quoted]                     |
+| `tab`              | `shapes[0].label.text` is `"a\tb"`. [fixture: c4/db-grid-tab-text-argument-quoted]                                   |
+| `vt`               | `shapes[0].label.text` is `"a\u000bb"`. [fixture: c4/db-grid-vt-text-argument-quoted]                                |
+
+#### alias-argument-quoted
+
+The quoted alias-argument position uses `Person` argument 1: `string` emits
+`STR`, and the trimmed alias selects entries by strict equality. [fixture:
+c4/db-grid-digits-alias-argument-quoted]
+
+| Kind               | Reading and fixture                                                                                              |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].alias` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-alias-argument-quoted]                   |
+| `arrow`            | `shapes[0].alias` is `"a-->b"`. [fixture: c4/db-grid-arrow-alias-argument-quoted]                                |
+| `arrow-spaced`     | `shapes[0].alias` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-alias-argument-quoted]                       |
+| `backslash`        | `shapes[0].alias` is `"a\\b"`. [fixture: c4/db-grid-backslash-alias-argument-quoted]                             |
+| `backtick`         | `shapes[0].alias` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-alias-argument-quoted]                          |
+| `bom`              | `shapes[0].alias` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-alias-argument-quoted]                               |
+| `classdef-rule`    | `shapes[0].alias` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-alias-argument-quoted]               |
+| `close-brace`      | `shapes[0].alias` is `"a}b"`. [fixture: c4/db-grid-close-brace-alias-argument-quoted]                            |
+| `close-round`      | `shapes[0].alias` is `"a)b"`. [fixture: c4/db-grid-close-round-alias-argument-quoted]                            |
+| `close-square`     | `shapes[0].alias` is `"a]b"`. [fixture: c4/db-grid-close-square-alias-argument-quoted]                           |
+| `colon`            | `shapes[0].alias` is `"a:b"`. [fixture: c4/db-grid-colon-alias-argument-quoted]                                  |
+| `comma`            | `shapes[0].alias` is `"a,b"`. [fixture: c4/db-grid-comma-alias-argument-quoted]                                  |
+| `comment`          | `shapes[0].alias` is `"a%% cb"`. [fixture: c4/db-grid-comment-alias-argument-quoted]                             |
+| `comment-line`     | `shapes[0].alias` is `"a\nb"`. [fixture: c4/db-grid-comment-line-alias-argument-quoted]                          |
+| `constructor`      | `shapes[0].alias` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-alias-argument-quoted]                  |
+| `cr`               | `shapes[0].alias` is `"a\nb"`. [fixture: c4/db-grid-cr-alias-argument-quoted]                                    |
+| `crlf`             | `shapes[0].alias` is `"a\nb"`. [fixture: c4/db-grid-crlf-alias-argument-quoted]                                  |
+| `dash`             | `shapes[0].alias` is `"a-b"`. [fixture: c4/db-grid-dash-alias-argument-quoted]                                   |
+| `digits`           | `shapes[0].alias` is `"a123b"`. [fixture: c4/db-grid-digits-alias-argument-quoted]                               |
+| `directive`        | `shapes[0].alias` is `"ab"`. [fixture: c4/db-grid-directive-alias-argument-quoted]                               |
+| `directive-line`   | `shapes[0].alias` is `"a\n\nb"`. [fixture: c4/db-grid-directive-line-alias-argument-quoted]                      |
+| `emoji`            | `shapes[0].alias` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-alias-argument-quoted]                       |
+| `empty`            | `shapes[0].alias` is `""`. [fixture: c4/db-grid-empty-alias-argument-quoted]                                     |
+| `entity`           | `shapes[0].alias` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-alias-argument-quoted]  |
+| `entity-named`     | `shapes[0].alias` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-alias-argument-quoted] |
+| `equals`           | `shapes[0].alias` is `"a=b"`. [fixture: c4/db-grid-equals-alias-argument-quoted]                                 |
+| `ff`               | `shapes[0].alias` is `"a\fb"`. [fixture: c4/db-grid-ff-alias-argument-quoted]                                    |
+| `greater-than`     | `shapes[0].alias` is `"a>b"`. [fixture: c4/db-grid-greater-than-alias-argument-quoted]                           |
+| `hash`             | `shapes[0].alias` is `"a#b"`. [fixture: c4/db-grid-hash-alias-argument-quoted]                                   |
+| `html`             | `shapes[0].alias` is `"a<b>b"`. [fixture: c4/db-grid-html-alias-argument-quoted]                                 |
+| `html-attribute`   | `shapes[0].alias` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-alias-argument-quoted]              |
+| `html-br`          | `shapes[0].alias` is `"a<br>b"`. [fixture: c4/db-grid-html-br-alias-argument-quoted]                             |
+| `ideographic`      | `shapes[0].alias` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-alias-argument-quoted]                       |
+| `keyword`          | `shapes[0].alias` is `"aPersonb"`. [fixture: c4/db-grid-keyword-alias-argument-quoted]                           |
+| `keyword-block`    | `shapes[0].alias` is `"a block b"`. [fixture: c4/db-grid-keyword-block-alias-argument-quoted]                    |
+| `keyword-class`    | `shapes[0].alias` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-alias-argument-quoted]                |
+| `keyword-classdef` | `shapes[0].alias` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-alias-argument-quoted]   |
+| `keyword-columns`  | `shapes[0].alias` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-alias-argument-quoted]              |
+| `keyword-end`      | `shapes[0].alias` is `"a end b"`. [fixture: c4/db-grid-keyword-end-alias-argument-quoted]                        |
+| `keyword-header`   | `shapes[0].alias` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-alias-argument-quoted]                 |
+| `keyword-space`    | `shapes[0].alias` is `"a space b"`. [fixture: c4/db-grid-keyword-space-alias-argument-quoted]                    |
+| `keyword-style`    | `shapes[0].alias` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-alias-argument-quoted]         |
+| `less-than`        | `shapes[0].alias` is `"a<b"`. [fixture: c4/db-grid-less-than-alias-argument-quoted]                              |
+| `lf`               | `shapes[0].alias` is `"a\nb"`. [fixture: c4/db-grid-lf-alias-argument-quoted]                                    |
+| `ls`               | `shapes[0].alias` is `"a\u2028b"`. [fixture: c4/db-grid-ls-alias-argument-quoted]                                |
+| `nbsp`             | `shapes[0].alias` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-alias-argument-quoted]                              |
+| `nel`              | `shapes[0].alias` is `"a\u0085b"`. [fixture: c4/db-grid-nel-alias-argument-quoted]                               |
+| `nonascii`         | `shapes[0].alias` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-alias-argument-quoted]                          |
+| `open-brace`       | `shapes[0].alias` is `"a{b"`. [fixture: c4/db-grid-open-brace-alias-argument-quoted]                             |
+| `open-round`       | `shapes[0].alias` is `"a(b"`. [fixture: c4/db-grid-open-round-alias-argument-quoted]                             |
+| `open-square`      | `shapes[0].alias` is `"a[b"`. [fixture: c4/db-grid-open-square-alias-argument-quoted]                            |
+| `percent`          | `shapes[0].alias` is `"a%b"`. [fixture: c4/db-grid-percent-alias-argument-quoted]                                |
+| `pipe`             | `shapes[0].alias` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-alias-argument-quoted]                              |
+| `proto`            | `shapes[0].alias` is `"a__proto__b"`. [fixture: c4/db-grid-proto-alias-argument-quoted]                          |
+| `ps`               | `shapes[0].alias` is `"a\u2029b"`. [fixture: c4/db-grid-ps-alias-argument-quoted]                                |
+| `punct`            | `shapes[0].alias` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-alias-argument-quoted]                     |
+| `quote`            | `shapes[0].alias` is `"a"`. [fixture: c4/db-grid-quote-alias-argument-quoted]                                    |
+| `root`             | `shapes[0].alias` is `"arootb"`. [fixture: c4/db-grid-root-alias-argument-quoted]                                |
+| `semicolon`        | `shapes[0].alias` is `"a;b"`. [fixture: c4/db-grid-semicolon-alias-argument-quoted]                              |
+| `single-quote`     | `shapes[0].alias` is `"a'b"`. [fixture: c4/db-grid-single-quote-alias-argument-quoted]                           |
+| `spaces`           | `shapes[0].alias` is `"a  b"`. [fixture: c4/db-grid-spaces-alias-argument-quoted]                                |
+| `style-rule`       | `shapes[0].alias` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-alias-argument-quoted]                     |
+| `tab`              | `shapes[0].alias` is `"a\tb"`. [fixture: c4/db-grid-tab-alias-argument-quoted]                                   |
+| `vt`               | `shapes[0].alias` is `"a\u000bb"`. [fixture: c4/db-grid-vt-alias-argument-quoted]                                |
+
+#### plain-argument-quoted
+
+The quoted plain-argument position uses `Person` argument 4, sprite: `string`
+emits `STR`, and the trimmed value stays a plain string, as do tags, link, and
+positional style strings. [fixture: c4/db-grid-digits-plain-argument-quoted]
+
+| Kind               | Reading and fixture                                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].sprite` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-plain-argument-quoted]                   |
+| `arrow`            | `shapes[0].sprite` is `"a-->b"`. [fixture: c4/db-grid-arrow-plain-argument-quoted]                                |
+| `arrow-spaced`     | `shapes[0].sprite` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-plain-argument-quoted]                       |
+| `backslash`        | `shapes[0].sprite` is `"a\\b"`. [fixture: c4/db-grid-backslash-plain-argument-quoted]                             |
+| `backtick`         | `shapes[0].sprite` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-plain-argument-quoted]                          |
+| `bom`              | `shapes[0].sprite` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-plain-argument-quoted]                               |
+| `classdef-rule`    | `shapes[0].sprite` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-plain-argument-quoted]               |
+| `close-brace`      | `shapes[0].sprite` is `"a}b"`. [fixture: c4/db-grid-close-brace-plain-argument-quoted]                            |
+| `close-round`      | `shapes[0].sprite` is `"a)b"`. [fixture: c4/db-grid-close-round-plain-argument-quoted]                            |
+| `close-square`     | `shapes[0].sprite` is `"a]b"`. [fixture: c4/db-grid-close-square-plain-argument-quoted]                           |
+| `colon`            | `shapes[0].sprite` is `"a:b"`. [fixture: c4/db-grid-colon-plain-argument-quoted]                                  |
+| `comma`            | `shapes[0].sprite` is `"a,b"`. [fixture: c4/db-grid-comma-plain-argument-quoted]                                  |
+| `comment`          | `shapes[0].sprite` is `"a%% cb"`. [fixture: c4/db-grid-comment-plain-argument-quoted]                             |
+| `comment-line`     | `shapes[0].sprite` is `"a\nb"`. [fixture: c4/db-grid-comment-line-plain-argument-quoted]                          |
+| `constructor`      | `shapes[0].sprite` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-plain-argument-quoted]                  |
+| `cr`               | `shapes[0].sprite` is `"a\nb"`. [fixture: c4/db-grid-cr-plain-argument-quoted]                                    |
+| `crlf`             | `shapes[0].sprite` is `"a\nb"`. [fixture: c4/db-grid-crlf-plain-argument-quoted]                                  |
+| `dash`             | `shapes[0].sprite` is `"a-b"`. [fixture: c4/db-grid-dash-plain-argument-quoted]                                   |
+| `digits`           | `shapes[0].sprite` is `"a123b"`. [fixture: c4/db-grid-digits-plain-argument-quoted]                               |
+| `directive`        | `shapes[0].sprite` is `"ab"`. [fixture: c4/db-grid-directive-plain-argument-quoted]                               |
+| `directive-line`   | `shapes[0].sprite` is `"a\n\nb"`. [fixture: c4/db-grid-directive-line-plain-argument-quoted]                      |
+| `emoji`            | `shapes[0].sprite` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-plain-argument-quoted]                       |
+| `empty`            | `shapes[0].sprite` is `""`. [fixture: c4/db-grid-empty-plain-argument-quoted]                                     |
+| `entity`           | `shapes[0].sprite` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-plain-argument-quoted]  |
+| `entity-named`     | `shapes[0].sprite` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-plain-argument-quoted] |
+| `equals`           | `shapes[0].sprite` is `"a=b"`. [fixture: c4/db-grid-equals-plain-argument-quoted]                                 |
+| `ff`               | `shapes[0].sprite` is `"a\fb"`. [fixture: c4/db-grid-ff-plain-argument-quoted]                                    |
+| `greater-than`     | `shapes[0].sprite` is `"a>b"`. [fixture: c4/db-grid-greater-than-plain-argument-quoted]                           |
+| `hash`             | `shapes[0].sprite` is `"a#b"`. [fixture: c4/db-grid-hash-plain-argument-quoted]                                   |
+| `html`             | `shapes[0].sprite` is `"a<b>b"`. [fixture: c4/db-grid-html-plain-argument-quoted]                                 |
+| `html-attribute`   | `shapes[0].sprite` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-plain-argument-quoted]              |
+| `html-br`          | `shapes[0].sprite` is `"a<br>b"`. [fixture: c4/db-grid-html-br-plain-argument-quoted]                             |
+| `ideographic`      | `shapes[0].sprite` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-plain-argument-quoted]                       |
+| `keyword`          | `shapes[0].sprite` is `"aPersonb"`. [fixture: c4/db-grid-keyword-plain-argument-quoted]                           |
+| `keyword-block`    | `shapes[0].sprite` is `"a block b"`. [fixture: c4/db-grid-keyword-block-plain-argument-quoted]                    |
+| `keyword-class`    | `shapes[0].sprite` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-plain-argument-quoted]                |
+| `keyword-classdef` | `shapes[0].sprite` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-plain-argument-quoted]   |
+| `keyword-columns`  | `shapes[0].sprite` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-plain-argument-quoted]              |
+| `keyword-end`      | `shapes[0].sprite` is `"a end b"`. [fixture: c4/db-grid-keyword-end-plain-argument-quoted]                        |
+| `keyword-header`   | `shapes[0].sprite` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-plain-argument-quoted]                 |
+| `keyword-space`    | `shapes[0].sprite` is `"a space b"`. [fixture: c4/db-grid-keyword-space-plain-argument-quoted]                    |
+| `keyword-style`    | `shapes[0].sprite` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-plain-argument-quoted]         |
+| `less-than`        | `shapes[0].sprite` is `"a<b"`. [fixture: c4/db-grid-less-than-plain-argument-quoted]                              |
+| `lf`               | `shapes[0].sprite` is `"a\nb"`. [fixture: c4/db-grid-lf-plain-argument-quoted]                                    |
+| `ls`               | `shapes[0].sprite` is `"a\u2028b"`. [fixture: c4/db-grid-ls-plain-argument-quoted]                                |
+| `nbsp`             | `shapes[0].sprite` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-plain-argument-quoted]                              |
+| `nel`              | `shapes[0].sprite` is `"a\u0085b"`. [fixture: c4/db-grid-nel-plain-argument-quoted]                               |
+| `nonascii`         | `shapes[0].sprite` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-plain-argument-quoted]                          |
+| `open-brace`       | `shapes[0].sprite` is `"a{b"`. [fixture: c4/db-grid-open-brace-plain-argument-quoted]                             |
+| `open-round`       | `shapes[0].sprite` is `"a(b"`. [fixture: c4/db-grid-open-round-plain-argument-quoted]                             |
+| `open-square`      | `shapes[0].sprite` is `"a[b"`. [fixture: c4/db-grid-open-square-plain-argument-quoted]                            |
+| `percent`          | `shapes[0].sprite` is `"a%b"`. [fixture: c4/db-grid-percent-plain-argument-quoted]                                |
+| `pipe`             | `shapes[0].sprite` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-plain-argument-quoted]                              |
+| `proto`            | `shapes[0].sprite` is `"a__proto__b"`. [fixture: c4/db-grid-proto-plain-argument-quoted]                          |
+| `ps`               | `shapes[0].sprite` is `"a\u2029b"`. [fixture: c4/db-grid-ps-plain-argument-quoted]                                |
+| `punct`            | `shapes[0].sprite` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-plain-argument-quoted]                     |
+| `quote`            | `shapes[0].sprite` is `"a"`. [fixture: c4/db-grid-quote-plain-argument-quoted]                                    |
+| `root`             | `shapes[0].sprite` is `"arootb"`. [fixture: c4/db-grid-root-plain-argument-quoted]                                |
+| `semicolon`        | `shapes[0].sprite` is `"a;b"`. [fixture: c4/db-grid-semicolon-plain-argument-quoted]                              |
+| `single-quote`     | `shapes[0].sprite` is `"a'b"`. [fixture: c4/db-grid-single-quote-plain-argument-quoted]                           |
+| `spaces`           | `shapes[0].sprite` is `"a  b"`. [fixture: c4/db-grid-spaces-plain-argument-quoted]                                |
+| `style-rule`       | `shapes[0].sprite` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-plain-argument-quoted]                     |
+| `tab`              | `shapes[0].sprite` is `"a\tb"`. [fixture: c4/db-grid-tab-plain-argument-quoted]                                   |
+| `vt`               | `shapes[0].sprite` is `"a\u000bb"`. [fixture: c4/db-grid-vt-plain-argument-quoted]                                |
+
+#### named-key
+
+The named-key position uses the key in `Person` argument 3, `$<key>="V"`:
+`string_kv` and `string_kv_key` select the trimmed attribute name. [fixture:
+c4/db-grid-digits-named-key]
+
+| Kind               | Reading and fixture                                                                                                                                                                             |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a&amp;b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-ampersand-entity-named-key]                   |
+| `arrow`            | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a-->b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-arrow-named-key]                                |
+| `arrow-spaced`     | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a --> b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-arrow-spaced-named-key]                       |
+| `backslash`        | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\\b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-backslash-named-key]                             |
+| `backtick`         | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u0060b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-backtick-named-key]                          |
+| `bom`              | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\ufeffb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-bom-named-key]                               |
+| `classdef-rule`    | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"aclassDef:#xyb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-classdef-rule-named-key]               |
+| `close-brace`      | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a}b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-close-brace-named-key]                            |
+| `close-round`      | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a)b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-close-round-named-key]                            |
+| `close-square`     | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a]b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-close-square-named-key]                           |
+| `colon`            | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a:b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-colon-named-key]                                  |
+| `comma`            | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a,b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-comma-named-key]                                  |
+| `comment`          | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a%% cb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-comment-named-key]                             |
+| `comment-line`     | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-comment-line-named-key]                          |
+| `constructor`      | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"aconstructorb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-constructor-named-key]                  |
+| `cr`               | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-cr-named-key]                                    |
+| `crlf`             | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-crlf-named-key]                                  |
+| `dash`             | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a-b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-dash-named-key]                                   |
+| `digits`           | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a123b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-digits-named-key]                               |
+| `directive`        | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"ab":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-directive-named-key]                               |
+| `directive-line`   | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\n\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-directive-line-named-key]                      |
+| `emoji`            | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\ud83d\ude00b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-emoji-named-key]                       |
+| `empty`            | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-empty-named-key]                                     |
+| `entity`           | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\ufb02\u00b0\u00b035\u00b6\u00dfb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-entity-named-key]  |
+| `entity-named`     | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\ufb02\u00b0amp\u00b6\u00dfb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-entity-named-named-key] |
+| `equals`           | Rejected with `Error`. [fixture: c4/gram-grid-equals-named-key]                                                                                                                                 |
+| `ff`               | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\fb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-ff-named-key]                                    |
+| `greater-than`     | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a>b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-greater-than-named-key]                           |
+| `hash`             | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a#b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-hash-named-key]                                   |
+| `html`             | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a<b>b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-html-named-key]                                 |
+| `html-attribute`   | Rejected with `Error`. [fixture: c4/gram-grid-html-attribute-named-key]                                                                                                                         |
+| `html-br`          | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a<br>b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-html-br-named-key]                             |
+| `ideographic`      | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u3000b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-ideographic-named-key]                       |
+| `keyword`          | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"aPersonb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-named-key]                           |
+| `keyword-block`    | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a block b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-block-named-key]                    |
+| `keyword-class`    | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a class A c b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-class-named-key]                |
+| `keyword-classdef` | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a classDef c fill:red b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-classdef-named-key]   |
+| `keyword-columns`  | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a columns 2 b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-columns-named-key]              |
+| `keyword-end`      | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a end b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-end-named-key]                        |
+| `keyword-header`   | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"aC4Contextb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-header-named-key]                 |
+| `keyword-space`    | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a space b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-space-named-key]                    |
+| `keyword-style`    | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a style A fill:red b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-keyword-style-named-key]         |
+| `less-than`        | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a<b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-less-than-named-key]                              |
+| `lf`               | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-lf-named-key]                                    |
+| `ls`               | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u2028b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-ls-named-key]                                |
+| `nbsp`             | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u00a0b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-nbsp-named-key]                              |
+| `nel`              | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u0085b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-nel-named-key]                               |
+| `nonascii`         | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u00e9b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-nonascii-named-key]                          |
+| `open-brace`       | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a{b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-open-brace-named-key]                             |
+| `open-round`       | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a(b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-open-round-named-key]                             |
+| `open-square`      | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a[b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-open-square-named-key]                            |
+| `percent`          | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a%b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-percent-named-key]                                |
+| `pipe`             | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u007cb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-pipe-named-key]                              |
+| `proto`            | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a__proto__b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-proto-named-key]                          |
+| `ps`               | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u2029b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-ps-named-key]                                |
+| `punct`            | Rejected with `Error`. [fixture: c4/gram-grid-punct-named-key]                                                                                                                                  |
+| `quote`            | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\"b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-quote-named-key]                                 |
+| `root`             | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"arootb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-root-named-key]                                |
+| `semicolon`        | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a;b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-semicolon-named-key]                              |
+| `single-quote`     | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a'b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-single-quote-named-key]                           |
+| `spaces`           | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a  b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-spaces-named-key]                                |
+| `style-rule`       | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"astyle:#xyb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-style-rule-named-key]                     |
+| `tab`              | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\tb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-tab-named-key]                                   |
+| `vt`               | `shapes[0]` is `{"alias":"a","label":{"text":"A"},"a\u000bb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`. [fixture: c4/db-grid-vt-named-key]                                |
+
+#### named-value
+
+The named-value position uses the value in `Person` argument 3,
+`$descr="<value>"`: `string_kv_value` emits `STR_VALUE`, and the trimmed value
+is stored in `descr.text`. [fixture: c4/db-grid-digits-named-value]
+
+| Kind               | Reading and fixture                                                                                         |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].descr.text` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-named-value]                   |
+| `arrow`            | `shapes[0].descr.text` is `"a-->b"`. [fixture: c4/db-grid-arrow-named-value]                                |
+| `arrow-spaced`     | `shapes[0].descr.text` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-named-value]                       |
+| `backslash`        | `shapes[0].descr.text` is `"a\\b"`. [fixture: c4/db-grid-backslash-named-value]                             |
+| `backtick`         | `shapes[0].descr.text` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-named-value]                          |
+| `bom`              | `shapes[0].descr.text` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-named-value]                               |
+| `classdef-rule`    | `shapes[0].descr.text` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-named-value]               |
+| `close-brace`      | `shapes[0].descr.text` is `"a}b"`. [fixture: c4/db-grid-close-brace-named-value]                            |
+| `close-round`      | `shapes[0].descr.text` is `"a)b"`. [fixture: c4/db-grid-close-round-named-value]                            |
+| `close-square`     | `shapes[0].descr.text` is `"a]b"`. [fixture: c4/db-grid-close-square-named-value]                           |
+| `colon`            | `shapes[0].descr.text` is `"a:b"`. [fixture: c4/db-grid-colon-named-value]                                  |
+| `comma`            | `shapes[0].descr.text` is `"a,b"`. [fixture: c4/db-grid-comma-named-value]                                  |
+| `comment`          | `shapes[0].descr.text` is `"a%% cb"`. [fixture: c4/db-grid-comment-named-value]                             |
+| `comment-line`     | `shapes[0].descr.text` is `"a\nb"`. [fixture: c4/db-grid-comment-line-named-value]                          |
+| `constructor`      | `shapes[0].descr.text` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-named-value]                  |
+| `cr`               | `shapes[0].descr.text` is `"a\nb"`. [fixture: c4/db-grid-cr-named-value]                                    |
+| `crlf`             | `shapes[0].descr.text` is `"a\nb"`. [fixture: c4/db-grid-crlf-named-value]                                  |
+| `dash`             | `shapes[0].descr.text` is `"a-b"`. [fixture: c4/db-grid-dash-named-value]                                   |
+| `digits`           | `shapes[0].descr.text` is `"a123b"`. [fixture: c4/db-grid-digits-named-value]                               |
+| `directive`        | `shapes[0].descr.text` is `"ab"`. [fixture: c4/db-grid-directive-named-value]                               |
+| `directive-line`   | `shapes[0].descr.text` is `"a\n\nb"`. [fixture: c4/db-grid-directive-line-named-value]                      |
+| `emoji`            | `shapes[0].descr.text` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-named-value]                       |
+| `empty`            | Rejected with `Error`. [fixture: c4/gram-grid-empty-named-value]                                            |
+| `entity`           | `shapes[0].descr.text` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-value]  |
+| `entity-named`     | `shapes[0].descr.text` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-named-value] |
+| `equals`           | `shapes[0].descr.text` is `"a=b"`. [fixture: c4/db-grid-equals-named-value]                                 |
+| `ff`               | `shapes[0].descr.text` is `"a\fb"`. [fixture: c4/db-grid-ff-named-value]                                    |
+| `greater-than`     | `shapes[0].descr.text` is `"a>b"`. [fixture: c4/db-grid-greater-than-named-value]                           |
+| `hash`             | `shapes[0].descr.text` is `"a#b"`. [fixture: c4/db-grid-hash-named-value]                                   |
+| `html`             | `shapes[0].descr.text` is `"a<b>b"`. [fixture: c4/db-grid-html-named-value]                                 |
+| `html-attribute`   | `shapes[0].descr.text` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-named-value]              |
+| `html-br`          | `shapes[0].descr.text` is `"a<br>b"`. [fixture: c4/db-grid-html-br-named-value]                             |
+| `ideographic`      | `shapes[0].descr.text` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-named-value]                       |
+| `keyword`          | `shapes[0].descr.text` is `"aPersonb"`. [fixture: c4/db-grid-keyword-named-value]                           |
+| `keyword-block`    | `shapes[0].descr.text` is `"a block b"`. [fixture: c4/db-grid-keyword-block-named-value]                    |
+| `keyword-class`    | `shapes[0].descr.text` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-named-value]                |
+| `keyword-classdef` | `shapes[0].descr.text` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-named-value]   |
+| `keyword-columns`  | `shapes[0].descr.text` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-named-value]              |
+| `keyword-end`      | `shapes[0].descr.text` is `"a end b"`. [fixture: c4/db-grid-keyword-end-named-value]                        |
+| `keyword-header`   | `shapes[0].descr.text` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-named-value]                 |
+| `keyword-space`    | `shapes[0].descr.text` is `"a space b"`. [fixture: c4/db-grid-keyword-space-named-value]                    |
+| `keyword-style`    | `shapes[0].descr.text` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-named-value]         |
+| `less-than`        | `shapes[0].descr.text` is `"a<b"`. [fixture: c4/db-grid-less-than-named-value]                              |
+| `lf`               | `shapes[0].descr.text` is `"a\nb"`. [fixture: c4/db-grid-lf-named-value]                                    |
+| `ls`               | `shapes[0].descr.text` is `"a\u2028b"`. [fixture: c4/db-grid-ls-named-value]                                |
+| `nbsp`             | `shapes[0].descr.text` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-named-value]                              |
+| `nel`              | `shapes[0].descr.text` is `"a\u0085b"`. [fixture: c4/db-grid-nel-named-value]                               |
+| `nonascii`         | `shapes[0].descr.text` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-named-value]                          |
+| `open-brace`       | `shapes[0].descr.text` is `"a{b"`. [fixture: c4/db-grid-open-brace-named-value]                             |
+| `open-round`       | `shapes[0].descr.text` is `"a(b"`. [fixture: c4/db-grid-open-round-named-value]                             |
+| `open-square`      | `shapes[0].descr.text` is `"a[b"`. [fixture: c4/db-grid-open-square-named-value]                            |
+| `percent`          | `shapes[0].descr.text` is `"a%b"`. [fixture: c4/db-grid-percent-named-value]                                |
+| `pipe`             | `shapes[0].descr.text` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-named-value]                              |
+| `proto`            | `shapes[0].descr.text` is `"a__proto__b"`. [fixture: c4/db-grid-proto-named-value]                          |
+| `ps`               | `shapes[0].descr.text` is `"a\u2029b"`. [fixture: c4/db-grid-ps-named-value]                                |
+| `punct`            | `shapes[0].descr.text` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-named-value]                     |
+| `quote`            | Rejected with `Error`. [fixture: c4/gram-grid-quote-named-value]                                            |
+| `root`             | `shapes[0].descr.text` is `"arootb"`. [fixture: c4/db-grid-root-named-value]                                |
+| `semicolon`        | `shapes[0].descr.text` is `"a;b"`. [fixture: c4/db-grid-semicolon-named-value]                              |
+| `single-quote`     | `shapes[0].descr.text` is `"a'b"`. [fixture: c4/db-grid-single-quote-named-value]                           |
+| `spaces`           | `shapes[0].descr.text` is `"a  b"`. [fixture: c4/db-grid-spaces-named-value]                                |
+| `style-rule`       | `shapes[0].descr.text` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-named-value]                     |
+| `tab`              | `shapes[0].descr.text` is `"a\tb"`. [fixture: c4/db-grid-tab-named-value]                                   |
+| `vt`               | `shapes[0].descr.text` is `"a\u000bb"`. [fixture: c4/db-grid-vt-named-value]                                |
+
+#### offset-argument-bare
+
+The bare offset-argument position uses `UpdateRelStyle` argument 5, offsetX:
+`attribute` emits `STR`, and unguarded `parseInt()` retains `NaN` results.
+[fixture: c4/db-grid-digits-offset-argument-bare]
+
+| Kind               | Reading and fixture                                                                       |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ampersand-entity-offset-argument-bare] |
+| `arrow`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-arrow-offset-argument-bare]            |
+| `arrow-spaced`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-arrow-spaced-offset-argument-bare]     |
+| `backslash`        | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-backslash-offset-argument-bare]        |
+| `backtick`         | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-backtick-offset-argument-bare]         |
+| `bom`              | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-bom-offset-argument-bare]              |
+| `classdef-rule`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-classdef-rule-offset-argument-bare]    |
+| `close-brace`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-close-brace-offset-argument-bare]      |
+| `close-round`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-close-round-offset-argument-bare]      |
+| `close-square`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-close-square-offset-argument-bare]     |
+| `colon`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-colon-offset-argument-bare]            |
+| `comma`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-comma-offset-argument-bare]            |
+| `comment`          | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-comment-offset-argument-bare]          |
+| `comment-line`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-comment-line-offset-argument-bare]     |
+| `constructor`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-constructor-offset-argument-bare]      |
+| `cr`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-cr-offset-argument-bare]               |
+| `crlf`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-crlf-offset-argument-bare]             |
+| `dash`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-dash-offset-argument-bare]             |
+| `digits`           | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-digits-offset-argument-bare]           |
+| `directive`        | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-directive-offset-argument-bare]        |
+| `directive-line`   | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-directive-line-offset-argument-bare]   |
+| `emoji`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-emoji-offset-argument-bare]            |
+| `empty`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-empty-offset-argument-bare]            |
+| `entity`           | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-entity-offset-argument-bare]           |
+| `entity-named`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-entity-named-offset-argument-bare]     |
+| `equals`           | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-equals-offset-argument-bare]           |
+| `ff`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ff-offset-argument-bare]               |
+| `greater-than`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-greater-than-offset-argument-bare]     |
+| `hash`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-hash-offset-argument-bare]             |
+| `html`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-html-offset-argument-bare]             |
+| `html-attribute`   | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-html-attribute-offset-argument-bare]   |
+| `html-br`          | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-html-br-offset-argument-bare]          |
+| `ideographic`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ideographic-offset-argument-bare]      |
+| `keyword`          | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-offset-argument-bare]          |
+| `keyword-block`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-block-offset-argument-bare]    |
+| `keyword-class`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-class-offset-argument-bare]    |
+| `keyword-classdef` | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-classdef-offset-argument-bare] |
+| `keyword-columns`  | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-columns-offset-argument-bare]  |
+| `keyword-end`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-end-offset-argument-bare]      |
+| `keyword-header`   | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-header-offset-argument-bare]   |
+| `keyword-space`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-space-offset-argument-bare]    |
+| `keyword-style`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-style-offset-argument-bare]    |
+| `less-than`        | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-less-than-offset-argument-bare]        |
+| `lf`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-lf-offset-argument-bare]               |
+| `ls`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ls-offset-argument-bare]               |
+| `nbsp`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-nbsp-offset-argument-bare]             |
+| `nel`              | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-nel-offset-argument-bare]              |
+| `nonascii`         | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-nonascii-offset-argument-bare]         |
+| `open-brace`       | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-open-brace-offset-argument-bare]       |
+| `open-round`       | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-open-round-offset-argument-bare]       |
+| `open-square`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-open-square-offset-argument-bare]      |
+| `percent`          | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-percent-offset-argument-bare]          |
+| `pipe`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-pipe-offset-argument-bare]             |
+| `proto`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-proto-offset-argument-bare]            |
+| `ps`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ps-offset-argument-bare]               |
+| `punct`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-punct-offset-argument-bare]            |
+| `quote`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-quote-offset-argument-bare]            |
+| `root`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-root-offset-argument-bare]             |
+| `semicolon`        | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-semicolon-offset-argument-bare]        |
+| `single-quote`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-single-quote-offset-argument-bare]     |
+| `spaces`           | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-spaces-offset-argument-bare]           |
+| `style-rule`       | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-style-rule-offset-argument-bare]       |
+| `tab`              | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-tab-offset-argument-bare]              |
+| `vt`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-vt-offset-argument-bare]               |
+
+#### layout-argument-bare
+
+The bare layout-argument position uses `UpdateLayoutConfig` argument 1:
+`attribute` emits `STR`, and `parseInt()` updates `c4ShapeInRow` only for
+results at least one. [fixture: c4/db-grid-digits-layout-argument-bare]
+
+| Kind               | Reading and fixture                                                                |
+| ------------------ | ---------------------------------------------------------------------------------- |
+| `ampersand-entity` | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ampersand-entity-layout-argument-bare] |
+| `arrow`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-arrow-layout-argument-bare]            |
+| `arrow-spaced`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-arrow-spaced-layout-argument-bare]     |
+| `backslash`        | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-backslash-layout-argument-bare]        |
+| `backtick`         | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-backtick-layout-argument-bare]         |
+| `bom`              | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-bom-layout-argument-bare]              |
+| `classdef-rule`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-classdef-rule-layout-argument-bare]    |
+| `close-brace`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-close-brace-layout-argument-bare]      |
+| `close-round`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-close-round-layout-argument-bare]      |
+| `close-square`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-close-square-layout-argument-bare]     |
+| `colon`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-colon-layout-argument-bare]            |
+| `comma`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-comma-layout-argument-bare]            |
+| `comment`          | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-comment-layout-argument-bare]          |
+| `comment-line`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-comment-line-layout-argument-bare]     |
+| `constructor`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-constructor-layout-argument-bare]      |
+| `cr`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-cr-layout-argument-bare]               |
+| `crlf`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-crlf-layout-argument-bare]             |
+| `dash`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-dash-layout-argument-bare]             |
+| `digits`           | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-digits-layout-argument-bare]           |
+| `directive`        | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-directive-layout-argument-bare]        |
+| `directive-line`   | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-directive-line-layout-argument-bare]   |
+| `emoji`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-emoji-layout-argument-bare]            |
+| `empty`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-empty-layout-argument-bare]            |
+| `entity`           | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-entity-layout-argument-bare]           |
+| `entity-named`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-entity-named-layout-argument-bare]     |
+| `equals`           | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-equals-layout-argument-bare]           |
+| `ff`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ff-layout-argument-bare]               |
+| `greater-than`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-greater-than-layout-argument-bare]     |
+| `hash`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-hash-layout-argument-bare]             |
+| `html`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-html-layout-argument-bare]             |
+| `html-attribute`   | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-html-attribute-layout-argument-bare]   |
+| `html-br`          | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-html-br-layout-argument-bare]          |
+| `ideographic`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ideographic-layout-argument-bare]      |
+| `keyword`          | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-layout-argument-bare]          |
+| `keyword-block`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-block-layout-argument-bare]    |
+| `keyword-class`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-class-layout-argument-bare]    |
+| `keyword-classdef` | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-classdef-layout-argument-bare] |
+| `keyword-columns`  | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-columns-layout-argument-bare]  |
+| `keyword-end`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-end-layout-argument-bare]      |
+| `keyword-header`   | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-header-layout-argument-bare]   |
+| `keyword-space`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-space-layout-argument-bare]    |
+| `keyword-style`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-style-layout-argument-bare]    |
+| `less-than`        | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-less-than-layout-argument-bare]        |
+| `lf`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-lf-layout-argument-bare]               |
+| `ls`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ls-layout-argument-bare]               |
+| `nbsp`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-nbsp-layout-argument-bare]             |
+| `nel`              | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-nel-layout-argument-bare]              |
+| `nonascii`         | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-nonascii-layout-argument-bare]         |
+| `open-brace`       | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-open-brace-layout-argument-bare]       |
+| `open-round`       | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-open-round-layout-argument-bare]       |
+| `open-square`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-open-square-layout-argument-bare]      |
+| `percent`          | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-percent-layout-argument-bare]          |
+| `pipe`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-pipe-layout-argument-bare]             |
+| `proto`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-proto-layout-argument-bare]            |
+| `ps`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ps-layout-argument-bare]               |
+| `punct`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-punct-layout-argument-bare]            |
+| `quote`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-quote-layout-argument-bare]            |
+| `root`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-root-layout-argument-bare]             |
+| `semicolon`        | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-semicolon-layout-argument-bare]        |
+| `single-quote`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-single-quote-layout-argument-bare]     |
+| `spaces`           | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-spaces-layout-argument-bare]           |
+| `style-rule`       | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-style-rule-layout-argument-bare]       |
+| `tab`              | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-tab-layout-argument-bare]              |
+| `vt`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-vt-layout-argument-bare]               |
+
+#### index-argument-bare
+
+The bare index-argument position uses `RelIndex` argument 1: `attribute` emits
+`STR`, and the first argument is discarded before the relationship is added.
+[fixture: c4/db-grid-digits-index-argument-bare]
+
+| Kind               | Reading and fixture                                                                                                                                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ampersand-entity-index-argument-bare] |
+| `arrow`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-arrow-index-argument-bare]            |
+| `arrow-spaced`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-arrow-spaced-index-argument-bare]     |
+| `backslash`        | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-backslash-index-argument-bare]        |
+| `backtick`         | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-backtick-index-argument-bare]         |
+| `bom`              | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-bom-index-argument-bare]              |
+| `classdef-rule`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-classdef-rule-index-argument-bare]    |
+| `close-brace`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-close-brace-index-argument-bare]      |
+| `close-round`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-close-round-index-argument-bare]      |
+| `close-square`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-close-square-index-argument-bare]     |
+| `colon`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-colon-index-argument-bare]            |
+| `comma`            | `rels` is `[{"type":"rel","from":"b","to":"a","label":{"text":"b"},"techn":{"text":"Uses"},"descr":{"text":"J"},"sprite":"D","tags":"S","link":"T"}]`. [fixture: c4/db-grid-comma-index-argument-bare]            |
+| `comment`          | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-comment-index-argument-bare]          |
+| `comment-line`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-comment-line-index-argument-bare]     |
+| `constructor`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-constructor-index-argument-bare]      |
+| `cr`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-cr-index-argument-bare]               |
+| `crlf`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-crlf-index-argument-bare]             |
+| `dash`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-dash-index-argument-bare]             |
+| `digits`           | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-digits-index-argument-bare]           |
+| `directive`        | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-directive-index-argument-bare]        |
+| `directive-line`   | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-directive-line-index-argument-bare]   |
+| `emoji`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-emoji-index-argument-bare]            |
+| `empty`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-empty-index-argument-bare]            |
+| `entity`           | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-entity-index-argument-bare]           |
+| `entity-named`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-entity-named-index-argument-bare]     |
+| `equals`           | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-equals-index-argument-bare]           |
+| `ff`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ff-index-argument-bare]               |
+| `greater-than`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-greater-than-index-argument-bare]     |
+| `hash`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-hash-index-argument-bare]             |
+| `html`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-html-index-argument-bare]             |
+| `html-attribute`   | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-html-attribute-index-argument-bare]   |
+| `html-br`          | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-html-br-index-argument-bare]          |
+| `ideographic`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ideographic-index-argument-bare]      |
+| `keyword`          | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-index-argument-bare]          |
+| `keyword-block`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-block-index-argument-bare]    |
+| `keyword-class`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-class-index-argument-bare]    |
+| `keyword-classdef` | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-classdef-index-argument-bare] |
+| `keyword-columns`  | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-columns-index-argument-bare]  |
+| `keyword-end`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-end-index-argument-bare]      |
+| `keyword-header`   | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-header-index-argument-bare]   |
+| `keyword-space`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-space-index-argument-bare]    |
+| `keyword-style`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-style-index-argument-bare]    |
+| `less-than`        | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-less-than-index-argument-bare]        |
+| `lf`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-lf-index-argument-bare]               |
+| `ls`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ls-index-argument-bare]               |
+| `nbsp`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-nbsp-index-argument-bare]             |
+| `nel`              | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-nel-index-argument-bare]              |
+| `nonascii`         | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-nonascii-index-argument-bare]         |
+| `open-brace`       | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-open-brace-index-argument-bare]       |
+| `open-round`       | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-open-round-index-argument-bare]       |
+| `open-square`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-open-square-index-argument-bare]      |
+| `percent`          | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-percent-index-argument-bare]          |
+| `pipe`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-pipe-index-argument-bare]             |
+| `proto`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-proto-index-argument-bare]            |
+| `ps`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ps-index-argument-bare]               |
+| `punct`            | `rels` is `[{"type":"rel","from":"/=?^_~@b","to":"a","label":{"text":"b"},"techn":{"text":"Uses"},"descr":{"text":"J"},"sprite":"D","tags":"S","link":"T"}]`. [fixture: c4/db-grid-punct-index-argument-bare]     |
+| `quote`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-quote-index-argument-bare]            |
+| `root`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-root-index-argument-bare]             |
+| `semicolon`        | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-semicolon-index-argument-bare]        |
+| `single-quote`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-single-quote-index-argument-bare]     |
+| `spaces`           | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-spaces-index-argument-bare]           |
+| `style-rule`       | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-style-rule-index-argument-bare]       |
+| `tab`              | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-tab-index-argument-bare]              |
+| `vt`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-vt-index-argument-bare]               |
+
+#### offset-argument-quoted
+
+The quoted offset-argument position uses `UpdateRelStyle` argument 5, offsetX:
+`string` emits `STR`, and unguarded `parseInt()` retains `NaN` results.
+[fixture: c4/db-grid-digits-offset-argument-quoted]
+
+| Kind               | Reading and fixture                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ampersand-entity-offset-argument-quoted] |
+| `arrow`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-arrow-offset-argument-quoted]            |
+| `arrow-spaced`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-arrow-spaced-offset-argument-quoted]     |
+| `backslash`        | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-backslash-offset-argument-quoted]        |
+| `backtick`         | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-backtick-offset-argument-quoted]         |
+| `bom`              | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-bom-offset-argument-quoted]              |
+| `classdef-rule`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-classdef-rule-offset-argument-quoted]    |
+| `close-brace`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-close-brace-offset-argument-quoted]      |
+| `close-round`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-close-round-offset-argument-quoted]      |
+| `close-square`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-close-square-offset-argument-quoted]     |
+| `colon`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-colon-offset-argument-quoted]            |
+| `comma`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-comma-offset-argument-quoted]            |
+| `comment`          | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-comment-offset-argument-quoted]          |
+| `comment-line`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-comment-line-offset-argument-quoted]     |
+| `constructor`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-constructor-offset-argument-quoted]      |
+| `cr`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-cr-offset-argument-quoted]               |
+| `crlf`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-crlf-offset-argument-quoted]             |
+| `dash`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-dash-offset-argument-quoted]             |
+| `digits`           | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-digits-offset-argument-quoted]           |
+| `directive`        | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-directive-offset-argument-quoted]        |
+| `directive-line`   | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-directive-line-offset-argument-quoted]   |
+| `emoji`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-emoji-offset-argument-quoted]            |
+| `empty`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-empty-offset-argument-quoted]            |
+| `entity`           | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-entity-offset-argument-quoted]           |
+| `entity-named`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-entity-named-offset-argument-quoted]     |
+| `equals`           | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-equals-offset-argument-quoted]           |
+| `ff`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ff-offset-argument-quoted]               |
+| `greater-than`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-greater-than-offset-argument-quoted]     |
+| `hash`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-hash-offset-argument-quoted]             |
+| `html`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-html-offset-argument-quoted]             |
+| `html-attribute`   | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-html-attribute-offset-argument-quoted]   |
+| `html-br`          | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-html-br-offset-argument-quoted]          |
+| `ideographic`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ideographic-offset-argument-quoted]      |
+| `keyword`          | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-offset-argument-quoted]          |
+| `keyword-block`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-block-offset-argument-quoted]    |
+| `keyword-class`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-class-offset-argument-quoted]    |
+| `keyword-classdef` | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-classdef-offset-argument-quoted] |
+| `keyword-columns`  | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-columns-offset-argument-quoted]  |
+| `keyword-end`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-end-offset-argument-quoted]      |
+| `keyword-header`   | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-header-offset-argument-quoted]   |
+| `keyword-space`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-space-offset-argument-quoted]    |
+| `keyword-style`    | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-keyword-style-offset-argument-quoted]    |
+| `less-than`        | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-less-than-offset-argument-quoted]        |
+| `lf`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-lf-offset-argument-quoted]               |
+| `ls`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ls-offset-argument-quoted]               |
+| `nbsp`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-nbsp-offset-argument-quoted]             |
+| `nel`              | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-nel-offset-argument-quoted]              |
+| `nonascii`         | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-nonascii-offset-argument-quoted]         |
+| `open-brace`       | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-open-brace-offset-argument-quoted]       |
+| `open-round`       | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-open-round-offset-argument-quoted]       |
+| `open-square`      | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-open-square-offset-argument-quoted]      |
+| `percent`          | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-percent-offset-argument-quoted]          |
+| `pipe`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-pipe-offset-argument-quoted]             |
+| `proto`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-proto-offset-argument-quoted]            |
+| `ps`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-ps-offset-argument-quoted]               |
+| `punct`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-punct-offset-argument-quoted]            |
+| `quote`            | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-quote-offset-argument-quoted]            |
+| `root`             | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-root-offset-argument-quoted]             |
+| `semicolon`        | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-semicolon-offset-argument-quoted]        |
+| `single-quote`     | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-single-quote-offset-argument-quoted]     |
+| `spaces`           | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-spaces-offset-argument-quoted]           |
+| `style-rule`       | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-style-rule-offset-argument-quoted]       |
+| `tab`              | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-tab-offset-argument-quoted]              |
+| `vt`               | `rels[0].offsetX` is `"NaN"`. [fixture: c4/db-grid-vt-offset-argument-quoted]               |
+
+#### layout-argument-quoted
+
+The quoted layout-argument position uses `UpdateLayoutConfig` argument 1:
+`string` emits `STR`, and `parseInt()` updates `c4ShapeInRow` only for results
+at least one. [fixture: c4/db-grid-digits-layout-argument-quoted]
+
+| Kind               | Reading and fixture                                                                  |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ampersand-entity-layout-argument-quoted] |
+| `arrow`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-arrow-layout-argument-quoted]            |
+| `arrow-spaced`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-arrow-spaced-layout-argument-quoted]     |
+| `backslash`        | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-backslash-layout-argument-quoted]        |
+| `backtick`         | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-backtick-layout-argument-quoted]         |
+| `bom`              | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-bom-layout-argument-quoted]              |
+| `classdef-rule`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-classdef-rule-layout-argument-quoted]    |
+| `close-brace`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-close-brace-layout-argument-quoted]      |
+| `close-round`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-close-round-layout-argument-quoted]      |
+| `close-square`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-close-square-layout-argument-quoted]     |
+| `colon`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-colon-layout-argument-quoted]            |
+| `comma`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-comma-layout-argument-quoted]            |
+| `comment`          | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-comment-layout-argument-quoted]          |
+| `comment-line`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-comment-line-layout-argument-quoted]     |
+| `constructor`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-constructor-layout-argument-quoted]      |
+| `cr`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-cr-layout-argument-quoted]               |
+| `crlf`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-crlf-layout-argument-quoted]             |
+| `dash`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-dash-layout-argument-quoted]             |
+| `digits`           | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-digits-layout-argument-quoted]           |
+| `directive`        | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-directive-layout-argument-quoted]        |
+| `directive-line`   | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-directive-line-layout-argument-quoted]   |
+| `emoji`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-emoji-layout-argument-quoted]            |
+| `empty`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-empty-layout-argument-quoted]            |
+| `entity`           | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-entity-layout-argument-quoted]           |
+| `entity-named`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-entity-named-layout-argument-quoted]     |
+| `equals`           | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-equals-layout-argument-quoted]           |
+| `ff`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ff-layout-argument-quoted]               |
+| `greater-than`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-greater-than-layout-argument-quoted]     |
+| `hash`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-hash-layout-argument-quoted]             |
+| `html`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-html-layout-argument-quoted]             |
+| `html-attribute`   | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-html-attribute-layout-argument-quoted]   |
+| `html-br`          | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-html-br-layout-argument-quoted]          |
+| `ideographic`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ideographic-layout-argument-quoted]      |
+| `keyword`          | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-layout-argument-quoted]          |
+| `keyword-block`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-block-layout-argument-quoted]    |
+| `keyword-class`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-class-layout-argument-quoted]    |
+| `keyword-classdef` | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-classdef-layout-argument-quoted] |
+| `keyword-columns`  | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-columns-layout-argument-quoted]  |
+| `keyword-end`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-end-layout-argument-quoted]      |
+| `keyword-header`   | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-header-layout-argument-quoted]   |
+| `keyword-space`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-space-layout-argument-quoted]    |
+| `keyword-style`    | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-keyword-style-layout-argument-quoted]    |
+| `less-than`        | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-less-than-layout-argument-quoted]        |
+| `lf`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-lf-layout-argument-quoted]               |
+| `ls`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ls-layout-argument-quoted]               |
+| `nbsp`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-nbsp-layout-argument-quoted]             |
+| `nel`              | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-nel-layout-argument-quoted]              |
+| `nonascii`         | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-nonascii-layout-argument-quoted]         |
+| `open-brace`       | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-open-brace-layout-argument-quoted]       |
+| `open-round`       | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-open-round-layout-argument-quoted]       |
+| `open-square`      | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-open-square-layout-argument-quoted]      |
+| `percent`          | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-percent-layout-argument-quoted]          |
+| `pipe`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-pipe-layout-argument-quoted]             |
+| `proto`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-proto-layout-argument-quoted]            |
+| `ps`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-ps-layout-argument-quoted]               |
+| `punct`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-punct-layout-argument-quoted]            |
+| `quote`            | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-quote-layout-argument-quoted]            |
+| `root`             | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-root-layout-argument-quoted]             |
+| `semicolon`        | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-semicolon-layout-argument-quoted]        |
+| `single-quote`     | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-single-quote-layout-argument-quoted]     |
+| `spaces`           | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-spaces-layout-argument-quoted]           |
+| `style-rule`       | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-style-rule-layout-argument-quoted]       |
+| `tab`              | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-tab-layout-argument-quoted]              |
+| `vt`               | `c4ShapeInRow` is `4`. [fixture: c4/db-grid-vt-layout-argument-quoted]               |
+
+#### index-argument-quoted
+
+The quoted index-argument position uses `RelIndex` argument 1: `string` emits
+`STR`, and the first argument is discarded before the relationship is added.
+[fixture: c4/db-grid-digits-index-argument-quoted]
+
+| Kind               | Reading and fixture                                                                                                                                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ampersand-entity-index-argument-quoted] |
+| `arrow`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-arrow-index-argument-quoted]            |
+| `arrow-spaced`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-arrow-spaced-index-argument-quoted]     |
+| `backslash`        | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-backslash-index-argument-quoted]        |
+| `backtick`         | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-backtick-index-argument-quoted]         |
+| `bom`              | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-bom-index-argument-quoted]              |
+| `classdef-rule`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-classdef-rule-index-argument-quoted]    |
+| `close-brace`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-close-brace-index-argument-quoted]      |
+| `close-round`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-close-round-index-argument-quoted]      |
+| `close-square`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-close-square-index-argument-quoted]     |
+| `colon`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-colon-index-argument-quoted]            |
+| `comma`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-comma-index-argument-quoted]            |
+| `comment`          | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-comment-index-argument-quoted]          |
+| `comment-line`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-comment-line-index-argument-quoted]     |
+| `constructor`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-constructor-index-argument-quoted]      |
+| `cr`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-cr-index-argument-quoted]               |
+| `crlf`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-crlf-index-argument-quoted]             |
+| `dash`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-dash-index-argument-quoted]             |
+| `digits`           | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-digits-index-argument-quoted]           |
+| `directive`        | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-directive-index-argument-quoted]        |
+| `directive-line`   | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-directive-line-index-argument-quoted]   |
+| `emoji`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-emoji-index-argument-quoted]            |
+| `empty`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-empty-index-argument-quoted]            |
+| `entity`           | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-entity-index-argument-quoted]           |
+| `entity-named`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-entity-named-index-argument-quoted]     |
+| `equals`           | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-equals-index-argument-quoted]           |
+| `ff`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ff-index-argument-quoted]               |
+| `greater-than`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-greater-than-index-argument-quoted]     |
+| `hash`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-hash-index-argument-quoted]             |
+| `html`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-html-index-argument-quoted]             |
+| `html-attribute`   | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-html-attribute-index-argument-quoted]   |
+| `html-br`          | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-html-br-index-argument-quoted]          |
+| `ideographic`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ideographic-index-argument-quoted]      |
+| `keyword`          | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-index-argument-quoted]          |
+| `keyword-block`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-block-index-argument-quoted]    |
+| `keyword-class`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-class-index-argument-quoted]    |
+| `keyword-classdef` | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-classdef-index-argument-quoted] |
+| `keyword-columns`  | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-columns-index-argument-quoted]  |
+| `keyword-end`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-end-index-argument-quoted]      |
+| `keyword-header`   | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-header-index-argument-quoted]   |
+| `keyword-space`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-space-index-argument-quoted]    |
+| `keyword-style`    | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-keyword-style-index-argument-quoted]    |
+| `less-than`        | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-less-than-index-argument-quoted]        |
+| `lf`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-lf-index-argument-quoted]               |
+| `ls`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ls-index-argument-quoted]               |
+| `nbsp`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-nbsp-index-argument-quoted]             |
+| `nel`              | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-nel-index-argument-quoted]              |
+| `nonascii`         | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-nonascii-index-argument-quoted]         |
+| `open-brace`       | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-open-brace-index-argument-quoted]       |
+| `open-round`       | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-open-round-index-argument-quoted]       |
+| `open-square`      | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-open-square-index-argument-quoted]      |
+| `percent`          | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-percent-index-argument-quoted]          |
+| `pipe`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-pipe-index-argument-quoted]             |
+| `proto`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-proto-index-argument-quoted]            |
+| `ps`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-ps-index-argument-quoted]               |
+| `punct`            | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-punct-index-argument-quoted]            |
+| `quote`            | `rels` is `[{"type":"rel","from":"b\"","to":"a","label":{"text":"b"},"techn":{"text":"Uses"},"descr":{"text":"J"},"sprite":"D","tags":"S","link":"T"}]`. [fixture: c4/db-grid-quote-index-argument-quoted]          |
+| `root`             | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-root-index-argument-quoted]             |
+| `semicolon`        | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-semicolon-index-argument-quoted]        |
+| `single-quote`     | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-single-quote-index-argument-quoted]     |
+| `spaces`           | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-spaces-index-argument-quoted]           |
+| `style-rule`       | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-style-rule-index-argument-quoted]       |
+| `tab`              | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-tab-index-argument-quoted]              |
+| `vt`               | `rels` is `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`. [fixture: c4/db-grid-vt-index-argument-quoted]               |
+
+#### style-value
+
+The style-value position uses `UpdateElementStyle` argument 2,
+`$techn="<value>"`: `string_kv_value` emits `STR_VALUE`, and the trimmed value
+stays a plain string even for a text-field key, sharing the treatment of named
+sprite, tags, and link. [fixture: c4/db-grid-digits-style-value]
+
+| Kind               | Reading and fixture                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `shapes[0].techn` is `"a&amp;b"`. [fixture: c4/db-grid-ampersand-entity-style-value]                   |
+| `arrow`            | `shapes[0].techn` is `"a-->b"`. [fixture: c4/db-grid-arrow-style-value]                                |
+| `arrow-spaced`     | `shapes[0].techn` is `"a --> b"`. [fixture: c4/db-grid-arrow-spaced-style-value]                       |
+| `backslash`        | `shapes[0].techn` is `"a\\b"`. [fixture: c4/db-grid-backslash-style-value]                             |
+| `backtick`         | `shapes[0].techn` is `"a\u0060b"`. [fixture: c4/db-grid-backtick-style-value]                          |
+| `bom`              | `shapes[0].techn` is `"a\ufeffb"`. [fixture: c4/db-grid-bom-style-value]                               |
+| `classdef-rule`    | `shapes[0].techn` is `"aclassDef:#xyb"`. [fixture: c4/db-grid-classdef-rule-style-value]               |
+| `close-brace`      | `shapes[0].techn` is `"a}b"`. [fixture: c4/db-grid-close-brace-style-value]                            |
+| `close-round`      | `shapes[0].techn` is `"a)b"`. [fixture: c4/db-grid-close-round-style-value]                            |
+| `close-square`     | `shapes[0].techn` is `"a]b"`. [fixture: c4/db-grid-close-square-style-value]                           |
+| `colon`            | `shapes[0].techn` is `"a:b"`. [fixture: c4/db-grid-colon-style-value]                                  |
+| `comma`            | `shapes[0].techn` is `"a,b"`. [fixture: c4/db-grid-comma-style-value]                                  |
+| `comment`          | `shapes[0].techn` is `"a%% cb"`. [fixture: c4/db-grid-comment-style-value]                             |
+| `comment-line`     | `shapes[0].techn` is `"a\nb"`. [fixture: c4/db-grid-comment-line-style-value]                          |
+| `constructor`      | `shapes[0].techn` is `"aconstructorb"`. [fixture: c4/db-grid-constructor-style-value]                  |
+| `cr`               | `shapes[0].techn` is `"a\nb"`. [fixture: c4/db-grid-cr-style-value]                                    |
+| `crlf`             | `shapes[0].techn` is `"a\nb"`. [fixture: c4/db-grid-crlf-style-value]                                  |
+| `dash`             | `shapes[0].techn` is `"a-b"`. [fixture: c4/db-grid-dash-style-value]                                   |
+| `digits`           | `shapes[0].techn` is `"a123b"`. [fixture: c4/db-grid-digits-style-value]                               |
+| `directive`        | `shapes[0].techn` is `"ab"`. [fixture: c4/db-grid-directive-style-value]                               |
+| `directive-line`   | `shapes[0].techn` is `"a\n\nb"`. [fixture: c4/db-grid-directive-line-style-value]                      |
+| `emoji`            | `shapes[0].techn` is `"a\ud83d\ude00b"`. [fixture: c4/db-grid-emoji-style-value]                       |
+| `empty`            | Rejected with `Error`. [fixture: c4/gram-grid-empty-style-value]                                       |
+| `entity`           | `shapes[0].techn` is `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-style-value]  |
+| `entity-named`     | `shapes[0].techn` is `"a\ufb02\u00b0amp\u00b6\u00dfb"`. [fixture: c4/db-grid-entity-named-style-value] |
+| `equals`           | `shapes[0].techn` is `"a=b"`. [fixture: c4/db-grid-equals-style-value]                                 |
+| `ff`               | `shapes[0].techn` is `"a\fb"`. [fixture: c4/db-grid-ff-style-value]                                    |
+| `greater-than`     | `shapes[0].techn` is `"a>b"`. [fixture: c4/db-grid-greater-than-style-value]                           |
+| `hash`             | `shapes[0].techn` is `"a#b"`. [fixture: c4/db-grid-hash-style-value]                                   |
+| `html`             | `shapes[0].techn` is `"a<b>b"`. [fixture: c4/db-grid-html-style-value]                                 |
+| `html-attribute`   | `shapes[0].techn` is `"a<a href='x'>b"`. [fixture: c4/db-grid-html-attribute-style-value]              |
+| `html-br`          | `shapes[0].techn` is `"a<br>b"`. [fixture: c4/db-grid-html-br-style-value]                             |
+| `ideographic`      | `shapes[0].techn` is `"a\u3000b"`. [fixture: c4/db-grid-ideographic-style-value]                       |
+| `keyword`          | `shapes[0].techn` is `"aPersonb"`. [fixture: c4/db-grid-keyword-style-value]                           |
+| `keyword-block`    | `shapes[0].techn` is `"a block b"`. [fixture: c4/db-grid-keyword-block-style-value]                    |
+| `keyword-class`    | `shapes[0].techn` is `"a class A c b"`. [fixture: c4/db-grid-keyword-class-style-value]                |
+| `keyword-classdef` | `shapes[0].techn` is `"a classDef c fill:red b"`. [fixture: c4/db-grid-keyword-classdef-style-value]   |
+| `keyword-columns`  | `shapes[0].techn` is `"a columns 2 b"`. [fixture: c4/db-grid-keyword-columns-style-value]              |
+| `keyword-end`      | `shapes[0].techn` is `"a end b"`. [fixture: c4/db-grid-keyword-end-style-value]                        |
+| `keyword-header`   | `shapes[0].techn` is `"aC4Contextb"`. [fixture: c4/db-grid-keyword-header-style-value]                 |
+| `keyword-space`    | `shapes[0].techn` is `"a space b"`. [fixture: c4/db-grid-keyword-space-style-value]                    |
+| `keyword-style`    | `shapes[0].techn` is `"a style A fill:red b"`. [fixture: c4/db-grid-keyword-style-style-value]         |
+| `less-than`        | `shapes[0].techn` is `"a<b"`. [fixture: c4/db-grid-less-than-style-value]                              |
+| `lf`               | `shapes[0].techn` is `"a\nb"`. [fixture: c4/db-grid-lf-style-value]                                    |
+| `ls`               | `shapes[0].techn` is `"a\u2028b"`. [fixture: c4/db-grid-ls-style-value]                                |
+| `nbsp`             | `shapes[0].techn` is `"a\u00a0b"`. [fixture: c4/db-grid-nbsp-style-value]                              |
+| `nel`              | `shapes[0].techn` is `"a\u0085b"`. [fixture: c4/db-grid-nel-style-value]                               |
+| `nonascii`         | `shapes[0].techn` is `"a\u00e9b"`. [fixture: c4/db-grid-nonascii-style-value]                          |
+| `open-brace`       | `shapes[0].techn` is `"a{b"`. [fixture: c4/db-grid-open-brace-style-value]                             |
+| `open-round`       | `shapes[0].techn` is `"a(b"`. [fixture: c4/db-grid-open-round-style-value]                             |
+| `open-square`      | `shapes[0].techn` is `"a[b"`. [fixture: c4/db-grid-open-square-style-value]                            |
+| `percent`          | `shapes[0].techn` is `"a%b"`. [fixture: c4/db-grid-percent-style-value]                                |
+| `pipe`             | `shapes[0].techn` is `"a\u007cb"`. [fixture: c4/db-grid-pipe-style-value]                              |
+| `proto`            | `shapes[0].techn` is `"a__proto__b"`. [fixture: c4/db-grid-proto-style-value]                          |
+| `ps`               | `shapes[0].techn` is `"a\u2029b"`. [fixture: c4/db-grid-ps-style-value]                                |
+| `punct`            | `shapes[0].techn` is `"a!$&*+.,/=?^_~@b"`. [fixture: c4/db-grid-punct-style-value]                     |
+| `quote`            | Rejected with `Error`. [fixture: c4/gram-grid-quote-style-value]                                       |
+| `root`             | `shapes[0].techn` is `"arootb"`. [fixture: c4/db-grid-root-style-value]                                |
+| `semicolon`        | `shapes[0].techn` is `"a;b"`. [fixture: c4/db-grid-semicolon-style-value]                              |
+| `single-quote`     | `shapes[0].techn` is `"a'b"`. [fixture: c4/db-grid-single-quote-style-value]                           |
+| `spaces`           | `shapes[0].techn` is `"a  b"`. [fixture: c4/db-grid-spaces-style-value]                                |
+| `style-rule`       | `shapes[0].techn` is `"astyle:#xyb"`. [fixture: c4/db-grid-style-rule-style-value]                     |
+| `tab`              | `shapes[0].techn` is `"a\tb"`. [fixture: c4/db-grid-tab-style-value]                                   |
+| `vt`               | `shapes[0].techn` is `"a\u000bb"`. [fixture: c4/db-grid-vt-style-value]                                |

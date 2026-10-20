@@ -30,6 +30,7 @@ export const diagramIds: Readonly<
   quadrant: ["quadrantChart"],
   block: ["block"],
   kanban: ["kanban"],
+  c4: ["c4"],
 }
 
 /**

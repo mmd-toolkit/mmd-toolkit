@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The keyword-class text in direction TB with preceding text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nC4Contexta class A c b direct...\n---------^\nExpecting 'title', 'accDescription', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'ENTERPRISE_BOUNDARY', 'SYSTEM_BOUNDARY', 'BOUNDARY', 'CONTAINER_BOUNDARY', 'NODE', 'NODE_L', 'NODE_R', 'PERSON', 'PERSON_EXT', 'SYSTEM', 'SYSTEM_DB', 'SYSTEM_QUEUE', 'SYSTEM_EXT', 'SYSTEM_EXT_DB', 'SYSTEM_EXT_QUEUE', 'CONTAINER', 'CONTAINER_DB', 'CONTAINER_QUEUE', 'CONTAINER_EXT', 'CONTAINER_EXT_DB', 'CONTAINER_EXT_QUEUE', 'COMPONENT', 'COMPONENT_DB', 'COMPONENT_QUEUE', 'COMPONENT_EXT', 'COMPONENT_EXT_DB', 'COMPONENT_EXT_QUEUE', 'REL', 'BIREL', 'REL_U', 'REL_D', 'REL_L', 'REL_R', 'REL_B', 'REL_INDEX', 'UPDATE_EL_STYLE', 'UPDATE_REL_STYLE', 'UPDATE_LAYOUT_CONFIG', got 'direction_tb'"
+  }
+}

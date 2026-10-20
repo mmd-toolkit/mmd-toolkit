@@ -34,6 +34,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "quadrant",
   "block",
   "kanban",
+  "c4",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -122,6 +123,16 @@ describe("fixtures", () => {
     for (const fixture of fixtures) {
       if (fixture.expected.accepted) {
         expect(fixture.expected.diagramType).toBe("kanban")
+      }
+    }
+  })
+
+  it("loads c4 fixtures", () => {
+    const fixtures = fixturesOf("c4")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("c4")
       }
     }
   })

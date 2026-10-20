@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header spelling `c4context` is rejected with UnknownDiagramError."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: c4context\nPerson(a, \"A\")\n"
+  }
+}

@@ -92,4 +92,4 @@ VS Codeでは、公式の[Prettier拡張機能][vscode]をインストールし�
 [parser]: https://prettier.io/docs/options#parser
 [vscode]: https://github.com/prettier/prettier-vscode
 [vscode-usage]: https://github.com/prettier/prettier-vscode#usage
-[compatibility]: ../../../prettier-plugin-mmd/docs/compatibility.ja.md
+[compatibility]: ./compatibility.ja.md

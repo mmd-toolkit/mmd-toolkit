@@ -12789,3 +12789,3925 @@ JSON のエスケープは記録値の文字を表し、
 | `style-rule`       | `[{"id":"S","label":"S","level":1,"isGroup":true},{"id":"I","label":"I","level":3,"isGroup":false,"parentId":"S"}]` を `nodes` に保持する。 [fixture: kanban/db-grid-style-rule-metadata-shape-quoted]       |
 | `tab`              | `[{"id":"S","label":"S","level":1,"isGroup":true},{"id":"I","label":"I","level":3,"isGroup":false,"parentId":"S"}]` を `nodes` に保持する。 [fixture: kanban/db-grid-tab-metadata-shape-quoted]              |
 | `vt`               | `YAMLException` で拒否する。 [fixture: kanban/gram-grid-vt-metadata-shape-quoted]                                                                                                                            |
+
+## c4
+
+`normalizeC4()`（`src/normalizers/c4.ts`）は、
+描画前の構文解析直後に共有 C4 Db を読み取る。
+[fixture: c4/db-all-fields]
+
+`type` は
+[`getC4Type()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L76-L78)
+の値を保持する。
+[fixture: c4/db-all-fields]
+
+`title` は
+[`getTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L722-L724)
+の値を保持する。
+[fixture: c4/db-all-fields]
+
+`accTitle` は
+[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20)
+の値を保持する。
+[fixture: c4/db-acc-title]
+
+`accDescr` は
+[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26)
+の値を保持する。
+[fixture: c4/db-all-fields]
+
+`shapes`、`boundaries`、`rels` は、
+[`getC4ShapeArray()`、`getBoundaries()`、`getRels()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L684-L720)
+の完全な own 属性を最初の追加順に保持する。
+[fixture: c4/db-shape-three-definitions]
+[fixture: c4/db-boundary-three-definitions]
+[fixture: c4/db-rel-three-definitions]
+
+図形は `alias`、`label`、`descr`、`techn`、`typeC4Shape`、
+`parentBoundary`、`wrap`、`sprite`、`tags`、`link` と、
+その他の代入済み属性を保持し、undefined のフィールドを省略する。
+[fixture: c4/db-all-fields]
+[fixture: c4/db-named-text-fields]
+[fixture: c4/db-style-layout-key-attributes]
+
+境界は `alias`、`label`、`type`、`parentBoundary`、`wrap`、
+`tags`、`link` とその他の代入済み属性を保持し、
+配置ノードは `nodeType` と代入された説明も保持する。
+[fixture: c4/db-all-fields]
+[fixture: c4/db-keyword-node-l]
+[fixture: c4/db-keyword-node-r]
+
+最初の境界は初期の `global` であり、
+ラベルと型は `{ text: "global" }`、親は空文字列、
+tags と link は null であり、宣言とスタイル更新がこの項目を更新できる。
+[fixture: c4/db-number-layout-zero]
+[fixture: c4/gram-boundary-global-alias]
+
+`parentBoundary` は宣言時の解析スタックが選んだ alias であり、
+重複する alias、オブジェクトの alias、図形と共有する alias も保持し、
+要約は階層を再構築しない。
+[fixture: c4/gram-boundary-nested]
+[fixture: c4/db-boundary-alias-named-change]
+[fixture: c4/gram-boundary-reused-alias]
+
+関係は `type`、`from`、`to`、`label`、`techn`、`descr`、
+`wrap`、`sprite`、`tags`、`link`、代入されたスタイルとオフセット、
+その他の代入済み属性を保持し、端点を解決しない。
+[fixture: c4/db-all-fields]
+[fixture: c4/db-alias-constructor]
+[fixture: c4/db-rel-named-endpoints]
+[fixture: c4/db-rel-self]
+
+図形と境界の alias は厳密等価で比較し、関係は端点の順序付き対で比較し、
+再定義は最初の一致を移動せずに更新し、
+別々のオブジェクトの alias や端点は別項目となる。
+[fixture: c4/db-shape-three-definitions]
+[fixture: c4/db-boundary-three-definitions]
+[fixture: c4/db-rel-three-definitions]
+[fixture: c4/db-required-named-alias-repeat]
+[fixture: c4/db-rel-object-endpoint-repeat]
+
+図形の再定義はラベル、図形種別、親、wrap を設定し直し、
+省略された任意の技術、説明、その他の属性は以前の値を保持する。
+[fixture: c4/db-shape-three-definitions]
+
+境界の再定義はラベル、型、親、wrap を設定し直し、
+省略された tags、link、配置ノードの説明は以前の値を保持する。
+[fixture: c4/db-boundary-three-definitions]
+
+関係の再定義は型、端点、ラベル、wrap を設定し直し、
+省略された任意属性は以前の値を保持する。
+[fixture: c4/db-rel-three-definitions]
+
+文法は引用符付きも含めて位置引数と名前付きのキーと値の両端を削り、
+内部の文字を保持し、空の位置文字列は空引数となり、
+空の名前付き値は拒否される。
+[fixture: c4/db-named-key-whitespace]
+[fixture: c4/db-required-label-empty]
+[fixture: c4/db-required-alias-empty]
+[fixture: c4/gram-named-empty-value]
+
+必須位置の名前付き引数はオブジェクトの alias や端点、
+ラベルの `text` 内のオブジェクトとなり、任意位置では名前のキーへ代入する。
+[fixture: c4/db-named-person-unknown-slot-1]
+[fixture: c4/db-named-person-unknown-slot-2]
+[fixture: c4/db-rel-named-endpoints]
+[fixture: c4/db-named-repeat]
+
+任意の名前付き `label`、`descr`、`techn`、`type` は `{ text }` となり、
+その他の名前付き値は文字列であり、同じキーへの後の代入が以前を置き換える。
+[fixture: c4/db-named-text-fields]
+[fixture: c4/db-named-repeat]
+[fixture: c4/db-named-case-sensitive]
+
+型が固定の境界キーワードは記述された任意引数の前へ型を挿入し、
+後の名前付き `$type` が置き換えられる。
+[fixture: c4/db-boundary-style-named-type]
+
+配置ノードの位置 sprite 引数はその位置の名前付き引数も含めて無視され、
+別の消費される任意位置の `$sprite` は sprite を設定できる。
+[fixture: c4/db-node-sprite]
+[fixture: c4/db-named-node-sprite-slot-3]
+[fixture: c4/db-named-node-sprite-slot-5]
+
+`RelIndex` は最初の記述引数を捨て、残りを通常の関係の引数と型として扱う。
+[fixture: c4/db-keyword-relindex]
+
+[`UpdateElementStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Db.ts#L494-L590)
+は最初に一致する図形を更新し、図形がなければ最初に一致する境界を更新し、
+対象がなければ何も変更しない。
+[fixture: c4/gram-boundary-reused-alias]
+[fixture: c4/db-style-boundary]
+[fixture: c4/db-style-before-definition]
+
+要素スタイルは `bgColor`、`fontColor`、`borderColor`、`shadowing`、
+`shape`、`sprite`、`techn`、`legendText`、`legendSprite` を保持し、
+名前付き引数はテキストフィールドと任意キーも直接の値として代入し、
+後の更新は指定されたフィールドだけを置き換える。
+[fixture: c4/db-all-fields]
+[fixture: c4/db-style-text-replacement]
+[fixture: c4/db-style-three-updates]
+
+`UpdateRelStyle` は保存済みの端点の順序付き対だけを更新し、
+`textColor`、`lineColor`、`offsetX`、`offsetY` と任意の名前付き属性を保持し、
+後の更新は指定されたフィールドだけを置き換える。
+[fixture: c4/db-style-before-definition]
+[fixture: c4/db-update-rel-style-three-times]
+[fixture: c4/db-update-rel-style-named-text]
+
+オフセット位置は名前付きキーが別フィールドを選んでも値へ `parseInt()` を使い、
+非有限数を `"NaN"`、`"Infinity"`、`"-Infinity"`、負のゼロをゼロで記録する。
+[fixture: c4/db-number-rel-style-negative-zero]
+[fixture: c4/db-number-rel-style-nan]
+[fixture: c4/db-number-rel-style-overflow]
+[fixture: c4/db-update-rel-style-named-number-key]
+
+`c4ShapeInRow` と `c4BoundaryInRow` は Db getter の値であり、
+初期値は 4 と 2 であり、
+対応する `UpdateLayoutConfig` 引数の `parseInt()` 値が 1 以上なら個別に変わり、
+名前付き引数でも位置が対象を選ぶ。
+[fixture: c4/db-number-layout-zero]
+[fixture: c4/db-named-layout-order]
+[fixture: c4/db-named-layout-key]
+[fixture: c4/db-update-layout-three-times]
+
+文法は個数制限のない引数列を受理し、
+Db は呼ばれた関数のパラメーターを超える引数を無視する。
+[fixture: c4/gram-arguments-person-above]
+[fixture: c4/gram-arguments-rel-above]
+[fixture: c4/gram-arguments-element-style-above]
+
+5 個の正確なヘッダー語が `type` を設定し、
+文の前の改行と空でない文のリストを必要とする。
+[fixture: c4/header-context-minimal]
+[fixture: c4/header-container-minimal]
+[fixture: c4/header-component-minimal]
+[fixture: c4/header-dynamic-minimal]
+[fixture: c4/header-deployment-minimal]
+[fixture: c4/db-empty-board]
+[fixture: c4/header-context-statement-on-header-line]
+
+5 ヘッダーはすべての要素、境界、ノード、関係、更新の文を共有する。
+[fixture: c4/db-keyword-person-ext]
+[fixture: c4/db-keyword-systemqueue-ext]
+[fixture: c4/db-keyword-containerqueue-ext]
+[fixture: c4/db-keyword-componentqueue-ext]
+[fixture: c4/db-keyword-rel-back]
+
+`title` は最初の区切りの後の文字を追加の先頭末尾空白も保持して取り、
+`accTitle:` は値の両端を削って同じ title を設定し、
+`accTitle` は空のままであり、最後の文が勝つ。
+[fixture: c4/db-title-whitespace]
+[fixture: c4/db-acc-title]
+[fixture: c4/db-title-acc-order]
+
+`accDescription` は最初の区切りの後の文字を保持し、
+`accDescr:` は値、空でない `accDescr { ... }` はブロックの両端を削り、
+すべて `accDescr` を設定し、その setter は改行後の空白を削る。
+[fixture: c4/db-acc-description-whitespace]
+[fixture: c4/db-acc-description-order]
+[fixture: c4/gram-acc-descr-block-text]
+
+空の説明ブロックは文を出さず、図形文と同じ行なら以前の値を保持し、
+直後の改行が余分な改行として残ると文法が拒否する。
+[fixture: c4/db-empty-block-inline-before-shape]
+[fixture: c4/db-empty-block-inline-after-shape]
+[fixture: c4/db-empty-block-inline-two]
+[fixture: c4/db-empty-description-block-after-value]
+
+frontmatter の title とアクセシビリティフィールドは C4 getter を設定しない。
+[fixture: c4/db-title-frontmatter]
+[fixture: c4/db-frontmatter-drawing-config]
+
+root の `wrap` 設定が図形、境界、関係へコピーされ、
+undefined と null の指定では省略し、
+false とその他の指定値も保持し、
+ラベルの `wrap:` と `nowrap:` は文字のまま残る。
+[fixture: c4/db-wrap-directive]
+[fixture: c4/config-wrap-true]
+[fixture: c4/config-wrap-false]
+[fixture: c4/config-wrap-null]
+[fixture: c4/config-wrap-text]
+[fixture: c4/db-wrap-frontmatter]
+[fixture: c4/db-wrap-init-directive]
+
+テーマ、`c4.wrap`、C4 の行数設定は解析時の Db フィールドを変えず、
+未対応の `securityLevel` と有効な HTML ラベルは title と説明の文字を置換し、
+root の `htmlLabels` は `flowchart.htmlLabels` に優先する。
+[fixture: c4/db-directive-drawing-config]
+[fixture: c4/db-frontmatter-drawing-config]
+[fixture: c4/config-security-level-other]
+[fixture: c4/config-security-level-other-html-labels-false]
+[fixture: c4/config-security-level-other-flowchart-html-labels-false]
+[fixture: c4/config-security-level-other-root-overrides-flowchart]
+
+要約は設定オブジェクト、描画用定数、重複する図形キー、解析スタックを捨て、
+描画座標は解析中に設定されず、座標に似た名前付き属性は記述属性として保持する。
+[fixture: c4/db-number-layout-zero]
+[fixture: c4/gram-boundary-nested]
+[fixture: c4/db-style-layout-key-attributes]
+
+`patchC4Db()` は C4 のクリア時に共有アクセシビリティ文字列を setter で消し、
+各入力が空のアクセシビリティ文字列から始まる。
+[fixture: c4/db-all-fields]
+[fixture: c4/header-context-minimal]
+
+C4 は `@{ ... }` データブロック生成規則を持たない。
+[fixture: c4/gram-data-block]
+
+行頭に固定されない direction の字句規則は同じ行の任意の前置文字を取り込み、
+文リストの direction トークンは拒否され、ヘッダーを置き換える場合は、
+存在しない `setDirection` を呼び TypeError となる。
+[fixture: c4/gram-direction-tb-prefix]
+[fixture: c4/gram-header-direction-tb]
+[fixture: c4/gram-header-direction-bt]
+[fixture: c4/gram-header-direction-rl]
+[fixture: c4/gram-header-direction-lr]
+
+次の読み取りはエンティティの仮表記、削られた directive の断片、
+共有のスタイル行前処理の結果を含む正確な文字列を保持する。
+[fixture: c4/db-preprocessing-style]
+[fixture: c4/db-preprocessing-classdef]
+[fixture: c4/db-preprocessing-upper]
+[fixture: c4/db-preprocessing-space]
+[fixture: c4/db-preprocessing-no-hash]
+[fixture: c4/db-preprocessing-two-semicolons]
+[fixture: c4/db-preprocessing-other-line]
+[fixture: c4/db-preprocessing-quoted-line]
+
+### 文ごとの読み取り
+
+表で省略したフィールドは初期の C4Context 要約の値を保持し、
+title とアクセシビリティ文字列と図形と関係は空、
+境界は初期 global、行数は 4 と 2 である。
+[fixture: c4/db-number-layout-zero]
+
+#### config-security
+
+| Fixture                                                               | 読み取り                                                                                                                                                                                                                                                   |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/config-security-level-other]                             | `{"title":"&lt;b&gt;T&lt;/b&gt; &equals; value","accDescr":"&lt;i&gt;D&lt;/i&gt; &equals; value","shapes":[{"alias":"a","label":{"text":"<b>A</b> = value"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/config-security-level-other-flowchart-html-labels-false] | `{"title":"<b>T</b> = value","accDescr":"<i>D</i> = value","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                      |
+| [fixture: c4/config-security-level-other-html-labels-false]           | `{"title":"<b>T</b> = value","accDescr":"<i>D</i> = value","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                      |
+| [fixture: c4/config-security-level-other-root-overrides-flowchart]    | `{"title":"&lt;b&gt;T&lt;/b&gt; &equals; value","accDescr":"&lt;i&gt;D&lt;/i&gt; &equals; value","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                |
+
+#### config-wrap
+
+| Fixture                         | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/config-wrap-false] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b","wrap":false}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global","wrap":false}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"wrap":false}]}` を保持する。 |
+| [fixture: c4/config-wrap-null]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                        |
+| [fixture: c4/config-wrap-text]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b","wrap":"yes"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global","wrap":"yes"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"wrap":"yes"}]}` を保持する。 |
+| [fixture: c4/config-wrap-true]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","wrap":true}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                          |
+
+#### db-acc
+
+| Fixture                                       | 読み取り                                                                                                                                                                |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-acc-descr-tab-before-colon]   | `{"accDescr":"Value"}` を保持する。                                                                                                                                     |
+| [fixture: c4/db-acc-description-order]        | `{"accDescr":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。         |
+| [fixture: c4/db-acc-description-spaces-only]  | `{"accDescr":"  "}` を保持する。                                                                                                                                        |
+| [fixture: c4/db-acc-description-whitespace]   | `{"accDescr":"   D   ","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。       |
+| [fixture: c4/db-acc-title]                    | `{"title":"Accessible title","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-acc-title-space-before-colon] | `{"title":"Value"}` を保持する。                                                                                                                                        |
+
+#### db-accdescr
+
+| Fixture                               | 読み取り                                                                                                                                                                                       |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-accdescr-comment]     | `{"accDescr":"T %% comment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-accdescr-empty]       | `{"accDescr":"Person(a, \"A\")"}` を保持する。                                                                                                                                                 |
+| [fixture: c4/db-accdescr-entity]      | `{"accDescr":"T \ufb02\u00b0\u00b035\u00b6\u00df U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-accdescr-hash]        | `{"accDescr":"T # U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-accdescr-html]        | `{"accDescr":"<b>T</b>","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                             |
+| [fixture: c4/db-accdescr-non-ascii]   | `{"accDescr":"\u65e5\u672c\u8a9e","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                   |
+| [fixture: c4/db-accdescr-plain]       | `{"accDescr":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-accdescr-quotes]      | `{"accDescr":"\"T\"","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-accdescr-semicolon]   | `{"accDescr":"T; U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                 |
+| [fixture: c4/db-accdescr-spaces]      | `{"accDescr":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-accdescr-tab]         | `{"accDescr":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-accdescr-three-times] | `{"accDescr":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+
+#### db-accdescription
+
+| Fixture                                     | 読み取り                                                                                                                                                                                       |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-accdescription-comment]     | `{"accDescr":"T %% comment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-accdescription-empty]       | `Error` で拒否される。                                                                                                                                                                         |
+| [fixture: c4/db-accdescription-entity]      | `{"accDescr":"T \ufb02\u00b0\u00b035\u00b6\u00df U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-accdescription-hash]        | `Error` で拒否される。                                                                                                                                                                         |
+| [fixture: c4/db-accdescription-html]        | `{"accDescr":"<b>T</b>","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                             |
+| [fixture: c4/db-accdescription-non-ascii]   | `{"accDescr":"\u65e5\u672c\u8a9e","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                   |
+| [fixture: c4/db-accdescription-plain]       | `{"accDescr":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-accdescription-quotes]      | `{"accDescr":"\"T\"","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-accdescription-semicolon]   | `Error` で拒否される。                                                                                                                                                                         |
+| [fixture: c4/db-accdescription-spaces]      | `{"accDescr":"  T  ","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-accdescription-tab]         | `{"accDescr":"\tT\t","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-accdescription-three-times] | `{"accDescr":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+
+#### db-acctitle
+
+| Fixture                               | 読み取り                                                                                                                                                                                    |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-acctitle-comment]     | `{"title":"T %% comment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-acctitle-empty]       | `{"title":"Person(a, \"A\")"}` を保持する。                                                                                                                                                 |
+| [fixture: c4/db-acctitle-entity]      | `{"title":"T \ufb02\u00b0\u00b035\u00b6\u00df U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-acctitle-hash]        | `{"title":"T # U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-acctitle-html]        | `{"title":"<b>T</b>","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                             |
+| [fixture: c4/db-acctitle-non-ascii]   | `{"title":"\u65e5\u672c\u8a9e","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                   |
+| [fixture: c4/db-acctitle-plain]       | `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-acctitle-quotes]      | `{"title":"\"T\"","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-acctitle-semicolon]   | `{"title":"T; U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                 |
+| [fixture: c4/db-acctitle-spaces]      | `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-acctitle-tab]         | `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-acctitle-three-times] | `{"title":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+
+#### db-alias
+
+| Fixture                               | 読み取り                                                                                                                                                                                                                                                                                 |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-alias-c4container]    | `{"shapes":[{"alias":"C4Container","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"C4Container","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。       |
+| [fixture: c4/db-alias-c4context]      | `{"shapes":[{"alias":"C4Context","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"C4Context","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。           |
+| [fixture: c4/db-alias-constructor]    | `{"shapes":[{"alias":"constructor","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"constructor","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。       |
+| [fixture: c4/db-alias-global]         | `{"shapes":[{"alias":"global","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"global","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                 |
+| [fixture: c4/db-alias-hasownproperty] | `{"shapes":[{"alias":"hasOwnProperty","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"hasOwnProperty","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。 |
+| [fixture: c4/db-alias-person]         | `{"shapes":[{"alias":"Person","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"Person","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                 |
+| [fixture: c4/db-alias-proto]          | `{"shapes":[{"alias":"__proto__","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"__proto__","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。           |
+| [fixture: c4/db-alias-title]          | `{"shapes":[{"alias":"title","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"title","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                   |
+| [fixture: c4/db-alias-tostring]       | `{"shapes":[{"alias":"toString","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"toString","to":"missing","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。             |
+
+#### db-all
+
+| Fixture                     | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-all-fields] | `{"title":"All fields","accDescr":"Accessible description","shapes":[{"alias":"a","label":{"text":"A"},"techn":"Changed technology","descr":{"text":"Description"},"sprite":"changed sprite","tags":"tags","link":"javascript:alert(1)","typeC4Shape":{"text":"container"},"parentBoundary":"inner","bgColor":"red","fontColor":"white","borderColor":"blue","shadowing":"yes","shape":"box","legendText":"Legend","legendSprite":"Legend sprite"},{"alias":"b","label":{"text":"B"},"descr":{"text":"Person description"},"custom":"own","typeC4Shape":{"text":"person"},"parentBoundary":"inner"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"outer","label":{"text":"Outer"},"type":{"text":"company"},"tags":"bt","link":"bl","parentBoundary":"global"},{"alias":"inner","label":{"text":"Inner"},"type":{"text":"machine"},"descr":{"text":"Node description"},"tags":"nt","link":"nl","nodeType":"node","parentBoundary":"outer"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"Relationship"},"sprite":"rel sprite","tags":"rt","link":"rl","textColor":"green","lineColor":"black","offsetX":-4,"offsetY":7}],"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。 |
+
+#### db-boundary
+
+| Fixture                                      | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-boundary-alias-named-change] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"c","label":{"text":"B"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-boundary-named-descr]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"descr":{"text":"Description"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-boundary-style-named-type]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":"Raw","link":"L","parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-boundary-three-definitions]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"},{"alias":"d","label":{"text":"D"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"c"},{"alias":"e","label":{"text":"E"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"},{"alias":"f","label":{"text":"F"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"Third"},"type":{"text":"system"},"tags":"tags","link":"link","parentBoundary":"c"},{"alias":"c","label":{"text":"Other"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### db-directive
+
+| Fixture                                   | 読み取り                                                                                                                                     |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-directive-drawing-config] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### db-empty
+
+| Fixture                                              | 読み取り                                                                                                                                                         |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-empty-block-inline-after-shape]      | `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-empty-block-inline-before-shape]     | `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-empty-block-inline-blank-lines]      | `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-empty-block-inline-spaces]           | `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-empty-block-inline-two]              | `{"accDescr":"Before","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-empty-board]                         | `Error` で拒否される。                                                                                                                                           |
+| [fixture: c4/db-empty-description-block-after-value] | `Error` で拒否される。                                                                                                                                           |
+
+#### db-frontmatter
+
+| Fixture                                     | 読み取り                                                                                                                                     |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-frontmatter-drawing-config] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### db-keyword
+
+| Fixture                                      | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-keyword-birel]               | `{"rels":[{"type":"birel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-boundary]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                         |
+| [fixture: c4/db-keyword-component]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                           |
+| [fixture: c4/db-keyword-component-ext]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                  |
+| [fixture: c4/db-keyword-componentdb]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component_db"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                        |
+| [fixture: c4/db-keyword-componentdb-ext]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_component_db"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-componentqueue]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component_queue"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                     |
+| [fixture: c4/db-keyword-componentqueue-ext]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_component_queue"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                            |
+| [fixture: c4/db-keyword-container]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                           |
+| [fixture: c4/db-keyword-container-boundary]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-keyword-container-ext]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                  |
+| [fixture: c4/db-keyword-containerdb]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container_db"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                        |
+| [fixture: c4/db-keyword-containerdb-ext]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_container_db"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-containerqueue]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container_queue"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                     |
+| [fixture: c4/db-keyword-containerqueue-ext]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_container_queue"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                            |
+| [fixture: c4/db-keyword-deployment-node]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。  |
+| [fixture: c4/db-keyword-enterprise-boundary] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                   |
+| [fixture: c4/db-keyword-node]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。  |
+| [fixture: c4/db-keyword-node-l]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"nodeL","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-keyword-node-r]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"nodeR","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-keyword-person]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/db-keyword-person-ext]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                             |
+| [fixture: c4/db-keyword-rel]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-keyword-rel-back]            | `{"rels":[{"type":"rel_b","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-d]               | `{"rels":[{"type":"rel_d","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-down]            | `{"rels":[{"type":"rel_d","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-l]               | `{"rels":[{"type":"rel_l","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-left]            | `{"rels":[{"type":"rel_l","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-r]               | `{"rels":[{"type":"rel_r","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-right]           | `{"rels":[{"type":"rel_r","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-u]               | `{"rels":[{"type":"rel_u","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-rel-up]              | `{"rels":[{"type":"rel_u","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                               |
+| [fixture: c4/db-keyword-relindex]            | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-keyword-system]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"system"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/db-keyword-system-boundary]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                       |
+| [fixture: c4/db-keyword-system-ext]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_system"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                             |
+| [fixture: c4/db-keyword-systemdb]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"system_db"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                   |
+| [fixture: c4/db-keyword-systemdb-ext]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_system_db"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                          |
+| [fixture: c4/db-keyword-systemqueue]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"system_queue"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                |
+| [fixture: c4/db-keyword-systemqueue-ext]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"external_system_queue"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                       |
+| [fixture: c4/db-keyword-updateelementstyle]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                              |
+| [fixture: c4/db-keyword-updatelayoutconfig]  | `{"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-keyword-updaterelstyle]      | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                       |
+
+#### db-named
+
+| Fixture                                                   | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-named-boundary-link-slot-1]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                              |
+| [fixture: c4/db-named-boundary-link-slot-2]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                       |
+| [fixture: c4/db-named-boundary-link-slot-3]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"link":"link","tags":"tags","parentBoundary":"global"}]}` を保持する。                                                                                       |
+| [fixture: c4/db-named-boundary-link-slot-4]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"link":"link","parentBoundary":"global"}]}` を保持する。                                                                              |
+| [fixture: c4/db-named-boundary-link-slot-5]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"V","parentBoundary":"global"}]}` を保持する。                                                                   |
+| [fixture: c4/db-named-boundary-sprite-slot-1]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                          |
+| [fixture: c4/db-named-boundary-sprite-slot-2]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                     |
+| [fixture: c4/db-named-boundary-sprite-slot-3]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"sprite":"V","tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                                          |
+| [fixture: c4/db-named-boundary-sprite-slot-4]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"sprite":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                                 |
+| [fixture: c4/db-named-boundary-sprite-slot-5]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","sprite":"V","parentBoundary":"global"}]}` を保持する。                                                                 |
+| [fixture: c4/db-named-boundary-tags-slot-1]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                              |
+| [fixture: c4/db-named-boundary-tags-slot-2]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                       |
+| [fixture: c4/db-named-boundary-tags-slot-3]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                                                       |
+| [fixture: c4/db-named-boundary-tags-slot-4]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                                   |
+| [fixture: c4/db-named-boundary-tags-slot-5]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"V","parentBoundary":"global"}]}` を保持する。                                                                                 |
+| [fixture: c4/db-named-boundary-unknown-slot-1]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/db-named-boundary-unknown-slot-2]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                    |
+| [fixture: c4/db-named-boundary-unknown-slot-3]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"unknown":"V","tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                                         |
+| [fixture: c4/db-named-boundary-unknown-slot-4]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"unknown":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                                |
+| [fixture: c4/db-named-boundary-unknown-slot-5]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","unknown":"V","parentBoundary":"global"}]}` を保持する。                                                                |
+| [fixture: c4/db-named-case-sensitive]                     | `{"shapes":[{"alias":"a","label":{"text":"A"},"Tags":"Upper","tags":"Lower","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-component-link-slot-1]              | `{"shapes":[{"alias":{"link":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-link-slot-2]              | `{"shapes":[{"alias":"a","label":{"text":{"link":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-link-slot-3]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"link":"link","descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-component-link-slot-4]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"link":"link","sprite":"sprite","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-link-slot-5]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"link":"link","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-component-link-slot-6]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-component-link-slot-7]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-component-sprite-slot-1]            | `{"shapes":[{"alias":{"sprite":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-sprite-slot-2]            | `{"shapes":[{"alias":"a","label":{"text":{"sprite":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-sprite-slot-3]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"sprite":"sprite","descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-component-sprite-slot-4]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-sprite-slot-5]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-sprite-slot-6]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-component-sprite-slot-7]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-component-tags-slot-1]              | `{"shapes":[{"alias":{"tags":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-tags-slot-2]              | `{"shapes":[{"alias":"a","label":{"text":{"tags":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-tags-slot-3]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"tags":"tags","descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-component-tags-slot-4]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"tags":"tags","sprite":"sprite","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-component-tags-slot-5]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-component-tags-slot-6]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-component-tags-slot-7]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-component-unknown-slot-1]           | `{"shapes":[{"alias":{"unknown":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-component-unknown-slot-2]           | `{"shapes":[{"alias":"a","label":{"text":{"unknown":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-component-unknown-slot-3]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"unknown":"V","descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-component-unknown-slot-4]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-component-unknown-slot-5]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-component-unknown-slot-6]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-component-unknown-slot-7]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-container-boundary-link-slot-1]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                         |
+| [fixture: c4/db-named-container-boundary-link-slot-2]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                  |
+| [fixture: c4/db-named-container-boundary-link-slot-3]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"link":"link","parentBoundary":"global"}]}` を保持する。                                                                         |
+| [fixture: c4/db-named-container-boundary-link-slot-4]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"V","parentBoundary":"global"}]}` を保持する。                                                              |
+| [fixture: c4/db-named-container-boundary-sprite-slot-1]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                     |
+| [fixture: c4/db-named-container-boundary-sprite-slot-2]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                |
+| [fixture: c4/db-named-container-boundary-sprite-slot-3]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"sprite":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                            |
+| [fixture: c4/db-named-container-boundary-sprite-slot-4]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","sprite":"V","parentBoundary":"global"}]}` を保持する。                                                            |
+| [fixture: c4/db-named-container-boundary-tags-slot-1]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                         |
+| [fixture: c4/db-named-container-boundary-tags-slot-2]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                  |
+| [fixture: c4/db-named-container-boundary-tags-slot-3]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                              |
+| [fixture: c4/db-named-container-boundary-tags-slot-4]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"V","parentBoundary":"global"}]}` を保持する。                                                                            |
+| [fixture: c4/db-named-container-boundary-type-slot-1]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"type":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"type":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                         |
+| [fixture: c4/db-named-container-boundary-type-slot-2]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"type":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                  |
+| [fixture: c4/db-named-container-boundary-type-slot-3]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"link":"link","parentBoundary":"global"}]}` を保持する。                                                                                 |
+| [fixture: c4/db-named-container-boundary-type-slot-4]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"tags":"tags","parentBoundary":"global"}]}` を保持する。                                                                                 |
+| [fixture: c4/db-named-container-boundary-unknown-slot-1]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                   |
+| [fixture: c4/db-named-container-boundary-unknown-slot-2]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"CONTAINER"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                               |
+| [fixture: c4/db-named-container-boundary-unknown-slot-3]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"unknown":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                           |
+| [fixture: c4/db-named-container-boundary-unknown-slot-4]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"CONTAINER"},"tags":"tags","unknown":"V","parentBoundary":"global"}]}` を保持する。                                                           |
+| [fixture: c4/db-named-container-link-slot-1]              | `{"shapes":[{"alias":{"link":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-link-slot-2]              | `{"shapes":[{"alias":"a","label":{"text":{"link":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-link-slot-3]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"link":"link","descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-container-link-slot-4]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"link":"link","sprite":"sprite","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-link-slot-5]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"link":"link","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-container-link-slot-6]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-container-link-slot-7]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-container-sprite-slot-1]            | `{"shapes":[{"alias":{"sprite":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-sprite-slot-2]            | `{"shapes":[{"alias":"a","label":{"text":{"sprite":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-sprite-slot-3]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"sprite":"sprite","descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-container-sprite-slot-4]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-sprite-slot-5]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-sprite-slot-6]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-container-sprite-slot-7]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"V","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-container-tags-slot-1]              | `{"shapes":[{"alias":{"tags":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-tags-slot-2]              | `{"shapes":[{"alias":"a","label":{"text":{"tags":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-tags-slot-3]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"tags":"tags","descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-container-tags-slot-4]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"tags":"tags","sprite":"sprite","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-container-tags-slot-5]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-container-tags-slot-6]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-container-tags-slot-7]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-container-unknown-slot-1]           | `{"shapes":[{"alias":{"unknown":"V"},"label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-container-unknown-slot-2]           | `{"shapes":[{"alias":"a","label":{"text":{"unknown":"V"}},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-container-unknown-slot-3]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"unknown":"V","descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-container-unknown-slot-4]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-container-unknown-slot-5]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-container-unknown-slot-6]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-container-unknown-slot-7]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-element-style-link-slot-1]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-element-style-link-slot-10]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","link":"V"}]}` を保持する。                                                                                                                                                |
+| [fixture: c4/db-named-element-style-link-slot-2]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","link":"V","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                          |
+| [fixture: c4/db-named-element-style-link-slot-3]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","link":"V","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                              |
+| [fixture: c4/db-named-element-style-link-slot-4]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","link":"V","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                                |
+| [fixture: c4/db-named-element-style-link-slot-5]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","link":"V","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                            |
+| [fixture: c4/db-named-element-style-link-slot-6]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","link":"V","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                        |
+| [fixture: c4/db-named-element-style-link-slot-7]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","link":"V","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                            |
+| [fixture: c4/db-named-element-style-link-slot-8]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","link":"V","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                         |
+| [fixture: c4/db-named-element-style-link-slot-9]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","link":"V","legendSprite":"star"}]}` を保持する。                                                                                                                                                |
+| [fixture: c4/db-named-element-style-sprite-slot-1]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-element-style-sprite-slot-10]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"V","techn":"Java","legendText":"Legend"}]}` を保持する。                                                                                                                                                                |
+| [fixture: c4/db-named-element-style-sprite-slot-2]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","sprite":"sprite","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                                     |
+| [fixture: c4/db-named-element-style-sprite-slot-3]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","sprite":"sprite","borderColor":"black","shadowing":"yes","shape":"box","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                                         |
+| [fixture: c4/db-named-element-style-sprite-slot-4]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","sprite":"sprite","shadowing":"yes","shape":"box","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                                           |
+| [fixture: c4/db-named-element-style-sprite-slot-5]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","sprite":"sprite","shape":"box","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                                       |
+| [fixture: c4/db-named-element-style-sprite-slot-6]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                                   |
+| [fixture: c4/db-named-element-style-sprite-slot-7]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"V","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                          |
+| [fixture: c4/db-named-element-style-sprite-slot-8]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"V","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                                         |
+| [fixture: c4/db-named-element-style-sprite-slot-9]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"V","techn":"Java","legendSprite":"star"}]}` を保持する。                                                                                                                                                                |
+| [fixture: c4/db-named-element-style-tags-slot-1]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-element-style-tags-slot-10]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","tags":"V"}]}` を保持する。                                                                                                                                                |
+| [fixture: c4/db-named-element-style-tags-slot-2]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","tags":"V","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                          |
+| [fixture: c4/db-named-element-style-tags-slot-3]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","tags":"V","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                              |
+| [fixture: c4/db-named-element-style-tags-slot-4]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","tags":"V","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                                |
+| [fixture: c4/db-named-element-style-tags-slot-5]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","tags":"V","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                            |
+| [fixture: c4/db-named-element-style-tags-slot-6]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","tags":"V","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                        |
+| [fixture: c4/db-named-element-style-tags-slot-7]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","tags":"V","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                            |
+| [fixture: c4/db-named-element-style-tags-slot-8]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","tags":"V","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                         |
+| [fixture: c4/db-named-element-style-tags-slot-9]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","tags":"V","legendSprite":"star"}]}` を保持する。                                                                                                                                                |
+| [fixture: c4/db-named-element-style-unknown-slot-1]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-element-style-unknown-slot-10]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","unknown":"V"}]}` を保持する。                                                                                                                                             |
+| [fixture: c4/db-named-element-style-unknown-slot-2]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","unknown":"V","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                       |
+| [fixture: c4/db-named-element-style-unknown-slot-3]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","unknown":"V","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                           |
+| [fixture: c4/db-named-element-style-unknown-slot-4]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","unknown":"V","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                             |
+| [fixture: c4/db-named-element-style-unknown-slot-5]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","unknown":"V","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                         |
+| [fixture: c4/db-named-element-style-unknown-slot-6]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","unknown":"V","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                     |
+| [fixture: c4/db-named-element-style-unknown-slot-7]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","unknown":"V","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                         |
+| [fixture: c4/db-named-element-style-unknown-slot-8]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","unknown":"V","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                                                      |
+| [fixture: c4/db-named-element-style-unknown-slot-9]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","unknown":"V","legendSprite":"star"}]}` を保持する。                                                                                                                                             |
+| [fixture: c4/db-named-enterprise-boundary-link-slot-1]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/db-named-enterprise-boundary-link-slot-2]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                 |
+| [fixture: c4/db-named-enterprise-boundary-link-slot-3]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"link":"link","parentBoundary":"global"}]}` を保持する。                                                                        |
+| [fixture: c4/db-named-enterprise-boundary-link-slot-4]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"V","parentBoundary":"global"}]}` を保持する。                                                             |
+| [fixture: c4/db-named-enterprise-boundary-sprite-slot-1]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-named-enterprise-boundary-sprite-slot-2]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                               |
+| [fixture: c4/db-named-enterprise-boundary-sprite-slot-3]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"sprite":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                           |
+| [fixture: c4/db-named-enterprise-boundary-sprite-slot-4]  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","sprite":"V","parentBoundary":"global"}]}` を保持する。                                                           |
+| [fixture: c4/db-named-enterprise-boundary-tags-slot-1]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/db-named-enterprise-boundary-tags-slot-2]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                 |
+| [fixture: c4/db-named-enterprise-boundary-tags-slot-3]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                             |
+| [fixture: c4/db-named-enterprise-boundary-tags-slot-4]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"V","parentBoundary":"global"}]}` を保持する。                                                                           |
+| [fixture: c4/db-named-enterprise-boundary-type-slot-1]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"type":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"type":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/db-named-enterprise-boundary-type-slot-2]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"type":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                 |
+| [fixture: c4/db-named-enterprise-boundary-type-slot-3]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"link":"link","parentBoundary":"global"}]}` を保持する。                                                                                 |
+| [fixture: c4/db-named-enterprise-boundary-type-slot-4]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"tags":"tags","parentBoundary":"global"}]}` を保持する。                                                                                 |
+| [fixture: c4/db-named-enterprise-boundary-unknown-slot-1] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                  |
+| [fixture: c4/db-named-enterprise-boundary-unknown-slot-2] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"ENTERPRISE"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                              |
+| [fixture: c4/db-named-enterprise-boundary-unknown-slot-3] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"unknown":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                          |
+| [fixture: c4/db-named-enterprise-boundary-unknown-slot-4] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"ENTERPRISE"},"tags":"tags","unknown":"V","parentBoundary":"global"}]}` を保持する。                                                          |
+| [fixture: c4/db-named-index-link-slot-1]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-link-slot-2]                  | `{"rels":[{"type":"rel","from":{"link":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-link-slot-3]                  | `{"rels":[{"type":"rel","from":"a","to":{"link":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-link-slot-4]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"link":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-index-link-slot-5]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"link":"link","descr":{"text":"D"},"sprite":"sprite","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-index-link-slot-6]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"link":"link","sprite":"sprite","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-link-slot-7]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"link":"link","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-index-link-slot-8]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-index-link-slot-9]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V"}]}` を保持する。                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-index-sprite-slot-1]                | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-sprite-slot-2]                | `{"rels":[{"type":"rel","from":{"sprite":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-sprite-slot-3]                | `{"rels":[{"type":"rel","from":"a","to":{"sprite":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-sprite-slot-4]                | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"sprite":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-index-sprite-slot-5]                | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"sprite":"sprite","descr":{"text":"D"},"tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-index-sprite-slot-6]                | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-sprite-slot-7]                | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-sprite-slot-8]                | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-index-sprite-slot-9]                | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-index-tags-slot-1]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-tags-slot-2]                  | `{"rels":[{"type":"rel","from":{"tags":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-tags-slot-3]                  | `{"rels":[{"type":"rel","from":"a","to":{"tags":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-tags-slot-4]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"tags":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-index-tags-slot-5]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"tags":"tags","descr":{"text":"D"},"sprite":"sprite","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-index-tags-slot-6]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"tags":"tags","sprite":"sprite","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-index-tags-slot-7]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-index-tags-slot-8]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-index-tags-slot-9]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"V"}]}` を保持する。                                                                                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-index-unknown-slot-1]               | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-unknown-slot-2]               | `{"rels":[{"type":"rel","from":{"unknown":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-index-unknown-slot-3]               | `{"rels":[{"type":"rel","from":"a","to":{"unknown":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-index-unknown-slot-4]               | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"unknown":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-unknown-slot-5]               | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"unknown":"V","descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-index-unknown-slot-6]               | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-index-unknown-slot-7]               | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-index-unknown-slot-8]               | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-index-unknown-slot-9]               | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V"}]}` を保持する。                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-key-whitespace]                     | `{"shapes":[{"alias":"a","label":{"text":"A"},"tags":"T","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-layout-key]                         | `{"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-layout-link-slot-1]                 | `{"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-layout-link-slot-2]                 | `{"c4ShapeInRow":3}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-layout-order]                       | `{"c4ShapeInRow":7,"c4BoundaryInRow":3}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-layout-sprite-slot-1]               | `{"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-layout-sprite-slot-2]               | `{"c4ShapeInRow":3}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-layout-tags-slot-1]                 | `{"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-layout-tags-slot-2]                 | `{"c4ShapeInRow":3}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-layout-unknown-slot-1]              | `{"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-layout-unknown-slot-2]              | `{"c4ShapeInRow":3}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-named-node-link-slot-1]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。       |
+| [fixture: c4/db-named-node-link-slot-2]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                |
+| [fixture: c4/db-named-node-link-slot-3]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"link":"link","descr":{"text":"D"},"tags":"tags","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                                |
+| [fixture: c4/db-named-node-link-slot-4]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"link":"link","tags":"tags","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                              |
+| [fixture: c4/db-named-node-link-slot-5]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-named-node-link-slot-6]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                       |
+| [fixture: c4/db-named-node-link-slot-7]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"V","nodeType":"node","parentBoundary":"global"}]}` を保持する。                            |
+| [fixture: c4/db-named-node-sprite-slot-1]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。   |
+| [fixture: c4/db-named-node-sprite-slot-2]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。              |
+| [fixture: c4/db-named-node-sprite-slot-3]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"sprite":"V","descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                   |
+| [fixture: c4/db-named-node-sprite-slot-4]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"sprite":"V","tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                 |
+| [fixture: c4/db-named-node-sprite-slot-5]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-named-node-sprite-slot-6]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"sprite":"V","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                          |
+| [fixture: c4/db-named-node-sprite-slot-7]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","sprite":"V","nodeType":"node","parentBoundary":"global"}]}` を保持する。                          |
+| [fixture: c4/db-named-node-tags-slot-1]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。       |
+| [fixture: c4/db-named-node-tags-slot-2]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                |
+| [fixture: c4/db-named-node-tags-slot-3]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"tags":"tags","descr":{"text":"D"},"link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                                |
+| [fixture: c4/db-named-node-tags-slot-4]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                              |
+| [fixture: c4/db-named-node-tags-slot-5]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-named-node-tags-slot-6]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"V","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                            |
+| [fixture: c4/db-named-node-tags-slot-7]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"V","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                          |
+| [fixture: c4/db-named-node-unknown-slot-1]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-named-node-unknown-slot-2]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。             |
+| [fixture: c4/db-named-node-unknown-slot-3]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"unknown":"V","descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                  |
+| [fixture: c4/db-named-node-unknown-slot-4]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"unknown":"V","tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-named-node-unknown-slot-5]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-named-node-unknown-slot-6]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"unknown":"V","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-named-node-unknown-slot-7]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","unknown":"V","nodeType":"node","parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-named-person-link-slot-1]                 | `{"shapes":[{"alias":{"link":"V"},"label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-link-slot-2]                 | `{"shapes":[{"alias":"a","label":{"text":{"link":"V"}},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-link-slot-3]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"link":"link","sprite":"sprite","tags":"tags","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-link-slot-4]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"link":"link","tags":"tags","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-person-link-slot-5]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-person-link-slot-6]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-person-sprite-slot-1]               | `{"shapes":[{"alias":{"sprite":"V"},"label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-sprite-slot-2]               | `{"shapes":[{"alias":"a","label":{"text":{"sprite":"V"}},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-sprite-slot-3]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-sprite-slot-4]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-sprite-slot-5]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"V","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-person-sprite-slot-6]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"V","tags":"tags","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-person-tags-slot-1]                 | `{"shapes":[{"alias":{"tags":"V"},"label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-tags-slot-2]                 | `{"shapes":[{"alias":"a","label":{"text":{"tags":"V"}},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-tags-slot-3]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"tags":"tags","sprite":"sprite","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-person-tags-slot-4]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-person-tags-slot-5]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-person-tags-slot-6]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                              |
+| [fixture: c4/db-named-person-unknown-slot-1]              | `{"shapes":[{"alias":{"unknown":"V"},"label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-person-unknown-slot-2]              | `{"shapes":[{"alias":"a","label":{"text":{"unknown":"V"}},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-person-unknown-slot-3]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-person-unknown-slot-4]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-person-unknown-slot-5]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-person-unknown-slot-6]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-link-slot-1]                    | `{"rels":[{"type":"rel","from":{"link":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-link-slot-2]                    | `{"rels":[{"type":"rel","from":"a","to":{"link":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-link-slot-3]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"link":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-rel-link-slot-4]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"link":"link","descr":{"text":"D"},"sprite":"sprite","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-rel-link-slot-5]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"link":"link","sprite":"sprite","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-link-slot-6]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"link":"link","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-rel-link-slot-7]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-rel-link-slot-8]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"V"}]}` を保持する。                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-sprite-slot-1]                  | `{"rels":[{"type":"rel","from":{"sprite":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-sprite-slot-2]                  | `{"rels":[{"type":"rel","from":"a","to":{"sprite":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-sprite-slot-3]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"sprite":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                |
+| [fixture: c4/db-named-rel-sprite-slot-4]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"sprite":"sprite","descr":{"text":"D"},"tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-rel-sprite-slot-5]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-sprite-slot-6]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-sprite-slot-7]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-sprite-slot-8]                  | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"V","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-style-link-slot-1]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-link-slot-2]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-link-slot-3]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"link":"V","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-rel-style-link-slot-4]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","link":"V","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-rel-style-link-slot-5]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","link":"NaN","offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                              |
+| [fixture: c4/db-named-rel-style-link-slot-6]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"link":"NaN"}]}` を保持する。                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-style-sprite-slot-1]            | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-sprite-slot-2]            | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-sprite-slot-3]            | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"sprite":"V","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-rel-style-sprite-slot-4]            | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","sprite":"V","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-rel-style-sprite-slot-5]            | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","sprite":"NaN","offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-sprite-slot-6]            | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"sprite":"NaN"}]}` を保持する。                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-style-tags-slot-1]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-tags-slot-2]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-tags-slot-3]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"tags":"V","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                                     |
+| [fixture: c4/db-named-rel-style-tags-slot-4]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","tags":"V","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                                      |
+| [fixture: c4/db-named-rel-style-tags-slot-5]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","tags":"NaN","offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                              |
+| [fixture: c4/db-named-rel-style-tags-slot-6]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"tags":"NaN"}]}` を保持する。                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-style-unknown-slot-1]           | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-unknown-slot-2]           | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-style-unknown-slot-3]           | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"unknown":"V","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-rel-style-unknown-slot-4]           | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","unknown":"V","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-rel-style-unknown-slot-5]           | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","unknown":"NaN","offsetY":5}]}` を保持する。                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-style-unknown-slot-6]           | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"unknown":"NaN"}]}` を保持する。                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-rel-tags-slot-1]                    | `{"rels":[{"type":"rel","from":{"tags":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-tags-slot-2]                    | `{"rels":[{"type":"rel","from":"a","to":{"tags":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-tags-slot-3]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"tags":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-named-rel-tags-slot-4]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"tags":"tags","descr":{"text":"D"},"sprite":"sprite","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                                 |
+| [fixture: c4/db-named-rel-tags-slot-5]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"tags":"tags","sprite":"sprite","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/db-named-rel-tags-slot-6]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/db-named-rel-tags-slot-7]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"V","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                           |
+| [fixture: c4/db-named-rel-tags-slot-8]                    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"V"}]}` を保持する。                                                                                                                                                                                                                                                                                         |
+| [fixture: c4/db-named-rel-unknown-slot-1]                 | `{"rels":[{"type":"rel","from":{"unknown":"V"},"to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-unknown-slot-2]                 | `{"rels":[{"type":"rel","from":"a","to":{"unknown":"V"},"label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-unknown-slot-3]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":{"unknown":"V"}},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-unknown-slot-4]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"unknown":"V","descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-named-rel-unknown-slot-5]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"unknown":"V","sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                               |
+| [fixture: c4/db-named-rel-unknown-slot-6]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"unknown":"V","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                            |
+| [fixture: c4/db-named-rel-unknown-slot-7]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","unknown":"V","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-rel-unknown-slot-8]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","unknown":"V"}]}` を保持する。                                                                                                                                                                                                                                                                        |
+| [fixture: c4/db-named-repeat]                             | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"Third"},"typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/db-named-system-boundary-link-slot-1]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"link":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"link":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                            |
+| [fixture: c4/db-named-system-boundary-link-slot-2]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"link":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                     |
+| [fixture: c4/db-named-system-boundary-link-slot-3]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"link":"link","parentBoundary":"global"}]}` を保持する。                                                                            |
+| [fixture: c4/db-named-system-boundary-link-slot-4]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"V","parentBoundary":"global"}]}` を保持する。                                                                 |
+| [fixture: c4/db-named-system-boundary-sprite-slot-1]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"sprite":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"sprite":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/db-named-system-boundary-sprite-slot-2]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"sprite":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                   |
+| [fixture: c4/db-named-system-boundary-sprite-slot-3]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"sprite":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                               |
+| [fixture: c4/db-named-system-boundary-sprite-slot-4]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","sprite":"V","parentBoundary":"global"}]}` を保持する。                                                               |
+| [fixture: c4/db-named-system-boundary-tags-slot-1]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"tags":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"tags":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                            |
+| [fixture: c4/db-named-system-boundary-tags-slot-2]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"tags":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                     |
+| [fixture: c4/db-named-system-boundary-tags-slot-3]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                                 |
+| [fixture: c4/db-named-system-boundary-tags-slot-4]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"V","parentBoundary":"global"}]}` を保持する。                                                                               |
+| [fixture: c4/db-named-system-boundary-type-slot-1]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"type":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"type":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                            |
+| [fixture: c4/db-named-system-boundary-type-slot-2]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"type":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                     |
+| [fixture: c4/db-named-system-boundary-type-slot-3]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"link":"link","parentBoundary":"global"}]}` を保持する。                                                                                 |
+| [fixture: c4/db-named-system-boundary-type-slot-4]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"V"},"tags":"tags","parentBoundary":"global"}]}` を保持する。                                                                                 |
+| [fixture: c4/db-named-system-boundary-unknown-slot-1]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":{"unknown":"V"}}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":{"unknown":"V"},"label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                      |
+| [fixture: c4/db-named-system-boundary-unknown-slot-2]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":{"unknown":"V"}},"type":{"text":"SYSTEM"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                                  |
+| [fixture: c4/db-named-system-boundary-unknown-slot-3]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"unknown":"V","link":"link","parentBoundary":"global"}]}` を保持する。                                                              |
+| [fixture: c4/db-named-system-boundary-unknown-slot-4]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"SYSTEM"},"tags":"tags","unknown":"V","parentBoundary":"global"}]}` を保持する。                                                              |
+| [fixture: c4/db-named-text-fields]                        | `{"shapes":[{"alias":"a","label":{"text":"Label"},"techn":{"text":"Tech"},"descr":{"text":"Description"},"type":{"text":"Kind"},"tags":"Tag","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                              |
+
+#### db-node
+
+| Fixture                      | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-node-sprite] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"n"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"n","label":{"text":"Node"},"type":{"text":"type"},"descr":{"text":"Description"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。 |
+
+#### db-number
+
+| Fixture                                            | 読み取り                                                                                                                                                                                                    |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-number-layout-exponent]            | `{"c4ShapeInRow":1,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                       |
+| [fixture: c4/db-number-layout-fraction]            | `{"c4ShapeInRow":7,"c4BoundaryInRow":7}` を保持する。                                                                                                                                                       |
+| [fixture: c4/db-number-layout-fullwidth]           | 初期要約を保持する。                                                                                                                                                                                        |
+| [fixture: c4/db-number-layout-hex]                 | `{"c4ShapeInRow":16,"c4BoundaryInRow":16}` を保持する。                                                                                                                                                     |
+| [fixture: c4/db-number-layout-infinity]            | 初期要約を保持する。                                                                                                                                                                                        |
+| [fixture: c4/db-number-layout-nan]                 | 初期要約を保持する。                                                                                                                                                                                        |
+| [fixture: c4/db-number-layout-negative]            | 初期要約を保持する。                                                                                                                                                                                        |
+| [fixture: c4/db-number-layout-negative-zero]       | 初期要約を保持する。                                                                                                                                                                                        |
+| [fixture: c4/db-number-layout-non-ascii]           | 初期要約を保持する。                                                                                                                                                                                        |
+| [fixture: c4/db-number-layout-overflow]            | `{"c4ShapeInRow":"Infinity","c4BoundaryInRow":"Infinity"}` を保持する。                                                                                                                                     |
+| [fixture: c4/db-number-layout-plus]                | `{"c4ShapeInRow":7,"c4BoundaryInRow":7}` を保持する。                                                                                                                                                       |
+| [fixture: c4/db-number-layout-space-text-after]    | `{"c4ShapeInRow":12,"c4BoundaryInRow":12}` を保持する。                                                                                                                                                     |
+| [fixture: c4/db-number-layout-text-after]          | `{"c4ShapeInRow":12,"c4BoundaryInRow":12}` を保持する。                                                                                                                                                     |
+| [fixture: c4/db-number-layout-zero]                | 初期要約を保持する。                                                                                                                                                                                        |
+| [fixture: c4/db-number-rel-style-empty]            | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}` を保持する。           |
+| [fixture: c4/db-number-rel-style-exponent]         | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":1,"offsetY":1}]}` を保持する。                   |
+| [fixture: c4/db-number-rel-style-fraction]         | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":7,"offsetY":7}]}` を保持する。                   |
+| [fixture: c4/db-number-rel-style-fullwidth]        | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}` を保持する。           |
+| [fixture: c4/db-number-rel-style-hex]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":16,"offsetY":16}]}` を保持する。                 |
+| [fixture: c4/db-number-rel-style-infinity]         | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}` を保持する。           |
+| [fixture: c4/db-number-rel-style-nan]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}` を保持する。           |
+| [fixture: c4/db-number-rel-style-negative]         | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-3,"offsetY":-3}]}` を保持する。                 |
+| [fixture: c4/db-number-rel-style-negative-zero]    | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":0,"offsetY":0}]}` を保持する。                   |
+| [fixture: c4/db-number-rel-style-non-ascii]        | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"NaN","offsetY":"NaN"}]}` を保持する。           |
+| [fixture: c4/db-number-rel-style-overflow]         | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":"Infinity","offsetY":"Infinity"}]}` を保持する。 |
+| [fixture: c4/db-number-rel-style-plus]             | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":7,"offsetY":7}]}` を保持する。                   |
+| [fixture: c4/db-number-rel-style-space-text-after] | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":12,"offsetY":12}]}` を保持する。                 |
+| [fixture: c4/db-number-rel-style-text-after]       | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":12,"offsetY":12}]}` を保持する。                 |
+| [fixture: c4/db-number-rel-style-zero]             | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":0,"offsetY":0}]}` を保持する。                   |
+
+#### db-parent
+
+| Fixture                                | 読み取り                                                                                                                                                                                                                                                                                                                                                                                 |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-parent-c4container]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"C4Container"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"C4Container","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。       |
+| [fixture: c4/db-parent-c4context]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"C4Context"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"C4Context","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。           |
+| [fixture: c4/db-parent-constructor]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"constructor"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"constructor","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。       |
+| [fixture: c4/db-parent-global]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"boundaries":[{"alias":"global","label":{"text":"B"},"type":{"text":"system"},"tags":null,"link":null,"parentBoundary":"global"}]}` を保持する。                                                                                                           |
+| [fixture: c4/db-parent-hasownproperty] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"hasOwnProperty"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"hasOwnProperty","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-parent-person]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"Person"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"Person","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。                 |
+| [fixture: c4/db-parent-proto]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"__proto__"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"__proto__","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。           |
+| [fixture: c4/db-parent-title]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"title"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"title","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。                   |
+| [fixture: c4/db-parent-tostring]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"toString"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"toString","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。             |
+
+#### db-preprocessing
+
+| Fixture                                       | 読み取り                                                                                                                                                                           |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-preprocessing-classdef]       | `{"shapes":[{"alias":"a","label":{"text":"classDef:#xy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                            |
+| [fixture: c4/db-preprocessing-no-hash]        | `{"shapes":[{"alias":"a","label":{"text":"style:x;y"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                               |
+| [fixture: c4/db-preprocessing-other-line]     | `{"shapes":[{"alias":"a","label":{"text":"style:\n\ufb02\u00b0x\u00b6\u00dfy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。      |
+| [fixture: c4/db-preprocessing-quoted-line]    | `{"shapes":[{"alias":"a","label":{"text":"first\nstyle:#xy\nlast"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                  |
+| [fixture: c4/db-preprocessing-space]          | `{"shapes":[{"alias":"a","label":{"text":"style: \ufb02\u00b0x\u00b6\u00dfy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。       |
+| [fixture: c4/db-preprocessing-style]          | `{"shapes":[{"alias":"a","label":{"text":"style:#xy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                               |
+| [fixture: c4/db-preprocessing-two-semicolons] | `{"shapes":[{"alias":"a","label":{"text":"style:\ufb02\u00b0\u00b035\u00b6\u00dfy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-preprocessing-upper]          | `{"shapes":[{"alias":"a","label":{"text":"Style:\ufb02\u00b0x\u00b6\u00dfy"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。        |
+
+#### db-rel
+
+| Fixture                                     | 読み取り                                                                                                                                                                                                                                                                                          |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-rel-endpoint-named-change]  | `{"rels":[{"type":"rel","from":"c","to":"b","label":{"text":"First"},"descr":{"text":""}},{"type":"rel","from":"a","to":"b","label":{"text":"Second"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                    |
+| [fixture: c4/db-rel-named-endpoints]        | `{"rels":[{"type":"rel","from":{"from":"a"},"to":{"to":"b"},"label":{"text":{"label":"Uses"}},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                            |
+| [fixture: c4/db-rel-object-endpoint-repeat] | `{"rels":[{"type":"rel","from":{"from":"a"},"to":"b","label":{"text":"First"},"techn":{"text":""},"descr":{"text":""}},{"type":"rel","from":{"from":"a"},"to":"b","label":{"text":"Second"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                              |
+| [fixture: c4/db-rel-self]                   | `{"rels":[{"type":"rel","from":"a","to":"a","label":{"text":"Self"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                      |
+| [fixture: c4/db-rel-three-definitions]      | `{"rels":[{"type":"rel_r","from":"a","to":"b","label":{"text":"Third"},"techn":{"text":"RPC"},"descr":{"text":"Description"},"sprite":"sprite","tags":"tags","link":"link"},{"type":"rel","from":"b","to":"a","label":{"text":"Partner"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。 |
+
+#### db-required
+
+| Fixture                                      | 読み取り                                                                                                                                                                                                                                                                                   |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [fixture: c4/db-required-alias-empty]        | `{"shapes":[{"alias":"","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                |
+| [fixture: c4/db-required-label-empty]        | `{"shapes":[{"alias":"a","label":{"text":""},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                |
+| [fixture: c4/db-required-named-alias-repeat] | `{"shapes":[{"alias":{"alias":"a"},"label":{"text":"First"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":{"alias":"a"},"label":{"text":"Second"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### db-shape
+
+| Fixture                                   | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-shape-alias-named-change] | `{"shapes":[{"alias":"b","label":{"text":"Third"},"typeC4Shape":{"text":"person"},"parentBoundary":"global","descr":{"text":""}},{"alias":"a","label":{"text":"Second"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                  |
+| [fixture: c4/db-shape-case-sensitive]     | `{"shapes":[{"alias":"a","label":{"text":"Lower"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"A","label":{"text":"Upper"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                   |
+| [fixture: c4/db-shape-three-definitions]  | `{"shapes":[{"alias":"a","label":{"text":"Third"},"techn":{"text":"Java"},"descr":{"text":"Third D"},"tags":"first","typeC4Shape":{"text":"system"},"parentBoundary":"c"},{"alias":"b","label":{"text":"Partner"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"c","label":{"text":"C"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### db-style
+
+| Fixture                                      | 読み取り                                                                                                                                                                                                                                                                                                                                                                                           |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-style-before-definition]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                           |
+| [fixture: c4/db-style-boundary]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global","bgColor":"red","fontColor":"white"}]}` を保持する。 |
+| [fixture: c4/db-style-layout-key-attributes] | `{"shapes":[{"alias":"a","label":{"text":"A"},"x":"17","width":"20","constructor":"own","hasOwnProperty":"yes","typeC4Shape":{"text":"container"},"parentBoundary":"global"}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"startPoint":"written","descr":{"text":""}}]}` を保持する。                                                                                        |
+| [fixture: c4/db-style-required-named-target] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-style-text-replacement]      | `{"shapes":[{"alias":"a","label":"Changed","descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","techn":"Tech","custom":"Own"}]}` を保持する。                                                                                                                                                                                                                            |
+| [fixture: c4/db-style-three-updates]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"green","fontColor":"blue","borderColor":"black"}]}` を保持する。                                                                                                                                                                                            |
+
+#### db-title
+
+| Fixture                            | 読み取り                                                                                                                                                                                    |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-title-acc-order]   | `{"title":"Third","accDescr":"Description","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。       |
+| [fixture: c4/db-title-comment]     | `{"title":"T %% comment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                         |
+| [fixture: c4/db-title-empty]       | `Error` で拒否される。                                                                                                                                                                      |
+| [fixture: c4/db-title-entity]      | `{"title":"T \ufb02\u00b0\u00b035\u00b6\u00df U","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/db-title-frontmatter] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                |
+| [fixture: c4/db-title-hash]        | `Error` で拒否される。                                                                                                                                                                      |
+| [fixture: c4/db-title-html]        | `{"title":"<b>T</b>","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                             |
+| [fixture: c4/db-title-non-ascii]   | `{"title":"\u65e5\u672c\u8a9e","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                   |
+| [fixture: c4/db-title-plain]       | `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                    |
+| [fixture: c4/db-title-quotes]      | `{"title":"\"T\"","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-title-semicolon]   | `Error` で拒否される。                                                                                                                                                                      |
+| [fixture: c4/db-title-spaces]      | `{"title":"  T  ","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-title-spaces-only] | `{"title":"  "}` を保持する。                                                                                                                                                               |
+| [fixture: c4/db-title-tab]         | `{"title":"\tT\t","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-title-tab-only]    | `{"title":"\t"}` を保持する。                                                                                                                                                               |
+| [fixture: c4/db-title-three-times] | `{"title":"Third","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                |
+| [fixture: c4/db-title-whitespace]  | `{"title":"   T   ","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                              |
+
+#### db-unclosed
+
+| Fixture                                    | 読み取り                                                                                                                                     |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-unclosed-directive-at-end] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### db-update
+
+| Fixture                                            | 読み取り                                                                                                                                                                                       |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-update-layout-three-times]         | `{"c4ShapeInRow":3,"c4BoundaryInRow":7}` を保持する。                                                                                                                                          |
+| [fixture: c4/db-update-rel-style-named-number-key] | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","custom":"NaN","unknown":-9}]}` を保持する。  |
+| [fixture: c4/db-update-rel-style-named-text]       | `{"rels":[{"type":"rel","from":"a","to":"b","label":"Raw","techn":{"text":""},"descr":{"text":""},"custom":"Own"}]}` を保持する。                                                              |
+| [fixture: c4/db-update-rel-style-three-times]      | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"green","lineColor":"blue","offsetX":3,"offsetY":"-7"}]}` を保持する。 |
+
+#### db-wrap
+
+| Fixture                              | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/db-wrap-directive]      | `{"shapes":[{"alias":"a","label":{"text":"wrap: A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","wrap":true}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"nowrap: B"},"techn":{"text":""},"descr":{"text":""},"wrap":true}]}` を保持する。                                                                                                                                                                                                                    |
+| [fixture: c4/db-wrap-frontmatter]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","wrap":true}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                       |
+| [fixture: c4/db-wrap-init-directive] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b","wrap":true}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global","wrap":true}],"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"wrap":true}]}` を保持する。 |
+
+#### gram-acc
+
+| Fixture                                                             | 読み取り                                                                                                                                                                |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-acc-descr-block-after-text-blank-lines]           | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-after-text-braces-inside]         | `{"accDescr":"D { E","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。         |
+| [fixture: c4/gram-acc-descr-block-after-text-comment-line]          | `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/gram-acc-descr-block-after-text-directive-line]        | `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/gram-acc-descr-block-after-text-next-line]             | `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。             |
+| [fixture: c4/gram-acc-descr-block-after-text-same-line]             | `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。             |
+| [fixture: c4/gram-acc-descr-block-after-text-space]                 | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-after-text-statement-after-brace] | `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。             |
+| [fixture: c4/gram-acc-descr-block-after-text-tab]                   | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-after-text-text]                  | `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/gram-acc-descr-block-after-text-text-after-brace]      | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-after-text-two-empty]             | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-after-text-unclosed]              | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-blank-lines]                      | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-braces-inside]                    | `{"accDescr":"D { E","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。         |
+| [fixture: c4/gram-acc-descr-block-comment-line]                     | `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/gram-acc-descr-block-directive-line]                   | `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/gram-acc-descr-block-empty]                            | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-next-line]                        | `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。             |
+| [fixture: c4/gram-acc-descr-block-same-line]                        | `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。             |
+| [fixture: c4/gram-acc-descr-block-space]                            | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-statement-after-brace]            | `{"accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。             |
+| [fixture: c4/gram-acc-descr-block-tab]                              | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-text]                             | `{"accDescr":"First\nSecond","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/gram-acc-descr-block-text-after-brace]                 | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-two-empty]                        | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-descr-block-unclosed]                         | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-description-block]                            | `Error` で拒否される。                                                                                                                                                  |
+| [fixture: c4/gram-acc-title-block]                                  | `Error` で拒否される。                                                                                                                                                  |
+
+#### gram-arguments
+
+| Fixture                                                  | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-arguments-bare-final]                  | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-bare-final-before-comma]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/gram-arguments-boundary-above]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/gram-arguments-boundary-bare]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-boundary-below]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","parentBoundary":"global"}]}` を保持する。                                                      |
+| [fixture: c4/gram-arguments-boundary-empty]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":""}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"","label":{"text":""},"type":{"text":""},"tags":"","link":"","parentBoundary":"global"}]}` を保持する。                                                       |
+| [fixture: c4/gram-arguments-boundary-missing-close]      | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-boundary-none]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-boundary-one]                | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-component-above]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-component-bare]              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-component-below]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                        |
+| [fixture: c4/gram-arguments-component-empty]             | `{"shapes":[{"alias":"","label":{"text":""},"techn":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":"","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                               |
+| [fixture: c4/gram-arguments-component-missing-close]     | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-component-none]              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-component-one]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-container-above]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-container-bare]              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-container-below]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                        |
+| [fixture: c4/gram-arguments-container-empty]             | `{"shapes":[{"alias":"","label":{"text":""},"techn":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":"","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                               |
+| [fixture: c4/gram-arguments-container-missing-close]     | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-container-none]              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-container-one]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-element-style-above]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                             |
+| [fixture: c4/gram-arguments-element-style-bare]          | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-element-style-below]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend"}]}` を保持する。                                                                                                                                   |
+| [fixture: c4/gram-arguments-element-style-empty]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-element-style-missing-close] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"UpdateElementStyle(a"},"sprite":"red","tags":"white","link":"black","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                   |
+| [fixture: c4/gram-arguments-element-style-none]          | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-element-style-one]           | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-index-above]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/gram-arguments-index-bare]                  | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-index-below]                 | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                              |
+| [fixture: c4/gram-arguments-index-empty]                 | `{"rels":[{"type":"rel","from":"","to":"","label":{"text":""},"techn":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":""}]}` を保持する。                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-index-missing-close]         | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-index-none]                  | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-index-one]                   | 初期要約を保持する。                                                                                                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/gram-arguments-layout-above]                | `{"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/gram-arguments-layout-bare]                 | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-layout-empty]                | 初期要約を保持する。                                                                                                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/gram-arguments-layout-missing-close]        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-layout-none]                 | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-layout-one]                  | `{"c4ShapeInRow":3}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                               |
+| [fixture: c4/gram-arguments-node-above]                  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/gram-arguments-node-bare]                   | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-node-below]                  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","nodeType":"node","parentBoundary":"global"}]}` を保持する。               |
+| [fixture: c4/gram-arguments-node-empty]                  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":""}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"","label":{"text":""},"type":{"text":""},"descr":{"text":""},"tags":"","link":"","nodeType":"node","parentBoundary":"global"}]}` を保持する。                 |
+| [fixture: c4/gram-arguments-node-missing-close]          | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-node-none]                   | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-node-one]                    | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-person-above]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/gram-arguments-person-bare]                 | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-person-below]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                   |
+| [fixture: c4/gram-arguments-person-empty]                | `{"shapes":[{"alias":"","label":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":"","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                      |
+| [fixture: c4/gram-arguments-person-missing-close]        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-person-none]                 | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-person-one]                  | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-above]                   | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/gram-arguments-rel-bare]                    | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-below]                   | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags"}]}` を保持する。                                                                                                                                                                                                                                                              |
+| [fixture: c4/gram-arguments-rel-empty]                   | `{"rels":[{"type":"rel","from":"","to":"","label":{"text":""},"techn":{"text":""},"descr":{"text":""},"sprite":"","tags":"","link":""}]}` を保持する。                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-missing-close]           | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-none]                    | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-one]                     | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-style-above]             | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/gram-arguments-rel-style-bare]              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-style-below]             | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4}]}` を保持する。                                                                                                                                                                                                                                                  |
+| [fixture: c4/gram-arguments-rel-style-empty]             | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""}}]}` を保持する。                                                                                                                                                                                                                                                                                                    |
+| [fixture: c4/gram-arguments-rel-style-missing-close]     | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"UpdateRelStyle(a"},"descr":{"text":"b"},"sprite":"red","tags":"blue","link":"-4"}]}` を保持する。                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-style-none]              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/gram-arguments-rel-style-one]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+
+#### gram-boundary
+
+| Fixture                                            | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-boundary-empty]                  | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/gram-boundary-empty-same-line]        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/gram-boundary-global-alias]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"boundaries":[{"alias":"global","label":{"text":"Written"},"type":{"text":"system"},"tags":null,"link":null,"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| [fixture: c4/gram-boundary-nested]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"d"},{"alias":"e","label":{"text":"E"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"c"},{"alias":"f","label":{"text":"F"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"},{"alias":"g","label":{"text":"G"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"},{"alias":"c","label":{"text":"C"},"type":{"text":"node"},"descr":{"text":""},"nodeType":"node","parentBoundary":"b"},{"alias":"d","label":{"text":"D"},"type":{"text":"CONTAINER"},"parentBoundary":"c"}]}` を保持する。 |
+| [fixture: c4/gram-boundary-next-line]              | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/gram-boundary-next-line-inline-child] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| [fixture: c4/gram-boundary-no-brace]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/gram-boundary-only-title]             | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/gram-boundary-reused-alias]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"},{"alias":"b","label":{"text":"Shape B"},"descr":{"text":""},"typeC4Shape":{"text":"system"},"parentBoundary":"global","bgColor":"red"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                                                                                                                                                                                            |
+| [fixture: c4/gram-boundary-same-line]              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/gram-boundary-unclosed]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+
+#### gram-data
+
+| Fixture                       | 読み取り               |
+| ----------------------------- | ---------------------- |
+| [fixture: c4/gram-data-block] | `Error` で拒否される。 |
+
+#### gram-direction
+
+| Fixture                                      | 読み取り               |
+| -------------------------------------------- | ---------------------- |
+| [fixture: c4/gram-direction-bt-inside-label] | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-bt-line]         | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-bt-lower-value]  | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-bt-prefix]       | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-bt-upper]        | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-lr-inside-label] | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-lr-line]         | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-lr-lower-value]  | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-lr-prefix]       | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-lr-upper]        | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-rl-inside-label] | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-rl-line]         | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-rl-lower-value]  | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-rl-prefix]       | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-rl-upper]        | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-tb]              | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-tb-inside-label] | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-tb-line]         | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-tb-lower-value]  | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-tb-prefix]       | `Error` で拒否される。 |
+| [fixture: c4/gram-direction-tb-upper]        | `Error` で拒否される。 |
+
+#### gram-header
+
+| Fixture                                | 読み取り                   |
+| -------------------------------------- | -------------------------- |
+| [fixture: c4/gram-header-direction-bt] | `TypeError` で拒否される。 |
+| [fixture: c4/gram-header-direction-lr] | `TypeError` で拒否される。 |
+| [fixture: c4/gram-header-direction-rl] | `TypeError` で拒否される。 |
+| [fixture: c4/gram-header-direction-tb] | `TypeError` で拒否される。 |
+
+#### gram-named
+
+| Fixture                               | 読み取り                   |
+| ------------------------------------- | -------------------------- |
+| [fixture: c4/gram-named-bare-value]   | `Error` で拒否される。     |
+| [fixture: c4/gram-named-empty-value]  | `Error` で拒否される。     |
+| [fixture: c4/gram-named-proto]        | `TypeError` で拒否される。 |
+| [fixture: c4/gram-named-single-quote] | `Error` で拒否される。     |
+
+#### gram-other
+
+| Fixture                                         | 読み取り                                                                                                                                                                |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-other-statements-after-shape] | `{"title":"A","accDescr":"D","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### gram-statement
+
+| Fixture                                      | 読み取り               |
+| -------------------------------------------- | ---------------------- |
+| [fixture: c4/gram-statement-newline-in-call] | `Error` で拒否される。 |
+
+#### gram-title
+
+| Fixture                                  | 読み取り                                                                                                                                                                                                                                                                                                                                                                   |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/gram-title-inside-boundary] | `{"title":"T","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"system"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### gram-two
+
+| Fixture                                   | 読み取り               |
+| ----------------------------------------- | ---------------------- |
+| [fixture: c4/gram-two-statements-on-line] | `Error` で拒否される。 |
+
+#### gram-unclosed
+
+| Fixture                                    | 読み取り               |
+| ------------------------------------------ | ---------------------- |
+| [fixture: c4/gram-unclosed-accdescr]       | `Error` で拒否される。 |
+| [fixture: c4/gram-unclosed-accdescription] | `Error` で拒否される。 |
+| [fixture: c4/gram-unclosed-acctitle]       | `Error` で拒否される。 |
+| [fixture: c4/gram-unclosed-title]          | `Error` で拒否される。 |
+
+#### header-after
+
+| Fixture                                            | 読み取り                                                                                                                                     |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-after-bare-percent-line]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-after-blank-lines]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-after-comment-line]            | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-after-directive-line]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-after-empty-braces-line]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-after-frontmatter-and-comment] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-after-hash-line]               | `UnknownDiagramError` で拒否される。                                                                                                         |
+| [fixture: c4/header-after-semicolon-line]          | `UnknownDiagramError` で拒否される。                                                                                                         |
+| [fixture: c4/header-after-whitespace-line]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### header-component
+
+| Fixture                                                     | 読み取り                                                                                                                                                          |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-component-comment-glued]                | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-comment-on-header-line]       | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-dash-suffix]                  | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-digit-suffix]                 | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-glued-keyword-suffix]         | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-lower]                        | `UnknownDiagramError` で拒否される。                                                                                                                              |
+| [fixture: c4/header-component-minimal]                      | `{"type":"C4Component","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-component-mixed]                        | `UnknownDiagramError` で拒否される。                                                                                                                              |
+| [fixture: c4/header-component-non-ascii-suffix]             | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-only]                         | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-only-lf]                      | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-statement-on-header-line]     | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-tab-statement-on-header-line] | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-title-on-header-line]         | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-twice]                        | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-underscore-suffix]            | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-component-upper]                        | `UnknownDiagramError` で拒否される。                                                                                                                              |
+| [fixture: c4/header-component-word-suffix]                  | `Error` で拒否される。                                                                                                                                            |
+
+#### header-container
+
+| Fixture                                                     | 読み取り                                                                                                                                                          |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-container-comment-glued]                | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-comment-on-header-line]       | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-dash-suffix]                  | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-digit-suffix]                 | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-glued-keyword-suffix]         | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-lower]                        | `UnknownDiagramError` で拒否される。                                                                                                                              |
+| [fixture: c4/header-container-minimal]                      | `{"type":"C4Container","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-container-mixed]                        | `UnknownDiagramError` で拒否される。                                                                                                                              |
+| [fixture: c4/header-container-non-ascii-suffix]             | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-only]                         | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-only-lf]                      | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-statement-on-header-line]     | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-tab-statement-on-header-line] | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-title-on-header-line]         | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-twice]                        | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-underscore-suffix]            | `Error` で拒否される。                                                                                                                                            |
+| [fixture: c4/header-container-upper]                        | `UnknownDiagramError` で拒否される。                                                                                                                              |
+| [fixture: c4/header-container-word-suffix]                  | `Error` で拒否される。                                                                                                                                            |
+
+#### header-context
+
+| Fixture                                                   | 読み取り                                                                                                                                     |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-context-comment-glued]                | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-comment-on-header-line]       | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-dash-suffix]                  | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-digit-suffix]                 | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-glued-keyword-suffix]         | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-lower]                        | `UnknownDiagramError` で拒否される。                                                                                                         |
+| [fixture: c4/header-context-minimal]                      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-context-mixed]                        | `UnknownDiagramError` で拒否される。                                                                                                         |
+| [fixture: c4/header-context-non-ascii-suffix]             | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-only]                         | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-statement-on-header-line]     | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-tab-statement-on-header-line] | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-title-on-header-line]         | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-twice]                        | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-underscore-suffix]            | `Error` で拒否される。                                                                                                                       |
+| [fixture: c4/header-context-upper]                        | `UnknownDiagramError` で拒否される。                                                                                                         |
+| [fixture: c4/header-context-word-suffix]                  | `Error` で拒否される。                                                                                                                       |
+
+#### header-deployment
+
+| Fixture                                                      | 読み取り                                                                                                                                                           |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [fixture: c4/header-deployment-comment-glued]                | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-comment-on-header-line]       | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-dash-suffix]                  | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-digit-suffix]                 | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-glued-keyword-suffix]         | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-lower]                        | `UnknownDiagramError` で拒否される。                                                                                                                               |
+| [fixture: c4/header-deployment-minimal]                      | `{"type":"C4Deployment","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-deployment-mixed]                        | `UnknownDiagramError` で拒否される。                                                                                                                               |
+| [fixture: c4/header-deployment-non-ascii-suffix]             | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-only]                         | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-only-lf]                      | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-statement-on-header-line]     | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-tab-statement-on-header-line] | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-title-on-header-line]         | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-twice]                        | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-underscore-suffix]            | `Error` で拒否される。                                                                                                                                             |
+| [fixture: c4/header-deployment-upper]                        | `UnknownDiagramError` で拒否される。                                                                                                                               |
+| [fixture: c4/header-deployment-word-suffix]                  | `Error` で拒否される。                                                                                                                                             |
+
+#### header-dynamic
+
+| Fixture                                                   | 読み取り                                                                                                                                                        |
+| --------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/header-dynamic-comment-glued]                | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-comment-on-header-line]       | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-dash-suffix]                  | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-digit-suffix]                 | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-glued-keyword-suffix]         | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-lower]                        | `UnknownDiagramError` で拒否される。                                                                                                                            |
+| [fixture: c4/header-dynamic-minimal]                      | `{"type":"C4Dynamic","shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/header-dynamic-mixed]                        | `UnknownDiagramError` で拒否される。                                                                                                                            |
+| [fixture: c4/header-dynamic-non-ascii-suffix]             | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-only]                         | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-only-lf]                      | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-statement-on-header-line]     | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-tab-statement-on-header-line] | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-title-on-header-line]         | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-twice]                        | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-underscore-suffix]            | `Error` で拒否される。                                                                                                                                          |
+| [fixture: c4/header-dynamic-upper]                        | `UnknownDiagramError` で拒否される。                                                                                                                            |
+| [fixture: c4/header-dynamic-word-suffix]                  | `Error` で拒否される。                                                                                                                                          |
+
+#### lex-after
+
+| Fixture                                                       | 読み取り                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-after-boundary-call]                         | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-boundary-comment]                      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/lex-after-boundary-comment-glued]                | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/lex-after-boundary-directive]                    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/lex-after-boundary-directive-unclosed]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/lex-after-boundary-directive-word-unclosed]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"tags":"tags","link":"link","parentBoundary":"global"}]}` を保持する。                                        |
+| [fixture: c4/lex-after-boundary-double-close]                 | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-boundary-double-semicolon]             | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-boundary-semicolon]                    | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-boundary-semicolon-spaced]             | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-boundary-word]                         | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-call]                        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-comment]                     | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-comment-glued]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-directive]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-directive-unclosed]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-directive-word-unclosed]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"component"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-double-close]                | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-double-semicolon]            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-semicolon]                   | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-semicolon-spaced]            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-component-word]                        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-call]                        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-comment]                     | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-comment-glued]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-directive]                   | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-directive-unclosed]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-directive-word-unclosed]     | `{"shapes":[{"alias":"a","label":{"text":"A"},"techn":{"text":"Java"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"container"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-double-close]                | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-double-semicolon]            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-semicolon]                   | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-semicolon-spaced]            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-container-word]                        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-element-style-call]                    | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-element-style-comment]                 | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                             |
+| [fixture: c4/lex-after-element-style-comment-glued]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                             |
+| [fixture: c4/lex-after-element-style-directive]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                             |
+| [fixture: c4/lex-after-element-style-directive-unclosed]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                             |
+| [fixture: c4/lex-after-element-style-directive-word-unclosed] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global","bgColor":"red","fontColor":"white","borderColor":"black","shadowing":"yes","shape":"box","sprite":"sprite","techn":"Java","legendText":"Legend","legendSprite":"star"}]}` を保持する。                                                                                                             |
+| [fixture: c4/lex-after-element-style-double-close]            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-element-style-double-semicolon]        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-element-style-semicolon]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-element-style-semicolon-spaced]        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-element-style-word]                    | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-index-call]                            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-index-comment]                         | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-comment-glued]                   | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-directive]                       | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-directive-unclosed]              | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-directive-word-unclosed]         | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-index-double-close]                    | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-index-double-semicolon]                | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-index-semicolon]                       | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-index-semicolon-spaced]                | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-index-word]                            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-layout-call]                           | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-layout-comment]                        | `{"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-comment-glued]                  | `{"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-directive]                      | `{"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-directive-unclosed]             | `{"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-directive-word-unclosed]        | `{"c4ShapeInRow":3,"c4BoundaryInRow":1}` を保持する。                                                                                                                                                                                                                                                                                                                                                                           |
+| [fixture: c4/lex-after-layout-double-close]                   | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-layout-double-semicolon]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-layout-semicolon]                      | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-layout-semicolon-spaced]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-layout-word]                           | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-node-call]                             | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-node-comment]                          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-after-node-comment-glued]                    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-after-node-directive]                        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-after-node-directive-unclosed]               | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-after-node-directive-word-unclosed]          | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"b"}],"boundaries":[{"alias":"global","label":{"text":"global"},"type":{"text":"global"},"tags":null,"link":null,"parentBoundary":""},{"alias":"b","label":{"text":"B"},"type":{"text":"type"},"descr":{"text":"D"},"tags":"tags","link":"link","nodeType":"node","parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-after-node-double-close]                     | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-node-double-semicolon]                 | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-node-semicolon]                        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-node-semicolon-spaced]                 | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-node-word]                             | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-person-call]                           | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-person-comment]                        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-comment-glued]                  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-directive]                      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-directive-unclosed]             | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-directive-word-unclosed]        | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link","typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                                                                                                                                     |
+| [fixture: c4/lex-after-person-double-close]                   | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-person-double-semicolon]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-person-semicolon]                      | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-person-semicolon-spaced]               | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-person-word]                           | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-call]                              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-comment]                           | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-comment-glued]                     | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-directive]                         | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-directive-unclosed]                | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-directive-word-unclosed]           | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"HTTPS"},"descr":{"text":"D"},"sprite":"sprite","tags":"tags","link":"link"}]}` を保持する。                                                                                                                                                                                                                                                |
+| [fixture: c4/lex-after-rel-double-close]                      | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-double-semicolon]                  | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-semicolon]                         | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-semicolon-spaced]                  | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-style-call]                        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-style-comment]                     | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-comment-glued]               | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-directive]                   | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-directive-unclosed]          | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-directive-word-unclosed]     | `{"rels":[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":""},"descr":{"text":""},"textColor":"red","lineColor":"blue","offsetX":-4,"offsetY":5}]}` を保持する。                                                                                                                                                                                                                                      |
+| [fixture: c4/lex-after-rel-style-double-close]                | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-style-double-semicolon]            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-style-semicolon]                   | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-style-semicolon-spaced]            | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-style-word]                        | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+| [fixture: c4/lex-after-rel-word]                              | `Error` で拒否される。                                                                                                                                                                                                                                                                                                                                                                                                          |
+
+#### lex-bom
+
+| Fixture                                  | 読み取り                                                                                                                                                                                                                                                      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-bom-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-bom-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-bom-between-statements] | `Error` で拒否される。                                                                                                                                                                                                                                        |
+| [fixture: c4/lex-bom-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-bom-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-bom-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-bom-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-bom-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-bom-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-comment
+
+| Fixture                                  | 読み取り                                                                                                                                                 |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-comment-hash]           | `Error` で拒否される。                                                                                                                                   |
+| [fixture: c4/lex-comment-inline]         | `{"shapes":[{"alias":"a","label":{"text":"A%% comment"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。   |
+| [fixture: c4/lex-comment-line]           | `{"shapes":[{"alias":"a","label":{"text":"first\nsecond"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-comment-single-percent] | `Error` で拒否される。                                                                                                                                   |
+
+#### lex-cr
+
+| Fixture                                 | 読み取り                                                                                                                                                                                                                                                      |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-cr-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-cr-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-cr-between-statements] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-cr-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-cr-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-cr-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-cr-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-cr-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-cr-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-crlf
+
+| Fixture                                   | 読み取り                                                                                                                                                                                                                                                      |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-crlf-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-crlf-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-crlf-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-crlf-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-crlf-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-crlf-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-crlf-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-directive
+
+| Fixture                                              | 読み取り                                                                                                                                                   |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-directive-colon-unclosed-next-line] | `Error` で拒否される。                                                                                                                                     |
+| [fixture: c4/lex-directive-end]                      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。               |
+| [fixture: c4/lex-directive-keyword]                  | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。               |
+| [fixture: c4/lex-directive-line]                     | `{"shapes":[{"alias":"a","label":{"text":"first\n\nsecond"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-directive-start]                    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。               |
+| [fixture: c4/lex-directive-unclosed-next-line]       | `Error` で拒否される。                                                                                                                                     |
+
+#### lex-double
+
+| Fixture                        | 読み取り                                                                                                                                     |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-double-comma] | `{"shapes":[{"alias":"a","label":{"text":""},"descr":{"text":"D"},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### lex-empty
+
+| Fixture                         | 読み取り                                                                                                                                    |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-empty-comma]   | `{"shapes":[{"alias":"","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-empty-strings] | `{"shapes":[{"alias":"","label":{"text":""},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。  |
+
+#### lex-ff
+
+| Fixture                                 | 読み取り                                                                                                                                                                                                                                                      |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-ff-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ff-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ff-between-statements] | `Error` で拒否される。                                                                                                                                                                                                                                        |
+| [fixture: c4/lex-ff-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-ff-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ff-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ff-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-ff-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ff-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-ideographic
+
+| Fixture                                          | 読み取り                                                                                                                                                                                                                                                      |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-ideographic-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ideographic-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ideographic-between-statements] | `Error` で拒否される。                                                                                                                                                                                                                                        |
+| [fixture: c4/lex-ideographic-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-ideographic-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ideographic-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ideographic-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-ideographic-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ideographic-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-keyword
+
+| Fixture                                                          | 読み取り                                       |
+| ---------------------------------------------------------------- | ---------------------------------------------- |
+| [fixture: c4/lex-keyword-accdescr-dash]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescr-digit]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescr-letter]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescr-lower]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescr-non-ascii]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescr-underscore]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescr-upper]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescription-dash]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescription-digit]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescription-letter]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescription-lower]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescription-non-ascii]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescription-underscore]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-accdescription-upper]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-acctitle-dash]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-acctitle-digit]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-acctitle-letter]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-acctitle-lower]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-acctitle-non-ascii]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-acctitle-underscore]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-acctitle-upper]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-birel-dash]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-birel-digit]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-birel-letter]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-birel-lower]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-birel-non-ascii]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-birel-underscore]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-birel-upper]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-boundary-dash]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-boundary-digit]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-boundary-letter]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-boundary-lower]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-boundary-non-ascii]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-boundary-underscore]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-boundary-upper]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-dash]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-digit]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-ext-dash]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-ext-digit]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-ext-letter]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-ext-lower]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-ext-non-ascii]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-ext-underscore]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-ext-upper]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-letter]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-lower]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-non-ascii]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-underscore]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-component-upper]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-dash]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-digit]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-ext-dash]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-ext-digit]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-ext-letter]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-ext-lower]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-ext-non-ascii]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-ext-underscore]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-ext-upper]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-letter]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-lower]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-non-ascii]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-underscore]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentdb-upper]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-dash]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-digit]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-ext-dash]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-ext-digit]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-ext-letter]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-ext-lower]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-ext-non-ascii]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-ext-underscore]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-ext-upper]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-letter]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-lower]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-non-ascii]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-underscore]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-componentqueue-upper]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-boundary-dash]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-boundary-digit]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-boundary-letter]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-boundary-lower]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-boundary-non-ascii]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-boundary-underscore]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-boundary-upper]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-dash]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-digit]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-ext-dash]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-ext-digit]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-ext-letter]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-ext-lower]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-ext-non-ascii]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-ext-underscore]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-ext-upper]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-letter]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-lower]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-non-ascii]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-underscore]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-container-upper]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-dash]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-digit]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-ext-dash]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-ext-digit]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-ext-letter]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-ext-lower]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-ext-non-ascii]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-ext-underscore]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-ext-upper]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-letter]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-lower]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-non-ascii]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-underscore]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerdb-upper]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-dash]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-digit]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-ext-dash]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-ext-digit]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-ext-letter]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-ext-lower]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-ext-non-ascii]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-ext-underscore]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-ext-upper]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-letter]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-lower]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-non-ascii]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-underscore]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-containerqueue-upper]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-deployment-node-dash]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-deployment-node-digit]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-deployment-node-letter]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-deployment-node-lower]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-deployment-node-non-ascii]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-deployment-node-underscore]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-deployment-node-upper]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-enterprise-boundary-dash]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-enterprise-boundary-digit]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-enterprise-boundary-letter]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-enterprise-boundary-lower]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-enterprise-boundary-non-ascii]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-enterprise-boundary-underscore]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-enterprise-boundary-upper]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-accdescr-blank-line]                | `{"accDescr":"Person(a, \"A\")"}` を保持する。 |
+| [fixture: c4/lex-keyword-gap-accdescr-comment-line]              | `{"accDescr":"Person(a, \"A\")"}` を保持する。 |
+| [fixture: c4/lex-keyword-gap-accdescr-directive-line]            | `{"accDescr":"Person(a, \"A\")"}` を保持する。 |
+| [fixture: c4/lex-keyword-gap-accdescr-lf]                        | `{"accDescr":"Person(a, \"A\")"}` を保持する。 |
+| [fixture: c4/lex-keyword-gap-accdescription-blank-line]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-accdescription-comment-line]        | `{"accDescr":"Person(a, \"A\")"}` を保持する。 |
+| [fixture: c4/lex-keyword-gap-accdescription-directive-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-accdescription-lf]                  | `{"accDescr":"Person(a, \"A\")"}` を保持する。 |
+| [fixture: c4/lex-keyword-gap-acctitle-blank-line]                | `{"title":"Person(a, \"A\")"}` を保持する。    |
+| [fixture: c4/lex-keyword-gap-acctitle-comment-line]              | `{"title":"Person(a, \"A\")"}` を保持する。    |
+| [fixture: c4/lex-keyword-gap-acctitle-directive-line]            | `{"title":"Person(a, \"A\")"}` を保持する。    |
+| [fixture: c4/lex-keyword-gap-acctitle-lf]                        | `{"title":"Person(a, \"A\")"}` を保持する。    |
+| [fixture: c4/lex-keyword-gap-birel-blank-line]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-birel-comment-line]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-birel-directive-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-birel-lf]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-birel-space]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-birel-tab]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-boundary-blank-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-boundary-comment-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-boundary-directive-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-boundary-lf]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-boundary-space]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-boundary-tab]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-blank-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-comment-line]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-directive-line]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-ext-blank-line]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-ext-comment-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-ext-directive-line]       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-ext-lf]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-ext-space]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-ext-tab]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-lf]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-space]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-component-tab]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-blank-line]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-comment-line]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-directive-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-blank-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-comment-line]       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-directive-line]     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-lf]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-space]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-ext-tab]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-lf]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-space]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentdb-tab]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-blank-line]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-comment-line]        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-directive-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-blank-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-comment-line]    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-directive-line]  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-lf]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-space]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-ext-tab]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-lf]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-space]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-componentqueue-tab]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-blank-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-boundary-blank-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-boundary-comment-line]    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-boundary-directive-line]  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-boundary-lf]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-boundary-space]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-boundary-tab]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-comment-line]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-directive-line]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-ext-blank-line]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-ext-comment-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-ext-directive-line]       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-ext-lf]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-ext-space]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-ext-tab]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-lf]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-space]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-container-tab]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-blank-line]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-comment-line]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-directive-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-blank-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-comment-line]       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-directive-line]     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-lf]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-space]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-ext-tab]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-lf]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-space]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerdb-tab]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-blank-line]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-comment-line]        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-directive-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-blank-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-comment-line]    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-directive-line]  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-lf]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-space]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-ext-tab]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-lf]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-space]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-containerqueue-tab]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-deployment-node-blank-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-deployment-node-comment-line]       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-deployment-node-directive-line]     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-deployment-node-lf]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-deployment-node-space]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-deployment-node-tab]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-blank-line]     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-comment-line]   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-directive-line] | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-lf]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-space]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-enterprise-boundary-tab]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-blank-line]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-comment-line]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-directive-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-l-blank-line]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-l-comment-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-l-directive-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-l-lf]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-l-space]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-l-tab]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-lf]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-r-blank-line]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-r-comment-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-r-directive-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-r-lf]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-r-space]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-r-tab]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-space]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-node-tab]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-blank-line]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-comment-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-directive-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-ext-blank-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-ext-comment-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-ext-directive-line]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-ext-lf]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-ext-space]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-ext-tab]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-lf]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-space]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-person-tab]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-back-blank-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-back-comment-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-back-directive-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-back-lf]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-back-space]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-back-tab]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-blank-line]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-comment-line]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-d-blank-line]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-d-comment-line]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-d-directive-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-d-lf]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-d-space]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-d-tab]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-directive-line]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-down-blank-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-down-comment-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-down-directive-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-down-lf]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-down-space]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-down-tab]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-l-blank-line]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-l-comment-line]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-l-directive-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-l-lf]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-l-space]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-l-tab]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-left-blank-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-left-comment-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-left-directive-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-left-lf]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-left-space]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-left-tab]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-lf]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-r-blank-line]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-r-comment-line]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-r-directive-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-r-lf]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-r-space]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-r-tab]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-right-blank-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-right-comment-line]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-right-directive-line]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-right-lf]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-right-space]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-right-tab]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-space]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-tab]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-u-blank-line]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-u-comment-line]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-u-directive-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-u-lf]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-u-space]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-u-tab]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-up-blank-line]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-up-comment-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-up-directive-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-up-lf]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-up-space]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-rel-up-tab]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-relindex-blank-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-relindex-comment-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-relindex-directive-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-relindex-lf]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-relindex-space]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-relindex-tab]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-blank-line]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-boundary-blank-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-boundary-comment-line]       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-boundary-directive-line]     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-boundary-lf]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-boundary-space]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-boundary-tab]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-comment-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-directive-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-ext-blank-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-ext-comment-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-ext-directive-line]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-ext-lf]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-ext-space]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-ext-tab]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-lf]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-space]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-system-tab]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-blank-line]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-comment-line]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-directive-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-blank-line]            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-comment-line]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-directive-line]        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-lf]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-space]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-ext-tab]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-lf]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-space]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemdb-tab]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-blank-line]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-comment-line]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-directive-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-blank-line]         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-comment-line]       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-directive-line]     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-lf]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-space]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-ext-tab]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-lf]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-space]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-systemqueue-tab]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-title-blank-line]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-title-comment-line]                 | `{"title":"Person(a, \"A\")"}` を保持する。    |
+| [fixture: c4/lex-keyword-gap-title-directive-line]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-title-lf]                           | `{"title":"Person(a, \"A\")"}` を保持する。    |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-blank-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-comment-line]    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-directive-line]  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-lf]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-space]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updateelementstyle-tab]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-blank-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-comment-line]    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-directive-line]  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-lf]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-space]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updatelayoutconfig-tab]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-blank-line]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-comment-line]        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-directive-line]      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-lf]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-space]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-gap-updaterelstyle-tab]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-dash]                              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-digit]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-l-dash]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-l-digit]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-l-letter]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-l-lower]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-l-non-ascii]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-l-underscore]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-l-upper]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-letter]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-lower]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-non-ascii]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-r-dash]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-r-digit]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-r-letter]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-r-lower]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-r-non-ascii]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-r-underscore]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-r-upper]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-underscore]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-node-upper]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-dash]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-digit]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-ext-dash]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-ext-digit]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-ext-letter]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-ext-lower]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-ext-non-ascii]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-ext-underscore]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-ext-upper]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-letter]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-lower]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-non-ascii]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-underscore]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-person-upper]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-back-dash]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-back-digit]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-back-letter]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-back-lower]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-back-non-ascii]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-back-underscore]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-back-upper]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-d-dash]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-d-digit]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-d-letter]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-d-lower]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-d-non-ascii]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-d-underscore]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-d-upper]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-dash]                               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-digit]                              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-down-dash]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-down-digit]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-down-letter]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-down-lower]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-down-non-ascii]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-down-underscore]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-down-upper]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-l-dash]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-l-digit]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-l-letter]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-l-lower]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-l-non-ascii]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-l-underscore]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-l-upper]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-left-dash]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-left-digit]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-left-letter]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-left-lower]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-left-non-ascii]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-left-underscore]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-left-upper]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-letter]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-lower]                              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-non-ascii]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-r-dash]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-r-digit]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-r-letter]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-r-lower]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-r-non-ascii]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-r-underscore]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-r-upper]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-right-dash]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-right-digit]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-right-letter]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-right-lower]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-right-non-ascii]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-right-underscore]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-right-upper]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-u-dash]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-u-digit]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-u-letter]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-u-lower]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-u-non-ascii]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-u-underscore]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-u-upper]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-underscore]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-up-dash]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-up-digit]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-up-letter]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-up-lower]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-up-non-ascii]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-up-underscore]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-up-upper]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-rel-upper]                              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-relindex-dash]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-relindex-digit]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-relindex-letter]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-relindex-lower]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-relindex-non-ascii]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-relindex-underscore]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-relindex-upper]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-boundary-dash]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-boundary-digit]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-boundary-letter]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-boundary-lower]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-boundary-non-ascii]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-boundary-underscore]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-boundary-upper]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-dash]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-digit]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-ext-dash]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-ext-digit]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-ext-letter]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-ext-lower]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-ext-non-ascii]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-ext-underscore]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-ext-upper]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-letter]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-lower]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-non-ascii]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-underscore]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-system-upper]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-dash]                          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-digit]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-ext-dash]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-ext-digit]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-ext-letter]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-ext-lower]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-ext-non-ascii]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-ext-underscore]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-ext-upper]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-letter]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-lower]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-non-ascii]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-underscore]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemdb-upper]                         | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-dash]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-digit]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-ext-dash]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-ext-digit]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-ext-letter]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-ext-lower]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-ext-non-ascii]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-ext-underscore]             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-ext-upper]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-letter]                     | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-lower]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-non-ascii]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-underscore]                 | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-systemqueue-upper]                      | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-title-dash]                             | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-title-digit]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-title-letter]                           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-title-non-ascii]                        | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-title-underscore]                       | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-title-upper]                            | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updateelementstyle-dash]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updateelementstyle-digit]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updateelementstyle-letter]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updateelementstyle-lower]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updateelementstyle-non-ascii]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updateelementstyle-underscore]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updateelementstyle-upper]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updatelayoutconfig-dash]                | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updatelayoutconfig-digit]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updatelayoutconfig-letter]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updatelayoutconfig-lower]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updatelayoutconfig-non-ascii]           | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updatelayoutconfig-underscore]          | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updatelayoutconfig-upper]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updaterelstyle-dash]                    | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updaterelstyle-digit]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updaterelstyle-letter]                  | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updaterelstyle-lower]                   | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updaterelstyle-non-ascii]               | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updaterelstyle-underscore]              | `Error` で拒否される。                         |
+| [fixture: c4/lex-keyword-updaterelstyle-upper]                   | `Error` で拒否される。                         |
+
+#### lex-ls
+
+| Fixture                                 | 読み取り                                                                                                                                                                                                                                                      |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-ls-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ls-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ls-between-statements] | `Error` で拒否される。                                                                                                                                                                                                                                        |
+| [fixture: c4/lex-ls-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-ls-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ls-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ls-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-ls-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ls-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-missing
+
+| Fixture                         | 読み取り               |
+| ------------------------------- | ---------------------- |
+| [fixture: c4/lex-missing-comma] | `Error` で拒否される。 |
+| [fixture: c4/lex-missing-open]  | `Error` で拒否される。 |
+
+#### lex-nbsp
+
+| Fixture                                   | 読み取り                                                                                                                                                                                                                                                      |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-nbsp-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-nbsp-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-nbsp-between-statements] | `Error` で拒否される。                                                                                                                                                                                                                                        |
+| [fixture: c4/lex-nbsp-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-nbsp-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-nbsp-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-nbsp-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-nbsp-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-nbsp-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-nel
+
+| Fixture                                  | 読み取り                             |
+| ---------------------------------------- | ------------------------------------ |
+| [fixture: c4/lex-nel-after-header]       | `Error` で拒否される。               |
+| [fixture: c4/lex-nel-before-header]      | `UnknownDiagramError` で拒否される。 |
+| [fixture: c4/lex-nel-between-statements] | `Error` で拒否される。               |
+| [fixture: c4/lex-nel-line-end]           | `Error` で拒否される。               |
+| [fixture: c4/lex-nel-line-start]         | `Error` で拒否される。               |
+| [fixture: c4/lex-nel-text-end]           | `Error` で拒否される。               |
+| [fixture: c4/lex-nel-whitespace-between] | `Error` で拒否される。               |
+| [fixture: c4/lex-nel-whitespace-first]   | `Error` で拒否される。               |
+| [fixture: c4/lex-nel-whitespace-last]    | `Error` で拒否される。               |
+
+#### lex-ps
+
+| Fixture                                 | 読み取り                                                                                                                                                                                                                                                      |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-ps-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ps-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ps-between-statements] | `Error` で拒否される。                                                                                                                                                                                                                                        |
+| [fixture: c4/lex-ps-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-ps-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ps-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ps-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-ps-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-ps-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-tab
+
+| Fixture                                  | 読み取り                                                                                                                                                                                                                                                      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-tab-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-tab-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-tab-between-statements] | `Error` で拒否される。                                                                                                                                                                                                                                        |
+| [fixture: c4/lex-tab-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-tab-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-tab-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-tab-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-tab-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-tab-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+#### lex-trailing
+
+| Fixture                          | 読み取り                                                                                                                                     |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-trailing-comma] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+
+#### lex-unclosed
+
+| Fixture                                | 読み取り               |
+| -------------------------------------- | ---------------------- |
+| [fixture: c4/lex-unclosed-named]       | `Error` で拒否される。 |
+| [fixture: c4/lex-unclosed-parenthesis] | `Error` で拒否される。 |
+| [fixture: c4/lex-unclosed-quote]       | `Error` で拒否される。 |
+
+#### lex-vt
+
+| Fixture                                 | 読み取り                                                                                                                                                                                                                                                      |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [fixture: c4/lex-vt-after-header]       | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-vt-before-header]      | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-vt-between-statements] | `Error` で拒否される。                                                                                                                                                                                                                                        |
+| [fixture: c4/lex-vt-line-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-vt-line-start]         | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-vt-text-end]           | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-vt-whitespace-between] | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"},{"alias":"b","label":{"text":"B"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。 |
+| [fixture: c4/lex-vt-whitespace-first]   | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+| [fixture: c4/lex-vt-whitespace-last]    | `{"shapes":[{"alias":"a","label":{"text":"A"},"descr":{"text":""},"typeC4Shape":{"text":"person"},"parentBoundary":"global"}]}` を保持する。                                                                                                                  |
+
+### 位置引数の対応
+
+以下の各行は、
+
+名前付き引数を使わない呼び出しの記述順を 1 から数える。
+[fixture: c4/db-keyword-person]
+
+| キーワード            | 位置からフィールドへの対応と fixture                                                                                                                                                                                                  |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Person_Ext`          | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link` へ対応する。 [fixture: c4/db-keyword-person-ext]                                                                                       |
+| `Person`              | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link` へ対応する。 [fixture: c4/db-keyword-person]                                                                                           |
+| `SystemQueue_Ext`     | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link` へ対応する。 [fixture: c4/db-keyword-systemqueue-ext]                                                                                  |
+| `SystemDb_Ext`        | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link` へ対応する。 [fixture: c4/db-keyword-systemdb-ext]                                                                                     |
+| `System_Ext`          | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link` へ対応する。 [fixture: c4/db-keyword-system-ext]                                                                                       |
+| `SystemQueue`         | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link` へ対応する。 [fixture: c4/db-keyword-systemqueue]                                                                                      |
+| `SystemDb`            | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link` へ対応する。 [fixture: c4/db-keyword-systemdb]                                                                                         |
+| `System`              | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `descr.text`, 4 → `sprite`, 5 → `tags`, 6 → `link` へ対応する。 [fixture: c4/db-keyword-system]                                                                                           |
+| `Boundary`            | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `tags`, 5 → `link` へ対応する。 [fixture: c4/db-keyword-boundary]                                                                                                        |
+| `Enterprise_Boundary` | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `tags`, 4 → `link` へ対応する。 [fixture: c4/db-keyword-enterprise-boundary]                                                                                                              |
+| `System_Boundary`     | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `tags`, 4 → `link` へ対応する。 [fixture: c4/db-keyword-system-boundary]                                                                                                                  |
+| `ContainerQueue_Ext`  | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-containerqueue-ext]                                                             |
+| `ContainerDb_Ext`     | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-containerdb-ext]                                                                |
+| `Container_Ext`       | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-container-ext]                                                                  |
+| `ContainerQueue`      | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-containerqueue]                                                                 |
+| `ContainerDb`         | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-containerdb]                                                                    |
+| `Container`           | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-container]                                                                      |
+| `Container_Boundary`  | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `tags`, 4 → `link` へ対応する。 [fixture: c4/db-keyword-container-boundary]                                                                                                               |
+| `ComponentQueue_Ext`  | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-componentqueue-ext]                                                             |
+| `ComponentDb_Ext`     | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-componentdb-ext]                                                                |
+| `Component_Ext`       | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-component-ext]                                                                  |
+| `ComponentQueue`      | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-componentqueue]                                                                 |
+| `ComponentDb`         | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-componentdb]                                                                    |
+| `Component`           | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `techn.text`, 4 → `descr.text`, 5 → `sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-component]                                                                      |
+| `Deployment_Node`     | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `descr.text`, 5 → `無視する sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-deployment-node]                                                        |
+| `Node`                | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `descr.text`, 5 → `無視する sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-node]                                                                   |
+| `Node_L`              | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `descr.text`, 5 → `無視する sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-node-l]                                                                 |
+| `Node_R`              | 記述順に 1 → `alias`, 2 → `label.text`, 3 → `type.text`, 4 → `descr.text`, 5 → `無視する sprite`, 6 → `tags`, 7 → `link` へ対応する。 [fixture: c4/db-keyword-node-r]                                                                 |
+| `Rel`                 | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel]                                                                   |
+| `BiRel`               | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-birel]                                                                 |
+| `Rel_Up`              | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-up]                                                                |
+| `Rel_U`               | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-u]                                                                 |
+| `Rel_Down`            | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-down]                                                              |
+| `Rel_D`               | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-d]                                                                 |
+| `Rel_Left`            | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-left]                                                              |
+| `Rel_L`               | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-l]                                                                 |
+| `Rel_Right`           | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-right]                                                             |
+| `Rel_R`               | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-r]                                                                 |
+| `Rel_Back`            | 記述順に 1 → `from`, 2 → `to`, 3 → `label.text`, 4 → `techn.text`, 5 → `descr.text`, 6 → `sprite`, 7 → `tags`, 8 → `link` へ対応する。 [fixture: c4/db-keyword-rel-back]                                                              |
+| `RelIndex`            | 記述順に 1 → `捨てる index`, 2 → `from`, 3 → `to`, 4 → `label.text`, 5 → `techn.text`, 6 → `descr.text`, 7 → `sprite`, 8 → `tags`, 9 → `link` へ対応する。 [fixture: c4/db-keyword-relindex]                                          |
+| `UpdateElementStyle`  | 記述順に 1 → `対象 alias`, 2 → `bgColor`, 3 → `fontColor`, 4 → `borderColor`, 5 → `shadowing`, 6 → `shape`, 7 → `sprite`, 8 → `techn`, 9 → `legendText`, 10 → `legendSprite` へ対応する。 [fixture: c4/db-keyword-updateelementstyle] |
+| `UpdateRelStyle`      | 記述順に 1 → `対象 from`, 2 → `対象 to`, 3 → `textColor`, 4 → `lineColor`, 5 → `offsetX`, 6 → `offsetY` へ対応する。 [fixture: c4/db-keyword-updaterelstyle]                                                                          |
+| `UpdateLayoutConfig`  | 記述順に 1 → `c4ShapeInRow`, 2 → `c4BoundaryInRow` へ対応する。 [fixture: c4/db-keyword-updatelayoutconfig]                                                                                                                           |
+
+### テキスト位置の読み取り
+
+各位置は字句規則と Db の値処理の組であり、
+
+同じ処理を共有するキーワードと引数位置は一つの代表へまとめる。
+[fixture: c4/db-keyword-person] [fixture: c4/db-keyword-container]
+
+引数の字句規則は
+[`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L164-L187)
+の `attribute`、
+`string`、
+`string_kv*` 状態を共有し、
+
+文法は位置文字列と名前付きのキーと値の両端を削る。
+[fixture: c4/db-named-key-whitespace]
+
+各行はその位置の受理結果と対象フィールドの値を示し、
+
+省略はその属性が own プロパティにないことを示す。
+[fixture: c4/db-style-required-named-target]
+
+#### header-line
+
+ヘッダー行は `C4Context` の後と必須の改行の前を代表とし、
+
+5 ヘッダーがこの処理を共有する。
+[fixture: c4/gram-grid-digits-header-line]
+
+| Kind               | 読み取りと fixture                                                          |
+| ------------------ | --------------------------------------------------------------------------- |
+| `ampersand-entity` | `Error` で拒否される。 [fixture: c4/gram-grid-ampersand-entity-header-line] |
+| `arrow`            | `Error` で拒否される。 [fixture: c4/gram-grid-arrow-header-line]            |
+| `arrow-spaced`     | `Error` で拒否される。 [fixture: c4/gram-grid-arrow-spaced-header-line]     |
+| `backslash`        | `Error` で拒否される。 [fixture: c4/gram-grid-backslash-header-line]        |
+| `backtick`         | `Error` で拒否される。 [fixture: c4/gram-grid-backtick-header-line]         |
+| `bom`              | `Error` で拒否される。 [fixture: c4/gram-grid-bom-header-line]              |
+| `classdef-rule`    | `Error` で拒否される。 [fixture: c4/gram-grid-classdef-rule-header-line]    |
+| `close-brace`      | `Error` で拒否される。 [fixture: c4/gram-grid-close-brace-header-line]      |
+| `close-round`      | `Error` で拒否される。 [fixture: c4/gram-grid-close-round-header-line]      |
+| `close-square`     | `Error` で拒否される。 [fixture: c4/gram-grid-close-square-header-line]     |
+| `colon`            | `Error` で拒否される。 [fixture: c4/gram-grid-colon-header-line]            |
+| `comma`            | `Error` で拒否される。 [fixture: c4/gram-grid-comma-header-line]            |
+| `comment`          | `Error` で拒否される。 [fixture: c4/gram-grid-comment-header-line]          |
+| `comment-line`     | `Error` で拒否される。 [fixture: c4/gram-grid-comment-line-header-line]     |
+| `constructor`      | `Error` で拒否される。 [fixture: c4/gram-grid-constructor-header-line]      |
+| `cr`               | `Error` で拒否される。 [fixture: c4/gram-grid-cr-header-line]               |
+| `crlf`             | `Error` で拒否される。 [fixture: c4/gram-grid-crlf-header-line]             |
+| `dash`             | `Error` で拒否される。 [fixture: c4/gram-grid-dash-header-line]             |
+| `digits`           | `Error` で拒否される。 [fixture: c4/gram-grid-digits-header-line]           |
+| `directive`        | `Error` で拒否される。 [fixture: c4/gram-grid-directive-header-line]        |
+| `directive-line`   | `Error` で拒否される。 [fixture: c4/gram-grid-directive-line-header-line]   |
+| `emoji`            | `Error` で拒否される。 [fixture: c4/gram-grid-emoji-header-line]            |
+| `empty`            | `type` は `"C4Context"`。 [fixture: c4/db-grid-empty-header-line]           |
+| `entity`           | `Error` で拒否される。 [fixture: c4/gram-grid-entity-header-line]           |
+| `entity-named`     | `Error` で拒否される。 [fixture: c4/gram-grid-entity-named-header-line]     |
+| `equals`           | `Error` で拒否される。 [fixture: c4/gram-grid-equals-header-line]           |
+| `ff`               | `Error` で拒否される。 [fixture: c4/gram-grid-ff-header-line]               |
+| `greater-than`     | `Error` で拒否される。 [fixture: c4/gram-grid-greater-than-header-line]     |
+| `hash`             | `Error` で拒否される。 [fixture: c4/gram-grid-hash-header-line]             |
+| `html`             | `Error` で拒否される。 [fixture: c4/gram-grid-html-header-line]             |
+| `html-attribute`   | `Error` で拒否される。 [fixture: c4/gram-grid-html-attribute-header-line]   |
+| `html-br`          | `Error` で拒否される。 [fixture: c4/gram-grid-html-br-header-line]          |
+| `ideographic`      | `Error` で拒否される。 [fixture: c4/gram-grid-ideographic-header-line]      |
+| `keyword`          | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-header-line]          |
+| `keyword-block`    | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-block-header-line]    |
+| `keyword-class`    | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-class-header-line]    |
+| `keyword-classdef` | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-classdef-header-line] |
+| `keyword-columns`  | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-columns-header-line]  |
+| `keyword-end`      | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-end-header-line]      |
+| `keyword-header`   | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-header-header-line]   |
+| `keyword-space`    | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-space-header-line]    |
+| `keyword-style`    | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-style-header-line]    |
+| `less-than`        | `Error` で拒否される。 [fixture: c4/gram-grid-less-than-header-line]        |
+| `lf`               | `Error` で拒否される。 [fixture: c4/gram-grid-lf-header-line]               |
+| `ls`               | `Error` で拒否される。 [fixture: c4/gram-grid-ls-header-line]               |
+| `nbsp`             | `Error` で拒否される。 [fixture: c4/gram-grid-nbsp-header-line]             |
+| `nel`              | `Error` で拒否される。 [fixture: c4/gram-grid-nel-header-line]              |
+| `nonascii`         | `Error` で拒否される。 [fixture: c4/gram-grid-nonascii-header-line]         |
+| `open-brace`       | `Error` で拒否される。 [fixture: c4/gram-grid-open-brace-header-line]       |
+| `open-round`       | `Error` で拒否される。 [fixture: c4/gram-grid-open-round-header-line]       |
+| `open-square`      | `Error` で拒否される。 [fixture: c4/gram-grid-open-square-header-line]      |
+| `percent`          | `Error` で拒否される。 [fixture: c4/gram-grid-percent-header-line]          |
+| `pipe`             | `Error` で拒否される。 [fixture: c4/gram-grid-pipe-header-line]             |
+| `proto`            | `Error` で拒否される。 [fixture: c4/gram-grid-proto-header-line]            |
+| `ps`               | `Error` で拒否される。 [fixture: c4/gram-grid-ps-header-line]               |
+| `punct`            | `Error` で拒否される。 [fixture: c4/gram-grid-punct-header-line]            |
+| `quote`            | `Error` で拒否される。 [fixture: c4/gram-grid-quote-header-line]            |
+| `root`             | `Error` で拒否される。 [fixture: c4/gram-grid-root-header-line]             |
+| `semicolon`        | `Error` で拒否される。 [fixture: c4/gram-grid-semicolon-header-line]        |
+| `single-quote`     | `Error` で拒否される。 [fixture: c4/gram-grid-single-quote-header-line]     |
+| `spaces`           | `Error` で拒否される。 [fixture: c4/gram-grid-spaces-header-line]           |
+| `style-rule`       | `Error` で拒否される。 [fixture: c4/gram-grid-style-rule-header-line]       |
+| `tab`              | `Error` で拒否される。 [fixture: c4/gram-grid-tab-header-line]              |
+| `vt`               | `Error` で拒否される。 [fixture: c4/gram-grid-vt-header-line]               |
+
+#### title
+
+`title` の後は専用の字句規則で読み取り、
+
+`title` に保持する。
+[fixture: c4/db-grid-digits-title]
+
+| Kind               | 読み取りと fixture                                                                      |
+| ------------------ | --------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `Error` で拒否される。 [fixture: c4/gram-grid-ampersand-entity-title]                   |
+| `arrow`            | `title` は `"a-->b"`。 [fixture: c4/db-grid-arrow-title]                                |
+| `arrow-spaced`     | `title` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-title]                       |
+| `backslash`        | `title` は `"a\\b"`。 [fixture: c4/db-grid-backslash-title]                             |
+| `backtick`         | `title` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-title]                          |
+| `bom`              | `title` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-title]                               |
+| `classdef-rule`    | `Error` で拒否される。 [fixture: c4/gram-grid-classdef-rule-title]                      |
+| `close-brace`      | `title` は `"a}b"`。 [fixture: c4/db-grid-close-brace-title]                            |
+| `close-round`      | `title` は `"a)b"`。 [fixture: c4/db-grid-close-round-title]                            |
+| `close-square`     | `title` は `"a]b"`。 [fixture: c4/db-grid-close-square-title]                           |
+| `colon`            | `title` は `"a:b"`。 [fixture: c4/db-grid-colon-title]                                  |
+| `comma`            | `title` は `"a,b"`。 [fixture: c4/db-grid-comma-title]                                  |
+| `comment`          | `title` は `"a%% cb"`。 [fixture: c4/db-grid-comment-title]                             |
+| `comment-line`     | `Error` で拒否される。 [fixture: c4/gram-grid-comment-line-title]                       |
+| `constructor`      | `title` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-title]                  |
+| `cr`               | `Error` で拒否される。 [fixture: c4/gram-grid-cr-title]                                 |
+| `crlf`             | `Error` で拒否される。 [fixture: c4/gram-grid-crlf-title]                               |
+| `dash`             | `title` は `"a-b"`。 [fixture: c4/db-grid-dash-title]                                   |
+| `digits`           | `title` は `"a123b"`。 [fixture: c4/db-grid-digits-title]                               |
+| `directive`        | `title` は `"ab"`。 [fixture: c4/db-grid-directive-title]                               |
+| `directive-line`   | `Error` で拒否される。 [fixture: c4/gram-grid-directive-line-title]                     |
+| `emoji`            | `title` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-title]                       |
+| `empty`            | `Error` で拒否される。 [fixture: c4/db-title-empty]                                     |
+| `entity`           | `title` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-title]  |
+| `entity-named`     | `title` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-title] |
+| `equals`           | `title` は `"a=b"`。 [fixture: c4/db-grid-equals-title]                                 |
+| `ff`               | `title` は `"a\fb"`。 [fixture: c4/db-grid-ff-title]                                    |
+| `greater-than`     | `title` は `"a>b"`。 [fixture: c4/db-grid-greater-than-title]                           |
+| `hash`             | `Error` で拒否される。 [fixture: c4/gram-grid-hash-title]                               |
+| `html`             | `title` は `"a<b>b"`。 [fixture: c4/db-grid-html-title]                                 |
+| `html-attribute`   | `title` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-title]              |
+| `html-br`          | `title` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-title]                             |
+| `ideographic`      | `title` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-title]                       |
+| `keyword`          | `title` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-title]                           |
+| `keyword-block`    | `title` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-title]                    |
+| `keyword-class`    | `title` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-title]                |
+| `keyword-classdef` | `title` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-title]   |
+| `keyword-columns`  | `title` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-title]              |
+| `keyword-end`      | `title` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-title]                        |
+| `keyword-header`   | `title` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-title]                 |
+| `keyword-space`    | `title` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-title]                    |
+| `keyword-style`    | `title` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-title]         |
+| `less-than`        | `title` は `"a<b"`。 [fixture: c4/db-grid-less-than-title]                              |
+| `lf`               | `Error` で拒否される。 [fixture: c4/gram-grid-lf-title]                                 |
+| `ls`               | `title` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-title]                                |
+| `nbsp`             | `title` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-title]                              |
+| `nel`              | `title` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-title]                               |
+| `nonascii`         | `title` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-title]                          |
+| `open-brace`       | `title` は `"a{b"`。 [fixture: c4/db-grid-open-brace-title]                             |
+| `open-round`       | `title` は `"a(b"`。 [fixture: c4/db-grid-open-round-title]                             |
+| `open-square`      | `title` は `"a[b"`。 [fixture: c4/db-grid-open-square-title]                            |
+| `percent`          | `title` は `"a%b"`。 [fixture: c4/db-grid-percent-title]                                |
+| `pipe`             | `title` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-title]                              |
+| `proto`            | `title` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-title]                          |
+| `ps`               | `title` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-title]                                |
+| `punct`            | `title` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-title]                     |
+| `quote`            | `title` は `"a\"b"`。 [fixture: c4/db-grid-quote-title]                                 |
+| `root`             | `title` は `"arootb"`。 [fixture: c4/db-grid-root-title]                                |
+| `semicolon`        | `Error` で拒否される。 [fixture: c4/gram-grid-semicolon-title]                          |
+| `single-quote`     | `title` は `"a'b"`。 [fixture: c4/db-grid-single-quote-title]                           |
+| `spaces`           | `title` は `"a  b"`。 [fixture: c4/db-grid-spaces-title]                                |
+| `style-rule`       | `Error` で拒否される。 [fixture: c4/gram-grid-style-rule-title]                         |
+| `tab`              | `title` は `"a\tb"`。 [fixture: c4/db-grid-tab-title]                                   |
+| `vt`               | `title` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-title]                                |
+
+#### acc-description
+
+`accDescription` の後は専用の字句規則で読み取り、
+
+`accDescr` に保持する。
+[fixture: c4/db-grid-digits-acc-description]
+
+| Kind               | 読み取りと fixture                                                                                   |
+| ------------------ | ---------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `Error` で拒否される。 [fixture: c4/gram-grid-ampersand-entity-acc-description]                      |
+| `arrow`            | `accDescr` は `"a-->b"`。 [fixture: c4/db-grid-arrow-acc-description]                                |
+| `arrow-spaced`     | `accDescr` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-acc-description]                       |
+| `backslash`        | `accDescr` は `"a\\b"`。 [fixture: c4/db-grid-backslash-acc-description]                             |
+| `backtick`         | `accDescr` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-acc-description]                          |
+| `bom`              | `accDescr` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-acc-description]                               |
+| `classdef-rule`    | `Error` で拒否される。 [fixture: c4/gram-grid-classdef-rule-acc-description]                         |
+| `close-brace`      | `accDescr` は `"a}b"`。 [fixture: c4/db-grid-close-brace-acc-description]                            |
+| `close-round`      | `accDescr` は `"a)b"`。 [fixture: c4/db-grid-close-round-acc-description]                            |
+| `close-square`     | `accDescr` は `"a]b"`。 [fixture: c4/db-grid-close-square-acc-description]                           |
+| `colon`            | `accDescr` は `"a:b"`。 [fixture: c4/db-grid-colon-acc-description]                                  |
+| `comma`            | `accDescr` は `"a,b"`。 [fixture: c4/db-grid-comma-acc-description]                                  |
+| `comment`          | `accDescr` は `"a%% cb"`。 [fixture: c4/db-grid-comment-acc-description]                             |
+| `comment-line`     | `Error` で拒否される。 [fixture: c4/gram-grid-comment-line-acc-description]                          |
+| `constructor`      | `accDescr` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-acc-description]                  |
+| `cr`               | `Error` で拒否される。 [fixture: c4/gram-grid-cr-acc-description]                                    |
+| `crlf`             | `Error` で拒否される。 [fixture: c4/gram-grid-crlf-acc-description]                                  |
+| `dash`             | `accDescr` は `"a-b"`。 [fixture: c4/db-grid-dash-acc-description]                                   |
+| `digits`           | `accDescr` は `"a123b"`。 [fixture: c4/db-grid-digits-acc-description]                               |
+| `directive`        | `accDescr` は `"ab"`。 [fixture: c4/db-grid-directive-acc-description]                               |
+| `directive-line`   | `Error` で拒否される。 [fixture: c4/gram-grid-directive-line-acc-description]                        |
+| `emoji`            | `accDescr` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-acc-description]                       |
+| `empty`            | `Error` で拒否される。 [fixture: c4/db-accdescription-empty]                                         |
+| `entity`           | `accDescr` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-acc-description]  |
+| `entity-named`     | `accDescr` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-acc-description] |
+| `equals`           | `accDescr` は `"a=b"`。 [fixture: c4/db-grid-equals-acc-description]                                 |
+| `ff`               | `accDescr` は `"a\fb"`。 [fixture: c4/db-grid-ff-acc-description]                                    |
+| `greater-than`     | `accDescr` は `"a>b"`。 [fixture: c4/db-grid-greater-than-acc-description]                           |
+| `hash`             | `Error` で拒否される。 [fixture: c4/gram-grid-hash-acc-description]                                  |
+| `html`             | `accDescr` は `"a<b>b"`。 [fixture: c4/db-grid-html-acc-description]                                 |
+| `html-attribute`   | `accDescr` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-acc-description]              |
+| `html-br`          | `accDescr` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-acc-description]                             |
+| `ideographic`      | `accDescr` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-acc-description]                       |
+| `keyword`          | `accDescr` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-acc-description]                           |
+| `keyword-block`    | `accDescr` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-acc-description]                    |
+| `keyword-class`    | `accDescr` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-acc-description]                |
+| `keyword-classdef` | `accDescr` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-acc-description]   |
+| `keyword-columns`  | `accDescr` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-acc-description]              |
+| `keyword-end`      | `accDescr` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-acc-description]                        |
+| `keyword-header`   | `accDescr` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-acc-description]                 |
+| `keyword-space`    | `accDescr` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-acc-description]                    |
+| `keyword-style`    | `accDescr` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-acc-description]         |
+| `less-than`        | `accDescr` は `"a<b"`。 [fixture: c4/db-grid-less-than-acc-description]                              |
+| `lf`               | `Error` で拒否される。 [fixture: c4/gram-grid-lf-acc-description]                                    |
+| `ls`               | `accDescr` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-acc-description]                                |
+| `nbsp`             | `accDescr` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-acc-description]                              |
+| `nel`              | `accDescr` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-acc-description]                               |
+| `nonascii`         | `accDescr` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-acc-description]                          |
+| `open-brace`       | `accDescr` は `"a{b"`。 [fixture: c4/db-grid-open-brace-acc-description]                             |
+| `open-round`       | `accDescr` は `"a(b"`。 [fixture: c4/db-grid-open-round-acc-description]                             |
+| `open-square`      | `accDescr` は `"a[b"`。 [fixture: c4/db-grid-open-square-acc-description]                            |
+| `percent`          | `accDescr` は `"a%b"`。 [fixture: c4/db-grid-percent-acc-description]                                |
+| `pipe`             | `accDescr` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-acc-description]                              |
+| `proto`            | `accDescr` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-acc-description]                          |
+| `ps`               | `accDescr` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-acc-description]                                |
+| `punct`            | `accDescr` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-acc-description]                     |
+| `quote`            | `accDescr` は `"a\"b"`。 [fixture: c4/db-grid-quote-acc-description]                                 |
+| `root`             | `accDescr` は `"arootb"`。 [fixture: c4/db-grid-root-acc-description]                                |
+| `semicolon`        | `Error` で拒否される。 [fixture: c4/gram-grid-semicolon-acc-description]                             |
+| `single-quote`     | `accDescr` は `"a'b"`。 [fixture: c4/db-grid-single-quote-acc-description]                           |
+| `spaces`           | `accDescr` は `"a  b"`。 [fixture: c4/db-grid-spaces-acc-description]                                |
+| `style-rule`       | `Error` で拒否される。 [fixture: c4/gram-grid-style-rule-acc-description]                            |
+| `tab`              | `accDescr` は `"a\tb"`。 [fixture: c4/db-grid-tab-acc-description]                                   |
+| `vt`               | `accDescr` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-acc-description]                                |
+
+#### acc-title
+
+`accTitle:` の後は `acc_title` 状態で読み取り、
+
+両端を削って `title` に保持する。
+[fixture: c4/db-grid-digits-acc-title]
+
+| Kind               | 読み取りと fixture                                                                          |
+| ------------------ | ------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `title` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-acc-title]                   |
+| `arrow`            | `title` は `"a-->b"`。 [fixture: c4/db-grid-arrow-acc-title]                                |
+| `arrow-spaced`     | `title` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-acc-title]                       |
+| `backslash`        | `title` は `"a\\b"`。 [fixture: c4/db-grid-backslash-acc-title]                             |
+| `backtick`         | `title` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-acc-title]                          |
+| `bom`              | `title` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-acc-title]                               |
+| `classdef-rule`    | `title` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-acc-title]               |
+| `close-brace`      | `title` は `"a}b"`。 [fixture: c4/db-grid-close-brace-acc-title]                            |
+| `close-round`      | `title` は `"a)b"`。 [fixture: c4/db-grid-close-round-acc-title]                            |
+| `close-square`     | `title` は `"a]b"`。 [fixture: c4/db-grid-close-square-acc-title]                           |
+| `colon`            | `title` は `"a:b"`。 [fixture: c4/db-grid-colon-acc-title]                                  |
+| `comma`            | `title` は `"a,b"`。 [fixture: c4/db-grid-comma-acc-title]                                  |
+| `comment`          | `title` は `"a%% cb"`。 [fixture: c4/db-grid-comment-acc-title]                             |
+| `comment-line`     | `Error` で拒否される。 [fixture: c4/gram-grid-comment-line-acc-title]                       |
+| `constructor`      | `title` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-acc-title]                  |
+| `cr`               | `Error` で拒否される。 [fixture: c4/gram-grid-cr-acc-title]                                 |
+| `crlf`             | `Error` で拒否される。 [fixture: c4/gram-grid-crlf-acc-title]                               |
+| `dash`             | `title` は `"a-b"`。 [fixture: c4/db-grid-dash-acc-title]                                   |
+| `digits`           | `title` は `"a123b"`。 [fixture: c4/db-grid-digits-acc-title]                               |
+| `directive`        | `title` は `"ab"`。 [fixture: c4/db-grid-directive-acc-title]                               |
+| `directive-line`   | `Error` で拒否される。 [fixture: c4/gram-grid-directive-line-acc-title]                     |
+| `emoji`            | `title` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-acc-title]                       |
+| `empty`            | `title` は `"Person(a, \"A\")"`。 [fixture: c4/db-acctitle-empty]                           |
+| `entity`           | `title` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-acc-title]  |
+| `entity-named`     | `title` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-acc-title] |
+| `equals`           | `title` は `"a=b"`。 [fixture: c4/db-grid-equals-acc-title]                                 |
+| `ff`               | `title` は `"a\fb"`。 [fixture: c4/db-grid-ff-acc-title]                                    |
+| `greater-than`     | `title` は `"a>b"`。 [fixture: c4/db-grid-greater-than-acc-title]                           |
+| `hash`             | `title` は `"a#b"`。 [fixture: c4/db-grid-hash-acc-title]                                   |
+| `html`             | `title` は `"a<b>b"`。 [fixture: c4/db-grid-html-acc-title]                                 |
+| `html-attribute`   | `title` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-acc-title]              |
+| `html-br`          | `title` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-acc-title]                             |
+| `ideographic`      | `title` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-acc-title]                       |
+| `keyword`          | `title` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-acc-title]                           |
+| `keyword-block`    | `title` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-acc-title]                    |
+| `keyword-class`    | `title` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-acc-title]                |
+| `keyword-classdef` | `title` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-acc-title]   |
+| `keyword-columns`  | `title` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-acc-title]              |
+| `keyword-end`      | `title` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-acc-title]                        |
+| `keyword-header`   | `title` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-acc-title]                 |
+| `keyword-space`    | `title` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-acc-title]                    |
+| `keyword-style`    | `title` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-acc-title]         |
+| `less-than`        | `title` は `"a<b"`。 [fixture: c4/db-grid-less-than-acc-title]                              |
+| `lf`               | `Error` で拒否される。 [fixture: c4/gram-grid-lf-acc-title]                                 |
+| `ls`               | `title` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-acc-title]                                |
+| `nbsp`             | `title` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-acc-title]                              |
+| `nel`              | `title` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-acc-title]                               |
+| `nonascii`         | `title` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-acc-title]                          |
+| `open-brace`       | `title` は `"a{b"`。 [fixture: c4/db-grid-open-brace-acc-title]                             |
+| `open-round`       | `title` は `"a(b"`。 [fixture: c4/db-grid-open-round-acc-title]                             |
+| `open-square`      | `title` は `"a[b"`。 [fixture: c4/db-grid-open-square-acc-title]                            |
+| `percent`          | `title` は `"a%b"`。 [fixture: c4/db-grid-percent-acc-title]                                |
+| `pipe`             | `title` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-acc-title]                              |
+| `proto`            | `title` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-acc-title]                          |
+| `ps`               | `title` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-acc-title]                                |
+| `punct`            | `title` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-acc-title]                     |
+| `quote`            | `title` は `"a\"b"`。 [fixture: c4/db-grid-quote-acc-title]                                 |
+| `root`             | `title` は `"arootb"`。 [fixture: c4/db-grid-root-acc-title]                                |
+| `semicolon`        | `title` は `"a;b"`。 [fixture: c4/db-grid-semicolon-acc-title]                              |
+| `single-quote`     | `title` は `"a'b"`。 [fixture: c4/db-grid-single-quote-acc-title]                           |
+| `spaces`           | `title` は `"a  b"`。 [fixture: c4/db-grid-spaces-acc-title]                                |
+| `style-rule`       | `title` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-acc-title]                     |
+| `tab`              | `title` は `"a\tb"`。 [fixture: c4/db-grid-tab-acc-title]                                   |
+| `vt`               | `title` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-acc-title]                                |
+
+#### acc-descr
+
+`accDescr:` の後は `acc_descr` 状態で読み取り、
+
+両端を削って `accDescr` に保持する。
+[fixture: c4/db-grid-digits-acc-descr]
+
+| Kind               | 読み取りと fixture                                                                             |
+| ------------------ | ---------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `accDescr` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-acc-descr]                   |
+| `arrow`            | `accDescr` は `"a-->b"`。 [fixture: c4/db-grid-arrow-acc-descr]                                |
+| `arrow-spaced`     | `accDescr` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-acc-descr]                       |
+| `backslash`        | `accDescr` は `"a\\b"`。 [fixture: c4/db-grid-backslash-acc-descr]                             |
+| `backtick`         | `accDescr` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-acc-descr]                          |
+| `bom`              | `accDescr` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-acc-descr]                               |
+| `classdef-rule`    | `accDescr` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-acc-descr]               |
+| `close-brace`      | `accDescr` は `"a}b"`。 [fixture: c4/db-grid-close-brace-acc-descr]                            |
+| `close-round`      | `accDescr` は `"a)b"`。 [fixture: c4/db-grid-close-round-acc-descr]                            |
+| `close-square`     | `accDescr` は `"a]b"`。 [fixture: c4/db-grid-close-square-acc-descr]                           |
+| `colon`            | `accDescr` は `"a:b"`。 [fixture: c4/db-grid-colon-acc-descr]                                  |
+| `comma`            | `accDescr` は `"a,b"`。 [fixture: c4/db-grid-comma-acc-descr]                                  |
+| `comment`          | `accDescr` は `"a%% cb"`。 [fixture: c4/db-grid-comment-acc-descr]                             |
+| `comment-line`     | `Error` で拒否される。 [fixture: c4/gram-grid-comment-line-acc-descr]                          |
+| `constructor`      | `accDescr` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-acc-descr]                  |
+| `cr`               | `Error` で拒否される。 [fixture: c4/gram-grid-cr-acc-descr]                                    |
+| `crlf`             | `Error` で拒否される。 [fixture: c4/gram-grid-crlf-acc-descr]                                  |
+| `dash`             | `accDescr` は `"a-b"`。 [fixture: c4/db-grid-dash-acc-descr]                                   |
+| `digits`           | `accDescr` は `"a123b"`。 [fixture: c4/db-grid-digits-acc-descr]                               |
+| `directive`        | `accDescr` は `"ab"`。 [fixture: c4/db-grid-directive-acc-descr]                               |
+| `directive-line`   | `Error` で拒否される。 [fixture: c4/gram-grid-directive-line-acc-descr]                        |
+| `emoji`            | `accDescr` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-acc-descr]                       |
+| `empty`            | `accDescr` は `"Person(a, \"A\")"`。 [fixture: c4/db-accdescr-empty]                           |
+| `entity`           | `accDescr` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-acc-descr]  |
+| `entity-named`     | `accDescr` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-acc-descr] |
+| `equals`           | `accDescr` は `"a=b"`。 [fixture: c4/db-grid-equals-acc-descr]                                 |
+| `ff`               | `accDescr` は `"a\fb"`。 [fixture: c4/db-grid-ff-acc-descr]                                    |
+| `greater-than`     | `accDescr` は `"a>b"`。 [fixture: c4/db-grid-greater-than-acc-descr]                           |
+| `hash`             | `accDescr` は `"a#b"`。 [fixture: c4/db-grid-hash-acc-descr]                                   |
+| `html`             | `accDescr` は `"a<b>b"`。 [fixture: c4/db-grid-html-acc-descr]                                 |
+| `html-attribute`   | `accDescr` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-acc-descr]              |
+| `html-br`          | `accDescr` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-acc-descr]                             |
+| `ideographic`      | `accDescr` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-acc-descr]                       |
+| `keyword`          | `accDescr` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-acc-descr]                           |
+| `keyword-block`    | `accDescr` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-acc-descr]                    |
+| `keyword-class`    | `accDescr` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-acc-descr]                |
+| `keyword-classdef` | `accDescr` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-acc-descr]   |
+| `keyword-columns`  | `accDescr` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-acc-descr]              |
+| `keyword-end`      | `accDescr` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-acc-descr]                        |
+| `keyword-header`   | `accDescr` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-acc-descr]                 |
+| `keyword-space`    | `accDescr` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-acc-descr]                    |
+| `keyword-style`    | `accDescr` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-acc-descr]         |
+| `less-than`        | `accDescr` は `"a<b"`。 [fixture: c4/db-grid-less-than-acc-descr]                              |
+| `lf`               | `Error` で拒否される。 [fixture: c4/gram-grid-lf-acc-descr]                                    |
+| `ls`               | `accDescr` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-acc-descr]                                |
+| `nbsp`             | `accDescr` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-acc-descr]                              |
+| `nel`              | `accDescr` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-acc-descr]                               |
+| `nonascii`         | `accDescr` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-acc-descr]                          |
+| `open-brace`       | `accDescr` は `"a{b"`。 [fixture: c4/db-grid-open-brace-acc-descr]                             |
+| `open-round`       | `accDescr` は `"a(b"`。 [fixture: c4/db-grid-open-round-acc-descr]                             |
+| `open-square`      | `accDescr` は `"a[b"`。 [fixture: c4/db-grid-open-square-acc-descr]                            |
+| `percent`          | `accDescr` は `"a%b"`。 [fixture: c4/db-grid-percent-acc-descr]                                |
+| `pipe`             | `accDescr` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-acc-descr]                              |
+| `proto`            | `accDescr` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-acc-descr]                          |
+| `ps`               | `accDescr` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-acc-descr]                                |
+| `punct`            | `accDescr` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-acc-descr]                     |
+| `quote`            | `accDescr` は `"a\"b"`。 [fixture: c4/db-grid-quote-acc-descr]                                 |
+| `root`             | `accDescr` は `"arootb"`。 [fixture: c4/db-grid-root-acc-descr]                                |
+| `semicolon`        | `accDescr` は `"a;b"`。 [fixture: c4/db-grid-semicolon-acc-descr]                              |
+| `single-quote`     | `accDescr` は `"a'b"`。 [fixture: c4/db-grid-single-quote-acc-descr]                           |
+| `spaces`           | `accDescr` は `"a  b"`。 [fixture: c4/db-grid-spaces-acc-descr]                                |
+| `style-rule`       | `accDescr` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-acc-descr]                     |
+| `tab`              | `accDescr` は `"a\tb"`。 [fixture: c4/db-grid-tab-acc-descr]                                   |
+| `vt`               | `accDescr` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-acc-descr]                                |
+
+#### acc-descr-block
+
+`accDescr { ... }` 内は `acc_descr_multiline` 状態で読み取り、
+
+ブロックの両端を削って `accDescr` に保持する。
+[fixture: c4/db-grid-digits-acc-descr-block]
+
+| Kind               | 読み取りと fixture                                                                                   |
+| ------------------ | ---------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `accDescr` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-acc-descr-block]                   |
+| `arrow`            | `accDescr` は `"a-->b"`。 [fixture: c4/db-grid-arrow-acc-descr-block]                                |
+| `arrow-spaced`     | `accDescr` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-acc-descr-block]                       |
+| `backslash`        | `accDescr` は `"a\\b"`。 [fixture: c4/db-grid-backslash-acc-descr-block]                             |
+| `backtick`         | `accDescr` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-acc-descr-block]                          |
+| `bom`              | `accDescr` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-acc-descr-block]                               |
+| `classdef-rule`    | `accDescr` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-acc-descr-block]               |
+| `close-brace`      | `Error` で拒否される。 [fixture: c4/gram-grid-close-brace-acc-descr-block]                           |
+| `close-round`      | `accDescr` は `"a)b"`。 [fixture: c4/db-grid-close-round-acc-descr-block]                            |
+| `close-square`     | `accDescr` は `"a]b"`。 [fixture: c4/db-grid-close-square-acc-descr-block]                           |
+| `colon`            | `accDescr` は `"a:b"`。 [fixture: c4/db-grid-colon-acc-descr-block]                                  |
+| `comma`            | `accDescr` は `"a,b"`。 [fixture: c4/db-grid-comma-acc-descr-block]                                  |
+| `comment`          | `accDescr` は `"a%% cb"`。 [fixture: c4/db-grid-comment-acc-descr-block]                             |
+| `comment-line`     | `accDescr` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-acc-descr-block]                          |
+| `constructor`      | `accDescr` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-acc-descr-block]                  |
+| `cr`               | `accDescr` は `"a\nb"`。 [fixture: c4/db-grid-cr-acc-descr-block]                                    |
+| `crlf`             | `accDescr` は `"a\nb"`。 [fixture: c4/db-grid-crlf-acc-descr-block]                                  |
+| `dash`             | `accDescr` は `"a-b"`。 [fixture: c4/db-grid-dash-acc-descr-block]                                   |
+| `digits`           | `accDescr` は `"a123b"`。 [fixture: c4/db-grid-digits-acc-descr-block]                               |
+| `directive`        | `accDescr` は `"ab"`。 [fixture: c4/db-grid-directive-acc-descr-block]                               |
+| `directive-line`   | `accDescr` は `"a\nb"`。 [fixture: c4/db-grid-directive-line-acc-descr-block]                        |
+| `emoji`            | `accDescr` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-acc-descr-block]                       |
+| `empty`            | `Error` で拒否される。 [fixture: c4/gram-grid-empty-acc-descr-block]                                 |
+| `entity`           | `accDescr` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-acc-descr-block]  |
+| `entity-named`     | `accDescr` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-acc-descr-block] |
+| `equals`           | `accDescr` は `"a=b"`。 [fixture: c4/db-grid-equals-acc-descr-block]                                 |
+| `ff`               | `accDescr` は `"a\fb"`。 [fixture: c4/db-grid-ff-acc-descr-block]                                    |
+| `greater-than`     | `accDescr` は `"a>b"`。 [fixture: c4/db-grid-greater-than-acc-descr-block]                           |
+| `hash`             | `accDescr` は `"a#b"`。 [fixture: c4/db-grid-hash-acc-descr-block]                                   |
+| `html`             | `accDescr` は `"a<b>b"`。 [fixture: c4/db-grid-html-acc-descr-block]                                 |
+| `html-attribute`   | `accDescr` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-acc-descr-block]              |
+| `html-br`          | `accDescr` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-acc-descr-block]                             |
+| `ideographic`      | `accDescr` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-acc-descr-block]                       |
+| `keyword`          | `accDescr` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-acc-descr-block]                           |
+| `keyword-block`    | `accDescr` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-acc-descr-block]                    |
+| `keyword-class`    | `accDescr` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-acc-descr-block]                |
+| `keyword-classdef` | `accDescr` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-acc-descr-block]   |
+| `keyword-columns`  | `accDescr` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-acc-descr-block]              |
+| `keyword-end`      | `accDescr` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-acc-descr-block]                        |
+| `keyword-header`   | `accDescr` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-acc-descr-block]                 |
+| `keyword-space`    | `accDescr` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-acc-descr-block]                    |
+| `keyword-style`    | `accDescr` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-acc-descr-block]         |
+| `less-than`        | `accDescr` は `"a<b"`。 [fixture: c4/db-grid-less-than-acc-descr-block]                              |
+| `lf`               | `accDescr` は `"a\nb"`。 [fixture: c4/db-grid-lf-acc-descr-block]                                    |
+| `ls`               | `accDescr` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-acc-descr-block]                                |
+| `nbsp`             | `accDescr` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-acc-descr-block]                              |
+| `nel`              | `accDescr` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-acc-descr-block]                               |
+| `nonascii`         | `accDescr` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-acc-descr-block]                          |
+| `open-brace`       | `accDescr` は `"a{b"`。 [fixture: c4/db-grid-open-brace-acc-descr-block]                             |
+| `open-round`       | `accDescr` は `"a(b"`。 [fixture: c4/db-grid-open-round-acc-descr-block]                             |
+| `open-square`      | `accDescr` は `"a[b"`。 [fixture: c4/db-grid-open-square-acc-descr-block]                            |
+| `percent`          | `accDescr` は `"a%b"`。 [fixture: c4/db-grid-percent-acc-descr-block]                                |
+| `pipe`             | `accDescr` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-acc-descr-block]                              |
+| `proto`            | `accDescr` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-acc-descr-block]                          |
+| `ps`               | `accDescr` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-acc-descr-block]                                |
+| `punct`            | `accDescr` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-acc-descr-block]                     |
+| `quote`            | `accDescr` は `"a\"b"`。 [fixture: c4/db-grid-quote-acc-descr-block]                                 |
+| `root`             | `accDescr` は `"arootb"`。 [fixture: c4/db-grid-root-acc-descr-block]                                |
+| `semicolon`        | `accDescr` は `"a;b"`。 [fixture: c4/db-grid-semicolon-acc-descr-block]                              |
+| `single-quote`     | `accDescr` は `"a'b"`。 [fixture: c4/db-grid-single-quote-acc-descr-block]                           |
+| `spaces`           | `accDescr` は `"a  b"`。 [fixture: c4/db-grid-spaces-acc-descr-block]                                |
+| `style-rule`       | `accDescr` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-acc-descr-block]                     |
+| `tab`              | `accDescr` は `"a\tb"`。 [fixture: c4/db-grid-tab-acc-descr-block]                                   |
+| `vt`               | `accDescr` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-acc-descr-block]                                |
+
+#### direction-line
+
+方向行は `direction TB` の前を代表とし、
+
+4 方向の非アンカー字句規則が行の前後の文字を消費する。
+[fixture: c4/gram-grid-digits-direction-line]
+
+| Kind               | 読み取りと fixture                                                             |
+| ------------------ | ------------------------------------------------------------------------------ |
+| `ampersand-entity` | `Error` で拒否される。 [fixture: c4/gram-grid-ampersand-entity-direction-line] |
+| `arrow`            | `Error` で拒否される。 [fixture: c4/gram-grid-arrow-direction-line]            |
+| `arrow-spaced`     | `Error` で拒否される。 [fixture: c4/gram-grid-arrow-spaced-direction-line]     |
+| `backslash`        | `Error` で拒否される。 [fixture: c4/gram-grid-backslash-direction-line]        |
+| `backtick`         | `Error` で拒否される。 [fixture: c4/gram-grid-backtick-direction-line]         |
+| `bom`              | `Error` で拒否される。 [fixture: c4/gram-grid-bom-direction-line]              |
+| `classdef-rule`    | `Error` で拒否される。 [fixture: c4/gram-grid-classdef-rule-direction-line]    |
+| `close-brace`      | `Error` で拒否される。 [fixture: c4/gram-grid-close-brace-direction-line]      |
+| `close-round`      | `Error` で拒否される。 [fixture: c4/gram-grid-close-round-direction-line]      |
+| `close-square`     | `Error` で拒否される。 [fixture: c4/gram-grid-close-square-direction-line]     |
+| `colon`            | `Error` で拒否される。 [fixture: c4/gram-grid-colon-direction-line]            |
+| `comma`            | `Error` で拒否される。 [fixture: c4/gram-grid-comma-direction-line]            |
+| `comment`          | `Error` で拒否される。 [fixture: c4/gram-grid-comment-direction-line]          |
+| `comment-line`     | `Error` で拒否される。 [fixture: c4/gram-grid-comment-line-direction-line]     |
+| `constructor`      | `Error` で拒否される。 [fixture: c4/gram-grid-constructor-direction-line]      |
+| `cr`               | `Error` で拒否される。 [fixture: c4/gram-grid-cr-direction-line]               |
+| `crlf`             | `Error` で拒否される。 [fixture: c4/gram-grid-crlf-direction-line]             |
+| `dash`             | `Error` で拒否される。 [fixture: c4/gram-grid-dash-direction-line]             |
+| `digits`           | `Error` で拒否される。 [fixture: c4/gram-grid-digits-direction-line]           |
+| `directive`        | `Error` で拒否される。 [fixture: c4/gram-grid-directive-direction-line]        |
+| `directive-line`   | `Error` で拒否される。 [fixture: c4/gram-grid-directive-line-direction-line]   |
+| `emoji`            | `Error` で拒否される。 [fixture: c4/gram-grid-emoji-direction-line]            |
+| `empty`            | `Error` で拒否される。 [fixture: c4/gram-grid-empty-direction-line]            |
+| `entity`           | `Error` で拒否される。 [fixture: c4/gram-grid-entity-direction-line]           |
+| `entity-named`     | `Error` で拒否される。 [fixture: c4/gram-grid-entity-named-direction-line]     |
+| `equals`           | `Error` で拒否される。 [fixture: c4/gram-grid-equals-direction-line]           |
+| `ff`               | `Error` で拒否される。 [fixture: c4/gram-grid-ff-direction-line]               |
+| `greater-than`     | `Error` で拒否される。 [fixture: c4/gram-grid-greater-than-direction-line]     |
+| `hash`             | `Error` で拒否される。 [fixture: c4/gram-grid-hash-direction-line]             |
+| `html`             | `Error` で拒否される。 [fixture: c4/gram-grid-html-direction-line]             |
+| `html-attribute`   | `Error` で拒否される。 [fixture: c4/gram-grid-html-attribute-direction-line]   |
+| `html-br`          | `Error` で拒否される。 [fixture: c4/gram-grid-html-br-direction-line]          |
+| `ideographic`      | `Error` で拒否される。 [fixture: c4/gram-grid-ideographic-direction-line]      |
+| `keyword`          | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-direction-line]          |
+| `keyword-block`    | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-block-direction-line]    |
+| `keyword-class`    | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-class-direction-line]    |
+| `keyword-classdef` | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-classdef-direction-line] |
+| `keyword-columns`  | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-columns-direction-line]  |
+| `keyword-end`      | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-end-direction-line]      |
+| `keyword-header`   | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-header-direction-line]   |
+| `keyword-space`    | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-space-direction-line]    |
+| `keyword-style`    | `Error` で拒否される。 [fixture: c4/gram-grid-keyword-style-direction-line]    |
+| `less-than`        | `Error` で拒否される。 [fixture: c4/gram-grid-less-than-direction-line]        |
+| `lf`               | `Error` で拒否される。 [fixture: c4/gram-grid-lf-direction-line]               |
+| `ls`               | `Error` で拒否される。 [fixture: c4/gram-grid-ls-direction-line]               |
+| `nbsp`             | `Error` で拒否される。 [fixture: c4/gram-grid-nbsp-direction-line]             |
+| `nel`              | `Error` で拒否される。 [fixture: c4/gram-grid-nel-direction-line]              |
+| `nonascii`         | `Error` で拒否される。 [fixture: c4/gram-grid-nonascii-direction-line]         |
+| `open-brace`       | `Error` で拒否される。 [fixture: c4/gram-grid-open-brace-direction-line]       |
+| `open-round`       | `Error` で拒否される。 [fixture: c4/gram-grid-open-round-direction-line]       |
+| `open-square`      | `Error` で拒否される。 [fixture: c4/gram-grid-open-square-direction-line]      |
+| `percent`          | `Error` で拒否される。 [fixture: c4/gram-grid-percent-direction-line]          |
+| `pipe`             | `Error` で拒否される。 [fixture: c4/gram-grid-pipe-direction-line]             |
+| `proto`            | `Error` で拒否される。 [fixture: c4/gram-grid-proto-direction-line]            |
+| `ps`               | `Error` で拒否される。 [fixture: c4/gram-grid-ps-direction-line]               |
+| `punct`            | `Error` で拒否される。 [fixture: c4/gram-grid-punct-direction-line]            |
+| `quote`            | `Error` で拒否される。 [fixture: c4/gram-grid-quote-direction-line]            |
+| `root`             | `Error` で拒否される。 [fixture: c4/gram-grid-root-direction-line]             |
+| `semicolon`        | `Error` で拒否される。 [fixture: c4/gram-grid-semicolon-direction-line]        |
+| `single-quote`     | `Error` で拒否される。 [fixture: c4/gram-grid-single-quote-direction-line]     |
+| `spaces`           | `Error` で拒否される。 [fixture: c4/gram-grid-spaces-direction-line]           |
+| `style-rule`       | `Error` で拒否される。 [fixture: c4/gram-grid-style-rule-direction-line]       |
+| `tab`              | `Error` で拒否される。 [fixture: c4/gram-grid-tab-direction-line]              |
+| `vt`               | `Error` で拒否される。 [fixture: c4/gram-grid-vt-direction-line]               |
+
+#### text-argument-bare
+
+引用符なしのテキスト引数は `Person` の第 2 引数を代表とし、
+
+`attribute` の `STR` を両端削除後に `{ text }` で保持する。
+[fixture: c4/db-grid-digits-text-argument-bare]
+
+| Kind               | 読み取りと fixture                                                                                                  |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].label.text` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-text-argument-bare]                   |
+| `arrow`            | `shapes[0].label.text` は `"a-->b"`。 [fixture: c4/db-grid-arrow-text-argument-bare]                                |
+| `arrow-spaced`     | `shapes[0].label.text` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-text-argument-bare]                       |
+| `backslash`        | `shapes[0].label.text` は `"a\\b"`。 [fixture: c4/db-grid-backslash-text-argument-bare]                             |
+| `backtick`         | `shapes[0].label.text` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-text-argument-bare]                          |
+| `bom`              | `shapes[0].label.text` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-text-argument-bare]                               |
+| `classdef-rule`    | `shapes[0].label.text` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-text-argument-bare]               |
+| `close-brace`      | `shapes[0].label.text` は `"a}b"`。 [fixture: c4/db-grid-close-brace-text-argument-bare]                            |
+| `close-round`      | `shapes[0].label.text` は `"a)b"`。 [fixture: c4/db-grid-close-round-text-argument-bare]                            |
+| `close-square`     | `shapes[0].label.text` は `"a]b"`。 [fixture: c4/db-grid-close-square-text-argument-bare]                           |
+| `colon`            | `shapes[0].label.text` は `"a:b"`。 [fixture: c4/db-grid-colon-text-argument-bare]                                  |
+| `comma`            | `shapes[0].label.text` は `"a"`。 [fixture: c4/db-grid-comma-text-argument-bare]                                    |
+| `comment`          | `shapes[0].label.text` は `"a%% cb"`。 [fixture: c4/db-grid-comment-text-argument-bare]                             |
+| `comment-line`     | `shapes[0].label.text` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-text-argument-bare]                          |
+| `constructor`      | `shapes[0].label.text` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-text-argument-bare]                  |
+| `cr`               | `shapes[0].label.text` は `"a\nb"`。 [fixture: c4/db-grid-cr-text-argument-bare]                                    |
+| `crlf`             | `shapes[0].label.text` は `"a\nb"`。 [fixture: c4/db-grid-crlf-text-argument-bare]                                  |
+| `dash`             | `shapes[0].label.text` は `"a-b"`。 [fixture: c4/db-grid-dash-text-argument-bare]                                   |
+| `digits`           | `shapes[0].label.text` は `"a123b"`。 [fixture: c4/db-grid-digits-text-argument-bare]                               |
+| `directive`        | `shapes[0].label.text` は `"ab"`。 [fixture: c4/db-grid-directive-text-argument-bare]                               |
+| `directive-line`   | `shapes[0].label.text` は `"a\n\nb"`。 [fixture: c4/db-grid-directive-line-text-argument-bare]                      |
+| `emoji`            | `shapes[0].label.text` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-text-argument-bare]                       |
+| `empty`            | `shapes[0].label.text` は `""`。 [fixture: c4/db-grid-empty-text-argument-bare]                                     |
+| `entity`           | `shapes[0].label.text` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-text-argument-bare]  |
+| `entity-named`     | `shapes[0].label.text` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-text-argument-bare] |
+| `equals`           | `shapes[0].label.text` は `"a=b"`。 [fixture: c4/db-grid-equals-text-argument-bare]                                 |
+| `ff`               | `shapes[0].label.text` は `"a\fb"`。 [fixture: c4/db-grid-ff-text-argument-bare]                                    |
+| `greater-than`     | `shapes[0].label.text` は `"a>b"`。 [fixture: c4/db-grid-greater-than-text-argument-bare]                           |
+| `hash`             | `shapes[0].label.text` は `"a#b"`。 [fixture: c4/db-grid-hash-text-argument-bare]                                   |
+| `html`             | `shapes[0].label.text` は `"a<b>b"`。 [fixture: c4/db-grid-html-text-argument-bare]                                 |
+| `html-attribute`   | `shapes[0].label.text` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-text-argument-bare]              |
+| `html-br`          | `shapes[0].label.text` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-text-argument-bare]                             |
+| `ideographic`      | `shapes[0].label.text` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-text-argument-bare]                       |
+| `keyword`          | `shapes[0].label.text` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-text-argument-bare]                           |
+| `keyword-block`    | `shapes[0].label.text` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-text-argument-bare]                    |
+| `keyword-class`    | `shapes[0].label.text` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-text-argument-bare]                |
+| `keyword-classdef` | `shapes[0].label.text` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-text-argument-bare]   |
+| `keyword-columns`  | `shapes[0].label.text` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-text-argument-bare]              |
+| `keyword-end`      | `shapes[0].label.text` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-text-argument-bare]                        |
+| `keyword-header`   | `shapes[0].label.text` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-text-argument-bare]                 |
+| `keyword-space`    | `shapes[0].label.text` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-text-argument-bare]                    |
+| `keyword-style`    | `shapes[0].label.text` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-text-argument-bare]         |
+| `less-than`        | `shapes[0].label.text` は `"a<b"`。 [fixture: c4/db-grid-less-than-text-argument-bare]                              |
+| `lf`               | `shapes[0].label.text` は `"a\nb"`。 [fixture: c4/db-grid-lf-text-argument-bare]                                    |
+| `ls`               | `shapes[0].label.text` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-text-argument-bare]                                |
+| `nbsp`             | `shapes[0].label.text` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-text-argument-bare]                              |
+| `nel`              | `shapes[0].label.text` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-text-argument-bare]                               |
+| `nonascii`         | `shapes[0].label.text` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-text-argument-bare]                          |
+| `open-brace`       | `shapes[0].label.text` は `"a{b"`。 [fixture: c4/db-grid-open-brace-text-argument-bare]                             |
+| `open-round`       | `shapes[0].label.text` は `"a(b"`。 [fixture: c4/db-grid-open-round-text-argument-bare]                             |
+| `open-square`      | `shapes[0].label.text` は `"a[b"`。 [fixture: c4/db-grid-open-square-text-argument-bare]                            |
+| `percent`          | `shapes[0].label.text` は `"a%b"`。 [fixture: c4/db-grid-percent-text-argument-bare]                                |
+| `pipe`             | `shapes[0].label.text` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-text-argument-bare]                              |
+| `proto`            | `shapes[0].label.text` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-text-argument-bare]                          |
+| `ps`               | `shapes[0].label.text` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-text-argument-bare]                                |
+| `punct`            | `shapes[0].label.text` は `"a!$&*+."`。 [fixture: c4/db-grid-punct-text-argument-bare]                              |
+| `quote`            | `shapes[0].label.text` は `"a\"b"`。 [fixture: c4/db-grid-quote-text-argument-bare]                                 |
+| `root`             | `shapes[0].label.text` は `"arootb"`。 [fixture: c4/db-grid-root-text-argument-bare]                                |
+| `semicolon`        | `shapes[0].label.text` は `"a;b"`。 [fixture: c4/db-grid-semicolon-text-argument-bare]                              |
+| `single-quote`     | `shapes[0].label.text` は `"a'b"`。 [fixture: c4/db-grid-single-quote-text-argument-bare]                           |
+| `spaces`           | `shapes[0].label.text` は `"a  b"`。 [fixture: c4/db-grid-spaces-text-argument-bare]                                |
+| `style-rule`       | `shapes[0].label.text` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-text-argument-bare]                     |
+| `tab`              | `shapes[0].label.text` は `"a\tb"`。 [fixture: c4/db-grid-tab-text-argument-bare]                                   |
+| `vt`               | `shapes[0].label.text` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-text-argument-bare]                                |
+
+#### alias-argument-bare
+
+引用符なしの alias 引数は `Person` の第 1 引数を代表とし、
+
+`attribute` の `STR` の両端を削った alias が厳密等価で項目を選ぶ。
+[fixture: c4/db-grid-digits-alias-argument-bare]
+
+| Kind               | 読み取りと fixture                                                                                              |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].alias` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-alias-argument-bare]                   |
+| `arrow`            | `shapes[0].alias` は `"a-->b"`。 [fixture: c4/db-grid-arrow-alias-argument-bare]                                |
+| `arrow-spaced`     | `shapes[0].alias` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-alias-argument-bare]                       |
+| `backslash`        | `shapes[0].alias` は `"a\\b"`。 [fixture: c4/db-grid-backslash-alias-argument-bare]                             |
+| `backtick`         | `shapes[0].alias` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-alias-argument-bare]                          |
+| `bom`              | `shapes[0].alias` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-alias-argument-bare]                               |
+| `classdef-rule`    | `shapes[0].alias` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-alias-argument-bare]               |
+| `close-brace`      | `shapes[0].alias` は `"a}b"`。 [fixture: c4/db-grid-close-brace-alias-argument-bare]                            |
+| `close-round`      | `shapes[0].alias` は `"a)b"`。 [fixture: c4/db-grid-close-round-alias-argument-bare]                            |
+| `close-square`     | `shapes[0].alias` は `"a]b"`。 [fixture: c4/db-grid-close-square-alias-argument-bare]                           |
+| `colon`            | `shapes[0].alias` は `"a:b"`。 [fixture: c4/db-grid-colon-alias-argument-bare]                                  |
+| `comma`            | `shapes[0].alias` は `"a"`。 [fixture: c4/db-grid-comma-alias-argument-bare]                                    |
+| `comment`          | `shapes[0].alias` は `"a%% cb"`。 [fixture: c4/db-grid-comment-alias-argument-bare]                             |
+| `comment-line`     | `shapes[0].alias` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-alias-argument-bare]                          |
+| `constructor`      | `shapes[0].alias` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-alias-argument-bare]                  |
+| `cr`               | `shapes[0].alias` は `"a\nb"`。 [fixture: c4/db-grid-cr-alias-argument-bare]                                    |
+| `crlf`             | `shapes[0].alias` は `"a\nb"`。 [fixture: c4/db-grid-crlf-alias-argument-bare]                                  |
+| `dash`             | `shapes[0].alias` は `"a-b"`。 [fixture: c4/db-grid-dash-alias-argument-bare]                                   |
+| `digits`           | `shapes[0].alias` は `"a123b"`。 [fixture: c4/db-grid-digits-alias-argument-bare]                               |
+| `directive`        | `shapes[0].alias` は `"ab"`。 [fixture: c4/db-grid-directive-alias-argument-bare]                               |
+| `directive-line`   | `shapes[0].alias` は `"a\n\nb"`。 [fixture: c4/db-grid-directive-line-alias-argument-bare]                      |
+| `emoji`            | `shapes[0].alias` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-alias-argument-bare]                       |
+| `empty`            | `shapes[0].alias` は `""`。 [fixture: c4/db-grid-empty-alias-argument-bare]                                     |
+| `entity`           | `shapes[0].alias` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-alias-argument-bare]  |
+| `entity-named`     | `shapes[0].alias` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-alias-argument-bare] |
+| `equals`           | `shapes[0].alias` は `"a=b"`。 [fixture: c4/db-grid-equals-alias-argument-bare]                                 |
+| `ff`               | `shapes[0].alias` は `"a\fb"`。 [fixture: c4/db-grid-ff-alias-argument-bare]                                    |
+| `greater-than`     | `shapes[0].alias` は `"a>b"`。 [fixture: c4/db-grid-greater-than-alias-argument-bare]                           |
+| `hash`             | `shapes[0].alias` は `"a#b"`。 [fixture: c4/db-grid-hash-alias-argument-bare]                                   |
+| `html`             | `shapes[0].alias` は `"a<b>b"`。 [fixture: c4/db-grid-html-alias-argument-bare]                                 |
+| `html-attribute`   | `shapes[0].alias` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-alias-argument-bare]              |
+| `html-br`          | `shapes[0].alias` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-alias-argument-bare]                             |
+| `ideographic`      | `shapes[0].alias` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-alias-argument-bare]                       |
+| `keyword`          | `shapes[0].alias` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-alias-argument-bare]                           |
+| `keyword-block`    | `shapes[0].alias` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-alias-argument-bare]                    |
+| `keyword-class`    | `shapes[0].alias` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-alias-argument-bare]                |
+| `keyword-classdef` | `shapes[0].alias` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-alias-argument-bare]   |
+| `keyword-columns`  | `shapes[0].alias` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-alias-argument-bare]              |
+| `keyword-end`      | `shapes[0].alias` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-alias-argument-bare]                        |
+| `keyword-header`   | `shapes[0].alias` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-alias-argument-bare]                 |
+| `keyword-space`    | `shapes[0].alias` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-alias-argument-bare]                    |
+| `keyword-style`    | `shapes[0].alias` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-alias-argument-bare]         |
+| `less-than`        | `shapes[0].alias` は `"a<b"`。 [fixture: c4/db-grid-less-than-alias-argument-bare]                              |
+| `lf`               | `shapes[0].alias` は `"a\nb"`。 [fixture: c4/db-grid-lf-alias-argument-bare]                                    |
+| `ls`               | `shapes[0].alias` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-alias-argument-bare]                                |
+| `nbsp`             | `shapes[0].alias` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-alias-argument-bare]                              |
+| `nel`              | `shapes[0].alias` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-alias-argument-bare]                               |
+| `nonascii`         | `shapes[0].alias` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-alias-argument-bare]                          |
+| `open-brace`       | `shapes[0].alias` は `"a{b"`。 [fixture: c4/db-grid-open-brace-alias-argument-bare]                             |
+| `open-round`       | `shapes[0].alias` は `"a(b"`。 [fixture: c4/db-grid-open-round-alias-argument-bare]                             |
+| `open-square`      | `shapes[0].alias` は `"a[b"`。 [fixture: c4/db-grid-open-square-alias-argument-bare]                            |
+| `percent`          | `shapes[0].alias` は `"a%b"`。 [fixture: c4/db-grid-percent-alias-argument-bare]                                |
+| `pipe`             | `shapes[0].alias` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-alias-argument-bare]                              |
+| `proto`            | `shapes[0].alias` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-alias-argument-bare]                          |
+| `ps`               | `shapes[0].alias` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-alias-argument-bare]                                |
+| `punct`            | `shapes[0].alias` は `"a!$&*+."`。 [fixture: c4/db-grid-punct-alias-argument-bare]                              |
+| `quote`            | `shapes[0].alias` は `"a\"b"`。 [fixture: c4/db-grid-quote-alias-argument-bare]                                 |
+| `root`             | `shapes[0].alias` は `"arootb"`。 [fixture: c4/db-grid-root-alias-argument-bare]                                |
+| `semicolon`        | `shapes[0].alias` は `"a;b"`。 [fixture: c4/db-grid-semicolon-alias-argument-bare]                              |
+| `single-quote`     | `shapes[0].alias` は `"a'b"`。 [fixture: c4/db-grid-single-quote-alias-argument-bare]                           |
+| `spaces`           | `shapes[0].alias` は `"a  b"`。 [fixture: c4/db-grid-spaces-alias-argument-bare]                                |
+| `style-rule`       | `shapes[0].alias` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-alias-argument-bare]                     |
+| `tab`              | `shapes[0].alias` は `"a\tb"`。 [fixture: c4/db-grid-tab-alias-argument-bare]                                   |
+| `vt`               | `shapes[0].alias` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-alias-argument-bare]                                |
+
+#### plain-argument-bare
+
+引用符なしの単純引数は `Person` の第 4 引数 sprite を代表とし、
+
+`attribute` の `STR` の両端を削った値は、
+
+tags、
+link、
+位置指定のスタイル文字列と同じく単純な文字列となる。
+[fixture: c4/db-grid-digits-plain-argument-bare]
+
+| Kind               | 読み取りと fixture                                                                                               |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].sprite` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-plain-argument-bare]                   |
+| `arrow`            | `shapes[0].sprite` は `"a-->b"`。 [fixture: c4/db-grid-arrow-plain-argument-bare]                                |
+| `arrow-spaced`     | `shapes[0].sprite` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-plain-argument-bare]                       |
+| `backslash`        | `shapes[0].sprite` は `"a\\b"`。 [fixture: c4/db-grid-backslash-plain-argument-bare]                             |
+| `backtick`         | `shapes[0].sprite` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-plain-argument-bare]                          |
+| `bom`              | `shapes[0].sprite` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-plain-argument-bare]                               |
+| `classdef-rule`    | `shapes[0].sprite` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-plain-argument-bare]               |
+| `close-brace`      | `shapes[0].sprite` は `"a}b"`。 [fixture: c4/db-grid-close-brace-plain-argument-bare]                            |
+| `close-round`      | `shapes[0].sprite` は `"a)b"`。 [fixture: c4/db-grid-close-round-plain-argument-bare]                            |
+| `close-square`     | `shapes[0].sprite` は `"a]b"`。 [fixture: c4/db-grid-close-square-plain-argument-bare]                           |
+| `colon`            | `shapes[0].sprite` は `"a:b"`。 [fixture: c4/db-grid-colon-plain-argument-bare]                                  |
+| `comma`            | `shapes[0].sprite` は `"a"`。 [fixture: c4/db-grid-comma-plain-argument-bare]                                    |
+| `comment`          | `shapes[0].sprite` は `"a%% cb"`。 [fixture: c4/db-grid-comment-plain-argument-bare]                             |
+| `comment-line`     | `shapes[0].sprite` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-plain-argument-bare]                          |
+| `constructor`      | `shapes[0].sprite` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-plain-argument-bare]                  |
+| `cr`               | `shapes[0].sprite` は `"a\nb"`。 [fixture: c4/db-grid-cr-plain-argument-bare]                                    |
+| `crlf`             | `shapes[0].sprite` は `"a\nb"`。 [fixture: c4/db-grid-crlf-plain-argument-bare]                                  |
+| `dash`             | `shapes[0].sprite` は `"a-b"`。 [fixture: c4/db-grid-dash-plain-argument-bare]                                   |
+| `digits`           | `shapes[0].sprite` は `"a123b"`。 [fixture: c4/db-grid-digits-plain-argument-bare]                               |
+| `directive`        | `shapes[0].sprite` は `"ab"`。 [fixture: c4/db-grid-directive-plain-argument-bare]                               |
+| `directive-line`   | `shapes[0].sprite` は `"a\n\nb"`。 [fixture: c4/db-grid-directive-line-plain-argument-bare]                      |
+| `emoji`            | `shapes[0].sprite` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-plain-argument-bare]                       |
+| `empty`            | `shapes[0].sprite` は `""`。 [fixture: c4/db-grid-empty-plain-argument-bare]                                     |
+| `entity`           | `shapes[0].sprite` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-plain-argument-bare]  |
+| `entity-named`     | `shapes[0].sprite` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-plain-argument-bare] |
+| `equals`           | `shapes[0].sprite` は `"a=b"`。 [fixture: c4/db-grid-equals-plain-argument-bare]                                 |
+| `ff`               | `shapes[0].sprite` は `"a\fb"`。 [fixture: c4/db-grid-ff-plain-argument-bare]                                    |
+| `greater-than`     | `shapes[0].sprite` は `"a>b"`。 [fixture: c4/db-grid-greater-than-plain-argument-bare]                           |
+| `hash`             | `shapes[0].sprite` は `"a#b"`。 [fixture: c4/db-grid-hash-plain-argument-bare]                                   |
+| `html`             | `shapes[0].sprite` は `"a<b>b"`。 [fixture: c4/db-grid-html-plain-argument-bare]                                 |
+| `html-attribute`   | `shapes[0].sprite` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-plain-argument-bare]              |
+| `html-br`          | `shapes[0].sprite` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-plain-argument-bare]                             |
+| `ideographic`      | `shapes[0].sprite` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-plain-argument-bare]                       |
+| `keyword`          | `shapes[0].sprite` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-plain-argument-bare]                           |
+| `keyword-block`    | `shapes[0].sprite` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-plain-argument-bare]                    |
+| `keyword-class`    | `shapes[0].sprite` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-plain-argument-bare]                |
+| `keyword-classdef` | `shapes[0].sprite` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-plain-argument-bare]   |
+| `keyword-columns`  | `shapes[0].sprite` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-plain-argument-bare]              |
+| `keyword-end`      | `shapes[0].sprite` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-plain-argument-bare]                        |
+| `keyword-header`   | `shapes[0].sprite` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-plain-argument-bare]                 |
+| `keyword-space`    | `shapes[0].sprite` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-plain-argument-bare]                    |
+| `keyword-style`    | `shapes[0].sprite` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-plain-argument-bare]         |
+| `less-than`        | `shapes[0].sprite` は `"a<b"`。 [fixture: c4/db-grid-less-than-plain-argument-bare]                              |
+| `lf`               | `shapes[0].sprite` は `"a\nb"`。 [fixture: c4/db-grid-lf-plain-argument-bare]                                    |
+| `ls`               | `shapes[0].sprite` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-plain-argument-bare]                                |
+| `nbsp`             | `shapes[0].sprite` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-plain-argument-bare]                              |
+| `nel`              | `shapes[0].sprite` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-plain-argument-bare]                               |
+| `nonascii`         | `shapes[0].sprite` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-plain-argument-bare]                          |
+| `open-brace`       | `shapes[0].sprite` は `"a{b"`。 [fixture: c4/db-grid-open-brace-plain-argument-bare]                             |
+| `open-round`       | `shapes[0].sprite` は `"a(b"`。 [fixture: c4/db-grid-open-round-plain-argument-bare]                             |
+| `open-square`      | `shapes[0].sprite` は `"a[b"`。 [fixture: c4/db-grid-open-square-plain-argument-bare]                            |
+| `percent`          | `shapes[0].sprite` は `"a%b"`。 [fixture: c4/db-grid-percent-plain-argument-bare]                                |
+| `pipe`             | `shapes[0].sprite` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-plain-argument-bare]                              |
+| `proto`            | `shapes[0].sprite` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-plain-argument-bare]                          |
+| `ps`               | `shapes[0].sprite` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-plain-argument-bare]                                |
+| `punct`            | `shapes[0].sprite` は `"a!$&*+."`。 [fixture: c4/db-grid-punct-plain-argument-bare]                              |
+| `quote`            | `shapes[0].sprite` は `"a\"b"`。 [fixture: c4/db-grid-quote-plain-argument-bare]                                 |
+| `root`             | `shapes[0].sprite` は `"arootb"`。 [fixture: c4/db-grid-root-plain-argument-bare]                                |
+| `semicolon`        | `shapes[0].sprite` は `"a;b"`。 [fixture: c4/db-grid-semicolon-plain-argument-bare]                              |
+| `single-quote`     | `shapes[0].sprite` は `"a'b"`。 [fixture: c4/db-grid-single-quote-plain-argument-bare]                           |
+| `spaces`           | `shapes[0].sprite` は `"a  b"`。 [fixture: c4/db-grid-spaces-plain-argument-bare]                                |
+| `style-rule`       | `shapes[0].sprite` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-plain-argument-bare]                     |
+| `tab`              | `shapes[0].sprite` は `"a\tb"`。 [fixture: c4/db-grid-tab-plain-argument-bare]                                   |
+| `vt`               | `shapes[0].sprite` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-plain-argument-bare]                                |
+
+#### text-argument-quoted
+
+引用符付きのテキスト引数は `Person` の第 2 引数を代表とし、
+
+`string` の `STR` を両端削除後に `{ text }` で保持する。
+[fixture: c4/db-grid-digits-text-argument-quoted]
+
+| Kind               | 読み取りと fixture                                                                                                    |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].label.text` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-text-argument-quoted]                   |
+| `arrow`            | `shapes[0].label.text` は `"a-->b"`。 [fixture: c4/db-grid-arrow-text-argument-quoted]                                |
+| `arrow-spaced`     | `shapes[0].label.text` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-text-argument-quoted]                       |
+| `backslash`        | `shapes[0].label.text` は `"a\\b"`。 [fixture: c4/db-grid-backslash-text-argument-quoted]                             |
+| `backtick`         | `shapes[0].label.text` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-text-argument-quoted]                          |
+| `bom`              | `shapes[0].label.text` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-text-argument-quoted]                               |
+| `classdef-rule`    | `shapes[0].label.text` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-text-argument-quoted]               |
+| `close-brace`      | `shapes[0].label.text` は `"a}b"`。 [fixture: c4/db-grid-close-brace-text-argument-quoted]                            |
+| `close-round`      | `shapes[0].label.text` は `"a)b"`。 [fixture: c4/db-grid-close-round-text-argument-quoted]                            |
+| `close-square`     | `shapes[0].label.text` は `"a]b"`。 [fixture: c4/db-grid-close-square-text-argument-quoted]                           |
+| `colon`            | `shapes[0].label.text` は `"a:b"`。 [fixture: c4/db-grid-colon-text-argument-quoted]                                  |
+| `comma`            | `shapes[0].label.text` は `"a,b"`。 [fixture: c4/db-grid-comma-text-argument-quoted]                                  |
+| `comment`          | `shapes[0].label.text` は `"a%% cb"`。 [fixture: c4/db-grid-comment-text-argument-quoted]                             |
+| `comment-line`     | `shapes[0].label.text` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-text-argument-quoted]                          |
+| `constructor`      | `shapes[0].label.text` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-text-argument-quoted]                  |
+| `cr`               | `shapes[0].label.text` は `"a\nb"`。 [fixture: c4/db-grid-cr-text-argument-quoted]                                    |
+| `crlf`             | `shapes[0].label.text` は `"a\nb"`。 [fixture: c4/db-grid-crlf-text-argument-quoted]                                  |
+| `dash`             | `shapes[0].label.text` は `"a-b"`。 [fixture: c4/db-grid-dash-text-argument-quoted]                                   |
+| `digits`           | `shapes[0].label.text` は `"a123b"`。 [fixture: c4/db-grid-digits-text-argument-quoted]                               |
+| `directive`        | `shapes[0].label.text` は `"ab"`。 [fixture: c4/db-grid-directive-text-argument-quoted]                               |
+| `directive-line`   | `shapes[0].label.text` は `"a\n\nb"`。 [fixture: c4/db-grid-directive-line-text-argument-quoted]                      |
+| `emoji`            | `shapes[0].label.text` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-text-argument-quoted]                       |
+| `empty`            | `shapes[0].label.text` は `""`。 [fixture: c4/db-grid-empty-text-argument-quoted]                                     |
+| `entity`           | `shapes[0].label.text` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-text-argument-quoted]  |
+| `entity-named`     | `shapes[0].label.text` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-text-argument-quoted] |
+| `equals`           | `shapes[0].label.text` は `"a=b"`。 [fixture: c4/db-grid-equals-text-argument-quoted]                                 |
+| `ff`               | `shapes[0].label.text` は `"a\fb"`。 [fixture: c4/db-grid-ff-text-argument-quoted]                                    |
+| `greater-than`     | `shapes[0].label.text` は `"a>b"`。 [fixture: c4/db-grid-greater-than-text-argument-quoted]                           |
+| `hash`             | `shapes[0].label.text` は `"a#b"`。 [fixture: c4/db-grid-hash-text-argument-quoted]                                   |
+| `html`             | `shapes[0].label.text` は `"a<b>b"`。 [fixture: c4/db-grid-html-text-argument-quoted]                                 |
+| `html-attribute`   | `shapes[0].label.text` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-text-argument-quoted]              |
+| `html-br`          | `shapes[0].label.text` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-text-argument-quoted]                             |
+| `ideographic`      | `shapes[0].label.text` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-text-argument-quoted]                       |
+| `keyword`          | `shapes[0].label.text` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-text-argument-quoted]                           |
+| `keyword-block`    | `shapes[0].label.text` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-text-argument-quoted]                    |
+| `keyword-class`    | `shapes[0].label.text` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-text-argument-quoted]                |
+| `keyword-classdef` | `shapes[0].label.text` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-text-argument-quoted]   |
+| `keyword-columns`  | `shapes[0].label.text` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-text-argument-quoted]              |
+| `keyword-end`      | `shapes[0].label.text` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-text-argument-quoted]                        |
+| `keyword-header`   | `shapes[0].label.text` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-text-argument-quoted]                 |
+| `keyword-space`    | `shapes[0].label.text` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-text-argument-quoted]                    |
+| `keyword-style`    | `shapes[0].label.text` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-text-argument-quoted]         |
+| `less-than`        | `shapes[0].label.text` は `"a<b"`。 [fixture: c4/db-grid-less-than-text-argument-quoted]                              |
+| `lf`               | `shapes[0].label.text` は `"a\nb"`。 [fixture: c4/db-grid-lf-text-argument-quoted]                                    |
+| `ls`               | `shapes[0].label.text` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-text-argument-quoted]                                |
+| `nbsp`             | `shapes[0].label.text` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-text-argument-quoted]                              |
+| `nel`              | `shapes[0].label.text` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-text-argument-quoted]                               |
+| `nonascii`         | `shapes[0].label.text` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-text-argument-quoted]                          |
+| `open-brace`       | `shapes[0].label.text` は `"a{b"`。 [fixture: c4/db-grid-open-brace-text-argument-quoted]                             |
+| `open-round`       | `shapes[0].label.text` は `"a(b"`。 [fixture: c4/db-grid-open-round-text-argument-quoted]                             |
+| `open-square`      | `shapes[0].label.text` は `"a[b"`。 [fixture: c4/db-grid-open-square-text-argument-quoted]                            |
+| `percent`          | `shapes[0].label.text` は `"a%b"`。 [fixture: c4/db-grid-percent-text-argument-quoted]                                |
+| `pipe`             | `shapes[0].label.text` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-text-argument-quoted]                              |
+| `proto`            | `shapes[0].label.text` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-text-argument-quoted]                          |
+| `ps`               | `shapes[0].label.text` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-text-argument-quoted]                                |
+| `punct`            | `shapes[0].label.text` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-text-argument-quoted]                     |
+| `quote`            | `shapes[0].label.text` は `"a"`。 [fixture: c4/db-grid-quote-text-argument-quoted]                                    |
+| `root`             | `shapes[0].label.text` は `"arootb"`。 [fixture: c4/db-grid-root-text-argument-quoted]                                |
+| `semicolon`        | `shapes[0].label.text` は `"a;b"`。 [fixture: c4/db-grid-semicolon-text-argument-quoted]                              |
+| `single-quote`     | `shapes[0].label.text` は `"a'b"`。 [fixture: c4/db-grid-single-quote-text-argument-quoted]                           |
+| `spaces`           | `shapes[0].label.text` は `"a  b"`。 [fixture: c4/db-grid-spaces-text-argument-quoted]                                |
+| `style-rule`       | `shapes[0].label.text` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-text-argument-quoted]                     |
+| `tab`              | `shapes[0].label.text` は `"a\tb"`。 [fixture: c4/db-grid-tab-text-argument-quoted]                                   |
+| `vt`               | `shapes[0].label.text` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-text-argument-quoted]                                |
+
+#### alias-argument-quoted
+
+引用符付きの alias 引数は `Person` の第 1 引数を代表とし、
+
+`string` の `STR` の両端を削った alias が厳密等価で項目を選ぶ。
+[fixture: c4/db-grid-digits-alias-argument-quoted]
+
+| Kind               | 読み取りと fixture                                                                                                |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].alias` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-alias-argument-quoted]                   |
+| `arrow`            | `shapes[0].alias` は `"a-->b"`。 [fixture: c4/db-grid-arrow-alias-argument-quoted]                                |
+| `arrow-spaced`     | `shapes[0].alias` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-alias-argument-quoted]                       |
+| `backslash`        | `shapes[0].alias` は `"a\\b"`。 [fixture: c4/db-grid-backslash-alias-argument-quoted]                             |
+| `backtick`         | `shapes[0].alias` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-alias-argument-quoted]                          |
+| `bom`              | `shapes[0].alias` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-alias-argument-quoted]                               |
+| `classdef-rule`    | `shapes[0].alias` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-alias-argument-quoted]               |
+| `close-brace`      | `shapes[0].alias` は `"a}b"`。 [fixture: c4/db-grid-close-brace-alias-argument-quoted]                            |
+| `close-round`      | `shapes[0].alias` は `"a)b"`。 [fixture: c4/db-grid-close-round-alias-argument-quoted]                            |
+| `close-square`     | `shapes[0].alias` は `"a]b"`。 [fixture: c4/db-grid-close-square-alias-argument-quoted]                           |
+| `colon`            | `shapes[0].alias` は `"a:b"`。 [fixture: c4/db-grid-colon-alias-argument-quoted]                                  |
+| `comma`            | `shapes[0].alias` は `"a,b"`。 [fixture: c4/db-grid-comma-alias-argument-quoted]                                  |
+| `comment`          | `shapes[0].alias` は `"a%% cb"`。 [fixture: c4/db-grid-comment-alias-argument-quoted]                             |
+| `comment-line`     | `shapes[0].alias` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-alias-argument-quoted]                          |
+| `constructor`      | `shapes[0].alias` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-alias-argument-quoted]                  |
+| `cr`               | `shapes[0].alias` は `"a\nb"`。 [fixture: c4/db-grid-cr-alias-argument-quoted]                                    |
+| `crlf`             | `shapes[0].alias` は `"a\nb"`。 [fixture: c4/db-grid-crlf-alias-argument-quoted]                                  |
+| `dash`             | `shapes[0].alias` は `"a-b"`。 [fixture: c4/db-grid-dash-alias-argument-quoted]                                   |
+| `digits`           | `shapes[0].alias` は `"a123b"`。 [fixture: c4/db-grid-digits-alias-argument-quoted]                               |
+| `directive`        | `shapes[0].alias` は `"ab"`。 [fixture: c4/db-grid-directive-alias-argument-quoted]                               |
+| `directive-line`   | `shapes[0].alias` は `"a\n\nb"`。 [fixture: c4/db-grid-directive-line-alias-argument-quoted]                      |
+| `emoji`            | `shapes[0].alias` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-alias-argument-quoted]                       |
+| `empty`            | `shapes[0].alias` は `""`。 [fixture: c4/db-grid-empty-alias-argument-quoted]                                     |
+| `entity`           | `shapes[0].alias` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-alias-argument-quoted]  |
+| `entity-named`     | `shapes[0].alias` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-alias-argument-quoted] |
+| `equals`           | `shapes[0].alias` は `"a=b"`。 [fixture: c4/db-grid-equals-alias-argument-quoted]                                 |
+| `ff`               | `shapes[0].alias` は `"a\fb"`。 [fixture: c4/db-grid-ff-alias-argument-quoted]                                    |
+| `greater-than`     | `shapes[0].alias` は `"a>b"`。 [fixture: c4/db-grid-greater-than-alias-argument-quoted]                           |
+| `hash`             | `shapes[0].alias` は `"a#b"`。 [fixture: c4/db-grid-hash-alias-argument-quoted]                                   |
+| `html`             | `shapes[0].alias` は `"a<b>b"`。 [fixture: c4/db-grid-html-alias-argument-quoted]                                 |
+| `html-attribute`   | `shapes[0].alias` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-alias-argument-quoted]              |
+| `html-br`          | `shapes[0].alias` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-alias-argument-quoted]                             |
+| `ideographic`      | `shapes[0].alias` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-alias-argument-quoted]                       |
+| `keyword`          | `shapes[0].alias` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-alias-argument-quoted]                           |
+| `keyword-block`    | `shapes[0].alias` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-alias-argument-quoted]                    |
+| `keyword-class`    | `shapes[0].alias` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-alias-argument-quoted]                |
+| `keyword-classdef` | `shapes[0].alias` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-alias-argument-quoted]   |
+| `keyword-columns`  | `shapes[0].alias` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-alias-argument-quoted]              |
+| `keyword-end`      | `shapes[0].alias` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-alias-argument-quoted]                        |
+| `keyword-header`   | `shapes[0].alias` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-alias-argument-quoted]                 |
+| `keyword-space`    | `shapes[0].alias` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-alias-argument-quoted]                    |
+| `keyword-style`    | `shapes[0].alias` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-alias-argument-quoted]         |
+| `less-than`        | `shapes[0].alias` は `"a<b"`。 [fixture: c4/db-grid-less-than-alias-argument-quoted]                              |
+| `lf`               | `shapes[0].alias` は `"a\nb"`。 [fixture: c4/db-grid-lf-alias-argument-quoted]                                    |
+| `ls`               | `shapes[0].alias` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-alias-argument-quoted]                                |
+| `nbsp`             | `shapes[0].alias` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-alias-argument-quoted]                              |
+| `nel`              | `shapes[0].alias` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-alias-argument-quoted]                               |
+| `nonascii`         | `shapes[0].alias` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-alias-argument-quoted]                          |
+| `open-brace`       | `shapes[0].alias` は `"a{b"`。 [fixture: c4/db-grid-open-brace-alias-argument-quoted]                             |
+| `open-round`       | `shapes[0].alias` は `"a(b"`。 [fixture: c4/db-grid-open-round-alias-argument-quoted]                             |
+| `open-square`      | `shapes[0].alias` は `"a[b"`。 [fixture: c4/db-grid-open-square-alias-argument-quoted]                            |
+| `percent`          | `shapes[0].alias` は `"a%b"`。 [fixture: c4/db-grid-percent-alias-argument-quoted]                                |
+| `pipe`             | `shapes[0].alias` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-alias-argument-quoted]                              |
+| `proto`            | `shapes[0].alias` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-alias-argument-quoted]                          |
+| `ps`               | `shapes[0].alias` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-alias-argument-quoted]                                |
+| `punct`            | `shapes[0].alias` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-alias-argument-quoted]                     |
+| `quote`            | `shapes[0].alias` は `"a"`。 [fixture: c4/db-grid-quote-alias-argument-quoted]                                    |
+| `root`             | `shapes[0].alias` は `"arootb"`。 [fixture: c4/db-grid-root-alias-argument-quoted]                                |
+| `semicolon`        | `shapes[0].alias` は `"a;b"`。 [fixture: c4/db-grid-semicolon-alias-argument-quoted]                              |
+| `single-quote`     | `shapes[0].alias` は `"a'b"`。 [fixture: c4/db-grid-single-quote-alias-argument-quoted]                           |
+| `spaces`           | `shapes[0].alias` は `"a  b"`。 [fixture: c4/db-grid-spaces-alias-argument-quoted]                                |
+| `style-rule`       | `shapes[0].alias` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-alias-argument-quoted]                     |
+| `tab`              | `shapes[0].alias` は `"a\tb"`。 [fixture: c4/db-grid-tab-alias-argument-quoted]                                   |
+| `vt`               | `shapes[0].alias` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-alias-argument-quoted]                                |
+
+#### plain-argument-quoted
+
+引用符付きの単純引数は `Person` の第 4 引数 sprite を代表とし、
+
+`string` の `STR` の両端を削った値は、
+
+tags、
+link、
+位置指定のスタイル文字列と同じく単純な文字列となる。
+[fixture: c4/db-grid-digits-plain-argument-quoted]
+
+| Kind               | 読み取りと fixture                                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `shapes[0].sprite` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-plain-argument-quoted]                   |
+| `arrow`            | `shapes[0].sprite` は `"a-->b"`。 [fixture: c4/db-grid-arrow-plain-argument-quoted]                                |
+| `arrow-spaced`     | `shapes[0].sprite` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-plain-argument-quoted]                       |
+| `backslash`        | `shapes[0].sprite` は `"a\\b"`。 [fixture: c4/db-grid-backslash-plain-argument-quoted]                             |
+| `backtick`         | `shapes[0].sprite` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-plain-argument-quoted]                          |
+| `bom`              | `shapes[0].sprite` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-plain-argument-quoted]                               |
+| `classdef-rule`    | `shapes[0].sprite` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-plain-argument-quoted]               |
+| `close-brace`      | `shapes[0].sprite` は `"a}b"`。 [fixture: c4/db-grid-close-brace-plain-argument-quoted]                            |
+| `close-round`      | `shapes[0].sprite` は `"a)b"`。 [fixture: c4/db-grid-close-round-plain-argument-quoted]                            |
+| `close-square`     | `shapes[0].sprite` は `"a]b"`。 [fixture: c4/db-grid-close-square-plain-argument-quoted]                           |
+| `colon`            | `shapes[0].sprite` は `"a:b"`。 [fixture: c4/db-grid-colon-plain-argument-quoted]                                  |
+| `comma`            | `shapes[0].sprite` は `"a,b"`。 [fixture: c4/db-grid-comma-plain-argument-quoted]                                  |
+| `comment`          | `shapes[0].sprite` は `"a%% cb"`。 [fixture: c4/db-grid-comment-plain-argument-quoted]                             |
+| `comment-line`     | `shapes[0].sprite` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-plain-argument-quoted]                          |
+| `constructor`      | `shapes[0].sprite` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-plain-argument-quoted]                  |
+| `cr`               | `shapes[0].sprite` は `"a\nb"`。 [fixture: c4/db-grid-cr-plain-argument-quoted]                                    |
+| `crlf`             | `shapes[0].sprite` は `"a\nb"`。 [fixture: c4/db-grid-crlf-plain-argument-quoted]                                  |
+| `dash`             | `shapes[0].sprite` は `"a-b"`。 [fixture: c4/db-grid-dash-plain-argument-quoted]                                   |
+| `digits`           | `shapes[0].sprite` は `"a123b"`。 [fixture: c4/db-grid-digits-plain-argument-quoted]                               |
+| `directive`        | `shapes[0].sprite` は `"ab"`。 [fixture: c4/db-grid-directive-plain-argument-quoted]                               |
+| `directive-line`   | `shapes[0].sprite` は `"a\n\nb"`。 [fixture: c4/db-grid-directive-line-plain-argument-quoted]                      |
+| `emoji`            | `shapes[0].sprite` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-plain-argument-quoted]                       |
+| `empty`            | `shapes[0].sprite` は `""`。 [fixture: c4/db-grid-empty-plain-argument-quoted]                                     |
+| `entity`           | `shapes[0].sprite` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-plain-argument-quoted]  |
+| `entity-named`     | `shapes[0].sprite` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-plain-argument-quoted] |
+| `equals`           | `shapes[0].sprite` は `"a=b"`。 [fixture: c4/db-grid-equals-plain-argument-quoted]                                 |
+| `ff`               | `shapes[0].sprite` は `"a\fb"`。 [fixture: c4/db-grid-ff-plain-argument-quoted]                                    |
+| `greater-than`     | `shapes[0].sprite` は `"a>b"`。 [fixture: c4/db-grid-greater-than-plain-argument-quoted]                           |
+| `hash`             | `shapes[0].sprite` は `"a#b"`。 [fixture: c4/db-grid-hash-plain-argument-quoted]                                   |
+| `html`             | `shapes[0].sprite` は `"a<b>b"`。 [fixture: c4/db-grid-html-plain-argument-quoted]                                 |
+| `html-attribute`   | `shapes[0].sprite` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-plain-argument-quoted]              |
+| `html-br`          | `shapes[0].sprite` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-plain-argument-quoted]                             |
+| `ideographic`      | `shapes[0].sprite` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-plain-argument-quoted]                       |
+| `keyword`          | `shapes[0].sprite` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-plain-argument-quoted]                           |
+| `keyword-block`    | `shapes[0].sprite` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-plain-argument-quoted]                    |
+| `keyword-class`    | `shapes[0].sprite` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-plain-argument-quoted]                |
+| `keyword-classdef` | `shapes[0].sprite` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-plain-argument-quoted]   |
+| `keyword-columns`  | `shapes[0].sprite` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-plain-argument-quoted]              |
+| `keyword-end`      | `shapes[0].sprite` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-plain-argument-quoted]                        |
+| `keyword-header`   | `shapes[0].sprite` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-plain-argument-quoted]                 |
+| `keyword-space`    | `shapes[0].sprite` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-plain-argument-quoted]                    |
+| `keyword-style`    | `shapes[0].sprite` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-plain-argument-quoted]         |
+| `less-than`        | `shapes[0].sprite` は `"a<b"`。 [fixture: c4/db-grid-less-than-plain-argument-quoted]                              |
+| `lf`               | `shapes[0].sprite` は `"a\nb"`。 [fixture: c4/db-grid-lf-plain-argument-quoted]                                    |
+| `ls`               | `shapes[0].sprite` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-plain-argument-quoted]                                |
+| `nbsp`             | `shapes[0].sprite` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-plain-argument-quoted]                              |
+| `nel`              | `shapes[0].sprite` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-plain-argument-quoted]                               |
+| `nonascii`         | `shapes[0].sprite` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-plain-argument-quoted]                          |
+| `open-brace`       | `shapes[0].sprite` は `"a{b"`。 [fixture: c4/db-grid-open-brace-plain-argument-quoted]                             |
+| `open-round`       | `shapes[0].sprite` は `"a(b"`。 [fixture: c4/db-grid-open-round-plain-argument-quoted]                             |
+| `open-square`      | `shapes[0].sprite` は `"a[b"`。 [fixture: c4/db-grid-open-square-plain-argument-quoted]                            |
+| `percent`          | `shapes[0].sprite` は `"a%b"`。 [fixture: c4/db-grid-percent-plain-argument-quoted]                                |
+| `pipe`             | `shapes[0].sprite` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-plain-argument-quoted]                              |
+| `proto`            | `shapes[0].sprite` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-plain-argument-quoted]                          |
+| `ps`               | `shapes[0].sprite` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-plain-argument-quoted]                                |
+| `punct`            | `shapes[0].sprite` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-plain-argument-quoted]                     |
+| `quote`            | `shapes[0].sprite` は `"a"`。 [fixture: c4/db-grid-quote-plain-argument-quoted]                                    |
+| `root`             | `shapes[0].sprite` は `"arootb"`。 [fixture: c4/db-grid-root-plain-argument-quoted]                                |
+| `semicolon`        | `shapes[0].sprite` は `"a;b"`。 [fixture: c4/db-grid-semicolon-plain-argument-quoted]                              |
+| `single-quote`     | `shapes[0].sprite` は `"a'b"`。 [fixture: c4/db-grid-single-quote-plain-argument-quoted]                           |
+| `spaces`           | `shapes[0].sprite` は `"a  b"`。 [fixture: c4/db-grid-spaces-plain-argument-quoted]                                |
+| `style-rule`       | `shapes[0].sprite` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-plain-argument-quoted]                     |
+| `tab`              | `shapes[0].sprite` は `"a\tb"`。 [fixture: c4/db-grid-tab-plain-argument-quoted]                                   |
+| `vt`               | `shapes[0].sprite` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-plain-argument-quoted]                                |
+
+#### named-key
+
+名前付きキーは `Person` の第 3 引数 `$<key>="V"` を代表とし、
+
+`string_kv` と `string_kv_key` が両端を削った属性名を選ぶ。
+[fixture: c4/db-grid-digits-named-key]
+
+| Kind               | 読み取りと fixture                                                                                                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a&amp;b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-ampersand-entity-named-key]                   |
+| `arrow`            | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a-->b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-arrow-named-key]                                |
+| `arrow-spaced`     | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a --> b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-arrow-spaced-named-key]                       |
+| `backslash`        | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\\b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-backslash-named-key]                             |
+| `backtick`         | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u0060b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-backtick-named-key]                          |
+| `bom`              | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\ufeffb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-bom-named-key]                               |
+| `classdef-rule`    | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"aclassDef:#xyb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-classdef-rule-named-key]               |
+| `close-brace`      | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a}b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-close-brace-named-key]                            |
+| `close-round`      | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a)b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-close-round-named-key]                            |
+| `close-square`     | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a]b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-close-square-named-key]                           |
+| `colon`            | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a:b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-colon-named-key]                                  |
+| `comma`            | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a,b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-comma-named-key]                                  |
+| `comment`          | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a%% cb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-comment-named-key]                             |
+| `comment-line`     | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-comment-line-named-key]                          |
+| `constructor`      | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"aconstructorb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-constructor-named-key]                  |
+| `cr`               | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-cr-named-key]                                    |
+| `crlf`             | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-crlf-named-key]                                  |
+| `dash`             | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a-b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-dash-named-key]                                   |
+| `digits`           | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a123b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-digits-named-key]                               |
+| `directive`        | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"ab":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-directive-named-key]                               |
+| `directive-line`   | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\n\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-directive-line-named-key]                      |
+| `emoji`            | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\ud83d\ude00b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-emoji-named-key]                       |
+| `empty`            | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-empty-named-key]                                     |
+| `entity`           | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\ufb02\u00b0\u00b035\u00b6\u00dfb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-entity-named-key]  |
+| `entity-named`     | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\ufb02\u00b0amp\u00b6\u00dfb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-entity-named-named-key] |
+| `equals`           | `Error` で拒否される。 [fixture: c4/gram-grid-equals-named-key]                                                                                                                                  |
+| `ff`               | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\fb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-ff-named-key]                                    |
+| `greater-than`     | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a>b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-greater-than-named-key]                           |
+| `hash`             | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a#b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-hash-named-key]                                   |
+| `html`             | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a<b>b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-html-named-key]                                 |
+| `html-attribute`   | `Error` で拒否される。 [fixture: c4/gram-grid-html-attribute-named-key]                                                                                                                          |
+| `html-br`          | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a<br>b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-html-br-named-key]                             |
+| `ideographic`      | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u3000b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-ideographic-named-key]                       |
+| `keyword`          | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"aPersonb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-named-key]                           |
+| `keyword-block`    | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a block b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-block-named-key]                    |
+| `keyword-class`    | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a class A c b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-class-named-key]                |
+| `keyword-classdef` | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a classDef c fill:red b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-classdef-named-key]   |
+| `keyword-columns`  | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a columns 2 b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-columns-named-key]              |
+| `keyword-end`      | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a end b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-end-named-key]                        |
+| `keyword-header`   | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"aC4Contextb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-header-named-key]                 |
+| `keyword-space`    | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a space b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-space-named-key]                    |
+| `keyword-style`    | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a style A fill:red b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-keyword-style-named-key]         |
+| `less-than`        | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a<b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-less-than-named-key]                              |
+| `lf`               | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\nb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-lf-named-key]                                    |
+| `ls`               | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u2028b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-ls-named-key]                                |
+| `nbsp`             | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u00a0b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-nbsp-named-key]                              |
+| `nel`              | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u0085b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-nel-named-key]                               |
+| `nonascii`         | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u00e9b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-nonascii-named-key]                          |
+| `open-brace`       | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a{b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-open-brace-named-key]                             |
+| `open-round`       | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a(b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-open-round-named-key]                             |
+| `open-square`      | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a[b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-open-square-named-key]                            |
+| `percent`          | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a%b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-percent-named-key]                                |
+| `pipe`             | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u007cb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-pipe-named-key]                              |
+| `proto`            | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a__proto__b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-proto-named-key]                          |
+| `ps`               | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u2029b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-ps-named-key]                                |
+| `punct`            | `Error` で拒否される。 [fixture: c4/gram-grid-punct-named-key]                                                                                                                                   |
+| `quote`            | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\"b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-quote-named-key]                                 |
+| `root`             | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"arootb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-root-named-key]                                |
+| `semicolon`        | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a;b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-semicolon-named-key]                              |
+| `single-quote`     | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a'b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-single-quote-named-key]                           |
+| `spaces`           | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a  b":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-spaces-named-key]                                |
+| `style-rule`       | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"astyle:#xyb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-style-rule-named-key]                     |
+| `tab`              | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\tb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-tab-named-key]                                   |
+| `vt`               | `shapes[0]` は `{"alias":"a","label":{"text":"A"},"a\u000bb":"V","typeC4Shape":{"text":"person"},"parentBoundary":"global"}`。 [fixture: c4/db-grid-vt-named-key]                                |
+
+#### named-value
+
+名前付き値は `Person` の第 3 引数 `$descr="<value>"` を代表とし、
+
+`string_kv_value` の `STR_VALUE` の両端を削って `descr.text` に保持する。
+[fixture: c4/db-grid-digits-named-value]
+
+| Kind               | 読み取りと fixture                                                                                           |
+| ------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `shapes[0].descr.text` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-named-value]                   |
+| `arrow`            | `shapes[0].descr.text` は `"a-->b"`。 [fixture: c4/db-grid-arrow-named-value]                                |
+| `arrow-spaced`     | `shapes[0].descr.text` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-named-value]                       |
+| `backslash`        | `shapes[0].descr.text` は `"a\\b"`。 [fixture: c4/db-grid-backslash-named-value]                             |
+| `backtick`         | `shapes[0].descr.text` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-named-value]                          |
+| `bom`              | `shapes[0].descr.text` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-named-value]                               |
+| `classdef-rule`    | `shapes[0].descr.text` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-named-value]               |
+| `close-brace`      | `shapes[0].descr.text` は `"a}b"`。 [fixture: c4/db-grid-close-brace-named-value]                            |
+| `close-round`      | `shapes[0].descr.text` は `"a)b"`。 [fixture: c4/db-grid-close-round-named-value]                            |
+| `close-square`     | `shapes[0].descr.text` は `"a]b"`。 [fixture: c4/db-grid-close-square-named-value]                           |
+| `colon`            | `shapes[0].descr.text` は `"a:b"`。 [fixture: c4/db-grid-colon-named-value]                                  |
+| `comma`            | `shapes[0].descr.text` は `"a,b"`。 [fixture: c4/db-grid-comma-named-value]                                  |
+| `comment`          | `shapes[0].descr.text` は `"a%% cb"`。 [fixture: c4/db-grid-comment-named-value]                             |
+| `comment-line`     | `shapes[0].descr.text` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-named-value]                          |
+| `constructor`      | `shapes[0].descr.text` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-named-value]                  |
+| `cr`               | `shapes[0].descr.text` は `"a\nb"`。 [fixture: c4/db-grid-cr-named-value]                                    |
+| `crlf`             | `shapes[0].descr.text` は `"a\nb"`。 [fixture: c4/db-grid-crlf-named-value]                                  |
+| `dash`             | `shapes[0].descr.text` は `"a-b"`。 [fixture: c4/db-grid-dash-named-value]                                   |
+| `digits`           | `shapes[0].descr.text` は `"a123b"`。 [fixture: c4/db-grid-digits-named-value]                               |
+| `directive`        | `shapes[0].descr.text` は `"ab"`。 [fixture: c4/db-grid-directive-named-value]                               |
+| `directive-line`   | `shapes[0].descr.text` は `"a\n\nb"`。 [fixture: c4/db-grid-directive-line-named-value]                      |
+| `emoji`            | `shapes[0].descr.text` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-named-value]                       |
+| `empty`            | `Error` で拒否される。 [fixture: c4/gram-grid-empty-named-value]                                             |
+| `entity`           | `shapes[0].descr.text` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-value]  |
+| `entity-named`     | `shapes[0].descr.text` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-named-value] |
+| `equals`           | `shapes[0].descr.text` は `"a=b"`。 [fixture: c4/db-grid-equals-named-value]                                 |
+| `ff`               | `shapes[0].descr.text` は `"a\fb"`。 [fixture: c4/db-grid-ff-named-value]                                    |
+| `greater-than`     | `shapes[0].descr.text` は `"a>b"`。 [fixture: c4/db-grid-greater-than-named-value]                           |
+| `hash`             | `shapes[0].descr.text` は `"a#b"`。 [fixture: c4/db-grid-hash-named-value]                                   |
+| `html`             | `shapes[0].descr.text` は `"a<b>b"`。 [fixture: c4/db-grid-html-named-value]                                 |
+| `html-attribute`   | `shapes[0].descr.text` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-named-value]              |
+| `html-br`          | `shapes[0].descr.text` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-named-value]                             |
+| `ideographic`      | `shapes[0].descr.text` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-named-value]                       |
+| `keyword`          | `shapes[0].descr.text` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-named-value]                           |
+| `keyword-block`    | `shapes[0].descr.text` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-named-value]                    |
+| `keyword-class`    | `shapes[0].descr.text` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-named-value]                |
+| `keyword-classdef` | `shapes[0].descr.text` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-named-value]   |
+| `keyword-columns`  | `shapes[0].descr.text` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-named-value]              |
+| `keyword-end`      | `shapes[0].descr.text` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-named-value]                        |
+| `keyword-header`   | `shapes[0].descr.text` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-named-value]                 |
+| `keyword-space`    | `shapes[0].descr.text` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-named-value]                    |
+| `keyword-style`    | `shapes[0].descr.text` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-named-value]         |
+| `less-than`        | `shapes[0].descr.text` は `"a<b"`。 [fixture: c4/db-grid-less-than-named-value]                              |
+| `lf`               | `shapes[0].descr.text` は `"a\nb"`。 [fixture: c4/db-grid-lf-named-value]                                    |
+| `ls`               | `shapes[0].descr.text` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-named-value]                                |
+| `nbsp`             | `shapes[0].descr.text` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-named-value]                              |
+| `nel`              | `shapes[0].descr.text` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-named-value]                               |
+| `nonascii`         | `shapes[0].descr.text` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-named-value]                          |
+| `open-brace`       | `shapes[0].descr.text` は `"a{b"`。 [fixture: c4/db-grid-open-brace-named-value]                             |
+| `open-round`       | `shapes[0].descr.text` は `"a(b"`。 [fixture: c4/db-grid-open-round-named-value]                             |
+| `open-square`      | `shapes[0].descr.text` は `"a[b"`。 [fixture: c4/db-grid-open-square-named-value]                            |
+| `percent`          | `shapes[0].descr.text` は `"a%b"`。 [fixture: c4/db-grid-percent-named-value]                                |
+| `pipe`             | `shapes[0].descr.text` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-named-value]                              |
+| `proto`            | `shapes[0].descr.text` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-named-value]                          |
+| `ps`               | `shapes[0].descr.text` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-named-value]                                |
+| `punct`            | `shapes[0].descr.text` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-named-value]                     |
+| `quote`            | `Error` で拒否される。 [fixture: c4/gram-grid-quote-named-value]                                             |
+| `root`             | `shapes[0].descr.text` は `"arootb"`。 [fixture: c4/db-grid-root-named-value]                                |
+| `semicolon`        | `shapes[0].descr.text` は `"a;b"`。 [fixture: c4/db-grid-semicolon-named-value]                              |
+| `single-quote`     | `shapes[0].descr.text` は `"a'b"`。 [fixture: c4/db-grid-single-quote-named-value]                           |
+| `spaces`           | `shapes[0].descr.text` は `"a  b"`。 [fixture: c4/db-grid-spaces-named-value]                                |
+| `style-rule`       | `shapes[0].descr.text` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-named-value]                     |
+| `tab`              | `shapes[0].descr.text` は `"a\tb"`。 [fixture: c4/db-grid-tab-named-value]                                   |
+| `vt`               | `shapes[0].descr.text` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-named-value]                                |
+
+#### offset-argument-bare
+
+引用符なしのオフセットは `UpdateRelStyle` の第 5 引数 offsetX を代表とし、
+
+`attribute` の `STR` へ無条件に `parseInt()` を適用して `NaN` も保持する。
+[fixture: c4/db-grid-digits-offset-argument-bare]
+
+| Kind               | 読み取りと fixture                                                                         |
+| ------------------ | ------------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ampersand-entity-offset-argument-bare] |
+| `arrow`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-arrow-offset-argument-bare]            |
+| `arrow-spaced`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-arrow-spaced-offset-argument-bare]     |
+| `backslash`        | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-backslash-offset-argument-bare]        |
+| `backtick`         | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-backtick-offset-argument-bare]         |
+| `bom`              | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-bom-offset-argument-bare]              |
+| `classdef-rule`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-classdef-rule-offset-argument-bare]    |
+| `close-brace`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-close-brace-offset-argument-bare]      |
+| `close-round`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-close-round-offset-argument-bare]      |
+| `close-square`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-close-square-offset-argument-bare]     |
+| `colon`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-colon-offset-argument-bare]            |
+| `comma`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-comma-offset-argument-bare]            |
+| `comment`          | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-comment-offset-argument-bare]          |
+| `comment-line`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-comment-line-offset-argument-bare]     |
+| `constructor`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-constructor-offset-argument-bare]      |
+| `cr`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-cr-offset-argument-bare]               |
+| `crlf`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-crlf-offset-argument-bare]             |
+| `dash`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-dash-offset-argument-bare]             |
+| `digits`           | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-digits-offset-argument-bare]           |
+| `directive`        | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-directive-offset-argument-bare]        |
+| `directive-line`   | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-directive-line-offset-argument-bare]   |
+| `emoji`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-emoji-offset-argument-bare]            |
+| `empty`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-empty-offset-argument-bare]            |
+| `entity`           | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-entity-offset-argument-bare]           |
+| `entity-named`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-entity-named-offset-argument-bare]     |
+| `equals`           | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-equals-offset-argument-bare]           |
+| `ff`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ff-offset-argument-bare]               |
+| `greater-than`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-greater-than-offset-argument-bare]     |
+| `hash`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-hash-offset-argument-bare]             |
+| `html`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-html-offset-argument-bare]             |
+| `html-attribute`   | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-html-attribute-offset-argument-bare]   |
+| `html-br`          | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-html-br-offset-argument-bare]          |
+| `ideographic`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ideographic-offset-argument-bare]      |
+| `keyword`          | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-offset-argument-bare]          |
+| `keyword-block`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-block-offset-argument-bare]    |
+| `keyword-class`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-class-offset-argument-bare]    |
+| `keyword-classdef` | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-classdef-offset-argument-bare] |
+| `keyword-columns`  | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-columns-offset-argument-bare]  |
+| `keyword-end`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-end-offset-argument-bare]      |
+| `keyword-header`   | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-header-offset-argument-bare]   |
+| `keyword-space`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-space-offset-argument-bare]    |
+| `keyword-style`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-style-offset-argument-bare]    |
+| `less-than`        | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-less-than-offset-argument-bare]        |
+| `lf`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-lf-offset-argument-bare]               |
+| `ls`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ls-offset-argument-bare]               |
+| `nbsp`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-nbsp-offset-argument-bare]             |
+| `nel`              | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-nel-offset-argument-bare]              |
+| `nonascii`         | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-nonascii-offset-argument-bare]         |
+| `open-brace`       | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-open-brace-offset-argument-bare]       |
+| `open-round`       | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-open-round-offset-argument-bare]       |
+| `open-square`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-open-square-offset-argument-bare]      |
+| `percent`          | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-percent-offset-argument-bare]          |
+| `pipe`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-pipe-offset-argument-bare]             |
+| `proto`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-proto-offset-argument-bare]            |
+| `ps`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ps-offset-argument-bare]               |
+| `punct`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-punct-offset-argument-bare]            |
+| `quote`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-quote-offset-argument-bare]            |
+| `root`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-root-offset-argument-bare]             |
+| `semicolon`        | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-semicolon-offset-argument-bare]        |
+| `single-quote`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-single-quote-offset-argument-bare]     |
+| `spaces`           | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-spaces-offset-argument-bare]           |
+| `style-rule`       | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-style-rule-offset-argument-bare]       |
+| `tab`              | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-tab-offset-argument-bare]              |
+| `vt`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-vt-offset-argument-bare]               |
+
+#### layout-argument-bare
+
+引用符なしの配置引数は `UpdateLayoutConfig` の第 1 引数を代表とし、
+
+`attribute` の `STR` の `parseInt()` 値が 1 以上なら `c4ShapeInRow` を更新する。
+[fixture: c4/db-grid-digits-layout-argument-bare]
+
+| Kind               | 読み取りと fixture                                                                  |
+| ------------------ | ----------------------------------------------------------------------------------- |
+| `ampersand-entity` | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ampersand-entity-layout-argument-bare] |
+| `arrow`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-arrow-layout-argument-bare]            |
+| `arrow-spaced`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-arrow-spaced-layout-argument-bare]     |
+| `backslash`        | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-backslash-layout-argument-bare]        |
+| `backtick`         | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-backtick-layout-argument-bare]         |
+| `bom`              | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-bom-layout-argument-bare]              |
+| `classdef-rule`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-classdef-rule-layout-argument-bare]    |
+| `close-brace`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-close-brace-layout-argument-bare]      |
+| `close-round`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-close-round-layout-argument-bare]      |
+| `close-square`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-close-square-layout-argument-bare]     |
+| `colon`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-colon-layout-argument-bare]            |
+| `comma`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-comma-layout-argument-bare]            |
+| `comment`          | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-comment-layout-argument-bare]          |
+| `comment-line`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-comment-line-layout-argument-bare]     |
+| `constructor`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-constructor-layout-argument-bare]      |
+| `cr`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-cr-layout-argument-bare]               |
+| `crlf`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-crlf-layout-argument-bare]             |
+| `dash`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-dash-layout-argument-bare]             |
+| `digits`           | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-digits-layout-argument-bare]           |
+| `directive`        | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-directive-layout-argument-bare]        |
+| `directive-line`   | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-directive-line-layout-argument-bare]   |
+| `emoji`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-emoji-layout-argument-bare]            |
+| `empty`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-empty-layout-argument-bare]            |
+| `entity`           | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-entity-layout-argument-bare]           |
+| `entity-named`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-entity-named-layout-argument-bare]     |
+| `equals`           | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-equals-layout-argument-bare]           |
+| `ff`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ff-layout-argument-bare]               |
+| `greater-than`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-greater-than-layout-argument-bare]     |
+| `hash`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-hash-layout-argument-bare]             |
+| `html`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-html-layout-argument-bare]             |
+| `html-attribute`   | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-html-attribute-layout-argument-bare]   |
+| `html-br`          | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-html-br-layout-argument-bare]          |
+| `ideographic`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ideographic-layout-argument-bare]      |
+| `keyword`          | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-layout-argument-bare]          |
+| `keyword-block`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-block-layout-argument-bare]    |
+| `keyword-class`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-class-layout-argument-bare]    |
+| `keyword-classdef` | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-classdef-layout-argument-bare] |
+| `keyword-columns`  | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-columns-layout-argument-bare]  |
+| `keyword-end`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-end-layout-argument-bare]      |
+| `keyword-header`   | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-header-layout-argument-bare]   |
+| `keyword-space`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-space-layout-argument-bare]    |
+| `keyword-style`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-style-layout-argument-bare]    |
+| `less-than`        | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-less-than-layout-argument-bare]        |
+| `lf`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-lf-layout-argument-bare]               |
+| `ls`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ls-layout-argument-bare]               |
+| `nbsp`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-nbsp-layout-argument-bare]             |
+| `nel`              | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-nel-layout-argument-bare]              |
+| `nonascii`         | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-nonascii-layout-argument-bare]         |
+| `open-brace`       | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-open-brace-layout-argument-bare]       |
+| `open-round`       | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-open-round-layout-argument-bare]       |
+| `open-square`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-open-square-layout-argument-bare]      |
+| `percent`          | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-percent-layout-argument-bare]          |
+| `pipe`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-pipe-layout-argument-bare]             |
+| `proto`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-proto-layout-argument-bare]            |
+| `ps`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ps-layout-argument-bare]               |
+| `punct`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-punct-layout-argument-bare]            |
+| `quote`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-quote-layout-argument-bare]            |
+| `root`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-root-layout-argument-bare]             |
+| `semicolon`        | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-semicolon-layout-argument-bare]        |
+| `single-quote`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-single-quote-layout-argument-bare]     |
+| `spaces`           | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-spaces-layout-argument-bare]           |
+| `style-rule`       | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-style-rule-layout-argument-bare]       |
+| `tab`              | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-tab-layout-argument-bare]              |
+| `vt`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-vt-layout-argument-bare]               |
+
+#### index-argument-bare
+
+引用符なしの index 引数は `RelIndex` の第 1 引数を代表とし、
+
+`attribute` の `STR` は関係の追加前に捨てられる。
+[fixture: c4/db-grid-digits-index-argument-bare]
+
+| Kind               | 読み取りと fixture                                                                                                                                                                                                 |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ampersand-entity` | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ampersand-entity-index-argument-bare] |
+| `arrow`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-arrow-index-argument-bare]            |
+| `arrow-spaced`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-arrow-spaced-index-argument-bare]     |
+| `backslash`        | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-backslash-index-argument-bare]        |
+| `backtick`         | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-backtick-index-argument-bare]         |
+| `bom`              | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-bom-index-argument-bare]              |
+| `classdef-rule`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-classdef-rule-index-argument-bare]    |
+| `close-brace`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-close-brace-index-argument-bare]      |
+| `close-round`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-close-round-index-argument-bare]      |
+| `close-square`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-close-square-index-argument-bare]     |
+| `colon`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-colon-index-argument-bare]            |
+| `comma`            | `rels` は `[{"type":"rel","from":"b","to":"a","label":{"text":"b"},"techn":{"text":"Uses"},"descr":{"text":"J"},"sprite":"D","tags":"S","link":"T"}]`。 [fixture: c4/db-grid-comma-index-argument-bare]            |
+| `comment`          | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-comment-index-argument-bare]          |
+| `comment-line`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-comment-line-index-argument-bare]     |
+| `constructor`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-constructor-index-argument-bare]      |
+| `cr`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-cr-index-argument-bare]               |
+| `crlf`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-crlf-index-argument-bare]             |
+| `dash`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-dash-index-argument-bare]             |
+| `digits`           | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-digits-index-argument-bare]           |
+| `directive`        | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-directive-index-argument-bare]        |
+| `directive-line`   | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-directive-line-index-argument-bare]   |
+| `emoji`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-emoji-index-argument-bare]            |
+| `empty`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-empty-index-argument-bare]            |
+| `entity`           | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-entity-index-argument-bare]           |
+| `entity-named`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-entity-named-index-argument-bare]     |
+| `equals`           | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-equals-index-argument-bare]           |
+| `ff`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ff-index-argument-bare]               |
+| `greater-than`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-greater-than-index-argument-bare]     |
+| `hash`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-hash-index-argument-bare]             |
+| `html`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-html-index-argument-bare]             |
+| `html-attribute`   | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-html-attribute-index-argument-bare]   |
+| `html-br`          | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-html-br-index-argument-bare]          |
+| `ideographic`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ideographic-index-argument-bare]      |
+| `keyword`          | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-index-argument-bare]          |
+| `keyword-block`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-block-index-argument-bare]    |
+| `keyword-class`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-class-index-argument-bare]    |
+| `keyword-classdef` | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-classdef-index-argument-bare] |
+| `keyword-columns`  | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-columns-index-argument-bare]  |
+| `keyword-end`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-end-index-argument-bare]      |
+| `keyword-header`   | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-header-index-argument-bare]   |
+| `keyword-space`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-space-index-argument-bare]    |
+| `keyword-style`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-style-index-argument-bare]    |
+| `less-than`        | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-less-than-index-argument-bare]        |
+| `lf`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-lf-index-argument-bare]               |
+| `ls`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ls-index-argument-bare]               |
+| `nbsp`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-nbsp-index-argument-bare]             |
+| `nel`              | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-nel-index-argument-bare]              |
+| `nonascii`         | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-nonascii-index-argument-bare]         |
+| `open-brace`       | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-open-brace-index-argument-bare]       |
+| `open-round`       | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-open-round-index-argument-bare]       |
+| `open-square`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-open-square-index-argument-bare]      |
+| `percent`          | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-percent-index-argument-bare]          |
+| `pipe`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-pipe-index-argument-bare]             |
+| `proto`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-proto-index-argument-bare]            |
+| `ps`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ps-index-argument-bare]               |
+| `punct`            | `rels` は `[{"type":"rel","from":"/=?^_~@b","to":"a","label":{"text":"b"},"techn":{"text":"Uses"},"descr":{"text":"J"},"sprite":"D","tags":"S","link":"T"}]`。 [fixture: c4/db-grid-punct-index-argument-bare]     |
+| `quote`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-quote-index-argument-bare]            |
+| `root`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-root-index-argument-bare]             |
+| `semicolon`        | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-semicolon-index-argument-bare]        |
+| `single-quote`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-single-quote-index-argument-bare]     |
+| `spaces`           | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-spaces-index-argument-bare]           |
+| `style-rule`       | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-style-rule-index-argument-bare]       |
+| `tab`              | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-tab-index-argument-bare]              |
+| `vt`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-vt-index-argument-bare]               |
+
+#### offset-argument-quoted
+
+引用符付きのオフセットは `UpdateRelStyle` の第 5 引数 offsetX を代表とし、
+
+`string` の `STR` へ無条件に `parseInt()` を適用して `NaN` も保持する。
+[fixture: c4/db-grid-digits-offset-argument-quoted]
+
+| Kind               | 読み取りと fixture                                                                           |
+| ------------------ | -------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ampersand-entity-offset-argument-quoted] |
+| `arrow`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-arrow-offset-argument-quoted]            |
+| `arrow-spaced`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-arrow-spaced-offset-argument-quoted]     |
+| `backslash`        | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-backslash-offset-argument-quoted]        |
+| `backtick`         | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-backtick-offset-argument-quoted]         |
+| `bom`              | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-bom-offset-argument-quoted]              |
+| `classdef-rule`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-classdef-rule-offset-argument-quoted]    |
+| `close-brace`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-close-brace-offset-argument-quoted]      |
+| `close-round`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-close-round-offset-argument-quoted]      |
+| `close-square`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-close-square-offset-argument-quoted]     |
+| `colon`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-colon-offset-argument-quoted]            |
+| `comma`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-comma-offset-argument-quoted]            |
+| `comment`          | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-comment-offset-argument-quoted]          |
+| `comment-line`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-comment-line-offset-argument-quoted]     |
+| `constructor`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-constructor-offset-argument-quoted]      |
+| `cr`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-cr-offset-argument-quoted]               |
+| `crlf`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-crlf-offset-argument-quoted]             |
+| `dash`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-dash-offset-argument-quoted]             |
+| `digits`           | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-digits-offset-argument-quoted]           |
+| `directive`        | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-directive-offset-argument-quoted]        |
+| `directive-line`   | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-directive-line-offset-argument-quoted]   |
+| `emoji`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-emoji-offset-argument-quoted]            |
+| `empty`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-empty-offset-argument-quoted]            |
+| `entity`           | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-entity-offset-argument-quoted]           |
+| `entity-named`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-entity-named-offset-argument-quoted]     |
+| `equals`           | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-equals-offset-argument-quoted]           |
+| `ff`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ff-offset-argument-quoted]               |
+| `greater-than`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-greater-than-offset-argument-quoted]     |
+| `hash`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-hash-offset-argument-quoted]             |
+| `html`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-html-offset-argument-quoted]             |
+| `html-attribute`   | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-html-attribute-offset-argument-quoted]   |
+| `html-br`          | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-html-br-offset-argument-quoted]          |
+| `ideographic`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ideographic-offset-argument-quoted]      |
+| `keyword`          | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-offset-argument-quoted]          |
+| `keyword-block`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-block-offset-argument-quoted]    |
+| `keyword-class`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-class-offset-argument-quoted]    |
+| `keyword-classdef` | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-classdef-offset-argument-quoted] |
+| `keyword-columns`  | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-columns-offset-argument-quoted]  |
+| `keyword-end`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-end-offset-argument-quoted]      |
+| `keyword-header`   | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-header-offset-argument-quoted]   |
+| `keyword-space`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-space-offset-argument-quoted]    |
+| `keyword-style`    | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-keyword-style-offset-argument-quoted]    |
+| `less-than`        | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-less-than-offset-argument-quoted]        |
+| `lf`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-lf-offset-argument-quoted]               |
+| `ls`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ls-offset-argument-quoted]               |
+| `nbsp`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-nbsp-offset-argument-quoted]             |
+| `nel`              | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-nel-offset-argument-quoted]              |
+| `nonascii`         | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-nonascii-offset-argument-quoted]         |
+| `open-brace`       | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-open-brace-offset-argument-quoted]       |
+| `open-round`       | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-open-round-offset-argument-quoted]       |
+| `open-square`      | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-open-square-offset-argument-quoted]      |
+| `percent`          | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-percent-offset-argument-quoted]          |
+| `pipe`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-pipe-offset-argument-quoted]             |
+| `proto`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-proto-offset-argument-quoted]            |
+| `ps`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-ps-offset-argument-quoted]               |
+| `punct`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-punct-offset-argument-quoted]            |
+| `quote`            | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-quote-offset-argument-quoted]            |
+| `root`             | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-root-offset-argument-quoted]             |
+| `semicolon`        | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-semicolon-offset-argument-quoted]        |
+| `single-quote`     | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-single-quote-offset-argument-quoted]     |
+| `spaces`           | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-spaces-offset-argument-quoted]           |
+| `style-rule`       | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-style-rule-offset-argument-quoted]       |
+| `tab`              | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-tab-offset-argument-quoted]              |
+| `vt`               | `rels[0].offsetX` は `"NaN"`。 [fixture: c4/db-grid-vt-offset-argument-quoted]               |
+
+#### layout-argument-quoted
+
+引用符付きの配置引数は `UpdateLayoutConfig` の第 1 引数を代表とし、
+
+`string` の `STR` の `parseInt()` 値が 1 以上なら `c4ShapeInRow` を更新する。
+[fixture: c4/db-grid-digits-layout-argument-quoted]
+
+| Kind               | 読み取りと fixture                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ampersand-entity-layout-argument-quoted] |
+| `arrow`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-arrow-layout-argument-quoted]            |
+| `arrow-spaced`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-arrow-spaced-layout-argument-quoted]     |
+| `backslash`        | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-backslash-layout-argument-quoted]        |
+| `backtick`         | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-backtick-layout-argument-quoted]         |
+| `bom`              | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-bom-layout-argument-quoted]              |
+| `classdef-rule`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-classdef-rule-layout-argument-quoted]    |
+| `close-brace`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-close-brace-layout-argument-quoted]      |
+| `close-round`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-close-round-layout-argument-quoted]      |
+| `close-square`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-close-square-layout-argument-quoted]     |
+| `colon`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-colon-layout-argument-quoted]            |
+| `comma`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-comma-layout-argument-quoted]            |
+| `comment`          | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-comment-layout-argument-quoted]          |
+| `comment-line`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-comment-line-layout-argument-quoted]     |
+| `constructor`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-constructor-layout-argument-quoted]      |
+| `cr`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-cr-layout-argument-quoted]               |
+| `crlf`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-crlf-layout-argument-quoted]             |
+| `dash`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-dash-layout-argument-quoted]             |
+| `digits`           | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-digits-layout-argument-quoted]           |
+| `directive`        | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-directive-layout-argument-quoted]        |
+| `directive-line`   | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-directive-line-layout-argument-quoted]   |
+| `emoji`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-emoji-layout-argument-quoted]            |
+| `empty`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-empty-layout-argument-quoted]            |
+| `entity`           | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-entity-layout-argument-quoted]           |
+| `entity-named`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-entity-named-layout-argument-quoted]     |
+| `equals`           | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-equals-layout-argument-quoted]           |
+| `ff`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ff-layout-argument-quoted]               |
+| `greater-than`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-greater-than-layout-argument-quoted]     |
+| `hash`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-hash-layout-argument-quoted]             |
+| `html`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-html-layout-argument-quoted]             |
+| `html-attribute`   | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-html-attribute-layout-argument-quoted]   |
+| `html-br`          | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-html-br-layout-argument-quoted]          |
+| `ideographic`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ideographic-layout-argument-quoted]      |
+| `keyword`          | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-layout-argument-quoted]          |
+| `keyword-block`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-block-layout-argument-quoted]    |
+| `keyword-class`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-class-layout-argument-quoted]    |
+| `keyword-classdef` | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-classdef-layout-argument-quoted] |
+| `keyword-columns`  | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-columns-layout-argument-quoted]  |
+| `keyword-end`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-end-layout-argument-quoted]      |
+| `keyword-header`   | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-header-layout-argument-quoted]   |
+| `keyword-space`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-space-layout-argument-quoted]    |
+| `keyword-style`    | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-keyword-style-layout-argument-quoted]    |
+| `less-than`        | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-less-than-layout-argument-quoted]        |
+| `lf`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-lf-layout-argument-quoted]               |
+| `ls`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ls-layout-argument-quoted]               |
+| `nbsp`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-nbsp-layout-argument-quoted]             |
+| `nel`              | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-nel-layout-argument-quoted]              |
+| `nonascii`         | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-nonascii-layout-argument-quoted]         |
+| `open-brace`       | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-open-brace-layout-argument-quoted]       |
+| `open-round`       | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-open-round-layout-argument-quoted]       |
+| `open-square`      | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-open-square-layout-argument-quoted]      |
+| `percent`          | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-percent-layout-argument-quoted]          |
+| `pipe`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-pipe-layout-argument-quoted]             |
+| `proto`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-proto-layout-argument-quoted]            |
+| `ps`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-ps-layout-argument-quoted]               |
+| `punct`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-punct-layout-argument-quoted]            |
+| `quote`            | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-quote-layout-argument-quoted]            |
+| `root`             | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-root-layout-argument-quoted]             |
+| `semicolon`        | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-semicolon-layout-argument-quoted]        |
+| `single-quote`     | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-single-quote-layout-argument-quoted]     |
+| `spaces`           | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-spaces-layout-argument-quoted]           |
+| `style-rule`       | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-style-rule-layout-argument-quoted]       |
+| `tab`              | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-tab-layout-argument-quoted]              |
+| `vt`               | `c4ShapeInRow` は `4`。 [fixture: c4/db-grid-vt-layout-argument-quoted]               |
+
+#### index-argument-quoted
+
+引用符付きの index 引数は `RelIndex` の第 1 引数を代表とし、
+
+`string` の `STR` は関係の追加前に捨てられる。
+[fixture: c4/db-grid-digits-index-argument-quoted]
+
+| Kind               | 読み取りと fixture                                                                                                                                                                                                   |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ampersand-entity-index-argument-quoted] |
+| `arrow`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-arrow-index-argument-quoted]            |
+| `arrow-spaced`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-arrow-spaced-index-argument-quoted]     |
+| `backslash`        | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-backslash-index-argument-quoted]        |
+| `backtick`         | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-backtick-index-argument-quoted]         |
+| `bom`              | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-bom-index-argument-quoted]              |
+| `classdef-rule`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-classdef-rule-index-argument-quoted]    |
+| `close-brace`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-close-brace-index-argument-quoted]      |
+| `close-round`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-close-round-index-argument-quoted]      |
+| `close-square`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-close-square-index-argument-quoted]     |
+| `colon`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-colon-index-argument-quoted]            |
+| `comma`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-comma-index-argument-quoted]            |
+| `comment`          | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-comment-index-argument-quoted]          |
+| `comment-line`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-comment-line-index-argument-quoted]     |
+| `constructor`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-constructor-index-argument-quoted]      |
+| `cr`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-cr-index-argument-quoted]               |
+| `crlf`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-crlf-index-argument-quoted]             |
+| `dash`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-dash-index-argument-quoted]             |
+| `digits`           | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-digits-index-argument-quoted]           |
+| `directive`        | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-directive-index-argument-quoted]        |
+| `directive-line`   | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-directive-line-index-argument-quoted]   |
+| `emoji`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-emoji-index-argument-quoted]            |
+| `empty`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-empty-index-argument-quoted]            |
+| `entity`           | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-entity-index-argument-quoted]           |
+| `entity-named`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-entity-named-index-argument-quoted]     |
+| `equals`           | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-equals-index-argument-quoted]           |
+| `ff`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ff-index-argument-quoted]               |
+| `greater-than`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-greater-than-index-argument-quoted]     |
+| `hash`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-hash-index-argument-quoted]             |
+| `html`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-html-index-argument-quoted]             |
+| `html-attribute`   | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-html-attribute-index-argument-quoted]   |
+| `html-br`          | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-html-br-index-argument-quoted]          |
+| `ideographic`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ideographic-index-argument-quoted]      |
+| `keyword`          | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-index-argument-quoted]          |
+| `keyword-block`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-block-index-argument-quoted]    |
+| `keyword-class`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-class-index-argument-quoted]    |
+| `keyword-classdef` | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-classdef-index-argument-quoted] |
+| `keyword-columns`  | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-columns-index-argument-quoted]  |
+| `keyword-end`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-end-index-argument-quoted]      |
+| `keyword-header`   | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-header-index-argument-quoted]   |
+| `keyword-space`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-space-index-argument-quoted]    |
+| `keyword-style`    | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-keyword-style-index-argument-quoted]    |
+| `less-than`        | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-less-than-index-argument-quoted]        |
+| `lf`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-lf-index-argument-quoted]               |
+| `ls`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ls-index-argument-quoted]               |
+| `nbsp`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-nbsp-index-argument-quoted]             |
+| `nel`              | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-nel-index-argument-quoted]              |
+| `nonascii`         | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-nonascii-index-argument-quoted]         |
+| `open-brace`       | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-open-brace-index-argument-quoted]       |
+| `open-round`       | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-open-round-index-argument-quoted]       |
+| `open-square`      | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-open-square-index-argument-quoted]      |
+| `percent`          | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-percent-index-argument-quoted]          |
+| `pipe`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-pipe-index-argument-quoted]             |
+| `proto`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-proto-index-argument-quoted]            |
+| `ps`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-ps-index-argument-quoted]               |
+| `punct`            | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-punct-index-argument-quoted]            |
+| `quote`            | `rels` は `[{"type":"rel","from":"b\"","to":"a","label":{"text":"b"},"techn":{"text":"Uses"},"descr":{"text":"J"},"sprite":"D","tags":"S","link":"T"}]`。 [fixture: c4/db-grid-quote-index-argument-quoted]          |
+| `root`             | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-root-index-argument-quoted]             |
+| `semicolon`        | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-semicolon-index-argument-quoted]        |
+| `single-quote`     | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-single-quote-index-argument-quoted]     |
+| `spaces`           | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-spaces-index-argument-quoted]           |
+| `style-rule`       | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-style-rule-index-argument-quoted]       |
+| `tab`              | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-tab-index-argument-quoted]              |
+| `vt`               | `rels` は `[{"type":"rel","from":"a","to":"b","label":{"text":"Uses"},"techn":{"text":"J"},"descr":{"text":"D"},"sprite":"S","tags":"T","link":"L"}]`。 [fixture: c4/db-grid-vt-index-argument-quoted]               |
+
+#### style-value
+
+スタイル値は `UpdateElementStyle` の第 2 引数 `$techn="<value>"` を代表とし、
+
+`string_kv_value` の `STR_VALUE` の両端を削った値は、
+
+名前付き sprite、
+tags、
+link と同じく、
+
+テキストフィールドのキーでも単純な文字列となる。
+[fixture: c4/db-grid-digits-style-value]
+
+| Kind               | 読み取りと fixture                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------- |
+| `ampersand-entity` | `shapes[0].techn` は `"a&amp;b"`。 [fixture: c4/db-grid-ampersand-entity-style-value]                   |
+| `arrow`            | `shapes[0].techn` は `"a-->b"`。 [fixture: c4/db-grid-arrow-style-value]                                |
+| `arrow-spaced`     | `shapes[0].techn` は `"a --> b"`。 [fixture: c4/db-grid-arrow-spaced-style-value]                       |
+| `backslash`        | `shapes[0].techn` は `"a\\b"`。 [fixture: c4/db-grid-backslash-style-value]                             |
+| `backtick`         | `shapes[0].techn` は `"a\u0060b"`。 [fixture: c4/db-grid-backtick-style-value]                          |
+| `bom`              | `shapes[0].techn` は `"a\ufeffb"`。 [fixture: c4/db-grid-bom-style-value]                               |
+| `classdef-rule`    | `shapes[0].techn` は `"aclassDef:#xyb"`。 [fixture: c4/db-grid-classdef-rule-style-value]               |
+| `close-brace`      | `shapes[0].techn` は `"a}b"`。 [fixture: c4/db-grid-close-brace-style-value]                            |
+| `close-round`      | `shapes[0].techn` は `"a)b"`。 [fixture: c4/db-grid-close-round-style-value]                            |
+| `close-square`     | `shapes[0].techn` は `"a]b"`。 [fixture: c4/db-grid-close-square-style-value]                           |
+| `colon`            | `shapes[0].techn` は `"a:b"`。 [fixture: c4/db-grid-colon-style-value]                                  |
+| `comma`            | `shapes[0].techn` は `"a,b"`。 [fixture: c4/db-grid-comma-style-value]                                  |
+| `comment`          | `shapes[0].techn` は `"a%% cb"`。 [fixture: c4/db-grid-comment-style-value]                             |
+| `comment-line`     | `shapes[0].techn` は `"a\nb"`。 [fixture: c4/db-grid-comment-line-style-value]                          |
+| `constructor`      | `shapes[0].techn` は `"aconstructorb"`。 [fixture: c4/db-grid-constructor-style-value]                  |
+| `cr`               | `shapes[0].techn` は `"a\nb"`。 [fixture: c4/db-grid-cr-style-value]                                    |
+| `crlf`             | `shapes[0].techn` は `"a\nb"`。 [fixture: c4/db-grid-crlf-style-value]                                  |
+| `dash`             | `shapes[0].techn` は `"a-b"`。 [fixture: c4/db-grid-dash-style-value]                                   |
+| `digits`           | `shapes[0].techn` は `"a123b"`。 [fixture: c4/db-grid-digits-style-value]                               |
+| `directive`        | `shapes[0].techn` は `"ab"`。 [fixture: c4/db-grid-directive-style-value]                               |
+| `directive-line`   | `shapes[0].techn` は `"a\n\nb"`。 [fixture: c4/db-grid-directive-line-style-value]                      |
+| `emoji`            | `shapes[0].techn` は `"a\ud83d\ude00b"`。 [fixture: c4/db-grid-emoji-style-value]                       |
+| `empty`            | `Error` で拒否される。 [fixture: c4/gram-grid-empty-style-value]                                        |
+| `entity`           | `shapes[0].techn` は `"a\ufb02\u00b0\u00b035\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-style-value]  |
+| `entity-named`     | `shapes[0].techn` は `"a\ufb02\u00b0amp\u00b6\u00dfb"`。 [fixture: c4/db-grid-entity-named-style-value] |
+| `equals`           | `shapes[0].techn` は `"a=b"`。 [fixture: c4/db-grid-equals-style-value]                                 |
+| `ff`               | `shapes[0].techn` は `"a\fb"`。 [fixture: c4/db-grid-ff-style-value]                                    |
+| `greater-than`     | `shapes[0].techn` は `"a>b"`。 [fixture: c4/db-grid-greater-than-style-value]                           |
+| `hash`             | `shapes[0].techn` は `"a#b"`。 [fixture: c4/db-grid-hash-style-value]                                   |
+| `html`             | `shapes[0].techn` は `"a<b>b"`。 [fixture: c4/db-grid-html-style-value]                                 |
+| `html-attribute`   | `shapes[0].techn` は `"a<a href='x'>b"`。 [fixture: c4/db-grid-html-attribute-style-value]              |
+| `html-br`          | `shapes[0].techn` は `"a<br>b"`。 [fixture: c4/db-grid-html-br-style-value]                             |
+| `ideographic`      | `shapes[0].techn` は `"a\u3000b"`。 [fixture: c4/db-grid-ideographic-style-value]                       |
+| `keyword`          | `shapes[0].techn` は `"aPersonb"`。 [fixture: c4/db-grid-keyword-style-value]                           |
+| `keyword-block`    | `shapes[0].techn` は `"a block b"`。 [fixture: c4/db-grid-keyword-block-style-value]                    |
+| `keyword-class`    | `shapes[0].techn` は `"a class A c b"`。 [fixture: c4/db-grid-keyword-class-style-value]                |
+| `keyword-classdef` | `shapes[0].techn` は `"a classDef c fill:red b"`。 [fixture: c4/db-grid-keyword-classdef-style-value]   |
+| `keyword-columns`  | `shapes[0].techn` は `"a columns 2 b"`。 [fixture: c4/db-grid-keyword-columns-style-value]              |
+| `keyword-end`      | `shapes[0].techn` は `"a end b"`。 [fixture: c4/db-grid-keyword-end-style-value]                        |
+| `keyword-header`   | `shapes[0].techn` は `"aC4Contextb"`。 [fixture: c4/db-grid-keyword-header-style-value]                 |
+| `keyword-space`    | `shapes[0].techn` は `"a space b"`。 [fixture: c4/db-grid-keyword-space-style-value]                    |
+| `keyword-style`    | `shapes[0].techn` は `"a style A fill:red b"`。 [fixture: c4/db-grid-keyword-style-style-value]         |
+| `less-than`        | `shapes[0].techn` は `"a<b"`。 [fixture: c4/db-grid-less-than-style-value]                              |
+| `lf`               | `shapes[0].techn` は `"a\nb"`。 [fixture: c4/db-grid-lf-style-value]                                    |
+| `ls`               | `shapes[0].techn` は `"a\u2028b"`。 [fixture: c4/db-grid-ls-style-value]                                |
+| `nbsp`             | `shapes[0].techn` は `"a\u00a0b"`。 [fixture: c4/db-grid-nbsp-style-value]                              |
+| `nel`              | `shapes[0].techn` は `"a\u0085b"`。 [fixture: c4/db-grid-nel-style-value]                               |
+| `nonascii`         | `shapes[0].techn` は `"a\u00e9b"`。 [fixture: c4/db-grid-nonascii-style-value]                          |
+| `open-brace`       | `shapes[0].techn` は `"a{b"`。 [fixture: c4/db-grid-open-brace-style-value]                             |
+| `open-round`       | `shapes[0].techn` は `"a(b"`。 [fixture: c4/db-grid-open-round-style-value]                             |
+| `open-square`      | `shapes[0].techn` は `"a[b"`。 [fixture: c4/db-grid-open-square-style-value]                            |
+| `percent`          | `shapes[0].techn` は `"a%b"`。 [fixture: c4/db-grid-percent-style-value]                                |
+| `pipe`             | `shapes[0].techn` は `"a\u007cb"`。 [fixture: c4/db-grid-pipe-style-value]                              |
+| `proto`            | `shapes[0].techn` は `"a__proto__b"`。 [fixture: c4/db-grid-proto-style-value]                          |
+| `ps`               | `shapes[0].techn` は `"a\u2029b"`。 [fixture: c4/db-grid-ps-style-value]                                |
+| `punct`            | `shapes[0].techn` は `"a!$&*+.,/=?^_~@b"`。 [fixture: c4/db-grid-punct-style-value]                     |
+| `quote`            | `Error` で拒否される。 [fixture: c4/gram-grid-quote-style-value]                                        |
+| `root`             | `shapes[0].techn` は `"arootb"`。 [fixture: c4/db-grid-root-style-value]                                |
+| `semicolon`        | `shapes[0].techn` は `"a;b"`。 [fixture: c4/db-grid-semicolon-style-value]                              |
+| `single-quote`     | `shapes[0].techn` は `"a'b"`。 [fixture: c4/db-grid-single-quote-style-value]                           |
+| `spaces`           | `shapes[0].techn` は `"a  b"`。 [fixture: c4/db-grid-spaces-style-value]                                |
+| `style-rule`       | `shapes[0].techn` は `"astyle:#xyb"`。 [fixture: c4/db-grid-style-rule-style-value]                     |
+| `tab`              | `shapes[0].techn` は `"a\tb"`。 [fixture: c4/db-grid-tab-style-value]                                   |
+| `vt`               | `shapes[0].techn` は `"a\u000bb"`。 [fixture: c4/db-grid-vt-style-value]                                |

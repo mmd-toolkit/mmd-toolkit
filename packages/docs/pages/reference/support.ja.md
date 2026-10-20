@@ -28,4 +28,4 @@ lintルールは、それぞれ特定の書き間違いを検出します。
 
 [rules]: ../../../eslint-plugin/docs/rules/index.ja.md
 [divergences]: ../../../spec/docs/known-divergences.ja.md
-[formatter]: ../../../prettier-plugin-mmd/docs/compatibility.ja.md
+[formatter]: ../formatter/compatibility.ja.md

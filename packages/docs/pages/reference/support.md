@@ -26,5 +26,5 @@ Mermaid.
 - [Compatibility](./index.md): tool guarantees and validation scope.
 - [Known divergences](../../../spec/docs/known-divergences.md): differences in
   accepted syntax and interpretation.
-- [Formatter compatibility](../../../prettier-plugin-mmd/docs/compatibility.md):
-  guarantees and exceptions when formatting text.
+- [Formatter compatibility](../formatter/compatibility.md): guarantees and
+  exceptions when formatting text.

@@ -10,12 +10,7 @@ import {
 import path from "node:path"
 
 const documentDirectories = [
-  ["packages/spec/docs/known-divergences", "reference/divergences"],
   ["packages/eslint-plugin/docs/rules", "linter/rules"],
-]
-
-const diagramDirectories = [
-  ["packages/prettier-plugin-mmd/docs", "formatter/formatting"],
 ]
 
 /**
@@ -57,18 +52,9 @@ const diagramOrder = [
   "treeView",
 ]
 
-const documentFiles = [
-  ["packages/spec/docs/known-divergences", "reference/divergences"],
-  [
-    "packages/prettier-plugin-mmd/docs/compatibility",
-    "formatter/compatibility",
-  ],
-]
-
 const sourceDirectories = [
   "packages/docs/pages",
-  "packages/spec/docs",
-  "packages/prettier-plugin-mmd/docs",
+  "packages/spec/docs/diagrams",
   "packages/eslint-plugin/docs/rules",
 ]
 
@@ -86,9 +72,8 @@ function markdownFiles(directory) {
 
 /**
  * Uses English specification filenames as the diagram inventory, with localized
- * headings for display. Other packages may provide documents for those names;
- * scanning their directories alone would also import unrelated development docs.
- * Mermaid's documented presentation order is shared by every generated menu.
+ * headings for the rule sidebar's diagram groups. Mermaid's documented
+ * presentation order also applies when new diagram families are added.
  */
 export function collectDiagrams(repositoryRoot) {
   const directory = "packages/spec/docs/diagrams"
@@ -132,10 +117,7 @@ export function collectDiagrams(repositoryRoot) {
  * generated source directory. Japanese pages keep .ja.md here; URL locale
  * rewriting happens separately. Duplicate destinations are rejected.
  */
-export function collectDocuments(
-  repositoryRoot,
-  diagrams = collectDiagrams(repositoryRoot),
-) {
+export function collectDocuments(repositoryRoot) {
   const documents = new Map()
   const destinations = new Set()
 
@@ -153,40 +135,12 @@ export function collectDocuments(
   )) {
     add(`packages/docs/pages/${page}`, page)
   }
-  for (const [source, page] of documentFiles) {
-    for (const extension of [".md", ".ja.md"]) {
-      add(source + extension, page + extension)
-    }
-  }
   for (const [source, page] of documentDirectories) {
     for (const file of markdownFiles(path.join(repositoryRoot, source))) {
       add(`${source}/${file}`, `${page}/${file}`)
     }
   }
-  for (const { name } of diagrams) {
-    for (const [source, page] of diagramDirectories) {
-      for (const extension of [".md", ".ja.md"]) {
-        const file = `${source}/${name}${extension}`
-        if (existsSync(path.join(repositoryRoot, file))) {
-          add(file, `${page}/${name}${extension}`)
-        }
-      }
-    }
-  }
   return documents
-}
-
-/** Lists available diagram pages for a section and language. */
-export function diagramItems(diagrams, documents, section, locale) {
-  const extension = locale === "ja" ? ".ja.md" : ".md"
-  const prefix = locale === "ja" ? "/ja" : ""
-  const pages = new Set(documents.values())
-  return diagrams
-    .filter(({ name }) => pages.has(`${section}/${name}${extension}`))
-    .map(({ name, text }) => ({
-      text: text[locale],
-      link: `${prefix}/${section}/${name}`,
-    }))
 }
 
 /**
@@ -292,51 +246,6 @@ function removeLanguageNotice(content, source, documents) {
   }
   const rest = end < 0 ? text.length : end + separator.length
   return Buffer.from(text.slice(0, start) + text.slice(rest))
-}
-
-/**
- * Updates the marked guide list in both canonical formatting overviews.
- * Keeping ordinary Markdown links in the source makes the page readable on its
- * own. The sidebar inventory supplies titles, ordering, and available languages;
- * only this marked section is rewritten, and identical sources are untouched.
- */
-export function updateFormatterGuides(repositoryRoot, diagrams, documents) {
-  const overview = "packages/docs/pages/formatter/formatting/index"
-  const startMarker = "<!-- formatter-diagram-guides:start -->"
-  const endMarker = "<!-- formatter-diagram-guides:end -->"
-  // Prepare both language updates before writing either source.
-  const updates = [".md", ".ja.md"].map((extension) => {
-    const source = overview + extension
-    const file = path.join(repositoryRoot, source)
-    const text = readFileSync(file, "utf8")
-    const start = text.indexOf(startMarker)
-    const end = text.indexOf(endMarker, start + startMarker.length)
-    if (start < 0 || end < 0) {
-      throw new Error(`Missing formatter guide list markers in ${source}`)
-    }
-    const locale = extension === ".ja.md" ? "ja" : "root"
-    const links = diagramItems(
-      diagrams,
-      documents,
-      "formatter/formatting",
-      locale,
-    ).map((item) => {
-      const target = sourceForPage(documents, `${item.link.slice(1)}.md`)
-      const href = path.posix.relative(path.posix.dirname(source), target)
-      const label = item.text
-        .replaceAll("\\", "\\\\")
-        .replaceAll("[", "\\[")
-        .replaceAll("]", "\\]")
-      return `- [${label}](${href})`
-    })
-    const prefix = text.slice(0, start + startMarker.length)
-    const suffix = text.slice(end)
-    const updated = `${prefix}\n\n${links.join("\n")}\n\n${suffix}`
-    return { file, text, updated }
-  })
-  for (const { file, text, updated } of updates) {
-    if (text !== updated) writeFileSync(file, updated)
-  }
 }
 
 /**
@@ -451,9 +360,9 @@ export function configureDocumentMarkdown(md, documents, repositoryRoot) {
 
 /**
  * Watches canonical sources and synchronizes their generated copies. Body edits
- * use VitePress's normal page hot updates; changes to diagram availability or
- * titles update the canonical overview guide lists. These and rule page additions
- * or removals reload its config so the computed sidebars are rebuilt as well.
+ * use VitePress's normal page hot updates. Changes to the diagram inventory or
+ * titles, and rule page additions or removals, reload the configuration so the
+ * computed rule sidebars are rebuilt as well.
  */
 export function documentSourcesPlugin(
   repositoryRoot,
@@ -490,19 +399,11 @@ export function documentSourcesPlugin(
           return
         try {
           const updatedDiagrams = collectDiagrams(repositoryRoot)
-          const updated = collectDocuments(repositoryRoot, updatedDiagrams)
+          const updated = collectDocuments(repositoryRoot)
           const navigationChanged =
             JSON.stringify(diagrams) !== JSON.stringify(updatedDiagrams) ||
             (event !== "change" &&
-              (relative.startsWith("packages/eslint-plugin/docs/rules/") ||
-                diagramDirectories.some(([directory]) =>
-                  updatedDiagrams.some(
-                    ({ name }) =>
-                      relative === `${directory}/${name}.md` ||
-                      relative === `${directory}/${name}.ja.md`,
-                  ),
-                )))
-          updateFormatterGuides(repositoryRoot, updatedDiagrams, updated)
+              relative.startsWith("packages/eslint-plugin/docs/rules/"))
           syncDocuments(repositoryRoot, updated, sourceDirectory)
           // Markdown hooks retain this map. Update shared objects in place, also
           // preserving the diagram inventory used to compare subsequent events.

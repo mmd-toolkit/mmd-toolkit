@@ -67,12 +67,24 @@ Validate every exact complete input at every measured size, including comparison
 inputs, with live pinned Mermaid and Db equality before reporting its timing. A
 passing small example does not validate the larger inputs.
 
+If the public parser fails only as input grows, validate every exact input with
+live Mermaid and a non-null Db, and compare AST-derived Db where parsing
+succeeds. Record the actual exception and stack for failing sizes; an absent AST
+cannot pass a Db comparison. Keep this size-dependent failure separate from a
+quadratic-time finding, and do not present one observed failing size as a
+portable limit or the smallest failure.
+
 Use the current helpers in `packages/tests`, such as
 `runMermaidWithEmbeddedData`, `dbFromTree`, and their required embedded data and
 browser stand-ins. Disable stored Mermaid results with
 `MMD_TOOLKIT_MERMAID_CACHE=disabled`. Check current helper contracts rather than
 copying outdated signatures. Missing normalizers or environmental failures are
 validation limitations, not successful comparisons or syntax rejections.
+
+If live Mermaid returns a resource exception before the target parser is called,
+record that validation limitation. It is neither a target-parser failure nor
+proof of invalid syntax. Do not report unexecuted sizes as tested; the exact
+input still needs live acceptance and a non-null Db.
 
 Keep the same valid syntax shape at several explicit sizes. Vary the dimension
 that causes the suspected repeated work, and state when two dimensions must grow
@@ -102,12 +114,20 @@ avoiding competing heavy checks. Keep every sample, the median, size-to-size
 ratios, total UTF-16 source length, the growing dimensions, runtime version,
 pinned Mermaid version, command, source entry or built entry, and nondefault
 options. Distinguish validation-helper stack requirements from parser behavior.
+Setting a validation option does not prove that the API enforces it or that it
+was needed for acceptance; check that path before claiming either effect.
 
 Analyze repeated work in the source independently of the timings. Finite ratios
 are not an asymptotic proof and need not be exactly four when input doubles.
 Account for linear costs, reader lookup costs, required output size, and timing
 noise. If several operations grow in the same input, whole-parse time and a
 comparison's difference are not isolated function times.
+
+When the quadratic argument relies on a repeated bulk collection operation,
+verify its behavior for the measured runtime rather than treating the method
+name as a complexity guarantee. Mark runtime implementation evidence as
+**Read**. A verified cost component still does not establish its isolated time
+or that it dominates total parse time.
 
 A timing assertion may diagnose excessive growth, but its threshold is not a
 universal performance contract. Do not tune it merely to obtain a failing test,
@@ -139,6 +159,15 @@ acceptance, token text, source ranges, whitespace, directives, comments, and
 other relevant decisions. Describe the change needed without implementing it or
 proposing unrelated refactoring.
 
+Lead with the valid shape actually measured as slow, its growing dimension, and
+the measured delay. Label a small accepted example as a reduced illustration; do
+not make the reader mistake it for the slow reproduction. The standalone's
+opening comments should identify the repeated work and, when a comparison is
+included, what it changes, before the measurement bookkeeping.
+
+Keep an example labeled as executed identical to its tested input, including
+whitespace. A formatted equivalent is not itself an executed example.
+
 Mark executed evidence as **Run**, source/specification evidence as **Read**,
 and unmeasured cases explicitly. Shared source is not proof of measured behavior
 in every diagram. Do not turn a finite measurement into a claim about all
@@ -162,6 +191,13 @@ operation times unless those operations were measured. Low priority does not
 erase a confirmed problem.
 
 ## Verify and hand over
+
+In a rereview, identify each finding as introduced by a fix, present before and
+missed, or newly added review scope. Name the case or parsing path the earlier
+review omitted when it missed a finding. If the earlier reproduction is
+unavailable, label current equivalent inputs as new probes; do not claim to have
+rerun the original inputs. Separate reading a repair from measuring its current
+behavior, and keep a finite negative result within its measured bounds.
 
 Execute each final standalone reproduction against the source state being
 reported. Check its actual outcomes and all reported values against the log.

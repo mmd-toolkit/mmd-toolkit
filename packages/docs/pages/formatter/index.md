@@ -59,17 +59,11 @@ npx prettier --plugin prettier-plugin-mmd --write README.md
 - Markdown fenced code blocks marked with the language `mermaid` or `mmd`.
   Matching is case-sensitive: `Mermaid` does not match.
 
-If the plugin reports a syntax error, the CLI leaves the file unchanged. In
-Markdown, the affected code block is left to Prettier's usual Markdown
-formatting.
-
-[Compatibility](../../../prettier-plugin-mmd/docs/compatibility.md) explains the
-known differences from mermaid.js and the limits of the formatting guarantees.
+[Compatibility](./compatibility.md) explains syntax-error handling, known
+differences from mermaid.js, and the limits of the formatting guarantees.
 
 ## Next steps
 
 - [Configuration](./configuration.md): plugin registration, file selection, CLI
   usage, and editor setup.
 - [Options](./options.md): indentation and line endings.
-- [Formatting rules](./formatting/index.md): common and diagram-specific
-  formatting rules.

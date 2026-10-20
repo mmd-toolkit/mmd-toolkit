@@ -115,14 +115,6 @@ This rule has no options.
 - [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.md)
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.md)
 
-## Background
-
-How mermaid.js takes the name of a subgraph and decides its id, including which
-whitespace after the name becomes part of it, is described under the id of a
-subgraph in
-[Building the summary from the tree](../../../tests/docs/db-from-tree/flowchart.md#building-the-summary-from-the-tree)
-in the documents of the tests package.
-
 <!-- begin auto-generated rule resources -->
 
 ## Resources

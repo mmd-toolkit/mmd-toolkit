@@ -79,9 +79,7 @@ quoted string is not an ESLint configuration comment.
 
 For diagrams in Markdown, write these comments inside the Mermaid code block. An
 HTML comment such as `<!-- eslint @mmd-toolkit/flowchart-no-undef: error -->`
-outside the block is not a Mermaid configuration comment. The current Markdown
-processor forwards it in JavaScript comment syntax, which this plugin does not
-read as an ESLint directive.
+outside the block is not a Mermaid configuration comment.
 
 `%% eslint-disable-line` suppresses reports on the same physical line. When
 written on its own comment line, it does not suppress the next statement; use

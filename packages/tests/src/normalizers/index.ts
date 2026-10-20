@@ -1,5 +1,6 @@
 import type { DbSummary } from "../types.ts"
 import { normalizeBlock, patchBlockDb } from "./block.ts"
+import { normalizeC4, patchC4Db } from "./c4.ts"
 import { normalizeClass, patchClassDb } from "./class.ts"
 import { normalizeEr } from "./er.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
@@ -50,6 +51,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["quadrantChart", normalizeQuadrant],
   ["block", normalizeBlock],
   ["kanban", normalizeKanban],
+  ["c4", normalizeC4],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])
@@ -122,6 +124,14 @@ const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
     {
       sampleText: "block-beta\n  A\n",
       patch: patchBlockDb,
+      appliedTo: "object",
+    },
+  ],
+  [
+    "c4",
+    {
+      sampleText: 'C4Context\nPerson(a, "A")\n',
+      patch: patchC4Db,
       appliedTo: "object",
     },
   ],

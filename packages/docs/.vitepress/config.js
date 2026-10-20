@@ -7,21 +7,18 @@ import {
   configureDocumentMarkdown,
   documentAnchor,
   documentSourcesPlugin,
-  diagramItems,
   rewritePagePath,
   ruleItems,
   sourceForPage,
   syncDocuments,
-  updateFormatterGuides,
 } from "./documents.js"
 
 const repositoryRoot = fileURLToPath(new URL("../../../", import.meta.url))
 const sourceDirectory = fileURLToPath(new URL("../lib/pages", import.meta.url))
 const diagrams = collectDiagrams(repositoryRoot)
-const documents = collectDocuments(repositoryRoot, diagrams)
+const documents = collectDocuments(repositoryRoot)
 // Populate srcDir before VitePress discovers routes. Development changes are
 // handled by documentSourcesPlugin using the same mapping and output directory.
-updateFormatterGuides(repositoryRoot, diagrams, documents)
 syncDocuments(repositoryRoot, documents, sourceDirectory)
 
 /** Links each page to its canonical document rather than its generated copy. */
@@ -110,21 +107,6 @@ export default defineConfig({
                 },
               ],
             },
-            {
-              text: "Formatting rules",
-              items: [
-                {
-                  text: "Overview",
-                  link: "/formatter/formatting/",
-                },
-                ...diagramItems(
-                  diagrams,
-                  documents,
-                  "formatter/formatting",
-                  "root",
-                ),
-              ],
-            },
           ],
           "/linter/": [
             {
@@ -193,8 +175,8 @@ export default defineConfig({
                   link: "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/parser/docs/positions.md",
                 },
                 {
-                  text: "Known divergences",
-                  link: "/reference/divergences",
+                  text: "Known divergences (GitHub)",
+                  link: "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/known-divergences.md",
                 },
               ],
             },
@@ -212,8 +194,8 @@ export default defineConfig({
                   link: "/reference/support",
                 },
                 {
-                  text: "Known divergences",
-                  link: "/reference/divergences",
+                  text: "Known divergences (GitHub)",
+                  link: "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/known-divergences.md",
                 },
               ],
             },
@@ -277,21 +259,6 @@ export default defineConfig({
                   text: "互換性",
                   link: "/ja/formatter/compatibility",
                 },
-              ],
-            },
-            {
-              text: "整形規則",
-              items: [
-                {
-                  text: "概要",
-                  link: "/ja/formatter/formatting/",
-                },
-                ...diagramItems(
-                  diagrams,
-                  documents,
-                  "formatter/formatting",
-                  "ja",
-                ),
               ],
             },
           ],
@@ -362,8 +329,8 @@ export default defineConfig({
                   link: "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/parser/docs/positions.ja.md",
                 },
                 {
-                  text: "既知の差異",
-                  link: "/ja/reference/divergences",
+                  text: "既知の差異（GitHub）",
+                  link: "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/known-divergences.ja.md",
                 },
               ],
             },
@@ -381,8 +348,8 @@ export default defineConfig({
                   link: "/ja/reference/support",
                 },
                 {
-                  text: "既知の差異",
-                  link: "/ja/reference/divergences",
+                  text: "既知の差異（GitHub）",
+                  link: "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/known-divergences.ja.md",
                 },
               ],
             },

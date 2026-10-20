@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "UpdateLayoutConfig keyword with a glued non-ASCII text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tUpdateLayoutConfigé(\"3\", \"1\")\n----------------------^"
+  }
+}

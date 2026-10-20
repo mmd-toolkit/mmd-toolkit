@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`UpdateRelStyle` with one fewer positional argument than its maximum is accepted; rels[0] is {\"type\":\"rel\",\"from\":\"a\",\"to\":\"b\",\"label\":{\"text\":\"Uses\"},\"techn\":{\"text\":\"\"},\"descr\":{\"text\":\"\"},\"textColor\":\"red\",\"lineColor\":\"blue\",\"offsetX\":-4}."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        },
+        "textColor": "red",
+        "lineColor": "blue",
+        "offsetX": -4
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

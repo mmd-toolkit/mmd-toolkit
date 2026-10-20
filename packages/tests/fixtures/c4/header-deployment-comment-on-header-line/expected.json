@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Deployment header with a comment on its line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...ployment %% commentPerson(a, \"A\")\n----------------------^\nExpecting 'NEWLINE', got 'PERSON'"
+  }
+}

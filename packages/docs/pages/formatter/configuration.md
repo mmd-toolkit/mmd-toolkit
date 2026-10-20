@@ -82,5 +82,5 @@ trusted workspace. For default formatter and format-on-save settings, see the
 ## Related pages
 
 - [Options](./options.md): indentation and line endings.
-- [Compatibility](../../../prettier-plugin-mmd/docs/compatibility.md):
-  formatting guarantees, exceptions, and error handling in Markdown.
+- [Compatibility](./compatibility.md): formatting guarantees, exceptions, and
+  error handling in Markdown.

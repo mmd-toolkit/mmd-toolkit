@@ -22,12 +22,10 @@ import {
   documentAnchor,
   documentLink,
   documentSourcesPlugin,
-  diagramItems,
   rewritePagePath,
   ruleItems,
   sourceForPage,
   syncDocuments,
-  updateFormatterGuides,
 } from "../.vitepress/documents.js"
 
 const repositoryRoot = fileURLToPath(new URL("../../../", import.meta.url))
@@ -79,11 +77,8 @@ afterEach(() => {
 describe("canonical documents", () => {
   it("imports references and keeps English/Japanese routes and sources paired", () => {
     expect(
-      documents.get("packages/prettier-plugin-mmd/docs/flowchart.md"),
-    ).toBe("formatter/formatting/flowchart.md")
-    expect(documents.get("packages/spec/docs/known-divergences.ja.md")).toBe(
-      "reference/divergences.ja.md",
-    )
+      documents.get("packages/docs/pages/formatter/compatibility.md"),
+    ).toBe("formatter/compatibility.md")
     expect(
       documents.get("packages/eslint-plugin/docs/rules/flowchart-no-undef.md"),
     ).toBe("linter/rules/flowchart-no-undef.md")
@@ -97,7 +92,13 @@ describe("canonical documents", () => {
     expect(documents.has("packages/parser/docs/tokens.md")).toBe(false)
     expect(documents.has("packages/parser/docs/tokens.ja.md")).toBe(false)
     for (const source of documents.keys()) {
+      expect(source.startsWith("packages/prettier-plugin-mmd/docs/")).toBe(
+        false,
+      )
       expect(source.startsWith("packages/spec/docs/diagrams/")).toBe(false)
+      expect(source.startsWith("packages/spec/docs/known-divergences")).toBe(
+        false,
+      )
       expect(source.startsWith("packages/spec/docs/ast/")).toBe(false)
       expect(source.startsWith("packages/parser/docs/tokens/")).toBe(false)
       expect(source.startsWith("packages/parser/docs/positions/")).toBe(false)
@@ -108,6 +109,8 @@ describe("canonical documents", () => {
       expect(source).not.toBe("packages/spec/docs/ast.ja.md")
     }
     for (const [source, page] of documents) {
+      expect(page.startsWith("formatter/formatting/")).toBe(false)
+      expect(page.startsWith("reference/divergences")).toBe(false)
       expect(sourceForPage(documents, rewritePagePath(page))).toBe(source)
       if (!source.endsWith(".ja.md")) {
         expect(documents.get(`${source.slice(0, -3)}.ja.md`)).toBe(
@@ -249,6 +252,29 @@ describe("canonical documents", () => {
     )
   })
 
+  it("removes imported divergence pages while preserving their original sources", () => {
+    const { root, output } = referenceRepository()
+    for (const extension of [".md", ".ja.md"]) {
+      for (const name of ["", "/embedded-data-opaque"]) {
+        const source = `packages/spec/docs/known-divergences${name}${extension}`
+        const page = `reference/divergences${name}${extension}`
+        write(root, source, "# Detailed specification\n")
+        write(output, page, "# Old imported specification\n")
+      }
+    }
+    syncDocuments(root, collectDocuments(root), output)
+    for (const extension of [".md", ".ja.md"]) {
+      for (const name of ["", "/embedded-data-opaque"]) {
+        const source = `packages/spec/docs/known-divergences${name}${extension}`
+        const page = `reference/divergences${name}${extension}`
+        expect(readFileSync(path.join(root, source), "utf8")).toBe(
+          "# Detailed specification\n",
+        )
+        expect(existsSync(path.join(output, page))).toBe(false)
+      }
+    }
+  })
+
   it("fails before changing output when a required source is missing", () => {
     const { root, output } = temporaryRepository()
     write(root, "docs/current.md", "# New\n")
@@ -347,7 +373,7 @@ describe("rule sidebar", () => {
     vi.useFakeTimers()
     const { root, output } = referenceRepository()
     const diagrams = collectDiagrams(root)
-    const mapping = collectDocuments(root, diagrams)
+    const mapping = collectDocuments(root)
     const watcher = new EventEmitter()
     watcher.add = vi.fn()
     const restart = vi.fn()
@@ -408,148 +434,6 @@ describe("rule sidebar", () => {
 })
 
 describe("additional diagram types", () => {
-  it("updates canonical overview guides while preserving the surrounding text", () => {
-    const { root, output } = referenceRepository()
-    const source = "packages/docs/pages/formatter/formatting/index.md"
-    const original = readFileSync(path.join(root, source), "utf8")
-    write(root, "packages/spec/docs/diagrams/er.md", "# Entity relationship\n")
-    write(root, "packages/spec/docs/diagrams/er.ja.md", "# ER図\n")
-    write(root, "packages/prettier-plugin-mmd/docs/er.md", "# ER formatting\n")
-    const diagrams = collectDiagrams(root)
-    const mapping = collectDocuments(root, diagrams)
-    updateFormatterGuides(root, diagrams, mapping)
-    syncDocuments(root, mapping, output)
-    const overview = path.join(output, "formatter/formatting/index.md")
-    const japanese = path.join(output, "formatter/formatting/index.ja.md")
-    expect(
-      readFileSync(overview, "utf8")
-        .split("\n")
-        .filter((line) => line.startsWith("- [")),
-    ).toEqual([
-      "- [Flowchart](../../../../prettier-plugin-mmd/docs/flowchart.md)",
-      "- [Sequence](../../../../prettier-plugin-mmd/docs/sequence.md)",
-      "- [Class](../../../../prettier-plugin-mmd/docs/class.md)",
-      "- [State](../../../../prettier-plugin-mmd/docs/state.md)",
-      "- [Entity relationship](../../../../prettier-plugin-mmd/docs/er.md)",
-    ])
-    expect(readFileSync(japanese, "utf8")).not.toContain("docs/er.ja.md")
-    const canonical = path.join(root, source)
-    const updated = readFileSync(canonical, "utf8")
-    expect(updated).toBe(readFileSync(overview, "utf8"))
-    const start = "<!-- formatter-diagram-guides:start -->"
-    const end = "<!-- formatter-diagram-guides:end -->"
-    expect(updated.slice(0, updated.indexOf(start))).toBe(
-      original.slice(0, original.indexOf(start)),
-    )
-    expect(updated.slice(updated.indexOf(end))).toBe(
-      original.slice(original.indexOf(end)),
-    )
-    utimesSync(canonical, 1000, 1000)
-    utimesSync(overview, 1000, 1000)
-    updateFormatterGuides(root, diagrams, mapping)
-    syncDocuments(root, mapping, output)
-    expect(statSync(canonical).mtimeMs).toBe(1_000_000)
-    expect(statSync(overview).mtimeMs).toBe(1_000_000)
-
-    write(root, "packages/prettier-plugin-mmd/docs/er.ja.md", "# ER整形\n")
-    write(root, "packages/spec/docs/diagrams/er.md", "# ER [relationships]\n")
-    const renamed = collectDiagrams(root)
-    const translated = collectDocuments(root, renamed)
-    updateFormatterGuides(root, renamed, translated)
-    syncDocuments(root, translated, output)
-    expect(readFileSync(overview, "utf8")).toContain(
-      "- [ER \\[relationships\\]](../../../../prettier-plugin-mmd/docs/er.md)",
-    )
-    expect(readFileSync(japanese, "utf8")).toContain(
-      "- [ER図](../../../../prettier-plugin-mmd/docs/er.ja.md)",
-    )
-    expect(
-      readFileSync(
-        path.join(root, "packages/docs/pages/formatter/formatting/index.ja.md"),
-        "utf8",
-      ),
-    ).toBe(readFileSync(japanese, "utf8"))
-    unlinkSync(path.join(root, "packages/prettier-plugin-mmd/docs/er.ja.md"))
-    const untranslated = collectDocuments(root, renamed)
-    updateFormatterGuides(root, renamed, untranslated)
-    syncDocuments(root, untranslated, output)
-    expect(readFileSync(japanese, "utf8")).not.toContain("docs/er.ja.md")
-    expect(readFileSync(overview, "utf8")).toContain("docs/er.md")
-  })
-
-  it("discovers new diagrams and includes only available documents in each language", () => {
-    const { root } = referenceRepository()
-    write(root, "packages/spec/docs/diagrams/er.md", "# Entity relationship\n")
-    write(root, "packages/spec/docs/diagrams/er.ja.md", "# ER図\n")
-    write(root, "packages/spec/docs/ast/er.md", "# ER AST\n")
-    write(root, "packages/parser/docs/positions/er.ja.md", "# ER positions\n")
-    write(root, "packages/prettier-plugin-mmd/docs/er.md", "# ER formatting\n")
-    write(root, "packages/prettier-plugin-mmd/docs/orphan.md", "# Unrelated\n")
-    const diagrams = collectDiagrams(root)
-    const mapping = collectDocuments(root, diagrams)
-    expect(diagrams.map(({ name }) => name)).toEqual([
-      "flowchart",
-      "sequence",
-      "class",
-      "state",
-      "er",
-      "gantt",
-    ])
-    expect(diagrams.find(({ name }) => name === "er")).toEqual({
-      name: "er",
-      text: { root: "Entity relationship", ja: "ER図" },
-    })
-    expect(mapping.get("packages/prettier-plugin-mmd/docs/er.md")).toBe(
-      "formatter/formatting/er.md",
-    )
-    expect(mapping.has("packages/prettier-plugin-mmd/docs/orphan.md")).toBe(
-      false,
-    )
-    expect(
-      mapping.has("packages/prettier-plugin-mmd/docs/development.md"),
-    ).toBe(false)
-    expect(mapping.has("packages/parser/docs/positions/er.ja.md")).toBe(false)
-    expect(mapping.has("packages/spec/docs/diagrams/er.md")).toBe(false)
-    expect(mapping.has("packages/spec/docs/ast/er.md")).toBe(false)
-    expect(
-      diagramItems(diagrams, mapping, "formatter/formatting", "root"),
-    ).toContainEqual({
-      text: "Entity relationship",
-      link: "/formatter/formatting/er",
-    })
-    expect(
-      diagramItems(diagrams, mapping, "formatter/formatting", "root").map(
-        ({ link }) => link,
-      ),
-    ).toEqual([
-      "/formatter/formatting/flowchart",
-      "/formatter/formatting/sequence",
-      "/formatter/formatting/class",
-      "/formatter/formatting/state",
-      "/formatter/formatting/er",
-    ])
-    expect(
-      diagramItems(diagrams, mapping, "formatter/formatting", "ja").map(
-        ({ link }) => link,
-      ),
-    ).toEqual([
-      "/ja/formatter/formatting/flowchart",
-      "/ja/formatter/formatting/sequence",
-      "/ja/formatter/formatting/class",
-      "/ja/formatter/formatting/state",
-    ])
-    expect(
-      diagramItems(diagrams, mapping, "formatter/formatting", "ja").some(
-        (item) => item.link.endsWith("/er"),
-      ),
-    ).toBe(false)
-    write(root, "packages/prettier-plugin-mmd/docs/er.ja.md", "# ER整形\n")
-    const translated = collectDocuments(root, diagrams)
-    expect(
-      diagramItems(diagrams, translated, "formatter/formatting", "ja"),
-    ).toContainEqual({ text: "ER図", link: "/ja/formatter/formatting/er" })
-  })
-
   it("keeps unlisted diagrams after Mermaid's documented types in name order", () => {
     const { root } = referenceRepository()
     for (const name of [
@@ -580,43 +464,37 @@ describe("additional diagram types", () => {
     ])
   })
 
-  it("removes a diagram from generated pages when its canonical type disappears", () => {
+  it("removes former formatting pages while preserving the repository specifications", () => {
     const { root, output } = referenceRepository()
-    const source = "packages/spec/docs/diagrams/er.md"
-    write(root, source, "# ER\n")
-    write(root, "packages/prettier-plugin-mmd/docs/er.md", "# ER formatting\n")
-    const diagrams = collectDiagrams(root)
-    const before = collectDocuments(root, diagrams)
-    updateFormatterGuides(root, diagrams, before)
-    syncDocuments(root, before, output)
-    expect(existsSync(path.join(output, "formatter/formatting/er.md"))).toBe(
-      true,
+    const source = "packages/prettier-plugin-mmd/docs/flowchart.md"
+    write(root, source, "# Detailed formatting specification\n")
+    write(output, "formatter/formatting/flowchart.md", "# Old copy\n")
+    write(output, "formatter/formatting/index.ja.md", "# Old overview\n")
+    write(output, "formatter/compatibility.md", "# Old imported details\n")
+    syncDocuments(root, collectDocuments(root), output)
+    expect(
+      existsSync(path.join(output, "formatter/formatting/flowchart.md")),
+    ).toBe(false)
+    expect(
+      existsSync(path.join(output, "formatter/formatting/index.ja.md")),
+    ).toBe(false)
+    expect(readFileSync(path.join(root, source), "utf8")).toBe(
+      "# Detailed formatting specification\n",
     )
     expect(
-      readFileSync(path.join(output, "formatter/formatting/index.md"), "utf8"),
-    ).toContain("docs/er.md")
-    unlinkSync(path.join(root, source))
-    const remaining = collectDiagrams(root)
-    const mapping = collectDocuments(root, remaining)
-    updateFormatterGuides(root, remaining, mapping)
-    syncDocuments(root, mapping, output)
-    expect(mapping.has("packages/prettier-plugin-mmd/docs/er.md")).toBe(false)
-    expect(existsSync(path.join(output, "formatter/formatting/er.md"))).toBe(
-      false,
+      readFileSync(path.join(output, "formatter/compatibility.md")),
+    ).toEqual(
+      readFileSync(
+        path.join(root, "packages/docs/pages/formatter/compatibility.md"),
+      ),
     )
-    expect(
-      readFileSync(path.join(output, "formatter/formatting/index.md"), "utf8"),
-    ).not.toContain("docs/er.md")
-    expect(
-      existsSync(path.join(root, "packages/prettier-plugin-mmd/docs/er.md")),
-    ).toBe(true)
   })
 
-  it("refreshes navigation on diagram or page additions, while body edits keep hot updates", () => {
+  it("refreshes diagram navigation while ignoring formatter specifications", () => {
     vi.useFakeTimers()
     const { root, output } = referenceRepository()
     const diagrams = collectDiagrams(root)
-    const mapping = collectDocuments(root, diagrams)
+    const mapping = collectDocuments(root)
     const watcher = new EventEmitter()
     watcher.add = vi.fn()
     const restart = vi.fn()
@@ -631,15 +509,23 @@ describe("additional diagram types", () => {
     documentSourcesPlugin(root, diagrams, mapping, output).configureServer(
       server,
     )
+    expect(watcher.add).not.toHaveBeenCalledWith(
+      expect.arrayContaining([
+        path.join(root, "packages/prettier-plugin-mmd/docs"),
+      ]),
+    )
+    expect(watcher.add).not.toHaveBeenCalledWith(
+      expect.arrayContaining([path.join(root, "packages/spec/docs")]),
+    )
     const source = "packages/spec/docs/diagrams/er.md"
     const file = write(root, source, "# ER\n")
-    watcher.emit("all", "add", file)
+    watcher.emit("all", "change", file)
     const translation = write(
       root,
       "packages/spec/docs/diagrams/er.ja.md",
       "# ER図\n",
     )
-    watcher.emit("all", "add", translation)
+    watcher.emit("all", "change", translation)
     expect(restart).not.toHaveBeenCalled()
     vi.advanceTimersByTime(200)
     expect(restart).toHaveBeenCalledExactlyOnceWith(configPath)
@@ -651,65 +537,37 @@ describe("additional diagram types", () => {
       "packages/prettier-plugin-mmd/docs/er.md",
       "# ER formatting\n",
     )
-    watcher.emit("all", "add", formatter)
+    for (const event of ["add", "change", "unlink"]) {
+      watcher.emit("all", event, formatter)
+    }
     vi.advanceTimersByTime(200)
-    expect(restart).toHaveBeenCalledExactlyOnceWith(configPath)
-    expect(server.config.logger.error).not.toHaveBeenCalled()
-    expect(server.ws.send).not.toHaveBeenCalled()
-    expect(
-      readFileSync(path.join(output, "formatter/formatting/index.md"), "utf8"),
-    ).toContain("- [ER](../../../../prettier-plugin-mmd/docs/er.md)")
-    expect(
-      readFileSync(
-        path.join(root, "packages/docs/pages/formatter/formatting/index.md"),
-        "utf8",
-      ),
-    ).toContain("- [ER](../../../../prettier-plugin-mmd/docs/er.md)")
-    expect(
-      readFileSync(
-        path.join(output, "formatter/formatting/index.ja.md"),
-        "utf8",
-      ),
-    ).not.toContain("docs/er.ja.md")
-    restart.mockClear()
-    write(
-      root,
-      "packages/prettier-plugin-mmd/docs/er.md",
-      "# ER\n\nUpdated body.\n",
+    expect(restart).not.toHaveBeenCalled()
+    expect(mapping.has("packages/prettier-plugin-mmd/docs/er.md")).toBe(false)
+    expect(existsSync(path.join(output, "formatter/formatting/er.md"))).toBe(
+      false,
     )
-    watcher.emit("all", "change", formatter)
+    const page = "packages/docs/pages/formatter/compatibility.md"
+    write(root, page, "# Compatibility\n\nUpdated guide.\n")
+    watcher.emit("all", "change", path.join(root, page))
     expect(restart).not.toHaveBeenCalled()
     expect(
-      readFileSync(path.join(output, "formatter/formatting/er.md"), "utf8"),
-    ).toContain("Updated body.")
-    const translationPage = write(
+      readFileSync(path.join(output, "formatter/compatibility.md"), "utf8"),
+    ).toContain("Updated guide.")
+    const divergence = write(
       root,
-      "packages/prettier-plugin-mmd/docs/er.ja.md",
-      "# ER整形\n",
+      "packages/spec/docs/known-divergences/embedded-data-opaque.md",
+      "# Detailed divergence specification\n",
     )
-    watcher.emit("all", "add", translationPage)
-    expect(
-      readFileSync(
-        path.join(output, "formatter/formatting/index.ja.md"),
-        "utf8",
-      ),
-    ).toContain("- [ER図](../../../../prettier-plugin-mmd/docs/er.ja.md)")
+    watcher.emit("all", "change", divergence)
+    vi.advanceTimersByTime(200)
+    expect(restart).not.toHaveBeenCalled()
     write(root, source, "# Entity relationship\n")
     watcher.emit("all", "change", file)
-    expect(
-      readFileSync(path.join(output, "formatter/formatting/index.md"), "utf8"),
-    ).toContain(
-      "- [Entity relationship](../../../../prettier-plugin-mmd/docs/er.md)",
+    expect(diagrams.find(({ name }) => name === "er").text.root).toBe(
+      "Entity relationship",
     )
-    unlinkSync(translationPage)
-    watcher.emit("all", "unlink", translationPage)
-    expect(
-      readFileSync(
-        path.join(output, "formatter/formatting/index.ja.md"),
-        "utf8",
-      ),
-    ).not.toContain("docs/er.ja.md")
     expect(server.config.logger.error).not.toHaveBeenCalled()
+    expect(server.ws.send).not.toHaveBeenCalled()
     server.httpServer.emit("close")
     vi.advanceTimersByTime(200)
     expect(restart).not.toHaveBeenCalled()
@@ -735,21 +593,40 @@ describe("rendered document links and examples", () => {
   })
 
   it.each([".md", ".ja.md"])(
-    "renders canonical overview guides as site links for %s",
+    "keeps the formatter guide local and detailed specifications on GitHub for %s",
     (extension) => {
-      const { output } = temporaryRepository()
-      syncDocuments(repositoryRoot, documents, output)
-      const page = `formatter/formatting/index${extension}`
-      const rendered = markdown.render(
-        readFileSync(path.join(output, page), "utf8"),
-        { relativePath: rewritePagePath(page) },
-      )
+      const source = `packages/docs/pages/formatter/index${extension}`
       const locale = extension === ".ja.md" ? "/ja" : ""
-      for (const name of ["flowchart", "sequence", "class", "state"]) {
-        expect(rendered).toContain(
-          `href="/mmd-toolkit${locale}/formatter/formatting/${name}.html"`,
-        )
-      }
+      const rendered = markdown.render(
+        readFileSync(path.join(repositoryRoot, source), "utf8"),
+        {
+          relativePath: rewritePagePath(`formatter/index${extension}`),
+        },
+      )
+      expect(rendered).toContain(
+        `href="/mmd-toolkit${locale}/formatter/compatibility.html"`,
+      )
+      const compatibility = `formatter/compatibility${extension}`
+      const guide = markdown.render(
+        readFileSync(
+          path.join(repositoryRoot, `packages/docs/pages/${compatibility}`),
+          "utf8",
+        ),
+        { relativePath: rewritePagePath(compatibility) },
+      )
+      expect(guide).toContain(
+        `href="https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/prettier-plugin-mmd/docs/compatibility${extension}"`,
+      )
+      expect(
+        documentLink(
+          `../../../prettier-plugin-mmd/docs/flowchart${extension}`,
+          `packages/docs/pages/${compatibility}`,
+          documents,
+          repositoryRoot,
+        ),
+      ).toBe(
+        `https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/prettier-plugin-mmd/docs/flowchart${extension}`,
+      )
     },
   )
 
@@ -761,6 +638,7 @@ describe("rendered document links and examples", () => {
         "/mmd-toolkit/parser/",
         "/mmd-toolkit/linter/rules/",
         "/mmd-toolkit/reference/",
+        "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/known-divergences.md",
       ],
     },
     {
@@ -770,6 +648,7 @@ describe("rendered document links and examples", () => {
         "/mmd-toolkit/ja/parser/",
         "/mmd-toolkit/ja/linter/rules/",
         "/mmd-toolkit/ja/reference/",
+        "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/known-divergences.ja.md",
       ],
     },
   ])(
@@ -785,30 +664,34 @@ describe("rendered document links and examples", () => {
     },
   )
 
-  it("resolves imported cross-package links and Japanese routes with fragments", () => {
-    const source = "packages/prettier-plugin-mmd/docs/flowchart.ja.md"
+  it("keeps original divergence specifications on GitHub with Japanese fragments", () => {
+    const source = "packages/eslint-plugin/docs/rules/flowchart-no-undef.ja.md"
     expect(
       documentLink(
-        "../../spec/docs/known-divergences.ja.md?view=details#差の一覧",
+        "../../../spec/docs/known-divergences.ja.md?view=details#差異の一覧",
         source,
         documents,
         repositoryRoot,
       ),
-    ).toBe(encodeURI("/ja/reference/divergences.md?view=details#差の一覧"))
+    ).toBe(
+      encodeURI(
+        "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/known-divergences.ja.md?view=details#差異の一覧",
+      ),
+    )
     const rendered = markdown.render(
-      "[Known divergences](../../spec/docs/known-divergences.ja.md#差の一覧)\n",
-      { relativePath: "ja/formatter/formatting/flowchart.md" },
+      "[Known divergences](../../../spec/docs/known-divergences.ja.md#差異の一覧)\n",
+      { relativePath: "ja/linter/rules/flowchart-no-undef.md" },
     )
     expect(decodeURI(rendered)).toContain(
-      'href="/mmd-toolkit/ja/reference/divergences.html#差の一覧"',
+      'href="https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/known-divergences.ja.md#差異の一覧"',
     )
   })
 
   it("links detailed AST definitions to GitHub with their language and fragments", () => {
-    const source = "packages/prettier-plugin-mmd/docs/flowchart.ja.md"
+    const source = "packages/eslint-plugin/docs/rules/flowchart-no-undef.ja.md"
     expect(
       documentLink(
-        "../../spec/docs/ast/flowchart.ja.md?view=nodes#flowchartdatablock",
+        "../../../spec/docs/ast/flowchart.ja.md?view=nodes#flowchartdatablock",
         source,
         documents,
         repositoryRoot,
@@ -817,8 +700,8 @@ describe("rendered document links and examples", () => {
       "https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/ast/flowchart.ja.md?view=nodes#flowchartdatablock",
     )
     const rendered = markdown.render(
-      "[AST][ast]\n\n[ast]: ../../spec/docs/ast/flowchart.ja.md#flowchartdatablock\n",
-      { relativePath: "ja/formatter/formatting/flowchart.md" },
+      "[AST][ast]\n\n[ast]: ../../../spec/docs/ast/flowchart.ja.md#flowchartdatablock\n",
+      { relativePath: "ja/linter/rules/flowchart-no-undef.md" },
     )
     expect(rendered).toContain(
       'href="https://github.com/mmd-toolkit/mmd-toolkit/blob/main/packages/spec/docs/ast/flowchart.ja.md#flowchartdatablock"',
@@ -861,7 +744,7 @@ describe("rendered document links and examples", () => {
         "[fixture: flowchart/example]",
         "```",
       ].join("\n"),
-      { relativePath: "formatter/formatting/flowchart.md" },
+      { relativePath: "linter/rules/flowchart-no-undef.md" },
     )
     expect(rendered).toContain(
       'href="https://github.com/mmd-toolkit/mmd-toolkit/tree/main/packages/tests/fixtures/flowchart/gram-label-empty"',
@@ -872,7 +755,7 @@ describe("rendered document links and examples", () => {
 
   it("displays Mermaid delimiters literally instead of as Vue interpolations", () => {
     const rendered = markdown.render("`{{` … `}}`\n", {
-      relativePath: "formatter/formatting/flowchart.md",
+      relativePath: "linter/rules/flowchart-no-undef.md",
     })
     expect(rendered).toContain('<code v-pre="">{{</code>')
     expect(rendered).toContain('<code v-pre="">}}</code>')
@@ -889,7 +772,7 @@ describe("rendered document links and examples", () => {
         "",
         "[Strings](#文字列バッククォートの名前ジェネリクスの型)",
       ].join("\n"),
-      { relativePath: "formatter/formatting/class.ja.md" },
+      { relativePath: "linter/rules/class-no-undef.ja.md" },
     )
     expect(rendered).toContain('id="the-pinned-mermaidjs"')
     expect(rendered).toContain('href="#the-pinned-mermaidjs"')

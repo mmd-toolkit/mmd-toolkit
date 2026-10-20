@@ -55,7 +55,7 @@ function fileOf(fixture: Fixture, file: string): string {
  * (`UnsupportedDiagramError`). A type leaves the list when the parser records
  * its trees, and the list is empty between two diagram types.
  */
-const DIAGRAM_TYPES_WITHOUT_RECORDED_TREES: readonly string[] = []
+const DIAGRAM_TYPES_WITHOUT_RECORDED_TREES: readonly string[] = ["c4"]
 
 describe("dbFromTree", () => {
   for (const diagram of DIAGRAMS) {

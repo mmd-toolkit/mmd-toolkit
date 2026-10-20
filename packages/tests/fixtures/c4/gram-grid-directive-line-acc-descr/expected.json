@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The directive-line text in accDescr: is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 4. Unrecognized text.\n...ontextaccDescr: abPerson(a, \"A\")\n--------------------^"
+  }
+}

@@ -154,6 +154,9 @@ const SPEC_FILES: Readonly<
   ],
   // The directory has just this spec file, which passes texts to its parser.
   kanban: () => ["diagrams/kanban/kanban.spec.ts"],
+  // Every spec in this parser directory passes diagram text to the parser.
+  c4: (filesIn) =>
+    filesIn("diagrams/c4/parser").filter((file) => file.endsWith(".spec.ts")),
 }
 
 /**

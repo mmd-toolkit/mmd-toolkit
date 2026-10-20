@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4 ignores frontmatter title and accessibility fields in its own getters and does not read layout counters from C4 config."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  },
+  "embedded": {
+    "config": {
+      "c4": {
+        "c4ShapeInRow": 8,
+        "c4BoundaryInRow": 9,
+        "wrap": false
+      }
+    },
+    "title": "Frontmatter"
+  }
+}

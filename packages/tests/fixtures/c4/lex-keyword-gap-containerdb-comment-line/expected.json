@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`ContainerDb` followed by a comment line before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...4ContextContainerDb(a, \"A\", \"Java\", \"D\n----------------------^"
+  }
+}

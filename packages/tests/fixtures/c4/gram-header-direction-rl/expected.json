@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A direction token can consume a C4 header line and calls the absent Db setDirection method."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "yy.setDirection is not a function"
+  }
+}

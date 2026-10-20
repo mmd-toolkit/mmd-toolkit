@@ -65,7 +65,7 @@ fixture は 1 件ごとに、
 `<diagram>` は、
 図種（`flowchart`、`sequence`、`class`、`state`、`er`、`gantt`、`journey`、
 `requirement`、`mindmap`、`timeline`、`sankey`、`xychart`、`quadrant`、
-`block`、`kanban`）か、
+`block`、`kanban`、`c4`）か、
 `common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
@@ -145,7 +145,8 @@ mermaid.js は読み込みません。
 - `loadFixtures(diagram)`:
   `"common"`、`"flowchart"`、`"sequence"`、`"class"`、`"state"`、
   `"er"`、`"gantt"`、`"journey"`、`"requirement"`、`"mindmap"`、
-  `"timeline"`、`"sankey"`、`"xychart"`、`"quadrant"`、`"block"`、`"kanban"` の
+  `"timeline"`、`"sankey"`、`"xychart"`、`"quadrant"`、`"block"`、
+  `"kanban"`、`"c4"` の
   どれかの fixture を、名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
   `config` と `knownDivergence`（あるとき）、`expected` を持つ。

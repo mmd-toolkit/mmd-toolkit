@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "RelIndex keyword with a glued digit is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextRelIndex1(\"5\", a, b,\n---------^"
+  }
+}

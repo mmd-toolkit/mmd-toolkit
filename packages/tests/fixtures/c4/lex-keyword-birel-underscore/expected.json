@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "BiRel keyword with a glued underscore is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextBiRel_(a, b, \"Uses\",\n---------^"
+  }
+}

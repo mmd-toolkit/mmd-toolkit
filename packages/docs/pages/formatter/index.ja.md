@@ -58,10 +58,7 @@ npx prettier --plugin prettier-plugin-mmd --write README.md
 - 言語名が`mermaid`または`mmd`のMarkdownコードブロック。
   大文字と小文字を区別するため、`Mermaid`は対象になりません。
 
-プラグインが構文エラーを報告した場合、CLIはファイルを変更しません。
-Markdownでは、そのコードブロックはPrettierの通常のMarkdown整形に任されます。
-
-mermaid.jsとの既知の差異と整形の保証の範囲は、
+構文エラー時の動作、mermaid.jsとの既知の差異、整形の保証範囲は、
 [互換性][formatter]で説明しています。
 
 ## 次に読むページ
@@ -69,7 +66,6 @@ mermaid.jsとの既知の差異と整形の保証の範囲は、
 - [設定](./configuration.ja.md): プラグインの登録、対象ファイル、CLI、
   エディターの設定。
 - [オプション](./options.ja.md): インデントと改行コード。
-- [整形規則](./formatting/index.ja.md): 共通の規則と図ごとの整形規則。
 
-[formatter]: ../../../prettier-plugin-mmd/docs/compatibility.ja.md
+[formatter]: ./compatibility.ja.md
 [plugin]: https://prettier.io/docs/plugins#using-plugins

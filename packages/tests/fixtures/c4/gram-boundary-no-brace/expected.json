@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A Boundary declaration without braces is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...xtBoundary(b, \"B\")Person(a, \"A\")\n---------------------^\nExpecting 'LBRACE', got 'PERSON'"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4 Db getters retain elements, nested boundaries, relationship attributes, style updates and row counts in insertion order."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "All fields",
+    "accTitle": "",
+    "accDescr": "Accessible description",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "techn": "Changed technology",
+        "descr": {
+          "text": "Description"
+        },
+        "sprite": "changed sprite",
+        "tags": "tags",
+        "link": "javascript:alert(1)",
+        "typeC4Shape": {
+          "text": "container"
+        },
+        "parentBoundary": "inner",
+        "bgColor": "red",
+        "fontColor": "white",
+        "borderColor": "blue",
+        "shadowing": "yes",
+        "shape": "box",
+        "legendText": "Legend",
+        "legendSprite": "Legend sprite"
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "B"
+        },
+        "descr": {
+          "text": "Person description"
+        },
+        "custom": "own",
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "inner"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "outer",
+        "label": {
+          "text": "Outer"
+        },
+        "type": {
+          "text": "company"
+        },
+        "tags": "bt",
+        "link": "bl",
+        "parentBoundary": "global"
+      },
+      {
+        "alias": "inner",
+        "label": {
+          "text": "Inner"
+        },
+        "type": {
+          "text": "machine"
+        },
+        "descr": {
+          "text": "Node description"
+        },
+        "tags": "nt",
+        "link": "nl",
+        "nodeType": "node",
+        "parentBoundary": "outer"
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": "HTTPS"
+        },
+        "descr": {
+          "text": "Relationship"
+        },
+        "sprite": "rel sprite",
+        "tags": "rt",
+        "link": "rl",
+        "textColor": "green",
+        "lineColor": "black",
+        "offsetX": -4,
+        "offsetY": 7
+      }
+    ],
+    "c4ShapeInRow": 3,
+    "c4BoundaryInRow": 1
+  }
+}

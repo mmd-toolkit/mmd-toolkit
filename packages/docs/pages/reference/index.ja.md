@@ -29,5 +29,5 @@ mmd-toolkitは、**mermaid.js 12.0.0**を互換性の基準とします。
 そのため、このツールが受理する埋め込みデータをMermaidが拒否することがあります。
 詳しくは、[埋め込みデータの差異][embedded]を参照してください。
 
-[formatter]: ../../../prettier-plugin-mmd/docs/compatibility.ja.md
+[formatter]: ../formatter/compatibility.ja.md
 [embedded]: ../../../spec/docs/known-divergences/embedded-data-opaque.ja.md

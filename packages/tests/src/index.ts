@@ -60,6 +60,7 @@ export type DiagramType =
   | "quadrant"
   | "block"
   | "kanban"
+  | "c4"
 
 /**
  * Where a fixture input came from.

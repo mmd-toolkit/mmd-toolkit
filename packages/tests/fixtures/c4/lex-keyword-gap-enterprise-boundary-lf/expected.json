@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`Enterprise_Boundary` followed by an LF before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...Enterprise_Boundary(b, \"B\", \"tags\", \"l\n----------------------^"
+  }
+}

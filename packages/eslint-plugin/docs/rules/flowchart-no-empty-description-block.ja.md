@@ -124,14 +124,6 @@ flowchart LR
 - [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md)
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)
 
-## 背景
-
-mermaid.js が subgraph の名前を取り、id を決める方法は、
-名前の後のどの空白が名前に入るかも含めて、
-tests パッケージの文書の
-[AST から要約を作る方法](../../../tests/docs/db-from-tree/flowchart.ja.md#木から要約を作る)
-のうち、subgraph の id の項に書いてある。
-
 <!-- begin auto-generated rule resources -->
 
 ## リソース

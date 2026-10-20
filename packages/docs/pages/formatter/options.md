@@ -13,42 +13,16 @@ and adds no options of its own. Set these options in your
 - [`endOfLine`](https://prettier.io/docs/options#end-of-line): line endings in
   the formatted output.
 
+Playground output uses LF line endings.
+
 ## Indentation
 
-For example, this Mermaid input:
-
-```mmd
-flowchart LR
-subgraph S
-A --> B
-end
-```
-
-is formatted with four spaces per level when `tabWidth: 4` and space indentation
-are selected:
-
-```mmd
-flowchart LR
-    subgraph S
-        A --> B
-    end
-```
-
-With `useTabs: true`, each indentation level in the diagram uses one tab.
+In Mindmap, `tabWidth` affects the root's indentation, while indentation
+differences between nodes keep their original character counts. In Kanban, each
+node keeps its absolute indentation count; `tabWidth` does not change it. In
+both diagrams, reformatted indentation uses the character selected by `useTabs`.
 
 ## Line width
 
 `printWidth` does not wrap diagram lines. Prettier's formatting of Markdown and
 YAML frontmatter can still use `printWidth`.
-
-## Try the options online
-
-Open the [four-space example][spaces-example] or the [tab example][tabs-example]
-in the Playground and select **Formatted**. **Indent** controls `tabWidth`, and
-**Use tabs** controls `useTabs`. The preview updates when you change them.
-Playground output always uses LF line endings.
-
-[spaces-example]:
-  https://mmd-toolkit.github.io/mmd-toolkit/playground/#v1=H4sIAAAAAAAAE6tWKs4vLUpOVbJSSsvJL0_OSCwqUfAJiskrLk1KL0osyFAIjslzVNDVtVNwislLzUuJyVPSUSpJTArPTCnJULIy0VEqLU4NSUwqVrJKS8wpTq0FAMg1m-5SAAAA
-[tabs-example]:
-  https://mmd-toolkit.github.io/mmd-toolkit/playground/#v1=H4sIAAAAAAAAE6tWKs4vLUpOVbJSSsvJL0_OSCwqUfAJiskrLk1KL0osyFAIjslzVNDVtVNwislLzUuJyVPSUSpJTArPTCnJULIy0VEqLU4NSUwqVrIqKSpNrQUAtB2x3lEAAAA
