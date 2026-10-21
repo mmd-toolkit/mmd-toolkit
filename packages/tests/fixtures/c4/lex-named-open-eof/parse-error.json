@@ -1,0 +1,17 @@
+{
+  "message": "The named attribute has no = before the end of the text",
+  "range": [
+    24,
+    25
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 14
+    },
+    "end": {
+      "line": 2,
+      "column": 15
+    }
+  }
+}

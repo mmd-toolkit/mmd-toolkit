@@ -23,8 +23,6 @@ export interface FormatFixture {
   /** The diagram, the rule, and the example, such as `flowchart/semicolons/removed`. */
   readonly id: string
   readonly input: string
-  /** A fixture in `rejected-inputs` expects an error and unchanged source. */
-  readonly rejected: boolean
   /** The formatted input; null when `-output.mmd` does not exist yet. */
   readonly output: string | null
   readonly options: Options
@@ -90,7 +88,6 @@ async function loadRuleFixtures(
     fixtures.push({
       id: `${idPrefix}/${example}`,
       input: await readFile(path.join(dir, file), "utf8"),
-      rejected: idPrefix.endsWith("/rejected-inputs"),
       output: files.has(example + OUTPUT_SUFFIX)
         ? await readFile(outputPath, "utf8")
         : null,

@@ -114,7 +114,7 @@ Kept (an author's mistake that mermaid accepts silently):
 | Input                                                                                                | What mermaid does                                                       | Rule                                                                                                                                                        |
 | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `%%{init: {...}}` (the closing `%%` forgotten)                                                       | The directive runs to the end of the text, and the diagram is empty     | no-unclosed-directive (common)                                                                                                                              |
-| `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                       | no-ignored-init-directive (common)                                                                                                                          |
+| `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                       | no-invalid-init-directive (common)                                                                                                                          |
 | `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                              | flowchart-no-redefined-vertex                                                                                                                               |
 | `style C fill:red` (C mistyped)                                                                      | Adds a styled vertex C                                                  | flowchart-no-undef                                                                                                                                          |
 | `class C foo` or `click C href "…"` (C mistyped)                                                     | Nothing: no vertex gets the class or the link                           | flowchart-no-undef                                                                                                                                          |
@@ -183,6 +183,16 @@ Dropped:
 | In a quadrant chart, a colour without `#` (`color: f00`, kept as written)                                                                                                                                      | Outside the scope of this toolkit, as for `classDef fo` above: whether the colour is drawn shows only in the drawn chart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | In a quadrant chart, two points of one name or one position, and a `classDef` that no point uses                                                                                                               | Nothing is lost: both points are kept, and the class is listed. Calling either a mistake is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | In a quadrant chart, a statement after a `;` on the line of a title (`title Sales; x-axis Low --> High`; the title holds the rest of the line)                                                                 | Not something a person drawing a chart writes: a title is written on a line of its own, and the documentation of mermaid.js shows no `;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| In a block diagram, a `class` statement whose class no `classDef` defines (`class A blue`)                                                                                                                     | Nothing is lost: the class stays on the block, and the drawing gives it to the block as a CSS class, which the styles of the page can use (read in `getNodeFromBlock()`). This differs from a quadrant chart, which draws no class name of a point                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| In a block diagram, `title` and other words of other diagrams (`title Sales` gives the blocks `title` and `Sales`)                                                                                             | mermaid.js reads them by its grammar as blocks and loses nothing; a block diagram has no title. Calling them a title is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a block diagram, `%%` after a statement on its line (`A --> B %% note` gives the blocks `%%` and `note`)                                                                                                    | Comes from not knowing the syntax, as for `subgraph S %% group` in a flowchart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| In a block diagram, a `style` or `classDef` list that gives a property twice (`fill:#f00,fill:#00f`), and a `classDef` written twice                                                                           | mermaid.js keeps every style as written; which one the drawing uses is decided by CSS, which this toolkit does not draw                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| In a block diagram, `columns 1.5`, a width or a space of zero, and a width of more digits than a number holds                                                                                                  | `1.5` is the count 1 and a block `.5`, which the formatter prints on a line of its own; zero is kept as written; a number too large to hold is not ordinary writing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a block diagram, a correct CSS declaration in an HTML label that loses its `;`                                                                                                                              | A defect of mermaid.js, as for the same label in a flowchart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| In a block diagram, `class A c` before the block `A` is declared (`A` is not placed, and the class goes to a block outside the diagram)                                                                        | Looks like a mermaid bug, as `class A foo` before the vertex `A` in a flowchart above: the id is written correctly, and only where the statement stands changes the result. Decided the same way as the flowchart, so that one diagram type is not judged apart (2026-10-21); block-no-undef does not report an id declared later                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In a kanban diagram, an icon (`::icon(x)` or `icon:` in the metadata), and an icon written twice                                                                                                               | Nothing is drawn: the drawing of a kanban item uses no icon (read in `kanbanItem.ts`), so neither an icon nor its replacement changes the output; the documentation of kanban names no icon                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| In a kanban diagram, `assigned`, `priority`, or `icon` in the metadata of a column, and a class (`:::c`) on a column or an item                                                                                | The Db keeps them and the board does not show them (run): a column with an owner is sensible writing, and the classes are a gap of mermaid.js with open fixes ([#8119](https://github.com/mermaid-js/mermaid/issues/8119), [#8139](https://github.com/mermaid-js/mermaid/pull/8139), [#8281](https://github.com/mermaid-js/mermaid/pull/8281))                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| In a kanban diagram, two items of one id, `title` or `accTitle:` as a node, and a shape with another closer (`a[A)`)                                                                                           | Two items of one id are both drawn, as the example of the documentation writes them; `title` is a node by the grammar ([#8120](https://github.com/mermaid-js/mermaid/issues/8120) asks for accessibility); every kanban item is drawn in one shape, so a closer changes nothing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ### Questions for unclear cases
 
@@ -587,7 +597,7 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | flowchart-no-redefined-vertex             | yes              |                                                                              |
 | flowchart-no-undef                        | yes              |                                                                              |
 | no-unclosed-directive                     | no (provisional) | Their documents cover four diagram types only                                |
-| no-ignored-init-directive                 | no (provisional) | Their documents cover four diagram types only                                |
+| no-invalid-init-directive                 | no (provisional) | Their documents cover four diagram types only                                |
 | sequence-no-create-destroy                | yes              |                                                                              |
 | sequence-no-duplicate-description         | yes              |                                                                              |
 | sequence-no-duplicate-title               | yes              |                                                                              |
@@ -624,7 +634,7 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | gantt-no-empty-description-block          | yes              |                                                                              |
 | gantt-no-undef                            | yes              |                                                                              |
 | gantt-no-unknown-exclude                  | yes              |                                                                              |
-| gantt-no-unread-tag                       | yes              |                                                                              |
+| gantt-no-invalid-tag                      | yes              |                                                                              |
 | journey-no-duplicate-description          | yes              |                                                                              |
 | journey-no-duplicate-title                | yes              |                                                                              |
 | journey-no-empty-description-block        | yes              |                                                                              |
@@ -650,7 +660,7 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | xychart-no-duplicate-description          | yes              |                                                                              |
 | xychart-no-empty-description-block        | yes              |                                                                              |
 | xychart-no-unclosed-description-block     | yes              |                                                                              |
-| xychart-no-unread-orientation             | yes              |                                                                              |
+| xychart-no-invalid-orientation            | yes              |                                                                              |
 | xychart-no-redefined-axis                 | yes              |                                                                              |
 | xychart-no-extra-value                    | yes              |                                                                              |
 | quadrant-no-duplicate-title               | yes              |                                                                              |
@@ -662,6 +672,20 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | quadrant-no-undef                         | yes              |                                                                              |
 | quadrant-no-duplicate-style               | yes              |                                                                              |
 | quadrant-no-invalid-coordinate            | yes              |                                                                              |
+| block-no-edge-chain                       | yes              |                                                                              |
+| block-no-edge-in-composite-head           | yes              |                                                                              |
+| block-no-duplicate-block                  | yes              |                                                                              |
+| block-no-spaced-class-id                  | yes              |                                                                              |
+| block-no-undef                            | yes              |                                                                              |
+| block-no-duplicate-columns                | yes              |                                                                              |
+| block-no-redefined-style                  | yes              |                                                                              |
+| block-no-mismatched-shape                 | yes              |                                                                              |
+| block-no-mismatched-edge                  | yes              |                                                                              |
+| block-no-useless-width                    | yes              |                                                                              |
+| block-no-invalid-direction                | yes              |                                                                              |
+| kanban-no-invalid-metadata-key            | held             |                                                                              |
+| kanban-no-invalid-priority                | held             |                                                                              |
+| kanban-no-duplicate-section               | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -814,10 +838,15 @@ documentation of mermaid.js replaces directives with the frontmatter
 ([#7989](https://github.com/mermaid-js/mermaid/pull/7989), merged), which keeps
 the reading; (4) close the directive with `}%%`.
 
-no-ignored-init-directive (provisional): (1) every init directive of the text is
+no-invalid-init-directive (provisional): (1) every init directive of the text is
 ignored; (2) none; (3) "init trailing comma", "init directive ignored",
 "directive case sensitive", "init json", "json5", "trailing comma init"; (4)
-remove the comma, or write the name in lower case.
+remove the comma, or write the name in lower case. The name follows the words of
+the rules of ESLint itself: a form written incorrectly, so that it does not work
+as meant, is invalid there, as in no-invalid-regexp and valid-typeof (a
+misspelled type name that silently matches nothing); both reported forms, a JSON
+argument with a trailing comma and a name in another case, are such forms, and
+the fix is to write them correctly.
 
 class-no-inline-comment: see the paragraph after these notes.
 
@@ -864,13 +893,18 @@ end dates of tasks over excluded days, as
 section ([#5680](https://github.com/mermaid-js/mermaid/issues/5680)); (4) write
 `weekends` or the full name of a day.
 
-gantt-no-unread-tag: (1) the word in the place of the start or the end is read
+gantt-no-invalid-tag: (1) the word in the place of the start or the end is read
 as a date, which it is not: the chart is not drawn, or the task has no length
 (run); the id is not checked, since mermaid.js reads any word there as an id;
 (2) none; (3) "gantt tag case", "gantt done crit":
 [#4165](https://github.com/mermaid-js/mermaid/issues/4165) (open) concerns a
 missing comma before the start; (4) the document names the form, in lower case
-at the front, followed by a comma.
+at the front, followed by a comma. The names gantt-no-invalid-tag,
+xychart-no-invalid-orientation, and block-no-invalid-direction follow the words
+of the rules of ESLint itself, as no-invalid-init-directive does: each reports a
+value written incorrectly (in another case, without its comma, with whitespace,
+or in a place where it cannot stand), which silently does not work as meant, as
+in valid-typeof and no-invalid-regexp; the fix is to write it correctly.
 
 journey-no-empty-person: (1) the journey and its legend get a person with an
 empty name; (2) none: `Make tea: 5:`, with the people left to be written, adds a
@@ -948,7 +982,7 @@ in the text, and found nothing that changes the readings but what is named.
   text, takes the statements after it, and leaves the description empty (run);
   the rule reports only a block without its `}`, so no description that
   mermaid.js reads as written is reported; (2) none; (4) close the block.
-- xychart-no-unread-orientation: (1) `Horizontal` and `HORIZONTAL` give a
+- xychart-no-invalid-orientation: (1) `Horizontal` and `HORIZONTAL` give a
   vertical chart, also over the setting `chartOrientation: horizontal` (run);
   (2) none: `vertical` in any case is not reported; (4) the document names
   `horizontal` in lower case.
@@ -999,6 +1033,100 @@ ranges of the axes.
   the coordinates as numbers from 0 to 1 with a decimal point; (3) #7608 asks
   for other ranges, which would not make `0,3` a number; (4) write the decimal
   point.
+
+The block diagram rules have these notes; the searches were "block" in titles
+and in the text, also with the words chain, composite, class, styles, columns,
+shape, arrow, redefined, whitespace, duplicate, comma, width, edge, before,
+direction, label, and link, and found nothing that changes the readings: the
+open [#8279](https://github.com/mermaid-js/mermaid/pull/8279) changes a `style`
+for an id that no block has, which mermaid.js now rejects, and
+[#8310](https://github.com/mermaid-js/mermaid/pull/8310) (open) adds the
+accessibility statements.
+[#5588](https://github.com/mermaid-js/mermaid/issues/5588) (open, in triage)
+asks to reuse an id in two composite blocks, which mermaid.js draws once; no
+maintainer has said it will change.
+
+- block-no-edge-chain, block-no-edge-in-composite-head: (1) the chain keeps only
+  its last link, with no start, and places neither of its first blocks; the head
+  with a link gives a composite with no id and no edge (run); (2) none: the
+  documentation of mermaid.js writes one link in an edge and no link after
+  `block:`; (4) write one edge for each link, and link the composite after its
+  `end`.
+- block-no-duplicate-block: (1) a block written again places nothing, and a
+  label or shape written again replaces the first one while a width, the
+  children, and the `columns` are lost (run); (2) a statement that gives a block
+  its first shape is not reported, since it gives the block its label and shape,
+  unless it is a block arrow, which gets no directions that way, and neither is
+  an edge that repeats the shape; (4) give each block its own id, with the text
+  in its label.
+- block-no-spaced-class-id, block-no-invalid-direction: (1) the id with its
+  whitespace finds no block and makes a new one, whitespace before a comma makes
+  the rest of the line the name of the class, and the direction with its
+  whitespace is not read by the drawing (run for the Db; the drawing read in
+  `blockArrow.ts`); (2) none: the documentation of mermaid.js writes
+  `class Backend,Database back` and `(x, down)`, which lose nothing, so the
+  whitespace is a way of writing that it does not show, as for
+  `note left of A:hi`; (4) write no whitespace there.
+- block-no-undef: (1) the class goes to a new block that is not placed (run);
+  (2) none: an id declared after the `class` statement is not reported, and a
+  class name without a `classDef` is not checked; (4) correct the id.
+- block-no-duplicate-columns, block-no-redefined-style: (1) the last `columns`
+  sets the count of the whole block, and a later `style` replaces the whole list
+  (run); (2) none: the same count and a list that keeps the styles, compared as
+  CSS reads whitespace (none at the ends or around the colon, a run as one
+  space), are not reported; (4) write one `columns` for each block, and one
+  `style` with all the styles.
+- block-no-mismatched-shape, block-no-mismatched-edge, block-no-useless-width:
+  (1) the block gets no shape, the edge takes its line and markers from the
+  arrow after the label only, and the width before a link is dropped with the
+  link (run); (2) none: the pairs of the documentation, the same line on both
+  sides, and a width equal to the one the block has are not reported; (4) close
+  the shape with its pair, write the same line on both sides and the start
+  marker on the second arrow, and write the width where the block is declared on
+  its own. The name block-no-useless-width follows the words of the rules of
+  ESLint itself: there, a value written that has no effect on the result is
+  useless, as in no-useless-assignment (a value assigned and never used) and
+  no-useless-backreference (a backreference written to match that can match
+  nothing), while unused names what is declared and never read. The width is
+  read by the grammar (`node SIZE`) and left out of the block by the action of
+  the edge (`nodeStatement link node`), so it is a value given that has no
+  effect.
+
+The kanban rules have these notes; the searches were "kanban" in titles and in
+the text, also with the words metadata, priority, duplicate, and icon, and found
+nothing that changes the readings:
+[#8117](https://github.com/mermaid-js/mermaid/issues/8117) (open) proposes a key
+`status`, which mermaid.js does not read now.
+
+- kanban-no-invalid-metadata-key, kanban-no-invalid-priority: (1) a key other
+  than `assigned`, `ticket`, `priority`, `icon`, `label`, and `shape` sets
+  nothing, also a key in another case and `ticket:DOC-1` without a space, which
+  YAML reads as one key; a priority other than `Very High`, `High`, `Medium`,
+  `Low`, and `Very Low` is kept and drawn with no colour (run for the Db; the
+  drawing read in `kanbanItem.ts`); (2) none: `Medium`, which the drawing
+  handles although the documentation names only four values, and a priority left
+  empty are not reported; (4) write the key and the value as the documentation
+  writes them. Both rules read the YAML of the metadata, which the tree keeps as
+  written, as mermaid.js reads it (JSON_SCHEMA of js-yaml). Their conditions,
+  for writing the documents and the fixtures again: the key rule reports each
+  key of the metadata of a column or an item that is not one of the six,
+  compared with its case after YAML has read it (a key in quotes too), with the
+  blocks of one node read as one, as mermaid.js joins them; the priority rule
+  reports the priority of an item that is not one of the five, as `high`,
+  `" High "`, `Urgent`, `0`, another number, or a list, and not one that is
+  missing, `null`, `false`, or empty, and not the priority of a column, which
+  mermaid.js does not keep. Both are held until after the release; they are not
+  dropped. Their documents and fixtures are kept outside the repository for now,
+  and are written again from this note and from runs of mermaid.js if they are
+  lost. Reading the YAML needs a dependency of the plugin, and the lint rules
+  before the release serve mainly to check the shape of the tree, so whether to
+  add one is decided after the release; the dependency would then be
+  yaml-eslint-parser. A misspelled key in the data of a flowchart node, as
+  `A@{ shpe: circle }`, which gives the node no shape without an error (run), is
+  a candidate of the same kind and is held in the same way.
+- kanban-no-duplicate-section: (1) every column of one id lists every item of
+  that id, so the items are drawn once for each column (run); (2) none: columns
+  of one id with no item are not reported; (4) give each column its own id.
 
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
@@ -1079,6 +1207,8 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | sankey-no-empty-node                    | None for now (2026-10-15; see the end of this section)         |
 | xychart-* (all 7 rules)                 | None for now (2026-10-15; see the end of this section)         |
 | quadrant-* (all 9 rules)                | None for now (2026-10-16; see the end of this section)         |
+| block-* (all 11 rules)                  | None for now (2026-10-21; see the end of this section)         |
+| kanban-* (all 3 rules)                  | None for now (2026-10-21; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1175,9 +1305,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 
 `sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
 `journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`,
-`sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16): the
-rules are implemented without suggestions for now. No suggestion had been
-decided for them or described in their documents, and the one planned for the
-empty block of a sequence diagram rested on generated inputs. Whether they get
-suggestions is decided later, in the form of the flowchart rules, with a fixture
-for each case.
+`sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
+`block-*` and `kanban-*` (2026-10-21): the rules are implemented without
+suggestions for now. No suggestion had been decided for them or described in
+their documents, and the one planned for the empty block of a sequence diagram
+rested on generated inputs. Whether they get suggestions is decided later, in
+the form of the flowchart rules, with a fixture for each case.

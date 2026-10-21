@@ -2,6 +2,7 @@ import type { AstPath, Doc, ParserOptions } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import { printBlockDiagram } from "./block.ts"
 import { printClass } from "./class.ts"
+import { printC4 } from "./c4.ts"
 import { printEr } from "./er.ts"
 import { printFlowchart } from "./flowchart.ts"
 import { printGantt } from "./gantt.ts"
@@ -52,6 +53,7 @@ export const diagramPrinters: Readonly<
   JourneyDiagram: printJourney,
   MindmapDiagram: printMindmap,
   KanbanDiagram: printKanban,
+  C4Diagram: printC4,
   QuadrantDiagram: printQuadrant,
   RequirementDiagram: printRequirement,
   SankeyDiagram: printSankey,

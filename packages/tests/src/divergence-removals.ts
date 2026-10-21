@@ -303,6 +303,26 @@ const REMOVALS: Readonly<Record<DivergenceRemoval, readonly Removal[]>> = {
         },
       ],
     },
+    // Both C4 comment rules take the following line feeds
+    // (`c4Diagram.jison`, lines 98 to 99 at the pinned commit). Leave them
+    // outside the comment, so they separate a header, call, or boundary
+    // from what follows it.
+    {
+      diagramType: "c4",
+      sampleText: "C4Context\ntitle T\n",
+      changes: [
+        {
+          kind: "pattern",
+          original: String.raw`^(?:%%(?!\{)*[^\n]*(\r?\n?)+)`,
+          source: String.raw`^(?:%%[^\n]*)`,
+        },
+        {
+          kind: "pattern",
+          original: String.raw`^(?:%%[^\n]*(\r?\n)*)`,
+          source: String.raw`^(?:%%[^\n]*)`,
+        },
+      ],
+    },
   ],
   // Inside a backquoted name and a generic type, the class lexer tries the
   // rules of every state (`"`, keywords, `<<`, `>>`, `~`) before the rules that

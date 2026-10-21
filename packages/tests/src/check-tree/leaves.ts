@@ -32,6 +32,7 @@ const DIAGRAM_TYPES_OF_BODY: Readonly<Record<string, readonly string[]>> = {
   QuadrantDiagram: ["quadrantChart"],
   BlockDiagram: ["block"],
   KanbanDiagram: ["kanban"],
+  C4Diagram: ["c4"],
 }
 
 /** The name of a directive whose text between the delimiters is `value`: its first word, after the whitespace that may precede it. */

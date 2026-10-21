@@ -1,43 +1,109 @@
-# Kanban の整形規則
+# kanban の整形規則
 
 英語版: [kanban.md](./kanban.md)
+prettier-plugin-mmd が kanban のボードをどう整形するかを説明します。
+以下の各規則は、mermaid.js がボードから読むものを保ちます。
+整形によってボードの解釈が変わる箇所は、入力をそのまま残します。
+各規則でその条件を説明します。
+mindmap と同じ規則はそう書き、理由は mindmap の規則にあります。
+kanban のボードは、行の平らなリストです
+（[kanban の木](../../spec/docs/ast/kanban.ja.md)を参照）。
+Db は、ノードごとに、セクションかどうかと、どのセクションに属するかを持ち、
+字下げは持ちません。
+最初の行のノードがセクションの字下げを決めます。
+その字下げに書かれたノードはセクションで、
+ほかのノードは、どれだけ深く書かれていても、直前のセクションの項目です。
+深い行は直前の行の子ではありません。
+そのため、印字は、どの行もリストの中の場所と役割を保ち、字下げは印字が決めます
+（[インデント](#インデント)を参照）。
+以下の規則では、次の言葉を使います。
 
-[kanban の木](../../spec/docs/ast/kanban.ja.md)の絶対的な level と、
-平らなノードのリストに従って整形します。
-各規則は仕様の Db と、書かれた埋め込みテキストを保ちます。
-既知の差異には仕様の読み方を使い、素の mermaid.js の Db を作りません。
-
-以下の入力と出力の例は、リンク先の整形 fixture です。
-各規則は固定したケースを引用します。
-置き方は[文書と fixture](./development.ja.md#文書と-fixture)にあります。
-Markdown で示せない空白は、エスケープした文字列でテストします。
+- **ノード行**は、セクションか項目を持つ行です。
+  id、省略できる形、省略できるデータブロックでできていて、
+  `Todo`、`a[Write docs]`、`a[x]@{ticket: T-1}` などです。
+- **飾り行**は、アイコンの行（`::icon(fa fa-star)`）か、
+  クラスの行（`:::urgent`）です。
+  直前に書かれたノード行を、字下げに関係なく飾ります。
+- **ディレクティブ**は `%%{ ... }%%` です。
+  mermaid.js はこれを、インデントとテキストを読む前に取り除くので、
+  ディレクティブの隣の空白は、字下げかテキストの一部になります。
+- **コメント行**は、`%% note` のように、`%%` の後にテキストを持つ行です。
+  mermaid.js は、テキストを読む前に、その改行ごと取り除きます。
+  **図のコメント**は、図の字句解析器が自分で読むコメントで、
+  `%%` だけの行、`%%{ }%%` の行、
+  ヘッダー、形、アイコン、データブロックの後の `%%`（`S[x] %% note`）です。
+  既知の差異
+  [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)
+  が両方を定義しています。
+- **保つ行**は、`;` を持つ行です。
+  ノードのテキストは書かれたまま残します
+  （[行の規則と保つ行](#行の規則と保つ行)を参照）。
+  パーサーが拒否するボードについて、プラグインは構文エラーを報告し、
+  テキストをそのまま残します。
+  印字は何も直しません
+  （[整形しない場合](../README.ja.md#整形しない場合)を参照）。
+  適合性コーパスの拒否される入力は、`corpus.test.ts` が確かめます。
+  各規則では、整形前のテキストと、プラグインが出力するテキストを、例で示します。
+  例はテストが確かめる fixture で、各例の上のリンクはそのファイルへのものです。
+  Markdown で示せない空白は、テストの中でエスケープして書きます。
+  fixture の置き方と確かめ方は、
+  [文書と fixture](./development.ja.md#文書と-fixture)にあります。
 
 ## 規則
 
-### 字下げ
+### インデント
 
-各ノードの字下げの絶対文字数を、0 や不均等な段も含めて保ちます。
-字下げの各文字を空白 1 つに、`useTabs` ではタブ 1 つに置き換えます。
-`tabWidth` は文字数を変えません。
-絶対的な `level` が Db に入るため、最初の列の移動やタブの展開はできません。
-文字の種類だけを揃えると、通常の字下げが一貫します。
-インラインディレクティブの行、保持する区間、保護する隙間の字下げは、
-それぞれの規則に従って原文を保ちます。
-[fixture: directives/leading-directive-kept]
-[fixture: line-rule-and-kept-lines/style-segment]
-[fixture: blank-lines/div-between-comment-blank]
-[fixture: indentation/absolute-counts]
-[fixture: indentation/indentation-common-shift]
+ノード行の字下げは、セクションと項目を区別するだけのものです。
+Db は、ノードごとに、セクションかどうかと、どのセクションに属するかを持ち、
+字下げは持ちません。
+最初のノードの字下げに書かれたノードはセクションで、ほかのノードは、
+字下げに関係なく、
+直前のセクションの項目です。
+最初のノードより浅い最後の行も項目です
+（diagrams/kanban.md）。
+そのため、[mindmap](./mindmap.ja.md#インデント)と同じく、
+書かれた字下げは Db を読む側に残るものを持たず、印字が字下げを決めます。
+セクションはヘッダーより 1 段深く、項目は、書かれた深さに関係なく、
+2 段深く置きます。
+`kanban`、`      S`、`          A`、`             B`、`      T` は、
+`S` と `T` を空白 2 つで、`A` と `B` を空白 4 つで印字します。
+[fixture: indentation/sections-and-items]
+[fixture: indentation/written-indentation-dropped]
+[fixture: indentation/first-section-at-the-first-column]
+[fixture: indentation/items-at-any-depth]
+
+1 段は Prettier の `useTabs` と `tabWidth` の指定どおりで、既定は空白 2 つ、
+`useTabs` ではタブ 1 つです。
+ノードの前の空白文字は、タブ、U+00A0、U+3000、U+FEFF も含め、
+どれも字下げの 1 文字で
+（[空白文字](#空白文字)を参照）、印字はオプションの文字だけを書くので、
+どの行の字下げも 1 種類の文字になります。
+[fixture: indentation/tab-width-4]
+[fixture: indentation/use-tabs]
 [test: kanban: tab-one-space]
 [test: kanban: indent-whitespace-kind]
 [test: kanban: ls-indent-one-space]
-[fixture: indentation/spaces-to-tabs-count]
 [test: kanban: ps-indent-count]
-[fixture: indentation/tab-width-4]
-[fixture: indentation/use-tabs]
+
+一部を書かれたまま印字する行も、字下げは印字が決めます。
+Db は、ノードの字下げを最初のノードの字下げと比べるので、
+数える文字は正しく保ちます。
+テキストの前にディレクティブのある行では、ディレクティブの後の空白も字下げで、
+ディレクティブは数えないので（[ディレクティブ](#ディレクティブ)を参照）、
+その行は、ほかの行と同じく、役割の字下げを持ちます。
+`;` を持つ行（[行の規則と保つ行](#行の規則と保つ行)を参照）では、
+テキストの前の空白を同じように決めます。
+U+2028 か U+2029 で終わる図のコメントの後では、
+区切りが次のノードの字下げの 1 文字で、
+そのまま残し（[空行](#空行)を参照）、その後の空白が残りを作ります。
+[fixture: directives/leading-directive-indentation-decided]
+[fixture: directives/wide-whitespace-after-directive]
+[fixture: directives/leading-directive-gap-shortened]
+[fixture: line-rule-and-kept-lines/kept-line-indentation-decided]
+[fixture: blank-lines/div-between-comment-blank]
 
 入力
-([indentation/absolute-counts-input.mmd](../tests/fixtures/kanban/indentation/absolute-counts-input.mmd)):
+([indentation/sections-and-items-input.mmd](../tests/fixtures/kanban/indentation/sections-and-items-input.mmd)):
 
 ```mmd
 kanban
@@ -48,34 +114,77 @@ kanban
 ```
 
 出力
-([indentation/absolute-counts-output.mmd](../tests/fixtures/kanban/indentation/absolute-counts-output.mmd)):
+([indentation/sections-and-items-output.mmd](../tests/fixtures/kanban/indentation/sections-and-items-output.mmd)):
 
 ```mmd
 kanban
-      S
-          A
-             B
-      T
+  S
+    A
+    B
+  T
+```
+
+入力
+([indentation/items-at-any-depth-input.mmd](../tests/fixtures/kanban/indentation/items-at-any-depth-input.mmd)):
+
+```mmd
+kanban
+ S
+   A
+      B
+  C
+ T
+```
+
+出力
+([indentation/items-at-any-depth-output.mmd](../tests/fixtures/kanban/indentation/items-at-any-depth-output.mmd)):
+
+```mmd
+kanban
+  S
+    A
+    B
+    C
+  T
 ```
 
 ### ヘッダー
 
-`kanban` は 1 桁目に置きます。
-ヘッダー行の最初のノードは、その後ろの字下げ文字数を保って自分の行に移します。
-接した形で文字数が 0 の場合も同じです。
-他図種と同じヘッダー配置にしつつ、絶対的な level を保つためです。
-保持するセミコロンの区間では移動しません。
-インラインディレクティブは後続のテキスト全体と一緒に移します。
+ヘッダー `kanban` は 1 桁目に置きます。
+ヘッダーの行の `kanban` の後のテキストは、
+間の空白を字下げとするノード行として読まれます。
+`kanban   S[x]` のノード `S[x]` は最初のノードで、セクションです。
+印字は、これを自分の行に移し、ほかのセクションと同じに字下げします。
+`kanban`、改行、`  S[x]` となります。
+ノードがヘッダーに接している `kanban[S]` や `kanban-x` でも同じです
+（`  [S]`、`  -x`）。
+`kanban` の後にあるものは、ノードのテキストである `%%` も含め、
+すべて一緒に動きます
+（`kanban S %% literal` は、行 `  S %% literal` になります）。
+ディレクティブを持つヘッダーの行は、ノードとディレクティブを一緒に動かします
+（[ディレクティブ](#ディレクティブ)を参照）。
+`;` を持つヘッダーの行も例外ではありません。
+単語 `kanban` には行の規則が読むものがないので、ノードは `;` と一緒に動きます
+（`kanban S;T` は `kanban` と `  S;T` になります。
+[行の規則と保つ行](#行の規則と保つ行)を参照）。
 [fixture: header/inline-count]
 [fixture: header/header-column]
 [fixture: header/header-touching-shape]
-[fixture: header/header-percent-in-text]
-[fixture: header/header-only-lf]
-[fixture: header/header-space-only]
 [fixture: header/header-touching-dash]
+[fixture: header/header-percent-in-text]
+[fixture: header/header-line-with-semicolon-moved]
+[fixture: header/header-directive-with-semicolon]
+[fixture: header/header-line-with-semicolon-then-sections-and-items]
 [test: kanban: header-tab-inline]
 [test: kanban: header-nbsp-count]
 [test: kanban: header-bom-count]
+
+後に何もないヘッダーは、`kanban` と改行のままです。
+`kanban` の後の空白は落とします（[空行](#空行)を参照）。
+`kanban` の後に改行のない図は拒否されます
+（[整形しない場合](../README.ja.md#整形しない場合)を参照）。
+[fixture: header/header-only-lf]
+[fixture: header/header-space-only]
 
 入力
 ([header/inline-count-input.mmd](../tests/fixtures/kanban/header/inline-count-input.mmd)):
@@ -90,16 +199,26 @@ kanban   S[x]
 
 ```mmd
 kanban
-   S[x]
-     A
+  S[x]
+    A
 ```
 
 ### ノードは 1 行に 1 つ
 
-平らなノードのリストを記述順に、1 行に 1 つずつ印字します。
-同じ id、同じ深さの列、深い項目、最後の浅い項目も保ちます。
-項目の入れ子の推測、定義の統合、並べ替え、行の連結は、
-ボードや値を変えるため行いません。
+ボードのノードは平らなリストです。
+最初の行のノードがセクションの字下げを決め、
+その字下げのノードがセクションを始め、
+ほかのノードは、どれだけ深く書かれていても、直前のセクションの項目です。
+前の項目より深く書かれた項目（`A` の後の、より深い `B`）は、
+その子ではありません。
+そのため、印字は、ノードを書かれた順に 1 行ずつ出し、
+入れ子にも、まとめることも、並べ替えることも、つなぐこともしません。
+同じ id の 2 つのセクションは 2 つのままで、
+どの深さの項目も項目の 1 つの深さで印字し、
+最初のセクションより浅い最後の行は項目として印字します
+（[インデント](#インデント)を参照）。
+入れ子、まとめ、並べ替え、つなぐことは、
+mermaid.js が作るボードを変えるからです。
 [fixture: nodes-one-per-line/flat-order]
 [fixture: nodes-one-per-line/deeper-to-regular-items]
 [fixture: nodes-one-per-line/repeated-ids]
@@ -122,22 +241,26 @@ kanban
 
 ```mmd
 kanban
- S
-   A
-     B
-   C
- T
+  S
+    A
+    B
+    C
+  T
 ```
 
 ### 形
 
-開きと閉じを、不一致、id のない形、ダッシュの綴りも含めて残します。
-id と形の間の空白は id の一部なので保ちます。
-閉じを合わせても Db が同じ場合はありますが、作者の構造を変えます。
-理由は [mindmap](./mindmap.ja.md#形) と同じです。
+形の開きと閉じは、書かれたまま印字します。
+閉じは開きと合っていなくてもよく、`S[x)` は受理されます。
+`S[x]` と書き換えても Db は同じですが、
+書き手が書いたものを書き換えることになります
+（[mindmap](./mindmap.ja.md#形)も同じです）。
+どの形の族も同じです。
+`S[x]`、`A(y)`、`B((z))`、`C{{q}}`、`D)w(`、`E))v((`、
+ダッシュの書き方 `F-)"bang"(-` と `G(-"cloud"-)` です。
+id のない形（`[S]`）も同じです。
 [fixture: shapes/mismatched]
 [fixture: shapes/matching-closer]
-[fixture: shapes/id-before-shape]
 [fixture: shapes/shape-families]
 [fixture: shapes/shape-alone]
 [fixture: shapes/db-shape-square]
@@ -151,6 +274,10 @@ id と形の間の空白は id の一部なので保ちます。
 [fixture: shapes/db-shape-mismatched]
 [fixture: shapes/lex-shape-dash-bare]
 [fixture: shapes/lex-shape-dash-string]
+
+裸の id と形の間の空白は残します。
+Db は裸の id の末尾の空白を保つので、`S [x]` の id は空白を含む `S ` です。
+[fixture: shapes/id-before-shape]
 
 入力
 ([shapes/mismatched-input.mmd](../tests/fixtures/kanban/shapes/mismatched-input.mmd)):
@@ -168,30 +295,41 @@ kanban
 
 ```mmd
 kanban
- S[x)
-   A(y]
-   B))z((
-   C{{q}}
+  S[x)
+    A(y]
+    B))z((
+    C{{q}}
 ```
 
 ### ラベル
 
-裸、引用符付き、markdown のラベルの形式と、値の全文字を保ちます。
-空白だけの値、先頭の空白に続く引用符、実体参照、
-エスケープ、HTML 属性の綴りも対象です。
-引用符の付け外し、両端の空白の変更、符号化、復号、無害化は行いません。
-空白で読み方が変わり、
-Db が同じでも書かれた形式を変える理由にはならないためです。
+ラベルは、書かれた形のまま印字します。
+裸（`A[x y]`）、引用符つき（`B["x y"]`）、markdown（`C["`x y`"]`）です。
+ラベルの中の空白は Db に入るので残します。
+空白だけのラベル（`S[ ]`、`A[" "]`）と、裸のラベルの両端の空白
+（`S[  x  ]`）も同じです。
+引用符が文字列の始まりになるのは、開きの直後だけなので、
+`D[ "x" ]` のテキストは、引用符とその両側の空白を含む裸のテキスト `"x"` で、
+印字はそれらを動かしません。
+実体（`a#35;b`）と HTML の属性（`<a href="x">`）はテキストで、そのまま残ります。
+形の外に書かれた `""` や `"``"` のノードも同じです。
 [fixture: labels/forms]
 [fixture: labels/inner-whitespace-trim]
-[fixture: labels/bare-to-quoted]
 [fixture: labels/leading-space-quote]
-[fixture: labels/space-after-string-invalid]
-[fixture: labels/bare-empty-spellings]
 [fixture: labels/whitespace-only-forms]
+[fixture: labels/bare-empty-spellings]
 [fixture: labels/lex-style-entity-two-semicolons]
 [fixture: labels/db-grid-html-attribute-item-label-quoted]
 [fixture: labels/db-grid-entity-item-label-quoted]
+
+印字は、ラベルに引用符をつけることも、外すことも、削ることも、足すことも、
+符号化することも、戻すこともしません。
+`A[x y]` と `A["x y"]` の Db は同じですが、書き方は書き手のものです。
+文字列の閉じ引用符の後の空白（`S["x" ]`）は拒否されるので、
+印字する形にはなりません
+（[整形しない場合](../README.ja.md#整形しない場合)を参照）。
+[fixture: labels/bare-to-quoted]
+[fixture: labels/space-after-string-invalid]
 
 入力
 ([labels/forms-input.mmd](../tests/fixtures/kanban/labels/forms-input.mmd)):
@@ -210,37 +348,59 @@ kanban
 
 ```mmd
 kanban
- S
-   A[x y]
-   B["x y"]
-   C["`x y`"]
-   D[ "x" ]
+  S
+    A[x y]
+    B["x y"]
+    C["`x y`"]
+    D[ "x" ]
 ```
 
 ### アイコンとクラス
 
-インラインディレクティブの行と保持する区間の外では、
-icon と class をそれぞれ自分の行に、付くノードと同じ絶対列で置きます。
-順序、重複、大文字小文字、値の空白をすべて保ちます。
-字下げは付着先を決めません。
-配置で付着先を示す理由は [mindmap](./mindmap.ja.md#飾り行) と同じです。
-ノードの末尾に付けると id が変わったり、形が拒否されたりします。
-Db に現れない class や列の icon も残します。
+飾り行は、直前に書かれたノード行を、字下げに関係なく飾るので、
+字下げは Db に入りません。
+印字は、どの飾り行も、飾るノード行の桁に置き、付いている先が見えるようにします
+（mermaid.js の文書の書き方で、[mindmap](./mindmap.ja.md#飾り行)も同じです）。
+` S`、`   A`、1 桁目の `::icon(x)` では、アイコンは `A` を飾り、
+項目の字下げ 4 文字で印字します。
+最初のノードより浅く、やはり項目であるノード行の後では、
+アイコンはそのノード行に従います
+（`    S`、`  A`、` ::icon(x)` は、`A` とアイコンを字下げ 4 文字で印字します）。
 [fixture: icons-and-classes/aligned]
 [fixture: icons-and-classes/decorations-align]
+[fixture: icons-and-classes/gram-shallower-then-decoration]
+[fixture: icons-and-classes/db-decoration-icon-section]
+[fixture: icons-and-classes/gram-decoration-then-child]
+
+飾りのテキストは書かれたまま残します。
+マーカーの大文字小文字（`::ICON(y)`）、アイコンの中の空白（`::icon( x )`）、
+クラスの中の空白（`::: c  ` の末尾の空白はクラスの一部です）、
+空白だけのアイコンとクラス、最初の後の 2 つめのアイコンやクラスです。
+後のアイコンは Db で前のものを置き換えますが、
+印字は何も落とさないので両方を残します。
+飾りをノードの行へ動かすことはしません。
+ボードが変わるからです。
+裸のノードの後ろでは、アイコンは括弧のテキストが丸い形になり、
+残りが id の一部になります
+（`A ::icon(x)` はラベル `x` のノード `A ::icon` です）。
+クラスは id の一部になります（`A :::c` の id は `A :::c` です）。
+形の後ろでは、どちらも拒否されます
+（`S[x] ::icon(star)`。
+[整形しない場合](../README.ja.md#整形しない場合)を参照）。
+クラスとセクションのアイコンは、テストが比べる Db には現れませんが、
+書き手が書いたテキストなので、同じように残します。
 [fixture: icons-and-classes/icon-after-bare]
 [fixture: icons-and-classes/class-after-bare]
+[fixture: icons-and-classes/icon-appended-to-bare-is-a-shape]
+[fixture: icons-and-classes/class-appended-to-bare-is-the-id]
 [fixture: icons-and-classes/icon-after-shape]
+[fixture: icons-and-classes/class-after-shape]
 [fixture: icons-and-classes/icon-value-trim]
 [fixture: icons-and-classes/class-value-trim-summary-only]
-[fixture: icons-and-classes/class-after-shape]
 [fixture: icons-and-classes/gram-whitespace-class]
 [fixture: icons-and-classes/gram-whitespace-icon]
-[fixture: icons-and-classes/db-decoration-icon-section]
 [fixture: icons-and-classes/db-decoration-icon-twice]
 [fixture: icons-and-classes/db-decoration-class-twice]
-[fixture: icons-and-classes/gram-decoration-then-child]
-[fixture: icons-and-classes/gram-shallower-then-decoration]
 
 入力
 ([icons-and-classes/aligned-input.mmd](../tests/fixtures/kanban/icons-and-classes/aligned-input.mmd)):
@@ -258,39 +418,54 @@ kanban
 
 ```mmd
 kanban
- S
-   A
-   ::icon(x)
-   :::hot
+  S
+    A
+    ::icon(x)
+    :::hot
 ```
 
 ### データブロック
 
-`@{ ... }` は不透明なデータとして、区切り、中身、付着位置、
-隣接するブロックや間のディレクティブも書かれたまま保ちます。
-形の後のブロックは閉じに接し、裸のノードとブロックの間の空白は id の一部です。
-空、未知のキー、重複、偽値、複数行、不正な中身も、
-YAML 整形、統合、分割、並べ替え、折り返し、修復をしません。
-付着位置は文法で決まり、Db が同じでも埋め込みテキストは書き換えません。
-[fixture: data-blocks/adjacent]
+データブロック `@{ ... }` は、mermaid.js がノードの属性
+（`ticket` や `assigned`）の YAML として読む、
+埋め込みのテキストです。
+印字は、これを不透明なものとして、区切り、中身、改行を、書かれたまま残します。
+YAML を整形することも、ブロックをまとめることも、分けることも、
+並べ替えることも、
+折り返すことも、直すこともしません。
+ブロックが空（`A@{}`）でも、キーが未知か重複（`A@{ticket: X, ticket: Y}`）でも、
+YAML として正しくなくても（`A@{assigned: [a}`）、複数行にわたっても同じです。
+Db が変わらない書き換えでも、書き手が埋め込んだテキストを変えることになります。
 [fixture: data-blocks/data-opaque]
-[fixture: data-blocks/data-space-after-shape]
-[fixture: data-blocks/data-space-after-bare]
-[fixture: data-blocks/data-adjacent-gap]
-[fixture: data-blocks/data-adjacent-directive]
-[fixture: data-blocks/data-multiline]
 [fixture: data-blocks/empty-data]
 [fixture: data-blocks/data-invalid-yaml]
 [fixture: data-blocks/data-unknown-duplicate]
-[fixture: data-blocks/data-space-before-kept]
-[fixture: data-blocks/data-empty-adjacent]
-[fixture: data-blocks/data-line-rule-gap]
 [fixture: data-blocks/gram-metadata-ticket-duplicate]
+[fixture: data-blocks/data-multiline]
 [fixture: data-blocks/gram-metadata-empty-multiline]
 [fixture: data-blocks/db-metadata-comment-line]
 [fixture: data-blocks/db-metadata-ticket-false]
 [fixture: data-blocks/db-metadata-assigned-zero]
 [fixture: data-blocks/db-metadata-quoted-brace]
+[fixture: data-blocks/data-line-rule-gap]
+
+ブロックが付く場所は構文の一部です。
+ブロックは形の閉じに接し（`A[x]@{ticket: X}`）、そこに空白があると拒否されます。
+裸の id の後では、ブロックの前の空白は id の一部なので、
+`A  @{ticket: X}` の id は `A  ` です。
+続くブロックは接し
+（`A[x]@{ticket: X,}@{assigned: Ada}`。mermaid.js は中身をつなぎます）、
+間に置けるのはディレクティブだけで
+（`A@{ticket: X,}%%{init: {}}%%@{assigned: Ada}`）、
+2 つのブロックの間の空白は拒否されます。
+印字は、これらを書かれたまま残します。
+[fixture: data-blocks/data-space-after-shape]
+[fixture: data-blocks/data-space-after-bare]
+[fixture: data-blocks/data-space-before-kept]
+[fixture: data-blocks/adjacent]
+[fixture: data-blocks/data-adjacent-gap]
+[fixture: data-blocks/data-adjacent-directive]
+[fixture: data-blocks/data-empty-adjacent]
 
 入力
 ([data-blocks/adjacent-input.mmd](../tests/fixtures/kanban/data-blocks/adjacent-input.mmd)):
@@ -306,35 +481,29 @@ kanban
 
 ```mmd
 kanban
- S
-   A[x]@{ticket: X,}@{assigned: Ada}
+  S
+    A[x]@{ticket: X,}@{assigned: Ada}
 ```
 
 ### 空行
 
-通常の文間の連続する空行は 1 つにし、本体の両端の空行と、
-ノードのないヘッダーの行末の空白は落とします。
-他図種と同じ簡潔な区切りにするためです。
-図のコメントの後の空行・コメントの隙間は、末尾も含めて全体を保ちます。
-既知の差異 `blank-line-after-header-or-comments` を理由に、
-コメントの組を修復しないためです。
-ヘッダーの空行を落とすと、素の mermaid.js が拒否した入力を受理し、
-仕様の Db に一致する場合があります。
-拒否された入力に素の Db はありません。
+ヘッダーの後の、空行、コメント行、図のコメントは、
+ノードの間でも、飾りの前でも、ボードの終わりでも、Db を変えません
+（diagrams/kanban.md、Blank lines）。
+文の間の空行の並びは 1 つの空行にし、空白だけの行は空行とみなし、
+ボードの始まりと終わりの空行は、ほかの図種と同じに落とします。
+`kanban`、空行 2 つ、` S` は、`kanban` と `  S` になります。
+ほかに何もないヘッダーの行の `kanban` の後の空白は、
+空白、タブ、U+00A0、U+3000、U+FEFF、改ページ、垂直タブ、U+2028、
+U+2029 のどれでも落とします。
 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/blank-body-end]
-[test: kanban: blank-whitespace]
-[fixture: blank-lines/blank-comment-accepted]
-[fixture: blank-lines/blank-comment-text-accepted]
-[fixture: blank-lines/comment-blank-trailing]
-[fixture: blank-lines/decoration-blank-runs-collapsed]
 [fixture: blank-lines/gram-grid-lf-header-line]
+[fixture: blank-lines/decoration-blank-runs-collapsed]
+[fixture: blank-lines/gram-blank-before-icon]
 [fixture: blank-lines/div-header-space-node]
+[test: kanban: blank-whitespace]
 [test: kanban: header-tab-trailing]
-[fixture: blank-lines/div-header-comments-blank]
-[fixture: blank-lines/div-between-comment-blank]
-[fixture: blank-lines/div-comment-blank-before-icon]
-[fixture: blank-lines/div-comment-blank-before-class]
 [test: kanban: header-bom-trailing]
 [test: kanban: header-crlf-trailing]
 [test: kanban: header-ff-trailing]
@@ -351,9 +520,39 @@ kanban
 [test: kanban: lex-ls-whitespace-first]
 [test: kanban: lex-nbsp-whitespace-first]
 [test: kanban: lex-ps-whitespace-first]
-[fixture: blank-lines/header-header-comment-blank]
-[fixture: blank-lines/gram-blank-before-icon]
+
+mermaid.js は、仕様が受理するこれらの置き方の一部を拒否します
+（既知の差異
+[`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
+受理されるかどうかは、2 つの文の間にある図のコメントと空行の数で決まります。
+たとえば、`S`、`%%` の行、空行、`   A` は、mermaid.js が拒否し、
+仕様が受理します。
+印字はそれを直しません。
+図のコメントの後に空行、別のコメント、U+2028 か U+2029 が続く隙間は、
+書かれたまま、全体を残します。
+空行とコメントを、次の文の字下げの前までです。
+字下げは印字が決めます（[インデント](#インデント)を参照）。
+コメント行だけの隙間（`S`、`%% note`、空行、`A`）は通常どおり整形し、
+コメント行を揃えます（[コメント](#コメント)を参照）。
+[fixture: blank-lines/div-between-comment-blank]
+[fixture: blank-lines/div-comment-blank-before-icon]
+[fixture: blank-lines/div-comment-blank-before-class]
+[fixture: blank-lines/blank-comment-accepted]
+[fixture: blank-lines/comment-blank-trailing]
+[fixture: blank-lines/blank-comment-text-accepted]
 [fixture: blank-lines/common-comment-after-directive]
+
+ヘッダーの直後では、mermaid.js は `kanban` の後の空行と、
+ヘッダーの行の末尾の空白を拒否し、
+仕様はそれらを受理します。
+印字はそれらを落とすので、mermaid.js は出力を受理し、Db は仕様の Db です。
+ヘッダーの後の図のコメントの後の空行は、上の規則で残ります。
+`kanban`、`%%`、`%%`、空行、`S` は、mermaid.js が入力も出力も拒否し、
+`%%` が 1 つなら両方が受理するので、隙間を保ちます。
+拒否されるテキストに mermaid.js の Db はないので、
+これらは Db の前後の比較ではありません。
+[fixture: blank-lines/div-header-comments-blank]
+[fixture: blank-lines/header-header-comment-blank]
 
 入力
 ([blank-lines/collapsed-input.mmd](../tests/fixtures/kanban/blank-lines/collapsed-input.mmd)):
@@ -375,34 +574,75 @@ kanban
 
 ```mmd
 kanban
+  S
+
+    A
+
+  T
+```
+
+入力
+([blank-lines/div-between-comment-blank-input.mmd](../tests/fixtures/kanban/blank-lines/div-between-comment-blank-input.mmd)):
+
+```mmd
+kanban
  S
+%%
 
    A
+```
 
- T
+出力
+([blank-lines/div-between-comment-blank-output.mmd](../tests/fixtures/kanban/blank-lines/div-between-comment-blank-output.mmd)):
+
+```mmd
+kanban
+  S
+%%
+
+    A
 ```
 
 ### コメント
 
-インラインディレクティブの行、保護する隙間、保持する区間の外では、
-独立したコメントを次の文の列に揃えます。
-末尾では最後の文、ヘッダーの前では 1 桁目に置き、印とテキストを保ちます。
-次の文を示す理由は [mindmap](./mindmap.ja.md#コメント) と同じです。
-インラインコメントは同じ行に残し、安全な外側の隙間だけ、
-空白があれば 1 つ、接していれば接したままにします。
-id・ラベル・class の `%%`、単独の `%` や `#` のノード、
-値やデータ内のコメントは、文脈を保ちます。
-共通コメントの領域を分割して、読み捨てられたテキストを復活させません。
-[fixture: comments/inline]
+単独のコメントは、コメント行（`%% note`）、`%%` だけの行、`%%{ }%%` の行です。
+後ろの文の桁に置き、ボードの終わりでは最後の文の桁に、
+ヘッダーの前では 1 桁目に置きます。
+印字は、印とテキストを書かれたまま残します。
+コメントがどの文についてのものかが見えるようになります
+（[mindmap](./mindmap.ja.md#コメント)も同じです）。
+`kanban`、`%% c1`、` S`、`       %% c2`、`   A`、`%% c3` では、
+コメントは字下げ 2、4、4 文字で、`S` と `A` の字下げに置きます。
+複数行のラベルやデータブロックの中のコメント行は、mermaid.js が取り除き、
+そのまま残ります。
+空行、別のコメント、U+2028 か U+2029 が続く図のコメントは、
+後ろの隙間と一緒に書かれたまま残します
+（[空行](#空行)を参照）。
 [fixture: comments/comments-align]
-[fixture: comments/header-comment-gap]
-[fixture: comments/percent-values]
+[fixture: comments/bare-brace-comments-aligned]
+[fixture: comments/header-leading-comment]
 [fixture: comments/comment-line-in-value]
-[test: kanban: comment-line-ls-taken]
+
+ヘッダー、形、アイコン、データブロックの後の図のコメントは、その行に残します。
+空白が書かれていれば前に空白 1 つを置き、接していれば接したままにします。
+コメントの前の空白は Db に入らないので、この形は選択です。
+空白の連なりは 1 つにし、空白があるかどうかは保ちます。
+コメントが前のものに接するかどうかは書き手が決めるからです
+（[mindmap](./mindmap.ja.md#コメント)も同じ選択です）。
+`S[x]   %% c` は `S[x] %% c` になり、`A[y]%% d` は変わりません。
+裸の id の後、ラベルの中、クラスの中の `%%` はテキストの文字で
+（`S %% x`、`A[%% y]`、`:::c %% z`）、
+`#` や 1 つの `%` で始まる行はノードのテキストです。
+印字はこれらに触りません。
+コメント行は、改行までのテキストと一緒に取り除かれ、
+そこにある U+2028 や U+2029 でも終わりません。
+区切りの後のテキストも、取り除かれるコメントの一部で、印字はそこに残します。
+[fixture: comments/inline]
+[fixture: comments/header-comment-gap]
 [fixture: comments/comment-after-data-gap]
 [fixture: comments/comment-after-icon-gap]
-[fixture: comments/header-leading-comment]
-[fixture: comments/bare-brace-comments-aligned]
+[fixture: comments/percent-values]
+[test: kanban: comment-line-ls-taken]
 
 入力
 ([comments/inline-input.mmd](../tests/fixtures/kanban/comments/inline-input.mmd)):
@@ -418,26 +658,43 @@ kanban
 
 ```mmd
 kanban
- S[x] %% c
-   A[y]%% d
+  S[x] %% c
+    A[y]%% d
 ```
 
 ### ディレクティブ
 
-インラインディレクティブと、それを含むノードや装飾の行は、
-字下げと隙間も含めて書かれたまま保ちます。
-ヘッダー行のノードは後続全体と一緒に移します。
-値や保護する隙間の外の独立したディレクティブだけを、
-独立コメントと同じに揃えます。
-中身、複数行、閉じのない形式、行の連結、セミコロンでの停止は保ちます。
-除去後の両側の空白が字下げや値に入るので、隙間を畳めないためです。
-[fixture: directives/standalone]
+mermaid.js はディレクティブをインデントとテキストを読む前に取り除くので、
+ディレクティブの両側の空白は、そのノード行の字下げか、テキストの一部になります。
+そのため、ディレクティブのある行（ディレクティブ行）は、
+最初のディレクティブから、ディレクティブと隣の隙間を含めて、
+書かれたまま印字します。
+字下げは印字が決めます。
+ノードのテキストの前の空白はすべて字下げで、ディレクティブの後の空白も含み、
+ディレクティブは数えないので、その行は、ほかの行と同じく、
+役割の字下げを持ちます。
+印字は最初のディレクティブの前の空白を書き、
+各ディレクティブの後の空白は、全体が収まるうちは書かれた文字数のまま残し、
+収まらないときは、最後のディレクティブから順に縮めます。
+隙間は、書き手がディレクティブの隣に書いたものなので、
+できるだけ大きさを保ちます。
+収まらない分は、Db が読むものを持ちません。
+`kanban`、` S`、`      %%{init: {}}%%  A` では、ノード `A` は項目で、
+字下げは 8 文字（ディレクティブの前に 6、後に 2）ですが、
+4 文字になり、ディレクティブの前に 2、後ろに 2 です。
+`    %%{a}%%  %%{b}%%   A` では隙間が 2 と 3 で、`A` は 4 を得るので、
+最後の隙間を 2 に縮め、最初のディレクティブの前には何も置きません。
+行の 2 つの単位の間（`A  %%{init: {}}%%  B[x]`）、データブロックの間、
+id、アイコン、クラス、markdown ラベルの中のディレクティブ、
+閉じていないディレクティブと、それがつなぐ行は、書かれたまま残します。
 [fixture: directives/leading-directive-kept]
+[fixture: directives/leading-directive-with-semicolon]
+[fixture: directives/two-leading-directives]
+[fixture: directives/leading-directive-then-empty-data]
+[fixture: directives/leading-directive-before-icon]
+[fixture: directives/leading-directive-after-empty-lines]
 [fixture: directives/id-directive-kept]
-[fixture: directives/standalone-directive-align]
 [fixture: directives/unclosed-directive]
-[fixture: directives/header-directive-inline]
-[fixture: directives/directive-before-header]
 [fixture: directives/db-grid-directive-item-label-markdown]
 [fixture: directives/db-grid-directive-item-icon]
 [fixture: directives/db-grid-directive-item-class]
@@ -445,6 +702,17 @@ kanban
 [test: kanban: unicode-inline-directive-indentation]
 [test: kanban: directive-before-unicode-comment]
 [test: kanban: directive-after-unicode-comment]
+
+単独の行のディレクティブは、単独のコメントと同じに、後ろの文の桁に揃えます。
+ヘッダーの行では、ノードは `kanban` の後のものすべて
+（ディレクティブも）と一緒に自分の行へ移り、
+最初のディレクティブかノードから、書かれたまま印字します。
+`kanban %%{init: {}}%%  S[x]` は `kanban` と `%%{init: {}}%%  S[x]` になります。
+ヘッダーより前のディレクティブは 1 桁目に置きます。
+[fixture: directives/standalone]
+[fixture: directives/standalone-directive-align]
+[fixture: directives/header-directive-inline]
+[fixture: directives/directive-before-header]
 
 入力
 ([directives/standalone-input.mmd](../tests/fixtures/kanban/directives/standalone-input.mmd)):
@@ -461,39 +729,98 @@ kanban
 
 ```mmd
 kanban
- S
-   %%{init: {}}%%
-   A
+  S
+    %%{init: {}}%%
+    A
 ```
 
-### 行規則と保持行
+入力
+([directives/leading-directive-indentation-decided-input.mmd](../tests/fixtures/kanban/directives/leading-directive-indentation-decided-input.mmd)):
 
-セミコロンを含む区間は、字下げ、境界、インラインコメント、
-除去されるディレクティブの隣接、コロンとハッシュの間の空白も保ちます。
-共通の行規則は大文字小文字を区別し、`style`、次に `classDef` の順に、
-値・データ・コメント内でも一致する区間の最後のセミコロンを無視できます。
-区間を変えると、選ばれるセミコロンが変わり得るためです。
-kanban の style 文ではありません。
-保持する区間は、ヘッダーの移動や他の配置規則より優先します。
+```mmd
+kanban
+ S
+      %%{init: {}}%%  A
+```
+
+出力
+([directives/leading-directive-indentation-decided-output.mmd](../tests/fixtures/kanban/directives/leading-directive-indentation-decided-output.mmd)):
+
+```mmd
+kanban
+  S
+  %%{init: {}}%%  A
+```
+
+### 行の規則と保つ行
+
+mermaid.js は、小文字の単語 `style`、続いて `:`、
+`:` との間に空白のない `#`、続いて `;` を持つ行の、最後の `;` を無視します。
+次の処理が `classDef` について同じことをします
+（仕様の
+[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）。
+この規則は行のテキストを読むので、ラベル、データブロック、コメントと、
+その間にあるものも含みます。
+kanban の文ではありません。
+そのテキストを動かしたり折り返したりすると、
+規則が別の `;` を無視することがあります。
+`S["style:#x ;y"]%% note;` のラベルは `style:#x ;y` です。
+無視されるのはコメントの `;` だからです。
+コメントを単独の行に移すと、ラベルの中の `;` が無視され、
+ラベルは `style:#x y` になります。
+[fixture: line-rule-and-kept-lines/line-rule-comment-after-label-kept]
+[fixture: line-rule-and-kept-lines/line-rule-comment-on-its-own-line]
+[fixture: line-rule-and-kept-lines/line-rule-comment-to-own-line]
+[fixture: line-rule-and-kept-lines/line-rule-comment-move]
+[fixture: line-rule-and-kept-lines/line-rule-classdef-and-style]
+[fixture: line-rule-and-kept-lines/line-rule-two-semicolons]
+
+そのため、`;` を持つ行は保つ行です。
+ノードのテキストと、行の中のコメントやディレクティブは、
+それらの間の隙間と、`:` と `#` の間の空白も含めて、書かれたまま残します。
+`;` が id（`astyle:#x;y`）、ラベル、アイコン（`::icon(style:#x;y)`）、クラス、
+データブロック、コメント、ディレクティブのどこにあっても同じで、
+規則が行に当てはまるかどうかにも関係しません。
+大文字の `style`（`aStyle`）、空白をはさむ `:` と `#`（`style: #x;`）、
+`#` がない行、
+複数行のラベルの別の行にある `;` は、規則を当てはめませんが、
+テキストは同じように保ちます。
 [fixture: line-rule-and-kept-lines/style-segment]
 [fixture: line-rule-and-kept-lines/line-rule-kept]
-[fixture: line-rule-and-kept-lines/line-rule-colon-space]
 [fixture: line-rule-and-kept-lines/line-rule-wrap]
-[fixture: line-rule-and-kept-lines/line-rule-comment-move]
+[fixture: line-rule-and-kept-lines/line-rule-colon-space]
 [fixture: line-rule-and-kept-lines/line-rule-directive-kept]
-[fixture: line-rule-and-kept-lines/line-rule-two-semicolons]
 [fixture: line-rule-and-kept-lines/line-rule-id]
 [fixture: line-rule-and-kept-lines/line-rule-data]
 [fixture: line-rule-and-kept-lines/line-rule-icon]
 [fixture: line-rule-and-kept-lines/line-rule-class]
-[fixture: line-rule-and-kept-lines/line-rule-comment-to-own-line]
-[fixture: line-rule-and-kept-lines/line-rule-classdef-and-style]
-[test: kanban: line-rule-ls-segment]
 [fixture: line-rule-and-kept-lines/lex-label-style-rule-upper]
 [fixture: line-rule-and-kept-lines/lex-label-style-rule-no-hash]
 [fixture: line-rule-and-kept-lines/lex-label-style-rule-space]
 [fixture: line-rule-and-kept-lines/lex-label-style-rule-other-line]
 [fixture: line-rule-and-kept-lines/lex-label-style-rule-two-semicolons]
+[test: kanban: line-rule-ls-segment]
+
+行のそれ以外は、ほかの行と同じく、印字が決めます。
+規則が見るのは、単語 `style` か `classDef`、`:`、`#`、`;` と、その間の空白です。
+行の前の字下げと、形、アイコン、データブロックの後の行末の空白は、それに入らず、
+なくても Db は同じです。
+前にタブ 2 つ、後に空白 3 つのある `A[style:#x;y]` と、
+前に空白 2 つのある `A[style:#x;y]` は、
+同じに読まれます。
+そのため、字下げは印字が決め（[インデント](#インデント)を参照）、
+行末の空白は Db に入らない所で落とします（[行末の空白](#行末の空白)を参照）。
+`kanban`、` S` と、その行は、`  S` と、
+空白 4 つで字下げした `A[style:#x;y]` を出力し、
+後ろには何もありません。
+[fixture: line-rule-and-kept-lines/kept-line-whitespace-decided]
+[fixture: line-rule-and-kept-lines/kept-line-indentation-decided]
+[fixture: line-rule-and-kept-lines/kept-line-data-trailing-whitespace]
+[fixture: line-rule-and-kept-lines/kept-line-after-kept-gap]
+[fixture: line-rule-and-kept-lines/kept-line-ignored-semicolon]
+[fixture: line-rule-and-kept-lines/kept-line-unclosed-directive]
+[fixture: line-rule-and-kept-lines/kept-line-use-tabs]
+[test: kanban: semicolon-line-crlf-trailing-whitespace]
 
 入力
 ([line-rule-and-kept-lines/style-segment-input.mmd](../tests/fixtures/kanban/line-rule-and-kept-lines/style-segment-input.mmd)):
@@ -509,30 +836,38 @@ kanban
 
 ```mmd
 kanban
- S
-   A[style:#x;] %% c;
+  S
+    A[style:#x;] %% c;
 ```
 
 ### 行末の空白
 
-保持する領域の外では、完結した形・icon・データの後ろだけ、
-値の外の行末の空白を落とします。
-裸の id の末尾や形・データの前の空白、空白だけの class、
-ラベル・icon・データ・コメント・ディレクティブ・継続行の空白は保ちます。
-[mindmap の値と外側の区別](./mindmap.ja.md#ノードのテキスト)を、
-データに広げる規則です。
-意味のあるテキストを保つためです。
+行末の空白は、Db に入らない所では落とします。
+形の後（`S[x]   `）、アイコンの後（`::icon(z)  `）、データブロックの後
+（`A[y]@{ticket: X}   `）、
+閉じた文字列の後（`A["Work"]  `）です。
+Db が保つ所では残します。
+裸の id の後（`S   ` は id `S   ` で、形やデータブロックの前の空白も同じです）、
+クラスの中（`:::c   `）、コメントの中、
+ラベル、アイコン、データブロック、ディレクティブの中、複数行の値の続きの行です。
+これは [mindmap](./mindmap.ja.md#ノードのテキスト) の区別で、
+データブロックを加えたものです。
+保つ行でも同じです。
 [test: kanban: bare-trailing-trim]
 [test: kanban: closed-trailing-trim]
-[fixture: trailing-whitespace/class-trailing-trim]
 [test: kanban: closed-whitespace-trim]
+[fixture: trailing-whitespace/class-trailing-trim]
 [fixture: trailing-whitespace/lex-after-quoted-spaces]
+[fixture: trailing-whitespace/kept-line-kept]
 
 ### 改行
 
-共通の Prettier の経路で、CRLF・CR・LF を `endOfLine` に揃えます。
-ラベル・icon・ディレクティブ・不透明なデータの中も同じです。
-mermaid.js もこれらを正規化するので、kanban 独自の処理は設けません。
+CRLF と単独の CR は、LF と同じく mermaid.js にとって改行で
+（仕様の[行終端文字](../../spec/docs/common.ja.md#行終端)）、
+ラベル、アイコン、ディレクティブ、データブロックの中でも同じです。
+Prettier は、プラグインがテキストを読む前にそれらを変換し、
+出力は `endOfLine` オプションの改行コードで、行は同じです。
+印字にこのための独自の規則はありません。
 [test: kanban: crlf-to-lf]
 [test: kanban: cr-to-lf]
 [test: kanban: multiline-data-crlf]
@@ -542,26 +877,43 @@ mermaid.js もこれらを正規化するので、kanban 独自の処理は設�
 
 ### 空白文字
 
-通常の字下げでは、タブ、NBSP、BOM、全角空白、垂直タブ、
-改ページ、U+2028、U+2029 を 1 文字ずつ置き換えます。
-値とインラインディレクティブの行では残します。
-U+0085 はテキストとして保ちます。
-図のコメントを終える Unicode 区切りと、
-後続を飲み込む共通コメント領域は保ちます。
-その区切りは、続く字下げの 1 文字に入ります。
-CR・LF と違って一般的な改行ではなく、一律の変換は値や level を変えるためです。
-ファイル先頭の BOM は、共通の Prettier の扱いに従います。
-空でない class の後、LF の前の Unicode 区切りは値の外なので落とします。
-[test: kanban: ls-is-value]
-[test: kanban: ps-is-value]
-[test: kanban: comment-ls-split-count]
+通常の行の字下げでは、タブ、U+00A0、U+FEFF、U+3000、垂直タブ、改ページ、U+2028、
+U+2029 は、
+どれも 1 文字で、それぞれ空白 1 つ（`useTabs` ではタブ 1 つ）に置き換えます
+（[インデント](#インデント)を参照）。
+ラベル、アイコン、データブロック、裸の id、クラスの中では、テキストの文字で、
+そのまま残ります
+（`A\u00a0B[x\ufeff\t\u3000y]`）。
+U+0085 は空白でなくテキストで、そのまま残ります。
+U+2028 と U+2029 は改行ではありません。
+`S[x\u2028y]` は 1 つのノードです。
+U+FEFF で始まるファイルはそれを残します。
+Prettier がプラグインより前に扱うからです。
 [test: kanban: whitespace-values]
 [test: kanban: nel-is-text]
-[test: kanban: ps-icon-value]
-[test: kanban: leading-bom]
-[test: kanban: class-separator-empty-tail]
+[test: kanban: ls-is-value]
+[test: kanban: ps-is-value]
 [test: kanban: ls-bare-value]
 [test: kanban: ls-data-value]
+[test: kanban: ps-icon-value]
+[test: kanban: leading-bom]
+
+図のコメントは、改行と同じく U+2028 か U+2029 で終わり、
+区切りとその後の空白は、次のノードの字下げと数えます
+（`S[x]%% c\u2028   A` では `A` の字下げは 4 文字で、区切りと空白 3 つです）。
+印字は、そのようなコメントと区切りを書かれたまま残し、
+区切りの後に、ノードの字下げになる空白を書きます
+（[インデント](#インデント)を参照）。
+`;` を持つ行でも同じで、区切りの後のノードは行の始まりです。
+`S[x]%% c;`、U+2028、` T` は、コメント、区切り、項目としての `T` を印字し、
+コメントの中の `;` は `T` を行につなぎません。
+コメント行（`%% c\u2029   A`）は、改行までのテキストと一緒に取り除かれるので、
+その `A` はコメントの一部です。
+印字はコメント行を揃え、テキストは残します。
+クラスのテキストの後で改行の前にある区切りは、値の外でクラスを終わらせ、
+落とします
+（`:::c\u2028`）。
+[test: kanban: comment-ls-split-count]
 [test: kanban: div-between-real-comments-ls-node]
 [test: kanban: div-between-real-comments-ps-node]
 [test: kanban: div-header-comment-ls-node]
@@ -570,77 +922,27 @@ CR・LF と違って一般的な改行ではなく、一律の変換は値や le
 [test: kanban: db-metadata-comment-ls]
 [test: kanban: shape-comment-ps]
 [test: kanban: common-comment-ps-swallows-suffix]
-
-### 拒否する入力
-
-空の形式、壊れた区切り、単独のデータ、不正な末尾、トークン境界の差異、
-不正なヘッダーなど、parser が拒否した入力は共通の失敗経路に従います。
-単独ファイルは構文エラーとして報告して変更せず、
-Markdown は埋め込み整形を辞退して Prettier に任せます。
-修復、空の値の削除、ヘッダーを有効にする改行の追加は行いません。
-素の mermaid.js が不透明なデータを拒否しても、中身を修復する理由にはしません。
-[fixture: rejected-inputs/empty-icon]
-[fixture: rejected-inputs/empty-icon-at-section-column]
-[fixture: rejected-inputs/empty-class]
-[fixture: rejected-inputs/empty-shape]
-[fixture: rejected-inputs/empty-string-shape]
-[fixture: rejected-inputs/empty-markdown-shape]
-[fixture: rejected-inputs/empty-description-not-syntax]
-[fixture: rejected-inputs/semicolon-after-shape]
-[fixture: rejected-inputs/header-only-invalid]
-[fixture: rejected-inputs/empty-class-after-shape]
-[fixture: rejected-inputs/decoration-before-node]
-[fixture: rejected-inputs/data-before-shape-invalid]
-[fixture: rejected-inputs/data-standalone-invalid]
-[fixture: rejected-inputs/unclosed-directive-semicolon-kept]
-[fixture: rejected-inputs/header-directive-inside]
-[fixture: rejected-inputs/div-semicolon-opener]
-[fixture: rejected-inputs/gram-indent-shallower-followed]
-[fixture: rejected-inputs/gram-shape-carryover-doublecircle]
-[fixture: rejected-inputs/div-frontmatter-open-tag]
-[fixture: rejected-inputs/div-empty-icon-after-shape]
-[fixture: rejected-inputs/div-empty-string-before-label]
-[fixture: rejected-inputs/div-empty-string-after-label]
-[fixture: rejected-inputs/div-empty-markdown-before-label]
-[fixture: rejected-inputs/div-empty-markdown-after-label]
-[fixture: rejected-inputs/gram-unclosed-shape]
-[fixture: rejected-inputs/gram-unclosed-quote]
-[fixture: rejected-inputs/gram-unclosed-markdown]
-[fixture: rejected-inputs/gram-unclosed-icon]
-[fixture: rejected-inputs/gram-decoration-before-node]
-[fixture: rejected-inputs/gram-decoration-class-before-node]
-[fixture: rejected-inputs/div-directive-data-marker]
-[fixture: rejected-inputs/upper-case-header]
-[fixture: rejected-inputs/space-after-string]
-[fixture: rejected-inputs/icon-appended-to-shape]
-[fixture: rejected-inputs/space-before-shaped-data]
-[fixture: rejected-inputs/space-between-data]
-
-入力
-([rejected-inputs/empty-icon-input.mmd](../tests/fixtures/kanban/rejected-inputs/empty-icon-input.mmd)):
-
-```mmd
-kanban
- S
-   ::icon()
-```
-
-出力
-([rejected-inputs/empty-icon-output.mmd](../tests/fixtures/kanban/rejected-inputs/empty-icon-output.mmd)):
-
-```mmd
-kanban
- S
-   ::icon()
-```
+[test: kanban: class-separator-empty-tail]
+[test: kanban: comment-ls-then-item-on-semicolon-line]
+[test: kanban: semicolon-line-comment-ps-then-directive-line]
+[test: kanban: semicolon-line-comment-ls-then-empty-line]
+[test: kanban: semicolon-line-two-comments-then-item]
+[test: kanban: semicolon-line-comment-ls-then-semicolon-node]
+[test: kanban: semicolon-line-empty-data-then-comment-ls]
+[test: kanban: semicolon-line-icon-comment-ls-then-item]
+[test: kanban: semicolon-line-comment-ls-between-items]
+[test: kanban: comment-ps-then-section-on-semicolon-line]
+[test: kanban: semicolon-in-a-comment-with-text-after-it]
 
 ### セミコロン
 
-単独のノード、id、ラベル、icon、class、データ、
-共通の行規則が無視する文字も含め、すべてのセミコロンを残します。
-kanban では文の区切りではなく、削除や分割でテキストや読み方が変わるためです。
-形の後の通常のセミコロンは拒否され得ますが、
-無視される末尾は受理される場合もあり、その場合も残します。
+kanban のボードでは、`;` はテキストの文字で、文を区切る `;` はありません。
+`S;T` は id `S;T` の 1 つのノードで、`A["x;y"]` のラベルには `;` があり、
+`;` だけの行もノードで、`:::c;d` のクラスにも `;` があります。
+印字は、mermaid.js の行の規則が無視する `;` も含め、すべての `;` を残します
+（[行の規則と保つ行](#行の規則と保つ行)を参照）。
+落としたり、そこで行を分けたりすると、書かれたテキストか、その読みが変わります。
+形のすぐ後の `;` は形の一部でなく、拒否されます（`S[x];`）。
 [fixture: semicolons/values]
 [fixture: semicolons/semicolon-remove]
 
@@ -660,20 +962,25 @@ kanban
 
 ```mmd
 kanban
- S;T
-   A["x;y"]
-   ;
-   :::c;d
+  S;T
+    A["x;y"]
+    ;
+    :::c;d
 ```
 
 ### キーワードの大文字小文字
 
-icon の印の大文字小文字と、通常のノードの単語は書かれたまま保ちます。
-検出には小文字の `kanban` が必要です。
-title・アクセシビリティ・style・class 定義・columns・space・end・C4 の
-綴りを、印字側の特別な文としては扱いません。
-作者の綴りと parser が定めた読み方を保つためで、
-[mindmap](./mindmap.ja.md#キーワードの大文字小文字)と同じ理由です。
+ボードは小文字の `kanban` で検出されます。
+`KANBAN` は拒否されます
+（[整形しない場合](../README.ja.md#整形しない場合)を参照）。
+アイコンのマーカーはどの大文字小文字でも読まれ、
+印字は書かれた大文字小文字を残します
+（`::ICON(x)`、`::Icon(y)`）。
+ほかの図種で文になる単語、`title`、`accTitle`、`accDescr`、`style`、`classDef`、
+`columns`、`space`、`end` と、C4 の単語（`C4Container`）は、
+ここでは普通のノードのテキストで、書かれたまま印字します。
+大文字小文字は何も変えません
+（[mindmap](./mindmap.ja.md#キーワードの大文字小文字)も同じです）。
 [fixture: keyword-case/icon-case]
 [fixture: keyword-case/case-lower-icon]
 [fixture: keyword-case/lower-case-header]
@@ -696,20 +1003,27 @@ kanban
 
 ```mmd
 kanban
- S
-   A
-   ::ICON(x)
-   ::Icon(y)
+  S
+    A
+    ::ICON(x)
+    ::Icon(y)
 ```
 
 ### フロントマターの YAML
 
-保護条件付きの共通 YAML 整形を使い、区切りの綴りを保ちます。
-不正な YAML、字下げされた区切り、HTML タグの危険、
-整形後に区切り行ができる場合は書かれたまま残します。
-フロントマターとヘッダーの間のコメントやディレクティブも残します。
-設定と共通の保護条件を保ち、埋め込みの効果を変えないためです。
-この整形の許可はデータブロックには適用しません。
+`---` の行の間の YAML は Prettier の YAML 整形で整形し、
+`---` の行は書かれたまま残します。
+ほかの図種と同じです
+（[フロントマター](./compatibility.ja.md#フロントマター)を参照）。
+正しい YAML でないフロントマター、`---` の行が字下げされたもの、
+HTML タグを始めうる `<` を含むもの、
+整形した YAML が `---` の行を含むことになるものは、
+書かれたまま残します。
+閉じの `---` の後の空白も残します。
+フロントマターとヘッダーの間のコメントやディレクティブは残し、
+その後のボードは通常どおり整形します。
+整形してよいのはフロントマターだけで、データブロックは書かれたまま残します
+（[データブロック](#データブロック)を参照）。
 [fixture: frontmatter-yaml/formatted]
 [fixture: frontmatter-yaml/frontmatter-malformed]
 [fixture: frontmatter-yaml/frontmatter-indented-kept]
@@ -739,24 +1053,34 @@ title: T
 config: { kanban: { ticketBaseUrl: "https://example.com/#TICKET#" } }
 ---
 kanban
- S
+  S
 ```
 
 ### 複数行の値
 
-裸・引用符付き・markdown のラベル、icon、データは、
-継続行の空白、内部のコメントやディレクティブ、空行も含めて保ちます。
-`printWidth` のために、値や長い裸のノードを連結・折り返しません。
-継続部分は値であり、改行の変更は Db を変えたり、別のノードを作ったりします。
-不透明な埋め込みテキストも幅より優先するためです。
+ラベル、アイコン、データブロックは複数行にわたってよく、
+その中の改行と空白は Db に入ります
+（`A["x`、改行、` y"]` のラベルは改行と空白を持ちます）。
+印字は、そのような値のどの行も、続きの行の桁、中のコメント行やディレクティブ、
+中の空行も含め、
+書かれたまま残します。
+飾りでそろえるのは最初の行だけです
+（[アイコンとクラス](#アイコンとクラス)を参照）。
+行をつなぐことはしません。
+値の中の改行はその文字で、つなぐと Db が変わるか、別のノードになるからです。
 [fixture: multi-line-values/labels-and-icon]
 [fixture: multi-line-values/multiline-join]
-[fixture: multi-line-values/long-line-kept]
 [fixture: multi-line-values/multiline-icon-trim-unsafe]
-[fixture: multi-line-values/small-print-width]
 [fixture: multi-line-values/lex-label-empty-line]
 [fixture: multi-line-values/lex-label-directive-line]
 [fixture: multi-line-values/lex-metadata-blank-line]
+
+`printWidth` は効きません。
+長い裸のノード（`This is a deliberately long kanban item ...`）も、
+長いラベルも、その行に残します。
+裸のノードを折り返すと別のノードになり、値はテキストだからです。
+[fixture: multi-line-values/long-line-kept]
+[fixture: multi-line-values/small-print-width]
 
 入力
 ([multi-line-values/labels-and-icon-input.mmd](../tests/fixtures/kanban/multi-line-values/labels-and-icon-input.mmd)):
@@ -779,30 +1103,32 @@ kanban
 
 ```mmd
 kanban
- S
-   A[x
+  S
+    A[x
  y]
-   B["p
+    B["p
  q"]
-   C["`r
+    C["`r
  s`"]
-   ::icon(fa
+    ::icon(fa
   fa-star)
 ```
 
 ### 末尾の改行
 
-EOF に達する閉じていないディレクティブの外では、
-受理して整形したボードを共通の設定された改行で終えます。
-その前の意味のある空白と、保護する末尾のコメントの隙間は保ちます。
-受理する空のボードは `kanban` と改行を印字し、
-拒否する裸のヘッダーは失敗のままです。
-構文を修復せず共通のファイル規則に従うためです。
-Markdown のフェンスやコンテナの字下げは、kanban の level に加えません。
+出力は、最後の行の後に、`endOfLine` オプションの改行 1 つで終わります。
+最後の改行のない `kanban`、改行、` S` は、`  S` と改行を出力します。
+空のボードは `kanban` と改行です。
+最後の裸の id の末尾の空白は id の一部なので残ります
+（`S   ` は空白つきで印字し、その後に改行が来ます）。
+閉じていないディレクティブがテキストの終わりまで届くときは、残りを取るので、
+印字はその後ろに何も足しません。
+Markdown では、コードフェンスやリスト項目の字下げはホストの字下げで、
+ボードの字下げには入りません。
 [fixture: final-newline/accepted]
 [fixture: final-newline/no-final-lf]
-[fixture: final-newline/open-directive-at-eof]
 [fixture: final-newline/empty-board]
+[fixture: final-newline/open-directive-at-eof]
 
 入力
 ([final-newline/empty-board-input.mmd](../tests/fixtures/kanban/final-newline/empty-board-input.mmd)):

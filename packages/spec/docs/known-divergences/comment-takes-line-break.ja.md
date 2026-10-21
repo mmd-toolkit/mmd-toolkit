@@ -2,7 +2,7 @@
 
 英語版: [comment-takes-line-break.md](./comment-takes-line-break.md)
 
-図種: class、gantt。
+図種: class、gantt、c4。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -130,6 +130,34 @@ gantt では差異は一方向です。mermaid.js が受理し、この仕様が
 [fixture: gantt/lex-double-percent-comment-after-click-id-then-href-line]
 [fixture: gantt/lex-percent-comment-glued-after-header-blank-line]
 
+C4 では見出し、呼び出し、境界の後の図のコメントは、
+この仕様では後続の行終端子をコメントの外に残します。
+[fixture: c4/header-component-comment-glued]
+[fixture: c4/header-component-comment-on-header-line]
+[fixture: c4/header-container-comment-glued]
+[fixture: c4/header-container-comment-on-header-line]
+[fixture: c4/header-context-comment-glued]
+[fixture: c4/header-context-comment-on-header-line]
+[fixture: c4/header-deployment-comment-glued]
+[fixture: c4/header-deployment-comment-on-header-line]
+[fixture: c4/header-dynamic-comment-glued]
+[fixture: c4/header-dynamic-comment-on-header-line]
+[fixture: c4/div-comment-between-joined-statements]
+[fixture: c4/div-boundary-comment-before-inline-body]
+[fixture: c4/div-boundary-comment-before-next-statement]
+
+mermaid.js は後続の連続する LF を取り、
+必須の区切りを失うこれらの入力を拒否し、
+コメントの後に空行がある場合も同じです。
+[fixture: c4/div-header-comment-blank-recovery]
+[fixture: c4/div-comment-between-blank-recovery]
+[fixture: c4/div-diagram-comment-u2028][fixture: c4/div-diagram-comment-u2029]
+
+コメントの後のスペースだけの行は C4 のコメント規則を止め、
+区切られた文を両者とも受理します。
+[fixture: c4/header-header-comment-spaces-recovery]
+[fixture: c4/lex-comment-between-spaces-recovery]
+
 ## 書き手にとっての結果
 
 mmd-toolkit のパーサーが受理する、文の後にコメントのある class 図は、
@@ -209,3 +237,19 @@ mermaid.js が次の行をつなぐのは、その字句の規則の作りから
   2026-10-02 の時点で、#1646 はラベル `Type: Enhancement` のまま closed です。
   #1645 は、文の後ではなく、クラスの本体の中のコメントについてのもので、
   ラベル `Type: Bug / Error` と `Status: Approved` などを持ち、closed です。
+
+- 固定した版の
+  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  は見出しと呼び出しを別の行に置き、
+  行の途中のコメントが後続の改行を取る規則を示していません。
+  `mermaid-js/mermaid` の issue と pull request を、
+  2026-10-21 に `C4 comment in:title,body`、
+  `C4 newline in:title,body`、
+  `C4 "inline comments" in:title,body`、
+  `C4 comment "line break" in:title,body` で検索したところ、
+  [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504)
+  が見つかりました。
+  この PR の変更は C4 の検出位置についてで、
+  パーサーを変更していません。
+  C4 のコメント規則が必須の改行を取ることについての報告は、
+  見つかりませんでした。

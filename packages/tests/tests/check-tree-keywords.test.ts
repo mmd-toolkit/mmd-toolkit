@@ -3,6 +3,7 @@ import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
+import { C4_FIELD_WORDS } from "../src/check-tree/c4.ts"
 import { KEYWORD_TEXTS } from "../src/check-tree/keywords.ts"
 import type { CheckedRoot } from "../src/check-tree/types.ts"
 import type { DiagramType } from "../src/index.ts"
@@ -31,6 +32,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["quadrant", "QuadrantDiagram"],
   ["block", "BlockDiagram"],
   ["kanban", "KanbanDiagram"],
+  ["c4", "C4Diagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -56,6 +58,10 @@ function cutProblems(body: string, ...fragments: string[]): string[] {
 }
 
 describe("the check of the cut Keyword tokens", () => {
+  it("reports a cut C4 header and call keyword", () => {
+    expect(cutProblems("C4Diagram", "C4", "Context")).toHaveLength(1)
+    expect(cutProblems("C4Diagram", "Person", "_Ext")).toHaveLength(1)
+  })
   it("reports a cut kanban header", () => {
     expect(cutProblems("KanbanDiagram", "kan", "ban")).toHaveLength(1)
   })
@@ -222,6 +228,22 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
       return ["mindmap"]
     case "kanban":
       return ["kanban"]
+    case "c4":
+      return [
+        "c4context",
+        "c4container",
+        "c4component",
+        "c4dynamic",
+        "c4deployment",
+        ...[
+          "C4ElementStatement",
+          "C4BoundaryStatement",
+          "C4RelationshipStatement",
+          "C4UpdateStatement",
+        ]
+          .flatMap((type) => C4_FIELD_WORDS[type]?.keyword ?? [])
+          .map((word) => word.toLowerCase()),
+      ]
     // The row gives the two headers as texts.
     case "sankey":
       return []

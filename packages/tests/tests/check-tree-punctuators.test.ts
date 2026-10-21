@@ -75,6 +75,7 @@ const DIAGRAMS: readonly [string, string][] = [
   ["quadrant", "QuadrantDiagram"],
   ["block", "BlockDiagram"],
   ["kanban", "KanbanDiagram"],
+  ["c4", "C4Diagram"],
 ]
 
 /**
@@ -108,8 +109,10 @@ function textsBesidesTheRow(diagram: string): string[] {
     // The row names the openers and the closers of a shape by their kind.
     case "mindmap":
       return ["))", "(", "((", "[", "]", "{{", "}}", "(-", "-)"]
+    // The row names the shapes by their kind, and the `data-start` unit,
+    // which is `@{`, by its name.
     case "kanban":
-      return [...KANBAN_OPENERS, ...KANBAN_CLOSERS]
+      return [...KANBAN_OPENERS, ...KANBAN_CLOSERS, "@{"]
     // The row names the arrow, of any length, by its unit.
     case "block":
       return [...BLOCK_SHAPE_OPENINGS, ...BLOCK_SHAPE_CLOSINGS]
@@ -126,6 +129,21 @@ function distinct(texts: readonly string[]): string[] {
 }
 
 describe("the table of the texts of Punctuator tokens", () => {
+  it("registers the C4 punctuation and rejects another text", () => {
+    expect(PUNCTUATOR_TEXTS.C4Diagram).toEqual([
+      "(",
+      "(,",
+      ")",
+      ",",
+      ",,",
+      "$",
+      "=",
+      "{",
+      "}",
+      ":",
+    ])
+    expect(textProblems("C4Diagram", ";")).toHaveLength(1)
+  })
   it("reports punctuation that kanban does not have", () => {
     expect(textProblems("KanbanDiagram", ":")).toHaveLength(1)
   })

@@ -10,20 +10,17 @@
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "astyle:#x",
         "label": "astyle:#x",
-        "level": 3,
         "isGroup": false,
         "parentId": "S"
       },
       {
         "id": ";yb",
         "label": ";yb",
-        "level": 0,
         "isGroup": false,
         "parentId": "S"
       }

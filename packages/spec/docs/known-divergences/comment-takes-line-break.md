@@ -3,7 +3,7 @@
 Japanese version:
 [comment-takes-line-break.ja.md](./comment-takes-line-break.ja.md)
 
-Diagram types: class and gantt. This is one of the
+Diagram types: class, gantt, and c4. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -129,6 +129,32 @@ gantt/lex-space-percent-comment-after-call-then-href-line] [fixture:
 gantt/lex-double-percent-comment-after-click-id-then-href-line] [fixture:
 gantt/lex-percent-comment-glued-after-header-blank-line]
 
+In C4, a diagram comment after a header, call, or boundary leaves the following
+line terminator outside the comment in this specification. [fixture:
+c4/header-component-comment-glued] [fixture:
+c4/header-component-comment-on-header-line] [fixture:
+c4/header-container-comment-glued] [fixture:
+c4/header-container-comment-on-header-line] [fixture:
+c4/header-context-comment-glued] [fixture:
+c4/header-context-comment-on-header-line] [fixture:
+c4/header-deployment-comment-glued] [fixture:
+c4/header-deployment-comment-on-header-line] [fixture:
+c4/header-dynamic-comment-glued] [fixture:
+c4/header-dynamic-comment-on-header-line] [fixture:
+c4/div-comment-between-joined-statements] [fixture:
+c4/div-boundary-comment-before-inline-body] [fixture:
+c4/div-boundary-comment-before-next-statement]
+
+mermaid.js takes consecutive following line feeds and rejects these inputs when
+the required separator disappears, including with an empty line after the
+comment. [fixture: c4/div-header-comment-blank-recovery] [fixture:
+c4/div-comment-between-blank-recovery] [fixture: c4/div-diagram-comment-u2028]
+[fixture: c4/div-diagram-comment-u2029]
+
+A spaces-only line after the comment stops the C4 comment rule, so both accept
+the separated statements. [fixture: c4/header-header-comment-spaces-recovery]
+[fixture: c4/lex-comment-between-spaces-recovery]
+
 ## What it means for an author
 
 A class diagram with a comment after a statement, which this toolkit accepts,
@@ -206,3 +232,14 @@ second of the reasons for a known divergence (see
   2026-10-02, #1646 is closed with the label `Type: Enhancement`. #1645 is about
   comments inside the body of a class, not after a statement; it is closed, with
   the labels `Type: Bug / Error` and `Status: Approved` among others.
+
+- The pinned
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  puts the header and calls on separate lines and gives no rule for an inline
+  comment taking the following line break. Searches of issues and pull requests
+  in `mermaid-js/mermaid` on 2026-10-21 with `C4 comment in:title,body`,
+  `C4 newline in:title,body`, `C4 "inline comments" in:title,body`, and
+  `C4 comment "line break" in:title,body` found
+  [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504), whose change
+  concerns C4 detector anchoring and leaves the parser unchanged. No report
+  about the C4 comment rule consuming the required line break was found.

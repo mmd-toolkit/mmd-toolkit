@@ -1,0 +1,7654 @@
+{
+  "type": "Root",
+  "diagramType": "c4",
+  "body": {
+    "type": "C4Diagram",
+    "kind": "component",
+    "beforeBody": [],
+    "body": [
+      {
+        "type": "C4TitleStatement",
+        "value": {
+          "type": "C4Literal",
+          "value": "Component diagram for Internet Banking System - API Application",
+          "range": [
+            18,
+            81
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 69
+            }
+          }
+        },
+        "range": [
+          12,
+          81
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 69
+          }
+        }
+      },
+      {
+        "type": "C4ElementStatement",
+        "keyword": "Container",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "spa",
+            "range": [
+              93,
+              96
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 10
+              },
+              "end": {
+                "line": 4,
+                "column": 13
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Single Page Application",
+            "raw": "\"Single Page Application\"",
+            "closed": true,
+            "range": [
+              98,
+              123
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 15
+              },
+              "end": {
+                "line": 4,
+                "column": 40
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "javascript and angular",
+            "raw": "\"javascript and angular\"",
+            "closed": true,
+            "range": [
+              125,
+              149
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 42
+              },
+              "end": {
+                "line": 4,
+                "column": 66
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Provides all the internet banking functionality to customers via their web browser.",
+            "raw": "\"Provides all the internet banking functionality to customers via their web browser.\"",
+            "closed": true,
+            "range": [
+              151,
+              236
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 68
+              },
+              "end": {
+                "line": 4,
+                "column": 153
+              }
+            }
+          }
+        ],
+        "range": [
+          83,
+          237
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 154
+          }
+        }
+      },
+      {
+        "type": "C4ElementStatement",
+        "keyword": "Container",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "ma",
+            "range": [
+              248,
+              250
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 10
+              },
+              "end": {
+                "line": 5,
+                "column": 12
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Mobile App",
+            "raw": "\"Mobile App\"",
+            "closed": true,
+            "range": [
+              252,
+              264
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 14
+              },
+              "end": {
+                "line": 5,
+                "column": 26
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Xamarin",
+            "raw": "\"Xamarin\"",
+            "closed": true,
+            "range": [
+              266,
+              275
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 28
+              },
+              "end": {
+                "line": 5,
+                "column": 37
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Provides a limited subset ot the internet banking functionality to customers via their mobile device.",
+            "raw": "\"Provides a limited subset ot the internet banking functionality to customers via their mobile device.\"",
+            "closed": true,
+            "range": [
+              277,
+              380
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 39
+              },
+              "end": {
+                "line": 5,
+                "column": 142
+              }
+            }
+          }
+        ],
+        "range": [
+          238,
+          381
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 0
+          },
+          "end": {
+            "line": 5,
+            "column": 143
+          }
+        }
+      },
+      {
+        "type": "C4ElementStatement",
+        "keyword": "ContainerDb",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "db",
+            "range": [
+              394,
+              396
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 12
+              },
+              "end": {
+                "line": 6,
+                "column": 14
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Database",
+            "raw": "\"Database\"",
+            "closed": true,
+            "range": [
+              398,
+              408
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 16
+              },
+              "end": {
+                "line": 6,
+                "column": 26
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Relational Database Schema",
+            "raw": "\"Relational Database Schema\"",
+            "closed": true,
+            "range": [
+              410,
+              438
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 28
+              },
+              "end": {
+                "line": 6,
+                "column": 56
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Stores user registration information, hashed authentication credentials, access logs, etc.",
+            "raw": "\"Stores user registration information, hashed authentication credentials, access logs, etc.\"",
+            "closed": true,
+            "range": [
+              440,
+              532
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 58
+              },
+              "end": {
+                "line": 6,
+                "column": 150
+              }
+            }
+          }
+        ],
+        "range": [
+          382,
+          533
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 151
+          }
+        }
+      },
+      {
+        "type": "C4ElementStatement",
+        "keyword": "System_Ext",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "mbs",
+            "range": [
+              545,
+              548
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 11
+              },
+              "end": {
+                "line": 7,
+                "column": 14
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Mainframe Banking System",
+            "raw": "\"Mainframe Banking System\"",
+            "closed": true,
+            "range": [
+              550,
+              576
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 16
+              },
+              "end": {
+                "line": 7,
+                "column": 42
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Stores all of the core banking information about customers, accounts, transactions, etc.",
+            "raw": "\"Stores all of the core banking information about customers, accounts, transactions, etc.\"",
+            "closed": true,
+            "range": [
+              578,
+              668
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 44
+              },
+              "end": {
+                "line": 7,
+                "column": 134
+              }
+            }
+          }
+        ],
+        "range": [
+          534,
+          669
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 135
+          }
+        }
+      },
+      {
+        "type": "C4BoundaryStatement",
+        "keyword": "Container_Boundary",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "api",
+            "range": [
+              690,
+              693
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 19
+              },
+              "end": {
+                "line": 9,
+                "column": 22
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "API Application",
+            "raw": "\"API Application\"",
+            "closed": true,
+            "range": [
+              695,
+              712
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 24
+              },
+              "end": {
+                "line": 9,
+                "column": 41
+              }
+            }
+          }
+        ],
+        "beforeBody": [],
+        "body": [
+          {
+            "type": "C4ElementStatement",
+            "keyword": "Component",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "sign",
+                "range": [
+                  730,
+                  734
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 18
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Sign In Controller",
+                "raw": "\"Sign In Controller\"",
+                "closed": true,
+                "range": [
+                  736,
+                  756
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 20
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 40
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "MVC Rest Controller",
+                "raw": "\"MVC Rest Controller\"",
+                "closed": true,
+                "range": [
+                  758,
+                  779
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 42
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 63
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Allows users to sign in to the internet banking system",
+                "raw": "\"Allows users to sign in to the internet banking system\"",
+                "closed": true,
+                "range": [
+                  781,
+                  837
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 65
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 121
+                  }
+                }
+              }
+            ],
+            "range": [
+              720,
+              838
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 4
+              },
+              "end": {
+                "line": 10,
+                "column": 122
+              }
+            }
+          },
+          {
+            "type": "C4ElementStatement",
+            "keyword": "Component",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "accounts",
+                "range": [
+                  853,
+                  861
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 22
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Accounts Summary Controller",
+                "raw": "\"Accounts Summary Controller\"",
+                "closed": true,
+                "range": [
+                  863,
+                  892
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 53
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "MVC Rest Controller",
+                "raw": "\"MVC Rest Controller\"",
+                "closed": true,
+                "range": [
+                  894,
+                  915
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 55
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 76
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Provides customers with a summary of their bank accounts",
+                "raw": "\"Provides customers with a summary of their bank accounts\"",
+                "closed": true,
+                "range": [
+                  917,
+                  975
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 78
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 136
+                  }
+                }
+              }
+            ],
+            "range": [
+              843,
+              976
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 4
+              },
+              "end": {
+                "line": 11,
+                "column": 137
+              }
+            }
+          },
+          {
+            "type": "C4ElementStatement",
+            "keyword": "Component",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "security",
+                "range": [
+                  991,
+                  999
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 22
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Security Component",
+                "raw": "\"Security Component\"",
+                "closed": true,
+                "range": [
+                  1001,
+                  1021
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 44
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Spring Bean",
+                "raw": "\"Spring Bean\"",
+                "closed": true,
+                "range": [
+                  1023,
+                  1036
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 46
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 59
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Provides functionality related to singing in, changing passwords, etc.",
+                "raw": "\"Provides functionality related to singing in, changing passwords, etc.\"",
+                "closed": true,
+                "range": [
+                  1038,
+                  1110
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 61
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 133
+                  }
+                }
+              }
+            ],
+            "range": [
+              981,
+              1111
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 4
+              },
+              "end": {
+                "line": 12,
+                "column": 134
+              }
+            }
+          },
+          {
+            "type": "C4ElementStatement",
+            "keyword": "Component",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "mbsfacade",
+                "range": [
+                  1126,
+                  1135
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 23
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Mainframe Banking System Facade",
+                "raw": "\"Mainframe Banking System Facade\"",
+                "closed": true,
+                "range": [
+                  1137,
+                  1170
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 25
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 58
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Spring Bean",
+                "raw": "\"Spring Bean\"",
+                "closed": true,
+                "range": [
+                  1172,
+                  1185
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 60
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 73
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "A facade onto the mainframe banking system.",
+                "raw": "\"A facade onto the mainframe banking system.\"",
+                "closed": true,
+                "range": [
+                  1187,
+                  1232
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 75
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 120
+                  }
+                }
+              }
+            ],
+            "range": [
+              1116,
+              1233
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 4
+              },
+              "end": {
+                "line": 13,
+                "column": 121
+              }
+            }
+          },
+          {
+            "type": "C4RelationshipStatement",
+            "keyword": "Rel",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "sign",
+                "range": [
+                  1243,
+                  1247
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 12
+                  }
+                }
+              },
+              {
+                "type": "C4Literal",
+                "value": "security",
+                "range": [
+                  1249,
+                  1257
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 14
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 22
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Uses",
+                "raw": "\"Uses\"",
+                "closed": true,
+                "range": [
+                  1259,
+                  1265
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 30
+                  }
+                }
+              }
+            ],
+            "range": [
+              1239,
+              1266
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 4
+              },
+              "end": {
+                "line": 15,
+                "column": 31
+              }
+            }
+          },
+          {
+            "type": "C4RelationshipStatement",
+            "keyword": "Rel",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "accounts",
+                "range": [
+                  1275,
+                  1283
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 16
+                  }
+                }
+              },
+              {
+                "type": "C4Literal",
+                "value": "mbsfacade",
+                "range": [
+                  1285,
+                  1294
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 27
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Uses",
+                "raw": "\"Uses\"",
+                "closed": true,
+                "range": [
+                  1296,
+                  1302
+                ],
+                "loc": {
+                  "start": {
+                    "line": 16,
+                    "column": 29
+                  },
+                  "end": {
+                    "line": 16,
+                    "column": 35
+                  }
+                }
+              }
+            ],
+            "range": [
+              1271,
+              1303
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 4
+              },
+              "end": {
+                "line": 16,
+                "column": 36
+              }
+            }
+          },
+          {
+            "type": "C4RelationshipStatement",
+            "keyword": "Rel",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "security",
+                "range": [
+                  1312,
+                  1320
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 16
+                  }
+                }
+              },
+              {
+                "type": "C4Literal",
+                "value": "db",
+                "range": [
+                  1322,
+                  1324
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 18
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 20
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Read & write to",
+                "raw": "\"Read & write to\"",
+                "closed": true,
+                "range": [
+                  1326,
+                  1343
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 22
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 39
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "JDBC",
+                "raw": "\"JDBC\"",
+                "closed": true,
+                "range": [
+                  1345,
+                  1351
+                ],
+                "loc": {
+                  "start": {
+                    "line": 17,
+                    "column": 41
+                  },
+                  "end": {
+                    "line": 17,
+                    "column": 47
+                  }
+                }
+              }
+            ],
+            "range": [
+              1308,
+              1352
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 4
+              },
+              "end": {
+                "line": 17,
+                "column": 48
+              }
+            }
+          },
+          {
+            "type": "C4RelationshipStatement",
+            "keyword": "Rel",
+            "arguments": [
+              {
+                "type": "C4Literal",
+                "value": "mbsfacade",
+                "range": [
+                  1361,
+                  1370
+                ],
+                "loc": {
+                  "start": {
+                    "line": 18,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 17
+                  }
+                }
+              },
+              {
+                "type": "C4Literal",
+                "value": "mbs",
+                "range": [
+                  1372,
+                  1375
+                ],
+                "loc": {
+                  "start": {
+                    "line": 18,
+                    "column": 19
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 22
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "Uses",
+                "raw": "\"Uses\"",
+                "closed": true,
+                "range": [
+                  1377,
+                  1383
+                ],
+                "loc": {
+                  "start": {
+                    "line": 18,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 30
+                  }
+                }
+              },
+              {
+                "type": "StringLiteral",
+                "value": "XML/HTTPS",
+                "raw": "\"XML/HTTPS\"",
+                "closed": true,
+                "range": [
+                  1385,
+                  1396
+                ],
+                "loc": {
+                  "start": {
+                    "line": 18,
+                    "column": 32
+                  },
+                  "end": {
+                    "line": 18,
+                    "column": 43
+                  }
+                }
+              }
+            ],
+            "range": [
+              1357,
+              1397
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 4
+              },
+              "end": {
+                "line": 18,
+                "column": 44
+              }
+            }
+          }
+        ],
+        "range": [
+          671,
+          1399
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 19,
+            "column": 1
+          }
+        }
+      },
+      {
+        "type": "C4RelationshipStatement",
+        "keyword": "Rel_Back",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "spa",
+            "range": [
+              1410,
+              1413
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 9
+              },
+              "end": {
+                "line": 21,
+                "column": 12
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "sign",
+            "range": [
+              1415,
+              1419
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 14
+              },
+              "end": {
+                "line": 21,
+                "column": 18
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Uses",
+            "raw": "\"Uses\"",
+            "closed": true,
+            "range": [
+              1421,
+              1427
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 20
+              },
+              "end": {
+                "line": 21,
+                "column": 26
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "JSON/HTTPS",
+            "raw": "\"JSON/HTTPS\"",
+            "closed": true,
+            "range": [
+              1429,
+              1441
+            ],
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 28
+              },
+              "end": {
+                "line": 21,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "range": [
+          1401,
+          1442
+        ],
+        "loc": {
+          "start": {
+            "line": 21,
+            "column": 0
+          },
+          "end": {
+            "line": 21,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "C4RelationshipStatement",
+        "keyword": "Rel",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "spa",
+            "range": [
+              1447,
+              1450
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 4
+              },
+              "end": {
+                "line": 22,
+                "column": 7
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "accounts",
+            "range": [
+              1452,
+              1460
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 9
+              },
+              "end": {
+                "line": 22,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Uses",
+            "raw": "\"Uses\"",
+            "closed": true,
+            "range": [
+              1462,
+              1468
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 19
+              },
+              "end": {
+                "line": 22,
+                "column": 25
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "JSON/HTTPS",
+            "raw": "\"JSON/HTTPS\"",
+            "closed": true,
+            "range": [
+              1470,
+              1482
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 27
+              },
+              "end": {
+                "line": 22,
+                "column": 39
+              }
+            }
+          }
+        ],
+        "range": [
+          1443,
+          1483
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 0
+          },
+          "end": {
+            "line": 22,
+            "column": 40
+          }
+        }
+      },
+      {
+        "type": "C4RelationshipStatement",
+        "keyword": "Rel",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "ma",
+            "range": [
+              1489,
+              1491
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 4
+              },
+              "end": {
+                "line": 24,
+                "column": 6
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "sign",
+            "range": [
+              1493,
+              1497
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 8
+              },
+              "end": {
+                "line": 24,
+                "column": 12
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Uses",
+            "raw": "\"Uses\"",
+            "closed": true,
+            "range": [
+              1499,
+              1505
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 14
+              },
+              "end": {
+                "line": 24,
+                "column": 20
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "JSON/HTTPS",
+            "raw": "\"JSON/HTTPS\"",
+            "closed": true,
+            "range": [
+              1507,
+              1519
+            ],
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 22
+              },
+              "end": {
+                "line": 24,
+                "column": 34
+              }
+            }
+          }
+        ],
+        "range": [
+          1485,
+          1520
+        ],
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 0
+          },
+          "end": {
+            "line": 24,
+            "column": 35
+          }
+        }
+      },
+      {
+        "type": "C4RelationshipStatement",
+        "keyword": "Rel",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "ma",
+            "range": [
+              1525,
+              1527
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 4
+              },
+              "end": {
+                "line": 25,
+                "column": 6
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "accounts",
+            "range": [
+              1529,
+              1537
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 8
+              },
+              "end": {
+                "line": 25,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "Uses",
+            "raw": "\"Uses\"",
+            "closed": true,
+            "range": [
+              1539,
+              1545
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 18
+              },
+              "end": {
+                "line": 25,
+                "column": 24
+              }
+            }
+          },
+          {
+            "type": "StringLiteral",
+            "value": "JSON/HTTPS",
+            "raw": "\"JSON/HTTPS\"",
+            "closed": true,
+            "range": [
+              1547,
+              1559
+            ],
+            "loc": {
+              "start": {
+                "line": 25,
+                "column": 26
+              },
+              "end": {
+                "line": 25,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "range": [
+          1521,
+          1560
+        ],
+        "loc": {
+          "start": {
+            "line": 25,
+            "column": 0
+          },
+          "end": {
+            "line": 25,
+            "column": 39
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "spa",
+            "range": [
+              1577,
+              1580
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 15
+              },
+              "end": {
+                "line": 27,
+                "column": 18
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "sign",
+            "range": [
+              1582,
+              1586
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 20
+              },
+              "end": {
+                "line": 27,
+                "column": 24
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1589,
+                1596
+              ],
+              "loc": {
+                "start": {
+                  "line": 27,
+                  "column": 27
+                },
+                "end": {
+                  "line": 27,
+                  "column": 34
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-40",
+              "raw": "\"-40\"",
+              "closed": true,
+              "range": [
+                1597,
+                1602
+              ],
+              "loc": {
+                "start": {
+                  "line": 27,
+                  "column": 35
+                },
+                "end": {
+                  "line": 27,
+                  "column": 40
+                }
+              }
+            },
+            "range": [
+              1588,
+              1602
+            ],
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 26
+              },
+              "end": {
+                "line": 27,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "range": [
+          1562,
+          1603
+        ],
+        "loc": {
+          "start": {
+            "line": 27,
+            "column": 0
+          },
+          "end": {
+            "line": 27,
+            "column": 41
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "spa",
+            "range": [
+              1620,
+              1623
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 15
+              },
+              "end": {
+                "line": 28,
+                "column": 18
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "accounts",
+            "range": [
+              1625,
+              1633
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 20
+              },
+              "end": {
+                "line": 28,
+                "column": 28
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetX",
+              "range": [
+                1636,
+                1643
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 31
+                },
+                "end": {
+                  "line": 28,
+                  "column": 38
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "40",
+              "raw": "\"40\"",
+              "closed": true,
+              "range": [
+                1644,
+                1648
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 39
+                },
+                "end": {
+                  "line": 28,
+                  "column": 43
+                }
+              }
+            },
+            "range": [
+              1635,
+              1648
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 30
+              },
+              "end": {
+                "line": 28,
+                "column": 43
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1651,
+                1658
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 46
+                },
+                "end": {
+                  "line": 28,
+                  "column": 53
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "40",
+              "raw": "\"40\"",
+              "closed": true,
+              "range": [
+                1659,
+                1663
+              ],
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 54
+                },
+                "end": {
+                  "line": 28,
+                  "column": 58
+                }
+              }
+            },
+            "range": [
+              1650,
+              1663
+            ],
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 45
+              },
+              "end": {
+                "line": 28,
+                "column": 58
+              }
+            }
+          }
+        ],
+        "range": [
+          1605,
+          1664
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 0
+          },
+          "end": {
+            "line": 28,
+            "column": 59
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "ma",
+            "range": [
+              1681,
+              1683
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 15
+              },
+              "end": {
+                "line": 30,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "sign",
+            "range": [
+              1685,
+              1689
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 19
+              },
+              "end": {
+                "line": 30,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetX",
+              "range": [
+                1692,
+                1699
+              ],
+              "loc": {
+                "start": {
+                  "line": 30,
+                  "column": 26
+                },
+                "end": {
+                  "line": 30,
+                  "column": 33
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-90",
+              "raw": "\"-90\"",
+              "closed": true,
+              "range": [
+                1700,
+                1705
+              ],
+              "loc": {
+                "start": {
+                  "line": 30,
+                  "column": 34
+                },
+                "end": {
+                  "line": 30,
+                  "column": 39
+                }
+              }
+            },
+            "range": [
+              1691,
+              1705
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 25
+              },
+              "end": {
+                "line": 30,
+                "column": 39
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1708,
+                1715
+              ],
+              "loc": {
+                "start": {
+                  "line": 30,
+                  "column": 42
+                },
+                "end": {
+                  "line": 30,
+                  "column": 49
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "40",
+              "raw": "\"40\"",
+              "closed": true,
+              "range": [
+                1716,
+                1720
+              ],
+              "loc": {
+                "start": {
+                  "line": 30,
+                  "column": 50
+                },
+                "end": {
+                  "line": 30,
+                  "column": 54
+                }
+              }
+            },
+            "range": [
+              1707,
+              1720
+            ],
+            "loc": {
+              "start": {
+                "line": 30,
+                "column": 41
+              },
+              "end": {
+                "line": 30,
+                "column": 54
+              }
+            }
+          }
+        ],
+        "range": [
+          1666,
+          1721
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 0
+          },
+          "end": {
+            "line": 30,
+            "column": 55
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "ma",
+            "range": [
+              1737,
+              1739
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 15
+              },
+              "end": {
+                "line": 31,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "accounts",
+            "range": [
+              1741,
+              1749
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 19
+              },
+              "end": {
+                "line": 31,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1752,
+                1759
+              ],
+              "loc": {
+                "start": {
+                  "line": 31,
+                  "column": 30
+                },
+                "end": {
+                  "line": 31,
+                  "column": 37
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-40",
+              "raw": "\"-40\"",
+              "closed": true,
+              "range": [
+                1760,
+                1765
+              ],
+              "loc": {
+                "start": {
+                  "line": 31,
+                  "column": 38
+                },
+                "end": {
+                  "line": 31,
+                  "column": 43
+                }
+              }
+            },
+            "range": [
+              1751,
+              1765
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 29
+              },
+              "end": {
+                "line": 31,
+                "column": 43
+              }
+            }
+          }
+        ],
+        "range": [
+          1722,
+          1766
+        ],
+        "loc": {
+          "start": {
+            "line": 31,
+            "column": 0
+          },
+          "end": {
+            "line": 31,
+            "column": 44
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "sign",
+            "range": [
+              1787,
+              1791
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 19
+              },
+              "end": {
+                "line": 33,
+                "column": 23
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "security",
+            "range": [
+              1793,
+              1801
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 25
+              },
+              "end": {
+                "line": 33,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetX",
+              "range": [
+                1804,
+                1811
+              ],
+              "loc": {
+                "start": {
+                  "line": 33,
+                  "column": 36
+                },
+                "end": {
+                  "line": 33,
+                  "column": 43
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-160",
+              "raw": "\"-160\"",
+              "closed": true,
+              "range": [
+                1812,
+                1818
+              ],
+              "loc": {
+                "start": {
+                  "line": 33,
+                  "column": 44
+                },
+                "end": {
+                  "line": 33,
+                  "column": 50
+                }
+              }
+            },
+            "range": [
+              1803,
+              1818
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 35
+              },
+              "end": {
+                "line": 33,
+                "column": 50
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1821,
+                1828
+              ],
+              "loc": {
+                "start": {
+                  "line": 33,
+                  "column": 53
+                },
+                "end": {
+                  "line": 33,
+                  "column": 60
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "10",
+              "raw": "\"10\"",
+              "closed": true,
+              "range": [
+                1829,
+                1833
+              ],
+              "loc": {
+                "start": {
+                  "line": 33,
+                  "column": 61
+                },
+                "end": {
+                  "line": 33,
+                  "column": 65
+                }
+              }
+            },
+            "range": [
+              1820,
+              1833
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 52
+              },
+              "end": {
+                "line": 33,
+                "column": 65
+              }
+            }
+          }
+        ],
+        "range": [
+          1772,
+          1834
+        ],
+        "loc": {
+          "start": {
+            "line": 33,
+            "column": 4
+          },
+          "end": {
+            "line": 33,
+            "column": 66
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "accounts",
+            "range": [
+              1854,
+              1862
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 19
+              },
+              "end": {
+                "line": 34,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "mbsfacade",
+            "range": [
+              1864,
+              1873
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 29
+              },
+              "end": {
+                "line": 34,
+                "column": 38
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetX",
+              "range": [
+                1876,
+                1883
+              ],
+              "loc": {
+                "start": {
+                  "line": 34,
+                  "column": 41
+                },
+                "end": {
+                  "line": 34,
+                  "column": 48
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "140",
+              "raw": "\"140\"",
+              "closed": true,
+              "range": [
+                1884,
+                1889
+              ],
+              "loc": {
+                "start": {
+                  "line": 34,
+                  "column": 49
+                },
+                "end": {
+                  "line": 34,
+                  "column": 54
+                }
+              }
+            },
+            "range": [
+              1875,
+              1889
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 40
+              },
+              "end": {
+                "line": 34,
+                "column": 54
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1892,
+                1899
+              ],
+              "loc": {
+                "start": {
+                  "line": 34,
+                  "column": 57
+                },
+                "end": {
+                  "line": 34,
+                  "column": 64
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "10",
+              "raw": "\"10\"",
+              "closed": true,
+              "range": [
+                1900,
+                1904
+              ],
+              "loc": {
+                "start": {
+                  "line": 34,
+                  "column": 65
+                },
+                "end": {
+                  "line": 34,
+                  "column": 69
+                }
+              }
+            },
+            "range": [
+              1891,
+              1904
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 56
+              },
+              "end": {
+                "line": 34,
+                "column": 69
+              }
+            }
+          }
+        ],
+        "range": [
+          1839,
+          1905
+        ],
+        "loc": {
+          "start": {
+            "line": 34,
+            "column": 4
+          },
+          "end": {
+            "line": 34,
+            "column": 70
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "security",
+            "range": [
+              1925,
+              1933
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 19
+              },
+              "end": {
+                "line": 35,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "db",
+            "range": [
+              1935,
+              1937
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 29
+              },
+              "end": {
+                "line": 35,
+                "column": 31
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1940,
+                1947
+              ],
+              "loc": {
+                "start": {
+                  "line": 35,
+                  "column": 34
+                },
+                "end": {
+                  "line": 35,
+                  "column": 41
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-40",
+              "raw": "\"-40\"",
+              "closed": true,
+              "range": [
+                1948,
+                1953
+              ],
+              "loc": {
+                "start": {
+                  "line": 35,
+                  "column": 42
+                },
+                "end": {
+                  "line": 35,
+                  "column": 47
+                }
+              }
+            },
+            "range": [
+              1939,
+              1953
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 33
+              },
+              "end": {
+                "line": 35,
+                "column": 47
+              }
+            }
+          }
+        ],
+        "range": [
+          1910,
+          1954
+        ],
+        "loc": {
+          "start": {
+            "line": 35,
+            "column": 4
+          },
+          "end": {
+            "line": 35,
+            "column": 48
+          }
+        }
+      },
+      {
+        "type": "C4UpdateStatement",
+        "keyword": "UpdateRelStyle",
+        "arguments": [
+          {
+            "type": "C4Literal",
+            "value": "mbsfacade",
+            "range": [
+              1974,
+              1983
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 19
+              },
+              "end": {
+                "line": 36,
+                "column": 28
+              }
+            }
+          },
+          {
+            "type": "C4Literal",
+            "value": "mbs",
+            "range": [
+              1985,
+              1988
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 30
+              },
+              "end": {
+                "line": 36,
+                "column": 33
+              }
+            }
+          },
+          {
+            "type": "C4NamedAttribute",
+            "key": {
+              "type": "C4Literal",
+              "value": "offsetY",
+              "range": [
+                1991,
+                1998
+              ],
+              "loc": {
+                "start": {
+                  "line": 36,
+                  "column": 36
+                },
+                "end": {
+                  "line": 36,
+                  "column": 43
+                }
+              }
+            },
+            "value": {
+              "type": "StringLiteral",
+              "value": "-40",
+              "raw": "\"-40\"",
+              "closed": true,
+              "range": [
+                1999,
+                2004
+              ],
+              "loc": {
+                "start": {
+                  "line": 36,
+                  "column": 44
+                },
+                "end": {
+                  "line": 36,
+                  "column": 49
+                }
+              }
+            },
+            "range": [
+              1990,
+              2004
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 35
+              },
+              "end": {
+                "line": 36,
+                "column": 49
+              }
+            }
+          }
+        ],
+        "range": [
+          1959,
+          2005
+        ],
+        "loc": {
+          "start": {
+            "line": 36,
+            "column": 4
+          },
+          "end": {
+            "line": 36,
+            "column": 50
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      2005
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 36,
+        "column": 50
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "C4Component",
+      "range": [
+        0,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        12,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Component diagram for Internet Banking System - API Application",
+      "range": [
+        18,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Container",
+      "range": [
+        83,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        92,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "spa",
+      "range": [
+        93,
+        96
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        96,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 13
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Single Page Application\"",
+      "range": [
+        98,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        123,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 40
+        },
+        "end": {
+          "line": 4,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"javascript and angular\"",
+      "range": [
+        125,
+        149
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 42
+        },
+        "end": {
+          "line": 4,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        149,
+        150
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 66
+        },
+        "end": {
+          "line": 4,
+          "column": 67
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Provides all the internet banking functionality to customers via their web browser.\"",
+      "range": [
+        151,
+        236
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 68
+        },
+        "end": {
+          "line": 4,
+          "column": 153
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        236,
+        237
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 153
+        },
+        "end": {
+          "line": 4,
+          "column": 154
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Container",
+      "range": [
+        238,
+        247
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        247,
+        248
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 9
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ma",
+      "range": [
+        248,
+        250
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        250,
+        251
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Mobile App\"",
+      "range": [
+        252,
+        264
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 14
+        },
+        "end": {
+          "line": 5,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        264,
+        265
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 26
+        },
+        "end": {
+          "line": 5,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Xamarin\"",
+      "range": [
+        266,
+        275
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 28
+        },
+        "end": {
+          "line": 5,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        275,
+        276
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 37
+        },
+        "end": {
+          "line": 5,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Provides a limited subset ot the internet banking functionality to customers via their mobile device.\"",
+      "range": [
+        277,
+        380
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 39
+        },
+        "end": {
+          "line": 5,
+          "column": 142
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        380,
+        381
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 142
+        },
+        "end": {
+          "line": 5,
+          "column": 143
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ContainerDb",
+      "range": [
+        382,
+        393
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        393,
+        394
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 11
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "db",
+      "range": [
+        394,
+        396
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        396,
+        397
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 14
+        },
+        "end": {
+          "line": 6,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Database\"",
+      "range": [
+        398,
+        408
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 16
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        408,
+        409
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 26
+        },
+        "end": {
+          "line": 6,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Relational Database Schema\"",
+      "range": [
+        410,
+        438
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 28
+        },
+        "end": {
+          "line": 6,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        438,
+        439
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 56
+        },
+        "end": {
+          "line": 6,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Stores user registration information, hashed authentication credentials, access logs, etc.\"",
+      "range": [
+        440,
+        532
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 58
+        },
+        "end": {
+          "line": 6,
+          "column": 150
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        532,
+        533
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 150
+        },
+        "end": {
+          "line": 6,
+          "column": 151
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "System_Ext",
+      "range": [
+        534,
+        544
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        544,
+        545
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 10
+        },
+        "end": {
+          "line": 7,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mbs",
+      "range": [
+        545,
+        548
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 11
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        548,
+        549
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 14
+        },
+        "end": {
+          "line": 7,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Mainframe Banking System\"",
+      "range": [
+        550,
+        576
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 16
+        },
+        "end": {
+          "line": 7,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        576,
+        577
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 42
+        },
+        "end": {
+          "line": 7,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Stores all of the core banking information about customers, accounts, transactions, etc.\"",
+      "range": [
+        578,
+        668
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 44
+        },
+        "end": {
+          "line": 7,
+          "column": 134
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        668,
+        669
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 134
+        },
+        "end": {
+          "line": 7,
+          "column": 135
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Container_Boundary",
+      "range": [
+        671,
+        689
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        689,
+        690
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 18
+        },
+        "end": {
+          "line": 9,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "api",
+      "range": [
+        690,
+        693
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 19
+        },
+        "end": {
+          "line": 9,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        693,
+        694
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 22
+        },
+        "end": {
+          "line": 9,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"API Application\"",
+      "range": [
+        695,
+        712
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 24
+        },
+        "end": {
+          "line": 9,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        712,
+        713
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 41
+        },
+        "end": {
+          "line": 9,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        714,
+        715
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 43
+        },
+        "end": {
+          "line": 9,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Component",
+      "range": [
+        720,
+        729
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        729,
+        730
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 13
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sign",
+      "range": [
+        730,
+        734
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 14
+        },
+        "end": {
+          "line": 10,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        734,
+        735
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 18
+        },
+        "end": {
+          "line": 10,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Sign In Controller\"",
+      "range": [
+        736,
+        756
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 20
+        },
+        "end": {
+          "line": 10,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        756,
+        757
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 40
+        },
+        "end": {
+          "line": 10,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"MVC Rest Controller\"",
+      "range": [
+        758,
+        779
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 42
+        },
+        "end": {
+          "line": 10,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        779,
+        780
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 63
+        },
+        "end": {
+          "line": 10,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Allows users to sign in to the internet banking system\"",
+      "range": [
+        781,
+        837
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 65
+        },
+        "end": {
+          "line": 10,
+          "column": 121
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        837,
+        838
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 121
+        },
+        "end": {
+          "line": 10,
+          "column": 122
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Component",
+      "range": [
+        843,
+        852
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        852,
+        853
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 13
+        },
+        "end": {
+          "line": 11,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "accounts",
+      "range": [
+        853,
+        861
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 14
+        },
+        "end": {
+          "line": 11,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        861,
+        862
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 22
+        },
+        "end": {
+          "line": 11,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Accounts Summary Controller\"",
+      "range": [
+        863,
+        892
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 24
+        },
+        "end": {
+          "line": 11,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        892,
+        893
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 53
+        },
+        "end": {
+          "line": 11,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"MVC Rest Controller\"",
+      "range": [
+        894,
+        915
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 55
+        },
+        "end": {
+          "line": 11,
+          "column": 76
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        915,
+        916
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 76
+        },
+        "end": {
+          "line": 11,
+          "column": 77
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Provides customers with a summary of their bank accounts\"",
+      "range": [
+        917,
+        975
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 78
+        },
+        "end": {
+          "line": 11,
+          "column": 136
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        975,
+        976
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 136
+        },
+        "end": {
+          "line": 11,
+          "column": 137
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Component",
+      "range": [
+        981,
+        990
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        990,
+        991
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 13
+        },
+        "end": {
+          "line": 12,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "security",
+      "range": [
+        991,
+        999
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 14
+        },
+        "end": {
+          "line": 12,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        999,
+        1000
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 22
+        },
+        "end": {
+          "line": 12,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Security Component\"",
+      "range": [
+        1001,
+        1021
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 24
+        },
+        "end": {
+          "line": 12,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1021,
+        1022
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 44
+        },
+        "end": {
+          "line": 12,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Spring Bean\"",
+      "range": [
+        1023,
+        1036
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 46
+        },
+        "end": {
+          "line": 12,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1036,
+        1037
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 59
+        },
+        "end": {
+          "line": 12,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Provides functionality related to singing in, changing passwords, etc.\"",
+      "range": [
+        1038,
+        1110
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 61
+        },
+        "end": {
+          "line": 12,
+          "column": 133
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1110,
+        1111
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 133
+        },
+        "end": {
+          "line": 12,
+          "column": 134
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Component",
+      "range": [
+        1116,
+        1125
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 4
+        },
+        "end": {
+          "line": 13,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1125,
+        1126
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 13
+        },
+        "end": {
+          "line": 13,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mbsfacade",
+      "range": [
+        1126,
+        1135
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 14
+        },
+        "end": {
+          "line": 13,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1135,
+        1136
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 23
+        },
+        "end": {
+          "line": 13,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Mainframe Banking System Facade\"",
+      "range": [
+        1137,
+        1170
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 25
+        },
+        "end": {
+          "line": 13,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1170,
+        1171
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 58
+        },
+        "end": {
+          "line": 13,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Spring Bean\"",
+      "range": [
+        1172,
+        1185
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 60
+        },
+        "end": {
+          "line": 13,
+          "column": 73
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1185,
+        1186
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 73
+        },
+        "end": {
+          "line": 13,
+          "column": 74
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"A facade onto the mainframe banking system.\"",
+      "range": [
+        1187,
+        1232
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 75
+        },
+        "end": {
+          "line": 13,
+          "column": 120
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1232,
+        1233
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 120
+        },
+        "end": {
+          "line": 13,
+          "column": 121
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1239,
+        1242
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 4
+        },
+        "end": {
+          "line": 15,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1242,
+        1243
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 7
+        },
+        "end": {
+          "line": 15,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sign",
+      "range": [
+        1243,
+        1247
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 8
+        },
+        "end": {
+          "line": 15,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1247,
+        1248
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 12
+        },
+        "end": {
+          "line": 15,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "security",
+      "range": [
+        1249,
+        1257
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 14
+        },
+        "end": {
+          "line": 15,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1257,
+        1258
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 22
+        },
+        "end": {
+          "line": 15,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1259,
+        1265
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 24
+        },
+        "end": {
+          "line": 15,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1265,
+        1266
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 30
+        },
+        "end": {
+          "line": 15,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1271,
+        1274
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 4
+        },
+        "end": {
+          "line": 16,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1274,
+        1275
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 7
+        },
+        "end": {
+          "line": 16,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "accounts",
+      "range": [
+        1275,
+        1283
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 8
+        },
+        "end": {
+          "line": 16,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1283,
+        1284
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 16
+        },
+        "end": {
+          "line": 16,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mbsfacade",
+      "range": [
+        1285,
+        1294
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 18
+        },
+        "end": {
+          "line": 16,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1294,
+        1295
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 27
+        },
+        "end": {
+          "line": 16,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1296,
+        1302
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 29
+        },
+        "end": {
+          "line": 16,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1302,
+        1303
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 35
+        },
+        "end": {
+          "line": 16,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1308,
+        1311
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 4
+        },
+        "end": {
+          "line": 17,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1311,
+        1312
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 7
+        },
+        "end": {
+          "line": 17,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "security",
+      "range": [
+        1312,
+        1320
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 8
+        },
+        "end": {
+          "line": 17,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1320,
+        1321
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 16
+        },
+        "end": {
+          "line": 17,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "db",
+      "range": [
+        1322,
+        1324
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 18
+        },
+        "end": {
+          "line": 17,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1324,
+        1325
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 20
+        },
+        "end": {
+          "line": 17,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Read & write to\"",
+      "range": [
+        1326,
+        1343
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 22
+        },
+        "end": {
+          "line": 17,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1343,
+        1344
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 39
+        },
+        "end": {
+          "line": 17,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"JDBC\"",
+      "range": [
+        1345,
+        1351
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 41
+        },
+        "end": {
+          "line": 17,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1351,
+        1352
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 47
+        },
+        "end": {
+          "line": 17,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1357,
+        1360
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 4
+        },
+        "end": {
+          "line": 18,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1360,
+        1361
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 7
+        },
+        "end": {
+          "line": 18,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mbsfacade",
+      "range": [
+        1361,
+        1370
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 8
+        },
+        "end": {
+          "line": 18,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1370,
+        1371
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 17
+        },
+        "end": {
+          "line": 18,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mbs",
+      "range": [
+        1372,
+        1375
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 19
+        },
+        "end": {
+          "line": 18,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1375,
+        1376
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 22
+        },
+        "end": {
+          "line": 18,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1377,
+        1383
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 24
+        },
+        "end": {
+          "line": 18,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1383,
+        1384
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 30
+        },
+        "end": {
+          "line": 18,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"XML/HTTPS\"",
+      "range": [
+        1385,
+        1396
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 32
+        },
+        "end": {
+          "line": 18,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1396,
+        1397
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 43
+        },
+        "end": {
+          "line": 18,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        1398,
+        1399
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel_Back",
+      "range": [
+        1401,
+        1409
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1409,
+        1410
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 8
+        },
+        "end": {
+          "line": 21,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "spa",
+      "range": [
+        1410,
+        1413
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 9
+        },
+        "end": {
+          "line": 21,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1413,
+        1414
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 12
+        },
+        "end": {
+          "line": 21,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sign",
+      "range": [
+        1415,
+        1419
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 14
+        },
+        "end": {
+          "line": 21,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1419,
+        1420
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 18
+        },
+        "end": {
+          "line": 21,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1421,
+        1427
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 20
+        },
+        "end": {
+          "line": 21,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1427,
+        1428
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 26
+        },
+        "end": {
+          "line": 21,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"JSON/HTTPS\"",
+      "range": [
+        1429,
+        1441
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 28
+        },
+        "end": {
+          "line": 21,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1441,
+        1442
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 40
+        },
+        "end": {
+          "line": 21,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1443,
+        1446
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1446,
+        1447
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 3
+        },
+        "end": {
+          "line": 22,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "spa",
+      "range": [
+        1447,
+        1450
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 4
+        },
+        "end": {
+          "line": 22,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1450,
+        1451
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 7
+        },
+        "end": {
+          "line": 22,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "accounts",
+      "range": [
+        1452,
+        1460
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 9
+        },
+        "end": {
+          "line": 22,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1460,
+        1461
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 17
+        },
+        "end": {
+          "line": 22,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1462,
+        1468
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 19
+        },
+        "end": {
+          "line": 22,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1468,
+        1469
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 25
+        },
+        "end": {
+          "line": 22,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"JSON/HTTPS\"",
+      "range": [
+        1470,
+        1482
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 27
+        },
+        "end": {
+          "line": 22,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1482,
+        1483
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 39
+        },
+        "end": {
+          "line": 22,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1485,
+        1488
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1488,
+        1489
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 3
+        },
+        "end": {
+          "line": 24,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ma",
+      "range": [
+        1489,
+        1491
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 4
+        },
+        "end": {
+          "line": 24,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1491,
+        1492
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 6
+        },
+        "end": {
+          "line": 24,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sign",
+      "range": [
+        1493,
+        1497
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 8
+        },
+        "end": {
+          "line": 24,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1497,
+        1498
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 12
+        },
+        "end": {
+          "line": 24,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1499,
+        1505
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 14
+        },
+        "end": {
+          "line": 24,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1505,
+        1506
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 20
+        },
+        "end": {
+          "line": 24,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"JSON/HTTPS\"",
+      "range": [
+        1507,
+        1519
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 22
+        },
+        "end": {
+          "line": 24,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1519,
+        1520
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 34
+        },
+        "end": {
+          "line": 24,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Rel",
+      "range": [
+        1521,
+        1524
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 0
+        },
+        "end": {
+          "line": 25,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1524,
+        1525
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 3
+        },
+        "end": {
+          "line": 25,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ma",
+      "range": [
+        1525,
+        1527
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 4
+        },
+        "end": {
+          "line": 25,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1527,
+        1528
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 6
+        },
+        "end": {
+          "line": 25,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "accounts",
+      "range": [
+        1529,
+        1537
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 8
+        },
+        "end": {
+          "line": 25,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1537,
+        1538
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 16
+        },
+        "end": {
+          "line": 25,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Uses\"",
+      "range": [
+        1539,
+        1545
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 18
+        },
+        "end": {
+          "line": 25,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1545,
+        1546
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 24
+        },
+        "end": {
+          "line": 25,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"JSON/HTTPS\"",
+      "range": [
+        1547,
+        1559
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 26
+        },
+        "end": {
+          "line": 25,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1559,
+        1560
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 38
+        },
+        "end": {
+          "line": 25,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1562,
+        1576
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 27,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1576,
+        1577
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 14
+        },
+        "end": {
+          "line": 27,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "spa",
+      "range": [
+        1577,
+        1580
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 15
+        },
+        "end": {
+          "line": 27,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1580,
+        1581
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 18
+        },
+        "end": {
+          "line": 27,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sign",
+      "range": [
+        1582,
+        1586
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 20
+        },
+        "end": {
+          "line": 27,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1586,
+        1587
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 24
+        },
+        "end": {
+          "line": 27,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1588,
+        1589
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 26
+        },
+        "end": {
+          "line": 27,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1589,
+        1596
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 27
+        },
+        "end": {
+          "line": 27,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1596,
+        1597
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 34
+        },
+        "end": {
+          "line": 27,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-40\"",
+      "range": [
+        1597,
+        1602
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 35
+        },
+        "end": {
+          "line": 27,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1602,
+        1603
+      ],
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 40
+        },
+        "end": {
+          "line": 27,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1605,
+        1619
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 0
+        },
+        "end": {
+          "line": 28,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1619,
+        1620
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 14
+        },
+        "end": {
+          "line": 28,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "spa",
+      "range": [
+        1620,
+        1623
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 15
+        },
+        "end": {
+          "line": 28,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1623,
+        1624
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 18
+        },
+        "end": {
+          "line": 28,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "accounts",
+      "range": [
+        1625,
+        1633
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 20
+        },
+        "end": {
+          "line": 28,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1633,
+        1634
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 28
+        },
+        "end": {
+          "line": 28,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1635,
+        1636
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 30
+        },
+        "end": {
+          "line": 28,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetX",
+      "range": [
+        1636,
+        1643
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 31
+        },
+        "end": {
+          "line": 28,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1643,
+        1644
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 38
+        },
+        "end": {
+          "line": 28,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"40\"",
+      "range": [
+        1644,
+        1648
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 39
+        },
+        "end": {
+          "line": 28,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1648,
+        1649
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 43
+        },
+        "end": {
+          "line": 28,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1650,
+        1651
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 45
+        },
+        "end": {
+          "line": 28,
+          "column": 46
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1651,
+        1658
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 46
+        },
+        "end": {
+          "line": 28,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1658,
+        1659
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 53
+        },
+        "end": {
+          "line": 28,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"40\"",
+      "range": [
+        1659,
+        1663
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 54
+        },
+        "end": {
+          "line": 28,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1663,
+        1664
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 58
+        },
+        "end": {
+          "line": 28,
+          "column": 59
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1666,
+        1680
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 30,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1680,
+        1681
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 14
+        },
+        "end": {
+          "line": 30,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ma",
+      "range": [
+        1681,
+        1683
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 15
+        },
+        "end": {
+          "line": 30,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1683,
+        1684
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 17
+        },
+        "end": {
+          "line": 30,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sign",
+      "range": [
+        1685,
+        1689
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 19
+        },
+        "end": {
+          "line": 30,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1689,
+        1690
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 23
+        },
+        "end": {
+          "line": 30,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1691,
+        1692
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 25
+        },
+        "end": {
+          "line": 30,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetX",
+      "range": [
+        1692,
+        1699
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 26
+        },
+        "end": {
+          "line": 30,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1699,
+        1700
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 33
+        },
+        "end": {
+          "line": 30,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-90\"",
+      "range": [
+        1700,
+        1705
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 34
+        },
+        "end": {
+          "line": 30,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1705,
+        1706
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 39
+        },
+        "end": {
+          "line": 30,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1707,
+        1708
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 41
+        },
+        "end": {
+          "line": 30,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1708,
+        1715
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 42
+        },
+        "end": {
+          "line": 30,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1715,
+        1716
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 49
+        },
+        "end": {
+          "line": 30,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"40\"",
+      "range": [
+        1716,
+        1720
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 50
+        },
+        "end": {
+          "line": 30,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1720,
+        1721
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 54
+        },
+        "end": {
+          "line": 30,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1722,
+        1736
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 0
+        },
+        "end": {
+          "line": 31,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1736,
+        1737
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 14
+        },
+        "end": {
+          "line": 31,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "ma",
+      "range": [
+        1737,
+        1739
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 15
+        },
+        "end": {
+          "line": 31,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1739,
+        1740
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 17
+        },
+        "end": {
+          "line": 31,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "accounts",
+      "range": [
+        1741,
+        1749
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 19
+        },
+        "end": {
+          "line": 31,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1749,
+        1750
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 27
+        },
+        "end": {
+          "line": 31,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1751,
+        1752
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 29
+        },
+        "end": {
+          "line": 31,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1752,
+        1759
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 30
+        },
+        "end": {
+          "line": 31,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1759,
+        1760
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 37
+        },
+        "end": {
+          "line": 31,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-40\"",
+      "range": [
+        1760,
+        1765
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 38
+        },
+        "end": {
+          "line": 31,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1765,
+        1766
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 43
+        },
+        "end": {
+          "line": 31,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1772,
+        1786
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 4
+        },
+        "end": {
+          "line": 33,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1786,
+        1787
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 18
+        },
+        "end": {
+          "line": 33,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "sign",
+      "range": [
+        1787,
+        1791
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 19
+        },
+        "end": {
+          "line": 33,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1791,
+        1792
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 23
+        },
+        "end": {
+          "line": 33,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "security",
+      "range": [
+        1793,
+        1801
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 25
+        },
+        "end": {
+          "line": 33,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1801,
+        1802
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 33
+        },
+        "end": {
+          "line": 33,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1803,
+        1804
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 35
+        },
+        "end": {
+          "line": 33,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetX",
+      "range": [
+        1804,
+        1811
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 36
+        },
+        "end": {
+          "line": 33,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1811,
+        1812
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 43
+        },
+        "end": {
+          "line": 33,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-160\"",
+      "range": [
+        1812,
+        1818
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 44
+        },
+        "end": {
+          "line": 33,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1818,
+        1819
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 50
+        },
+        "end": {
+          "line": 33,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1820,
+        1821
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 52
+        },
+        "end": {
+          "line": 33,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1821,
+        1828
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 53
+        },
+        "end": {
+          "line": 33,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1828,
+        1829
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 60
+        },
+        "end": {
+          "line": 33,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"10\"",
+      "range": [
+        1829,
+        1833
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 61
+        },
+        "end": {
+          "line": 33,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1833,
+        1834
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 65
+        },
+        "end": {
+          "line": 33,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1839,
+        1853
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 4
+        },
+        "end": {
+          "line": 34,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1853,
+        1854
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 18
+        },
+        "end": {
+          "line": 34,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "accounts",
+      "range": [
+        1854,
+        1862
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 19
+        },
+        "end": {
+          "line": 34,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1862,
+        1863
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 27
+        },
+        "end": {
+          "line": 34,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mbsfacade",
+      "range": [
+        1864,
+        1873
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 29
+        },
+        "end": {
+          "line": 34,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1873,
+        1874
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 38
+        },
+        "end": {
+          "line": 34,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1875,
+        1876
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 40
+        },
+        "end": {
+          "line": 34,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetX",
+      "range": [
+        1876,
+        1883
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 41
+        },
+        "end": {
+          "line": 34,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1883,
+        1884
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 48
+        },
+        "end": {
+          "line": 34,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"140\"",
+      "range": [
+        1884,
+        1889
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 49
+        },
+        "end": {
+          "line": 34,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1889,
+        1890
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 54
+        },
+        "end": {
+          "line": 34,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1891,
+        1892
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 56
+        },
+        "end": {
+          "line": 34,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1892,
+        1899
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 57
+        },
+        "end": {
+          "line": 34,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1899,
+        1900
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 64
+        },
+        "end": {
+          "line": 34,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"10\"",
+      "range": [
+        1900,
+        1904
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 65
+        },
+        "end": {
+          "line": 34,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1904,
+        1905
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 69
+        },
+        "end": {
+          "line": 34,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1910,
+        1924
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 4
+        },
+        "end": {
+          "line": 35,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1924,
+        1925
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 18
+        },
+        "end": {
+          "line": 35,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "security",
+      "range": [
+        1925,
+        1933
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 19
+        },
+        "end": {
+          "line": 35,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1933,
+        1934
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 27
+        },
+        "end": {
+          "line": 35,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "db",
+      "range": [
+        1935,
+        1937
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 29
+        },
+        "end": {
+          "line": 35,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1937,
+        1938
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 31
+        },
+        "end": {
+          "line": 35,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1939,
+        1940
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 33
+        },
+        "end": {
+          "line": 35,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1940,
+        1947
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 34
+        },
+        "end": {
+          "line": 35,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1947,
+        1948
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 41
+        },
+        "end": {
+          "line": 35,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-40\"",
+      "range": [
+        1948,
+        1953
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 42
+        },
+        "end": {
+          "line": 35,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        1953,
+        1954
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 47
+        },
+        "end": {
+          "line": 35,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "UpdateRelStyle",
+      "range": [
+        1959,
+        1973
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 4
+        },
+        "end": {
+          "line": 36,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "(",
+      "range": [
+        1973,
+        1974
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 18
+        },
+        "end": {
+          "line": 36,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mbsfacade",
+      "range": [
+        1974,
+        1983
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 19
+        },
+        "end": {
+          "line": 36,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1983,
+        1984
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 28
+        },
+        "end": {
+          "line": 36,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "mbs",
+      "range": [
+        1985,
+        1988
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 30
+        },
+        "end": {
+          "line": 36,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1988,
+        1989
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 33
+        },
+        "end": {
+          "line": 36,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "$",
+      "range": [
+        1990,
+        1991
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 35
+        },
+        "end": {
+          "line": 36,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "offsetY",
+      "range": [
+        1991,
+        1998
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 36
+        },
+        "end": {
+          "line": 36,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "=",
+      "range": [
+        1998,
+        1999
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 43
+        },
+        "end": {
+          "line": 36,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"-40\"",
+      "range": [
+        1999,
+        2004
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 44
+        },
+        "end": {
+          "line": 36,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ")",
+      "range": [
+        2004,
+        2005
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 49
+        },
+        "end": {
+          "line": 36,
+          "column": 50
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    2005
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 36,
+      "column": 50
+    }
+  }
+}

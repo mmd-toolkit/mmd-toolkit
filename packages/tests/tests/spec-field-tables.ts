@@ -30,6 +30,7 @@ export const TREE_DOCUMENT_DIAGRAMS = [
   "quadrant",
   "block",
   "kanban",
+  "c4",
 ] as const
 
 /** The fields that every node and every record has, which no table lists. */
@@ -43,7 +44,7 @@ function typeNamesIn(heading: string): string[] {
   const names: string[] = []
   let word = ""
   for (const character of `${heading} `) {
-    if (/^[A-Za-z]$/u.test(character)) {
+    if (/^[A-Za-z]$/u.test(character) || (word === "C" && character === "4")) {
       word += character
     } else {
       if (word.length > 0) names.push(word)

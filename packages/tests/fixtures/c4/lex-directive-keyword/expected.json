@@ -3,6 +3,7 @@
     "kind": "authored",
     "note": "A directive cutting the Person keyword is accepted; shapes[0].label.text is \"A\"."
   },
+  "knownDivergence": "directive-as-token-boundary",
   "accepted": true,
   "diagramType": "c4",
   "db": {

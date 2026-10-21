@@ -54,15 +54,53 @@ export interface BlockRules<Statement extends Positioned> {
   /** The lines whose statements stay together (see `KeptLines`). */
   readonly kept: KeptLines
   /**
-   * Whether a complete gap keeps its source text, including line boundaries
-   * and the following indentation (docs/kanban.md, Blank lines). Absent for
+   * Where the source text of a gap that is kept stops, or undefined for a gap
+   * that is formatted as usual (docs/kanban.md, Blank lines; docs/c4.md,
+   * Blank lines and Comments). The gap runs from `start` to `end`. The hook
+   * is called before a statement, before the closing brace of a nested body,
+   * and at the end of the diagram. `beforeStatement` is true in the first
+   * two cases and false at the end of the diagram. A kept gap is printed as
+   * written, its line breaks and empty lines included, up to the returned
+   * offset. When `beforeStatement` is true, what follows, up to the statement
+   * or closing brace, is indentation that the printer decides. Absent for
    * diagrams whose gaps use the ordinary comment and blank-line rules.
    */
-  readonly keepsGap?: (start: number, end: number) => boolean
+  readonly keptGapEnd?: (
+    start: number,
+    end: number,
+    beforeStatement: boolean,
+  ) => number | undefined
   /**
-   * Written indentation of an ordinary statement line, when its inline
-   * directives make all surrounding whitespace significant. Gap items still
-   * use `extraIndentationOf` (docs/kanban.md, Directives).
+   * The end of text kept verbatim within a joined line. Unlike `keptGapEnd`,
+   * this preserves inline spacing without preserving a line break.
+   */
+  readonly keptInlineGapEnd?: (start: number) => number
+  /**
+   * What precedes a closing delimiter on a joined line even without a
+   * following statement. Empty description blocks can require attachment;
+   * the ordinary rule only joins a closer when another statement follows it.
+   */
+  readonly keptClosingJoin?: string
+  /**
+   * Whether a kept first body line continues the opening line. False when
+   * the layout moves an opening delimiter onto its call's line and the
+   * grammar then requires a newline before the first child.
+   */
+  readonly keepsOpeningLine?: boolean
+  /**
+   * Where the line of the diagram that holds `offset` ends, when that is
+   * before the line feed that ends the line of the source, or undefined: at
+   * the U+2028 or U+2029 that ends a diagram comment in a kanban board
+   * (docs/kanban.md, Whitespace characters). The statements of a kept line stay
+   * together only up to this offset, and a statement after it starts a line
+   * of its own.
+   */
+  readonly diagramLineEnd?: (offset: number) => number | undefined
+  /**
+   * Indentation of an ordinary statement line that the printer decides apart
+   * from the other lines, when its inline directives make the whitespace
+   * around them part of its indentation. Gap items still use
+   * `extraIndentationOf` (docs/kanban.md, Directives).
    */
   readonly writtenIndentationOf?: (statement: Statement) => string | undefined
   /**
@@ -435,17 +473,17 @@ export function printBlock<Statement extends Positioned>(
     let after = statementsAfter
     let stretchEnd = end
     while (isKept(stretchEnd - 1)) {
-      const lineEnd = Math.min(lineEndOf(source, stretchEnd), bounds.end)
-      if (after >= statements.length || statements[after].range[0] >= lineEnd) {
+      const lineEnd = Math.min(
+        lineEndOf(source, stretchEnd),
+        bounds.end,
+        rules.diagramLineEnd?.(stretchEnd) ?? Infinity,
+      )
+      const following = statements[after]
+      if (following === undefined || following.range[0] >= lineEnd) {
         return { start, end: Math.max(stretchEnd, lineEnd), first, after }
       }
-      while (
-        after < statements.length &&
-        statements[after].range[0] < lineEnd
-      ) {
-        stretchEnd = Math.max(stretchEnd, rules.printedEnd(statements[after]))
-        after++
-      }
+      stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))
+      after++
     }
     return { start, end: stretchEnd, first, after }
   }
@@ -506,11 +544,17 @@ export function printBlock<Statement extends Positioned>(
     let position = stretch.start
     for (const [index, statement] of covered.entries()) {
       parts.push(
-        printInlineGap(source, position, statement.range[0], {
-          atLineStart:
-            position === stretch.start && stretch.start !== bounds.start,
-          atLineEnd: false,
-        }),
+        printInlineGap(
+          source,
+          position,
+          statement.range[0],
+          {
+            atLineStart:
+              position === stretch.start && stretch.start !== bounds.start,
+            atLineEnd: false,
+          },
+          rules.keptInlineGapEnd,
+        ),
         docs[stretch.first + index],
       )
       position = rules.printedEnd(statement)
@@ -524,10 +568,16 @@ export function printBlock<Statement extends Positioned>(
       written.trim() === "" &&
       (written.includes("\u2028") || written.includes("\u2029"))
         ? printAsWritten(source, position, stretch.end)
-        : printInlineGap(source, position, stretch.end, {
-            atLineStart: false,
-            atLineEnd: true,
-          })
+        : printInlineGap(
+            source,
+            position,
+            stretch.end,
+            {
+              atLineStart: false,
+              atLineEnd: true,
+            },
+            rules.keptInlineGapEnd,
+          )
     return {
       doc: [...parts, trailing],
       blankBefore: false,
@@ -554,6 +604,7 @@ export function printBlock<Statement extends Positioned>(
       return null
     }
     if (kept.verbatim.has(closingLine)) return ""
+    if (rules.keptClosingJoin !== undefined) return rules.keptClosingJoin
     const closing = findTokenStartingAt(source, bounds.end)
     if (closing === undefined) return null
     const followed = findTokensBetween(
@@ -564,7 +615,7 @@ export function printBlock<Statement extends Positioned>(
     return followed ? " " : null
   }
 
-  if (isKept(bounds.start - 1)) {
+  if (rules.keepsOpeningLine !== false && isKept(bounds.start - 1)) {
     const stretch = findStretch(bounds.start, 0, 0, bounds.start)
     if (stretch.end > bounds.start) {
       pushLine(printStretch(stretch))
@@ -591,16 +642,26 @@ export function printBlock<Statement extends Positioned>(
     }
     extra = rules.extraIndentationOf?.(statement) ?? ""
     // A kept line starts where its content starts, so that a `;` or a
-    // directive before its first statement stays on it.
+    // directive before its first statement stays on it, unless the line of
+    // the diagram starts later on the line of the source.
+    const contentStart = findContentStart(source, statement.range[0])
     const start =
-      startsStretch && isKept(statement.range[0])
-        ? Math.max(offset, findContentStart(source, statement.range[0]))
+      startsStretch &&
+      isKept(statement.range[0]) &&
+      (rules.diagramLineEnd === undefined || contentStart >= offset)
+        ? Math.max(offset, contentStart)
         : statement.range[0]
-    const keepsGap = rules.keepsGap?.(offset, start) === true
-    const writtenBreak = keepsGap
-      ? { writtenBreakBefore: printAsWritten(source, offset, start) }
-      : {}
-    const gap = readGap(source, keepsGap ? start : offset, start, false)
+    const keptEnd = rules.keptGapEnd?.(offset, start, true)
+    const writtenBreak =
+      keptEnd === undefined
+        ? {}
+        : { writtenBreakBefore: printAsWritten(source, offset, keptEnd) }
+    const gap = readGap(
+      source,
+      keptEnd === undefined ? offset : start,
+      start,
+      false,
+    )
     addItemLines(gap, statements[index - 1])
     if (!startsStretch) {
       const writtenIndentation = rules.writtenIndentationOf?.(statement)
@@ -650,8 +711,8 @@ export function printBlock<Statement extends Positioned>(
     lastStatement === undefined
       ? ""
       : (rules.extraIndentationOf?.(lastStatement) ?? "")
-  const keepsEnd =
-    bounds.isTopLevel && rules.keepsGap?.(offset, bounds.end) === true
+  const keptEnd = rules.keptGapEnd?.(offset, bounds.end, !bounds.isTopLevel)
+  const keepsEnd = keptEnd !== undefined
   const gap = readGap(
     source,
     keepsEnd ? bounds.end : offset,
@@ -666,8 +727,10 @@ export function printBlock<Statement extends Positioned>(
     ...(keepsEnd
       ? {
           writtenEnd: [
-            printAsWritten(source, offset, bounds.end),
-            source.text.endsWith("\n") || endsInsideOpenText(source)
+            printAsWritten(source, offset, keptEnd),
+            !bounds.isTopLevel ||
+            source.text.endsWith("\n") ||
+            endsInsideOpenText(source)
               ? ""
               : builders.literalline,
           ],
@@ -784,7 +847,9 @@ export function printClosedBlock(
   return [
     header.doc,
     body,
-    block.closingJoin ?? breakAfter(last, indentationOf(options, depth)),
+    block.writtenEnd === undefined
+      ? (block.closingJoin ?? breakAfter(last, indentationOf(options, depth)))
+      : [block.writtenEnd, indentationOf(options, depth)],
     withLeading(block.endLeading, closing),
   ]
 }
@@ -807,8 +872,11 @@ function printInlineGap(
   start: number,
   end: number,
   place: InlinePlace,
+  keptEnd?: (start: number) => number,
 ): Doc {
   if (start >= end) return ""
+  if (keptEnd !== undefined && end <= keptEnd(start))
+    return printAsWritten(source, start, end)
   const gap = readGap(source, start, end, true)
   if (gap.breaksLine) {
     throw new Error(

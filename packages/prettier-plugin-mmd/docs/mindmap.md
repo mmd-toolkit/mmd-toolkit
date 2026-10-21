@@ -532,7 +532,10 @@ comments/before-the-header]
 
 A comment after the header, a shape, or an icon stays on the line, as written:
 one space stands before it where whitespace was written, and none where it
-touches. [fixture: comments/after-the-header] [fixture:
+touches. The whitespace before such a comment is no part of the Db, so the form
+is a choice: the printer shortens a run to one space and keeps whether there is
+any, since the author decides whether a comment touches what it follows, as in
+the other diagram types. [fixture: comments/after-the-header] [fixture:
 comments/after-the-header-touching] [fixture: comments/after-a-shape] [fixture:
 comments/after-an-icon] After a node text and inside a class, `%%` is a
 character of the text. [fixture: comments/in-text-is-text] [fixture:

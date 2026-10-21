@@ -10,14 +10,12 @@
       {
         "id": "S",
         "label": "Todo",
-        "level": 1,
         "isGroup": true,
         "ticket": "COL-1"
       },
       {
         "id": "A",
         "label": "Changed",
-        "level": 3,
         "isGroup": false,
         "parentId": "S",
         "ticket": "TASK-1",

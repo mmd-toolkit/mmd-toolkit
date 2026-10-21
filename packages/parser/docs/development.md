@@ -42,8 +42,8 @@ diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 (`gantt`), the user journey diagram (`journey`), the requirement diagram
 (`requirement`), the mindmap (`mindmap`), the timeline (`timeline`), the sankey
 diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
-(`quadrantChart`), the block diagram (`block`), and the kanban diagram
-(`kanban`). Every other detected type throws `UnsupportedDiagramError`.
+(`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
+and C4 (`c4`). Every other detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -61,8 +61,9 @@ The parser of each diagram follows its document,
 [`diagrams/sankey.md`](../../spec/docs/diagrams/sankey.md),
 [`diagrams/xychart.md`](../../spec/docs/diagrams/xychart.md),
 [`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.md),
-[`diagrams/block.md`](../../spec/docs/diagrams/block.md), or
-[`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.md). It has three parts:
+[`diagrams/block.md`](../../spec/docs/diagrams/block.md),
+[`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.md), or
+[`diagrams/c4.md`](../../spec/docs/diagrams/c4.md). It has three parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -86,18 +87,18 @@ requirement compare case-insensitively, and the Unicode letters of the letter
 rules of flowchart and class (`src/unicode-letters.ts`). A diagram whose lexer
 reads diagram comments, as the sequence lexer reads `#` and `%`, the class lexer
 `%%`, the state lexer `#` and `%%`, the Gantt lexer `%`, the journey,
-requirement, and timeline lexers `#` and `%`, and the mindmap and kanban lexers
-`%%`, hands them to the common part, which records them in `Root.comments`, cut
-at the comment regions that lie inside them, as tokens are. The rejections that
-mermaid.js makes while it builds the Db are made by the parser after the
-grammar: `subgraph-members.ts` for the flowchart, and `db-rejections.ts` for the
-sequence diagram, the class diagram, and the state diagram; the Gantt grammar
-makes its two where it reads the statement, since a `topAxis` statement makes no
-node, the mindmap grammar its two where it reads the line, as it places each
-node in the tree by its indentation when it reads it, the kanban grammar its two
-while keeping a flat list of node lines, and the timeline grammar its one where
-it reads the event statement. The class lexer divides each member line into its
-parts with the steps of
+requirement, and timeline lexers `#` and `%`, and the mindmap, kanban, and C4
+lexers `%%`, hands them to the common part, which records them in
+`Root.comments`, cut at the comment regions that lie inside them, as tokens are.
+The rejections that mermaid.js makes while it builds the Db are made by the
+parser after the grammar: `subgraph-members.ts` for the flowchart, and
+`db-rejections.ts` for the sequence diagram, the class diagram, and the state
+diagram; the Gantt grammar makes its two where it reads the statement, since a
+`topAxis` statement makes no node, the mindmap grammar its two where it reads
+the line, as it places each node in the tree by its indentation when it reads
+it, the kanban grammar its two while keeping a flat list of node lines, and the
+timeline grammar its one where it reads the event statement. The class lexer
+divides each member line into its parts with the steps of
 [Member lines](../../spec/docs/diagrams/class.md#member-lines)
 (`src/diagrams/class/member-lines.ts`), both in a class body and in the label of
 a member statement, and rejects a method line that cannot be divided.
@@ -124,6 +125,10 @@ for every diagram in one place. Each directive outside the tokens and the
 comments is recorded as a `Directive` token of its own. The frontmatter is
 recorded first, as its opening `---`, its body, and its closing `---`
 ([`ast.md`, Frontmatter](../../spec/docs/ast.md#frontmatter)).
+
+The C4 grammar checks `__proto__` keys in consumed argument positions and
+retains only aliases and relationship endpoints to decide whether update targets
+exist.
 
 ## Tools
 

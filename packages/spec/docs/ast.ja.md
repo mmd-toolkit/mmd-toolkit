@@ -265,7 +265,8 @@ mermaid.js はこれらを
 [`XychartDiagram`](./ast/xychart.ja.md#xychartdiagram)、
 [`QuadrantDiagram`](./ast/quadrant.ja.md#quadrantdiagram)、
 [`BlockDiagram`](./ast/block.ja.md#blockdiagram)、
-[`KanbanDiagram`](./ast/kanban.ja.md#kanbandiagram) のどれかです。
+[`KanbanDiagram`](./ast/kanban.ja.md#kanbandiagram)、
+[`C4Diagram`](./ast/c4.ja.md#c4diagram) のどれかです。
 
 ## ErrorDiagram
 

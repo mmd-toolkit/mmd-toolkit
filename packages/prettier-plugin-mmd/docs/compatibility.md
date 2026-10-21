@@ -1126,16 +1126,19 @@ standalone file. Only the line endings may change: they follow Prettier's
 `endOfLine` option, as for every other language. In Markdown, the code block is
 left to Prettier.
 
-## Kanban levels, opaque suffixes, and kept lines
+## Kanban indentation, opaque suffixes, and kept lines
 
-Kanban keeps absolute indentation counts, including the first section, replacing
-ordinary indentation one character for one character. Bare-id, label, icon, and
-class whitespace remains value text. Decorations align with their node;
-inline-directive lines keep their written indentation and gaps. See the
-[kanban rules](./kanban.md). [fixture: kanban/indentation/absolute-counts]
-[fixture: kanban/icons-and-classes/aligned] [fixture:
-kanban/directives/leading-directive-kept] [fixture:
-kanban/trailing-whitespace/trailing-bare-id-trim]
+The Db of a kanban board has no indentation: it tells a section from an item by
+comparing the indentation of a node with that of the first node. So the printer
+chooses the indentation, one step for a section and two for an item, and keeps
+what decides the roles. Bare-id, label, icon, and class whitespace remains value
+text. Decorations align with their node; an inline-directive line keeps its
+directives and the gaps beside them, and the printer chooses the whitespace
+before the first one. See the [kanban rules](./kanban.md). [fixture:
+kanban/indentation/sections-and-items] [fixture:
+kanban/icons-and-classes/aligned] [fixture:
+kanban/directives/leading-directive-indentation-decided] [fixture:
+kanban/trailing-whitespace/class-trailing-trim]
 
 Data blocks keep their interiors and attachment, including touching adjacent
 blocks and intervening directives; YAML formatting applies only to guarded
@@ -1157,3 +1160,36 @@ kanban/line-rule-and-kept-lines/line-rule-comment-to-own-line] [fixture:
 kanban/line-rule-and-kept-lines/line-rule-classdef-and-style] [fixture:
 kanban/semicolons/values] [test: kanban: line-rule-ls-segment] [test: kanban:
 comment-ls-split-count] [test: a kanban diagram with other line endings]
+
+## C4 argument units and physical lines
+
+C4 keeps every written argument unit and slot, including nulls, empty strings,
+ignored indices and sprites, excess arguments, and adjacent units. Bare and
+quoted forms stay authored; a non-ASCII-space prefix before a bare quote or `$`
+stays because it selects bare lexing. A whitespace-only unit after a quoted
+argument remains a unit. See the [C4 rules](./c4.md). [fixture:
+c4/argument-spacing/null-space-kept] [fixture:
+c4/empty-entries/named-null-slots] [fixture: c4/number-like-text/excess-kept]
+[test: c4: tab-before-quote] [test: c4: bare-dollar-prefix]
+
+Empty description blocks remain adjacent, with both `beforeBody` gaps retained,
+because they supply neither a significant statement nor a newline. Multiline
+values and named-key exterior newlines retain their lines and columns; joining
+direction text can make an accepted input rejected even at column one. [fixture:
+c4/empty-description-blocks/empty-header-gap] [fixture:
+c4/empty-description-blocks/empty-boundary-next-gap] [fixture:
+c4/empty-description-blocks/empty-on-close-line] [fixture:
+c4/named-attributes/named-exterior-newline-kept] [fixture:
+c4/direction-rejection/acc-colon-direction]
+
+Diagram comments retain their complete following gaps, including whitespace-only
+recovery lines and terminal gaps; the `comment-takes-line-break` divergence is
+not repaired by moving comments. C4 keeps every semicolon and the shared
+`style`/`classDef` line rule's protected prefix, with value nodes whole and
+Unicode segment boundaries retained. Indentation and exterior trailing
+whitespace remain printer whitespace. [fixture: c4/comments/comment-header]
+[fixture: c4/blank-lines/comment-recovery] [fixture:
+c4/final-newline/comment-eof-gap] [fixture:
+c4/line-rule-and-semicolons/semicolon-inline-comment] [fixture:
+c4/line-rule-and-semicolons/semicolon-suffix-spacing] [fixture:
+c4/trailing-whitespace/semicolon-line] [test: c4: ls-line-rule-segments]

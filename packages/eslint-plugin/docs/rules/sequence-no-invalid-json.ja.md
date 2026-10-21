@@ -80,7 +80,7 @@ sequenceDiagram
 ## 関連する規則
 
 - [sequence-no-link-without-separator](./sequence-no-link-without-separator.ja.md)
-- [no-ignored-init-directive](./no-ignored-init-directive.ja.md)
+- [no-invalid-init-directive](./no-invalid-init-directive.ja.md)
 
 <!-- begin auto-generated rule resources -->
 

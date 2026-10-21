@@ -58,6 +58,20 @@ is allowed (see
 [Directives inside units](../diagrams/kanban.md#directives-inside-units)).
 [fixture: kanban/db-metadata-adjacent-directive]
 
+In C4, a directive inside a header keyword, call keyword, `accTitle`, or
+`accDescr` is rejected, while mermaid.js joins its parts. [fixture:
+c4/lex-directive-keyword] [fixture: c4/div-directive-header] [fixture:
+c4/div-acc-title-directive] [fixture: c4/div-acc-block-marker-directive]
+
+Bare arguments and named keys are text units and may contain directives, as may
+quoted arguments and title or description text. [fixture:
+c4/lex-directive-bare-alias] [fixture: c4/lex-directive-named-key] [fixture:
+c4/lex-directive-quoted] [fixture: c4/lex-title-directive-value]
+
+The equals sign and opening quote of a named value are separate delimiters, so a
+directive between them is allowed. [fixture:
+c4/lex-directive-named-equals-quote]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -188,7 +202,7 @@ that a specification would state as a rule of the syntax; this is the second of
 the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
 
-## The documentation of mermaid.js and its tests
+## The documentation of mermaid.js and its issues
 
 - The documentation of
   [directives](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
@@ -211,3 +225,14 @@ the reasons for a known divergence (see
   and
   [`exampleConfig.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/theme/exampleConfig.spec.ts).
   The flowchart parser tests contain no directive at all.
+
+- The pinned
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L148-L157)
+  shows calls and named arguments, but does not describe directives inside a
+  header or call keyword. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-21 with `C4 directive`,
+  `C4 directive in:title,body`, `C4 directive keyword in:title,body`, and
+  `"Add directive support" in:title` found no report about that form.
+  [PR #4759](https://github.com/mermaid-js/mermaid/pull/4759) introduces
+  preprocessing that removes directives, frontmatter, and comments before
+  diagram parsing for all diagram types.

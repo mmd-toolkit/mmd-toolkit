@@ -101,6 +101,12 @@ const VALUE_FIELD_REPORTS: Readonly<
   "BlockOpeningArrow.value": { message: "value is not its written text" },
   "BlockShape.close": { message: "the shape closing " },
   "BlockShape.open": { message: "the shape opening " },
+  "C4BoundaryStatement.keyword": { message: "the field keyword is " },
+  "C4Diagram.kind": { message: "the field kind is " },
+  "C4ElementStatement.keyword": { message: "the field keyword is " },
+  "C4Literal.value": { message: "value is not its written text" },
+  "C4RelationshipStatement.keyword": { message: "the field keyword is " },
+  "C4UpdateStatement.keyword": { message: "the field keyword is " },
   "ClassArrow.value": {
     message: "value is not the texts of its tokens joined",
   },

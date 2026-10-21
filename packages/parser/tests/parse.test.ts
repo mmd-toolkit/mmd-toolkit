@@ -500,7 +500,7 @@ describe("parse: the flowchart diagram types", () => {
 describe("parse: detected but unsupported diagram types", () => {
   it.each([
     ['pie\n"a": 1', "pie"],
-    ['C4Container\nContainer(a, "A")', "c4"],
+    ["info", "info"],
   ])("%j is %s", (text, diagramType) => {
     let caught: unknown
     try {

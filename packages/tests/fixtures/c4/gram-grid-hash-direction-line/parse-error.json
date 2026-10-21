@@ -1,0 +1,17 @@
+{
+  "message": "A direction line is not allowed in C4",
+  "range": [
+    14,
+    26
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 4
+    },
+    "end": {
+      "line": 2,
+      "column": 16
+    }
+  }
+}

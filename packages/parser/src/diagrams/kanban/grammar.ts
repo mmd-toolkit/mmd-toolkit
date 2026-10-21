@@ -1,18 +1,18 @@
 import type {
   KanbanClassStatement,
   KanbanDataBlock,
-  KanbanCloser,
   KanbanIconStatement,
   KanbanLabel,
   KanbanLiteral,
   KanbanNode,
-  KanbanOpener,
   KanbanShape,
 } from "../../ast/kanban.ts"
+import { significantRangeOf } from "../../diagram-units.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
+import { CLOSERS, OPENERS } from "./units.ts"
 import type { KanbanLexing, Unit } from "./units.ts"
 import type { UnitName } from "./units.ts"
 
@@ -23,30 +23,6 @@ export interface KanbanSyntax {
   /** The tokens of the diagram, in source order. */
   readonly tokens: readonly PendingToken[]
 }
-
-/** ast/kanban.md, KanbanShape: the openers, as written. */
-const OPENERS: readonly KanbanOpener[] = [
-  "(",
-  "((",
-  "[",
-  "{{",
-  ")",
-  "))",
-  "(-",
-  "-)",
-]
-
-/** ast/kanban.md, KanbanShape: the closers, as written. */
-const CLOSERS: readonly KanbanCloser[] = [
-  ")",
-  "))",
-  "]",
-  "}}",
-  "(",
-  "((",
-  "(-",
-  "-)",
-]
 
 /** A decoration of a node: an icon line or a class line. */
 type Decoration = KanbanIconStatement | KanbanClassStatement
@@ -79,9 +55,6 @@ export class KanbanGrammar extends UnitGrammar<UnitName, Unit> {
   /** The node lines read so far, in source order. */
   private readonly nodeLines: NodeLine[] = []
 
-  /** Tokens of data delimiters and interiors, whose ranges the lexer supplies. */
-  private readonly dataTokens: PendingToken[] = []
-
   public constructor(lexing: KanbanLexing, lexer: SourceLexer) {
     super(lexing.units, lexer, EMPTY_FORM_KINDS.kanban, lexing.comments)
   }
@@ -100,9 +73,7 @@ export class KanbanGrammar extends UnitGrammar<UnitName, Unit> {
     }
     return {
       body: this.makeBody(),
-      tokens: [...this.tokensInOrder(), ...this.dataTokens].toSorted(
-        (a, b) => a.range[0] - b.range[0],
-      ),
+      tokens: this.tokensInOrder(),
     }
   }
 
@@ -178,25 +149,30 @@ export class KanbanGrammar extends UnitGrammar<UnitName, Unit> {
     this.nodeLines.push(line)
   }
 
-  /** Data blocks: each block directly follows the preceding node or block, with directives allowed between. */
+  /**
+   * Data blocks: `data-block = data-start ( data-text | data-quote )* "}"`,
+   * each right after the node or the block before it, with no whitespace
+   * between, and directives allowed there. The `data-start` and the `}` are
+   * one `Punctuator` item each, and the units between them one `RawText`
+   * item; the value is the written text between `@{` and `}`.
+   */
   private parseDataBlocks(): KanbanDataBlock[] {
     const blocks: KanbanDataBlock[] = []
-    while (this.peek()?.name === "data-block") {
-      const unit = this.take("data-block")
-      if (unit.whitespaceBefore !== 0) throw this.unexpected(unit)
-      const content = unit.contentRange
-      const delimiters = unit.dataDelimiters
-      if (content === null || delimiters === null) {
-        throw new Error("mmd-toolkit parser bug: data has no delimiters")
-      }
-      this.dataTokens.push({ kind: "Punctuator", range: delimiters[0] })
-      if (content[0] < content[1])
-        this.dataTokens.push({ kind: "RawText", range: content })
-      this.dataTokens.push({ kind: "Punctuator", range: delimiters[1] })
+    while (this.peek()?.name === "data-start") {
+      const start = this.next
+      const opening = this.take("data-start")
+      if (opening.whitespaceBefore !== 0) throw this.unexpected(opening)
+      this.addItem("Punctuator", [opening])
+      this.addItem("RawText", this.takeWhile(["data-text", "data-quote"]))
+      const closing = this.take("}")
+      this.addItem("Punctuator", [closing])
       blocks.push({
         type: "KanbanDataBlock",
-        value: this.textOf(content),
-        ...this.placeOf([unit]),
+        value: this.textOf([
+          significantRangeOf(opening)[1],
+          significantRangeOf(closing)[0],
+        ]),
+        ...this.placeFrom(start),
       })
     }
     return blocks

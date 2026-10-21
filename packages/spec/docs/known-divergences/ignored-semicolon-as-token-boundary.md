@@ -4,8 +4,8 @@ Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
-requirement, mindmap, timeline, xychart, quadrant, block, and kanban. This is
-one of the [known divergences](../known-divergences.md) of this specification
+requirement, mindmap, timeline, xychart, quadrant, block, kanban, and c4. This
+is one of the [known divergences](../known-divergences.md) of this specification
 from mermaid.js.
 
 ## The syntax
@@ -203,6 +203,15 @@ kanban/lex-metadata-style-rule] A semicolon on the next line is not selected:
 [fixture: kanban/lex-label-style-rule-other-line] [fixture:
 kanban/lex-semicolon-icon-marker]
 
+In C4, `accDescr { style:#x }Pers;on(a,"A")` is rejected here because the
+selected semicolon lies inside the call keyword; mermaid.js removes it and
+accepts the call. [fixture: c4/div-semicolon-call-keyword-after-block]
+
+A selected semicolon inside bare argument text or a named key is trivia, and one
+between `=` and the opening quote is trivia between delimiters. [fixture:
+c4/lex-semicolon-text-selected] [fixture: c4/lex-semicolon-key-selected]
+[fixture: c4/lex-semicolon-delimiter-selected]
+
 ## What it means for an author
 
 An ignored `;` inside a name, a number, a keyword, an arrow, or a delimiter is
@@ -258,3 +267,14 @@ syntax; this is the second of the reasons for a known divergence (see
   `semicolon style`, `semicolon arrow`, `semicolon flowchart`,
   `semicolon in style`, `semicolon link`, `encodeEntities`,
   `classDef semicolon`, and `semicolon entity`, on 2026-10-03.
+
+- The pinned
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L43-L49)
+  shows `UpdateElementStyle` and `UpdateRelStyle` calls without semicolons, and
+  does not describe a semicolon removed from inside a call keyword. Searches of
+  issues and pull requests in `mermaid-js/mermaid` on 2026-10-21 with
+  `C4 semicolon in:title,body` and `C4 encodeEntities in:title,body` found
+  [PR #8039](https://github.com/mermaid-js/mermaid/pull/8039), which changes the
+  handling of `#` in titles and descriptions and explicitly preserves semicolon
+  termination of those values. No issue or pull request about the selected
+  semicolon inside a C4 keyword was found.

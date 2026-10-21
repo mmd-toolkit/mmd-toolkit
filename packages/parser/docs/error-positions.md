@@ -551,6 +551,53 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   [fixture: kanban/div-empty-icon-after-shape] [fixture:
   kanban/div-empty-class-after-shape]
 
+## In a C4 diagram
+
+- Where no lexer rule matches, `range` is the character there, with
+  `Unexpected character`: an unknown top-level word, whitespace between a call
+  keyword and `(`, or an unquoted named value. [fixture:
+  c4/lex-keyword-gap-person-space] [fixture: c4/gram-named-bare-value] [fixture:
+  c4/lex-after-person-word]
+- Unfinished contexts report what entered them, also when only whitespace
+  remains. The message identifies the missing part, as in the table below.
+  [fixture: c4/lex-keyword-eof] [fixture: c4/lex-unclosed-parenthesis] [fixture:
+  c4/lex-unclosed-quote] [fixture: c4/lex-unclosed-named] [fixture:
+  c4/lex-named-open-eof] [fixture: c4/gram-unclosed-acctitle] [fixture:
+  c4/gram-unclosed-accdescr] [fixture: c4/gram-acc-descr-block-unclosed]
+
+| Context                         | Range               | Message                                                           |
+| ------------------------------- | ------------------- | ----------------------------------------------------------------- |
+| Call keyword                    | Keyword             | `The call keyword has no ( before the end of the text`            |
+| Arguments                       | Opening `(` or `(,` | `The arguments have no ) before the end of the text`              |
+| Quoted argument or named string | Opening quote       | `The string has no closing " before the end of the text`          |
+| Named key                       | `$`                 | `The named attribute has no = before the end of the text`         |
+| Named value opener              | `$`                 | `The named attribute has no opening " before the end of the text` |
+| Colon title                     | `accTitle`          | `accTitle has no text before the end of the text`                 |
+| Colon description               | `accDescr`          | `accDescr has no text before the end of the text`                 |
+| Description block               | `accDescr`          | `The description block has no } before the end of the text`       |
+
+- Where the grammar cannot read a unit, `range` is its token range, or the empty
+  range at the start of an all-whitespace unit, with `Unexpected token`. End of
+  text before a required statement or closing boundary brace has the empty range
+  there, with `Unexpected end of text`. An empty named value is reported at its
+  closing quote. [fixture: c4/gram-arguments-person-none] [fixture:
+  c4/gram-named-empty-value] [fixture: c4/header-context-only] [fixture:
+  c4/gram-boundary-unclosed] [fixture:
+  c4/gram-unmatched-right-brace-after-person]
+- Direction lookahead rejects before the top-level unit is read. Its range
+  covers the matched `direction` through its direction value, with
+  `A direction line is not allowed in C4`. [fixture: c4/gram-direction-tb]
+  [fixture: c4/gram-header-direction-tb] [fixture:
+  c4/gram-direction-value-next-line]
+- A consumed named `__proto__` attribute is reported at its trimmed key,
+  excluding `$` and `=`, with
+  `A consumed named attribute cannot have the key __proto__`. [fixture:
+  c4/gram-named-proto] [fixture: c4/gram-named-proto-person-description]
+  [fixture: c4/gram-named-proto-existing-relationship-style]
+- Cuts inside fixed keywords use the shared divergence errors below. [fixture:
+  c4/div-directive-header] [fixture: c4/lex-directive-keyword] [fixture:
+  c4/div-semicolon-call-keyword-after-block]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

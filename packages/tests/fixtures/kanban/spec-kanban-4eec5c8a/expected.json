@@ -13,27 +13,23 @@
       {
         "id": "root",
         "label": "Root",
-        "level": 2,
         "isGroup": true
       },
       {
         "id": "Child",
         "label": "Child",
-        "level": 4,
         "isGroup": false,
         "parentId": "root"
       },
       {
         "id": "a",
         "label": "a",
-        "level": 6,
         "isGroup": false,
         "parentId": "root"
       },
       {
         "id": "b",
         "label": "New Stuff",
-        "level": 6,
         "isGroup": false,
         "parentId": "root"
       }

@@ -136,6 +136,12 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   [fixture: block/db-arrow-spaces]
   [fixture: block/db-class-apply-list-spaces]
   [fixture: block/db-style-spaces]
+- **C4 の呼び出し**: 引数、タイトル、アクセシビリティのテキストは、
+  値ノードとその範囲の変換形だけから読みます。
+  入れ子の本体が境界のスタックを定め、
+  名前付き属性が完全な自属性の集合を更新します。
+  手順は [db-from-tree/c4.md](./db-from-tree/c4.ja.md) にあります。
+  [fixture: c4/db-all-fields]
 - **kanban の行**: id、ラベル、アイコンは、
   ノードの範囲と書かれた値だけから読みます。
   平坦な body が所属を定め、
@@ -440,6 +446,9 @@ HTML ラベルが有効で、`securityLevel` が
   `accDescr`（行のものとブロックのもの）、軸と象限のテキスト、点の名前。
   クラス名、座標、スタイルには届きません。
   [fixture: quadrant/config-security-level-other-all]
+- C4: タイトルとアクセシビリティのテキスト。
+  図形、境界、関係の引数には適用しません。
+  [fixture: c4/config-security-level-other]
 - block: ノード、ブロック矢印、複合ブロック、辺のラベル。
   id、クラス、スタイル、方向には届きません。
   [fixture: block/config-security-level-other-all]
@@ -483,6 +492,9 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: sequence/config-security-level-other-link]
 
 ## 確かめ
+
+記録した木の比較には C4、block、kanban と common の検出例を含み、
+C4 の五つの kind もすべて含みます。
 
 `tests/db-from-tree.test.ts` は、木と受理の結果（Db 付き）を記録する
 すべての fixture の Db を作り、記録した Db

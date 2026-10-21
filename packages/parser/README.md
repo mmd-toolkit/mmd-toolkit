@@ -136,6 +136,8 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Quadrant charts: `quadrantChart` (`quadrantChart`).
 - Block diagrams: `block` (`block-beta` and `block`).
 - Kanban diagrams: `kanban` (`kanban`).
+- C4 diagrams: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and
+  `C4Deployment` (`c4`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -238,8 +240,9 @@ type ids. The names and fields are those of the specification's
 [`ast/sankey.md`](../spec/docs/ast/sankey.md),
 [`ast/xychart.md`](../spec/docs/ast/xychart.md),
 [`ast/quadrant.md`](../spec/docs/ast/quadrant.md),
-[`ast/block.md`](../spec/docs/ast/block.md), and
-[`ast/kanban.md`](../spec/docs/ast/kanban.md).
+[`ast/block.md`](../spec/docs/ast/block.md),
+[`ast/kanban.md`](../spec/docs/ast/kanban.md), and
+[`ast/c4.md`](../spec/docs/ast/c4.md).
 
 ## Walking the tree
 
@@ -412,7 +415,8 @@ these differences:
   [`ast/xychart.md`](../spec/docs/ast/xychart.md) (the XY chart nodes),
   [`ast/quadrant.md`](../spec/docs/ast/quadrant.md) (the quadrant chart nodes),
   [`ast/block.md`](../spec/docs/ast/block.md) (the block diagram nodes),
-  [`ast/kanban.md`](../spec/docs/ast/kanban.md) (the kanban nodes), and
+  [`ast/kanban.md`](../spec/docs/ast/kanban.md) (the kanban nodes),
+  [`ast/c4.md`](../spec/docs/ast/c4.md) (the C4 nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

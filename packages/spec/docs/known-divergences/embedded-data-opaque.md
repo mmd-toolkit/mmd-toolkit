@@ -53,6 +53,12 @@ mapping closes the block are syntax errors. They are not this divergence.
 [fixture: kanban/gram-metadata-caret] [fixture: kanban/gram-metadata-unclosed]
 [fixture: kanban/gram-metadata-assigned-mapping]
 
+In C4, frontmatter and directive contents are opaque, so invalid YAML such as
+`title: [` in a well-delimited frontmatter does not reject the diagram here;
+mermaid.js rejects it. [fixture: c4/div-frontmatter-invalid-yaml]
+
+C4 has no `@{ ... }` data-block form. [fixture: c4/gram-data-block]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -189,3 +195,15 @@ This is not a rejection of an input that mermaid.js accepts, so it needs none of
 the reasons for one (see [known-divergences.md](../known-divergences.md)): it
 accepts inputs that mermaid.js rejects, and every input that both accept has the
 same Db.
+
+## The documentation of mermaid.js and its issues
+
+- The pinned
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)
+  shows valid YAML frontmatter configuring `c4.wrap`, but states no policy for
+  malformed embedded YAML. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-21 with `C4 YAML in:title,body`,
+  `C4 "invalid YAML" in:title,body`, and `C4 frontmatter in:title,body` found
+  [issue #7949](https://github.com/mermaid-js/mermaid/issues/7949), which
+  reports a wrapping configuration problem rather than malformed YAML. No issue
+  or pull request about acceptance of invalid YAML in C4 frontmatter was found.

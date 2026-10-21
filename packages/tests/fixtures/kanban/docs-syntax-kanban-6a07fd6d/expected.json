@@ -12,13 +12,11 @@
       {
         "id": "todo",
         "label": "Todo",
-        "level": 0,
         "isGroup": true
       },
       {
         "id": "id3",
         "label": "Update Database Function",
-        "level": 2,
         "isGroup": false,
         "parentId": "todo",
         "ticket": "MC-2037",

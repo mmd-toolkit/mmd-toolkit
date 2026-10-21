@@ -30,11 +30,10 @@ async function summary(
   return result.db
 }
 
-const SECTION = { id: "S", label: "Todo", level: 1, isGroup: true }
+const SECTION = { id: "S", label: "Todo", isGroup: true }
 const ITEM = {
   id: "A",
   label: "Changed",
-  level: 3,
   isGroup: false,
   parentId: "S",
   ticket: "TASK-1",
@@ -76,10 +75,16 @@ describe("the summary of a kanban diagram", () => {
     expect(normalizeKanban(db)).toEqual({ nodes: [ITEM] })
   })
 
+  it("does not keep the absolute indentation, which the renderer does not read", () => {
+    const node = { ...ITEM, level: 3 }
+    expect(normalizeKanban({ getData: () => ({ nodes: [node] }) })).toEqual({
+      nodes: [ITEM],
+    })
+  })
+
   it.each([
     ["id", "B"],
     ["label", "Other"],
-    ["level", 7],
     ["isGroup", true],
     ["parentId", "T"],
     ["ticket", "TASK-2"],
@@ -140,10 +145,10 @@ describe("the summary of a kanban diagram", () => {
   it("keeps the depth in characters without building a hierarchy of items", async () => {
     expect(await summary("db-indent-deeper")).toEqual({
       nodes: [
-        { id: "S", label: "S", level: 1, isGroup: true },
-        { id: "A", label: "A", level: 3, isGroup: false, parentId: "S" },
-        { id: "B", label: "B", level: 5, isGroup: false, parentId: "S" },
-        { id: "C", label: "C", level: 3, isGroup: false, parentId: "S" },
+        { id: "S", label: "S", isGroup: true },
+        { id: "A", label: "A", isGroup: false, parentId: "S" },
+        { id: "B", label: "B", isGroup: false, parentId: "S" },
+        { id: "C", label: "C", isGroup: false, parentId: "S" },
       ],
     })
   })
@@ -175,11 +180,10 @@ describe("the summary of a kanban diagram", () => {
   it("keeps repeated item ids as separate entries with separate metadata", async () => {
     const result = await summary("db-metadata-repeated-id")
     expect(result.nodes).toEqual([
-      { id: "S", label: "S", level: 1, isGroup: true },
+      { id: "S", label: "S", isGroup: true },
       {
         id: "A",
         label: "A",
-        level: 3,
         isGroup: false,
         parentId: "S",
         assigned: "Ada",
@@ -187,7 +191,6 @@ describe("the summary of a kanban diagram", () => {
       {
         id: "A",
         label: "A",
-        level: 3,
         isGroup: false,
         parentId: "S",
         ticket: "TASK-1",
@@ -396,7 +399,6 @@ function fakeKanbanDb() {
 interface KanbanTestNode {
   id: string
   label: string
-  level: number
   isGroup: boolean
   ticket?: string | undefined
   icon?: string

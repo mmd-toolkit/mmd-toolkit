@@ -41,14 +41,14 @@ kanban has no recorded parser trees yet.
    kanban/db-name-no-id] [fixture: kanban/db-name-two-words] [fixture:
    kanban/db-name-space-before-shape] [fixture: kanban/db-name-trailing-space]
    [fixture: kanban/config-security-level-other]
-3. **Membership.** Read the flat body in source order, keeping absolute indent
-   as `level`: the first row establishes the section level, equal indentation
-   starts a section with `isGroup: true`, and every other indentation gives an
-   item with `isGroup: false` and the most recent section's id as `parentId`,
-   including a final shallower row. [fixture: kanban/db-sections-items]
-   [fixture: kanban/db-indent-unindented] [fixture: kanban/db-indent-tabs]
-   [fixture: kanban/db-indent-deeper] [fixture: kanban/db-indent-shallower-last]
-   [fixture: kanban/db-section-item-same-id]
+3. **Membership.** Read the flat body in source order, without keeping the
+   indentation: the first row establishes the section indentation, equal
+   indentation starts a section with `isGroup: true`, and every other
+   indentation gives an item with `isGroup: false` and the most recent section's
+   id as `parentId`, including a final shallower row. [fixture:
+   kanban/db-sections-items] [fixture: kanban/db-indent-unindented] [fixture:
+   kanban/db-indent-tabs] [fixture: kanban/db-indent-deeper] [fixture:
+   kanban/db-indent-shallower-last] [fixture: kanban/db-section-item-same-id]
 4. **Repeated ids.** Keep every section and item definition separately, treating
    prototype names and different letter cases as ordinary distinct ids, then
    emit each section in declaration order followed by all items whose `parentId`

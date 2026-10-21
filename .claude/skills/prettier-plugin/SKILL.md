@@ -275,6 +275,11 @@ Running tests; this is what belongs to this package):
     `line-separators`, `markdown-quadrant`, and `value-nodes`.
   - `block.ts`, `block-*.ts`: `format` and `corpus` with `-t block`; and,
     without `-t`, `line-separators`, `markdown-block`, and `value-nodes`.
+  - `kanban*.ts`: `format` and `corpus` with `-t kanban`; and, without `-t`,
+    `line-separators`, `markdown-kanban`, and `value-nodes`.
+  - `c4*.ts`: `format` and `corpus` with `-t c4`; and, without `-t`,
+    `line-separators`, `line-terminators`, `markdown-c4`, `value-nodes`, and
+    `dispatch`.
   - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
     types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:

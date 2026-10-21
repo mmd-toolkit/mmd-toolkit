@@ -327,6 +327,29 @@ export type {
   KanbanShape,
   KanbanTreeNode,
 } from "./ast/kanban.ts"
+
+export type {
+  C4Kind,
+  C4ElementKeyword,
+  C4BoundaryKeyword,
+  C4RelationshipKeyword,
+  C4UpdateKeyword,
+  C4Diagram,
+  C4Statement,
+  C4ElementStatement,
+  C4BoundaryStatement,
+  C4RelationshipStatement,
+  C4UpdateStatement,
+  C4Argument,
+  C4NamedAttribute,
+  C4TitleStatement,
+  C4AccDescriptionStatement,
+  C4AccTitleStatement,
+  C4AccDescrStatement,
+  C4AccDescrBlockStatement,
+  C4Literal,
+  C4Node,
+} from "./ast/c4.ts"
 export type {
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,

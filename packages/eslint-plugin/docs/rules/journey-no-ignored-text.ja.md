@@ -2,7 +2,7 @@
 
 英語版: [journey-no-ignored-text.md](./journey-no-ignored-text.md)
 
-mermaid.js が読まない、タスクのデータの中のテキストを禁止する。
+mermaid.js が捨てる、タスクのデータの中のテキストを禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -12,7 +12,7 @@ mermaid.js が読まない、タスクのデータの中のテキストを禁止
 
 `Make tea: 5: Me: Cat` のように 2 人の間にコロンを書くと、
 その後の人は捨てられる。
-mermaid.js はタスクのデータを 3 つ目のコロンの前までしか読まず、
+mermaid.js はタスクのデータを 3 つ目のコロンの前までしか使わず、
 残りをエラーなしに捨てる。
 タスクのデータは、コロンで区切った score と人で、人はコンマで区切る。
 

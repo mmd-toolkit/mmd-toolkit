@@ -10,13 +10,11 @@
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "accDescr2",
         "label": "accDescr2",
-        "level": 3,
         "isGroup": false,
         "parentId": "S"
       }

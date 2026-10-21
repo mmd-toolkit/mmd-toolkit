@@ -61,6 +61,14 @@ kanban の隣り合うデータブロックは別々のノードに保ちます�
 [fixture: kanban/gram-metadata-unclosed]
 [fixture: kanban/gram-metadata-assigned-mapping]
 
+C4 では frontmatter とディレクティブの内容は不透明なので、
+正しく区切られた frontmatter の `title: [` のような無効な YAML は、
+ここでは図を拒否せず、mermaid.js は拒否します。
+[fixture: c4/div-frontmatter-invalid-yaml]
+
+C4 には `@{ ... }` のデータブロック形式はありません。
+[fixture: c4/gram-data-block]
+
 ## 差異
 
 どの例も、図の全体です。
@@ -207,3 +215,20 @@ mermaid.js は、フロントマターの本文とデータブロックを YAML 
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
 mermaid.js が拒否する入力を受理するもので、
 どちらも受理する入力は、すべて同じ Db を持ちます。
+
+## mermaid.js の文書と issue
+
+- 固定した版の
+  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)
+  は `c4.wrap` を設定する正しい YAML のフロントマターを示し、
+  不正な埋め込み YAML の扱いは述べていません。
+  `mermaid-js/mermaid` の issue と pull request を、
+  2026-10-21 に `C4 YAML in:title,body`、
+  `C4 "invalid YAML" in:title,body`、
+  `C4 frontmatter in:title,body` で検索したところ、
+  [issue #7949](https://github.com/mermaid-js/mermaid/issues/7949)
+  が見つかりました。
+  この issue は不正な YAML ではなく、
+  折り返しの設定についての問題を報告しています。
+  C4 のフロントマターの不正な YAML の受理を扱う、
+  issue や pull request は見つかりませんでした。

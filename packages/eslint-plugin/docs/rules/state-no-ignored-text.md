@@ -2,7 +2,7 @@
 
 Japanese version: [state-no-ignored-text.ja.md](./state-no-ignored-text.ja.md)
 
-Disallow text that mermaid.js does not read.
+Disallow text that mermaid.js drops.
 
 <!-- begin auto-generated rule notice -->
 
@@ -17,8 +17,7 @@ in the same way.
 
 ## Rule Details
 
-This rule reports text that mermaid.js does not read. It applies to
-`stateDiagram`.
+This rule reports text that mermaid.js drops. It applies to `stateDiagram`.
 
 `A --> B direction LR` sets the direction `LR` and makes no transition and no
 state. `direction TBX` sets the direction `TB`, and the `X` is dropped. A line

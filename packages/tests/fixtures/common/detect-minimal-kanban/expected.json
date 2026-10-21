@@ -10,7 +10,6 @@
       {
         "id": "todo",
         "label": "todo",
-        "level": 0,
         "isGroup": true
       }
     ]

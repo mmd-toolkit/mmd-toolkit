@@ -4,7 +4,7 @@ Japanese version:
 [bare-percent-line-before-header.ja.md](./bare-percent-line-before-header.ja.md)
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
-timeline, sankey, and block. This is one of the
+timeline, sankey, block, and c4. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -213,6 +213,15 @@ class/header-after-bare-percent-then-whitespace-line-then-comment-line]
 one way: this specification accepts inputs that mermaid.js rejects, and it never
 rejects one that mermaid.js accepts here.
 
+In C4, a bare `%%` line followed by a spaces-only line before the header is
+leading trivia here; mermaid.js leaves a newline before the header and rejects
+it. [fixture: c4/div-leading-percent-space-blank]
+
+A bare percent line directly before the C4 header or followed only by an empty
+line is accepted by both. [fixture: c4/header-after-bare-percent-line] [fixture:
+c4/header-leading-percent-blank] [fixture:
+c4/header-leading-percent-before-different-header]
+
 ## What it means for an author
 
 A line of `%%` alone, or `%%{ }%%`, before the header is read as a comment by
@@ -272,3 +281,15 @@ are the divergence.
   comments differently. No issue or pull request about a `%%` line before the
   header was found (searched on 2026-10-07 for `comment before diagram type`,
   `detectType comment`, `stripAnyComments`, and `UnknownDiagramError comment`).
+
+- The pinned
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  starts its examples with a C4 header and does not describe a bare `%%` line
+  before it. Searches of issues and pull requests in `mermaid-js/mermaid` on
+  2026-10-21 with `C4 comment header in:title,body`,
+  `C4 comment "header" in:title,body`, `C4 "bare" comment in:title,body`, and
+  `stripAnyComments in:title,body` found
+  [issue #8196](https://github.com/mermaid-js/mermaid/issues/8196), which
+  describes the disagreement between detection and preprocessing comment removal
+  without singling out C4. No report about a bare percent line followed by a
+  spaces-only line before a C4 header was found.

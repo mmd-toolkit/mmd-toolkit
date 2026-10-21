@@ -14,7 +14,7 @@ mermaid-js とは無関係です。
 
 いま対応している図種は
 flowchart、sequence、class、state、ER、Gantt、journey、requirement、mindmap、
-timeline、sankey、xychart、quadrant、block で、
+timeline、sankey、xychart、quadrant、block、kanban、C4 で、
 ほかの図種は順に対応します。
 フォーマッター、リンター、パーサーは、まだ npm に公開していません。
 mermaid.js のすべての図種に対応してから公開します。

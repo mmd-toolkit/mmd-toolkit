@@ -10,13 +10,11 @@
       {
         "id": "S",
         "label": "style:#x",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "::ic;on",
         "label": "x",
-        "level": 1,
         "isGroup": true
       }
     ]

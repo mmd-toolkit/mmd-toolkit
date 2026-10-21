@@ -69,7 +69,7 @@ const HTML_TAG_MARK = "html-tag-in-frontmatter"
 /** The mark of the divergence about a bare `%%` line before the header. */
 const BARE_PERCENT_MARK = "bare-percent-line-before-header"
 
-/** The mark of the divergence about a blank line after the header or after a comment line in a mindmap. */
+/** The mark of the divergence about a blank line after the header or after a comment line in a mindmap or a kanban. */
 const BLANK_LINES_MARK = "blank-line-after-header-or-comments"
 
 /**
@@ -241,14 +241,14 @@ export function withoutBarePercentLinesBeforeHeader(text: string): string {
 
 /**
  * `text` without the empty lines and the lines of whitespace only after its
- * header, and without the whitespace that ends the header line (the mindmap
- * divergence `blank-line-after-header-or-comments`). A line is of whitespace
- * only when nothing but whitespace is left of it once the directives are
- * taken out: mermaid.js removes a directive before it reads the text, so the
- * line of a directive alone is such a line. Every directive after the header
- * moves to a line of its own before it, so that the title and the
- * configuration do not change and no line is left with only a directive. A
- * line feed goes before a U+2028 or a U+2029 that ends a diagram comment when a
+ * header, and without the whitespace that ends the header line (the divergence
+ * `blank-line-after-header-or-comments` of the mindmap and the kanban). A line
+ * is of whitespace only when nothing but whitespace is left of it once the
+ * directives are taken out: mermaid.js removes a directive before it reads the
+ * text, so the line of a directive alone is such a line. Every directive after
+ * the header moves to a line of its own before it, so that the title and the
+ * configuration do not change and no line is left with only a directive. A line
+ * feed goes before a U+2028 or a U+2029 that ends a diagram comment when a
  * statement follows it on its line ({@link lineBreakAfterCommentSeparators}).
  * The lines before the header (blank lines, comment lines, directives) and the
  * comment lines and node lines after it stay as they are.
@@ -256,8 +256,8 @@ export function withoutBarePercentLinesBeforeHeader(text: string): string {
  * The header is the first line after the frontmatter that is neither a line of
  * whitespace only nor a comment line. Throws where a line to take out stands
  * inside text that a node holds across lines (a shape or an icon that is not
- * closed yet), where a blank line is a character of the text and the
- * specified reading cannot be made by taking lines out.
+ * closed yet), where a blank line is a character of the text and the specified
+ * reading cannot be made by taking lines out.
  */
 export function withoutBlankLinesAfterHeader(text: string): string {
   const frontmatter = frontmatterLength(text)
@@ -367,12 +367,18 @@ function lineBreakAfterCommentSeparators(line: string): string {
   return result
 }
 
+/** The headers of the diagram types of the divergence `blank-line-after-header-or-comments`: a `%%` after one of them on its line starts a comment. */
+const HEADERS_OF_BLANK_LINE_DIVERGENCE: readonly string[] = [
+  "mindmap",
+  "kanban",
+]
+
 /** Whether a `%%` after `before` on its line starts a comment (see {@link lineBreakAfterCommentSeparators}). */
 function startsComment(before: string): boolean {
   const trimmed = before.trim()
   return (
     trimmed === "" ||
-    trimmed === "mindmap" ||
+    HEADERS_OF_BLANK_LINE_DIVERGENCE.includes(trimmed) ||
     ")]}(".includes(trimmed.charAt(trimmed.length - 1))
   )
 }

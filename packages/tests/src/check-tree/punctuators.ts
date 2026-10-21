@@ -1,4 +1,5 @@
 import { BLOCK_PUNCTUATORS } from "./block.ts"
+import { C4_PUNCTUATORS, c4PunctuatorText } from "./c4.ts"
 import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
 import { FLOWCHART_SHAPES } from "./flowchart-shapes.ts"
 import { KANBAN_PUNCTUATORS } from "./kanban.ts"
@@ -113,6 +114,8 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   // as `-->` and is checked with the other arrows of two dashes or more.
   QuadrantDiagram: QUADRANT_PUNCTUATORS,
   BlockDiagram: BLOCK_PUNCTUATORS,
+  // parser/docs/tokens/c4.md, including the opening empty-entry unit.
+  C4Diagram: C4_PUNCTUATORS,
   ErrorDiagram: [],
 }
 
@@ -140,6 +143,8 @@ export function checkPunctuatorsAreWhole(
   problems: Problems,
 ): void {
   const texts = PUNCTUATOR_TEXTS[root.body.type] ?? []
+  const textOfPunctuator =
+    root.body.type === "C4Diagram" ? c4PunctuatorText : (text: string) => text
   const arrows = nodesOf(root).filter((node) => ARROW_NODE_TYPES.has(node.type))
   const punctuators = diagramTokensOf(root).filter(
     (token) =>
@@ -152,7 +157,7 @@ export function checkPunctuatorsAreWhole(
   )
   for (const token of punctuators) {
     problems.expect(
-      texts.includes(token.value),
+      texts.includes(textOfPunctuator(token.value)),
       label(token),
       `the Punctuator text ${JSON.stringify(token.value)} is none of those of a ${root.body.type}`,
     )
@@ -160,7 +165,7 @@ export function checkPunctuatorsAreWhole(
   reportCutEntries(
     root,
     punctuators,
-    (joined) => texts.includes(joined),
+    (joined) => texts.includes(textOfPunctuator(joined)),
     problems,
   )
 }

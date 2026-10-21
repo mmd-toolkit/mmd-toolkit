@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: An empty description block cannot stand between a call keyword and its opening parenthesis."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextPerson accDescr {}(a,\"A\")\n---------------^"
+  }
+}

@@ -43,7 +43,7 @@ kanban のパーサーの記録済みの木はまだありません。
    [fixture: kanban/db-name-space-before-shape]
    [fixture: kanban/db-name-trailing-space]
    [fixture: kanban/config-security-level-other]
-3. **所属。** 平坦な body をソース順に読み、絶対字下げを `level` に保ちます。
+3. **所属。** 平坦な body をソース順に読み、字下げは保ちません。
    最初の行が列の字下げを定め、同じ字下げは `isGroup: true` の列を始めます。
    それ以外は `isGroup: false` の項目で、
    直前の列の id を `parentId` とします。最後の浅い行も項目です。

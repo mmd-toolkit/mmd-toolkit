@@ -12,13 +12,11 @@
       {
         "id": "column1",
         "label": "Column Title",
-        "level": 2,
         "isGroup": true
       },
       {
         "id": "task1",
         "label": "Task Description",
-        "level": 4,
         "isGroup": false,
         "parentId": "column1"
       }

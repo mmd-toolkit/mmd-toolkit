@@ -2,7 +2,7 @@
 
 英語版: [state-no-ignored-text.md](./state-no-ignored-text.md)
 
-mermaid.js が読まないテキストを禁止する。
+mermaid.js が捨てるテキストを禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -17,7 +17,7 @@ state 図には、同じようにテキストを捨てる所がほかにもい�
 
 ## 規則の詳細
 
-この規則は、mermaid.js が読まないテキストを報告する。
+この規則は、mermaid.js が捨てるテキストを報告する。
 対象の図種は `stateDiagram` である。
 
 `A --> B direction LR` は方向を `LR` にし、遷移も状態も作らない。

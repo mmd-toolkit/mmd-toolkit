@@ -14,6 +14,7 @@ import type {
   QuadrantNode,
   BlockTreeNode,
   KanbanTreeNode,
+  C4Node,
 } from "../../src/index.ts"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
@@ -400,6 +401,22 @@ export const allKanbanNodeTypes: Readonly<
   KanbanLiteral: true,
 }
 
+/** Every node type of ast/c4.md, in document order. */
+export const allC4NodeTypes: Readonly<Record<C4Node["type"], true>> = {
+  C4Diagram: true,
+  C4ElementStatement: true,
+  C4BoundaryStatement: true,
+  C4RelationshipStatement: true,
+  C4UpdateStatement: true,
+  C4NamedAttribute: true,
+  C4TitleStatement: true,
+  C4AccDescriptionStatement: true,
+  C4AccTitleStatement: true,
+  C4AccDescrStatement: true,
+  C4AccDescrBlockStatement: true,
+  C4Literal: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -418,6 +435,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allQuadrantNodeTypes),
   ...Object.keys(allBlockNodeTypes),
   ...Object.keys(allKanbanNodeTypes),
+  ...Object.keys(allC4NodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

@@ -25,7 +25,7 @@ export const requirementNoIgnoredText: MermaidRuleDefinition<{
   meta: {
     type: "problem",
     docs: {
-      description: "Disallow text that mermaid.js does not read.",
+      description: "Disallow text that mermaid.js drops.",
       recommended: true,
       url: ruleDocsUrl("requirement-no-ignored-text"),
     },

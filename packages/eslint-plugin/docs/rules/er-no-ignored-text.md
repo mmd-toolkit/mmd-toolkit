@@ -2,7 +2,7 @@
 
 Japanese version: [er-no-ignored-text.ja.md](./er-no-ignored-text.ja.md)
 
-Disallow text that mermaid.js does not read.
+Disallow text that mermaid.js drops.
 
 <!-- begin auto-generated rule notice -->
 
@@ -16,7 +16,7 @@ drops the rest without an error.
 
 ## Rule Details
 
-This rule reports text that mermaid.js does not read. It applies to `er`.
+This rule reports text that mermaid.js drops. It applies to `er`.
 
 `A ||--o{ B : x direction LR` sets the direction `LR` and makes no entity and no
 relationship. `direction LR x` sets the direction `LR`, and the `x` is dropped.

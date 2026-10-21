@@ -12,7 +12,6 @@ import { ownProperties, toJson, toJsonObject } from "./json.ts"
 interface KanbanNodeLike {
   id: string
   label: string
-  level: number
   isGroup: boolean
   parentId?: string
   ticket?: unknown
@@ -37,12 +36,14 @@ interface PatchableKanbanDb extends KanbanDbLike {
  * Summarizes the kanban Db (`kanban`) from `getData()`, the form the renderer
  * reads. Nodes stay in its order: each section followed by the items whose
  * `parentId` equals its id, including the repeated items of duplicate section
- * ids. The summary keeps ids, labels, indentation levels, section membership,
- * and the metadata that this form exposes. Undefined fields are omitted.
+ * ids. The summary keeps ids, labels, section membership, and the metadata
+ * that this form exposes. Undefined fields are omitted.
  *
- * Dropped: the constant shapes, label types, corner radii and CSS styles, the
- * empty edges and `other`, and site configuration (`look`, widths, padding,
- * theme and ticket URLs). `getSections()` also exposes section decorations and
+ * Dropped: `level`, the absolute indentation, which the renderer does not read
+ * (it tells a section from an item by `isGroup` and `parentId`); the constant
+ * shapes, label types, corner radii and CSS styles, the empty edges and
+ * `other`, and site configuration (`look`, widths, padding, theme and ticket
+ * URLs). `getSections()` also exposes section decorations and
  * metadata that `getData()` does not use; these are outside this summary.
  * The data block patch records changes to these same fields; the getters read
  * no browser global, time or random id.
@@ -59,7 +60,6 @@ function nodeSummary(node: KanbanNodeLike): JsonObject {
   return toJsonObject({
     id: node.id,
     label: node.label,
-    level: node.level,
     isGroup: node.isGroup,
     parentId: node.parentId,
     ticket: node.ticket,

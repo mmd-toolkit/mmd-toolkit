@@ -34,6 +34,15 @@ beforeEach(() => {
 })
 
 describe("dispatch to diagram printers", () => {
+  it("registers the C4 body printer", async () => {
+    const actual = await vi.importActual<typeof ParserModule>(
+      "@mmd-toolkit/parser",
+    )
+    parse.mockImplementation(actual.parse)
+    expect(await formatMermaid('C4Context\nPerson(a,"A")')).toBe(
+      'C4Context\n  Person(a, "A")\n',
+    )
+  })
   it("hands the diagram body to the printer of its body type", async () => {
     const seen: string[] = []
 

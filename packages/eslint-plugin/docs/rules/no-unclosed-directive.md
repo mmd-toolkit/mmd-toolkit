@@ -80,7 +80,7 @@ This rule has no options.
 
 ## Related Rules
 
-- [no-ignored-init-directive](./no-ignored-init-directive.md)
+- [no-invalid-init-directive](./no-invalid-init-directive.md)
 
 <!-- begin auto-generated rule resources -->
 

@@ -10,13 +10,11 @@
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "classDef-x",
         "label": "classDef-x",
-        "level": 3,
         "isGroup": false,
         "parentId": "S"
       }

@@ -133,8 +133,12 @@ flowchart LR
   整形の規則は、
   例とともに [docs/quadrant.ja.md](./docs/quadrant.ja.md) にあります。
 - kanban。
-  `kanban` で始まる図で、字下げの絶対文字数を保ちます。
+  `kanban` で始まる図です。
   整形の規則は、例とともに [docs/kanban.ja.md](./docs/kanban.ja.md) にあります。
+- C4 図。
+  `C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
+  `C4Deployment` で始まる図です。
+  整形の規則は、例とともに [docs/c4.ja.md](./docs/c4.ja.md) にあります。
 - ブロック図。
   `block-beta` か `block` で始まる図です。
   整形の規則は、
@@ -167,7 +171,8 @@ flowchart LR
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
 - flowchart、sequence、class、state、ER、Gantt、journey、
-  requirement、mindmap、timeline、sankey、XY チャート、象限チャート、kanban、
+  requirement、mindmap、timeline、sankey、XY チャート、象限チャート、
+  kanban、C4、
   ブロック図以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
@@ -216,6 +221,7 @@ flowchart LR
 - [docs/xychart.ja.md](./docs/xychart.ja.md): XY チャートの整形の規則。
 - [docs/quadrant.ja.md](./docs/quadrant.ja.md): 象限チャートの整形の規則。
 - [docs/kanban.ja.md](./docs/kanban.ja.md): kanban の整形の規則。
+- [docs/c4.ja.md](./docs/c4.ja.md): C4 図の整形の規則。
 - [docs/block.ja.md](./docs/block.ja.md): ブロック図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):
   mermaid.js と違う箇所と、その理由。

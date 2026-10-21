@@ -10,13 +10,11 @@
       {
         "id": "S",
         "label": "a123b",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "I",
         "label": "I",
-        "level": 3,
         "isGroup": false,
         "parentId": "S"
       }

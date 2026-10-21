@@ -124,7 +124,7 @@ description:
 | 入力                                                               | mermaid の結果                                           | 規則                                                                                                                                    |
 | ------------------------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `%%{init: {...}}`（最後の `%%` を書き忘れ）                        | 文の終わりまでがディレクティブになり、図が空             | no-unclosed-directive（共通）                                                                                                           |
-| `%%{init: {"flowchart": {"inheritDir": true},}}%%`（末尾のカンマ） | init の設定がすべて捨てられる                            | no-ignored-init-directive（共通）                                                                                                       |
+| `%%{init: {"flowchart": {"inheritDir": true},}}%%`（末尾のカンマ） | init の設定がすべて捨てられる                            | no-invalid-init-directive（共通）                                                                                                       |
 | `A[Start]-->B` の後に `C-->A[End]`                                 | A のラベルが End に置き換わる                            | flowchart-no-redefined-vertex                                                                                                           |
 | `style C fill:red`（C の打ち間違い）                               | スタイル付きの頂点 C が増える                            | flowchart-no-undef                                                                                                                      |
 | `class C foo` か `click C href "…"`（C の打ち間違い）              | 何もしない（どの頂点にもクラスやリンクが付かない）       | flowchart-no-undef                                                                                                                      |
@@ -193,6 +193,16 @@ description:
 | 四象限チャートで、`#` のない色（`color: f00`。書いたとおりに持つ）                                                                                                                        | 上の `classDef fo` と同じく、このツールキットの範囲の外である。色が描かれるかは、描いたチャートにしか表れない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | 四象限チャートで、同じ名前か同じ位置の 2 つの点と、どの点も使わない `classDef`                                                                                                            | 何も失われない。点は両方残り、クラスは一覧にある。どちらも誤りと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | 四象限チャートで、タイトルの行の `;` の後の文（`title Sales; x-axis Low --> High`。タイトルが行の残りを持つ）                                                                             | チャートを描く人が書くものではない。タイトルは 1 行に書き、mermaid.js の文書は `;` を示さない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| ブロック図で、どの `classDef` も定義しないクラスの `class` の文（`class A blue`）                                                                                                         | 何も失われない。クラスはブロックに残り、描画はそれを CSS のクラスとしてブロックに与え、ページのスタイルが使える（`getNodeFromBlock()` を読んだ）。点のクラス名を描かない四象限チャートとは違う                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ブロック図で、`title` などほかの図の語（`title Sales` はブロック `title` と `Sales` を与える）                                                                                            | mermaid.js は文法どおりにブロックとして読み、何も失わない。ブロック図にタイトルはない。タイトルと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ブロック図で、行の文の後の `%%`（`A --> B %% note` はブロック `%%` と `note` を与える）                                                                                                   | flowchart の `subgraph S %% group` と同じく、構文を知らないことから起きる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ブロック図で、性質を 2 度与える `style` や `classDef` の並び（`fill:#f00,fill:#00f`）と、2 度書いた `classDef`                                                                            | mermaid.js はどのスタイルも書いたとおりに持つ。描画がどれを使うかは CSS が決め、このツールキットは描かない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ブロック図で、`columns 1.5`、0 の幅や空き、数が持てない桁数の幅                                                                                                                           | `1.5` は数 1 とブロック `.5` であり、整形は `.5` を別の行に印字する。0 は書いたとおりに持つ。持てないほど大きな数は通常の書き方ではない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ブロック図で、HTML のラベルの正しい CSS の宣言が `;` を失うもの                                                                                                                           | 上の flowchart の同じラベルと同じく、mermaid.js の不具合である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ブロック図で、ブロック `A` を宣言する前の `class A c`（`A` は置かれず、クラスは図の外のブロックに行く）                                                                                   | 上の flowchart の、頂点 `A` より前の `class A foo` と同じく、mermaid の不具合に見える。id は正しく書かれ、文の位置だけが結果を変える。図の型ごとに判断を分けないよう、flowchart と同じに決めた（2026-10-21）。block-no-undef は後で宣言する id を報告しない                                                                                                                                                                                                                                                                                                                                                                                                 |
+| カンバン図で、アイコン（`::icon(x)` やメタデータの `icon:`）と、2 度書いたアイコン                                                                                                        | 何も描かれない。カンバンの項目の描画はアイコンを使わず（`kanbanItem.ts` を読んだ）、アイコンもその置き換えも出力を変えない。カンバンの文書はアイコンを挙げない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| カンバン図で、列のメタデータの `assigned`、`priority`、`icon` と、列や項目のクラス（`:::c`）                                                                                              | Db は持つがボードは示さない（実行）。担当者のある列は意味のある書き方であり、クラスは修正の open な mermaid.js の欠落である（[#8119](https://github.com/mermaid-js/mermaid/issues/8119)、[#8139](https://github.com/mermaid-js/mermaid/pull/8139)、[#8281](https://github.com/mermaid-js/mermaid/pull/8281)）                                                                                                                                                                                                                                                                                                                                               |
+| カンバン図で、同じ id の 2 つの項目、ノードとしての `title` や `accTitle:`、別の閉じを持つ形（`a[A)`）                                                                                    | 同じ id の 2 つの項目は、文書の例が書くとおり両方描かれる。`title` は文法どおりノードである（[#8120](https://github.com/mermaid-js/mermaid/issues/8120) がアクセシビリティを求めている）。カンバンの項目はどれも 1 つの形で描かれるので、閉じは何も変えない                                                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### 迷ったときの問い
 
@@ -595,7 +605,7 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | flowchart-no-redefined-vertex             | 入れる               |                                                                          |
 | flowchart-no-undef                        | 入れる               |                                                                          |
 | no-unclosed-directive                     | 入れない（いったん） | 文書が 4 図種しか書いていない                                            |
-| no-ignored-init-directive                 | 入れない（いったん） | 文書が 4 図種しか書いていない                                            |
+| no-invalid-init-directive                 | 入れない（いったん） | 文書が 4 図種しか書いていない                                            |
 | sequence-no-create-destroy                | 入れる               |                                                                          |
 | sequence-no-duplicate-description         | 入れる               |                                                                          |
 | sequence-no-duplicate-title               | 入れる               |                                                                          |
@@ -632,7 +642,7 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | gantt-no-empty-description-block          | 入れる               |                                                                          |
 | gantt-no-undef                            | 入れる               |                                                                          |
 | gantt-no-unknown-exclude                  | 入れる               |                                                                          |
-| gantt-no-unread-tag                       | 入れる               |                                                                          |
+| gantt-no-invalid-tag                      | 入れる               |                                                                          |
 | journey-no-duplicate-description          | 入れる               |                                                                          |
 | journey-no-duplicate-title                | 入れる               |                                                                          |
 | journey-no-empty-description-block        | 入れる               |                                                                          |
@@ -658,7 +668,7 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | xychart-no-duplicate-description          | 入れる               |                                                                          |
 | xychart-no-empty-description-block        | 入れる               |                                                                          |
 | xychart-no-unclosed-description-block     | 入れる               |                                                                          |
-| xychart-no-unread-orientation             | 入れる               |                                                                          |
+| xychart-no-invalid-orientation            | 入れる               |                                                                          |
 | xychart-no-redefined-axis                 | 入れる               |                                                                          |
 | xychart-no-extra-value                    | 入れる               |                                                                          |
 | quadrant-no-duplicate-title               | 入れる               |                                                                          |
@@ -670,6 +680,20 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | quadrant-no-undef                         | 入れる               |                                                                          |
 | quadrant-no-duplicate-style               | 入れる               |                                                                          |
 | quadrant-no-invalid-coordinate            | 入れる               |                                                                          |
+| block-no-edge-chain                       | 入れる               |                                                                          |
+| block-no-edge-in-composite-head           | 入れる               |                                                                          |
+| block-no-duplicate-block                  | 入れる               |                                                                          |
+| block-no-spaced-class-id                  | 入れる               |                                                                          |
+| block-no-undef                            | 入れる               |                                                                          |
+| block-no-duplicate-columns                | 入れる               |                                                                          |
+| block-no-redefined-style                  | 入れる               |                                                                          |
+| block-no-mismatched-shape                 | 入れる               |                                                                          |
+| block-no-mismatched-edge                  | 入れる               |                                                                          |
+| block-no-useless-width                    | 入れる               |                                                                          |
+| block-no-invalid-direction                | 入れる               |                                                                          |
+| kanban-no-invalid-metadata-key            | 保留                 |                                                                          |
+| kanban-no-invalid-priority                | 保留                 |                                                                          |
+| kanban-no-duplicate-section               | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -875,13 +899,19 @@ mermaid.js の文書は指令をフロントマターに置き換えている
 読み方は変わらない。
 (4) 指令を `}%%` で閉じる。
 
-no-ignored-init-directive（いったん）:
+no-invalid-init-directive（いったん）:
 (1) テキストのどの init の指令も無視される。
 (2) なし。
 (3) 「init trailing comma」「init directive ignored」
 「directive case sensitive」
 「init json」「json5」「trailing comma init」。
 (4) コンマを除くか、名前を小文字で書く。
+名前は ESLint 自身の規則の語に合わせる。
+そこでは、正しく書かれておらず意図どおりに働かない形を invalid と呼ぶ。
+no-invalid-regexp と、綴り違いの型の名前が黙って何にも一致しない valid-typeof が
+そうである。
+報告する 2 つの形、末尾にコンマのある JSON の引数と大文字小文字の違う名前は
+そうした形であり、直しは正しく書くことである。
 
 class-no-inline-comment: これらの注の後の段落を参照。
 
@@ -952,7 +982,7 @@ gantt-no-unknown-exclude:
 （[#5680](https://github.com/mermaid-js/mermaid/issues/5680)）である。
 (4) `weekends` か、曜日の完全な名前を書く。
 
-gantt-no-unread-tag:
+gantt-no-invalid-tag:
 (1) 開始や終わりの場所の語は、日付として読まれるが日付でなく、
 チャートは描かれないか、タスクは長さを持たない（実行）。
 mermaid.js はそこのどんな語も id として読むので、id は調べない。
@@ -961,6 +991,13 @@ mermaid.js はそこのどんな語も id として読むので、id は調べ�
 [#4165](https://github.com/mermaid-js/mermaid/issues/4165)（open）は、
 開始の前のコンマが抜けた場合についてのものである。
 (4) 文書は、先頭に小文字で書き、コンマを続ける、という形を挙げている。
+gantt-no-invalid-tag、xychart-no-invalid-orientation、block-no-invalid-direction
+の名前は、no-invalid-init-directive と同じく ESLint 自身の規則の語に合わせる。
+どれも、正しく書かれていない値
+（別の大文字小文字、コンマなし、空白、置けない位置）を報告し、
+その値は valid-typeof や no-invalid-regexp と同じく、
+黙って意図どおりに働かない。
+直しは正しく書くことである。
 
 journey-no-empty-person:
 (1) ジャーニーとその凡例が、名前の空の人を持つ。
@@ -1066,7 +1103,7 @@ XY チャートの規則の注は次のとおりである。
   mermaid.js が書いたとおりに読む説明は報告しない。
   (2) なし。
   (4) ブロックを閉じる。
-- xychart-no-unread-orientation:
+- xychart-no-invalid-orientation:
   (1) `Horizontal` と `HORIZONTAL` は、
   設定 `chartOrientation: horizontal` があっても、
   縦向きのチャートを与える（実行）。
@@ -1131,6 +1168,114 @@ open の [#8084](https://github.com/mermaid-js/mermaid/pull/8084) は、
   (2) なし。mermaid.js の文書は、座標を小数点のある 0 から 1 の数で書く。
   (3) #7608 はほかの範囲を求めているが、それで `0,3` が数になることはない。
   (4) 小数点を書く。
+
+ブロック図の規則の注は次のとおりである。
+検索は題名と本文の「block」で、
+chain、composite、class、styles、columns、shape、arrow、redefined、whitespace、
+duplicate、comma、width、edge、before、direction、label、link の語も添えた。
+読み方を変えるものはなかった。
+open の [#8279](https://github.com/mermaid-js/mermaid/pull/8279) は、
+どのブロックも持たない id への `style`（いまは拒否される）を変え、
+[#8310](https://github.com/mermaid-js/mermaid/pull/8310)（open）は
+アクセシビリティの文を足す。
+[#5588](https://github.com/mermaid-js/mermaid/issues/5588)（open、triage）は、
+2 つの複合ブロックで id を使い回すことを求めており、
+mermaid.js はそれを 1 度描く。
+変えると言った保守者はいない。
+
+- block-no-edge-chain、block-no-edge-in-composite-head:
+  (1) 連なりは最後のリンクだけを始点なしに残し、最初のブロックを置かない。
+  リンクのある頭は、id も辺もない複合ブロックを与える（実行）。
+  (2) なし。mermaid.js の文書は、辺に 1 つのリンクを書き、
+  `block:` の後にリンクを書かない。
+  (4) リンクごとに辺を書き、複合ブロックは `end` の後でつなぐ。
+- block-no-duplicate-block:
+  (1) もう一度書いたブロックは何も置かず、
+  もう一度書いたラベルや形は最初のものを置き換え、
+  幅、子、`columns` は失われる（実行）。
+  (2) ブロックに最初の形を与える文は、ラベルと形を与えるので報告せず、
+  ただしその方法では向きを得ないブロック矢印は報告する。
+  形を繰り返す辺も報告しない。
+  (4) ブロックごとに自分の id を与え、テキストはラベルに書く。
+- block-no-spaced-class-id、block-no-invalid-direction:
+  (1) 空白を含む id はブロックを見つけずに新しいものを作り、
+  コンマの前の空白は行の残りをクラスの名前にし、
+  空白を含む向きは描画が読まない（Db は実行、描画は `blockArrow.ts` を読んだ）。
+  (2) なし。mermaid.js の文書は、何も失わない `class Backend,Database back` と
+  `(x, down)` を書くので、
+  その空白は `note left of A:hi` と同じく、文書が示さない書き方である。
+  (4) そこに空白を書かない。
+- block-no-undef:
+  (1) クラスは置かれない新しいブロックに行く（実行）。
+  (2) なし。`class` の文の後で宣言した id は報告せず、
+  `classDef` のないクラスの名前は確かめない。
+  (4) id を直す。
+- block-no-duplicate-columns、block-no-redefined-style:
+  (1) 最後の `columns` がブロック全体の数を設定し、
+  後の `style` は並び全体を置き換える（実行）。
+  (2) なし。同じ数と、CSS が空白を読むとおり（両端とコロンの前後はなし、
+  連なりは 1 つ）に比べてスタイルを残す並びは報告しない。
+  (4) ブロックごとに 1 つの `columns` と、
+  すべてのスタイルを持つ 1 つの `style` を書く。
+- block-no-mismatched-shape、block-no-mismatched-edge、block-no-useless-width:
+  (1) ブロックは形を持たず、辺は線と印をラベルの後の矢印だけから取り、
+  リンクの前の幅はリンクとともに捨てられる（実行）。
+  (2) なし。文書の組、両側の同じ線、ブロックが持つ幅と同じ幅は報告しない。
+  (4) 形をその組で閉じ、両側に同じ線と 2 つ目の矢印の始まりの印を書き、
+  幅はブロックを単独で宣言するところに書く。
+  block-no-useless-width の名前は、ESLint 自身の規則の語に合わせる。
+  そこでは、書いたが結果に効かない値を useless と呼ぶ。
+  no-useless-assignment（代入したが使われない値）や
+  no-useless-backreference（合わせるつもりで書いたが何にも合わない後方参照）が
+  そうであり、
+  unused は宣言したが読まれないものを指す。
+  幅は文法が読み（`node SIZE`）、辺の動作（`nodeStatement link node`）が
+  ブロックに入れないので、与えたが効かない値である。
+
+カンバン図の規則の注は次のとおりである。
+検索は題名と本文の「kanban」で、
+metadata、priority、duplicate、icon の語も添えた。
+読み方を変えるものはなかった。
+[#8117](https://github.com/mermaid-js/mermaid/issues/8117)（open）は
+キー `status` を提案しているが、mermaid.js はいまそれを読まない。
+
+- kanban-no-invalid-metadata-key、kanban-no-invalid-priority:
+  (1) `assigned`、`ticket`、`priority`、`icon`、`label`、`shape` 以外のキーは
+  何も設定しない。
+  別の大文字小文字のキーと、
+  YAML が 1 つのキーと読む空白のない `ticket:DOC-1` も同じである。
+  `Very High`、`High`、`Medium`、`Low`、`Very Low` 以外の priority は、
+  持たれるが色なしに描かれる（Db は実行、描画は `kanbanItem.ts` を読んだ）。
+  (2) なし。文書は 4 つの値しか挙げないが描画が扱う `Medium` と、
+  空のままの priority は報告しない。
+  (4) キーと値を、文書が書くとおりに書く。
+  どちらの規則も、木が書いたとおりに持つメタデータの YAML を、
+  mermaid.js が読むとおり（js-yaml の JSON_SCHEMA）に読む。
+  文書と fixture を書き直すための条件は次のとおりである。
+  キーの規則は、列か項目のメタデータのキーのうち、6 つのどれでもないものを、
+  YAML が読んだ後のキー（引用符の中のキーも）を、
+  大文字小文字を区別して比べて報告する。
+  1 つのノードのブロックは、mermaid.js がつなぐとおりに 1 つとして読む。
+  priority の規則は、項目の priority のうち 5 つのどれでもないもの
+  （`high`、`" High "`、`Urgent`、`0`、ほかの数、リスト）を報告し、
+  ないもの、`null`、`false`、空のもの、
+  mermaid.js が持たない列の priority は報告しない。
+  どちらもリリースの後まで保留する。
+  採らないのではない。
+  文書と fixture は、いまはリポジトリの外に置き、
+  失われたらこの注と mermaid.js の実行から書き直す。
+  YAML を読むには plugin の依存が要り、
+  リリース前の lint の規則はおもに木の形を確かめるためにあるので、
+  依存を足すかはリリースの後に決める。
+  足すときの依存は yaml-eslint-parser である。
+  flowchart のノードのデータのキーの綴り違い（`A@{ shpe: circle }` は、
+  エラーなしにノードに形を与えない。実行）も同じ種類の候補であり、
+  同じく保留する。
+- kanban-no-duplicate-section:
+  (1) 同じ id のどの列も、その id のすべての項目を並べるので、
+  項目は列ごとに描かれる（実行）。
+  (2) なし。項目のない同じ id の列は報告しない。
+  (4) 列ごとに自分の id を与える。
 
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
@@ -1217,6 +1362,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | sankey-no-empty-node                    | いまはなし（2026-10-15。この節の終わりを見る）   |
 | xychart-*（7 件すべて）                 | いまはなし（2026-10-15。この節の終わりを見る）   |
 | quadrant-*（9 件すべて）                | いまはなし（2026-10-16。この節の終わりを見る）   |
+| block-*（11 件すべて）                  | いまはなし（2026-10-21。この節の終わりを見る）   |
+| kanban-*（3 件すべて）                  | いまはなし（2026-10-21。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1340,7 +1487,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `sequence-*`、`class-*`、`state-*`（2026-10-08）と
 `er-*`、`gantt-*`、`journey-*`（2026-10-14）と
 `requirement-*`、`mindmap-*`、`timeline-*`、`sankey-*`、`xychart-*`（2026-10-15）と
-`quadrant-*`（2026-10-16）:
+`quadrant-*`（2026-10-16）と `block-*`、`kanban-*`（2026-10-21）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

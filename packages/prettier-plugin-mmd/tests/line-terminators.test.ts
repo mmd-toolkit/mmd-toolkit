@@ -12,6 +12,27 @@ import { formatMermaid } from "./helpers.ts"
 /** A diagram with a statement, a block, and a comment, as lines. */
 const diagrams: readonly (readonly [string, readonly string[], string])[] = [
   [
+    "c4",
+    [
+      "C4Context",
+      'Boundary(b,"B") {',
+      'Person(a,"one',
+      '  two",$first',
+      ' second = "three',
+      ' four")',
+      "Person(b,bare",
+      " last,)",
+      "accDescr {",
+      " first",
+      "  last",
+      "}",
+      "}",
+      "%% c",
+      "%%{init: {}}%%",
+    ],
+    'C4Context\n  Boundary(b, "B") {\n    Person(a, "one\n  two", $first\n second = "three\n four")\n    Person(b, bare\n last,)\n    accDescr {\n first\n  last\n    }\n  }\n  %% c\n  %%{init: {}}%%\n',
+  ],
+  [
     "flowchart",
     ["flowchart LR", "A   -->   B", "subgraph S", "C", "end", "%%{init: {}}%%"],
     "flowchart LR\n  A --> B\n  subgraph S\n    C\n  end\n  %%{init: {}}%%\n",
@@ -139,7 +160,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "%% c",
       "%%{init: {}}%%",
     ],
-    "kanban\n   S[x]\n     A@{ticket: X}\n     ::icon(fa)\n     %% c\n     %%{init: {}}%%\n",
+    "kanban\n  S[x]\n    A@{ticket: X}\n    ::icon(fa)\n    %% c\n    %%{init: {}}%%\n",
   ],
   [
     "block",
@@ -186,3 +207,15 @@ describe.each(diagrams)(
     })
   },
 )
+
+describe("configured C4 line endings", () => {
+  it("uses lone CR outside and inside description values", async () => {
+    expect(
+      await formatMermaid(
+        'C4Context\naccDescr {\n first\n}\nPerson(a,"A")',
+        "diagram.mmd",
+        { endOfLine: "cr" },
+      ),
+    ).toBe('C4Context\r  accDescr {\r first\r  }\r  Person(a, "A")\r')
+  })
+})

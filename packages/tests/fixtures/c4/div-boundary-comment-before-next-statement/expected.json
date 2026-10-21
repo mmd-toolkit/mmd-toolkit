@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: An inline comment after a boundary takes the next statement separator in mermaid.js."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...erson(a,\"A\")} %% cPerson(c,\"C\")\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'RBRACE', got 'PERSON'"
+  }
+}

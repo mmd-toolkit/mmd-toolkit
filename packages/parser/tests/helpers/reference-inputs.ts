@@ -4,6 +4,7 @@ import { detectDiagram } from "../../src/detection.ts"
 import { findDirectives } from "../../src/directives.ts"
 import type { ClassUnits } from "../../src/diagrams/class/index.ts"
 import { lexClass } from "../../src/diagrams/class/index.ts"
+import { lexC4 } from "../../src/diagrams/c4/index.ts"
 import { MISSING_HEADER_MESSAGE } from "../../src/diagrams/class/units.ts"
 import { lexFlowchart } from "../../src/diagrams/flowchart/index.ts"
 import type { SequenceUnits } from "../../src/diagrams/sequence/index.ts"
@@ -676,6 +677,25 @@ export function commentsAfterUnits(text: string): number[] | null {
       const before = lexing.units.filter((unit) => unit.end <= start).at(-1)
       return before !== undefined && before.name !== "newline"
     })
+}
+
+/**
+ * known-divergences/comment-takes-line-break.md: the offsets of the C4
+ * diagram comments, which leave their following line terminator outside.
+ * Null when `text` is no C4 diagram or its lexer rejects it.
+ */
+export function c4DiagramComments(text: string): number[] | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "c4") return null
+  try {
+    return lexC4(diagramInputOf(opened, detection, "c4")).comments.map(
+      (comment) => comment.range[0],
+    )
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
 }
 
 /**

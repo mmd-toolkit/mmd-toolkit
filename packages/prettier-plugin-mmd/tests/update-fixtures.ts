@@ -12,22 +12,11 @@ import plugin from "../src/index.ts"
 import { loadFormatFixtures } from "./fixtures.ts"
 
 for (const fixture of await loadFormatFixtures()) {
-  const formatted = prettier.format(fixture.input, {
+  const output = await prettier.format(fixture.input, {
     ...fixture.options,
     filepath: "fixture.mmd",
     plugins: [plugin],
   })
-  const output = fixture.rejected
-    ? await formatted.then(
-        () => {
-          throw new Error(`Expected rejection: ${fixture.id}`)
-        },
-        (error: unknown) => {
-          if (!(error instanceof SyntaxError)) throw error
-          return fixture.input
-        },
-      )
-    : await formatted
   if (output !== fixture.output) {
     await writeFile(fixture.outputPath, output)
     process.stdout.write(`updated ${fixture.id}\n`)

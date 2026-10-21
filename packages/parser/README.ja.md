@@ -137,6 +137,8 @@ const tokenCount = root.tokens.length // 8
 - 四象限チャート: `quadrantChart`（`quadrantChart`）。
 - ブロック図: `block`（`block-beta` と `block`）。
 - kanban 図: `kanban`（`kanban`）。
+- C4 図: `C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
+  `C4Deployment`（`c4`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -254,7 +256,8 @@ try {
 [`ast/xychart.md`](../spec/docs/ast/xychart.ja.md)、
 [`ast/quadrant.md`](../spec/docs/ast/quadrant.ja.md)、
 [`ast/block.md`](../spec/docs/ast/block.ja.md)、
-[`ast/kanban.md`](../spec/docs/ast/kanban.ja.md) のものです。
+[`ast/kanban.md`](../spec/docs/ast/kanban.ja.md)、
+[`ast/c4.md`](../spec/docs/ast/c4.ja.md) のものです。
 
 ## 木を辿る
 
@@ -451,6 +454,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   （四象限チャートのノード）、
   [`ast/block.md`](../spec/docs/ast/block.ja.md)（ブロック図のノード）、
   [`ast/kanban.md`](../spec/docs/ast/kanban.ja.md)（kanban 図のノード）、
+  [`ast/c4.md`](../spec/docs/ast/c4.ja.md)（C4 図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

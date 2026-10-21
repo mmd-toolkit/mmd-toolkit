@@ -301,6 +301,12 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - `block-*.ts`、`block.ts`: `format` と `corpus` を `-t block` で。
     `-t` なしで `line-separators`、`markdown-block`、
     `value-nodes`。
+  - `kanban*.ts`: `format` と `corpus` を `-t kanban` で。
+    `-t` なしで `line-separators`、`markdown-kanban`、
+    `value-nodes`。
+  - `c4*.ts`: `format` と `corpus` を `-t c4` で。
+    `-t` なしで `line-separators`、`line-terminators`、`markdown-c4`、
+    `value-nodes`、`dispatch`。
   - `statement-rules.ts`、`accessibility-lines.ts`:
     それを使う図種、ER と requirement のテスト。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:

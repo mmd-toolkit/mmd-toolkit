@@ -60,6 +60,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "quadrant",
   "block",
   "kanban",
+  "c4",
 ]
 
 /**
@@ -68,9 +69,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
  * type leaves these types out. Remove a prefix once the trees of its diagram
  * type are recorded; the list stays empty between two diagram types.
  */
-export const NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES: readonly string[] = [
-  "C4",
-]
+export const NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES: readonly string[] = []
 
 /** Whether a recorded tree may have a node of the type `type`: false for the types of a diagram type whose trees are not recorded yet. */
 export function mayHaveRecordedTrees(type: string): boolean {

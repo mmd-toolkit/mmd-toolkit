@@ -202,7 +202,7 @@ function convertVisibleCharacters(
 }
 
 /**
- * The converted text of one kanban leaf's range, using its written value to
+ * The converted text of one leaf's range, using its written value to
  * identify semicolons that the tree has already left out. The scan is confined
  * to that range. A value starts inside a unit, so the prefix supplies that
  * context to the shared scan without reading the preceding source character.
@@ -213,6 +213,7 @@ export function convertedValueOf(
   range: TreeRange,
   value: string,
   delimiterLength = 0,
+  diagram = "kanban",
 ): string {
   const text = `x${source.slice(...range)}`
   const leftOut = sourceLeftOut(text, 0)
@@ -234,13 +235,13 @@ export function convertedValueOf(
       leftOut[offset] = 1
     } else {
       throw new Error(
-        "kanban Db: the written value does not match its node range",
+        `${diagram} Db: the written value does not match its node range`,
       )
     }
   }
   if (at !== value.length)
     throw new Error(
-      "kanban Db: the written value does not match its node range",
+      `${diagram} Db: the written value does not match its node range`,
     )
   return convertVisibleCharacters(
     text,

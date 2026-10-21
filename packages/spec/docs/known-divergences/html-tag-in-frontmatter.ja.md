@@ -118,6 +118,11 @@ mermaid.js は `S["b="c">d"]` の内側の属性引用符を変換して入力�
 フロントマターに `<a` がなければ両者で拒否します。
 [fixture: kanban/gram-frontmatter-no-tag-reference]
 
+C4 では frontmatter に `title: <a` があると、
+`Person(a,"b="c">d")` をここでは拒否し、
+mermaid.js は内側の属性引用符を変換して受理します。
+[fixture: c4/div-frontmatter-open-tag]
+
 ## 書き手にとっての結果
 
 `title: <a` のように、`<` と語の後に `>` のないタイトルを持つフロントマターは、
@@ -156,3 +161,17 @@ mermaid.js の処理の順から生じます。
 仕様が構文の規則として述べるものではありません。
 これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
+
+## mermaid.js の文書と issue
+
+- 固定した版の
+  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  は引用された説明の内部で `<br/>` を使い、
+  [折り返しの設定に YAML のフロントマターを示しています](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)。
+  フロントマターで始まり C4 の引数へ続くタグは、
+  説明していません。
+  `mermaid-js/mermaid` の issue と pull request を、
+  2026-10-21 に `C4 frontmatter in:title,body`、
+  `frontmatter HTML quotes in:title,body`、
+  `C4 frontmatter tag in:title,body` で検索し、
+  この形式についての報告は見つかりませんでした。

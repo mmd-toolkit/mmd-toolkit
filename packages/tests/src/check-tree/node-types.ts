@@ -45,6 +45,7 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "QuadrantLiteral",
   "QuadrantIdentifier",
   "BlockLiteral",
+  "C4Literal",
 ])
 
 /**
@@ -236,6 +237,17 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "XychartAccTitleStatement",
   "XychartAccDescrStatement",
   "XychartAccDescrBlockStatement",
+  "C4Diagram",
+  "C4ElementStatement",
+  "C4BoundaryStatement",
+  "C4RelationshipStatement",
+  "C4UpdateStatement",
+  "C4NamedAttribute",
+  "C4TitleStatement",
+  "C4AccDescriptionStatement",
+  "C4AccTitleStatement",
+  "C4AccDescrStatement",
+  "C4AccDescrBlockStatement",
   "BlockDiagram",
   "BlockNodeStatement",
   "BlockNode",

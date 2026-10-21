@@ -13,13 +13,11 @@
       {
         "id": "root",
         "label": "root",
-        "level": 0,
         "isGroup": true
       },
       {
         "id": "theId",
         "label": "child1",
-        "level": 6,
         "isGroup": false,
         "parentId": "root"
       }

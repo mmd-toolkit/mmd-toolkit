@@ -2,7 +2,7 @@
 
 英語版: [class-no-ignored-text.md](./class-no-ignored-text.md)
 
-mermaid.js が読まないテキストを禁止する。
+mermaid.js が捨てるテキストを禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -17,7 +17,7 @@ mermaid.js が読まないテキストを禁止する。
 ## 規則の詳細
 
 この規則は、方向の行で、`direction` の前か、方向の値の後にあるテキストと、
-メソッドの行のうち mermaid.js が読まない部分を報告する。
+メソッドの行のうち mermaid.js が捨てる部分を報告する。
 対象の図種は `classDiagram` である。
 
 `class A direction LR` は方向を `LR` にし、クラスを宣言しない。

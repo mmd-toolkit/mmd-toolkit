@@ -2,7 +2,7 @@
 
 英語版: [flowchart-no-ignored-text.md](./flowchart-no-ignored-text.md)
 
-方向の行にあって、mermaid.js が読まないテキストを禁止する。
+方向の行にあって、mermaid.js が捨てるテキストを禁止する。
 
 <!-- begin auto-generated rule notice -->
 

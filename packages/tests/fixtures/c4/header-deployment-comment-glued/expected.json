@@ -3,6 +3,7 @@
     "kind": "authored",
     "note": "C4Deployment header with a glued comment is rejected."
   },
+  "knownDivergence": "comment-takes-line-break",
   "accepted": false,
   "error": {
     "name": "Error",

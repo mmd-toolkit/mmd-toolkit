@@ -1859,43 +1859,43 @@ describe("a block diagram with a whitespace character that no fixture file holds
 
 /** Fixed kanban cases of Unicode whitespace, comment boundaries, and CR/LF. */
 const kanbanExamples: readonly (readonly [string, string, string])[] = [
-  ["kanban: tab-one-space", "kanban\n\tS\n\t\tA\n", "kanban\n S\n  A\n"],
+  ["kanban: tab-one-space", "kanban\n\tS\n\t\tA\n", "kanban\n  S\n    A\n"],
   [
     "kanban: blank-whitespace",
     "kanban\n S\n \t\n   A\n",
-    "kanban\n S\n\n   A\n",
+    "kanban\n  S\n\n    A\n",
   ],
   [
     "kanban: bare-trailing-trim",
     "kanban\n S   \n   A\t \n",
-    "kanban\n S   \n   A\t \n",
+    "kanban\n  S   \n    A\t \n",
   ],
   [
     "kanban: closed-trailing-trim",
     "kanban\n S[x]   \n   A[y]@{ticket: X}\t \n ::icon(z)  \n",
-    "kanban\n S[x]\n   A[y]@{ticket: X}\n   ::icon(z)\n",
+    "kanban\n  S[x]\n    A[y]@{ticket: X}\n    ::icon(z)\n",
   ],
   [
     "kanban: crlf-to-lf",
     'kanban\r\n S["x\r\n y"]\r\n',
-    'kanban\n S["x\n y"]\n',
+    'kanban\n  S["x\n y"]\n',
   ],
-  ["kanban: cr-to-lf", 'kanban\r S["x\r y"]\r', 'kanban\n S["x\n y"]\n'],
-  ["kanban: ls-is-value", "kanban\n S[x\u2028y]\n", "kanban\n S[x\u2028y]\n"],
+  ["kanban: cr-to-lf", 'kanban\r S["x\r y"]\r', 'kanban\n  S["x\n y"]\n'],
+  ["kanban: ls-is-value", "kanban\n S[x\u2028y]\n", "kanban\n  S[x\u2028y]\n"],
   [
     "kanban: ps-is-value",
     'kanban\n S["x\u2029y"]\n',
-    'kanban\n S["x\u2029y"]\n',
+    'kanban\n  S["x\u2029y"]\n',
   ],
   [
     "kanban: comment-ls-split-count",
     "kanban\n S[x]%% c\u2028   A\n",
-    "kanban\n S[x]%% c\u2028   A\n",
+    "kanban\n  S[x]%% c\u2028   A\n",
   ],
   [
     "kanban: comment-line-ls-taken",
     "kanban\n S[x]\n%%\n%%\u2028   A\n",
-    "kanban\n S[x]\n%%\n%%\u2028   A\n",
+    "kanban\n  S[x]\n%%\n%%\u2028   A\n",
   ],
   [
     "kanban: indent-whitespace-kind",
@@ -1905,73 +1905,77 @@ const kanbanExamples: readonly (readonly [string, string, string])[] = [
   [
     "kanban: whitespace-values",
     "kanban\n S\n   A\u00a0B[x\ufeff\t\u3000y]\n",
-    "kanban\n S\n   A\u00a0B[x\ufeff\t\u3000y]\n",
+    "kanban\n  S\n    A\u00a0B[x\ufeff\t\u3000y]\n",
   ],
   [
     "kanban: closed-whitespace-trim",
     "kanban\n S[x]\u00a0\ufeff\t\n",
-    "kanban\n S[x]\n",
+    "kanban\n  S[x]\n",
   ],
   [
     "kanban: nel-is-text",
     "kanban\n S\n   A\u0085B\n",
-    "kanban\n S\n   A\u0085B\n",
+    "kanban\n  S\n    A\u0085B\n",
   ],
   [
     "kanban: ls-indent-one-space",
     "kanban\n S\n\u2028  A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: ps-icon-value",
     "kanban\n S\n   A\n ::icon(x\u2029y)\n",
-    "kanban\n S\n   A\n   ::icon(x\u2029y)\n",
+    "kanban\n  S\n    A\n    ::icon(x\u2029y)\n",
   ],
-  ["kanban: header-tab-inline", "kanban\tS[x]\n", "kanban\n S[x]\n"],
-  ["kanban: leading-bom", "\ufeffkanban\n S\n", "\ufeffkanban\n S\n"],
+  ["kanban: header-tab-inline", "kanban\tS[x]\n", "kanban\n  S[x]\n"],
+  ["kanban: leading-bom", "\ufeffkanban\n S\n", "\ufeffkanban\n  S\n"],
   [
     "kanban: multiline-data-crlf",
     "kanban\r\n S\r\n   A@{\r\n ticket: X\r\n}\r\n",
-    "kanban\n S\n   A@{\n ticket: X\n}\n",
+    "kanban\n  S\n    A@{\n ticket: X\n}\n",
   ],
   [
     "kanban: multiline-data-cr",
     "kanban\r S\r   A@{\r ticket: X\r}\r",
-    "kanban\n S\n   A@{\n ticket: X\n}\n",
+    "kanban\n  S\n    A@{\n ticket: X\n}\n",
   ],
   [
     "kanban: class-separator-empty-tail",
     "kanban\n S\n :::c\u2028\n",
-    "kanban\n S\n :::c\n",
+    "kanban\n  S\n  :::c\n",
   ],
   [
     "kanban: ls-bare-value",
     "kanban\n S\n   A\u2028B\n",
-    "kanban\n S\n   A\u2028B\n",
+    "kanban\n  S\n    A\u2028B\n",
   ],
   [
     "kanban: ls-data-value",
     'kanban\n S\n   A@{label: "x\u2028y"}\n',
-    'kanban\n S\n   A@{label: "x\u2028y"}\n',
+    'kanban\n  S\n    A@{label: "x\u2028y"}\n',
   ],
   [
     "kanban: line-rule-ls-segment",
     'kanban\n S["style:#x\u2028;y"]\n',
-    'kanban\n S["style:#x\u2028;y"]\n',
+    'kanban\n  S["style:#x\u2028;y"]\n',
   ],
-  ["kanban: header-nbsp-count", "kanban\u00a0S[x]\n", "kanban\n S[x]\n"],
-  ["kanban: header-bom-count", "kanban\ufeffS[x]\n", "kanban\n S[x]\n"],
-  ["kanban: ps-indent-count", "kanban\n S\n\u2029  A\n", "kanban\n S\n   A\n"],
-  ["kanban: header-tab-trailing", "kanban\t\n S\n", "kanban\n S\n"],
+  ["kanban: header-nbsp-count", "kanban\u00a0S[x]\n", "kanban\n  S[x]\n"],
+  ["kanban: header-bom-count", "kanban\ufeffS[x]\n", "kanban\n  S[x]\n"],
+  [
+    "kanban: ps-indent-count",
+    "kanban\n S\n\u2029  A\n",
+    "kanban\n  S\n    A\n",
+  ],
+  ["kanban: header-tab-trailing", "kanban\t\n S\n", "kanban\n  S\n"],
   [
     "kanban: div-between-real-comments-ls-node",
     "kanban\n S[x]%% c\n%%{ }%%\u2028   A\n",
-    "kanban\n S[x]%% c\n%%{ }%%\u2028   A\n",
+    "kanban\n  S[x]%% c\n%%{ }%%\u2028   A\n",
   ],
   [
     "kanban: div-between-real-comments-ps-node",
     "kanban\n S[x]%% c\n%%{ }%%\u2029   A\n",
-    "kanban\n S[x]%% c\n%%{ }%%\u2029   A\n",
+    "kanban\n  S[x]%% c\n%%{ }%%\u2029   A\n",
   ],
   [
     "kanban: div-header-comment-ls-node",
@@ -1983,98 +1987,157 @@ const kanbanExamples: readonly (readonly [string, string, string])[] = [
     "kanban %% c\u2029 S\n",
     "kanban %% c\u2029 S\n",
   ],
-  ["kanban: header-bom-trailing", "kanban\ufeff\n S\n", "kanban\n S\n"],
-  ["kanban: header-crlf-trailing", "kanban\r\n\n S\n", "kanban\n S\n"],
-  ["kanban: header-ff-trailing", "kanban\f\n S\n", "kanban\n S\n"],
-  ["kanban: header-ideographic-trailing", "kanban\u3000\n S\n", "kanban\n S\n"],
-  ["kanban: header-ls-trailing", "kanban\u2028\n S\n", "kanban\n S\n"],
-  ["kanban: header-nbsp-trailing", "kanban\u00a0\n S\n", "kanban\n S\n"],
-  ["kanban: header-ps-trailing", "kanban\u2029\n S\n", "kanban\n S\n"],
-  ["kanban: header-vt-trailing", "kanban\u000b\n S\n", "kanban\n S\n"],
+  ["kanban: header-bom-trailing", "kanban\ufeff\n S\n", "kanban\n  S\n"],
+  ["kanban: header-crlf-trailing", "kanban\r\n\n S\n", "kanban\n  S\n"],
+  ["kanban: header-ff-trailing", "kanban\f\n S\n", "kanban\n  S\n"],
+  [
+    "kanban: header-ideographic-trailing",
+    "kanban\u3000\n S\n",
+    "kanban\n  S\n",
+  ],
+  ["kanban: header-ls-trailing", "kanban\u2028\n S\n", "kanban\n  S\n"],
+  ["kanban: header-nbsp-trailing", "kanban\u00a0\n S\n", "kanban\n  S\n"],
+  ["kanban: header-ps-trailing", "kanban\u2029\n S\n", "kanban\n  S\n"],
+  ["kanban: header-vt-trailing", "kanban\u000b\n S\n", "kanban\n  S\n"],
   [
     "kanban: lex-tab-whitespace-first",
     "kanban\n\t\n S\n   A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: lex-bom-whitespace-first",
     "kanban\n\ufeff\n S\n   A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: lex-cr-whitespace-first",
     "kanban\n\r\n S\n   A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: lex-crlf-whitespace-first",
     "kanban\n\r\n\n S\n   A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: lex-ideographic-whitespace-first",
     "kanban\n\u3000\n S\n   A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: lex-ls-whitespace-first",
     "kanban\n\u2028\n S\n   A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: lex-nbsp-whitespace-first",
     "kanban\n\u00a0\n S\n   A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: lex-ps-whitespace-first",
     "kanban\n\u2029\n S\n   A\n",
-    "kanban\n S\n   A\n",
+    "kanban\n  S\n    A\n",
   ],
   [
     "kanban: closing-delimiter-whitespace-kept",
     "---  \ntitle:   x\n---\t \nkanban\n S\n",
-    "---  \ntitle: x\n---\t \nkanban\n S\n",
+    "---  \ntitle: x\n---\t \nkanban\n  S\n",
   ],
   [
     "kanban: crlf-in-multiline-values",
     'kanban\r\n S\r\n   A["x\r\ny"]\r\n ::icon(a\r\nb)\r\n%%{init:\r\n{}}%%\r\n',
-    'kanban\n S\n   A["x\ny"]\n   ::icon(a\nb)\n   %%{init:\n{}}%%\n',
+    'kanban\n  S\n    A["x\ny"]\n    ::icon(a\nb)\n    %%{init:\n{}}%%\n',
   ],
   [
     "kanban: lex-icon-comment-ls",
     "kanban\n S\n ::icon(x)%% c\u2028   A\n",
-    "kanban\n S\n ::icon(x)%% c\u2028   A\n",
+    "kanban\n  S\n  ::icon(x)%% c\u2028   A\n",
   ],
   [
     "kanban: db-metadata-comment-ls",
     "kanban\n S@{}%% c\u2028   A\n",
-    "kanban\n S@{}%% c\u2028   A\n",
+    "kanban\n  S@{}%% c\u2028   A\n",
   ],
   [
     "kanban: shape-comment-ps",
     "kanban\n S[x]%% c\u2029   A\n",
-    "kanban\n S[x]%% c\u2029   A\n",
+    "kanban\n  S[x]%% c\u2029   A\n",
   ],
   [
     "kanban: common-comment-ps-swallows-suffix",
     "kanban\n S\n%% c\u2029   A\n",
-    "kanban\n S\n %% c\u2029   A\n",
+    "kanban\n  S\n  %% c\u2029   A\n",
   ],
   [
     "kanban: unicode-inline-directive-indentation",
     "kanban\n S\n\u00a0%%{init: {}}%%\t\u3000A\n",
-    "kanban\n S\n\u00a0%%{init: {}}%%\t\u3000A\n",
+    "kanban\n  S\n  %%{init: {}}%%  A\n",
   ],
   [
     "kanban: directive-before-unicode-comment",
     "kanban\n S[x]%%{init: {}}%%%% c\u2028   A\n",
-    "kanban\n S[x]%%{init: {}}%%%% c\u2028   A\n",
+    "kanban\n  S[x]%%{init: {}}%%%% c\u2028   A\n",
   ],
   [
     "kanban: directive-after-unicode-comment",
     "kanban\n S[x]%% c\u2029 %%{init: {}}%%  A\n",
-    "kanban\n S[x]%% c\u2029 %%{init: {}}%%  A\n",
+    "kanban\n  S[x]%% c\u2029 %%{init: {}}%%  A\n",
+  ],
+  [
+    "kanban: comment-ls-then-item-on-semicolon-line",
+    "kanban\n S[x]%% c;\u2028 T\n",
+    "kanban\n  S[x]%% c;\u2028   T\n",
+  ],
+  [
+    "kanban: comment-ps-then-section-on-semicolon-line",
+    "kanban\n S[x]%% c; \u2029T;x\n   A;b\n",
+    "kanban\n  S[x]%% c; \u2029 T;x\n    A;b\n",
+  ],
+  [
+    "kanban: semicolon-in-a-comment-with-text-after-it",
+    "kanban\n S\n   A[x]%% c;\u2028    B\n",
+    "kanban\n  S\n    A[x]%% c;\u2028   B\n",
+  ],
+  [
+    "kanban: semicolon-line-comment-ps-then-directive-line",
+    "kanban\n S[x]%% c;\u2029 %%{init: {}}%%  T\n",
+    "kanban\n  S[x]%% c;\u2029   %%{init: {}}%%  T\n",
+  ],
+  [
+    "kanban: semicolon-line-comment-ls-then-empty-line",
+    "kanban\n S[x]%% c;\u2028\n\n T\n",
+    "kanban\n  S[x]%% c;\u2028\n\n  T\n",
+  ],
+  [
+    "kanban: semicolon-line-two-comments-then-item",
+    "kanban\n S[x]%% a;\u2028%% b\u2028 T\n",
+    "kanban\n  S[x]%% a;\u2028%% b\u2028 T\n",
+  ],
+  [
+    "kanban: semicolon-line-comment-ls-then-semicolon-node",
+    "kanban\n S[x]%% c;\u2028 T;x\n   A\n",
+    "kanban\n  S[x]%% c;\u2028   T;x\n    A\n",
+  ],
+  [
+    "kanban: semicolon-line-empty-data-then-comment-ls",
+    "kanban\n S@{}%% c;\u2028 T\n",
+    "kanban\n  S@{}%% c;\u2028   T\n",
+  ],
+  [
+    "kanban: semicolon-line-icon-comment-ls-then-item",
+    "kanban\n S\n   A\n ::icon(a;b)%% c\u2028 T\n",
+    "kanban\n  S\n    A\n    ::icon(a;b)%% c\u2028   T\n",
+  ],
+  [
+    "kanban: semicolon-line-comment-ls-between-items",
+    "kanban\n S\n   A[x]%% c;\u2028   B\n   C\n",
+    "kanban\n  S\n    A[x]%% c;\u2028   B\n    C\n",
+  ],
+  [
+    "kanban: semicolon-line-crlf-trailing-whitespace",
+    "kanban\r\n S\r\n  A[x;y]   \r\n",
+    "kanban\n  S\n    A[x;y]\n",
   ],
 ]
 
@@ -2089,4 +2152,348 @@ describe("kanban whitespace and line boundaries", () => {
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
     expect(await describeFrontmatterChange(input, output)).toBeNull()
   })
+})
+
+/** C4 lexical whitespace can be a bare prefix or a value character. */
+const c4Examples: readonly (readonly [string, string, string])[] = [
+  [
+    "c4: exterior-whitespace-kinds",
+    'C4Context\n\t\u00a0\ufeff\u000b\u000c\u3000Person(a,"A")\n',
+    'C4Context\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: file-leading-bom",
+    '\ufeffC4Context\nPerson(a,"A")',
+    '\ufeffC4Context\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: internal-whitespace-kinds",
+    'C4Context\nPerson(a,"A\t\u00a0\ufeff\u000b\u000c\u3000B")',
+    'C4Context\n  Person(a, "A\t\u00a0\ufeff\u000b\u000c\u3000B")\n',
+  ],
+  [
+    "c4: tab-before-quote",
+    'C4Context\nPerson(a,\t"A", "D")',
+    'C4Context\n  Person(a,\t"A", "D")\n',
+  ],
+  [
+    "c4: nbsp-before-quote",
+    'C4Context\nPerson(a,\u00a0"A", "D")',
+    'C4Context\n  Person(a,\u00a0"A", "D")\n',
+  ],
+  [
+    "c4: bom-before-quote",
+    'C4Context\nPerson(a, \ufeff"A", "D")',
+    'C4Context\n  Person(a, \ufeff"A", "D")\n',
+  ],
+  [
+    "c4: bare-dollar-prefix",
+    'C4Context\nPerson(a, \t$descr="D", "X")',
+    'C4Context\n  Person(a, \t$descr="D", "X")\n',
+  ],
+  [
+    "c4: nbsp-dollar-prefix",
+    'C4Context\nPerson(a,\u00a0$descr="D", "X")',
+    'C4Context\n  Person(a,\u00a0$descr="D", "X")\n',
+  ],
+  [
+    "c4: bom-dollar-prefix",
+    'C4Context\nPerson(a, \ufeff$descr="D", "X")',
+    'C4Context\n  Person(a, \ufeff$descr="D", "X")\n',
+  ],
+  [
+    "c4: other-bare-prefix-kinds",
+    'C4Context\nPerson(a,\u000b\u000c\u3000"A", "D")',
+    'C4Context\n  Person(a,\u000b\u000c\u3000"A", "D")\n',
+  ],
+  [
+    "c4: harmless-bare-exterior",
+    "C4Context\nPerson(\t a\t,\u00a0A\ufeff,)",
+    "C4Context\n  Person(a, A,)\n",
+  ],
+  [
+    "c4: null-tab-unit",
+    'C4Context\nPerson("a"\t,"A")',
+    'C4Context\n  Person("a"\t, "A")\n',
+  ],
+  [
+    "c4: internal-key-whitespace",
+    'C4Context\nPerson(a,"A",$ first\u00a0second = "D")',
+    'C4Context\n  Person(a, "A", $first\u00a0second="D")\n',
+  ],
+  [
+    "c4: nel-is-value-text",
+    'C4Context\nPerson(a,"A\u0085B")',
+    'C4Context\n  Person(a, "A\u0085B")\n',
+  ],
+  [
+    "c4: title-tab-separator",
+    'C4Context\ntitle\t  T   \nPerson(a,"A")',
+    'C4Context\n  title   T   \n  Person(a, "A")\n',
+  ],
+  [
+    "c4: accdescription-tab-separator",
+    'C4Context\naccDescription\t  D   \nPerson(a,"A")',
+    'C4Context\n  accDescription   D   \n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-bare-value",
+    "C4Context\nPerson(a,one\u2028two,)",
+    "C4Context\n  Person(a, one\u2028two,)\n",
+  ],
+  [
+    "c4: ps-quoted-value",
+    'C4Context\nPerson(a,"one\u2029two")',
+    'C4Context\n  Person(a, "one\u2029two")\n',
+  ],
+  [
+    "c4: ls-argument-prefix",
+    'C4Context\nPerson(a,\u2028"A", "D")',
+    'C4Context\n  Person(a,\u2028"A", "D")\n',
+  ],
+  [
+    "c4: ps-title-separator",
+    'C4Context\ntitle\u2029T\nPerson(a,"A")',
+    'C4Context\n  title\u2029T\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-title-value",
+    'C4Context\ntitle A\u2028B\nPerson(a,"A")',
+    'C4Context\n  title A\u2028B\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ps-colon-gap",
+    'C4Context\naccTitle:\u2029T\nPerson(a,"A")',
+    'C4Context\n  accTitle:\u2029T\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-comment-boundary",
+    'C4Context\nPerson(a,"A") %% left\u2028right\nPerson(b,"B")',
+    'C4Context\n  Person(a, "A") %% left\u2028right\n  Person(b, "B")\n',
+  ],
+  [
+    "c4: ps-common-comment-in-value",
+    'C4Context\nPerson(a,"first\u2029%% note\nlast")',
+    'C4Context\n  Person(a,"first\u2029%% note\nlast")\n',
+  ],
+  [
+    "c4: ls-directive-terminator",
+    'C4Context\nPerson(a,"first%%{init: {}}%%\u2028last")',
+    'C4Context\n  Person(a,"first%%{init: {}}%%\u2028last")\n',
+  ],
+  [
+    "c4: ps-open-directive-terminator",
+    'C4Context\nPerson(a,"first%%{wrap\u2029last")',
+    'C4Context\n  Person(a,"first%%{wrap\u2029last")\n',
+  ],
+  [
+    "c4: ls-line-rule-segments",
+    'C4Context\nPerson(a,"style:#x;\u2028end;")',
+    'C4Context\n  Person(a,"style:#x;\u2028end;")\n',
+  ],
+  [
+    "c4: ps-line-rule-segments",
+    'C4Context\nPerson(a,"classDef:#x;\u2029end;")',
+    'C4Context\n  Person(a,"classDef:#x;\u2029end;")\n',
+  ],
+  [
+    "c4: ls-description-block",
+    'C4Context\naccDescr { A\u2028B }Person(a,"A")',
+    'C4Context\n  accDescr { A\u2028B }\n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ps-empty-block-gap",
+    'C4Context accDescr {\u2029}\naccDescr {}Person(a,"A")',
+    'C4Context accDescr {\u2029}\n  accDescr {}Person(a, "A")\n',
+  ],
+  [
+    "c4: cr-bare-and-named-values",
+    'C4Context\rPerson(a,one\r  two,$descr="three\r four")\r',
+    'C4Context\n  Person(a, one\n  two, $descr="three\n four")\n',
+  ],
+  [
+    "c4: ls-kept-comment-statement",
+    'C4Context\nPerson(a, "x") %% c;\u2028 Person(b, "y")\n',
+    'C4Context\n  Person(a, "x") %% c;\u2028 Person(b, "y")\n',
+  ],
+  [
+    "c4: ps-kept-comment-statement",
+    'C4Context\nPerson(a, "x") %% c;\u2029 Person(b, "y")\n',
+    'C4Context\n  Person(a, "x") %% c;\u2029 Person(b, "y")\n',
+  ],
+  [
+    "c4: ls-kept-call-comment-statement",
+    'C4Context\nPerson(a, "x;y") %% c\u2028 Person(b, "y")\n',
+    'C4Context\n  Person(a, "x;y") %% c\u2028 Person(b, "y")\n',
+  ],
+  [
+    "c4: ps-kept-call-comment-statement",
+    'C4Context\nPerson(a, "x;y") %% c\u2029 Person(b, "y")\n',
+    'C4Context\n  Person(a, "x;y") %% c\u2029 Person(b, "y")\n',
+  ],
+  [
+    "c4: ls-comment-statement-control",
+    'C4Context\nPerson(a, "x") %% c\u2028 Person(b, "y")\n',
+    'C4Context\n  Person(a, "x") %% c\u2028 Person(b, "y")\n',
+  ],
+  [
+    "c4: ps-comment-statement-control",
+    'C4Context\nPerson(a, "x") %% c\u2029 Person(b, "y")\n',
+    'C4Context\n  Person(a, "x") %% c\u2029 Person(b, "y")\n',
+  ],
+  [
+    "c4: ls-kept-comment-whitespace-text",
+    'C4Context\nPerson(a, "x;y") %% c\u2028 \t x  \n',
+    'C4Context\n  Person(a, "x;y") %% c\u2028 \t x\n',
+  ],
+  [
+    "c4: ps-kept-comment-whitespace-text",
+    'C4Context\nPerson(a, "x") %% c;\u2029 \t x  \n',
+    'C4Context\n  Person(a, "x") %% c;\u2029 \t x\n',
+  ],
+  [
+    "c4: ls-kept-comment-final-character",
+    'C4Context\nPerson(a, "x;y") %% c\u2028\n',
+    'C4Context\n  Person(a, "x;y") %% c\u2028\n',
+  ],
+  [
+    "c4: ps-kept-comment-final-character",
+    'C4Context\nPerson(a, "x") %% c;\u2029\n',
+    'C4Context\n  Person(a, "x") %% c;\u2029\n',
+  ],
+  [
+    "c4: ls-kept-call-comment-eof",
+    'C4Context\nPerson(a, "x;y") %% c\u2028 x',
+    'C4Context\n  Person(a, "x;y") %% c\u2028 x\n',
+  ],
+  [
+    "c4: ps-kept-call-comment-eof",
+    'C4Context\nPerson(a, "x;y") %% c\u2029 x',
+    'C4Context\n  Person(a, "x;y") %% c\u2029 x\n',
+  ],
+  [
+    "c4: ls-kept-comment-eof",
+    'C4Context\nPerson(a, "x") %% c;\u2028',
+    'C4Context\n  Person(a, "x") %% c;\u2028\n',
+  ],
+  [
+    "c4: ps-kept-comment-eof",
+    'C4Context\nPerson(a, "x") %% c;\u2029',
+    'C4Context\n  Person(a, "x") %% c;\u2029\n',
+  ],
+  [
+    "c4: ls-comment-header-control",
+    'C4Context %% c\u2028 x\n \nPerson(a, "A")\n',
+    'C4Context %% c\u2028 x\n \n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ps-comment-header-control",
+    'C4Context %% c\u2029 x\n \nPerson(a, "A")\n',
+    'C4Context %% c\u2029 x\n \n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-comment-opener-control",
+    'C4Context\nSystem_Boundary(s, "S") { %% c\u2028 x\n \nPerson(a, "A")\n}\n',
+    'C4Context\n  System_Boundary(s, "S") { %% c\u2028 x\n \n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ps-comment-opener-control",
+    'C4Context\nSystem_Boundary(s, "S") { %% c\u2029 x\n \nPerson(a, "A")\n}\n',
+    'C4Context\n  System_Boundary(s, "S") { %% c\u2029 x\n \n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ls-kept-comment-header",
+    'C4Context %% c;\u2028 x\n \nPerson(a, "A")\n',
+    'C4Context %% c;\u2028 x\n \n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ps-kept-comment-header",
+    'C4Context %% c;\u2029 x\n \nPerson(a, "A")\n',
+    'C4Context %% c;\u2029 x\n \n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-kept-comment-header-suffix-semicolon",
+    'C4Context %% c\u2028 x;\n \nPerson(a, "A")\n',
+    'C4Context %% c\u2028 x;\n \n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ps-kept-comment-header-suffix-semicolon",
+    'C4Context %% c\u2029 x;\n \nPerson(a, "A")\n',
+    'C4Context %% c\u2029 x;\n \n  Person(a, "A")\n',
+  ],
+  [
+    "c4: ls-kept-comment-opener",
+    'C4Context\nSystem_Boundary(s, "S") { %% c;\u2028 x\n \nPerson(a, "A")\n}\n',
+    'C4Context\n  System_Boundary(s, "S") { %% c;\u2028 x\n \n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ps-kept-comment-opener",
+    'C4Context\nSystem_Boundary(s, "S") { %% c;\u2029 x\n \nPerson(a, "A")\n}\n',
+    'C4Context\n  System_Boundary(s, "S") { %% c;\u2029 x\n \n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ls-kept-call-comment-opener",
+    'C4Context\nSystem_Boundary(s, "S;") { %% c\u2028 x\n \nPerson(a, "A")\n}\n',
+    'C4Context\n  System_Boundary(s, "S;") { %% c\u2028 x\n \n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ps-kept-call-comment-opener",
+    'C4Context\nSystem_Boundary(s, "S;") { %% c\u2029 x\n \nPerson(a, "A")\n}\n',
+    'C4Context\n  System_Boundary(s, "S;") { %% c\u2029 x\n \n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ls-kept-comment-opener-suffix-semicolon",
+    'C4Context\nSystem_Boundary(s, "S") { %% c\u2028 x;\n \nPerson(a, "A")\n}\n',
+    'C4Context\n  System_Boundary(s, "S") { %% c\u2028 x;\n \n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ps-kept-comment-opener-suffix-semicolon",
+    'C4Context\nSystem_Boundary(s, "S") { %% c\u2029 x;\n \nPerson(a, "A")\n}\n',
+    'C4Context\n  System_Boundary(s, "S") { %% c\u2029 x;\n \n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ls-kept-directive",
+    'C4Context\nPerson(a, "x;y") %%{init:\u2028 {}}%%\n',
+    'C4Context\n  Person(a, "x;y") %%{init:\u2028 {}}%%\n',
+  ],
+  [
+    "c4: ps-kept-directive",
+    'C4Context\nPerson(a, "x;y") %%{init:\u2029 {}}%%\n',
+    'C4Context\n  Person(a, "x;y") %%{init:\u2029 {}}%%\n',
+  ],
+  [
+    "c4: ls-kept-boundary-brace-gap",
+    'C4Context\nSystem_Boundary(b, "x;")\n\u2028      {\nPerson(a,"A")\n}\n',
+    'C4Context\n  System_Boundary(b, "x;")\n\u2028      {\n    Person(a, "A")\n  }\n',
+  ],
+  [
+    "c4: ps-kept-boundary-brace-gap",
+    'C4Context\nSystem_Boundary(b, "x;")\n\u2029      {\nPerson(a,"A")\n}\n',
+    'C4Context\n  System_Boundary(b, "x;")\n\u2029      {\n    Person(a, "A")\n  }\n',
+  ],
+]
+
+describe("C4 whitespace and line boundaries", () => {
+  it.each(c4Examples)("%s", async (_title, input, expected) => {
+    const output = await format(input)
+    expect(output).toBe(expected)
+    expect(await format(output)).toBe(output)
+    expect(dbOfText(output, defaultEmbedded())).toEqual(
+      dbOfText(input, defaultEmbedded()),
+    )
+    expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
+    expect(await describeFrontmatterChange(input, output)).toBeNull()
+  })
+
+  it.each([
+    'C4Context\nPerson(a,"A")\u2028Person(b,"B")',
+    'C4Context\nPerson(a,"A")\u2029Person(b,"B")',
+    'C4Context\nPerson(a,"A",$descr=\t"D")',
+    'C4Context\nPerson(a,"A")\u0085',
+  ])(
+    "retains rejection of C4 Unicode and delimiter input %j",
+    async (input) => {
+      await expect(format(input)).rejects.toBeInstanceOf(SyntaxError)
+    },
+  )
 })

@@ -70,9 +70,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
   header, as every diagram type does, and for no other comment; a gantt diagram
   has the marks `%%` and `%` for its diagram comments, and a journey diagram and
   a requirement diagram the marks `#`, `%%`, and `%`, a timeline diagram the
-  same marks, a mindmap diagram, an xychart diagram, and a quadrant chart the
-  mark `%%`; a fragment without a mark follows a comment region
-  (parser/docs/tokens.md, Comment;
+  same marks, a mindmap diagram, an xychart diagram, a C4 diagram, and a
+  quadrant chart the mark `%%`; a fragment without a mark follows a comment
+  region (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
@@ -483,6 +483,20 @@ const problems: TreeProblem[] = checkTree(text, tree)
     The tokens of a string label are one `String` token, or `StringFragment`
     tokens where a directive, a comment region, or an ignored `;` cuts the
     string, and the `RawText` tokens of the words after it.
+  - c4: child types, nullable fields, nonempty argument lists, exact keyword
+    families and diagram kinds follow ast/c4.md; `beforeBody` holds only empty
+    description blocks, and a boundary body starts with a significant call.
+    C4Literal values retain written text and exclude exterior whitespace except
+    in `title` and `accDescription`; strings retain their shared value, raw text
+    and closed fields, and named values are nonempty. Calls, named attributes,
+    titles, accessibility forms and statement gaps use statement-checks.ts for
+    layout, whitespace and hulls. Diagram comments have the mark `%%` and leave
+    their line terminator outside. Token kinds and keyword and punctuation
+    tables follow `parser/docs/tokens/c4.md`, including `(,` with its ASCII
+    spaces and `,,` as single tokens. `check-tree-c4.test.ts` checks hand-made
+    trees and breaks the recorded trees of named fixtures. The corpus checks
+    include every recorded C4 tree and the common detection fixtures for all
+    five diagram kinds; C4 has no recorded-tree exclusion.
   - kanban: child types and value words follow the tables of ast/kanban.md; the
     body is flat and may be empty, as may data and decoration lists. A node has
     a text, a shape, or both, with nonnegative integer indentation matching its

@@ -32,6 +32,7 @@ import type { XychartDiagram, XychartNode } from "../src/ast/xychart.ts"
 import type { QuadrantDiagram, QuadrantNode } from "../src/ast/quadrant.ts"
 import type { BlockDiagram, BlockTreeNode } from "../src/ast/block.ts"
 import type { KanbanDiagram, KanbanTreeNode } from "../src/ast/kanban.ts"
+import type { C4Diagram, C4Node } from "../src/ast/c4.ts"
 import { ParseError } from "../src/errors.ts"
 
 // The checks on types run in the type checker (`tsc` covers tests/); the
@@ -60,6 +61,7 @@ describe("the types of ast.md", () => {
       | QuadrantNode["type"]
       | BlockTreeNode["type"]
       | KanbanTreeNode["type"]
+      | C4Node["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -78,6 +80,7 @@ describe("the types of ast.md", () => {
       | QuadrantDiagram
       | BlockDiagram
       | KanbanDiagram
+      | C4Diagram
     >()
   })
 

@@ -59,7 +59,6 @@ export function kanbanDbOf(
     const summary: Record<string, JsonValue> = {
       id: nodeId,
       label: replace(description ?? writtenId),
-      level: node.indent,
       isGroup,
       ...(isGroup || sectionId === undefined ? {} : { parentId: sectionId }),
     }

@@ -2,7 +2,7 @@
   "message": "Unexpected token",
   "range": [
     13,
-    25
+    15
   ],
   "loc": {
     "start": {
@@ -11,7 +11,7 @@
     },
     "end": {
       "line": 2,
-      "column": 18
+      "column": 8
     }
   }
 }

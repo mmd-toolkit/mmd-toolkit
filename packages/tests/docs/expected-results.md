@@ -360,7 +360,11 @@ the statement stays; a separator that ends a comment with only whitespace after
 it goes with that whitespace. The comment lines, the lines before the header,
 and the node lines stay as they are. The generator stops where a line to take
 out stands inside the text of a node that is not closed, since a blank line is
-then a character of the text. [fixture:
+then a character of the text. The kanban has the same divergence and the same
+rule as the mindmap: a line feed goes before a statement after the U+2028 or the
+U+2029 that ends a comment on the header line, and also between statements.
+[fixture: kanban/div-header-comment-ls-node] [fixture:
+kanban/div-header-comment-ps-node] [fixture:
 mindmap/div-header-trailing-spaces-then-node] [fixture:
 mindmap/div-header-space-directive-then-node] [fixture:
 mindmap/div-tab-line-after-header] [fixture:
@@ -514,6 +518,22 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   feed. [fixture: gantt/div-percent-comment-takes-line-feed-after-href]
   [fixture: gantt/div-percent-comment-takes-line-feeds-after-call] [fixture:
   gantt/lex-space-percent-comment-after-call-then-href-line]
+- `comment-takes-line-break`, in the C4 lexer
+  ([`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L98-L99)):
+  both rules that read `%%`, the rest of the line and the line feeds after it
+  end at the end of the line, so the line terminator after a diagram comment
+  separates the header, call, or boundary from what follows, also with an empty
+  line after it. [fixture: c4/header-context-comment-glued] [fixture:
+  c4/header-context-comment-on-header-line] [fixture:
+  c4/div-comment-between-joined-statements] [fixture:
+  c4/div-boundary-comment-before-inline-body] [fixture:
+  c4/div-boundary-comment-before-next-statement] [fixture:
+  c4/div-header-comment-blank-recovery] [fixture:
+  c4/div-comment-between-blank-recovery] [fixture: c4/div-diagram-comment-u2028]
+  [fixture: c4/div-diagram-comment-u2029] A spaces-only line after the comment
+  still separates the statements. [fixture:
+  c4/header-header-comment-spaces-recovery] [fixture:
+  c4/lex-comment-between-spaces-recovery]
 - `percent-brace-after-unit`, in the gantt lexer
   ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)):
   the rule that enters the start state `open_directive` at every `%%{` is taken

@@ -4,7 +4,7 @@
 [bare-percent-line-before-header.md](./bare-percent-line-before-header.md)
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
-sankey、block。
+sankey、block、c4。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 対象の構文
@@ -219,6 +219,17 @@ class/header-after-bare-percent-then-whitespace-line-then-comment-line]
 この仕様は mermaid.js が拒否する入力を受理し、
 mermaid.js がここで受理する入力を拒否することはありません。
 
+C4 では見出しの前で `%%` だけの行にスペースだけの行が続くと、
+ここでは前置きとなり、
+mermaid.js は見出しの前に改行を残して拒否します。
+[fixture: c4/div-leading-percent-space-blank]
+
+C4 の見出しの直前の裸のパーセント行と、
+その後に空行だけがある形は両者とも受理します。
+[fixture: c4/header-after-bare-percent-line]
+[fixture: c4/header-leading-percent-blank]
+[fixture: c4/header-leading-percent-before-different-header]
+
 ## 書き手にとっての意味
 
 ヘッダーの前の `%%` だけの行や `%%{ }%%` の行を、
@@ -285,3 +296,20 @@ mermaid.js がこの理由で拒否する入力を差異とします。
   見つかりませんでした
   （2026-10-07 に `comment before diagram type`、`detectType comment`、
   `stripAnyComments`、`UnknownDiagramError comment` で検索）。
+
+- 固定した版の
+  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  は例を C4 の見出しから始め、
+  その前の `%%` だけの行を説明していません。
+  `mermaid-js/mermaid` の issue と pull request を、
+  2026-10-21 に `C4 comment header in:title,body`、
+  `C4 comment "header" in:title,body`、
+  `C4 "bare" comment in:title,body`、
+  `stripAnyComments in:title,body` で検索したところ、
+  [issue #8196](https://github.com/mermaid-js/mermaid/issues/8196)
+  が見つかりました。
+  この issue は C4 だけを取り上げるものではなく、
+  検出時と前処理時のコメント除去の不一致を記録しています。
+  C4 の見出しの前で、
+  裸のパーセント行にスペースだけの行が続く形についての報告は、
+  見つかりませんでした。

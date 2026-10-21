@@ -4,13 +4,11 @@
  * both, and the embedded data is as written in both (see `db-reading.ts`).
  * The outputs are written by
  * `pnpm --filter prettier-plugin-mmd run test:update` and reviewed as diffs;
- * this test never writes them. A rejected-inputs fixture expects a syntax
- * error and leaves Markdown embedding to the host.
+ * this test never writes them.
  */
 import { describe, expect, it } from "vitest"
 import * as prettier from "prettier"
 import plugin from "../src/index.ts"
-import { formatMarkdown, formatMarkdownWithoutPlugin } from "./helpers.ts"
 import type { FormatFixture } from "./fixtures.ts"
 import { loadFormatFixtures } from "./fixtures.ts"
 import {
@@ -44,21 +42,6 @@ describe("formatting fixtures", () => {
         `${fixture.outputPath} is missing; run pnpm --filter prettier-plugin-mmd run test:update`,
       ).not.toBeNull()
       const output = fixture.output as string
-      if (fixture.rejected) {
-        expect(output).toBe(fixture.input)
-        await expect(format(fixture, fixture.input)).rejects.toBeInstanceOf(
-          SyntaxError,
-        )
-        // A fence necessarily terminates its last content line. A rejected
-        // bare header without that newline has no equivalent fence input.
-        if (fixture.input.endsWith("\n")) {
-          const markdown = `\`\`\`mermaid\n${fixture.input}\`\`\`\n`
-          expect(await formatMarkdown(markdown)).toBe(
-            await formatMarkdownWithoutPlugin(markdown),
-          )
-        }
-        return
-      }
       expect(await format(fixture, fixture.input)).toBe(output)
       expect(await format(fixture, output)).toBe(output)
       expect(dbOfText(output, defaultEmbedded())).toEqual(

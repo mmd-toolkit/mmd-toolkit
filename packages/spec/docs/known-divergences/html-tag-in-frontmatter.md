@@ -114,6 +114,10 @@ ends the label string at its second quote and rejects the input. [fixture:
 kanban/div-frontmatter-open-tag] Without `<a` in frontmatter, both reject it.
 [fixture: kanban/gram-frontmatter-no-tag-reference]
 
+In C4, with `title: <a` in frontmatter, `Person(a,"b="c">d")` is rejected here;
+mermaid.js converts the inner attribute quotes and accepts it. [fixture:
+c4/div-frontmatter-open-tag]
+
 ## What it means for an author
 
 A frontmatter whose title has a `<` followed by a word and no `>` after it, such
@@ -147,3 +151,15 @@ the steps of mermaid.js: the replacement runs before the frontmatter is removed.
 It is nothing that a specification would state as a rule of the syntax; this is
 the second of the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
+
+## The documentation of mermaid.js and its issues
+
+- The pinned
+  [C4 documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+  uses `<br/>` inside a quoted description and
+  [shows YAML frontmatter for wrapping configuration](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171).
+  It does not describe a tag starting in frontmatter and continuing into a C4
+  argument. Searches of issues and pull requests in `mermaid-js/mermaid` on
+  2026-10-21 with `C4 frontmatter in:title,body`,
+  `frontmatter HTML quotes in:title,body`, and
+  `C4 frontmatter tag in:title,body` found no report about that form.

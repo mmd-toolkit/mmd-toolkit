@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: Direction lookahead rejects the opening-brace line of a boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...extBoundary(b,\"B\"){ direction TBPerso\n---------------------^\nExpecting 'LBRACE', got 'direction_tb'"
+  }
+}

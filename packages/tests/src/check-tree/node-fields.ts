@@ -18,6 +18,36 @@ import type { FieldSpec } from "./field-spec.ts"
 export const NODE_FIELDS: Readonly<
   Record<string, Readonly<Record<string, FieldSpec>>>
 > = {
+  C4Diagram: {
+    kind: { shape: "value", valueType: "string" },
+    beforeBody: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  C4ElementStatement: {
+    keyword: { shape: "value", valueType: "string" },
+    arguments: { shape: "nodeListWithNull" },
+  },
+  C4BoundaryStatement: {
+    keyword: { shape: "value", valueType: "string" },
+    arguments: { shape: "nodeListWithNull" },
+    beforeBody: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  C4RelationshipStatement: {
+    keyword: { shape: "value", valueType: "string" },
+    arguments: { shape: "nodeListWithNull" },
+  },
+  C4UpdateStatement: {
+    keyword: { shape: "value", valueType: "string" },
+    arguments: { shape: "nodeListWithNull" },
+  },
+  C4NamedAttribute: { key: { shape: "nodeOrNull" }, value: { shape: "node" } },
+  C4TitleStatement: { value: { shape: "node" } },
+  C4AccDescriptionStatement: { value: { shape: "node" } },
+  C4AccTitleStatement: { value: { shape: "nodeOrNull" } },
+  C4AccDescrStatement: { value: { shape: "nodeOrNull" } },
+  C4AccDescrBlockStatement: { value: { shape: "nodeOrNull" } },
+  C4Literal: { value: { shape: "value", valueType: "string" } },
   BlockDiagram: { body: { shape: "nodeList" } },
   BlockNodeStatement: {
     node: { shape: "node" },

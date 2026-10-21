@@ -2,7 +2,7 @@
 
 英語版: [er-no-ignored-text.md](./er-no-ignored-text.md)
 
-mermaid.js が読まないテキストを禁止する。
+mermaid.js が捨てるテキストを禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -16,7 +16,7 @@ mermaid.js は行全体を方向の文として読み、残りをエラーなし
 
 ## 規則の詳細
 
-この規則は、mermaid.js が読まないテキストを報告する。
+この規則は、mermaid.js が捨てるテキストを報告する。
 対象の図種は `er` である。
 
 `A ||--o{ B : x direction LR` は方向を `LR` にし、実体も関係も作らない。

@@ -4,7 +4,7 @@
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
-mindmap、timeline、xychart、quadrant、block、kanban。
+mindmap、timeline、xychart、quadrant、block、kanban、c4。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -231,6 +231,17 @@ mermaid.js は `style:#x{;{b}}` と `style:#x{{b};}` を、
 [fixture: kanban/lex-label-style-rule-other-line]
 [fixture: kanban/lex-semicolon-icon-marker]
 
+C4 の `accDescr { style:#x }Pers;on(a,"A")` は、
+選択された `;` が呼び出し語の内部にあるためここでは拒否し、
+mermaid.js は除いて呼び出しを受理します。
+[fixture: c4/div-semicolon-call-keyword-after-block]
+
+裸の引数や名前付きキーの内部の選択された `;` は前置きとなり、
+`=` と開き引用符の間のものは区切りの間の前置きとなります。
+[fixture: c4/lex-semicolon-text-selected]
+[fixture: c4/lex-semicolon-key-selected]
+[fixture: c4/lex-semicolon-delimiter-selected]
+
 ## 書き手にとっての結果
 
 名前、数、キーワード、矢印、区切り記号の中の無視される `;` は、
@@ -295,3 +306,17 @@ mermaid.js がその中の無視される `;` を読めるのは、
   `semicolon flowchart`、`semicolon in style`、`semicolon link`、
   `encodeEntities`、`classDef semicolon`、`semicolon entity` で、
   2026-10-03 に検索しました。
+
+- 固定した版の
+  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L43-L49)
+  は `UpdateElementStyle` と `UpdateRelStyle` を `;` なしで示し、
+  呼び出し語の内部から除かれる `;` を説明していません。
+  `mermaid-js/mermaid` の issue と pull request を、
+  2026-10-21 に `C4 semicolon in:title,body`、
+  `C4 encodeEntities in:title,body` で検索したところ、
+  [PR #8039](https://github.com/mermaid-js/mermaid/pull/8039)
+  が見つかりました。
+  この PR はタイトルと説明の `#` の扱いを変え、
+  それらの値を `;` が終える規則は維持すると明記しています。
+  C4 のキーワード内の選択された `;` を扱う issue や pull request は、
+  見つかりませんでした。

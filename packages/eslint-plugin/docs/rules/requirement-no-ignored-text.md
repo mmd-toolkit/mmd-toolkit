@@ -3,7 +3,7 @@
 Japanese version:
 [requirement-no-ignored-text.ja.md](./requirement-no-ignored-text.ja.md)
 
-Disallow text that mermaid.js does not read.
+Disallow text that mermaid.js drops.
 
 <!-- begin auto-generated rule notice -->
 
@@ -17,8 +17,8 @@ drops the rest without an error.
 
 ## Rule Details
 
-This rule reports text that mermaid.js does not read on a direction line. It
-applies to `requirement`.
+This rule reports text that mermaid.js drops on a direction line. It applies to
+`requirement`.
 
 `r - satisfies -> e direction LR` sets the direction `LR` and makes no
 relationship. `direction LR x` sets the direction `LR`, and the `x` is dropped,

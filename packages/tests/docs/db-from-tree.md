@@ -113,6 +113,10 @@ are read from the tree like this:
   quotes, since mermaid.js reads the space units into the text (the rule is in
   [db-from-tree/quadrant.md](./db-from-tree/quadrant.md)). [fixture:
   quadrant/db-quadrant-spaces-trimmed]
+- **C4 calls**: arguments, titles and accessibility texts use only their value
+  nodes and converted node ranges; nested bodies determine the boundary stack,
+  and named attributes update the complete own attribute bags (the steps are in
+  [db-from-tree/c4.md](./db-from-tree/c4.md)). [fixture: c4/db-all-fields]
 - **Kanban rows**: ids, labels, and icons use only their node ranges and written
   values; the flat body determines membership, and each adjacent data suffix
   consumes one embedded effect (the steps are in
@@ -404,6 +408,8 @@ does not, are:
   the quadrants; and the names of the points. The class names, the coordinates,
   and the styles are not reached. [fixture:
   quadrant/config-security-level-other-all]
+- C4: title and accessibility text; shape, boundary and relationship arguments
+  are not reached. [fixture: c4/config-security-level-other]
 - Block: the labels of nodes, block arrows, composites, and edges; ids, classes,
   styles, and directions are not reached. [fixture:
   block/config-security-level-other-all]
@@ -444,6 +450,9 @@ mermaid.js reads them further, and the builders do the same.
   sequence/config-security-level-other-link]
 
 ## The check
+
+The recorded-tree comparisons include C4, block, kanban, and their common
+detection fixtures, including all five C4 diagram kinds.
 
 `tests/db-from-tree.test.ts` builds the Db of every fixture that records a tree
 and an accepted result with a Db, and requires it to be the recorded Db

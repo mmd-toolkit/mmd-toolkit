@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A header comment without a statement does not make a complete diagram."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nC4Context %% c\n--------------^\nExpecting 'NEWLINE', got 'EOF'"
+  }
+}

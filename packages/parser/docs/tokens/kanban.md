@@ -12,26 +12,27 @@ The units of
 [Lexical structure](../../../spec/docs/diagrams/kanban.md#lexical-structure)
 give these grammar items and token kinds:
 
-| Kind         | Items                                                                         |
-| ------------ | ----------------------------------------------------------------------------- |
-| `Keyword`    | `header`; `::icon(`                                                           |
-| `Punctuator` | `opener`; `closer`; `:::`; the `)` of an icon; `@{` and `}` of data           |
-| `RawText`    | `node-text`; `shape-text`; `icon-text`; `class-text`; the whole data interior |
-| `String`     | `string` and `markdown-string`, including their delimiters                    |
+| Kind         | Items                                                                                                                           |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| `Keyword`    | `header`; `::icon(`                                                                                                             |
+| `Punctuator` | `opener`; `closer`; `:::`; the `)` of an icon; `data-start` and the `}` of a data block                                         |
+| `RawText`    | `node-text`; `shape-text`; `icon-text`; `class-text`; the `data-text` and `data-quote` units of a data block, together one item |
+| `String`     | `string` and `markdown-string`, including their delimiters                                                                      |
 
 [fixture: kanban/db-shape-square] [fixture: kanban/db-decoration-icon-item]
 [fixture: kanban/db-decoration-class-item] [fixture: kanban/db-metadata-all]
 [fixture: kanban/spec-kanban-562eb2dc] [fixture: kanban/db-markdown-label]
 
-Each listed unit is one item, except `data-block`: its opener, whole interior,
-and closer are three separate items. An empty interior makes no token; a
-whitespace-only interior makes a `RawText` token of that whitespace. Quotes in
-data stay in the same `RawText` item, even around `}` or `^`. Adjacent data
-blocks keep separate tokens. No `Identifier` or `Numeric` items are used.
-[fixture: kanban/db-metadata-empty] [fixture: kanban/db-metadata-whitespace]
-[fixture: kanban/db-metadata-quotes-empty] [fixture:
-kanban/db-metadata-quoted-brace] [fixture: kanban/db-metadata-double-caret]
-[fixture: kanban/db-metadata-two-items]
+Each listed unit is one item, except the units between the `data-start` and the
+`}` of a data block, which are one `RawText` item together, as in a flowchart:
+the `data-text` units and the `data-quote` units around a quoted part, also one
+around `}` or `^`, make one `RawText` token for the whole interior. An empty
+interior makes no token; a whitespace-only interior makes a `RawText` token of
+that whitespace. Adjacent data blocks keep separate tokens. No `Identifier` or
+`Numeric` items are used. [fixture: kanban/db-metadata-empty] [fixture:
+kanban/db-metadata-whitespace] [fixture: kanban/db-metadata-quotes-empty]
+[fixture: kanban/db-metadata-quoted-brace] [fixture:
+kanban/db-metadata-double-caret] [fixture: kanban/db-metadata-two-items]
 
 Indentation and statement-context whitespace make no tokens. Node text keeps its
 trailing whitespace. Shape text, icon text, class text, and data interiors keep

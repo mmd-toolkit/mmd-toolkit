@@ -10,13 +10,11 @@
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "\"\"",
         "label": "\"\"",
-        "level": 1,
         "isGroup": true
       }
     ]

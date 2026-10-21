@@ -3,7 +3,7 @@
 Japanese version:
 [flowchart-no-ignored-text.ja.md](./flowchart-no-ignored-text.ja.md)
 
-Disallow text on a direction line that mermaid.js does not read.
+Disallow text on a direction line that mermaid.js drops.
 
 <!-- begin auto-generated rule notice -->
 

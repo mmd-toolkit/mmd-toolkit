@@ -10,13 +10,11 @@
       {
         "id": "class A c ",
         "label": "class A c ",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       }
     ]

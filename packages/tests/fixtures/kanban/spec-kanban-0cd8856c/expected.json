@@ -13,13 +13,11 @@
       {
         "id": "section1",
         "label": "section1",
-        "level": 4,
         "isGroup": true
       },
       {
         "id": "section2",
         "label": "section2",
-        "level": 4,
         "isGroup": true
       }
     ]

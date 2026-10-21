@@ -18,4 +18,5 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "quadrant",
   "block",
   "kanban",
+  "c4",
 ]

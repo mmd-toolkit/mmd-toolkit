@@ -1221,17 +1221,20 @@ Prettier はすべての行の末尾の空白を取り除きます。
 他の言語と同じく Prettier の `endOfLine` オプションに従います。
 Markdown では、コードブロックを Prettier に任せます。
 
-## Kanban の level、不透明な末尾、保持行
+## Kanban の字下げ、不透明な末尾、保持行
 
-kanban は最初の列も含め、字下げの絶対文字数を保ちます。
-通常の字下げだけ、1 文字を 1 文字に置き換えます。
+kanban のボードの Db は字下げを持たず、
+ノードの字下げを最初のノードの字下げと比べて、セクションと項目を区別します。
+そのため、印字は、セクションは 1 段、項目は 2 段の字下げを決め、
+役割を決めるものを保ちます。
 裸の id・ラベル・icon・class の空白は値として残します。
-装飾はノードの列に揃え、インラインディレクティブの行は字下げと隙間を保ちます。
+装飾はノードの桁に揃え、インラインディレクティブの行は、
+ディレクティブと隣の隙間を保ち、最初のディレクティブの前の空白を印字が決めます。
 [kanban の規則](./kanban.ja.md)を参照してください。
-[fixture: kanban/indentation/absolute-counts]
+[fixture: kanban/indentation/sections-and-items]
 [fixture: kanban/icons-and-classes/aligned]
-[fixture: kanban/directives/leading-directive-kept]
-[fixture: kanban/trailing-whitespace/trailing-bare-id-trim]
+[fixture: kanban/directives/leading-directive-indentation-decided]
+[fixture: kanban/trailing-whitespace/class-trailing-trim]
 
 データブロックは、中身と付着位置、
 隣接するブロックや間のディレクティブも保ちます。
@@ -1257,3 +1260,46 @@ CR・LF の変換は他図種と共通の設定に従います。
 [test: kanban: line-rule-ls-segment]
 [test: kanban: comment-ls-split-count]
 [test: a kanban diagram with other line endings]
+
+## C4 の引数の単位と物理行
+
+C4 は書かれた引数の単位と位置をすべて保ちます。
+空項目、空文字列、使われない添字と sprite、余分な引数、
+隣接する単位も対象です。
+裸と引用符付きの形は作者のままにし、
+裸の引用符または `$` の前の非 ASCII 空白も保ちます。
+その空白が裸の単位を選ぶためです。
+引用符付き引数の後の空白だけの単位も残します。
+[C4 の規則](./c4.ja.md)を参照してください。
+[fixture: c4/argument-spacing/null-space-kept]
+[fixture: c4/empty-entries/named-null-slots]
+[fixture: c4/number-like-text/excess-kept]
+[test: c4: tab-before-quote] [test: c4: bare-dollar-prefix]
+
+空の説明ブロックは隣接したままにし、
+二つの `beforeBody` の隙間も保ちます。
+意味のある文も改行も供給しないためです。
+複数行の値と名前付きキーの外側の改行は行と列を保ちます。
+direction の文字の結合は、
+先頭列でも受理される入力を拒否に変えうるためです。
+[fixture: c4/empty-description-blocks/empty-header-gap]
+[fixture: c4/empty-description-blocks/empty-boundary-next-gap]
+[fixture: c4/empty-description-blocks/empty-on-close-line]
+[fixture: c4/named-attributes/named-exterior-newline-kept]
+[fixture: c4/direction-rejection/acc-colon-direction]
+
+図のコメントの後は、
+復帰用の空白行と末尾の隙間も含めて全体を保ちます。
+コメントを移して `comment-takes-line-break` の差異を修復しません。
+すべてのセミコロンと、
+共有の `style` と `classDef` の行規則が守る接頭部を保ちます。
+値のノードを分けず、
+Unicode の区間境界も保ちます。
+字下げと値の外の末尾空白は printer が整えます。
+[fixture: c4/comments/comment-header]
+[fixture: c4/blank-lines/comment-recovery]
+[fixture: c4/final-newline/comment-eof-gap]
+[fixture: c4/line-rule-and-semicolons/semicolon-inline-comment]
+[fixture: c4/line-rule-and-semicolons/semicolon-suffix-spacing]
+[fixture: c4/trailing-whitespace/semicolon-line]
+[test: c4: ls-line-rule-segments]

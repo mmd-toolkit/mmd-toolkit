@@ -21,6 +21,20 @@ mermaid.js が列への所属とメタデータの効果をどう読むかは、
 その後の境界は求めません。
 [fixture: kanban/header-indented]
 [fixture: kanban/header-after-blank-lines]
+[fixture: kanban/header-bom-before]
+[fixture: kanban/header-cr-before]
+[fixture: kanban/header-crlf-before]
+[fixture: kanban/header-ff-before]
+[fixture: kanban/header-ideographic-before]
+[fixture: kanban/header-ls-before]
+[fixture: kanban/header-nbsp-before]
+[fixture: kanban/header-ps-before]
+[fixture: kanban/header-vt-before]
+[fixture: kanban/header-nel-before]
+[fixture: kanban/header-tab-indented]
+[fixture: kanban/header-after-whitespace-line]
+[fixture: kanban/header-only-comment]
+[fixture: kanban/header-statement-first]
 [fixture: kanban/header-dash-suffix]
 [fixture: kanban/header-non-ascii-suffix]
 `KANBAN`、`Kanban`、大文字小文字の混在は検出されません。
@@ -37,6 +51,8 @@ mermaid.js が列への所属とメタデータの効果をどう読むかは、
 [fixture: kanban/header-after-frontmatter-and-comment]
 [fixture: kanban/header-after-comment-line]
 [fixture: kanban/header-after-directive-line]
+[fixture: kanban/gram-frontmatter-empty]
+[fixture: kanban/gram-frontmatter-unclosed]
 先頭の `%%` だけの行と `%%{ }%%` の行は、
 その後に空行があっても図のコメントです。
 [fixture: kanban/header-after-bare-percent-line]
@@ -45,6 +61,7 @@ mermaid.js が列への所属とメタデータの効果をどう読むかは、
 ヘッダー前の `#` の行と `;` の行は検出を妨げます。
 [fixture: kanban/header-after-hash-line]
 [fixture: kanban/header-after-semicolon-line]
+[fixture: kanban/header-leading-semicolon]
 
 字句解析器はキーワード `kanban` を大文字小文字を区別せず、
 [語の文字](../common.ja.md#表記) が続かないときだけ読みます。
@@ -64,6 +81,13 @@ mermaid.js が列への所属とメタデータの効果をどう読むかは、
 最初のノードはヘッダーと同じ行の空白の後に置けます。
 [fixture: kanban/header-statement-on-header-line]
 [fixture: kanban/header-statement-on-header-line-tab]
+[fixture: kanban/header-bom-after]
+[fixture: kanban/header-ideographic-after]
+[fixture: kanban/header-ls-after]
+[fixture: kanban/header-nbsp-after]
+[fixture: kanban/header-ps-after]
+[fixture: kanban/header-tab-after]
+[fixture: kanban/header-semicolon-spaced]
 [fixture: kanban/header-spaced-word-suffix]
 形か、`-`、`:`、`#`、`%`、引用符のような語の文字以外で始まるノードは、
 ヘッダーの直後にも置けます。
@@ -73,6 +97,8 @@ mermaid.js が列への所属とメタデータの効果をどう読むかは、
 [fixture: kanban/db-grid-hash-header-line]
 [fixture: kanban/db-grid-percent-header-line]
 [fixture: kanban/header-header-quote]
+[fixture: kanban/header-nel-trailing]
+[fixture: kanban/header-semicolon]
 単独の `{` は開きではなく拒否します。
 [fixture: kanban/gram-grid-open-brace-header-line]
 
@@ -82,6 +108,8 @@ mermaid.js が列への所属とメタデータの効果をどう読むかは、
 ソースの改行、空白、図のコメント、最初のノードはヘッダーの後に置けます。
 ノードのない図は空の body を持ちます。
 [fixture: kanban/header-only-lf]
+[fixture: kanban/header-cr-after]
+[fixture: kanban/header-crlf-after]
 [fixture: kanban/db-empty-board-comment]
 [fixture: kanban/db-empty-board-whitespace]
 [fixture: kanban/header-header-space-only]
@@ -95,6 +123,19 @@ mermaid.js が列への所属とメタデータの効果をどう読むかは、
 CRLF と単独の CR は改行です。
 [fixture: kanban/lex-crlf-quoted-value]
 [fixture: kanban/lex-cr-quoted-value]
+[fixture: kanban/lex-cr-bare-value]
+[fixture: kanban/lex-cr-line-end]
+[fixture: kanban/lex-cr-line-start]
+[fixture: kanban/lex-cr-text-end]
+[fixture: kanban/lex-cr-whitespace-between]
+[fixture: kanban/lex-cr-whitespace-last]
+[fixture: kanban/lex-crlf-bare-value]
+[fixture: kanban/lex-crlf-line-end]
+[fixture: kanban/lex-crlf-line-start]
+[fixture: kanban/lex-crlf-line-trailing]
+[fixture: kanban/lex-crlf-text-end]
+[fixture: kanban/lex-crlf-whitespace-between]
+[fixture: kanban/lex-crlf-whitespace-last]
 属性の引用符は単一引用符です。
 [fixture: kanban/db-grid-html-attribute-item-label-quoted]
 文字参照はプレースホルダーです。
@@ -107,6 +148,12 @@ CRLF と単独の CR は改行です。
 複数行のラベルやデータブロックの中でも trivia です。
 [fixture: kanban/lex-comment-quoted-line]
 [fixture: kanban/db-metadata-comment-line]
+[fixture: kanban/lex-comment-line]
+[fixture: kanban/lex-id-comment-line]
+[fixture: kanban/lex-id-directive-line]
+[fixture: kanban/lex-label-comment-line]
+[fixture: kanban/lex-metadata-comment-line]
+[fixture: kanban/lex-metadata-directive-line]
 ノード本文、形のラベル、class 本文の途中の `%%` はそのテキストの一部です。
 [fixture: kanban/lex-comment-quoted-inline]
 [fixture: kanban/db-grid-comment-item-id]
@@ -128,9 +175,19 @@ kanban の位置で読みます。
 [fixture: kanban/lex-c4-c4component-label]
 [fixture: kanban/lex-c4-c4dynamic-metadata]
 [fixture: kanban/lex-c4-c4deployment-id]
+[fixture: kanban/lex-c4-c4context-label]
+[fixture: kanban/lex-c4-c4context-metadata]
 除かれるコメントとフロントマターの語は検出に関わりません。
 [fixture: kanban/lex-c4-c4container-comment]
 [fixture: kanban/lex-c4-c4container-frontmatter]
+[fixture: kanban/lex-c4-c4component-comment]
+[fixture: kanban/lex-c4-c4component-frontmatter]
+[fixture: kanban/lex-c4-c4context-comment]
+[fixture: kanban/lex-c4-c4context-frontmatter]
+[fixture: kanban/lex-c4-c4deployment-comment]
+[fixture: kanban/lex-c4-c4deployment-frontmatter]
+[fixture: kanban/lex-c4-c4dynamic-comment]
+[fixture: kanban/lex-c4-c4dynamic-frontmatter]
 ヘッダー後の `C4Context` は両者で通常のテキストです。
 [fixture: kanban/lex-c4-c4context-id]
 
@@ -187,6 +244,12 @@ U+0085 は空白ではありません。
 [fixture: kanban/db-grid-ls-metadata-label-quoted]
 [fixture: kanban/lex-shape-bare-ls]
 [fixture: kanban/db-grid-ps-metadata-label-quoted]
+[fixture: kanban/lex-ls-line-trailing]
+[fixture: kanban/lex-ls-text-end]
+[fixture: kanban/lex-ls-line-end]
+[fixture: kanban/lex-ps-line-trailing]
+[fixture: kanban/lex-ps-text-end]
+[fixture: kanban/lex-ps-line-end]
 
 字下げはディレクティブを除いたテキストで測ります。
 [fixture: kanban/lex-indent-directive]
@@ -201,7 +264,7 @@ U+0085 は空白ではありません。
 ### 単位の中のディレクティブ
 
 テキストの単位は `node-text`、`shape-text`、`icon-text`、`class-text`、
-データ本文です。
+`data-start` の単位とその `}` の間の `data-text` と `data-quote` の単位です。
 文字列の単位は `string` と `markdown-string` です。
 これらの単位の中のディレクティブは trivia です。
 残りのテキストは両側の空白を含めて読みを保ちます。
@@ -216,6 +279,16 @@ U+0085 は空白ではありません。
 [fixture: kanban/lex-indent-directive]
 [fixture: kanban/db-grid-directive-item-label-bare]
 [fixture: kanban/db-grid-directive-item-label-markdown]
+[fixture: kanban/lex-after-class-directive]
+[fixture: kanban/lex-after-class-directive-unclosed]
+[fixture: kanban/lex-after-class-directive-word-unclosed]
+[fixture: kanban/lex-after-bare-directive]
+[fixture: kanban/lex-after-bare-directive-unclosed]
+[fixture: kanban/lex-after-bare-directive-word-unclosed]
+[fixture: kanban/lex-label-directive-start]
+[fixture: kanban/lex-label-directive-end]
+[fixture: kanban/lex-metadata-directive-start]
+[fixture: kanban/lex-metadata-directive-end]
 
 ヘッダー語、形の開きと閉じ、`::icon(`、`:::`、`@{` の中のディレクティブは
 [directive-as-token-boundary](../known-divergences/directive-as-token-boundary.ja.md)
@@ -226,6 +299,14 @@ U+0085 は空白ではありません。
 [fixture: kanban/div-directive-icon-marker]
 [fixture: kanban/div-directive-class-marker]
 [fixture: kanban/div-directive-data-marker]
+[fixture: kanban/div-directive-opener-round-dash]
+[fixture: kanban/div-directive-opener-double-close]
+[fixture: kanban/div-directive-opener-double-brace]
+[fixture: kanban/div-directive-closer-double-brace]
+[fixture: kanban/div-directive-closer-round-dash]
+[fixture: kanban/div-directive-closer-dash-round]
+[fixture: kanban/div-directive-closer-double-open]
+[fixture: kanban/div-directive-opener-dash-round]
 完全な単位の間のディレクティブは、
 隣り合うデータブロックの間も含めて置けます。
 [fixture: kanban/header-directive-glued]
@@ -245,11 +326,29 @@ U+0085 は空白ではありません。
 [fixture: kanban/lex-metadata-style-rule]
 [fixture: kanban/lex-style-entity-two-semicolons]
 [fixture: kanban/gram-semicolon-text-reference]
+[fixture: kanban/lex-id-style-rule-no-hash]
+[fixture: kanban/lex-id-style-rule-other-line]
+[fixture: kanban/lex-id-style-rule-space]
+[fixture: kanban/lex-id-style-rule-two-semicolons]
+[fixture: kanban/lex-id-style-rule-upper]
+[fixture: kanban/lex-metadata-style-rule-no-hash]
+[fixture: kanban/lex-metadata-style-rule-other-line]
+[fixture: kanban/lex-metadata-style-rule-space]
+[fixture: kanban/lex-metadata-style-rule-two-semicolons]
+[fixture: kanban/lex-metadata-style-rule-upper]
+[fixture: kanban/lex-metadata-classdef-rule]
 形の開きと閉じの中で選ばれたセミコロンは
 [ignored-semicolon-as-token-boundary](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)
 により拒否します。
 [fixture: kanban/div-semicolon-opener]
 [fixture: kanban/div-semicolon-closer]
+[fixture: kanban/div-semicolon-opener-round-dash]
+[fixture: kanban/div-semicolon-opener-double-close]
+[fixture: kanban/div-semicolon-opener-double-open]
+[fixture: kanban/div-semicolon-closer-double-close]
+[fixture: kanban/div-semicolon-closer-round-dash]
+[fixture: kanban/div-semicolon-closer-dash-round]
+[fixture: kanban/div-semicolon-closer-double-open]
 `style:#x` と別の行のセミコロンは選びません。
 [fixture: kanban/lex-label-style-rule-other-line]
 [fixture: kanban/lex-semicolon-icon-marker]
@@ -276,7 +375,8 @@ U+0085 は空白ではありません。
 [fixture: kanban/lex-between-comments-ls-node]
 [fixture: kanban/gram-blank-before-icon]
 
-1. `@{` はデータの文脈に入ります（[データの文脈](#データの文脈) を参照）。
+1. `@{` は `data-start` の単位で、データの文脈に入ります
+   （[データの文脈](#データの文脈) を参照）。
    [fixture: kanban/db-metadata-all]
    [fixture: kanban/db-metadata-empty]
 
@@ -301,6 +401,17 @@ U+0085 は空白ではありません。
    [fixture: kanban/db-sections-items]
    空白だけの行は何も読みません。
    [fixture: kanban/gram-grid-lf-header-line]
+   [fixture: kanban/lex-bom-whitespace-between]
+   [fixture: kanban/lex-bom-whitespace-last]
+   [fixture: kanban/lex-ideographic-whitespace-between]
+   [fixture: kanban/lex-ideographic-whitespace-last]
+   [fixture: kanban/lex-nbsp-whitespace-between]
+   [fixture: kanban/lex-nbsp-whitespace-last]
+   [fixture: kanban/lex-tab-whitespace-last]
+   [fixture: kanban/lex-ls-whitespace-between]
+   [fixture: kanban/lex-ls-whitespace-last]
+   [fixture: kanban/lex-ps-whitespace-between]
+   [fixture: kanban/lex-ps-whitespace-last]
 
 7. 開きは `-)`、`(-`、`))`、`)`、`((`、`{{`、`(`、`[` の順に試します。
    `opener` の単位として形の文脈に入ります。
@@ -354,6 +465,22 @@ U+0085 は空白ではありません。
 [fixture: kanban/db-name-space-before-shape]
 [fixture: kanban/db-name-trailing-space]
 [fixture: kanban/db-grid-spaces-item-id]
+[fixture: kanban/lex-bom-bare-value]
+[fixture: kanban/lex-bom-line-trailing]
+[fixture: kanban/lex-bom-text-end]
+[fixture: kanban/lex-bom-line-end]
+[fixture: kanban/lex-ideographic-bare-value]
+[fixture: kanban/lex-ideographic-line-trailing]
+[fixture: kanban/lex-ideographic-text-end]
+[fixture: kanban/lex-ideographic-line-end]
+[fixture: kanban/lex-nbsp-bare-value]
+[fixture: kanban/lex-nbsp-line-trailing]
+[fixture: kanban/lex-nbsp-text-end]
+[fixture: kanban/lex-nbsp-line-end]
+[fixture: kanban/lex-tab-bare-value]
+[fixture: kanban/lex-tab-line-trailing]
+[fixture: kanban/lex-tab-text-end]
+[fixture: kanban/lex-tab-line-end]
 先頭の字下げは別です。
 単独の `@` は拒否します。
 [fixture: kanban/gram-node-at]
@@ -361,7 +488,8 @@ U+0085 は空白ではありません。
 この文法にはタイトル、アクセシビリティ、style、class 定義、
 columns の文はありません。
 `title`、`accTitle:`、`accDescr:`、`style`、`classDef`、`columns`、`space`、
-`end` は通常のノード本文です。
+`end`、`default`、`interpolate`、`linkStyle` は、
+大文字小文字を問わず、後にどの文字が続いても、通常のノード本文です。
 [fixture: kanban/db-title-not-statement]
 [fixture: kanban/db-acc-title-not-statement]
 [fixture: kanban/db-acc-descr-not-statement]
@@ -371,9 +499,94 @@ columns の文はありません。
 [fixture: kanban/lex-keyword-columns-digit]
 [fixture: kanban/lex-keyword-space-letter]
 [fixture: kanban/lex-keyword-end-non-ascii]
+[fixture: kanban/lex-keyword-accdescr-dash]
+[fixture: kanban/lex-keyword-accdescr-digit]
+[fixture: kanban/lex-keyword-accdescr-letter]
+[fixture: kanban/lex-keyword-accdescr-non-ascii]
+[fixture: kanban/lex-keyword-accdescr-underscore]
+[fixture: kanban/lex-keyword-accdescr-upper]
+[fixture: kanban/lex-keyword-acctitle-dash]
+[fixture: kanban/lex-keyword-acctitle-digit]
+[fixture: kanban/lex-keyword-acctitle-letter]
+[fixture: kanban/lex-keyword-acctitle-non-ascii]
+[fixture: kanban/lex-keyword-acctitle-underscore]
+[fixture: kanban/lex-keyword-acctitle-upper]
+[fixture: kanban/lex-keyword-classdef-digit]
+[fixture: kanban/lex-keyword-classdef-letter]
+[fixture: kanban/lex-keyword-classdef-non-ascii]
+[fixture: kanban/lex-keyword-classdef-underscore]
+[fixture: kanban/lex-keyword-classdef-upper]
+[fixture: kanban/lex-keyword-columns-dash]
+[fixture: kanban/lex-keyword-columns-letter]
+[fixture: kanban/lex-keyword-columns-non-ascii]
+[fixture: kanban/lex-keyword-columns-underscore]
+[fixture: kanban/lex-keyword-columns-upper]
+[fixture: kanban/lex-keyword-default-dash]
+[fixture: kanban/lex-keyword-default-digit]
+[fixture: kanban/lex-keyword-default-letter]
+[fixture: kanban/lex-keyword-default-non-ascii]
+[fixture: kanban/lex-keyword-default-underscore]
+[fixture: kanban/lex-keyword-default-upper]
+[fixture: kanban/lex-keyword-end-dash]
+[fixture: kanban/lex-keyword-end-digit]
+[fixture: kanban/lex-keyword-end-letter]
+[fixture: kanban/lex-keyword-end-underscore]
+[fixture: kanban/lex-keyword-end-upper]
+[fixture: kanban/lex-keyword-interpolate-dash]
+[fixture: kanban/lex-keyword-interpolate-digit]
+[fixture: kanban/lex-keyword-interpolate-letter]
+[fixture: kanban/lex-keyword-interpolate-non-ascii]
+[fixture: kanban/lex-keyword-interpolate-underscore]
+[fixture: kanban/lex-keyword-interpolate-upper]
+[fixture: kanban/lex-keyword-linkstyle-dash]
+[fixture: kanban/lex-keyword-linkstyle-digit]
+[fixture: kanban/lex-keyword-linkstyle-letter]
+[fixture: kanban/lex-keyword-linkstyle-non-ascii]
+[fixture: kanban/lex-keyword-linkstyle-underscore]
+[fixture: kanban/lex-keyword-linkstyle-upper]
+[fixture: kanban/lex-keyword-space-dash]
+[fixture: kanban/lex-keyword-space-digit]
+[fixture: kanban/lex-keyword-space-non-ascii]
+[fixture: kanban/lex-keyword-space-underscore]
+[fixture: kanban/lex-keyword-space-upper]
+[fixture: kanban/lex-keyword-style-dash]
+[fixture: kanban/lex-keyword-style-digit]
+[fixture: kanban/lex-keyword-style-letter]
+[fixture: kanban/lex-keyword-style-non-ascii]
+[fixture: kanban/lex-keyword-style-underscore]
+[fixture: kanban/lex-keyword-title-dash]
+[fixture: kanban/lex-keyword-title-digit]
+[fixture: kanban/lex-keyword-title-letter]
+[fixture: kanban/lex-keyword-title-non-ascii]
+[fixture: kanban/lex-keyword-title-underscore]
+[fixture: kanban/lex-keyword-title-upper]
+そうした語が行の終わりにあっても、次の行を取りません。
+空の行、コメント行、ディレクティブの行を挟んでも同じです。
+`title` に行 `A[Work]` が続くと、2 つのノードです。
+[fixture: kanban/lex-keyword-gap-accdescr-blank-line]
+[fixture: kanban/lex-keyword-gap-accdescr-comment-line]
+[fixture: kanban/lex-keyword-gap-accdescr-directive-line]
+[fixture: kanban/lex-keyword-gap-accdescr-lf]
+[fixture: kanban/lex-keyword-gap-acctitle-blank-line]
+[fixture: kanban/lex-keyword-gap-acctitle-comment-line]
+[fixture: kanban/lex-keyword-gap-acctitle-directive-line]
+[fixture: kanban/lex-keyword-gap-acctitle-lf]
+[fixture: kanban/lex-keyword-gap-classdef-blank-line]
+[fixture: kanban/lex-keyword-gap-classdef-comment-line]
+[fixture: kanban/lex-keyword-gap-classdef-directive-line]
+[fixture: kanban/lex-keyword-gap-classdef-lf]
+[fixture: kanban/lex-keyword-gap-style-blank-line]
+[fixture: kanban/lex-keyword-gap-style-comment-line]
+[fixture: kanban/lex-keyword-gap-style-directive-line]
+[fixture: kanban/lex-keyword-gap-style-lf]
+[fixture: kanban/lex-keyword-gap-title-blank-line]
+[fixture: kanban/lex-keyword-gap-title-comment-line]
+[fixture: kanban/lex-keyword-gap-title-directive-line]
+[fixture: kanban/lex-keyword-gap-title-lf]
 `accDescr {}` は波括弧で拒否します。
 [fixture: kanban/gram-acc-descr-block-not-statement]
 [fixture: kanban/gram-empty-description-block-after-value]
+[fixture: kanban/gram-unclosed-acc-block]
 
 ### 形の文脈
 
@@ -411,6 +624,13 @@ columns の文はありません。
    [fixture: kanban/db-label-multiline]
    [fixture: kanban/lex-ls-quoted-value]
    [fixture: kanban/lex-ps-quoted-value]
+   [fixture: kanban/lex-bom-quoted-value]
+   [fixture: kanban/lex-ideographic-quoted-value]
+   [fixture: kanban/lex-nbsp-quoted-value]
+   [fixture: kanban/lex-tab-quoted-value]
+   [fixture: kanban/lex-label-blank-line]
+   [fixture: kanban/lex-label-empty-line]
+   [fixture: kanban/spec-kanban-76e41a77]
    [fixture: kanban/gram-grid-quote-item-label-quoted]
    [fixture: kanban/db-grid-backslash-item-label-quoted]
    閉じない文字列は拒否します。
@@ -501,29 +721,25 @@ class 本文を読むと class の文脈を出ます。
 
 ### データの文脈
 
-文の文脈で単位が始まるところの `@{` はデータの文脈に入ります。
-二重引用符の外の `}` はその文脈を出て 1 つの `data-block` 単位を作ります。
-その単位は空でもかまいません。
-[fixture: kanban/db-metadata-all]
-[fixture: kanban/db-metadata-empty]
-[fixture: kanban/db-metadata-whitespace]
-[fixture: kanban/db-metadata-brace-in-quoted]
-閉じないブロックは拒否します。
-[fixture: kanban/gram-metadata-unclosed]
+文の文脈で単位が始まるところの `@{` は `data-start` の単位で、
+データの文脈に入ります。
+データの文脈では、字句解析器は次の規則を順に試します。
 
-データ内では、
-二重引用符で引用データに入り、
-空でない引用外の本文を読み、
-`}` でブロックを閉じる順に規則を試します。
-[fixture: kanban/db-metadata-all]
-[fixture: kanban/db-metadata-empty]
-引用データ内では、
-空でない本文の規則より先に二重引用符でその文脈を出ます。
-[fixture: kanban/db-metadata-quotes-empty]
-[fixture: kanban/db-metadata-double-caret]
+1. `"` は `data-quote` の単位で、引用データの文脈に入ります。
+   [fixture: kanban/db-metadata-quotes-empty]
+   [fixture: kanban/db-metadata-brace-in-quoted]
+2. `}`、`^`、`"` 以外の 1 つ以上の文字は `data-text` の単位です。
+   [fixture: kanban/db-metadata-all]
+   [fixture: kanban/db-metadata-whitespace]
+3. `}` は `}` の単位で、その文脈を出ます。
+   [fixture: kanban/db-metadata-all]
+   [fixture: kanban/db-metadata-empty]
 
-二重引用符の外のデータ本文は `}`、`^`、二重引用符以外の空でない最長の並びです。
-`^` は合う規則がなく拒否します。
+そのため、データブロックは二重引用符の外の最初の `}` で終わり、
+空でもかまいません。
+`@{}` は `data-start` の単位と `}` の単位です。
+[fixture: kanban/db-metadata-empty]
+二重引用符の外の `^` は合う規則がなく拒否します。
 [fixture: kanban/gram-metadata-caret]
 `{` と単一引用符は通常の本文です。
 [fixture: kanban/db-metadata-assigned-single-quoted]
@@ -532,14 +748,20 @@ class 本文を読むと class の文脈を出ます。
 [fixture: kanban/gram-metadata-single-caret]
 [fixture: kanban/gram-metadata-single-brace]
 [fixture: kanban/gram-metadata-assigned-mapping]
+[fixture: kanban/gram-metadata-icon-mapping]
+[fixture: kanban/gram-metadata-label-mapping]
+[fixture: kanban/gram-metadata-priority-mapping]
+[fixture: kanban/gram-metadata-shape-mapping]
+[fixture: kanban/gram-metadata-ticket-mapping]
 
-データ内の二重引用符は引用データの文脈に入ります。
-次の引用符はその文脈を出ます。
+引用データの文脈では、`"` は `data-quote` の単位でその文脈を出て、
+ほかの 1 つ以上の文字は `data-text` の単位です。
+この単位は `}`、`^`、改行、逆斜線を持てます。
 [fixture: kanban/db-metadata-quotes-empty]
-ほかの文字は `}`、`^`、改行、逆斜線も本文です。
 [fixture: kanban/db-metadata-quoted-brace]
 [fixture: kanban/db-metadata-double-caret]
 [fixture: kanban/gram-metadata-newline-quotes]
+[fixture: kanban/lex-metadata-blank-line]
 逆斜線は閉じる引用符をエスケープしません。
 [fixture: kanban/gram-metadata-unclosed-quote]
 
@@ -623,11 +845,24 @@ shape       = opener shape-label closer
 shape-label = shape-text | string | markdown-string
 icon-line   = "::icon(" icon-text ")"
 class-line  = ":::" class-text
+data-block  = data-start ( data-text | data-quote )* "}"
 ```
 
 各ノードと装飾は行の終わりを要します。
 形、データ接尾部、icon、引用したラベルの後の 2 つ目の文は拒否します。
 [fixture: kanban/gram-two-shapes-on-line]
+[fixture: kanban/lex-after-shape-colon-space]
+[fixture: kanban/lex-after-quoted-colon-space]
+[fixture: kanban/lex-after-markdown-colon-space]
+[fixture: kanban/lex-after-metadata-colon-space]
+[fixture: kanban/lex-after-icon-colon-space]
+[fixture: kanban/gram-second-statement-icon-after-shape]
+[fixture: kanban/gram-second-statement-class-after-shape]
+[fixture: kanban/gram-second-statement-after-metadata]
+[fixture: kanban/gram-second-statement-icon-after-metadata]
+[fixture: kanban/gram-second-statement-after-icon]
+[fixture: kanban/gram-second-statement-after-quoted]
+[fixture: kanban/gram-second-statement-after-markdown]
 形、データ接尾部、icon、引用したラベルの後のセミコロンは拒否します。
 [fixture: kanban/lex-after-shape-semicolon]
 [fixture: kanban/lex-after-shape-semicolon-spaced]
@@ -635,13 +870,35 @@ class-line  = ":::" class-text
 [fixture: kanban/lex-after-icon-semicolon]
 [fixture: kanban/lex-after-quoted-semicolon]
 [fixture: kanban/lex-after-markdown-semicolon]
+[fixture: kanban/lex-after-shape-semicolon-space-semicolon]
+[fixture: kanban/lex-after-quoted-semicolon-space-semicolon]
+[fixture: kanban/lex-after-markdown-semicolon-space-semicolon]
+[fixture: kanban/lex-after-metadata-semicolon-space-semicolon]
+[fixture: kanban/lex-after-icon-semicolon-space-semicolon]
+[fixture: kanban/lex-after-shape-directive-semicolon]
+[fixture: kanban/lex-after-shape-directive-word-semicolon]
+[fixture: kanban/lex-after-shape-double-semicolon]
+[fixture: kanban/lex-after-quoted-double-semicolon]
+[fixture: kanban/lex-after-quoted-semicolon-spaced]
+[fixture: kanban/lex-after-markdown-double-semicolon]
+[fixture: kanban/lex-after-markdown-semicolon-spaced]
+[fixture: kanban/lex-after-metadata-double-semicolon]
+[fixture: kanban/lex-after-metadata-semicolon-spaced]
+[fixture: kanban/lex-after-icon-double-semicolon]
+[fixture: kanban/lex-after-icon-semicolon-spaced]
 裸のノード本文と class 本文の中のセミコロンは本文です。
 [fixture: kanban/lex-after-class-semicolon]
 [fixture: kanban/db-semicolon-bare-node]
 [fixture: kanban/db-semicolon-only-node]
+[fixture: kanban/lex-after-class-semicolon-space-semicolon]
+[fixture: kanban/lex-after-bare-semicolon-space-semicolon]
+[fixture: kanban/lex-after-class-double-semicolon]
+[fixture: kanban/lex-after-class-semicolon-spaced]
+[fixture: kanban/lex-after-bare-double-semicolon]
+[fixture: kanban/lex-after-bare-semicolon-spaced]
 
 形、icon、データ接尾部が終わった後には、
-行が終わるまでに空白と図のコメントを置けます。
+行が終わるまでに空白、図のコメント、ディレクティブを置けます。
 [fixture: kanban/lex-after-shape-spaces]
 [fixture: kanban/lex-after-icon-spaces]
 [fixture: kanban/lex-after-metadata-spaces]
@@ -649,13 +906,81 @@ class-line  = ":::" class-text
 [fixture: kanban/lex-after-icon-comment]
 [fixture: kanban/lex-after-metadata-comment]
 [fixture: kanban/db-metadata-before-comment]
+[fixture: kanban/lex-after-shape-crlf]
+[fixture: kanban/lex-after-shape-blank-line]
+[fixture: kanban/lex-after-quoted-crlf]
+[fixture: kanban/lex-after-quoted-blank-line]
+[fixture: kanban/lex-after-markdown-crlf]
+[fixture: kanban/lex-after-markdown-blank-line]
+[fixture: kanban/lex-after-metadata-crlf]
+[fixture: kanban/lex-after-metadata-blank-line]
+[fixture: kanban/lex-after-icon-crlf]
+[fixture: kanban/lex-after-icon-blank-line]
+[fixture: kanban/lex-after-class-crlf]
+[fixture: kanban/lex-after-class-blank-line]
+[fixture: kanban/lex-crlf-text-end]
+[fixture: kanban/lex-after-bare-blank-line]
+[fixture: kanban/spec-kanban-4fa35e34]
+[fixture: kanban/lex-after-shape-tab]
+[fixture: kanban/lex-after-shape-nbsp]
+[fixture: kanban/lex-after-shape-bom]
+[fixture: kanban/lex-after-shape-directive]
+[fixture: kanban/lex-after-shape-directive-unclosed]
+[fixture: kanban/lex-after-shape-directive-word-unclosed]
+[fixture: kanban/lex-after-quoted-spaces]
+[fixture: kanban/lex-after-quoted-tab]
+[fixture: kanban/lex-after-quoted-nbsp]
+[fixture: kanban/lex-after-quoted-bom]
+[fixture: kanban/lex-after-quoted-comment]
+[fixture: kanban/lex-after-quoted-comment-glued]
+[fixture: kanban/lex-after-quoted-directive]
+[fixture: kanban/lex-after-quoted-directive-unclosed]
+[fixture: kanban/lex-after-quoted-directive-word-unclosed]
+[fixture: kanban/lex-after-markdown-spaces]
+[fixture: kanban/lex-after-markdown-tab]
+[fixture: kanban/lex-after-markdown-nbsp]
+[fixture: kanban/lex-after-markdown-bom]
+[fixture: kanban/lex-after-markdown-comment]
+[fixture: kanban/lex-after-markdown-comment-glued]
+[fixture: kanban/lex-after-markdown-directive]
+[fixture: kanban/lex-after-markdown-directive-unclosed]
+[fixture: kanban/lex-after-markdown-directive-word-unclosed]
+[fixture: kanban/lex-after-metadata-tab]
+[fixture: kanban/lex-after-metadata-nbsp]
+[fixture: kanban/lex-after-metadata-bom]
+[fixture: kanban/lex-after-metadata-comment-glued]
+[fixture: kanban/lex-after-metadata-directive]
+[fixture: kanban/lex-after-metadata-directive-unclosed]
+[fixture: kanban/lex-after-metadata-directive-word-unclosed]
+[fixture: kanban/lex-after-icon-tab]
+[fixture: kanban/lex-after-icon-nbsp]
+[fixture: kanban/lex-after-icon-bom]
+[fixture: kanban/lex-after-icon-comment-glued]
+[fixture: kanban/lex-after-icon-directive]
+[fixture: kanban/lex-after-icon-directive-unclosed]
+[fixture: kanban/lex-after-icon-directive-word-unclosed]
 class と裸のノード本文は末尾の本文を保ちます。
 [fixture: kanban/lex-after-class-comment]
 [fixture: kanban/lex-after-bare-spaces]
+[fixture: kanban/lex-after-class-colon-space]
+[fixture: kanban/lex-after-bare-colon-space]
+[fixture: kanban/lex-after-class-spaces]
+[fixture: kanban/lex-after-class-tab]
+[fixture: kanban/lex-after-class-nbsp]
+[fixture: kanban/lex-after-class-bom]
+[fixture: kanban/lex-after-class-comment-glued]
 
 最後のノードはソースの末尾の改行を要しません
 （[テキストの終わり](../common.ja.md#テキストの終わり) を参照）。
 [fixture: kanban/db-no-final-line-feed]
+[fixture: kanban/lex-after-shape-end-of-text]
+[fixture: kanban/lex-after-quoted-end-of-text]
+[fixture: kanban/lex-after-markdown-end-of-text]
+[fixture: kanban/lex-after-metadata-end-of-text]
+[fixture: kanban/lex-after-icon-end-of-text]
+[fixture: kanban/lex-after-class-end-of-text]
+[fixture: kanban/spec-kanban-0cd8856c]
+[fixture: kanban/spec-kanban-764a099a]
 形、文字列、markdown 文字列、icon は閉じる必要があります。
 [fixture: kanban/gram-unclosed-shape]
 [fixture: kanban/gram-unclosed-quote]
@@ -674,6 +999,7 @@ class はソースの終わりで終えられます。
 形だけのノードは id の子を持ちません。
 [fixture: kanban/db-name-no-id]
 [fixture: kanban/spec-kanban-46081dfb]
+[fixture: kanban/spec-kanban-3ef59952]
 
 図の本体は絶対的な字下げを持つノードの平坦なリストです。
 深いノードも入れ子の子にはなりません。
@@ -683,6 +1009,10 @@ class はソースの終わりで終えられます。
 [fixture: kanban/db-indent-shallower-last]
 [fixture: kanban/db-sections-items]
 [fixture: kanban/spec-kanban-d05521ff]
+[fixture: kanban/spec-kanban-2ae1792f]
+[fixture: kanban/spec-kanban-9d61a67e]
+[fixture: kanban/docs-syntax-kanban-64d47195]
+[fixture: kanban/docs-syntax-kanban-1463e787]
 列と項目への割り当ては
 [tests パッケージ](../../../tests/docs/db-summaries.ja.md#kanban) が定めます。
 
@@ -759,6 +1089,14 @@ id は一意でなくてもかまいません。
 解析したキーと値の子は持ちません。
 [fixture: kanban/db-metadata-spaces]
 [fixture: kanban/db-metadata-multiline]
+[fixture: kanban/spec-kanban-0a8960fa]
+[fixture: kanban/spec-kanban-3283219d]
+[fixture: kanban/spec-kanban-3da77593]
+[fixture: kanban/spec-kanban-4b19cf5b]
+[fixture: kanban/spec-kanban-98f0b1ea]
+[fixture: kanban/spec-kanban-cdfdcce7]
+[fixture: kanban/spec-kanban-f1762a09]
+[fixture: kanban/docs-syntax-kanban-6a07fd6d]
 [fixture: kanban/db-metadata-unknown-key]
 [fixture: kanban/db-metadata-proto-key]
 [fixture: kanban/gram-metadata-ticket-duplicate]
@@ -792,6 +1130,8 @@ icon と class の行は字下げによらず最後に書いたノードを飾�
 [fixture: kanban/spec-kanban-382e97e1]
 [fixture: kanban/spec-kanban-dc1ceff8]
 [fixture: kanban/spec-kanban-3f5b450b]
+[fixture: kanban/spec-kanban-3fa978ee]
+[fixture: kanban/spec-kanban-7ab4b766]
 後の深いノードの前の装飾は、
 前のノードに属します。
 [fixture: kanban/gram-decoration-then-child]
@@ -861,6 +1201,12 @@ icon と class の行は字下げによらず最後に書いたノードを飾�
 [fixture: kanban/lex-tab-whitespace-first]
 [fixture: kanban/lex-tab-whitespace-between]
 [fixture: kanban/spec-kanban-b45e7358]
+[fixture: kanban/lex-id-blank-line]
+[fixture: kanban/spec-kanban-39a3f7b2]
+[fixture: kanban/spec-kanban-3e2d4f7b]
+[fixture: kanban/spec-kanban-4eec5c8a]
+[fixture: kanban/spec-kanban-cf8e8c50]
+[fixture: kanban/spec-kanban-da074888]
 [fixture: kanban/header-header-comment-blank]
 [fixture: kanban/gram-between-comments-blank]
 [fixture: kanban/lex-between-comments-ls-node]
@@ -959,12 +1305,27 @@ icon と class の行は字下げによらず最後に書いたノードを飾�
   [fixture: kanban/div-directive-icon-marker]
   [fixture: kanban/div-directive-class-marker]
   [fixture: kanban/div-directive-data-marker]
+  [fixture: kanban/div-directive-opener-round-dash]
+  [fixture: kanban/div-directive-opener-double-close]
+  [fixture: kanban/div-directive-opener-double-brace]
+  [fixture: kanban/div-directive-closer-double-brace]
+  [fixture: kanban/div-directive-closer-round-dash]
+  [fixture: kanban/div-directive-closer-dash-round]
+  [fixture: kanban/div-directive-closer-double-open]
+  [fixture: kanban/div-directive-opener-dash-round]
 
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md).**
   形の開きと閉じの中で共通の行規則が選ぶセミコロンは拒否します。
   mermaid.js はそれを除きます。
   [fixture: kanban/div-semicolon-opener]
   [fixture: kanban/div-semicolon-closer]
+  [fixture: kanban/div-semicolon-opener-round-dash]
+  [fixture: kanban/div-semicolon-opener-double-close]
+  [fixture: kanban/div-semicolon-opener-double-open]
+  [fixture: kanban/div-semicolon-closer-double-close]
+  [fixture: kanban/div-semicolon-closer-round-dash]
+  [fixture: kanban/div-semicolon-closer-dash-round]
+  [fixture: kanban/div-semicolon-closer-double-open]
 
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md).**
   フロントマターで始まるタグは後の kanban ラベルの引用符を変換しません。
@@ -998,6 +1359,16 @@ icon と class の行は字下げによらず最後に書いたノードを飾�
   [fixture: kanban/gram-metadata-shape-camel]
   [fixture: kanban/gram-metadata-shape-number]
   [fixture: kanban/gram-metadata-shape-underscore]
+  [fixture: kanban/gram-metadata-section-shape]
+  [fixture: kanban/gram-metadata-shape-double-quoted]
+  [fixture: kanban/gram-metadata-shape-infinity-word]
+  [fixture: kanban/gram-metadata-shape-list]
+  [fixture: kanban/gram-metadata-shape-nan-word]
+  [fixture: kanban/gram-metadata-shape-negative]
+  [fixture: kanban/gram-metadata-shape-plain]
+  [fixture: kanban/gram-metadata-shape-plus]
+  [fixture: kanban/gram-metadata-shape-single-quoted]
+  [fixture: kanban/gram-metadata-shape-true]
   空の複数行ブロックと、
   mermaid.js が連結した本文を拒否する隣り合うブロックも受理します。
   [fixture: kanban/gram-metadata-empty-multiline]

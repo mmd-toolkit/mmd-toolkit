@@ -32,7 +32,11 @@ const DIAGRAMS = [
   "quadrant",
   "block",
   "kanban",
+  "c4",
 ] as const
+
+/** Documented type aliases have their own headings, but are not node types. */
+const TYPE_ALIASES: ReadonlySet<string> = new Set(["C4Argument"])
 
 /** The node types that no `ast/<diagram>.md` defines: `ast.md` defines them. */
 const NODE_TYPES_OF_AST_MD: ReadonlySet<string> = new Set([
@@ -43,13 +47,13 @@ const NODE_TYPES_OF_AST_MD: ReadonlySet<string> = new Set([
   "NumericLiteral",
 ])
 
-/** The words of `heading` that are names of node types: a heading may name several, as `A, B, and C`. */
+/** The words of `heading` that are type names: a heading may name several, as `A, B, and C`. */
 function nodeTypeNamesIn(heading: string): string[] {
   const names: string[] = []
   let word = ""
   for (const character of `${heading} `) {
-    const isLetter = /^[A-Za-z]$/u.test(character)
-    if (isLetter) {
+    const isNameCharacter = /^[0-9A-Za-z]$/u.test(character)
+    if (isNameCharacter) {
       word += character
     } else {
       if (word.length > 0) names.push(word)
@@ -59,8 +63,8 @@ function nodeTypeNamesIn(heading: string): string[] {
   return names.filter((name) => /^[A-Z]/u.test(name) && /[a-z]/u.test(name))
 }
 
-/** The node types that the tree documents of the diagrams define, by their headings. */
-function definedNodeTypes(): Set<string> {
+/** The types that the tree documents of the diagrams define, by their headings. */
+function documentedTypes(): Set<string> {
   const defined = new Set<string>()
   for (const diagram of DIAGRAMS) {
     const text = readFileSync(
@@ -78,18 +82,27 @@ function definedNodeTypes(): Set<string> {
 
 describe("the node types of the check of a tree", () => {
   it("classify every node type that the tree documents define, and no other", () => {
-    const defined = definedNodeTypes()
+    const defined = documentedTypes()
     const classified = new Set([...VALUE_NODE_TYPES, ...STRUCTURE_NODE_TYPES])
     expect(
-      [...defined].filter((name) => !classified.has(name)),
+      [...defined].filter(
+        (name) => !TYPE_ALIASES.has(name) && !classified.has(name),
+      ),
       "defined by a tree document and not classified",
     ).toEqual([])
     expect(
       [...classified].filter(
-        (name) => !defined.has(name) && !NODE_TYPES_OF_AST_MD.has(name),
+        (name) =>
+          TYPE_ALIASES.has(name) ||
+          (!defined.has(name) && !NODE_TYPES_OF_AST_MD.has(name)),
       ),
       "classified and defined by no tree document",
     ).toEqual([])
+  })
+
+  it("list only documented type aliases in the alias table", () => {
+    const defined = documentedTypes()
+    expect([...TYPE_ALIASES].filter((name) => !defined.has(name))).toEqual([])
   })
 
   it("classify no node type twice", () => {

@@ -10,13 +10,11 @@
       {
         "id": "end ",
         "label": "end ",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       }
     ]

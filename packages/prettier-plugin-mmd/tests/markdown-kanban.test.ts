@@ -1,4 +1,4 @@
-/** Kanban fences retain absolute diagram levels after host dedentation. */
+/** Kanban fences keep sections and items after host dedentation. */
 import { describe, expect, it } from "vitest"
 import { dbOfText, defaultEmbedded } from "./db-reading.ts"
 import { formatMarkdown, formatMarkdownWithoutPlugin } from "./helpers.ts"
@@ -19,15 +19,15 @@ describe("kanban in Markdown", () => {
   it("formats a top-level fence", async () => {
     expect(
       await twice("```mermaid\n  kanban   S[x]\n     A\n ::icon(x)\n```\n"),
-    ).toBe("```mermaid\nkanban\n   S[x]\n     A\n     ::icon(x)\n```\n")
+    ).toBe("```mermaid\nkanban\n  S[x]\n    A\n    ::icon(x)\n```\n")
   })
 
-  it("keeps levels in a list inside a block quote after dedenting the host", async () => {
+  it("keeps sections and items in a list inside a block quote after dedenting the host", async () => {
     const input =
       "> - item\n>\n>   ```mermaid\n>     kanban   S[x]\n>        A\n>    ::icon(x)\n>   ```\n"
     const output = await twice(input)
     expect(output).toBe(
-      "> - item\n>\n>   ```mermaid\n>   kanban\n>      S[x]\n>        A\n>        ::icon(x)\n>   ```\n",
+      "> - item\n>\n>   ```mermaid\n>   kanban\n>     S[x]\n>       A\n>       ::icon(x)\n>   ```\n",
     )
     const lines = output.split("\n")
     const opening = lines.indexOf(">   ```mermaid")
@@ -43,7 +43,7 @@ describe("kanban in Markdown", () => {
 
   it("retains multiline values and opaque adjacent data", async () => {
     const markdown =
-      '```mermaid\nkanban\n S\n   A["x\n y"]@{ticket: X,}@{assigned: Ada}\n```\n'
+      '```mermaid\nkanban\n  S\n    A["x\n y"]@{ticket: X,}@{assigned: Ada}\n```\n'
     expect(await twice(markdown)).toBe(markdown)
   })
 

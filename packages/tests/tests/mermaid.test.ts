@@ -1326,7 +1326,7 @@ describe("withoutDivergences: gantt", () => {
   })
 })
 
-describe("withoutDivergences: c4-keyword-anywhere", () => {
+describe("withoutDivergences: c4", () => {
   const withoutC4Anywhere: RunMermaidOptions = {
     withoutDivergences: ["c4-keyword-anywhere"],
   }
@@ -1345,6 +1345,41 @@ describe("withoutDivergences: c4-keyword-anywhere", () => {
     if (!outcome.accepted) throw new Error("expected an accepted outcome")
     return outcome.db
   }
+
+  it.each([
+    ["div-boundary-comment-before-inline-body", false],
+    ["div-boundary-comment-before-next-statement", false],
+    ["div-comment-between-blank-recovery", false],
+    ["div-comment-between-joined-statements", false],
+    ["div-diagram-comment-u2028", false],
+    ["div-diagram-comment-u2029", false],
+    ["div-header-comment-blank-recovery", false],
+    ["header-component-comment-glued", false],
+    ["header-component-comment-on-header-line", false],
+    ["header-container-comment-glued", false],
+    ["header-container-comment-on-header-line", false],
+    ["header-context-comment-glued", false],
+    ["header-context-comment-on-header-line", false],
+    ["header-deployment-comment-glued", false],
+    ["header-deployment-comment-on-header-line", false],
+    ["header-dynamic-comment-glued", false],
+    ["header-dynamic-comment-on-header-line", false],
+    ["header-header-comment-spaces-recovery", true],
+    ["lex-comment-between-spaces-recovery", true],
+  ] as const)(
+    "leaves the line break after a diagram comment as a separator [fixture: c4/%s]",
+    async (name, acceptedAsIs) => {
+      const input = await inputOf("c4", name)
+      expect((await runMermaid(input)).accepted).toBe(acceptedAsIs)
+      const removed = await runMermaid(input, {
+        withoutDivergences: ["comment-takes-line-break"],
+      })
+      expect(removed.accepted).toBe(true)
+      if (!removed.accepted) throw new Error("expected an accepted outcome")
+      expect(removed.diagramType).toBe("c4")
+      expect((await runMermaid(input)).accepted).toBe(acceptedAsIs)
+    },
+  )
 
   it("reads a sequence diagram whose message is C4Container as the sequence diagram [fixture: common/detect-c4-anywhere]", async () => {
     const input = await inputOf("common", "detect-c4-anywhere")

@@ -11,22 +11,24 @@ kanban のトークンを定めます。
 [字句構造](../../../spec/docs/diagrams/kanban.ja.md#字句構造) の単位から、
 次の文法の項目とトークンの種類を作ります。
 
-| 種類         | 項目                                                                   |
-| ------------ | ---------------------------------------------------------------------- |
-| `Keyword`    | `header`、`::icon(`                                                    |
-| `Punctuator` | `opener`、`closer`、`:::`、icon の `)`、データの `@{` と `}`           |
-| `RawText`    | `node-text`、`shape-text`、`icon-text`、`class-text`、データの内部全体 |
-| `String`     | 区切りを含む `string` と `markdown-string`                             |
+| 種類         | 項目                                                                                                                         |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| `Keyword`    | `header`、`::icon(`                                                                                                          |
+| `Punctuator` | `opener`、`closer`、`:::`、icon の `)`、データブロックの `data-start` と `}`                                                 |
+| `RawText`    | `node-text`、`shape-text`、`icon-text`、`class-text`、データブロックの `data-text` と `data-quote` の単位（合わせて 1 項目） |
+| `String`     | 区切りを含む `string` と `markdown-string`                                                                                   |
 
 [fixture: kanban/db-shape-square] [fixture: kanban/db-decoration-icon-item]
 [fixture: kanban/db-decoration-class-item] [fixture: kanban/db-metadata-all]
 [fixture: kanban/spec-kanban-562eb2dc] [fixture: kanban/db-markdown-label]
 
 各単位は 1 項目です。
-ただし `data-block` は開始、内部全体、終わりの 3 項目です。
+ただし、データブロックの `data-start` と `}` の間の単位は、
+flowchart と同じく、合わせて 1 つの `RawText` 項目です。
+`data-text` の単位と、引用された部分を囲む `data-quote` の単位は、
+`}` や `^` を囲んでいても、内部全体で 1 つの `RawText` トークンになります。
 空の内部はトークンを作りません。
 空白だけの内部は、その空白の `RawText` トークンを作ります。
-データの引用符は、`}` や `^` を囲んでいても同じ `RawText` 項目に残ります。
 隣り合うデータブロックは別々のトークンを保ちます。
 `Identifier` と `Numeric` の項目は使いません。
 [fixture: kanban/db-metadata-empty] [fixture: kanban/db-metadata-whitespace]

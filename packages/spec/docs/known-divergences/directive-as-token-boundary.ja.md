@@ -71,6 +71,21 @@ mermaid.js は前後をつないで受理します。
 を参照）。
 [fixture: kanban/db-metadata-adjacent-directive]
 
+C4 では見出し語、呼び出し語、`accTitle`、`accDescr` の内部の、
+ディレクティブを拒否し、mermaid.js は前後をつなぎます。
+[fixture: c4/lex-directive-keyword][fixture: c4/div-directive-header]
+[fixture: c4/div-acc-title-directive]
+[fixture: c4/div-acc-block-marker-directive]
+
+裸の引数と名前付きキーはテキスト単位なので、
+引用引数やタイトル・説明のテキストと同様に、
+内部にディレクティブを置けます。[fixture: c4/lex-directive-bare-alias]
+[fixture: c4/lex-directive-named-key][fixture: c4/lex-directive-quoted]
+[fixture: c4/lex-title-directive-value]
+
+名前付き値の等号と開き引用符は別の区切りなので、
+その間のディレクティブを許します。[fixture: c4/lex-directive-named-equals-quote]
+
 ## 差異
 
 どの例も、図の全体です。
@@ -211,7 +226,7 @@ mermaid.js がその中のディレクティブを読めるのは、
 これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
 
-## mermaid.js の文書とテスト
+## mermaid.js の文書と issue
 
 - [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
   の文書は、どのディレクティブもそれだけの行に示し、
@@ -235,3 +250,18 @@ mermaid.js がその中のディレクティブを読めるのは、
   にあります。
   mermaid.js の flowchart のパーサーのテストには、
   ディレクティブが 1 つもありません。
+
+- 固定した版の
+  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L148-L157)
+  は呼び出しと名前付き引数の例を示し、
+  見出しや呼び出し語の内部のディレクティブを説明していません。
+  `mermaid-js/mermaid` の issue と pull request を、
+  2026-10-21 に `C4 directive`、
+  `C4 directive in:title,body`、
+  `C4 directive keyword in:title,body`、
+  `"Add directive support" in:title` で検索し、
+  この形式についての報告は見つかりませんでした。
+  [PR #4759](https://github.com/mermaid-js/mermaid/pull/4759)
+  は全図種の解析前にディレクティブ、
+  フロントマター、
+  コメントを除く前処理を導入しています。

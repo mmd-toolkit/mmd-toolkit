@@ -421,6 +421,11 @@ mermaid.js の文法がそこに改行を要り、文の字下げは変わらな
 コメント行、ヘッダーの前の行、ノードの行はそのまま残します。
 ノードが閉じていないテキストの途中に、取り除く行があるときは、
 空行がそのテキストの文字なので、生成器が止まります。
+kanban にも同じ差異があり、mindmap と同じ規則です。
+ヘッダーの行でも文の間でも、コメントを終える U+2028 と U+2029 の後ろに
+文が続くときは、その前に改行を入れます。
+[fixture: kanban/div-header-comment-ls-node]
+[fixture: kanban/div-header-comment-ps-node]
 [fixture: mindmap/div-header-trailing-spaces-then-node]
 [fixture: mindmap/div-header-space-directive-then-node]
 [fixture: mindmap/div-tab-line-after-header]
@@ -600,6 +605,25 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: gantt/div-percent-comment-takes-line-feed-after-href]
   [fixture: gantt/div-percent-comment-takes-line-feeds-after-call]
   [fixture: gantt/lex-space-percent-comment-after-call-then-href-line]
+- `comment-takes-line-break`、C4 の字句解析器
+  （[`c4Diagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/parser/c4Diagram.jison#L98-L99)）
+  :
+  `%%` と行の残りとその後の改行を読む二つの規則は、行の終わりで終わる。
+  そうすると、図のコメントの後の行区切りは、
+  ヘッダー、呼び出し、境界と、その後に続くものとを分け、
+  コメントの後に空行があっても同じになる。
+  [fixture: c4/header-context-comment-glued]
+  [fixture: c4/header-context-comment-on-header-line]
+  [fixture: c4/div-comment-between-joined-statements]
+  [fixture: c4/div-boundary-comment-before-inline-body]
+  [fixture: c4/div-boundary-comment-before-next-statement]
+  [fixture: c4/div-header-comment-blank-recovery]
+  [fixture: c4/div-comment-between-blank-recovery]
+  [fixture: c4/div-diagram-comment-u2028]
+  [fixture: c4/div-diagram-comment-u2029]
+  コメントの後に空白だけの行がある場合も、文は引き続き分かれる。
+  [fixture: c4/header-header-comment-spaces-recovery]
+  [fixture: c4/lex-comment-between-spaces-recovery]
 - `percent-brace-after-unit`、gantt の字句解析器
   （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)）
   :

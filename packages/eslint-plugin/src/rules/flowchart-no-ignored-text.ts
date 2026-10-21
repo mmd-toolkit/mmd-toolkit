@@ -285,8 +285,7 @@ export const flowchartNoIgnoredText: MermaidRuleDefinition<{
   meta: {
     type: "problem",
     docs: {
-      description:
-        "Disallow text on a direction line that mermaid.js does not read.",
+      description: "Disallow text on a direction line that mermaid.js drops.",
       recommended: true,
       url: ruleDocsUrl("flowchart-no-ignored-text"),
     },

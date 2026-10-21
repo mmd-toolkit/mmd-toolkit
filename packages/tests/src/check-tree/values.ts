@@ -309,6 +309,11 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "trimmed-text",
     spec: "The field without the whitespace at its ends, as written (ast/sankey.md, SankeyLiteral).",
   },
+  C4Literal: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text (ast/c4.md, C4Literal).",
+  },
   BlockLiteral: { field: "value", kind: "written-text", spec: WRITTEN_TEXT },
   BlockArrow: { field: "value", kind: "written-text", spec: WRITTEN_TEXT },
   BlockOpeningArrow: {

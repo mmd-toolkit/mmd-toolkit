@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A style marker on a different line does not select a keyword semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...Contexttitle style:#xPers;on(a,\"A\")\n----------------------^"
+  }
+}

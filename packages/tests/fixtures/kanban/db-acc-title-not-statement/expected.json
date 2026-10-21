@@ -10,13 +10,11 @@
       {
         "id": "accTitle: First",
         "label": "accTitle: First",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "accTitle: Second",
         "label": "accTitle: Second",
-        "level": 1,
         "isGroup": true
       }
     ]

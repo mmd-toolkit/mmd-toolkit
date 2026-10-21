@@ -170,6 +170,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   RequirementDiagram: ["#", "%%", "%"],
   MindmapDiagram: ["%%"],
   KanbanDiagram: ["%%"],
+  C4Diagram: ["%%"],
   TimelineDiagram: ["#", "%%", "%"],
   SankeyDiagram: [],
   XychartDiagram: ["%%"],

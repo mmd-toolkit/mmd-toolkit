@@ -153,6 +153,7 @@ interface BrokenValueRow {
  * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  { type: "C4Literal", message: NOT_WRITTEN_TEXT },
   { type: "Identifier", message: NAME_NOT_TOKENS_JOINED },
   { type: "StringLiteral", message: NOT_WRITTEN_TEXT },
   {
@@ -357,6 +358,29 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "C4Literal",
+    name: "a C4Literal reports leading title whitespace taken off its RawText token",
+    diagram: "c4",
+    fixture: "db-title-whitespace",
+    token: { type: "RawText", value: "   T   " },
+    side: "start",
+    problems: [
+      {
+        where: "C4Literal at 16-23",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "C4Literal at 16-23",
+        message: `${JOINED}: "T   ", not "   T   "`,
+      },
+      {
+        where: "C4Literal at 16-23",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [16,23], not [19,23]",
+      },
+    ],
+  },
   {
     type: "KanbanLiteral",
     name: "a KanbanLiteral reports trailing node-text whitespace taken off its RawText token",

@@ -10,13 +10,11 @@
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "A",
         "label": "A",
-        "level": 3,
         "isGroup": false,
         "parentId": "S",
         "priority": "Infinity"
@@ -24,7 +22,6 @@
       {
         "id": "B",
         "label": "B",
-        "level": 3,
         "isGroup": false,
         "parentId": "S",
         "priority": "-Infinity"
@@ -32,7 +29,6 @@
       {
         "id": "C",
         "label": "C",
-        "level": 3,
         "isGroup": false,
         "parentId": "S"
       }

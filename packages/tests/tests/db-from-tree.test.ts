@@ -33,6 +33,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "quadrant",
   "block",
   "kanban",
+  "c4",
 ]
 
 /** The file in which a parser records the tree of a fixture it accepts. */
@@ -55,7 +56,7 @@ function fileOf(fixture: Fixture, file: string): string {
  * (`UnsupportedDiagramError`). A type leaves the list when the parser records
  * its trees, and the list is empty between two diagram types.
  */
-const DIAGRAM_TYPES_WITHOUT_RECORDED_TREES: readonly string[] = ["c4"]
+const DIAGRAM_TYPES_WITHOUT_RECORDED_TREES: readonly string[] = []
 
 describe("dbFromTree", () => {
   for (const diagram of DIAGRAMS) {
@@ -67,9 +68,9 @@ describe("dbFromTree", () => {
         const unsupportedWithTree: string[] = []
         let compared = 0
         for (const fixture of await loadFixtures(diagram)) {
+          const name = `${fixture.diagram}/${fixture.name}`
           const result = fixture.specified ?? fixture.expected
           if (!result.accepted || result.db === null) continue
-          const name = `${fixture.diagram}/${fixture.name}`
           if (
             result.diagramType !== undefined &&
             DIAGRAM_TYPES_WITHOUT_RECORDED_TREES.includes(result.diagramType)

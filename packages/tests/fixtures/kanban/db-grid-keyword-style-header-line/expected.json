@@ -10,13 +10,11 @@
       {
         "id": "style A fill:red ",
         "label": "style A fill:red ",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       }
     ]

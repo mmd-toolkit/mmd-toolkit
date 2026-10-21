@@ -13,13 +13,11 @@
       {
         "id": "root",
         "label": "String containing []",
-        "level": 4,
         "isGroup": true
       },
       {
         "id": "child1",
         "label": "String containing ()",
-        "level": 6,
         "isGroup": false,
         "parentId": "root"
       }

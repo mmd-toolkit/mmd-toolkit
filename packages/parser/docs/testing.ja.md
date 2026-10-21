@@ -17,7 +17,7 @@ fixture としてコーパスに足します。
 
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
 `class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/`、`mindmap/`、
-`timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/`、`kanban/` の、
+`timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/`、`kanban/`、`c4/` の、
 すべての fixture を parse し、
 次を確かめます。
 
@@ -40,6 +40,17 @@ kanban の fixture は `tests/kanban.test.ts` が検査します。
 トークンの正確なテキストも検査します。
 共通の kanban 検出 fixture を含む解析結果の記録は、
 `tests/fixtures.test.ts` が比べます。
+
+C4 の fixture は `tests/c4.test.ts` が検査します。
+コーパスの各入力について、宣言された差異と、
+存在すれば `specified.json` を適用し、
+記録された受理判定と比べます。
+受理した木では、トークンとコメントによる文字被覆、
+正確なトークンのテキスト、子ノードの包含とソース順も検査します。
+`tests/fixtures.test.ts` は、`c4/` の外にある C4 検出 fixture も含めて、
+解析結果の記録を比べます。
+`tests/ast-c4-examples.test.ts` は、
+型のコメントの例の範囲と木の不変条件を検査します。
 
 ## 既知の差異
 
@@ -96,6 +107,8 @@ kanban の fixture は `tests/kanban.test.ts` が検査します。
   [コメント](../../spec/docs/diagrams/gantt.ja.md#コメント) の定めのとおりで、
   パーサーの単位、コメント、図のテキストから求めます。
   `newline` 単位の改行は、`%` の前の空白として数えます。
+  C4 では、後続の改行をコメントの外に残す図のコメントを持つこと。
+  そのコメントは、パーサーの字句解析器から求めます。
 - `percent-brace-after-unit`: 入力が、ディレクティブを始めない `%%{` で、
   mermaid.js が直接たどり着くものを持つ Gantt チャートであること。
   同じように求めます。

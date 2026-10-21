@@ -243,8 +243,9 @@ the diagram sections below: a
 [`SankeyDiagram`](./ast/sankey.md#sankeydiagram), an
 [`XychartDiagram`](./ast/xychart.md#xychartdiagram), a
 [`QuadrantDiagram`](./ast/quadrant.md#quadrantdiagram), a
-[`BlockDiagram`](./ast/block.md#blockdiagram), or a
-[`KanbanDiagram`](./ast/kanban.md#kanbandiagram).
+[`BlockDiagram`](./ast/block.md#blockdiagram), a
+[`KanbanDiagram`](./ast/kanban.md#kanbandiagram), or a
+[`C4Diagram`](./ast/c4.md#c4diagram).
 
 ## ErrorDiagram
 

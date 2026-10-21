@@ -63,6 +63,7 @@ import {
 import {
   clickIdsWithinLeafNodes,
   clickReferenceOf,
+  c4DiagramComments,
   commentsAfterMatchStarts,
   commentsAfterOneCharacterUnits,
   commentsAfterUnits,
@@ -617,6 +618,7 @@ describe("marked fixtures differ only by their divergence", async () => {
   // here, while mermaid.js takes the line feeds after it; in gantt, so does
   // a comment with the mark `%` that mermaid.js reaches directly. Each
   // fixture has such a comment, found by the parser's lexer and units.
+  // C4 diagram comments leave their following line terminator outside too.
   describe("comment-takes-line-break", () => {
     const fixturesWithMark = marked("comment-takes-line-break")
 
@@ -628,9 +630,10 @@ describe("marked fixtures differ only by their divergence", async () => {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         const places =
           commentsAfterUnits(fixture.input) ??
-          percentCommentsReachedDirectly(fixture.input)
+          percentCommentsReachedDirectly(fixture.input) ??
+          c4DiagramComments(fixture.input)
         if (places === null) {
-          throw new Error("the input is no class diagram or Gantt chart")
+          throw new Error("the input is no class, Gantt, or C4 diagram")
         }
         expect(places.length).toBeGreaterThan(0)
       })

@@ -47,7 +47,7 @@ export type UnitName =
   | "newline"
   | "opener"
   | "node-text"
-  | "data-block"
+  | "data-start"
   // The shape context.
   | "markdown-string"
   | "empty-markdown-string"
@@ -60,6 +60,10 @@ export type UnitName =
   | ")"
   // The class context.
   | "class-text"
+  // The data and quoted-data contexts.
+  | "data-text"
+  | "data-quote"
+  | "}"
 
 /** diagrams/kanban.md, Units and contexts: one unit of the kanban lexer. */
 export interface Unit extends DiagramUnit<UnitName> {
@@ -74,14 +78,11 @@ export interface Unit extends DiagramUnit<UnitName> {
    * The shape context, rules 1 and 2: for a `string` or a
    * `markdown-string` unit, the source range of its content, from its first
    * character after the opening delimiter to the start of the closing
-   * delimiter; for a data block, its whole interior including whitespace;
-   * null otherwise. A directive may lie between the two characters of a
-   * delimiter of a markdown string, so the content is not found by counting
-   * characters from the ends of the unit.
+   * delimiter; null otherwise. A directive may lie between the two
+   * characters of a delimiter of a markdown string, so the content is not
+   * found by counting characters from the ends of the unit.
    */
   readonly contentRange: Range | null
-  /** The data opener and closer, including any trivia inside the opener. */
-  readonly dataDelimiters: readonly [Range, Range] | null
 }
 
 /** diagrams/kanban.md, Units and contexts: the contexts of the lexer. */
@@ -101,8 +102,11 @@ const END_OF_TEXT_MESSAGES: Readonly<Record<Context, string | null>> = {
   "quoted-data": 'The data string has no closing " before the end of the text',
 }
 
-/** The statement context, rule 7: the openers, in the order in which they are tried. */
-const OPENERS: readonly KanbanOpener[] = [
+/**
+ * The statement context, rule 7: the openers, in the order in which they
+ * are tried; the grammar reads the opener of a shape as one of them.
+ */
+export const OPENERS: readonly KanbanOpener[] = [
   "-)",
   "(-",
   "))",
@@ -113,8 +117,11 @@ const OPENERS: readonly KanbanOpener[] = [
   "[",
 ]
 
-/** The shape context, rule 3: the closers, in the order in which they are tried. */
-const CLOSERS: readonly KanbanCloser[] = [
+/**
+ * The shape context, rule 3: the closers, in the order in which they are
+ * tried; the grammar reads the closer of a shape as one of them.
+ */
+export const CLOSERS: readonly KanbanCloser[] = [
   "))",
   ")",
   "]",
@@ -184,12 +191,6 @@ export class KanbanUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   /** The number of whitespace characters that rule 8 read since the last unit, which the next unit takes (see `Unit.whitespaceBefore`). */
   private whitespaceRead = 0
 
-  /** The opening of the data block being read, before its one unit is made. */
-  private dataOpening: {
-    readonly from: DiagramCharacter
-    readonly end: number
-  } | null = null
-
   public constructor(reader: DiagramText, lines: LineIndex) {
     super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
   }
@@ -217,13 +218,11 @@ export class KanbanUnitLexer extends UnitLexer<Context, UnitName, Unit> {
     to: DiagramPosition,
     ends: UnitEnds = "trim-whitespace",
     contentRange: Range | null = null,
-    dataDelimiters: readonly [Range, Range] | null = null,
   ): Unit {
     const unit: Unit = {
       ...readUnit(this.reader, name, this.units.length, from, to, null, ends),
       whitespaceBefore: this.whitespaceRead,
       contentRange,
-      dataDelimiters,
     }
     this.units.push(unit)
     this.whitespaceRead = 0
@@ -281,7 +280,7 @@ export class KanbanUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   /** diagrams/kanban.md, The statement context: rules 1 to 9, in order. */
   private readInStatementContext(at: DiagramCharacter): void {
     if (
-      this.readDataOpening(at) ||
+      this.readDataStart(at) ||
       this.readComment(at) ||
       this.readHeader(at) ||
       this.readMarker(at, ":::", "class") ||
@@ -296,15 +295,12 @@ export class KanbanUnitLexer extends UnitLexer<Context, UnitName, Unit> {
     throw this.noRuleMatches(at)
   }
 
-  /** The statement context, rule 1: `@{` enters data; its `}` makes one `data-block` unit. */
-  private readDataOpening(at: DiagramCharacter): boolean {
+  /** The statement context, rule 1: `@{`, a `data-start` unit, which enters the data context. */
+  private readDataStart(at: DiagramCharacter): boolean {
     const match = matchWord(this.reader, at, "@{")
     if (match === null) return false
-    const brace = this.reader.after(at)
-    if (brace === null) throw new Error("mmd-toolkit parser bug: no data brace")
-    this.dataOpening = { from: at, end: brace.end }
-    this.enter("data", [at.start, brace.end])
-    this.position = match.end
+    const start = this.read("data-start", at, match.end)
+    this.enter("data", significantRangeOf(start))
     return true
   }
 
@@ -578,36 +574,26 @@ export class KanbanUnitLexer extends UnitLexer<Context, UnitName, Unit> {
     this.leave()
   }
 
-  /** The data context: a quote enters quoted data, nonempty content excludes `}`, `^`, and quotes, and `}` closes the block. */
+  /**
+   * diagrams/kanban.md, The data context: `"`, a `data-quote` unit, which
+   * enters the quoted-data context; one or more characters other than `}`,
+   * `^`, and `"`, a `data-text` unit, whose token keeps the whitespace at
+   * its ends, which the value of the data block holds; and `}`, a `}` unit,
+   * which leaves the context. A `^` has no rule.
+   */
   private readInDataContext(at: DiagramCharacter): void {
     if (at.codePoint === QUOTATION_MARK) {
-      this.enter("quoted-data", [at.start, at.end])
-      this.position = this.reader.after(at)
+      const quote = this.read("data-quote", at, this.reader.after(at))
+      this.enter("quoted-data", significantRangeOf(quote))
       return
     }
     if (at.codePoint === RIGHT_CURLY_BRACKET) {
-      const opening = this.dataOpening
-      if (opening === null)
-        throw new Error("mmd-toolkit parser bug: data has no opening")
-      const end = this.reader.after(at)
-      this.addUnit(
-        "data-block",
-        opening.from,
-        end,
-        "trim-whitespace",
-        [opening.end, at.start],
-        [
-          [opening.from.start, opening.end],
-          [at.start, at.end],
-        ],
-      )
-      this.dataOpening = null
-      this.position = end
+      this.read("}", at, this.reader.after(at))
       this.leave()
       return
     }
     if (at.codePoint === CIRCUMFLEX_ACCENT) throw this.noRuleMatches(at)
-    this.position = skipWhile(
+    const end = skipWhile(
       this.reader,
       at,
       (character) =>
@@ -615,19 +601,25 @@ export class KanbanUnitLexer extends UnitLexer<Context, UnitName, Unit> {
         character.codePoint !== CIRCUMFLEX_ACCENT &&
         character.codePoint !== QUOTATION_MARK,
     )
+    this.read("data-text", at, end, "keep-whitespace")
   }
 
-  /** The quoted-data context: the next quote leaves it; every other character is content. */
+  /**
+   * diagrams/kanban.md, The data context: in the quoted-data context, `"`,
+   * a `data-quote` unit, which leaves the context; and one or more other
+   * characters, a `data-text` unit.
+   */
   private readInQuotedDataContext(at: DiagramCharacter): void {
     if (at.codePoint === QUOTATION_MARK) {
-      this.position = this.reader.after(at)
+      this.read("data-quote", at, this.reader.after(at))
       this.leave()
       return
     }
-    this.position = skipWhile(
+    const end = skipWhile(
       this.reader,
       at,
       (character) => character.codePoint !== QUOTATION_MARK,
     )
+    this.read("data-text", at, end, "keep-whitespace")
   }
 }

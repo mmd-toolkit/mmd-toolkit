@@ -13,13 +13,11 @@
       {
         "id": "S",
         "label": "&lt;b&gt;S&lt;/b&gt;",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "A",
         "label": "&lt;i&gt;A&lt;/i&gt;<br/>",
-        "level": 3,
         "isGroup": false,
         "parentId": "S",
         "ticket": "<u>T</u>"

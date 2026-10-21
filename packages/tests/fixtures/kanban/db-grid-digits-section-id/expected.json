@@ -10,13 +10,11 @@
       {
         "id": "a123b",
         "label": "Column",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "I",
         "label": "Item",
-        "level": 3,
         "isGroup": false,
         "parentId": "a123b"
       }

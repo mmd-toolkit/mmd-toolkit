@@ -74,7 +74,7 @@ This rule has no options.
 ## Related Rules
 
 - [sequence-no-link-without-separator](./sequence-no-link-without-separator.md)
-- [no-ignored-init-directive](./no-ignored-init-directive.md)
+- [no-invalid-init-directive](./no-invalid-init-directive.md)
 
 <!-- begin auto-generated rule resources -->
 

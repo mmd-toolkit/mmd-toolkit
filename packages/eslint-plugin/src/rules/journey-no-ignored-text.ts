@@ -22,8 +22,7 @@ export const journeyNoIgnoredText: MermaidRuleDefinition<{
   meta: {
     type: "problem",
     docs: {
-      description:
-        "Disallow text in the data of a task that mermaid.js does not read.",
+      description: "Disallow text in the data of a task that mermaid.js drops.",
       recommended: true,
       url: ruleDocsUrl("journey-no-ignored-text"),
     },

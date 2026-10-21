@@ -555,6 +555,9 @@ mindmap
 
 ヘッダー、形、icon の後ろのコメントは、その行に書かれたまま残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
+そのコメントの前の空白は Db に入らないので、この形は選択です。
+空白の連なりは 1 つにし、空白があるかどうかは保ちます。
+コメントが前のものに接するかどうかは書き手が決めるからで、ほかの図種も同じです。
 [fixture: comments/after-the-header]
 [fixture: comments/after-the-header-touching]
 [fixture: comments/after-a-shape]

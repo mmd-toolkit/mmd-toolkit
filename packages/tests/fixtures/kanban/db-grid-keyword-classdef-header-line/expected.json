@@ -10,13 +10,11 @@
       {
         "id": "classDef c fill:red ",
         "label": "classDef c fill:red ",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "S",
         "label": "S",
-        "level": 1,
         "isGroup": true
       }
     ]

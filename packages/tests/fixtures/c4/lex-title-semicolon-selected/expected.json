@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A hash in title text is still rejected when the common line rule removes a semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...Contexttitle style:#x\n----------------------^"
+  }
+}

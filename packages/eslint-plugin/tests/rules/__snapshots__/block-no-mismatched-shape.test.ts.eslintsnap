@@ -1,0 +1,106 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: block-no-mismatched-shape >> invalid >>> docs/rules/block-no-mismatched-shape.md incorrect 1
+Filename: block-no-mismatched-shape-incorrect-1.mmd
+
+Code:
+  1 | block
+  2 |   A["Start")
+    |    ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js recognizes no shape for this pair: the closing `)` does not match the opening `[`.
+---
+
+
+Test: block-no-mismatched-shape >> invalid >>> invalid/block/chain-target-mismatched
+Filename: tests/fixtures/rules/block-no-mismatched-shape/invalid/block/chain-target-mismatched-input.mmd
+
+Code:
+  1 | block
+  2 |   A --> B --> C("x"]
+    |                ^~~~~ [1]
+  3 |
+
+[1] mermaid.js recognizes no shape for this pair: the closing `]` does not match the opening `(`.
+---
+
+
+Test: block-no-mismatched-shape >> invalid >>> invalid/block/circle-missing-paren
+Filename: tests/fixtures/rules/block-no-mismatched-shape/invalid/block/circle-missing-paren-input.mmd
+
+Code:
+  1 | block
+  2 |   A(("x")
+    |    ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js recognizes no shape for this pair: the closing `)` does not match the opening `((`.
+---
+
+
+Test: block-no-mismatched-shape >> invalid >>> invalid/block/edge-start-mismatched
+Filename: tests/fixtures/rules/block-no-mismatched-shape/invalid/block/edge-start-mismatched-input.mmd
+
+Code:
+  1 | block
+  2 |   A["x") --> B
+    |    ^~~~~ [1]
+  3 |
+
+[1] mermaid.js recognizes no shape for this pair: the closing `)` does not match the opening `[`.
+---
+
+
+Test: block-no-mismatched-shape >> invalid >>> invalid/block/edge-target-mismatched
+Filename: tests/fixtures/rules/block-no-mismatched-shape/invalid/block/edge-target-mismatched-input.mmd
+
+Code:
+  1 | block
+  2 |   A --> B("x"]
+    |          ^~~~~ [1]
+  3 |
+
+[1] mermaid.js recognizes no shape for this pair: the closing `]` does not match the opening `(`.
+---
+
+
+Test: block-no-mismatched-shape >> invalid >>> invalid/block/mismatched-after-known-shape
+Filename: tests/fixtures/rules/block-no-mismatched-shape/invalid/block/mismatched-after-known-shape-input.mmd
+
+Code:
+  1 | block
+  2 |   A["First"]
+  3 |   A["Second")
+    |    ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js recognizes no shape for this pair: the closing `)` does not match the opening `[`.
+---
+
+
+Test: block-no-mismatched-shape >> invalid >>> invalid/block/square-closed-by-paren
+Filename: tests/fixtures/rules/block-no-mismatched-shape/invalid/block/square-closed-by-paren-input.mmd
+
+Code:
+  1 | block
+  2 |   A["x")
+    |    ^~~~~ [1]
+  3 |
+
+[1] mermaid.js recognizes no shape for this pair: the closing `)` does not match the opening `[`.
+---
+
+
+Test: block-no-mismatched-shape >> invalid >>> invalid/block/square-extra-bracket
+Filename: tests/fixtures/rules/block-no-mismatched-shape/invalid/block/square-extra-bracket-input.mmd
+
+Code:
+  1 | block
+  2 |   A["x"]]
+    |    ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js recognizes no shape for this pair: the closing `]]` does not match the opening `[`.
+---

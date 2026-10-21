@@ -104,34 +104,7 @@ const ruleDocuments: readonly {
     rulesInTestCode: ["line-terminators", "whitespace-characters"],
   },
   {
-    diagram: "kanban",
-    rulesWithoutExamples: [
-      "trailing-whitespace",
-      "line-terminators",
-      "whitespace-characters",
-    ],
-    rulesInTestCode: ["line-terminators", "whitespace-characters"],
-  },
-  {
-    diagram: "kanban",
-    rulesWithoutExamples: [
-      "trailing-whitespace",
-      "line-terminators",
-      "whitespace-characters",
-    ],
-    rulesInTestCode: ["line-terminators", "whitespace-characters"],
-  },
-  {
-    diagram: "kanban",
-    rulesWithoutExamples: [
-      "trailing-whitespace",
-      "line-terminators",
-      "whitespace-characters",
-    ],
-    rulesInTestCode: ["line-terminators", "whitespace-characters"],
-  },
-  {
-    diagram: "kanban",
+    diagram: "c4",
     rulesWithoutExamples: [
       "trailing-whitespace",
       "line-terminators",
@@ -376,6 +349,7 @@ async function readCitedTestTitles(): Promise<string[]> {
           "class",
           "state",
           "kanban",
+          "c4",
         ]) {
           titles.push(title.replaceAll("%s", diagram))
         }
@@ -406,10 +380,7 @@ describe("the test citations in the documents", async () => {
     "docs/quadrant.md",
     "docs/block.md",
     "docs/kanban.md",
-    "docs/kanban.md",
-    "docs/kanban.md",
-    "docs/kanban.md",
-    "docs/kanban.md",
+    "docs/c4.md",
     "docs/compatibility.md",
   ]) {
     const text = await readFile(new URL(document, packageRoot), "utf8")

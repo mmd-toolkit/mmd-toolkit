@@ -659,6 +659,58 @@
   [fixture: kanban/div-empty-icon-after-shape]
   [fixture: kanban/div-empty-class-after-shape]
 
+## C4 図の中
+
+- 字句規則が一致しない位置は、その文字の範囲で、
+  メッセージは `Unexpected character` です。
+  先頭の文脈の未知の語、呼び出しのキーワードと `(` の間の空白、
+  引用符のない名前付きの値が該当します。
+  [fixture: c4/lex-keyword-gap-person-space]
+  [fixture: c4/gram-named-bare-value] [fixture: c4/lex-after-person-word]
+- 終わっていない文脈は、空白だけが残る場合も、その文脈に入った要素の範囲です。
+  メッセージは下表のとおり、不足する部分を示します。
+  [fixture: c4/lex-keyword-eof] [fixture: c4/lex-unclosed-parenthesis]
+  [fixture: c4/lex-unclosed-quote] [fixture: c4/lex-unclosed-named]
+  [fixture: c4/lex-named-open-eof] [fixture: c4/gram-unclosed-acctitle]
+  [fixture: c4/gram-unclosed-accdescr]
+  [fixture: c4/gram-acc-descr-block-unclosed]
+
+| 文脈                                 | 範囲                   | メッセージ                                                        |
+| ------------------------------------ | ---------------------- | ----------------------------------------------------------------- |
+| 呼び出しのキーワード                 | キーワード             | `The call keyword has no ( before the end of the text`            |
+| 引数                                 | 開きの `(` または `(,` | `The arguments have no ) before the end of the text`              |
+| 引用された引数または名前付きの文字列 | 開きの引用符           | `The string has no closing " before the end of the text`          |
+| 名前付きのキー                       | `$`                    | `The named attribute has no = before the end of the text`         |
+| 名前付きの値の開き                   | `$`                    | `The named attribute has no opening " before the end of the text` |
+| コロンのタイトル                     | `accTitle`             | `accTitle has no text before the end of the text`                 |
+| コロンの説明                         | `accDescr`             | `accDescr has no text before the end of the text`                 |
+| 説明ブロック                         | `accDescr`             | `The description block has no } before the end of the text`       |
+
+- 文法が読めない単位は、そのトークンの範囲です。
+  空白だけの単位は、その先頭の空範囲です。
+  メッセージは `Unexpected token` です。
+  必須の文や境界の閉じ波括弧より前でテキストが終わるときは、
+  末尾の空範囲で、メッセージは `Unexpected end of text` です。
+  空の名前付きの値は、閉じ引用符の位置です。
+  [fixture: c4/gram-arguments-person-none]
+  [fixture: c4/gram-named-empty-value] [fixture: c4/header-context-only]
+  [fixture: c4/gram-boundary-unclosed]
+  [fixture: c4/gram-unmatched-right-brace-after-person]
+- 方向の先読みは、先頭の文脈の単位を読む前に拒否します。
+  範囲は一致した `direction` から方向値までで、メッセージは
+  `A direction line is not allowed in C4` です。
+  [fixture: c4/gram-direction-tb] [fixture: c4/gram-header-direction-tb]
+  [fixture: c4/gram-direction-value-next-line]
+- 消費する名前付きの `__proto__` 属性は、
+  外側の空白と `$`、`=` を除いたキーの範囲です。
+  メッセージは `A consumed named attribute cannot have the key __proto__` です。
+  [fixture: c4/gram-named-proto]
+  [fixture: c4/gram-named-proto-person-description]
+  [fixture: c4/gram-named-proto-existing-relationship-style]
+- 固定のキーワード内の切れ目は、下記の共通の差異のエラーです。
+  [fixture: c4/div-directive-header] [fixture: c4/lex-directive-keyword]
+  [fixture: c4/div-semicolon-call-keyword-after-block]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

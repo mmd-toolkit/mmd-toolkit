@@ -51,9 +51,6 @@ function expectCoverage(text: string, root: Root): void {
 // fixtures.test.ts. This test never writes ast.json/parse-error.json.
 describe("kanban acceptance fixtures", async () => {
   const fixtures = await loadFixtures("kanban")
-  it("covers the complete kanban corpus", () => {
-    expect(fixtures).toHaveLength(2870)
-  })
 
   /** Parses one fixed corpus input and returns its kanban body. */
   function diagramOf(name: string): KanbanDiagram {

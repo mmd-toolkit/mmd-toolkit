@@ -10,13 +10,11 @@
       {
         "id": "In progress",
         "label": "In progress",
-        "level": 1,
         "isGroup": true
       },
       {
         "id": "Work item",
         "label": "Work item",
-        "level": 3,
         "isGroup": false,
         "parentId": "In progress"
       }

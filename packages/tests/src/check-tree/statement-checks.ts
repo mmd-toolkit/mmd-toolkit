@@ -445,7 +445,14 @@ export function checkLayout(
   for (const [index, part] of parts.entries()) {
     const next = parts[index + 1]
     if (next === undefined) continue
-    const gap = between(reading, part.range[1], next.range[0])
+    // C4 diagram comments are trivia between statements and boundary parts.
+    const gap =
+      reading.root.body.type === "C4Diagram"
+        ? reading.written.of(
+            [part.range[1], next.range[0]],
+            reading.root.comments.map((comment) => comment.range),
+          )
+        : between(reading, part.range[1], next.range[0])
     reading.problems.expect(
       isBlank(gap),
       where,

@@ -28,7 +28,7 @@ import { walkNodes } from "./walk.ts"
 // ast/kanban.md and diagrams/kanban.md define these checks; token kinds and
 // ranges follow parser/docs/tokens/kanban.md and positions/kanban.md.
 
-/** ast/kanban.md, KanbanShape: independent written delimiters. */
+/** ast/kanban.md, KanbanShape: the openings, each independent of the closing written with it. */
 export const KANBAN_OPENERS: readonly string[] = [
   "-)",
   "(-",
@@ -39,6 +39,7 @@ export const KANBAN_OPENERS: readonly string[] = [
   "(",
   "[",
 ]
+/** ast/kanban.md, KanbanShape: the closings, each independent of the opening written with it. */
 export const KANBAN_CLOSERS: readonly string[] = [
   "))",
   ")",
@@ -322,7 +323,7 @@ function checkValueTokens(
   )
 }
 
-/** Checks the first-stage kanban tree against the specification and the published token and position rules. */
+/** Checks a kanban tree against ast/kanban.md and parser/docs/tokens/kanban.md and positions/kanban.md. */
 export function checkKanbanTree(
   text: string,
   root: CheckedRoot,

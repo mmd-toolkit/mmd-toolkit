@@ -268,3 +268,12 @@ mindmap/div-two-comments-line-separator-between-nodes]
 - No issue or pull request about it was found (searched on 2026-10-15 for
   `mindmap empty line`, `mindmap blank line`, `mindmap comment`,
   `mindmap newline`, `mindmap parse`, and `mindmap error`).
+- The
+  [kanban syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/kanban.md)
+  says nothing of empty lines or comments between the lines of a kanban diagram;
+  it says only that the indentation matters.
+- No issue or pull request about it was found (searched on 2026-10-21 for
+  `kanban comment`, `kanban blank line`, `kanban empty line`, `kanban newline`,
+  `kanban parse`, `kanban error`, and `kanban`). The issues and pull requests
+  found are about other things, such as `style` statements (#8118), `:::`
+  classes (#8119), and `accTitle` (#8120).

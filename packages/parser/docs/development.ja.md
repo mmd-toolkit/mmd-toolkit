@@ -42,7 +42,7 @@ journey 図（`journey`）と、要求図（`requirement`）と、
 mindmap（`mindmap`）と、timeline（`timeline`）と、
 sankey 図（`sankey`）と、XY チャート（`xychart`）と、
 四象限チャート（`quadrantChart`）と、ブロック図（`block`）と、
-kanban 図（`kanban`）です。
+kanban 図（`kanban`）と、C4 図（`c4`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -62,7 +62,8 @@ kanban 図（`kanban`）です。
 [`diagrams/xychart.md`](../../spec/docs/diagrams/xychart.ja.md)、
 [`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.ja.md)、
 [`diagrams/block.md`](../../spec/docs/diagrams/block.ja.md)、
-[`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.ja.md)
+[`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.ja.md)、
+[`diagrams/c4.md`](../../spec/docs/diagrams/c4.ja.md)
 のどれかに従います。
 3 つの部分からなります。
 
@@ -91,7 +92,7 @@ flowchart とクラス図の文字の規則の Unicode の文字は
 状態図の字句解析器が `#` と `%%` を、
 Gantt チャートの字句解析器が `%` を、
 journey 図と要求図と timeline の字句解析器が `#` と `%` を、
-mindmap と kanban 図の字句解析器が `%%` を読むように、
+mindmap、kanban 図、C4 図の字句解析器が `%%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
 中にコメント領域があれば、トークンと同じく、そこで切ります。
@@ -139,6 +140,9 @@ subgraph の要素についてこれを読みます。
 フロントマターは最初に、
 開く `---`、本文、閉じる `---` のトークンとして記録します
 （[`ast.md` の Frontmatter](../../spec/docs/ast.ja.md#frontmatter)）。
+
+C4 の文法は、消費する引数の位置にある `__proto__` キーを検査し、
+更新先の有無を判断するために、別名と関係の端点だけを保持します。
 
 ## 道具
 

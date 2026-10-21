@@ -15,8 +15,8 @@ the sentence of the specification or of the parser's documents that defines it.
 
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
 `sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
-`mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, `block/`, and
-`kanban/`, and checks:
+`mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, `block/`,
+`kanban/`, and `c4/`, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -34,6 +34,14 @@ compared with their recorded acceptance, applying the declared divergences and
 `specified.json` where present. Accepted trees also check token/comment coverage
 and exact token text. The parse records, including the common kanban detection
 fixture, are compared by `tests/fixtures.test.ts`.
+
+C4 fixtures are checked by `tests/c4.test.ts`: every corpus input is compared
+with its recorded acceptance, applying the declared divergences and
+`specified.json` where present. Accepted trees also check token/comment
+coverage, exact token text, and child-node containment and source order.
+`tests/fixtures.test.ts` compares their recorded parse results, including the C4
+detection fixtures outside `c4/`. `tests/ast-c4-examples.test.ts` checks the
+ranges and tree invariants in the type comment examples.
 
 ## Known divergences
 
@@ -80,7 +88,9 @@ compares it with the Db built from the recorded tree.
   chart has a comment with the mark `%` that mermaid.js reaches directly, as
   [Comments](../../spec/docs/diagrams/gantt.md#comments) defines it, found from
   the parser's units, comments, and diagram text, with the line feeds of a
-  `newline` unit counted as whitespace before the `%`.
+  `newline` unit counted as whitespace before the `%`. In C4, the input has a
+  diagram comment, found by its lexer, whose following line terminator stays
+  outside the comment.
 - `percent-brace-after-unit`: the Gantt chart has a `%%{` that starts no
   directive and that mermaid.js reaches directly, found in the same way.
 - `blank-line-after-header-or-comments`: the mindmap or kanban diagram has,

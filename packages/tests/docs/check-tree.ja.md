@@ -76,7 +76,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   gantt 図の図のコメントは、印 `%%` と `%` を持ち、
   journey 図と requirement 図と timeline 図の図のコメントは、
   印 `#`、`%%`、`%` を持ち、
-  mindmap 図、xychart 図、quadrant chart の図のコメントは、印 `%%` を持ちます。
+  mindmap 図、xychart 図、C4 図、quadrant chart の図のコメントは、
+  印 `%%` を持ちます。
   印のない断片は、コメント領域に続きます
   （parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
@@ -583,6 +584,24 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `StringFragment` トークンで、
     その後ろの語は `RawText` トークンです。
 
+  - c4: 子の型、null 条件、空にできない引数リスト、
+    正確なキーワードの家族、図の kind は ast/c4.md に従います。
+    `beforeBody` は空の説明ブロックだけを持ち、
+    境界の本体の最初の有意な文は呼び出しです。
+    C4Literal は書かれたテキストを保持し、
+    `title` と `accDescription` 以外では外側の空白を除きます。
+    文字列は共有の value、raw、closed を持ち、名前付きの値は空にできません。
+    呼び出し、名前付き属性、タイトル、アクセシビリティ形式、文の間隔は、
+    statement-checks.ts で配置、空白、外包を検査します。
+    図のコメントの印は `%%` で、行終端子を外に残します。
+    トークンの種類とキーワード・句読点の表は、
+    `parser/docs/tokens/c4.md` に従います。
+    ASCII の空白も含む `(,` と `,,` は、それぞれ一つのトークンです。
+    `check-tree-c4.test.ts` は手作りの木を検査し、
+    名前で指定したフィクスチャの記録済みの木も壊して検査します。
+    コーパスの検査は C4 の記録済みの木すべてと、
+    五つの kind の common の検出例を含みます。
+    C4 を記録済みの木の検査から除外しません。
   - kanban: 子の型と欄の語は ast/kanban.md の表に従います。
     body は平坦で、data と decorations のリストと同じく空でも構いません。
     ノードはテキスト、形、または両方を持ち、

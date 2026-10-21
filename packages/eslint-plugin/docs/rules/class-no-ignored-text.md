@@ -2,7 +2,7 @@
 
 Japanese version: [class-no-ignored-text.ja.md](./class-no-ignored-text.ja.md)
 
-Disallow text that mermaid.js does not read.
+Disallow text that mermaid.js drops.
 
 <!-- begin auto-generated rule notice -->
 
@@ -17,8 +17,8 @@ drops the rest without an error.
 ## Rule Details
 
 This rule reports the text that stands on a direction line before `direction` or
-after the direction value, and the parts of a method line that mermaid.js does
-not read. It applies to `classDiagram`.
+after the direction value, and the parts of a method line that mermaid.js drops.
+It applies to `classDiagram`.
 
 `class A direction LR` sets the direction `LR` and declares no class.
 `direction TBX` sets the direction `TB`, and the `X` is dropped.

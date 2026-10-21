@@ -305,3 +305,11 @@ mindmap/div-two-comments-line-separator-between-nodes]
   （2026-10-15 に `mindmap empty line`、`mindmap blank line`、
   `mindmap comment`、`mindmap newline`、
   `mindmap parse`、`mindmap error` で検索）。
+- [kanban の構文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/kanban.md)
+  は、kanban の図の行の間の空の行やコメントについて何も述べず、
+  字下げが大切だと述べるだけです。
+- それについての issue と pull request は見つかりませんでした
+  （2026-10-21 に `kanban comment`、`kanban blank line`、`kanban empty line`、
+  `kanban newline`、`kanban parse`、`kanban error`、`kanban` で検索）。
+  見つかった issue と pull request は、`style` の文（#8118）、
+  `:::` のクラス（#8119）、`accTitle`（#8120）など、別の件についてのものです。

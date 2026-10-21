@@ -15,7 +15,7 @@ export const stateNoIgnoredText: MermaidRuleDefinition<{
   meta: {
     type: "problem",
     docs: {
-      description: "Disallow text that mermaid.js does not read.",
+      description: "Disallow text that mermaid.js drops.",
       recommended: true,
       url: ruleDocsUrl("state-no-ignored-text"),
     },
