@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The tab fragment in style-key is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betastyle A a\tb:red\n-------------------^\nExpecting 'COLON', got 'IDENTIFIER'"
+  }
+}

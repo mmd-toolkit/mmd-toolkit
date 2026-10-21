@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex text style rule two semicolons form stores {\"texts\":[{\"sets\":[\"A\"],\"id\":\"astyle:\\ufb02\\u00b0\\u00b035\\u00b6\\u00dfb\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "astyle:ﬂ°°35¶ßb"
+      }
+    ],
+    "styles": []
+  }
+}

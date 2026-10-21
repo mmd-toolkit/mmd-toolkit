@@ -18,6 +18,7 @@ import { parseQuadrantDiagram } from "./diagrams/quadrant/index.ts"
 import { parseBlockDiagram } from "./diagrams/block/index.ts"
 import { parseKanbanDiagram } from "./diagrams/kanban/index.ts"
 import { parseC4Diagram } from "./diagrams/c4/index.ts"
+import { parseVennDiagram } from "./diagrams/venn/index.ts"
 import { parseRequirementDiagram } from "./diagrams/requirement/index.ts"
 import { ParseError, UnsupportedDiagramError } from "./errors.ts"
 import { readFrontmatterTrivia } from "./frontmatter.ts"
@@ -148,6 +149,8 @@ export function parse(text: string): Root {
       return parseKanbanDiagram(input)
     case "c4":
       return parseC4Diagram(input)
+    case "venn":
+      return parseVennDiagram(input)
     default:
       throw new UnsupportedDiagramError(detected)
   }

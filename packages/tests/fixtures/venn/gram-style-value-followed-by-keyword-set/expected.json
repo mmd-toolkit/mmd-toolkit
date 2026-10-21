@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Units and contexts: The same-line set keyword ends the bare style value red and starts the accepted set B statement."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "x": "red"
+        }
+      }
+    ]
+  }
+}

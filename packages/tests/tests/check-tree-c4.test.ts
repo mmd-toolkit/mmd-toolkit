@@ -21,6 +21,7 @@ import {
   says,
   setEnd,
   setField,
+  recordedTree,
 } from "./check-tree-recorded.ts"
 import {
   readFieldTables,
@@ -1102,6 +1103,11 @@ const RECORDED_CASES: readonly MutationCase[] = [
 ]
 
 describe("checkTree of the recorded C4 trees", () => {
+  // The HTML tag begins outside the quoted value's range.
+  it("passes the recorded HTML tag context from earlier text", () => {
+    const { input, tree } = recordedTree("c4", "db-html-tag-from-earlier-text")
+    expect(checkTree(input, tree)).toEqual([])
+  })
   for (const mutation of RECORDED_CASES)
     it(`passes ${mutation.fixture} and reports ${mutation.name}`, () => {
       const { base, mutated } = problemsOfMutation("c4", mutation)

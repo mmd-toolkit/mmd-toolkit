@@ -203,6 +203,10 @@ description:
 | カンバン図で、アイコン（`::icon(x)` やメタデータの `icon:`）と、2 度書いたアイコン                                                                                                        | 何も描かれない。カンバンの項目の描画はアイコンを使わず（`kanbanItem.ts` を読んだ）、アイコンもその置き換えも出力を変えない。カンバンの文書はアイコンを挙げない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | カンバン図で、列のメタデータの `assigned`、`priority`、`icon` と、列や項目のクラス（`:::c`）                                                                                              | Db は持つがボードは示さない（実行）。担当者のある列は意味のある書き方であり、クラスは修正の open な mermaid.js の欠落である（[#8119](https://github.com/mermaid-js/mermaid/issues/8119)、[#8139](https://github.com/mermaid-js/mermaid/pull/8139)、[#8281](https://github.com/mermaid-js/mermaid/pull/8281)）                                                                                                                                                                                                                                                                                                                                               |
 | カンバン図で、同じ id の 2 つの項目、ノードとしての `title` や `accTitle:`、別の閉じを持つ形（`a[A)`）                                                                                    | 同じ id の 2 つの項目は、文書の例が書くとおり両方描かれる。`title` は文法どおりノードである（[#8120](https://github.com/mermaid-js/mermaid/issues/8120) がアクセシビリティを求めている）。カンバンの項目はどれも 1 つの形で描かれるので、閉じは何も変えない                                                                                                                                                                                                                                                                                                                                                                                                 |
+| C4 図で、どの要素も境界も宣言しない alias への関係（`Rel(a, typo, "Uses")`）                                                                                                              | 黙ってはいない。図を描くとき、その関係を挙げるエラーで止まる（`drawRels` を読んだ）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| C4 図で、0、負、数でない `UpdateLayoutConfig` の数                                                                                                                                        | 図を描く人が書くものではない。1 行の形の数は正の数である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| C4 図で、見える題名を設定する `accTitle:` と、同じ順の組の関係の 2 度書き（後のものが最初のものを置き換える）                                                                             | 修正が open な mermaid.js の不具合である（[#8040](https://github.com/mermaid-js/mermaid/issues/8040) と [#8041](https://github.com/mermaid-js/mermaid/pull/8041)、[#8143](https://github.com/mermaid-js/mermaid/pull/8143)）                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| C4 図で、`RelIndex` の番号、配置ノードの sprite、知られたキーの大文字小文字違いでないキー（`$colour`）、2 度書いたスタイル更新                                                            | 文書は、番号を読まないことと sprite が未完であることを書く。mermaid.js は名前付きの属性をどれも持ち、挙げられていないキーのいくつか（`alias`、`from`、`to`）は後の文の照合を変えるので、正しいキーの一覧が立たない。2 つ目の更新は与えた欄だけを置き換え、何も失われない                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ### 迷ったときの問い
 
@@ -694,6 +698,12 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | kanban-no-invalid-metadata-key            | 保留                 |                                                                          |
 | kanban-no-invalid-priority                | 保留                 |                                                                          |
 | kanban-no-duplicate-section               | 入れる               |                                                                          |
+| c4-no-undef                               | 入れる               |                                                                          |
+| c4-no-invalid-attribute-key               | 入れる               |                                                                          |
+| c4-no-useless-argument                    | 入れる               |                                                                          |
+| c4-no-duplicate-title                     | 入れる               |                                                                          |
+| c4-no-duplicate-description               | 入れる               |                                                                          |
+| c4-no-redefined-element                   | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1277,6 +1287,34 @@ metadata、priority、duplicate、icon の語も添えた。
   (2) なし。項目のない同じ id の列は報告しない。
   (4) 列ごとに自分の id を与える。
 
+C4 図の規則の注は次のとおりである。
+検索は題名の「C4」と、duplicate、undefined、UpdateLayoutConfig、
+UpdateElementStyle before、attribute case、accTitle、sprite、offset の語で、
+上の行が挙げるもののほかに読み方を変えるものはなかった。
+
+- c4-no-duplicate-title、c4-no-duplicate-description:
+  上のタイトルと説明の規則の注を持つ。
+  `accTitle:` は、mermaid.js の不具合で見える題名を設定するので、比べない。
+- c4-no-undef:
+  (1) 読まれるときに対象のないスタイル更新は、対象より前に書いたものも、
+  何も変えない（実行）。
+  (2) なし。mermaid.js の文書は更新を図の終わりに書くので、
+  対象より前の更新は文書が示すとおりに書かれていない。
+  順について文書が何も言わない flowchart の、頂点より前の `class` とは違う。
+  知らない alias への関係は、描くときにエラーで止まるので報告しない。
+  (4) alias を直すか、更新を対象の後へ移す。
+- c4-no-invalid-attribute-key、c4-no-useless-argument:
+  (1) 大文字小文字の違うスタイルのキーは別の欄として持たれ、
+  呼び出しの引数を超える引数は持たれない（実行）。
+  (2) なし。ほかの知らないキーと、引数を超える空の項目は報告しない。
+  (4) キーをその大文字小文字で書き、値をその引数に書く。
+- c4-no-redefined-element:
+  (1) alias の後の宣言は、要素のラベルと種類、
+  境界のラベルと型を置き換える（実行）。
+  (2) なし。同じラベルの繰り返し、最初のラベル、要素を足すために書き直した境界、
+  誰も書いていない既定の型は報告しない。
+  (4) 要素と境界ごとに自分の alias を与える。
+
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
 mermaid.js は次の行を書き手のつもりどおりに別に読むが、
@@ -1364,6 +1402,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | quadrant-*（9 件すべて）                | いまはなし（2026-10-16。この節の終わりを見る）   |
 | block-*（11 件すべて）                  | いまはなし（2026-10-21。この節の終わりを見る）   |
 | kanban-*（3 件すべて）                  | いまはなし（2026-10-21。この節の終わりを見る）   |
+| c4-*（6 件すべて）                      | いまはなし（2026-10-21。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1487,7 +1526,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `sequence-*`、`class-*`、`state-*`（2026-10-08）と
 `er-*`、`gantt-*`、`journey-*`（2026-10-14）と
 `requirement-*`、`mindmap-*`、`timeline-*`、`sankey-*`、`xychart-*`（2026-10-15）と
-`quadrant-*`（2026-10-16）と `block-*`、`kanban-*`（2026-10-21）:
+`quadrant-*`（2026-10-16）と `block-*`、`kanban-*`、`c4-*`（2026-10-21）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

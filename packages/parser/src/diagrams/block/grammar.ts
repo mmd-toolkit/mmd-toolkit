@@ -340,16 +340,7 @@ export class BlockGrammar extends UnitGrammar<UnitName, Unit> {
   private parseString(): StringLiteral {
     const unit = this.take("string")
     if (this.emptyFormOf(unit) !== null) throw this.unexpected(unit)
-    this.addItem("String", [unit])
-    const place = this.placeOf([unit])
-    const [start, end] = place.range
-    return {
-      type: "StringLiteral",
-      value: this.textOf([start + 1, end - 1]),
-      raw: this.lexer.text.slice(start, end),
-      closed: true,
-      ...place,
-    }
+    return this.closedStringLiteralOf(unit)
   }
 
   /** Spaces and columns: `space-statement = "space" | "space:" digits`. */

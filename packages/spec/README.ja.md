@@ -45,6 +45,7 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 | class     | [`docs/diagrams/class.ja.md`](./docs/diagrams/class.ja.md)         | [`docs/ast/class.ja.md`](./docs/ast/class.ja.md)         |
 | state     | [`docs/diagrams/state.ja.md`](./docs/diagrams/state.ja.md)         | [`docs/ast/state.ja.md`](./docs/ast/state.ja.md)         |
 | er        | [`docs/diagrams/er.ja.md`](./docs/diagrams/er.ja.md)               | [`docs/ast/er.ja.md`](./docs/ast/er.ja.md)               |
+| venn      | [`docs/diagrams/venn.ja.md`](./docs/diagrams/venn.ja.md)           | [`docs/ast/venn.ja.md`](./docs/ast/venn.ja.md)           |
 
 mermaid.js のほかの図種は、まだ定めていません。
 

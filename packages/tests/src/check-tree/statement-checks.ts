@@ -9,6 +9,11 @@ import { nodeTokensIn, ownTokensOf } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot, CheckedToken } from "./types.ts"
 import { childNodesOf, isNode } from "./walk.ts"
 import { WrittenText } from "./written-text.ts"
+import {
+  AttributeQuotes,
+  ConvertedText,
+  readConvertedCharacters,
+} from "../db-from-tree/converted-text.ts"
 
 // The checks that the diagrams whose statements are a keyword and a text
 // share (gantt and journey): the tokens that a node writes itself, the range
@@ -24,6 +29,13 @@ export interface Reading {
   readonly text: string
   readonly written: WrittenText
   readonly problems: Problems
+  readonly converted: ConvertedText
+  readonly attributeTextOf: (range: TreeRange) => string
+  readonly attributeValueOf: (
+    node: CheckedNode,
+    field?: "value" | "name",
+    trim?: boolean,
+  ) => string
 }
 
 /** The reading of the tree `root` of the source `text`, which reports to `problems`. */
@@ -32,7 +44,36 @@ export function readingOf(
   root: CheckedRoot,
   problems: Problems,
 ): Reading {
-  return { root, text, written: new WrittenText(text, root), problems }
+  const written = new WrittenText(text, root)
+  let attributes: AttributeQuotes | undefined,
+    converted: ConvertedText | undefined
+
+  /** Common conversion excludes the frontmatter, but includes all comments and statements. */
+  function attributeQuotes(): AttributeQuotes {
+    return (attributes ??= new AttributeQuotes(text, root))
+  }
+
+  return {
+    root,
+    text,
+    written,
+    problems,
+    get converted() {
+      return (converted ??= new ConvertedText(
+        readConvertedCharacters(text, root, attributeQuotes()),
+      ))
+    },
+    attributeTextOf: (range) =>
+      attributeQuotes().of(range, (offset) => written.isLeftOut(offset)),
+    attributeValueOf: (node, field = "value", trim = false) =>
+      attributeQuotes().readValue(
+        node.range,
+        textOf(node, field),
+        (offset) => written.isLeftOut(offset),
+        node.type === "StringLiteral" ? 1 : 0,
+        trim,
+      ),
+  }
 }
 
 /** A character of a token that a node writes itself, with its offset. */

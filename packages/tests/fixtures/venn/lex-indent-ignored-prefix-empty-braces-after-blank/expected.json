@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Text and implicit text mode: After an empty line, rule 2 swallows Q in Q%%{ }%% before rule 7 runs and preserves the enabled mode; text item is accepted as implicit text."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "item"
+      }
+    ],
+    "styles": []
+  }
+}

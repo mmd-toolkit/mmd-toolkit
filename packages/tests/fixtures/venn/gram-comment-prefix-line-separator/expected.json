@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Whitespace and value units: U+2028 before a header-line diagram comment is rejected rather than swallowed as whitespace trivia."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nvenn-beta \n---------^"
+  }
+}

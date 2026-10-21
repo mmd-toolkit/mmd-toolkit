@@ -2497,3 +2497,366 @@ describe("C4 whitespace and line boundaries", () => {
     },
   )
 })
+
+/** Venn separators are characters inside values and whole diagram comments. */
+const vennExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "venn: crlf-values",
+    'venn-beta\r\nset "A\r\n B"[L\r\n M]\r\nstyle A fill:rgb(1,\r\n 2,3)\r\n',
+    'venn-beta\nset "A\n B"[L\n M]\nstyle A fill:rgb(1,\n 2,3)\n',
+  ],
+  [
+    "venn: cr-values",
+    'venn-beta\rset "A\r B"[L\r M]\rstyle A fill:rgb(1,\r 2,3)\r',
+    'venn-beta\nset "A\n B"[L\n M]\nstyle A fill:rgb(1,\n 2,3)\n',
+  ],
+  [
+    "venn: ls-values",
+    'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)',
+    'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)\n',
+  ],
+  [
+    "venn: ls-values-control",
+    'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)\n',
+    'venn-beta\nset "A\u2028 B"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)\n',
+  ],
+  [
+    "venn: ps-values",
+    'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)',
+    'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)\n',
+  ],
+  [
+    "venn: ps-values-control",
+    'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)\n',
+    'venn-beta\nset "A\u2029 B"[L\u2029 M]\nstyle A fill:rgba(1,\u2029 2,3,.5)\n',
+  ],
+  [
+    "venn: ls-value-to-lf-differs",
+    "venn-beta\nset A[L\u2028 M]",
+    "venn-beta\nset A[L\u2028 M]\n",
+  ],
+  [
+    "venn: ps-value-to-lf-differs",
+    "venn-beta\nstyle A fill:rgb(1,\u2029 2,3)",
+    "venn-beta\nstyle A fill:rgb(1,\u2029 2,3)\n",
+  ],
+  [
+    "venn: ls-comment-kept",
+    "venn-beta\n set A[style:#x;y]%% c;\u2028set B\nset C",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028set B\nset C\n",
+  ],
+  [
+    "venn: ls-comment-kept-control",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028set B\nset C\n",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028set B\nset C\n",
+  ],
+  [
+    "venn: ps-comment-kept",
+    "venn-beta\n set A[style:#x;y]%% c;\u2029set B\nset C",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029set B\nset C\n",
+  ],
+  [
+    "venn: ps-comment-kept-control",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029set B\nset C\n",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029set B\nset C\n",
+  ],
+  [
+    "venn: ls-comment-split-unsafe",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028set B",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028set B\n",
+  ],
+  [
+    "venn: ps-comment-eof",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029 x",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029 x\n",
+  ],
+  [
+    "venn: ps-comment-eof-control",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029 x\n",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029 x\n",
+  ],
+  [
+    "venn: ls-common-region",
+    "venn-beta\nset A\n%% c\u2028hidden\n text item",
+    "venn-beta\nset A\n  %% c\u2028hidden\n  text item\n",
+  ],
+  [
+    "venn: ls-common-region-control",
+    "venn-beta\nset A\n  %% c\u2028hidden\n  text item\n",
+    "venn-beta\nset A\n  %% c\u2028hidden\n  text item\n",
+  ],
+  [
+    "venn: ps-comment-cut-region",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029%% d\nset B",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029%% d\nset B\n",
+  ],
+  [
+    "venn: ps-comment-cut-region-control",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029%% d\nset B\n",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029%% d\nset B\n",
+  ],
+  [
+    "venn: ls-title-separator",
+    "venn-beta\ntitle\u2028T",
+    "venn-beta\ntitle T\n",
+  ],
+  [
+    "venn: ps-directive-kept",
+    "venn-beta\nset A\n%%{init:\u2029 {}}%%\n text item",
+    "venn-beta\nset A\n  %%{init:\u2029 {}}%%\n  text item\n",
+  ],
+  [
+    "venn: ps-directive-kept-control",
+    "venn-beta\nset A\n  %%{init:\u2029 {}}%%\n  text item\n",
+    "venn-beta\nset A\n  %%{init:\u2029 {}}%%\n  text item\n",
+  ],
+  [
+    "venn: ls-header-comment",
+    "venn-beta %% style:#x;y\u2028set Hidden\nset A",
+    "venn-beta %% style:#x;y\u2028set Hidden\nset A\n",
+  ],
+  [
+    "venn: ls-header-comment-control",
+    "venn-beta %% style:#x;y\u2028set Hidden\nset A\n",
+    "venn-beta %% style:#x;y\u2028set Hidden\nset A\n",
+  ],
+  [
+    "venn: ps-kept-comment-whitespace-line",
+    "venn-beta\n set A[style:#x;y]%% c;\u2029   \nset B",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029   \nset B\n",
+  ],
+  [
+    "venn: ps-kept-comment-whitespace-line-control",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029   \nset B\n",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029   \nset B\n",
+  ],
+  [
+    "venn: ls-kept-comment-last-character",
+    "venn-beta\n set A[style:#x;y]%% c;\u2028x",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028x\n",
+  ],
+  [
+    "venn: ls-kept-comment-last-character-control",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028x\n",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028x\n",
+  ],
+  [
+    "venn: ls-style-string",
+    'venn-beta\nstyle A fill:"red\u2028blue"',
+    'venn-beta\nstyle A fill:"red\u2028blue"\n',
+  ],
+  [
+    "venn: ls-style-string-control",
+    'venn-beta\nstyle A fill:"red\u2028blue"\n',
+    'venn-beta\nstyle A fill:"red\u2028blue"\n',
+  ],
+  [
+    "venn: ps-title-value",
+    "venn-beta\ntitle T\u2029U",
+    "venn-beta\ntitle T\u2029U\n",
+  ],
+  [
+    "venn: ps-title-value-control",
+    "venn-beta\ntitle T\u2029U\n",
+    "venn-beta\ntitle T\u2029U\n",
+  ],
+  ["venn: nbsp-leading-header", "\u00a0venn-beta\nset A", "venn-beta\nset A\n"],
+  [
+    "venn: nbsp-value-kept",
+    'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)',
+    'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)\n',
+  ],
+  [
+    "venn: nbsp-value-kept-control",
+    'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)\n',
+    'venn-beta\nset " A\u00a0B "[ L\u00a0M ]\nstyle A fill:rgb(1,\u00a02,3)\n',
+  ],
+  ["venn: ff-title-separator", "venn-beta\ntitle\fT", "venn-beta\ntitle T\n"],
+  [
+    "venn: bom-leading-header",
+    "\ufeffvenn-beta\nset A",
+    "\ufeffvenn-beta\nset A\n",
+  ],
+  [
+    "venn: bom-leading-header-control",
+    "\ufeffvenn-beta\nset A\n",
+    "\ufeffvenn-beta\nset A\n",
+  ],
+  [
+    "venn: vt-value-kept",
+    'venn-beta\nset "A\u000bB"[L\fM]',
+    'venn-beta\nset "A\u000bB"[L\fM]\n',
+  ],
+  [
+    "venn: vt-value-kept-control",
+    'venn-beta\nset "A\u000bB"[L\fM]\n',
+    'venn-beta\nset "A\u000bB"[L\fM]\n',
+  ],
+  [
+    "venn: nbsp-title-separator",
+    "venn-beta\ntitle\u00a0 T",
+    "venn-beta\ntitle  T\n",
+  ],
+  [
+    "venn: bom-title-separator",
+    "venn-beta\ntitle\ufeffT",
+    "venn-beta\ntitle T\n",
+  ],
+  [
+    "venn: corpus-lex-indent-set-blank-empty-braces-ls-without-empty-lines",
+    "venn-beta\nset A\n%%{ }%%\u2028\n text item\n",
+    "venn-beta\nset A\n%%{ }%%\u2028\n  text item\n",
+  ],
+  [
+    "venn: corpus-lex-inline-comment-line-separators",
+    "venn-beta\nset A %% c\u2028 set X\nset B %% c\u2029 set Y\n",
+    "venn-beta\nset A %% c\u2028 set X\nset B %% c\u2029 set Y\n",
+  ],
+  [
+    "venn: corpus-db-style-rgba-line-separator",
+    "venn-beta\nstyle A fill:rgba(1,\u20282,3,.5)\n",
+    "venn-beta\nstyle A fill:rgba(1,\u20282,3,.5)\n",
+  ],
+  [
+    "venn: corpus-db-text-unclosed-directive-paragraph-separator",
+    'venn-beta\ntext A "a%%{init: {}\u2029b"\n',
+    'venn-beta\ntext A "a%%{init: {}\u2029b"\n',
+  ],
+  [
+    "venn: corpus-lex-ideographic-header-before",
+    "\u3000venn-beta\nset A\n",
+    "venn-beta\nset A\n",
+  ],
+  [
+    "venn: ps-header-comment",
+    "venn-beta %% style:#x;y\u2029set Hidden\nset A",
+    "venn-beta %% style:#x;y\u2029set Hidden\nset A\n",
+  ],
+  [
+    "venn: ls-comment-eof",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028 x",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028 x\n",
+  ],
+  [
+    "venn: ls-kept-comment-whitespace-line",
+    "venn-beta\n set A[style:#x;y]%% c;\u2028   \nset B",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028   \nset B\n",
+  ],
+  [
+    "venn: ps-kept-comment-last-character",
+    "venn-beta\n set A[style:#x;y]%% c;\u2029x",
+    "venn-beta\nset A[style:#x;y]%% c;\u2029x\n",
+  ],
+  [
+    "venn: ls-comment-control",
+    "venn-beta\nset AB %% c\u2028set Hidden\nset B",
+    "venn-beta\nset AB %% c\u2028set Hidden\nset B\n",
+  ],
+  [
+    "venn: ps-comment-control",
+    "venn-beta\nset AB %% c\u2029set Hidden\nset B",
+    "venn-beta\nset AB %% c\u2029set Hidden\nset B\n",
+  ],
+  [
+    "venn: ls-kept-directive",
+    "venn-beta\nset A[style:#x;y] %%{init:\u2028 {}}%%",
+    "venn-beta\nset A[style:#x;y] %%{init:\u2028 {}}%%\n",
+  ],
+  [
+    "venn: ps-kept-directive",
+    "venn-beta\nset A[style:#x;y] %%{init:\u2029 {}}%%",
+    "venn-beta\nset A[style:#x;y] %%{init:\u2029 {}}%%\n",
+  ],
+  [
+    "venn: ls-comment-cut-region",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028%% d\nset B",
+    "venn-beta\nset A[style:#x;y]%% c;\u2028%% d\nset B\n",
+  ],
+  [
+    "venn: ls-title-separator-control",
+    "venn-beta\ntitle\u2028 T",
+    "venn-beta\ntitle  T\n",
+  ],
+  [
+    "venn: ps-title-separator",
+    "venn-beta\ntitle\u2029T",
+    "venn-beta\ntitle T\n",
+  ],
+  [
+    "venn: ps-quoted-style",
+    'venn-beta\nstyle A fill:"red\u2029blue"',
+    'venn-beta\nstyle A fill:"red\u2029blue"\n',
+  ],
+  [
+    "venn: unicode-role-whitespace",
+    '\u3000venn-beta\nset "A\ufeffB"[L\u3000M]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"',
+    'venn-beta\nset "A\ufeffB"[L\u3000M]\ntext A "x\u2028y"\nstyle A fill:"a\u2029b"\n',
+  ],
+  [
+    "venn: ls-kept-overlapping-value",
+    "venn-beta\n set A[style:#x;\u2028rest] : 2",
+    "venn-beta\nset A[style:#x;\u2028rest]:2\n",
+  ],
+  [
+    "venn: ps-kept-overlapping-value",
+    "venn-beta\n set A[style:#x;\u2029rest] : 2",
+    "venn-beta\nset A[style:#x;\u2029rest]:2\n",
+  ],
+  [
+    "venn: ls-header-comment-eof",
+    "venn-beta %% c;\u2028x",
+    "venn-beta %% c;\u2028x\n",
+  ],
+  [
+    "venn: ps-header-comment-eof",
+    "venn-beta %% c;\u2029x",
+    "venn-beta %% c;\u2029x\n",
+  ],
+  [
+    "venn: ps-common-region",
+    "venn-beta\nset A\n%% c\u2029hidden\n text item",
+    "venn-beta\nset A\n  %% c\u2029hidden\n  text item\n",
+  ],
+  [
+    "venn: ls-open-directive",
+    "venn-beta\nset A\n%%{init:\u2028 {oops",
+    "venn-beta\nset A\n%%{init:\u2028 {oops",
+  ],
+  [
+    "venn: ps-open-directive",
+    "venn-beta\nset A\n%%{init:\u2029 {oops",
+    "venn-beta\nset A\n%%{init:\u2029 {oops",
+  ],
+  [
+    "venn: bom-frontmatter",
+    "\ufeff---\ntitle:   T\n---\nvenn-beta\nset A",
+    "\ufeff---\ntitle: T\n---\nvenn-beta\nset A\n",
+  ],
+  [
+    "venn: ls-comment-competing-semicolon",
+    "venn-beta\nset A[style:#x;y]%% c\u2028tail;",
+    "venn-beta\nset A[style:#x;y]%% c\u2028tail;\n",
+  ],
+  [
+    "venn: ps-comment-competing-semicolon",
+    "venn-beta\nset A[style:#x;y]%% c\u2029tail;",
+    "venn-beta\nset A[style:#x;y]%% c\u2029tail;\n",
+  ],
+]
+
+describe("Venn whitespace and line boundaries", () => {
+  it.each(vennExamples)("%s", async (_title, input, expected) => {
+    const output = await format(input)
+    expect(output).toBe(expected)
+    expect(await format(output)).toBe(output)
+    const original = input.startsWith("\uFEFF") ? input.slice(1) : input
+    const formatted = output.startsWith("\uFEFF") ? output.slice(1) : output
+    expect(dbOfText(formatted, defaultEmbedded())).toEqual(
+      dbOfText(original, defaultEmbedded()),
+    )
+    expect(writtenEmbeddedTexts(formatted)).toEqual(
+      writtenEmbeddedTexts(original),
+    )
+    expect(await describeFrontmatterChange(original, formatted)).toBeNull()
+  })
+})

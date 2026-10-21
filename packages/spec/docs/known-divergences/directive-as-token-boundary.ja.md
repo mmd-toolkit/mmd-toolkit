@@ -86,6 +86,67 @@ C4 では見出し語、呼び出し語、`accTitle`、`accDescr` の内部の�
 名前付き値の等号と開き引用符は別の区切りなので、
 その間のディレクティブを許します。[fixture: c4/lex-directive-named-equals-quote]
 
+venn では、
+見出し、文のキーワード、名前、size、数値の text id、
+裸の style 値の識別子か数の中のディレクティブをここでは拒否します。
+[fixture: venn/header-directive-inside]
+[fixture: venn/lex-directive-in-set]
+[fixture: venn/lex-directive-in-union]
+[fixture: venn/lex-directive-in-text]
+[fixture: venn/lex-directive-in-style]
+[fixture: venn/lex-directive-in-title]
+[fixture: venn/db-grid-directive-identifier-bare]
+[fixture: venn/db-grid-directive-size]
+[fixture: venn/db-grid-directive-style-key]
+[fixture: venn/db-grid-directive-text-number]
+[fixture: venn/db-grid-directive-style-value]
+[fixture: venn/div-directive-union-target]
+[fixture: venn/div-directive-text-id]
+[fixture: venn/div-directive-style-target]
+[fixture: venn/div-directive-style-value-word]
+[fixture: venn/div-directive-style-value-number]
+[fixture: venn/lex-unterminated-directive-next-line]
+[fixture: venn/lex-unterminated-colon-directive-next-line]
+mermaid.js はその前後を連結します。
+[fixture: venn/header-directive-inside]
+[fixture: venn/lex-directive-in-set]
+[fixture: venn/lex-directive-in-union]
+[fixture: venn/lex-directive-in-text]
+[fixture: venn/lex-directive-in-style]
+[fixture: venn/lex-directive-in-title]
+[fixture: venn/db-grid-directive-identifier-bare]
+[fixture: venn/db-grid-directive-size]
+[fixture: venn/db-grid-directive-style-key]
+[fixture: venn/db-grid-directive-text-number]
+[fixture: venn/db-grid-directive-style-value]
+[fixture: venn/div-directive-union-target]
+[fixture: venn/div-directive-text-id]
+[fixture: venn/div-directive-style-target]
+[fixture: venn/div-directive-style-value-word]
+[fixture: venn/div-directive-style-value-number]
+[fixture: venn/lex-unterminated-directive-next-line]
+[fixture: venn/lex-unterminated-colon-directive-next-line]
+
+venn の文字列、ラベルの内容、タイトルの内容、色全体は、
+ディレクティブを含められます。
+[fixture: venn/lex-identifier-directive-middle]
+[fixture: venn/db-grid-directive-label-bare]
+[fixture: venn/lex-label-directive-middle]
+[fixture: venn/lex-style-directive-middle]
+[fixture: venn/lex-title-directive-middle]
+[fixture: venn/lex-directive-style-value-color]
+[fixture: venn/lex-style-value-rgb-directive-in-comma]
+[fixture: venn/lex-directive-label-delimiter-gap]
+ラベルの角括弧と引用符は別の区切りです。
+[fixture: venn/lex-identifier-directive-middle]
+[fixture: venn/db-grid-directive-label-bare]
+[fixture: venn/lex-label-directive-middle]
+[fixture: venn/lex-style-directive-middle]
+[fixture: venn/lex-title-directive-middle]
+[fixture: venn/lex-directive-style-value-color]
+[fixture: venn/lex-style-value-rgb-directive-in-comma]
+[fixture: venn/lex-directive-label-delimiter-gap]
+
 ## 差異
 
 どの例も、図の全体です。
@@ -265,3 +326,12 @@ mermaid.js がその中のディレクティブを読めるのは、
   は全図種の解析前にディレクティブ、
   フロントマター、
   コメントを除く前処理を導入しています。
+
+- ピン留めした
+  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  は完全なキーワードと名前を示し、
+  その内部のディレクティブは示していません。
+  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+  `venn directive in:title,body` で検索しましたが、
+  venn のキーワード、名前、数の内部のディレクティブに関する報告は
+  見つかりませんでした。

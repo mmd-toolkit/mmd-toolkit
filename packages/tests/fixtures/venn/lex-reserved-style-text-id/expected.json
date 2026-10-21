@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex reserved style text id form is rejected by the grammar or its validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betatext A style\n----------------^\nExpecting 'NUMERIC', 'IDENTIFIER', 'STRING', 'COMMA', got 'STYLE'"
+  }
+}

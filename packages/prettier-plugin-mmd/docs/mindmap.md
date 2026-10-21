@@ -17,6 +17,17 @@ organized and checked is described in
 
 ### Indentation
 
+With spaces, one configured indentation level is at least one character, even
+with `tabWidth: 0`; `useTabs` still supplies a tab. Formatting must not change
+the Db, and one character is the smallest width that keeps the indentation's
+reading. The root uses this configured level; each other node keeps its written
+character difference from the root.
+
+[fixture: mindmap/indentation/tab-width-0] [fixture:
+mindmap/indentation/tab-width-0-kept] [fixture:
+mindmap/indentation/tab-width-0-leading-directive] [fixture:
+mindmap/indentation/tab-width-0-use-tabs]
+
 In a mindmap the indentation of a node is its level in the Db: the Db reads the
 level of a node as its indentation minus the indentation of the root, counted in
 characters, so the width of the step between a node and its children is part of

@@ -62,6 +62,7 @@ The plugin reads these diagram types:
 - State diagrams: `stateDiagram` (`stateDiagram` and `stateDiagram-v2`).
 - Entity relationship diagrams: `er` (`erDiagram`).
 - Gantt charts: `gantt` (`gantt`).
+- Venn diagrams: `venn` (`venn-beta`).
 
 ER diagrams and Gantt charts have no rules of their own yet. Other diagram types
 are reported as parse errors until they are supported.

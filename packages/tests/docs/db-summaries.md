@@ -13695,3 +13695,1952 @@ c4/db-grid-quote-offset-argument-quoted] [fixture:
 c4/db-grid-comma-layout-argument-bare] [fixture:
 c4/db-grid-punct-layout-argument-bare] [fixture:
 c4/db-grid-quote-layout-argument-quoted]
+
+## venn
+
+`normalizeVenn()` (`src/normalizers/venn.ts`) summarizes the shared Db in
+[vennDB.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L22-L133).
+[fixture: venn/db-all-fields]
+
+The summary keeps `title` from
+[`getDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L32-L32).
+[fixture: venn/db-all-fields] [fixture: venn/db-frontmatter-title]
+
+The summary keeps `accTitle` from
+[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20).
+[fixture: venn/db-frontmatter-accessibility] [fixture: venn/header-only]
+
+The summary keeps `accDescr` from
+[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26).
+[fixture: venn/db-frontmatter-accessibility] [fixture: venn/header-only]
+
+`subsets` comes from
+[`getSubsetData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L38-L40).
+[fixture: venn/db-all-fields]
+
+`texts` comes from
+[`getTextData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L88-L90).
+[fixture: venn/db-all-fields]
+
+`styles` comes from
+[`getStyleData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L72-L74).
+[fixture: venn/db-all-fields]
+
+The three arrays retain declaration order, including duplicate declarations.
+[fixture: venn/db-style-three-definitions] [fixture:
+venn/db-text-three-definitions] [fixture: venn/db-three-definitions] [fixture:
+venn/demo-venn-0d817555] [fixture: venn/demo-venn-30b70b4c] [fixture:
+venn/demo-venn-4f81eecc] [fixture: venn/demo-venn-5a5405c7] [fixture:
+venn/demo-venn-6f1fb809] [fixture: venn/demo-venn-7526522b] [fixture:
+venn/demo-venn-855cfd39] [fixture: venn/demo-venn-875948cd] [fixture:
+venn/demo-venn-8f9aeefc] [fixture: venn/demo-venn-beda756a] [fixture:
+venn/demo-venn-c2dd3beb] [fixture: venn/demo-venn-eccf2f74] [fixture:
+venn/docs-syntax-venn-43f17aa1] [fixture: venn/docs-syntax-venn-4ac8b1e3]
+[fixture: venn/docs-syntax-venn-74014555] [fixture:
+venn/docs-syntax-venn-7e1f629a] [fixture: venn/docs-syntax-venn-9a53dbe6]
+[fixture: venn/docs-syntax-venn-ac6de7c7] [fixture:
+venn/docs-syntax-venn-cd2ead2b] [fixture: venn/docs-syntax-venn-dbe2e15b]
+[fixture: venn/spec-venn-0cf96be0] [fixture: venn/spec-venn-209cd4ba] [fixture:
+venn/spec-venn-228bfe87] [fixture: venn/spec-venn-3f44150e] [fixture:
+venn/spec-venn-4fdc103a] [fixture: venn/spec-venn-83701753] [fixture:
+venn/spec-venn-850680f1] [fixture: venn/spec-venn-85a3609e] [fixture:
+venn/spec-venn-951627a3] [fixture: venn/spec-venn-a47b6a31] [fixture:
+venn/spec-venn-aa7d1ad8] [fixture: venn/spec-venn-ab635fc5] [fixture:
+venn/spec-venn-ef1992f9]
+
+A third union with the same sorted members appends another subset with its own
+size. [fixture: venn/db-union-three-definitions]
+
+A third style statement for the same targets appends another entry containing
+only its own properties. [fixture: venn/db-style-three-definitions-same-target]
+
+A subset keeps `{ sets, size, label? }`, a text node keeps
+`{ sets, id, label? }`, and a style entry keeps `{ targets, styles }`; undefined
+labels are omitted. [fixture: venn/db-form-set] [fixture: venn/db-form-style-id]
+[fixture: venn/db-form-text-id] [fixture: venn/db-label-empty]
+
+The summary drops
+[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L100-L102)
+because it supplies drawing settings, and the known-set table, current sets,
+indentation mode, and temporary indent flag because they are parsing state; it
+adds no renderer geometry, palette values, generated ids, or implied pairwise
+overlaps. [fixture: venn/db-form-union] [fixture: venn/db-indent-width]
+[fixture: venn/db-union-repeated-member]
+
+The Db's
+[`customClear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L104-L112)
+calls the common
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L10-L14)
+and resets declarations and parsing state. [fixture: venn/db-all-fields]
+[fixture: venn/header-only]
+
+No title, accessibility text, declaration, or indentation state survives the
+previous input. [fixture: venn/db-all-fields] [fixture: venn/header-only]
+
+`set` adds one identifier with an optional bracket label and optional numeric
+size, while `union` adds a sorted identifier list with the same two optional
+arguments. [fixture: venn/db-form-set] [fixture: venn/db-form-set-label]
+[fixture: venn/db-form-set-label-size] [fixture: venn/db-form-set-size]
+[fixture: venn/db-form-union] [fixture: venn/db-form-union-label] [fixture:
+venn/db-form-union-label-size] [fixture: venn/db-form-union-size]
+
+Spaces and tabs may separate the arguments and optional label or size suffixes
+of set, union, text, and style statements. [fixture: venn/db-set-label-space]
+[fixture: venn/db-set-label-tab] [fixture: venn/db-set-label-size-label-space]
+[fixture: venn/db-set-label-size-label-tab] [fixture: venn/db-set-size-space]
+[fixture: venn/db-set-size-tab] [fixture: venn/db-set-label-size-size-space]
+[fixture: venn/db-set-label-size-size-tab] [fixture: venn/db-union-label-space]
+[fixture: venn/db-union-label-tab] [fixture:
+venn/db-union-label-size-label-space] [fixture:
+venn/db-union-label-size-label-tab] [fixture: venn/db-union-size-space]
+[fixture: venn/db-union-size-tab] [fixture: venn/db-union-label-size-size-space]
+[fixture: venn/db-union-label-size-size-tab] [fixture: venn/db-form-text-id]
+[fixture: venn/db-text-target-id-tab] [fixture:
+venn/db-text-target-string-space] [fixture: venn/db-text-target-string-tab]
+[fixture: venn/db-text-target-number-space] [fixture:
+venn/db-text-target-number-tab] [fixture: venn/db-text-id-label-space] [fixture:
+venn/db-text-id-label-tab] [fixture: venn/db-text-string-label-space] [fixture:
+venn/db-text-string-label-tab] [fixture: venn/db-form-indent-id] [fixture:
+venn/db-indent-keyword-id-tab] [fixture: venn/db-indent-keyword-string-space]
+[fixture: venn/db-indent-keyword-string-tab] [fixture:
+venn/db-indent-keyword-number-space] [fixture:
+venn/db-indent-keyword-number-tab] [fixture: venn/db-indent-id-label-space]
+[fixture: venn/db-indent-id-label-tab] [fixture:
+venn/db-indent-string-label-space] [fixture: venn/db-indent-string-label-tab]
+[fixture: venn/db-size-space] [fixture: venn/db-set-colon-size-tab] [fixture:
+venn/db-set-label-colon-size-space] [fixture: venn/db-set-label-colon-size-tab]
+[fixture: venn/db-union-colon-size-space] [fixture:
+venn/db-union-colon-size-tab] [fixture: venn/db-union-label-colon-size-space]
+[fixture: venn/db-union-label-colon-size-tab] [fixture:
+venn/db-style-target-property-space] [fixture:
+venn/db-style-target-property-tab] [fixture: venn/db-style-property-colon-space]
+[fixture: venn/db-style-property-colon-tab] [fixture:
+venn/db-style-colon-value-space] [fixture: venn/db-style-colon-value-tab]
+
+An LF or CRLF at those argument boundaries is rejected, including when a blank,
+comment, or directive line intervenes. [fixture: venn/gram-set-label-next-line]
+[fixture: venn/gram-set-label-comment-gap] [fixture:
+venn/gram-set-label-directive-gap] [fixture: venn/gram-set-label-blank-gap]
+[fixture: venn/gram-set-label-crlf-gap] [fixture:
+venn/gram-set-label-size-label-next-line] [fixture:
+venn/gram-set-label-size-label-comment-gap] [fixture:
+venn/gram-set-label-size-label-directive-gap] [fixture:
+venn/gram-set-label-size-label-blank-gap] [fixture:
+venn/gram-set-label-size-label-crlf-gap] [fixture: venn/gram-set-size-next-line]
+[fixture: venn/gram-set-size-comment-gap] [fixture:
+venn/gram-set-size-directive-gap] [fixture: venn/gram-set-size-blank-gap]
+[fixture: venn/gram-set-size-crlf-gap] [fixture:
+venn/gram-set-label-size-size-next-line] [fixture:
+venn/gram-set-label-size-size-comment-gap] [fixture:
+venn/gram-set-label-size-size-directive-gap] [fixture:
+venn/gram-set-label-size-size-blank-gap] [fixture:
+venn/gram-set-label-size-size-crlf-gap] [fixture:
+venn/gram-union-label-next-line] [fixture: venn/gram-union-label-comment-gap]
+[fixture: venn/gram-union-label-directive-gap] [fixture:
+venn/gram-union-label-blank-gap] [fixture: venn/gram-union-label-crlf-gap]
+[fixture: venn/gram-union-label-size-label-next-line] [fixture:
+venn/gram-union-label-size-label-comment-gap] [fixture:
+venn/gram-union-label-size-label-directive-gap] [fixture:
+venn/gram-union-label-size-label-blank-gap] [fixture:
+venn/gram-union-label-size-label-crlf-gap] [fixture:
+venn/gram-union-size-next-line] [fixture: venn/gram-union-size-comment-gap]
+[fixture: venn/gram-union-size-directive-gap] [fixture:
+venn/gram-union-size-blank-gap] [fixture: venn/gram-union-size-crlf-gap]
+[fixture: venn/gram-union-label-size-size-next-line] [fixture:
+venn/gram-union-label-size-size-comment-gap] [fixture:
+venn/gram-union-label-size-size-directive-gap] [fixture:
+venn/gram-union-label-size-size-blank-gap] [fixture:
+venn/gram-union-label-size-size-crlf-gap] [fixture:
+venn/gram-text-target-id-next-line] [fixture:
+venn/gram-text-target-id-comment-gap] [fixture:
+venn/gram-text-target-id-directive-gap] [fixture:
+venn/gram-text-target-id-blank-gap] [fixture: venn/gram-text-target-id-crlf-gap]
+[fixture: venn/gram-text-target-string-next-line] [fixture:
+venn/gram-text-target-string-comment-gap] [fixture:
+venn/gram-text-target-string-directive-gap] [fixture:
+venn/gram-text-target-string-blank-gap] [fixture:
+venn/gram-text-target-string-crlf-gap] [fixture:
+venn/gram-text-target-number-next-line] [fixture:
+venn/gram-text-target-number-comment-gap] [fixture:
+venn/gram-text-target-number-directive-gap] [fixture:
+venn/gram-text-target-number-blank-gap] [fixture:
+venn/gram-text-target-number-crlf-gap] [fixture:
+venn/gram-text-id-label-next-line] [fixture:
+venn/gram-text-id-label-comment-gap] [fixture:
+venn/gram-text-id-label-directive-gap] [fixture:
+venn/gram-text-id-label-blank-gap] [fixture: venn/gram-text-id-label-crlf-gap]
+[fixture: venn/gram-text-string-label-next-line] [fixture:
+venn/gram-text-string-label-comment-gap] [fixture:
+venn/gram-text-string-label-directive-gap] [fixture:
+venn/gram-text-string-label-blank-gap] [fixture:
+venn/gram-text-string-label-crlf-gap] [fixture:
+venn/gram-indent-keyword-id-next-line] [fixture:
+venn/gram-indent-keyword-id-comment-gap] [fixture:
+venn/gram-indent-keyword-id-directive-gap] [fixture:
+venn/gram-indent-keyword-id-blank-gap] [fixture:
+venn/gram-indent-keyword-id-crlf-gap] [fixture:
+venn/gram-indent-keyword-string-next-line] [fixture:
+venn/gram-indent-keyword-string-comment-gap] [fixture:
+venn/gram-indent-keyword-string-directive-gap] [fixture:
+venn/gram-indent-keyword-string-blank-gap] [fixture:
+venn/gram-indent-keyword-string-crlf-gap] [fixture:
+venn/gram-indent-keyword-number-next-line] [fixture:
+venn/gram-indent-keyword-number-comment-gap] [fixture:
+venn/gram-indent-keyword-number-directive-gap] [fixture:
+venn/gram-indent-keyword-number-blank-gap] [fixture:
+venn/gram-indent-keyword-number-crlf-gap] [fixture:
+venn/gram-indent-id-label-next-line] [fixture:
+venn/gram-indent-id-label-comment-gap] [fixture:
+venn/gram-indent-id-label-directive-gap] [fixture:
+venn/gram-indent-id-label-blank-gap] [fixture:
+venn/gram-indent-id-label-crlf-gap] [fixture:
+venn/gram-indent-string-label-next-line] [fixture:
+venn/gram-indent-string-label-comment-gap] [fixture:
+venn/gram-indent-string-label-directive-gap] [fixture:
+venn/gram-indent-string-label-blank-gap] [fixture:
+venn/gram-indent-string-label-crlf-gap] [fixture: venn/gram-size-newline]
+[fixture: venn/gram-set-colon-size-comment-gap] [fixture:
+venn/gram-set-colon-size-directive-gap] [fixture:
+venn/gram-set-colon-size-blank-gap] [fixture: venn/gram-set-colon-size-crlf-gap]
+[fixture: venn/gram-set-label-colon-size-next-line] [fixture:
+venn/gram-set-label-colon-size-comment-gap] [fixture:
+venn/gram-set-label-colon-size-directive-gap] [fixture:
+venn/gram-set-label-colon-size-blank-gap] [fixture:
+venn/gram-set-label-colon-size-crlf-gap] [fixture:
+venn/gram-union-colon-size-next-line] [fixture:
+venn/gram-union-colon-size-comment-gap] [fixture:
+venn/gram-union-colon-size-directive-gap] [fixture:
+venn/gram-union-colon-size-blank-gap] [fixture:
+venn/gram-union-colon-size-crlf-gap] [fixture:
+venn/gram-union-label-colon-size-next-line] [fixture:
+venn/gram-union-label-colon-size-comment-gap] [fixture:
+venn/gram-union-label-colon-size-directive-gap] [fixture:
+venn/gram-union-label-colon-size-blank-gap] [fixture:
+venn/gram-union-label-colon-size-crlf-gap] [fixture:
+venn/gram-style-target-property-next-line] [fixture:
+venn/gram-style-target-property-comment-gap] [fixture:
+venn/gram-style-target-property-directive-gap] [fixture:
+venn/gram-style-target-property-blank-gap] [fixture:
+venn/gram-style-target-property-crlf-gap] [fixture:
+venn/gram-style-property-colon-next-line] [fixture:
+venn/gram-style-property-colon-comment-gap] [fixture:
+venn/gram-style-property-colon-directive-gap] [fixture:
+venn/gram-style-property-colon-blank-gap] [fixture:
+venn/gram-style-property-colon-crlf-gap] [fixture:
+venn/gram-style-colon-value-next-line] [fixture:
+venn/gram-style-colon-value-comment-gap] [fixture:
+venn/gram-style-colon-value-directive-gap] [fixture:
+venn/gram-style-colon-value-blank-gap] [fixture:
+venn/gram-style-colon-value-crlf-gap]
+
+A closed directive at an argument boundary is removed without supplying a
+separating space. [fixture: venn/db-set-label-inline-directive] [fixture:
+venn/db-set-label-size-label-inline-directive] [fixture:
+venn/db-set-size-inline-directive] [fixture:
+venn/db-set-label-size-size-inline-directive] [fixture:
+venn/db-union-label-inline-directive] [fixture:
+venn/db-union-label-size-label-inline-directive] [fixture:
+venn/db-union-size-inline-directive] [fixture:
+venn/db-union-label-size-size-inline-directive] [fixture:
+venn/gram-text-target-id-inline-directive] [fixture:
+venn/db-text-target-string-inline-directive] [fixture:
+venn/gram-text-target-number-inline-directive] [fixture:
+venn/db-text-id-label-inline-directive] [fixture:
+venn/db-text-string-label-inline-directive] [fixture:
+venn/gram-indent-keyword-id-inline-directive] [fixture:
+venn/db-indent-keyword-string-inline-directive] [fixture:
+venn/gram-indent-keyword-number-inline-directive] [fixture:
+venn/db-indent-id-label-inline-directive] [fixture:
+venn/db-indent-string-label-inline-directive] [fixture:
+venn/db-set-colon-size-inline-directive] [fixture:
+venn/db-set-label-colon-size-inline-directive] [fixture:
+venn/db-union-colon-size-inline-directive] [fixture:
+venn/db-union-label-colon-size-inline-directive] [fixture:
+venn/gram-style-target-property-inline-directive] [fixture:
+venn/db-style-property-colon-inline-directive] [fixture:
+venn/db-style-colon-value-inline-directive]
+
+When removal of an unclosed directive deletes an optional suffix, the preceding
+complete declaration remains. [fixture:
+venn/db-set-label-unclosed-directive-gap] [fixture:
+venn/db-set-label-size-label-unclosed-directive-gap] [fixture:
+venn/db-set-size-unclosed-directive-gap] [fixture:
+venn/db-set-label-size-size-unclosed-directive-gap] [fixture:
+venn/db-union-label-unclosed-directive-gap] [fixture:
+venn/db-union-label-size-label-unclosed-directive-gap] [fixture:
+venn/db-union-size-unclosed-directive-gap] [fixture:
+venn/db-union-label-size-size-unclosed-directive-gap] [fixture:
+venn/db-text-id-label-unclosed-directive-gap] [fixture:
+venn/db-text-string-label-unclosed-directive-gap] [fixture:
+venn/db-indent-id-label-unclosed-directive-gap] [fixture:
+venn/db-indent-string-label-unclosed-directive-gap]
+
+When that removal leaves a required id, property, or numeric argument missing,
+the statement is rejected. [fixture:
+venn/gram-text-target-id-unclosed-directive-gap] [fixture:
+venn/gram-text-target-string-unclosed-directive-gap] [fixture:
+venn/gram-text-target-number-unclosed-directive-gap] [fixture:
+venn/gram-indent-keyword-id-unclosed-directive-gap] [fixture:
+venn/gram-indent-keyword-string-unclosed-directive-gap] [fixture:
+venn/gram-indent-keyword-number-unclosed-directive-gap] [fixture:
+venn/gram-set-colon-size-unclosed-directive-gap] [fixture:
+venn/gram-set-label-colon-size-unclosed-directive-gap] [fixture:
+venn/gram-union-colon-size-unclosed-directive-gap] [fixture:
+venn/gram-union-label-colon-size-unclosed-directive-gap] [fixture:
+venn/gram-style-target-property-unclosed-directive-gap] [fixture:
+venn/gram-style-property-colon-unclosed-directive-gap] [fixture:
+venn/gram-style-colon-value-unclosed-directive-gap]
+
+A union requires at least two written identifiers, all declared by earlier `set`
+statements; repeated members remain repeated and count toward the default size
+`10 / arity²`, while a set defaults to 10. [fixture:
+venn/db-union-repeated-member] [fixture: venn/gram-union-before-definitions]
+[fixture: venn/gram-union-one] [fixture: venn/gram-union-unknown] [fixture:
+venn/spec-venn-a30f032a] [fixture: venn/spec-venn-d0c4cd0d]
+
+Sizes accept signed decimal integers and fractions, including leading zeros and
+a leading decimal point. [fixture: venn/db-size-fraction] [fixture:
+venn/db-size-leading-zeros] [fixture: venn/db-size-negative] [fixture:
+venn/db-size-negative-zero] [fixture: venn/db-size-plus] [fixture:
+venn/db-size-signed-fraction] [fixture: venn/db-size-space] [fixture:
+venn/db-size-zero]
+
+Negative zero is recorded as zero. [fixture: venn/db-size-negative-zero]
+
+Positive overflow is recorded as `"Infinity"`. [fixture: venn/db-size-overflow]
+
+Negative overflow is recorded as `"-Infinity"`. [fixture:
+venn/db-size-negative-overflow]
+
+A missing size, exponent, trailing decimal point, hexadecimal prefix, `NaN`,
+`Infinity`, non-ASCII digit, or trailing identifier fails to form one size.
+[fixture: venn/gram-size-empty] [fixture: venn/gram-size-exponent] [fixture:
+venn/gram-size-fullwidth] [fixture: venn/gram-size-hex] [fixture:
+venn/gram-size-infinity] [fixture: venn/gram-size-nan] [fixture:
+venn/gram-size-newline] [fixture: venn/gram-size-suffix] [fixture:
+venn/gram-size-trailing-point]
+
+Explicit `text` supplies a target list and an identifier, quoted string, or
+numeric spelling as its id; only identifier and string ids can take a bracket
+label, and targets need not exist. [fixture: venn/db-form-text-id] [fixture:
+venn/db-form-text-id-label] [fixture: venn/db-form-text-number] [fixture:
+venn/db-form-text-string] [fixture: venn/db-form-text-string-label] [fixture:
+venn/db-text-comma-list] [fixture: venn/db-text-numeric-fraction] [fixture:
+venn/db-text-numeric-positive] [fixture: venn/db-text-unknown] [fixture:
+venn/gram-size-numeric-label] [fixture: venn/gram-text-no-id]
+
+An indented `text` with a word boundary uses the most recent set or union, with
+any positive space or tab indentation rather than relative depth; blank,
+whitespace-only, removed comment, and directive lines preserve this mode.
+[fixture: venn/db-form-indent-id] [fixture: venn/db-form-indent-id-label]
+[fixture: venn/db-form-indent-number] [fixture: venn/db-form-indent-string]
+[fixture: venn/db-form-indent-string-label] [fixture:
+venn/db-indent-after-blank] [fixture: venn/db-indent-after-comment] [fixture:
+venn/db-indent-after-directive] [fixture: venn/db-indent-blank-line] [fixture:
+venn/db-indent-empty-id] [fixture: venn/db-indent-width]
+
+Before the next statement after a NEWLINE token, the line-start rule clears
+implicit text mode unless leading spaces or tabs select an enabled implicit text
+marker. [fixture: venn/gram-extra-indent-indented-style] [fixture:
+venn/gram-extra-indent-nonindent-text] [fixture: venn/gram-indent-after-style]
+[fixture: venn/gram-indent-after-title] [fixture:
+venn/gram-indent-after-indented-title] [fixture: venn/db-indent-width]
+
+Every completed `set` or `union` enables implicit text mode with its own
+targets. [fixture: venn/db-indent-after-set] [fixture:
+venn/db-indent-after-indented-set] [fixture: venn/db-indent-after-union]
+[fixture: venn/db-indent-after-indented-union] [fixture:
+venn/db-indent-after-header-set] [fixture: venn/spec-venn-0cf96be0]
+
+A style, explicit text, or title after that declaration on the same line leaves
+the mode enabled. [fixture: venn/db-indent-after-same-line-style] [fixture:
+venn/db-indent-after-same-line-explicit-text] [fixture:
+venn/db-indent-after-same-line-title]
+
+Without an enabled mode and current targets, indented text cannot use an
+implicit target list. [fixture: venn/gram-indent-without-set] [fixture:
+venn/gram-indent-after-style]
+
+A word suffix glued to the indented `text` marker prevents that marker from
+supplying implicit targets. [fixture: venn/gram-indent-text-prefix]
+
+Identifiers and text ids preserve case, empty quoted strings, and the whitespace
+inside quotes; the Db trims outside the quotes and removes one surrounding pair
+of double quotes. [fixture: venn/db-case-distinct-ids] [fixture:
+venn/db-empty-identifiers] [fixture: venn/db-prototype-ids] [fixture:
+venn/db-quoted-padding] [fixture: venn/gram-union-inner-space]
+
+Bracket labels lose their bracket and quote delimiters before Db trimming, so
+padded quoted labels are trimmed again; an empty lexer label is omitted, a
+quoted whitespace label becomes an empty string, and a bare whitespace label is
+omitted. [fixture: venn/db-label-double-normalization] [fixture:
+venn/db-label-empty] [fixture: venn/db-label-spaces] [fixture:
+venn/db-set-label] [fixture: venn/db-text-label] [fixture: venn/lex-label-empty]
+
+Backticks and single quotes are literal label text; a bare empty bracket, a
+quote inside a bracket value, adjacent label strings, and unclosed delimiters
+are rejected. [fixture: venn/db-label-backticks] [fixture:
+venn/db-label-inner-quotes] [fixture: venn/gram-label-bare-empty] [fixture:
+venn/gram-label-two-strings] [fixture: venn/gram-nested-label-quotes] [fixture:
+venn/gram-string-escape-quote] [fixture: venn/gram-unclosed-id] [fixture:
+venn/gram-unclosed-label] [fixture: venn/gram-unclosed-style]
+
+`style` stores the sorted targets and arbitrary case-sensitive property names,
+even for unknown targets; the last occurrence of a property in one statement
+wins, while separate statements remain separate entries. [fixture:
+venn/db-style-case-and-order] [fixture: venn/db-style-duplicate-key] [fixture:
+venn/db-style-three-definitions] [fixture: venn/db-style-unknown]
+
+A style target can be the id of a text node. [fixture: venn/spec-venn-ed0d6591]
+
+A style value is either one quoted string or a nonempty sequence of identifier,
+numeric, hex, rgb, or rgba tokens. [fixture:
+venn/db-form-style-documented-properties] [fixture: venn/db-form-style-hex]
+[fixture: venn/db-form-style-id] [fixture: venn/db-form-style-multiple]
+[fixture: venn/db-form-style-number] [fixture: venn/db-form-style-rgb] [fixture:
+venn/db-form-style-rgba] [fixture: venn/db-form-style-string] [fixture:
+venn/db-form-style-tokens] [fixture: venn/lex-style-empty]
+
+The Db joins separate unquoted value tokens with one space, even when no
+whitespace separated their spellings. [fixture: venn/db-form-style-tokens]
+[fixture: venn/db-style-adjacent-numeric-tokens] [fixture:
+venn/db-grid-spaces-style-value] [fixture: venn/db-grid-tab-style-value]
+
+Quoted style values lose one surrounding pair of quotes and retain the
+whitespace inside it. [fixture: venn/db-form-style-string] [fixture:
+venn/db-quoted-padding] [fixture: venn/lex-style-spaces]
+
+A quoted style string cannot be followed by another value token. [fixture:
+venn/gram-style-string-followed-token] [fixture:
+venn/gram-style-empty-string-followed-token]
+
+An rgb token keeps its written case and component spelling, without validating
+numeric ranges or the placement of decimal points. [fixture:
+venn/db-style-rgb-uppercase] [fixture: venn/db-style-rgb-dot-components]
+
+An empty component or a minus sign in an rgb or rgba component prevents a color
+token from forming. [fixture: venn/gram-style-rgb-empty-component] [fixture:
+venn/gram-style-rgba-empty-component] [fixture:
+venn/gram-style-rgb-negative-component] [fixture:
+venn/gram-style-rgba-negative-component]
+
+U+2028, U+2029, and NBSP inside rgb and rgba tokens remain in the stored value.
+[fixture: venn/db-style-rgb-line-separator] [fixture:
+venn/db-style-rgb-paragraph-separator] [fixture: venn/db-style-rgb-nbsp]
+[fixture: venn/db-style-rgba-line-separator] [fixture:
+venn/db-style-rgba-paragraph-separator] [fixture: venn/db-style-rgba-nbsp]
+
+CR and CRLF inside a color token become LF, which remains inside that token.
+[fixture: venn/db-style-rgb-cr] [fixture: venn/db-style-rgb-crlf] [fixture:
+venn/db-style-rgba-crlf]
+
+Removing a comment line inside rgb or rgba leaves one LF in the color token.
+[fixture: venn/db-style-rgb-comment-line] [fixture:
+venn/db-style-rgba-comment-line]
+
+Removing a closed directive inside rgb or rgba joins the surrounding color
+fragments. [fixture: venn/db-style-rgb-directive] [fixture:
+venn/db-style-rgba-directive]
+
+A hex color token contains three through eight hexadecimal digits. [fixture:
+venn/db-style-hex-three] [fixture: venn/db-style-hex-four] [fixture:
+venn/db-style-hex-five] [fixture: venn/db-style-hex-six] [fixture:
+venn/db-style-hex-seven] [fixture: venn/db-style-hex-eight] [fixture:
+venn/gram-style-hex-short]
+
+A ninth digit or a following identifier becomes a separate token joined by one
+space. [fixture: venn/db-style-hex-trailing-numeric-token] [fixture:
+venn/db-style-hex-trailing-identifier]
+
+A closed directive can join hex fragments into one token. [fixture:
+venn/db-style-hex-directive]
+
+A line separator, comment line, or CRLF between hex fragments prevents one hex
+value from spanning them and is rejected. [fixture:
+venn/gram-style-hex-line-separator] [fixture: venn/gram-style-hex-comment-line]
+[fixture: venn/gram-style-hex-crlf]
+
+Assigning a string to the style key `__proto__` creates no own property, while
+`constructor`, `hasOwnProperty`, and `toString` remain own properties; these
+names are ordinary set and text identifiers. [fixture: venn/db-prototype-ids]
+[fixture: venn/db-style-prototype-keys]
+
+Missing properties or values, trailing property commas, single-quoted style
+values, and quoted style keys are rejected. [fixture:
+venn/gram-extra-style-no-target] [fixture: venn/gram-extra-style-quoted-key]
+[fixture: venn/gram-style-empty] [fixture: venn/gram-style-missing-value]
+[fixture: venn/gram-style-single-quoted] [fixture:
+venn/gram-style-trailing-comma]
+
+`title` keeps the text after its first whitespace separator, including quotes
+and further leading and trailing whitespace, and the last title wins;
+frontmatter supplies an initial title that a statement can replace. [fixture:
+venn/db-frontmatter-title] [fixture: venn/db-frontmatter-title-overridden]
+[fixture: venn/db-title-last] [fixture: venn/db-title-on-header] [fixture:
+venn/db-title-only-whitespace] [fixture: venn/db-title-padding] [fixture:
+venn/db-title-quotes] [fixture: venn/lex-title-spaces]
+
+A single line break, or a removed comment line after it, can separate `title`
+from its value, while an additional blank or directive line leaves an invalid
+title; missing title text at end of input is rejected. [fixture:
+venn/db-title-value-next-line] [fixture: venn/gram-title-empty] [fixture:
+venn/gram-title-space-end] [fixture: venn/lex-gap-title-blank] [fixture:
+venn/lex-gap-title-comment] [fixture: venn/lex-gap-title-directive] [fixture:
+venn/lex-gap-title-lf]
+
+Venn has no accessibility-line, accessibility-block, or `@{ ... }` data-block
+production, and frontmatter accessibility keys do not populate the common
+getters. [fixture: venn/db-frontmatter-accessibility] [fixture:
+venn/gram-acc-block] [fixture: venn/gram-acc-descr] [fixture:
+venn/gram-acc-title] [fixture: venn/gram-accdescr-blank] [fixture:
+venn/gram-accdescr-comment] [fixture: venn/gram-accdescr-directive] [fixture:
+venn/gram-accdescr-end] [fixture: venn/gram-accdescr-statement] [fixture:
+venn/gram-acctitle-blank] [fixture: venn/gram-acctitle-comment] [fixture:
+venn/gram-acctitle-directive] [fixture: venn/gram-acctitle-end] [fixture:
+venn/gram-acctitle-statement] [fixture: venn/gram-data-block] [fixture:
+venn/gram-empty-acc-block] [fixture: venn/gram-unclosed-acc-block] [fixture:
+venn/lex-empty-description-after-set]
+
+Supported security levels and venn drawing configuration leave the summary
+unchanged; an unsupported `securityLevel` replaces `<`, `>`, and `=` in the
+common title when HTML labels are enabled, with root `htmlLabels` taking
+precedence over `flowchart.htmlLabels`. [fixture: venn/config-security-other]
+[fixture: venn/config-security-other-flowchart-false] [fixture:
+venn/config-security-other-html-false] [fixture:
+venn/config-security-other-root-false-flowchart-true] [fixture:
+venn/config-security-other-root-true-flowchart-false] [fixture: venn/db-markup]
+
+The detector requires exact lower-case `venn-beta` at the start after
+preprocessing, but imposes no suffix boundary; the parser accepts the empty
+document and complete statements on the header line, while extra headers or
+ordinary glued suffixes are rejected. [fixture: venn/db-same-line-statements]
+[fixture: venn/header-capitalized] [fixture: venn/header-comment-glued]
+[fixture: venn/header-dash-suffix] [fixture: venn/header-digit-suffix] [fixture:
+venn/header-directive-glued] [fixture: venn/header-directive-inside] [fixture:
+venn/header-mixed] [fixture: venn/header-nonascii-suffix] [fixture:
+venn/header-only] [fixture: venn/header-only-lf] [fixture:
+venn/header-semicolon] [fixture: venn/header-semicolon-spaced] [fixture:
+venn/header-statement-glued] [fixture: venn/header-statement-on-line] [fixture:
+venn/header-statement-tab] [fixture: venn/header-twice] [fixture:
+venn/header-twice-same-line] [fixture: venn/header-underscore-suffix] [fixture:
+venn/header-upper] [fixture: venn/header-word-suffix]
+
+Leading blank lines, spaces, comments, directives, frontmatter, bare percent
+pairs and empty-brace percent lines can precede the header, while a hash, single
+percent, semicolon, or diagram statement before it prevents detection. [fixture:
+venn/header-before-bare-percent] [fixture: venn/header-before-blank] [fixture:
+venn/header-before-comment] [fixture: venn/header-before-directive] [fixture:
+venn/header-before-empty-braces] [fixture: venn/header-before-frontmatter]
+[fixture: venn/header-before-frontmatter-comment] [fixture:
+venn/header-before-hash] [fixture: venn/header-before-percent] [fixture:
+venn/header-before-semicolon] [fixture: venn/header-before-spaces] [fixture:
+venn/header-before-statement]
+
+Statement keywords are case-insensitive, but glued letters, digits, underscores,
+dashes, and non-ASCII suffixes do not form those statements; a line break, blank
+line, comment line, or directive line between a non-title keyword and its first
+argument is rejected. [fixture: venn/lex-gap-set-blank] [fixture:
+venn/lex-gap-set-comment] [fixture: venn/lex-gap-set-directive] [fixture:
+venn/lex-gap-set-lf] [fixture: venn/lex-gap-style-blank] [fixture:
+venn/lex-gap-style-comment] [fixture: venn/lex-gap-style-directive] [fixture:
+venn/lex-gap-style-lf] [fixture: venn/lex-gap-text-blank] [fixture:
+venn/lex-gap-text-comment] [fixture: venn/lex-gap-text-directive] [fixture:
+venn/lex-gap-text-lf] [fixture: venn/lex-gap-union-blank] [fixture:
+venn/lex-gap-union-comment] [fixture: venn/lex-gap-union-directive] [fixture:
+venn/lex-gap-union-lf] [fixture: venn/lex-keyword-set-dash] [fixture:
+venn/lex-keyword-set-digit] [fixture: venn/lex-keyword-set-letter] [fixture:
+venn/lex-keyword-set-nonascii] [fixture: venn/lex-keyword-set-underscore]
+[fixture: venn/lex-keyword-set-upper] [fixture: venn/lex-keyword-style-dash]
+[fixture: venn/lex-keyword-style-digit] [fixture: venn/lex-keyword-style-letter]
+[fixture: venn/lex-keyword-style-nonascii] [fixture:
+venn/lex-keyword-style-underscore] [fixture: venn/lex-keyword-style-upper]
+[fixture: venn/lex-keyword-text-dash] [fixture: venn/lex-keyword-text-digit]
+[fixture: venn/lex-keyword-text-letter] [fixture:
+venn/lex-keyword-text-nonascii] [fixture: venn/lex-keyword-text-underscore]
+[fixture: venn/lex-keyword-text-upper] [fixture: venn/lex-keyword-title-dash]
+[fixture: venn/lex-keyword-title-digit] [fixture: venn/lex-keyword-title-letter]
+[fixture: venn/lex-keyword-title-nonascii] [fixture:
+venn/lex-keyword-title-underscore] [fixture: venn/lex-keyword-title-upper]
+[fixture: venn/lex-keyword-union-dash] [fixture: venn/lex-keyword-union-digit]
+[fixture: venn/lex-keyword-union-letter] [fixture:
+venn/lex-keyword-union-nonascii] [fixture: venn/lex-keyword-union-underscore]
+[fixture: venn/lex-keyword-union-upper]
+
+The reserved `venn-beta`, `set`, `union`, `text`, and `style` tokens are
+rejected as bare identifiers, text ids, style keys, and style values, while
+quoting them makes identifiers; `title` without its following whitespace is an
+identifier. [fixture: venn/lex-reserved-set-identifier] [fixture:
+venn/lex-reserved-set-quoted-identifier] [fixture:
+venn/lex-reserved-set-style-key] [fixture: venn/lex-reserved-set-style-value]
+[fixture: venn/lex-reserved-set-text-id] [fixture:
+venn/lex-reserved-style-identifier] [fixture:
+venn/lex-reserved-style-quoted-identifier] [fixture:
+venn/lex-reserved-style-style-key] [fixture:
+venn/lex-reserved-style-style-value] [fixture: venn/lex-reserved-style-text-id]
+[fixture: venn/lex-reserved-text-identifier] [fixture:
+venn/lex-reserved-text-quoted-identifier] [fixture:
+venn/lex-reserved-text-style-key] [fixture: venn/lex-reserved-text-style-value]
+[fixture: venn/lex-reserved-text-text-id] [fixture:
+venn/lex-reserved-title-identifier] [fixture:
+venn/lex-reserved-title-quoted-identifier] [fixture:
+venn/lex-reserved-title-style-key] [fixture:
+venn/lex-reserved-title-style-value] [fixture: venn/lex-reserved-title-text-id]
+[fixture: venn/lex-reserved-union-identifier] [fixture:
+venn/lex-reserved-union-quoted-identifier] [fixture:
+venn/lex-reserved-union-style-key] [fixture:
+venn/lex-reserved-union-style-value] [fixture: venn/lex-reserved-union-text-id]
+[fixture: venn/lex-reserved-venn-beta-identifier] [fixture:
+venn/lex-reserved-venn-beta-quoted-identifier] [fixture:
+venn/lex-reserved-venn-beta-style-key] [fixture:
+venn/lex-reserved-venn-beta-style-value] [fixture:
+venn/lex-reserved-venn-beta-text-id]
+
+Spaces and tabs are the lexer whitespace, CR and CRLF become LF separators, and
+leading JavaScript whitespace can be removed before detection; BOM, NBSP,
+U+3000, U+2028, U+2029, vertical tab, form feed, and U+0085 inside the document
+are not interchangeable with those separators. [fixture:
+venn/lex-bom-header-after] [fixture: venn/lex-bom-header-before] [fixture:
+venn/lex-bom-line-end] [fixture: venn/lex-bom-line-start] [fixture:
+venn/lex-bom-text-end] [fixture: venn/lex-bom-whitespace-line] [fixture:
+venn/lex-cr-header-after] [fixture: venn/lex-cr-header-before] [fixture:
+venn/lex-cr-line-end] [fixture: venn/lex-cr-line-start] [fixture:
+venn/lex-cr-text-end] [fixture: venn/lex-cr-whitespace-line] [fixture:
+venn/lex-crlf-header-after] [fixture: venn/lex-crlf-header-before] [fixture:
+venn/lex-crlf-line-end] [fixture: venn/lex-crlf-text-end] [fixture:
+venn/lex-crlf-whitespace-line] [fixture: venn/lex-ff-header-after] [fixture:
+venn/lex-ff-header-before] [fixture: venn/lex-ff-line-end] [fixture:
+venn/lex-ff-line-start] [fixture: venn/lex-ff-text-end] [fixture:
+venn/lex-ff-whitespace-line] [fixture: venn/lex-ideographic-header-after]
+[fixture: venn/lex-ideographic-header-before] [fixture:
+venn/lex-ideographic-line-end] [fixture: venn/lex-ideographic-line-start]
+[fixture: venn/lex-ideographic-text-end] [fixture:
+venn/lex-ideographic-whitespace-line] [fixture: venn/lex-ls-header-after]
+[fixture: venn/lex-ls-header-before] [fixture: venn/lex-ls-line-end] [fixture:
+venn/lex-ls-line-start] [fixture: venn/lex-ls-text-end] [fixture:
+venn/lex-ls-whitespace-line] [fixture: venn/lex-nbsp-header-after] [fixture:
+venn/lex-nbsp-header-before] [fixture: venn/lex-nbsp-line-end] [fixture:
+venn/lex-nbsp-line-start] [fixture: venn/lex-nbsp-text-end] [fixture:
+venn/lex-nbsp-whitespace-line] [fixture: venn/lex-nel-header-after] [fixture:
+venn/lex-nel-header-before] [fixture: venn/lex-nel-line-end] [fixture:
+venn/lex-nel-line-start] [fixture: venn/lex-nel-text-end] [fixture:
+venn/lex-nel-whitespace-line] [fixture: venn/lex-ps-header-after] [fixture:
+venn/lex-ps-header-before] [fixture: venn/lex-ps-line-end] [fixture:
+venn/lex-ps-line-start] [fixture: venn/lex-ps-text-end] [fixture:
+venn/lex-ps-whitespace-line] [fixture: venn/lex-tab-header-before] [fixture:
+venn/lex-tab-line-end] [fixture: venn/lex-tab-line-start] [fixture:
+venn/lex-tab-text-end] [fixture: venn/lex-tab-whitespace-line] [fixture:
+venn/lex-vt-header-after] [fixture: venn/lex-vt-header-before] [fixture:
+venn/lex-vt-line-end] [fixture: venn/lex-vt-line-start] [fixture:
+venn/lex-vt-text-end] [fixture: venn/lex-vt-whitespace-line]
+
+Whitespace inside a quoted identifier remains part of that identifier, with CR
+and CRLF normalized to LF; even leading or trailing whitespace inside the quotes
+remains. [fixture: venn/lex-bom-quoted-end] [fixture: venn/lex-bom-quoted-start]
+[fixture: venn/lex-bom-quoted-value] [fixture: venn/lex-cr-quoted-end] [fixture:
+venn/lex-cr-quoted-start] [fixture: venn/lex-cr-quoted-value] [fixture:
+venn/lex-crlf-quoted-end] [fixture: venn/lex-crlf-quoted-start] [fixture:
+venn/lex-crlf-quoted-value] [fixture: venn/lex-ff-quoted-end] [fixture:
+venn/lex-ff-quoted-start] [fixture: venn/lex-ff-quoted-value] [fixture:
+venn/lex-ideographic-quoted-end] [fixture: venn/lex-ideographic-quoted-start]
+[fixture: venn/lex-ideographic-quoted-value] [fixture: venn/lex-ls-quoted-end]
+[fixture: venn/lex-ls-quoted-start] [fixture: venn/lex-ls-quoted-value]
+[fixture: venn/lex-nbsp-quoted-end] [fixture: venn/lex-nbsp-quoted-start]
+[fixture: venn/lex-nbsp-quoted-value] [fixture: venn/lex-nel-quoted-end]
+[fixture: venn/lex-nel-quoted-start] [fixture: venn/lex-nel-quoted-value]
+[fixture: venn/lex-ps-quoted-end] [fixture: venn/lex-ps-quoted-start] [fixture:
+venn/lex-ps-quoted-value] [fixture: venn/lex-tab-quoted-end] [fixture:
+venn/lex-tab-quoted-start] [fixture: venn/lex-tab-quoted-value] [fixture:
+venn/lex-vt-quoted-end] [fixture: venn/lex-vt-quoted-start] [fixture:
+venn/lex-vt-quoted-value]
+
+After preprocessing, the suffixes ` ;`, `;`, `;;`, and `; ;` are rejected after
+a complete set, union, text, or style statement. [fixture:
+venn/lex-after-set-semicolon-spaced] [fixture: venn/lex-after-set-semicolon]
+[fixture: venn/lex-after-set-double-semicolon] [fixture:
+venn/gram-after-set-spaced-semicolons] [fixture:
+venn/lex-after-set-label-semicolon-spaced] [fixture:
+venn/lex-after-set-label-semicolon] [fixture:
+venn/lex-after-set-label-double-semicolon] [fixture:
+venn/gram-after-set-label-spaced-semicolons] [fixture:
+venn/lex-after-set-size-semicolon-spaced] [fixture:
+venn/lex-after-set-size-semicolon] [fixture:
+venn/lex-after-set-size-double-semicolon] [fixture:
+venn/gram-after-set-size-spaced-semicolons] [fixture:
+venn/gram-after-set-label-size-semicolon-spaced] [fixture:
+venn/gram-after-set-label-size-semicolon] [fixture:
+venn/gram-after-set-label-size-double-semicolon] [fixture:
+venn/gram-after-set-label-size-spaced-semicolons] [fixture:
+venn/lex-after-union-semicolon-spaced] [fixture: venn/lex-after-union-semicolon]
+[fixture: venn/lex-after-union-double-semicolon] [fixture:
+venn/gram-after-union-spaced-semicolons] [fixture:
+venn/gram-after-union-label-semicolon-spaced] [fixture:
+venn/gram-after-union-label-semicolon] [fixture:
+venn/gram-after-union-label-double-semicolon] [fixture:
+venn/gram-after-union-label-spaced-semicolons] [fixture:
+venn/gram-after-union-size-semicolon-spaced] [fixture:
+venn/gram-after-union-size-semicolon] [fixture:
+venn/gram-after-union-size-double-semicolon] [fixture:
+venn/gram-after-union-size-spaced-semicolons] [fixture:
+venn/lex-after-union-label-size-semicolon-spaced] [fixture:
+venn/lex-after-union-label-size-semicolon] [fixture:
+venn/lex-after-union-label-size-double-semicolon] [fixture:
+venn/gram-after-union-label-size-spaced-semicolons] [fixture:
+venn/lex-after-text-semicolon-spaced] [fixture: venn/lex-after-text-semicolon]
+[fixture: venn/lex-after-text-double-semicolon] [fixture:
+venn/gram-after-text-id-spaced-semicolons] [fixture:
+venn/lex-after-text-string-semicolon-spaced] [fixture:
+venn/lex-after-text-string-semicolon] [fixture:
+venn/lex-after-text-string-double-semicolon] [fixture:
+venn/gram-after-text-string-spaced-semicolons] [fixture:
+venn/lex-after-text-number-semicolon-spaced] [fixture:
+venn/lex-after-text-number-semicolon] [fixture:
+venn/lex-after-text-number-double-semicolon] [fixture:
+venn/gram-after-text-number-spaced-semicolons] [fixture:
+venn/lex-after-text-label-semicolon-spaced] [fixture:
+venn/lex-after-text-label-semicolon] [fixture:
+venn/lex-after-text-label-double-semicolon] [fixture:
+venn/gram-after-text-id-label-spaced-semicolons] [fixture:
+venn/gram-after-text-string-label-semicolon-spaced] [fixture:
+venn/gram-after-text-string-label-semicolon] [fixture:
+venn/gram-after-text-string-label-double-semicolon] [fixture:
+venn/gram-after-text-string-label-spaced-semicolons] [fixture:
+venn/lex-after-indent-semicolon-spaced] [fixture:
+venn/lex-after-indent-semicolon] [fixture:
+venn/lex-after-indent-double-semicolon] [fixture:
+venn/gram-after-indent-id-spaced-semicolons] [fixture:
+venn/gram-after-indent-string-semicolon-spaced] [fixture:
+venn/gram-after-indent-string-semicolon] [fixture:
+venn/gram-after-indent-string-double-semicolon] [fixture:
+venn/gram-after-indent-string-spaced-semicolons] [fixture:
+venn/gram-after-indent-number-semicolon-spaced] [fixture:
+venn/gram-after-indent-number-semicolon] [fixture:
+venn/gram-after-indent-number-double-semicolon] [fixture:
+venn/gram-after-indent-number-spaced-semicolons] [fixture:
+venn/gram-after-indent-id-label-semicolon-spaced] [fixture:
+venn/gram-after-indent-id-label-semicolon] [fixture:
+venn/gram-after-indent-id-label-double-semicolon] [fixture:
+venn/gram-after-indent-id-label-spaced-semicolons] [fixture:
+venn/gram-after-indent-string-label-semicolon-spaced] [fixture:
+venn/gram-after-indent-string-label-semicolon] [fixture:
+venn/gram-after-indent-string-label-double-semicolon] [fixture:
+venn/gram-after-indent-string-label-spaced-semicolons] [fixture:
+venn/lex-after-style-semicolon-spaced] [fixture: venn/lex-after-style-semicolon]
+[fixture: venn/lex-after-style-double-semicolon] [fixture:
+venn/gram-after-style-spaced-semicolons] [fixture:
+venn/lex-after-style-string-semicolon-spaced] [fixture:
+venn/lex-after-style-string-semicolon] [fixture:
+venn/lex-after-style-string-double-semicolon] [fixture:
+venn/gram-after-style-string-spaced-semicolons] [fixture:
+venn/gram-after-style-list-semicolon-spaced] [fixture:
+venn/gram-after-style-list-semicolon] [fixture:
+venn/gram-after-style-list-double-semicolon] [fixture:
+venn/gram-after-style-list-spaced-semicolons] [fixture:
+venn/gram-after-style-hex-double-semicolon] [fixture:
+venn/gram-after-style-hex-spaced-semicolons]
+
+An extra colon followed only by a space supplies no required argument and is
+rejected. [fixture: venn/gram-after-set-colon-space] [fixture:
+venn/gram-after-set-label-colon-space] [fixture:
+venn/gram-after-set-size-colon-space] [fixture:
+venn/gram-after-set-label-size-colon-space] [fixture:
+venn/gram-after-union-colon-space] [fixture:
+venn/gram-after-union-label-colon-space] [fixture:
+venn/gram-after-union-size-colon-space] [fixture:
+venn/gram-after-union-label-size-colon-space] [fixture:
+venn/gram-after-text-id-colon-space] [fixture:
+venn/gram-after-text-string-colon-space] [fixture:
+venn/gram-after-text-number-colon-space] [fixture:
+venn/gram-after-text-id-label-colon-space] [fixture:
+venn/gram-after-text-string-label-colon-space] [fixture:
+venn/gram-after-indent-id-colon-space] [fixture:
+venn/gram-after-indent-string-colon-space] [fixture:
+venn/gram-after-indent-number-colon-space] [fixture:
+venn/gram-after-indent-id-label-colon-space] [fixture:
+venn/gram-after-indent-string-label-colon-space] [fixture:
+venn/gram-after-style-colon-space] [fixture:
+venn/gram-after-style-string-colon-space] [fixture:
+venn/gram-after-style-list-colon-space]
+
+A complete non-title statement accepts a trailing space, tab, blank line, CRLF,
+or EOF without changing its Db fields. [fixture: venn/db-after-set-space]
+[fixture: venn/lex-after-set-tab] [fixture: venn/db-after-set-blank] [fixture:
+venn/db-after-set-crlf] [fixture: venn/db-set-eof] [fixture:
+venn/db-after-set-label-space] [fixture: venn/lex-after-set-label-tab] [fixture:
+venn/db-after-set-label-blank] [fixture: venn/db-after-set-label-crlf] [fixture:
+venn/db-set-label-eof] [fixture: venn/db-after-set-size-space] [fixture:
+venn/lex-after-set-size-tab] [fixture: venn/db-after-set-size-blank] [fixture:
+venn/db-after-set-size-crlf] [fixture: venn/db-set-size-eof] [fixture:
+venn/db-after-set-label-size-space] [fixture: venn/db-after-set-label-size-tab]
+[fixture: venn/db-after-set-label-size-blank] [fixture:
+venn/db-after-set-label-size-crlf] [fixture: venn/db-set-label-size-eof]
+[fixture: venn/db-after-union-space] [fixture: venn/lex-after-union-tab]
+[fixture: venn/db-after-union-blank] [fixture: venn/db-after-union-crlf]
+[fixture: venn/db-union-eof] [fixture: venn/db-after-union-label-space]
+[fixture: venn/db-after-union-label-tab] [fixture:
+venn/db-after-union-label-blank] [fixture: venn/db-after-union-label-crlf]
+[fixture: venn/db-union-label-eof] [fixture: venn/db-after-union-size-space]
+[fixture: venn/db-after-union-size-tab] [fixture:
+venn/db-after-union-size-blank] [fixture: venn/db-after-union-size-crlf]
+[fixture: venn/db-union-size-eof] [fixture:
+venn/db-after-union-label-size-space] [fixture:
+venn/lex-after-union-label-size-tab] [fixture:
+venn/db-after-union-label-size-blank] [fixture:
+venn/db-after-union-label-size-crlf] [fixture: venn/db-union-label-size-eof]
+[fixture: venn/db-after-text-id-space] [fixture: venn/lex-after-text-tab]
+[fixture: venn/db-after-text-id-blank] [fixture: venn/db-after-text-id-crlf]
+[fixture: venn/db-text-id-eof] [fixture: venn/db-after-text-string-space]
+[fixture: venn/lex-after-text-string-tab] [fixture:
+venn/db-after-text-string-blank] [fixture: venn/db-after-text-string-crlf]
+[fixture: venn/db-text-string-eof] [fixture: venn/db-after-text-number-space]
+[fixture: venn/lex-after-text-number-tab] [fixture:
+venn/db-after-text-number-blank] [fixture: venn/db-after-text-number-crlf]
+[fixture: venn/db-text-number-eof] [fixture: venn/db-after-text-id-label-space]
+[fixture: venn/lex-after-text-label-tab] [fixture:
+venn/db-after-text-id-label-blank] [fixture: venn/db-after-text-id-label-crlf]
+[fixture: venn/db-text-id-label-eof] [fixture:
+venn/db-after-text-string-label-space] [fixture:
+venn/db-after-text-string-label-tab] [fixture:
+venn/db-after-text-string-label-blank] [fixture:
+venn/db-after-text-string-label-crlf] [fixture: venn/db-text-string-label-eof]
+[fixture: venn/db-after-indent-id-space] [fixture: venn/lex-after-indent-tab]
+[fixture: venn/db-after-indent-id-blank] [fixture: venn/db-after-indent-id-crlf]
+[fixture: venn/db-indent-id-eof] [fixture: venn/db-after-indent-string-space]
+[fixture: venn/db-after-indent-string-tab] [fixture:
+venn/db-after-indent-string-blank] [fixture: venn/db-after-indent-string-crlf]
+[fixture: venn/db-indent-string-eof] [fixture:
+venn/db-after-indent-number-space] [fixture: venn/db-after-indent-number-tab]
+[fixture: venn/db-after-indent-number-blank] [fixture:
+venn/db-after-indent-number-crlf] [fixture: venn/db-indent-number-eof] [fixture:
+venn/db-after-indent-id-label-space] [fixture:
+venn/db-after-indent-id-label-tab] [fixture:
+venn/db-after-indent-id-label-blank] [fixture:
+venn/db-after-indent-id-label-crlf] [fixture: venn/db-indent-id-label-eof]
+[fixture: venn/db-after-indent-string-label-space] [fixture:
+venn/db-after-indent-string-label-tab] [fixture:
+venn/db-after-indent-string-label-blank] [fixture:
+venn/db-after-indent-string-label-crlf] [fixture:
+venn/db-indent-string-label-eof] [fixture: venn/db-after-style-space] [fixture:
+venn/lex-after-style-tab] [fixture: venn/db-after-style-blank] [fixture:
+venn/db-after-style-crlf] [fixture: venn/db-style-eof] [fixture:
+venn/db-after-style-string-space] [fixture: venn/lex-after-style-string-tab]
+[fixture: venn/db-after-style-string-blank] [fixture:
+venn/db-after-style-string-crlf] [fixture: venn/db-style-string-eof] [fixture:
+venn/db-after-style-list-space] [fixture: venn/db-after-style-list-tab]
+[fixture: venn/db-after-style-list-blank] [fixture:
+venn/db-after-style-list-crlf] [fixture: venn/db-style-list-eof] [fixture:
+venn/lex-after-indent-spaces] [fixture: venn/lex-after-set-label-spaces]
+[fixture: venn/lex-after-set-size-spaces] [fixture: venn/lex-after-set-spaces]
+[fixture: venn/lex-after-style-spaces] [fixture:
+venn/lex-after-style-string-spaces] [fixture: venn/lex-after-text-label-spaces]
+[fixture: venn/lex-after-text-number-spaces] [fixture:
+venn/lex-after-text-spaces] [fixture: venn/lex-after-text-string-spaces]
+[fixture: venn/lex-after-union-label-size-spaces] [fixture:
+venn/lex-after-union-spaces]
+
+A percent-pair comment separated from a complete statement by a space leaves
+that statement unchanged. [fixture: venn/lex-after-set-comment] [fixture:
+venn/lex-after-set-label-comment] [fixture: venn/lex-after-set-size-comment]
+[fixture: venn/db-after-set-label-size-comment] [fixture:
+venn/lex-after-union-comment] [fixture: venn/db-after-union-label-comment]
+[fixture: venn/db-after-union-size-comment] [fixture:
+venn/lex-after-union-label-size-comment] [fixture: venn/lex-after-text-comment]
+[fixture: venn/lex-after-text-string-comment] [fixture:
+venn/lex-after-text-number-comment] [fixture: venn/lex-after-text-label-comment]
+[fixture: venn/db-after-text-string-label-comment] [fixture:
+venn/lex-after-indent-comment] [fixture: venn/db-after-indent-string-comment]
+[fixture: venn/db-after-indent-number-comment] [fixture:
+venn/db-after-indent-id-label-comment] [fixture:
+venn/db-after-indent-string-label-comment] [fixture:
+venn/lex-after-style-comment] [fixture: venn/lex-after-style-string-comment]
+[fixture: venn/db-after-style-list-comment]
+
+A closed directive or an unclosed object-argument directive after a complete
+statement can be removed through its end without changing that statement.
+[fixture: venn/lex-after-set-directive] [fixture:
+venn/lex-after-set-directive-unclosed] [fixture:
+venn/lex-after-set-label-directive] [fixture:
+venn/lex-after-set-label-directive-unclosed] [fixture:
+venn/lex-after-set-size-directive] [fixture:
+venn/lex-after-set-size-directive-unclosed] [fixture:
+venn/db-after-set-label-size-directive] [fixture:
+venn/db-after-set-label-size-unclosed-directive] [fixture:
+venn/lex-after-union-directive] [fixture:
+venn/lex-after-union-directive-unclosed] [fixture:
+venn/db-after-union-label-directive] [fixture:
+venn/db-after-union-label-unclosed-directive] [fixture:
+venn/db-after-union-size-directive] [fixture:
+venn/db-after-union-size-unclosed-directive] [fixture:
+venn/lex-after-union-label-size-directive] [fixture:
+venn/lex-after-union-label-size-directive-unclosed] [fixture:
+venn/lex-after-text-directive] [fixture: venn/lex-after-text-directive-unclosed]
+[fixture: venn/lex-after-text-string-directive] [fixture:
+venn/lex-after-text-string-directive-unclosed] [fixture:
+venn/lex-after-text-number-directive] [fixture:
+venn/lex-after-text-number-directive-unclosed] [fixture:
+venn/lex-after-text-label-directive] [fixture:
+venn/lex-after-text-label-directive-unclosed] [fixture:
+venn/db-after-text-string-label-directive] [fixture:
+venn/db-after-text-string-label-unclosed-directive] [fixture:
+venn/lex-after-indent-directive] [fixture:
+venn/lex-after-indent-directive-unclosed] [fixture:
+venn/db-after-indent-string-directive] [fixture:
+venn/db-after-indent-string-unclosed-directive] [fixture:
+venn/db-after-indent-number-directive] [fixture:
+venn/db-after-indent-number-unclosed-directive] [fixture:
+venn/db-after-indent-id-label-directive] [fixture:
+venn/db-after-indent-id-label-unclosed-directive] [fixture:
+venn/db-after-indent-string-label-directive] [fixture:
+venn/db-after-indent-string-label-unclosed-directive] [fixture:
+venn/lex-after-style-directive] [fixture:
+venn/lex-after-style-directive-unclosed] [fixture:
+venn/lex-after-style-string-directive] [fixture:
+venn/lex-after-style-string-directive-unclosed] [fixture:
+venn/db-after-style-list-directive] [fixture:
+venn/db-after-style-list-unclosed-directive] [fixture:
+venn/lex-after-indent-directive-word-unclosed] [fixture:
+venn/lex-after-set-directive-word-unclosed] [fixture:
+venn/lex-after-set-label-directive-word-unclosed] [fixture:
+venn/lex-after-set-size-directive-word-unclosed] [fixture:
+venn/lex-after-style-directive-word-unclosed] [fixture:
+venn/lex-after-style-string-directive-word-unclosed] [fixture:
+venn/lex-after-text-directive-word-unclosed] [fixture:
+venn/lex-after-text-label-directive-word-unclosed] [fixture:
+venn/lex-after-text-number-directive-word-unclosed] [fixture:
+venn/lex-after-text-string-directive-word-unclosed] [fixture:
+venn/lex-after-union-directive-word-unclosed] [fixture:
+venn/lex-after-union-label-size-directive-word-unclosed]
+
+NBSP and BOM after a non-title statement are not trailing lexer whitespace and
+are rejected. [fixture: venn/lex-after-indent-bom] [fixture:
+venn/lex-after-indent-nbsp] [fixture: venn/lex-after-set-bom] [fixture:
+venn/lex-after-set-label-bom] [fixture: venn/lex-after-set-label-nbsp] [fixture:
+venn/lex-after-set-nbsp] [fixture: venn/lex-after-set-size-bom] [fixture:
+venn/lex-after-set-size-nbsp] [fixture: venn/lex-after-style-bom] [fixture:
+venn/lex-after-style-nbsp] [fixture: venn/lex-after-style-string-bom] [fixture:
+venn/lex-after-style-string-nbsp] [fixture: venn/lex-after-text-bom] [fixture:
+venn/lex-after-text-label-bom] [fixture: venn/lex-after-text-label-nbsp]
+[fixture: venn/lex-after-text-nbsp] [fixture: venn/lex-after-text-number-bom]
+[fixture: venn/lex-after-text-number-nbsp] [fixture:
+venn/lex-after-text-string-bom] [fixture: venn/lex-after-text-string-nbsp]
+[fixture: venn/lex-after-union-bom] [fixture:
+venn/lex-after-union-label-size-bom] [fixture:
+venn/lex-after-union-label-size-nbsp] [fixture: venn/lex-after-union-nbsp]
+
+A glued percent-pair comment can consume the final character of a bare set
+identifier, size, or numeric text id, rejecting an incomplete statement, while a
+text id, style value, or bracket label can be completed before that comment
+token is tried. [fixture: venn/lex-after-indent-comment-glued] [fixture:
+venn/lex-after-set-comment-glued] [fixture:
+venn/lex-after-set-label-comment-glued] [fixture:
+venn/lex-after-set-size-comment-glued] [fixture:
+venn/lex-after-style-comment-glued] [fixture:
+venn/lex-after-style-string-comment-glued] [fixture:
+venn/lex-after-text-comment-glued] [fixture:
+venn/lex-after-text-label-comment-glued] [fixture:
+venn/lex-after-text-number-comment-glued] [fixture:
+venn/lex-after-text-string-comment-glued] [fixture:
+venn/lex-after-union-comment-glued] [fixture:
+venn/lex-after-union-label-size-comment-glued] [fixture:
+venn/lex-inline-comment-eats-id] [fixture: venn/lex-inline-comment-spaced]
+
+Title text keeps inline percent pairs and its trailing spaces, tabs, NBSP, and
+BOM. [fixture: venn/lex-after-title-bom] [fixture: venn/lex-after-title-comment]
+[fixture: venn/lex-after-title-comment-glued] [fixture:
+venn/lex-after-title-nbsp] [fixture: venn/lex-after-title-spaces] [fixture:
+venn/lex-after-title-tab] [fixture: venn/db-after-title-space]
+
+A colon and space at the end of a title remain title text. [fixture:
+venn/db-after-title-colon-space]
+
+A completed title may end at LF, a blank line, CRLF, or EOF. [fixture:
+venn/db-after-title-blank] [fixture: venn/db-after-title-crlf] [fixture:
+venn/db-title-eof]
+
+Closed and unclosed directive suffixes can be removed from a completed title.
+[fixture: venn/lex-after-title-directive] [fixture:
+venn/lex-after-title-directive-unclosed] [fixture:
+venn/lex-after-title-directive-word-unclosed]
+
+The semicolon suffixes ` ;`, `;`, `;;`, and `; ;` remaining after preprocessing
+are rejected after a title. [fixture: venn/lex-after-title-double-semicolon]
+[fixture: venn/lex-after-title-semicolon] [fixture:
+venn/lex-after-title-semicolon-spaced] [fixture:
+venn/gram-after-title-spaced-semicolons]
+
+Hash and single-percent lines are not comments, an unclosed directive can remove
+the following line or the header itself, and U+2028 inside a percent-pair
+comment does not end that comment. [fixture: venn/db-indent-comment-ls]
+[fixture: venn/lex-hash-comment] [fixture: venn/lex-single-percent-comment]
+[fixture: venn/lex-unclosed-directive-only] [fixture:
+venn/lex-unterminated-colon-directive-next-line] [fixture:
+venn/lex-unterminated-directive-next-line]
+
+Closed directives inside statement keywords are removed before the lexer reads
+the joined keyword. [fixture: venn/lex-directive-in-set] [fixture:
+venn/lex-directive-in-style] [fixture: venn/lex-directive-in-text] [fixture:
+venn/lex-directive-in-title] [fixture: venn/lex-directive-in-union]
+
+An unanchored C4 detector word in a venn identifier, label, title, or style
+string can select C4 and reject the input, but `C4Context` in those positions
+stays in venn; removed comments and frontmatter do not expose C4 words to
+detection. [fixture: venn/lex-c4-c4component-comment] [fixture:
+venn/lex-c4-c4component-frontmatter] [fixture:
+venn/lex-c4-c4component-identifier] [fixture: venn/lex-c4-c4component-label]
+[fixture: venn/lex-c4-c4component-style] [fixture:
+venn/lex-c4-c4component-title] [fixture: venn/lex-c4-c4container-comment]
+[fixture: venn/lex-c4-c4container-frontmatter] [fixture:
+venn/lex-c4-c4container-identifier] [fixture: venn/lex-c4-c4container-label]
+[fixture: venn/lex-c4-c4container-style] [fixture:
+venn/lex-c4-c4container-title] [fixture: venn/lex-c4-c4context-comment]
+[fixture: venn/lex-c4-c4context-frontmatter] [fixture:
+venn/lex-c4-c4context-identifier] [fixture: venn/lex-c4-c4context-label]
+[fixture: venn/lex-c4-c4context-style] [fixture: venn/lex-c4-c4context-title]
+[fixture: venn/lex-c4-c4deployment-comment] [fixture:
+venn/lex-c4-c4deployment-frontmatter] [fixture:
+venn/lex-c4-c4deployment-identifier] [fixture: venn/lex-c4-c4deployment-label]
+[fixture: venn/lex-c4-c4deployment-style] [fixture:
+venn/lex-c4-c4deployment-title] [fixture: venn/lex-c4-c4dynamic-comment]
+[fixture: venn/lex-c4-c4dynamic-frontmatter] [fixture:
+venn/lex-c4-c4dynamic-identifier] [fixture: venn/lex-c4-c4dynamic-label]
+[fixture: venn/lex-c4-c4dynamic-style] [fixture: venn/lex-c4-c4dynamic-title]
+
+Closed directives inside identifiers, labels, text ids, quoted style values, and
+titles are removed, joining the remaining fragments. [fixture:
+venn/lex-identifier-directive-start] [fixture: venn/lex-label-directive-start]
+[fixture: venn/lex-text-directive-start] [fixture:
+venn/lex-style-directive-start] [fixture: venn/lex-title-directive-start]
+[fixture: venn/lex-identifier-directive-middle] [fixture:
+venn/lex-label-directive-middle] [fixture: venn/lex-text-directive-middle]
+[fixture: venn/lex-style-directive-middle] [fixture:
+venn/lex-title-directive-middle] [fixture: venn/lex-identifier-directive-end]
+[fixture: venn/lex-label-directive-end] [fixture: venn/lex-text-directive-end]
+[fixture: venn/lex-style-directive-end] [fixture: venn/lex-title-directive-end]
+
+A directive on its own line inside a multiline quoted value leaves the
+surrounding two LFs. [fixture: venn/lex-identifier-directive-line] [fixture:
+venn/lex-label-directive-line] [fixture: venn/lex-text-directive-line] [fixture:
+venn/lex-style-directive-line]
+
+Removing a comment line inside a multiline quoted value leaves one LF between
+its neighboring text fragments. [fixture: venn/lex-identifier-comment-line]
+[fixture: venn/lex-label-comment-line] [fixture: venn/lex-text-comment-line]
+[fixture: venn/lex-style-comment-line]
+
+An empty line inside a quoted identifier, label, text id, or style value remains
+two LFs. [fixture: venn/lex-identifier-blank-line] [fixture:
+venn/lex-label-blank-line] [fixture: venn/lex-text-blank-line] [fixture:
+venn/lex-style-blank-line]
+
+Numeric and named character references in identifiers, labels, text ids, and
+titles become the shared preprocessing placeholders. [fixture:
+venn/lex-identifier-entity-numeric] [fixture: venn/lex-label-entity-numeric]
+[fixture: venn/lex-text-entity-numeric] [fixture: venn/lex-title-entity-numeric]
+[fixture: venn/lex-identifier-entity-named] [fixture:
+venn/lex-label-entity-named] [fixture: venn/lex-text-entity-named] [fixture:
+venn/lex-title-entity-named]
+
+In quoted style values, the line rule removes the semicolon of `a#35;b` and
+`a#amp;b`, leaving `a#35b` and `a#ampb`. [fixture:
+venn/lex-style-entity-numeric] [fixture: venn/lex-style-entity-named]
+
+The unquoted style value `a#35;b` is stored as `a #35b` after semicolon removal
+and token joining. [fixture: venn/db-grid-entity-style-value]
+
+A hash reference without a semicolon stays literal in quoted identifiers,
+labels, text ids, and style values. [fixture:
+venn/lex-identifier-entity-no-semicolon] [fixture:
+venn/lex-label-entity-no-semicolon] [fixture: venn/lex-text-entity-no-semicolon]
+[fixture: venn/lex-style-entity-no-semicolon]
+
+Double quotes around HTML attribute values become single quotes before venn
+reads the surrounding value. [fixture: venn/lex-identifier-html-attribute]
+[fixture: venn/lex-label-html-attribute] [fixture: venn/lex-text-html-attribute]
+[fixture: venn/lex-style-html-attribute] [fixture:
+venn/lex-title-html-attribute]
+
+A `style` or `classDef` fragment in that exact case, followed on its line by a
+colon and a hash with no intervening whitespace, triggers the shared semicolon
+rule. [fixture: venn/lex-identifier-style-rule] [fixture:
+venn/lex-label-style-rule] [fixture: venn/lex-text-style-rule] [fixture:
+venn/lex-style-style-rule] [fixture: venn/lex-identifier-classdef-rule]
+[fixture: venn/lex-label-classdef-rule] [fixture: venn/lex-text-classdef-rule]
+[fixture: venn/lex-style-classdef-rule]
+
+That rule drops the last semicolon after the hash, including inside quoted
+values. [fixture: venn/lex-identifier-style-rule] [fixture:
+venn/lex-label-style-rule] [fixture: venn/lex-text-style-rule] [fixture:
+venn/lex-style-style-rule] [fixture: venn/lex-identifier-classdef-rule]
+[fixture: venn/lex-label-classdef-rule] [fixture: venn/lex-text-classdef-rule]
+[fixture: venn/lex-style-classdef-rule] [fixture:
+venn/db-after-style-hex-semicolon] [fixture:
+venn/db-after-style-hex-semicolon-spaced]
+
+A remaining reference semicolon is still encoded after that removal. [fixture:
+venn/lex-identifier-style-rule-two-semicolons] [fixture:
+venn/lex-label-style-rule-two-semicolons] [fixture:
+venn/lex-text-style-rule-two-semicolons] [fixture:
+venn/lex-style-style-rule-two-semicolons] [fixture:
+venn/lex-title-style-rule-two-semicolons]
+
+Without the matching spelling and line condition, the semicolon stays;
+character-reference encoding can still apply. [fixture:
+venn/lex-identifier-style-rule-upper] [fixture: venn/lex-label-style-rule-upper]
+[fixture: venn/lex-text-style-rule-upper] [fixture:
+venn/lex-identifier-style-rule-space] [fixture: venn/lex-label-style-rule-space]
+[fixture: venn/lex-text-style-rule-space] [fixture:
+venn/lex-identifier-style-rule-no-hash] [fixture:
+venn/lex-label-style-rule-no-hash] [fixture: venn/lex-text-style-rule-no-hash]
+[fixture: venn/lex-identifier-style-rule-other-line] [fixture:
+venn/lex-label-style-rule-other-line] [fixture:
+venn/lex-text-style-rule-other-line] [fixture: venn/lex-style-style-rule-space]
+[fixture: venn/lex-style-style-rule-no-hash] [fixture:
+venn/lex-style-style-rule-other-line] [fixture: venn/lex-title-style-rule-space]
+[fixture: venn/lex-title-style-rule-upper]
+
+The outer style statement can trigger semicolon removal even when an inner
+`Style` fragment starts with an uppercase letter. [fixture:
+venn/lex-style-style-rule-upper]
+
+Quoted identifiers, text ids, and style values keep their inner padding, while
+bracket labels trim it. [fixture: venn/lex-identifier-spaces] [fixture:
+venn/lex-label-spaces] [fixture: venn/lex-text-spaces] [fixture:
+venn/lex-style-spaces]
+
+An empty quoted identifier, text id, or style string remains an empty string.
+[fixture: venn/lex-identifier-empty] [fixture: venn/lex-text-empty] [fixture:
+venn/lex-style-empty]
+
+An empty quoted bracket label is omitted. [fixture: venn/lex-label-empty]
+
+The literal values `a#b` and `a;b` remain inside quoted identifiers, labels,
+text ids, and style strings. [fixture: venn/db-grid-hash-identifier-quoted]
+[fixture: venn/db-grid-semicolon-identifier-quoted] [fixture:
+venn/db-grid-hash-label-quoted] [fixture: venn/db-grid-semicolon-label-quoted]
+[fixture: venn/db-text-quoted-hash] [fixture: venn/db-text-quoted-semicolon]
+[fixture: venn/db-style-quoted-hash] [fixture: venn/db-style-quoted-semicolon]
+
+Without a closing `}%%`, the fragment `%%{init: {}` consumes through EOF when no
+U+2028 or U+2029 interrupts its free-text argument. [fixture:
+venn/lex-identifier-unclosed-directive] [fixture:
+venn/lex-label-unclosed-directive] [fixture: venn/lex-text-unclosed-directive]
+[fixture: venn/lex-style-unclosed-directive]
+
+In a quoted identifier, label, text id, or style string, that removal takes the
+closing delimiter and rejects the unclosed value. [fixture:
+venn/lex-identifier-unclosed-directive] [fixture:
+venn/lex-label-unclosed-directive] [fixture: venn/lex-text-unclosed-directive]
+[fixture: venn/lex-style-unclosed-directive]
+
+A word argument ends before the closing delimiter, which remains available even
+when the directive is unclosed. [fixture:
+venn/lex-identifier-word-unclosed-directive] [fixture:
+venn/lex-label-word-unclosed-directive] [fixture:
+venn/lex-text-word-unclosed-directive] [fixture:
+venn/lex-style-word-unclosed-directive] [fixture:
+venn/db-identifier-unclosed-directive-word-argument] [fixture:
+venn/db-label-unclosed-directive-word-argument] [fixture:
+venn/db-text-unclosed-directive-word-argument] [fixture:
+venn/db-style-unclosed-directive-word-argument]
+
+A U+2028 or U+2029 before that delimiter stops the free-text argument and is
+itself removed, leaving the following text and delimiter. [fixture:
+venn/db-identifier-unclosed-directive-line-separator] [fixture:
+venn/db-label-unclosed-directive-line-separator] [fixture:
+venn/db-text-unclosed-directive-line-separator] [fixture:
+venn/db-style-unclosed-directive-line-separator] [fixture:
+venn/db-identifier-unclosed-directive-paragraph-separator] [fixture:
+venn/db-label-unclosed-directive-paragraph-separator] [fixture:
+venn/db-text-unclosed-directive-paragraph-separator] [fixture:
+venn/db-style-unclosed-directive-paragraph-separator]
+
+A title needs no closing delimiter, so an unclosed object-argument directive can
+remove its suffix and leave its earlier text as the title. [fixture:
+venn/lex-title-unclosed-directive]
+
+An unclosed word-argument directive in a title removes its next word and leaves
+the preceding title text. [fixture: venn/lex-title-word-unclosed-directive]
+
+LF ends title text, so a remaining bare line is rejected even after an
+intervening blank, comment, or directive line. [fixture:
+venn/lex-title-blank-line] [fixture: venn/lex-title-comment-line] [fixture:
+venn/lex-title-directive-line] [fixture: venn/lex-title-style-rule-other-line]
+
+An unencoded hash or semicolon in title text ends its token and rejects a
+leftover fragment. [fixture: venn/lex-title-classdef-rule] [fixture:
+venn/lex-title-entity-no-semicolon] [fixture: venn/lex-title-style-rule]
+[fixture: venn/lex-title-style-rule-no-hash]
+
+A set requires one identifier, a union requires an identifier list, and a style
+statement requires targets; single-quoted set identifiers are rejected.
+[fixture: venn/gram-extra-set-no-id] [fixture:
+venn/gram-extra-set-single-quoted] [fixture: venn/gram-extra-union-no-id]
+[fixture: venn/gram-set-list] [fixture: venn/spec-venn-a50620dc]
+
+Indented and CRLF frontmatter supply the title, and HTML attribute quotes in
+that title become single quotes; empty, malformed, unclosed, misplaced, or
+comment-prefixed frontmatter is rejected in these forms. [fixture:
+venn/frontmatter-after-header] [fixture: venn/frontmatter-comment-before]
+[fixture: venn/frontmatter-crlf] [fixture: venn/frontmatter-empty] [fixture:
+venn/frontmatter-html-title] [fixture: venn/frontmatter-indented] [fixture:
+venn/frontmatter-invalid] [fixture: venn/frontmatter-unclosed]
+
+A numeric text id keeps leading zeros, while a bare identifier or empty string
+cannot start a venn statement. [fixture: venn/db-text-leading-zeros] [fixture:
+venn/gram-bare-empty-string] [fixture: venn/gram-bare-word]
+
+A comment or directive alone supplies no diagram header, and an indented comment
+line preserves implicit text mode. [fixture: venn/lex-comment-line-before-text]
+[fixture: venn/lex-comment-only] [fixture: venn/lex-directive-only]
+
+The title separator accepts a tab, BOM, NBSP, U+3000, U+2028, U+2029, CR, CRLF,
+vertical tab, or form feed, but not U+0085. [fixture:
+venn/lex-title-separator-bom] [fixture: venn/lex-title-separator-cr] [fixture:
+venn/lex-title-separator-crlf] [fixture: venn/lex-title-separator-ff] [fixture:
+venn/lex-title-separator-ideographic] [fixture: venn/lex-title-separator-ls]
+[fixture: venn/lex-title-separator-nbsp] [fixture: venn/lex-title-separator-nel]
+[fixture: venn/lex-title-separator-ps] [fixture: venn/lex-title-separator-tab]
+[fixture: venn/lex-title-separator-vt]
+
+### Text positions
+
+The grid uses the 64 named fragments defined for [kanban](#kanban), with
+`venn-beta` for `keyword` and a space-padded `venn-beta` for `keyword-header`;
+each fragment stands between `a` and `b`, or between `1` and `2` in numeric
+positions.
+
+`header-line` is a bare fragment after the header, where a complete statement is
+required.
+
+The grammar rejects these inserted fragments: `ampersand-entity`, `arrow`,
+`arrow-spaced`, `backslash`, `backtick`, `bom`, `classdef-rule`, `close-brace`,
+`close-round`, `close-square`, `colon`, `comma`, `comment-line`, `constructor`,
+`cr`, `crlf`, `dash`, `digits`, `directive`, `directive-line`, `emoji`, `empty`,
+`entity`, `entity-named`, `equals`, `ff`, `greater-than`, `hash`, `html`,
+`html-attribute`, `html-br`, `ideographic`, `keyword`, `keyword-block`,
+`keyword-class`, `keyword-classdef`, `keyword-columns`, `keyword-end`,
+`keyword-header`, `keyword-space`, `keyword-style`, `less-than`, `lf`, `ls`,
+`nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`,
+`pipe`, `proto`, `ps`, `punct`, `quote`, `root`, `semicolon`, `single-quote`,
+`spaces`, `style-rule`, `tab`, `vt`. [fixture:
+venn/gram-grid-ampersand-entity-header-line] [fixture:
+venn/gram-grid-arrow-header-line] [fixture:
+venn/gram-grid-arrow-spaced-header-line] [fixture:
+venn/gram-grid-backslash-header-line] [fixture:
+venn/gram-grid-backtick-header-line] [fixture: venn/gram-grid-bom-header-line]
+[fixture: venn/gram-grid-classdef-rule-header-line] [fixture:
+venn/gram-grid-close-brace-header-line] [fixture:
+venn/gram-grid-close-round-header-line] [fixture:
+venn/gram-grid-close-square-header-line] [fixture:
+venn/gram-grid-colon-header-line] [fixture: venn/gram-grid-comma-header-line]
+[fixture: venn/gram-grid-comment-line-header-line] [fixture:
+venn/gram-grid-constructor-header-line] [fixture: venn/gram-grid-cr-header-line]
+[fixture: venn/gram-grid-crlf-header-line] [fixture:
+venn/gram-grid-dash-header-line] [fixture: venn/gram-grid-digits-header-line]
+[fixture: venn/gram-grid-directive-header-line] [fixture:
+venn/gram-grid-directive-line-header-line] [fixture:
+venn/gram-grid-emoji-header-line] [fixture: venn/gram-grid-empty-header-line]
+[fixture: venn/gram-grid-entity-header-line] [fixture:
+venn/gram-grid-entity-named-header-line] [fixture:
+venn/gram-grid-equals-header-line] [fixture: venn/gram-grid-ff-header-line]
+[fixture: venn/gram-grid-greater-than-header-line] [fixture:
+venn/gram-grid-hash-header-line] [fixture:
+venn/gram-grid-html-attribute-header-line] [fixture:
+venn/gram-grid-html-br-header-line] [fixture: venn/gram-grid-html-header-line]
+[fixture: venn/gram-grid-ideographic-header-line] [fixture:
+venn/gram-grid-keyword-block-header-line] [fixture:
+venn/gram-grid-keyword-class-header-line] [fixture:
+venn/gram-grid-keyword-classdef-header-line] [fixture:
+venn/gram-grid-keyword-columns-header-line] [fixture:
+venn/gram-grid-keyword-end-header-line] [fixture:
+venn/gram-grid-keyword-header-header-line] [fixture:
+venn/gram-grid-keyword-header-line] [fixture:
+venn/gram-grid-keyword-space-header-line] [fixture:
+venn/gram-grid-keyword-style-header-line] [fixture:
+venn/gram-grid-less-than-header-line] [fixture: venn/gram-grid-lf-header-line]
+[fixture: venn/gram-grid-ls-header-line] [fixture:
+venn/gram-grid-nbsp-header-line] [fixture: venn/gram-grid-nel-header-line]
+[fixture: venn/gram-grid-nonascii-header-line] [fixture:
+venn/gram-grid-open-brace-header-line] [fixture:
+venn/gram-grid-open-round-header-line] [fixture:
+venn/gram-grid-open-square-header-line] [fixture:
+venn/gram-grid-percent-header-line] [fixture: venn/gram-grid-pipe-header-line]
+[fixture: venn/gram-grid-proto-header-line] [fixture:
+venn/gram-grid-ps-header-line] [fixture: venn/gram-grid-punct-header-line]
+[fixture: venn/gram-grid-quote-header-line] [fixture:
+venn/gram-grid-root-header-line] [fixture: venn/gram-grid-semicolon-header-line]
+[fixture: venn/gram-grid-single-quote-header-line] [fixture:
+venn/gram-grid-spaces-header-line] [fixture:
+venn/gram-grid-style-rule-header-line] [fixture: venn/gram-grid-tab-header-line]
+[fixture: venn/gram-grid-vt-header-line]
+
+The comment token consumes the preceding bare fragment, leaving only set Z:
+`comment`. [fixture: venn/db-grid-comment-header-line]
+
+`identifier-bare` uses the ASCII identifier lexer and normalization shared by
+set ids, union members, text targets and bare text ids, and style targets.
+
+The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
+`arrow-spaced`, `backslash`, `backtick`, `bom`, `classdef-rule`, `close-brace`,
+`close-round`, `close-square`, `emoji`, `entity`, `entity-named`, `equals`,
+`ff`, `greater-than`, `hash`, `html`, `html-attribute`, `html-br`,
+`ideographic`, `less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`,
+`open-round`, `open-square`, `percent`, `pipe`, `ps`, `punct`, `quote`,
+`semicolon`, `single-quote`, `style-rule`, `vt`. [fixture:
+venn/gram-grid-ampersand-entity-identifier-bare] [fixture:
+venn/gram-grid-arrow-identifier-bare] [fixture:
+venn/gram-grid-arrow-spaced-identifier-bare] [fixture:
+venn/gram-grid-backslash-identifier-bare] [fixture:
+venn/gram-grid-backtick-identifier-bare] [fixture:
+venn/gram-grid-bom-identifier-bare] [fixture:
+venn/gram-grid-classdef-rule-identifier-bare] [fixture:
+venn/gram-grid-close-brace-identifier-bare] [fixture:
+venn/gram-grid-close-round-identifier-bare] [fixture:
+venn/gram-grid-close-square-identifier-bare] [fixture:
+venn/gram-grid-emoji-identifier-bare] [fixture:
+venn/gram-grid-entity-identifier-bare] [fixture:
+venn/gram-grid-entity-named-identifier-bare] [fixture:
+venn/gram-grid-equals-identifier-bare] [fixture:
+venn/gram-grid-ff-identifier-bare] [fixture:
+venn/gram-grid-greater-than-identifier-bare] [fixture:
+venn/gram-grid-hash-identifier-bare] [fixture:
+venn/gram-grid-html-attribute-identifier-bare] [fixture:
+venn/gram-grid-html-br-identifier-bare] [fixture:
+venn/gram-grid-html-identifier-bare] [fixture:
+venn/gram-grid-ideographic-identifier-bare] [fixture:
+venn/gram-grid-less-than-identifier-bare] [fixture:
+venn/gram-grid-ls-identifier-bare] [fixture:
+venn/gram-grid-nbsp-identifier-bare] [fixture:
+venn/gram-grid-nel-identifier-bare] [fixture:
+venn/gram-grid-nonascii-identifier-bare] [fixture:
+venn/gram-grid-open-brace-identifier-bare] [fixture:
+venn/gram-grid-open-round-identifier-bare] [fixture:
+venn/gram-grid-open-square-identifier-bare] [fixture:
+venn/gram-grid-percent-identifier-bare] [fixture:
+venn/gram-grid-pipe-identifier-bare] [fixture:
+venn/gram-grid-ps-identifier-bare] [fixture:
+venn/gram-grid-punct-identifier-bare] [fixture:
+venn/gram-grid-quote-identifier-bare] [fixture:
+venn/gram-grid-semicolon-identifier-bare] [fixture:
+venn/gram-grid-single-quote-identifier-bare] [fixture:
+venn/gram-grid-style-rule-identifier-bare] [fixture:
+venn/gram-grid-vt-identifier-bare]
+
+The grammar rejects these inserted fragments: `colon`, `comma`, `comment`,
+`comment-line`, `cr`, `crlf`, `directive-line`, `keyword-block`,
+`keyword-class`, `keyword-classdef`, `keyword-columns`, `keyword-end`,
+`keyword-header`, `keyword-space`, `lf`, `spaces`, `tab`. [fixture:
+venn/gram-grid-colon-identifier-bare] [fixture:
+venn/gram-grid-comma-identifier-bare] [fixture:
+venn/gram-grid-comment-identifier-bare] [fixture:
+venn/gram-grid-comment-line-identifier-bare] [fixture:
+venn/gram-grid-cr-identifier-bare] [fixture:
+venn/gram-grid-crlf-identifier-bare] [fixture:
+venn/gram-grid-directive-line-identifier-bare] [fixture:
+venn/gram-grid-keyword-block-identifier-bare] [fixture:
+venn/gram-grid-keyword-class-identifier-bare] [fixture:
+venn/gram-grid-keyword-classdef-identifier-bare] [fixture:
+venn/gram-grid-keyword-columns-identifier-bare] [fixture:
+venn/gram-grid-keyword-end-identifier-bare] [fixture:
+venn/gram-grid-keyword-header-identifier-bare] [fixture:
+venn/gram-grid-keyword-space-identifier-bare] [fixture:
+venn/gram-grid-lf-identifier-bare] [fixture:
+venn/gram-grid-spaces-identifier-bare] [fixture:
+venn/gram-grid-tab-identifier-bare]
+
+The inserted fragments remain literal in this value: `constructor`, `dash`,
+`digits`, `empty`, `keyword`, `proto`, `root`. [fixture:
+venn/db-grid-constructor-identifier-bare] [fixture:
+venn/db-grid-dash-identifier-bare] [fixture:
+venn/db-grid-digits-identifier-bare] [fixture:
+venn/db-grid-empty-identifier-bare] [fixture:
+venn/db-grid-keyword-identifier-bare] [fixture:
+venn/db-grid-proto-identifier-bare] [fixture: venn/db-grid-root-identifier-bare]
+
+The directive is removed and the surrounding fragments join: `directive`.
+[fixture: venn/db-grid-directive-identifier-bare]
+
+The inserted style keyword starts a separate statement and the earlier value
+ends before it: `keyword-style`. [fixture:
+venn/db-grid-keyword-style-identifier-bare]
+
+`identifier-quoted` uses the string lexer and one-pair quote removal shared by
+quoted identifiers, quoted text ids, and quoted style values.
+
+The inserted fragments remain literal in this value: `ampersand-entity`,
+`arrow`, `arrow-spaced`, `backslash`, `backtick`, `bom`, `close-brace`,
+`close-round`, `close-square`, `colon`, `comma`, `comment`, `constructor`,
+`dash`, `digits`, `emoji`, `empty`, `equals`, `ff`, `greater-than`, `hash`,
+`html`, `html-br`, `ideographic`, `keyword`, `keyword-block`, `keyword-class`,
+`keyword-classdef`, `keyword-columns`, `keyword-end`, `keyword-header`,
+`keyword-space`, `keyword-style`, `less-than`, `lf`, `ls`, `nbsp`, `nel`,
+`nonascii`, `open-brace`, `open-round`, `open-square`, `percent`, `pipe`,
+`proto`, `ps`, `punct`, `root`, `semicolon`, `single-quote`, `spaces`, `tab`,
+`vt`. [fixture: venn/db-grid-ampersand-entity-identifier-quoted] [fixture:
+venn/db-grid-arrow-identifier-quoted] [fixture:
+venn/db-grid-arrow-spaced-identifier-quoted] [fixture:
+venn/db-grid-backslash-identifier-quoted] [fixture:
+venn/db-grid-backtick-identifier-quoted] [fixture:
+venn/db-grid-close-brace-identifier-quoted] [fixture:
+venn/db-grid-close-round-identifier-quoted] [fixture:
+venn/db-grid-close-square-identifier-quoted] [fixture:
+venn/db-grid-colon-identifier-quoted] [fixture:
+venn/db-grid-comma-identifier-quoted] [fixture:
+venn/db-grid-comment-identifier-quoted] [fixture:
+venn/db-grid-constructor-identifier-quoted] [fixture:
+venn/db-grid-dash-identifier-quoted] [fixture:
+venn/db-grid-digits-identifier-quoted] [fixture:
+venn/db-grid-emoji-identifier-quoted] [fixture:
+venn/db-grid-empty-identifier-quoted] [fixture:
+venn/db-grid-equals-identifier-quoted] [fixture:
+venn/db-grid-greater-than-identifier-quoted] [fixture:
+venn/db-grid-hash-identifier-quoted] [fixture:
+venn/db-grid-html-br-identifier-quoted] [fixture:
+venn/db-grid-html-identifier-quoted] [fixture:
+venn/db-grid-keyword-block-identifier-quoted] [fixture:
+venn/db-grid-keyword-class-identifier-quoted] [fixture:
+venn/db-grid-keyword-classdef-identifier-quoted] [fixture:
+venn/db-grid-keyword-columns-identifier-quoted] [fixture:
+venn/db-grid-keyword-end-identifier-quoted] [fixture:
+venn/db-grid-keyword-header-identifier-quoted] [fixture:
+venn/db-grid-keyword-identifier-quoted] [fixture:
+venn/db-grid-keyword-space-identifier-quoted] [fixture:
+venn/db-grid-keyword-style-identifier-quoted] [fixture:
+venn/db-grid-less-than-identifier-quoted] [fixture:
+venn/db-grid-lf-identifier-quoted] [fixture:
+venn/db-grid-nonascii-identifier-quoted] [fixture:
+venn/db-grid-open-brace-identifier-quoted] [fixture:
+venn/db-grid-open-round-identifier-quoted] [fixture:
+venn/db-grid-open-square-identifier-quoted] [fixture:
+venn/db-grid-percent-identifier-quoted] [fixture:
+venn/db-grid-pipe-identifier-quoted] [fixture:
+venn/db-grid-proto-identifier-quoted] [fixture:
+venn/db-grid-punct-identifier-quoted] [fixture:
+venn/db-grid-root-identifier-quoted] [fixture:
+venn/db-grid-semicolon-identifier-quoted] [fixture:
+venn/db-grid-single-quote-identifier-quoted] [fixture:
+venn/db-grid-spaces-identifier-quoted] [fixture: venn/lex-bom-quoted-value]
+[fixture: venn/lex-ff-quoted-value] [fixture: venn/lex-ideographic-quoted-value]
+[fixture: venn/lex-ls-quoted-value] [fixture: venn/lex-nbsp-quoted-value]
+[fixture: venn/lex-nel-quoted-value] [fixture: venn/lex-ps-quoted-value]
+[fixture: venn/lex-tab-quoted-value] [fixture: venn/lex-vt-quoted-value]
+
+The matching style or classDef line loses its last semicolon: `classdef-rule`,
+`style-rule`. [fixture: venn/db-grid-classdef-rule-identifier-quoted] [fixture:
+venn/db-grid-style-rule-identifier-quoted]
+
+The inserted line ending or removed comment line becomes one LF: `comment-line`,
+`cr`, `crlf`. [fixture: venn/lex-cr-quoted-value] [fixture:
+venn/lex-crlf-quoted-value] [fixture: venn/lex-identifier-comment-line]
+
+The directive is removed and the surrounding fragments join: `directive`.
+[fixture: venn/lex-identifier-directive-middle]
+
+The removed directive line leaves two LFs: `directive-line`. [fixture:
+venn/lex-identifier-directive-line]
+
+The character reference becomes its shared preprocessing placeholder: `entity`,
+`entity-named`. [fixture: venn/lex-identifier-entity-named] [fixture:
+venn/lex-identifier-entity-numeric]
+
+Double quotes of the HTML attribute become single quotes: `html-attribute`.
+[fixture: venn/lex-identifier-html-attribute]
+
+The grammar rejects these inserted fragments: `quote`. [fixture:
+venn/gram-grid-quote-identifier-quoted]
+
+`label-bare` uses the unquoted bracket-label lexer, which trims before Db
+normalization.
+
+The inserted fragments remain literal in this value: `ampersand-entity`,
+`arrow`, `arrow-spaced`, `backslash`, `backtick`, `bom`, `close-brace`,
+`close-round`, `colon`, `comma`, `comment`, `constructor`, `dash`, `digits`,
+`emoji`, `empty`, `equals`, `ff`, `greater-than`, `hash`, `html`, `html-br`,
+`ideographic`, `keyword`, `keyword-block`, `keyword-class`, `keyword-classdef`,
+`keyword-columns`, `keyword-end`, `keyword-header`, `keyword-space`,
+`keyword-style`, `less-than`, `lf`, `ls`, `nbsp`, `nel`, `nonascii`,
+`open-brace`, `open-round`, `open-square`, `percent`, `pipe`, `proto`, `ps`,
+`punct`, `root`, `semicolon`, `single-quote`, `spaces`, `tab`, `vt`. [fixture:
+venn/db-grid-ampersand-entity-label-bare] [fixture:
+venn/db-grid-arrow-label-bare] [fixture: venn/db-grid-arrow-spaced-label-bare]
+[fixture: venn/db-grid-backslash-label-bare] [fixture:
+venn/db-grid-backtick-label-bare] [fixture: venn/db-grid-bom-label-bare]
+[fixture: venn/db-grid-close-brace-label-bare] [fixture:
+venn/db-grid-close-round-label-bare] [fixture: venn/db-grid-colon-label-bare]
+[fixture: venn/db-grid-comma-label-bare] [fixture:
+venn/db-grid-comment-label-bare] [fixture: venn/db-grid-constructor-label-bare]
+[fixture: venn/db-grid-dash-label-bare] [fixture:
+venn/db-grid-digits-label-bare] [fixture: venn/db-grid-emoji-label-bare]
+[fixture: venn/db-grid-empty-label-bare] [fixture:
+venn/db-grid-equals-label-bare] [fixture: venn/db-grid-ff-label-bare] [fixture:
+venn/db-grid-greater-than-label-bare] [fixture: venn/db-grid-hash-label-bare]
+[fixture: venn/db-grid-html-br-label-bare] [fixture:
+venn/db-grid-html-label-bare] [fixture: venn/db-grid-ideographic-label-bare]
+[fixture: venn/db-grid-keyword-block-label-bare] [fixture:
+venn/db-grid-keyword-class-label-bare] [fixture:
+venn/db-grid-keyword-classdef-label-bare] [fixture:
+venn/db-grid-keyword-columns-label-bare] [fixture:
+venn/db-grid-keyword-end-label-bare] [fixture:
+venn/db-grid-keyword-header-label-bare] [fixture:
+venn/db-grid-keyword-label-bare] [fixture:
+venn/db-grid-keyword-space-label-bare] [fixture:
+venn/db-grid-keyword-style-label-bare] [fixture:
+venn/db-grid-less-than-label-bare] [fixture: venn/db-grid-lf-label-bare]
+[fixture: venn/db-grid-ls-label-bare] [fixture: venn/db-grid-nbsp-label-bare]
+[fixture: venn/db-grid-nel-label-bare] [fixture:
+venn/db-grid-nonascii-label-bare] [fixture: venn/db-grid-open-brace-label-bare]
+[fixture: venn/db-grid-open-round-label-bare] [fixture:
+venn/db-grid-open-square-label-bare] [fixture: venn/db-grid-percent-label-bare]
+[fixture: venn/db-grid-pipe-label-bare] [fixture: venn/db-grid-proto-label-bare]
+[fixture: venn/db-grid-ps-label-bare] [fixture: venn/db-grid-punct-label-bare]
+[fixture: venn/db-grid-root-label-bare] [fixture:
+venn/db-grid-semicolon-label-bare] [fixture:
+venn/db-grid-single-quote-label-bare] [fixture: venn/db-grid-spaces-label-bare]
+[fixture: venn/db-grid-tab-label-bare] [fixture: venn/db-grid-vt-label-bare]
+
+The matching style or classDef line loses its last semicolon: `classdef-rule`,
+`style-rule`. [fixture: venn/db-grid-classdef-rule-label-bare] [fixture:
+venn/db-grid-style-rule-label-bare]
+
+The grammar rejects these inserted fragments: `close-square`. [fixture:
+venn/gram-grid-close-square-label-bare]
+
+The inserted line ending or removed comment line becomes one LF: `comment-line`,
+`cr`, `crlf`. [fixture: venn/db-grid-comment-line-label-bare] [fixture:
+venn/db-grid-cr-label-bare] [fixture: venn/db-grid-crlf-label-bare]
+
+The directive is removed and the surrounding fragments join: `directive`.
+[fixture: venn/db-grid-directive-label-bare]
+
+The removed directive line leaves two LFs: `directive-line`. [fixture:
+venn/db-grid-directive-line-label-bare]
+
+The character reference becomes its shared preprocessing placeholder: `entity`,
+`entity-named`. [fixture: venn/db-grid-entity-label-bare] [fixture:
+venn/db-grid-entity-named-label-bare]
+
+Double quotes of the HTML attribute become single quotes: `html-attribute`.
+[fixture: venn/db-grid-html-attribute-label-bare]
+
+The lexer rejects these inserted fragments: `quote`. [fixture:
+venn/gram-grid-quote-label-bare]
+
+`label-quoted` removes bracket-string delimiters before Db normalization, so
+interior whitespace can be trimmed.
+
+The inserted fragments remain literal in this value: `ampersand-entity`,
+`arrow`, `arrow-spaced`, `backslash`, `backtick`, `bom`, `close-brace`,
+`close-round`, `close-square`, `colon`, `comma`, `comment`, `constructor`,
+`dash`, `digits`, `emoji`, `empty`, `equals`, `ff`, `greater-than`, `hash`,
+`html`, `html-br`, `ideographic`, `keyword`, `keyword-block`, `keyword-class`,
+`keyword-classdef`, `keyword-columns`, `keyword-end`, `keyword-header`,
+`keyword-space`, `keyword-style`, `less-than`, `lf`, `ls`, `nbsp`, `nel`,
+`nonascii`, `open-brace`, `open-round`, `open-square`, `percent`, `pipe`,
+`proto`, `ps`, `punct`, `root`, `semicolon`, `single-quote`, `spaces`, `tab`,
+`vt`. [fixture: venn/db-grid-ampersand-entity-label-quoted] [fixture:
+venn/db-grid-arrow-label-quoted] [fixture:
+venn/db-grid-arrow-spaced-label-quoted] [fixture:
+venn/db-grid-backslash-label-quoted] [fixture:
+venn/db-grid-backtick-label-quoted] [fixture: venn/db-grid-bom-label-quoted]
+[fixture: venn/db-grid-close-brace-label-quoted] [fixture:
+venn/db-grid-close-round-label-quoted] [fixture:
+venn/db-grid-close-square-label-quoted] [fixture:
+venn/db-grid-colon-label-quoted] [fixture: venn/db-grid-comma-label-quoted]
+[fixture: venn/db-grid-comment-label-quoted] [fixture:
+venn/db-grid-constructor-label-quoted] [fixture: venn/db-grid-dash-label-quoted]
+[fixture: venn/db-grid-digits-label-quoted] [fixture:
+venn/db-grid-emoji-label-quoted] [fixture: venn/db-grid-empty-label-quoted]
+[fixture: venn/db-grid-equals-label-quoted] [fixture:
+venn/db-grid-ff-label-quoted] [fixture: venn/db-grid-greater-than-label-quoted]
+[fixture: venn/db-grid-hash-label-quoted] [fixture:
+venn/db-grid-html-br-label-quoted] [fixture: venn/db-grid-html-label-quoted]
+[fixture: venn/db-grid-ideographic-label-quoted] [fixture:
+venn/db-grid-keyword-block-label-quoted] [fixture:
+venn/db-grid-keyword-class-label-quoted] [fixture:
+venn/db-grid-keyword-classdef-label-quoted] [fixture:
+venn/db-grid-keyword-columns-label-quoted] [fixture:
+venn/db-grid-keyword-end-label-quoted] [fixture:
+venn/db-grid-keyword-header-label-quoted] [fixture:
+venn/db-grid-keyword-label-quoted] [fixture:
+venn/db-grid-keyword-space-label-quoted] [fixture:
+venn/db-grid-keyword-style-label-quoted] [fixture:
+venn/db-grid-less-than-label-quoted] [fixture: venn/db-grid-lf-label-quoted]
+[fixture: venn/db-grid-ls-label-quoted] [fixture:
+venn/db-grid-nbsp-label-quoted] [fixture: venn/db-grid-nel-label-quoted]
+[fixture: venn/db-grid-nonascii-label-quoted] [fixture:
+venn/db-grid-open-brace-label-quoted] [fixture:
+venn/db-grid-open-round-label-quoted] [fixture:
+venn/db-grid-open-square-label-quoted] [fixture:
+venn/db-grid-percent-label-quoted] [fixture: venn/db-grid-pipe-label-quoted]
+[fixture: venn/db-grid-proto-label-quoted] [fixture:
+venn/db-grid-ps-label-quoted] [fixture: venn/db-grid-punct-label-quoted]
+[fixture: venn/db-grid-root-label-quoted] [fixture:
+venn/db-grid-semicolon-label-quoted] [fixture:
+venn/db-grid-single-quote-label-quoted] [fixture:
+venn/db-grid-spaces-label-quoted] [fixture: venn/db-grid-tab-label-quoted]
+[fixture: venn/db-grid-vt-label-quoted]
+
+The matching style or classDef line loses its last semicolon: `classdef-rule`,
+`style-rule`. [fixture: venn/db-grid-classdef-rule-label-quoted] [fixture:
+venn/db-grid-style-rule-label-quoted]
+
+The inserted line ending or removed comment line becomes one LF: `comment-line`,
+`cr`, `crlf`. [fixture: venn/db-grid-cr-label-quoted] [fixture:
+venn/db-grid-crlf-label-quoted] [fixture: venn/lex-label-comment-line]
+
+The directive is removed and the surrounding fragments join: `directive`.
+[fixture: venn/lex-label-directive-middle]
+
+The removed directive line leaves two LFs: `directive-line`. [fixture:
+venn/lex-label-directive-line]
+
+The character reference becomes its shared preprocessing placeholder: `entity`,
+`entity-named`. [fixture: venn/lex-label-entity-named] [fixture:
+venn/lex-label-entity-numeric]
+
+Double quotes of the HTML attribute become single quotes: `html-attribute`.
+[fixture: venn/lex-label-html-attribute]
+
+The lexer rejects these inserted fragments: `quote`. [fixture:
+venn/gram-grid-quote-label-quoted]
+
+`size` converts a numeric token with `parseFloat()` for a set or union.
+
+The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
+`arrow-spaced`, `backslash`, `backtick`, `bom`, `close-brace`, `close-round`,
+`close-square`, `emoji`, `entity`, `entity-named`, `equals`, `ff`,
+`greater-than`, `hash`, `html`, `html-attribute`, `html-br`, `ideographic`,
+`less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`,
+`open-square`, `percent`, `pipe`, `ps`, `punct`, `quote`, `semicolon`,
+`single-quote`, `vt`. [fixture: venn/gram-grid-ampersand-entity-size] [fixture:
+venn/gram-grid-arrow-size] [fixture: venn/gram-grid-arrow-spaced-size] [fixture:
+venn/gram-grid-backslash-size] [fixture: venn/gram-grid-backtick-size] [fixture:
+venn/gram-grid-bom-size] [fixture: venn/gram-grid-close-brace-size] [fixture:
+venn/gram-grid-close-round-size] [fixture: venn/gram-grid-close-square-size]
+[fixture: venn/gram-grid-emoji-size] [fixture: venn/gram-grid-entity-named-size]
+[fixture: venn/gram-grid-entity-size] [fixture: venn/gram-grid-equals-size]
+[fixture: venn/gram-grid-ff-size] [fixture: venn/gram-grid-greater-than-size]
+[fixture: venn/gram-grid-hash-size] [fixture:
+venn/gram-grid-html-attribute-size] [fixture: venn/gram-grid-html-br-size]
+[fixture: venn/gram-grid-html-size] [fixture: venn/gram-grid-ideographic-size]
+[fixture: venn/gram-grid-less-than-size] [fixture: venn/gram-grid-ls-size]
+[fixture: venn/gram-grid-nbsp-size] [fixture: venn/gram-grid-nel-size] [fixture:
+venn/gram-grid-nonascii-size] [fixture: venn/gram-grid-open-brace-size]
+[fixture: venn/gram-grid-open-round-size] [fixture:
+venn/gram-grid-open-square-size] [fixture: venn/gram-grid-percent-size]
+[fixture: venn/gram-grid-pipe-size] [fixture: venn/gram-grid-ps-size] [fixture:
+venn/gram-grid-punct-size] [fixture: venn/gram-grid-quote-size] [fixture:
+venn/gram-grid-semicolon-size] [fixture: venn/gram-grid-single-quote-size]
+[fixture: venn/gram-grid-vt-size]
+
+The grammar rejects these inserted fragments: `classdef-rule`, `colon`, `comma`,
+`comment`, `comment-line`, `constructor`, `cr`, `crlf`, `dash`,
+`directive-line`, `keyword`, `keyword-block`, `keyword-class`,
+`keyword-classdef`, `keyword-columns`, `keyword-end`, `keyword-header`,
+`keyword-space`, `lf`, `proto`, `root`, `spaces`, `style-rule`, `tab`. [fixture:
+venn/gram-grid-classdef-rule-size] [fixture: venn/gram-grid-colon-size]
+[fixture: venn/gram-grid-comma-size] [fixture: venn/gram-grid-comment-line-size]
+[fixture: venn/gram-grid-comment-size] [fixture:
+venn/gram-grid-constructor-size] [fixture: venn/gram-grid-cr-size] [fixture:
+venn/gram-grid-crlf-size] [fixture: venn/gram-grid-dash-size] [fixture:
+venn/gram-grid-directive-line-size] [fixture: venn/gram-grid-keyword-block-size]
+[fixture: venn/gram-grid-keyword-class-size] [fixture:
+venn/gram-grid-keyword-classdef-size] [fixture:
+venn/gram-grid-keyword-columns-size] [fixture: venn/gram-grid-keyword-end-size]
+[fixture: venn/gram-grid-keyword-header-size] [fixture:
+venn/gram-grid-keyword-size] [fixture: venn/gram-grid-keyword-space-size]
+[fixture: venn/gram-grid-lf-size] [fixture: venn/gram-grid-proto-size] [fixture:
+venn/gram-grid-root-size] [fixture: venn/gram-grid-spaces-size] [fixture:
+venn/gram-grid-style-rule-size] [fixture: venn/gram-grid-tab-size]
+
+The inserted fragments remain literal in this value: `digits`, `empty`.
+[fixture: venn/db-grid-digits-size] [fixture: venn/db-grid-empty-size]
+
+The size is 12: `directive`. [fixture: venn/db-grid-directive-size]
+
+The inserted style keyword starts a separate statement and the earlier value
+ends before it: `keyword-style`. [fixture: venn/db-grid-keyword-style-size]
+
+`text-number` keeps a numeric token as text instead of converting it to a size.
+
+The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
+`arrow-spaced`, `backslash`, `backtick`, `bom`, `close-brace`, `close-round`,
+`close-square`, `emoji`, `entity`, `entity-named`, `equals`, `ff`,
+`greater-than`, `hash`, `html`, `html-attribute`, `html-br`, `ideographic`,
+`less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`,
+`open-square`, `percent`, `pipe`, `ps`, `punct`, `quote`, `semicolon`,
+`single-quote`, `vt`. [fixture: venn/gram-grid-ampersand-entity-text-number]
+[fixture: venn/gram-grid-arrow-spaced-text-number] [fixture:
+venn/gram-grid-arrow-text-number] [fixture:
+venn/gram-grid-backslash-text-number] [fixture:
+venn/gram-grid-backtick-text-number] [fixture: venn/gram-grid-bom-text-number]
+[fixture: venn/gram-grid-close-brace-text-number] [fixture:
+venn/gram-grid-close-round-text-number] [fixture:
+venn/gram-grid-close-square-text-number] [fixture:
+venn/gram-grid-emoji-text-number] [fixture:
+venn/gram-grid-entity-named-text-number] [fixture:
+venn/gram-grid-entity-text-number] [fixture: venn/gram-grid-equals-text-number]
+[fixture: venn/gram-grid-ff-text-number] [fixture:
+venn/gram-grid-greater-than-text-number] [fixture:
+venn/gram-grid-hash-text-number] [fixture:
+venn/gram-grid-html-attribute-text-number] [fixture:
+venn/gram-grid-html-br-text-number] [fixture: venn/gram-grid-html-text-number]
+[fixture: venn/gram-grid-ideographic-text-number] [fixture:
+venn/gram-grid-less-than-text-number] [fixture: venn/gram-grid-ls-text-number]
+[fixture: venn/gram-grid-nbsp-text-number] [fixture:
+venn/gram-grid-nel-text-number] [fixture: venn/gram-grid-nonascii-text-number]
+[fixture: venn/gram-grid-open-brace-text-number] [fixture:
+venn/gram-grid-open-round-text-number] [fixture:
+venn/gram-grid-open-square-text-number] [fixture:
+venn/gram-grid-percent-text-number] [fixture: venn/gram-grid-pipe-text-number]
+[fixture: venn/gram-grid-ps-text-number] [fixture:
+venn/gram-grid-punct-text-number] [fixture: venn/gram-grid-quote-text-number]
+[fixture: venn/gram-grid-semicolon-text-number] [fixture:
+venn/gram-grid-single-quote-text-number] [fixture:
+venn/gram-grid-vt-text-number]
+
+The grammar rejects these inserted fragments: `classdef-rule`, `colon`, `comma`,
+`comment`, `comment-line`, `constructor`, `cr`, `crlf`, `dash`,
+`directive-line`, `keyword`, `keyword-block`, `keyword-class`,
+`keyword-classdef`, `keyword-columns`, `keyword-end`, `keyword-header`,
+`keyword-space`, `lf`, `proto`, `root`, `spaces`, `style-rule`, `tab`. [fixture:
+venn/gram-grid-classdef-rule-text-number] [fixture:
+venn/gram-grid-colon-text-number] [fixture: venn/gram-grid-comma-text-number]
+[fixture: venn/gram-grid-comment-line-text-number] [fixture:
+venn/gram-grid-comment-text-number] [fixture:
+venn/gram-grid-constructor-text-number] [fixture: venn/gram-grid-cr-text-number]
+[fixture: venn/gram-grid-crlf-text-number] [fixture:
+venn/gram-grid-dash-text-number] [fixture:
+venn/gram-grid-directive-line-text-number] [fixture:
+venn/gram-grid-keyword-block-text-number] [fixture:
+venn/gram-grid-keyword-class-text-number] [fixture:
+venn/gram-grid-keyword-classdef-text-number] [fixture:
+venn/gram-grid-keyword-columns-text-number] [fixture:
+venn/gram-grid-keyword-end-text-number] [fixture:
+venn/gram-grid-keyword-header-text-number] [fixture:
+venn/gram-grid-keyword-space-text-number] [fixture:
+venn/gram-grid-keyword-text-number] [fixture: venn/gram-grid-lf-text-number]
+[fixture: venn/gram-grid-proto-text-number] [fixture:
+venn/gram-grid-root-text-number] [fixture: venn/gram-grid-spaces-text-number]
+[fixture: venn/gram-grid-style-rule-text-number] [fixture:
+venn/gram-grid-tab-text-number]
+
+The inserted fragments remain literal in this value: `digits`, `empty`.
+[fixture: venn/db-grid-digits-text-number] [fixture:
+venn/db-grid-empty-text-number]
+
+The directive is removed and the surrounding fragments join: `directive`.
+[fixture: venn/db-grid-directive-text-number]
+
+The inserted style keyword starts a separate statement and the earlier value
+ends before it: `keyword-style`. [fixture:
+venn/db-grid-keyword-style-text-number]
+
+`style-key` uses the identifier lexer and assigns its raw spelling into an
+ordinary property object.
+
+The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
+`arrow-spaced`, `backslash`, `backtick`, `bom`, `classdef-rule`, `close-brace`,
+`close-round`, `close-square`, `emoji`, `entity`, `entity-named`, `equals`,
+`ff`, `greater-than`, `hash`, `html`, `html-attribute`, `html-br`,
+`ideographic`, `less-than`, `ls`, `nbsp`, `nel`, `nonascii`, `open-brace`,
+`open-round`, `open-square`, `percent`, `pipe`, `ps`, `punct`, `quote`,
+`semicolon`, `single-quote`, `style-rule`, `vt`. [fixture:
+venn/gram-grid-ampersand-entity-style-key] [fixture:
+venn/gram-grid-arrow-spaced-style-key] [fixture: venn/gram-grid-arrow-style-key]
+[fixture: venn/gram-grid-backslash-style-key] [fixture:
+venn/gram-grid-backtick-style-key] [fixture: venn/gram-grid-bom-style-key]
+[fixture: venn/gram-grid-classdef-rule-style-key] [fixture:
+venn/gram-grid-close-brace-style-key] [fixture:
+venn/gram-grid-close-round-style-key] [fixture:
+venn/gram-grid-close-square-style-key] [fixture: venn/gram-grid-emoji-style-key]
+[fixture: venn/gram-grid-entity-named-style-key] [fixture:
+venn/gram-grid-entity-style-key] [fixture: venn/gram-grid-equals-style-key]
+[fixture: venn/gram-grid-ff-style-key] [fixture:
+venn/gram-grid-greater-than-style-key] [fixture: venn/gram-grid-hash-style-key]
+[fixture: venn/gram-grid-html-attribute-style-key] [fixture:
+venn/gram-grid-html-br-style-key] [fixture: venn/gram-grid-html-style-key]
+[fixture: venn/gram-grid-ideographic-style-key] [fixture:
+venn/gram-grid-less-than-style-key] [fixture: venn/gram-grid-ls-style-key]
+[fixture: venn/gram-grid-nbsp-style-key] [fixture: venn/gram-grid-nel-style-key]
+[fixture: venn/gram-grid-nonascii-style-key] [fixture:
+venn/gram-grid-open-brace-style-key] [fixture:
+venn/gram-grid-open-round-style-key] [fixture:
+venn/gram-grid-open-square-style-key] [fixture:
+venn/gram-grid-percent-style-key] [fixture: venn/gram-grid-pipe-style-key]
+[fixture: venn/gram-grid-ps-style-key] [fixture: venn/gram-grid-punct-style-key]
+[fixture: venn/gram-grid-quote-style-key] [fixture:
+venn/gram-grid-semicolon-style-key] [fixture:
+venn/gram-grid-single-quote-style-key] [fixture:
+venn/gram-grid-style-rule-style-key] [fixture: venn/gram-grid-vt-style-key]
+
+The grammar rejects these inserted fragments: `colon`, `comma`, `comment`,
+`comment-line`, `cr`, `crlf`, `directive-line`, `keyword-block`,
+`keyword-class`, `keyword-classdef`, `keyword-columns`, `keyword-end`,
+`keyword-header`, `keyword-space`, `keyword-style`, `lf`, `spaces`, `tab`.
+[fixture: venn/gram-grid-colon-style-key] [fixture:
+venn/gram-grid-comma-style-key] [fixture: venn/gram-grid-comment-line-style-key]
+[fixture: venn/gram-grid-comment-style-key] [fixture:
+venn/gram-grid-cr-style-key] [fixture: venn/gram-grid-crlf-style-key] [fixture:
+venn/gram-grid-directive-line-style-key] [fixture:
+venn/gram-grid-keyword-block-style-key] [fixture:
+venn/gram-grid-keyword-class-style-key] [fixture:
+venn/gram-grid-keyword-classdef-style-key] [fixture:
+venn/gram-grid-keyword-columns-style-key] [fixture:
+venn/gram-grid-keyword-end-style-key] [fixture:
+venn/gram-grid-keyword-header-style-key] [fixture:
+venn/gram-grid-keyword-space-style-key] [fixture:
+venn/gram-grid-keyword-style-style-key] [fixture: venn/gram-grid-lf-style-key]
+[fixture: venn/gram-grid-spaces-style-key] [fixture:
+venn/gram-grid-tab-style-key]
+
+The inserted fragments remain literal in this value: `constructor`, `dash`,
+`digits`, `empty`, `keyword`, `proto`, `root`. [fixture:
+venn/db-grid-constructor-style-key] [fixture: venn/db-grid-dash-style-key]
+[fixture: venn/db-grid-digits-style-key] [fixture: venn/db-grid-empty-style-key]
+[fixture: venn/db-grid-keyword-style-key] [fixture:
+venn/db-grid-proto-style-key] [fixture: venn/db-grid-root-style-key]
+
+The directive is removed and the surrounding fragments join: `directive`.
+[fixture: venn/db-grid-directive-style-key]
+
+`style-value` inserts fragments between bare value words; the color-token
+readings above cover rgb, rgba, and hex interiors separately. [fixture:
+venn/db-grid-spaces-style-value] [fixture: venn/db-style-rgb-line-separator]
+[fixture: venn/db-style-hex-five]
+
+The lexer rejects these inserted fragments: `ampersand-entity`, `arrow`,
+`arrow-spaced`, `backslash`, `backtick`, `bom`, `close-brace`, `close-round`,
+`close-square`, `emoji`, `entity-named`, `equals`, `ff`, `greater-than`, `hash`,
+`html`, `html-attribute`, `html-br`, `ideographic`, `less-than`, `ls`, `nbsp`,
+`nel`, `nonascii`, `open-brace`, `open-round`, `open-square`, `percent`, `pipe`,
+`ps`, `punct`, `quote`, `semicolon`, `single-quote`, `vt`. [fixture:
+venn/gram-grid-ampersand-entity-style-value] [fixture:
+venn/gram-grid-arrow-spaced-style-value] [fixture:
+venn/gram-grid-arrow-style-value] [fixture:
+venn/gram-grid-backslash-style-value] [fixture:
+venn/gram-grid-backtick-style-value] [fixture: venn/gram-grid-bom-style-value]
+[fixture: venn/gram-grid-close-brace-style-value] [fixture:
+venn/gram-grid-close-round-style-value] [fixture:
+venn/gram-grid-close-square-style-value] [fixture:
+venn/gram-grid-emoji-style-value] [fixture:
+venn/gram-grid-entity-named-style-value] [fixture:
+venn/gram-grid-equals-style-value] [fixture: venn/gram-grid-ff-style-value]
+[fixture: venn/gram-grid-greater-than-style-value] [fixture:
+venn/gram-grid-hash-style-value] [fixture:
+venn/gram-grid-html-attribute-style-value] [fixture:
+venn/gram-grid-html-br-style-value] [fixture: venn/gram-grid-html-style-value]
+[fixture: venn/gram-grid-ideographic-style-value] [fixture:
+venn/gram-grid-less-than-style-value] [fixture: venn/gram-grid-ls-style-value]
+[fixture: venn/gram-grid-nbsp-style-value] [fixture:
+venn/gram-grid-nel-style-value] [fixture: venn/gram-grid-nonascii-style-value]
+[fixture: venn/gram-grid-open-brace-style-value] [fixture:
+venn/gram-grid-open-round-style-value] [fixture:
+venn/gram-grid-open-square-style-value] [fixture:
+venn/gram-grid-percent-style-value] [fixture: venn/gram-grid-pipe-style-value]
+[fixture: venn/gram-grid-ps-style-value] [fixture:
+venn/gram-grid-punct-style-value] [fixture: venn/gram-grid-quote-style-value]
+[fixture: venn/gram-grid-semicolon-style-value] [fixture:
+venn/gram-grid-single-quote-style-value] [fixture:
+venn/gram-grid-vt-style-value]
+
+The grammar rejects these inserted fragments: `classdef-rule`, `colon`, `comma`,
+`comment`, `comment-line`, `cr`, `crlf`, `directive-line`, `keyword-classdef`,
+`keyword-header`, `lf`, `style-rule`. [fixture:
+venn/gram-grid-classdef-rule-style-value] [fixture:
+venn/gram-grid-colon-style-value] [fixture: venn/gram-grid-comma-style-value]
+[fixture: venn/gram-grid-comment-line-style-value] [fixture:
+venn/gram-grid-comment-style-value] [fixture: venn/gram-grid-cr-style-value]
+[fixture: venn/gram-grid-crlf-style-value] [fixture:
+venn/gram-grid-directive-line-style-value] [fixture:
+venn/gram-grid-keyword-classdef-style-value] [fixture:
+venn/gram-grid-keyword-header-style-value] [fixture:
+venn/gram-grid-lf-style-value] [fixture: venn/gram-grid-style-rule-style-value]
+
+The inserted fragments remain literal in this value: `constructor`, `dash`,
+`digits`, `empty`, `keyword`, `keyword-block`, `keyword-class`,
+`keyword-columns`, `keyword-end`, `keyword-space`, `proto`, `root`. [fixture:
+venn/db-grid-constructor-style-value] [fixture: venn/db-grid-dash-style-value]
+[fixture: venn/db-grid-digits-style-value] [fixture:
+venn/db-grid-empty-style-value] [fixture:
+venn/db-grid-keyword-block-style-value] [fixture:
+venn/db-grid-keyword-class-style-value] [fixture:
+venn/db-grid-keyword-columns-style-value] [fixture:
+venn/db-grid-keyword-end-style-value] [fixture:
+venn/db-grid-keyword-space-style-value] [fixture:
+venn/db-grid-keyword-style-value] [fixture: venn/db-grid-proto-style-value]
+[fixture: venn/db-grid-root-style-value]
+
+The directive is removed and the surrounding fragments join: `directive`.
+[fixture: venn/db-grid-directive-style-value]
+
+The stored value is `"a #35b"`: `entity`. [fixture:
+venn/db-grid-entity-style-value]
+
+The inserted style keyword starts a separate statement and the earlier value
+ends before it: `keyword-style`. [fixture:
+venn/db-grid-keyword-style-style-value]
+
+Whitespace between unquoted value tokens becomes one space: `spaces`, `tab`.
+[fixture: venn/db-grid-spaces-style-value] [fixture:
+venn/db-grid-tab-style-value]
+
+`title` uses the whole title token and the common title setter rather than venn
+string normalization.
+
+The lexer rejects these inserted fragments: `ampersand-entity`, `classdef-rule`,
+`hash`, `semicolon`, `style-rule`. [fixture:
+venn/gram-grid-ampersand-entity-title] [fixture:
+venn/gram-grid-classdef-rule-title] [fixture: venn/gram-grid-hash-title]
+[fixture: venn/gram-grid-semicolon-title] [fixture:
+venn/gram-grid-style-rule-title]
+
+The inserted fragments remain literal in this value: `arrow`, `arrow-spaced`,
+`backslash`, `backtick`, `bom`, `close-brace`, `close-round`, `close-square`,
+`colon`, `comma`, `comment`, `constructor`, `dash`, `digits`, `emoji`, `empty`,
+`equals`, `ff`, `greater-than`, `html`, `html-br`, `ideographic`, `keyword`,
+`keyword-block`, `keyword-class`, `keyword-classdef`, `keyword-columns`,
+`keyword-end`, `keyword-header`, `keyword-space`, `keyword-style`, `less-than`,
+`ls`, `nbsp`, `nel`, `nonascii`, `open-brace`, `open-round`, `open-square`,
+`percent`, `pipe`, `proto`, `ps`, `punct`, `quote`, `root`, `single-quote`,
+`spaces`, `tab`, `vt`. [fixture: venn/db-grid-arrow-spaced-title] [fixture:
+venn/db-grid-arrow-title] [fixture: venn/db-grid-backslash-title] [fixture:
+venn/db-grid-backtick-title] [fixture: venn/db-grid-bom-title] [fixture:
+venn/db-grid-close-brace-title] [fixture: venn/db-grid-close-round-title]
+[fixture: venn/db-grid-close-square-title] [fixture: venn/db-grid-colon-title]
+[fixture: venn/db-grid-comma-title] [fixture: venn/db-grid-comment-title]
+[fixture: venn/db-grid-constructor-title] [fixture: venn/db-grid-dash-title]
+[fixture: venn/db-grid-digits-title] [fixture: venn/db-grid-emoji-title]
+[fixture: venn/db-grid-empty-title] [fixture: venn/db-grid-equals-title]
+[fixture: venn/db-grid-ff-title] [fixture: venn/db-grid-greater-than-title]
+[fixture: venn/db-grid-html-br-title] [fixture: venn/db-grid-html-title]
+[fixture: venn/db-grid-ideographic-title] [fixture:
+venn/db-grid-keyword-block-title] [fixture: venn/db-grid-keyword-class-title]
+[fixture: venn/db-grid-keyword-classdef-title] [fixture:
+venn/db-grid-keyword-columns-title] [fixture: venn/db-grid-keyword-end-title]
+[fixture: venn/db-grid-keyword-header-title] [fixture:
+venn/db-grid-keyword-space-title] [fixture: venn/db-grid-keyword-style-title]
+[fixture: venn/db-grid-keyword-title] [fixture: venn/db-grid-less-than-title]
+[fixture: venn/db-grid-ls-title] [fixture: venn/db-grid-nbsp-title] [fixture:
+venn/db-grid-nel-title] [fixture: venn/db-grid-nonascii-title] [fixture:
+venn/db-grid-open-brace-title] [fixture: venn/db-grid-open-round-title]
+[fixture: venn/db-grid-open-square-title] [fixture: venn/db-grid-percent-title]
+[fixture: venn/db-grid-pipe-title] [fixture: venn/db-grid-proto-title] [fixture:
+venn/db-grid-ps-title] [fixture: venn/db-grid-punct-title] [fixture:
+venn/db-grid-quote-title] [fixture: venn/db-grid-root-title] [fixture:
+venn/db-grid-single-quote-title] [fixture: venn/db-grid-spaces-title] [fixture:
+venn/db-grid-tab-title] [fixture: venn/db-grid-vt-title]
+
+The grammar rejects these inserted fragments: `comment-line`, `cr`, `crlf`,
+`directive-line`, `lf`. [fixture: venn/gram-grid-cr-title] [fixture:
+venn/gram-grid-crlf-title] [fixture: venn/gram-grid-lf-title] [fixture:
+venn/lex-title-comment-line] [fixture: venn/lex-title-directive-line]
+
+The directive is removed and the surrounding fragments join: `directive`.
+[fixture: venn/lex-title-directive-middle]
+
+The character reference becomes its shared preprocessing placeholder: `entity`,
+`entity-named`. [fixture: venn/lex-title-entity-named] [fixture:
+venn/lex-title-entity-numeric]
+
+Double quotes of the HTML attribute become single quotes: `html-attribute`.
+[fixture: venn/lex-title-html-attribute]

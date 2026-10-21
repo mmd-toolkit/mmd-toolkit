@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The five documented style properties and an arbitrary property are all stored without property-name validation."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "red",
+          "color": "white",
+          "stroke": "blue",
+          "stroke-width": "2",
+          "fill-opacity": ".5",
+          "custom": "kept"
+        }
+      }
+    ]
+  }
+}

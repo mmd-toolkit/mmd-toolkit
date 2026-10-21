@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Every union member must match an earlier set name after the converted name text is trimmed outside its quotes and one outer double-quote pair is removed; matching is case-sensitive. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          ""
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "",
+          ""
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

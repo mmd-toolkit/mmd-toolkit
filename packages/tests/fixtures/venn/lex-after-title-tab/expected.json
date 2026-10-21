@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex after title tab form stores {\"title\":\"T\\t\"}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "T\t",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

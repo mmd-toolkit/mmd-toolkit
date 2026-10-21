@@ -4,9 +4,9 @@ Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
-requirement, mindmap, timeline, xychart, quadrant, block, kanban, and c4. This
-is one of the [known divergences](../known-divergences.md) of this specification
-from mermaid.js.
+requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, and venn.
+This is one of the [known divergences](../known-divergences.md) of this
+specification from mermaid.js.
 
 ## The syntax
 
@@ -212,6 +212,30 @@ between `=` and the opening quote is trivia between delimiters. [fixture:
 c4/lex-semicolon-text-selected] [fixture: c4/lex-semicolon-key-selected]
 [fixture: c4/lex-semicolon-delimiter-selected]
 
+In venn, the selected semicolon inside a name, size, text id, statement keyword,
+property key, or an identifier or number in a bare style value is rejected here.
+[fixture: venn/div-ignored-semicolon-set-name-selected] [fixture:
+venn/div-ignored-semicolon-size] [fixture:
+venn/div-ignored-semicolon-text-id-selected] [fixture:
+venn/div-ignored-semicolon-text-number-selected] [fixture:
+venn/div-ignored-semicolon-set-keyword-selected] [fixture:
+venn/div-ignored-semicolon-title-keyword-selected] [fixture:
+venn/div-ignored-semicolon-style-key-selected] [fixture:
+venn/div-ignored-semicolon-style-value-selected] mermaid.js joins the parts.
+[fixture: venn/div-ignored-semicolon-set-name-selected] [fixture:
+venn/div-ignored-semicolon-size] [fixture:
+venn/div-ignored-semicolon-text-id-selected] [fixture:
+venn/div-ignored-semicolon-text-number-selected] [fixture:
+venn/div-ignored-semicolon-set-keyword-selected] [fixture:
+venn/div-ignored-semicolon-title-keyword-selected] [fixture:
+venn/div-ignored-semicolon-style-key-selected] [fixture:
+venn/div-ignored-semicolon-style-value-selected] [fixture:
+venn/div-ignored-semicolon-style-value-number-selected]
+
+A selected semicolon inside a whole venn color unit is trivia and does not cause
+this divergence. [fixture: venn/lex-style-hex-ignored-semicolon] [fixture:
+venn/lex-style-rgb-ignored-semicolon]
+
 ## What it means for an author
 
 An ignored `;` inside a name, a number, a keyword, an arrow, or a delimiter is
@@ -278,3 +302,9 @@ syntax; this is the second of the reasons for a known divergence (see
   handling of `#` in titles and descriptions and explicitly preserves semicolon
   termination of those values. No issue or pull request about the selected
   semicolon inside a C4 keyword was found.
+
+- The pinned
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  uses comma-separated properties and shows no semicolon inside a keyword, name,
+  or number. Searches of issues and pull requests in `mermaid-js/mermaid` on
+  2026-10-21 with `venn semicolon in:title,body` returned no results.

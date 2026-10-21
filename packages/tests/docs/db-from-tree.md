@@ -69,6 +69,22 @@ what the text cannot give alone:
 Leading whitespace is not read, and the end of the text is one more `\n`. In
 flowchart, the whitespace after a `}` up to its last line feed is one line feed.
 
+HTML attribute-quote positions are found once over the whole source after the
+frontmatter, before comments and directives are removed. A tag can start in a
+comment or an earlier statement, outside the value being read. The shared
+conversion helper applies those positions to each value range; the tree keeps
+its written quotes. [fixture: venn/db-html-tag-from-title-name] [fixture:
+venn/db-html-tag-from-title-label] [fixture: venn/db-html-tag-from-title-style]
+[fixture: venn/db-html-tag-from-comment-name] [fixture:
+venn/db-html-tag-across-names] [fixture: c4/db-html-tag-from-earlier-text]
+[fixture: kanban/db-html-tag-from-earlier-text] [fixture:
+kanban/db-html-tag-from-earlier-text-data] [fixture:
+block/db-html-tag-from-earlier-text] [fixture:
+quadrant/db-html-tag-from-earlier-text] [fixture:
+sankey/db-html-tag-from-earlier-text] [fixture:
+sankey/db-html-tag-from-earlier-text-quoted] [fixture:
+xychart/db-html-tag-from-earlier-text]
+
 Characters inside a diagram comment are not read the way a lexer reads them: the
 Db has no value that contains a comment. For the same reason, an entity or the
 `;` that the line rule ignores inside a diagram comment does not count. The
@@ -113,6 +129,10 @@ are read from the tree like this:
   quotes, since mermaid.js reads the space units into the text (the rule is in
   [db-from-tree/quadrant.md](./db-from-tree/quadrant.md)). [fixture:
   quadrant/db-quadrant-spaces-trimmed]
+- **Venn declarations**: names, labels, numbers, style values and titles use
+  their written values and converted leaf ranges; null text targets use the
+  latest subset after `checkTree` validates implicit mode (the steps are in
+  [db-from-tree/venn.md](./db-from-tree/venn.md)). [fixture: venn/db-all-fields]
 - **C4 calls**: arguments, titles and accessibility texts use only their value
   nodes and converted node ranges; nested bodies determine the boundary stack,
   and named attributes update the complete own attribute bags (the steps are in
@@ -408,6 +428,8 @@ does not, are:
   the quadrants; and the names of the points. The class names, the coordinates,
   and the styles are not reached. [fixture:
   quadrant/config-security-level-other-all]
+- Venn: only the title, including the initial frontmatter title. [fixture:
+  venn/config-security-other]
 - C4: title and accessibility text; shape, boundary and relationship arguments
   are not reached. [fixture: c4/config-security-level-other]
 - Block: the labels of nodes, block arrows, composites, and edges; ids, classes,
@@ -451,7 +473,9 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
-The recorded-tree comparisons include C4, block, kanban, and their common
+Venn is checked with both hand-made and recorded trees.
+
+The recorded-tree comparisons include C4, block, kanban, Venn, and their common
 detection fixtures, including all five C4 diagram kinds.
 
 `tests/db-from-tree.test.ts` builds the Db of every fixture that records a tree

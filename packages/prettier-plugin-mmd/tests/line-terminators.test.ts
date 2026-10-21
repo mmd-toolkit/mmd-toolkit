@@ -12,6 +12,26 @@ import { formatMermaid } from "./helpers.ts"
 /** A diagram with a statement, a block, and a comment, as lines. */
 const diagrams: readonly (readonly [string, readonly string[], string])[] = [
   [
+    "venn",
+    [
+      "venn-beta",
+      'set "A',
+      ' B"[L',
+      " M]",
+      'text A "id',
+      ' next"',
+      'style A fill:"red',
+      ' blue",stroke:rgb(1,',
+      " 2,3)",
+      "set C",
+      " text item",
+      "%% c",
+      "%%{init: {",
+      "}}%%",
+    ],
+    'venn-beta\nset "A\n B"[L\n M]\ntext A "id\n next"\nstyle A fill:"red\n blue", stroke:rgb(1,\n 2,3)\nset C\n  text item\n  %% c\n  %%{init: {\n}}%%\n',
+  ],
+  [
     "c4",
     [
       "C4Context",
@@ -217,5 +237,17 @@ describe("configured C4 line endings", () => {
         { endOfLine: "cr" },
       ),
     ).toBe('C4Context\r  accDescr {\r first\r  }\r  Person(a, "A")\r')
+  })
+})
+
+describe("configured Venn line endings", () => {
+  it("uses lone CR inside values and after implicit text", async () => {
+    expect(
+      await formatMermaid(
+        'venn-beta\nset "A\n B"[L\n M]\n text item',
+        "diagram.mmd",
+        { endOfLine: "cr" },
+      ),
+    ).toBe('venn-beta\rset "A\r B"[L\r M]\r  text item\r')
   })
 })

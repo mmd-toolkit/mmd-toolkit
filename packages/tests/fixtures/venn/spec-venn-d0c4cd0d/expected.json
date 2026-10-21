@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/venn/parser/venn.spec.ts",
+    "line": 239,
+    "test": "Venn diagram > union requires known identifiers"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "unknown set identifier: Buz"
+  }
+}

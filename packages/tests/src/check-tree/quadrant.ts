@@ -1,8 +1,3 @@
-import {
-  ConvertedText,
-  readConvertedCharacters,
-  withAttributeQuotesRead,
-} from "../db-from-tree/converted-text.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
 import { trimmed } from "../db-from-tree/values.ts"
 import { checkChildTypes, checkListsWithAnEntry } from "./field-rules.ts"
@@ -182,8 +177,6 @@ function isTextRest(text: string): boolean {
   )
 }
 
-const convertedTexts = new WeakMap<Reading, ConvertedText>()
-
 /**
  * The converted form of the text of `range` (common.md, Reading a source): each
  * entity is its placeholder, a character outside ASCII, so it is a character of
@@ -195,14 +188,7 @@ function convertedTextOf(
   range: TreeRange,
   leftOut: readonly TreeRange[] = [],
 ): string {
-  let converted = convertedTexts.get(reading)
-  if (converted === undefined) {
-    converted = new ConvertedText(
-      readConvertedCharacters(reading.text, reading.root),
-    )
-    convertedTexts.set(reading, converted)
-  }
-  return converted.of(range, leftOut)
+  return reading.converted.of(range, leftOut)
 }
 
 /** Whether `text` holds a line terminator. */
@@ -220,6 +206,7 @@ function hasLineTerminator(text: string): boolean {
 function labelValueOf(
   kind: string,
   written: string,
+  read = written,
 ): {
   readonly value: string
   readonly content: string
@@ -228,8 +215,7 @@ function labelValueOf(
   if (kind === "text") return { value: written, content: written, rest: "" }
   const opening = kind === "string" ? QUOTE : MARKDOWN_OPENING
   const closing = kind === "string" ? QUOTE : MARKDOWN_CLOSING
-  if (!written.startsWith(opening)) return null
-  const read = withAttributeQuotesRead(written)
+  if (!read.startsWith(opening)) return null
   const close = read.indexOf(closing, opening.length)
   if (close === -1) return null
   const content = written.slice(opening.length, close)
@@ -256,7 +242,7 @@ function checkLabel(reading: Reading, node: CheckedNode): void {
     return
   }
   const written = reading.written.of(node.range)
-  const parts = labelValueOf(kind, written)
+  const parts = labelValueOf(kind, written, reading.attributeTextOf(node.range))
   if (parts === null) {
     reading.problems.report(
       where,
@@ -720,7 +706,11 @@ function stringLabelTokenKinds(
   tokens: readonly CheckedToken[],
 ): string[] {
   const written = reading.written.of(node.range)
-  const parts = labelValueOf(String(node.kind), written)
+  const parts = labelValueOf(
+    String(node.kind),
+    written,
+    reading.attributeTextOf(node.range),
+  )
   if (parts === null) return tokens.map(() => "RawText")
   const stringLength = written.length - parts.rest.length
   let covered = 0

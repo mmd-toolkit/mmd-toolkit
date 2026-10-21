@@ -59,6 +59,15 @@ mermaid.js rejects it. [fixture: c4/div-frontmatter-invalid-yaml]
 
 C4 has no `@{ ... }` data-block form. [fixture: c4/gram-data-block]
 
+In venn, invalid YAML such as `title: [` inside a well-delimited frontmatter is
+accepted here and rejected by mermaid.js. [fixture: venn/frontmatter-invalid]
+
+Venn has no `@{ ... }` data-block form. [fixture: venn/gram-data-block]
+[fixture: venn/frontmatter-empty] [fixture: venn/frontmatter-unclosed] Adjacent
+frontmatter delimiter lines and an unclosed frontmatter remain syntax errors.
+[fixture: venn/gram-data-block] [fixture: venn/frontmatter-empty] [fixture:
+venn/frontmatter-unclosed]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -207,3 +216,11 @@ same Db.
   [issue #7949](https://github.com/mermaid-js/mermaid/issues/7949), which
   reports a wrapping configuration problem rather than malformed YAML. No issue
   or pull request about acceptance of invalid YAML in C4 frontmatter was found.
+
+- The pinned
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  shows valid YAML frontmatter, but states no acceptance rule for malformed
+  YAML. Searches of issues and pull requests in `mermaid-js/mermaid` on
+  2026-10-21 with `venn YAML in:title,body`,
+  `venn "invalid YAML" in:title,body`, and `venn frontmatter in:title,body`
+  found no report about accepting invalid YAML in venn frontmatter.

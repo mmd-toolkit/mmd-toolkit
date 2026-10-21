@@ -445,7 +445,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     start: number,
     textBeforeDescription: StateIgnoredText | null,
   ): StateAliasDefinitionStatement {
-    const description = this.stringLiteralOf(this.take("string"))
+    const description = this.closedStringLiteralOf(this.take("string"))
     const textAfterDescription = this.parseEmptyStrings()
     this.addItem("Keyword", [this.take("as")])
     const aliasId = this.takeIf("alias-id")
@@ -485,24 +485,6 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
       quote = this.takeIf('"')
     ) {
       this.addItem("Punctuator", [quote])
-    }
-  }
-
-  /**
-   * ast.md, Shared leaf nodes > StringLiteral: the StringLiteral of the
-   * `string` unit `unit`, one `String` item. Its value is the text of its
-   * range without its quotes; a string of a state diagram is always closed.
-   */
-  private stringLiteralOf(unit: Unit): StringLiteral {
-    this.addItem("String", [unit])
-    const place = this.placeOf([unit])
-    const [start, end] = place.range
-    return {
-      type: "StringLiteral",
-      value: this.textOf([start + 1, end - 1]),
-      raw: this.lexer.text.slice(start, end),
-      closed: true,
-      ...place,
     }
   }
 
@@ -618,10 +600,10 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     const href = this.takeIf("href")
     if (href !== null) {
       this.addItem("Keyword", [href])
-      url = this.stringLiteralOf(this.take("string"))
+      url = this.closedStringLiteralOf(this.take("string"))
     } else {
-      url = this.stringLiteralOf(this.take("string"))
-      tooltip = this.stringLiteralOf(this.take("string"))
+      url = this.closedStringLiteralOf(this.take("string"))
+      tooltip = this.closedStringLiteralOf(this.take("string"))
     }
     this.statementEndAt(["newline"], true)
     return {

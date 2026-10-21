@@ -1,0 +1,312 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: c4-no-redefined-element >> invalid >>> docs/rules/c4-no-redefined-element.md incorrect 1
+Filename: c4-no-redefined-element-incorrect-1.mmd
+
+Code:
+  1 | C4Context
+  2 |   Person(a, "Customer")
+  3 |   Person(a, "Administrator")
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier label.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> docs/rules/c4-no-redefined-element.md incorrect 2
+Filename: c4-no-redefined-element-incorrect-2.mmd
+
+Code:
+  1 | C4Context
+  2 |   Person(a, "Customer")
+  3 |   System(a, "Customer")
+    |   ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier kind.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> docs/rules/c4-no-redefined-element.md incorrect 3
+Filename: c4-no-redefined-element-incorrect-3.mmd
+
+Code:
+  1 | C4Context
+  2 |   Boundary(bank, "Bank") {
+  3 |     Person(customer, "Customer")
+  4 |   }
+  5 |   Boundary(bank, "Branch") {
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |     System(atm, "ATM")
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  7 |   }
+    | ~~~ [1]
+  8 |
+
+[1] mermaid.js reuses this boundary, replacing its earlier label.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/alias-override-then-redefinition
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/alias-override-then-redefinition-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "First", $alias="b")
+  3 | System(b, "Second")
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier kind.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/boundary-back-to-first
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/boundary-back-to-first-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Boundary(b, "One") {
+  3 |   Person(p, "P")
+  4 | }
+  5 | Boundary(b, "Two") {
+    | ^~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |   Person(q, "Q")
+    | ~~~~~~~~~~~~~~~~\ [1]
+  7 | }
+    | ~ [1]
+  8 | Boundary(b, "One") {
+    | ^~~~~~~~~~~~~~~~~~~~\ [2]
+  9 |   Person(r, "R")
+    | ~~~~~~~~~~~~~~~~\ [2]
+ 10 | }
+    | ~ [2]
+ 11 |
+
+[1] mermaid.js reuses this boundary, replacing its earlier label.
+[2] mermaid.js reuses this boundary, replacing its earlier label.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/boundary-keyword-changed
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/boundary-keyword-changed-input.mmd
+
+Code:
+  1 | C4Context
+  2 | System_Boundary(b, "One") {
+  3 |   Person(p, "P")
+  4 | }
+  5 | Enterprise_Boundary(b, "One") {
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |   Person(q, "Q")
+    | ~~~~~~~~~~~~~~~~\ [1]
+  7 | }
+    | ~ [1]
+  8 |
+
+[1] mermaid.js reuses this boundary, replacing its earlier type.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/boundary-label-changed
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/boundary-label-changed-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Boundary(b, "One") {
+  3 |   Person(p, "P")
+  4 | }
+  5 | Boundary(b, "Two") {
+    | ^~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |   Person(q, "Q")
+    | ~~~~~~~~~~~~~~~~\ [1]
+  7 | }
+    | ~ [1]
+  8 |
+
+[1] mermaid.js reuses this boundary, replacing its earlier label.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/boundary-node-type-changed
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/boundary-node-type-changed-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Node(n, "One", "k8s") {
+  3 |   Person(p, "P")
+  4 | }
+  5 | Node(n, "One", "vm") {
+    | ^~~~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |   Person(q, "Q")
+    | ~~~~~~~~~~~~~~~~\ [1]
+  7 | }
+    | ~ [1]
+  8 |
+
+[1] mermaid.js reuses this boundary, replacing its earlier type.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/boundary-type-changed
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/boundary-type-changed-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Boundary(b, "One", "company") {
+  3 |   Person(p, "P")
+  4 | }
+  5 | Boundary(b, "One", "team") {
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |   Person(q, "Q")
+    | ~~~~~~~~~~~~~~~~\ [1]
+  7 | }
+    | ~ [1]
+  8 |
+
+[1] mermaid.js reuses this boundary, replacing its earlier type.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/boundary-written-type-reset-to-default
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/boundary-written-type-reset-to-default-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Boundary(b, "One", "company") {
+  3 |   Person(p, "P")
+  4 | }
+  5 | Boundary(b, "One") {
+    | ^~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |   Person(q, "Q")
+    | ~~~~~~~~~~~~~~~~\ [1]
+  7 | }
+    | ~ [1]
+  8 |
+
+[1] mermaid.js reuses this boundary, replacing its earlier type.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/db-shape-three-definitions
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/db-shape-three-definitions-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Container(a, "First", "Java", "First D", $tags="first")
+  3 | Person(b, "Partner")
+  4 | Person(a, "Second")
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  5 | Boundary(c, "C") {
+  6 | System(a, "Third", "Third D")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [2]
+  7 | }
+  8 |
+
+[1] mermaid.js reuses this element, replacing its earlier kind.
+[2] mermaid.js reuses this element, replacing its earlier kind.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/empty-label-after-label
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/empty-label-after-label-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "First")
+  3 | Person(a, "")
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier label.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/empty-label-replaces-nonempty
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/empty-label-replaces-nonempty-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "Customer")
+  3 | Person(a, "")
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier label.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/external-kind-changes
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/external-kind-changes-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person_Ext(a, "A")
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier kind.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/omitted-label-after-label
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/omitted-label-after-label-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "First")
+  3 | Person(a,)
+    | ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier label.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/redefined-label
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/redefined-label-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "Customer")
+  3 | Person(a, "Administrator")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier label.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/redefined-shape
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/redefined-shape-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "Customer")
+  3 | System(a, "Customer")
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses this element, replacing its earlier kind.
+---
+
+
+Test: c4-no-redefined-element >> invalid >>> invalid/c4/three-latest-label
+Filename: tests/fixtures/rules/c4-no-redefined-element/invalid/c4/three-latest-label-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "First")
+  3 | Person(a, "Second")
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | Person(a, "Second")
+  5 | Person(a, "First")
+    | ^~~~~~~~~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js reuses this element, replacing its earlier label.
+[2] mermaid.js reuses this element, replacing its earlier label.
+---

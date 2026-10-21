@@ -5,5 +5,12 @@
   },
   "accepted": true,
   "diagramType": "venn",
-  "db": null
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
 }

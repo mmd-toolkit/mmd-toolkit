@@ -76,6 +76,7 @@ const DIAGRAMS: readonly [string, string][] = [
   ["block", "BlockDiagram"],
   ["kanban", "KanbanDiagram"],
   ["c4", "C4Diagram"],
+  ["venn", "VennDiagram"],
 ]
 
 /**
@@ -116,6 +117,9 @@ function textsBesidesTheRow(diagram: string): string[] {
     // The row names the arrow, of any length, by its unit.
     case "block":
       return [...BLOCK_SHAPE_OPENINGS, ...BLOCK_SHAPE_CLOSINGS]
+    // The Venn row names these four delimiters in prose.
+    case "venn":
+      return [",", ":", "[", "]"]
     case "quadrant":
       return ["-->"]
     default:
@@ -129,6 +133,10 @@ function distinct(texts: readonly string[]): string[] {
 }
 
 describe("the table of the texts of Punctuator tokens", () => {
+  it("registers the Venn punctuation and rejects another text", () => {
+    expect(PUNCTUATOR_TEXTS.VennDiagram).toEqual([",", ":", "[", "]"])
+    expect(textProblems("VennDiagram", ";")).toHaveLength(1)
+  })
   it("registers the C4 punctuation and rejects another text", () => {
     expect(PUNCTUATOR_TEXTS.C4Diagram).toEqual([
       "(",

@@ -15,7 +15,7 @@ import {
   layoutMindmapLine,
 } from "./mindmap-layout.ts"
 import { isPathOfType } from "./paths.ts"
-import { indentationOf } from "./lines.ts"
+import { indentationOf, significantIndentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 
@@ -64,7 +64,7 @@ export function printMindmap(
   const header = openingLine(
     printAtoms(source, layoutKeywordHeader(source, keyword), {
       statement: "",
-      continuation: indentationOf(options, 1),
+      continuation: significantIndentationOf(options, 1),
     }).doc,
     block,
     false,
@@ -79,8 +79,8 @@ function printLine(
   line: MindmapLine,
 ): Doc {
   return printAtoms(source, layoutMindmapLine(line), {
-    statement: indentationOf(options, 1),
-    continuation: indentationOf(options, 2),
+    statement: significantIndentationOf(options, 1),
+    continuation: significantIndentationOf(options, 2),
   }).doc
 }
 
@@ -107,7 +107,10 @@ function lineBlockRules(
 ): BlockRules<MindmapLine> {
   const steps = findIndentationSteps(diagram)
   const character = options.useTabs ? "\t" : " "
-  const rootWidth = indentationOf(options, 1).length
+  const rootWidth = significantIndentationOf(options, 1).length
+  // The shared block already supplies Prettier's configured indentation.
+  // Supply only the missing part of the significant root level here.
+  const rootPadding = rootWidth - indentationOf(options, 1).length
 
   /** The step of a line beyond the root, in characters. */
   function stepOf(line: MindmapLine): number {
@@ -130,7 +133,8 @@ function lineBlockRules(
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
     keepsDirectiveLinesUnindented: false,
-    extraIndentationOf: (line) => character.repeat(stepOf(line) + shift),
+    extraIndentationOf: (line) =>
+      character.repeat(rootPadding + stepOf(line) + shift),
     keptIndentationOf: (line) =>
       character.repeat(
         rootWidth + shift + stepOf(line) - (afterDirective.get(line) ?? 0),

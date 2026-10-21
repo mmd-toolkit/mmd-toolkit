@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex title separator ff form stores {\"title\":\"T\"}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

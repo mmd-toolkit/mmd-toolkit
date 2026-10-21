@@ -31,6 +31,7 @@ export const diagramIds: Readonly<
   block: ["block"],
   kanban: ["kanban"],
   c4: ["c4"],
+  venn: ["venn"],
 }
 
 /**

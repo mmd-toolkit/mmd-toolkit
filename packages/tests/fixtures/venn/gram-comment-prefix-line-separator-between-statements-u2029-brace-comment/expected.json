@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Whitespace and value units: After set A, %%{ }%% remains diagram text and rule 2 swallows its U+2029 prefix."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

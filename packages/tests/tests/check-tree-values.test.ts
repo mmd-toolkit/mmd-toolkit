@@ -52,6 +52,9 @@ function valueFieldsOfTables(): Map<string, string> {
 function saidInSpecification(
   meaning: string,
 ): "written-text" | "units-joined" | "otherwise" {
+  // ast/venn.md, VennIgnoredText names its written code unit directly.
+  if (meaning === "The swallowed non-whitespace fragment as written.")
+    return "written-text"
   if (meaning.startsWith("Its written text between")) return "otherwise"
   if (meaning.startsWith("Its written text")) return "written-text"
   // ast/xychart.md, XychartLiteral: the units joined, but for the texts of the
@@ -154,6 +157,9 @@ interface BrokenValueRow {
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "C4Literal", message: NOT_WRITTEN_TEXT },
+  { type: "VennLabel", message: "the label value is not its written interior" },
+  { type: "VennLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "VennIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "Identifier", message: NAME_NOT_TOKENS_JOINED },
   { type: "StringLiteral", message: NOT_WRITTEN_TEXT },
   {
@@ -358,6 +364,40 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "VennLabel",
+    name: "a VennLabel reports trailing bare-label padding taken off its RawText token",
+    diagram: "venn",
+    fixture: "lex-label-bare-padding",
+    token: { type: "RawText", value: "  Alpha  " },
+    side: "end",
+    problems: [
+      {
+        where: "VennLabel at 15-26",
+        message:
+          'the tokens of the node outside its child nodes, joined: "[  Alpha]", not "[  Alpha  ]"',
+      },
+    ],
+  },
+  {
+    type: "VennLiteral",
+    name: "a VennLiteral reports leading title padding taken off its RawText token",
+    diagram: "venn",
+    fixture: "db-title-padding",
+    token: { type: "RawText", value: "  padded  " },
+    side: "start",
+    problems: [
+      {
+        where: "VennLiteral at 16-26",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "VennLiteral at 16-26",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [16,26], not [18,26]",
+      },
+    ],
+  },
   {
     type: "C4Literal",
     name: "a C4Literal reports leading title whitespace taken off its RawText token",
@@ -956,6 +996,12 @@ interface TypeWithoutTokenWhitespace {
 const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
   Record<string, TypeWithoutTokenWhitespace>
 > = {
+  VennIgnoredText: {
+    diagram: "venn",
+    fixture: "lex-style-extra-id-eaten",
+    reason:
+      "its token is one non-whitespace code unit (ast/venn.md, VennIgnoredText)",
+  },
   Identifier: {
     diagram: "flowchart",
     fixture: "db-arrow-double",

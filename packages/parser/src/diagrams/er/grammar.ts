@@ -279,7 +279,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     }
     this.advance()
     return unit.name === "quoted-name"
-      ? this.stringLiteralOf(unit)
+      ? this.closedStringLiteralOf(unit)
       : this.erIdentifierOf(unit)
   }
 
@@ -350,7 +350,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
       }
     }
     const comment = this.attributeGoesOn(["comment-string"])
-      ? this.stringLiteralOf(this.take("comment-string"))
+      ? this.closedStringLiteralOf(this.take("comment-string"))
       : null
     return {
       type: "ErAttribute",
@@ -375,7 +375,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     }
     this.advance()
     return unit.name === "backquoted-word"
-      ? this.stringLiteralOf(unit)
+      ? this.closedStringLiteralOf(unit)
       : this.erIdentifierOf(unit)
   }
 
@@ -470,7 +470,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     const unit = this.peek()
     if (unit?.name === "string" || unit?.name === "quoted-name") {
       this.advance()
-      return this.stringLiteralOf(unit)
+      return this.closedStringLiteralOf(unit)
     }
     return this.erIdentifierOf(this.take("name"))
   }
@@ -695,25 +695,5 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     this.addItem("RawText", [unit])
     const place = this.placeOf([unit])
     return { type: "ErLiteral", value: this.textOf(place.range), ...place }
-  }
-
-  /**
-   * ast.md, Shared leaf nodes > StringLiteral: the string unit `unit`, one
-   * `String` item: a `quoted-name`, a `string`, a `comment-string`, or a
-   * `backquoted-word` unit, whose value is its written text between its
-   * delimiters. Every string of this diagram is closed: the lexer makes no
-   * unit of one that the text ends in.
-   */
-  private stringLiteralOf(unit: Unit): StringLiteral {
-    this.addItem("String", [unit])
-    const place = this.placeOf([unit])
-    const [start, end] = place.range
-    return {
-      type: "StringLiteral",
-      value: this.textOf([start + 1, end - 1]),
-      raw: this.lexer.text.slice(start, end),
-      closed: true,
-      ...place,
-    }
   }
 }

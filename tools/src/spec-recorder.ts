@@ -110,6 +110,8 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/common/commonDb.js": ["getDiagramTitle"],
   "diagrams/xychart/parser/xychart.jison": ["parser"],
   "diagrams/quadrant-chart/parser/quadrant.jison": ["parser"],
+  "diagrams/venn/parser/venn.jison": ["default"],
+  "diagrams/venn/vennDB.js": ["db"],
   "diagrams/kanban/parser/kanban.jison": ["parser"],
   "diagrams/kanban/kanbanDb.js": ["default"],
   "diagrams/c4/parser/c4Diagram.jison": ["default"],
@@ -429,6 +431,10 @@ export async function recordSpecFile(
     "diagrams/quadrant-chart/parser/quadrant.jison": {
       parser: { parse: record, yy: anything },
     },
+    "diagrams/venn/parser/venn.jison": {
+      default: { parser: { parse: record, yy: anything }, parse: record },
+    },
+    "diagrams/venn/vennDB.js": { db: anything },
     "diagrams/kanban/parser/kanban.jison": {
       parser: { parse: record, yy: anything },
     },

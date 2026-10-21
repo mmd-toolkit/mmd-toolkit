@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A name is bare or double-quoted, never numeric; an empty quoted name is accepted. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betatext 2 item\n--------------^\nExpecting 'IDENTIFIER', 'STRING', got 'NUMERIC'"
+  }
+}

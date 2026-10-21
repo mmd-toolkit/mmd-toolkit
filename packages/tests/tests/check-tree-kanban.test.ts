@@ -17,6 +17,7 @@ import {
   says,
   setEnd,
   setField,
+  recordedTree,
 } from "./check-tree-recorded.ts"
 import { readFieldTables, readFieldMeanings } from "./spec-field-tables.ts"
 
@@ -996,6 +997,15 @@ const RECORDED_CASES: readonly MutationCase[] = [
 ]
 
 describe("checkTree of the recorded kanban trees", () => {
+  // The HTML tag begins outside the checked value's range.
+  for (const fixture of [
+    "db-html-tag-from-earlier-text",
+    "db-html-tag-from-earlier-text-data",
+  ])
+    it(`passes the recorded HTML tag context of ${fixture}`, () => {
+      const { input, tree } = recordedTree("kanban", fixture)
+      expect(checkTree(input, tree)).toEqual([])
+    })
   for (const mutation of RECORDED_CASES)
     it(`passes ${mutation.fixture} and reports ${mutation.name}`, () => {
       const { base, mutated } = problemsOfMutation("kanban", mutation)

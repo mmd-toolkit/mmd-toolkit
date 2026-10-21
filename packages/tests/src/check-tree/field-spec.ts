@@ -117,6 +117,9 @@ export function fieldSpecOf(typeCell: string): FieldSpec {
   }
   // ast/c4.md: the C4Argument alias includes null in its flat list.
   if (cell === "list of C4Argument") return { shape: "nodeListWithNull" }
+  // ast/venn.md: the null is outside the parenthesized target alternatives.
+  if (cell === "list of (Identifier or StringLiteral) or null")
+    return { shape: "nodeListOrNull" }
   if (cell.startsWith("list of ")) {
     const rest = cell.slice("list of ".length)
     if (rest.startsWith("(")) {

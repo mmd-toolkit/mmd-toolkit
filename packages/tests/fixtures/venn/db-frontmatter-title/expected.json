@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frontmatter supplies the common diagram title."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "From YAML",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  },
+  "embedded": {
+    "title": "From YAML"
+  }
+}

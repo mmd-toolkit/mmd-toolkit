@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Mermaid joins a selected semicolon inside a bare style numeric atom; the specification rejects this as ignored-semicolon-as-token-boundary."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "x": "#abc 12"
+        }
+      }
+    ]
+  }
+}

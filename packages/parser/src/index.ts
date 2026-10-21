@@ -379,6 +379,19 @@ export type {
   RequirementVerifyMethod,
   RequirementVerifyMethodField,
 } from "./ast/requirement.ts"
+export type {
+  VennDiagram,
+  VennSubsetStatement,
+  VennTextStatement,
+  VennStyleStatement,
+  VennStyleProperty,
+  VennTitleStatement,
+  VennLabel,
+  VennLiteral,
+  VennIgnoredText,
+  VennStatement,
+  VennNode,
+} from "./ast/venn.ts"
 export { ParseError, UnsupportedDiagramError } from "./errors.ts"
 export { parse } from "./parse.ts"
 export type { Visitor } from "./traverse.ts"

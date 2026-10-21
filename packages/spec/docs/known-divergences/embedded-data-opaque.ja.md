@@ -69,6 +69,21 @@ C4 では frontmatter とディレクティブの内容は不透明なので、
 C4 には `@{ ... }` のデータブロック形式はありません。
 [fixture: c4/gram-data-block]
 
+venn では、
+正しく区切られた frontmatter 内の `title: [` などの不正な YAML は、
+ここでは受理しますが mermaid.js は拒否します。
+[fixture: venn/frontmatter-invalid]
+
+venn に `@{ ... }` のデータブロックの形はありません。
+[fixture: venn/gram-data-block]
+[fixture: venn/frontmatter-empty]
+[fixture: venn/frontmatter-unclosed]
+隣り合う frontmatter の区切りの行と、
+閉じていない frontmatter は構文エラーのままです。
+[fixture: venn/gram-data-block]
+[fixture: venn/frontmatter-empty]
+[fixture: venn/frontmatter-unclosed]
+
 ## 差異
 
 どの例も、図の全体です。
@@ -232,3 +247,13 @@ mermaid.js が拒否する入力を受理するもので、
   折り返しの設定についての問題を報告しています。
   C4 のフロントマターの不正な YAML の受理を扱う、
   issue や pull request は見つかりませんでした。
+
+- ピン留めした
+  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  は正しい YAML frontmatter を示しますが、
+  不正な YAML の受理条件は述べていません。
+  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+  `venn YAML in:title,body`、`venn "invalid YAML" in:title,body`、
+  `venn frontmatter in:title,body` で検索し、
+  venn の frontmatter 内の不正な YAML の受理に関する報告は
+  見つかりませんでした。

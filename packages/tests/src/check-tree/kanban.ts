@@ -1,5 +1,4 @@
 import { isWhitespace, isWordCharacter } from "../db-from-tree/characters.ts"
-import { withAttributeQuotesRead } from "../db-from-tree/converted-text.ts"
 import { checkChildTypes, checkFieldWords } from "./field-rules.ts"
 import type { FieldTable } from "./field-rules.ts"
 import { label } from "./problems.ts"
@@ -185,7 +184,7 @@ function checkNode(reading: Reading, node: CheckedNode): void {
 /** KanbanLabel and The shape context: nonempty text or the content of a closed string of its kind. */
 function checkLabel(reading: Reading, node: CheckedNode): void {
   const kind = textOf(node, "kind")
-  const written = withAttributeQuotesRead(between(reading, ...node.range))
+  const written = reading.attributeTextOf(node.range)
   const [opening, closing]: readonly [string, string] =
     kind === "markdown" ? ['"`', '`"'] : ['"', '"']
   const value =
@@ -227,7 +226,7 @@ function checkLiteral(
   node: CheckedNode,
   parent: CheckedNode | null,
 ): void {
-  const value = withAttributeQuotesRead(textOf(node))
+  const value = reading.attributeValueOf(node)
   reading.problems.expect(value !== "", label(node), "the literal is empty")
   if (parent?.type === "KanbanNode") {
     const lower = value.toLowerCase()
@@ -263,7 +262,7 @@ function checkLiteral(
 
 /** KanbanDataBlock: a closed opaque interior; only double quotes protect a closing brace or caret. */
 function checkData(reading: Reading, node: CheckedNode): void {
-  const written = withAttributeQuotesRead(between(reading, ...node.range))
+  const written = reading.attributeTextOf(node.range)
   reading.problems.expect(
     written.startsWith("@{") && written.endsWith("}"),
     label(node),

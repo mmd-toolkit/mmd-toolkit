@@ -19,6 +19,7 @@ import {
   retypeIn,
   says,
   setField,
+  recordedTree,
 } from "./check-tree-recorded.ts"
 import { readFieldTables } from "./spec-field-tables.ts"
 
@@ -798,6 +799,15 @@ const RECORDED_CASES: readonly MutationCase[] = [
 ]
 
 describe("the check of a sankey tree against the recorded trees", () => {
+  // The HTML tag begins outside the checked value's range.
+  for (const fixture of [
+    "db-html-tag-from-earlier-text",
+    "db-html-tag-from-earlier-text-quoted",
+  ])
+    it(`passes the recorded HTML tag context of ${fixture}`, () => {
+      const { input, tree } = recordedTree("sankey", fixture)
+      expect(checkTree(input, tree)).toEqual([])
+    })
   for (const mutation of RECORDED_CASES) {
     it(`passes the recorded tree of ${mutation.fixture} and fails ${mutation.name}`, () => {
       const { base, mutated } = problemsOf("sankey", mutation)

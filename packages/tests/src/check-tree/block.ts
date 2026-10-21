@@ -1,5 +1,4 @@
 import { isWhitespace, isWordCharacter } from "../db-from-tree/characters.ts"
-import { withAttributeQuotesRead } from "../db-from-tree/converted-text.ts"
 import { trimmed } from "../db-from-tree/values.ts"
 import { checkChildTypes, checkListsWithAnEntry } from "./field-rules.ts"
 import type { FieldTable } from "./field-rules.ts"
@@ -691,7 +690,7 @@ export function checkBlockTree(
         layout(reading, node, ["accDescr", "{", "}"])
         break
       case "StringLiteral": {
-        const written = withAttributeQuotesRead(reading.written.of(node.range))
+        const written = reading.attributeTextOf(node.range)
         problems.expect(
           node.closed === true &&
             written.startsWith('"') &&
@@ -715,7 +714,7 @@ export function checkBlockTree(
         if (parent?.type === "BlockNode")
           problems.expect(
             textOf(node, "name") !== "" &&
-              [...withAttributeQuotesRead(textOf(node, "name"))].every(
+              [...reading.attributeValueOf(node, "name")].every(
                 (c) =>
                   !isWhitespace(c.charCodeAt(0)) && !"([-){}<>:=".includes(c),
               ),

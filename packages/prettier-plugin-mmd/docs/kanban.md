@@ -54,6 +54,14 @@ organized and checked is described in
 
 ### Indentation
 
+With spaces, one configured indentation level is at least one character, even
+with `tabWidth: 0`; `useTabs` still supplies a tab. Formatting must not change
+the Db, and one character is the smallest width that keeps the indentation's
+reading.
+
+[fixture: kanban/indentation/tab-width-0] [fixture:
+kanban/indentation/tab-width-0-use-tabs]
+
 The indentation of a node line tells a section from an item, and nothing else.
 The Db has, for each node, whether it is a section and which section it belongs
 to; it has no indentation. A node written at the indentation of the first node

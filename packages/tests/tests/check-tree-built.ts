@@ -37,7 +37,7 @@ export interface Kit {
   /** The next directive `text` in the source, with its token. */
   directive: (text: string) => void
   /** The next diagram comment `text` in the source, with the mark `mark`. */
-  comment: (mark: string, text: string) => void
+  comment: (mark: string | null, text: string) => void
 }
 
 /** A tree with its source. */

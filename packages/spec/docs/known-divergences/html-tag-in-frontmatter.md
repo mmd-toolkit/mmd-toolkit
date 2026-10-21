@@ -27,6 +27,14 @@ flowchart/frontmatter-title-html-attribute] This document is about a tag that
 starts in the frontmatter and does not end there, so that it reaches into the
 text of the diagram.
 
+In venn, with `title: <a` in frontmatter, `set "b="c">d"` is rejected here.
+[fixture: venn/div-html-tag-starts-in-frontmatter] mermaid.js converts the inner
+attribute quotes and accepts it. [fixture:
+venn/div-html-tag-starts-in-frontmatter]
+
+Without the opening tag in frontmatter, both reject the same venn body.
+[fixture: venn/gram-html-tag-body-only-reference]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -163,3 +171,10 @@ the second of the reasons for a known divergence (see
   2026-10-21 with `C4 frontmatter in:title,body`,
   `frontmatter HTML quotes in:title,body`, and
   `C4 frontmatter tag in:title,body` found no report about that form.
+
+- The pinned
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  shows YAML frontmatter and quoted labels, but no HTML tag crossing the
+  frontmatter boundary. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-21 with `venn frontmatter in:title,body` and
+  `venn HTML in:title,body` found no report about that form.

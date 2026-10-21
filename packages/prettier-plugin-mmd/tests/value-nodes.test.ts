@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest"
 import { valueNodeTypes } from "../src/printers/flowchart-layout.ts"
 import { blockValueNodeTypes } from "../src/printers/block-layout.ts"
 import { classValueNodeTypes } from "../src/printers/class-layout.ts"
+import { vennValueNodeTypes } from "../src/printers/venn-layout.ts"
 import { c4ValueNodeTypes } from "../src/printers/c4-layout.ts"
 import { erValueNodeTypes } from "../src/printers/er-layout.ts"
 import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
@@ -43,6 +44,11 @@ interface DiagramValues {
 }
 
 const diagrams: readonly DiagramValues[] = [
+  {
+    prefix: "Venn",
+    values: vennValueNodeTypes,
+    notValues: new Set(),
+  },
   {
     prefix: "C4",
     values: c4ValueNodeTypes,

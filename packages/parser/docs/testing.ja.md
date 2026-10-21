@@ -17,7 +17,8 @@ fixture としてコーパスに足します。
 
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
 `class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/`、`mindmap/`、
-`timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/`、`kanban/`、`c4/` の、
+`timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/`、`kanban/`、`c4/`、
+`venn/` の、
 すべての fixture を parse し、
 次を確かめます。
 
@@ -51,6 +52,15 @@ C4 の fixture は `tests/c4.test.ts` が検査します。
 解析結果の記録を比べます。
 `tests/ast-c4-examples.test.ts` は、
 型のコメントの例の範囲と木の不変条件を検査します。
+
+venn の fixture は `tests/venn.test.ts` が検査します。
+各入力に宣言された差異と、存在すれば `specified.json` を適用し、
+仕様の受理判定と比べます。
+受理した木では、トークンとコメントによる文字被覆、正確なトークンのテキスト、
+リテラルの raw、子ノードの包含とソース順を検査します。
+`tests/fixtures.test.ts` は、共通の venn 検出 fixture も含めて、
+解析結果の記録を比べます。
+`tests/ast-venn-examples.test.ts` は型のコメントの例の範囲を検査します。
 
 ## 既知の差異
 

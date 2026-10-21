@@ -193,6 +193,10 @@ Dropped:
 | In a kanban diagram, an icon (`::icon(x)` or `icon:` in the metadata), and an icon written twice                                                                                                               | Nothing is drawn: the drawing of a kanban item uses no icon (read in `kanbanItem.ts`), so neither an icon nor its replacement changes the output; the documentation of kanban names no icon                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | In a kanban diagram, `assigned`, `priority`, or `icon` in the metadata of a column, and a class (`:::c`) on a column or an item                                                                                | The Db keeps them and the board does not show them (run): a column with an owner is sensible writing, and the classes are a gap of mermaid.js with open fixes ([#8119](https://github.com/mermaid-js/mermaid/issues/8119), [#8139](https://github.com/mermaid-js/mermaid/pull/8139), [#8281](https://github.com/mermaid-js/mermaid/pull/8281))                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | In a kanban diagram, two items of one id, `title` or `accTitle:` as a node, and a shape with another closer (`a[A)`)                                                                                           | Two items of one id are both drawn, as the example of the documentation writes them; `title` is a node by the grammar ([#8120](https://github.com/mermaid-js/mermaid/issues/8120) asks for accessibility); every kanban item is drawn in one shape, so a closer changes nothing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a C4 diagram, a relationship to an alias that no element or boundary declares (`Rel(a, typo, "Uses")`)                                                                                                      | Not silent: drawing the diagram stops with an error that names the relationship (read in `drawRels`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| In a C4 diagram, a count of `UpdateLayoutConfig` that is zero, negative, or no number                                                                                                                          | Not something a person drawing a diagram writes: a number of shapes in a row is a positive number                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In a C4 diagram, `accTitle:`, which sets the visible title, and a relationship of one ordered pair written twice (the later one replaces the first)                                                            | Defects of mermaid.js with open fixes: [#8040](https://github.com/mermaid-js/mermaid/issues/8040) and [#8041](https://github.com/mermaid-js/mermaid/pull/8041), and [#8143](https://github.com/mermaid-js/mermaid/pull/8143)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| In a C4 diagram, the index of `RelIndex`, the sprite of a deployment node, a key that is not a known key in another case (`$colour`), and a style update written twice                                         | The documentation says that the index is not read and that sprites are unfinished; mermaid.js keeps every named attribute, and some unlisted keys (`alias`, `from`, `to`) change what later statements match, so no list of valid keys stands; a second update replaces only the fields it gives, and nothing is lost                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 ### Questions for unclear cases
 
@@ -686,6 +690,12 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | kanban-no-invalid-metadata-key            | held             |                                                                              |
 | kanban-no-invalid-priority                | held             |                                                                              |
 | kanban-no-duplicate-section               | yes              |                                                                              |
+| c4-no-undef                               | yes              |                                                                              |
+| c4-no-invalid-attribute-key               | yes              |                                                                              |
+| c4-no-useless-argument                    | yes              |                                                                              |
+| c4-no-duplicate-title                     | yes              |                                                                              |
+| c4-no-duplicate-description               | yes              |                                                                              |
+| c4-no-redefined-element                   | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -1128,6 +1138,33 @@ nothing that changes the readings:
   that id, so the items are drawn once for each column (run); (2) none: columns
   of one id with no item are not reported; (4) give each column its own id.
 
+The C4 rules have these notes; the searches were "C4" in titles and the words
+duplicate, undefined, UpdateLayoutConfig, UpdateElementStyle before, attribute
+case, accTitle, sprite, and offset, and found nothing that changes the readings
+but what the rows above name.
+
+- c4-no-duplicate-title, c4-no-duplicate-description: the notes of the title and
+  description rules above; `accTitle:` is not compared, since it sets the
+  visible title by a defect of mermaid.js.
+- c4-no-undef: (1) a style update whose target does not exist when it is read
+  changes nothing (run), also one written before its target; (2) none: the
+  documentation of mermaid.js writes the updates at the end of the diagram, so
+  an update before its target is not written as it shows, unlike a `class`
+  before its vertex in a flowchart, of whose order the documentation says
+  nothing; a relationship to an unknown alias is not reported, since drawing
+  stops with an error; (4) correct the alias, or move the update after its
+  target.
+- c4-no-invalid-attribute-key, c4-no-useless-argument: (1) a style key in
+  another case is kept as another field, and an argument beyond the parameters
+  of a call is not kept (run); (2) none: other unknown keys, and empty entries
+  beyond the parameters, are not reported; (4) write the key in its case, and
+  the value in its parameter.
+- c4-no-redefined-element: (1) a later declaration of an alias replaces the
+  label and the kind of an element, and the label and the type of a boundary
+  (run); (2) none: the same label again, a first label, a boundary written again
+  to add elements, and a default type that nobody wrote are not reported; (4)
+  give each element and boundary its own alias.
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -1209,6 +1246,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | quadrant-* (all 9 rules)                | None for now (2026-10-16; see the end of this section)         |
 | block-* (all 11 rules)                  | None for now (2026-10-21; see the end of this section)         |
 | kanban-* (all 3 rules)                  | None for now (2026-10-21; see the end of this section)         |
+| c4-* (all 6 rules)                      | None for now (2026-10-21; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1306,8 +1344,8 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 `sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
 `journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`,
 `sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
-`block-*` and `kanban-*` (2026-10-21): the rules are implemented without
-suggestions for now. No suggestion had been decided for them or described in
-their documents, and the one planned for the empty block of a sequence diagram
-rested on generated inputs. Whether they get suggestions is decided later, in
-the form of the flowchart rules, with a fixture for each case.
+`block-*`, `kanban-*`, and `c4-*` (2026-10-21): the rules are implemented
+without suggestions for now. No suggestion had been decided for them or
+described in their documents, and the one planned for the empty block of a
+sequence diagram rested on generated inputs. Whether they get suggestions is
+decided later, in the form of the flowchart rules, with a fixture for each case.

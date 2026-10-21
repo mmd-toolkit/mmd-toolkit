@@ -1,16 +1,20 @@
 import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject, JsonValue } from "../types.ts"
-import { convertedValueOf } from "./converted-text.ts"
+import { convertedValuesOf } from "./converted-text.ts"
+import type { ConvertedValueReader } from "./converted-text.ts"
 import type { KanbanDiagram, KanbanNode } from "./kanban-tree.ts"
 import { textReplacementOf } from "./text-replacement.ts"
 import { TreeError } from "./tree.ts"
+import type { TreeRoot } from "./tree.ts"
 
 /** docs/db-from-tree/kanban.md: the normalized renderer data, read from the flat written rows. */
 export function kanbanDbOf(
   source: string,
+  root: TreeRoot,
   diagram: KanbanDiagram,
   embedded: EmbeddedValues,
 ): DbSummary {
+  const readValue = convertedValuesOf(source, root, "kanban")
   const replace = textReplacementOf(embedded.config)
   const sections: JsonObject[] = []
   const items: JsonObject[] = []
@@ -28,8 +32,7 @@ export function kanbanDbOf(
     const description =
       shape === null
         ? null
-        : convertedValueOf(
-            source,
+        : readValue(
             shape.label.range,
             shape.label.value,
             shape.label.kind === "text"
@@ -39,9 +42,7 @@ export function kanbanDbOf(
                 : 2,
           )
     const writtenId =
-      id === null
-        ? (description ?? "")
-        : convertedValueOf(source, id.range, id.value)
+      id === null ? (description ?? "") : readValue(id.range, id.value)
     const nodeId = replace(writtenId)
     const isGroup = node.indent === sectionLevel
     if (
@@ -80,7 +81,7 @@ export function kanbanDbOf(
         )
       Object.assign(summary, effect.set)
     }
-    applyDecorations(source, node, summary, isGroup, replace)
+    applyDecorations(readValue, node, summary, isGroup, replace)
     if (isGroup) sections.push(summary)
     else items.push(summary)
   }
@@ -100,7 +101,7 @@ export function kanbanDbOf(
 
 /** Decorations: only the last icon of an item is exposed; class lines and section icons add no summary field. */
 function applyDecorations(
-  source: string,
+  readValue: ConvertedValueReader,
   node: KanbanNode,
   summary: Record<string, JsonValue>,
   isGroup: boolean,
@@ -109,7 +110,7 @@ function applyDecorations(
   for (const decoration of node.decorations) {
     if (!isGroup && decoration.type === "KanbanIconStatement")
       summary.icon = replace(
-        convertedValueOf(source, decoration.icon.range, decoration.icon.value),
+        readValue(decoration.icon.range, decoration.icon.value),
       )
   }
 }

@@ -307,6 +307,9 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - `c4*.ts`: `format` と `corpus` を `-t c4` で。
     `-t` なしで `line-separators`、`line-terminators`、`markdown-c4`、
     `value-nodes`、`dispatch`。
+  - `venn*.ts`: `format` と `corpus` を `-t venn` で。
+    `-t` なしで `line-separators`、`markdown-venn`、
+    `value-nodes`。
   - `statement-rules.ts`、`accessibility-lines.ts`:
     それを使う図種、ER と requirement のテスト。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:

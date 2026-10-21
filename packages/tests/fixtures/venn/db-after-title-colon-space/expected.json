@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "This title ending retains \"T: \" as the title."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "T: ",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

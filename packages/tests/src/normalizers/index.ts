@@ -14,6 +14,7 @@ import { normalizeSankey } from "./sankey.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
 import { normalizeTimeline } from "./timeline.ts"
+import { normalizeVenn } from "./venn.ts"
 import { normalizeXyChart } from "./xychart.ts"
 
 /**
@@ -52,6 +53,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["block", normalizeBlock],
   ["kanban", normalizeKanban],
   ["c4", normalizeC4],
+  ["venn", normalizeVenn],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

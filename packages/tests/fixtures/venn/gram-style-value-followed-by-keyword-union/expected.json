@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Units and contexts: The same-line union keyword ends the bare style value a; union B is rejected because a union requires multiple names."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "union requires multiple identifiers"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag opened in an earlier node label converts the attribute quotes in a later quoted node label; the later label is b='c'>d."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "a",
+        "label": "<a",
+        "isGroup": true
+      },
+      {
+        "id": "b",
+        "label": "b='c'>d",
+        "isGroup": true
+      }
+    ]
+  }
+}

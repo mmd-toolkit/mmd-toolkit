@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Text and implicit text mode: After the empty line and unindented %%{ }%% line disable implicit text mode, targets A,B and id x form accepted explicit text."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "id": "x"
+      }
+    ],
+    "styles": []
+  }
+}

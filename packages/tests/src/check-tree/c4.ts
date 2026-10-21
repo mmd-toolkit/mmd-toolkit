@@ -1,9 +1,4 @@
 import {
-  ConvertedText,
-  readConvertedCharacters,
-  withAttributeQuotesRead,
-} from "../db-from-tree/converted-text.ts"
-import {
   checkChildTypes,
   checkFieldWords,
   checkListsWithAnEntry,
@@ -380,7 +375,7 @@ function checkCall(reading: Reading, node: CheckedNode, own: Own): void {
           label(node),
           "a bare argument ends before its comma",
         )
-        const value = withAttributeQuotesRead(textOf(part.child))
+        const value = reading.attributeValueOf(part.child)
         reading.problems.expect(
           !asciiSpaces || (!value.startsWith('"') && !value.startsWith("$")),
           label(node),
@@ -465,7 +460,7 @@ function checkLiteral(
     checkTrimmedValue(reading, node, node, "the C4Literal")
   if (parent?.type === "C4NamedAttribute")
     reading.problems.expect(
-      !withAttributeQuotesRead(textOf(node)).includes("="),
+      !reading.attributeValueOf(node).includes("="),
       label(node),
       "the named key holds its equals delimiter",
     )
@@ -484,7 +479,7 @@ export function checkC4Tree(
   problems: Problems,
 ): void {
   const reading = readingOf(text, root, problems)
-  const converted = new ConvertedText(readConvertedCharacters(text, root))
+  const converted = reading.converted
   checkTokensInValueNodes(root, problems)
   walkNodes(root, (node, parent) => {
     checkChildTypes(reading, node, C4_CHILD_TYPES)
@@ -496,11 +491,11 @@ export function checkC4Tree(
         label(node),
         "the string is not closed",
       )
-      const written = withAttributeQuotesRead(between(reading, ...node.range))
+      const written = reading.attributeTextOf(node.range)
       problems.expect(
         written.startsWith('"') &&
           written.endsWith('"') &&
-          !withAttributeQuotesRead(textOf(node)).includes('"'),
+          !reading.attributeValueOf(node).includes('"'),
         label(node),
         "the string is not a double-quoted C4 argument",
       )

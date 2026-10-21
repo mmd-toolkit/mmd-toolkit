@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex title style rule space form stores {\"title\":\"astyle: \\ufb02\\u00b0f00\\u00b6\\u00dfb\"}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "astyle: ﬂ°f00¶ßb",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

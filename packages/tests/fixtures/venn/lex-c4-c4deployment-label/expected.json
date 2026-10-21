@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unanchored C4 detector word selects C4 and rejects this venn input."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nvenn-betaset A[\"C4D\n^"
+  }
+}

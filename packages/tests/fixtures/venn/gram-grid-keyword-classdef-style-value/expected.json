@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The keyword-classdef fragment in style-value is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...om:a classDef c fill:red b\n-----------------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'NUMERIC', 'UNION', 'TEXT', 'IDENTIFIER', 'INDENT_TEXT', 'STYLE', 'COMMA', 'HEXCOLOR', 'RGBCOLOR', 'RGBACOLOR', got 'COLON'"
+  }
+}

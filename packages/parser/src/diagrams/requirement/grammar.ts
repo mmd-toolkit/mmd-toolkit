@@ -373,7 +373,7 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
     const unit = this.peek()
     if (unit?.name === "string") {
       this.advance()
-      return this.stringLiteralOf(unit)
+      return this.closedStringLiteralOf(unit)
     }
     return this.literalOf(this.take("unquoted-text"))
   }
@@ -609,7 +609,7 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
     }
     this.advance()
     return unit.name === "string"
-      ? this.stringLiteralOf(unit)
+      ? this.closedStringLiteralOf(unit)
       : this.identifierOfName(unit)
   }
 
@@ -687,26 +687,6 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
     return {
       type: "RequirementLiteral",
       value: this.textOf(place.range),
-      ...place,
-    }
-  }
-
-  /**
-   * ast.md, Shared leaf nodes > StringLiteral: the `string` unit `unit`,
-   * one `String` item, whose value is its written text between its quotes.
-   * Every string of this diagram is closed and not empty: the lexer
-   * rejects a string that the text ends in, and makes an `empty-string`
-   * unit of two quotes.
-   */
-  private stringLiteralOf(unit: Unit): StringLiteral {
-    this.addItem("String", [unit])
-    const place = this.placeOf([unit])
-    const [start, end] = place.range
-    return {
-      type: "StringLiteral",
-      value: this.textOf([start + 1, end - 1]),
-      raw: this.lexer.text.slice(start, end),
-      closed: true,
       ...place,
     }
   }

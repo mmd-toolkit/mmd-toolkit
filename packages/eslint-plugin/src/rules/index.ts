@@ -12,6 +12,12 @@ import { blockNoRedefinedStyle } from "./block-no-redefined-style.ts"
 import { blockNoSpacedClassId } from "./block-no-spaced-class-id.ts"
 import { blockNoUndef } from "./block-no-undef.ts"
 import { blockNoUselessWidth } from "./block-no-useless-width.ts"
+import { c4NoDuplicateDescription } from "./c4-no-duplicate-description.ts"
+import { c4NoDuplicateTitle } from "./c4-no-duplicate-title.ts"
+import { c4NoInvalidAttributeKey } from "./c4-no-invalid-attribute-key.ts"
+import { c4NoRedefinedElement } from "./c4-no-redefined-element.ts"
+import { c4NoUndef } from "./c4-no-undef.ts"
+import { c4NoUselessArgument } from "./c4-no-useless-argument.ts"
 import { classNoBareClassName } from "./class-no-bare-class-name.ts"
 import { classNoDuplicateDescription } from "./class-no-duplicate-description.ts"
 import { classNoDuplicateTitle } from "./class-no-duplicate-title.ts"
@@ -115,6 +121,12 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "block-no-spaced-class-id": blockNoSpacedClassId,
   "block-no-undef": blockNoUndef,
   "block-no-useless-width": blockNoUselessWidth,
+  "c4-no-duplicate-description": c4NoDuplicateDescription,
+  "c4-no-duplicate-title": c4NoDuplicateTitle,
+  "c4-no-invalid-attribute-key": c4NoInvalidAttributeKey,
+  "c4-no-redefined-element": c4NoRedefinedElement,
+  "c4-no-undef": c4NoUndef,
+  "c4-no-useless-argument": c4NoUselessArgument,
   "class-no-bare-class-name": classNoBareClassName,
   "class-no-duplicate-description": classNoDuplicateDescription,
   "class-no-duplicate-title": classNoDuplicateTitle,

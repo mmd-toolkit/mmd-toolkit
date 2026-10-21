@@ -16014,3 +16014,2585 @@ c4/db-grid-quote-offset-argument-quoted] [fixture:
 c4/db-grid-comma-layout-argument-bare] [fixture:
 c4/db-grid-punct-layout-argument-bare] [fixture:
 c4/db-grid-quote-layout-argument-quoted]
+
+## venn
+
+`normalizeVenn()`（`src/normalizers/venn.ts`）は、
+[vennDB.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L22-L133)
+の共有 Db を要約する。
+[fixture: venn/db-all-fields]
+
+要約は
+[`getDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L32-L32)
+から `title` を得る。
+[fixture: venn/db-all-fields]
+[fixture: venn/db-frontmatter-title]
+
+要約は
+[`getAccTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L20-L20)
+から `accTitle` を得る。
+[fixture: venn/db-frontmatter-accessibility]
+[fixture: venn/header-only]
+
+要約は
+[`getAccDescription()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L26-L26)
+から `accDescr` を得る。
+[fixture: venn/db-frontmatter-accessibility]
+[fixture: venn/header-only]
+
+`subsets` は
+[`getSubsetData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L38-L40)
+から得る。
+[fixture: venn/db-all-fields]
+
+`texts` は
+[`getTextData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L88-L90)
+から得る。
+[fixture: venn/db-all-fields]
+
+`styles` は
+[`getStyleData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L72-L74)
+から得る。
+[fixture: venn/db-all-fields]
+
+三つの配列は重複する宣言を含めて宣言順を保つ。
+[fixture: venn/db-style-three-definitions]
+[fixture: venn/db-text-three-definitions]
+[fixture: venn/db-three-definitions]
+[fixture: venn/demo-venn-0d817555]
+[fixture: venn/demo-venn-30b70b4c]
+[fixture: venn/demo-venn-4f81eecc]
+[fixture: venn/demo-venn-5a5405c7]
+[fixture: venn/demo-venn-6f1fb809]
+[fixture: venn/demo-venn-7526522b]
+[fixture: venn/demo-venn-855cfd39]
+[fixture: venn/demo-venn-875948cd]
+[fixture: venn/demo-venn-8f9aeefc]
+[fixture: venn/demo-venn-beda756a]
+[fixture: venn/demo-venn-c2dd3beb]
+[fixture: venn/demo-venn-eccf2f74]
+[fixture: venn/docs-syntax-venn-43f17aa1]
+[fixture: venn/docs-syntax-venn-4ac8b1e3]
+[fixture: venn/docs-syntax-venn-74014555]
+[fixture: venn/docs-syntax-venn-7e1f629a]
+[fixture: venn/docs-syntax-venn-9a53dbe6]
+[fixture: venn/docs-syntax-venn-ac6de7c7]
+[fixture: venn/docs-syntax-venn-cd2ead2b]
+[fixture: venn/docs-syntax-venn-dbe2e15b]
+[fixture: venn/spec-venn-0cf96be0]
+[fixture: venn/spec-venn-209cd4ba]
+[fixture: venn/spec-venn-228bfe87]
+[fixture: venn/spec-venn-3f44150e]
+[fixture: venn/spec-venn-4fdc103a]
+[fixture: venn/spec-venn-83701753]
+[fixture: venn/spec-venn-850680f1]
+[fixture: venn/spec-venn-85a3609e]
+[fixture: venn/spec-venn-951627a3]
+[fixture: venn/spec-venn-a47b6a31]
+[fixture: venn/spec-venn-aa7d1ad8]
+[fixture: venn/spec-venn-ab635fc5]
+[fixture: venn/spec-venn-ef1992f9]
+
+同じソート済みの要素を持つ三度目の union は、
+固有のサイズを持つ集合の要素を追加する。
+[fixture: venn/db-union-three-definitions]
+
+同じ対象への三度目の style 文は、
+その文のプロパティだけを持つ別の要素を追加する。
+[fixture: venn/db-style-three-definitions-same-target]
+
+集合の要素は `{ sets, size, label? }`、
+テキストノードは `{ sets, id, label? }`、
+style の要素は `{ targets, styles }` を保ち、
+未定義のラベルは省略する。
+[fixture: venn/db-form-set]
+[fixture: venn/db-form-style-id]
+[fixture: venn/db-form-text-id]
+[fixture: venn/db-label-empty]
+
+要約は描画設定の
+[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L100-L102)
+と、
+解析状態である既知の集合の表、現在の集合、
+字下げモードと一時的な字下げフラグを省き、
+描画座標、配色、生成 id、暗黙の二集合の重なりを追加しない。
+[fixture: venn/db-form-union]
+[fixture: venn/db-indent-width]
+[fixture: venn/db-union-repeated-member]
+
+Db の
+[`customClear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L104-L112)
+は共通の
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L10-L14)
+を呼び、
+宣言と解析状態を消去する。
+[fixture: venn/db-all-fields]
+[fixture: venn/header-only]
+
+前の入力のタイトル、アクセシビリティの文字、
+宣言、字下げ状態は残らない。
+[fixture: venn/db-all-fields]
+[fixture: venn/header-only]
+
+`set` は一つの識別子と任意の括弧ラベル、
+任意の数値サイズを追加し、
+`union` は同じ二つの任意引数とソート済みの識別子列を追加する。
+[fixture: venn/db-form-set]
+[fixture: venn/db-form-set-label]
+[fixture: venn/db-form-set-label-size]
+[fixture: venn/db-form-set-size]
+[fixture: venn/db-form-union]
+[fixture: venn/db-form-union-label]
+[fixture: venn/db-form-union-label-size]
+[fixture: venn/db-form-union-size]
+
+集合、重なり、text、style の文の引数と、
+任意のラベルやサイズの接尾辞の間はスペースやタブで区切れる。
+[fixture: venn/db-set-label-space]
+[fixture: venn/db-set-label-tab]
+[fixture: venn/db-set-label-size-label-space]
+[fixture: venn/db-set-label-size-label-tab]
+[fixture: venn/db-set-size-space]
+[fixture: venn/db-set-size-tab]
+[fixture: venn/db-set-label-size-size-space]
+[fixture: venn/db-set-label-size-size-tab]
+[fixture: venn/db-union-label-space]
+[fixture: venn/db-union-label-tab]
+[fixture: venn/db-union-label-size-label-space]
+[fixture: venn/db-union-label-size-label-tab]
+[fixture: venn/db-union-size-space]
+[fixture: venn/db-union-size-tab]
+[fixture: venn/db-union-label-size-size-space]
+[fixture: venn/db-union-label-size-size-tab]
+[fixture: venn/db-form-text-id]
+[fixture: venn/db-text-target-id-tab]
+[fixture: venn/db-text-target-string-space]
+[fixture: venn/db-text-target-string-tab]
+[fixture: venn/db-text-target-number-space]
+[fixture: venn/db-text-target-number-tab]
+[fixture: venn/db-text-id-label-space]
+[fixture: venn/db-text-id-label-tab]
+[fixture: venn/db-text-string-label-space]
+[fixture: venn/db-text-string-label-tab]
+[fixture: venn/db-form-indent-id]
+[fixture: venn/db-indent-keyword-id-tab]
+[fixture: venn/db-indent-keyword-string-space]
+[fixture: venn/db-indent-keyword-string-tab]
+[fixture: venn/db-indent-keyword-number-space]
+[fixture: venn/db-indent-keyword-number-tab]
+[fixture: venn/db-indent-id-label-space]
+[fixture: venn/db-indent-id-label-tab]
+[fixture: venn/db-indent-string-label-space]
+[fixture: venn/db-indent-string-label-tab]
+[fixture: venn/db-size-space]
+[fixture: venn/db-set-colon-size-tab]
+[fixture: venn/db-set-label-colon-size-space]
+[fixture: venn/db-set-label-colon-size-tab]
+[fixture: venn/db-union-colon-size-space]
+[fixture: venn/db-union-colon-size-tab]
+[fixture: venn/db-union-label-colon-size-space]
+[fixture: venn/db-union-label-colon-size-tab]
+[fixture: venn/db-style-target-property-space]
+[fixture: venn/db-style-target-property-tab]
+[fixture: venn/db-style-property-colon-space]
+[fixture: venn/db-style-property-colon-tab]
+[fixture: venn/db-style-colon-value-space]
+[fixture: venn/db-style-colon-value-tab]
+
+それらの引数境界は LF や CRLF をまたげず、
+間に空行、コメント行、directive 行がある場合も拒否する。
+[fixture: venn/gram-set-label-next-line]
+[fixture: venn/gram-set-label-comment-gap]
+[fixture: venn/gram-set-label-directive-gap]
+[fixture: venn/gram-set-label-blank-gap]
+[fixture: venn/gram-set-label-crlf-gap]
+[fixture: venn/gram-set-label-size-label-next-line]
+[fixture: venn/gram-set-label-size-label-comment-gap]
+[fixture: venn/gram-set-label-size-label-directive-gap]
+[fixture: venn/gram-set-label-size-label-blank-gap]
+[fixture: venn/gram-set-label-size-label-crlf-gap]
+[fixture: venn/gram-set-size-next-line]
+[fixture: venn/gram-set-size-comment-gap]
+[fixture: venn/gram-set-size-directive-gap]
+[fixture: venn/gram-set-size-blank-gap]
+[fixture: venn/gram-set-size-crlf-gap]
+[fixture: venn/gram-set-label-size-size-next-line]
+[fixture: venn/gram-set-label-size-size-comment-gap]
+[fixture: venn/gram-set-label-size-size-directive-gap]
+[fixture: venn/gram-set-label-size-size-blank-gap]
+[fixture: venn/gram-set-label-size-size-crlf-gap]
+[fixture: venn/gram-union-label-next-line]
+[fixture: venn/gram-union-label-comment-gap]
+[fixture: venn/gram-union-label-directive-gap]
+[fixture: venn/gram-union-label-blank-gap]
+[fixture: venn/gram-union-label-crlf-gap]
+[fixture: venn/gram-union-label-size-label-next-line]
+[fixture: venn/gram-union-label-size-label-comment-gap]
+[fixture: venn/gram-union-label-size-label-directive-gap]
+[fixture: venn/gram-union-label-size-label-blank-gap]
+[fixture: venn/gram-union-label-size-label-crlf-gap]
+[fixture: venn/gram-union-size-next-line]
+[fixture: venn/gram-union-size-comment-gap]
+[fixture: venn/gram-union-size-directive-gap]
+[fixture: venn/gram-union-size-blank-gap]
+[fixture: venn/gram-union-size-crlf-gap]
+[fixture: venn/gram-union-label-size-size-next-line]
+[fixture: venn/gram-union-label-size-size-comment-gap]
+[fixture: venn/gram-union-label-size-size-directive-gap]
+[fixture: venn/gram-union-label-size-size-blank-gap]
+[fixture: venn/gram-union-label-size-size-crlf-gap]
+[fixture: venn/gram-text-target-id-next-line]
+[fixture: venn/gram-text-target-id-comment-gap]
+[fixture: venn/gram-text-target-id-directive-gap]
+[fixture: venn/gram-text-target-id-blank-gap]
+[fixture: venn/gram-text-target-id-crlf-gap]
+[fixture: venn/gram-text-target-string-next-line]
+[fixture: venn/gram-text-target-string-comment-gap]
+[fixture: venn/gram-text-target-string-directive-gap]
+[fixture: venn/gram-text-target-string-blank-gap]
+[fixture: venn/gram-text-target-string-crlf-gap]
+[fixture: venn/gram-text-target-number-next-line]
+[fixture: venn/gram-text-target-number-comment-gap]
+[fixture: venn/gram-text-target-number-directive-gap]
+[fixture: venn/gram-text-target-number-blank-gap]
+[fixture: venn/gram-text-target-number-crlf-gap]
+[fixture: venn/gram-text-id-label-next-line]
+[fixture: venn/gram-text-id-label-comment-gap]
+[fixture: venn/gram-text-id-label-directive-gap]
+[fixture: venn/gram-text-id-label-blank-gap]
+[fixture: venn/gram-text-id-label-crlf-gap]
+[fixture: venn/gram-text-string-label-next-line]
+[fixture: venn/gram-text-string-label-comment-gap]
+[fixture: venn/gram-text-string-label-directive-gap]
+[fixture: venn/gram-text-string-label-blank-gap]
+[fixture: venn/gram-text-string-label-crlf-gap]
+[fixture: venn/gram-indent-keyword-id-next-line]
+[fixture: venn/gram-indent-keyword-id-comment-gap]
+[fixture: venn/gram-indent-keyword-id-directive-gap]
+[fixture: venn/gram-indent-keyword-id-blank-gap]
+[fixture: venn/gram-indent-keyword-id-crlf-gap]
+[fixture: venn/gram-indent-keyword-string-next-line]
+[fixture: venn/gram-indent-keyword-string-comment-gap]
+[fixture: venn/gram-indent-keyword-string-directive-gap]
+[fixture: venn/gram-indent-keyword-string-blank-gap]
+[fixture: venn/gram-indent-keyword-string-crlf-gap]
+[fixture: venn/gram-indent-keyword-number-next-line]
+[fixture: venn/gram-indent-keyword-number-comment-gap]
+[fixture: venn/gram-indent-keyword-number-directive-gap]
+[fixture: venn/gram-indent-keyword-number-blank-gap]
+[fixture: venn/gram-indent-keyword-number-crlf-gap]
+[fixture: venn/gram-indent-id-label-next-line]
+[fixture: venn/gram-indent-id-label-comment-gap]
+[fixture: venn/gram-indent-id-label-directive-gap]
+[fixture: venn/gram-indent-id-label-blank-gap]
+[fixture: venn/gram-indent-id-label-crlf-gap]
+[fixture: venn/gram-indent-string-label-next-line]
+[fixture: venn/gram-indent-string-label-comment-gap]
+[fixture: venn/gram-indent-string-label-directive-gap]
+[fixture: venn/gram-indent-string-label-blank-gap]
+[fixture: venn/gram-indent-string-label-crlf-gap]
+[fixture: venn/gram-size-newline]
+[fixture: venn/gram-set-colon-size-comment-gap]
+[fixture: venn/gram-set-colon-size-directive-gap]
+[fixture: venn/gram-set-colon-size-blank-gap]
+[fixture: venn/gram-set-colon-size-crlf-gap]
+[fixture: venn/gram-set-label-colon-size-next-line]
+[fixture: venn/gram-set-label-colon-size-comment-gap]
+[fixture: venn/gram-set-label-colon-size-directive-gap]
+[fixture: venn/gram-set-label-colon-size-blank-gap]
+[fixture: venn/gram-set-label-colon-size-crlf-gap]
+[fixture: venn/gram-union-colon-size-next-line]
+[fixture: venn/gram-union-colon-size-comment-gap]
+[fixture: venn/gram-union-colon-size-directive-gap]
+[fixture: venn/gram-union-colon-size-blank-gap]
+[fixture: venn/gram-union-colon-size-crlf-gap]
+[fixture: venn/gram-union-label-colon-size-next-line]
+[fixture: venn/gram-union-label-colon-size-comment-gap]
+[fixture: venn/gram-union-label-colon-size-directive-gap]
+[fixture: venn/gram-union-label-colon-size-blank-gap]
+[fixture: venn/gram-union-label-colon-size-crlf-gap]
+[fixture: venn/gram-style-target-property-next-line]
+[fixture: venn/gram-style-target-property-comment-gap]
+[fixture: venn/gram-style-target-property-directive-gap]
+[fixture: venn/gram-style-target-property-blank-gap]
+[fixture: venn/gram-style-target-property-crlf-gap]
+[fixture: venn/gram-style-property-colon-next-line]
+[fixture: venn/gram-style-property-colon-comment-gap]
+[fixture: venn/gram-style-property-colon-directive-gap]
+[fixture: venn/gram-style-property-colon-blank-gap]
+[fixture: venn/gram-style-property-colon-crlf-gap]
+[fixture: venn/gram-style-colon-value-next-line]
+[fixture: venn/gram-style-colon-value-comment-gap]
+[fixture: venn/gram-style-colon-value-directive-gap]
+[fixture: venn/gram-style-colon-value-blank-gap]
+[fixture: venn/gram-style-colon-value-crlf-gap]
+
+引数境界の閉じた directive は除かれ、
+区切りのスペースを与えない。
+[fixture: venn/db-set-label-inline-directive]
+[fixture: venn/db-set-label-size-label-inline-directive]
+[fixture: venn/db-set-size-inline-directive]
+[fixture: venn/db-set-label-size-size-inline-directive]
+[fixture: venn/db-union-label-inline-directive]
+[fixture: venn/db-union-label-size-label-inline-directive]
+[fixture: venn/db-union-size-inline-directive]
+[fixture: venn/db-union-label-size-size-inline-directive]
+[fixture: venn/gram-text-target-id-inline-directive]
+[fixture: venn/db-text-target-string-inline-directive]
+[fixture: venn/gram-text-target-number-inline-directive]
+[fixture: venn/db-text-id-label-inline-directive]
+[fixture: venn/db-text-string-label-inline-directive]
+[fixture: venn/gram-indent-keyword-id-inline-directive]
+[fixture: venn/db-indent-keyword-string-inline-directive]
+[fixture: venn/gram-indent-keyword-number-inline-directive]
+[fixture: venn/db-indent-id-label-inline-directive]
+[fixture: venn/db-indent-string-label-inline-directive]
+[fixture: venn/db-set-colon-size-inline-directive]
+[fixture: venn/db-set-label-colon-size-inline-directive]
+[fixture: venn/db-union-colon-size-inline-directive]
+[fixture: venn/db-union-label-colon-size-inline-directive]
+[fixture: venn/gram-style-target-property-inline-directive]
+[fixture: venn/db-style-property-colon-inline-directive]
+[fixture: venn/db-style-colon-value-inline-directive]
+
+閉じない directive の除去が任意の接尾辞を消すと、
+その前の完了した宣言が残る。
+[fixture: venn/db-set-label-unclosed-directive-gap]
+[fixture: venn/db-set-label-size-label-unclosed-directive-gap]
+[fixture: venn/db-set-size-unclosed-directive-gap]
+[fixture: venn/db-set-label-size-size-unclosed-directive-gap]
+[fixture: venn/db-union-label-unclosed-directive-gap]
+[fixture: venn/db-union-label-size-label-unclosed-directive-gap]
+[fixture: venn/db-union-size-unclosed-directive-gap]
+[fixture: venn/db-union-label-size-size-unclosed-directive-gap]
+[fixture: venn/db-text-id-label-unclosed-directive-gap]
+[fixture: venn/db-text-string-label-unclosed-directive-gap]
+[fixture: venn/db-indent-id-label-unclosed-directive-gap]
+[fixture: venn/db-indent-string-label-unclosed-directive-gap]
+
+その除去によって必須の id、プロパティ、数値引数が欠けると、
+その文は拒否される。
+[fixture: venn/gram-text-target-id-unclosed-directive-gap]
+[fixture: venn/gram-text-target-string-unclosed-directive-gap]
+[fixture: venn/gram-text-target-number-unclosed-directive-gap]
+[fixture: venn/gram-indent-keyword-id-unclosed-directive-gap]
+[fixture: venn/gram-indent-keyword-string-unclosed-directive-gap]
+[fixture: venn/gram-indent-keyword-number-unclosed-directive-gap]
+[fixture: venn/gram-set-colon-size-unclosed-directive-gap]
+[fixture: venn/gram-set-label-colon-size-unclosed-directive-gap]
+[fixture: venn/gram-union-colon-size-unclosed-directive-gap]
+[fixture: venn/gram-union-label-colon-size-unclosed-directive-gap]
+[fixture: venn/gram-style-target-property-unclosed-directive-gap]
+[fixture: venn/gram-style-property-colon-unclosed-directive-gap]
+[fixture: venn/gram-style-colon-value-unclosed-directive-gap]
+
+重なりには先行する `set` が宣言した識別子が二つ以上必要で、
+重複する識別子はそのまま残り、
+既定サイズ `10 / arity²` の個数に数え、
+集合の既定サイズは 10 とする。
+[fixture: venn/db-union-repeated-member]
+[fixture: venn/gram-union-before-definitions]
+[fixture: venn/gram-union-one]
+[fixture: venn/gram-union-unknown]
+[fixture: venn/spec-venn-a30f032a]
+[fixture: venn/spec-venn-d0c4cd0d]
+
+サイズは符号付き十進整数と小数を受け入れ、
+先頭のゼロや小数点も許す。
+[fixture: venn/db-size-fraction]
+[fixture: venn/db-size-leading-zeros]
+[fixture: venn/db-size-negative]
+[fixture: venn/db-size-negative-zero]
+[fixture: venn/db-size-plus]
+[fixture: venn/db-size-signed-fraction]
+[fixture: venn/db-size-space]
+[fixture: venn/db-size-zero]
+
+負のゼロはゼロとして記録する。
+[fixture: venn/db-size-negative-zero]
+
+正の桁あふれは `"Infinity"` として記録する。
+[fixture: venn/db-size-overflow]
+
+負の桁あふれは `"-Infinity"` として記録する。
+[fixture: venn/db-size-negative-overflow]
+
+サイズの欠落、指数、末尾の小数点、十六進接頭辞、
+`NaN`、`Infinity`、非 ASCII 数字、
+後続の識別子は一つのサイズを構成せず拒否される。
+[fixture: venn/gram-size-empty]
+[fixture: venn/gram-size-exponent]
+[fixture: venn/gram-size-fullwidth]
+[fixture: venn/gram-size-hex]
+[fixture: venn/gram-size-infinity]
+[fixture: venn/gram-size-nan]
+[fixture: venn/gram-size-newline]
+[fixture: venn/gram-size-suffix]
+[fixture: venn/gram-size-trailing-point]
+
+明示的な `text` は対象の列と、
+識別子、引用文字列、数値表記のいずれかの id を取り、
+括弧ラベルを取れるのは識別子と文字列の id だけで、
+対象の存在は検査しない。
+[fixture: venn/db-form-text-id]
+[fixture: venn/db-form-text-id-label]
+[fixture: venn/db-form-text-number]
+[fixture: venn/db-form-text-string]
+[fixture: venn/db-form-text-string-label]
+[fixture: venn/db-text-comma-list]
+[fixture: venn/db-text-numeric-fraction]
+[fixture: venn/db-text-numeric-positive]
+[fixture: venn/db-text-unknown]
+[fixture: venn/gram-size-numeric-label]
+[fixture: venn/gram-text-no-id]
+
+単語境界のある字下げした `text` は直前の集合か重なりを使い、
+相対的な深さによらず一つ以上の空白やタブで字下げでき、
+空行、空白だけの行、除去されたコメント行、
+directive 行はこのモードを保つ。
+[fixture: venn/db-form-indent-id]
+[fixture: venn/db-form-indent-id-label]
+[fixture: venn/db-form-indent-number]
+[fixture: venn/db-form-indent-string]
+[fixture: venn/db-form-indent-string-label]
+[fixture: venn/db-indent-after-blank]
+[fixture: venn/db-indent-after-comment]
+[fixture: venn/db-indent-after-directive]
+[fixture: venn/db-indent-blank-line]
+[fixture: venn/db-indent-empty-id]
+[fixture: venn/db-indent-width]
+
+NEWLINE トークンの後の次の文を読む前に、
+先頭のスペースかタブが有効な暗黙の text マーカーを選ぶ場合を除き、
+行頭の規則は暗黙の text モードを解除する。
+[fixture: venn/gram-extra-indent-indented-style]
+[fixture: venn/gram-extra-indent-nonindent-text]
+[fixture: venn/gram-indent-after-style]
+[fixture: venn/gram-indent-after-title]
+[fixture: venn/gram-indent-after-indented-title]
+[fixture: venn/db-indent-width]
+
+完了した `set` と `union` は、
+それぞれの対象で暗黙の text モードを有効にする。
+[fixture: venn/db-indent-after-set]
+[fixture: venn/db-indent-after-indented-set]
+[fixture: venn/db-indent-after-union]
+[fixture: venn/db-indent-after-indented-union]
+[fixture: venn/db-indent-after-header-set]
+[fixture: venn/spec-venn-0cf96be0]
+
+その宣言と同じ行の後続の style、明示的な text、
+タイトルはモードを有効なままにする。
+[fixture: venn/db-indent-after-same-line-style]
+[fixture: venn/db-indent-after-same-line-explicit-text]
+[fixture: venn/db-indent-after-same-line-title]
+
+有効なモードと現在の対象がなければ、
+字下げした text は暗黙の対象列を使えない。
+[fixture: venn/gram-indent-without-set]
+[fixture: venn/gram-indent-after-style]
+
+字下げした `text` に単語の接尾辞が接続すると、
+そのマーカーは暗黙の対象を与えない。
+[fixture: venn/gram-indent-text-prefix]
+
+識別子とテキスト id は大文字小文字、空の引用文字列、
+引用符の内側の空白を保ち、
+Db は引用符の外側を trim して一組の二重引用符を除く。
+[fixture: venn/db-case-distinct-ids]
+[fixture: venn/db-empty-identifiers]
+[fixture: venn/db-prototype-ids]
+[fixture: venn/db-quoted-padding]
+[fixture: venn/gram-union-inner-space]
+
+括弧ラベルは Db が trim する前に括弧と引用符を失うため、
+引用したラベルの内側の空白も trim され、
+lexer の空ラベルは省略され、
+引用した空白ラベルは空文字列に、
+引用しない空白ラベルは省略される。
+[fixture: venn/db-label-double-normalization]
+[fixture: venn/db-label-empty]
+[fixture: venn/db-label-spaces]
+[fixture: venn/db-set-label]
+[fixture: venn/db-text-label]
+[fixture: venn/lex-label-empty]
+
+バッククォートと単一引用符はラベルの文字として残り、
+引用しない空の括弧、括弧内の引用符、
+隣接するラベル文字列、閉じない区切りは拒否される。
+[fixture: venn/db-label-backticks]
+[fixture: venn/db-label-inner-quotes]
+[fixture: venn/gram-label-bare-empty]
+[fixture: venn/gram-label-two-strings]
+[fixture: venn/gram-nested-label-quotes]
+[fixture: venn/gram-string-escape-quote]
+[fixture: venn/gram-unclosed-id]
+[fixture: venn/gram-unclosed-label]
+[fixture: venn/gram-unclosed-style]
+
+`style` は対象が未定義でもソート済みの対象と、
+大文字小文字を区別する任意のプロパティ名を保ち、
+一つの文で同じキーを繰り返すと最後の値を使い、
+別の文は別の要素として残す。
+[fixture: venn/db-style-case-and-order]
+[fixture: venn/db-style-duplicate-key]
+[fixture: venn/db-style-three-definitions]
+[fixture: venn/db-style-unknown]
+
+style の対象にはテキストノードの id を使える。
+[fixture: venn/spec-venn-ed0d6591]
+
+style 値は一つの引用文字列か、
+識別子、数値、十六進色、rgb、rgba の空でないトークン列である。
+[fixture: venn/db-form-style-documented-properties]
+[fixture: venn/db-form-style-hex]
+[fixture: venn/db-form-style-id]
+[fixture: venn/db-form-style-multiple]
+[fixture: venn/db-form-style-number]
+[fixture: venn/db-form-style-rgb]
+[fixture: venn/db-form-style-rgba]
+[fixture: venn/db-form-style-string]
+[fixture: venn/db-form-style-tokens]
+[fixture: venn/lex-style-empty]
+
+Db は別々の非引用値トークンを一つのスペースで結び、
+表記の間に空白がなくても同じ処理をする。
+[fixture: venn/db-form-style-tokens]
+[fixture: venn/db-style-adjacent-numeric-tokens]
+[fixture: venn/db-grid-spaces-style-value]
+[fixture: venn/db-grid-tab-style-value]
+
+引用した style 値は一組の外側の引用符を失い、
+その内側の空白を保つ。
+[fixture: venn/db-form-style-string]
+[fixture: venn/db-quoted-padding]
+[fixture: venn/lex-style-spaces]
+
+引用した style 文字列の後に別の値トークンは置けない。
+[fixture: venn/gram-style-string-followed-token]
+[fixture: venn/gram-style-empty-string-followed-token]
+
+rgb トークンは文字の大小と成分の表記を保ち、
+数値の範囲や小数点の位置を検査しない。
+[fixture: venn/db-style-rgb-uppercase]
+[fixture: venn/db-style-rgb-dot-components]
+
+rgb や rgba の成分が空であるか負号を含むと、
+色のトークンは成立しない。
+[fixture: venn/gram-style-rgb-empty-component]
+[fixture: venn/gram-style-rgba-empty-component]
+[fixture: venn/gram-style-rgb-negative-component]
+[fixture: venn/gram-style-rgba-negative-component]
+
+rgb と rgba のトークン内の U+2028、U+2029、NBSP は、
+保持する値に残る。
+[fixture: venn/db-style-rgb-line-separator]
+[fixture: venn/db-style-rgb-paragraph-separator]
+[fixture: venn/db-style-rgb-nbsp]
+[fixture: venn/db-style-rgba-line-separator]
+[fixture: venn/db-style-rgba-paragraph-separator]
+[fixture: venn/db-style-rgba-nbsp]
+
+色のトークン内の CR と CRLF は LF となり、
+そのトークンの内側に残る。
+[fixture: venn/db-style-rgb-cr]
+[fixture: venn/db-style-rgb-crlf]
+[fixture: venn/db-style-rgba-crlf]
+
+rgb や rgba の内側のコメント行を除くと、
+色のトークンに一つの LF が残る。
+[fixture: venn/db-style-rgb-comment-line]
+[fixture: venn/db-style-rgba-comment-line]
+
+rgb や rgba の内側の閉じた directive を除くと、
+前後の色の断片が結合する。
+[fixture: venn/db-style-rgb-directive]
+[fixture: venn/db-style-rgba-directive]
+
+十六進色のトークンは三桁から八桁の十六進数字を含む。
+[fixture: venn/db-style-hex-three]
+[fixture: venn/db-style-hex-four]
+[fixture: venn/db-style-hex-five]
+[fixture: venn/db-style-hex-six]
+[fixture: venn/db-style-hex-seven]
+[fixture: venn/db-style-hex-eight]
+[fixture: venn/gram-style-hex-short]
+
+九桁目の数字や後続の識別子は別のトークンとなり、
+一つのスペースで結ばれる。
+[fixture: venn/db-style-hex-trailing-numeric-token]
+[fixture: venn/db-style-hex-trailing-identifier]
+
+閉じた directive は十六進色の断片を一つのトークンに結合できる。
+[fixture: venn/db-style-hex-directive]
+
+十六進色の断片間の行区切り、コメント行、CRLF は、
+それらをまたぐ一つの十六進色の値を作れず拒否される。
+[fixture: venn/gram-style-hex-line-separator]
+[fixture: venn/gram-style-hex-comment-line]
+[fixture: venn/gram-style-hex-crlf]
+
+style キー `__proto__` への文字列の代入は自分のプロパティを作らず、
+`constructor`、`hasOwnProperty`、`toString` は自分のプロパティとなり、
+集合とテキストではこれらの名前は普通の識別子となる。
+[fixture: venn/db-prototype-ids]
+[fixture: venn/db-style-prototype-keys]
+
+プロパティや値の欠落、プロパティ列の末尾のカンマ、
+単一引用符の style 値、引用した style キーは拒否される。
+[fixture: venn/gram-extra-style-no-target]
+[fixture: venn/gram-extra-style-quoted-key]
+[fixture: venn/gram-style-empty]
+[fixture: venn/gram-style-missing-value]
+[fixture: venn/gram-style-single-quoted]
+[fixture: venn/gram-style-trailing-comma]
+
+`title` は最初の空白区切りの後の文字を引用符や追加の前後の空白ごと保ち、
+最後のタイトルを使い、
+frontmatter の初期タイトルは文で上書きできる。
+[fixture: venn/db-frontmatter-title]
+[fixture: venn/db-frontmatter-title-overridden]
+[fixture: venn/db-title-last]
+[fixture: venn/db-title-on-header]
+[fixture: venn/db-title-only-whitespace]
+[fixture: venn/db-title-padding]
+[fixture: venn/db-title-quotes]
+[fixture: venn/lex-title-spaces]
+
+一つの改行やその後で除去されるコメント行は `title` と値を区切れるが、
+追加の空行や directive 行は無効なタイトルを残し、
+入力末尾でタイトルの文字がない場合も拒否される。
+[fixture: venn/db-title-value-next-line]
+[fixture: venn/gram-title-empty]
+[fixture: venn/gram-title-space-end]
+[fixture: venn/lex-gap-title-blank]
+[fixture: venn/lex-gap-title-comment]
+[fixture: venn/lex-gap-title-directive]
+[fixture: venn/lex-gap-title-lf]
+
+venn にはアクセシビリティ行、アクセシビリティブロック、
+`@{ ... }` データブロックの生成規則がなく、
+frontmatter のアクセシビリティキーも共通 getter を設定しない。
+[fixture: venn/db-frontmatter-accessibility]
+[fixture: venn/gram-acc-block]
+[fixture: venn/gram-acc-descr]
+[fixture: venn/gram-acc-title]
+[fixture: venn/gram-accdescr-blank]
+[fixture: venn/gram-accdescr-comment]
+[fixture: venn/gram-accdescr-directive]
+[fixture: venn/gram-accdescr-end]
+[fixture: venn/gram-accdescr-statement]
+[fixture: venn/gram-acctitle-blank]
+[fixture: venn/gram-acctitle-comment]
+[fixture: venn/gram-acctitle-directive]
+[fixture: venn/gram-acctitle-end]
+[fixture: venn/gram-acctitle-statement]
+[fixture: venn/gram-data-block]
+[fixture: venn/gram-empty-acc-block]
+[fixture: venn/gram-unclosed-acc-block]
+[fixture: venn/lex-empty-description-after-set]
+
+対応する securityLevel と venn の描画設定は要約を変えず、
+未対応の `securityLevel` では HTML ラベルが有効なとき、
+共通タイトルの `<`、`>`、`=` を置換し、
+ルートの `htmlLabels` を `flowchart.htmlLabels` より優先する。
+[fixture: venn/config-security-other]
+[fixture: venn/config-security-other-flowchart-false]
+[fixture: venn/config-security-other-html-false]
+[fixture: venn/config-security-other-root-false-flowchart-true]
+[fixture: venn/config-security-other-root-true-flowchart-false]
+[fixture: venn/db-markup]
+
+検出は前処理後の先頭の小文字 `venn-beta` を正確に要求するが、
+接尾辞との境界は検査せず、
+パーサーは空の文書やヘッダー行の完全な文を受け入れ、
+追加のヘッダーや通常の接尾辞は拒否する。
+[fixture: venn/db-same-line-statements]
+[fixture: venn/header-capitalized]
+[fixture: venn/header-comment-glued]
+[fixture: venn/header-dash-suffix]
+[fixture: venn/header-digit-suffix]
+[fixture: venn/header-directive-glued]
+[fixture: venn/header-directive-inside]
+[fixture: venn/header-mixed]
+[fixture: venn/header-nonascii-suffix]
+[fixture: venn/header-only]
+[fixture: venn/header-only-lf]
+[fixture: venn/header-semicolon]
+[fixture: venn/header-semicolon-spaced]
+[fixture: venn/header-statement-glued]
+[fixture: venn/header-statement-on-line]
+[fixture: venn/header-statement-tab]
+[fixture: venn/header-twice]
+[fixture: venn/header-twice-same-line]
+[fixture: venn/header-underscore-suffix]
+[fixture: venn/header-upper]
+[fixture: venn/header-word-suffix]
+
+先頭の空行、空白、コメント、directive、frontmatter、
+裸のパーセント対と空の波括弧のパーセント行はヘッダーの前に置けるが、
+ハッシュ、単独のパーセント、セミコロン、
+図の文がその前にあると検出できない。
+[fixture: venn/header-before-bare-percent]
+[fixture: venn/header-before-blank]
+[fixture: venn/header-before-comment]
+[fixture: venn/header-before-directive]
+[fixture: venn/header-before-empty-braces]
+[fixture: venn/header-before-frontmatter]
+[fixture: venn/header-before-frontmatter-comment]
+[fixture: venn/header-before-hash]
+[fixture: venn/header-before-percent]
+[fixture: venn/header-before-semicolon]
+[fixture: venn/header-before-spaces]
+[fixture: venn/header-before-statement]
+
+文のキーワードは大文字小文字を区別しないが、
+文字、数字、下線、ダッシュ、非 ASCII の接尾辞を付けた形式は文にならず、
+タイトル以外のキーワードと最初の引数の間の改行、
+空行、コメント行、directive 行は拒否される。
+[fixture: venn/lex-gap-set-blank]
+[fixture: venn/lex-gap-set-comment]
+[fixture: venn/lex-gap-set-directive]
+[fixture: venn/lex-gap-set-lf]
+[fixture: venn/lex-gap-style-blank]
+[fixture: venn/lex-gap-style-comment]
+[fixture: venn/lex-gap-style-directive]
+[fixture: venn/lex-gap-style-lf]
+[fixture: venn/lex-gap-text-blank]
+[fixture: venn/lex-gap-text-comment]
+[fixture: venn/lex-gap-text-directive]
+[fixture: venn/lex-gap-text-lf]
+[fixture: venn/lex-gap-union-blank]
+[fixture: venn/lex-gap-union-comment]
+[fixture: venn/lex-gap-union-directive]
+[fixture: venn/lex-gap-union-lf]
+[fixture: venn/lex-keyword-set-dash]
+[fixture: venn/lex-keyword-set-digit]
+[fixture: venn/lex-keyword-set-letter]
+[fixture: venn/lex-keyword-set-nonascii]
+[fixture: venn/lex-keyword-set-underscore]
+[fixture: venn/lex-keyword-set-upper]
+[fixture: venn/lex-keyword-style-dash]
+[fixture: venn/lex-keyword-style-digit]
+[fixture: venn/lex-keyword-style-letter]
+[fixture: venn/lex-keyword-style-nonascii]
+[fixture: venn/lex-keyword-style-underscore]
+[fixture: venn/lex-keyword-style-upper]
+[fixture: venn/lex-keyword-text-dash]
+[fixture: venn/lex-keyword-text-digit]
+[fixture: venn/lex-keyword-text-letter]
+[fixture: venn/lex-keyword-text-nonascii]
+[fixture: venn/lex-keyword-text-underscore]
+[fixture: venn/lex-keyword-text-upper]
+[fixture: venn/lex-keyword-title-dash]
+[fixture: venn/lex-keyword-title-digit]
+[fixture: venn/lex-keyword-title-letter]
+[fixture: venn/lex-keyword-title-nonascii]
+[fixture: venn/lex-keyword-title-underscore]
+[fixture: venn/lex-keyword-title-upper]
+[fixture: venn/lex-keyword-union-dash]
+[fixture: venn/lex-keyword-union-digit]
+[fixture: venn/lex-keyword-union-letter]
+[fixture: venn/lex-keyword-union-nonascii]
+[fixture: venn/lex-keyword-union-underscore]
+[fixture: venn/lex-keyword-union-upper]
+
+予約語 `venn-beta`、`set`、`union`、`text`、`style` は、
+引用しない識別子、テキスト id、style キー、style 値として拒否されるが、
+引用すると識別子となり、
+後続の空白のない `title` も識別子となる。
+[fixture: venn/lex-reserved-set-identifier]
+[fixture: venn/lex-reserved-set-quoted-identifier]
+[fixture: venn/lex-reserved-set-style-key]
+[fixture: venn/lex-reserved-set-style-value]
+[fixture: venn/lex-reserved-set-text-id]
+[fixture: venn/lex-reserved-style-identifier]
+[fixture: venn/lex-reserved-style-quoted-identifier]
+[fixture: venn/lex-reserved-style-style-key]
+[fixture: venn/lex-reserved-style-style-value]
+[fixture: venn/lex-reserved-style-text-id]
+[fixture: venn/lex-reserved-text-identifier]
+[fixture: venn/lex-reserved-text-quoted-identifier]
+[fixture: venn/lex-reserved-text-style-key]
+[fixture: venn/lex-reserved-text-style-value]
+[fixture: venn/lex-reserved-text-text-id]
+[fixture: venn/lex-reserved-title-identifier]
+[fixture: venn/lex-reserved-title-quoted-identifier]
+[fixture: venn/lex-reserved-title-style-key]
+[fixture: venn/lex-reserved-title-style-value]
+[fixture: venn/lex-reserved-title-text-id]
+[fixture: venn/lex-reserved-union-identifier]
+[fixture: venn/lex-reserved-union-quoted-identifier]
+[fixture: venn/lex-reserved-union-style-key]
+[fixture: venn/lex-reserved-union-style-value]
+[fixture: venn/lex-reserved-union-text-id]
+[fixture: venn/lex-reserved-venn-beta-identifier]
+[fixture: venn/lex-reserved-venn-beta-quoted-identifier]
+[fixture: venn/lex-reserved-venn-beta-style-key]
+[fixture: venn/lex-reserved-venn-beta-style-value]
+[fixture: venn/lex-reserved-venn-beta-text-id]
+
+lexer の空白はスペースとタブで、
+CR と CRLF は LF 区切りとなり、
+先頭の JavaScript の空白は検出前に除去できるが、
+文書内の BOM、NBSP、U+3000、U+2028、U+2029、
+垂直タブ、改ページ、U+0085 は同じ区切りとして使えない。
+[fixture: venn/lex-bom-header-after]
+[fixture: venn/lex-bom-header-before]
+[fixture: venn/lex-bom-line-end]
+[fixture: venn/lex-bom-line-start]
+[fixture: venn/lex-bom-text-end]
+[fixture: venn/lex-bom-whitespace-line]
+[fixture: venn/lex-cr-header-after]
+[fixture: venn/lex-cr-header-before]
+[fixture: venn/lex-cr-line-end]
+[fixture: venn/lex-cr-line-start]
+[fixture: venn/lex-cr-text-end]
+[fixture: venn/lex-cr-whitespace-line]
+[fixture: venn/lex-crlf-header-after]
+[fixture: venn/lex-crlf-header-before]
+[fixture: venn/lex-crlf-line-end]
+[fixture: venn/lex-crlf-text-end]
+[fixture: venn/lex-crlf-whitespace-line]
+[fixture: venn/lex-ff-header-after]
+[fixture: venn/lex-ff-header-before]
+[fixture: venn/lex-ff-line-end]
+[fixture: venn/lex-ff-line-start]
+[fixture: venn/lex-ff-text-end]
+[fixture: venn/lex-ff-whitespace-line]
+[fixture: venn/lex-ideographic-header-after]
+[fixture: venn/lex-ideographic-header-before]
+[fixture: venn/lex-ideographic-line-end]
+[fixture: venn/lex-ideographic-line-start]
+[fixture: venn/lex-ideographic-text-end]
+[fixture: venn/lex-ideographic-whitespace-line]
+[fixture: venn/lex-ls-header-after]
+[fixture: venn/lex-ls-header-before]
+[fixture: venn/lex-ls-line-end]
+[fixture: venn/lex-ls-line-start]
+[fixture: venn/lex-ls-text-end]
+[fixture: venn/lex-ls-whitespace-line]
+[fixture: venn/lex-nbsp-header-after]
+[fixture: venn/lex-nbsp-header-before]
+[fixture: venn/lex-nbsp-line-end]
+[fixture: venn/lex-nbsp-line-start]
+[fixture: venn/lex-nbsp-text-end]
+[fixture: venn/lex-nbsp-whitespace-line]
+[fixture: venn/lex-nel-header-after]
+[fixture: venn/lex-nel-header-before]
+[fixture: venn/lex-nel-line-end]
+[fixture: venn/lex-nel-line-start]
+[fixture: venn/lex-nel-text-end]
+[fixture: venn/lex-nel-whitespace-line]
+[fixture: venn/lex-ps-header-after]
+[fixture: venn/lex-ps-header-before]
+[fixture: venn/lex-ps-line-end]
+[fixture: venn/lex-ps-line-start]
+[fixture: venn/lex-ps-text-end]
+[fixture: venn/lex-ps-whitespace-line]
+[fixture: venn/lex-tab-header-before]
+[fixture: venn/lex-tab-line-end]
+[fixture: venn/lex-tab-line-start]
+[fixture: venn/lex-tab-text-end]
+[fixture: venn/lex-tab-whitespace-line]
+[fixture: venn/lex-vt-header-after]
+[fixture: venn/lex-vt-header-before]
+[fixture: venn/lex-vt-line-end]
+[fixture: venn/lex-vt-line-start]
+[fixture: venn/lex-vt-text-end]
+[fixture: venn/lex-vt-whitespace-line]
+
+引用した識別子内の空白は先頭や末尾のものも識別子に残り、
+CR と CRLF だけ LF に正規化される。
+[fixture: venn/lex-bom-quoted-end]
+[fixture: venn/lex-bom-quoted-start]
+[fixture: venn/lex-bom-quoted-value]
+[fixture: venn/lex-cr-quoted-end]
+[fixture: venn/lex-cr-quoted-start]
+[fixture: venn/lex-cr-quoted-value]
+[fixture: venn/lex-crlf-quoted-end]
+[fixture: venn/lex-crlf-quoted-start]
+[fixture: venn/lex-crlf-quoted-value]
+[fixture: venn/lex-ff-quoted-end]
+[fixture: venn/lex-ff-quoted-start]
+[fixture: venn/lex-ff-quoted-value]
+[fixture: venn/lex-ideographic-quoted-end]
+[fixture: venn/lex-ideographic-quoted-start]
+[fixture: venn/lex-ideographic-quoted-value]
+[fixture: venn/lex-ls-quoted-end]
+[fixture: venn/lex-ls-quoted-start]
+[fixture: venn/lex-ls-quoted-value]
+[fixture: venn/lex-nbsp-quoted-end]
+[fixture: venn/lex-nbsp-quoted-start]
+[fixture: venn/lex-nbsp-quoted-value]
+[fixture: venn/lex-nel-quoted-end]
+[fixture: venn/lex-nel-quoted-start]
+[fixture: venn/lex-nel-quoted-value]
+[fixture: venn/lex-ps-quoted-end]
+[fixture: venn/lex-ps-quoted-start]
+[fixture: venn/lex-ps-quoted-value]
+[fixture: venn/lex-tab-quoted-end]
+[fixture: venn/lex-tab-quoted-start]
+[fixture: venn/lex-tab-quoted-value]
+[fixture: venn/lex-vt-quoted-end]
+[fixture: venn/lex-vt-quoted-start]
+[fixture: venn/lex-vt-quoted-value]
+
+前処理後に完了した集合、重なり、text、style の文の後に残る
+` ;`、`;`、`;;`、`; ;` の接尾辞は拒否される。
+[fixture: venn/lex-after-set-semicolon-spaced]
+[fixture: venn/lex-after-set-semicolon]
+[fixture: venn/lex-after-set-double-semicolon]
+[fixture: venn/gram-after-set-spaced-semicolons]
+[fixture: venn/lex-after-set-label-semicolon-spaced]
+[fixture: venn/lex-after-set-label-semicolon]
+[fixture: venn/lex-after-set-label-double-semicolon]
+[fixture: venn/gram-after-set-label-spaced-semicolons]
+[fixture: venn/lex-after-set-size-semicolon-spaced]
+[fixture: venn/lex-after-set-size-semicolon]
+[fixture: venn/lex-after-set-size-double-semicolon]
+[fixture: venn/gram-after-set-size-spaced-semicolons]
+[fixture: venn/gram-after-set-label-size-semicolon-spaced]
+[fixture: venn/gram-after-set-label-size-semicolon]
+[fixture: venn/gram-after-set-label-size-double-semicolon]
+[fixture: venn/gram-after-set-label-size-spaced-semicolons]
+[fixture: venn/lex-after-union-semicolon-spaced]
+[fixture: venn/lex-after-union-semicolon]
+[fixture: venn/lex-after-union-double-semicolon]
+[fixture: venn/gram-after-union-spaced-semicolons]
+[fixture: venn/gram-after-union-label-semicolon-spaced]
+[fixture: venn/gram-after-union-label-semicolon]
+[fixture: venn/gram-after-union-label-double-semicolon]
+[fixture: venn/gram-after-union-label-spaced-semicolons]
+[fixture: venn/gram-after-union-size-semicolon-spaced]
+[fixture: venn/gram-after-union-size-semicolon]
+[fixture: venn/gram-after-union-size-double-semicolon]
+[fixture: venn/gram-after-union-size-spaced-semicolons]
+[fixture: venn/lex-after-union-label-size-semicolon-spaced]
+[fixture: venn/lex-after-union-label-size-semicolon]
+[fixture: venn/lex-after-union-label-size-double-semicolon]
+[fixture: venn/gram-after-union-label-size-spaced-semicolons]
+[fixture: venn/lex-after-text-semicolon-spaced]
+[fixture: venn/lex-after-text-semicolon]
+[fixture: venn/lex-after-text-double-semicolon]
+[fixture: venn/gram-after-text-id-spaced-semicolons]
+[fixture: venn/lex-after-text-string-semicolon-spaced]
+[fixture: venn/lex-after-text-string-semicolon]
+[fixture: venn/lex-after-text-string-double-semicolon]
+[fixture: venn/gram-after-text-string-spaced-semicolons]
+[fixture: venn/lex-after-text-number-semicolon-spaced]
+[fixture: venn/lex-after-text-number-semicolon]
+[fixture: venn/lex-after-text-number-double-semicolon]
+[fixture: venn/gram-after-text-number-spaced-semicolons]
+[fixture: venn/lex-after-text-label-semicolon-spaced]
+[fixture: venn/lex-after-text-label-semicolon]
+[fixture: venn/lex-after-text-label-double-semicolon]
+[fixture: venn/gram-after-text-id-label-spaced-semicolons]
+[fixture: venn/gram-after-text-string-label-semicolon-spaced]
+[fixture: venn/gram-after-text-string-label-semicolon]
+[fixture: venn/gram-after-text-string-label-double-semicolon]
+[fixture: venn/gram-after-text-string-label-spaced-semicolons]
+[fixture: venn/lex-after-indent-semicolon-spaced]
+[fixture: venn/lex-after-indent-semicolon]
+[fixture: venn/lex-after-indent-double-semicolon]
+[fixture: venn/gram-after-indent-id-spaced-semicolons]
+[fixture: venn/gram-after-indent-string-semicolon-spaced]
+[fixture: venn/gram-after-indent-string-semicolon]
+[fixture: venn/gram-after-indent-string-double-semicolon]
+[fixture: venn/gram-after-indent-string-spaced-semicolons]
+[fixture: venn/gram-after-indent-number-semicolon-spaced]
+[fixture: venn/gram-after-indent-number-semicolon]
+[fixture: venn/gram-after-indent-number-double-semicolon]
+[fixture: venn/gram-after-indent-number-spaced-semicolons]
+[fixture: venn/gram-after-indent-id-label-semicolon-spaced]
+[fixture: venn/gram-after-indent-id-label-semicolon]
+[fixture: venn/gram-after-indent-id-label-double-semicolon]
+[fixture: venn/gram-after-indent-id-label-spaced-semicolons]
+[fixture: venn/gram-after-indent-string-label-semicolon-spaced]
+[fixture: venn/gram-after-indent-string-label-semicolon]
+[fixture: venn/gram-after-indent-string-label-double-semicolon]
+[fixture: venn/gram-after-indent-string-label-spaced-semicolons]
+[fixture: venn/lex-after-style-semicolon-spaced]
+[fixture: venn/lex-after-style-semicolon]
+[fixture: venn/lex-after-style-double-semicolon]
+[fixture: venn/gram-after-style-spaced-semicolons]
+[fixture: venn/lex-after-style-string-semicolon-spaced]
+[fixture: venn/lex-after-style-string-semicolon]
+[fixture: venn/lex-after-style-string-double-semicolon]
+[fixture: venn/gram-after-style-string-spaced-semicolons]
+[fixture: venn/gram-after-style-list-semicolon-spaced]
+[fixture: venn/gram-after-style-list-semicolon]
+[fixture: venn/gram-after-style-list-double-semicolon]
+[fixture: venn/gram-after-style-list-spaced-semicolons]
+[fixture: venn/gram-after-style-hex-double-semicolon]
+[fixture: venn/gram-after-style-hex-spaced-semicolons]
+
+追加のコロンの後にスペースしかない場合は、
+必要な引数を与えず拒否される。
+[fixture: venn/gram-after-set-colon-space]
+[fixture: venn/gram-after-set-label-colon-space]
+[fixture: venn/gram-after-set-size-colon-space]
+[fixture: venn/gram-after-set-label-size-colon-space]
+[fixture: venn/gram-after-union-colon-space]
+[fixture: venn/gram-after-union-label-colon-space]
+[fixture: venn/gram-after-union-size-colon-space]
+[fixture: venn/gram-after-union-label-size-colon-space]
+[fixture: venn/gram-after-text-id-colon-space]
+[fixture: venn/gram-after-text-string-colon-space]
+[fixture: venn/gram-after-text-number-colon-space]
+[fixture: venn/gram-after-text-id-label-colon-space]
+[fixture: venn/gram-after-text-string-label-colon-space]
+[fixture: venn/gram-after-indent-id-colon-space]
+[fixture: venn/gram-after-indent-string-colon-space]
+[fixture: venn/gram-after-indent-number-colon-space]
+[fixture: venn/gram-after-indent-id-label-colon-space]
+[fixture: venn/gram-after-indent-string-label-colon-space]
+[fixture: venn/gram-after-style-colon-space]
+[fixture: venn/gram-after-style-string-colon-space]
+[fixture: venn/gram-after-style-list-colon-space]
+
+タイトル以外の完了した文は、
+末尾のスペース、タブ、空行、CRLF、EOF を受け入れ、
+Db のフィールドを変えない。
+[fixture: venn/db-after-set-space]
+[fixture: venn/lex-after-set-tab]
+[fixture: venn/db-after-set-blank]
+[fixture: venn/db-after-set-crlf]
+[fixture: venn/db-set-eof]
+[fixture: venn/db-after-set-label-space]
+[fixture: venn/lex-after-set-label-tab]
+[fixture: venn/db-after-set-label-blank]
+[fixture: venn/db-after-set-label-crlf]
+[fixture: venn/db-set-label-eof]
+[fixture: venn/db-after-set-size-space]
+[fixture: venn/lex-after-set-size-tab]
+[fixture: venn/db-after-set-size-blank]
+[fixture: venn/db-after-set-size-crlf]
+[fixture: venn/db-set-size-eof]
+[fixture: venn/db-after-set-label-size-space]
+[fixture: venn/db-after-set-label-size-tab]
+[fixture: venn/db-after-set-label-size-blank]
+[fixture: venn/db-after-set-label-size-crlf]
+[fixture: venn/db-set-label-size-eof]
+[fixture: venn/db-after-union-space]
+[fixture: venn/lex-after-union-tab]
+[fixture: venn/db-after-union-blank]
+[fixture: venn/db-after-union-crlf]
+[fixture: venn/db-union-eof]
+[fixture: venn/db-after-union-label-space]
+[fixture: venn/db-after-union-label-tab]
+[fixture: venn/db-after-union-label-blank]
+[fixture: venn/db-after-union-label-crlf]
+[fixture: venn/db-union-label-eof]
+[fixture: venn/db-after-union-size-space]
+[fixture: venn/db-after-union-size-tab]
+[fixture: venn/db-after-union-size-blank]
+[fixture: venn/db-after-union-size-crlf]
+[fixture: venn/db-union-size-eof]
+[fixture: venn/db-after-union-label-size-space]
+[fixture: venn/lex-after-union-label-size-tab]
+[fixture: venn/db-after-union-label-size-blank]
+[fixture: venn/db-after-union-label-size-crlf]
+[fixture: venn/db-union-label-size-eof]
+[fixture: venn/db-after-text-id-space]
+[fixture: venn/lex-after-text-tab]
+[fixture: venn/db-after-text-id-blank]
+[fixture: venn/db-after-text-id-crlf]
+[fixture: venn/db-text-id-eof]
+[fixture: venn/db-after-text-string-space]
+[fixture: venn/lex-after-text-string-tab]
+[fixture: venn/db-after-text-string-blank]
+[fixture: venn/db-after-text-string-crlf]
+[fixture: venn/db-text-string-eof]
+[fixture: venn/db-after-text-number-space]
+[fixture: venn/lex-after-text-number-tab]
+[fixture: venn/db-after-text-number-blank]
+[fixture: venn/db-after-text-number-crlf]
+[fixture: venn/db-text-number-eof]
+[fixture: venn/db-after-text-id-label-space]
+[fixture: venn/lex-after-text-label-tab]
+[fixture: venn/db-after-text-id-label-blank]
+[fixture: venn/db-after-text-id-label-crlf]
+[fixture: venn/db-text-id-label-eof]
+[fixture: venn/db-after-text-string-label-space]
+[fixture: venn/db-after-text-string-label-tab]
+[fixture: venn/db-after-text-string-label-blank]
+[fixture: venn/db-after-text-string-label-crlf]
+[fixture: venn/db-text-string-label-eof]
+[fixture: venn/db-after-indent-id-space]
+[fixture: venn/lex-after-indent-tab]
+[fixture: venn/db-after-indent-id-blank]
+[fixture: venn/db-after-indent-id-crlf]
+[fixture: venn/db-indent-id-eof]
+[fixture: venn/db-after-indent-string-space]
+[fixture: venn/db-after-indent-string-tab]
+[fixture: venn/db-after-indent-string-blank]
+[fixture: venn/db-after-indent-string-crlf]
+[fixture: venn/db-indent-string-eof]
+[fixture: venn/db-after-indent-number-space]
+[fixture: venn/db-after-indent-number-tab]
+[fixture: venn/db-after-indent-number-blank]
+[fixture: venn/db-after-indent-number-crlf]
+[fixture: venn/db-indent-number-eof]
+[fixture: venn/db-after-indent-id-label-space]
+[fixture: venn/db-after-indent-id-label-tab]
+[fixture: venn/db-after-indent-id-label-blank]
+[fixture: venn/db-after-indent-id-label-crlf]
+[fixture: venn/db-indent-id-label-eof]
+[fixture: venn/db-after-indent-string-label-space]
+[fixture: venn/db-after-indent-string-label-tab]
+[fixture: venn/db-after-indent-string-label-blank]
+[fixture: venn/db-after-indent-string-label-crlf]
+[fixture: venn/db-indent-string-label-eof]
+[fixture: venn/db-after-style-space]
+[fixture: venn/lex-after-style-tab]
+[fixture: venn/db-after-style-blank]
+[fixture: venn/db-after-style-crlf]
+[fixture: venn/db-style-eof]
+[fixture: venn/db-after-style-string-space]
+[fixture: venn/lex-after-style-string-tab]
+[fixture: venn/db-after-style-string-blank]
+[fixture: venn/db-after-style-string-crlf]
+[fixture: venn/db-style-string-eof]
+[fixture: venn/db-after-style-list-space]
+[fixture: venn/db-after-style-list-tab]
+[fixture: venn/db-after-style-list-blank]
+[fixture: venn/db-after-style-list-crlf]
+[fixture: venn/db-style-list-eof]
+[fixture: venn/lex-after-indent-spaces]
+[fixture: venn/lex-after-set-label-spaces]
+[fixture: venn/lex-after-set-size-spaces]
+[fixture: venn/lex-after-set-spaces]
+[fixture: venn/lex-after-style-spaces]
+[fixture: venn/lex-after-style-string-spaces]
+[fixture: venn/lex-after-text-label-spaces]
+[fixture: venn/lex-after-text-number-spaces]
+[fixture: venn/lex-after-text-spaces]
+[fixture: venn/lex-after-text-string-spaces]
+[fixture: venn/lex-after-union-label-size-spaces]
+[fixture: venn/lex-after-union-spaces]
+
+完了した文からスペースで区切ったパーセント対コメントは、
+その文を変えない。
+[fixture: venn/lex-after-set-comment]
+[fixture: venn/lex-after-set-label-comment]
+[fixture: venn/lex-after-set-size-comment]
+[fixture: venn/db-after-set-label-size-comment]
+[fixture: venn/lex-after-union-comment]
+[fixture: venn/db-after-union-label-comment]
+[fixture: venn/db-after-union-size-comment]
+[fixture: venn/lex-after-union-label-size-comment]
+[fixture: venn/lex-after-text-comment]
+[fixture: venn/lex-after-text-string-comment]
+[fixture: venn/lex-after-text-number-comment]
+[fixture: venn/lex-after-text-label-comment]
+[fixture: venn/db-after-text-string-label-comment]
+[fixture: venn/lex-after-indent-comment]
+[fixture: venn/db-after-indent-string-comment]
+[fixture: venn/db-after-indent-number-comment]
+[fixture: venn/db-after-indent-id-label-comment]
+[fixture: venn/db-after-indent-string-label-comment]
+[fixture: venn/lex-after-style-comment]
+[fixture: venn/lex-after-style-string-comment]
+[fixture: venn/db-after-style-list-comment]
+
+完了した文の後の閉じた directive や、
+オブジェクト引数の閉じない directive は、
+その末尾まで除かれてもその文を変えない。
+[fixture: venn/lex-after-set-directive]
+[fixture: venn/lex-after-set-directive-unclosed]
+[fixture: venn/lex-after-set-label-directive]
+[fixture: venn/lex-after-set-label-directive-unclosed]
+[fixture: venn/lex-after-set-size-directive]
+[fixture: venn/lex-after-set-size-directive-unclosed]
+[fixture: venn/db-after-set-label-size-directive]
+[fixture: venn/db-after-set-label-size-unclosed-directive]
+[fixture: venn/lex-after-union-directive]
+[fixture: venn/lex-after-union-directive-unclosed]
+[fixture: venn/db-after-union-label-directive]
+[fixture: venn/db-after-union-label-unclosed-directive]
+[fixture: venn/db-after-union-size-directive]
+[fixture: venn/db-after-union-size-unclosed-directive]
+[fixture: venn/lex-after-union-label-size-directive]
+[fixture: venn/lex-after-union-label-size-directive-unclosed]
+[fixture: venn/lex-after-text-directive]
+[fixture: venn/lex-after-text-directive-unclosed]
+[fixture: venn/lex-after-text-string-directive]
+[fixture: venn/lex-after-text-string-directive-unclosed]
+[fixture: venn/lex-after-text-number-directive]
+[fixture: venn/lex-after-text-number-directive-unclosed]
+[fixture: venn/lex-after-text-label-directive]
+[fixture: venn/lex-after-text-label-directive-unclosed]
+[fixture: venn/db-after-text-string-label-directive]
+[fixture: venn/db-after-text-string-label-unclosed-directive]
+[fixture: venn/lex-after-indent-directive]
+[fixture: venn/lex-after-indent-directive-unclosed]
+[fixture: venn/db-after-indent-string-directive]
+[fixture: venn/db-after-indent-string-unclosed-directive]
+[fixture: venn/db-after-indent-number-directive]
+[fixture: venn/db-after-indent-number-unclosed-directive]
+[fixture: venn/db-after-indent-id-label-directive]
+[fixture: venn/db-after-indent-id-label-unclosed-directive]
+[fixture: venn/db-after-indent-string-label-directive]
+[fixture: venn/db-after-indent-string-label-unclosed-directive]
+[fixture: venn/lex-after-style-directive]
+[fixture: venn/lex-after-style-directive-unclosed]
+[fixture: venn/lex-after-style-string-directive]
+[fixture: venn/lex-after-style-string-directive-unclosed]
+[fixture: venn/db-after-style-list-directive]
+[fixture: venn/db-after-style-list-unclosed-directive]
+[fixture: venn/lex-after-indent-directive-word-unclosed]
+[fixture: venn/lex-after-set-directive-word-unclosed]
+[fixture: venn/lex-after-set-label-directive-word-unclosed]
+[fixture: venn/lex-after-set-size-directive-word-unclosed]
+[fixture: venn/lex-after-style-directive-word-unclosed]
+[fixture: venn/lex-after-style-string-directive-word-unclosed]
+[fixture: venn/lex-after-text-directive-word-unclosed]
+[fixture: venn/lex-after-text-label-directive-word-unclosed]
+[fixture: venn/lex-after-text-number-directive-word-unclosed]
+[fixture: venn/lex-after-text-string-directive-word-unclosed]
+[fixture: venn/lex-after-union-directive-word-unclosed]
+[fixture: venn/lex-after-union-label-size-directive-word-unclosed]
+
+タイトル以外の文の後の NBSP と BOM は、
+末尾の lexer の空白にはならず拒否される。
+[fixture: venn/lex-after-indent-bom]
+[fixture: venn/lex-after-indent-nbsp]
+[fixture: venn/lex-after-set-bom]
+[fixture: venn/lex-after-set-label-bom]
+[fixture: venn/lex-after-set-label-nbsp]
+[fixture: venn/lex-after-set-nbsp]
+[fixture: venn/lex-after-set-size-bom]
+[fixture: venn/lex-after-set-size-nbsp]
+[fixture: venn/lex-after-style-bom]
+[fixture: venn/lex-after-style-nbsp]
+[fixture: venn/lex-after-style-string-bom]
+[fixture: venn/lex-after-style-string-nbsp]
+[fixture: venn/lex-after-text-bom]
+[fixture: venn/lex-after-text-label-bom]
+[fixture: venn/lex-after-text-label-nbsp]
+[fixture: venn/lex-after-text-nbsp]
+[fixture: venn/lex-after-text-number-bom]
+[fixture: venn/lex-after-text-number-nbsp]
+[fixture: venn/lex-after-text-string-bom]
+[fixture: venn/lex-after-text-string-nbsp]
+[fixture: venn/lex-after-union-bom]
+[fixture: venn/lex-after-union-label-size-bom]
+[fixture: venn/lex-after-union-label-size-nbsp]
+[fixture: venn/lex-after-union-nbsp]
+
+接続したパーセント対コメントは引用しない集合識別子、サイズ、
+数値のテキスト id の末尾を取り、
+不完全な文を拒否させることがあるが、
+テキスト id、style 値、括弧ラベルは、
+そのコメントトークンを試す前に完了できる。
+[fixture: venn/lex-after-indent-comment-glued]
+[fixture: venn/lex-after-set-comment-glued]
+[fixture: venn/lex-after-set-label-comment-glued]
+[fixture: venn/lex-after-set-size-comment-glued]
+[fixture: venn/lex-after-style-comment-glued]
+[fixture: venn/lex-after-style-string-comment-glued]
+[fixture: venn/lex-after-text-comment-glued]
+[fixture: venn/lex-after-text-label-comment-glued]
+[fixture: venn/lex-after-text-number-comment-glued]
+[fixture: venn/lex-after-text-string-comment-glued]
+[fixture: venn/lex-after-union-comment-glued]
+[fixture: venn/lex-after-union-label-size-comment-glued]
+[fixture: venn/lex-inline-comment-eats-id]
+[fixture: venn/lex-inline-comment-spaced]
+
+タイトルの文字は行内のパーセント対と、
+末尾のスペース、タブ、NBSP、BOM を保つ。
+[fixture: venn/lex-after-title-bom]
+[fixture: venn/lex-after-title-comment]
+[fixture: venn/lex-after-title-comment-glued]
+[fixture: venn/lex-after-title-nbsp]
+[fixture: venn/lex-after-title-spaces]
+[fixture: venn/lex-after-title-tab]
+[fixture: venn/db-after-title-space]
+
+タイトル末尾のコロンとスペースはタイトルの文字として残る。
+[fixture: venn/db-after-title-colon-space]
+
+完了したタイトルは LF、空行、CRLF、EOF で終えられる。
+[fixture: venn/db-after-title-blank]
+[fixture: venn/db-after-title-crlf]
+[fixture: venn/db-title-eof]
+
+完了したタイトルの閉じた directive と、
+閉じない directive の接尾辞は除去できる。
+[fixture: venn/lex-after-title-directive]
+[fixture: venn/lex-after-title-directive-unclosed]
+[fixture: venn/lex-after-title-directive-word-unclosed]
+
+前処理後にタイトルの後に残るセミコロンの接尾辞
+` ;`、`;`、`;;`、`; ;` は拒否される。
+[fixture: venn/lex-after-title-double-semicolon]
+[fixture: venn/lex-after-title-semicolon]
+[fixture: venn/lex-after-title-semicolon-spaced]
+[fixture: venn/gram-after-title-spaced-semicolons]
+
+ハッシュと単独パーセントの行はコメントではなく、
+閉じない directive は後続行やヘッダー自体を除くことがあり、
+パーセント対コメント内の U+2028 はコメントを終えない。
+[fixture: venn/db-indent-comment-ls]
+[fixture: venn/lex-hash-comment]
+[fixture: venn/lex-single-percent-comment]
+[fixture: venn/lex-unclosed-directive-only]
+[fixture: venn/lex-unterminated-colon-directive-next-line]
+[fixture: venn/lex-unterminated-directive-next-line]
+
+文のキーワード内の閉じた directive は除かれ、
+lexer は結合されたキーワードを読む。
+[fixture: venn/lex-directive-in-set]
+[fixture: venn/lex-directive-in-style]
+[fixture: venn/lex-directive-in-text]
+[fixture: venn/lex-directive-in-title]
+[fixture: venn/lex-directive-in-union]
+
+venn の識別子、ラベル、タイトル、style 文字列内の非先頭固定の C4 検出語は、
+C4 を選んで入力を拒否させることがあるが、
+同じ位置の `C4Context` は venn のままとなり、
+除去されたコメントと frontmatter の C4 語は検出されない。
+[fixture: venn/lex-c4-c4component-comment]
+[fixture: venn/lex-c4-c4component-frontmatter]
+[fixture: venn/lex-c4-c4component-identifier]
+[fixture: venn/lex-c4-c4component-label]
+[fixture: venn/lex-c4-c4component-style]
+[fixture: venn/lex-c4-c4component-title]
+[fixture: venn/lex-c4-c4container-comment]
+[fixture: venn/lex-c4-c4container-frontmatter]
+[fixture: venn/lex-c4-c4container-identifier]
+[fixture: venn/lex-c4-c4container-label]
+[fixture: venn/lex-c4-c4container-style]
+[fixture: venn/lex-c4-c4container-title]
+[fixture: venn/lex-c4-c4context-comment]
+[fixture: venn/lex-c4-c4context-frontmatter]
+[fixture: venn/lex-c4-c4context-identifier]
+[fixture: venn/lex-c4-c4context-label]
+[fixture: venn/lex-c4-c4context-style]
+[fixture: venn/lex-c4-c4context-title]
+[fixture: venn/lex-c4-c4deployment-comment]
+[fixture: venn/lex-c4-c4deployment-frontmatter]
+[fixture: venn/lex-c4-c4deployment-identifier]
+[fixture: venn/lex-c4-c4deployment-label]
+[fixture: venn/lex-c4-c4deployment-style]
+[fixture: venn/lex-c4-c4deployment-title]
+[fixture: venn/lex-c4-c4dynamic-comment]
+[fixture: venn/lex-c4-c4dynamic-frontmatter]
+[fixture: venn/lex-c4-c4dynamic-identifier]
+[fixture: venn/lex-c4-c4dynamic-label]
+[fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-title]
+
+識別子、ラベル、テキスト id、引用 style 値、
+タイトルの内側の閉じた directive は除かれ、
+残る断片が結合する。
+[fixture: venn/lex-identifier-directive-start]
+[fixture: venn/lex-label-directive-start]
+[fixture: venn/lex-text-directive-start]
+[fixture: venn/lex-style-directive-start]
+[fixture: venn/lex-title-directive-start]
+[fixture: venn/lex-identifier-directive-middle]
+[fixture: venn/lex-label-directive-middle]
+[fixture: venn/lex-text-directive-middle]
+[fixture: venn/lex-style-directive-middle]
+[fixture: venn/lex-title-directive-middle]
+[fixture: venn/lex-identifier-directive-end]
+[fixture: venn/lex-label-directive-end]
+[fixture: venn/lex-text-directive-end]
+[fixture: venn/lex-style-directive-end]
+[fixture: venn/lex-title-directive-end]
+
+複数行の引用値の内側で一行を占める directive は、
+前後の二つの LF を残す。
+[fixture: venn/lex-identifier-directive-line]
+[fixture: venn/lex-label-directive-line]
+[fixture: venn/lex-text-directive-line]
+[fixture: venn/lex-style-directive-line]
+
+複数行の引用値の内側のコメント行を除くと、
+前後の文字の断片の間に一つの LF が残る。
+[fixture: venn/lex-identifier-comment-line]
+[fixture: venn/lex-label-comment-line]
+[fixture: venn/lex-text-comment-line]
+[fixture: venn/lex-style-comment-line]
+
+引用した識別子、ラベル、テキスト id、
+style 値の内側の空行は二つの LF として残る。
+[fixture: venn/lex-identifier-blank-line]
+[fixture: venn/lex-label-blank-line]
+[fixture: venn/lex-text-blank-line]
+[fixture: venn/lex-style-blank-line]
+
+識別子、ラベル、テキスト id、タイトルの数値文字参照と、
+名前付き文字参照は共通の前処理のプレースホルダーとなる。
+[fixture: venn/lex-identifier-entity-numeric]
+[fixture: venn/lex-label-entity-numeric]
+[fixture: venn/lex-text-entity-numeric]
+[fixture: venn/lex-title-entity-numeric]
+[fixture: venn/lex-identifier-entity-named]
+[fixture: venn/lex-label-entity-named]
+[fixture: venn/lex-text-entity-named]
+[fixture: venn/lex-title-entity-named]
+
+引用 style 値の `a#35;b` と `a#amp;b` は、
+行の規則がセミコロンを除き、
+`a#35b` と `a#ampb` を残す。
+[fixture: venn/lex-style-entity-numeric]
+[fixture: venn/lex-style-entity-named]
+
+引用しない style 値 `a#35;b` は、
+セミコロンの除去とトークンの結合の後に `a #35b` として保持される。
+[fixture: venn/db-grid-entity-style-value]
+
+セミコロンのないハッシュの参照は、
+引用した識別子、ラベル、テキスト id、style 値に文字として残る。
+[fixture: venn/lex-identifier-entity-no-semicolon]
+[fixture: venn/lex-label-entity-no-semicolon]
+[fixture: venn/lex-text-entity-no-semicolon]
+[fixture: venn/lex-style-entity-no-semicolon]
+
+HTML 属性値を囲む二重引用符は、
+venn が周囲の値を読む前に単一引用符となる。
+[fixture: venn/lex-identifier-html-attribute]
+[fixture: venn/lex-label-html-attribute]
+[fixture: venn/lex-text-html-attribute]
+[fixture: venn/lex-style-html-attribute]
+[fixture: venn/lex-title-html-attribute]
+
+その大小文字の `style` や `classDef` の断片の後に、
+同じ行でコロンと空白を挟まないハッシュがあると、
+共通のセミコロン規則が適用される。
+[fixture: venn/lex-identifier-style-rule]
+[fixture: venn/lex-label-style-rule]
+[fixture: venn/lex-text-style-rule]
+[fixture: venn/lex-style-style-rule]
+[fixture: venn/lex-identifier-classdef-rule]
+[fixture: venn/lex-label-classdef-rule]
+[fixture: venn/lex-text-classdef-rule]
+[fixture: venn/lex-style-classdef-rule]
+
+その規則は引用値の内側でも、
+ハッシュの後の最後のセミコロンを除く。
+[fixture: venn/lex-identifier-style-rule]
+[fixture: venn/lex-label-style-rule]
+[fixture: venn/lex-text-style-rule]
+[fixture: venn/lex-style-style-rule]
+[fixture: venn/lex-identifier-classdef-rule]
+[fixture: venn/lex-label-classdef-rule]
+[fixture: venn/lex-text-classdef-rule]
+[fixture: venn/lex-style-classdef-rule]
+[fixture: venn/db-after-style-hex-semicolon]
+[fixture: venn/db-after-style-hex-semicolon-spaced]
+
+その除去の後にも残る参照のセミコロンは、
+文字参照としてエンコードされる。
+[fixture: venn/lex-identifier-style-rule-two-semicolons]
+[fixture: venn/lex-label-style-rule-two-semicolons]
+[fixture: venn/lex-text-style-rule-two-semicolons]
+[fixture: venn/lex-style-style-rule-two-semicolons]
+[fixture: venn/lex-title-style-rule-two-semicolons]
+
+一致する表記と行の条件がなければセミコロンは残り、
+文字参照のエンコードはなお適用される。
+[fixture: venn/lex-identifier-style-rule-upper]
+[fixture: venn/lex-label-style-rule-upper]
+[fixture: venn/lex-text-style-rule-upper]
+[fixture: venn/lex-identifier-style-rule-space]
+[fixture: venn/lex-label-style-rule-space]
+[fixture: venn/lex-text-style-rule-space]
+[fixture: venn/lex-identifier-style-rule-no-hash]
+[fixture: venn/lex-label-style-rule-no-hash]
+[fixture: venn/lex-text-style-rule-no-hash]
+[fixture: venn/lex-identifier-style-rule-other-line]
+[fixture: venn/lex-label-style-rule-other-line]
+[fixture: venn/lex-text-style-rule-other-line]
+[fixture: venn/lex-style-style-rule-space]
+[fixture: venn/lex-style-style-rule-no-hash]
+[fixture: venn/lex-style-style-rule-other-line]
+[fixture: venn/lex-title-style-rule-space]
+[fixture: venn/lex-title-style-rule-upper]
+
+外側の style 文は、
+内側の `Style` の断片が大文字で始まっていてもセミコロンを除去できる。
+[fixture: venn/lex-style-style-rule-upper]
+
+引用した識別子、テキスト id、style 値は内側の空白を保ち、
+括弧ラベルはそれを trim する。
+[fixture: venn/lex-identifier-spaces]
+[fixture: venn/lex-label-spaces]
+[fixture: venn/lex-text-spaces]
+[fixture: venn/lex-style-spaces]
+
+空の引用識別子、テキスト id、style 文字列は、
+空文字列として残る。
+[fixture: venn/lex-identifier-empty]
+[fixture: venn/lex-text-empty]
+[fixture: venn/lex-style-empty]
+
+空の引用括弧ラベルは省略される。
+[fixture: venn/lex-label-empty]
+
+文字どおりの値 `a#b` と `a;b` は、
+引用した識別子、ラベル、テキスト id、style 文字列の内側に残る。
+[fixture: venn/db-grid-hash-identifier-quoted]
+[fixture: venn/db-grid-semicolon-identifier-quoted]
+[fixture: venn/db-grid-hash-label-quoted]
+[fixture: venn/db-grid-semicolon-label-quoted]
+[fixture: venn/db-text-quoted-hash]
+[fixture: venn/db-text-quoted-semicolon]
+[fixture: venn/db-style-quoted-hash]
+[fixture: venn/db-style-quoted-semicolon]
+
+閉じる `}%%` がない `%%{init: {}` の断片は、
+自由文字の引数を U+2028 や U+2029 が中断しなければ EOF まで取る。
+[fixture: venn/lex-identifier-unclosed-directive]
+[fixture: venn/lex-label-unclosed-directive]
+[fixture: venn/lex-text-unclosed-directive]
+[fixture: venn/lex-style-unclosed-directive]
+
+引用した識別子、ラベル、テキスト id、style 文字列では、
+その除去が終端の区切りを取り、閉じない値を拒否させる。
+[fixture: venn/lex-identifier-unclosed-directive]
+[fixture: venn/lex-label-unclosed-directive]
+[fixture: venn/lex-text-unclosed-directive]
+[fixture: venn/lex-style-unclosed-directive]
+
+単語の引数は終端の区切りの前で終わり、
+directive が閉じていなくてもその区切りは残る。
+[fixture: venn/lex-identifier-word-unclosed-directive]
+[fixture: venn/lex-label-word-unclosed-directive]
+[fixture: venn/lex-text-word-unclosed-directive]
+[fixture: venn/lex-style-word-unclosed-directive]
+[fixture: venn/db-identifier-unclosed-directive-word-argument]
+[fixture: venn/db-label-unclosed-directive-word-argument]
+[fixture: venn/db-text-unclosed-directive-word-argument]
+[fixture: venn/db-style-unclosed-directive-word-argument]
+
+その区切りの前の U+2028 や U+2029 は自由文字の引数を止め、
+自身は除かれ、後続の文字と区切りを残す。
+[fixture: venn/db-identifier-unclosed-directive-line-separator]
+[fixture: venn/db-label-unclosed-directive-line-separator]
+[fixture: venn/db-text-unclosed-directive-line-separator]
+[fixture: venn/db-style-unclosed-directive-line-separator]
+[fixture: venn/db-identifier-unclosed-directive-paragraph-separator]
+[fixture: venn/db-label-unclosed-directive-paragraph-separator]
+[fixture: venn/db-text-unclosed-directive-paragraph-separator]
+[fixture: venn/db-style-unclosed-directive-paragraph-separator]
+
+タイトルに終端の区切りは不要なため、
+オブジェクト引数の閉じない directive が接尾辞を除いても、
+前の文字がタイトルとして残る。
+[fixture: venn/lex-title-unclosed-directive]
+
+タイトルの単語引数の閉じない directive は次の単語を除き、
+その前のタイトルの文字を残す。
+[fixture: venn/lex-title-word-unclosed-directive]
+
+LF はタイトルの文字を終えるため、
+間に空行、コメント行、directive 行があっても、
+後続の裸の行は拒否される。
+[fixture: venn/lex-title-blank-line]
+[fixture: venn/lex-title-comment-line]
+[fixture: venn/lex-title-directive-line]
+[fixture: venn/lex-title-style-rule-other-line]
+
+タイトルの文字内のエンコードされないハッシュやセミコロンは、
+そのトークンを終え、残る断片を拒否させる。
+[fixture: venn/lex-title-classdef-rule]
+[fixture: venn/lex-title-entity-no-semicolon]
+[fixture: venn/lex-title-style-rule]
+[fixture: venn/lex-title-style-rule-no-hash]
+
+集合には一つの識別子、重なりには識別子列、
+style 文には対象が必要で、
+単一引用符の集合識別子は拒否される。
+[fixture: venn/gram-extra-set-no-id]
+[fixture: venn/gram-extra-set-single-quoted]
+[fixture: venn/gram-extra-union-no-id]
+[fixture: venn/gram-set-list]
+[fixture: venn/spec-venn-a50620dc]
+
+字下げした frontmatter と CRLF の frontmatter はタイトルを与え、
+その HTML 属性の引用符は単一引用符となり、
+ここでの空、構文違反、閉じない形式、
+ヘッダーの後の形式、コメントが先行する形式は拒否される。
+[fixture: venn/frontmatter-after-header]
+[fixture: venn/frontmatter-comment-before]
+[fixture: venn/frontmatter-crlf]
+[fixture: venn/frontmatter-empty]
+[fixture: venn/frontmatter-html-title]
+[fixture: venn/frontmatter-indented]
+[fixture: venn/frontmatter-invalid]
+[fixture: venn/frontmatter-unclosed]
+
+数値のテキスト id は先頭のゼロを保ち、
+裸の識別子や空文字列は venn の文を開始できない。
+[fixture: venn/db-text-leading-zeros]
+[fixture: venn/gram-bare-empty-string]
+[fixture: venn/gram-bare-word]
+
+コメントか directive だけの入力にはヘッダーがなく、
+字下げしたコメント行は暗黙の text モードを保つ。
+[fixture: venn/lex-comment-line-before-text]
+[fixture: venn/lex-comment-only]
+[fixture: venn/lex-directive-only]
+
+タイトルの区切りはタブ、BOM、NBSP、U+3000、U+2028、U+2029、
+CR、CRLF、垂直タブ、改ページを受け入れるが、U+0085 は拒否する。
+[fixture: venn/lex-title-separator-bom]
+[fixture: venn/lex-title-separator-cr]
+[fixture: venn/lex-title-separator-crlf]
+[fixture: venn/lex-title-separator-ff]
+[fixture: venn/lex-title-separator-ideographic]
+[fixture: venn/lex-title-separator-ls]
+[fixture: venn/lex-title-separator-nbsp]
+[fixture: venn/lex-title-separator-nel]
+[fixture: venn/lex-title-separator-ps]
+[fixture: venn/lex-title-separator-tab]
+[fixture: venn/lex-title-separator-vt]
+
+### 文字の位置
+
+格子は [kanban](#kanban) で定義した 64 種の断片を使い、
+`keyword` は `venn-beta`、
+`keyword-header` は前後にスペースを置く `venn-beta` とし、
+各断片を `a` と `b` の間、
+数値の位置では `1` と `2` の間に置く。
+
+`header-line` はヘッダーの後の断片で、完全な文が必要な位置とする。
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`classdef-rule`、`close-brace`、`close-round`、`close-square`、`colon`、
+`comma`、`comment-line`、`constructor`、`cr`、`crlf`、`dash`、`digits`、
+`directive`、`directive-line`、`emoji`、`empty`、`entity`、`entity-named`、
+`equals`、`ff`、`greater-than`、`hash`、`html`、`html-attribute`、`html-br`、
+`ideographic`、`keyword`、`keyword-block`、`keyword-class`、`keyword-classdef`、
+`keyword-columns`、`keyword-end`、`keyword-header`、`keyword-space`、
+`keyword-style`、`less-than`、`lf`、`ls`、`nbsp`、`nel`、`nonascii`、
+`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`proto`、`ps`、
+`punct`、`quote`、`root`、`semicolon`、`single-quote`、`spaces`、`style-rule`、
+`tab`、`vt`。
+[fixture: venn/gram-grid-ampersand-entity-header-line]
+[fixture: venn/gram-grid-arrow-header-line]
+[fixture: venn/gram-grid-arrow-spaced-header-line]
+[fixture: venn/gram-grid-backslash-header-line]
+[fixture: venn/gram-grid-backtick-header-line]
+[fixture: venn/gram-grid-bom-header-line]
+[fixture: venn/gram-grid-classdef-rule-header-line]
+[fixture: venn/gram-grid-close-brace-header-line]
+[fixture: venn/gram-grid-close-round-header-line]
+[fixture: venn/gram-grid-close-square-header-line]
+[fixture: venn/gram-grid-colon-header-line]
+[fixture: venn/gram-grid-comma-header-line]
+[fixture: venn/gram-grid-comment-line-header-line]
+[fixture: venn/gram-grid-constructor-header-line]
+[fixture: venn/gram-grid-cr-header-line]
+[fixture: venn/gram-grid-crlf-header-line]
+[fixture: venn/gram-grid-dash-header-line]
+[fixture: venn/gram-grid-digits-header-line]
+[fixture: venn/gram-grid-directive-header-line]
+[fixture: venn/gram-grid-directive-line-header-line]
+[fixture: venn/gram-grid-emoji-header-line]
+[fixture: venn/gram-grid-empty-header-line]
+[fixture: venn/gram-grid-entity-header-line]
+[fixture: venn/gram-grid-entity-named-header-line]
+[fixture: venn/gram-grid-equals-header-line]
+[fixture: venn/gram-grid-ff-header-line]
+[fixture: venn/gram-grid-greater-than-header-line]
+[fixture: venn/gram-grid-hash-header-line]
+[fixture: venn/gram-grid-html-attribute-header-line]
+[fixture: venn/gram-grid-html-br-header-line]
+[fixture: venn/gram-grid-html-header-line]
+[fixture: venn/gram-grid-ideographic-header-line]
+[fixture: venn/gram-grid-keyword-block-header-line]
+[fixture: venn/gram-grid-keyword-class-header-line]
+[fixture: venn/gram-grid-keyword-classdef-header-line]
+[fixture: venn/gram-grid-keyword-columns-header-line]
+[fixture: venn/gram-grid-keyword-end-header-line]
+[fixture: venn/gram-grid-keyword-header-header-line]
+[fixture: venn/gram-grid-keyword-header-line]
+[fixture: venn/gram-grid-keyword-space-header-line]
+[fixture: venn/gram-grid-keyword-style-header-line]
+[fixture: venn/gram-grid-less-than-header-line]
+[fixture: venn/gram-grid-lf-header-line]
+[fixture: venn/gram-grid-ls-header-line]
+[fixture: venn/gram-grid-nbsp-header-line]
+[fixture: venn/gram-grid-nel-header-line]
+[fixture: venn/gram-grid-nonascii-header-line]
+[fixture: venn/gram-grid-open-brace-header-line]
+[fixture: venn/gram-grid-open-round-header-line]
+[fixture: venn/gram-grid-open-square-header-line]
+[fixture: venn/gram-grid-percent-header-line]
+[fixture: venn/gram-grid-pipe-header-line]
+[fixture: venn/gram-grid-proto-header-line]
+[fixture: venn/gram-grid-ps-header-line]
+[fixture: venn/gram-grid-punct-header-line]
+[fixture: venn/gram-grid-quote-header-line]
+[fixture: venn/gram-grid-root-header-line]
+[fixture: venn/gram-grid-semicolon-header-line]
+[fixture: venn/gram-grid-single-quote-header-line]
+[fixture: venn/gram-grid-spaces-header-line]
+[fixture: venn/gram-grid-style-rule-header-line]
+[fixture: venn/gram-grid-tab-header-line]
+[fixture: venn/gram-grid-vt-header-line]
+
+コメントトークンは直前の断片を取り、集合 Z だけを残す。
+対象は `comment`。
+[fixture: venn/db-grid-comment-header-line]
+
+`identifier-bare` は集合 id、重なりの要素、
+text の対象と引用しない id、style の対象が共有する、
+ASCII 識別子の lexer と正規化を使う。
+
+lexer はこれらの挿入した断片を拒否する。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`classdef-rule`、`close-brace`、`close-round`、`close-square`、`emoji`、
+`entity`、`entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
+`html-attribute`、`html-br`、`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、
+`nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
+`punct`、`quote`、`semicolon`、`single-quote`、`style-rule`、`vt`。
+[fixture: venn/gram-grid-ampersand-entity-identifier-bare]
+[fixture: venn/gram-grid-arrow-identifier-bare]
+[fixture: venn/gram-grid-arrow-spaced-identifier-bare]
+[fixture: venn/gram-grid-backslash-identifier-bare]
+[fixture: venn/gram-grid-backtick-identifier-bare]
+[fixture: venn/gram-grid-bom-identifier-bare]
+[fixture: venn/gram-grid-classdef-rule-identifier-bare]
+[fixture: venn/gram-grid-close-brace-identifier-bare]
+[fixture: venn/gram-grid-close-round-identifier-bare]
+[fixture: venn/gram-grid-close-square-identifier-bare]
+[fixture: venn/gram-grid-emoji-identifier-bare]
+[fixture: venn/gram-grid-entity-identifier-bare]
+[fixture: venn/gram-grid-entity-named-identifier-bare]
+[fixture: venn/gram-grid-equals-identifier-bare]
+[fixture: venn/gram-grid-ff-identifier-bare]
+[fixture: venn/gram-grid-greater-than-identifier-bare]
+[fixture: venn/gram-grid-hash-identifier-bare]
+[fixture: venn/gram-grid-html-attribute-identifier-bare]
+[fixture: venn/gram-grid-html-br-identifier-bare]
+[fixture: venn/gram-grid-html-identifier-bare]
+[fixture: venn/gram-grid-ideographic-identifier-bare]
+[fixture: venn/gram-grid-less-than-identifier-bare]
+[fixture: venn/gram-grid-ls-identifier-bare]
+[fixture: venn/gram-grid-nbsp-identifier-bare]
+[fixture: venn/gram-grid-nel-identifier-bare]
+[fixture: venn/gram-grid-nonascii-identifier-bare]
+[fixture: venn/gram-grid-open-brace-identifier-bare]
+[fixture: venn/gram-grid-open-round-identifier-bare]
+[fixture: venn/gram-grid-open-square-identifier-bare]
+[fixture: venn/gram-grid-percent-identifier-bare]
+[fixture: venn/gram-grid-pipe-identifier-bare]
+[fixture: venn/gram-grid-ps-identifier-bare]
+[fixture: venn/gram-grid-punct-identifier-bare]
+[fixture: venn/gram-grid-quote-identifier-bare]
+[fixture: venn/gram-grid-semicolon-identifier-bare]
+[fixture: venn/gram-grid-single-quote-identifier-bare]
+[fixture: venn/gram-grid-style-rule-identifier-bare]
+[fixture: venn/gram-grid-vt-identifier-bare]
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `colon`、`comma`、`comment`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`keyword-block`、`keyword-class`、`keyword-classdef`、
+`keyword-columns`、`keyword-end`、`keyword-header`、`keyword-space`、`lf`、
+`spaces`、`tab`。
+[fixture: venn/gram-grid-colon-identifier-bare]
+[fixture: venn/gram-grid-comma-identifier-bare]
+[fixture: venn/gram-grid-comment-identifier-bare]
+[fixture: venn/gram-grid-comment-line-identifier-bare]
+[fixture: venn/gram-grid-cr-identifier-bare]
+[fixture: venn/gram-grid-crlf-identifier-bare]
+[fixture: venn/gram-grid-directive-line-identifier-bare]
+[fixture: venn/gram-grid-keyword-block-identifier-bare]
+[fixture: venn/gram-grid-keyword-class-identifier-bare]
+[fixture: venn/gram-grid-keyword-classdef-identifier-bare]
+[fixture: venn/gram-grid-keyword-columns-identifier-bare]
+[fixture: venn/gram-grid-keyword-end-identifier-bare]
+[fixture: venn/gram-grid-keyword-header-identifier-bare]
+[fixture: venn/gram-grid-keyword-space-identifier-bare]
+[fixture: venn/gram-grid-lf-identifier-bare]
+[fixture: venn/gram-grid-spaces-identifier-bare]
+[fixture: venn/gram-grid-tab-identifier-bare]
+
+挿入した断片はこの値に文字として残る。
+対象は `constructor`、`dash`、`digits`、`empty`、`keyword`、`proto`、`root`。
+[fixture: venn/db-grid-constructor-identifier-bare]
+[fixture: venn/db-grid-dash-identifier-bare]
+[fixture: venn/db-grid-digits-identifier-bare]
+[fixture: venn/db-grid-empty-identifier-bare]
+[fixture: venn/db-grid-keyword-identifier-bare]
+[fixture: venn/db-grid-proto-identifier-bare]
+[fixture: venn/db-grid-root-identifier-bare]
+
+directive は除かれ前後の断片が結合する。
+対象は `directive`。
+[fixture: venn/db-grid-directive-identifier-bare]
+
+挿入した style キーワードは別の文を始め、
+前の値はその前で終わる。
+対象は `keyword-style`。
+[fixture: venn/db-grid-keyword-style-identifier-bare]
+
+`identifier-quoted` は引用識別子、引用テキスト id、
+引用 style 値が共有する文字列の lexer と一組の引用符の除去を使う。
+
+挿入した断片はこの値に文字として残る。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`close-brace`、`close-round`、`close-square`、`colon`、`comma`、
+`comment`、`constructor`、`dash`、`digits`、`emoji`、`empty`、`equals`、`ff`、
+`greater-than`、`hash`、`html`、`html-br`、`ideographic`、`keyword`、
+`keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
+`keyword-end`、`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、
+`lf`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、
+`open-square`、`percent`、`pipe`、`proto`、`ps`、`punct`、`root`、`semicolon`、
+`single-quote`、`spaces`、`tab`、`vt`。
+[fixture: venn/db-grid-ampersand-entity-identifier-quoted]
+[fixture: venn/db-grid-arrow-identifier-quoted]
+[fixture: venn/db-grid-arrow-spaced-identifier-quoted]
+[fixture: venn/db-grid-backslash-identifier-quoted]
+[fixture: venn/db-grid-backtick-identifier-quoted]
+[fixture: venn/db-grid-close-brace-identifier-quoted]
+[fixture: venn/db-grid-close-round-identifier-quoted]
+[fixture: venn/db-grid-close-square-identifier-quoted]
+[fixture: venn/db-grid-colon-identifier-quoted]
+[fixture: venn/db-grid-comma-identifier-quoted]
+[fixture: venn/db-grid-comment-identifier-quoted]
+[fixture: venn/db-grid-constructor-identifier-quoted]
+[fixture: venn/db-grid-dash-identifier-quoted]
+[fixture: venn/db-grid-digits-identifier-quoted]
+[fixture: venn/db-grid-emoji-identifier-quoted]
+[fixture: venn/db-grid-empty-identifier-quoted]
+[fixture: venn/db-grid-equals-identifier-quoted]
+[fixture: venn/db-grid-greater-than-identifier-quoted]
+[fixture: venn/db-grid-hash-identifier-quoted]
+[fixture: venn/db-grid-html-br-identifier-quoted]
+[fixture: venn/db-grid-html-identifier-quoted]
+[fixture: venn/db-grid-keyword-block-identifier-quoted]
+[fixture: venn/db-grid-keyword-class-identifier-quoted]
+[fixture: venn/db-grid-keyword-classdef-identifier-quoted]
+[fixture: venn/db-grid-keyword-columns-identifier-quoted]
+[fixture: venn/db-grid-keyword-end-identifier-quoted]
+[fixture: venn/db-grid-keyword-header-identifier-quoted]
+[fixture: venn/db-grid-keyword-identifier-quoted]
+[fixture: venn/db-grid-keyword-space-identifier-quoted]
+[fixture: venn/db-grid-keyword-style-identifier-quoted]
+[fixture: venn/db-grid-less-than-identifier-quoted]
+[fixture: venn/db-grid-lf-identifier-quoted]
+[fixture: venn/db-grid-nonascii-identifier-quoted]
+[fixture: venn/db-grid-open-brace-identifier-quoted]
+[fixture: venn/db-grid-open-round-identifier-quoted]
+[fixture: venn/db-grid-open-square-identifier-quoted]
+[fixture: venn/db-grid-percent-identifier-quoted]
+[fixture: venn/db-grid-pipe-identifier-quoted]
+[fixture: venn/db-grid-proto-identifier-quoted]
+[fixture: venn/db-grid-punct-identifier-quoted]
+[fixture: venn/db-grid-root-identifier-quoted]
+[fixture: venn/db-grid-semicolon-identifier-quoted]
+[fixture: venn/db-grid-single-quote-identifier-quoted]
+[fixture: venn/db-grid-spaces-identifier-quoted]
+[fixture: venn/lex-bom-quoted-value]
+[fixture: venn/lex-ff-quoted-value]
+[fixture: venn/lex-ideographic-quoted-value]
+[fixture: venn/lex-ls-quoted-value]
+[fixture: venn/lex-nbsp-quoted-value]
+[fixture: venn/lex-nel-quoted-value]
+[fixture: venn/lex-ps-quoted-value]
+[fixture: venn/lex-tab-quoted-value]
+[fixture: venn/lex-vt-quoted-value]
+
+一致する style や classDef の行は最後のセミコロンを失う。
+対象は `classdef-rule`、`style-rule`。
+[fixture: venn/db-grid-classdef-rule-identifier-quoted]
+[fixture: venn/db-grid-style-rule-identifier-quoted]
+
+挿入した改行や除去したコメント行は一つの LF となる。
+対象は `comment-line`、`cr`、`crlf`。
+[fixture: venn/lex-cr-quoted-value]
+[fixture: venn/lex-crlf-quoted-value]
+[fixture: venn/lex-identifier-comment-line]
+
+directive は除かれ前後の断片が結合する。
+対象は `directive`。
+[fixture: venn/lex-identifier-directive-middle]
+
+除去した directive 行は二つの LF を残す。
+対象は `directive-line`。
+[fixture: venn/lex-identifier-directive-line]
+
+文字参照は共通の前処理のプレースホルダーとなる。
+対象は `entity`、`entity-named`。
+[fixture: venn/lex-identifier-entity-named]
+[fixture: venn/lex-identifier-entity-numeric]
+
+HTML 属性の二重引用符は単一引用符となる。
+対象は `html-attribute`。
+[fixture: venn/lex-identifier-html-attribute]
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `quote`。
+[fixture: venn/gram-grid-quote-identifier-quoted]
+
+`label-bare` は引用しない括弧ラベルの lexer を使い、
+Db の正規化の前にも trim する。
+
+挿入した断片はこの値に文字として残る。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`close-brace`、`close-round`、`colon`、`comma`、`comment`、
+`constructor`、`dash`、`digits`、`emoji`、`empty`、`equals`、`ff`、
+`greater-than`、`hash`、`html`、`html-br`、`ideographic`、`keyword`、
+`keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
+`keyword-end`、`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、
+`lf`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、
+`open-square`、`percent`、`pipe`、`proto`、`ps`、`punct`、`root`、`semicolon`、
+`single-quote`、`spaces`、`tab`、`vt`。
+[fixture: venn/db-grid-ampersand-entity-label-bare]
+[fixture: venn/db-grid-arrow-label-bare]
+[fixture: venn/db-grid-arrow-spaced-label-bare]
+[fixture: venn/db-grid-backslash-label-bare]
+[fixture: venn/db-grid-backtick-label-bare]
+[fixture: venn/db-grid-bom-label-bare]
+[fixture: venn/db-grid-close-brace-label-bare]
+[fixture: venn/db-grid-close-round-label-bare]
+[fixture: venn/db-grid-colon-label-bare]
+[fixture: venn/db-grid-comma-label-bare]
+[fixture: venn/db-grid-comment-label-bare]
+[fixture: venn/db-grid-constructor-label-bare]
+[fixture: venn/db-grid-dash-label-bare]
+[fixture: venn/db-grid-digits-label-bare]
+[fixture: venn/db-grid-emoji-label-bare]
+[fixture: venn/db-grid-empty-label-bare]
+[fixture: venn/db-grid-equals-label-bare]
+[fixture: venn/db-grid-ff-label-bare]
+[fixture: venn/db-grid-greater-than-label-bare]
+[fixture: venn/db-grid-hash-label-bare]
+[fixture: venn/db-grid-html-br-label-bare]
+[fixture: venn/db-grid-html-label-bare]
+[fixture: venn/db-grid-ideographic-label-bare]
+[fixture: venn/db-grid-keyword-block-label-bare]
+[fixture: venn/db-grid-keyword-class-label-bare]
+[fixture: venn/db-grid-keyword-classdef-label-bare]
+[fixture: venn/db-grid-keyword-columns-label-bare]
+[fixture: venn/db-grid-keyword-end-label-bare]
+[fixture: venn/db-grid-keyword-header-label-bare]
+[fixture: venn/db-grid-keyword-label-bare]
+[fixture: venn/db-grid-keyword-space-label-bare]
+[fixture: venn/db-grid-keyword-style-label-bare]
+[fixture: venn/db-grid-less-than-label-bare]
+[fixture: venn/db-grid-lf-label-bare]
+[fixture: venn/db-grid-ls-label-bare]
+[fixture: venn/db-grid-nbsp-label-bare]
+[fixture: venn/db-grid-nel-label-bare]
+[fixture: venn/db-grid-nonascii-label-bare]
+[fixture: venn/db-grid-open-brace-label-bare]
+[fixture: venn/db-grid-open-round-label-bare]
+[fixture: venn/db-grid-open-square-label-bare]
+[fixture: venn/db-grid-percent-label-bare]
+[fixture: venn/db-grid-pipe-label-bare]
+[fixture: venn/db-grid-proto-label-bare]
+[fixture: venn/db-grid-ps-label-bare]
+[fixture: venn/db-grid-punct-label-bare]
+[fixture: venn/db-grid-root-label-bare]
+[fixture: venn/db-grid-semicolon-label-bare]
+[fixture: venn/db-grid-single-quote-label-bare]
+[fixture: venn/db-grid-spaces-label-bare]
+[fixture: venn/db-grid-tab-label-bare]
+[fixture: venn/db-grid-vt-label-bare]
+
+一致する style や classDef の行は最後のセミコロンを失う。
+対象は `classdef-rule`、`style-rule`。
+[fixture: venn/db-grid-classdef-rule-label-bare]
+[fixture: venn/db-grid-style-rule-label-bare]
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `close-square`。
+[fixture: venn/gram-grid-close-square-label-bare]
+
+挿入した改行や除去したコメント行は一つの LF となる。
+対象は `comment-line`、`cr`、`crlf`。
+[fixture: venn/db-grid-comment-line-label-bare]
+[fixture: venn/db-grid-cr-label-bare]
+[fixture: venn/db-grid-crlf-label-bare]
+
+directive は除かれ前後の断片が結合する。
+対象は `directive`。
+[fixture: venn/db-grid-directive-label-bare]
+
+除去した directive 行は二つの LF を残す。
+対象は `directive-line`。
+[fixture: venn/db-grid-directive-line-label-bare]
+
+文字参照は共通の前処理のプレースホルダーとなる。
+対象は `entity`、`entity-named`。
+[fixture: venn/db-grid-entity-label-bare]
+[fixture: venn/db-grid-entity-named-label-bare]
+
+HTML 属性の二重引用符は単一引用符となる。
+対象は `html-attribute`。
+[fixture: venn/db-grid-html-attribute-label-bare]
+
+lexer はこれらの挿入した断片を拒否する。
+対象は `quote`。
+[fixture: venn/gram-grid-quote-label-bare]
+
+`label-quoted` は Db の正規化の前に括弧文字列の区切りを除き、
+内側の空白も trim できる。
+
+挿入した断片はこの値に文字として残る。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`close-brace`、`close-round`、`close-square`、`colon`、`comma`、
+`comment`、`constructor`、`dash`、`digits`、`emoji`、`empty`、`equals`、`ff`、
+`greater-than`、`hash`、`html`、`html-br`、`ideographic`、`keyword`、
+`keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
+`keyword-end`、`keyword-header`、`keyword-space`、`keyword-style`、`less-than`、
+`lf`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、`open-round`、
+`open-square`、`percent`、`pipe`、`proto`、`ps`、`punct`、`root`、`semicolon`、
+`single-quote`、`spaces`、`tab`、`vt`。
+[fixture: venn/db-grid-ampersand-entity-label-quoted]
+[fixture: venn/db-grid-arrow-label-quoted]
+[fixture: venn/db-grid-arrow-spaced-label-quoted]
+[fixture: venn/db-grid-backslash-label-quoted]
+[fixture: venn/db-grid-backtick-label-quoted]
+[fixture: venn/db-grid-bom-label-quoted]
+[fixture: venn/db-grid-close-brace-label-quoted]
+[fixture: venn/db-grid-close-round-label-quoted]
+[fixture: venn/db-grid-close-square-label-quoted]
+[fixture: venn/db-grid-colon-label-quoted]
+[fixture: venn/db-grid-comma-label-quoted]
+[fixture: venn/db-grid-comment-label-quoted]
+[fixture: venn/db-grid-constructor-label-quoted]
+[fixture: venn/db-grid-dash-label-quoted]
+[fixture: venn/db-grid-digits-label-quoted]
+[fixture: venn/db-grid-emoji-label-quoted]
+[fixture: venn/db-grid-empty-label-quoted]
+[fixture: venn/db-grid-equals-label-quoted]
+[fixture: venn/db-grid-ff-label-quoted]
+[fixture: venn/db-grid-greater-than-label-quoted]
+[fixture: venn/db-grid-hash-label-quoted]
+[fixture: venn/db-grid-html-br-label-quoted]
+[fixture: venn/db-grid-html-label-quoted]
+[fixture: venn/db-grid-ideographic-label-quoted]
+[fixture: venn/db-grid-keyword-block-label-quoted]
+[fixture: venn/db-grid-keyword-class-label-quoted]
+[fixture: venn/db-grid-keyword-classdef-label-quoted]
+[fixture: venn/db-grid-keyword-columns-label-quoted]
+[fixture: venn/db-grid-keyword-end-label-quoted]
+[fixture: venn/db-grid-keyword-header-label-quoted]
+[fixture: venn/db-grid-keyword-label-quoted]
+[fixture: venn/db-grid-keyword-space-label-quoted]
+[fixture: venn/db-grid-keyword-style-label-quoted]
+[fixture: venn/db-grid-less-than-label-quoted]
+[fixture: venn/db-grid-lf-label-quoted]
+[fixture: venn/db-grid-ls-label-quoted]
+[fixture: venn/db-grid-nbsp-label-quoted]
+[fixture: venn/db-grid-nel-label-quoted]
+[fixture: venn/db-grid-nonascii-label-quoted]
+[fixture: venn/db-grid-open-brace-label-quoted]
+[fixture: venn/db-grid-open-round-label-quoted]
+[fixture: venn/db-grid-open-square-label-quoted]
+[fixture: venn/db-grid-percent-label-quoted]
+[fixture: venn/db-grid-pipe-label-quoted]
+[fixture: venn/db-grid-proto-label-quoted]
+[fixture: venn/db-grid-ps-label-quoted]
+[fixture: venn/db-grid-punct-label-quoted]
+[fixture: venn/db-grid-root-label-quoted]
+[fixture: venn/db-grid-semicolon-label-quoted]
+[fixture: venn/db-grid-single-quote-label-quoted]
+[fixture: venn/db-grid-spaces-label-quoted]
+[fixture: venn/db-grid-tab-label-quoted]
+[fixture: venn/db-grid-vt-label-quoted]
+
+一致する style や classDef の行は最後のセミコロンを失う。
+対象は `classdef-rule`、`style-rule`。
+[fixture: venn/db-grid-classdef-rule-label-quoted]
+[fixture: venn/db-grid-style-rule-label-quoted]
+
+挿入した改行や除去したコメント行は一つの LF となる。
+対象は `comment-line`、`cr`、`crlf`。
+[fixture: venn/db-grid-cr-label-quoted]
+[fixture: venn/db-grid-crlf-label-quoted]
+[fixture: venn/lex-label-comment-line]
+
+directive は除かれ前後の断片が結合する。
+対象は `directive`。
+[fixture: venn/lex-label-directive-middle]
+
+除去した directive 行は二つの LF を残す。
+対象は `directive-line`。
+[fixture: venn/lex-label-directive-line]
+
+文字参照は共通の前処理のプレースホルダーとなる。
+対象は `entity`、`entity-named`。
+[fixture: venn/lex-label-entity-named]
+[fixture: venn/lex-label-entity-numeric]
+
+HTML 属性の二重引用符は単一引用符となる。
+対象は `html-attribute`。
+[fixture: venn/lex-label-html-attribute]
+
+lexer はこれらの挿入した断片を拒否する。
+対象は `quote`。
+[fixture: venn/gram-grid-quote-label-quoted]
+
+`size` は集合か重なりの数値トークンを `parseFloat()` で変換する。
+
+lexer はこれらの挿入した断片を拒否する。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`close-brace`、`close-round`、`close-square`、`emoji`、`entity`、
+`entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
+`html-attribute`、`html-br`、`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、
+`nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
+`punct`、`quote`、`semicolon`、`single-quote`、`vt`。
+[fixture: venn/gram-grid-ampersand-entity-size]
+[fixture: venn/gram-grid-arrow-size]
+[fixture: venn/gram-grid-arrow-spaced-size]
+[fixture: venn/gram-grid-backslash-size]
+[fixture: venn/gram-grid-backtick-size]
+[fixture: venn/gram-grid-bom-size]
+[fixture: venn/gram-grid-close-brace-size]
+[fixture: venn/gram-grid-close-round-size]
+[fixture: venn/gram-grid-close-square-size]
+[fixture: venn/gram-grid-emoji-size]
+[fixture: venn/gram-grid-entity-named-size]
+[fixture: venn/gram-grid-entity-size]
+[fixture: venn/gram-grid-equals-size]
+[fixture: venn/gram-grid-ff-size]
+[fixture: venn/gram-grid-greater-than-size]
+[fixture: venn/gram-grid-hash-size]
+[fixture: venn/gram-grid-html-attribute-size]
+[fixture: venn/gram-grid-html-br-size]
+[fixture: venn/gram-grid-html-size]
+[fixture: venn/gram-grid-ideographic-size]
+[fixture: venn/gram-grid-less-than-size]
+[fixture: venn/gram-grid-ls-size]
+[fixture: venn/gram-grid-nbsp-size]
+[fixture: venn/gram-grid-nel-size]
+[fixture: venn/gram-grid-nonascii-size]
+[fixture: venn/gram-grid-open-brace-size]
+[fixture: venn/gram-grid-open-round-size]
+[fixture: venn/gram-grid-open-square-size]
+[fixture: venn/gram-grid-percent-size]
+[fixture: venn/gram-grid-pipe-size]
+[fixture: venn/gram-grid-ps-size]
+[fixture: venn/gram-grid-punct-size]
+[fixture: venn/gram-grid-quote-size]
+[fixture: venn/gram-grid-semicolon-size]
+[fixture: venn/gram-grid-single-quote-size]
+[fixture: venn/gram-grid-vt-size]
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `classdef-rule`、`colon`、`comma`、`comment`、`comment-line`、
+`constructor`、`cr`、`crlf`、`dash`、`directive-line`、`keyword`、
+`keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
+`keyword-end`、`keyword-header`、`keyword-space`、`lf`、`proto`、`root`、
+`spaces`、`style-rule`、`tab`。
+[fixture: venn/gram-grid-classdef-rule-size]
+[fixture: venn/gram-grid-colon-size]
+[fixture: venn/gram-grid-comma-size]
+[fixture: venn/gram-grid-comment-line-size]
+[fixture: venn/gram-grid-comment-size]
+[fixture: venn/gram-grid-constructor-size]
+[fixture: venn/gram-grid-cr-size]
+[fixture: venn/gram-grid-crlf-size]
+[fixture: venn/gram-grid-dash-size]
+[fixture: venn/gram-grid-directive-line-size]
+[fixture: venn/gram-grid-keyword-block-size]
+[fixture: venn/gram-grid-keyword-class-size]
+[fixture: venn/gram-grid-keyword-classdef-size]
+[fixture: venn/gram-grid-keyword-columns-size]
+[fixture: venn/gram-grid-keyword-end-size]
+[fixture: venn/gram-grid-keyword-header-size]
+[fixture: venn/gram-grid-keyword-size]
+[fixture: venn/gram-grid-keyword-space-size]
+[fixture: venn/gram-grid-lf-size]
+[fixture: venn/gram-grid-proto-size]
+[fixture: venn/gram-grid-root-size]
+[fixture: venn/gram-grid-spaces-size]
+[fixture: venn/gram-grid-style-rule-size]
+[fixture: venn/gram-grid-tab-size]
+
+挿入した断片はこの値に文字として残る。
+対象は `digits`、`empty`。
+[fixture: venn/db-grid-digits-size]
+[fixture: venn/db-grid-empty-size]
+
+サイズは 12 となる。
+対象は `directive`。
+[fixture: venn/db-grid-directive-size]
+
+挿入した style キーワードは別の文を始め、
+前の値はその前で終わる。
+対象は `keyword-style`。
+[fixture: venn/db-grid-keyword-style-size]
+
+`text-number` は数値トークンをサイズに変換せず文字として保つ。
+
+lexer はこれらの挿入した断片を拒否する。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`close-brace`、`close-round`、`close-square`、`emoji`、`entity`、
+`entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
+`html-attribute`、`html-br`、`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、
+`nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
+`punct`、`quote`、`semicolon`、`single-quote`、`vt`。
+[fixture: venn/gram-grid-ampersand-entity-text-number]
+[fixture: venn/gram-grid-arrow-spaced-text-number]
+[fixture: venn/gram-grid-arrow-text-number]
+[fixture: venn/gram-grid-backslash-text-number]
+[fixture: venn/gram-grid-backtick-text-number]
+[fixture: venn/gram-grid-bom-text-number]
+[fixture: venn/gram-grid-close-brace-text-number]
+[fixture: venn/gram-grid-close-round-text-number]
+[fixture: venn/gram-grid-close-square-text-number]
+[fixture: venn/gram-grid-emoji-text-number]
+[fixture: venn/gram-grid-entity-named-text-number]
+[fixture: venn/gram-grid-entity-text-number]
+[fixture: venn/gram-grid-equals-text-number]
+[fixture: venn/gram-grid-ff-text-number]
+[fixture: venn/gram-grid-greater-than-text-number]
+[fixture: venn/gram-grid-hash-text-number]
+[fixture: venn/gram-grid-html-attribute-text-number]
+[fixture: venn/gram-grid-html-br-text-number]
+[fixture: venn/gram-grid-html-text-number]
+[fixture: venn/gram-grid-ideographic-text-number]
+[fixture: venn/gram-grid-less-than-text-number]
+[fixture: venn/gram-grid-ls-text-number]
+[fixture: venn/gram-grid-nbsp-text-number]
+[fixture: venn/gram-grid-nel-text-number]
+[fixture: venn/gram-grid-nonascii-text-number]
+[fixture: venn/gram-grid-open-brace-text-number]
+[fixture: venn/gram-grid-open-round-text-number]
+[fixture: venn/gram-grid-open-square-text-number]
+[fixture: venn/gram-grid-percent-text-number]
+[fixture: venn/gram-grid-pipe-text-number]
+[fixture: venn/gram-grid-ps-text-number]
+[fixture: venn/gram-grid-punct-text-number]
+[fixture: venn/gram-grid-quote-text-number]
+[fixture: venn/gram-grid-semicolon-text-number]
+[fixture: venn/gram-grid-single-quote-text-number]
+[fixture: venn/gram-grid-vt-text-number]
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `classdef-rule`、`colon`、`comma`、`comment`、`comment-line`、
+`constructor`、`cr`、`crlf`、`dash`、`directive-line`、`keyword`、
+`keyword-block`、`keyword-class`、`keyword-classdef`、`keyword-columns`、
+`keyword-end`、`keyword-header`、`keyword-space`、`lf`、`proto`、`root`、
+`spaces`、`style-rule`、`tab`。
+[fixture: venn/gram-grid-classdef-rule-text-number]
+[fixture: venn/gram-grid-colon-text-number]
+[fixture: venn/gram-grid-comma-text-number]
+[fixture: venn/gram-grid-comment-line-text-number]
+[fixture: venn/gram-grid-comment-text-number]
+[fixture: venn/gram-grid-constructor-text-number]
+[fixture: venn/gram-grid-cr-text-number]
+[fixture: venn/gram-grid-crlf-text-number]
+[fixture: venn/gram-grid-dash-text-number]
+[fixture: venn/gram-grid-directive-line-text-number]
+[fixture: venn/gram-grid-keyword-block-text-number]
+[fixture: venn/gram-grid-keyword-class-text-number]
+[fixture: venn/gram-grid-keyword-classdef-text-number]
+[fixture: venn/gram-grid-keyword-columns-text-number]
+[fixture: venn/gram-grid-keyword-end-text-number]
+[fixture: venn/gram-grid-keyword-header-text-number]
+[fixture: venn/gram-grid-keyword-space-text-number]
+[fixture: venn/gram-grid-keyword-text-number]
+[fixture: venn/gram-grid-lf-text-number]
+[fixture: venn/gram-grid-proto-text-number]
+[fixture: venn/gram-grid-root-text-number]
+[fixture: venn/gram-grid-spaces-text-number]
+[fixture: venn/gram-grid-style-rule-text-number]
+[fixture: venn/gram-grid-tab-text-number]
+
+挿入した断片はこの値に文字として残る。
+対象は `digits`、`empty`。
+[fixture: venn/db-grid-digits-text-number]
+[fixture: venn/db-grid-empty-text-number]
+
+directive は除かれ前後の断片が結合する。
+対象は `directive`。
+[fixture: venn/db-grid-directive-text-number]
+
+挿入した style キーワードは別の文を始め、
+前の値はその前で終わる。
+対象は `keyword-style`。
+[fixture: venn/db-grid-keyword-style-text-number]
+
+`style-key` は識別子の lexer を使い、
+その表記を通常のプロパティオブジェクトのキーとする。
+
+lexer はこれらの挿入した断片を拒否する。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`classdef-rule`、`close-brace`、`close-round`、`close-square`、`emoji`、
+`entity`、`entity-named`、`equals`、`ff`、`greater-than`、`hash`、`html`、
+`html-attribute`、`html-br`、`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、
+`nonascii`、`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`ps`、
+`punct`、`quote`、`semicolon`、`single-quote`、`style-rule`、`vt`。
+[fixture: venn/gram-grid-ampersand-entity-style-key]
+[fixture: venn/gram-grid-arrow-spaced-style-key]
+[fixture: venn/gram-grid-arrow-style-key]
+[fixture: venn/gram-grid-backslash-style-key]
+[fixture: venn/gram-grid-backtick-style-key]
+[fixture: venn/gram-grid-bom-style-key]
+[fixture: venn/gram-grid-classdef-rule-style-key]
+[fixture: venn/gram-grid-close-brace-style-key]
+[fixture: venn/gram-grid-close-round-style-key]
+[fixture: venn/gram-grid-close-square-style-key]
+[fixture: venn/gram-grid-emoji-style-key]
+[fixture: venn/gram-grid-entity-named-style-key]
+[fixture: venn/gram-grid-entity-style-key]
+[fixture: venn/gram-grid-equals-style-key]
+[fixture: venn/gram-grid-ff-style-key]
+[fixture: venn/gram-grid-greater-than-style-key]
+[fixture: venn/gram-grid-hash-style-key]
+[fixture: venn/gram-grid-html-attribute-style-key]
+[fixture: venn/gram-grid-html-br-style-key]
+[fixture: venn/gram-grid-html-style-key]
+[fixture: venn/gram-grid-ideographic-style-key]
+[fixture: venn/gram-grid-less-than-style-key]
+[fixture: venn/gram-grid-ls-style-key]
+[fixture: venn/gram-grid-nbsp-style-key]
+[fixture: venn/gram-grid-nel-style-key]
+[fixture: venn/gram-grid-nonascii-style-key]
+[fixture: venn/gram-grid-open-brace-style-key]
+[fixture: venn/gram-grid-open-round-style-key]
+[fixture: venn/gram-grid-open-square-style-key]
+[fixture: venn/gram-grid-percent-style-key]
+[fixture: venn/gram-grid-pipe-style-key]
+[fixture: venn/gram-grid-ps-style-key]
+[fixture: venn/gram-grid-punct-style-key]
+[fixture: venn/gram-grid-quote-style-key]
+[fixture: venn/gram-grid-semicolon-style-key]
+[fixture: venn/gram-grid-single-quote-style-key]
+[fixture: venn/gram-grid-style-rule-style-key]
+[fixture: venn/gram-grid-vt-style-key]
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `colon`、`comma`、`comment`、`comment-line`、`cr`、`crlf`、
+`directive-line`、`keyword-block`、`keyword-class`、`keyword-classdef`、
+`keyword-columns`、`keyword-end`、`keyword-header`、`keyword-space`、
+`keyword-style`、`lf`、`spaces`、`tab`。
+[fixture: venn/gram-grid-colon-style-key]
+[fixture: venn/gram-grid-comma-style-key]
+[fixture: venn/gram-grid-comment-line-style-key]
+[fixture: venn/gram-grid-comment-style-key]
+[fixture: venn/gram-grid-cr-style-key]
+[fixture: venn/gram-grid-crlf-style-key]
+[fixture: venn/gram-grid-directive-line-style-key]
+[fixture: venn/gram-grid-keyword-block-style-key]
+[fixture: venn/gram-grid-keyword-class-style-key]
+[fixture: venn/gram-grid-keyword-classdef-style-key]
+[fixture: venn/gram-grid-keyword-columns-style-key]
+[fixture: venn/gram-grid-keyword-end-style-key]
+[fixture: venn/gram-grid-keyword-header-style-key]
+[fixture: venn/gram-grid-keyword-space-style-key]
+[fixture: venn/gram-grid-keyword-style-style-key]
+[fixture: venn/gram-grid-lf-style-key]
+[fixture: venn/gram-grid-spaces-style-key]
+[fixture: venn/gram-grid-tab-style-key]
+
+挿入した断片はこの値に文字として残る。
+対象は `constructor`、`dash`、`digits`、`empty`、`keyword`、`proto`、`root`。
+[fixture: venn/db-grid-constructor-style-key]
+[fixture: venn/db-grid-dash-style-key]
+[fixture: venn/db-grid-digits-style-key]
+[fixture: venn/db-grid-empty-style-key]
+[fixture: venn/db-grid-keyword-style-key]
+[fixture: venn/db-grid-proto-style-key]
+[fixture: venn/db-grid-root-style-key]
+
+directive は除かれ前後の断片が結合する。
+対象は `directive`。
+[fixture: venn/db-grid-directive-style-key]
+
+`style-value` は引用しない値の単語間に断片を挿入し、
+rgb、rgba、十六進色の内側は上の色トークンの読みで別に扱う。
+[fixture: venn/db-grid-spaces-style-value]
+[fixture: venn/db-style-rgb-line-separator]
+[fixture: venn/db-style-hex-five]
+
+lexer はこれらの挿入した断片を拒否する。
+対象は `ampersand-entity`、`arrow`、`arrow-spaced`、`backslash`、`backtick`、
+`bom`、`close-brace`、`close-round`、`close-square`、`emoji`、`entity-named`、
+`equals`、`ff`、`greater-than`、`hash`、`html`、`html-attribute`、`html-br`、
+`ideographic`、`less-than`、`ls`、`nbsp`、`nel`、`nonascii`、`open-brace`、
+`open-round`、`open-square`、`percent`、`pipe`、`ps`、`punct`、`quote`、
+`semicolon`、`single-quote`、`vt`。
+[fixture: venn/gram-grid-ampersand-entity-style-value]
+[fixture: venn/gram-grid-arrow-spaced-style-value]
+[fixture: venn/gram-grid-arrow-style-value]
+[fixture: venn/gram-grid-backslash-style-value]
+[fixture: venn/gram-grid-backtick-style-value]
+[fixture: venn/gram-grid-bom-style-value]
+[fixture: venn/gram-grid-close-brace-style-value]
+[fixture: venn/gram-grid-close-round-style-value]
+[fixture: venn/gram-grid-close-square-style-value]
+[fixture: venn/gram-grid-emoji-style-value]
+[fixture: venn/gram-grid-entity-named-style-value]
+[fixture: venn/gram-grid-equals-style-value]
+[fixture: venn/gram-grid-ff-style-value]
+[fixture: venn/gram-grid-greater-than-style-value]
+[fixture: venn/gram-grid-hash-style-value]
+[fixture: venn/gram-grid-html-attribute-style-value]
+[fixture: venn/gram-grid-html-br-style-value]
+[fixture: venn/gram-grid-html-style-value]
+[fixture: venn/gram-grid-ideographic-style-value]
+[fixture: venn/gram-grid-less-than-style-value]
+[fixture: venn/gram-grid-ls-style-value]
+[fixture: venn/gram-grid-nbsp-style-value]
+[fixture: venn/gram-grid-nel-style-value]
+[fixture: venn/gram-grid-nonascii-style-value]
+[fixture: venn/gram-grid-open-brace-style-value]
+[fixture: venn/gram-grid-open-round-style-value]
+[fixture: venn/gram-grid-open-square-style-value]
+[fixture: venn/gram-grid-percent-style-value]
+[fixture: venn/gram-grid-pipe-style-value]
+[fixture: venn/gram-grid-ps-style-value]
+[fixture: venn/gram-grid-punct-style-value]
+[fixture: venn/gram-grid-quote-style-value]
+[fixture: venn/gram-grid-semicolon-style-value]
+[fixture: venn/gram-grid-single-quote-style-value]
+[fixture: venn/gram-grid-vt-style-value]
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `classdef-rule`、`colon`、`comma`、`comment`、`comment-line`、`cr`、
+`crlf`、`directive-line`、`keyword-classdef`、`keyword-header`、`lf`、
+`style-rule`。
+[fixture: venn/gram-grid-classdef-rule-style-value]
+[fixture: venn/gram-grid-colon-style-value]
+[fixture: venn/gram-grid-comma-style-value]
+[fixture: venn/gram-grid-comment-line-style-value]
+[fixture: venn/gram-grid-comment-style-value]
+[fixture: venn/gram-grid-cr-style-value]
+[fixture: venn/gram-grid-crlf-style-value]
+[fixture: venn/gram-grid-directive-line-style-value]
+[fixture: venn/gram-grid-keyword-classdef-style-value]
+[fixture: venn/gram-grid-keyword-header-style-value]
+[fixture: venn/gram-grid-lf-style-value]
+[fixture: venn/gram-grid-style-rule-style-value]
+
+挿入した断片はこの値に文字として残る。
+対象は `constructor`、`dash`、`digits`、`empty`、`keyword`、`keyword-block`、
+`keyword-class`、`keyword-columns`、`keyword-end`、`keyword-space`、`proto`、
+`root`。
+[fixture: venn/db-grid-constructor-style-value]
+[fixture: venn/db-grid-dash-style-value]
+[fixture: venn/db-grid-digits-style-value]
+[fixture: venn/db-grid-empty-style-value]
+[fixture: venn/db-grid-keyword-block-style-value]
+[fixture: venn/db-grid-keyword-class-style-value]
+[fixture: venn/db-grid-keyword-columns-style-value]
+[fixture: venn/db-grid-keyword-end-style-value]
+[fixture: venn/db-grid-keyword-space-style-value]
+[fixture: venn/db-grid-keyword-style-value]
+[fixture: venn/db-grid-proto-style-value]
+[fixture: venn/db-grid-root-style-value]
+
+directive は除かれ前後の断片が結合する。
+対象は `directive`。
+[fixture: venn/db-grid-directive-style-value]
+
+保持する値は `"a #35b"` となる。
+対象は `entity`。
+[fixture: venn/db-grid-entity-style-value]
+
+挿入した style キーワードは別の文を始め、
+前の値はその前で終わる。
+対象は `keyword-style`。
+[fixture: venn/db-grid-keyword-style-style-value]
+
+引用しない値のトークン間の空白は一つのスペースとなる。
+対象は `spaces`、`tab`。
+[fixture: venn/db-grid-spaces-style-value]
+[fixture: venn/db-grid-tab-style-value]
+
+`title` はタイトルのトークン全体と共通の setter を使い、
+venn の文字列の正規化を使わない。
+
+lexer はこれらの挿入した断片を拒否する。
+対象は `ampersand-entity`、`classdef-rule`、`hash`、`semicolon`、`style-rule`。
+[fixture: venn/gram-grid-ampersand-entity-title]
+[fixture: venn/gram-grid-classdef-rule-title]
+[fixture: venn/gram-grid-hash-title]
+[fixture: venn/gram-grid-semicolon-title]
+[fixture: venn/gram-grid-style-rule-title]
+
+挿入した断片はこの値に文字として残る。
+対象は `arrow`、`arrow-spaced`、`backslash`、`backtick`、`bom`、`close-brace`、
+`close-round`、`close-square`、`colon`、`comma`、`comment`、`constructor`、
+`dash`、`digits`、`emoji`、`empty`、`equals`、`ff`、`greater-than`、`html`、
+`html-br`、`ideographic`、`keyword`、`keyword-block`、`keyword-class`、
+`keyword-classdef`、`keyword-columns`、`keyword-end`、`keyword-header`、
+`keyword-space`、`keyword-style`、`less-than`、`ls`、`nbsp`、`nel`、`nonascii`、
+`open-brace`、`open-round`、`open-square`、`percent`、`pipe`、`proto`、`ps`、
+`punct`、`quote`、`root`、`single-quote`、`spaces`、`tab`、`vt`。
+[fixture: venn/db-grid-arrow-spaced-title]
+[fixture: venn/db-grid-arrow-title]
+[fixture: venn/db-grid-backslash-title]
+[fixture: venn/db-grid-backtick-title]
+[fixture: venn/db-grid-bom-title]
+[fixture: venn/db-grid-close-brace-title]
+[fixture: venn/db-grid-close-round-title]
+[fixture: venn/db-grid-close-square-title]
+[fixture: venn/db-grid-colon-title]
+[fixture: venn/db-grid-comma-title]
+[fixture: venn/db-grid-comment-title]
+[fixture: venn/db-grid-constructor-title]
+[fixture: venn/db-grid-dash-title]
+[fixture: venn/db-grid-digits-title]
+[fixture: venn/db-grid-emoji-title]
+[fixture: venn/db-grid-empty-title]
+[fixture: venn/db-grid-equals-title]
+[fixture: venn/db-grid-ff-title]
+[fixture: venn/db-grid-greater-than-title]
+[fixture: venn/db-grid-html-br-title]
+[fixture: venn/db-grid-html-title]
+[fixture: venn/db-grid-ideographic-title]
+[fixture: venn/db-grid-keyword-block-title]
+[fixture: venn/db-grid-keyword-class-title]
+[fixture: venn/db-grid-keyword-classdef-title]
+[fixture: venn/db-grid-keyword-columns-title]
+[fixture: venn/db-grid-keyword-end-title]
+[fixture: venn/db-grid-keyword-header-title]
+[fixture: venn/db-grid-keyword-space-title]
+[fixture: venn/db-grid-keyword-style-title]
+[fixture: venn/db-grid-keyword-title]
+[fixture: venn/db-grid-less-than-title]
+[fixture: venn/db-grid-ls-title]
+[fixture: venn/db-grid-nbsp-title]
+[fixture: venn/db-grid-nel-title]
+[fixture: venn/db-grid-nonascii-title]
+[fixture: venn/db-grid-open-brace-title]
+[fixture: venn/db-grid-open-round-title]
+[fixture: venn/db-grid-open-square-title]
+[fixture: venn/db-grid-percent-title]
+[fixture: venn/db-grid-pipe-title]
+[fixture: venn/db-grid-proto-title]
+[fixture: venn/db-grid-ps-title]
+[fixture: venn/db-grid-punct-title]
+[fixture: venn/db-grid-quote-title]
+[fixture: venn/db-grid-root-title]
+[fixture: venn/db-grid-single-quote-title]
+[fixture: venn/db-grid-spaces-title]
+[fixture: venn/db-grid-tab-title]
+[fixture: venn/db-grid-vt-title]
+
+文法 はこれらの挿入した断片を拒否する。
+対象は `comment-line`、`cr`、`crlf`、`directive-line`、`lf`。
+[fixture: venn/gram-grid-cr-title]
+[fixture: venn/gram-grid-crlf-title]
+[fixture: venn/gram-grid-lf-title]
+[fixture: venn/lex-title-comment-line]
+[fixture: venn/lex-title-directive-line]
+
+directive は除かれ前後の断片が結合する。
+対象は `directive`。
+[fixture: venn/lex-title-directive-middle]
+
+文字参照は共通の前処理のプレースホルダーとなる。
+対象は `entity`、`entity-named`。
+[fixture: venn/lex-title-entity-named]
+[fixture: venn/lex-title-entity-numeric]
+
+HTML 属性の二重引用符は単一引用符となる。
+対象は `html-attribute`。
+[fixture: venn/lex-title-html-attribute]

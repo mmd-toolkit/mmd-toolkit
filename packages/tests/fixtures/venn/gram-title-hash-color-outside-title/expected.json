@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: 12. `title`, one whitespace character of [Notation](../common.md#notation), and nonempty text without a converted `#`, line feed, or `;` make one `title-line` unit, taking as many characters as possible. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betatitle T #abc\n-----------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'UNION', 'TEXT', 'INDENT_TEXT', 'STYLE', got 'HEXCOLOR'"
+  }
+}

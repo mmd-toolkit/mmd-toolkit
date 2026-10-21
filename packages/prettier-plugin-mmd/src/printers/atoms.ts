@@ -60,7 +60,8 @@ export interface AtomLayout {
    * the line after the `:` of an event in a timeline, where the line break is
    * the one whitespace character that the lexer reads after the colon. Such a
    * gap holds no comment and no directive, as for a layout that joins its line
-   * breaks. Without it, no gap is joined.
+   * breaks. It also normalizes a Unicode separator in such a gap, as the
+   * consumed separator of a title. Without it, no gap is joined.
    */
   readonly joinedBefore?: ReadonlySet<number>
 }
@@ -175,7 +176,8 @@ export function printAtoms(
           atom.start,
         )
         current.push(
-          written.includes("\u2028") || written.includes("\u2029")
+          (written.includes("\u2028") || written.includes("\u2029")) &&
+            layout.joinedBefore?.has(atom.start) !== true
             ? written
             : inStyleRuleStretch
               ? written === ""

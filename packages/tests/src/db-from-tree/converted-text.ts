@@ -52,18 +52,81 @@ function findAttributeQuotes(text: string, from: number): Set<number> {
   }
 }
 
-/**
- * The text `text` with the `"` of its HTML attribute quotes read as `'`
- * (common.md, HTML attribute quotes): the form of a written value in which the
- * quotes that a lexer sees are the ones that delimit a string.
- */
-export function withAttributeQuotesRead(text: string): string {
-  const quotes = findAttributeQuotes(text, 0)
-  let read = ""
-  for (let offset = 0; offset < text.length; offset++) {
-    read += quotes.has(offset) ? "'" : text.charAt(offset)
+/** common.md, HTML attribute quotes: source-wide positions, found once before any range is read. */
+export class AttributeQuotes {
+  private readonly source: string
+
+  private readonly positions: ReadonlySet<number>
+
+  public constructor(source: string, root: TreeRoot) {
+    this.source = source
+    this.positions = findAttributeQuotes(
+      source,
+      root.frontmatter?.range[1] ?? 0,
+    )
   }
-  return read
+
+  /** Whether the quote at the original source offset is an attribute quote. */
+  public has(offset: number): boolean {
+    return this.positions.has(offset)
+  }
+
+  /** Only attribute quotes are converted; original offsets and line terminators are kept. */
+  public of(range: TreeRange, leftOut: (offset: number) => boolean): string {
+    let read = ""
+    for (let offset = range[0]; offset < range[1]; offset++) {
+      if (!leftOut(offset))
+        read += this.has(offset) ? "'" : this.source.charAt(offset)
+    }
+    return read
+  }
+
+  /** Apply the source's quote positions to the held value, retaining even a broken value for lexical checks. */
+  public readValue(
+    range: TreeRange,
+    value: string,
+    leftOut: (offset: number) => boolean,
+    delimiters: number,
+    trim: boolean,
+  ): string {
+    const offsets: number[] = []
+    for (let offset = range[0]; offset < range[1]; offset++)
+      if (!leftOut(offset)) offsets.push(offset)
+    let start = delimiters
+    let end = offsets.length - delimiters
+    if (trim) {
+      while (
+        start < end &&
+        isWhitespace(this.source.charCodeAt(offsets[start] ?? -1))
+      )
+        start++
+      while (
+        end > start &&
+        isWhitespace(this.source.charCodeAt(offsets[end - 1] ?? -1))
+      )
+        end--
+    }
+    // A broken held value is still checked as supplied. Source positions only
+    // describe a value that agrees with its written range.
+    if (
+      value.length !== end - start ||
+      offsets
+        .slice(start, end)
+        .some(
+          (offset, index) => this.source.charAt(offset) !== value.charAt(index),
+        )
+    )
+      return value
+    let read = ""
+    for (let index = 0; index < value.length; index++) {
+      const offset = start + index < end ? offsets[start + index] : undefined
+      read +=
+        value.charAt(index) === '"' && offset !== undefined && this.has(offset)
+          ? "'"
+          : value.charAt(index)
+    }
+    return read
+  }
 }
 
 /**
@@ -127,10 +190,10 @@ function findEntityAt(
 export function readConvertedCharacters(
   text: string,
   root: TreeRoot,
+  attributes: AttributeQuotes = new AttributeQuotes(text, root),
 ): ConvertedCharacter[] {
   const textStart = root.frontmatter?.range[1] ?? 0
   const leftOut = findLeftOut(text, root, textStart)
-  const quotes = findAttributeQuotes(text, textStart)
   // Leading whitespace is trivia (common.md, Leading whitespace), also after
   // the directives and comment regions that precede the first unit.
   const visible: number[] = []
@@ -139,7 +202,12 @@ export function readConvertedCharacters(
     if (visible.length === 0 && isWhitespace(text.charCodeAt(offset))) continue
     visible.push(offset)
   }
-  const characters = convertVisibleCharacters(text, visible, quotes, leftOut)
+  const characters = convertVisibleCharacters(
+    text,
+    visible,
+    attributes,
+    leftOut,
+  )
   characters.push({ start: text.length, codePoint: LINE_FEED })
   return characters
 }
@@ -148,8 +216,9 @@ export function readConvertedCharacters(
 function convertVisibleCharacters(
   text: string,
   visible: readonly number[],
-  quotes: ReadonlySet<number>,
+  quotes: AttributeQuotes,
   leftOut: Uint8Array,
+  sourceOffset = 0,
 ): ConvertedCharacter[] {
   const characters: ConvertedCharacter[] = []
   for (let index = 0; index < visible.length; index++) {
@@ -189,7 +258,7 @@ function convertVisibleCharacters(
       }
       continue
     }
-    if (code === 0x22 && quotes.has(offset)) {
+    if (code === 0x22 && quotes.has(sourceOffset + offset)) {
       characters.push({ start: offset, codePoint: 0x27 })
       continue
     }
@@ -201,19 +270,32 @@ function convertVisibleCharacters(
   return characters
 }
 
-/**
- * The converted text of one leaf's range, using its written value to
- * identify semicolons that the tree has already left out. The scan is confined
- * to that range. A value starts inside a unit, so the prefix supplies that
- * context to the shared scan without reading the preceding source character.
- * Keeping original offsets distinguishes CR/directive/LF from a CRLF.
- */
-export function convertedValueOf(
+/** A value range read with the source-wide HTML tag context and its written delimiters excluded. */
+export type ConvertedValueReader = (
+  range: TreeRange,
+  value: string,
+  delimiterLength?: number,
+) => string
+
+/** Find HTML attribute quotes once; all other conversion reads only the supplied value ranges. */
+export function convertedValuesOf(
+  source: string,
+  root: TreeRoot,
+  diagram: string,
+): ConvertedValueReader {
+  const attributes = new AttributeQuotes(source, root)
+  return (range, value, delimiterLength = 0) =>
+    convertedValueOf(source, range, value, delimiterLength, diagram, attributes)
+}
+
+/** Leaf-local trivia and entity conversion, retaining original offsets for CRLF and HTML quotes. */
+function convertedValueOf(
   source: string,
   range: TreeRange,
   value: string,
-  delimiterLength = 0,
-  diagram = "kanban",
+  delimiterLength: number,
+  diagram: string,
+  attributes: AttributeQuotes,
 ): string {
   const text = `x${source.slice(...range)}`
   const leftOut = sourceLeftOut(text, 0)
@@ -246,8 +328,9 @@ export function convertedValueOf(
   return convertVisibleCharacters(
     text,
     visible,
-    findAttributeQuotes(text, 1),
+    attributes,
     leftOut,
+    range[0] - 1,
   )
     .map(({ codePoint }) => String.fromCodePoint(codePoint))
     .join("")

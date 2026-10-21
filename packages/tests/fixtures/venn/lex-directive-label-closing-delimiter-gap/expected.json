@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Directives: A directive between the closing quote and closing bracket of a quoted label is accepted, and the label is x."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "x"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

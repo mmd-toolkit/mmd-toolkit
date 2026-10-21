@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
   ConvertedText,
+  convertedValuesOf,
   readConvertedCharacters,
   readWhitespaceAfterBraceAsLineFeed,
 } from "../src/db-from-tree/converted-text.ts"
@@ -154,5 +155,40 @@ describe("ConvertedText.of", () => {
         ],
       ),
     ).toBe("ab")
+  })
+})
+
+describe("convertedValuesOf", () => {
+  it("keeps the whole-source tag context when reading separate value ranges", () => {
+    const source = 'venn-beta\ntitle <a\nset "b="c">d"\n'
+    const readValue = convertedValuesOf(source, rootOf(source), "venn")
+    expect(readValue([16, 18], "<a")).toBe("<a")
+    expect(readValue([23, 32], 'b="c">d', 1)).toBe("b='c'>d")
+    expect(readValue([23, 32], 'b="c">d', 1)).toBe("b='c'>d")
+  })
+
+  it("finds a tag before comment removal, even outside the value range", () => {
+    const source = 'venn-beta\n%% <a\nset "b="c">d"\n'
+    expect(
+      convertedValuesOf(source, rootOf(source), "venn")([20, 29], 'b="c">d', 1),
+    ).toBe("b='c'>d")
+  })
+
+  it("excludes frontmatter from the tag context", () => {
+    const source = '---\ntitle: <a\n---\nvenn-beta\nset "b="c">d"\n'
+    const start = source.indexOf('"b=')
+    const root = rootOf(source)
+    const readValue = convertedValuesOf(
+      source,
+      {
+        ...root,
+        frontmatter: {
+          type: "Frontmatter",
+          range: [0, source.indexOf("venn-beta")],
+        },
+      },
+      "venn",
+    )
+    expect(readValue([start, start + 9], 'b="c">d', 1)).toBe('b="c">d')
   })
 })

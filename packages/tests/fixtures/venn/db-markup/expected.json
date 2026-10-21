@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Only the common title is sanitized; identifiers, labels, text ids and style strings use venn normalization."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "<b>T</b> = value",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "<b>A</b>"
+        ],
+        "size": 10,
+        "label": "<b>L</b>"
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "<b>A</b>"
+        ],
+        "id": "<b>I</b>"
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "<b>A</b>"
+        ],
+        "styles": {
+          "color": "<b>red</b>"
+        }
+      }
+    ]
+  }
+}

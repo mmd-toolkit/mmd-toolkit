@@ -66,6 +66,7 @@ export default [...markdown.configs.processor, mmd.configs.recommended]
 - 状態図: `stateDiagram`（`stateDiagram` と `stateDiagram-v2`）。
 - ER 図: `er`（`erDiagram`）。
 - Gantt チャート: `gantt`（`gantt`）。
+- Venn 図: `venn`（`venn-beta`）。
 
 ER 図と Gantt チャートには、まだ図種ごとの規則がありません。
 ほかの図種は、対応するまで、パースのエラーとして報告されます。

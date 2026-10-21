@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed directive word-argument leaves the identifier closing delimiter available."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "a"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

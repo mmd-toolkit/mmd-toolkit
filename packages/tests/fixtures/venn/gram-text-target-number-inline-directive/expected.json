@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text target number inline directive boundary is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betatext A2\n----------------^\nExpecting 'NUMERIC', 'IDENTIFIER', 'STRING', 'COMMA', got 'NEWLINE'"
+  }
+}

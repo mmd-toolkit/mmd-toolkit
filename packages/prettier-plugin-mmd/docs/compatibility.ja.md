@@ -1303,3 +1303,57 @@ Unicode の区間境界も保ちます。
 [fixture: c4/line-rule-and-semicolons/semicolon-suffix-spacing]
 [fixture: c4/trailing-whitespace/semicolon-line]
 [test: c4: ls-line-rule-segments]
+
+## Venn の暗黙の text とテキストの行規則
+
+Venn の本文は平らな一覧で、
+対象を書かない text だけを字下げします。
+モードが有効な間は正の字下げが暗黙の text を選ぶためです。
+宣言と同じ行の style、対象つき text、title は分けず、
+モードを解除しないようにします。
+先頭のディレクティブは論理的な字下げの正とゼロを保ちます。
+図コメントの隙間は `%%{ }%%` の前の空行と空白だけの行の境界を保ちます。
+[Venn の規則](./venn.ja.md)を参照してください。
+
+[fixture: venn/indentation/indent-width]
+[fixture: venn/statements-one-per-line/header-declaration-group]
+[fixture: venn/directives/directive-leading-marker]
+[fixture: venn/blank-lines/whitespace-before-empty-braces]
+[fixture: venn/blank-lines/blank-before-empty-braces-explicit]
+
+名前、ラベル、サイズ、裸と引用符つきの style 全体、title、
+重複と飲み込まれる断片は書かれたテキストのまま保ちます。
+空の引用符つきの名前と style も値です。
+裸の空白、引用符内の空白、空の引用符つきラベルの読み分けも保ちます。
+全てのセミコロンを保ち、
+最初の非空白から最後のセミコロンまでの接頭部を保護します。
+端にかかる値と項目は全体を保ちます。
+字下げと外側の末尾空白はプリンターの空白で、
+安全な接尾部は通常どおり整形します。
+コメントとディレクティブ内の Unicode 区切りは保持部分を切りません。
+Venn の図コメントは LF か末尾まで続きます。
+
+[fixture: venn/name-lists/empty-quoted-targets]
+[fixture: venn/labels/labels-empty-kept]
+[fixture: venn/style-properties/style-atoms-kept]
+[fixture: venn/comments/ignored-fragment]
+[fixture: venn/line-rule-and-kept-lines/line-rule-suffix-spacing]
+[test: venn: ls-kept-comment-whitespace-line]
+[test: venn: ps-kept-directive]
+
+正規化するのは受理する役割の空白だけです。
+通常の ASCII の隙間、設定の暗黙の字下げ、title の最初の区切りです。
+CR と CRLF は共通の改行処理を使います。
+値の Unicode 文字は保ち、
+不正な通常の隙間は拒否のままです。
+失敗、Markdown、frontmatter、最後の改行は共通の経路に従います。
+仕様の単位境界の乖離は失敗のままで、
+C4 の検出と不透明な YAML の乖離は仕様の読み方を使います。
+生の拒否には生の Db はありません。
+
+[fixture: venn/whitespace-characters/tab-gaps]
+[fixture: venn/title/title-next-line]
+[fixture: venn/header/div-c4-detector]
+[fixture: venn/frontmatter-yaml/frontmatter-invalid-kept]
+[test: a venn diagram with other line endings]
+[test: venn: unicode-role-whitespace]

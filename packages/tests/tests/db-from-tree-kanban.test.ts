@@ -658,6 +658,11 @@ describe("dbFromTree of kanban trees made by hand", async () => {
         {},
         {
           get(_target, key) {
+            // HTML tag context is source-wide; value slices stay in their nodes.
+            if (key === "indexOf")
+              return fixture.input.indexOf.bind(fixture.input)
+            if (key === "charCodeAt")
+              return fixture.input.charCodeAt.bind(fixture.input)
             if (key !== "slice")
               throw new Error(`source read through ${String(key)}`)
             return (from: number, to: number) => {

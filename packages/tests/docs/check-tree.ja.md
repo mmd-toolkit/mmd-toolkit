@@ -41,6 +41,25 @@ const problems: TreeProblem[] = checkTree(text, tree)
   木にないコメントやディレクティブを見つけるためです。
   木から取るのは `IgnoredSemicolon` のトークンです。
   行の規則がどの `;` を無視するかは、行の区切りと図種に依ります。
+- HTML 属性の引用符の位置は、Db と同じ共有の変換で、
+  フロントマターの後のソース全体から一度求めます。
+  コメントや前の文も含めた文脈を、
+  文字列、ラベル、データブロックの範囲に当て、
+  値の中だけでタグを探し直しません。
+  ノードの値とトークンは、書かれた引用符を保ちます。
+  [fixture: venn/db-html-tag-from-title-name]
+  [fixture: venn/db-html-tag-from-title-label]
+  [fixture: venn/db-html-tag-from-title-style]
+  [fixture: venn/db-html-tag-from-comment-name]
+  [fixture: venn/db-html-tag-across-names]
+  [fixture: c4/db-html-tag-from-earlier-text]
+  [fixture: kanban/db-html-tag-from-earlier-text]
+  [fixture: kanban/db-html-tag-from-earlier-text-data]
+  [fixture: block/db-html-tag-from-earlier-text]
+  [fixture: quadrant/db-html-tag-from-earlier-text]
+  [fixture: sankey/db-html-tag-from-earlier-text]
+  [fixture: sankey/db-html-tag-from-earlier-text-quoted]
+  [fixture: xychart/db-html-tag-from-earlier-text]
 - 木の形は、ノードの型と記録ごとの欄の表が与えます
   （`src/check-tree/node-fields.ts`）。
   各欄の名前と種類（ある型の値、ノード、ノードか null、ノードの列）です。
@@ -584,6 +603,99 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `StringFragment` トークンで、
     その後ろの語は `RawText` トークンです。
 
+  - venn: 子の型、null 条件、空にできない名前とプロパティのリスト、
+    部分集合の名前の数、数値 id のラベルの禁止、
+    kind の語は ast/venn.md に従います。
+    対象が null なのは有効な字下げ付き text の印だけです。
+    改行後の通常の文頭がモードを終わらせ、空行、除去されたコメント、
+    共通のディレクティブ、飲み込まれた断片は保ちます。
+    空行の後の字下げなしの `%%{ }%%` はモードを終わらせます。
+    宣言の直後のもの、ASCII 空白かタブをちょうど一つ前置したもの、
+    裸の `%%` の行はモードを保ちます。
+    空白かタブだけの空でない行が間にあってもモードは保たれます。
+    先頭の空白かタブが二つ以上なら一つの並びとして読み飛ばします。
+    規則 2 がコメントの前の別の一文字を飲み込まなければ、
+    規則 7 が `%%{` でモードを終わらせます。
+    ラベルは空の引用ラベルも含む書かれた内部全体を保ち、
+    リテラルは単位間の空白とタイトルの空白を保ちます。
+    配置と空白には statement-checks.ts を使います。
+    図のコメントは `%%` で、
+    無視されるテキストはその直前の空白以外の一コード単位です。
+    キーワード、句読点、トークンの種類は
+    `parser/docs/tokens/venn.md` に従います。
+    裸のスタイルの識別子、数、色の単位はそれぞれのトークンを保ちます。
+    識別子の単位より前にキーワードとタイトル行の規則を当てます。
+    通常の文間は ASCII の空白だけを許します。
+    規則 2 は図のテキストに残る `%%` の直前で、
+    Notation の空白一文字を飲み込めます。
+    U+2028 と U+2029 も、裸の `%%` や `%%{ }%%` の前では飲み込まれます。
+    除去される共通のコメント行や本物のディレクティブの前では、
+    通常の文間に残り、拒否されます。
+    [fixture: venn/gram-comment-prefix-line-separator-bare-percent]
+    [fixture: venn/gram-comment-prefix-line-separator-u2029-bare-percent]
+    [fixture: venn/gram-comment-prefix-line-separator-brace-comment]
+    [fixture: venn/gram-comment-prefix-line-separator-u2029-brace-comment]
+    [fixture: venn/gram-comment-prefix-line-separator-between-statements-bare-percent]
+    [fixture: venn/gram-comment-prefix-line-separator-between-statements-u2029-bare-percent]
+    [fixture: venn/gram-comment-prefix-line-separator-between-statements-brace-comment]
+    [fixture: venn/gram-comment-prefix-line-separator-between-statements-u2029-brace-comment]
+    [fixture: venn/gram-comment-prefix-line-separator-between-statements-implicit-text]
+    [fixture: venn/gram-comment-prefix-line-separator-between-statements-u2029-implicit-text]
+    [fixture: venn/gram-comment-prefix-line-separator]
+    [fixture: venn/gram-comment-prefix-line-separator-u2029]
+    [fixture: venn/gram-comment-prefix-line-separator-directive]
+    [fixture: venn/gram-comment-prefix-line-separator-u2029-directive]
+    [fixture: venn/lex-swallowed-nbsp-gap]
+    [fixture: venn/lex-swallowed-vt-gap]
+    [fixture: venn/lex-swallowed-ff-gap]
+    [fixture: venn/lex-swallowed-bom-gap]
+    [fixture: venn/lex-swallowed-ideographic-gap]
+    [fixture: venn/lex-swallowed-nbsp-header]
+    [fixture: venn/lex-swallowed-nbsp-between-subsets]
+    [fixture: venn/lex-swallowed-nbsp-eof]
+    [fixture: venn/lex-comment-swallowed-vt]
+    [fixture: venn/lex-comment-swallowed-ff]
+    [fixture: venn/lex-comment-swallowed-nbsp]
+    [fixture: venn/lex-comment-swallowed-ogham]
+    [fixture: venn/lex-comment-swallowed-en-quad]
+    [fixture: venn/lex-comment-swallowed-em-quad]
+    [fixture: venn/lex-comment-swallowed-en-space]
+    [fixture: venn/lex-comment-swallowed-em-space]
+    [fixture: venn/lex-comment-swallowed-three-per-em]
+    [fixture: venn/lex-comment-swallowed-four-per-em]
+    [fixture: venn/lex-comment-swallowed-six-per-em]
+    [fixture: venn/lex-comment-swallowed-figure]
+    [fixture: venn/lex-comment-swallowed-punctuation]
+    [fixture: venn/lex-comment-swallowed-thin-space]
+    [fixture: venn/lex-comment-swallowed-hair-space]
+    [fixture: venn/lex-comment-swallowed-narrow-nbsp]
+    [fixture: venn/lex-comment-swallowed-medium-math]
+    [fixture: venn/lex-comment-swallowed-ideographic]
+    [fixture: venn/lex-comment-swallowed-bom]
+    [fixture: venn/lex-comment-swallowed-cr]
+    U+0085 は空白ではなく、この位置では無視されるテキストに残ります。
+    [fixture: venn/lex-swallowed-nel-gap]
+    図のコメントは LF の前で終わり、U+2028 と U+2029 では終わりません
+    （[diagrams/venn.md の Comments](../../spec/docs/diagrams/venn.md#comments-and-swallowed-fragments)）。
+    文間と末尾の検査で使うコメントの範囲は、
+    共通のコメント領域が切ったソースの断片間の区切り文字と空白も含み、
+    図のテキストの次の LF か EOF まで続きます。
+    [fixture: venn/lex-diagram-comment-cut-ls-tree-gap]
+    [fixture: venn/lex-diagram-comment-cut-ps-tree-gap]
+    [fixture: venn/lex-diagram-comment-cut-ls-spaces-tree-gap]
+    [fixture: venn/lex-diagram-comment-cut-ps-spaces-tree-gap]
+    [fixture: venn/lex-diagram-comment-cut-ls-tab-tree-gap]
+    [fixture: venn/lex-diagram-comment-cut-ps-tab-tree-gap]
+    [fixture: venn/lex-diagram-comment-cut-ls-eof-tree-gap]
+    [fixture: venn/lex-diagram-comment-cut-ps-eof-tree-gap]
+    [fixture: venn/lex-diagram-comment-cut-ls-following-real-statement]
+    [fixture: venn/lex-diagram-comment-cut-ps-following-real-statement]
+    [fixture: venn/lex-diagram-comment-cut-ls-joined-unit]
+    ラベルのトークンは空白を含む書かれた内部全体を覆います。
+    `check-tree-venn.test.ts` が手作りの木を渡し、壊して検査します。
+    名前で指定した fixture の記録済みの木も壊して検査します。
+    コーパスの検査は Venn の記録済みの木すべてと common の検出例を含みます。
+    Venn を記録済みの木の検査から除外しません。
   - c4: 子の型、null 条件、空にできない引数リスト、
     正確なキーワードの家族、図の kind は ast/c4.md に従います。
     `beforeBody` は空の説明ブロックだけを持ち、

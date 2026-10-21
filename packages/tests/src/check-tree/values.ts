@@ -309,6 +309,22 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "trimmed-text",
     spec: "The field without the whitespace at its ends, as written (ast/sankey.md, SankeyLiteral).",
   },
+  VennLiteral: {
+    field: "value",
+    kind: "written-text",
+    gaps: true,
+    spec: "Its written text, including atom spacing (ast/venn.md, VennLiteral).",
+  },
+  VennIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "The swallowed code unit as written (ast/venn.md, VennIgnoredText).",
+  },
+  VennLabel: {
+    field: "value",
+    kind: "derived",
+    spec: "The written bracket interior without string quotes (ast/venn.md, VennLabel), checked in venn.ts.",
+  },
   C4Literal: {
     field: "value",
     kind: "written-text",
@@ -512,9 +528,10 @@ function checkRunsKeepWhitespaceNextToCuts(
  * comment line does; the fragment after a comment line starts in the same
  * comment, and so has the same end. What the records leave between the
  * comments of one diagram comment, such as a U+2028 and the whitespace after a
- * comment line, lies in its range.
+ * comment line, lies in its range. This also implements diagrams/venn.md,
+ * Comments: a diagram comment stops before a line feed, not U+2028 or U+2029.
  */
-function diagramCommentRanges(
+export function diagramCommentRanges(
   text: string,
   root: CheckedRoot,
   written: WrittenText,

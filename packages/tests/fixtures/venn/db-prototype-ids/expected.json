@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Prototype names remain ordinary identifiers in lists backed by arrays and Set."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "__proto__"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "constructor"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "hasOwnProperty"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "toString"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "valueOf"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "__proto__",
+          "constructor"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "__proto__"
+        ],
+        "id": "constructor"
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "__proto__"
+        ],
+        "styles": {
+          "fill": "red"
+        }
+      }
+    ]
+  }
+}

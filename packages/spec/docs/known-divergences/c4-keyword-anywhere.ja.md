@@ -54,6 +54,57 @@ kanban のノード名 `C4Context` は両者で検出を変えません。
 [fixture: kanban/lex-c4-c4container-comment]
 [fixture: kanban/lex-c4-c4container-frontmatter]
 
+venn では、
+裸か引用の set の名前、ラベル、裸か引用の style 値、
+タイトルの中の
+`C4Container`、`C4Component`、`C4Dynamic`、`C4Deployment` を、
+ここでは venn の位置で読みます。
+[fixture: venn/lex-c4-c4container-identifier]
+[fixture: venn/lex-c4-c4container-label]
+[fixture: venn/lex-c4-c4container-style]
+[fixture: venn/lex-c4-c4container-title]
+[fixture: venn/lex-c4-c4component-identifier]
+[fixture: venn/lex-c4-c4component-label]
+[fixture: venn/lex-c4-c4component-style]
+[fixture: venn/lex-c4-c4component-title]
+[fixture: venn/lex-c4-c4dynamic-identifier]
+[fixture: venn/lex-c4-c4dynamic-label]
+[fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-title]
+[fixture: venn/lex-c4-c4deployment-identifier]
+[fixture: venn/lex-c4-c4deployment-label]
+[fixture: venn/lex-c4-c4deployment-style]
+[fixture: venn/lex-c4-c4deployment-title]
+mermaid.js は C4 を選び、入力を拒否します。
+[fixture: venn/lex-c4-c4container-identifier]
+[fixture: venn/lex-c4-c4container-label]
+[fixture: venn/lex-c4-c4container-style]
+[fixture: venn/lex-c4-c4container-title]
+[fixture: venn/lex-c4-c4component-identifier]
+[fixture: venn/lex-c4-c4component-label]
+[fixture: venn/lex-c4-c4component-style]
+[fixture: venn/lex-c4-c4component-title]
+[fixture: venn/lex-c4-c4dynamic-identifier]
+[fixture: venn/lex-c4-c4dynamic-label]
+[fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-title]
+[fixture: venn/lex-c4-c4deployment-identifier]
+[fixture: venn/lex-c4-c4deployment-label]
+[fixture: venn/lex-c4-c4deployment-style]
+[fixture: venn/lex-c4-c4deployment-title]
+[fixture: venn/div-c4-bare-identifier]
+[fixture: venn/div-c4-bare-style-value]
+
+venn の見出しより後の `C4Context` と、
+除かれるコメントか frontmatter 内の C4 語は、
+どちらの読みでも検出を変えません。
+[fixture: venn/lex-c4-c4context-identifier]
+[fixture: venn/lex-c4-c4context-label]
+[fixture: venn/lex-c4-c4context-style]
+[fixture: venn/lex-c4-c4context-title]
+[fixture: venn/lex-c4-c4container-comment]
+[fixture: venn/lex-c4-c4container-frontmatter]
+
 ## 差異
 
 どの例も、それぞれが図全体です。
@@ -178,3 +229,18 @@ mermaid.js は、どの字句解析器がソースを読むよりも前に、
   は、図のキーワードを標準化する提案で、C4 の 5 つを `c4 context`、
   `c4 container` などにすることを含みますが、
   キーワードをどこに探すかには触れていません。
+
+- ピン留めした
+  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  は図を `venn-beta` で始めます。
+  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+  `C4Container detection in:title,body` と
+  `C4 detection in:title,body` で検索し、
+  すべての C4 語を先頭に限定する提案の
+  [PR #8501](https://github.com/mermaid-js/mermaid/pull/8501) と
+  [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504) が見つかりました。
+  ピン留めした検出器は四つの語を任意の位置で照合します。
+  [fixture: venn/lex-c4-c4container-identifier]
+  [fixture: venn/lex-c4-c4component-label]
+  [fixture: venn/lex-c4-c4dynamic-style]
+  [fixture: venn/lex-c4-c4deployment-title]

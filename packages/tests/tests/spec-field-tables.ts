@@ -31,6 +31,7 @@ export const TREE_DOCUMENT_DIAGRAMS = [
   "block",
   "kanban",
   "c4",
+  "venn",
 ] as const
 
 /** The fields that every node and every record has, which no table lists. */

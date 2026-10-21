@@ -16,7 +16,7 @@ the sentence of the specification or of the parser's documents that defines it.
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
 `sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
 `mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, `block/`,
-`kanban/`, and `c4/`, and checks:
+`kanban/`, `c4/`, and `venn/`, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -42,6 +42,14 @@ coverage, exact token text, and child-node containment and source order.
 `tests/fixtures.test.ts` compares their recorded parse results, including the C4
 detection fixtures outside `c4/`. `tests/ast-c4-examples.test.ts` checks the
 ranges and tree invariants in the type comment examples.
+
+Venn fixtures are checked by `tests/venn.test.ts`: every corpus input is
+compared with its specified acceptance, applying declared divergences and
+`specified.json` where present. Accepted trees check token/comment coverage,
+exact token text, raw literal text, and child-node containment and source order.
+`tests/fixtures.test.ts` compares their recorded parse results, including the
+common venn detection fixture. `tests/ast-venn-examples.test.ts` checks the
+ranges in the type comment examples.
 
 ## Known divergences
 

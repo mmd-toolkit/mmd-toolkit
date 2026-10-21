@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The frontmatter indented form stores {\"title\":\"T\"}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

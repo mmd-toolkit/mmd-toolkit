@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Text and implicit text mode (set-style-blank-comment): The line-start statement clears implicit text mode; blank and diagram-comment-only lines do not restore it, so the incomplete explicit text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...%%{ }%% text item\n--------------------^\nExpecting 'NUMERIC', 'IDENTIFIER', 'STRING', 'COMMA', got 'NEWLINE'"
+  }
+}

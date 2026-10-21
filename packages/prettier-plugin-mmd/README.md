@@ -106,6 +106,8 @@ flowchart LR
 - C4 diagrams: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and
   `C4Deployment`. The formatting rules, with examples, are in
   [docs/c4.md](./docs/c4.md).
+- Venn diagrams: diagrams that start with `venn-beta`. The formatting rules,
+  with examples, are in [docs/venn.md](./docs/venn.md).
 - Block diagrams: diagrams that start with `block-beta` or `block`. The
   formatting rules, with examples, are in [docs/block.md](./docs/block.md).
 - The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
@@ -131,8 +133,8 @@ Other diagram types are not formatted yet (see below).
   list is in [docs/compatibility.md](./docs/compatibility.md).
 - A diagram type other than flowchart, sequence, class, state, ER, Gantt, user
   journey, requirement, mindmap, timeline, sankey, XY chart, quadrant chart,
-  kanban, C4, and block diagram is not changed, except that line endings follow
-  `endOfLine`. In Markdown, it is left to Prettier.
+  kanban, C4, Venn, and block diagram is not changed, except that line endings
+  follow `endOfLine`. In Markdown, it is left to Prettier.
 
 ## Guarantees and limitations
 
@@ -178,6 +180,7 @@ The reasons and the details are in
   charts.
 - [docs/kanban.md](./docs/kanban.md): the formatting rules for kanban boards.
 - [docs/c4.md](./docs/c4.md): the formatting rules for C4 diagrams.
+- [docs/venn.md](./docs/venn.md): the formatting rules for Venn diagrams.
 - [docs/block.md](./docs/block.md): the formatting rules for block diagrams.
 - [docs/compatibility.md](./docs/compatibility.md): where the plugin differs
   from mermaid.js, and why.

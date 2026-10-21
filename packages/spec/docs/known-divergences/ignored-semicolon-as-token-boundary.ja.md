@@ -4,7 +4,7 @@
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
-mindmap、timeline、xychart、quadrant、block、kanban、c4。
+mindmap、timeline、xychart、quadrant、block、kanban、c4、venn。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -242,6 +242,33 @@ mermaid.js は除いて呼び出しを受理します。
 [fixture: c4/lex-semicolon-key-selected]
 [fixture: c4/lex-semicolon-delimiter-selected]
 
+venn では、
+名前、size、text id、文のキーワード、プロパティキー、
+裸の style 値の識別子か数の中の選ばれたセミコロンをここでは拒否します。
+[fixture: venn/div-ignored-semicolon-set-name-selected]
+[fixture: venn/div-ignored-semicolon-size]
+[fixture: venn/div-ignored-semicolon-text-id-selected]
+[fixture: venn/div-ignored-semicolon-text-number-selected]
+[fixture: venn/div-ignored-semicolon-set-keyword-selected]
+[fixture: venn/div-ignored-semicolon-title-keyword-selected]
+[fixture: venn/div-ignored-semicolon-style-key-selected]
+[fixture: venn/div-ignored-semicolon-style-value-selected]
+mermaid.js はその前後を連結します。
+[fixture: venn/div-ignored-semicolon-set-name-selected]
+[fixture: venn/div-ignored-semicolon-size]
+[fixture: venn/div-ignored-semicolon-text-id-selected]
+[fixture: venn/div-ignored-semicolon-text-number-selected]
+[fixture: venn/div-ignored-semicolon-set-keyword-selected]
+[fixture: venn/div-ignored-semicolon-title-keyword-selected]
+[fixture: venn/div-ignored-semicolon-style-key-selected]
+[fixture: venn/div-ignored-semicolon-style-value-selected]
+[fixture: venn/div-ignored-semicolon-style-value-number-selected]
+
+venn の色全体の単位の内部で選ばれたセミコロンは trivia で、
+この差異を生じません。
+[fixture: venn/lex-style-hex-ignored-semicolon]
+[fixture: venn/lex-style-rgb-ignored-semicolon]
+
 ## 書き手にとっての結果
 
 名前、数、キーワード、矢印、区切り記号の中の無視される `;` は、
@@ -320,3 +347,10 @@ mermaid.js がその中の無視される `;` を読めるのは、
   それらの値を `;` が終える規則は維持すると明記しています。
   C4 のキーワード内の選択された `;` を扱う issue や pull request は、
   見つかりませんでした。
+
+- ピン留めした
+  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  はプロパティをカンマで区切り、
+  キーワード、名前、数の内部のセミコロンは示していません。
+  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+  `venn semicolon in:title,body` で検索し、結果は 0 件でした。

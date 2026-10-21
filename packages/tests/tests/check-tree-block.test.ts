@@ -1408,6 +1408,14 @@ const RECORDED_CASES: readonly MutationCase[] = [
 ]
 
 describe("the check of a block diagram tree against the recorded trees", () => {
+  // The HTML tag begins outside the quoted value's range.
+  it("passes the recorded HTML tag context from earlier text", () => {
+    const { input, tree } = recordedTree(
+      "block",
+      "db-html-tag-from-earlier-text",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+  })
   for (const mutation of RECORDED_CASES) {
     it(`passes the recorded tree of ${mutation.fixture} and fails ${mutation.name}`, () => {
       const { base, mutated } = problemsOfMutation("block", mutation)

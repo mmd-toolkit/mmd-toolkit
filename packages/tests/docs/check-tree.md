@@ -37,6 +37,22 @@ const problems: TreeProblem[] = checkTree(text, tree)
   comment or a directive that the tree lacks is found. The tree gives the
   `IgnoredSemicolon` tokens: which `;` the line rule ignores depends on the line
   segment and on the diagram.
+- HTML attribute-quote positions use the same shared conversion as the Db: they
+  are found once over the whole source after the frontmatter, including comments
+  and earlier statements. Checks of strings, labels and data blocks apply that
+  context to their ranges; they do not find tags anew inside each value. Written
+  node values and token texts retain their original quotes. [fixture:
+  venn/db-html-tag-from-title-name] [fixture: venn/db-html-tag-from-title-label]
+  [fixture: venn/db-html-tag-from-title-style] [fixture:
+  venn/db-html-tag-from-comment-name] [fixture: venn/db-html-tag-across-names]
+  [fixture: c4/db-html-tag-from-earlier-text] [fixture:
+  kanban/db-html-tag-from-earlier-text] [fixture:
+  kanban/db-html-tag-from-earlier-text-data] [fixture:
+  block/db-html-tag-from-earlier-text] [fixture:
+  quadrant/db-html-tag-from-earlier-text] [fixture:
+  sankey/db-html-tag-from-earlier-text] [fixture:
+  sankey/db-html-tag-from-earlier-text-quoted] [fixture:
+  xychart/db-html-tag-from-earlier-text]
 - The form of a tree is given by a table of the fields of each node type and
   record (`src/check-tree/node-fields.ts`): the name of each field and its kind
   (a value of a type, a node, a node or null, a list of nodes). The
@@ -483,6 +499,92 @@ const problems: TreeProblem[] = checkTree(text, tree)
     The tokens of a string label are one `String` token, or `StringFragment`
     tokens where a directive, a comment region, or an ignored `;` cuts the
     string, and the `RawText` tokens of the words after it.
+  - venn: child types, nullable fields, nonempty name and property lists, subset
+    arity, the numeric-id label restriction and kind sets follow ast/venn.md.
+    Implicit targets are null exactly at an enabled indented text marker;
+    ordinary statement starts after a newline end the mode, while blank lines,
+    removed comments, common directives and swallowed fragments preserve it. An
+    unindented `%%{ }%%` after an empty line ends the mode; immediately after
+    the declaration, or prefixed by exactly one ASCII space or tab, it preserves
+    the mode, as does a bare `%%` line or an intervening nonempty line of only
+    spaces or tabs. Two or more leading spaces or tabs are skipped as one run;
+    rule 7 then ends the mode at `%%{` unless rule 2 swallows a separate prefix
+    character before the comment. Labels retain their complete written
+    interiors, including empty quoted labels; literals retain atom spacing and
+    title padding. Layout and whitespace use statement-checks.ts. Diagram
+    comments use `%%`, and ignored text is the single non-whitespace code unit
+    swallowed immediately before one. Keyword, punctuation and token kinds
+    follow `parser/docs/tokens/venn.md`, including separate identifier, numeric
+    and whole-color atoms in bare style values. Ordered keyword and title-line
+    rules precede identifier atoms. Ordinary statement gaps accept only ASCII
+    whitespace, while rule 2 may swallow one Notation whitespace character
+    immediately before a `%%` that remains in diagram text. U+2028 and U+2029
+    can be swallowed before a bare `%%` or `%%{ }%%`; before a removed common
+    comment line or a real directive, they remain invalid ordinary gaps.
+    [fixture: venn/gram-comment-prefix-line-separator-bare-percent] [fixture:
+    venn/gram-comment-prefix-line-separator-u2029-bare-percent] [fixture:
+    venn/gram-comment-prefix-line-separator-brace-comment] [fixture:
+    venn/gram-comment-prefix-line-separator-u2029-brace-comment] [fixture:
+    venn/gram-comment-prefix-line-separator-between-statements-bare-percent]
+    [fixture:
+    venn/gram-comment-prefix-line-separator-between-statements-u2029-bare-percent]
+    [fixture:
+    venn/gram-comment-prefix-line-separator-between-statements-brace-comment]
+    [fixture:
+    venn/gram-comment-prefix-line-separator-between-statements-u2029-brace-comment]
+    [fixture:
+    venn/gram-comment-prefix-line-separator-between-statements-implicit-text]
+    [fixture:
+    venn/gram-comment-prefix-line-separator-between-statements-u2029-implicit-text]
+    [fixture: venn/gram-comment-prefix-line-separator] [fixture:
+    venn/gram-comment-prefix-line-separator-u2029] [fixture:
+    venn/gram-comment-prefix-line-separator-directive] [fixture:
+    venn/gram-comment-prefix-line-separator-u2029-directive] [fixture:
+    venn/lex-swallowed-nbsp-gap] [fixture: venn/lex-swallowed-vt-gap] [fixture:
+    venn/lex-swallowed-ff-gap] [fixture: venn/lex-swallowed-bom-gap] [fixture:
+    venn/lex-swallowed-ideographic-gap] [fixture:
+    venn/lex-swallowed-nbsp-header] [fixture:
+    venn/lex-swallowed-nbsp-between-subsets] [fixture:
+    venn/lex-swallowed-nbsp-eof] [fixture: venn/lex-comment-swallowed-vt]
+    [fixture: venn/lex-comment-swallowed-ff] [fixture:
+    venn/lex-comment-swallowed-nbsp] [fixture: venn/lex-comment-swallowed-ogham]
+    [fixture: venn/lex-comment-swallowed-en-quad] [fixture:
+    venn/lex-comment-swallowed-em-quad] [fixture:
+    venn/lex-comment-swallowed-en-space] [fixture:
+    venn/lex-comment-swallowed-em-space] [fixture:
+    venn/lex-comment-swallowed-three-per-em] [fixture:
+    venn/lex-comment-swallowed-four-per-em] [fixture:
+    venn/lex-comment-swallowed-six-per-em] [fixture:
+    venn/lex-comment-swallowed-figure] [fixture:
+    venn/lex-comment-swallowed-punctuation] [fixture:
+    venn/lex-comment-swallowed-thin-space] [fixture:
+    venn/lex-comment-swallowed-hair-space] [fixture:
+    venn/lex-comment-swallowed-narrow-nbsp] [fixture:
+    venn/lex-comment-swallowed-medium-math] [fixture:
+    venn/lex-comment-swallowed-ideographic] [fixture:
+    venn/lex-comment-swallowed-bom] [fixture: venn/lex-comment-swallowed-cr]
+    U+0085 is not whitespace and remains ignored text in that position.
+    [fixture: venn/lex-swallowed-nel-gap] A diagram comment stops before a line
+    feed, not U+2028 or U+2029
+    ([diagrams/venn.md, Comments](../../spec/docs/diagrams/venn.md#comments-and-swallowed-fragments));
+    its range for the gap and tail checks includes the separators and whitespace
+    between source pieces where common comment regions cut it, through the next
+    line feed of diagram text or EOF. [fixture:
+    venn/lex-diagram-comment-cut-ls-tree-gap] [fixture:
+    venn/lex-diagram-comment-cut-ps-tree-gap] [fixture:
+    venn/lex-diagram-comment-cut-ls-spaces-tree-gap] [fixture:
+    venn/lex-diagram-comment-cut-ps-spaces-tree-gap] [fixture:
+    venn/lex-diagram-comment-cut-ls-tab-tree-gap] [fixture:
+    venn/lex-diagram-comment-cut-ps-tab-tree-gap] [fixture:
+    venn/lex-diagram-comment-cut-ls-eof-tree-gap] [fixture:
+    venn/lex-diagram-comment-cut-ps-eof-tree-gap] [fixture:
+    venn/lex-diagram-comment-cut-ls-following-real-statement] [fixture:
+    venn/lex-diagram-comment-cut-ps-following-real-statement] [fixture:
+    venn/lex-diagram-comment-cut-ls-joined-unit] Label tokens cover the complete
+    written interior, including padding. `check-tree-venn.test.ts` supplies and
+    breaks hand-made trees and breaks recorded trees of named fixtures. The
+    corpus checks include every recorded Venn tree and the common detection
+    fixture; Venn has no recorded-tree exclusion.
   - c4: child types, nullable fields, nonempty argument lists, exact keyword
     families and diagram kinds follow ast/c4.md; `beforeBody` holds only empty
     description blocks, and a boundary body starts with a significant call.

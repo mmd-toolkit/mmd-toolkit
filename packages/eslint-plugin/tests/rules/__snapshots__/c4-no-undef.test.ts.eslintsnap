@@ -1,0 +1,354 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: c4-no-undef >> invalid >>> docs/rules/c4-no-undef.md incorrect 1
+Filename: c4-no-undef-incorrect-1.mmd
+
+Code:
+  1 | C4Context
+  2 |   Person(customer, "Customer")
+  3 |   UpdateElementStyle(custmer, "red")
+    |                      ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> docs/rules/c4-no-undef.md incorrect 2
+Filename: c4-no-undef-incorrect-2.mmd
+
+Code:
+  1 | C4Context
+  2 |   UpdateElementStyle(customer, "red")
+    |                      ^~~~~~~~ [1]
+  3 |   Person(customer, "Customer")
+  4 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> docs/rules/c4-no-undef.md incorrect 3
+Filename: c4-no-undef-incorrect-3.mmd
+
+Code:
+  1 | C4Context
+  2 |   Person(a, "A")
+  3 |   Person(b, "B")
+  4 |   Rel(a, b, "Uses")
+  5 |   UpdateRelStyle(b, a, "red")
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/alias-override-old-misses
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/alias-override-old-misses-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A", $alias="b")
+  3 | UpdateElementStyle(a, "red")
+    |                    ^ [1]
+  4 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/birel-style-reversed
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/birel-style-reversed-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Person(c, "C")
+  5 | BiRel(a, b, "Uses")
+  6 | UpdateRelStyle(b, a, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/boundary-style-before
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/boundary-style-before-input.mmd
+
+Code:
+  1 | C4Context
+  2 | UpdateElementStyle(bank, "red")
+    |                    ^~~~ [1]
+  3 | Boundary(bank, "Bank") {
+  4 | Person(customer, "Customer")
+  5 | }
+  6 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/case-sensitive
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/case-sensitive-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(A, "A")
+  3 | UpdateElementStyle(a, "red")
+    |                    ^ [1]
+  4 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/comment-and-directive-before-use
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/comment-and-directive-before-use-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | %% note
+  4 | %%{init: {}}%%
+  5 | UpdateElementStyle(typo, "red")
+    |                    ^~~~ [1]
+  6 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/element-style-before
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/element-style-before-input.mmd
+
+Code:
+  1 | C4Context
+  2 | UpdateElementStyle(customer, "red")
+    |                    ^~~~~~~~ [1]
+  3 | Person(customer, "Customer")
+  4 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/element-style-typo
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/element-style-typo-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(customer, "Customer")
+  3 | UpdateElementStyle(custmer, "red")
+    |                    ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/endpoint-override-old-misses
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/endpoint-override-old-misses-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Person(c, "C")
+  5 | Rel(a, b, "Uses", $from="c")
+  6 | UpdateRelStyle(a, b, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/historical-alias-not-temporal-check
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/historical-alias-not-temporal-check-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $alias="b")
+  4 | UpdateElementStyle(a, "red")
+    |                    ^ [1]
+  5 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/historical-pair-not-temporal-check
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/historical-pair-not-temporal-check-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Person(c, "C")
+  5 | Rel(a, b, "Uses")
+  6 | UpdateRelStyle(a, b, $from="c")
+  7 | UpdateRelStyle(a, b, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  8 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/incomplete-relation
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/incomplete-relation-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel(a, "b")
+  3 | UpdateRelStyle(a, b, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/missing-endpoint-not-empty-string
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/missing-endpoint-not-empty-string-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person("", "Empty")
+  4 | Rel(a, "", "Uses")
+  5 | UpdateRelStyle(a,)
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/numeric-endpoint-cannot-match-string
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/numeric-endpoint-cannot-match-string-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Person(c, "C")
+  5 | Rel(a, b, "Uses")
+  6 | UpdateRelStyle(a, b, "red", "blue", $from="3")
+  7 | UpdateRelStyle("3", b, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  8 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/object-endpoint-not-string
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/object-endpoint-not-string-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel($from="a", $to="b", "Uses")
+  3 | UpdateRelStyle(a, b, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/objects-not-identical
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/objects-not-identical-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel($from="a", $to="b", "Uses")
+  3 | UpdateRelStyle($from="a", $to="b", "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/rel-style-absent
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/rel-style-absent-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | UpdateRelStyle(a, b, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/rel-style-before
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/rel-style-before-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Person(c, "C")
+  5 | UpdateRelStyle(a, b, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  6 | Rel(a, b, "Uses")
+  7 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/rel-style-reversed
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/rel-style-reversed-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Rel(a, b, "Uses")
+  5 | UpdateRelStyle(b, a, "red")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js applies no style: no relationship has these ordered endpoints when this `UpdateRelStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/repeated-undefined-update
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/repeated-undefined-update-input.mmd
+
+Code:
+  1 | C4Context
+  2 | UpdateElementStyle(typo, "red")
+    |                    ^~~~ [1]
+  3 | UpdateElementStyle(typo, "blue")
+    |                    ^~~~ [2]
+  4 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+[2] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---
+
+
+Test: c4-no-undef >> invalid >>> invalid/c4/undefined-use-crlf
+Filename: tests/fixtures/rules/c4-no-undef/invalid/c4/undefined-use-crlf-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(typo, "red")
+    |                    ^~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style: no element or boundary has this alias when this `UpdateElementStyle` is read.
+---

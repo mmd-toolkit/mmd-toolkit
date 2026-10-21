@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated sets and unions append entries rather than updating earlier definitions."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 1,
+        "label": "First"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 8
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 2,
+        "label": "Second"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 3
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 4,
+        "label": "Third"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

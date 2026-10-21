@@ -91,7 +91,8 @@
   - create の後で、作った参加者へ行かないメッセージ
     （`The message after create must go to the created participant`）と、
     destroy の後で、消した参加者から来ず、そこへも行かないメッセージ
-    （`The message after destroy must come from or go to the destroyed participant`）。
+    （`The message after destroy must come from or go to`
+    `the destroyed participant`）。
     そのメッセージ。
     [fixture: sequence/gram-create-message-from-created]
     [fixture: sequence/gram-create-then-destroy-message-to-other]
@@ -140,7 +141,8 @@
     [fixture: class/lex-acc-descr-block-unclosed]
 - 分けられないメソッドの行では、
   `range` はメンバーのテキスト（両端の空白を除いた行）で、メッセージは
-  `A method line needs a ( that is not its first character and that a ) follows`。
+  `A method line needs a ( that is not its first character`
+  `and that a ) follows`。
   [fixture: class/lex-member-method-parenthesis-first]
 - 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
   テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
@@ -218,7 +220,8 @@
     [fixture: er/lex-block-unclosed-empty]
   - テキストの終わりの空白が、最後の文字の後の行送りを取った、
     `classDef` と `style`。メッセージは
-    `The classDef or style statement has no line feed before the end of the text`。
+    `The classDef or style statement has no line feed`
+    `before the end of the text`。
     [fixture: er/lex-classdef-trailing-space-at-end]
     [fixture: er/lex-style-trailing-tab-at-end]
   - `accTitle` と `accDescr`。
@@ -529,7 +532,8 @@
   [fixture: quadrant/gram-unclosed-class-name-at-end]
 - 文法の外の拒否は、文法が点やクラスのスタイルを読み終えたところで行う。
   `range` は、mermaid.js が取らない最初のスタイルで、メッセージは
-  `A style must be radius, color, stroke-color, or stroke-width with a value of its form`。
+  `A style must be radius, color, stroke-color, or stroke-width`
+  `with a value of its form`。
   [fixture: quadrant/gram-style-radius-word]
   [fixture: quadrant/gram-style-upper-case-key]
 - 空の文字列と空の markdown 文字列は、下の既知の差異と同じくその位置で拒否する。
@@ -711,6 +715,48 @@
   [fixture: c4/div-directive-header] [fixture: c4/lex-directive-keyword]
   [fixture: c4/div-semicolon-call-keyword-after-block]
 
+## venn 図の中
+
+- 字句規則が一致しない文字は、その文字の範囲で、
+  メッセージは `Unexpected character` です。
+  非 BMP 文字は両方のコード単位を覆います。
+  閉じていない文字列とラベルは単位全体に一致しないので、
+  開きの引用符か角括弧で報告します。
+  [fixture: venn/gram-header-non-bmp-before-comment]
+  [fixture: venn/gram-unclosed-id] [fixture: venn/gram-unclosed-label]
+  [fixture: venn/gram-unclosed-style] [fixture: venn/lex-nbsp-line-start]
+- 文法が読めない単位は、**有意な範囲**で報告します。
+  単位のソース範囲から両端の空白を除いた範囲ですが、
+  [トークンの規則](./tokens/venn.ja.md) が値の一部として保つ空白は含めます。
+  メッセージは `Unexpected token` です。
+  newline は開始位置の空の範囲です。
+  ソースの終わりでは、空の範囲で `Unexpected end of text` です。
+  要素が 1 つだけの union は、その要素で `Unexpected token` を報告します。
+  [fixture: venn/gram-extra-set-no-id] [fixture: venn/gram-size-empty]
+  [fixture: venn/gram-name-list-empty] [fixture: venn/gram-union-one]
+  [fixture: venn/gram-union-trailing-comma]
+  [fixture: venn/gram-set-colon-size-unclosed-directive-gap]
+- ラベル全体が字句規則に一致しても、文法がその位置でラベルを読めなければ、
+  開きの `[` の単位だけで報告します。
+  メッセージは `Unexpected token` です。
+  ラベルを受理した場合の[ノードの範囲](./positions/venn.ja.md) は、
+  両方の角括弧を含みます。
+  [fixture: venn/gram-empty-label-alone] [fixture: venn/db-set-label]
+- 先行する set と一致しない最初の union の要素を、その名前の範囲で報告します。
+  引用した名前では引用符も含みます。
+  メッセージは `A union member must name an earlier set` です。
+  [fixture: venn/gram-union-unknown]
+  [fixture: venn/gram-union-before-definitions]
+  [fixture: venn/gram-union-inner-space]
+  [fixture: venn/gram-union-case-mismatch]
+- キーワード、名前、数の内部での切断は、
+  裸の style 値の単位でも、
+  後述の共通の差異のエラーになります。
+  [fixture: venn/header-directive-inside]
+  [fixture: venn/db-grid-directive-size]
+  [fixture: venn/div-directive-style-value-word]
+  [fixture: venn/div-ignored-semicolon-style-value-selected]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、
@@ -745,7 +791,8 @@
   `accDescr` から `}` までの空の説明のブロックです。
   メッセージは `An empty string cannot be written here`、
   `An empty call cannot be written here`、
-  `An empty description block can only be written where a statement starts or ends`
+  `An empty description block can only be written`
+  `where a statement starts or ends`
   のいずれかです。
   [fixture: flowchart/gram-click-empty-call-only]
   [fixture: flowchart/gram-empty-description-block-before-link]

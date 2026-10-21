@@ -1193,3 +1193,46 @@ c4/final-newline/comment-eof-gap] [fixture:
 c4/line-rule-and-semicolons/semicolon-inline-comment] [fixture:
 c4/line-rule-and-semicolons/semicolon-suffix-spacing] [fixture:
 c4/trailing-whitespace/semicolon-line] [test: c4: ls-line-rule-segments]
+
+## Venn implicit text and textual line rules
+
+Venn's body is flat: only targetless text is indented, since positive
+indentation selects implicit text while its mode is enabled. Declarations retain
+same-line style, explicit text and title followers so splitting cannot clear
+that mode. Leading directives keep the positive/zero logical marker;
+diagram-comment gaps preserve the empty versus whitespace-only line boundary
+before `%%{ }%%`. See the [Venn rules](./venn.md).
+
+[fixture: venn/indentation/indent-width] [fixture:
+venn/statements-one-per-line/header-declaration-group] [fixture:
+venn/directives/directive-leading-marker] [fixture:
+venn/blank-lines/whitespace-before-empty-braces] [fixture:
+venn/blank-lines/blank-before-empty-braces-explicit]
+
+Names, labels, sizes, complete bare/quoted styles, titles, repetitions and
+swallowed fragments remain authored text. Empty quoted names and styles are real
+values; bare whitespace, quoted whitespace and empty quoted labels keep their
+different readings. Every semicolon stays, with the prefix from first
+non-whitespace through last semicolon protected and crossing values/trivia
+whole; indentation and exterior trailing spaces remain printer whitespace, and
+safe suffixes format normally. Unicode separators inside comments or directives
+do not cut the kept part: Venn diagram comments continue to LF/EOF.
+
+[fixture: venn/name-lists/empty-quoted-targets] [fixture:
+venn/labels/labels-empty-kept] [fixture: venn/style-properties/style-atoms-kept]
+[fixture: venn/comments/ignored-fragment] [fixture:
+venn/line-rule-and-kept-lines/line-rule-suffix-spacing] [test: venn:
+ls-kept-comment-whitespace-line] [test: venn: ps-kept-directive]
+
+Only accepted whitespace roles normalize: ordinary ASCII gaps, configured
+implicit indentation and the title's consumed first separator. CR/CRLF use
+shared EOL handling; Unicode value characters remain, and invalid ordinary gaps
+remain rejected. The shared failure, Markdown, frontmatter and final newline
+paths apply. Specified token-boundary divergences still fail, while C4-detection
+and opaque-YAML divergences use the specified reading; raw rejection provides no
+raw Db.
+
+[fixture: venn/whitespace-characters/tab-gaps] [fixture:
+venn/title/title-next-line] [fixture: venn/header/div-c4-detector] [fixture:
+venn/frontmatter-yaml/frontmatter-invalid-kept] [test: a venn diagram with other
+line endings] [test: venn: unicode-role-whitespace]

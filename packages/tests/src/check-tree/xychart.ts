@@ -1,4 +1,3 @@
-import { withAttributeQuotesRead } from "../db-from-tree/converted-text.ts"
 import { checkChildTypes, checkListsWithAnEntry } from "./field-rules.ts"
 import type { FieldTable } from "./field-rules.ts"
 import { label } from "./problems.ts"
@@ -346,7 +345,7 @@ function checkString(reading: Reading, node: CheckedNode): void {
     "the string is not closed",
   )
   reading.problems.expect(
-    !withAttributeQuotesRead(value).includes(QUOTE),
+    !reading.attributeValueOf(node).includes(QUOTE),
     where,
     `the string ${JSON.stringify(value)} holds a \`"\`, which would close it`,
   )

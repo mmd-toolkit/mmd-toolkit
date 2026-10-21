@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The directive is removed and the surrounding fragments join (directive in title)."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "ab",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

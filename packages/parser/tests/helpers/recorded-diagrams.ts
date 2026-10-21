@@ -19,4 +19,5 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "block",
   "kanban",
   "c4",
+  "venn",
 ]

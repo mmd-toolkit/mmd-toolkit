@@ -338,6 +338,8 @@ export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
     "y",
   ],
   // parser/docs/tokens/c4.md: headers, call keywords and text statements.
+  // parser/docs/tokens/venn.md: the header and statement keywords.
+  VennDiagram: ["venn-beta", "set", "union", "text", "style", "title"],
   C4Diagram: [
     "c4context",
     "c4container",

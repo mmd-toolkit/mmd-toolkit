@@ -107,6 +107,11 @@ const VALUE_FIELD_REPORTS: Readonly<
   "C4Literal.value": { message: "value is not its written text" },
   "C4RelationshipStatement.keyword": { message: "the field keyword is " },
   "C4UpdateStatement.keyword": { message: "the field keyword is " },
+  "VennSubsetStatement.kind": { message: "the field kind is " },
+  "VennLabel.kind": { message: "the field kind is " },
+  "VennLabel.value": { message: "the label value is not its written interior" },
+  "VennLiteral.value": { message: "value is not its written text" },
+  "VennIgnoredText.value": { message: "value is not its written text" },
   "ClassArrow.value": {
     message: "value is not the texts of its tokens joined",
   },

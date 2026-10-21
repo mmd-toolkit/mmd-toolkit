@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: The prefix rule is retried at each unit position: `set AB%% c` and `text A 12%% c` keep their complete operand, while a directive removed just before `%%` can expose a one-character operand to swallowing. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betaset A%% c\n------------------^\nExpecting 'IDENTIFIER', 'STRING', got 'NEWLINE'"
+  }
+}

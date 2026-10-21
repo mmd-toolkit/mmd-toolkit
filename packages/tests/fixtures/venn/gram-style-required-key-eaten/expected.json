@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Swallowing a required operand does not make the remaining input valid: `set A%% c`, `set A:2%% c`, and `text A 2%% c` are rejected. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...n-betastyle A q%% c\n----------------------^\nExpecting 'IDENTIFIER', 'COMMA', got 'NEWLINE'"
+  }
+}

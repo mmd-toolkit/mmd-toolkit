@@ -24,6 +24,8 @@ import { requirementDbOf } from "./requirement.ts"
 import type { RequirementDiagram } from "./requirement-tree.ts"
 import { sankeyDbOf } from "./sankey.ts"
 import type { SankeyDiagram } from "./sankey-tree.ts"
+import { vennDbOf } from "./venn.ts"
+import type { VennDiagram } from "./venn-tree.ts"
 import type { ColorAnswer } from "./sequence.ts"
 import { sequenceDbOf } from "./sequence.ts"
 import type { SequenceDiagram } from "./sequence-tree.ts"
@@ -61,6 +63,7 @@ export type DiagramBody =
   | StateDiagram
   | TimelineDiagram
   | XychartDiagram
+  | VennDiagram
 
 /** A tree that the Db is built from. */
 export interface DbTreeRoot extends TreeRoot {
@@ -91,8 +94,10 @@ export function dbFromTree(
       return flowchartDbOf(text, root, root.body, embedded)
     case "SequenceDiagram":
       return sequenceDbOf(text, root, root.body, embedded, isColor)
+    case "VennDiagram":
+      return vennDbOf(text, root, root.body, embedded)
     case "C4Diagram":
-      return c4DbOf(text, root.body, embedded)
+      return c4DbOf(text, root, root.body, embedded)
     case "ClassDiagram":
       return classDbOf(text, root, root.body, embedded)
     case "StateDiagram":
@@ -104,7 +109,7 @@ export function dbFromTree(
     case "JourneyDiagram":
       return journeyDbOf(text, root, root.body, embedded)
     case "KanbanDiagram":
-      return kanbanDbOf(text, root.body, embedded)
+      return kanbanDbOf(text, root, root.body, embedded)
     case "MindmapDiagram":
       return mindmapDbOf(text, root, root.body, embedded)
     case "RequirementDiagram":

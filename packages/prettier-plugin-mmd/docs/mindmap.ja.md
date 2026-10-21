@@ -17,6 +17,18 @@ fixture の置き方と確かめ方は、
 
 ### インデント
 
+空白の設定の1段は `tabWidth: 0` でも1文字以上にします。
+`useTabs` はタブのままです。
+整形で Db を変えてはならず、
+1文字が字下げの読みを保つ最小の幅だからです。
+根にはこの設定の段を使い、
+ほかのノードは根との書かれた文字数の差を保ちます。
+
+[fixture: mindmap/indentation/tab-width-0]
+[fixture: mindmap/indentation/tab-width-0-kept]
+[fixture: mindmap/indentation/tab-width-0-leading-directive]
+[fixture: mindmap/indentation/tab-width-0-use-tabs]
+
 mindmap では、ノードの字下げがそのまま Db の level です。
 Db は、ノードの level を、
 そのノードの字下げから根の字下げを引いた文字数として読みます。

@@ -139,6 +139,7 @@ const tokenCount = root.tokens.length // 8
 - kanban 図: `kanban`（`kanban`）。
 - C4 図: `C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
   `C4Deployment`（`c4`）。
+- Venn 図: `venn`（`venn-beta`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -257,7 +258,8 @@ try {
 [`ast/quadrant.md`](../spec/docs/ast/quadrant.ja.md)、
 [`ast/block.md`](../spec/docs/ast/block.ja.md)、
 [`ast/kanban.md`](../spec/docs/ast/kanban.ja.md)、
-[`ast/c4.md`](../spec/docs/ast/c4.ja.md) のものです。
+[`ast/c4.md`](../spec/docs/ast/c4.ja.md)、
+[`ast/venn.md`](../spec/docs/ast/venn.ja.md) のものです。
 
 ## 木を辿る
 
@@ -455,6 +457,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/block.md`](../spec/docs/ast/block.ja.md)（ブロック図のノード）、
   [`ast/kanban.md`](../spec/docs/ast/kanban.ja.md)（kanban 図のノード）、
   [`ast/c4.md`](../spec/docs/ast/c4.ja.md)（C4 図のノード）、
+  [`ast/venn.md`](../spec/docs/ast/venn.ja.md)（venn 図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

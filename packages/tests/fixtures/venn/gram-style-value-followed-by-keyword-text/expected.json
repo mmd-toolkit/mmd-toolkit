@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Units and contexts: The same-line text keyword ends the bare style value a and reads explicit text with target B and id t."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "t"
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "x": "a"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/venn.html",
+    "line": 78
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "Four sets with all pairwise intersections",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 18
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 18
+      },
+      {
+        "sets": [
+          "C"
+        ],
+        "size": 18
+      },
+      {
+        "sets": [
+          "D"
+        ],
+        "size": 18
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 5
+      },
+      {
+        "sets": [
+          "A",
+          "C"
+        ],
+        "size": 2.5
+      },
+      {
+        "sets": [
+          "A",
+          "D"
+        ],
+        "size": 5
+      },
+      {
+        "sets": [
+          "B",
+          "C"
+        ],
+        "size": 5
+      },
+      {
+        "sets": [
+          "B",
+          "D"
+        ],
+        "size": 2.5
+      },
+      {
+        "sets": [
+          "C",
+          "D"
+        ],
+        "size": 5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  },
+  "embedded": {
+    "config": {
+      "venn": {
+        "useDebugLayout": true
+      }
+    }
+  }
+}

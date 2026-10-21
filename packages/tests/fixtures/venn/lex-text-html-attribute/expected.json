@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex text html attribute form stores {\"texts\":[{\"sets\":[\"A\"],\"id\":\"a<a href='x'>b\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "a<a href='x'>b"
+      }
+    ],
+    "styles": []
+  }
+}

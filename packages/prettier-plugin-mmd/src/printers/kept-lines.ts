@@ -291,17 +291,34 @@ export function lineStartOf(source: Source, offset: number): number {
  * The offset of the line feed that ends the line holding `offset`, or the
  * end of the text: the first line feed from it that no comment or directive
  * spans and that no comment region that joins lines removes (see
- * `lineStartOf`).
+ * `lineStartOf`). With `unicodeSeparators`, the first U+2028 or U+2029
+ * outside trivia also ends the printer's protected segment (docs/venn.md,
+ * Line rule and kept lines). Unlike a shared line-rule segment, it keeps a
+ * whole crossing diagram comment rather than cutting that item.
  */
-export function lineEndOf(source: Source, offset: number): number {
+export function lineEndOf(
+  source: Source,
+  offset: number,
+  unicodeSeparators = false,
+): number {
   let lineFeed = source.text.indexOf("\n", offset)
   while (lineFeed !== -1 && isNotALineBreak(source, lineFeed)) {
     lineFeed = source.text.indexOf("\n", lineFeed + 1)
   }
-  return lineFeed === -1 ? source.text.length : lineFeed
+  const end = lineFeed === -1 ? source.text.length : lineFeed
+  if (!unicodeSeparators) return end
+  for (let position = offset; position < end; position++) {
+    if (
+      (source.text[position] === "\u2028" ||
+        source.text[position] === "\u2029") &&
+      !isNotALineBreak(source, position)
+    )
+      return position
+  }
+  return end
 }
 
-/** Whether the line feed at `offset` ends no line: a comment or a directive spans it, or a region removes it. */
+/** Whether a potential boundary is inside trivia or a region removes it. */
 function isNotALineBreak(source: Source, offset: number): boolean {
   return (
     source.removedLineFeeds.has(offset) ||

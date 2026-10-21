@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header statement glued form is rejected by the grammar or its validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nvenn-betaset A\n^\nExpecting 'VENN', 'NEWLINE', got 'IDENTIFIER'"
+  }
+}

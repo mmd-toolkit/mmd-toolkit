@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty rgba component prevents the color token from being read."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tastyle A fill:rgba(1,,3,.5)\n----------------------^"
+  }
+}

@@ -1,4 +1,5 @@
 import { checkBlockTree } from "./block.ts"
+import { checkVennTree } from "./venn.ts"
 import { checkC4Tree } from "./c4.ts"
 import { checkClassTree } from "./class.ts"
 import { checkErTree } from "./er.ts"
@@ -74,6 +75,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "SequenceDiagram":
       checkSequenceTree(root, problems)
+      break
+    case "VennDiagram":
+      checkVennTree(text, root, problems)
       break
     case "C4Diagram":
       checkC4Tree(text, root, problems)

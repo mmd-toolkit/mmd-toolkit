@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex style style rule space form stores {\"styles\":[{\"targets\":[\"A\"],\"styles\":{\"color\":\"astyle: \\ufb02\\u00b0f00\\u00b6\\u00dfb\"}}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "color": "astyle: ﬂ°f00¶ßb"
+        }
+      }
+    ]
+  }
+}

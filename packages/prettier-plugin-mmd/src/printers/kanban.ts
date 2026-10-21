@@ -13,7 +13,7 @@ import {
 } from "./kanban-layout.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { lineEndOf } from "./kept-lines.ts"
-import { indentationOf, printAsWritten } from "./lines.ts"
+import { significantIndentationOf, printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 
@@ -102,7 +102,7 @@ function placeLine(
   line: KanbanLine,
 ): Placement {
   const character = options.useTabs ? "\t" : " "
-  const step = indentationOf(options, 1).length
+  const step = significantIndentationOf(options, 1).length
   const column = step * line.depth - line.separatorWidth
   const { leading } = line
   if (leading === null) {

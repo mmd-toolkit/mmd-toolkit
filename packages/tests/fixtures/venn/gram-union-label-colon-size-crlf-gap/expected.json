@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The union label colon size crlf gap boundary is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...set Bunion A,B[L]:2\n---------------------^\nExpecting 'NUMERIC', got 'NEWLINE'"
+  }
+}

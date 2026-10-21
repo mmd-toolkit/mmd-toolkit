@@ -4,6 +4,7 @@ import type {
   Location,
   NumericLiteral,
   Range,
+  StringLiteral,
 } from "./ast.ts"
 import type { DiagramComment } from "./diagram-parsing.ts"
 import type { DiagramUnit } from "./diagram-units.ts"
@@ -446,6 +447,26 @@ export abstract class UnitGrammar<
       .map((unit) => this.textOfUnit(unit))
       .join("")
     return { type: "Identifier", name, ...place }
+  }
+
+  /**
+   * ast.md, Shared leaf nodes > StringLiteral: one closed string unit whose
+   * delimiters each occupy one UTF-16 code unit, recorded as one `String`
+   * item. Its value is the written interior, without common trivia. The
+   * caller's lexer and grammar decide which units are strings and whether
+   * empty ones are allowed.
+   */
+  protected closedStringLiteralOf(unit: Unit): StringLiteral {
+    this.addItem("String", [unit])
+    const place = this.placeOf([unit])
+    const [start, end] = place.range
+    return {
+      type: "StringLiteral",
+      value: this.textOf([start + 1, end - 1]),
+      raw: this.lexer.text.slice(start, end),
+      closed: true,
+      ...place,
+    }
   }
 
   /**

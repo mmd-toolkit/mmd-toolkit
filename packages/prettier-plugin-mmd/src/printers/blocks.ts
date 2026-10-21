@@ -88,6 +88,13 @@ export interface BlockRules<Statement extends Positioned> {
    */
   readonly keepsOpeningLine?: boolean
   /**
+   * Whether trailing spaces inside trivia at the end of a kept stretch are
+   * value text. The default keeps the existing line-ending policy; Venn's
+   * diagram comments retain their complete text through LF, including after
+   * Unicode separators (docs/venn.md, Comments and Line terminators).
+   */
+  readonly keepsTrailingWhitespaceInKeptTrivia?: boolean
+  /**
    * Where the line of the diagram that holds `offset` ends, when that is
    * before the line feed that ends the line of the source, or undefined: at
    * the U+2028 or U+2029 that ends a diagram comment in a kanban board
@@ -147,6 +154,13 @@ export interface BlockRules<Statement extends Positioned> {
    * or lose its indentation.
    */
   readonly keepsDirectiveLinesUnindented: boolean
+  /**
+   * Whether directives between same-line statements remain with the previous
+   * statement when they split into separate lines (docs/venn.md, Directives).
+   * A directive touching the following statement instead requires that line
+   * to be joined by the diagram's kept-line rules.
+   */
+  readonly keepsInlineDirectivesWithPrevious?: boolean
   /**
    * The indentation that a statement stands deeper than the block, for a
    * diagram type whose tree keeps statements of different levels in one flat
@@ -582,9 +596,17 @@ export function printBlock<Statement extends Positioned>(
       doc: [...parts, trailing],
       blankBefore: false,
       endsWithWhitespace:
-        position === stretch.end && last !== undefined
-          ? endsWithSpaceOrTab(source.text.slice(last.range[0], position))
-          : false,
+        (position === stretch.end &&
+          last !== undefined &&
+          endsWithSpaceOrTab(source.text.slice(last.range[0], position))) ||
+        (rules.keepsTrailingWhitespaceInKeptTrivia === true &&
+          source.trivia.some(
+            (item) =>
+              item.range[1] === stretch.end &&
+              endsWithSpaceOrTab(
+                source.text.slice(item.range[0], item.range[1]),
+              ),
+          )),
     }
   }
 
@@ -661,6 +683,8 @@ export function printBlock<Statement extends Positioned>(
       keptEnd === undefined ? offset : start,
       start,
       false,
+      false,
+      rules.keepsInlineDirectivesWithPrevious,
     )
     addItemLines(gap, statements[index - 1])
     if (!startsStretch) {

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The db form set label size form stores {\"subsets\":[{\"sets\":[\"A\"],\"size\":7,\"label\":\"Alpha\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 7,
+        "label": "Alpha"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

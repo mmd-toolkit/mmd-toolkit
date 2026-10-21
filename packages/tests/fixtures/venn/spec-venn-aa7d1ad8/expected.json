@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/venn/parser/venn.spec.ts",
+    "line": 203,
+    "test": "Venn diagram > indent mode with style coexistence"
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 20,
+        "label": "Frontend"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 12,
+        "label": "Backend"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 3,
+        "label": "Shared"
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "A1",
+        "label": "React"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "id": "AB1",
+        "label": "OpenAPI"
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "#ff6b6b"
+        }
+      },
+      {
+        "targets": [
+          "A",
+          "B"
+        ],
+        "styles": {
+          "color": "#333"
+        }
+      },
+      {
+        "targets": [
+          "A1"
+        ],
+        "styles": {
+          "color": "red"
+        }
+      }
+    ]
+  }
+}

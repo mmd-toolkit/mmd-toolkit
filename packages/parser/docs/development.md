@@ -43,7 +43,8 @@ diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 (`requirement`), the mindmap (`mindmap`), the timeline (`timeline`), the sankey
 diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
 (`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
-and C4 (`c4`). Every other detected type throws `UnsupportedDiagramError`.
+C4 (`c4`), and venn (`venn`). Every other detected type throws
+`UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -62,8 +63,9 @@ The parser of each diagram follows its document,
 [`diagrams/xychart.md`](../../spec/docs/diagrams/xychart.md),
 [`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.md),
 [`diagrams/block.md`](../../spec/docs/diagrams/block.md),
-[`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.md), or
-[`diagrams/c4.md`](../../spec/docs/diagrams/c4.md). It has three parts:
+[`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.md),
+[`diagrams/c4.md`](../../spec/docs/diagrams/c4.md), or
+[`diagrams/venn.md`](../../spec/docs/diagrams/venn.md). It has three parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -87,8 +89,8 @@ requirement compare case-insensitively, and the Unicode letters of the letter
 rules of flowchart and class (`src/unicode-letters.ts`). A diagram whose lexer
 reads diagram comments, as the sequence lexer reads `#` and `%`, the class lexer
 `%%`, the state lexer `#` and `%%`, the Gantt lexer `%`, the journey,
-requirement, and timeline lexers `#` and `%`, and the mindmap, kanban, and C4
-lexers `%%`, hands them to the common part, which records them in
+requirement, and timeline lexers `#` and `%`, and the mindmap, kanban, C4, and
+venn lexers `%%`, hands them to the common part, which records them in
 `Root.comments`, cut at the comment regions that lie inside them, as tokens are.
 The rejections that mermaid.js makes while it builds the Db are made by the
 parser after the grammar: `subgraph-members.ts` for the flowchart, and
@@ -129,6 +131,10 @@ recorded first, as its opening `---`, its body, and its closing `---`
 The C4 grammar checks `__proto__` keys in consumed argument positions and
 retains only aliases and relationship endpoints to decide whether update targets
 exist.
+
+The venn lexer tracks implicit text mode across line starts. Its grammar keeps
+converted set names to check union members against earlier declarations, while
+the tree keeps written values.
 
 ## Tools
 

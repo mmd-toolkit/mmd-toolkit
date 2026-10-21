@@ -33,6 +33,7 @@ import type { QuadrantDiagram, QuadrantNode } from "../src/ast/quadrant.ts"
 import type { BlockDiagram, BlockTreeNode } from "../src/ast/block.ts"
 import type { KanbanDiagram, KanbanTreeNode } from "../src/ast/kanban.ts"
 import type { C4Diagram, C4Node } from "../src/ast/c4.ts"
+import type { VennDiagram, VennNode } from "../src/ast/venn.ts"
 import { ParseError } from "../src/errors.ts"
 
 // The checks on types run in the type checker (`tsc` covers tests/); the
@@ -62,6 +63,7 @@ describe("the types of ast.md", () => {
       | BlockTreeNode["type"]
       | KanbanTreeNode["type"]
       | C4Node["type"]
+      | VennNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -81,6 +83,7 @@ describe("the types of ast.md", () => {
       | BlockDiagram
       | KanbanDiagram
       | C4Diagram
+      | VennDiagram
     >()
   })
 

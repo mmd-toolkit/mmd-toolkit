@@ -147,6 +147,17 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。                 |     |     |     |
 | [requirement-no-undef](./requirement-no-undef.ja.md)                                           | どの requirement も element も名指さない、`style`、`class`、`:::`、関係の名前を禁止する。 | ✅  |     |     |
 
+## c4
+
+| 規則                                                               | 説明                                                                    | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------- | --- | --- | --- |
+| [c4-no-duplicate-description](./c4-no-duplicate-description.ja.md) | 異なる図の説明を置き換える説明文を禁止する。                            | ✅  |     |     |
+| [c4-no-duplicate-title](./c4-no-duplicate-title.ja.md)             | 別の title 文が設定した異なるタイトルを置き換える title 文を禁止する。  | ✅  |     |     |
+| [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.ja.md) | C4 のスタイル更新で、色と offset のキーの大文字小文字の誤りを禁止する。 | ✅  |     |     |
+| [c4-no-redefined-element](./c4-no-redefined-element.ja.md)         | 前のラベル、種類、型を置き換える要素や境界の宣言を禁止する。            | ✅  |     |     |
+| [c4-no-undef](./c4-no-undef.ja.md)                                 | 読まれるときに対象のないスタイル更新を禁止する。                        | ✅  |     |     |
+| [c4-no-useless-argument](./c4-no-useless-argument.ja.md)           | C4 の呼出しが読む引数の上限を超える、空でない引数を禁止する。           | ✅  |     |     |
+
 ## mindmap
 
 | 規則                                                                       | 説明                                                          | ✅  | 💡  | 🚧  |

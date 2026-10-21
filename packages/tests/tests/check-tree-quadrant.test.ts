@@ -22,6 +22,7 @@ import {
   retypeIn,
   says,
   setField,
+  recordedTree,
 } from "./check-tree-recorded.ts"
 import {
   readFieldMeanings,
@@ -1146,6 +1147,14 @@ const RECORDED_CASES: readonly MutationCase[] = [
 ]
 
 describe("the check of a quadrant chart tree against the recorded trees", () => {
+  // The HTML tag begins outside the quoted value's range.
+  it("passes the recorded HTML tag context from earlier text", () => {
+    const { input, tree } = recordedTree(
+      "quadrant",
+      "db-html-tag-from-earlier-text",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+  })
   for (const mutation of RECORDED_CASES) {
     it(`passes the recorded tree of ${mutation.fixture} and fails ${mutation.name}`, () => {
       const { base, mutated } = problemsOfMutation("quadrant", mutation)

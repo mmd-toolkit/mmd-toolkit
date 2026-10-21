@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 between hexadecimal fragments is not part of a hex token and rejects the style."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tastyle A fill:#123 45\n----------------------^"
+  }
+}

@@ -45,6 +45,39 @@ frontmatter changes no detection in either reading. [fixture:
 kanban/lex-c4-c4container-comment] [fixture:
 kanban/lex-c4-c4container-frontmatter]
 
+In venn, `C4Container`, `C4Component`, `C4Dynamic`, and `C4Deployment` in a bare
+or quoted set name, label, bare or quoted style value, or title are read in
+their venn positions here. [fixture: venn/lex-c4-c4container-identifier]
+[fixture: venn/lex-c4-c4container-label] [fixture:
+venn/lex-c4-c4container-style] [fixture: venn/lex-c4-c4container-title]
+[fixture: venn/lex-c4-c4component-identifier] [fixture:
+venn/lex-c4-c4component-label] [fixture: venn/lex-c4-c4component-style]
+[fixture: venn/lex-c4-c4component-title] [fixture:
+venn/lex-c4-c4dynamic-identifier] [fixture: venn/lex-c4-c4dynamic-label]
+[fixture: venn/lex-c4-c4dynamic-style] [fixture: venn/lex-c4-c4dynamic-title]
+[fixture: venn/lex-c4-c4deployment-identifier] [fixture:
+venn/lex-c4-c4deployment-label] [fixture: venn/lex-c4-c4deployment-style]
+[fixture: venn/lex-c4-c4deployment-title] mermaid.js selects C4 and rejects the
+input. [fixture: venn/lex-c4-c4container-identifier] [fixture:
+venn/lex-c4-c4container-label] [fixture: venn/lex-c4-c4container-style]
+[fixture: venn/lex-c4-c4container-title] [fixture:
+venn/lex-c4-c4component-identifier] [fixture: venn/lex-c4-c4component-label]
+[fixture: venn/lex-c4-c4component-style] [fixture:
+venn/lex-c4-c4component-title] [fixture: venn/lex-c4-c4dynamic-identifier]
+[fixture: venn/lex-c4-c4dynamic-label] [fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-title] [fixture:
+venn/lex-c4-c4deployment-identifier] [fixture: venn/lex-c4-c4deployment-label]
+[fixture: venn/lex-c4-c4deployment-style] [fixture:
+venn/lex-c4-c4deployment-title] [fixture: venn/div-c4-bare-identifier] [fixture:
+venn/div-c4-bare-style-value]
+
+`C4Context` after the venn header and C4 words in removed comments or
+frontmatter change no detection in either reading. [fixture:
+venn/lex-c4-c4context-identifier] [fixture: venn/lex-c4-c4context-label]
+[fixture: venn/lex-c4-c4context-style] [fixture: venn/lex-c4-c4context-title]
+[fixture: venn/lex-c4-c4container-comment] [fixture:
+venn/lex-c4-c4container-frontmatter]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -170,3 +203,15 @@ another header, which this specification reads as the diagram of the header.
   proposes to standardize the diagram keywords, among them the five of C4 as
   `c4 context`, `c4 container`, and so on; it does not mention where the keyword
   is looked for.
+
+- The pinned
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  starts diagrams with `venn-beta`. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-21 with `C4Container detection in:title,body`
+  and `C4 detection in:title,body` found
+  [PR #8501](https://github.com/mermaid-js/mermaid/pull/8501) and
+  [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504), which propose
+  anchoring all C4 keywords to the start. The pinned detector still matches four
+  keywords anywhere. [fixture: venn/lex-c4-c4container-identifier] [fixture:
+  venn/lex-c4-c4component-label] [fixture: venn/lex-c4-c4dynamic-style]
+  [fixture: venn/lex-c4-c4deployment-title]

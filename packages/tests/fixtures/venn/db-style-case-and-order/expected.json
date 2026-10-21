@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Style keys keep their case and property insertion order; target identifiers are sorted."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A",
+          "B"
+        ],
+        "styles": {
+          "color": "red",
+          "Color": "blue"
+        }
+      },
+      {
+        "targets": [
+          "A",
+          "B"
+        ],
+        "styles": {
+          "color": "green"
+        }
+      }
+    ]
+  }
+}

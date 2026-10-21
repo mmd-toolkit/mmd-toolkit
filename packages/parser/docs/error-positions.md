@@ -598,6 +598,40 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   c4/div-directive-header] [fixture: c4/lex-directive-keyword] [fixture:
   c4/div-semicolon-call-keyword-after-block]
 
+## In a venn diagram
+
+- A character matched by no lexer rule has its character range and the message
+  `Unexpected character`. A non-BMP character covers both code units. Unclosed
+  strings and labels match no whole unit, so the error is at their opening quote
+  or bracket. [fixture: venn/gram-header-non-bmp-before-comment] [fixture:
+  venn/gram-unclosed-id] [fixture: venn/gram-unclosed-label] [fixture:
+  venn/gram-unclosed-style] [fixture: venn/lex-nbsp-line-start]
+- A unit the grammar cannot read has its **significant range**: its source range
+  without whitespace at its ends, except where the
+  [token rules](./tokens/venn.md) keep that whitespace as part of a value. The
+  message is `Unexpected token`. A newline has the empty range at its start; at
+  the end of the source, the empty range has `Unexpected end of text`. A union
+  with only one member reports that member with `Unexpected token`. [fixture:
+  venn/gram-extra-set-no-id] [fixture: venn/gram-size-empty] [fixture:
+  venn/gram-name-list-empty] [fixture: venn/gram-union-one] [fixture:
+  venn/gram-union-trailing-comma] [fixture:
+  venn/gram-set-colon-size-unclosed-directive-gap]
+- A complete label in a position that does not allow one reports only its
+  opening `[` unit with `Unexpected token`. The
+  [label node's range](./positions/venn.md) includes both brackets when the
+  label is accepted. [fixture: venn/gram-empty-label-alone] [fixture:
+  venn/db-set-label]
+- The first union member not matching an earlier set is reported at its name,
+  including quotes for a quoted name, with
+  `A union member must name an earlier set`. [fixture: venn/gram-union-unknown]
+  [fixture: venn/gram-union-before-definitions] [fixture:
+  venn/gram-union-inner-space] [fixture: venn/gram-union-case-mismatch]
+- Cuts inside keywords, names, and numbers, including bare style-value atoms,
+  use the shared divergence errors below. [fixture:
+  venn/header-directive-inside] [fixture: venn/db-grid-directive-size] [fixture:
+  venn/div-directive-style-value-word] [fixture:
+  venn/div-ignored-semicolon-style-value-selected]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

@@ -11,10 +11,11 @@ import type {
   C4Statement,
   C4UpdateStatement,
 } from "./c4-tree.ts"
-import { convertedValueOf } from "./converted-text.ts"
+import { convertedValuesOf } from "./converted-text.ts"
+import type { ConvertedValueReader } from "./converted-text.ts"
 import { textReplacementOf } from "./text-replacement.ts"
 import type { TextReplacement } from "./text-replacement.ts"
-import type { StringLiteral } from "./tree.ts"
+import type { StringLiteral, TreeRoot } from "./tree.ts"
 import { TreeError } from "./tree.ts"
 import { setOwnProperty, trimmed } from "./values.ts"
 
@@ -100,12 +101,12 @@ class C4DbBuilder {
 
   private readonly replace: TextReplacement
 
-  private readonly source: string
+  private readonly readValue: ConvertedValueReader
 
   private readonly embedded: EmbeddedValues
 
-  public constructor(source: string, embedded: EmbeddedValues) {
-    this.source = source
+  public constructor(source: string, root: TreeRoot, embedded: EmbeddedValues) {
+    this.readValue = convertedValuesOf(source, root, "c4")
     this.embedded = embedded
     this.replace = textReplacementOf(embedded.config)
   }
@@ -126,16 +127,14 @@ class C4DbBuilder {
     }
   }
 
-  /** Convert only a value node's range, never tokens or surrounding source. */
+  /** Read a value range using the common source-wide HTML quote context. */
   private textOf(node: C4Literal | StringLiteral | null): string {
     return node === null
       ? ""
-      : convertedValueOf(
-          this.source,
+      : this.readValue(
           node.range,
           node.value,
           node.type === "StringLiteral" ? 1 : 0,
-          "c4",
         )
   }
 
@@ -423,8 +422,9 @@ class C4DbBuilder {
 /** docs/db-from-tree/c4.md: the normalized summary read solely from written value nodes. */
 export function c4DbOf(
   source: string,
+  root: TreeRoot,
   diagram: C4Diagram,
   embedded: EmbeddedValues,
 ): DbSummary {
-  return new C4DbBuilder(source, embedded).summaryOf(diagram)
+  return new C4DbBuilder(source, root, embedded).summaryOf(diagram)
 }

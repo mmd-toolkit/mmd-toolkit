@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: The common [directive boundary rule](../common.md#a-directive-is-a-token-boundary) rejects a directive inside a header, keyword, identifier, or number, including an identifier or number inside a bare style value. This input is accepted by mermaid.js."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "AB"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "AB",
+          "AB"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

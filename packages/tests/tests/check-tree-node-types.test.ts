@@ -33,6 +33,7 @@ const DIAGRAMS = [
   "block",
   "kanban",
   "c4",
+  "venn",
 ] as const
 
 /** Documented type aliases have their own headings, but are not node types. */

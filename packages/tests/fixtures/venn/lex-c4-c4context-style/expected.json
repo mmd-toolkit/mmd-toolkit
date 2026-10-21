@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Context inside venn text does not select the anchored C4Context detector."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "custom": "C4Context"
+        }
+      }
+    ]
+  }
+}

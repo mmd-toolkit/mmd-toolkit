@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Union name matching uses converted HTML attribute quotes; differently written quoted names match and are accepted."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "<b x='c'>d"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "<b x='c'>d",
+          "<b x='c'>d"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

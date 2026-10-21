@@ -171,6 +171,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   MindmapDiagram: ["%%"],
   KanbanDiagram: ["%%"],
   C4Diagram: ["%%"],
+  VennDiagram: ["%%"],
   TimelineDiagram: ["#", "%%", "%"],
   SankeyDiagram: [],
   XychartDiagram: ["%%"],
@@ -528,16 +529,17 @@ function checkFrontmatter(
   )
 }
 
-/** Where the value of `node` starts: where its range does, but after the `@{` of a data block. */
+/** Where the value starts, inside the opening delimiter of a data block or Venn label. */
 function valueStartOf(node: CheckedNode): number {
+  if (node.type === "VennLabel") return node.range[0] + 1
   return DATA_BLOCK_NODE_TYPES.has(node.type)
     ? node.range[0] + 2
     : node.range[0]
 }
 
-/** Where the value of `node` ends: where its range does, but before the `}` of a data block. */
+/** Where the value ends, inside the closing delimiter of a data block or Venn label. */
 function valueEndOf(node: CheckedNode): number {
-  return DATA_BLOCK_NODE_TYPES.has(node.type)
+  return DATA_BLOCK_NODE_TYPES.has(node.type) || node.type === "VennLabel"
     ? node.range[1] - 1
     : node.range[1]
 }

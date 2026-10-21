@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex gap text directive form is rejected by the grammar or its validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nvenn-betaset AtextA item\n------------------^\nExpecting 'IDENTIFIER', 'STRING', got 'NEWLINE'"
+  }
+}

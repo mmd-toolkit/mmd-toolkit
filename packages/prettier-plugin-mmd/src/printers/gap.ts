@@ -164,6 +164,8 @@ interface ScannedLine {
  * With `endsText`, the gap ends the text: what stands after the last line
  * terminator, when the text has none after it, is on the line of what comes
  * before the gap, as it is when a line terminator follows it.
+ * With `keepsInlineDirectivesWithPrevious`, directives on an unbroken gap
+ * remain with the preceding statement when the block splits its statements.
  *
  * Throws when the gap holds any other text than whitespace, line
  * terminators, comments, directives, and `;` tokens: the tree places every
@@ -176,10 +178,16 @@ export function readGap(
   end: number,
   keepsSeparators: boolean,
   endsText = false,
+  keepsInlineDirectivesWithPrevious = false,
 ): Gap {
   const lines = scanLines(source, start, end, keepsSeparators)
   if (lines.length === 1) {
-    return readSingleLine(source, lines[0], endsText)
+    return readSingleLine(
+      source,
+      lines[0],
+      endsText,
+      keepsInlineDirectivesWithPrevious,
+    )
   }
   const [first, ...rest] = lines
   const last = rest.pop() as ScannedLine
@@ -282,8 +290,14 @@ function readSingleLine(
   source: Source,
   line: ScannedLine,
   endsText: boolean,
+  keepsInlineDirectivesWithPrevious: boolean,
 ): Gap {
-  const split = endsText ? line.parts.length : line.afterLastSeparator
+  const lastDirective = keepsInlineDirectivesWithPrevious
+    ? line.parts.findLastIndex((part) => part.item.type === "Directive") + 1
+    : 0
+  const split = endsText
+    ? line.parts.length
+    : Math.max(line.afterLastSeparator, lastDirective)
   const before = line.parts.slice(0, split)
   const after = line.parts.slice(split)
   return {

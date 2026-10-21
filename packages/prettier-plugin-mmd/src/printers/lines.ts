@@ -131,6 +131,21 @@ export function indentationOf(
 }
 
 /**
+ * Indentation whose width mermaid.js reads as syntax or a node's level.
+ * Formatting must not change the Db: one character is the smallest width
+ * that keeps that reading, even when tabWidth is zero (docs/mindmap.md,
+ * docs/kanban.md and docs/venn.md, Indentation).
+ */
+export function significantIndentationOf(
+  options: ParserOptions<MermaidAst>,
+  depth: number,
+): string {
+  return (
+    options.useTabs ? "\t" : " ".repeat(Math.max(1, options.tabWidth))
+  ).repeat(depth)
+}
+
+/**
  * Prints the source between two offsets as written. Its inner lines keep
  * their source columns.
  */

@@ -46,6 +46,9 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "QuadrantIdentifier",
   "BlockLiteral",
   "C4Literal",
+  "VennLabel",
+  "VennLiteral",
+  "VennIgnoredText",
 ])
 
 /**
@@ -237,6 +240,12 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "XychartAccTitleStatement",
   "XychartAccDescrStatement",
   "XychartAccDescrBlockStatement",
+  "VennDiagram",
+  "VennSubsetStatement",
+  "VennTextStatement",
+  "VennStyleStatement",
+  "VennStyleProperty",
+  "VennTitleStatement",
   "C4Diagram",
   "C4ElementStatement",
   "C4BoundaryStatement",
@@ -295,6 +304,7 @@ export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
  * `checkBlockTree()` itself.
  */
 export const NODE_TYPES_WITH_TOKENS_OF_ANY_KIND: ReadonlySet<string> = new Set([
+  "VennLabel",
   "StateIgnoredText",
   "RequirementIgnoredText",
   "BlockLiteral",

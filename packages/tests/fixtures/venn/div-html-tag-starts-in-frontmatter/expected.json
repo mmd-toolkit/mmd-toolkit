@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).** With `title: <a` in frontmatter, `set \"b=\"c\">d\"` is rejected here, while mermaid.js converts the inner attribute quotes and accepts it. This input is accepted by mermaid.js."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "b='c'>d"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

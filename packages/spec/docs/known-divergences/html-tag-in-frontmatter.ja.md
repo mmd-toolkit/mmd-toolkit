@@ -27,6 +27,16 @@ flowchart LR
 この文書は、フロントマターで始まってそこで終わらず、
 フロントマターの境界を越えて図のテキストまで続くタグについてのものです。
 
+venn では、frontmatter が `title: <a` を持つ場合、
+`set "b="c">d"` はここでは拒否します。
+[fixture: venn/div-html-tag-starts-in-frontmatter]
+mermaid.js は内側の属性の引用符を変換して受理します。
+[fixture: venn/div-html-tag-starts-in-frontmatter]
+
+frontmatter に開始タグがなければ、
+同じ venn の本文をどちらも拒否します。
+[fixture: venn/gram-html-tag-body-only-reference]
+
 ## 差異
 
 どの例も、図の全体です。
@@ -175,3 +185,11 @@ mermaid.js の処理の順から生じます。
   `frontmatter HTML quotes in:title,body`、
   `C4 frontmatter tag in:title,body` で検索し、
   この形式についての報告は見つかりませんでした。
+
+- ピン留めした
+  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  は YAML frontmatter と引用ラベルを示し、
+  frontmatter の境界をまたぐ HTML タグは示していません。
+  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+  `venn frontmatter in:title,body` と `venn HTML in:title,body` で検索し、
+  その形に関する報告は見つかりませんでした。

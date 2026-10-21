@@ -424,6 +424,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("quadrant")),
     ...(await loadFixtures("block")),
     ...(await loadFixtures("kanban")),
+    ...(await loadFixtures("venn")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */

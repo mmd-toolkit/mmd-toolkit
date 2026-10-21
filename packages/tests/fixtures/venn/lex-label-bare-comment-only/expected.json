@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md Empty forms: removal of the common comment region leaves the first LF between the bare label brackets, so the label is accepted."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

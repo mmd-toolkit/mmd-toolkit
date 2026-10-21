@@ -280,6 +280,8 @@ Running tests; this is what belongs to this package):
   - `c4*.ts`: `format` and `corpus` with `-t c4`; and, without `-t`,
     `line-separators`, `line-terminators`, `markdown-c4`, `value-nodes`, and
     `dispatch`.
+  - `venn*.ts`: `format` and `corpus` with `-t venn`; and, without `-t`,
+    `line-separators`, `markdown-venn`, and `value-nodes`.
   - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
     types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:

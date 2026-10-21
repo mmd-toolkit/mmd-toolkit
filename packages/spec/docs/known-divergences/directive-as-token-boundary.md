@@ -72,6 +72,47 @@ The equals sign and opening quote of a named value are separate delimiters, so a
 directive between them is allowed. [fixture:
 c4/lex-directive-named-equals-quote]
 
+In venn, a directive inside the header, a statement keyword, a name, a size, a
+numeric text id, or an identifier or number of a bare style value is rejected
+here. [fixture: venn/header-directive-inside] [fixture:
+venn/lex-directive-in-set] [fixture: venn/lex-directive-in-union] [fixture:
+venn/lex-directive-in-text] [fixture: venn/lex-directive-in-style] [fixture:
+venn/lex-directive-in-title] [fixture: venn/db-grid-directive-identifier-bare]
+[fixture: venn/db-grid-directive-size] [fixture:
+venn/db-grid-directive-style-key] [fixture: venn/db-grid-directive-text-number]
+[fixture: venn/db-grid-directive-style-value] [fixture:
+venn/div-directive-union-target] [fixture: venn/div-directive-text-id] [fixture:
+venn/div-directive-style-target] [fixture: venn/div-directive-style-value-word]
+[fixture: venn/div-directive-style-value-number] [fixture:
+venn/lex-unterminated-directive-next-line] [fixture:
+venn/lex-unterminated-colon-directive-next-line] mermaid.js joins the parts.
+[fixture: venn/header-directive-inside] [fixture: venn/lex-directive-in-set]
+[fixture: venn/lex-directive-in-union] [fixture: venn/lex-directive-in-text]
+[fixture: venn/lex-directive-in-style] [fixture: venn/lex-directive-in-title]
+[fixture: venn/db-grid-directive-identifier-bare] [fixture:
+venn/db-grid-directive-size] [fixture: venn/db-grid-directive-style-key]
+[fixture: venn/db-grid-directive-text-number] [fixture:
+venn/db-grid-directive-style-value] [fixture: venn/div-directive-union-target]
+[fixture: venn/div-directive-text-id] [fixture: venn/div-directive-style-target]
+[fixture: venn/div-directive-style-value-word] [fixture:
+venn/div-directive-style-value-number] [fixture:
+venn/lex-unterminated-directive-next-line] [fixture:
+venn/lex-unterminated-colon-directive-next-line]
+
+Venn strings, label content, title content, and whole color units can contain
+directives. [fixture: venn/lex-identifier-directive-middle] [fixture:
+venn/db-grid-directive-label-bare] [fixture: venn/lex-label-directive-middle]
+[fixture: venn/lex-style-directive-middle] [fixture:
+venn/lex-title-directive-middle] [fixture: venn/lex-directive-style-value-color]
+[fixture: venn/lex-style-value-rgb-directive-in-comma] [fixture:
+venn/lex-directive-label-delimiter-gap] The bracket and quote of a label are
+separate delimiters. [fixture: venn/lex-identifier-directive-middle] [fixture:
+venn/db-grid-directive-label-bare] [fixture: venn/lex-label-directive-middle]
+[fixture: venn/lex-style-directive-middle] [fixture:
+venn/lex-title-directive-middle] [fixture: venn/lex-directive-style-value-color]
+[fixture: venn/lex-style-value-rgb-directive-in-comma] [fixture:
+venn/lex-directive-label-delimiter-gap]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -236,3 +277,10 @@ the reasons for a known divergence (see
   [PR #4759](https://github.com/mermaid-js/mermaid/pull/4759) introduces
   preprocessing that removes directives, frontmatter, and comments before
   diagram parsing for all diagram types.
+
+- The pinned
+  [venn documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+  shows complete keywords and names, but no directive inside them. Searches of
+  issues and pull requests in `mermaid-js/mermaid` on 2026-10-21 with
+  `venn directive in:title,body` found no report about a directive inside a venn
+  keyword, name, or number.

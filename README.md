@@ -12,7 +12,7 @@ mermaid-js.
 unrelated to MultiMarkdown and MikuMikuDance, which also use the abbreviation.
 
 Flowchart, sequence, class, state, ER, Gantt, user journey, requirement,
-mindmap, timeline, sankey, XY chart, quadrant chart, block, kanban, and C4
+mindmap, timeline, sankey, XY chart, quadrant chart, block, kanban, C4, and Venn
 diagrams are supported so far; the other diagram types follow. The formatter,
 the linter, and the parser are not published to npm yet: they will be released
 once every diagram type of mermaid.js is supported. The specification and the

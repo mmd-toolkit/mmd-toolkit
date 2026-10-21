@@ -143,6 +143,17 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.                            |     |     |     |
 | [requirement-no-undef](./requirement-no-undef.md)                                           | Disallow a name in `style`, `class`, `:::`, or a relationship that names no requirement and no element. | ✅  |     |     |
 
+## c4
+
+| Rule                                                            | Description                                                                                       | ✅  | 💡  | 🚧  |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | --- | --- | --- |
+| [c4-no-duplicate-description](./c4-no-duplicate-description.md) | Disallow a description statement that replaces a different diagram description.                   | ✅  |     |     |
+| [c4-no-duplicate-title](./c4-no-duplicate-title.md)             | Disallow a title statement that replaces a different title set by another title statement.        | ✅  |     |     |
+| [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md) | Disallow incorrect casing of the color and offset keys in C4 style updates.                       | ✅  |     |     |
+| [c4-no-redefined-element](./c4-no-redefined-element.md)         | Disallow a declaration of an element or a boundary that replaces an earlier label, kind, or type. | ✅  |     |     |
+| [c4-no-undef](./c4-no-undef.md)                                 | Disallow a style update whose target does not exist when the update is read.                      | ✅  |     |     |
+| [c4-no-useless-argument](./c4-no-useless-argument.md)           | Disallow nonempty arguments beyond the parameters that a C4 call reads.                           | ✅  |     |     |
+
 ## mindmap
 
 | Rule                                                                    | Description                                                 | ✅  | 💡  | 🚧  |

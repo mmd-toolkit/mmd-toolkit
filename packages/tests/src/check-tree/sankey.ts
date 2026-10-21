@@ -1,4 +1,3 @@
-import { withAttributeQuotesRead } from "../db-from-tree/converted-text.ts"
 import {
   isLineTerminatorCode,
   isWhitespace,
@@ -95,7 +94,11 @@ function checkTextField(
     where,
     `the ${field} ${JSON.stringify(value)} starts or ends with whitespace`,
   )
-  const read = withAttributeQuotesRead(value)
+  const read = reading.attributeValueOf(
+    node,
+    field === "name" ? "name" : "value",
+    true,
+  )
   const others = disallowedIn(
     read,
     (character) =>
@@ -144,7 +147,7 @@ function checkString(reading: Reading, node: CheckedNode): void {
     where,
     "the string has nothing between its quotes",
   )
-  const read = withAttributeQuotesRead(value)
+  const read = reading.attributeValueOf(node)
   const others = disallowedIn(
     read,
     (character) =>

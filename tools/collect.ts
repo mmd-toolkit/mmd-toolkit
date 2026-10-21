@@ -157,6 +157,9 @@ const SPEC_FILES: Readonly<
   // Every spec in this parser directory passes diagram text to the parser.
   c4: (filesIn) =>
     filesIn("diagrams/c4/parser").filter((file) => file.endsWith(".spec.ts")),
+  // vennRenderer.spec.ts and vennPalette.spec.ts construct Db values and call
+  // the renderer with an empty text; neither passes diagram text to a parser.
+  venn: () => ["diagrams/venn/parser/venn.spec.ts"],
 }
 
 /**

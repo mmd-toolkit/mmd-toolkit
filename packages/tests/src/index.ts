@@ -61,6 +61,7 @@ export type DiagramType =
   | "block"
   | "kanban"
   | "c4"
+  | "venn"
 
 /**
  * Where a fixture input came from.

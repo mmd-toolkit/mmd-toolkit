@@ -34,6 +34,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "block",
   "kanban",
   "c4",
+  "venn",
 ]
 
 /** The file in which a parser records the tree of a fixture it accepts. */

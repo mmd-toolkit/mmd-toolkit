@@ -78,6 +78,24 @@ Comment lines の規則で、テキストそのものから見つけます
 先頭の空白は読みません。テキストの終わりには、`\n` がもう 1 つあります。
 flowchart では、`}` の後の空白は、最後の改行までを 1 つの改行として読みます。
 
+HTML 属性の引用符の位置は、コメントやディレクティブを除く前に、
+フロントマターの後のソース全体から一度求めます。
+タグは、読む値の外のコメントや前の文から始まることもあります。
+共有の変換ヘルパーがその位置を値の各範囲に当て、木は書かれた引用符を保ちます。
+[fixture: venn/db-html-tag-from-title-name]
+[fixture: venn/db-html-tag-from-title-label]
+[fixture: venn/db-html-tag-from-title-style]
+[fixture: venn/db-html-tag-from-comment-name]
+[fixture: venn/db-html-tag-across-names]
+[fixture: c4/db-html-tag-from-earlier-text]
+[fixture: kanban/db-html-tag-from-earlier-text]
+[fixture: kanban/db-html-tag-from-earlier-text-data]
+[fixture: block/db-html-tag-from-earlier-text]
+[fixture: quadrant/db-html-tag-from-earlier-text]
+[fixture: sankey/db-html-tag-from-earlier-text]
+[fixture: sankey/db-html-tag-from-earlier-text-quoted]
+[fixture: xychart/db-html-tag-from-earlier-text]
+
 図のコメントの中の文字は、字句解析器が読むとおりには読みません。
 Db の値にコメントを含むものがないからです。
 同じ理由で、図のコメントの中のエンティティや、
@@ -136,6 +154,12 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   [fixture: block/db-arrow-spaces]
   [fixture: block/db-class-apply-list-spaces]
   [fixture: block/db-style-spaces]
+- **Venn の宣言**: 名前、ラベル、数、スタイルの値、タイトルは、
+  書かれた値と葉の変換済みの範囲を使います。
+  null の text の対象は、
+  `checkTree` が暗黙のモードを検査した後の最後の部分集合です。
+  手順は [db-from-tree/venn.md](./db-from-tree/venn.md) にあります。
+  [fixture: venn/db-all-fields]
 - **C4 の呼び出し**: 引数、タイトル、アクセシビリティのテキストは、
   値ノードとその範囲の変換形だけから読みます。
   入れ子の本体が境界のスタックを定め、
@@ -493,7 +517,7 @@ HTML ラベルが有効で、`securityLevel` が
 
 ## 確かめ
 
-記録した木の比較には C4、block、kanban と common の検出例を含み、
+記録した木の比較には C4、block、kanban、Venn と common の検出例を含み、
 C4 の五つの kind もすべて含みます。
 
 `tests/db-from-tree.test.ts` は、木と受理の結果（Db 付き）を記録する
@@ -518,3 +542,7 @@ fixture がどれかを教えます。
    `index.ts` に登録する。
 3. テストを動かす。木で説明される失敗は、木の文書かパーサーの欠けである。
    入力を付けて報告する。
+
+Venn は手作りの木と記録済みの木の両方で検査します。
+文字の置換は frontmatter の初期タイトルも含むタイトルだけに適用します。
+[fixture: venn/config-security-other]

@@ -104,6 +104,15 @@ const ruleDocuments: readonly {
     rulesInTestCode: ["line-terminators", "whitespace-characters"],
   },
   {
+    diagram: "venn",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
+      "line-terminators",
+      "whitespace-characters",
+    ],
+    rulesInTestCode: [],
+  },
+  {
     diagram: "c4",
     rulesWithoutExamples: [
       "trailing-whitespace",
@@ -350,6 +359,7 @@ async function readCitedTestTitles(): Promise<string[]> {
           "state",
           "kanban",
           "c4",
+          "venn",
         ]) {
           titles.push(title.replaceAll("%s", diagram))
         }
@@ -381,6 +391,7 @@ describe("the test citations in the documents", async () => {
     "docs/block.md",
     "docs/kanban.md",
     "docs/c4.md",
+    "docs/venn.md",
     "docs/compatibility.md",
   ]) {
     const text = await readFile(new URL(document, packageRoot), "utf8")

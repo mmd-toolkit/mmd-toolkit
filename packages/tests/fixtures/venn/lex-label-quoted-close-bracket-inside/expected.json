@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: 14. `[\"`, any number of characters other than `\"`, and `\"]` make a `quoted-label` unit. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "x]y"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

@@ -139,6 +139,9 @@ flowchart LR
   `C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、
   `C4Deployment` で始まる図です。
   整形の規則は、例とともに [docs/c4.ja.md](./docs/c4.ja.md) にあります。
+- Venn 図。
+  `venn-beta` で始まる図です。
+  整形の規則は、例とともに [docs/venn.ja.md](./docs/venn.ja.md) にあります。
 - ブロック図。
   `block-beta` か `block` で始まる図です。
   整形の規則は、
@@ -172,7 +175,7 @@ flowchart LR
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
 - flowchart、sequence、class、state、ER、Gantt、journey、
   requirement、mindmap、timeline、sankey、XY チャート、象限チャート、
-  kanban、C4、
+  kanban、C4、Venn、
   ブロック図以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
@@ -222,6 +225,7 @@ flowchart LR
 - [docs/quadrant.ja.md](./docs/quadrant.ja.md): 象限チャートの整形の規則。
 - [docs/kanban.ja.md](./docs/kanban.ja.md): kanban の整形の規則。
 - [docs/c4.ja.md](./docs/c4.ja.md): C4 図の整形の規則。
+- [docs/venn.ja.md](./docs/venn.ja.md): Venn 図の整形の規則。
 - [docs/block.ja.md](./docs/block.ja.md): ブロック図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):
   mermaid.js と違う箇所と、その理由。

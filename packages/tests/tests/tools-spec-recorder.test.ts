@@ -441,6 +441,20 @@ describe("recordSpecFile: the functions that take a text", () => {
     ])
   })
 
+  it("records the venn default parser and named Db export", async () => {
+    const recording = await recordSource(
+      [
+        `import venn from "./venn.jison"`,
+        `import { db } from "../vennDB.js"`,
+        `beforeEach(() => { venn.parser.yy = db; venn.parser.yy.clear() })`,
+        `it("t", () => { venn.parse("venn-beta\\nset A") })`,
+        ``,
+      ].join("\n"),
+      "diagrams/venn/parser/venn.spec.ts",
+    )
+    expect(textsOf(recording)).toEqual(["venn-beta\nset A"])
+  })
+
   it("records the kanban parser with its Db and diagram API stubbed", async () => {
     const recording = await recordSource(
       [

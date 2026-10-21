@@ -1,3 +1,4 @@
+import { VENN_PUNCTUATORS } from "./venn.ts"
 import { BLOCK_PUNCTUATORS } from "./block.ts"
 import { C4_PUNCTUATORS, c4PunctuatorText } from "./c4.ts"
 import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
@@ -116,6 +117,7 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   BlockDiagram: BLOCK_PUNCTUATORS,
   // parser/docs/tokens/c4.md, including the opening empty-entry unit.
   C4Diagram: C4_PUNCTUATORS,
+  VennDiagram: VENN_PUNCTUATORS,
   ErrorDiagram: [],
 }
 

@@ -18,6 +18,30 @@ import type { FieldSpec } from "./field-spec.ts"
 export const NODE_FIELDS: Readonly<
   Record<string, Readonly<Record<string, FieldSpec>>>
 > = {
+  VennDiagram: { body: { shape: "nodeList" } },
+  VennSubsetStatement: {
+    kind: { shape: "value", valueType: "string" },
+    sets: { shape: "nodeList" },
+    label: { shape: "nodeOrNull" },
+    size: { shape: "nodeOrNull" },
+  },
+  VennTextStatement: {
+    targets: { shape: "nodeListOrNull" },
+    id: { shape: "node" },
+    label: { shape: "nodeOrNull" },
+  },
+  VennStyleStatement: {
+    targets: { shape: "nodeList" },
+    properties: { shape: "nodeList" },
+  },
+  VennStyleProperty: { key: { shape: "node" }, value: { shape: "node" } },
+  VennTitleStatement: { value: { shape: "node" } },
+  VennLabel: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
+  VennLiteral: { value: { shape: "value", valueType: "string" } },
+  VennIgnoredText: { value: { shape: "value", valueType: "string" } },
   C4Diagram: {
     kind: { shape: "value", valueType: "string" },
     beforeBody: { shape: "nodeList" },

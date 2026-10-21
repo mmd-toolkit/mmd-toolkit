@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/venn/parser/venn.spec.ts",
+    "line": 248,
+    "test": "Venn diagram > quoted identifiers"
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "Foo Bar"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "Buz"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "Buz",
+          "Foo Bar"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

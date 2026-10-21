@@ -15,6 +15,7 @@ import type {
   BlockTreeNode,
   KanbanTreeNode,
   C4Node,
+  VennNode,
 } from "../../src/index.ts"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
@@ -417,6 +418,19 @@ export const allC4NodeTypes: Readonly<Record<C4Node["type"], true>> = {
   C4Literal: true,
 }
 
+/** Every node type of ast/venn.md, in document order. */
+export const allVennNodeTypes: Readonly<Record<VennNode["type"], true>> = {
+  VennDiagram: true,
+  VennSubsetStatement: true,
+  VennTextStatement: true,
+  VennStyleStatement: true,
+  VennStyleProperty: true,
+  VennTitleStatement: true,
+  VennLabel: true,
+  VennLiteral: true,
+  VennIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -436,6 +450,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allBlockNodeTypes),
   ...Object.keys(allKanbanNodeTypes),
   ...Object.keys(allC4NodeTypes),
+  ...Object.keys(allVennNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

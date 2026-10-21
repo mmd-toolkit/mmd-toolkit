@@ -33,6 +33,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["block", "BlockDiagram"],
   ["kanban", "KanbanDiagram"],
   ["c4", "C4Diagram"],
+  ["venn", "VennDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -58,6 +59,18 @@ function cutProblems(body: string, ...fragments: string[]): string[] {
 }
 
 describe("the check of the cut Keyword tokens", () => {
+  it("registers the Venn keywords and reports cuts", () => {
+    expect(KEYWORD_TEXTS.VennDiagram).toEqual([
+      "venn-beta",
+      "set",
+      "union",
+      "text",
+      "style",
+      "title",
+    ])
+    expect(cutProblems("VennDiagram", "venn-", "beta")).toHaveLength(1)
+    expect(cutProblems("VennDiagram", "un", "ion")).toHaveLength(1)
+  })
   it("reports a cut C4 header and call keyword", () => {
     expect(cutProblems("C4Diagram", "C4", "Context")).toHaveLength(1)
     expect(cutProblems("C4Diagram", "Person", "_Ext")).toHaveLength(1)
@@ -245,6 +258,8 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
           .map((word) => word.toLowerCase()),
       ]
     // The row gives the two headers as texts.
+    case "venn":
+      return []
     case "sankey":
       return []
     // The header and the orientation units, which the row names by their kind.

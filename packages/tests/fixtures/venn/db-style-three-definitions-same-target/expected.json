@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A third style statement for A appends a new entry containing only that statement's properties."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "red"
+        }
+      },
+      {
+        "targets": [
+          "B"
+        ],
+        "styles": {
+          "color": "black"
+        }
+      },
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "blue"
+        }
+      },
+      {
+        "targets": [
+          "B"
+        ],
+        "styles": {
+          "fill": "green"
+        }
+      },
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "color": "white"
+        }
+      }
+    ]
+  }
+}

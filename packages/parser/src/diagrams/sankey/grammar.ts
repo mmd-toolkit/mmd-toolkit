@@ -90,7 +90,7 @@ export class SankeyGrammar extends UnitGrammar<UnitName, Unit> {
   /** Ids and values: `field = field-text | string` as the first or the second field, the id of a node. */
   private parseId(): SankeyIdentifier | StringLiteral {
     const string = this.takeIf("string")
-    if (string !== null) return this.stringLiteralOf(string)
+    if (string !== null) return this.closedStringLiteralOf(string)
     const { value, place } = this.fieldTextOf(this.take("field-text"))
     return { type: "SankeyIdentifier", name: value, ...place }
   }
@@ -98,7 +98,7 @@ export class SankeyGrammar extends UnitGrammar<UnitName, Unit> {
   /** Ids and values: `field = field-text | string` as the third field, the value of the link. */
   private parseValue(): SankeyLiteral | StringLiteral {
     const string = this.takeIf("string")
-    if (string !== null) return this.stringLiteralOf(string)
+    if (string !== null) return this.closedStringLiteralOf(string)
     const { value, place } = this.fieldTextOf(this.take("field-text"))
     return { type: "SankeyLiteral", value, ...place }
   }
@@ -118,25 +118,5 @@ export class SankeyGrammar extends UnitGrammar<UnitName, Unit> {
     this.addItem("RawText", [unit])
     const place = this.placeOf([unit])
     return { value: this.textOf(place.range), place }
-  }
-
-  /**
-   * ast.md, Shared leaf nodes > StringLiteral: the `string` unit `unit`,
-   * one `String` item, whose value is its written text between its quotes,
-   * `""` and line terminators as written. Every string of this diagram is
-   * closed and not empty: the lexer rejects a string that the text ends
-   * in, and reads no unit of two quotes.
-   */
-  private stringLiteralOf(unit: Unit): StringLiteral {
-    this.addItem("String", [unit])
-    const place = this.placeOf([unit])
-    const [start, end] = place.range
-    return {
-      type: "StringLiteral",
-      value: this.textOf([start + 1, end - 1]),
-      raw: this.lexer.text.slice(start, end),
-      closed: true,
-      ...place,
-    }
   }
 }

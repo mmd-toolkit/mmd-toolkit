@@ -104,6 +104,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   block: true,
   kanban: true,
   c4: true,
+  venn: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */
