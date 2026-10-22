@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Do mixed tabs and spaces use raw string length?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "C",
+          "children": []
+        }
+      ]
+    }
+  }
+}

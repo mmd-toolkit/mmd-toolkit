@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a physical line feed inside a plain string reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error lexing usecase diagram: unexpected character: ->\"<- at offset: 15, skipped 1 characters. at line 2, column 3 [15,16)"
+  }
+}

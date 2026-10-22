@@ -28,12 +28,14 @@ vertex a link. Each id of a list is checked: `class A,C foo` gives `A` the
 class, and `C` is reported.
 
 The ids of the diagram are those of its vertices and subgraphs, and those given
-to links, as `e1` in `A e1@--> B`, wherever they are written. A `style`
-statement before the vertex that it names still styles it. A `class` statement
-before the vertex that it names does nothing in mermaid.js, and a `click`
-statement there does not make the vertex clickable, although its tooltip still
-applies. Such a statement names an id of the diagram, which is written
-correctly, and the rule does not report it.
+to links, as `e1` in `A e1@--> B`, wherever they are written. The ids that
+mermaid.js gives itself to links written without one, as `L_A_B_0`, are ids of
+the diagram too: `class L_A_B_0 hot` gives the link the class, and it is not
+reported. A `style` statement before the vertex that it names still styles it. A
+`class` statement before the vertex that it names does nothing in mermaid.js,
+and a `click` statement there does not make the vertex clickable, although its
+tooltip still applies. Such a statement names an id of the diagram, which is
+written correctly, and the rule does not report it.
 
 A vertex that a `style` statement adds is a vertex of the diagram too, so the
 rule reports only the first `style` of an id that nothing else defines. After

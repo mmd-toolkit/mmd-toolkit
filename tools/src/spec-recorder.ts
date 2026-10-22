@@ -24,14 +24,26 @@
  *   gives NaN, and a recorded text that contains `NaN` stops the run, since a
  *   stub may have produced it.
  *   `expect(fn)` calls `fn` once, since tests pass a parse call to
- *   `expect(() => ...).toThrow()`; the stubbed parser itself never throws.
+ *   `expect(() => ...).toThrow()`. Parser stubs normally return without throwing.
+ *   The usecase parser stub makes one exception: after recording a call from
+ *   `expectExactSemanticError` or `expectGrammarErrorAt`, it throws an
+ *   assertion-only error. Those upstream helpers catch it and inspect its
+ *   message before continuing to later parse calls; returning normally would
+ *   stop the helper early. This supplies no acceptance or error-message truth:
+ *   the recorded inputs are checked separately against the pinned mermaid.
  *
  * A test body or hook that throws, or a promise it hands to `expect` that
  * rejects, may have stopped before some of its parse calls, so each such
  * failure is returned with the test's title. An import without a stub fails
  * the run.
  */
-import { mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs"
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  realpathSync,
+  writeFileSync,
+} from "node:fs"
 import path from "node:path"
 import { pathToFileURL } from "node:url"
 import ts from "typescript"
@@ -71,6 +83,25 @@ const STUBS_GLOBAL = "__mmdSpecStubs"
  * test file imports and others do not costs nothing.
  */
 const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
+  "diagrams/usecase/parser/usecase.chevrotain.js": ["parser"],
+  "diagrams/usecase/parser/usecase.lexer.js": ["usecaseLexer"],
+  "diagrams/usecase/parser/usecase.parser.js": ["usecaseParser"],
+  "diagrams/usecase/usecaseDb.js": ["db"],
+  "diagrams/usecase/usecaseTypes.js": ["ARROW_TYPE"],
+  "diagrams/usecase/styles.js": ["default"],
+  "diagrams/common/common.js": ["sanitizeText"],
+  "node:fs": ["existsSync", "readFileSync"],
+  "node:path": ["resolve"],
+  "diagrams/agentflow/parser/agentflowParser.js": ["default"],
+  "diagrams/agentflow/agentflowDb.js": ["AgentFlowDB"],
+  "diagrams/agentflow/diagnostics.js": [
+    "AgentflowWarning",
+    "PARSER_EMITTED_DIAGNOSTICS",
+    "RESERVED_DIAGNOSTICS",
+  ],
+  "diagrams/agentflow/transformData.js": ["transformData"],
+  "diagrams/agentflow/colorSlots.js": ["KIND_COUNT"],
+  "diagrams/agentflow/conformance/runner.js": ["matchExpected", "runFixture"],
   vitest: [
     "describe",
     "it",
@@ -107,11 +138,17 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "getSections",
     "getTasks",
   ],
-  "diagrams/common/commonDb.js": ["getDiagramTitle"],
+  "diagrams/common/commonDb.js": [
+    "getDiagramTitle",
+    "getAccTitle",
+    "getAccDescription",
+  ],
   "diagrams/xychart/parser/xychart.jison": ["parser"],
   "diagrams/quadrant-chart/parser/quadrant.jison": ["parser"],
   "diagrams/venn/parser/venn.jison": ["default"],
   "diagrams/venn/vennDB.js": ["db"],
+  "diagrams/ishikawa/parser/ishikawa.jison": ["parser"],
+  "diagrams/ishikawa/ishikawaDb.js": ["IshikawaDB"],
   "diagrams/kanban/parser/kanban.jison": ["parser"],
   "diagrams/kanban/kanbanDb.js": ["default"],
   "diagrams/c4/parser/c4Diagram.jison": ["default"],
@@ -134,11 +171,18 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "setDiagramConfigScope",
   ],
   "diagram-api/comments.js": ["cleanupComments"],
-  "logger.js": ["log"],
+  "tests/util.js": ["jsdomIt"],
+  "diagram-api/detectType.js": ["detectors"],
+  "logger.js": ["log", "setLogLevel"],
   "mermaidAPI.js": ["mermaidAPI", "default"],
   "mermaid.js": ["default"],
   "Diagram.js": ["Diagram"],
-  "diagram-api/diagramAPI.js": ["setSiteConfig", "setConfig", "setLogLevel"],
+  "diagram-api/diagramAPI.js": [
+    "setSiteConfig",
+    "setConfig",
+    "setLogLevel",
+    "getDiagram",
+  ],
   "diagram-api/diagram-orchestration.js": ["addDiagrams"],
 }
 
@@ -248,8 +292,11 @@ export async function recordSpecFile(
   // Each file gets its own stub modules, since Node evaluates a module once
   // per URL and the stubs record into this call. Stack traces name the real
   // path of the copy.
-  const fileDir = path.join(realpathSync(workDir), path.basename(file))
-  mkdirSync(fileDir)
+  const fileDir = path.join(
+    realpathSync(workDir),
+    path.relative(mermaidSource, file),
+  )
+  mkdirSync(fileDir, { recursive: true })
   const copy = writeCopyWithStubs(file, mermaidSource, fileDir)
   const copyUrl = pathToFileURL(copy).href
 
@@ -377,10 +424,78 @@ export async function recordSpecFile(
   }
   const mermaidAPI = withRecorders({
     parse: (text: unknown) => Promise.resolve(record(text)),
+    render: (_id: unknown, text: unknown) => Promise.resolve(record(text)),
   })
   const requirementDb = withRecorders({ ...REQUIREMENT_DB_TABLES })
+  // These maps must be iterable for publishedModel(), but missing lookups
+  // still accept assertions on their properties like the other Db stubs.
+  const usecaseElements = new Map<string, unknown>()
+  usecaseElements.get = () => anything
+  const usecaseDb = withRecorders({
+    getActors: () => usecaseElements,
+    getUseCases: () => usecaseElements,
+    getSystemBoundaries: () => usecaseElements,
+    getNotes: () => new Map(),
+    getJsonNodes: () => new Map(),
+    getClassDefs: () => new Map(),
+    getRelationships: () => [],
+    getDirection: () => "LR",
+    getAST: () => ({
+      nodes: {},
+      edges: [],
+      groups: {},
+      statements: [],
+      source: "",
+    }),
+    getData: () => ({ nodes: [], edges: [] }),
+  })
   const stubs: Record<string, Record<string, unknown>> = {
+    "diagrams/usecase/parser/usecase.chevrotain.js": {
+      parser: {
+        parse: (text: unknown) => {
+          record(text)
+          // These two upstream helpers catch the error and read its message
+          // before continuing to more parse calls. Supply an assertion-only
+          // error; do not decide acceptance or copy the parser's semantics.
+          const stack = new Error("stack").stack ?? ""
+          if (
+            stack.includes("at expectExactSemanticError (") ||
+            stack.includes("at expectGrammarErrorAt (")
+          ) {
+            throw new Error("recorded parser rejection")
+          }
+          return anything
+        },
+      },
+    },
+    "diagrams/usecase/parser/usecase.lexer.js": {
+      usecaseLexer: withRecorders({ tokenize: record }),
+    },
+    "diagrams/usecase/parser/usecase.parser.js": { usecaseParser: anything },
+    "diagrams/usecase/usecaseDb.js": { db: usecaseDb },
+    "diagrams/usecase/usecaseTypes.js": { ARROW_TYPE: anything },
+    "diagrams/usecase/styles.js": { default: anything },
+    "diagrams/common/common.js": { sanitizeText: (text: unknown) => text },
     vitest,
+    "diagrams/agentflow/parser/agentflowParser.js": {
+      default: { parser: { parse: record, yy: anything }, parse: record },
+    },
+    "diagrams/agentflow/agentflowDb.js": { AgentFlowDB: anything },
+    "diagrams/agentflow/diagnostics.js": {
+      AgentflowWarning: new Proxy({}, { get: (_target, key) => key }),
+      PARSER_EMITTED_DIAGNOSTICS: new Set([
+        "SHAPE_UNSUPPORTED",
+        "SHAPE_REMOVED",
+        "CONTAINMENT_VIOLATION",
+      ]),
+      RESERVED_DIAGNOSTICS: new Set(),
+    },
+    "diagrams/agentflow/transformData.js": { transformData: anything },
+    "diagrams/agentflow/colorSlots.js": { KIND_COUNT: 7 },
+    "diagrams/agentflow/conformance/runner.js": {
+      matchExpected: anything,
+      runFixture: record,
+    },
     "diagrams/flowchart/parser/flowParser.ts": {
       default: { parser: { parse: record, yy: anything }, parse: record },
     },
@@ -424,7 +539,11 @@ export async function recordSpecFile(
       getSections: anything,
       getTasks: anything,
     },
-    "diagrams/common/commonDb.js": { getDiagramTitle: anything },
+    "diagrams/common/commonDb.js": {
+      getDiagramTitle: anything,
+      getAccTitle: anything,
+      getAccDescription: anything,
+    },
     "diagrams/xychart/parser/xychart.jison": {
       parser: { parse: record, yy: anything },
     },
@@ -435,6 +554,10 @@ export async function recordSpecFile(
       default: { parser: { parse: record, yy: anything }, parse: record },
     },
     "diagrams/venn/vennDB.js": { db: anything },
+    "diagrams/ishikawa/parser/ishikawa.jison": {
+      parser: { parse: record, yy: anything },
+    },
+    "diagrams/ishikawa/ishikawaDb.js": { IshikawaDB: anything },
     "diagrams/kanban/parser/kanban.jison": {
       parser: { parse: record, yy: anything },
     },
@@ -459,6 +582,16 @@ export async function recordSpecFile(
     },
     fs: { readFileSync: (name: string) => readFileSync(name, "utf8") },
     path: { resolve: (...parts: string[]) => path.resolve(...parts) },
+    "node:fs": { existsSync, readFileSync },
+    "node:path": {
+      // The docs spec resolves its page from process.cwd(), which belongs
+      // to this repository while collecting; read the checkout's page.
+      resolve: (...parts: string[]) =>
+        parts.at(-1) === "packages/mermaid/src/docs/syntax/usecase.md" ||
+        parts.at(-1) === "src/docs/syntax/usecase.md"
+          ? path.join(mermaidSource, "docs/syntax/usecase.md")
+          : path.resolve(...parts),
+    },
     "diagrams/requirement/requirementDb.js": {
       RequirementDB: new Proxy(anything as object, {
         construct: () => requirementDb as object,
@@ -468,7 +601,9 @@ export async function recordSpecFile(
       (STUBBED_MODULES["config.js"] ?? []).map((name) => [name, anything]),
     ),
     "diagram-api/comments.js": { cleanupComments: (text: unknown) => text },
-    "logger.js": { log: anything },
+    "tests/util.js": { jsdomIt: it },
+    "diagram-api/detectType.js": { detectors: {} },
+    "logger.js": { log: anything, setLogLevel: anything },
     "mermaidAPI.js": { mermaidAPI, default: mermaidAPI },
     "mermaid.js": {
       default: withRecorders({
@@ -485,6 +620,7 @@ export async function recordSpecFile(
       setSiteConfig: anything,
       setConfig: anything,
       setLogLevel: anything,
+      getDiagram: anything,
     },
     "diagram-api/diagram-orchestration.js": { addDiagrams: () => undefined },
   }

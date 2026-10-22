@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L1: percent-pair comment] Can comment whitespace consume intervening blank lines without changing the tree?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

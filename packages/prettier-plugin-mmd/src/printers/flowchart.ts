@@ -1,10 +1,8 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
 import type {
   FlowchartDiagram,
-  FlowchartLabel,
   FlowchartStatement,
   FlowchartSubgraphStatement,
-  Token,
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
@@ -20,21 +18,22 @@ import {
   findFlowchartKeptLines,
   findSemicolonOnLaterLine,
 } from "./flowchart-kept-lines.ts"
+import { layoutStatement, layoutSubgraphHeader } from "./flowchart-layout.ts"
+import { endsWithSpaceOrTab } from "./gap.ts"
 import {
-  layoutHeader,
-  layoutStatement,
-  layoutSubgraphHeader,
-} from "./flowchart-layout.ts"
-import { endsWithSpaceOrTab, findWrittenWhitespaceEnd } from "./gap.ts"
-import { expectToken } from "./layout.ts"
+  layoutGraphHeader as layoutHeader,
+  findGraphHeaderEnd as findHeaderEnd,
+  findGraphTitleEnd as findTitleEnd,
+  findGraphEndKeyword as findEndKeyword,
+  findStyleStatementEnd,
+} from "./graph-layout.ts"
 import { narrowPath } from "./paths.ts"
-import { indentationOf } from "./lines.ts"
-import type { Source } from "./source.ts"
 import {
-  findStructuralToken,
-  findTokenEndingBefore,
-  findTokenStartingAt,
-} from "./source.ts"
+  indentationOf,
+  significantIndentationWidth,
+  withSignificantIndentation,
+} from "./lines.ts"
+import type { Source } from "./source.ts"
 
 /**
  * Prints the body of a flowchart and the nodes below it, to the end of the
@@ -56,12 +55,23 @@ export function printFlowchart(
   print: (path: AstPath<MermaidAst>) => Doc,
   source: Source,
 ): Doc {
+  // An indented direction statement can become accessibility text or rejected
+  // syntax at column one. Use the shared positive step for the whole body,
+  // including tabWidth zero (diagrams/flowchart.md, The statement context;
+  // docs/flowchart.md, Indentation).
+  const bodyOptions = {
+    ...options,
+    tabWidth: significantIndentationWidth(options.tabWidth),
+  }
   const node = path.node
   switch (node.type) {
     case "FlowchartDiagram":
-      return printDiagram(path, options, print, source, node)
+      return withSignificantIndentation(
+        printDiagram(path, bodyOptions, print, source, node),
+        options,
+      )
     case "FlowchartSubgraphStatement":
-      return printSubgraph(path, options, print, source, node)
+      return printSubgraph(path, bodyOptions, print, source, node)
     default: {
       const statement = node as Exclude<
         FlowchartStatement,
@@ -74,8 +84,8 @@ export function printFlowchart(
       )
       const depth = depthOf(path)
       return printAtoms(source, layout, {
-        statement: indentationOf(options, depth),
-        continuation: indentationOf(options, depth + 1),
+        statement: indentationOf(bodyOptions, depth),
+        continuation: indentationOf(bodyOptions, depth + 1),
       }).doc
     }
   }
@@ -197,39 +207,11 @@ function findPrintedEnd(source: Source, statement: FlowchartStatement): number {
     case "FlowchartClassDefStatement":
     case "FlowchartLinkStyleStatement":
     case "FlowchartDefaultLinkStyleStatement": {
-      const last = expectToken(
-        findTokenEndingBefore(source, statement.range[1]),
-        "the end of a style statement",
-      )
-      if (statement.styles.at(-1) !== null && !last.value.endsWith(",")) {
-        return statement.range[1]
-      }
-      return findWrittenWhitespaceEnd(source, statement.range[1])
+      return findStyleStatementEnd(source, statement)
     }
     default:
       return statement.range[1]
   }
-}
-
-/**
- * The end of the header: its keyword, and its direction when it has one.
- */
-function findHeaderEnd(source: Source, diagram: FlowchartDiagram): number {
-  const keyword = expectToken(
-    findTokenStartingAt(source, diagram.range[0]),
-    "the header keyword",
-  )
-  if (diagram.direction === null) return keyword.range[1]
-  const direction = expectToken(
-    findStructuralToken(source, keyword.range[1]),
-    "the header direction",
-  )
-  if (direction.value !== diagram.direction) {
-    throw new Error(
-      `prettier-plugin-mmd: the token after the header keyword is ${JSON.stringify(direction.value)}, not the direction ${JSON.stringify(diagram.direction)}`,
-    )
-  }
-  return direction.range[1]
 }
 
 /**
@@ -253,37 +235,6 @@ function findSubgraphHeaderEnd(
   if (semicolon !== undefined) return semicolon.range[1]
   const { range } = subgraph.name
   return Math.min(range[1], lineEndOf(source, range[1] - 1))
-}
-
-/** The end of the `]` after a subgraph title. */
-function findTitleEnd(source: Source, title: FlowchartLabel): number {
-  const closing = expectToken(
-    findStructuralToken(source, title.range[1]),
-    "the `]` after a subgraph title",
-  )
-  if (closing.value !== "]") {
-    throw new Error(
-      `prettier-plugin-mmd: the token after a subgraph title is ${JSON.stringify(closing.value)}, not "]"`,
-    )
-  }
-  return closing.range[1]
-}
-
-/** The `end` keyword that closes a subgraph: its last token. */
-function findEndKeyword(
-  source: Source,
-  subgraph: FlowchartSubgraphStatement,
-): Token {
-  const token = expectToken(
-    findTokenEndingBefore(source, subgraph.range[1]),
-    "the end of a subgraph",
-  )
-  if (token.range[1] !== subgraph.range[1]) {
-    throw new Error(
-      "prettier-plugin-mmd: no token ends where a subgraph statement ends",
-    )
-  }
-  return token
 }
 
 /**

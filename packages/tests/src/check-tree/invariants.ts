@@ -1,3 +1,4 @@
+import { agentflowPreservesComments } from "../db-from-tree/converted-text.ts"
 import {
   isLineTerminatorCode,
   isWhitespace,
@@ -159,6 +160,8 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
+  UsecaseDiagram: ["%%"],
+  AgentflowDiagram: ["%%"],
   ErrorDiagram: [],
   FlowchartDiagram: [],
   SequenceDiagram: ["#", "%%", "%"],
@@ -169,6 +172,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   JourneyDiagram: ["#", "%%", "%"],
   RequirementDiagram: ["#", "%%", "%"],
   MindmapDiagram: ["%%"],
+  IshikawaDiagram: ["%%"],
   KanbanDiagram: ["%%"],
   C4Diagram: ["%%"],
   VennDiagram: ["%%"],
@@ -219,6 +223,7 @@ function diagramCommentMarkEnd(
  */
 const COMMENT_ENDS_AT_LINE_SEGMENT: ReadonlySet<string> = new Set([
   "MindmapDiagram",
+  "IshikawaDiagram",
   "KanbanDiagram",
 ])
 
@@ -530,7 +535,13 @@ function checkFrontmatter(
 }
 
 /** Where the value starts, inside the opening delimiter of a data block or Venn label. */
-function valueStartOf(node: CheckedNode): number {
+function valueStartOf(node: CheckedNode, root: CheckedRoot): number {
+  if (node.type === "UsecaseJsonDataBlock")
+    return (
+      root.tokens.find(
+        (token) => token.value === "{" && contains(node.range, token.range),
+      )?.range[1] ?? node.range[0]
+    )
   if (node.type === "VennLabel") return node.range[0] + 1
   return DATA_BLOCK_NODE_TYPES.has(node.type)
     ? node.range[0] + 2
@@ -575,6 +586,9 @@ function checkWhitespaceAtTokenEnds(
       directive.scanEnd,
     ]),
     ...scan.commentLines.map((line) => line.region),
+    ...(root.body.type === "AgentflowDiagram"
+      ? root.comments.map((comment) => comment.range)
+      : []),
     ...root.tokens
       .filter((token) => token.type === "IgnoredSemicolon")
       .map((token) => token.range),
@@ -592,7 +606,9 @@ function checkWhitespaceAtTokenEnds(
     const holders = valueNodes.filter((node) =>
       contains(node.range, token.range),
     )
-    const atValueStart = holders.some((node) => valueStartOf(node) === start)
+    const atValueStart = holders.some(
+      (node) => valueStartOf(node, root) === start,
+    )
     const atValueEnd = holders.some((node) => valueEndOf(node) === end)
     const afterCut = holders.length > 0 && cutEnds.has(start)
     const beforeCut = holders.length > 0 && cutStarts.has(end)
@@ -760,6 +776,7 @@ export const CHILD_FIELDS_NOT_IN_SOURCE_ORDER: ReadonlyMap<
   // arrow and the closing one comes before the arrow in the source and after
   // it among the child fields.
   ["FlowchartLink", placeLabelBeforeArrow],
+  ["AgentflowLink", placeLabelBeforeArrow],
   // ast/gantt.md, GanttClickStatement: the child fields are always `ids`,
   // `call`, `href`, whichever of the call and the link is written first; the
   // ids are written first whichever part follows.
@@ -790,6 +807,13 @@ function checkNodeRanges(
   const diagramTokens = diagramTokensOf(root)
   const tokenStarts = new Set(diagramTokens.map((token) => token.range[0]))
   const tokenEnds = new Set(diagramTokens.map((token) => token.range[1]))
+  const lastStatement = Array.isArray(root.body.body)
+    ? (root.body.body as CheckedNode[]).at(-1)
+    : undefined
+  const agentflowUnclosed =
+    root.body.type === "AgentflowDiagram" &&
+    lastStatement?.type === "AgentflowAccDescrBlockStatement" &&
+    lastStatement.closed === false
   walkNodes(root, (node, parent) => {
     if (parent === null) return
     const where = label(node)
@@ -799,7 +823,11 @@ function checkNodeRanges(
       `lies outside ${label(parent)}`,
     )
     problems.expect(
-      tokenStarts.has(node.range[0]) && tokenEnds.has(node.range[1]),
+      tokenStarts.has(node.range[0]) &&
+        (tokenEnds.has(node.range[1]) ||
+          (agentflowUnclosed &&
+            (node === root.body || node === lastStatement) &&
+            node.range[1] === text.length)),
       where,
       "does not run from the start of a token to the end of a token",
     )
@@ -848,7 +876,7 @@ function checkNodeRanges(
   if (first !== undefined && last !== undefined) {
     problems.expectEqual(
       root.body.range,
-      [first.range[0], last.range[1]],
+      [first.range[0], agentflowUnclosed ? text.length : last.range[1]],
       "Root.body",
       "does not run from its first token to its last",
     )
@@ -889,7 +917,17 @@ export function checkInvariants(
   problems: Problems,
 ): void {
   const nodes = nodesOf(root)
-  const scan = scanSource(text, root.frontmatter?.range[1] ?? 0)
+  const found = scanSource(text, root.frontmatter?.range[1] ?? 0)
+  const scan =
+    root.body.type === "AgentflowDiagram" &&
+    agentflowPreservesComments(text, root)
+      ? {
+          ...found,
+          commentLines: found.commentLines.filter(
+            (line) => line.commentStart < root.body.range[0],
+          ),
+        }
+      : found
   const records: Placed[] = [
     ...(root.frontmatter === null ? [] : [root.frontmatter]),
     ...root.comments,

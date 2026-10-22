@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: No root after removed common comment without written LF after header."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

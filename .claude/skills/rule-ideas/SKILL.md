@@ -196,7 +196,36 @@ Dropped:
 | In a C4 diagram, a relationship to an alias that no element or boundary declares (`Rel(a, typo, "Uses")`)                                                                                                      | Not silent: drawing the diagram stops with an error that names the relationship (read in `drawRels`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | In a C4 diagram, a count of `UpdateLayoutConfig` that is zero, negative, or no number                                                                                                                          | Not something a person drawing a diagram writes: a number of shapes in a row is a positive number                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | In a C4 diagram, `accTitle:`, which sets the visible title, and a relationship of one ordered pair written twice (the later one replaces the first)                                                            | Defects of mermaid.js with open fixes: [#8040](https://github.com/mermaid-js/mermaid/issues/8040) and [#8041](https://github.com/mermaid-js/mermaid/pull/8041), and [#8143](https://github.com/mermaid-js/mermaid/pull/8143)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| In a C4 diagram, the index of `RelIndex`, the sprite of a deployment node, a key that is not a known key in another case (`$colour`), and a style update written twice                                         | The documentation says that the index is not read and that sprites are unfinished; mermaid.js keeps every named attribute, and some unlisted keys (`alias`, `from`, `to`) change what later statements match, so no list of valid keys stands; a second update replaces only the fields it gives, and nothing is lost                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| In a C4 diagram, the index of `RelIndex`, the sprite of a deployment node, a key that is not a known key in another case (`$colour`)                                                                           | The documentation says that the index is not read and that sprites are unfinished; mermaid.js keeps every named attribute, and some unlisted keys (`alias`, `from`, `to`) change what later statements match, so no list of valid keys stands                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| In a venn diagram, a text id used twice (`text A note[First]`, then `text A note[Second]`)                                                                                                                     | Both text nodes are drawn, and a `style` of the id styles both; calling the second a pasted copy is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| In a venn diagram, an indented `text` meant for another set (`set A`, then `  text B[Backend]`)                                                                                                                | mermaid.js reads it by its grammar as the text node `B` of A and loses nothing; calling `B` a set is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| In a venn diagram, a size of zero or below, a size of more digits than a number holds, and a name repeated in a union (`union A, A`)                                                                           | Zero is an empty set, which the drawing leaves out; a negative or a too large size is not something a person drawing a diagram writes; the names of a union are kept as written                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a venn diagram, a union of a name that no earlier `set` declares, a size that is no number, and `accTitle`, `accDescr`, or a description block                                                              | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a venn diagram, a diagram with no set or union                                                                                                                                                              | Not silent: drawing it fails ([#8471](https://github.com/mermaid-js/mermaid/pull/8471), open, makes it a clear error)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| In a venn diagram, a correct CSS declaration in an HTML label that loses its `;`                                                                                                                               | A defect of mermaid.js, as for the same label in a flowchart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| In a venn diagram, a value with a unit and without quotes (`stroke-width:2px`, kept as `2 px`)                                                                                                                 | Comes from not knowing the syntax: the specification says that the parts of a value without quotes are joined with one space; in quotes, `"2px"` is kept as written                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a venn diagram, a style property other than `color` for a text node (`style A1 fill:red`, which the drawing does not use)                                                                                   | The documentation of mermaid.js applies the styles to text nodes without saying which properties a text node takes, so a rule would report a way of writing that the documentation shows                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| In a venn diagram, `accTitle` and `accDescr` in the frontmatter, which set neither text                                                                                                                        | A rule would read the YAML of the frontmatter, which waits until after the release, as for kanban                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In an Ishikawa diagram, `title`, `accTitle:`, or `accDescr` written as a cause (the cause `title Delivery causes`; a `{` block gives the causes `accDescr {`, its lines, and `}`)                              | mermaid.js reads each line as a cause by its grammar and loses nothing; the documentation of the Ishikawa diagram shows no title, its first line being the event. The accessibility statements are written as the accessibility documentation of mermaid.js shows, which says that every diagram type supports them, and no other way keeps them (the frontmatter sets neither): a defect of mermaid.js. As for `title` and `accTitle:` in a kanban diagram                                                                                                                                                                                                                                                                                                                       |
+| In an Ishikawa diagram, a cause less indented than the first cause, a cause more than one level deeper than the one before, and a tab among spaces (a tab counts as one character)                             | The formatter makes it visible: it prints each cause at the depth that mermaid.js gives it; the indentation does not tell what the author meant, as for the unclear indentation of a mindmap                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| In an Ishikawa diagram, two causes of one text under one cause                                                                                                                                                 | Both are drawn, each with its own causes: nothing is lost, and calling the second a copy is a guess. This differs from two columns of one id in a kanban diagram, which list the same items twice                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In an Ishikawa diagram, `A@{shape: rect}`, `[]`, `""`, and a `"` that no `"` closes                                                                                                                            | mermaid.js reads them as the text of a cause and loses nothing; calling them a shape, an empty cause, or a quoted text is a guess. `[]` stays text in mermaid.js 12.0.0 ([#7891](https://github.com/mermaid-js/mermaid/pull/7891), open, would make it a gap)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| In an Ishikawa diagram, `%%` after the text of a cause (`Process %% note` is the cause)                                                                                                                        | Comes from not knowing the syntax, as for `subgraph S %% group` in a flowchart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| In an Ishikawa diagram, the `;` lost at the end of a line that starts with `style` or `classDef` (the cause `style R fill:#abc`)                                                                               | A defect of mermaid.js, as for the same rewriting of CSS in a label in a flowchart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| In an Ishikawa diagram, a directive inside the text of a cause, a second `ishikawa` header, and the header `ishikawa-betaX` (the event `-betaX`)                                                               | A directive inside a word is not ordinary writing, and one at the end of a line is a way of writing a setting; a second header is rejected; a header with a suffix is not ordinary writing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| In an Ishikawa diagram, `title`, `accTitle`, and `accDescr` in the frontmatter (the first line replaces the title, and the accessible texts stay empty)                                                        | A rule would read the YAML of the frontmatter, which waits until after the release, as for kanban                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In an agentflow, a flow, a connector, or a vertex written again without a title or a label                                                                                                                     | Nothing is lost: a flow written again adds its members to the flow of its id, and a reference keeps the label and the shape (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In an agentflow, a class that no `classDef` defines, a `classDef` written twice, and a property given twice in one                                                                                             | As in a flowchart and a block diagram above: the class may come from the styles of the page, and CSS decides which declaration the drawing uses                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In an agentflow, a `linkStyle` index out of range or with a leading zero                                                                                                                                       | Not silent: mermaid.js rejects it                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In an agentflow, a label on a reference link (`A -.-\|x\| B`), a `global` block written twice, metadata on the generated id of a link, and extra whitespace at the start of a style                            | mermaid.js keeps them, and nothing is lost (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| In an agentflow, a `direction` statement outside a flow                                                                                                                                                        | Comes from not knowing the syntax, as `direction LR` outside a subgraph in a flowchart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| In an agentflow, a link to a flow or a connector that nothing declares, and a `connectorRef` that names none                                                                                                   | The link adds a vertex, as in a flowchart; the `connectorRef` is in the YAML of a data block, which waits until after the release, as for kanban                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| In an agentflow, `click` in the name of a flow or a connector (`flow Handle click events` loses `click` and takes the next line into the name)                                                                 | A defect of mermaid.js, as the reserved word `click` in the title of a subgraph in a flowchart above: the author writes a correct name                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| In an agentflow, an empty string, an empty markdown string, or an empty call in a name or before the URL or the tooltip of `click` (`click A href """u"`)                                                      | They hold nothing, so nothing is lost: the name, the URL, and the tooltip are kept as written (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In an agentflow, a flow and a connector of one id, and a flow and a vertex of one id                                                                                                                           | mermaid.js keeps both records (run); calling the second a mistake is a guess. A connector and a vertex of one id are one element, which agentflow-no-redefined-vertex and agentflow-no-redefined-connector check                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| In an agentflow, a bracket shape that agentflow removed or does not allow (`A((x))`, drawn as a rounded rectangle)                                                                                             | Not silent: mermaid.js gives the diagnostic `SHAPE_REMOVED` or `SHAPE_UNSUPPORTED`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| In an agentflow, a correct CSS declaration in an HTML label that loses its `;`, `direction` inside a correct label, and a comment line in an `accDescr` block (kept as its text)                               | Defects of mermaid.js, as in a flowchart above; agentflow-no-ignored-text reports the second, and agentflow-no-duplicate-description the third where it replaces a description, with the mistakes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In an agentflow, the shape, the label, or other keys in the YAML of a data block                                                                                                                               | A rule would read the YAML, which waits until after the release, as for kanban                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ### Questions for unclear cases
 
@@ -600,6 +629,7 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | flowchart-no-duplicate-title              | yes              |                                                                              |
 | flowchart-no-redefined-vertex             | yes              |                                                                              |
 | flowchart-no-undef                        | yes              |                                                                              |
+| flowchart-no-duplicate-direction          | yes              |                                                                              |
 | no-unclosed-directive                     | no (provisional) | Their documents cover four diagram types only                                |
 | no-invalid-init-directive                 | no (provisional) | Their documents cover four diagram types only                                |
 | sequence-no-create-destroy                | yes              |                                                                              |
@@ -696,6 +726,23 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | c4-no-duplicate-title                     | yes              |                                                                              |
 | c4-no-duplicate-description               | yes              |                                                                              |
 | c4-no-redefined-element                   | yes              |                                                                              |
+| c4-no-duplicate-style                     | yes              |                                                                              |
+| venn-no-duplicate-title                   | yes              |                                                                              |
+| venn-no-duplicate-subset                  | yes              |                                                                              |
+| venn-no-duplicate-style                   | yes              |                                                                              |
+| venn-no-invalid-style-key                 | yes              |                                                                              |
+| venn-no-undef                             | yes              |                                                                              |
+| venn-no-ignored-text                      | yes              |                                                                              |
+| agentflow-no-duplicate-title              | yes              |                                                                              |
+| agentflow-no-duplicate-description        | yes              |                                                                              |
+| agentflow-no-empty-description-block      | yes              |                                                                              |
+| agentflow-no-unclosed-description-block   | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
+| agentflow-no-ignored-text                 | yes              |                                                                              |
+| agentflow-no-redefined-vertex             | yes              |                                                                              |
+| agentflow-no-redefined-connector          | yes              |                                                                              |
+| agentflow-no-redefined-flow               | yes              |                                                                              |
+| agentflow-no-duplicate-direction          | yes              |                                                                              |
+| agentflow-no-undef                        | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -795,7 +842,10 @@ nonexistent node", "style node":
 [#7040](https://github.com/mermaid-js/mermaid/issues/7040) (closed, approved)
 asked for an error, and [#7441](https://github.com/mermaid-js/mermaid/pull/7441)
 (merged, in 12.0.0) logs a warning and still makes the vertex; (4) correct the
-id.
+id. An id that mermaid.js gives a link written without one, as `L_A_B_0`, is an
+id of the diagram (run: `class L_A_B_0 hot` gives the link the class); using it
+is not reported, since it reaches what it names, and that such an id changes
+when the links change is no fact of the output (decided on 2026-10-22).
 
 class-no-undef: (1) the statement changes nothing, or the note has no line; (2)
 none; (3) "cssClass not applied", "classDiagram style nonexistent", "cssClass",
@@ -827,12 +877,26 @@ no box at that end; (2) none; (3) "requirement relationship missing",
 "requirement"; (4) correct the name.
 
 flowchart-no-redefined-vertex: (1) a later shape or label replaces the earlier
-one; labels that mermaid.js keeps the same, as two that differ only in their
-line breaks or in the quotes of an HTML attribute, are not reported; (2) none;
-(3) "node label overwritten", "redefine node label", "node label":
+one; labels that differ only in their line breaks are not reported, and labels
+are otherwise compared as written, so two that differ only in the quotes of an
+HTML attribute, which mermaid.js keeps the same, are reported, as the document
+says (changed on 2026-10-22 from a comparison that converted the quotes, to
+follow the decision that rules compare written values); (2) none; (3) "node
+label overwritten", "redefine node label", "node label":
 [#3789](https://github.com/mermaid-js/mermaid/issues/3789) (open, Type:
 Enhancement) proposes another statement for labels; (4) use another id, or write
 the label once.
+
+flowchart-no-duplicate-direction: (1) a later `direction` statement in the body
+of a subgraph replaces the direction of the subgraph (run in `flowchart`,
+`flowchart-elk`, and `swimlane-beta`); two subgraphs of one id are drawn as one
+with the direction of the first (read in `getData`, which gives the layout the
+subgraphs from the last to the first, and the layout keeps one node for an id),
+so a different direction in a later one is lost and reported, although the Db
+keeps both; `TD` and `TB` are one direction, as the documentation says; (2)
+none; (3) the searches of the direction rules above; (4) write one `direction`
+statement for each subgraph. Decided on 2026-10-22 with
+agentflow-no-duplicate-direction, which reports the same fact.
 
 class-no-redefined-class: (1) the earlier label is lost; (2) none; (3) "class
 label redefine"; (4) use another name, or write the label once.
@@ -1164,6 +1228,106 @@ but what the rows above name.
   (run); (2) none: the same label again, a first label, a boundary written again
   to add elements, and a default type that nobody wrote are not reported; (4)
   give each element and boundary its own alias.
+- c4-no-duplicate-style: (1) a later style update, or a later argument of the
+  same update, that gives a field again replaces the earlier value, also with
+  the empty value of an empty argument (run); (2) none: a field given the value
+  it has, a field the target has not had, `$alias`, `$from`, `$to`, and values
+  of declarations are not reported; (3) "UpdateElementStyle", "UpdateRelStyle":
+  [#8087](https://github.com/mermaid-js/mermaid/pull/8087) (open) checks the
+  colours, which does not change which value is kept; (4) give each field once,
+  with a named attribute for one field. Decided on 2026-10-21, after the venn
+  rules: an earlier decision had left a style update written twice out on the
+  ground that nothing is lost, which holds only for an update that gives other
+  fields (`$bgColor="red"`, then `$bgColor="blue"`, keeps only `blue`; run).
+
+The venn rules have these notes; the searches were "venn" in titles,
+"venn-beta", and "venn" with the words style, stroke-width, text, title,
+duplicate, comment, union label, and px, and found nothing that changes the
+readings: the open [#8089](https://github.com/mermaid-js/mermaid/pull/8089)
+sorts the names of a target before the drawing looks up its style or its area,
+which the Db already sorts; the open
+[#8471](https://github.com/mermaid-js/mermaid/pull/8471) makes a diagram with no
+set an error; [#8076](https://github.com/mermaid-js/mermaid/issues/8076) and
+[#7692](https://github.com/mermaid-js/mermaid/issues/7692) (open) concern where
+texts and circles are placed. The drawing was read in `vennRenderer.ts` and in
+@upsetjs/venn.js 2.0.0, whose layout was also run on the Db of the examples (no
+SVG was drawn).
+
+- venn-no-duplicate-title: the notes of the title rules above; a title keeps its
+  quotes and the rest of its line, and the title of the frontmatter is not
+  compared.
+- venn-no-duplicate-subset: (1) the drawing draws an area once for each
+  statement: a set written again is a second circle in the next colour, a later
+  label replaces the earlier one, a later size of a set replaces the earlier
+  one, and two sizes of a union give an overlap between them (run for the sizes;
+  the circles and the labels read); (2) none: a set written again so that an
+  indented `text` follows it is reported, since it is drawn twice, and the
+  document gives `text A A3` at the start of a line for it; (4) declare each
+  area once. A subset is a `set` or `union` statement, as in the tree
+  (VennSubsetStatement) and in the Db of mermaid.js (`getSubsetData`).
+- venn-no-duplicate-style, venn-no-invalid-style-key: (1) a later value of a
+  property replaces the earlier one, in one statement (run) and across the
+  statements of one target (read in `buildStyleByKey`); the drawing reads only
+  the five properties that the documentation lists, and mermaid.js keeps any
+  other with its name as written (run for the Db; the drawing read); (2) none: a
+  value that the target already has, a property that it has not had, and the
+  five properties are not reported; (4) give each property once, and write one
+  of the five. The name venn-no-invalid-style-key follows the words of ESLint
+  itself, as the invalid names above.
+- venn-no-undef: (1) the text node of an area that no statement declares is not
+  placed, and a style for it styles nothing (run for the areas of the layout;
+  read in `renderTextNodes` and in the lookups of the styles); (2) none: an area
+  declared later, the pairs that a larger union adds, and the id of a text node
+  for a style of one name are not reported; (4) correct the name, or declare the
+  area.
+- venn-no-ignored-text: (1) the character is dropped with the comment (run); (2)
+  none: a space before `%%` and a `%%` inside a label or a quoted name are not
+  reported; (4) remove the character, or complete the statement.
+
+The agentflow rules have these notes; the searches were "agentflow" in titles,
+"agentflow-beta", and "agentflow" with the words connector, flow title,
+direction, accDescr, duplicate, and shape, and found nothing that changes the
+readings: [#8443](https://github.com/mermaid-js/mermaid/pull/8443), merged after
+mermaid.js 12.0.0, draws `[/…/]` as an input, so that
+agentflow-no-redefined-vertex would miss a change to or from it, but would
+report nothing that changes nothing.
+
+- agentflow-no-duplicate-title, agentflow-no-duplicate-description,
+  agentflow-no-empty-description-block, agentflow-no-unclosed-description-block,
+  agentflow-no-ignored-text: the notes of the flowchart rules above, with what
+  agentflow reads differently: a comment line is text after `accTitle:` and
+  `accDescr:` and in a block (run), so a block of only a comment is not empty
+  and sets the description; an empty block in the name of a flow or a connector
+  and before the fields of `click` sets no description and is reported too
+  (run); the unclosed block rule has the condition of the flowchart rule and is
+  not enabled for the same reason.
+- agentflow-no-redefined-vertex, agentflow-no-redefined-connector: (1) a shaped
+  vertex or a connector declaration replaces the label, the drawn shape, and the
+  kind that the id had, and the first declaration of a connector replaces a
+  vertex of the id (run); shapes are compared as drawn, the diamond, the
+  hexagon, and the subroutine apart and every other bracket shape as a rounded
+  rectangle (read in `getTypeFromVertex` and `normaliseNodeShapes`), and kinds
+  as agentflow derives them (task, input, decision, action, tool, connector),
+  which its default theme `redux-color` draws in their own colours (read in
+  `deriveVertexKind` and `styles.ts`; decided on 2026-10-22, since kinds are
+  part of the default drawing of agentflow); (2) none: the id that a connector
+  without a title shows, a reference, data blocks, and the same label, drawn
+  shape, and kind are not reported; (4) give each element its own id. The two
+  rules share one record of each id and part by the statement reported.
+- agentflow-no-redefined-flow: (1) flows of one id are merged, and a later title
+  that is not empty replaces the earlier one, in the order in which the flows
+  end (run); (2) none: a flow written again without a title to add members is
+  not reported; (4) write one title for each id.
+- agentflow-no-duplicate-direction: (1) a later direction of a flow, in its body
+  or in a later declaration of its id, replaces the earlier one (run); `TD` and
+  `TB` are one direction, as the documentation of the flowchart says; (2) none;
+  (4) write one direction for each flow. Two `direction` statements in one
+  subgraph of a flowchart behave the same (run), which
+  flowchart-no-duplicate-direction reports.
+- agentflow-no-undef: the notes of flowchart-no-undef; the names of flows and
+  connectors are ids, and an id that mermaid.js gives itself (`subGraph0`,
+  `L_A_B_0`) is an id of the diagram and is not reported, since it reaches what
+  it names (run; decided on 2026-10-22).
 
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
@@ -1231,6 +1395,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | flowchart-no-ignored-text               | Split at the `;` so that the direction is on a line of its own |
 | flowchart-no-redefined-vertex           | None: criterion 1 (the likely fix is a new id)                 |
 | flowchart-no-undef                      | None: criterion 1 (which id was meant is not known)            |
+| flowchart-no-duplicate-direction        | None for now (2026-10-22; see the end of this section)         |
 | sequence-* (all 8 rules)                | None for now (2026-10-08; see the end of this section)         |
 | class-* (all 8 rules)                   | None for now (2026-10-08; see the end of this section)         |
 | state-* (all 6 rules)                   | None for now (2026-10-08; see the end of this section)         |
@@ -1246,7 +1411,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | quadrant-* (all 9 rules)                | None for now (2026-10-16; see the end of this section)         |
 | block-* (all 11 rules)                  | None for now (2026-10-21; see the end of this section)         |
 | kanban-* (all 3 rules)                  | None for now (2026-10-21; see the end of this section)         |
-| c4-* (all 6 rules)                      | None for now (2026-10-21; see the end of this section)         |
+| c4-* (all 7 rules)                      | None for now (2026-10-21; see the end of this section)         |
+| venn-* (all 6 rules)                    | None for now (2026-10-21; see the end of this section)         |
+| agentflow-* (all 10 rules)              | None for now (2026-10-22; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1344,8 +1511,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 `sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
 `journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`,
 `sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
-`block-*`, `kanban-*`, and `c4-*` (2026-10-21): the rules are implemented
-without suggestions for now. No suggestion had been decided for them or
-described in their documents, and the one planned for the empty block of a
-sequence diagram rested on generated inputs. Whether they get suggestions is
-decided later, in the form of the flowchart rules, with a fixture for each case.
+`block-*`, `kanban-*`, `c4-*`, and `venn-*` (2026-10-21), and `agentflow-*` and
+flowchart-no-duplicate-direction (2026-10-22): the rules are implemented without
+suggestions for now. No suggestion had been decided for them or described in
+their documents, and the one planned for the empty block of a sequence diagram
+rested on generated inputs. Whether they get suggestions is decided later, in
+the form of the flowchart rules, with a fixture for each case.

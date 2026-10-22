@@ -43,6 +43,8 @@ specification has a bug, except for the deliberate differences listed under
 | state        | [`docs/diagrams/state.md`](./docs/diagrams/state.md)         | [`docs/ast/state.md`](./docs/ast/state.md)         |
 | er           | [`docs/diagrams/er.md`](./docs/diagrams/er.md)               | [`docs/ast/er.md`](./docs/ast/er.md)               |
 | venn         | [`docs/diagrams/venn.md`](./docs/diagrams/venn.md)           | [`docs/ast/venn.md`](./docs/ast/venn.md)           |
+| ishikawa     | [`docs/diagrams/ishikawa.md`](./docs/diagrams/ishikawa.md)   | [`docs/ast/ishikawa.md`](./docs/ast/ishikawa.md)   |
+| agentflow    | [`docs/diagrams/agentflow.md`](./docs/diagrams/agentflow.md) | [`docs/ast/agentflow.md`](./docs/ast/agentflow.md) |
 
 The other diagram types of mermaid.js are not specified yet.
 

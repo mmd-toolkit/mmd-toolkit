@@ -1,0 +1,75 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 510,
+    "test": "usecase parser publication and normalized AST > preserves entity codes and literal backslash-n while accepting physical newlines only in Markdown labels"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "User",
+        "label": "**User**\nrole",
+        "labelType": "markdown",
+        "type": "normal",
+        "business": false,
+        "stereotype": "Human",
+        "classes": [
+          "decorated"
+        ],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Login",
+        "label": "Sign\nin",
+        "labelType": "markdown",
+        "shape": "ellipse",
+        "business": false,
+        "stereotype": "Primary",
+        "classes": [
+          "decorated"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Escaped",
+        "label": "Open ﬂ°°40¶ßsafeﬂ°°41¶ß ﬂ°°91¶ßnowﬂ°°93¶ß",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Literal",
+        "label": "First\\nSecond",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "decorated",
+        "styles": [
+          "fill:#fee"
+        ]
+      }
+    ]
+  }
+}

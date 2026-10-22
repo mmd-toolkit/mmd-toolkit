@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Bare header with bare comment at EOF."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

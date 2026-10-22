@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a repeated JSON property retain its first order and last value while removing old descendants?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "entry": {
+            "second": 3,
+            "first": 1
+          },
+          "tail": 0
+        },
+        "propertyOrder": {
+          "": [
+            "entry",
+            "tail"
+          ],
+          "/entry": [
+            "second",
+            "first"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "entry": {
+              "second": 3,
+              "first": 1
+            },
+            "tail": 0
+          },
+          "propertyOrder": {
+            "": [
+              "entry",
+              "tail"
+            ],
+            "/entry": [
+              "second",
+              "first"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

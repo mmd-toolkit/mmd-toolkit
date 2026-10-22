@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F3: LS ends the line-rule segment while the same node text continues."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R style:#x  tail;",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R style:#x  tail;",
+      "children": []
+    }
+  }
+}

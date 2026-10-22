@@ -45,20 +45,16 @@ those denote characters, not backslashes in a diagram. See
 
 The exact `venn-beta` header stands at column one so the diagram is easy to
 find; ordinary header-line statements move to body lines, while attached
-fragments, directives and kept parts retain their relations.
-
-[fixture: venn/header/corpus-header-before-comment] [fixture:
-venn/header/corpus-header-before-directive] [fixture:
-venn/header/corpus-header-before-frontmatter-comment] [fixture:
-venn/header/corpus-header-statement-tab] [fixture:
-venn/header/header-comment-fragment-control] [fixture:
-venn/header/header-comment-fragment] [fixture: venn/header/header-control]
-[fixture: venn/header/header-inline] [fixture: venn/header/header] [fixture:
-venn/header/header-leading-inline-directive] [fixture:
-venn/header/header-only-control] [fixture: venn/header/header-only] [fixture:
-venn/header/header-semicolon-prefix] [fixture: venn/header/header-title-control]
-[fixture: venn/header/header-title] [fixture:
-venn/header/header-trailing-comment]
+fragments, directives and kept parts retain their relations. [corpus fixture:
+venn/header-before-comment] [corpus fixture: venn/header-before-directive]
+[corpus fixture: venn/header-before-frontmatter-comment] [corpus fixture:
+venn/header-statement-tab] [fixture: venn/header/header-comment-fragment]
+[corpus fixture: venn/db-form-set] [fixture: venn/header/header-inline]
+[fixture: venn/header/header] [fixture:
+venn/header/header-leading-inline-directive] [corpus fixture:
+venn/header-only-lf] [corpus fixture: venn/header-only] [fixture:
+venn/header/header-semicolon-prefix] [fixture: venn/header/header-title]
+[fixture: venn/header/header-trailing-comment]
 
 Input (escaped):
 
@@ -77,10 +73,8 @@ set A
 Under the specified
 [`c4-keyword-anywhere`](../../spec/docs/known-divergences/c4-keyword-anywhere.md)
 divergence, C4 words in names or values do not change Venn dispatch; these
-accepted inputs follow their Venn formatting rules.
-
-[fixture: venn/header/corpus-div-c4-bare-identifier] [fixture:
-venn/header/div-c4-detector]
+accepted inputs follow their Venn formatting rules. [corpus fixture:
+venn/div-c4-bare-identifier] [fixture: venn/header/div-c4-detector]
 
 Input (escaped):
 
@@ -102,9 +96,7 @@ With spaces, one configured indentation level is at least one character, even
 with `tabWidth: 0`; `useTabs` still supplies a tab. Formatting must not change
 the Db, and one character is the smallest width that keeps the indentation's
 reading. Only implicit text needs that positive marker; ordinary statements
-remain at column one.
-
-[fixture: venn/indentation/tab-width-0] [fixture:
+remain at column one. [fixture: venn/indentation/tab-width-0] [fixture:
 venn/indentation/tab-width-0-leading-directive] [fixture:
 venn/indentation/tab-width-0-kept] [fixture:
 venn/indentation/tab-width-0-kept-leading-directive] [fixture:
@@ -116,34 +108,22 @@ one; only implicit text stands one configured step deeper (`tabWidth`,
 `useTabs`). Positive indentation selects implicit syntax while mode is enabled;
 it expresses no nesting, and indenting explicit text can change its reading. A
 declaration enables mode, a later ordinary line-start statement clears it, and
-another declaration enables it again.
-
-[fixture: venn/indentation/corpus-db-form-indent-id-label] [fixture:
-venn/indentation/corpus-db-form-indent-number] [fixture:
-venn/indentation/corpus-db-form-indent-string] [fixture:
-venn/indentation/corpus-db-form-indent-string-label] [fixture:
-venn/indentation/corpus-db-indent-after-header-set] [fixture:
-venn/indentation/corpus-db-indent-after-indented-set] [fixture:
-venn/indentation/corpus-db-indent-after-indented-union] [fixture:
-venn/indentation/corpus-db-indent-after-union] [fixture:
-venn/indentation/explicit-indent-unsafe] [fixture:
-venn/indentation/implicit-dedent-unsafe] [fixture:
-venn/indentation/indent-four-control] [fixture: venn/indentation/indent-four]
-[fixture: venn/indentation/indent-tabs-control] [fixture:
-venn/indentation/indent-tabs] [fixture: venn/indentation/indent-width-control]
-[fixture: venn/indentation/indent-width] [fixture:
-venn/indentation/leading-directives-positive] [fixture:
+another declaration enables it again. [corpus fixture:
+venn/db-form-indent-id-label] [corpus fixture: venn/db-form-indent-number]
+[corpus fixture: venn/db-form-indent-string] [corpus fixture:
+venn/db-form-indent-string-label] [corpus fixture:
+venn/db-indent-after-header-set] [corpus fixture:
+venn/db-indent-after-indented-set] [corpus fixture:
+venn/db-indent-after-indented-union] [corpus fixture:
+venn/db-indent-after-union] [fixture: venn/indentation/explicit-indent-unsafe]
+[corpus fixture: venn/db-indent-id-eof] [fixture: venn/indentation/indent-four]
+[fixture: venn/indentation/indent-tabs] [fixture: venn/indentation/indent-width]
+[fixture: venn/indentation/leading-directives-positive] [fixture:
 venn/indentation/leading-directives-zero] [fixture:
 venn/indentation/marker-kept-prefix] [fixture:
-venn/indentation/mode-end-explicit-control] [fixture:
-venn/indentation/mode-end-explicit] [fixture:
-venn/indentation/mode-end-style-control] [fixture:
-venn/indentation/mode-end-style] [fixture:
-venn/indentation/mode-end-title-control] [fixture:
-venn/indentation/mode-end-title] [fixture:
-venn/indentation/mode-no-current-control] [fixture:
-venn/indentation/mode-no-current] [fixture:
-venn/indentation/mode-reenabled-control] [fixture:
+venn/indentation/mode-end-explicit] [fixture: venn/indentation/mode-end-style]
+[fixture: venn/indentation/mode-end-title] [corpus fixture:
+venn/db-form-text-id] [fixture: venn/indentation/mode-no-current] [fixture:
 venn/indentation/mode-reenabled] [fixture:
 venn/indentation/union-positive-widths]
 
@@ -171,32 +151,24 @@ together because splitting would introduce a line-start statement that clears
 implicit mode. Same-line declaration runs can split, even where a retained group
 is followed by a declaration that resets the mode. Titles keep their
 statement-looking value text, and swallowed fragments stay with their written
-line neighbours.
-
-[fixture:
-venn/statements-one-per-line/corpus-db-indent-after-same-line-explicit-text]
-[fixture: venn/statements-one-per-line/corpus-db-indent-after-same-line-style]
-[fixture: venn/statements-one-per-line/corpus-db-indent-after-same-line-title]
-[fixture: venn/statements-one-per-line/corpus-header-statement-on-line]
-[fixture: venn/statements-one-per-line/declaration-runs] [fixture:
+line neighbours. [corpus fixture: venn/db-indent-after-same-line-explicit-text]
+[corpus fixture: venn/db-indent-after-same-line-style] [corpus fixture:
+venn/db-indent-after-same-line-title] [corpus fixture:
+venn/header-statement-on-line] [fixture:
+venn/statements-one-per-line/declaration-runs] [fixture:
 venn/statements-one-per-line/header-declaration-group] [fixture:
 venn/statements-one-per-line/ordinary-semicolon-repair-control] [fixture:
-venn/statements-one-per-line/same-line-declaration-reset-control] [fixture:
 venn/statements-one-per-line/same-line-declaration-reset] [fixture:
-venn/statements-one-per-line/same-line-style-kept-control] [fixture:
 venn/statements-one-per-line/same-line-style-kept] [fixture:
 venn/statements-one-per-line/same-line-style-split-unsafe] [fixture:
-venn/statements-one-per-line/same-line-text-kept-control] [fixture:
 venn/statements-one-per-line/same-line-text-kept] [fixture:
 venn/statements-one-per-line/same-line-text-split-unsafe] [fixture:
-venn/statements-one-per-line/same-line-title-kept-control] [fixture:
 venn/statements-one-per-line/same-line-title-kept] [fixture:
 venn/statements-one-per-line/same-line-title-split-unsafe] [fixture:
 venn/statements-one-per-line/same-line-title-value] [fixture:
 venn/statements-one-per-line/split-inline-directive] [fixture:
 venn/statements-one-per-line/statements-split-control] [fixture:
 venn/statements-one-per-line/statements-split] [fixture:
-venn/statements-one-per-line/title-not-two-statements-control] [fixture:
 venn/statements-one-per-line/title-not-two-statements]
 
 Input (escaped):
@@ -220,31 +192,25 @@ Ordinary blank runs collapse to one and body-edge blanks disappear, retaining
 grouping without excess space. Value blanks and protected diagram-comment gaps
 remain: an empty line and a nonempty space/tab-only line before an unindented
 `%%{ }%%` can select different modes. Common comment regions that join source
-lines also retain their boundaries.
-
-[fixture: venn/blank-lines/blank-before-empty-braces-explicit] [fixture:
+lines also retain their boundaries. [fixture:
+venn/blank-lines/blank-before-empty-braces-explicit] [fixture:
 venn/blank-lines/blank-before-indented-empty-braces] [fixture:
-venn/blank-lines/blank-in-value-control] [fixture:
-venn/blank-lines/blank-in-value] [fixture: venn/blank-lines/blank-runs-control]
-[fixture: venn/blank-lines/blank-runs] [fixture:
-venn/blank-lines/comment-groups] [fixture:
-venn/blank-lines/corpus-db-indent-after-blank] [fixture:
-venn/blank-lines/corpus-db-indent-blank-line] [fixture:
-venn/blank-lines/corpus-gram-indent-after-empty-braces-explicit-id] [fixture:
-venn/blank-lines/corpus-gram-indent-after-empty-braces-explicit-string]
-[fixture:
-venn/blank-lines/corpus-gram-indent-after-empty-braces-explicit-target-list]
-[fixture: venn/blank-lines/corpus-lex-indent-indented-empty-braces-after-blank]
-[fixture: venn/blank-lines/corpus-lex-indent-set-blank-directive] [fixture:
-venn/blank-lines/corpus-lex-indent-set-empty-braces-blank] [fixture:
-venn/blank-lines/corpus-lex-indent-set-two-empty-braces] [fixture:
-venn/blank-lines/corpus-lex-indent-spaces-before-empty-braces] [fixture:
-venn/blank-lines/corpus-lex-indent-tab-line-before-empty-braces] [fixture:
-venn/blank-lines/corpus-lex-indent-union-blank-directive] [fixture:
-venn/blank-lines/corpus-lex-unindented-blank-followed-comment] [fixture:
+venn/blank-lines/blank-in-value] [fixture: venn/blank-lines/blank-runs]
+[fixture: venn/blank-lines/comment-groups] [corpus fixture:
+venn/db-indent-after-blank] [corpus fixture: venn/db-indent-blank-line] [corpus
+fixture: venn/gram-indent-after-empty-braces-explicit-id] [corpus fixture:
+venn/gram-indent-after-empty-braces-explicit-string] [corpus fixture:
+venn/gram-indent-after-empty-braces-explicit-target-list] [corpus fixture:
+venn/lex-indent-indented-empty-braces-after-blank] [corpus fixture:
+venn/lex-indent-set-blank-directive] [corpus fixture:
+venn/lex-indent-set-empty-braces-blank] [corpus fixture:
+venn/lex-indent-set-two-empty-braces] [corpus fixture:
+venn/lex-indent-spaces-before-empty-braces] [corpus fixture:
+venn/lex-indent-tab-line-before-empty-braces] [corpus fixture:
+venn/lex-indent-union-blank-directive] [corpus fixture:
+venn/lex-unindented-blank-followed-comment] [fixture:
 venn/blank-lines/directive-groups] [fixture: venn/blank-lines/fragment-gaps]
-[fixture: venn/blank-lines/mode-trivia-control] [fixture:
-venn/blank-lines/mode-trivia] [fixture:
+[fixture: venn/blank-lines/mode-trivia] [fixture:
 venn/blank-lines/whitespace-before-empty-braces]
 
 Input
@@ -280,31 +246,21 @@ attachment, reducing an ordinary spaced gap to one space; a swallowed
 `VennIgnoredText` fragment remains touching its comment because detaching it can
 reject the input. Comment contents, including trailing spaces and U+2028/U+2029
 through LF or EOF, stay whole; percent pairs inside values remain value text.
-Protected gaps retain comment and mode boundaries.
-
-[fixture: venn/comments/bare-percent-tail] [fixture:
-venn/comments/comment-directives] [fixture:
-venn/comments/comment-mark-value-control] [fixture:
-venn/comments/comment-mark-value] [fixture:
-venn/comments/comment-spaced-control] [fixture: venn/comments/comment-spaced]
-[fixture: venn/comments/comment-touch-control] [fixture:
-venn/comments/comment-touch] [fixture: venn/comments/comments-align-control]
-[fixture: venn/comments/comments-align] [fixture:
-venn/comments/complete-multiletter] [fixture:
-venn/comments/corpus-lex-bare-percent-between-set-and-text] [fixture:
-venn/comments/corpus-lex-comment-line-before-text] [fixture:
-venn/comments/corpus-lex-comment-multiple-spaces-before-text] [fixture:
-venn/comments/corpus-lex-eaten-fragment-before-line-break] [fixture:
-venn/comments/corpus-lex-empty-braces-percent-between-set-and-text] [fixture:
-venn/comments/corpus-lex-inline-comment-spaced] [fixture:
-venn/comments/corpus-lex-style-extra-id-eaten] [fixture:
-venn/comments/empty-braces-tail] [fixture: venn/comments/fragment-tail]
-[fixture: venn/comments/header-comment] [fixture:
-venn/comments/header-only-comment] [fixture:
-venn/comments/ignored-fragment-control] [fixture:
-venn/comments/ignored-fragment] [fixture:
-venn/comments/ignored-line-preserves-mode-control] [fixture:
-venn/comments/ignored-line-preserves-mode]
+Protected gaps retain comment and mode boundaries. [fixture:
+venn/comments/bare-percent-tail] [fixture: venn/comments/comment-directives]
+[fixture: venn/comments/comment-mark-value] [fixture:
+venn/comments/comment-spaced] [fixture: venn/comments/comment-touch] [fixture:
+venn/comments/comments-align] [fixture: venn/comments/complete-multiletter]
+[corpus fixture: venn/lex-bare-percent-between-set-and-text] [corpus fixture:
+venn/lex-comment-line-before-text] [corpus fixture:
+venn/lex-comment-multiple-spaces-before-text] [corpus fixture:
+venn/lex-eaten-fragment-before-line-break] [corpus fixture:
+venn/lex-empty-braces-percent-between-set-and-text] [corpus fixture:
+venn/lex-inline-comment-spaced] [corpus fixture: venn/lex-style-extra-id-eaten]
+[fixture: venn/comments/empty-braces-tail] [fixture:
+venn/comments/fragment-tail] [fixture: venn/comments/header-comment] [fixture:
+venn/comments/header-only-comment] [fixture: venn/comments/ignored-fragment]
+[fixture: venn/comments/ignored-line-preserves-mode]
 
 Input (escaped):
 
@@ -327,23 +283,15 @@ Keywords and operands use one separator; name commas touch the preceding name
 and take one following space for readable lists. Bare and quoted names, quoted
 padding, empty names, source order and repeated members stay as written, even
 where the Db sorts targets; directives and ignored semicolons override ordinary
-gap spacing.
-
-[fixture: venn/name-lists/corpus-db-case-distinct-ids] [fixture:
-venn/name-lists/corpus-db-empty-identifiers] [fixture:
-venn/name-lists/corpus-db-union-repeated-member] [fixture:
-venn/name-lists/corpus-lex-name-list-comma-directive] [fixture:
-venn/name-lists/corpus-lex-union-empty-quoted-members] [fixture:
-venn/name-lists/corpus-lex-union-matching-quoted-padding] [fixture:
-venn/name-lists/empty-quoted-targets] [fixture:
-venn/name-lists/name-order-keep-control] [fixture:
-venn/name-lists/name-order-keep] [fixture:
-venn/name-lists/name-quoted-padding-control] [fixture:
-venn/name-lists/name-quoted-padding] [fixture:
-venn/name-lists/names-comma-control] [fixture: venn/name-lists/names-comma]
-[fixture: venn/name-lists/names-quotes-equivalent-control] [fixture:
-venn/name-lists/names-quotes-equivalent] [fixture:
-venn/name-lists/quoted-keyword]
+gap spacing. [corpus fixture: venn/db-case-distinct-ids] [corpus fixture:
+venn/db-empty-identifiers] [corpus fixture: venn/db-union-repeated-member]
+[corpus fixture: venn/lex-name-list-comma-directive] [corpus fixture:
+venn/lex-union-empty-quoted-members] [corpus fixture:
+venn/lex-union-matching-quoted-padding] [fixture:
+venn/name-lists/empty-quoted-targets] [fixture: venn/name-lists/name-order-keep]
+[fixture: venn/name-lists/names-quotes-equivalent] [fixture:
+venn/name-lists/name-quoted-padding] [fixture: venn/name-lists/names-comma]
+[corpus fixture: venn/db-form-set] [fixture: venn/name-lists/quoted-keyword]
 
 Input (escaped):
 
@@ -370,29 +318,23 @@ bare/quoted form and every interior character stay as written. Db trimming does
 not authorize value edits: an empty quoted label or bare whitespace label omits
 the Db label, whereas quoted whitespace stores an empty label. Embedded trivia
 stays inside the label, and gap items retain attachment instead of applying
-tight spacing.
-
-[fixture: venn/labels/specified-c4-label-title] [fixture:
-venn/labels/all-suffixes] [fixture:
-venn/labels/corpus-db-form-text-string-label] [fixture:
-venn/labels/corpus-db-form-union-label] [fixture:
-venn/labels/corpus-lex-directive-label-delimiter-gap] [fixture:
-venn/labels/corpus-lex-label-bare-comment-only] [fixture:
-venn/labels/corpus-lex-label-bare-padding] [fixture:
-venn/labels/corpus-lex-label-quoted-comment-only] [fixture:
-venn/labels/corpus-lex-label-quoted-directive-only] [fixture:
-venn/labels/corpus-lex-label-quoted-ignored-semicolon-only] [fixture:
+tight spacing. [fixture: venn/labels/specified-c4-label-title] [fixture:
+venn/labels/all-suffixes] [corpus fixture: venn/db-form-text-string-label]
+[corpus fixture: venn/db-form-union-label] [corpus fixture:
+venn/lex-directive-label-delimiter-gap] [corpus fixture:
+venn/lex-label-bare-comment-only] [corpus fixture: venn/lex-label-bare-padding]
+[corpus fixture: venn/lex-label-quoted-comment-only] [corpus fixture:
+venn/lex-label-quoted-directive-only] [corpus fixture:
+venn/lex-label-quoted-ignored-semicolon-only] [fixture:
 venn/labels/directive-attachment] [fixture:
 venn/labels/labels-empty-form-differs-control] [fixture:
-venn/labels/labels-empty-form-differs] [fixture:
-venn/labels/labels-empty-kept-control] [fixture: venn/labels/labels-empty-kept]
-[fixture: venn/labels/labels-form-equal-control] [fixture:
-venn/labels/labels-form-equal] [fixture:
-venn/labels/labels-padding-trim-equal-control] [fixture:
-venn/labels/labels-padding-trim-equal] [fixture: venn/labels/multiline-padding]
-[fixture: venn/labels/quoted-delimiter-directive] [fixture:
-venn/labels/quoted-label-padding-trim-equal] [fixture:
-venn/labels/suffix-spacing-control] [fixture: venn/labels/suffix-spacing]
+venn/labels/labels-empty-form-differs] [fixture: venn/labels/labels-empty-kept]
+[fixture: venn/labels/labels-form-equal-control] [corpus fixture:
+venn/db-set-label-eof] [fixture: venn/labels/labels-padding-trim-equal-control]
+[fixture: venn/labels/labels-padding-trim-equal] [fixture:
+venn/labels/multiline-padding] [fixture: venn/labels/quoted-delimiter-directive]
+[fixture: venn/labels/quoted-label-padding-trim-equal] [fixture:
+venn/labels/suffix-spacing]
 
 Input (escaped):
 
@@ -415,17 +357,12 @@ A size touches the preceding name or label as `:number`, giving both suffixes
 one compact form. Signs, fractions, leading zeros, signed zero and overflow
 retain their spelling; numeric text ids also retain their spelling because
 rewriting them changes the Db. Absent size and written zero remain distinct
-written forms.
-
-[fixture: venn/sizes-and-numbers/absent-zero-signs] [fixture:
-venn/sizes-and-numbers/corpus-db-set-colon-size-inline-directive] [fixture:
-venn/sizes-and-numbers/corpus-db-set-label-colon-size-inline-directive]
-[fixture: venn/sizes-and-numbers/corpus-db-size-negative-overflow] [fixture:
-venn/sizes-and-numbers/corpus-db-size-negative-zero] [fixture:
-venn/sizes-and-numbers/corpus-db-size-overflow] [fixture:
-venn/sizes-and-numbers/corpus-db-size-zero] [fixture:
-venn/sizes-and-numbers/size-spaces-control] [fixture:
-venn/sizes-and-numbers/size-spaces] [fixture:
+written forms. [fixture: venn/sizes-and-numbers/absent-zero-signs] [corpus
+fixture: venn/db-set-colon-size-inline-directive] [corpus fixture:
+venn/db-set-label-colon-size-inline-directive] [corpus fixture:
+venn/db-size-negative-overflow] [corpus fixture: venn/db-size-negative-zero]
+[corpus fixture: venn/db-size-overflow] [corpus fixture: venn/db-size-zero]
+[fixture: venn/sizes-and-numbers/size-spaces] [fixture:
 venn/sizes-and-numbers/size-spelling-equal-control] [fixture:
 venn/sizes-and-numbers/size-spelling-equal] [fixture:
 venn/sizes-and-numbers/text-number-forms] [fixture:
@@ -456,36 +393,27 @@ punctuation from value whitespace. Each bare value is one written `VennLiteral`,
 retaining adjacent atoms and their spacing even where the Db joins atoms with
 spaces; quoted values, whole rgb/rgba tokens, key case, repetitions and separate
 statements stay as written. A kept prefix overrides punctuation spacing so
-colon-to-hash gaps cannot change semicolon selection.
-
-[fixture: venn/style-properties/corpus-div-c4-bare-style-value] [fixture:
-venn/style-properties/corpus-db-style-case-and-order] [fixture:
-venn/style-properties/corpus-db-style-colon-value-inline-directive] [fixture:
-venn/style-properties/corpus-db-style-property-colon-inline-directive] [fixture:
-venn/style-properties/corpus-db-style-prototype-keys] [fixture:
-venn/style-properties/corpus-db-style-unknown] [fixture:
-venn/style-properties/corpus-lex-directive-style-value-color] [fixture:
-venn/style-properties/corpus-lex-style-adjacent-units] [fixture:
-venn/style-properties/corpus-lex-style-hex-ignored-semicolon] [fixture:
-venn/style-properties/corpus-lex-style-rgb-ignored-semicolon] [fixture:
-venn/style-properties/corpus-lex-style-single-number-whole-spelling] [fixture:
+colon-to-hash gaps cannot change semicolon selection. [corpus fixture:
+venn/div-c4-bare-style-value] [corpus fixture: venn/db-style-case-and-order]
+[corpus fixture: venn/db-style-colon-value-inline-directive] [corpus fixture:
+venn/db-style-property-colon-inline-directive] [corpus fixture:
+venn/db-style-prototype-keys] [corpus fixture: venn/db-style-unknown] [corpus
+fixture: venn/lex-directive-style-value-color] [corpus fixture:
+venn/lex-style-adjacent-units] [corpus fixture:
+venn/lex-style-hex-ignored-semicolon] [corpus fixture:
+venn/lex-style-rgb-ignored-semicolon] [corpus fixture:
+venn/lex-style-single-number-whole-spelling] [fixture:
 venn/style-properties/property-directives] [fixture:
 venn/style-properties/prototype-repeat] [fixture:
-venn/style-properties/style-atoms-kept-control] [fixture:
 venn/style-properties/style-atoms-kept] [fixture:
 venn/style-properties/style-atoms-normalize-equal-control] [fixture:
-venn/style-properties/style-color-kept-control] [fixture:
-venn/style-properties/style-color-kept] [fixture:
-venn/style-properties/style-color-space-differs-control] [fixture:
-venn/style-properties/style-color-space-differs] [fixture:
+venn/style-properties/style-color-kept] [corpus fixture: venn/db-form-style-rgb]
+[fixture: venn/style-properties/style-color-space-differs] [fixture:
 venn/style-properties/style-common-comment] [fixture:
-venn/style-properties/style-order-kept-control] [fixture:
 venn/style-properties/style-order-kept] [fixture:
-venn/style-properties/style-property-spacing-control] [fixture:
 venn/style-properties/style-property-spacing] [fixture:
 venn/style-properties/style-quote-differs-control] [fixture:
 venn/style-properties/style-quote-differs] [fixture:
-venn/style-properties/style-string-empty-control] [fixture:
 venn/style-properties/style-string-empty]
 
 Input (escaped):
@@ -521,35 +449,28 @@ U+2029 gives the same label. With an ASCII space in place of the separator,
 input `"venn-beta\nset A[style:#x;y]%% c tail;"` prints the same text with its
 final newline; the comment's semicolon is last, so the label retains its entity
 (normalized Db text `"style:\ufb02\u00b0x\u00b6\u00dfy"`). Each input keeps its
-own reading; the printer preserves the complete comment in both.
-
-[test: venn: ls-comment-competing-semicolon] [test: venn:
-ps-comment-competing-semicolon] [fixture:
-venn/comments/comment-competing-semicolon-space]
-
-[fixture: venn/line-rule-and-kept-lines/comment-only-semicolon] [fixture:
-venn/line-rule-and-kept-lines/corpus-lex-after-set-directive-unclosed] [fixture:
-venn/line-rule-and-kept-lines/corpus-lex-identifier-style-rule-other-line]
-[fixture:
-venn/line-rule-and-kept-lines/corpus-lex-identifier-style-rule-two-semicolons]
-[fixture: venn/line-rule-and-kept-lines/corpus-lex-label-classdef-rule]
-[fixture: venn/line-rule-and-kept-lines/corpus-lex-label-style-rule-other-line]
-[fixture: venn/line-rule-and-kept-lines/corpus-lex-style-style-rule] [fixture:
-venn/line-rule-and-kept-lines/corpus-lex-style-style-rule-other-line] [fixture:
-venn/line-rule-and-kept-lines/corpus-lex-text-style-rule-other-line] [fixture:
+own reading; the printer preserves the complete comment in both. [test: venn:
+ls-comment-competing-semicolon] [test: venn: ps-comment-competing-semicolon]
+[fixture: venn/comments/comment-competing-semicolon-space] [fixture:
+venn/line-rule-and-kept-lines/comment-only-semicolon] [corpus fixture:
+venn/lex-after-set-directive-unclosed] [corpus fixture:
+venn/lex-identifier-style-rule-other-line] [corpus fixture:
+venn/lex-identifier-style-rule-two-semicolons] [corpus fixture:
+venn/lex-label-classdef-rule] [corpus fixture:
+venn/lex-label-style-rule-other-line] [corpus fixture:
+venn/lex-style-style-rule] [corpus fixture:
+venn/lex-style-style-rule-other-line] [corpus fixture:
+venn/lex-text-style-rule-other-line] [fixture:
 venn/line-rule-and-kept-lines/crossing-multiline-value] [fixture:
 venn/line-rule-and-kept-lines/directive-crossing-prefix] [fixture:
 venn/line-rule-and-kept-lines/directive-semicolon-stop] [fixture:
 venn/line-rule-and-kept-lines/line-rule-colon-space-unsafe] [fixture:
-venn/line-rule-and-kept-lines/line-rule-comment-keep-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-comment-keep] [fixture:
 venn/line-rule-and-kept-lines/line-rule-comment-move-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-comment-move] [fixture:
 venn/line-rule-and-kept-lines/line-rule-cross-statement-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-cross-statement] [fixture:
-venn/line-rule-and-kept-lines/line-rule-double-pass-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-double-pass] [fixture:
-venn/line-rule-and-kept-lines/line-rule-kept-whitespace-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-kept-whitespace] [fixture:
 venn/line-rule-and-kept-lines/line-rule-no-hash-control-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-no-hash-control] [fixture:
@@ -559,7 +480,6 @@ venn/line-rule-and-kept-lines/line-rule-other-line-control-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-other-line-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-split-equal-control-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-split-equal-control] [fixture:
-venn/line-rule-and-kept-lines/line-rule-suffix-spacing-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-suffix-spacing] [fixture:
 venn/line-rule-and-kept-lines/line-rule-uppercase-control-control] [fixture:
 venn/line-rule-and-kept-lines/line-rule-uppercase-control] [fixture:
@@ -587,24 +507,15 @@ The consumed first title separator becomes one ASCII space for readability;
 every later value character, including leading/trailing whitespace and
 statement-looking words, stays as written. LF and the broader accepted title
 separators may normalize, but trivia, joined regions and kept parts protect
-their written boundaries.
-
-[fixture: venn/title/corpus-db-frontmatter-title-overridden] [fixture:
-venn/title/corpus-db-title-on-header] [fixture:
-venn/title/corpus-db-title-only-whitespace] [fixture:
-venn/title/corpus-db-title-padding] [fixture:
-venn/title/corpus-db-title-value-next-line] [fixture:
-venn/title/corpus-lex-gap-title-comment] [fixture: venn/title/repeated-title]
-[fixture: venn/title/title-directive] [fixture:
-venn/title/title-inline-percent-control] [fixture:
-venn/title/title-inline-percent] [fixture: venn/title/title-next-line-control]
-[fixture: venn/title/title-next-line] [fixture:
-venn/title/title-statement-words] [fixture:
-venn/title/title-tab-separator-control] [fixture:
-venn/title/title-tab-separator] [fixture: venn/title/title-trim-unsafe-control]
-[fixture: venn/title/title-trim-unsafe] [fixture:
-venn/title/title-whitespace-only-control] [fixture:
-venn/title/title-whitespace-only]
+their written boundaries. [corpus fixture: venn/db-frontmatter-title-overridden]
+[corpus fixture: venn/db-title-on-header] [corpus fixture:
+venn/db-title-only-whitespace] [corpus fixture: venn/db-title-padding] [corpus
+fixture: venn/db-title-value-next-line] [corpus fixture:
+venn/lex-gap-title-comment] [fixture: venn/title/repeated-title] [fixture:
+venn/title/title-directive] [fixture: venn/title/title-inline-percent] [fixture:
+venn/title/title-next-line] [fixture: venn/title/title-statement-words]
+[fixture: venn/title/title-tab-separator] [fixture:
+venn/title/title-trim-unsafe] [fixture: venn/title/title-whitespace-only]
 
 Input (escaped):
 
@@ -639,40 +550,29 @@ On a header or statement line, a directive stays with the preceding text when
 the following statement moves to a new line; its written gap before the
 directive becomes one space or stays touching. If a directive touches the
 following statement, the line remains together to preserve that relation. A
-semicolon-kept line also keeps its header attachment.
-
-[fixture: venn/directives/corpus-db-indent-after-directive] [fixture:
-venn/directives/corpus-db-set-label-unclosed-directive-gap] [fixture:
-venn/directives/corpus-lex-after-set-directive-unclosed] [fixture:
-venn/directives/corpus-lex-comment-after-directive-keeps-id] [fixture:
-venn/directives/corpus-lex-directive-style-value-color] [fixture:
-venn/directives/corpus-lex-identifier-directive-only] [fixture:
+semicolon-kept line also keeps its header attachment. [corpus fixture:
+venn/db-indent-after-directive] [corpus fixture:
+venn/db-set-label-unclosed-directive-gap] [corpus fixture:
+venn/lex-after-set-directive-unclosed] [corpus fixture:
+venn/lex-comment-after-directive-keeps-id] [corpus fixture:
+venn/lex-directive-style-value-color] [corpus fixture:
+venn/lex-identifier-directive-only] [fixture:
 venn/directives/directive-body-tail] [fixture:
-venn/directives/directive-bounded-argument] [fixture:
-venn/directives/directive-header-inline-control] [fixture:
-venn/directives/directive-header-inline] [fixture:
-venn/directives/directive-in-value-control] [fixture:
-venn/directives/directive-in-value] [fixture:
-venn/directives/directive-leading-explicit-control] [fixture:
+venn/directives/directive-bounded-argument] [corpus fixture:
+venn/header-directive-glued] [fixture: venn/directives/directive-header-inline]
+[fixture: venn/directives/directive-in-value] [fixture:
 venn/directives/directive-leading-explicit] [fixture:
-venn/directives/directive-leading-indent-chosen-control] [fixture:
 venn/directives/directive-leading-indent-chosen] [fixture:
-venn/directives/directive-leading-marker-control] [fixture:
 venn/directives/directive-leading-marker] [fixture:
-venn/directives/directive-multiline-control] [fixture:
 venn/directives/directive-multiline] [fixture:
 venn/directives/directive-unclosed-eof] [fixture:
 venn/directives/directive-unclosed-object] [fixture:
-venn/directives/directives-inline-gaps-control] [fixture:
 venn/directives/directives-inline-gaps] [fixture:
-venn/directives/directives-standalone-control] [fixture:
-venn/directives/directives-standalone] [fixture:
-venn/directives/directives-touch-control] [fixture:
-venn/directives/directives-touch] [fixture:
-venn/directives/leading-inline-directive-comment] [fixture:
+venn/directives/directives-standalone] [corpus fixture:
+venn/db-set-label-inline-directive] [fixture: venn/directives/directives-touch]
+[fixture: venn/directives/leading-inline-directive-comment] [fixture:
 venn/directives/leading-intermediate-marker] [fixture:
 venn/directives/kept-leading-intermediate-marker] [fixture:
-venn/directives/directive-header-inline] [fixture:
 venn/directives/header-directive-spaced] [fixture:
 venn/directives/header-directive-touching-statement] [fixture:
 venn/directives/header-directives-touching] [fixture:
@@ -724,18 +624,13 @@ set A
 Exterior ASCII spaces and tabs after completed headers and non-title statements
 disappear for clean line endings, including after kept parts and safe suffixes.
 Spaces inside names, labels, colors, style strings, title values, comments and
-directives remain authored text.
-
-[fixture: venn/trailing-whitespace/continuation-spaces] [fixture:
-venn/trailing-whitespace/corpus-db-after-set-label-size-space] [fixture:
-venn/trailing-whitespace/corpus-db-title-padding] [fixture:
-venn/trailing-whitespace/corpus-lex-tab-line-end] [fixture:
+directives remain authored text. [fixture:
+venn/trailing-whitespace/continuation-spaces] [corpus fixture:
+venn/db-after-set-label-size-space] [corpus fixture: venn/db-title-padding]
+[corpus fixture: venn/lex-tab-line-end] [fixture:
 venn/trailing-whitespace/kept-prefix-exterior] [fixture:
-venn/trailing-whitespace/trailing-comment-control] [fixture:
 venn/trailing-whitespace/trailing-comment] [fixture:
-venn/trailing-whitespace/trailing-exterior-control] [fixture:
 venn/trailing-whitespace/trailing-exterior] [fixture:
-venn/trailing-whitespace/trailing-in-values-control] [fixture:
 venn/trailing-whitespace/trailing-in-values]
 
 Input `"venn-beta \nset A \n"` prints `"venn-beta\nset A\n"`; `title T  ` keeps
@@ -746,16 +641,12 @@ its value spaces.
 Value lines, blank lines and continuation columns stay as written because
 joining or reindenting can change the Db. Statements and values do not wrap for
 `printWidth`, since ordinary token boundaries cannot gain newlines; the title
-separator is the narrow exception above.
-
-[fixture: venn/multiline-values/comment-in-value-control] [fixture:
-venn/multiline-values/comment-in-value] [fixture:
-venn/multiline-values/corpus-lex-identifier-blank-line] [fixture:
-venn/multiline-values/corpus-lex-identifier-comment-line] [fixture:
-venn/multiline-values/corpus-lex-label-blank-line] [fixture:
-venn/multiline-values/corpus-lex-style-blank-line] [fixture:
-venn/multiline-values/corpus-lex-style-value-rgb-multiline] [fixture:
-venn/multiline-values/long-no-wrap-control] [fixture:
+separator is the narrow exception above. [fixture:
+venn/multiline-values/comment-in-value] [corpus fixture:
+venn/lex-identifier-blank-line] [corpus fixture:
+venn/lex-identifier-comment-line] [corpus fixture: venn/lex-label-blank-line]
+[corpus fixture: venn/lex-style-blank-line] [corpus fixture:
+venn/lex-style-value-rgb-multiline] [fixture:
 venn/multiline-values/long-no-wrap] [fixture:
 venn/multiline-values/multiline-directive] [fixture:
 venn/multiline-values/multiline-empty-lines] [fixture:
@@ -763,7 +654,6 @@ venn/multiline-values/multiline-join-unsafe-control] [fixture:
 venn/multiline-values/multiline-join-unsafe] [fixture:
 venn/multiline-values/multiline-reindent-unsafe-control] [fixture:
 venn/multiline-values/multiline-reindent-unsafe] [fixture:
-venn/multiline-values/multiline-values-control] [fixture:
 venn/multiline-values/multiline-values] [fixture:
 venn/multiline-values/wrap-list-rejected]
 
@@ -794,19 +684,15 @@ style A fill:"red
 Written keyword case and every declaration, target and property remain in source
 order, including repeated or Db-ineffective entries, to retain authored choices.
 Names, keys and colors retain case too; the textual semicolon markers have exact
-case even though statement keywords are case-insensitive.
-
-[fixture: venn/keyword-case-and-order/all-written-repeats] [fixture:
-venn/keyword-case-and-order/corpus-db-style-three-definitions-same-target]
-[fixture: venn/keyword-case-and-order/corpus-db-text-three-definitions]
-[fixture: venn/keyword-case-and-order/corpus-db-three-definitions] [fixture:
-venn/keyword-case-and-order/corpus-db-union-three-definitions] [fixture:
-venn/keyword-case-and-order/corpus-lex-keyword-set-upper] [fixture:
+case even though statement keywords are case-insensitive. [fixture:
+venn/keyword-case-and-order/all-written-repeats] [corpus fixture:
+venn/db-style-three-definitions-same-target] [corpus fixture:
+venn/db-text-three-definitions] [corpus fixture: venn/db-three-definitions]
+[corpus fixture: venn/db-union-three-definitions] [corpus fixture:
+venn/lex-keyword-set-upper] [fixture:
 venn/keyword-case-and-order/declarations-order-keep-control] [fixture:
 venn/keyword-case-and-order/declarations-order-keep] [fixture:
-venn/keyword-case-and-order/keyword-case-kept-control] [fixture:
 venn/keyword-case-and-order/keyword-case-kept] [fixture:
-venn/keyword-case-and-order/keyword-lower-equal-control] [fixture:
 venn/keyword-case-and-order/keyword-lower-equal]
 
 Input (escaped):
@@ -829,30 +715,30 @@ Title T
 ### Line terminators
 
 CRLF and lone CR follow the shared `endOfLine`, including inside values, because
-mermaid.js reads them as LF. U+2028/U+2029 stay as characters in values,
-comments and directives; a Venn diagram comment runs through them to LF or EOF.
-Only the consumed first title separator can become an ASCII space; Unicode
-separators are rejected as ordinary body or bare-style gaps.
-
-[fixture: venn/line-terminators/crlf-values-control] [fixture:
-venn/line-terminators/ls-comment-split-unsafe-control] [fixture:
-venn/line-terminators/ls-title-separator-control] [fixture:
+mermaid.js reads them as LF. [test: a venn diagram with other line endings]
+[test: uses lone CR inside values and after implicit text] U+2028/U+2029 stay as
+characters in values, comments and directives; a Venn diagram comment runs
+through them to LF or EOF. Only the consumed first title separator can become an
+ASCII space; Unicode separators are rejected as ordinary body or bare-style
+gaps. [fixture: venn/line-terminators/ls-comment-split-unsafe-control] [fixture:
 venn/line-terminators/ls-value-to-lf-differs-control] [fixture:
-venn/line-terminators/ps-value-to-lf-differs-control]
-
-[test: a venn diagram with other line endings] [test: venn: crlf-values] [test:
-venn: cr-values] [test: venn: ls-values] [test: venn: ps-values] [test: venn:
-ls-comment-kept] [test: venn: ps-comment-kept] [test: venn: ls-header-comment]
-[test: venn: ps-header-comment] [test: venn: ps-comment-eof] [test: venn:
+venn/line-terminators/ps-value-to-lf-differs-control] [test: a venn diagram with
+other line endings] [test: venn: crlf-values] [test: venn: cr-values] [test:
+venn: ls-values] [test: venn: ps-values] [test: venn: ls-comment-kept] [test:
+venn: ps-comment-kept] [test: venn: ls-header-comment] [test: venn:
+ps-header-comment] [test: venn: ps-comment-eof] [test: venn:
 ls-kept-comment-last-character] [test: venn: ps-kept-comment-last-character]
 [test: venn: ls-kept-comment-whitespace-line] [test: venn:
-ps-kept-comment-whitespace-line] [test: venn: ls-comment-cut-region] [test:
-venn: ps-comment-cut-region] [test: venn: ls-kept-directive] [test: venn:
-ps-kept-directive] [test: venn: ls-kept-overlapping-value] [test: venn:
+ps-kept-comment-whitespace-line] [corpus fixture:
+venn/lex-diagram-comment-cut-ls-tree-gap] [corpus fixture:
+venn/lex-diagram-comment-cut-ps-tree-gap] [test: venn: ls-kept-directive] [test:
+venn: ps-kept-directive] [test: venn: ls-kept-overlapping-value] [test: venn:
 ps-kept-overlapping-value]
 
 Escaped input and output:
-`"venn-beta\nset A[L\u2028M]" -> "venn-beta\nset A[L\u2028M]\n"`.
+`"venn-beta\nset \"A\u2028 B\"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)"` ->
+`"venn-beta\nset \"A\u2028 B\"[L\u2028 M]\nstyle A fill:rgb(1,\u2028 2,3)\n"`.
+[test: venn: ls-values]
 
 ### Whitespace characters
 
@@ -860,21 +746,16 @@ Ordinary gaps normalize only accepted ASCII spaces/tabs; non-ASCII whitespace
 inside values stays, while broader leading detection whitespace and title
 separators use their dedicated rules. U+0085 is not whitespace, and NBSP, BOM,
 U+3000, VT and FF do not become accepted body gaps. File-leading BOM and
-BOM/frontmatter limitations follow shared host handling.
-
-[fixture: venn/whitespace-characters/ff-title-separator-control] [fixture:
-venn/whitespace-characters/nbsp-leading-header-control] [fixture:
-venn/whitespace-characters/nbsp-title-separator-control] [fixture:
-venn/whitespace-characters/tab-gaps-control] [fixture:
-venn/whitespace-characters/tab-gaps]
-
-[test: venn: nbsp-leading-header] [test: venn: nbsp-value-kept] [test: venn:
-vt-value-kept] [test: venn: ff-title-separator] [test: venn:
-bom-title-separator] [test: venn: bom-leading-header] [test: venn:
-bom-frontmatter] [test: venn: unicode-role-whitespace]
+BOM/frontmatter limitations follow shared host handling. [corpus fixture:
+venn/db-form-set] [fixture: venn/whitespace-characters/tab-gaps] [test: venn:
+nbsp-leading-header] [test: venn: nbsp-value-kept] [test: venn: vt-value-kept]
+[test: venn: ff-title-separator] [test: venn: bom-title-separator] [test: venn:
+bom-leading-header] [test: venn: bom-frontmatter] [test: venn:
+unicode-role-whitespace]
 
 Escaped input and output:
-`"venn-beta\ntitle\u00a0 T" -> "venn-beta\ntitle  T\n"`.
+`"venn-beta\ntitle\u00a0 T" -> "venn-beta\ntitle  T\n"`. [test: venn:
+nbsp-title-separator]
 
 ### Frontmatter YAML
 
@@ -882,20 +763,15 @@ Frontmatter uses the shared guarded YAML formatter for readable configuration.
 Delimiters, closing-line padding, comments/directives before the header and
 title overrides retain their roles; malformed, indented, HTML-sensitive and
 delimiter-hazard YAML stays as written, including ineffective accessibility
-metadata.
-
-[fixture: venn/frontmatter-yaml/specified-frontmatter-invalid] [fixture:
-venn/frontmatter-yaml/closing-delimiter-padding] [fixture:
-venn/frontmatter-yaml/corpus-db-frontmatter-accessibility] [fixture:
-venn/frontmatter-yaml/corpus-db-frontmatter-title] [fixture:
-venn/frontmatter-yaml/corpus-frontmatter-html-title] [fixture:
-venn/frontmatter-yaml/corpus-frontmatter-invalid] [fixture:
-venn/frontmatter-yaml/corpus-header-before-frontmatter-comment] [fixture:
+metadata. [corpus fixture: venn/frontmatter-invalid] [fixture:
+venn/frontmatter-yaml/closing-delimiter-padding] [corpus fixture:
+venn/db-frontmatter-accessibility] [corpus fixture: venn/db-frontmatter-title]
+[corpus fixture: venn/frontmatter-html-title] [corpus fixture:
+venn/header-before-frontmatter-comment] [fixture:
 venn/frontmatter-yaml/frontmatter-comments-directives] [fixture:
 venn/frontmatter-yaml/frontmatter-delimiter-hazard] [fixture:
 venn/frontmatter-yaml/frontmatter-html-kept] [fixture:
 venn/frontmatter-yaml/frontmatter-html-requote-unsafe-control] [fixture:
-venn/frontmatter-yaml/frontmatter-indented-kept-control] [fixture:
 venn/frontmatter-yaml/frontmatter-indented-kept] [fixture:
 venn/frontmatter-yaml/frontmatter-invalid-kept] [fixture:
 venn/frontmatter-yaml/frontmatter-title-override] [fixture:
@@ -926,22 +802,15 @@ Ordinary accepted input ends with one configured newline for the shared file
 convention, including a header-only body. Protected comment gaps and unclosed
 directives reaching EOF retain their written endings; terminal value spaces
 remain. Markdown supplies fence/container indentation around these same Venn
-rules.
-
-[fixture: venn/final-newline/bounded-argument-eof] [fixture:
-venn/final-newline/comment-gap-eof] [fixture:
-venn/final-newline/corpus-db-style-string-eof] [fixture:
-venn/final-newline/corpus-db-title-eof] [fixture:
-venn/final-newline/corpus-header-only] [fixture:
-venn/final-newline/corpus-lex-after-set-directive-unclosed] [fixture:
-venn/final-newline/final-comment-control] [fixture:
-venn/final-newline/final-comment] [fixture:
-venn/final-newline/final-newline-control] [fixture:
-venn/final-newline/final-newline] [fixture:
-venn/final-newline/final-open-directive] [fixture:
-venn/final-newline/final-title-spaces-control] [fixture:
-venn/final-newline/final-title-spaces] [fixture:
-venn/final-newline/ignored-fragment-comment] [fixture:
+rules. [fixture: venn/final-newline/bounded-argument-eof] [fixture:
+venn/final-newline/comment-gap-eof] [corpus fixture: venn/db-style-string-eof]
+[corpus fixture: venn/db-title-eof] [corpus fixture: venn/header-only] [corpus
+fixture: venn/lex-after-set-directive-unclosed] [corpus fixture:
+venn/lex-after-set-comment] [fixture: venn/final-newline/final-comment] [corpus
+fixture: venn/db-form-set] [fixture: venn/final-newline/final-newline] [fixture:
+venn/final-newline/final-open-directive] [corpus fixture:
+venn/lex-after-title-spaces] [fixture: venn/final-newline/final-title-spaces]
+[fixture: venn/final-newline/ignored-fragment-comment] [fixture:
 venn/final-newline/multiple-terminal-lf]
 
 Input (escaped):
@@ -967,8 +836,7 @@ unsupported syntax. Specified token-boundary divergences remain failures.
 
 For example, `venn-beta\nset A;` reports a syntax error and leaves the
 standalone source unformatted; a rejected Markdown fence retains its contents
-under the host's ordinary code-block handling.
-
-[corpus fixture: venn/lex-after-set-semicolon] [corpus fixture:
-venn/header-semicolon-spaced] [corpus fixture: venn/gram-bare-word] [corpus
-fixture: venn/gram-unclosed-id] [corpus fixture: venn/gram-set-label-crlf-gap]
+under the host's ordinary code-block handling. [corpus fixture:
+venn/lex-after-set-semicolon] [corpus fixture: venn/header-semicolon-spaced]
+[corpus fixture: venn/gram-bare-word] [corpus fixture: venn/gram-unclosed-id]
+[corpus fixture: venn/gram-set-label-crlf-gap]

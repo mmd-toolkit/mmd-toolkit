@@ -1,0 +1,74 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Metadata merges across three blocks and each effect records the complete changed metadata field."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "instruction": "third",
+          "model": "second"
+        }
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "instruction": "first"
+          }
+        }
+      },
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "instruction": "first",
+            "model": "second"
+          }
+        }
+      },
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "instruction": "third",
+            "model": "second"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -12,8 +12,9 @@ Three kinds of text in a diagram are data in another language, embedded in it:
 
 - the body of the frontmatter, in YAML;
 - the arguments of a directive, such as the JSON after `init:`;
-- the `@{ ... }` data blocks in the text of some diagram types, in YAML, such as
-  the shape data of a flowchart node or the data of a sequence participant.
+- the `@{ ... }` data blocks in the text of some diagram types: YAML for
+  flowchart shape data and sequence participant data, and JSON for usecase
+  tables. [fixture: usecase/db-json-values]
 
 ```mmd
 ---
@@ -67,6 +68,17 @@ Venn has no `@{ ... }` data-block form. [fixture: venn/gram-data-block]
 frontmatter delimiter lines and an unclosed frontmatter remain syntax errors.
 [fixture: venn/gram-data-block] [fixture: venn/frontmatter-empty] [fixture:
 venn/frontmatter-unclosed]
+
+In Ishikawa, well-delimited frontmatter and directive contents are opaque too.
+Invalid YAML, including a YAML error caused by the common attribute-quote
+conversion, does not reject the diagram here; mermaid.js rejects these
+frontmatters. [fixture: ishikawa/frontmatter-malformed] [fixture:
+ishikawa/frontmatter-html-title] Adjacent empty delimiter lines and an unclosed
+frontmatter remain syntax errors. [fixture: ishikawa/frontmatter-empty]
+[fixture: ishikawa/frontmatter-unclosed] `@{...}` has no data-block syntax in
+Ishikawa: it is ordinary node text, so malformed-looking or unclosed content
+remains text rather than an embedded-data divergence. [fixture:
+ishikawa/db-data-block-is-text] [fixture: ishikawa/gram-child-unclosed-brace]
 
 ## The difference
 
@@ -186,11 +198,16 @@ left to other tools.
 
 ## Why mermaid.js reads it so
 
-mermaid.js parses the frontmatter body and the data blocks as YAML, and the
-arguments of some directives as JSON, derives configuration and diagram data
-from them, and checks the result, before or while it draws (see
+mermaid.js parses frontmatter and the YAML forms of data blocks as YAML, usecase
+table bodies as JSON, and the arguments of some directives as JSON. It derives
+configuration and diagram data from them, and checks the result before or while
+it draws (see
 [Configuration (reference)](../../../tests/docs/configuration.md#configuration-reference)).
-A failure of any of these steps rejects the input.
+A failure of any of these steps rejects the input. [fixture:
+usecase/db-json-integer-order] [fixture: usecase/db-json-duplicate-order]
+[fixture: usecase/gram-json-object-scalar-overwrite] [fixture:
+usecase/gram-json-control-escapes] [fixture:
+usecase/div-gram-json-malformed-escape]
 
 ## The rule of this specification, and why
 
@@ -204,6 +221,69 @@ This is not a rejection of an input that mermaid.js accepts, so it needs none of
 the reasons for one (see [known-divergences.md](../known-divergences.md)): it
 accepts inputs that mermaid.js rejects, and every input that both accept has the
 same Db.
+
+### Agentflow
+
+AgentflowDataBlock holds the full authored interior of every vertex,
+flow-heading, and connector-heading block, including adjacent blocks separately.
+Invalid YAML, unknown shape names, invalid metadata types, combined-block YAML
+failures, and recursive-alias failures depend on those contents rather than on
+building the tree. They are accepted under the existing reverse-direction
+criterion. No YAML property tree, key sanitization, or alias resolution is
+needed. [fixture: agentflow/db-data-block-invalid-yaml] [fixture:
+agentflow/db-data-block-unknown-shape] [fixture:
+agentflow/db-metadata-adjacent-no-comma] [fixture:
+agentflow/div-metadata-yaml-self-alias] [fixture:
+agentflow/div-data-percent-line-is-content] [fixture:
+agentflow/gram-data-adjacent-multiline-blocks]
+
+A delimiter failure remains a syntax error: an unclosed block, a brace protected
+only by a single quote, or a caret outside the double-quoted data context is not
+an embedded-content rejection. Empty multiline blocks already parse in this pin.
+[fixture: agentflow/lex-data-block-unclosed] [fixture:
+agentflow/lex-data-block-single-quoted-brace] [fixture:
+agentflow/lex-data-block-caret] [fixture:
+agentflow/db-data-block-empty-multiline]
+
+### Usecase
+
+The usecase JSON table form, `json` followed by an id and `@{ ... }`, is JSON,
+not YAML. Its complete brace interior is UsecaseJsonDataBlock.value; frontmatter
+and directive contents use their common records. These nodes already hold the
+written text. Mermaid's own JSON reader rejects balanced malformed contents,
+including unquoted keys, bad escapes, trailing commas, and structural
+U+2028/U+2029. This specification accepts these content-only failures under the
+existing reverse criterion: JSON validation is unnecessary to construct the
+opaque tree. The externally supplied table value and property order do not
+become child nodes. [fixture: usecase/div-gram-json-unquoted-key] [fixture:
+usecase/div-gram-json-malformed-escape] [fixture:
+usecase/div-gram-json-trailing-comma] [fixture: usecase/div-gram-json-u2028]
+[fixture: usecase/div-lex-json-ps-whitespace] [fixture:
+usecase/db-json-duplicate-order] [fixture: usecase/div-frontmatter-malformed]
+
+Mermaid validates the JSON text and obtains its decoded value with
+[`JSON.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L345-L378).
+For a validated object root, it then gathers source property order with
+[`PropertyOrderCollector.collect()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseJson.ts#L373-L377).
+The collector can also help locate a JSON error; it does not replace JSON
+validation. The native metadata property grammar does not use this JSON reader.
+[fixture: usecase/db-json-integer-order] [fixture:
+usecase/db-json-duplicate-order] [fixture:
+usecase/gram-json-object-scalar-overwrite] [fixture:
+usecase/gram-json-control-escapes] [fixture:
+usecase/div-gram-json-malformed-escape]
+
+Unclosed balancing, a root that does not start with `{`, and text left after the
+first balancing close remain syntax errors. Single quotes do not protect braces
+in this matcher. Native declaration/update `@{ ... }` is different: it has
+UsecaseMetadata and ordered properties, is not an opaque block, and retains all
+key/type/combination checks. No input Mermaid accepts is rejected for embedded
+contents by this rule. [fixture: usecase/gram-json-empty-delimiter-only]
+[fixture: usecase/gram-json-array-root] [fixture:
+usecase/gram-json-brace-in-single-quote] [fixture:
+usecase/gram-native-quoted-business] [fixture:
+usecase/gram-metadata-unknown-key] [fixture:
+usecase/lex-native-single-quoted-keys]
 
 ## The documentation of mermaid.js and its issues
 
@@ -224,3 +304,34 @@ same Db.
   2026-10-21 with `venn YAML in:title,body`,
   `venn "invalid YAML" in:title,body`, and `venn frontmatter in:title,body`
   found no report about accepting invalid YAML in venn frontmatter.
+
+- The pinned
+  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  describes node text and indentation, but states no acceptance rule for
+  malformed embedded YAML. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-21 with `ishikawa`,
+  `ishikawa frontmatter in:title,body`, and
+  `ishikawa "invalid YAML" in:title,body` found no report about accepting
+  invalid YAML in Ishikawa frontmatter.
+
+- The pinned
+  [Agentflow metadata documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L233-L268)
+  describes YAML blocks on nodes, edges, and containers, including preservation
+  of unknown keys and removal of prototype-shaped keys. It states no acceptance
+  policy for malformed YAML. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `agentflow YAML in:title,body` found
+  [PR #8072](https://github.com/mermaid-js/mermaid/pull/8072), which introduces
+  the diagram, and
+  [issue #7827](https://github.com/mermaid-js/mermaid/issues/7827), which
+  proposes ELK layout configuration. Neither reports acceptance of malformed
+  Agentflow YAML.
+
+- The pinned
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  describes JSON tables. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `usecase JSON` found no inspected
+  report establishing a maintainer defect judgment for this acceptance behavior.
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048), closed and merged
+  on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
+  validation and JSON tables. This divergence follows the shared direct rule,
+  not a claim that a bug label approves a grammar change.

@@ -122,6 +122,12 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   [embedded-data.ja.md](./embedded-data.ja.md) を参照してください。
   [fixture: flowchart/db-data-block-asset-width]
 
+頂点のデータブロックの未知のキー内の YAML anchor と alias は受理し、
+そのキーとともに捨てる。共有する mapping も自己参照する mapping も、
+要約のフィールドや空でないデータブロックの効果を加えない。
+[fixture: flowchart/db-data-block-yaml-shared-alias]
+[fixture: flowchart/db-data-block-yaml-self-alias]
+
 ## sequence
 
 要約の欄は次のとおりです。
@@ -9556,6 +9562,12 @@ false、0、null、空文字列なら元の説明を残す。
 [fixture: kanban/db-metadata-yaml-comment]
 [fixture: kanban/gram-metadata-two-blocks]
 
+データブロックの未知のキー内の YAML anchor と alias は受理し、
+そのキーとともに捨てる。共有する mapping も自己参照する mapping も、
+要約のフィールドや空でないデータブロックの効果を加えない。
+[fixture: kanban/db-metadata-yaml-shared-alias]
+[fixture: kanban/db-metadata-yaml-self-alias]
+
 kanban の 1 つのノードに隣り合う `@{ ... }` ブロックは、
 中身を連結した 1 つの接尾部として読み、
 そのグループに 1 つの効果を記録する。
@@ -18596,3 +18608,1537 @@ directive は除かれ前後の断片が結合する。
 HTML 属性の二重引用符は単一引用符となる。
 対象は `html-attribute`。
 [fixture: venn/lex-title-html-attribute]
+
+## agentflow
+
+`normalizeAgentflow()`（`src/normalizers/agentflow.ts`）は
+[`AgentFlowDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L265)
+を要約する。ヘッダー `agentflow-beta` の検出器 id は `agentflow` である。
+[fixture: agentflow/header-lf] [fixture: agentflow/header-without-beta]
+[fixture: agentflow/detect-letter-suffix]
+
+| フィールド              | 内容                                                |
+| ----------------------- | --------------------------------------------------- |
+| `direction`             | 図の方向。記号の方向と `TD` の正規化を含む。        |
+| `title`                 | frontmatter のタイトル。なければ空文字列。          |
+| `accTitle` / `accDescr` | アクセシビリティのテキスト。なければ空文字列。      |
+| `vertices`              | 挿入順の生の頂点。connector も含む。                |
+| `edges`                 | 挿入順の生の辺。                                    |
+| `edgeDefaults`          | `interpolate` と `style`。未設定ならそれぞれ null。 |
+| `classDefs`             | 挿入順のクラス定義。`id`、`styles`。                |
+| `subgraphs`             | 完了順の flow コンテナー。直接の所属を含む。        |
+| `tooltips`              | id の初出順の `id`、`text`。                        |
+| `clickCalls`            | 呼出し順の `id`、`name`、`args`。なければ省略。     |
+
+getter、レコードの形、metadata 呼出しの引数位置が一致するため、flowchart
+のレコード正規化と Db パッチを再利用する。
+[`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L17-L61)
+は `direction` をレイアウト、`title` をタイトル挿入に使う。共通の
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+が `accTitle` と `accDescr` をアクセシビリティに使う。
+[fixture: agentflow/db-all-fields]
+
+頂点は `id`、`text`、`labelType`、`type`、`styles`、`classes`、`props` と、
+省略可能な `dir`、`link`、`linkTarget`、`metadata`、`isConnector` を保持する。
+[`addNodeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1613-L1664)
+は id を頂点と親の検索、テキストと種類をラベル、style と class を CSS、
+方向をレイアウト、link と target をリンクに使う。
+[`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587)
+は `type` から形を選ぶ。Map の順序が頂点の順序を決める。`isConnector`
+は宣言の種類を保持し、
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+が配色に使う connector-id 索引を再現できる。
+描画がこの真偽値自体を読むわけではない。 [fixture: agentflow/db-all-fields]
+[fixture: agentflow/gram-connector-all-forms]
+
+`props` は著者が property 括弧内に書いたキーと値を保持する。
+レイアウト頂点には渡らない。新しい props オブジェクトは own property の
+`__proto__` を保持できる。先に裸の頂点を作ってからこのキーを追加すると残らず、
+既存の own entry を更新すると値が置き換わる。
+[fixture: agentflow/db-props-proto-after-bare]
+[fixture: agentflow/db-props-proto-repeated] [fixture: agentflow/gram-props]
+[fixture: agentflow/gram-props-repeated]
+
+辺は `start`、`end`、`type`、`stroke`、`length`、`text`、`labelType`、
+`classes`、`id` と、省略可能な `interpolate`、`style`、
+`animate`、`animation`、`metadata` を保持する。
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+は端点と順序で辺を結び、`type` で矢印、`stroke` で線種と太さ、`length`
+で最小長を決める。テキストと種類はラベル、class はコンパイル済み CSS、補間、
+style、animation は共通の辺描画へ渡る。生成 id も描画する辺と後続 metadata
+の宛先を識別する。デフォルトは既存の辺を含む curve/style の代替値なので、
+`edgeDefaults` を別に保持する。 [fixture: agentflow/gram-three-edge-kinds]
+[fixture: agentflow/gram-edge-id]
+[fixture: agentflow/gram-linkstyle-interpolate-default]
+
+定義順の `classDefs.id` と `styles` は
+[`getClasses()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L10-L16)
+と
+[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1666-L1678)
+へ渡る。`tooltips.id` と `text` は
+[`setTooltip()` / `getTooltip()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L945-L1023)
+と頂点の tooltip binding に使う。要約は Map の id の初出順を保持する。
+`clickCalls` は secure 設定がブラウザー用 closure を捨てる前に、書かれた名前、
+引数、呼出し順を記録する。
+[`setClickFun()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L955-L1001)
+と描画後の binding が closure を使うのであり、描画が要約の `clickCalls`
+配列を読むわけではない。 [fixture: agentflow/db-all-fields]
+[fixture: agentflow/db-click-missing-id]
+
+コンテナーは `id`、`title`、`labelType`、`type`、`nodes`、`classes` と、
+省略可能な `dir`、`metadata` を保持する。
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+は id と所属を入れ子と折畳みの祖先、完了順を走査と配色順、
+タイトルと種類をグループのラベルと形に使う。class は CSS、方向はレイアウト、
+`metadata.view` は折畳み表示に使う。`global`
+はコンテナーを作らず所属を変える。同じコンテナー id の頂点は、その style と
+class がグループの描画レコードを更新するため残す。
+[fixture: agentflow/gram-flow-nested] [fixture: agentflow/gram-global]
+[fixture: agentflow/gram-global-after-flow] [fixture: agentflow/db-all-fields]
+
+生のレコードは入れ子の折畳みで隠れる子孫と元の辺の端点を保持し、
+隠れる未対応の形も残す。global の flow と connector の id
+は後のコンテナーの所属からも除く。後の flow
+宣言にタイトルがなければ前のタイトルを残し、所属を併合する。`end` の前の空行、
+コメント、directive は所属を変えない。空の引用符付き flow タイトルは拒否し、
+空白だけの connector タイトルは id に戻る。
+[fixture: agentflow/db-hidden-unsupported-shape]
+[fixture: agentflow/db-nested-collapse-descendants]
+[fixture: agentflow/db-global-flow-id]
+[fixture: agentflow/db-global-connector-membership]
+[fixture: agentflow/db-duplicate-flow-empty-last-title]
+[fixture: agentflow/db-end-before-blank-comment-directive]
+[fixture: agentflow/db-flow-empty-title-quoted]
+[fixture: agentflow/db-connector-whitespace-title]
+[fixture: agentflow/db-flow-collapse]
+
+要約は保存済みレコードから取る。子孫を隠し、境界の端点を付け替え、
+それにより生じる自己ループを落とすレイアウトデータや、表示用 metadata、
+クラス定義、対話操作を落とす
+[`getSemanticModel()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L2017-L2145)
+からは取らない。 [fixture: agentflow/db-flow-collapse]
+[fixture: agentflow/db-data-block-presentation-metadata]
+
+`metadata` は頂点、辺、flow、connector に書かれた未知のキーも、描画の reader
+がなくても保持する。`addNodeFromVertex()` は頂点 metadata をレイアウト頂点へ、
+`getData()` は辺 metadata をレイアウト辺へコピーする。
+コピーが全キーの描画消費を意味するわけではない。shape と label の効果は既に
+type と text に現れる。`getData()` は flow の `view` を折畳みに読み、flow
+の種類からレイアウトの `containerType` を作る。共通の elk の
+[`buildSubgraphLayoutOptions()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L369-L501)
+が `algorithm` を読み、共通の shape の
+[`collapsedGroup()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes/collapsedGroup.ts#L76-L190)
+がその導出した `containerType` を読む。パッチは YAML や routing
+を再実装せず、
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+の前後の差を `dataBlockEffects` に記録する。`animate` と `animation` は block
+専用の昇格フィールドである。icon と image の設定は metadata に残り、flowchart
+の asset フィールドへは昇格しない。
+[embedded-data.ja.md](./embedded-data.ja.md) を参照。
+[fixture: agentflow/db-data-block-routing]
+[fixture: agentflow/db-data-block-presentation-metadata]
+[fixture: agentflow/gram-edge-id]
+[fixture: agentflow/docs-syntax-agentflow-69451cfd]
+[fixture: agentflow/db-flow-collapse]
+
+metadata の非有限数は配列や mapping 内も再帰的に、
+共通の `numberOrText()` の規則で文字列
+`"Infinity"`、`"-Infinity"`、`"NaN"` にする。Mermaid は頂点、辺、flow、
+connector のこの数値を受理する。YAML の `1e999` は文字列なので `"1e999"`
+のまま保持する。観測処理の抽出上の問題は解析後に報告するため記録し、
+その抽出エラーを解析拒否にしない。
+[fixture: agentflow/db-metadata-positive-infinity]
+[fixture: agentflow/db-metadata-negative-infinity]
+[fixture: agentflow/db-metadata-nan] [fixture: agentflow/db-metadata-overflow]
+[fixture: agentflow/db-metadata-edge-infinity]
+[fixture: agentflow/db-metadata-flow-infinity]
+[fixture: agentflow/db-metadata-connector-infinity]
+[fixture: agentflow/db-metadata-nested-nan]
+[fixture: agentflow/db-metadata-nested-map-infinity]
+
+routing は既存の flow、connector、辺（生成 id も含む）、頂点の順に優先する。
+prototype 形の metadata キーは再帰的に除く。flow の前の block は頂点の
+descriptor に残る。後の connector 宣言は先の頂点 metadata を置き換える。
+connector と辺、flow と connector の id 衝突もこの優先順に従う。
+[fixture: agentflow/db-connector-edge-id-collision]
+[fixture: agentflow/db-flow-connector-collision]
+[fixture: agentflow/db-generated-edge-id-metadata-target]
+[fixture: agentflow/db-metadata-before-flow]
+[fixture: agentflow/db-metadata-before-connector]
+[fixture: agentflow/db-data-block-recursive-prototype-keys]
+
+隣接する metadata block は一つの呼出しにまとめる。
+そのため隣接する単一行の項目間にコンマがないと YAML として拒否する。複数行の
+scalar や配列は文字位置や添字をキーとする metadata になる。YAML
+コメントだけの本文は metadata を追加しない。空配列の label
+は空のテキストになる。エスケープした引用符が lexer の state を早く閉じ、
+拒否する場合がある。複数行の本文中の directive は YAML の前に消える。
+引用符付き複数行の値は `<br/>` で畳み、正しい plain scalar
+のコンマは値に残す。 [fixture: agentflow/db-metadata-scalar]
+[fixture: agentflow/db-metadata-array]
+[fixture: agentflow/db-metadata-single-line-comment]
+[fixture: agentflow/db-metadata-empty-array-label]
+[fixture: agentflow/db-metadata-escaped-quote]
+[fixture: agentflow/db-metadata-comment-directive-body]
+[fixture: agentflow/db-metadata-double-quoted-unicode-comma]
+[fixture: agentflow/db-metadata-adjacent-no-comma]
+[fixture: agentflow/db-data-block-adjacent]
+
+YAML の anchor と共有 alias は受理し、anchor の mapping の両方の出現を
+metadata と `dataBlockEffects` の値として保持する。
+`custom.deep` が自分の mapping を参照する alias は、
+要約の抽出より前に、
+Mermaid の再帰的な
+[`stripPrototypeKeys()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L124-L139)
+で `RangeError` を投げる。Db の観測パッチを外しても同じ拒否になる。
+[fixture: agentflow/db-metadata-yaml-shared-alias]
+[fixture: agentflow/div-metadata-yaml-self-alias]
+
+形の別名は保存前に解決する。六つの domain alias と `round` は
+[`SHAPE_ALIASES`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L16-L24)
+が定義する。`round` は `rect` を保存し、描画時に `roundedRect` にする。
+metadata の形は描画前に
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+が検査する。書かれた名前に大文字や underscore があると、内部の解決済み名や
+removed 集合に同じ綴りがあっても拒否する。`ellipse` と `connector` は shape
+catalogue で拒否するが、inline の ellipse 構文と connector 宣言は解析できる。
+空文字列とゼロは type を設定せず、形の配列は拒否する。
+[fixture: agentflow/db-alias-round]
+[fixture: agentflow/db-shape-collapsed-group-lowercase-rule]
+[fixture: agentflow/db-shape-canonical-roundedrect-lowercase-rule]
+[fixture: agentflow/db-removed-shape-type-declaration]
+[fixture: agentflow/db-removed-shape-underscore]
+[fixture: agentflow/db-shape-removed-lean-left-underscore]
+[fixture: agentflow/db-shape-removed-ellipse]
+[fixture: agentflow/db-shape-connector] [fixture: agentflow/db-shape-empty]
+[fixture: agentflow/db-shape-zero] [fixture: agentflow/db-shape-list]
+[fixture: agentflow/db-data-block-aliases]
+[fixture: agentflow/gram-bracket-shapes]
+[fixture: agentflow/gram-connector-all-forms]
+
+metadata の canonical name `subproc`、`lean-right`、`lin-doc`、
+`lined-document`、`hexagon`、`hex` は受理し、生の頂点に綴りを残す。
+[fixture: agentflow/db-shape-subproc] [fixture: agentflow/db-shape-lean-right]
+[fixture: agentflow/db-shape-lin-doc]
+[fixture: agentflow/db-shape-lined-document]
+[fixture: agentflow/db-shape-hexagon] [fixture: agentflow/db-shape-hex]
+
+metadata の検査を通る removed shape は解析でき、生の type と metadata を残す。
+[`normaliseNodeShapes()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L113-L147)
+は `SHAPE_REMOVED` を出し、レイアウトデータで `roundedRect` に替える。
+`doublecircle`、document、terminal、circle、trapezoid の各種、lean-left、
+in-out、odd、procs と、削除済み instance shape が該当する。
+[fixture: agentflow/db-removed-shape-doublecircle]
+[fixture: agentflow/db-shape-removed-doc]
+[fixture: agentflow/db-shape-removed-stadium]
+[fixture: agentflow/db-shape-removed-terminal]
+[fixture: agentflow/db-shape-removed-circle]
+[fixture: agentflow/db-shape-removed-trapezoid]
+[fixture: agentflow/db-shape-removed-inv-trapezoid]
+[fixture: agentflow/db-shape-removed-double-circle]
+[fixture: agentflow/db-shape-removed-lean-left]
+[fixture: agentflow/db-shape-removed-in-out]
+[fixture: agentflow/db-shape-removed-odd]
+[fixture: agentflow/db-shape-removed-procs]
+[fixture: agentflow/db-shape-removed-tag-rect]
+[fixture: agentflow/db-shape-removed-tagged-rectangle]
+[fixture: agentflow/db-shape-removed-delay]
+[fixture: agentflow/db-shape-removed-half-rounded-rectangle]
+[fixture: agentflow/db-shape-removed-lin-rect]
+[fixture: agentflow/db-shape-removed-lined-rectangle]
+[fixture: agentflow/db-shape-removed-win-pane]
+[fixture: agentflow/db-shape-removed-window-pane]
+[fixture: agentflow/db-shape-removed-curv-trap]
+[fixture: agentflow/db-shape-removed-curved-trapezoid]
+
+既知だが未対応の形は `SHAPE_UNSUPPORTED` を出し、`roundedRect` で描く。
+どちらの形の診断も解析を拒否せず、折畳みで隠れる子孫は検査しない。未知の
+metadata の形は解析時に throw する。包含の循環は `CONTAINMENT_VIOLATION`
+を出し、
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+は循環を閉じる親の割当てを省く。要約は生の所属を残す。
+[`PARSER_EMITTED_DIAGNOSTICS` と `RESERVED_DIAGNOSTICS` の定義](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/diagnostics.ts#L155-L169)
+がこれらの検査と外部の意味検査を区別する。reference のラベル、存在しない
+connector への参照、入力のない flow はここで予約済み id を出さない。
+診断レコードは描画の入力ではなく検査の出力なので省略し、normalizer は
+`getData()` を呼ばない。 [fixture: agentflow/db-data-block-removed-shape]
+[fixture: agentflow/db-data-block-unsupported-shape]
+[fixture: agentflow/db-flow-collapsed-removed-shape]
+[fixture: agentflow/db-data-block-unknown-shape]
+[fixture: agentflow/db-diagnostics-containment-cycle]
+[fixture: agentflow/db-diagnostics-no-semantic-checks]
+
+残りの状態は省く。`edgeSemantic` は type と stroke から導出でき、
+`isUserDefinedId` は描画が読まない。カウンター（`vertexCounter`、`subCount`、
+`firstGraphFlag`、`version`、`secCount`）、`posCrossRef`、`diagramId` は解析、
+索引、DOM の管理用である。レコードに既にある生成 element id は残す。`config`
+は別に記録する。`subGraphLookup`、`connectors`、`globalNodes` は routing
+と所属の索引を重複する。`funs` の closure は書かれた呼出しとして既に捕捉する。
+`frontmatterLineOffset`、`elementMappings`、`bareVertexMappings`、
+`preserveCommentsWhenParsing` はソース位置用である。`postParseValidationRun`
+は現在空の解析後検証の guard である。DOM id、`haveCallback`、派生した class
+の `textStyles`、レイアウトの幾何は独立した著者の情報を加えない。
+[fixture: agentflow/db-all-fields]
+[fixture: agentflow/db-diagnostic-position-variant]
+
+style 末尾の空白は除く。テキストは DOMPurify の前、URL は trim して sanitizer
+の前、callback は security 検査の前に記録する。対応する四つの security level
+の要約は一致する。未対応の level でも共通の `htmlLabels` 処理と
+`flowchart.htmlLabels` への fallback は働く。flow の方向継承は
+`flowchart.inheritDir` を使う。elk
+を含むレイアウト選択は要約にフィールドを加えない。時刻、ランダム id、既存の
+sanitizer 設定以外のブラウザー代替は不要である。
+[fixture: agentflow/config-security-strict]
+[fixture: agentflow/config-security-loose]
+[fixture: agentflow/config-security-antiscript]
+[fixture: agentflow/config-security-sandbox]
+[fixture: agentflow/lex-style-whitespace-complete]
+[fixture: agentflow/config-security-other]
+[fixture: agentflow/config-other-flowchart-html-false]
+[fixture: agentflow/config-other-root-true]
+[fixture: agentflow/config-other-root-false]
+[fixture: agentflow/config-inherit-site] [fixture: agentflow/config-elk]
+[fixture: agentflow/config-drawing-only]
+
+共通の前処理は `flow`、`connector`、`global`、`end`、`style`、`classDef`、
+`class`、`linkStyle`、`click`、`call`、`href`、`direction`、アクセシビリティ、
+`default`、`interpolate` のキーワード内でも directive を除き、
+断片を結合してから字句解析する。
+[fixture: agentflow/div-directive-in-flow-keyword]
+[fixture: agentflow/div-directive-in-connector-keyword]
+[fixture: agentflow/div-directive-in-global-keyword]
+[fixture: agentflow/div-directive-in-end-keyword]
+[fixture: agentflow/div-directive-in-style-keyword]
+[fixture: agentflow/div-directive-in-classdef-keyword]
+[fixture: agentflow/div-directive-in-class-keyword]
+[fixture: agentflow/div-directive-in-linkstyle-keyword]
+[fixture: agentflow/div-directive-in-click-keyword]
+[fixture: agentflow/div-directive-in-call-keyword]
+[fixture: agentflow/div-directive-in-href-keyword]
+[fixture: agentflow/div-directive-in-direction-keyword]
+[fixture: agentflow/div-directive-in-acctitle-keyword]
+[fixture: agentflow/div-directive-in-accdescr-keyword]
+[fixture: agentflow/div-directive-in-default-keyword]
+[fixture: agentflow/div-directive-in-interpolate-keyword]
+
+キーワードと値の間の directive は値を置き換えずに消える。空の `accTitle:`
+の後では、次の行の `A` は頂点ではなくタイトルになる。
+[fixture: agentflow/lex-directive-between-flow-value]
+[fixture: agentflow/lex-directive-between-connector-value]
+[fixture: agentflow/lex-directive-between-classdef-value]
+[fixture: agentflow/lex-directive-between-class-value]
+[fixture: agentflow/lex-directive-between-linkstyle-value]
+[fixture: agentflow/lex-directive-between-click-value]
+[fixture: agentflow/lex-directive-between-style-value]
+[fixture: agentflow/lex-directive-between-acctitle-value]
+[fixture: agentflow/lex-directive-between-accdescr-value]
+[fixture: agentflow/lex-directive-acctitle-next-line]
+
+アクセシビリティのテキスト、props のキーと値、class 名、class 定義の style、
+辺の style の中の directive は消え、前後の値の断片を結合する。
+[fixture: agentflow/lex-directive-in-description-value]
+[fixture: agentflow/lex-directive-in-title-value]
+[fixture: agentflow/div-directive-in-props-field]
+[fixture: agentflow/div-directive-in-props-value]
+[fixture: agentflow/div-directive-in-class-name]
+[fixture: agentflow/lex-directive-in-classdef-value]
+[fixture: agentflow/lex-directive-in-linkstyle-value]
+
+EOF ではヘッダーや頂点の後の閉じた directive も未閉鎖の directive も除く。
+未閉鎖の directive はアクセシビリティの値を直前のテキストで打ち切る。
+空白の後の inline comment は頂点を残すが、空白のない `A%%tail` は id
+のまま残る。 [fixture: agentflow/lex-directive-open-node-eof]
+[fixture: agentflow/lex-directive-closed-node-eof]
+[fixture: agentflow/lex-directive-open-header-eof]
+[fixture: agentflow/lex-directive-closed-header-eof]
+[fixture: agentflow/lex-directive-open-title-eof]
+[fixture: agentflow/lex-directive-open-description-eof]
+[fixture: agentflow/lex-comment-node-eof]
+[fixture: agentflow/lex-comment-glued-id-eof]
+
+閉じた description block、style、class 定義、class 割当て、click callback は
+EOF で終われる。square、ellipse、trapezoid のラベルが閉じていなければ、
+コメントが EOF に達しても拒否する。
+[fixture: agentflow/lex-description-closed-eof]
+[fixture: agentflow/lex-style-eof] [fixture: agentflow/lex-classdef-eof]
+[fixture: agentflow/lex-class-eof] [fixture: agentflow/lex-click-callback-eof]
+[fixture: agentflow/lex-comment-unclosed-square-eof]
+[fixture: agentflow/lex-comment-unclosed-ellipse-eof]
+[fixture: agentflow/lex-comment-unclosed-trap-eof]
+
+空白を挟む連続セミコロンは頂点、辺、class、style、linkStyle、click、metadata、
+connector、flow と global の終端、閉じた description を区切り、
+区切り自体のレコードは作らない。末尾空白の前のコロンは頂点、辺の端点、
+connector の id に属する。flow や global の `end` の後なら、
+コロンだけの別の頂点になる。 [fixture: agentflow/lex-node-spaced-semis]
+[fixture: agentflow/lex-edge-spaced-semis]
+[fixture: agentflow/lex-class-spaced-semis]
+[fixture: agentflow/lex-style-spaced-semis]
+[fixture: agentflow/lex-classdef-spaced-semis]
+[fixture: agentflow/lex-linkstyle-spaced-semis]
+[fixture: agentflow/lex-click-spaced-semis]
+[fixture: agentflow/lex-metadata-spaced-semis]
+[fixture: agentflow/lex-connector-spaced-semis]
+[fixture: agentflow/lex-flow-end-spaced-semis]
+[fixture: agentflow/lex-global-end-spaced-semis]
+[fixture: agentflow/lex-description-spaced-semis]
+[fixture: agentflow/lex-node-colon-space]
+[fixture: agentflow/lex-edge-colon-space]
+[fixture: agentflow/lex-connector-colon-space]
+[fixture: agentflow/lex-flow-end-colon-space]
+[fixture: agentflow/lex-global-end-colon-space]
+
+class 名や裸の click callback の後の TAB は拒否するが、connector
+と辺の後では受理する。辺の後の SPACE も受理する。ヘッダーと辺の末尾の space
+list は SPACE と TAB の連続を受理する。ヘッダーのセミコロンの前の SPACE は、
+その枝が改行を要求するため拒否する。
+[fixture: agentflow/lex-class-trailing-tab]
+[fixture: agentflow/lex-click-trailing-tab]
+[fixture: agentflow/lex-connector-trailing-tab]
+[fixture: agentflow/lex-edge-trailing-space]
+[fixture: agentflow/lex-edge-trailing-tab]
+[fixture: agentflow/lex-header-space-list-recursion]
+[fixture: agentflow/lex-edge-space-list-recursion]
+[fixture: agentflow/lex-header-space-then-semicolon]
+
+閉じた description や direction の後のコメントと閉じた directive は、
+後の文を残す。description の後の未閉鎖の directive は後の頂点を飲み込む。flow
+内の direction の後では閉じる `end` も飲み込み、flow を拒否する。
+[fixture: agentflow/lex-description-tail-comment]
+[fixture: agentflow/lex-description-tail-directive]
+[fixture: agentflow/lex-description-tail-open-directive]
+[fixture: agentflow/lex-direction-tail-comment]
+[fixture: agentflow/lex-direction-tail-directive]
+[fixture: agentflow/lex-direction-tail-open-directive]
+
+CRLF は各種の文で使える。共通の前処理は CR と CRLF を正規化する。
+単一行のアクセシビリティの値はそこで終わり、description block 内では LF
+として残り、コメント行の後の頂点は残す。
+[fixture: agentflow/lex-all-statements-crlf]
+[fixture: agentflow/lex-description-line-cr]
+[fixture: agentflow/lex-description-line-crlf]
+[fixture: agentflow/lex-title-line-cr]
+[fixture: agentflow/lex-description-block-cr]
+[fixture: agentflow/lex-description-block-crlf]
+[fixture: agentflow/lex-comment-cr] [fixture: agentflow/lex-comment-crlf]
+
+共通の style 行の前処理は引用符付きの頂点ラベル、辺ラベル、flow
+の名前とタイトル、connector の名前とタイトル、tooltip、
+アクセシビリティの値にも働く。`:` と `#` の前に `style` または `classDef`
+があるとセミコロンを一つ除く。
+三つなら符号化された文字参照と一つのセミコロンを残し、
+末尾の空白もこの区別を変えない。一つなら残らず、
+二つなら符号化された文字参照を残す。両方のキーワードがあれば二回除く。
+[fixture: agentflow/lex-style-trigger-three]
+[fixture: agentflow/lex-style-trigger-one-padding]
+[fixture: agentflow/lex-style-trigger-two-padding]
+[fixture: agentflow/lex-style-trigger-three-padding]
+[fixture: agentflow/lex-both-style-triggers]
+[fixture: agentflow/lex-style-trigger-edge]
+[fixture: agentflow/lex-style-trigger-flow-title]
+[fixture: agentflow/lex-style-trigger-connector-title]
+[fixture: agentflow/lex-style-trigger-tooltip]
+[fixture: agentflow/lex-style-trigger-title]
+[fixture: agentflow/lex-style-trigger-description]
+[fixture: agentflow/lex-style-trigger-block-description]
+[fixture: agentflow/lex-flow-name-style-trigger]
+[fixture: agentflow/lex-connector-name-style-trigger]
+
+三つのセミコロンを持つ実際の style、classDef、linkStyle の文は、
+符号化されたテキストで拒否する。style
+の条件がなければアクセシビリティの値は末尾のセミコロンを一つ、二つ、
+三つとも保持し、末尾の空白を trim する。
+[fixture: agentflow/lex-style-statement-three-semis]
+[fixture: agentflow/lex-classdef-three-semis]
+[fixture: agentflow/lex-linkstyle-three-semis]
+[fixture: agentflow/lex-description-end-semicolon]
+[fixture: agentflow/lex-description-end-two-semis]
+[fixture: agentflow/lex-description-end-three-semis]
+[fixture: agentflow/lex-title-end-semicolon]
+[fixture: agentflow/lex-title-end-two-semis]
+[fixture: agentflow/lex-title-end-three-semis]
+
+directive が `sty` と `le` を結合すると、style の前処理の条件になる。U+2028
+と U+2029 は dot が一致する区間の境界なので、後のセミコロンは残る。U+2028
+の後で始まるコメントは、前のどのセミコロンが除かれるかを変える。
+[fixture: agentflow/lex-directive-in-style-trigger]
+[fixture: agentflow/lex-style-trigger-ls-segment]
+[fixture: agentflow/lex-style-trigger-ps-segment]
+[fixture: agentflow/lex-style-trigger-ls-comment]
+
+方向のないヘッダーの後の NBSP は空白である。引用符付きラベル内の VT と FF
+はテキストとして残る。ヘッダー前の NEL は検出を妨げ、単独行の NEL
+は字句エラーになる。裸の id の補助平面文字と結合文字は拒否するが、
+引用符付きと引用符なしのラベルは補助平面文字を受理する。props の値は単一の
+`NODE_STRING` なので、その場所の Unicode token は拒否する。
+[fixture: agentflow/lex-header-nbsp-only]
+[fixture: agentflow/lex-node-vt-inside]
+[fixture: agentflow/lex-node-ff-inside]
+[fixture: agentflow/lex-nel-before-header]
+[fixture: agentflow/lex-nel-only-line]
+[fixture: agentflow/lex-supplementary-id]
+[fixture: agentflow/lex-combining-id]
+[fixture: agentflow/lex-quoted-supplementary-label]
+[fixture: agentflow/lex-unquoted-supplementary-label]
+[fixture: agentflow/lex-props-unicode-value]
+
+引用符付きの flow と connector の名前、flow タイトル、アクセシビリティの値、
+metadata scalar 内の U+2028 と U+2029 は、LF にならず値の中に残る。
+[fixture: agentflow/lex-flow-name-u2029]
+[fixture: agentflow/lex-flow-title-u2028]
+[fixture: agentflow/lex-connector-name-u2028]
+[fixture: agentflow/lex-connector-name-u2029]
+[fixture: agentflow/lex-title-u2029]
+[fixture: agentflow/lex-description-u2028]
+[fixture: agentflow/lex-metadata-raw-u2028]
+[fixture: agentflow/lex-metadata-raw-u2029]
+
+パーセント記号の間の directive を除くとコメントが現れる場合がある。U+2028 と
+U+2029 の後のコメント区間は前後の頂点を残す。
+ラベル内ではコメントを除いた後も区切り文字と LF が残る。
+その区切りで終わる未閉鎖の object directive は `A` と `B` を結合し、
+閉じた複数行の directive でも結合する。CR、directive、LF の境界は `A` と `B`
+を別に残す。 [fixture: agentflow/lex-comment-directive-between-marks]
+[fixture: agentflow/lex-comment-ls-region]
+[fixture: agentflow/lex-comment-ps-bare-region]
+[fixture: agentflow/lex-comment-ls-eof]
+[fixture: agentflow/lex-comment-in-label-after-ls]
+[fixture: agentflow/div-directive-open-object-ls]
+[fixture: agentflow/div-directive-open-object-ps]
+[fixture: agentflow/div-directive-multiline-joins-id]
+[fixture: agentflow/lex-directive-cr-lf-separated]
+
+パーセントのテキスト内の directive は、隣り合う頂点 token
+を残して拒否する場合がある。ヘッダー後の `%%{}%%` はここで認識する正しい
+directive ではなく、EOF の前に U+2028 や U+2029 が続いても解析できない。
+[fixture: agentflow/lex-directive-inside-percent-text]
+[fixture: agentflow/lex-header-comment-ls-eof]
+[fixture: agentflow/lex-header-comment-ps-eof]
+
+lexer は `SPACE` を一文字ずつ返す。style、classDef、class、linkStyle の後、
+class の値の前、`interpolate` の後、click の tooltip の前で二つの SPACE
+は拒否する。flow と connector の名前は二つ目を吸収して trim する。`end`
+の後の NBSP は別の頂点の前に置ける。`global` は LF の前の TAB と SPACE
+を受理する。 [fixture: agentflow/lex-style-double-space-keyword]
+[fixture: agentflow/lex-classdef-double-space-keyword]
+[fixture: agentflow/lex-class-double-space-keyword]
+[fixture: agentflow/lex-linkstyle-double-space-keyword]
+[fixture: agentflow/lex-class-double-space-value]
+[fixture: agentflow/lex-linkstyle-interpolate-double-space]
+[fixture: agentflow/lex-click-double-space-before-tooltip]
+[fixture: agentflow/lex-flow-double-space]
+[fixture: agentflow/lex-connector-double-space]
+[fixture: agentflow/lex-end-nbsp-with-following-node]
+[fixture: agentflow/lex-global-tab-space]
+
+ellipse のラベルは `/)` と `))` で閉じられる。trapezoid のラベルは `(]` と
+`]]` を受理し、`?]` と `=]` を拒否する。形を閉じない途中の slash と backslash
+は残す。引用符付きの空白だけの頂点ラベルは受理し、空文字列に trim する。
+[fixture: agentflow/lex-ellipse-close-slash]
+[fixture: agentflow/lex-ellipse-close-paren]
+[fixture: agentflow/lex-trap-close-question]
+[fixture: agentflow/lex-trap-close-equals]
+[fixture: agentflow/lex-trap-close-paren]
+[fixture: agentflow/lex-trap-close-double-bracket]
+[fixture: agentflow/lex-trap-interior-slash]
+[fixture: agentflow/lex-trap-interior-backslash]
+[fixture: agentflow/lex-node-empty-whitespace-label]
+
+引用符なしの flow と connector の名前は記号、数値、Unicode、キーワードの
+token を受理する。`global`、style、class、container の語、ヘッダーと方向の語、
+それらの組合せも名前になる。旧 flowchart のヘッダーと container
+の語は普通の裸の頂点 id になる。flow 名の先頭の link token と単独の escaped
+pipe は拒否し、`style` 自体は style の値にできる。
+[fixture: agentflow/lex-flow-name-other-keywords]
+[fixture: agentflow/lex-flow-name-start-link]
+[fixture: agentflow/lex-escaped-pipe-token]
+[fixture: agentflow/lex-style-keyword-as-value]
+[fixture: agentflow/lex-id-token-punctuation-base]
+[fixture: agentflow/lex-name-token-punctuation]
+[fixture: agentflow/lex-unquoted-unicode-names]
+[fixture: agentflow/lex-flow-name-global-keyword]
+[fixture: agentflow/lex-unquoted-keyword-names]
+[fixture: agentflow/lex-unquoted-rare-keyword-names]
+[fixture: agentflow/lex-legacy-header-words-as-ids]
+
+flow と connector の名前の `click` token は lexer の state を変える。次の行の
+`B` は `A` に結合し、どちらも頂点にならない。`click A` で終わる connector
+名は、click state が追加の LF を消費するため EOF separator に達する。
+[fixture: agentflow/lex-flow-name-click-state]
+[fixture: agentflow/lex-connector-name-click-state]
+[fixture: agentflow/lex-connector-click-eof-separator]
+
+貪欲な direction 規則は `direction LR` を含む行全体を消費できる。square
+の通常テキスト、string と markdown の頂点ラベル、引用符付き辺ラベル、metadata
+label は頂点や辺を残さない。flow の名前とタイトル、connector のタイトル、
+tooltip は行を消費した後に拒否する。
+行頭のアクセシビリティの値はこのテキストを残すが、字下げすると direction
+規則が行を消費する。セミコロンの後では前の頂点が消え、U+2028 と U+2029
+の後では入力を拒否する。 [fixture: agentflow/lex-direction-greedy-square]
+[fixture: agentflow/lex-direction-greedy-string]
+[fixture: agentflow/lex-direction-greedy-markdown]
+[fixture: agentflow/lex-direction-greedy-edge]
+[fixture: agentflow/lex-direction-title-column-zero]
+[fixture: agentflow/lex-direction-title-indented]
+[fixture: agentflow/lex-direction-description-column-zero]
+[fixture: agentflow/lex-direction-description-indented]
+[fixture: agentflow/lex-direction-greedy-flow-name]
+[fixture: agentflow/lex-direction-greedy-flow-title]
+[fixture: agentflow/lex-direction-greedy-connector]
+[fixture: agentflow/lex-direction-after-semicolon]
+[fixture: agentflow/lex-direction-after-ls]
+[fixture: agentflow/lex-direction-after-ps]
+[fixture: agentflow/lex-direction-in-data-label]
+[fixture: agentflow/lex-direction-in-tooltip]
+
+[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126)
+では agentflow の検出が C4 より先なので、id、通常と引用符付きのラベル、
+コメント、frontmatter、directive 内の C4 の語は図の id を変えない。
+先頭のセミコロンは検出を妨げる。
+[fixture: agentflow/lex-detect-c4-container-label]
+[fixture: agentflow/lex-detect-c4-component-id]
+[fixture: agentflow/lex-detect-c4-context-label]
+[fixture: agentflow/lex-detect-c4-deployment-suffix]
+[fixture: agentflow/lex-detect-c4-dynamic-string]
+[fixture: agentflow/lex-detect-c4-comment]
+[fixture: agentflow/lex-detect-c4-frontmatter]
+[fixture: agentflow/lex-detect-c4-directive]
+[fixture: agentflow/lex-detect-c4-inline-comment]
+[fixture: agentflow/lex-detect-leading-semicolon]
+
+コメントの後やヘッダーの後の frontmatter と、閉じていない frontmatter
+は拒否する。先頭の字下げと CRLF は frontmatter を妨げない。null のタイトル、
+配列の root、scalar の root では図のタイトルは空のままである。frontmatter
+タイトル内の HTML 属性の引用符は一重引用符になる。不正な directive の YAML
+本文を無視して図を解析する場合がある。
+[fixture: agentflow/db-frontmatter-null-title]
+[fixture: agentflow/db-frontmatter-title-html-quotes]
+[fixture: agentflow/db-frontmatter-root-array]
+[fixture: agentflow/db-frontmatter-root-scalar]
+[fixture: agentflow/db-directive-invalid-yaml]
+[fixture: agentflow/db-frontmatter-after-comment]
+[fixture: agentflow/db-frontmatter-unclosed]
+[fixture: agentflow/db-frontmatter-indented]
+[fixture: agentflow/db-frontmatter-crlf]
+[fixture: agentflow/db-frontmatter-after-header]
+
+引用符付きの辺 id は拒否する。通常と reference の link
+の長さは上限の十に達する。空の string と markdown の辺ラベルは拒否するが、
+引用符付きの空白だけの辺ラベルは空文字列として受理する。符号付きゼロ、指数、
+十六進数に見える linkStyle の添字は構文で拒否する。`00`
+と範囲外の大きな整数は文字列キーで配列を検索し、TypeError を投げる。
+[fixture: agentflow/lex-edge-link-id-quoted]
+[fixture: agentflow/lex-reference-long-length-at-cap]
+[fixture: agentflow/lex-normal-long-length-at-cap]
+[fixture: agentflow/lex-edge-empty-string-label]
+[fixture: agentflow/lex-edge-empty-markdown-label]
+[fixture: agentflow/lex-edge-whitespace-label]
+[fixture: agentflow/lex-linkstyle-negative-zero]
+[fixture: agentflow/lex-linkstyle-plus-zero]
+[fixture: agentflow/lex-linkstyle-leading-zero]
+[fixture: agentflow/lex-linkstyle-over-safe-integer]
+[fixture: agentflow/lex-linkstyle-infinite-exponent]
+[fixture: agentflow/lex-linkstyle-numeric-suffix]
+
+空白だけの URL は trim 後に省くが target は残す。tooltip の再定義は id
+の初出順を動かさずにテキストを置き換える。href の値と call
+の名前は次の行で始められる。call
+の名前は括弧前の空白と途中のセミコロンを保持し、裸の callback 名は hash
+を含む数値、Unicode、記号の token を受理する。
+[fixture: agentflow/db-trailing-click-url-whitespace]
+[fixture: agentflow/db-tooltip-three-definitions]
+[fixture: agentflow/db-href-newline-value]
+[fixture: agentflow/db-call-newline-name]
+[fixture: agentflow/db-call-name-space-before-parentheses]
+[fixture: agentflow/db-callback-name-semicolon]
+[fixture: agentflow/db-callback-token-punctuation]
+[fixture: agentflow/db-callback-hash-name]
+
+directive の除去は sequence、failure、reference の演算子、
+延長した矢印と、分割した辺ラベルを開く `--` を再構成する。
+pipe ラベルの直前の矢印でも同じである。
+[fixture: agentflow/div-directive-in-arrow-length]
+[fixture: agentflow/div-directive-in-opening-arrow]
+[fixture: agentflow/div-directive-inside-arrow]
+[fixture: agentflow/div-directive-in-arrow]
+[fixture: agentflow/div-directive-in-arrow-failure]
+[fixture: agentflow/div-directive-in-arrow-reference]
+[fixture: agentflow/div-directive-in-arrow-before-pipe]
+
+circle の二重丸括弧の開閉、hexagon の二重波括弧の開閉、
+cylinder の開き記号の内部の directive は、形を認識する前に除く。
+[fixture: agentflow/div-directive-in-circle-closing]
+[fixture: agentflow/div-directive-in-circle-opening]
+[fixture: agentflow/div-directive-in-hexagon-closing]
+[fixture: agentflow/div-directive-in-hexagon-opening]
+[fixture: agentflow/div-directive-in-cylinder-opening]
+
+最初または二番目のコロンの後の directive は、
+`:::` の三文字を結合して class の区切り記号にする。
+[fixture: agentflow/div-directive-in-style-separator]
+[fixture: agentflow/div-directive-in-triple-colon]
+
+directive の除去は頂点 id（`style` で始まる id も含む）、
+click と辺の id、class 定義と class 対象の名前、補間名、
+linkStyle の十進添字、property 括弧の二つの id run を結合する。
+[fixture: agentflow/div-directive-in-id]
+[fixture: agentflow/div-directive-in-id-starting-with-style]
+[fixture: agentflow/div-directive-in-click-id]
+[fixture: agentflow/div-directive-in-edge-id]
+[fixture: agentflow/div-directive-in-class-def-id-list]
+[fixture: agentflow/div-directive-in-class-id-list]
+[fixture: agentflow/div-directive-in-interpolate-name]
+[fixture: agentflow/div-directive-in-linkstyle-number]
+[fixture: agentflow/div-directive-in-bar-rectangle-first-id-run]
+[fixture: agentflow/div-directive-in-bar-rectangle-second-id-run]
+
+`href`、`interpolate`、`flow` の内部の directive はキーワードを再構成する。
+`flow` は flowchart の `subgraph` に対応する。
+[fixture: agentflow/div-directive-in-keyword-href]
+[fixture: agentflow/div-directive-in-keyword-interpolate]
+[fixture: agentflow/div-directive-in-subgraph-keyword]
+
+YAML を読む前に、directive の除去は `@{` の二文字と
+metadata のキーの断片を結合する。
+[fixture: agentflow/div-directive-in-data-block-start]
+[fixture: agentflow/lex-directive-in-metadata-key]
+
+ヘッダーの方向の `L` と `R` の間の directive は方向 `LR` を残す。
+[fixture: agentflow/div-directive-in-header-direction]
+
+`A[style:#x]` を含む行では、style の行規則が sequence、failure、
+reference の演算子や、分割ラベルを開く `--` 内のセミコロンを除く。
+pipe ラベルの直前の矢印も再構成する。
+[fixture: agentflow/div-ignored-semicolon-in-arrow]
+[fixture: agentflow/div-ignored-semicolon-in-arrow-failure]
+[fixture: agentflow/div-ignored-semicolon-in-arrow-reference]
+[fixture: agentflow/div-ignored-semicolon-in-opening-arrow]
+[fixture: agentflow/div-ignored-semicolon-in-arrow-before-pipe]
+
+同じ行規則はセミコロンで分断した circle、cylinder、hexagon の
+開き記号を再構成する。
+[fixture: agentflow/div-ignored-semicolon-in-circle-opening]
+[fixture: agentflow/div-ignored-semicolon-in-cylinder-opening]
+[fixture: agentflow/div-ignored-semicolon-in-hexagon-opening]
+
+この規則は三重コロンのどちらの分割位置も結合する。
+頂点、group、click、辺、style の id、class 定義と対象の名前、
+CSS class 名、linkStyle の十進添字も結合する。
+[fixture: agentflow/div-ignored-semicolon-in-triple-colon]
+[fixture: agentflow/div-ignored-semicolon-in-style-separator]
+[fixture: agentflow/div-ignored-semicolon-in-id]
+[fixture: agentflow/div-ignored-semicolon-in-id-in-group]
+[fixture: agentflow/div-ignored-semicolon-in-click-id]
+[fixture: agentflow/div-ignored-semicolon-in-edge-id]
+[fixture: agentflow/div-ignored-semicolon-in-style-id]
+[fixture: agentflow/div-ignored-semicolon-in-class-def-name]
+[fixture: agentflow/div-ignored-semicolon-in-class-ids]
+[fixture: agentflow/div-ignored-semicolon-in-css-class]
+[fixture: agentflow/div-ignored-semicolon-in-linkstyle-number]
+
+分断した `flow` キーワードと metadata の開き記号も再構成する。
+metadata のキーの内部のセミコロンは YAML が読む前に除く。
+[fixture: agentflow/div-ignored-semicolon-in-keyword]
+[fixture: agentflow/div-ignored-semicolon-in-data-block-start]
+[fixture: agentflow/lex-ignored-semicolon-in-metadata-key]
+
+境界の対照として、完成した矢印とラベルを開く pipe の間の directive や
+無視されるセミコロンも、ラベル付きの辺を残す。
+[fixture: agentflow/lex-directive-in-pipe-boundary]
+[fixture: agentflow/lex-ignored-semicolon-in-pipe-boundary]
+
+## ishikawa
+
+`normalizeIshikawa()`（`src/normalizers/ishikawa.ts`）は
+[`IshikawaDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96)
+を要約する。
+ヘッダー `ishikawa` と `ishikawa-beta` の図種 ID は共に `ishikawa`。
+[fixture: ishikawa/gram-root-eof]
+[fixture: ishikawa/spec-ishikawa-36b2cea5]
+
+`root` は
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L38-L40)
+の順序付きの木で、存在しなければ `null` となる。
+[fixture: ishikawa/header-only-lf]
+[fixture: ishikawa/header-beta-only-lf]
+[fixture: ishikawa/gram-whitespace-only-document]
+
+各ノードは `text` と `children` だけを再帰的に保持する。
+ラベルの重複と兄弟の順序も保持する。
+これは
+[`draw()`、`drawBranch()`、`flattenTree()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaRenderer.ts#L36-L445)
+が読む表現である。
+根の文字列が頭、根の子が原因、子孫が小さな枝となる。
+ノードの別表現は必要ない。
+[fixture: ishikawa/db-all-fields]
+[fixture: ishikawa/db-three-definitions]
+[fixture: ishikawa/demo-ishikawa-116a5f27]
+[fixture: ishikawa/spec-ishikawa-45c4f88f]
+[fixture: ishikawa/docs-syntax-ishikawa-b3ea7b01]
+[fixture: ishikawa/demo-ishikawa-224017d7]
+[fixture: ishikawa/demo-ishikawa-6040395b]
+[fixture: ishikawa/demo-ishikawa-611b5c9d]
+[fixture: ishikawa/demo-ishikawa-6d142918]
+
+`title`、`accTitle`、`accDescr` は
+[`Db の getter`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L73-L95)
+から保持する。
+共通の描画経路の
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+は両方のアクセシビリティ getter を読む。
+最初のノードは、サニタイズ後のラベルを `title` に設定する。
+解析前に設定されたフロントマターのタイトルを上書きする。
+ノードがなければ、空でないフロントマターのタイトルが残る。
+[fixture: ishikawa/db-frontmatter-title]
+[fixture: ishikawa/db-frontmatter-rootless]
+空のフロントマターのタイトルは根から得たタイトルを置き換えない。
+[fixture: ishikawa/frontmatter-empty-title]
+
+根がなければ、空または null のフロントマターのタイトルで `title` は空となる。
+[fixture: ishikawa/frontmatter-empty-title-rootless]
+[fixture: ishikawa/frontmatter-null-title-rootless]
+空白 2 個のフロントマターのタイトルは、両方の空白を保持する。
+ノード文字列の trim は行わない。
+[fixture: ishikawa/frontmatter-whitespace-title-rootless]
+数値 `7` のフロントマターのタイトルは文字列 `"7"` となる。
+[fixture: ishikawa/frontmatter-numeric-title-rootless]
+
+文法が呼ぶのは
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L50-L55)
+だけである。
+アクセシビリティ構文に見える行とブロックは通常のノード文字列となる。
+フロントマターのアクセシビリティキーも共通の getter を設定しない。
+そのため、これらの入力の `accTitle` と `accDescr` は空のままである。
+[fixture: ishikawa/db-acctitle-is-node]
+[fixture: ishikawa/db-accdescr-is-node]
+[fixture: ishikawa/db-accdescr-block-is-nodes]
+[fixture: ishikawa/db-accdescr-empty-keeps-node]
+[fixture: ishikawa/db-frontmatter-accessibility]
+
+private フィールドは `root`、`stack`、`baseLevel`。
+要約は `root` を保持し、次を除外する。
+
+- `stack` とその数値 `level`:
+  親を選ぶための一時的な状態。
+  選ばれた親子関係は既に木にある。
+  [fixture: ishikawa/db-indent-jump]
+  [fixture: ishikawa/db-indent-pop-several]
+- `baseLevel`:
+  最初の原因の生の字下げ幅。
+  相対レベルを求めるためだけに使い、0 以下のレベルは 1 にする。
+  根の字下げ幅はこの基準を設定しない。
+  [fixture: ishikawa/db-indent-first-cause]
+  [fixture: ishikawa/db-indent-root-deeper]
+  [fixture: ishikawa/db-indent-root-shallower]
+  [fixture: ishikawa/db-indent-clamped]
+  [fixture: ishikawa/db-indent-clamp-below-base]
+  [fixture: ishikawa/spec-ishikawa-c5953a5f]
+  相対レベルがちょうど 0 の原因も、レベル 1 の根の子となる。
+  その次のレベル 1 の原因は兄弟となる。
+  [fixture: ishikawa/db-indent-relative-zero]
+- 描画の座標、マーカー ID、色、フォント計測値、描画設定:
+  描画時にだけ作成または参照する値であり、格納された構文ではない。
+  要約には追加しない。
+  [fixture: ishikawa/config-drawing-only]
+
+文法はノード文字列の両端を trim し、共通の
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
+に渡す。
+共通の
+[`setDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
+は根のラベルをもう一度サニタイズする。
+DOMPurify は
+[expected-results.md](./expected-results.md) の説明どおり無効にする。
+内部の空白と引用符はそのまま残る。
+[fixture: ishikawa/gram-root-trailing-space]
+[fixture: ishikawa/gram-child-trailing-space]
+[fixture: ishikawa/gram-spaces-inside-text]
+[fixture: ishikawa/gram-quotes-padding]
+[fixture: ishikawa/db-markup]
+[fixture: ishikawa/lex-header-quoted-label]
+[fixture: ishikawa/lex-quoted-crlf]
+[fixture: ishikawa/lex-quoted-u2028]
+[fixture: ishikawa/lex-quoted-u2029]
+
+根と子の文字列で、末尾のコロンの後にある空白は trim されるが、
+コロンは残る。
+[fixture: ishikawa/gram-after-root-colon-space]
+[fixture: ishikawa/gram-after-child-colon-space]
+根の文字列の内部にある VT と FF は `title` にも残る。
+[fixture: ishikawa/lex-root-vt-inside]
+[fixture: ishikawa/lex-root-ff-inside]
+U+0085（NEL）は、単独の行でもノードの文字列として保持される。
+[fixture: ishikawa/lex-nel-only-line]
+
+根の `R; ;` と子の `A; ;` では、空白で区切ったセミコロンが文字列に残る。
+[fixture: ishikawa/gram-after-root-spaced-semicolons]
+[fixture: ishikawa/gram-after-child-spaced-semicolons]
+Db に渡す前の共通の
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L916)
+の前処理は、hash の後の最後のセミコロンを取り除く。
+条件は、その行の前方に正確な大文字小文字の `style` または `classDef` があり、
+後続のコロンと hash の間に空白がないことである。
+[fixture: ishikawa/lex-root-style-semicolon]
+[fixture: ishikawa/lex-child-classdef-semicolon]
+[fixture: ishikawa/lex-style-uppercase-semicolon]
+[fixture: ishikawa/lex-style-colon-space-semicolon]
+[fixture: ishikawa/lex-style-no-hash-semicolon]
+`fill:#abc;;` では、残った `#abc;` を共通の文字参照プレースホルダーに変換する。
+セミコロンが 3 個なら、そのプレースホルダーの後にセミコロンが 1 個残る。
+根の場合は、同じ読みを共通のタイトルにも設定する。
+[fixture: ishikawa/lex-style-two-semicolons]
+[fixture: ishikawa/lex-style-three-semicolons]
+[fixture: ishikawa/lex-root-style-two-semicolons]
+[fixture: ishikawa/lex-root-style-three-semicolons]
+セミコロンが 1 個、2 個、3 個のいずれも、後置する空白でこの読みは変わらない。
+ノード文字列の trim がその空白を取り除くためである。
+[fixture: ishikawa/lex-style-semicolon-padding]
+[fixture: ishikawa/lex-style-two-semicolons-padding]
+[fixture: ishikawa/lex-style-three-semicolons-padding]
+[fixture: ishikawa/lex-root-style-semicolon-padding]
+[fixture: ishikawa/lex-root-style-two-semicolons-padding]
+[fixture: ishikawa/lex-root-style-three-semicolons-padding]
+`text:#35;;;` は、数値の hash 参照を符号化し、セミコロンを 1 個残す。
+子でも根でも同じである。
+[fixture: ishikawa/lex-style-reference-three-semicolons]
+[fixture: ishikawa/lex-root-style-reference-three-semicolons]
+`style classDef A fill:#abc;;` のように両方の断片があると、
+2 回の置換がそれぞれセミコロンを 1 個ずつ取り除く。
+子の文字列は `style classDef A fill:#abc` となる。
+[fixture: ishikawa/lex-style-and-classdef-semicolons]
+
+対応する 4 つの securityLevel と ishikawa の描画設定で要約は変わらない。
+未対応の `securityLevel` では、文字の置換は根の `htmlLabels` に従う。
+根に設定がなければ `flowchart.htmlLabels` に従う。
+[fixture: ishikawa/config-security-other]
+[fixture: ishikawa/config-security-other-html-false]
+[fixture: ishikawa/config-security-other-flowchart-html-false]
+[fixture: ishikawa/config-security-other-root-true]
+[fixture: ishikawa/config-security-other-root-false]
+[fixture: ishikawa/config-drawing-only]
+
+Db のパッチは不要である。
+解析が使うブラウザー機能は、実行側が既に扱う共通のサニタイザーだけである。
+URL やデータブロックの action はない。
+データブロックに見える文字列はラベルとなり、記録する効果はない。
+[fixture: ishikawa/db-data-block-is-text]
+根の data-block 風の接尾辞も、不正な YAML を含む閉じた子の接尾辞も、
+そのまま文字列として残る。
+[fixture: ishikawa/db-data-block-root-is-text]
+[fixture: ishikawa/db-invalid-data-block-is-text]
+複数行の形式は、各行の文字列と字下げから通常のノードを作る。
+YAML に見える内容は解析しない。
+[fixture: ishikawa/db-data-block-multiline-is-nodes]
+ノード ID、乱数、時計の値、タイムゾーンは要約に入らない。
+[fixture: ishikawa/db-all-fields]
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L31-L36)
+は呼び出し間で木、解析状態、共通の文字列をリセットする。
+[fixture: ishikawa/db-all-fields]
+[fixture: ishikawa/header-only-lf]
+
+## usecase
+
+`normalizeUsecase()`（`src/normalizers/usecase.ts`）は、保存済みの
+[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L35-L116)
+を要約します。
+ヘッダー `usecase-beta` の検出 ID は `usecase` です。
+[`検出器`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L7-L11)
+はキーワードの後に空白かテキストの終わりを要求します。
+[fixture: usecase/spec-usecase-parser-7ae00acb]
+[fixture: usecase/header-letter-suffix]
+[fixture: usecase/header-semicolon]
+[fixture: usecase/header-spaced-semicolon]
+
+| 欄                      | 内容                                                          |
+| ----------------------- | ------------------------------------------------------------- |
+| `direction`             | 解決済みの図の方向。                                          |
+| `title`                 | 共通のタイトル getter。この固定版では解析後に空。             |
+| `accTitle` / `accDescr` | 共通のアクセシビリティ文字列。なければ空。                    |
+| `actors`                | アクターのレコード。Map 順。                                  |
+| `useCases`              | ユースケースのレコード。Map 順。                              |
+| `systemBoundaries`      | 境界のレコード。Map 順。`members` を除く。                    |
+| `relationships`         | 関連のレコード。ソース順。内部 ID を除く。                    |
+| `notes`                 | `target`、`label`、`labelType`。ソース順。                    |
+| `jsonNodes`             | `id`、`value`、`propertyOrder`、`classes`、`styles`。Map 順。 |
+| `classDefs`             | `id`、`styles`。定義順。                                      |
+
+正規化関数は `getAST()` や `getData()` ではなく保存済みの getter を読みます。
+AST はモデルを複製してソースと文の範囲を加えます。
+レイアウトデータはサニタイズ、形状、コンパイル済みスタイルを加えます。
+保存済みレコードは、その変換前の著者のテキストを一度ずつ保持します。
+[fixture: usecase/db-all-fields]
+
+アクターは `id`、`label`、`labelType`、`type`、`business`、
+`classes`、`styles` と、省略可能な `icon`、`stereotype`、`parentId`
+を保持します。
+ユースケースは `id`、`label`、`labelType`、`shape`、`business`、
+`classes`、`styles` と、省略可能な `stereotype`、`parentId` を保持します。
+[`getData()` のアクターとユースケースのループ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L337-L387)
+は ID を端点、ラベルと型をテキスト、
+型・形状・business・icon を図形に使います。
+ステレオタイプは表示名とアクセシブルな名前、親 ID はグループ化、
+クラスとスタイルは外観に使います。
+Map の順序がレイアウトのノード順を与えます。
+[fixture: usecase/db-all-fields] [fixture: usecase/db-actor-variants]
+
+境界は `id`、`label`、`labelType`、`type`、`classes`、`styles`
+を保持します。
+[`境界のループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L427-L447)
+はこれらをグループの識別、タイトル、rect/package の形状、CSS に使います。
+`members` は省きます。
+描画は各アクターとユースケースの `parentId` を読み、
+メンバー一覧は包含関係の二重の表現になるためです。
+[fixture: usecase/db-all-fields]
+[fixture: usecase/db-boundary-three-definitions]
+
+関連は `source`、`target`、`type`、`arrowType`、`minlen`、
+`classes`、`styles`、`animate` と、省略可能な `animation`、
+`label`、`labelType` を保持します。
+明示された辺 ID がある場合だけ `id` も保持します。
+[`関連の変換`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L254-L283)
+は実線・点線、矢印のマーカー、意味を示すラベルを選びます。
+[`辺のループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L449-L481)
+は端点、ラベル、長さ、CSS、アニメーションを読みます。
+明示 ID は著者が書いたクラス・スタイル・メタデータの対象です。
+匿名 ID と `explicitId` は省きます。
+`id` の有無だけで明示 ID を識別できるためです。
+[fixture: usecase/db-arrows] [fixture: usecase/db-labeled-arrows]
+[fixture: usecase/db-arrow-length] [fixture: usecase/db-edge-id-style]
+
+注釈は対象、テキスト、型を保持します。
+[`注釈ノードのループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L389-L409)
+がそれらを読みます。
+[`注釈の接続辺のループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L483-L508)
+も同じ対象を使います。
+生成された ID と派生する点線の接続辺は省きます。
+[fixture: usecase/db-note-order]
+
+JSON 表は値とソースのプロパティ順を保持します。
+[`JSON 行への変換`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L139-L219)
+は両方を読み、JavaScript のキー順だけでは整数風のキーが並び替わるためです。
+クラスとスタイルは
+[`表のループ`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L411-L425)
+へ渡ります。
+クラス定義は
+[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134)
+が読みます。
+表の行とコンパイル済み CSS は派生値なので省きます。
+共通の数値変換は有限でない JSON 数値をテキスト、負のゼロをゼロにします。
+[fixture: usecase/db-json-integer-order]
+[fixture: usecase/db-json-duplicate-order] [fixture: usecase/db-json-pointer]
+[fixture: usecase/db-json-overflow] [fixture: usecase/db-classdef-replace]
+
+`direction` は
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L525-L545)
+のレイアウト方向です。
+`title` は
+[`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseRenderer.ts#L287-L295)
+が読みます。
+共通のアクセシビリティ getter は
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+が読みます。
+[fixture: usecase/db-all-fields] [fixture: usecase/db-direction-td]
+
+残るモデル状態は省きます。
+`symbols` は参照解決の索引です。
+`relationshipCounter` と `noteCounter` は内部 ID を作ります。
+`ast` と各範囲はソース位置を記録します。
+`config` の描画設定は別に利用できます。
+DOM ID、色の索引、サニタイズ・エスケープ済みラベル、
+アクセシブルな名前、型と business から導く図形、マーカー名、
+レイアウト座標、フォント寸法は独立した構文情報を持ちません。
+描画は診断レコードを読みません。
+引用された要素ラベルから導いた意味上の ID は保持します。
+関連・クラス・スタイル・メタデータの参照先になり、
+内部描画 ID ではなくモデルの ID であるためです。
+[fixture: usecase/db-all-fields]
+[fixture: usecase/gram-metadata-target-plain]
+[fixture: usecase/config-drawing-only]
+
+Db パッチは、各 JSON 表を Mermaid が読んだ `value` と
+`propertyOrder` を `{ id, set: { value, propertyOrder } }` として、
+宣言の記述順に `dataBlockEffects` へ記録します。
+`commit` を捕捉し、公開される文の一覧から各 JSON の読みを取り出します。
+宣言より前の関連が表を参照すると、JSON の Map 順は記述順と異なります。
+木は JSON の内部を不透明に保持するため、
+`dbFromTree` は JSON リーダーを持たず、この effect を消費します。
+[fixture: usecase/db-json-source-map-order]
+[fixture: usecase/gram-json-empty]
+
+Chevrotain の
+[`メタデータ規則`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
+は不透明な YAML ではなく、閉じた固有のプロパティ文法を読み、
+data block の effect を作りません。
+解析はブラウザーの代用、URL サニタイザーのパッチ、
+時刻やランダム ID の置換を必要としません。
+[fixture: usecase/gram-metadata-comma]
+[fixture: usecase/db-native-metadata-not-yaml]
+
+保存済み要素テキストには、レイアウト時のサニタイズを適用しません。
+共通のタイトルとアクセシビリティの setter は、
+DOMPurify を無効にした共通サニタイザーを使います。
+対応する四つの securityLevel では要約は同じです。
+非対応の値では、ルートの `htmlLabels`、
+未設定なら `flowchart.htmlLabels` に従って共通文字列が変わることがあります。
+usecase の描画設定は保存済みモデルを変えません。
+[fixture: usecase/html-all-texts]
+[fixture: usecase/config-security-strict]
+[fixture: usecase/config-security-loose]
+[fixture: usecase/config-security-antiscript]
+[fixture: usecase/config-security-sandbox]
+[fixture: usecase/config-security-other]
+[fixture: usecase/config-security-other-html-false]
+[fixture: usecase/config-security-other-flowchart-false]
+[fixture: usecase/config-security-other-usecase-false]
+[fixture: usecase/config-security-other-root-true]
+[fixture: usecase/config-security-other-root-false]
+[fixture: usecase/config-drawing-only]
+
+この固定版では、外側の
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L47-L54)
+がフロントマターのタイトルを設定した後で、パーサーが
+[`db.clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.chevrotain.ts#L10-L12)
+を呼びます。
+そのため、空でない文字列、空白だけの文字列、数値のタイトルでも、
+`title` は空になります。
+`embedded.title` には与えられたタイトルが残ります。
+正規化関数はその結果を保持します。
+[fixture: usecase/frontmatter-title]
+[fixture: usecase/frontmatter-space-title]
+[fixture: usecase/frontmatter-number-title]
+
+directive の除去は `json`、`extend`、方向値 `TB` の途中をつなぎ直す。
+その結果の JSON ノード、extend ラベル、方向が Db に入る。
+[fixture: usecase/div-lex-directive-in-json-keyword]
+[fixture: usecase/div-lex-directive-in-extend-keyword]
+[fixture: usecase/div-lex-directive-in-direction-value]
+
+`actor` または `systemBoundary` と名前の間、`note` と `for` の間、
+ノートの対象とラベルの間の directive も除去され、宣言が受理される。
+[fixture: usecase/lex-directive-between-actor-name]
+[fixture: usecase/lex-directive-between-boundary-name]
+[fixture: usecase/lex-directive-between-note-for]
+[fixture: usecase/lex-directive-between-note-target-label]
+
+class の対象名と接尾辞のクラス名は directive の前後でつなぎ直される。
+対象リストのコンマの前で除去しても、両ノードにクラスが付く。
+[fixture: usecase/div-lex-directive-in-class-target]
+[fixture: usecase/div-lex-directive-in-class-suffix]
+[fixture: usecase/lex-directive-in-class-list-separator]
+
+クラス定義の id、class の対象、style の対象の直前にある directive は、
+それぞれの文を読む前に除去される。
+[fixture: usecase/lex-directive-between-classdef-id]
+[fixture: usecase/lex-directive-between-class-target]
+[fixture: usecase/lex-directive-between-style-target]
+
+方向値や JSON の id の直前、
+アクセシビリティのタイトルや説明の値の直前にある directive も除去される。
+[fixture: usecase/lex-directive-between-direction-value]
+[fixture: usecase/lex-directive-between-json-id]
+[fixture: usecase/lex-directive-between-acctitle-value]
+[fixture: usecase/lex-directive-between-accdescr-value]
+
+メタデータのキーは directive の前後でつなぎ直される。
+値の直前や直後にある directive は、その値を変えずに除去される。
+[fixture: usecase/div-lex-directive-in-metadata-key]
+[fixture: usecase/lex-directive-before-metadata-value]
+[fixture: usecase/lex-directive-after-metadata-value]
+
+除去によって、メタデータの `@{`、ステレオタイプの `<<`、class 接尾辞の `:::`、
+JSON 宣言の `@{` が再構成される。
+[fixture: usecase/div-lex-directive-in-metadata-opener]
+[fixture: usecase/div-lex-directive-in-stereotype-opener]
+[fixture: usecase/div-lex-directive-in-class-delimiter]
+[fixture: usecase/lex-directive-in-json-declaration-at]
+
+JSON 本文でも、除去によって引用されたプロパティ名がつながり、
+プロパティ間の directive だけの行が消える。
+`propertyOrder` はその結果のキーを記録する。
+[fixture: usecase/lex-directive-in-json-key]
+[fixture: usecase/lex-directive-json-comment-line]
+
+`actor` の次の行にある名前は、間にコメントまたは空行がある場合、
+除去後も前の行につながらず拒否される。
+[fixture: usecase/lex-actor-comment-gap] [fixture: usecase/lex-actor-empty-gap]
+
+`direction` の後、ノート対象の後、`json` と id の間のコメント行は、
+除去後も改行が残るため拒否される。
+`systemBoundary` の後の directive だけの行も同様である。
+[fixture: usecase/lex-direction-comment-gap]
+[fixture: usecase/lex-note-label-comment-gap]
+[fixture: usecase/lex-json-id-comment-gap]
+[fixture: usecase/lex-boundary-name-directive-gap]
+
+classDef の値の前の空行や、style の値の前のコメント行があっても、
+値は前の文の続きにならず拒否される。
+[fixture: usecase/lex-classdef-value-empty-gap]
+[fixture: usecase/lex-style-value-comment-gap]
+
+オブジェクト内に U+2028 または U+2029 を含む例の directive は、
+有効な宣言になるようには除去されず、どちらの入力も拒否される。
+[fixture: usecase/lex-directive-open-object-ls]
+[fixture: usecase/lex-directive-open-object-ps]
+
+アクセシビリティ行の後で閉じないまま入力末尾に達した directive は捨てられ、
+タイトルまたは説明は残る。
+[fixture: usecase/lex-directive-open-acctitle-eof]
+[fixture: usecase/lex-directive-open-accdescr-eof]
+
+パーセント記号の間の除去で、行全体のコメントができることがある。
+ヘッダーの直後で入力末尾になる directive は、閉じていても閉じていなくても、
+空の図として受理される。
+[fixture: usecase/lex-directive-between-percent-signs]
+[fixture: usecase/lex-header-closed-directive-eof]
+[fixture: usecase/lex-header-open-directive-eof]
+
+actor 宣言の後のセミコロン二つは、空白を挟む場合も拒否される。
+[fixture: usecase/lex-actor-two-semis] [fixture: usecase/lex-actor-spaced-semis]
+
+境界のヘッダーまたは `end` の後のセミコロン二つ、
+およびコロンと空白は拒否される。
+[fixture: usecase/lex-boundary-two-semis]
+[fixture: usecase/lex-boundary-colon-space] [fixture: usecase/lex-end-two-semis]
+[fixture: usecase/lex-end-colon-space]
+
+関係文の後のセミコロン二つ、またはコロンと空白は拒否される。単独の要素宣言も、
+後者のコロン形式を拒否する。
+[fixture: usecase/lex-edge-two-semis] [fixture: usecase/lex-edge-colon-space]
+[fixture: usecase/lex-entity-colon-space]
+
+class の割り当てと単独のメタデータ文は、末尾のセミコロン二つ、
+およびコロンと空白の両方を拒否する。
+[fixture: usecase/lex-class-two-semis] [fixture: usecase/lex-class-colon-space]
+[fixture: usecase/lex-metadata-two-semis]
+[fixture: usecase/lex-metadata-colon-space]
+
+JSON 宣言と方向指定は、末尾のセミコロン二つ、
+およびコロンと空白の両方を拒否する。
+[fixture: usecase/lex-json-two-semis] [fixture: usecase/lex-json-colon-space]
+[fixture: usecase/lex-direction-two-semis]
+[fixture: usecase/lex-direction-colon-space]
+
+閉じたアクセシビリティ説明ブロックも、閉じ括弧の後のセミコロン二つ、
+またはコロンと空白を拒否する。
+[fixture: usecase/lex-accdescr-block-two-semis]
+[fixture: usecase/lex-accdescr-block-colon-space]
+
+引用しないノートのセミコロンの例は、先頭の空白も含む `" text; ;"` となる。
+コロンの例は `"text:"` となり、末尾の空白は落ちる。
+引用したノートの後のセミコロンは拒否される。
+[fixture: usecase/lex-note-plain-spaced-semis]
+[fixture: usecase/lex-note-plain-colon-space]
+[fixture: usecase/lex-note-quoted-semicolon]
+
+style と classDef の値の末尾の `; ;` は拒否される。
+[fixture: usecase/lex-style-spaced-semis]
+[fixture: usecase/lex-classdef-spaced-semis]
+
+actor 宣言や class の割り当ての後、
+また境界のヘッダーと最後の `end` の後にある末尾の TAB は受理される。
+[fixture: usecase/lex-actor-final-tab] [fixture: usecase/lex-class-final-tab]
+[fixture: usecase/lex-boundary-final-tab]
+
+actor の後で入力末尾にある閉じた directive は除去される。
+アクセシビリティのタイトルや説明ブロックの後の閉じた directive、
+および説明ブロックの後で閉じずに末尾に達した directive も、
+値を変えずに除去される。
+[fixture: usecase/lex-actor-directive-final-eof]
+[fixture: usecase/lex-accessibility-tail-directives]
+[fixture: usecase/lex-accessibility-tail-open-directive]
+
+共通の style 行前処理は usecase lexer より先に動く。`fill:#abc` を使う例では、
+末尾に空白のある style のセミコロン二つ・三つの形式と、
+例示した classDef の末尾形式は、エンティティの符号化記号を生じ、
+CSS の構成要素として拒否される。
+[fixture: usecase/lex-style-three-padding]
+[fixture: usecase/lex-style-two-padding]
+[fixture: usecase/lex-classdef-hash-three]
+[fixture: usecase/lex-classdef-hash-two-padding]
+
+同じ前処理は、
+actor と境界のラベル内の `style fill:#abc;;;` も
+`style fill:\uFB02\u00B0abc\u00B6\u00DF;`（エスケープ表記）に変える。
+[fixture: usecase/lex-style-trigger-actor]
+[fixture: usecase/lex-style-trigger-boundary]
+
+関係のラベルとノートのラベルも、前処理後の同じ記号列を保持し、
+保存された Db では復号しない。
+[fixture: usecase/lex-style-trigger-edge]
+[fixture: usecase/lex-style-trigger-note]
+
+アクセシビリティのタイトルと説明ブロックにも、
+その style を契機とする文字列の変化が起こる。
+[fixture: usecase/lex-style-trigger-a11y-title]
+[fixture: usecase/lex-style-trigger-a11y-description]
+
+ステレオタイプ、JSON の文字列値、actor の icon メタデータにも、
+style を契機とするエンティティ記号が残る。JSON の例では、
+引用されたキーと値の区切りをまたいで前処理が作用する。
+[fixture: usecase/lex-style-trigger-stereotype]
+[fixture: usecase/lex-style-trigger-json]
+[fixture: usecase/lex-style-trigger-metadata-icon]
+
+同じ文字列を持つ frontmatter のタイトルは `embedded.title` では変わらず、
+共通タイトルは前述のとおりクリアされる。
+[fixture: usecase/lex-style-trigger-frontmatter]
+
+色とセミコロンの間に U+2028 または U+2029 がある例では、
+style 行のパターンに一致せず、ラベル文字列がそのまま残る。
+[fixture: usecase/lex-style-trigger-ls] [fixture: usecase/lex-style-trigger-ps]
+
+directive の除去は style 行前処理より先である。
+ラベル内の `sty` と `le` がつながることで前処理が作用し、
+色の後のセミコロンが除去される場合がある。
+[fixture: usecase/lex-style-trigger-directive]
+
+ヘッダーキーワードの後の U+2003 は検出条件を満たすが、
+その文字だけが続く入力は構文解析で拒否される。
+キーワードの直前・直後の U+0085 は usecase と検出されず、
+本文の U+0085 だけの行も拒否される。
+[fixture: usecase/lex-header-emspace-eof] [fixture: usecase/lex-header-nel-eof]
+[fixture: usecase/lex-nel-before-header] [fixture: usecase/lex-nel-only-line]
+
+引用した icon の値では、内部の U+00A0、末尾の U+FEFF、U+2029 が残る。
+引用していないメタデータ項目間の U+2028 は拒否される。
+[fixture: usecase/lex-metadata-unicode-value]
+[fixture: usecase/lex-metadata-ps-string]
+[fixture: usecase/lex-metadata-ls-separator]
+
+JSON では、オブジェクトの空白としての U+2029 は拒否されるが、
+引用した値の中の U+2028 は残る。
+[fixture: usecase/div-lex-json-ps-whitespace]
+[fixture: usecase/lex-json-ls-string]
+
+actor のラベルの前後の U+00A0、境界ラベルの前後の U+FEFF、
+関係ラベルの前後の U+3000、ノートラベルの前後の U+00A0 は残る。
+[fixture: usecase/lex-actor-label-unicode-padding]
+[fixture: usecase/lex-boundary-label-unicode-padding]
+[fixture: usecase/lex-edge-label-unicode-padding]
+[fixture: usecase/lex-note-label-unicode-padding]
+
+ステレオタイプの前後の U+FEFF は trim で除かれるが、
+内部の CR または CRLF は拒否される。
+[fixture: usecase/lex-stereotype-bom-padding]
+[fixture: usecase/lex-stereotype-cr] [fixture: usecase/lex-stereotype-crlf]
+
+例の完全な図では、CR と CRLF はアクセシビリティ、方向、actor、境界、要素、関係、
+ノート、JSON、メタデータ、classDef、class、style の各文を区切る。
+[fixture: usecase/lex-statements-cr] [fixture: usecase/lex-statements-crlf]
+
+行全体のコメントは CR でも CRLF でも終わる。共通のコメント除去は、
+例の U+00A0 による字下げも受け付ける。
+[fixture: usecase/lex-comment-cr] [fixture: usecase/lex-comment-crlf]
+[fixture: usecase/lex-comment-nbsp-indent]
+
+例の補助文字と結合文字列は id として拒否されるが、要素のラベルではどちらも残る。
+[fixture: usecase/lex-supplementary-id] [fixture: usecase/lex-combining-id]
+[fixture: usecase/lex-supplementary-label]
+
+markdown 文字列は、バックスラッシュの後でも、
+最初のバッククォートと二重引用符の組で閉じる。
+その後にラベル文字列が続く例は拒否される。バッククォートを伴わない二重引用符は、
+markdown 本文内に残る。
+[fixture: usecase/lex-markdown-earliest-close]
+[fixture: usecase/lex-markdown-close-backslash]
+[fixture: usecase/lex-markdown-embedded-double]
+
+例の単一引用符によるラベルでは、
+バックスラッシュはアポストロフィをエスケープしない。
+[fixture: usecase/lex-plain-single-apostrophe]
+
+ステレオタイプの mode は最初の `>>` で閉じ、本文の前の改行を拒否し、
+内部の `<<` は文字列として残す。
+[fixture: usecase/lex-stereotype-first-close]
+[fixture: usecase/lex-stereotype-newline-before-close]
+[fixture: usecase/lex-stereotype-nested-open]
+
+閉じない引用符を持つ JSON の値は、
+次の行も未閉鎖オブジェクトのトークンに取り込み、拒否される。
+`json` と id の間の U+00A0 は、JSON 宣言の mode を切り替えるトークンを作らない。
+[fixture: usecase/lex-json-mode-unclosed-string]
+[fixture: usecase/lex-json-nbsp-gap]
+
+キーワードの優先順位によって、
+CSS プロパティの `actor-name` は分割されて拒否される。一方、
+ラベルの `actor-name actorName` は残り、
+CSS の `style:include` は word カテゴリーとして受理される。
+[fixture: usecase/lex-css-hyphen-keyword-style]
+[fixture: usecase/lex-css-keyword-prefix-label-control]
+[fixture: usecase/lex-keyword-style-word-category]
+
+文頭の `o--word` と `x--word` は、後向きの記号付き矢印トークンで始まるため、
+宣言として拒否される。
+[fixture: usecase/lex-back-circle-id-prefix]
+[fixture: usecase/lex-back-cross-id-prefix]
+前向きの記号 `--o` と `--x` は、後続の id の先頭の `o` または `x` を取り込む。
+`A --order` と `A --xray` は丸印と交差印の関係として受理され、
+対象 id はそれぞれ `rder` と `ray` となる。
+[fixture: usecase/lex-forward-circle-id-prefix]
+[fixture: usecase/lex-forward-cross-id-prefix]
+`A --oB` では一文字の対象 `B` が残る。
+[fixture: usecase/lex-forward-circle-id-prefix-one-letter]
+
+ヘッダーキーワードはラベル文字列にもなる。
+単位付き小数は一つの数値トークンとなり id として拒否されるが、
+`1.5px_tail` は CSS の値として受理される。
+[fixture: usecase/lex-keyword-header-label]
+[fixture: usecase/lex-number-decimal-id-unit]
+[fixture: usecase/lex-number-suffix-boundary]
+
+例のラベルのフォールバックは、セミコロン、山括弧、バックスラッシュ、
+バッククォート、および fixture にあるその他の句読点・記号を残す。
+[fixture: usecase/lex-label-fallback-punctuation]
+[fixture: usecase/lex-label-fallback-symbols]
+
+コンマだけのメタデータブロックは拒否される。
+改行の後にコンマと次のプロパティが続く形式は受理される。
+[fixture: usecase/gram-metadata-empty-comma-only]
+[fixture: usecase/gram-metadata-newline-comma-same-line]
+
+インラインの `type` または `business` を異なる値で繰り返すと拒否される。
+actor 宣言より前の単独の `type:awesome` は、
+その宣言のインラインの `type:hollow` に優先する。
+[fixture: usecase/gram-metadata-duplicate-inline-conflict]
+[fixture: usecase/gram-metadata-duplicate-inline-business]
+[fixture: usecase/gram-metadata-standalone-before-inline]
+
+JSON ノードへの空の単独メタデータは受理されるが、
+その対象への `business:true` は無効となる。
+[fixture: usecase/gram-metadata-json-empty]
+[fixture: usecase/gram-metadata-json-nonempty]
+
+メタデータでは、`@` と `{` の間の空白、actor のステレオタイプの後のブロック、
+要素の class 接尾辞の後のブロックが拒否される。
+[fixture: usecase/gram-metadata-space-before-brace]
+[fixture: usecase/gram-actor-suffix-metadata-after-stereotype]
+[fixture: usecase/gram-entity-class-before-metadata]
+
+キーワード `actor` は、
+class 接尾辞の名前としても classDef の id としても拒否される。
+[fixture: usecase/gram-class-keyword-name]
+[fixture: usecase/gram-classdef-keyword-id]
+
+境界内の単独メタデータは、その `parentId` を持つユースケースを作れる。
+同じ場所で actor 宣言の行に関係文を続けると拒否される。
+[fixture: usecase/gram-boundary-standalone-metadata-inside]
+[fixture: usecase/gram-boundary-actor-relation]
+
+actor のラベルまたは境界のタイトルを、同じ本文でも異なるラベル種別で繰り返すと、
+競合になる。
+[fixture: usecase/gram-boundary-repeat-labeltype-conflict]
+[fixture: usecase/gram-actor-repeat-labeltype-conflict]
+
+同じ引用された宣言を繰り返すと、生成された意味上の id が衝突する。一方、
+その id を関係、style、メタデータから明示して参照すると、
+元のノードが更新される。
+[fixture: usecase/gram-generated-label-repeat]
+[fixture: usecase/gram-generated-reference-suffix]
+
+ノードを参照するだけの関係端点に class 接尾辞を付けると、
+宣言済み actor の id でも引用した端点でも拒否される。
+[fixture: usecase/gram-classes-on-reference-only]
+[fixture: usecase/gram-classes-on-quoted-reference-only]
+
+禁止語の大文字表記 `NEWPAGE` は、単独の要素宣言として拒否される。
+[fixture: usecase/gram-forbidden-uppercase]
+
+`A <--- text -- B` の長い左側は拒否される。
+ラベル付きの後向き丸印・交差印矢印の長い右側は受理され、`minlen: 1` となる。
+[fixture: usecase/gram-backward-long-labeled-left]
+[fixture: usecase/gram-back-circle-long-right-label]
+[fixture: usecase/gram-back-cross-long-right-label]
+
+引用した空白だけの関係ラベルは空白を保持し、
+空の markdown 関係ラベルは空文字列と `labelType: markdown` を保持する。
+[fixture: usecase/gram-edge-whitespace-label]
+[fixture: usecase/gram-edge-empty-markdown-label]
+
+class の割り当て順、classDef の定義順、直接の style は別々に残り、
+保存されたノードの styles にクラス定義は統合されない。
+[fixture: usecase/gram-class-styles-resolution-order]
+
+先頭を大文字にした `True` と `False` は business の値として無効であり、
+引用した空のプロパティ名も無効である。
+[fixture: usecase/gram-metadata-uppercase-boolean]
+[fixture: usecase/gram-metadata-uppercase-false]
+[fixture: usecase/gram-metadata-empty-key]
+
+整数の icon 値は文字列として保存され、actor の type が icon になるが、
+小数の icon 値は拒否される。icon を空文字列に更新すると、icon が除かれ、
+actor の type は normal に戻る。
+[fixture: usecase/gram-metadata-number-icon]
+[fixture: usecase/gram-metadata-decimal-icon]
+[fixture: usecase/gram-actor-icon-clear]
+
+同じ境界を三回宣言すると、class 接尾辞とメンバーが蓄積される。
+例の package から rect への更新では、最終的な type は `rect` となる。
+[fixture: usecase/gram-boundary-three-classes-types]
+
+小文字の `td`、`tb`、`bt`、`rl` は方向値として拒否される。
+[fixture: usecase/gram-direction-lower-td]
+[fixture: usecase/gram-direction-lower-tb]
+[fixture: usecase/gram-direction-lower-bt]
+[fixture: usecase/gram-direction-lower-rl]
+
+null、真偽値、オブジェクト、配列の frontmatter タイトルでは、
+共通の Db タイトルは空になる。
+frontmatter のルートがスカラーや配列の形式も受理され、タイトルは空になる。
+[fixture: usecase/gram-frontmatter-null-title]
+[fixture: usecase/gram-frontmatter-bool-title]
+[fixture: usecase/gram-frontmatter-object-title]
+[fixture: usecase/gram-frontmatter-array-title]
+[fixture: usecase/gram-frontmatter-scalar-root]
+[fixture: usecase/gram-frontmatter-array-root]
+
+字下げした frontmatter は受理される。
+二重引用符の HTML 属性を持つ例の frontmatter タイトルは、
+前処理で無効な YAML に変わり拒否される。
+[fixture: usecase/gram-frontmatter-indented]
+[fixture: usecase/div-gram-frontmatter-html-attribute-quotes]
+
+YAML として無効な例の init directive は除去され、図は拒否されず、
+ノードも変わらない。 [fixture: usecase/gram-directive-invalid-yaml]
+
+ラベル内の `C4Context` や frontmatter 内の `C4Container` があっても、
+usecase として検出される。ヘッダーの後の U+00A0 は検出条件を満たすが、
+続く actor 文との区切りにはならない。
+[fixture: usecase/gram-detect-c4-context-label]
+[fixture: usecase/gram-detect-c4-frontmatter]
+[fixture: usecase/gram-header-unicode-space-statement]
+
+未対応の security level とルートの `htmlLabels: false` の例では、
+説明ブロックと要素にある HTML マークアップがどちらも残る。
+[fixture: usecase/gram-accessibility-unsupported-description]
+
+actor の icon メタデータは HTML マークアップを保持する。
+`#amp;` は、エンティティ記号
+`\uFB02\u00B0amp\u00B6\u00DF`（エスケープ表記）として保存する。
+引用したエンティティのラベルは、
+符号化後の文字列から参照可能な id `__amp___name` を作る。
+[fixture: usecase/gram-html-actor-icon]
+[fixture: usecase/gram-entity-metadata-icon]
+[fixture: usecase/gram-entity-derived-id]
+
+二重引用符で囲んだ例のラベルでは、
+前処理が HTML 属性の二重引用符を単一引用符に変える。
+外側も単一引用符にした対応例は拒否される。
+[fixture: usecase/gram-html-double-attribute]
+[fixture: usecase/gram-html-single-attribute]
+
+JSON のプロパティ値が空文字列の場合も、その値が残る。
+[fixture: usecase/gram-json-empty-string-value]
+
+同じプロパティを繰り返してオブジェクトをスカラーで置き換えると、
+`value` はスカラーを保持し、
+`propertyOrder` から上書きされたオブジェクトのパスが消える。
+[fixture: usecase/gram-json-object-scalar-overwrite]
+
+JSON は、例のキーと値の制御文字、スラッシュ、Unicode のエスケープを復号し、
+`propertyOrder` は復号後のキーを記録する。不正な `\q` エスケープは拒否される。
+[fixture: usecase/gram-json-control-escapes]
+[fixture: usecase/div-gram-json-malformed-escape]
+
+JSON の閉じ引用符の前のバックスラッシュ二つは、一つのバックスラッシュを表し、
+引用符を隠さない。後続のオブジェクトと、その property-order エントリーも残る。
+[fixture: usecase/gram-json-double-backslash-before-quote]

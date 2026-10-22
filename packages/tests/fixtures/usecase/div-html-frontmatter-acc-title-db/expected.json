@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Grammar: Cross-frontmatter tag conversion changes an accessibility value while both readings accept."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "b='c'>d",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

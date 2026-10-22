@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A selected semicolon inside a native property key rejoins it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Business actor 'A' must use normal or hollow geometry at line 2, column 7 [19,20)"
+  }
+}

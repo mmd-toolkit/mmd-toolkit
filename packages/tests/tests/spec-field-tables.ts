@@ -15,6 +15,8 @@ const PARSER_DOCS = path.join(HERE, "../../parser/docs")
 
 /** The diagrams that have a tree document. */
 export const TREE_DOCUMENT_DIAGRAMS = [
+  "usecase",
+  "agentflow",
   "flowchart",
   "sequence",
   "class",
@@ -32,6 +34,7 @@ export const TREE_DOCUMENT_DIAGRAMS = [
   "kanban",
   "c4",
   "venn",
+  "ishikawa",
 ] as const
 
 /** The fields that every node and every record has, which no table lists. */
@@ -93,7 +96,7 @@ function readTables(
     }
     for (const name of names) {
       const fields = tables.get(name) ?? new Map<string, string>()
-      fields.set(field, cells[column] ?? "")
+      if (field !== "(none)") fields.set(field, cells[column] ?? "")
       tables.set(name, fields)
     }
   }

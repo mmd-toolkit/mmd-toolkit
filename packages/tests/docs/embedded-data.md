@@ -98,6 +98,16 @@ the next entry to the element the block belongs to.
 The list is empty when the text has no data blocks, and for diagram types whose
 Db patch does not record them yet.
 
+Usecase JSON tables record the complete Mermaid-read value and property order as
+`{ id, set: { value, propertyOrder } }`, including an empty object. Effects
+follow authored JSON declaration order, which can differ from Db map order after
+a forward reference. Native usecase metadata is syntax and has no such effect.
+The usecase patch intercepts the published model at `commit`, takes JSON
+statements in source order and looks up their Mermaid-read values; it never
+reads the JSON interior again. `clear` resets the effects. [fixture:
+usecase/gram-json-empty] [fixture: usecase/db-json-source-map-order] [fixture:
+usecase/db-native-metadata-not-yaml]
+
 ### How it is recorded
 
 The flowchart Db patch records it by wrapping

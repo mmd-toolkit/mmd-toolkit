@@ -47,6 +47,7 @@ export type EmptyFormKind =
  */
 export const EMPTY_FORM_KINDS: Readonly<
   Record<
+    | "agentflow"
     | "flowchart"
     | "sequence"
     | "class"
@@ -62,6 +63,7 @@ export const EMPTY_FORM_KINDS: Readonly<
     readonly EmptyFormKind[]
   >
 > = {
+  agentflow: ["empty-string", "empty-call", "empty-description-block"],
   flowchart: ["empty-string", "empty-call", "empty-description-block"],
   sequence: ["empty-description-block"],
   class: [

@@ -36,6 +36,7 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | Rule                                                                                    | Description                                                                                          | ✅  | 💡  | 🚧  |
 | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | --- | --- | --- |
 | [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.md)           | Disallow an `accDescr` statement that sets the description again.                                    | ✅  | 💡  |     |
+| [flowchart-no-duplicate-direction](./flowchart-no-duplicate-direction.md)               | Disallow a `direction` statement that replaces the direction of its subgraph.                        | ✅  |     |     |
 | [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.md)                       | Disallow an `accTitle` statement that sets the title again.                                          | ✅  | 💡  |     |
 | [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                                              | ✅  | 💡  |     |
 | [flowchart-no-ignored-text](./flowchart-no-ignored-text.md)                             | Disallow text on a direction line that mermaid.js drops.                                             | ✅  | 💡  |     |
@@ -148,6 +149,7 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | Rule                                                            | Description                                                                                       | ✅  | 💡  | 🚧  |
 | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | --- | --- | --- |
 | [c4-no-duplicate-description](./c4-no-duplicate-description.md) | Disallow a description statement that replaces a different diagram description.                   | ✅  |     |     |
+| [c4-no-duplicate-style](./c4-no-duplicate-style.md)             | Disallow a style update that replaces a value that an earlier update gave.                        | ✅  |     |     |
 | [c4-no-duplicate-title](./c4-no-duplicate-title.md)             | Disallow a title statement that replaces a different title set by another title statement.        | ✅  |     |     |
 | [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.md) | Disallow incorrect casing of the color and offset keys in C4 style updates.                       | ✅  |     |     |
 | [c4-no-redefined-element](./c4-no-redefined-element.md)         | Disallow a declaration of an element or a boundary that replaces an earlier label, kind, or type. | ✅  |     |     |
@@ -209,5 +211,31 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | Rule                                                            | Description                                                         | ✅  | 💡  | 🚧  |
 | --------------------------------------------------------------- | ------------------------------------------------------------------- | --- | --- | --- |
 | [kanban-no-duplicate-section](./kanban-no-duplicate-section.md) | Disallow a repeated section id that lists its items more than once. | ✅  |     |     |
+
+## venn
+
+| Rule                                                        | Description                                                                | ✅  | 💡  | 🚧  |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------- | --- | --- | --- |
+| [venn-no-duplicate-style](./venn-no-duplicate-style.md)     | Disallow a style that replaces an earlier value of the same target.        | ✅  |     |     |
+| [venn-no-duplicate-subset](./venn-no-duplicate-subset.md)   | Disallow a set or a union that is declared again.                          | ✅  |     |     |
+| [venn-no-duplicate-title](./venn-no-duplicate-title.md)     | Disallow a title that replaces a different title.                          | ✅  |     |     |
+| [venn-no-ignored-text](./venn-no-ignored-text.md)           | Disallow a character that the comment after it removes.                    | ✅  |     |     |
+| [venn-no-invalid-style-key](./venn-no-invalid-style-key.md) | Disallow a style property that the drawing does not read.                  | ✅  |     |     |
+| [venn-no-undef](./venn-no-undef.md)                         | Disallow a text node or a style for an area that no set or union declares. | ✅  |     |     |
+
+## agentflow
+
+| Rule                                                                                    | Description                                                                                       | ✅  | 💡  | 🚧  |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | --- | --- | --- |
+| [agentflow-no-duplicate-description](./agentflow-no-duplicate-description.md)           | Disallow an `accDescr` that replaces the description set before it.                               | ✅  |     |     |
+| [agentflow-no-duplicate-direction](./agentflow-no-duplicate-direction.md)               | Disallow a `direction` statement that replaces the direction of its flow.                         | ✅  |     |     |
+| [agentflow-no-duplicate-title](./agentflow-no-duplicate-title.md)                       | Disallow an `accTitle` that replaces the title set before it.                                     | ✅  |     |     |
+| [agentflow-no-empty-description-block](./agentflow-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                                           | ✅  |     |     |
+| [agentflow-no-ignored-text](./agentflow-no-ignored-text.md)                             | Disallow text that mermaid.js drops from a direction line.                                        | ✅  |     |     |
+| [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.md)               | Disallow a connector declaration that replaces the title or the vertex written for its id before. | ✅  |     |     |
+| [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.md)                         | Disallow a flow declaration that replaces the title written for its id before.                    | ✅  |     |     |
+| [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.md)                     | Disallow a vertex that replaces the label or the shape written for its id before.                 | ✅  |     |     |
+| [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.md) | Disallow an `accDescr {` block that is not closed by `}`.                                         |     |     |     |
+| [agentflow-no-undef](./agentflow-no-undef.md)                                           | Disallow a `style`, `class`, or `click` statement for an id that nothing declares.                | ✅  |     |     |
 
 <!-- end auto-generated rules list -->

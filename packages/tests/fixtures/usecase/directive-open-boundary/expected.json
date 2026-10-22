@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What happens to an unclosed directive after a boundary header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> END <-- but found --> '' <-- at line NaN, column NaN [30,30)"
+  }
+}

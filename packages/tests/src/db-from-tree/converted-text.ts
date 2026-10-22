@@ -129,6 +129,75 @@ export class AttributeQuotes {
   }
 }
 
+/** Frontmatter trivia includes its closing line and subsequent whitespace-only lines. */
+function afterFrontmatter(text: string, root: TreeRoot): number {
+  let start = root.frontmatter?.range[1] ?? 0
+  // Frontmatter.range excludes the padding and line terminator of its closing
+  // delimiter. The removed frontmatter trivia includes that entire line.
+  if (root.frontmatter !== null) {
+    while (start < text.length && text[start] !== "\r" && text[start] !== "\n")
+      start++
+    if (text[start] === "\r") start++
+    if (text[start] === "\n") start++
+    // Keep the indentation of the first nonblank line: it belongs to the body.
+    let end = start
+    while (end < text.length && isWhitespace(text.charCodeAt(end))) {
+      if (text[end] === "\r" || text[end] === "\n") start = end + 1
+      end++
+    }
+    if (end === text.length) start = end
+  }
+  return start
+}
+
+/** common.md: Agentflow measures UTF-16 source after frontmatter, directives and CRLF normalization. */
+export function agentflowPreservesComments(
+  text: string,
+  root: TreeRoot,
+): boolean {
+  const start = afterFrontmatter(text, root)
+  const scan = scanSource(text, start)
+  const cuts = new Uint8Array(text.length)
+  for (const directive of scan.directives)
+    mark(cuts, [directive.range[0], directive.scanEnd])
+  let length = 0
+  for (let at = start; at < text.length; at++) {
+    if (cuts[at] === 1) continue
+    length++
+    if (
+      text.charAt(at) === "\r" &&
+      text.charAt(at + 1) === "\n" &&
+      cuts[at + 1] !== 1
+    )
+      at++
+  }
+  return length <= 50_000
+}
+
+/** Written source cuts, including the lexical comments of Agentflow and Usecase. */
+export function sourceCutsOf(text: string, root: TreeRoot): Uint8Array {
+  const start = root.frontmatter?.range[1] ?? 0
+  const scan = scanSource(text, start)
+  const cuts = new Uint8Array(text.length)
+  for (const directive of scan.directives)
+    mark(cuts, [directive.range[0], directive.scanEnd])
+  if (
+    root.body.type !== "AgentflowDiagram" ||
+    !agentflowPreservesComments(text, root)
+  ) {
+    for (const line of scan.commentLines) mark(cuts, line.region)
+  }
+  if (
+    root.body.type === "AgentflowDiagram" ||
+    root.body.type === "UsecaseDiagram"
+  ) {
+    for (const comment of root.comments) mark(cuts, comment.range)
+  }
+  for (const token of root.tokens)
+    if (token.type === "IgnoredSemicolon") mark(cuts, token.range)
+  return cuts
+}
+
 /**
  * The offsets that the common source scan leaves out (common.md, Reading a
  * source): the directives, with what their scan takes after them, and the
@@ -141,19 +210,6 @@ function sourceLeftOut(text: string, textStart: number): Uint8Array {
     mark(leftOut, [directive.range[0], directive.scanEnd])
   }
   for (const commentLine of scan.commentLines) mark(leftOut, commentLine.region)
-  return leftOut
-}
-
-/** The shared source cuts, with the ignored semicolons supplied by the recorded tree. */
-function findLeftOut(
-  text: string,
-  root: TreeRoot,
-  textStart: number,
-): Uint8Array {
-  const leftOut = sourceLeftOut(text, textStart)
-  for (const token of root.tokens) {
-    if (token.type === "IgnoredSemicolon") mark(leftOut, token.range)
-  }
   return leftOut
 }
 
@@ -192,14 +248,25 @@ export function readConvertedCharacters(
   root: TreeRoot,
   attributes: AttributeQuotes = new AttributeQuotes(text, root),
 ): ConvertedCharacter[] {
-  const textStart = root.frontmatter?.range[1] ?? 0
-  const leftOut = findLeftOut(text, root, textStart)
+  const textStart =
+    root.body.type === "AgentflowDiagram"
+      ? afterFrontmatter(text, root)
+      : (root.frontmatter?.range[1] ?? 0)
+  const leftOut = sourceCutsOf(text, root)
+  const removeLeadingWhitespace =
+    root.body.type !== "AgentflowDiagram" ||
+    !agentflowPreservesComments(text, root)
   // Leading whitespace is trivia (common.md, Leading whitespace), also after
   // the directives and comment regions that precede the first unit.
   const visible: number[] = []
   for (let offset = textStart; offset < text.length; offset++) {
     if (leftOut[offset] === 1) continue
-    if (visible.length === 0 && isWhitespace(text.charCodeAt(offset))) continue
+    if (
+      removeLeadingWhitespace &&
+      visible.length === 0 &&
+      isWhitespace(text.charCodeAt(offset))
+    )
+      continue
     visible.push(offset)
   }
   const characters = convertVisibleCharacters(
@@ -407,4 +474,32 @@ export class ConvertedText {
       .map((token) => this.of(token.range))
       .join("")
   }
+}
+
+/** Agentflow's brace rule folds only line whitespace immediately followed by one LF. */
+export function readAgentflowCharacters(
+  text: string,
+  root: TreeRoot,
+): ConvertedCharacter[] {
+  const input = readConvertedCharacters(text, root)
+  const output: ConvertedCharacter[] = []
+  for (let at = 0; at < input.length; at++) {
+    const current = input[at]
+    if (current === undefined) continue
+    output.push(current)
+    if (current.codePoint !== 0x7d) continue
+    let next = at + 1
+    while (
+      next < input.length &&
+      input[next]?.codePoint !== 0x0a &&
+      isWhitespace(input[next]?.codePoint ?? -1)
+    )
+      next++
+    const first = input[at + 1]
+    if (first !== undefined && input[next]?.codePoint === 0x0a) {
+      output.push({ start: first.start, codePoint: 0x0a })
+      at = next
+    }
+  }
+  return output
 }

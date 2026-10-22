@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A body-only accessibility value keeps its double quotes."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "b=\"c\">d",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

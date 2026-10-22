@@ -7,7 +7,7 @@ import {
   BLOCK_SHAPE_CLOSINGS,
 } from "../src/check-tree/block.ts"
 import { checkTree } from "../src/check-tree/index.ts"
-import { FLOWCHART_SHAPES } from "../src/check-tree/flowchart-shapes.ts"
+import { GRAPH_SHAPES } from "../src/check-tree/graph-shapes.ts"
 import { KANBAN_OPENERS, KANBAN_CLOSERS } from "../src/check-tree/kanban.ts"
 import { PUNCTUATOR_TEXTS } from "../src/check-tree/punctuators.ts"
 import type { TreeProblem } from "../src/check-tree/types.ts"
@@ -61,6 +61,8 @@ function textsOfRow(diagram: string): string[] {
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [string, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["usecase", "UsecaseDiagram"],
+  ["agentflow", "AgentflowDiagram"],
   ["sequence", "SequenceDiagram"],
   ["class", "ClassDiagram"],
   ["state", "StateDiagram"],
@@ -88,12 +90,43 @@ function textsBesidesTheRow(diagram: string): string[] {
   switch (diagram) {
     // The row names the shapes by their rule, and the `data-start` unit,
     // which is `@{`, by its name.
+    // The usecase row names each punctuation family; arrow nodes check their operators.
+    case "usecase":
+      return [
+        "(",
+        ")",
+        "[",
+        "]",
+        "@{",
+        "@",
+        "{",
+        "}",
+        "<<",
+        ">>",
+        ":::",
+        ",",
+        ":",
+        "--",
+      ]
+    case "agentflow":
+      return [
+        ...GRAPH_SHAPES.flatMap((shape) => [shape.opening, ...shape.closings]),
+        "|",
+        ":",
+        "&",
+        ":::",
+        ",",
+        ";",
+        "@",
+        "@{",
+        "}",
+        "{",
+        "(",
+        ")",
+      ]
     case "flowchart":
       return [
-        ...FLOWCHART_SHAPES.flatMap((shape) => [
-          shape.opening,
-          ...shape.closings,
-        ]),
+        ...GRAPH_SHAPES.flatMap((shape) => [shape.opening, ...shape.closings]),
         "@{",
       ]
     // The row says that `;` is what a `newline` unit is read from.
@@ -133,6 +166,14 @@ function distinct(texts: readonly string[]): string[] {
 }
 
 describe("the table of the texts of Punctuator tokens", () => {
+  it("gives Ishikawa no punctuation, whose token table has no Punctuator row", () => {
+    const text = readFileSync(path.join(TOKEN_DOCUMENTS, "ishikawa.md"), "utf8")
+    expect(
+      text.split("\n").some((line) => line.startsWith("| `Punctuator`")),
+    ).toBe(false)
+    expect(PUNCTUATOR_TEXTS.IshikawaDiagram).toEqual([])
+    expect(textProblems("IshikawaDiagram", ":")).toHaveLength(1)
+  })
   it("registers the Venn punctuation and rejects another text", () => {
     expect(PUNCTUATOR_TEXTS.VennDiagram).toEqual([",", ":", "[", "]"])
     expect(textProblems("VennDiagram", ";")).toHaveLength(1)
@@ -226,9 +267,7 @@ describe("the table of the shapes of a flowchart", () => {
 
   it("is the rows of the specification: the name and the opening of each, and the closings that it names, or that the rule of the unit that it names gives, and no others", () => {
     expect(
-      FLOWCHART_SHAPES.map((shape) =>
-        describeShape(shape, shape.closings),
-      ).sort(),
+      GRAPH_SHAPES.map((shape) => describeShape(shape, shape.closings)).sort(),
     ).toEqual(rows.map((row) => describeShape(row, closingsOfRow(row))).sort())
   })
 })

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A space alone cannot separate the header direction and first node."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nagentflow-beta TB A\n------------------^\nExpecting 'NEWLINE', got 'NODE_STRING'"
+  }
+}

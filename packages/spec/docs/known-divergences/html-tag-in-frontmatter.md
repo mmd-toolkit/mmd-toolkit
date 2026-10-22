@@ -35,6 +35,15 @@ venn/div-html-tag-starts-in-frontmatter]
 Without the opening tag in frontmatter, both reject the same venn body.
 [fixture: venn/gram-html-tag-body-only-reference]
 
+In Ishikawa, with `title: <a` in frontmatter, bare `b="c">d` and quoted-looking
+`"b="c">d"` are accepted as node text by both. mermaid.js changes the attribute
+quotes to single quotes; this specification reads the body independently of that
+tag. The written IshikawaLiteral retains its original quotes. [fixture:
+ishikawa/div-frontmatter-open-tag-bare-node] [fixture:
+ishikawa/div-frontmatter-open-tag-quoted-node] Without the frontmatter tag,
+`b="c">d` is accepted unchanged by both. [fixture:
+ishikawa/lex-quotes-without-frontmatter-tag]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -160,6 +169,51 @@ It is nothing that a specification would state as a rule of the syntax; this is
 the second of the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
 
+### Agentflow
+
+Agentflow uses the same body-only HTML rule. Its Frontmatter record and
+Label/Literal nodes retain the authored text; an ignored-text sibling cannot
+make a tag in the frontmatter change the lexical role of body quotes under that
+scope. Matching Mermaid would change the shared scan scope rather than retain a
+missing value. [fixture: agentflow/div-html-cross-frontmatter] [fixture:
+agentflow/div-frontmatter-tag-enables-label] [fixture:
+agentflow/div-frontmatter-tag-changes-title]
+
+The comparison goes both ways: one frontmatter tag makes Mermaid accept a body
+label that the independent body rule rejects, while an unfinished frontmatter
+attribute makes Mermaid reject an otherwise valid body tag. The existing
+reason-2 direct rule covers both, and its reverse pipeline-order criterion
+permits the latter acceptance. [fixture:
+agentflow/div-frontmatter-tag-enables-label] [fixture:
+agentflow/html-label-without-frontmatter-tag] [fixture:
+agentflow/div-frontmatter-attribute-blocks-body-tag] [fixture:
+agentflow/html-body-tag-reference]
+
+### Usecase
+
+In usecase, the affected range starts with an unfinished tag/attribute in
+frontmatter and runs into the body's attribute quotes. Frontmatter and
+UsecaseLabel can retain all characters, but no missing-text node can make a
+frontmatter tag change the lexical role of body quotes under a body-only scan.
+Mermaid's cross-boundary conversion accepts the enabling example whose body-only
+reference is rejected, and rejects the blocking example whose body-only
+reference is accepted. Keep the existing reason-2 rule in both directions:
+accepting the latter is the reverse pipeline-order criterion, not a relaxation
+of the label grammar. [fixture: usecase/div-html-frontmatter-enables-label]
+[fixture: usecase/lex-html-body-label-reference] [fixture:
+usecase/div-html-frontmatter-blocks-label] [fixture:
+usecase/lex-html-body-tag-reference]
+
+Both readings can also accept while an accessibility value differs. With
+`title: <a` in frontmatter and `accTitle: b="c">d`, Mermaid reads `b='c'>d`;
+this specification keeps `b="c">d`. Frontmatter and UsecaseLiteral hold the
+written text without changing the tree's values to the converted quotes. An
+arrow before the accessibility statement closes the frontmatter tag at its `>`
+and prevents that change to the value. [fixture:
+usecase/div-html-frontmatter-acc-title-db] [fixture:
+usecase/lex-html-acc-title-body-control] [fixture:
+usecase/lex-html-frontmatter-arrow-closes-tag]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -178,3 +232,30 @@ the second of the reasons for a known divergence (see
   frontmatter boundary. Searches of issues and pull requests in
   `mermaid-js/mermaid` on 2026-10-21 with `venn frontmatter in:title,body` and
   `venn HTML in:title,body` found no report about that form.
+
+- The pinned
+  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  shows indented node text, but no frontmatter or HTML tag crossing its
+  boundary. Searches of issues and pull requests in `mermaid-js/mermaid` on
+  2026-10-21 with `ishikawa`, `ishikawa frontmatter in:title,body`, and
+  `ishikawa HTML in:title,body` found no report about a tag starting in
+  frontmatter and continuing into Ishikawa node text.
+
+- The pinned
+  [Agentflow frontmatter example](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L67-L90)
+  combines YAML configuration with quoted body labels; it does not describe an
+  HTML tag crossing that boundary. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `agentflow frontmatter in:title,body`
+  found the merged [PR #8073](https://github.com/mermaid-js/mermaid/pull/8073),
+  whose description discusses comment preservation and frontmatter offsets, not
+  a tag continuing into body quotes.
+
+- The pinned
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  describes quoted labels and JSON. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `usecase title` found no inspected
+  report establishing a maintainer defect judgment for this acceptance behavior.
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048), closed and merged
+  on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
+  validation and JSON tables. This divergence follows the shared direct rule,
+  not a claim that a bug label approves a grammar change.

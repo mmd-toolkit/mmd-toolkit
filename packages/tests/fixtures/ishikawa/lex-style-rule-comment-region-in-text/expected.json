@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F3: The line rule and a common comment region leave one node across physical lines."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R style:#x  tail;",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R style:#x  tail;",
+      "children": []
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import { agentflowDbOf } from "./agentflow.ts"
+import type { AgentflowDiagram } from "./agentflow-tree.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary } from "../types.ts"
 import { blockDbOf } from "./block.ts"
@@ -12,6 +14,8 @@ import { flowchartDbOf } from "./flowchart.ts"
 import type { FlowchartDiagram } from "./flowchart-tree.ts"
 import { ganttDbOf } from "./gantt.ts"
 import type { GanttDiagram } from "./gantt-tree.ts"
+import { ishikawaDbOf } from "./ishikawa.ts"
+import type { IshikawaDiagram } from "./ishikawa-tree.ts"
 import { journeyDbOf } from "./journey.ts"
 import type { JourneyDiagram } from "./journey-tree.ts"
 import { kanbanDbOf } from "./kanban.ts"
@@ -26,6 +30,8 @@ import { sankeyDbOf } from "./sankey.ts"
 import type { SankeyDiagram } from "./sankey-tree.ts"
 import { vennDbOf } from "./venn.ts"
 import type { VennDiagram } from "./venn-tree.ts"
+import { usecaseDbOf } from "./usecase.ts"
+import type { UsecaseDiagram } from "./usecase-tree.ts"
 import type { ColorAnswer } from "./sequence.ts"
 import { sequenceDbOf } from "./sequence.ts"
 import type { SequenceDiagram } from "./sequence-tree.ts"
@@ -46,6 +52,7 @@ export interface ErrorDiagram extends TreeNode {
 
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
+  | AgentflowDiagram
   | BlockDiagram
   | C4Diagram
   | ClassDiagram
@@ -53,6 +60,7 @@ export type DiagramBody =
   | ErrorDiagram
   | FlowchartDiagram
   | GanttDiagram
+  | IshikawaDiagram
   | JourneyDiagram
   | KanbanDiagram
   | MindmapDiagram
@@ -64,6 +72,7 @@ export type DiagramBody =
   | TimelineDiagram
   | XychartDiagram
   | VennDiagram
+  | UsecaseDiagram
 
 /** A tree that the Db is built from. */
 export interface DbTreeRoot extends TreeRoot {
@@ -90,6 +99,10 @@ export function dbFromTree(
     // The error pseudo-diagram has no Db.
     case "ErrorDiagram":
       return {}
+    case "AgentflowDiagram":
+      return agentflowDbOf(text, root, root.body, embedded)
+    case "UsecaseDiagram":
+      return usecaseDbOf(text, root, root.body, embedded)
     case "FlowchartDiagram":
       return flowchartDbOf(text, root, root.body, embedded)
     case "SequenceDiagram":
@@ -112,6 +125,8 @@ export function dbFromTree(
       return kanbanDbOf(text, root, root.body, embedded)
     case "MindmapDiagram":
       return mindmapDbOf(text, root, root.body, embedded)
+    case "IshikawaDiagram":
+      return ishikawaDbOf(text, root, root.body, embedded)
     case "RequirementDiagram":
       return requirementDbOf(text, root, root.body, embedded)
     case "TimelineDiagram":

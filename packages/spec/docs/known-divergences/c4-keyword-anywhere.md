@@ -20,13 +20,14 @@ C4Container
 [fixture: common/detect-minimal-c4]
 
 In mermaid.js the detector of C4 looks for `C4Context` at the start of the text
-and for the other four keywords anywhere in it. This specification decides the
-diagram type at the first unit of the diagram text (see
-[Diagram detection](../common.md#diagram-detection)), so it looks for all five
-at the start only. The divergence is the texts whose header is another diagram's
-and that hold one of the four keywords after it. mermaid.js tries the detector
-of mindmap before that of C4, so a mindmap has no such texts: `C4Container` is a
-node text in both. [fixture: mindmap/lex-c4-keyword-as-node-text]
+and for the other four keywords anywhere in the text remaining for detection.
+This specification decides the diagram type at the first unit of the diagram
+text (see [Diagram detection](../common.md#diagram-detection)), so it looks for
+all five at the start only. The divergence is the texts whose header is another
+diagram's and whose remaining detection text holds one of the four keywords
+after it. mermaid.js tries the detector of mindmap before that of C4, so a
+mindmap has no such texts: `C4Container` is a node text in both. [fixture:
+mindmap/lex-c4-keyword-as-node-text]
 
 In kanban, the four words in a node id, a label, or data content are read in
 their kanban positions. mermaid.js selects C4 and rejects the input. [fixture:
@@ -78,6 +79,32 @@ venn/lex-c4-c4context-identifier] [fixture: venn/lex-c4-c4context-label]
 [fixture: venn/lex-c4-c4container-comment] [fixture:
 venn/lex-c4-c4container-frontmatter]
 
+In Ishikawa, `C4Container`, `C4Component`, `C4Dynamic`, and `C4Deployment`
+anywhere in node text, including quoted-looking text and a suffix inside a
+larger word, stay Ishikawa text here. When the C4 word remains in the text used
+for detection, mermaid.js selects C4 and rejects the input. [fixture:
+ishikawa/detect-c4-container-text] [fixture: ishikawa/detect-c4-component-root]
+[fixture: ishikawa/detect-c4-dynamic-quoted] [fixture:
+ishikawa/detect-c4-deployment-suffix] `C4Context`, C4 words in frontmatter, and
+words removed as common comments or directives change no detection in either
+reading. [fixture: ishikawa/detect-c4-context-text] [fixture:
+ishikawa/detect-c4-frontmatter] [fixture: ishikawa/detect-c4-comment] [fixture:
+ishikawa/detect-c4-in-directive]
+
+Inline `R %% C4Container` is accepted by both when a physical line terminator
+follows its percent suffix (see
+[Line terminators](../common.md#line-terminators)): detection removes that
+suffix, while Ishikawa keeps the whole node text. [fixture:
+ishikawa/detect-inline-comment-c4-text] [fixture:
+ishikawa/detect-inline-comment-c4-cr]
+
+At EOF, including when only U+2028 or U+2029 follows the suffix, detection does
+not remove it. mermaid.js selects C4 and rejects the input; this specification
+accepts the Ishikawa text under this identifier. [fixture:
+ishikawa/div-c4-inline-percent-eof] [fixture:
+ishikawa/div-c4-inline-percent-ls-eof] [fixture:
+ishikawa/div-c4-inline-percent-ps-eof]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -86,7 +113,7 @@ Each example is a whole diagram.
 
    ```mmd
    sequenceDiagram
-     A->>B: C4Container
+     A ->> B: C4Container
    ```
 
 2. A keyword as a label:
@@ -114,7 +141,7 @@ Each example is a whole diagram.
 
    ```mmd
    flowchart LR
-     A-->C4Context
+     A --> C4Context
    ```
 
 6. A keyword on a comment line:
@@ -122,7 +149,7 @@ Each example is a whole diagram.
    ```mmd
    flowchart LR
      %% C4Container
-     A-->B
+     A --> B
    ```
 
 | Example | mermaid.js                              | This specification                                   |
@@ -151,10 +178,10 @@ same.
 
 A diagram of another type that contains `C4Container`, `C4Component`,
 `C4Dynamic`, or `C4Deployment`, in a label, a message, a name, or anywhere else
-in its text, is read by this toolkit as the diagram of its header and by
-mermaid.js as a C4 diagram, which fails. To write a diagram that both read the
-same, do not use these four words in a diagram of another type; `C4Context` is
-safe.
+in the text that remains visible to detection, is read by this toolkit as the
+diagram of its header and by mermaid.js as a C4 diagram, which fails. To write a
+diagram that both read the same, do not use these four words in a diagram of
+another type; `C4Context` is safe.
 
 ## Why mermaid.js reads it so
 
@@ -172,6 +199,12 @@ its own grammar except `flowchart-elk`, `mindmap`, `architecture`, and
 so it claims such a text before the detector of the header's diagram type is
 tried.
 
+For detection, an inline `%%` suffix is removed only when LF terminates it; at
+EOF it stays visible to the detector
+([`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L40-L72)).
+[fixture: usecase/lex-c4-inline-percent-with-lf] [fixture:
+usecase/div-c4-inline-percent-eof]
+
 ## The rule of this specification, and why
 
 This specification decides the diagram type at the first unit of the diagram
@@ -183,6 +216,31 @@ the detection as a rule on the first unit. This is the second of the reasons for
 a known divergence (see [known-divergences.md](../known-divergences.md)). The
 inputs read differently are then those with one of the four keywords after
 another header, which this specification reads as the diagram of the header.
+
+### Usecase
+
+Usecase is registered after C4. The affected words C4Container, C4Component,
+C4Dynamic and C4Deployment fit unchanged in UsecaseLabel, UsecaseLiteral or
+UsecaseJsonDataBlock. When such a word remains visible to detection, the pinned
+detector selects C4 and rejects these examples; removing only that detector
+behavior accepts the same inputs as usecase. The tree needs no missing-text
+node. The existing reverse pipeline-order criterion selects the header's grammar
+without rejecting any Mermaid-accepted input for this reason. C4Context and
+words removed with frontmatter, directives or comments are controls, not
+divergences. [fixture: usecase/div-detect-c4-label] [fixture:
+usecase/div-c4-component-label] [fixture: usecase/div-c4-dynamic-json] [fixture:
+usecase/div-c4-deployment-stereotype] [fixture:
+usecase/gram-detect-c4-context-label] [fixture:
+usecase/gram-detect-c4-frontmatter] [fixture: usecase/detect-c4-directive]
+[fixture: usecase/detect-c4-comment]
+
+Usecase keeps inline `%%` in labels. When LF terminates the line containing
+`A(C4Context %% C4Container)`, detection removes the percent suffix and selects
+usecase; its label still contains the whole written text. At EOF, detection
+leaves that suffix in place, selects C4 and rejects the input. This
+specification accepts that same label as usecase under the existing reverse
+criterion. [fixture: usecase/lex-c4-inline-percent-with-lf] [fixture:
+usecase/div-c4-inline-percent-eof]
 
 ## The documentation of mermaid.js and its issues
 
@@ -215,3 +273,22 @@ another header, which this specification reads as the diagram of the header.
   keywords anywhere. [fixture: venn/lex-c4-c4container-identifier] [fixture:
   venn/lex-c4-c4component-label] [fixture: venn/lex-c4-c4dynamic-style]
   [fixture: venn/lex-c4-c4deployment-title]
+
+- The pinned
+  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  starts its example with `ishikawa-beta`.
+  [Issue #4784](https://github.com/mermaid-js/mermaid/issues/4784) proposes
+  syntax like mindmap's, without a rule for C4 detection inside node text.
+  Searches of issues and pull requests in `mermaid-js/mermaid` on 2026-10-21
+  with `ishikawa` and `ishikawa C4 in:title,body` found no report about C4 words
+  overriding an Ishikawa header.
+
+- The pinned
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  describes beta header. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `usecase` found no inspected report
+  establishing a maintainer defect judgment for this acceptance behavior.
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048), closed and merged
+  on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
+  validation and JSON tables. This divergence follows the shared direct rule,
+  not a claim that a bug label approves a grammar change.

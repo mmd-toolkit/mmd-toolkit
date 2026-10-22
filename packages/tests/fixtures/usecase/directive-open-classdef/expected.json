@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What happens to an unclosed directive after a class definition at EOF?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "color:red"
+        ]
+      }
+    ]
+  }
+}

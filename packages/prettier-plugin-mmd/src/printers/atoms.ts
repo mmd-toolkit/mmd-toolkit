@@ -64,6 +64,8 @@ export interface AtomLayout {
    * consumed separator of a title. Without it, no gap is joined.
    */
   readonly joinedBefore?: ReadonlySet<number>
+  /** Gaps that retain every blank line while their items and tokens align. */
+  readonly keptBreaksBefore?: ReadonlySet<number>
 }
 
 /** Where the lines of a statement start. */
@@ -102,7 +104,7 @@ export function printAtoms(
   let currentBlank = false
   let currentEndsWithWhitespace = false
   let currentOutdented = false
-  let previous: Atom | undefined
+  let currentWrittenBreak: Doc | undefined, previous: Atom | undefined
 
   /** Ends the current line and starts a new one. */
   function breakCurrentLine(blankBefore: boolean, outdented: boolean): void {
@@ -111,11 +113,15 @@ export function printAtoms(
       blankBefore: currentBlank,
       endsWithWhitespace: currentEndsWithWhitespace,
       outdented: currentOutdented,
+      ...(currentWrittenBreak === undefined
+        ? {}
+        : { writtenBreakBefore: currentWrittenBreak }),
     })
     current = []
     currentBlank = blankBefore
     currentEndsWithWhitespace = false
     currentOutdented = outdented
+    currentWrittenBreak = undefined
   }
 
   for (const atom of layout.atoms) {
@@ -138,16 +144,30 @@ export function printAtoms(
         }
         current.push(spaceFor(layout.rules.get(atom.start), previous, atom))
       } else if (gap.breaksLine) {
+        let gapOffset = previous.end
+        const keepsBreaks = layout.keptBreaksBefore?.has(atom.start) === true
         if (gap.trailing !== null) {
           current = [withTrailing(current, gap.trailing)]
           currentEndsWithWhitespace = gap.trailing.endsWithWhitespace
+          gapOffset = gap.trailing.range[1]
         }
         for (const line of gap.lines) {
           breakCurrentLine(line.blankBefore, false)
+          currentWrittenBreak = keepsBreaks
+            ? literalBreaksBetween(source, gapOffset, line.run.range[0])
+            : undefined
           current = [line.run.doc]
           currentEndsWithWhitespace = line.run.endsWithWhitespace
+          gapOffset = line.run.range[1]
         }
         breakCurrentLine(gap.blankAfter, layout.outdented.has(atom.start))
+        currentWrittenBreak = keepsBreaks
+          ? literalBreaksBetween(
+              source,
+              gapOffset,
+              gap.leading?.range[0] ?? atom.start,
+            )
+          : undefined
         if (gap.leading !== null) current = [withLeading(gap.leading, "")]
       } else if (gap.trailing !== null || gap.leading !== null) {
         // Items keep the whitespace written on each side of them; the rule
@@ -221,4 +241,19 @@ function spaceFor(rule: GapRule | undefined, previous: Atom, next: Atom): Doc {
   if (rule === "space") return " "
   if (rule === "none") return ""
   return next.start > previous.end ? " " : ""
+}
+
+/**
+ * Keeps exterior LFs while multiline items print their own contents. Native
+ * metadata retains every blank line (docs/usecase.md, Native metadata).
+ */
+function literalBreaksBetween(
+  source: Source,
+  start: number,
+  end: number,
+): Doc | undefined {
+  const breaks = source.text.slice(start, end).split("\n").slice(1)
+  return breaks.length === 0
+    ? undefined
+    : breaks.map(() => builders.literalline)
 }

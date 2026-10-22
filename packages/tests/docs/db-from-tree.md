@@ -68,6 +68,14 @@ what the text cannot give alone:
 
 Leading whitespace is not read, and the end of the text is one more `\n`. In
 flowchart, the whitespace after a `}` up to its last line feed is one line feed.
+Agentflow retains leading whitespace and lexical comments at or below the
+default size limit, and folds only line whitespace through the immediately
+following LF after a brace; its precise conversion and Name.parts reading are in
+[db-from-tree/agentflow.md](./db-from-tree/agentflow.md). [fixture:
+agentflow/comment-default-size-equal] [fixture:
+agentflow/comment-default-size-fallback] [fixture:
+agentflow/lex-brace-string-keeps-blank-line] [fixture:
+agentflow/lex-flow-name-click-state]
 
 HTML attribute-quote positions are found once over the whole source after the
 frontmatter, before comments and directives are removed. A tag can start in a
@@ -133,6 +141,13 @@ are read from the tree like this:
   their written values and converted leaf ranges; null text targets use the
   latest subset after `checkTree` validates implicit mode (the steps are in
   [db-from-tree/venn.md](./db-from-tree/venn.md)). [fixture: venn/db-all-fields]
+- **Usecase occurrences**: declarations, native metadata and references rebuild
+  the stored model; JSON values and property order come only from source-ordered
+  embedded effects (the steps are in
+  [db-from-tree/usecase.md](./db-from-tree/usecase.md)). The common sanitizer
+  reaches accessibility strings; stored element text bypasses it. [fixture:
+  usecase/db-all-fields] [fixture: usecase/db-json-source-map-order] [fixture:
+  usecase/config-security-other]
 - **C4 calls**: arguments, titles and accessibility texts use only their value
   nodes and converted node ranges; nested bodies determine the boundary stack,
   and named attributes update the complete own attribute bags (the steps are in
@@ -188,9 +203,9 @@ are read from the tree like this:
   the converted form, and the whitespace after a `}` is one line feed in it, so
   none of them ends the name. [fixture:
   flowchart/lex-comment-line-in-markdown-subgraph-name]
-- **Flowchart edges**: a limit of `maxEdges` is checked on the tree by
-  `exceedsMaxEdges()`, since a parser does not know the configuration. The
-  function reads a `maxEdges` that is a non-negative integer, as the maximum
+- **Flowchart and Agentflow edges**: a limit of `maxEdges` is checked on the
+  tree by `exceedsMaxEdges()`, since a parser does not know the configuration.
+  The function reads a `maxEdges` that is a non-negative integer, as the maximum
   number of edges that the configuration documents; its result for any other
   value is not defined (under a `maxEdges` of 1.5, mermaid.js accepts two edges
   and the function rejects them, and a `maxEdges` of `Infinity` makes
@@ -473,10 +488,11 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
-Venn is checked with both hand-made and recorded trees.
+Venn, Agentflow and Usecase are checked with both hand-made and recorded trees.
 
-The recorded-tree comparisons include C4, block, kanban, Venn, and their common
-detection fixtures, including all five C4 diagram kinds.
+The recorded-tree comparisons include C4, block, kanban, Venn, Agentflow,
+Usecase, and their common detection fixtures, including all five C4 diagram
+kinds.
 
 `tests/db-from-tree.test.ts` builds the Db of every fixture that records a tree
 and an accepted result with a Db, and requires it to be the recorded Db

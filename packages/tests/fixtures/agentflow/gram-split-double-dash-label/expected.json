@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A double dash inside a split label starts an operator boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...low-beta TBA -- one--two --> B\n----------------------^"
+  }
+}

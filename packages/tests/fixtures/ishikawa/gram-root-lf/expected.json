@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G: start, document, statement and stop] Does NL terminate a root statement?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Root",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Root",
+      "children": []
+    }
+  }
+}

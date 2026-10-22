@@ -1,3 +1,5 @@
+import { parseUsecaseDiagram } from "./diagrams/usecase/index.ts"
+import { parseAgentflowDiagram } from "./diagrams/agentflow/index.ts"
 import type { DiagramType, Frontmatter, Range, Root } from "./ast.ts"
 import type { Detection } from "./detection.ts"
 import { detectDiagram } from "./detection.ts"
@@ -19,6 +21,7 @@ import { parseBlockDiagram } from "./diagrams/block/index.ts"
 import { parseKanbanDiagram } from "./diagrams/kanban/index.ts"
 import { parseC4Diagram } from "./diagrams/c4/index.ts"
 import { parseVennDiagram } from "./diagrams/venn/index.ts"
+import { parseIshikawaDiagram } from "./diagrams/ishikawa/index.ts"
 import { parseRequirementDiagram } from "./diagrams/requirement/index.ts"
 import { ParseError, UnsupportedDiagramError } from "./errors.ts"
 import { readFrontmatterTrivia } from "./frontmatter.ts"
@@ -151,6 +154,12 @@ export function parse(text: string): Root {
       return parseC4Diagram(input)
     case "venn":
       return parseVennDiagram(input)
+    case "usecase":
+      return parseUsecaseDiagram(input)
+    case "agentflow":
+      return parseAgentflowDiagram(input)
+    case "ishikawa":
+      return parseIshikawaDiagram(input)
     default:
       throw new UnsupportedDiagramError(detected)
   }

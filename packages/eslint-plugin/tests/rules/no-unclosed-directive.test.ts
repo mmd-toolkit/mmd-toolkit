@@ -2,13 +2,12 @@
  * The rule `no-unclosed-directive`, with the inputs of the fixtures that its
  * document cites.
  */
-import type { Rule } from "eslint"
 import { RuleTester } from "eslint"
-import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
 import type { DiagramType } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
 import { noUnclosedDirective } from "../../src/rules/no-unclosed-directive.ts"
 import { LANGUAGE_CONFIG } from "../helpers.ts"
+import { testRule } from "../rule-test.ts"
 
 /** The diagram types whose fixtures the cases use. */
 const DIAGRAMS: readonly DiagramType[] = [
@@ -54,10 +53,6 @@ function fixtureCase(
   }
 }
 
-const tester = new SnapshotRuleTester(LANGUAGE_CONFIG)
-
-// The tester takes the rule types of JavaScript; ESLint runs a rule of any
-// language the same way.
 /**
  * The inputs of the rule, each for one case that its document distinguishes:
  * the argument that is cut, the place of the directive, the other rules of the
@@ -207,16 +202,10 @@ const VALID: readonly { case: string; diagram: DiagramType; name: string }[] = [
   },
 ]
 
-// The tester takes the rule types of JavaScript; ESLint runs a rule of any
-// language the same way.
-tester.run(
-  "no-unclosed-directive",
-  noUnclosedDirective as unknown as Rule.RuleModule,
-  {
-    valid: VALID.map((each) => fixtureCase(each.name, each.diagram)),
-    invalid: INVALID.map((each) => fixtureCase(each.name, each.diagram)),
-  },
-)
+testRule("no-unclosed-directive", noUnclosedDirective, {
+  valid: VALID.map((each) => fixtureCase(each.name, each.diagram)),
+  invalid: INVALID.map((each) => fixtureCase(each.name, each.diagram)),
+})
 
 new RuleTester(LANGUAGE_CONFIG).run(
   "no-unclosed-directive",

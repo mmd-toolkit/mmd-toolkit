@@ -1,3 +1,5 @@
+import type { UsecaseDiagram, UsecaseNode } from "../src/ast/usecase.ts"
+import type { AgentflowDiagram, AgentflowNode } from "../src/ast/agentflow.ts"
 import { readdirSync } from "node:fs"
 import { describe, expect, expectTypeOf, it } from "vitest"
 import { KNOWN_DIVERGENCES } from "@mmd-toolkit/tests"
@@ -34,6 +36,7 @@ import type { BlockDiagram, BlockTreeNode } from "../src/ast/block.ts"
 import type { KanbanDiagram, KanbanTreeNode } from "../src/ast/kanban.ts"
 import type { C4Diagram, C4Node } from "../src/ast/c4.ts"
 import type { VennDiagram, VennNode } from "../src/ast/venn.ts"
+import type { IshikawaDiagram, IshikawaTreeNode } from "../src/ast/ishikawa.ts"
 import { ParseError } from "../src/errors.ts"
 
 // The checks on types run in the type checker (`tsc` covers tests/); the
@@ -64,6 +67,9 @@ describe("the types of ast.md", () => {
       | KanbanTreeNode["type"]
       | C4Node["type"]
       | VennNode["type"]
+      | IshikawaTreeNode["type"]
+      | AgentflowNode["type"]
+      | UsecaseNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -84,6 +90,9 @@ describe("the types of ast.md", () => {
       | KanbanDiagram
       | C4Diagram
       | VennDiagram
+      | IshikawaDiagram
+      | AgentflowDiagram
+      | UsecaseDiagram
     >()
   })
 

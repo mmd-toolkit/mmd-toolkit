@@ -26,8 +26,8 @@ import {
 
 /** What a test builds a tree with: the next token, a node, a directive, and a comment. */
 export interface Kit {
-  /** The token of the next `text` in the source, of the kind `type`. */
-  token: (type: string, text: string) => CheckedToken
+  /** The token of the next `text`, of the kind `type`; `from` explicitly locates a repeated spelling such as retained whitespace. */
+  token: (type: string, text: string, from?: number) => CheckedToken
   /** A node of `type` over `range`, with the fields `fields`. */
   node: (
     type: string,
@@ -70,8 +70,8 @@ export function buildTree(
   const directives: CheckedDirective[] = []
   const comments: CheckedComment[] = []
   const kit: Kit = {
-    token(type, text) {
-      const found = tokenOf(source, type, { text, from: cursor })
+    token(type, text, from) {
+      const found = tokenOf(source, type, { text, from: from ?? cursor })
       tokens.push(found)
       cursor = found.range[1]
       return found

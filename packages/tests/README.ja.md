@@ -65,7 +65,7 @@ fixture は 1 件ごとに、
 `<diagram>` は、
 図種（`flowchart`、`sequence`、`class`、`state`、`er`、`gantt`、`journey`、
 `requirement`、`mindmap`、`timeline`、`sankey`、`xychart`、`quadrant`、
-`block`、`kanban`、`c4`、`venn`）か、
+`block`、`kanban`、`c4`、`venn`、`ishikawa`、`agentflow`、`usecase`）か、
 `common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
@@ -146,7 +146,7 @@ mermaid.js は読み込みません。
   `"common"`、`"flowchart"`、`"sequence"`、`"class"`、`"state"`、
   `"er"`、`"gantt"`、`"journey"`、`"requirement"`、`"mindmap"`、
   `"timeline"`、`"sankey"`、`"xychart"`、`"quadrant"`、`"block"`、
-  `"kanban"`、`"c4"`、`"venn"` の
+  `"kanban"`、`"c4"`、`"venn"`、`"ishikawa"`、`"agentflow"`、`"usecase"` の
   どれかの fixture を、名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
   `config` と `knownDivergence`（あるとき）、`expected` を持つ。
@@ -211,8 +211,8 @@ mermaid.js は読み込みません。
   拒否のときは `undefined`。
 - `dbFromTree(text, tree, embedded, isColor)`:
   記録した木（`ast.json`）が表す Db の要約を、パーサーなしで作る関数。
-  `exceedsMaxEdges(tree, config)` と `flowchartEdgeCount(tree)` は、
-  flowchart の木の辺の上限を確かめる。
+  `exceedsMaxEdges(tree, config)`、`flowchartEdgeCount(tree)`、
+  `agentflowEdgeCount(tree)` は、グラフ系の木の辺の上限を確かめる。
   [docs/db-from-tree.ja.md](./docs/db-from-tree.ja.md) を参照。
 - `checkTree(text, tree)`:
   記録した木（`ast.json`）について、仕様が述べる条件のうち成り立たないもの。

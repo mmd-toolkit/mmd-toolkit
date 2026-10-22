@@ -42,7 +42,7 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
       拒否の理由にならない。
       唯一の例外は、文字列、リンク、呼び出しとして、
       それ自体の意味を持って書かれていて、mermaid.js が丸ごと捨てる形。
-      flowchart で文の始まるところにある空の文字列と空の call、
+      flowchart と agentflow で文の始まるところにある空の文字列と空の call、
       class で文の始まるところにある空の文字列、
       どこにあっても、gantt の空の href と空の call、
       どこにあっても、requirement の空の文字列、

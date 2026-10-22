@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest"
+import { checkTokensAreNotCut } from "../src/check-tree/tokens.ts"
+import { Problems } from "../src/check-tree/problems.ts"
 import { checkTree } from "../src/check-tree/index.ts"
 import type { TreeProblem } from "../src/check-tree/types.ts"
 import type { DiagramType } from "../src/index.ts"
@@ -762,4 +764,36 @@ describe("a run of Punctuator fragments of a text of the table", () => {
       ]),
     ).toEqual([])
   })
+})
+
+describe("the ASCII spelling of a cut keyword", () => {
+  for (const [name, source, first, last, isCutKeyword] of [
+    ["ASCII case", "ishi%%{init: {}}%%Kawa\n", "ishi", "Kawa", true],
+    [
+      "Kelvin sign",
+      "ishi%%{init: {}}%%\u212aawa\n",
+      "ishi",
+      "\u212aawa",
+      false,
+    ],
+  ] as const)
+    it(`compares ${name} without folding non-ASCII characters`, () => {
+      const directive = "%%{init: {}}%%"
+      const tree = handMadeRoot(source, {
+        bodyType: "IshikawaDiagram",
+        tokens: [
+          ["Keyword", first],
+          ["Directive", directive],
+          ["Keyword", last],
+        ],
+        directives: [directiveOf(source, directive)],
+      })
+      const problems = new Problems()
+      checkTokensAreNotCut(tree, problems)
+      expect(
+        problems.list.some((problem) =>
+          problem.message.includes("token is cut"),
+        ),
+      ).toBe(isCutKeyword)
+    })
 })

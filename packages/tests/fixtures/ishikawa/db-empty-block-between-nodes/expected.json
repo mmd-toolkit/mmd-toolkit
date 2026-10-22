@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Does an empty description-looking line append a node without replacing A?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        },
+        {
+          "text": "accDescr {}",
+          "children": []
+        },
+        {
+          "text": "B",
+          "children": []
+        }
+      ]
+    }
+  }
+}

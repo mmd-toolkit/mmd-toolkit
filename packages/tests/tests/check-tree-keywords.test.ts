@@ -18,6 +18,8 @@ import { directiveOf, handMadeRoot } from "./check-tree-trees.ts"
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [DiagramType, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["usecase", "UsecaseDiagram"],
+  ["agentflow", "AgentflowDiagram"],
   ["sequence", "SequenceDiagram"],
   ["class", "ClassDiagram"],
   ["state", "StateDiagram"],
@@ -34,6 +36,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["kanban", "KanbanDiagram"],
   ["c4", "C4Diagram"],
   ["venn", "VennDiagram"],
+  ["ishikawa", "IshikawaDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -188,6 +191,61 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
   switch (diagram) {
     // The header keywords, and the directions of the header context, which
     // include the characters `v`, `<`, `>`, and `^`.
+    // The usecase row names the header, statement, direction and semantic families.
+    case "usecase":
+      return [
+        "usecase-beta",
+        "actor",
+        "systemboundary",
+        "end",
+        "direction",
+        "td",
+        "tb",
+        "bt",
+        "lr",
+        "rl",
+        "note",
+        "for",
+        "json",
+        "classdef",
+        "class",
+        "style",
+        "include",
+        "extend",
+        "acctitle",
+        "accdescr",
+      ]
+    case "agentflow":
+      return [
+        "agentflow-beta",
+        "flow",
+        "connector",
+        "global",
+        "end",
+        "style",
+        "classDef",
+        "class",
+        "linkStyle",
+        "interpolate",
+        "default",
+        "click",
+        "call",
+        "href",
+        "direction",
+        "accTitle",
+        "accDescr",
+      ]
+        .map((word) => word.toLowerCase())
+        .concat([
+          ...DIRECTION_VALUES,
+          "td",
+          "br",
+          "v",
+          "<",
+          ">",
+          "^",
+          ...LINK_TARGETS,
+        ])
     case "flowchart":
       return [
         "flowchart",
@@ -259,6 +317,7 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
       ]
     // The row gives the two headers as texts.
     case "venn":
+    case "ishikawa":
       return []
     case "sankey":
       return []

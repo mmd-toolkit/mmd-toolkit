@@ -67,6 +67,8 @@ export default [...markdown.configs.processor, mmd.configs.recommended]
 - ER 図: `er`（`erDiagram`）。
 - Gantt チャート: `gantt`（`gantt`）。
 - Venn 図: `venn`（`venn-beta`）。
+- Ishikawa 図: `ishikawa`（`ishikawa` と `ishikawa-beta`）。
+- エージェントフロー図: `agentflow`（`agentflow-beta`）。
 
 ER 図と Gantt チャートには、まだ図種ごとの規則がありません。
 ほかの図種は、対応するまで、パースのエラーとして報告されます。

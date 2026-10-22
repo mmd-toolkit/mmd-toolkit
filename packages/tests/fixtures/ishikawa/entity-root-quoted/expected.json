@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Are character references encoded inside literal root quotes?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"Rﬂ°°35¶ßﬂ°amp¶ß\"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"Rﬂ°°35¶ßﬂ°amp¶ß\"",
+      "children": []
+    }
+  }
+}

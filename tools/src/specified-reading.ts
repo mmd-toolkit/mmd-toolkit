@@ -268,6 +268,16 @@ export function withoutBlankLinesAfterHeader(text: string): string {
     inDirective.fill(1, directive.range[0], directive.scanEnd)
   }
 
+  /** The next physical line terminator outside directives: their interior joins the visible line. */
+  function visibleLineEnd(at: number): {
+    readonly content: number
+    readonly next: number
+  } {
+    let end = lineEnd(text, at)
+    while (inDirective[end.content] === 1) end = lineEnd(text, end.next)
+    return end
+  }
+
   /** The text of the line from `at` to `end` without its directives. */
   function visibleOf(at: number, end: number): string {
     let visible = ""
@@ -288,13 +298,13 @@ export function withoutBlankLinesAfterHeader(text: string): string {
 
   let at = start
   while (at < text.length) {
-    const end = lineEnd(text, at)
+    const end = visibleLineEnd(at)
     const visible = visibleOf(at, end.content).trim()
     if (visible !== "" && !visible.startsWith("%%")) break
     at = end.next
   }
   if (at >= text.length) return text
-  const header = lineEnd(text, at)
+  const header = visibleLineEnd(at)
   const moved = directivesOf(at, header.content)
   let kept =
     lineBreakAfterCommentSeparators(visibleOf(at, header.content).trimEnd()) +
@@ -302,7 +312,7 @@ export function withoutBlankLinesAfterHeader(text: string): string {
   let open = 0
   let cursor = header.next
   while (cursor < text.length) {
-    const end = lineEnd(text, cursor)
+    const end = visibleLineEnd(cursor)
     const visible = visibleOf(cursor, end.content)
     open = Math.max(0, open + openersIn(visible))
     if (visible.trim() === "") {
@@ -371,6 +381,8 @@ function lineBreakAfterCommentSeparators(line: string): string {
 const HEADERS_OF_BLANK_LINE_DIVERGENCE: readonly string[] = [
   "mindmap",
   "kanban",
+  "ishikawa",
+  "ishikawa-beta",
 ]
 
 /** Whether a `%%` after `before` on its line starts a comment (see {@link lineBreakAfterCommentSeparators}). */

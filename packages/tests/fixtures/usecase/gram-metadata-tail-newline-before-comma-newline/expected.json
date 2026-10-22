@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Native metadata: A comma after a line break following the last property is not a trailing comma, whether or not another line break follows it; Mermaid requires another property and rejects the closing brace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [IDENTIFIER]\n  2. [PLAIN_STRING]\nbut found: '}' at line 4, column 1 [36,37)"
+  }
+}

@@ -7,6 +7,7 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { subgraphIdsOf } from "../utils/subgraph-ids.ts"
+import { flowchartLinkIdsOf } from "../utils/flowchart-links.ts"
 
 /** A statement that names ids of the diagram: `class` or `click`. */
 type IdsStatement =
@@ -29,7 +30,7 @@ type IdsStatement =
  */
 export const flowchartNoUndef: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "style" | "ignored"
+  MessageIds: "undef"
 }> = {
   meta: {
     type: "problem",
@@ -41,10 +42,8 @@ export const flowchartNoUndef: MermaidRuleDefinition<{
     },
     schema: [],
     messages: {
-      style:
-        "mermaid.js adds a new vertex `{{id}}` for this `style`: no vertex, subgraph, or link of the diagram has this id.",
-      ignored:
-        "mermaid.js does nothing with `{{id}}` here: no vertex, subgraph, or link of the diagram has this id.",
+      undef:
+        "The id `{{id}}` is not declared by any vertex, subgraph, or link.",
     },
   },
   create(context) {
@@ -60,11 +59,13 @@ export const flowchartNoUndef: MermaidRuleDefinition<{
     }
 
     return {
+      FlowchartDiagram(node) {
+        for (const ids of flowchartLinkIdsOf(node).values()) {
+          for (const id of ids) definedIds.add(id)
+        }
+      },
       FlowchartVertex(node) {
         definedIds.add(node.id.name)
-      },
-      FlowchartLink(node) {
-        if (node.id !== null) definedIds.add(node.id.name)
       },
       FlowchartStyleStatement(node) {
         styles.push(node)
@@ -83,7 +84,7 @@ export const flowchartNoUndef: MermaidRuleDefinition<{
           definedIds.add(style.id.name)
           context.report({
             node: style.id,
-            messageId: "style",
+            messageId: "undef",
             data: { id: style.id.name },
           })
         }
@@ -92,7 +93,7 @@ export const flowchartNoUndef: MermaidRuleDefinition<{
             if (id === null || definedIds.has(id.name)) continue
             context.report({
               node: id,
-              messageId: "ignored",
+              messageId: "undef",
               data: { id: id.name },
             })
           }

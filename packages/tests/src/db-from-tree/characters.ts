@@ -41,3 +41,13 @@ export function isWhitespaceAt(text: string, offset: number): boolean {
   const codePoint = text.codePointAt(offset)
   return codePoint !== undefined && isWhitespace(codePoint)
 }
+
+/** ASCII keyword comparison: change A to Z only, preserving every other character. */
+export function lowercaseAscii(text: string): string {
+  let lower = ""
+  for (const character of text) {
+    lower +=
+      character >= "A" && character <= "Z" ? character.toLowerCase() : character
+  }
+  return lower
+}

@@ -1,0 +1,257 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> docs/rules/agentflow-no-duplicate-direction.md incorrect 1
+Filename: agentflow-no-duplicate-direction-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow F
+  3 |     direction LR
+  4 |     A
+  5 |     direction BT
+    |     ^~~~~~~~~~~~ [1]
+  6 |   end
+  7 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-across-declarations
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-across-declarations-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 |   direction LR
+  4 |   A
+  5 | end
+  6 | flow F
+  7 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  8 |   B
+  9 | end
+ 10 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-comment-between
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-comment-between-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | direction LR
+  4 | %% comment
+  5 |
+  6 | %%{init: {}}%%
+  7 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  8 | end
+  9 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-duplicate
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-duplicate-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | direction LR
+  4 | A
+  5 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-flow-with-data
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-flow-with-data-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F@{view: expanded}
+  3 | direction LR
+  4 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  5 | A
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-ignored-label
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-ignored-label-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | direction LR
+  4 | A[Set direction BT]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  5 | end
+  6 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-nested-same-id-completion-order
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-nested-same-id-completion-order-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | direction LR
+    | ^~~~~~~~~~~~ [1]
+  4 | flow F
+  5 | direction BT
+  6 | A
+  7 | end
+  8 | end
+  9 |
+
+[1] mermaid.js replaces the direction set on line 5 for this flow with `LR`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-td-then-bt
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-td-then-bt-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 |   direction TD
+  4 |   direction BT
+    |   ^~~~~~~~~~~~ [1]
+  5 |   A
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-three
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-three-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F
+  3 | direction LR
+  4 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  5 | direction LR
+    | ^~~~~~~~~~~~ [2]
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+[2] mermaid.js replaces the direction set on line 4 for this flow with `LR`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/direction-unnamed-flow
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/direction-unnamed-flow-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow
+  3 | direction LR
+  4 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  5 | A
+  6 | end
+  7 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/flow-nameless-generated-collision
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/flow-nameless-generated-collision-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow subGraph1
+  3 | direction LR
+  4 | A
+  5 | end
+  6 | flow
+  7 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  8 | B
+  9 | end
+ 10 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/nested-unnamed-completion-collision
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/nested-unnamed-completion-collision-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow subGraph0
+  3 | direction LR
+    | ^~~~~~~~~~~~ [1]
+  4 | flow
+  5 | direction BT
+  6 | end
+  7 | end
+  8 |
+
+[1] mermaid.js replaces the direction set on line 5 for this flow with `LR`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/repeated-named-counts-before-unnamed
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/repeated-named-counts-before-unnamed-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow subGraph2
+  3 | direction LR
+  4 | end
+  5 | flow subGraph2
+  6 | end
+  7 | flow
+  8 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  9 | end
+ 10 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---
+
+
+Test: agentflow-no-duplicate-direction >> invalid >>> invalid/agentflow/unnamed-before-named-collision
+Filename: tests/fixtures/rules/agentflow-no-duplicate-direction/invalid/agentflow/unnamed-before-named-collision-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow
+  3 | direction LR
+  4 | A
+  5 | end
+  6 | flow subGraph0
+  7 | direction BT
+    | ^~~~~~~~~~~~ [1]
+  8 | B
+  9 | end
+ 10 |
+
+[1] mermaid.js replaces the direction set on line 3 for this flow with `BT`.
+---

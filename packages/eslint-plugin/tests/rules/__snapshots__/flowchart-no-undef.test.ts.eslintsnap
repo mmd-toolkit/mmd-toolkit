@@ -11,7 +11,7 @@ Code:
     |         ^ [1]
   4 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -26,7 +26,7 @@ Code:
     |         ^ [1]
   5 |
 
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -40,7 +40,7 @@ Code:
     |         ^ [1]
   4 |
 
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -54,7 +54,7 @@ Code:
     |       ^ [1]
   4 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -67,7 +67,7 @@ Code:
   3 | click Z "u" "t"
     |       ^ [1]
 
-[1] mermaid.js does nothing with `Z` here: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `Z` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -82,7 +82,7 @@ Code:
   4 |   class C foo
   5 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -97,7 +97,7 @@ Code:
     |         ^ [1]
   5 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -112,7 +112,7 @@ Code:
     |           ^ [1]
   5 |
 
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -126,7 +126,7 @@ Code:
   3 |   A --> B
   4 |
 
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -141,7 +141,7 @@ Code:
   4 |   click C href "https://example.com"
   5 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -155,7 +155,7 @@ Code:
     |         ^ [1]
   4 |
 
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -169,7 +169,7 @@ Code:
     |           ^ [1]
   4 |
 
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -184,7 +184,7 @@ Code:
     |         ^ [1]
   5 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -198,7 +198,7 @@ Code:
     |         ^ [1]
   4 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -212,7 +212,7 @@ Code:
     |         ^ [1]
   4 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -226,17 +226,7 @@ Code:
     |         ^ [1]
   4 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart-no-undef >> invalid >>> invalid/flowchart/db-undef-style-cr
-Filename: tests/fixtures/rules/flowchart-no-undef/invalid/flowchart/db-undef-style-cr-input.mmd
-
-Code:
-  1 | flowchart LR  A --> B  style C fill:red
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -251,7 +241,7 @@ Code:
     |         ^ [1]
   5 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -265,7 +255,7 @@ Code:
     |         ^ [1]
   4 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -279,7 +269,7 @@ Code:
     |         ^~ [1]
   4 |
 
-[1] mermaid.js adds a new vertex `e2` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `e2` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -292,7 +282,7 @@ Code:
     |         ^ [1]
   3 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -307,7 +297,7 @@ Code:
   4 |   style C stroke:blue
   5 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -323,7 +313,7 @@ Code:
   5 |   class C foo
   6 |
 
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
 ---
 
 
@@ -339,6 +329,21 @@ Code:
     |         ^ [2]
   5 |
 
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
-[2] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+[1] The id `C` is not declared by any vertex, subgraph, or link.
+[2] The id `C` is not declared by any vertex, subgraph, or link.
+---
+
+
+Test: flowchart-no-undef >> invalid >>> invalid/flowchart/generated-edge-id-missing
+Filename: tests/fixtures/rules/flowchart-no-undef/invalid/flowchart/generated-edge-id-missing-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | A --> B
+  3 | classDef hot fill:red
+  4 | class L_A_B_1 hot
+    |       ^~~~~~~ [1]
+  5 |
+
+[1] The id `L_A_B_1` is not declared by any vertex, subgraph, or link.
 ---

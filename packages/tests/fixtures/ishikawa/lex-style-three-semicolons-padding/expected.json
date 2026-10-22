@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Trailing spaces do not change the encoded reference and literal semicolon left by three child style semicolons."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "style A fill:ﬂ°abc¶ß;",
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -4,7 +4,7 @@
  * in the rules documents and the READMEs is a copy of the fixture file it
  * links to.
  */
-import { readFile } from "node:fs/promises"
+import { readdir, readFile } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 import { readRuleNames } from "./fixtures.ts"
@@ -30,6 +30,25 @@ const ruleDocuments: readonly {
    */
   readonly rulesInTestCode: readonly string[]
 }[] = [
+  {
+    diagram: "usecase",
+    rulesWithoutExamples: ["line-terminators"],
+    rulesInTestCode: ["line-terminators"],
+  },
+  {
+    diagram: "agentflow",
+    rulesWithoutExamples: ["default-size-branches", "line-terminators"],
+    rulesInTestCode: ["line-terminators"],
+  },
+  {
+    diagram: "ishikawa",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
+      "line-terminators",
+      "line-separators",
+    ],
+    rulesInTestCode: ["line-terminators"],
+  },
   {
     diagram: "flowchart",
     rulesWithoutExamples: ["style-trailing-whitespace"],
@@ -332,16 +351,21 @@ describe("the examples in the documents", () => {
  */
 async function readCitedTestTitles(): Promise<string[]> {
   const titles: string[] = []
-  for (const file of ["line-separators", "line-terminators"]) {
-    const text = await readFile(
-      new URL(`tests/${file}.test.ts`, packageRoot),
-      "utf8",
-    )
+  const testsRoot = new URL("tests/", packageRoot)
+  const files = (await readdir(testsRoot))
+    .filter((file) => file.endsWith(".ts"))
+    .sort()
+  for (const file of files) {
+    const text = await readFile(new URL(file, testsRoot), "utf8")
     for (const line of text.split("\n")) {
       const trimmed = line.trim()
-      const literal = trimmed.startsWith("[")
-        ? trimmed.slice(1).trimStart()
-        : trimmed
+      const literal = trimmed.startsWith('it("')
+        ? trimmed.slice(3)
+        : trimmed.startsWith("[")
+          ? trimmed.slice(1).trimStart()
+          : trimmed.startsWith("name: ")
+            ? trimmed.slice("name: ".length)
+            : trimmed
       if (!literal.startsWith('"')) continue
       let end = 1
       while (end < literal.length) {
@@ -352,15 +376,7 @@ async function readCitedTestTitles(): Promise<string[]> {
       if (literal[end + 1] !== ",") continue
       const title = JSON.parse(literal.slice(0, end + 1)) as string
       if (title.includes("%s")) {
-        for (const diagram of [
-          "flowchart",
-          "sequence",
-          "class",
-          "state",
-          "kanban",
-          "c4",
-          "venn",
-        ]) {
+        for (const { diagram } of ruleDocuments) {
           titles.push(title.replaceAll("%s", diagram))
         }
       } else {
@@ -375,6 +391,8 @@ describe("the test citations in the documents", async () => {
   const titles = await readCitedTestTitles()
   const citations: string[] = []
   for (const document of [
+    "docs/usecase.md",
+    "docs/agentflow.md",
     "docs/flowchart.md",
     "docs/sequence.md",
     "docs/class.md",
@@ -392,6 +410,7 @@ describe("the test citations in the documents", async () => {
     "docs/kanban.md",
     "docs/c4.md",
     "docs/venn.md",
+    "docs/ishikawa.md",
     "docs/compatibility.md",
   ]) {
     const text = await readFile(new URL(document, packageRoot), "utf8")

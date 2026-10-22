@@ -1,4 +1,5 @@
 import type { JsonObject, JsonValue } from "../types.ts"
+import { numberOrText } from "../summary-number.ts"
 
 /**
  * Converts Db data to plain JSON.
@@ -9,8 +10,10 @@ import type { JsonObject, JsonValue } from "../types.ts"
  * - `undefined` properties and functions are dropped.
  * - Other objects keep their own enumerable properties in insertion order,
  *   whatever their names: a property named `__proto__` stays a property.
+ * - Numbers use the shared summary form: non-finite numbers become text and
+ *   negative zero becomes zero.
  *
- * Throws on values JSON cannot represent faithfully, so a change in mermaid
+ * Throws on other unsupported values, so a change in mermaid
  * surfaces as an error instead of a silent `null`.
  */
 export function toJson(value: unknown): JsonValue {
@@ -70,10 +73,7 @@ function convert(value: unknown, path: string[]): JsonValue | undefined {
     case "boolean":
       return value
     case "number":
-      if (!Number.isFinite(value)) {
-        throw new TypeError(`toJson: non-finite number at ${where(path)}`)
-      }
-      return value
+      return numberOrText(value)
     case "bigint":
     case "symbol":
       throw new TypeError(`toJson: ${typeof value} at ${where(path)}`)

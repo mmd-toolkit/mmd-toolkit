@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G: start, document, statement and stop] Are empty bracket forms literal labels?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "[]",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "[]",
+      "children": [
+        {
+          "text": "()",
+          "children": []
+        },
+        {
+          "text": "{}",
+          "children": []
+        }
+      ]
+    }
+  }
+}

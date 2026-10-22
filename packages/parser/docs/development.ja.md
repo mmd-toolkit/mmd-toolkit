@@ -42,7 +42,9 @@ journey 図（`journey`）と、要求図（`requirement`）と、
 mindmap（`mindmap`）と、timeline（`timeline`）と、
 sankey 図（`sankey`）と、XY チャート（`xychart`）と、
 四象限チャート（`quadrantChart`）と、ブロック図（`block`）と、
-kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）です。
+kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）と、
+Ishikawa 図（`ishikawa`）と、agentflow（`agentflow`）と、
+usecase 図（`usecase`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -64,7 +66,10 @@ kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）です�
 [`diagrams/block.md`](../../spec/docs/diagrams/block.ja.md)、
 [`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.ja.md)、
 [`diagrams/c4.md`](../../spec/docs/diagrams/c4.ja.md)、
-[`diagrams/venn.md`](../../spec/docs/diagrams/venn.ja.md)
+[`diagrams/venn.md`](../../spec/docs/diagrams/venn.ja.md)、
+[`diagrams/ishikawa.md`](../../spec/docs/diagrams/ishikawa.ja.md)、
+[`diagrams/agentflow.md`](../../spec/docs/diagrams/agentflow.ja.md)、
+[`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.ja.md)
 のどれかに従います。
 3 つの部分からなります。
 
@@ -93,7 +98,8 @@ flowchart とクラス図の文字の規則の Unicode の文字は
 状態図の字句解析器が `#` と `%%` を、
 Gantt チャートの字句解析器が `%` を、
 journey 図と要求図と timeline の字句解析器が `#` と `%` を、
-mindmap、kanban 図、C4 図、venn 図の字句解析器が `%%` を読むように、
+mindmap、kanban 図、C4 図、venn 図、Ishikawa 図の字句解析器が
+`%%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
 中にコメント領域があれば、トークンと同じく、そこで切ります。
@@ -149,6 +155,10 @@ venn の字句解析器は、行の始まりをまたいで暗黙の text モー
 文法は、変換した set 名を保持して union の要素を先行する宣言と照合し、
 木は書かれた値を保持します。
 
+Ishikawa の文法は書かれた字下げを保ち、根の字下げにはよらず、
+最初の原因の字下げを使って親を選びます。
+[fixture: ishikawa/db-indent-clamped] [fixture: ishikawa/db-indent-root-deeper]
+
 ## 道具
 
 `tools/` には、パーサーの作業に使うスクリプトがあります。
@@ -175,3 +185,40 @@ venn の字句解析器は、行の始まりをまたいで暗黙の text モー
   違いの種類は、リストの位置を除いた、同じノードの型の同じ欄か、
   エラーの同じ欄です。
   その後に、違いを 1 つずつ、前と後の値とともに出します。
+
+agentflow の lexer と文法は `src/diagrams/agentflow/`
+に独自のファイルを持ちます。
+flowchart と共通の字句規則には、`src/graph-unit-lexer.ts` の
+`GraphUnitLexer` を使います。
+data・shape・callback などの共通生成規則には、`src/graph-grammar.ts` の
+`GraphGrammar` を使います。
+各図種は独自の AST ノードを構築し、矢印の語彙、コメント規則、
+名前の文法、波括弧の変換をそれぞれ持ちます。
+既存の共通 reader、方向行規則、Unicode 文字の補助も使います。
+テキストのラッパーは、終了波括弧後の最初の LF に直結する行空白だけを畳みます。
+[fixture: agentflow/lex-brace-string-keeps-blank-line]
+[fixture: agentflow/lex-brace-line-whitespace-ls]
+[fixture: agentflow/lex-brace-ls-without-lf]
+
+frontmatter と directive の除去後、正規化した長さが UTF-16 で 50000
+単位以下なら、
+SourceLexer は共通コメント領域を除去せずに行区間を読みます。
+agentflow が先頭の trivia と独自のコメントを読みます。
+上限を超える場合は共通のコメント除去経路を使います。
+[fixture: agentflow/comment-default-size-equal-crlf]
+[fixture: agentflow/comment-default-size-above-crlf]
+[fixture: agentflow/comment-default-size-equal-inline-directive]
+[fixture: agentflow/comment-default-size-above-frontmatter]
+
+usecase の字句解析器は、通常の規則を仕様の順で試し、
+JSON とステレオタイプには排他的な文脈を使います。
+文法は書かれた出現を保ち、
+ネイティブ metadata のプロパティと CSS 宣言を読みます。
+名前空間、宣言の互換性、端点の種類、最終 metadata の検査は、
+`src/diagrams/usecase/rejections.ts` が行います。
+JSON table の本文は不透明で、
+仕様の波括弧と文字列の釣り合いだけで終わりを探します。
+[fixture: usecase/db-all-fields]
+[fixture: usecase/lex-keyword-longer-number]
+[fixture: usecase/gram-native-final-invalid-then-valid]
+[fixture: usecase/div-json-balanced-invalid-array]

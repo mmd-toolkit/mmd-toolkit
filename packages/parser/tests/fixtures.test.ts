@@ -1,3 +1,5 @@
+import { usecaseAccepts } from "./helpers/usecase-fixtures.ts"
+import { agentflowAccepts } from "./helpers/agentflow-fixtures.ts"
 /**
  * The fixtures of `@mmd-toolkit/tests`, parsed: for each fixture, what
  * `parse()` gives must be what the fixture records for this parser, the tree
@@ -240,6 +242,14 @@ const ONE_WAY_DIVERGENCES: readonly (string | undefined)[] = [
  * by the site configuration (`outcomeOf`).
  */
 function checkAcceptance(fixture: Fixture, outcome: Outcome): void {
+  if (fixture.diagram === "usecase") {
+    expect(outcome.kind === "tree").toBe(usecaseAccepts(fixture))
+    return
+  }
+  if (fixture.diagram === "agentflow") {
+    expect(outcome.kind === "tree").toBe(agentflowAccepts(fixture))
+    return
+  }
   const { expected, knownDivergence } = fixture
   if (knownDivergence === undefined) {
     expectSameAcceptance(outcome, expected)
@@ -425,6 +435,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("block")),
     ...(await loadFixtures("kanban")),
     ...(await loadFixtures("venn")),
+    ...(await loadFixtures("ishikawa")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */
@@ -662,7 +673,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     }
   })
 
-  // known-divergences/blank-line-after-header-or-comments.md: in mindmap and kanban,
+  // known-divergences/blank-line-after-header-or-comments.md: in mindmap, kanban, and Ishikawa,
   // blank lines and diagram comments change nothing here wherever they
   // stand after the header, while mermaid.js rejects them in the four
   // cases of the divergence. Each fixture has such a place, found from the
@@ -679,7 +690,9 @@ describe("marked fixtures differ only by their divergence", async () => {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         const places = indentationBlankLinesRejectedByMermaid(fixture.input)
         if (places === null)
-          throw new Error("the input is neither mindmap nor kanban")
+          throw new Error(
+            "the input is no mindmap, kanban, or Ishikawa diagram",
+          )
         expect(places.length).toBeGreaterThan(0)
       })
     }

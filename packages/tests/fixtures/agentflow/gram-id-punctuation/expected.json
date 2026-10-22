@@ -1,0 +1,109 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hash, star, default, comma and colon tokens participate in node ids."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "#hash",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "#hash",
+        "props": {}
+      },
+      {
+        "id": "star*",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "star*",
+        "props": {}
+      },
+      {
+        "id": "default",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "default",
+        "props": {}
+      },
+      {
+        "id": "comma,name",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "comma,name",
+        "props": {}
+      },
+      {
+        "id": "colon:name",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "colon:name",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "#hash",
+        "end": "star*",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_#hash_star*_0"
+      },
+      {
+        "start": "star*",
+        "end": "default",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_star*_default_0"
+      },
+      {
+        "start": "default",
+        "end": "comma,name",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_default_comma,name_0"
+      },
+      {
+        "start": "comma,name",
+        "end": "colon:name",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_comma,name_colon:name_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

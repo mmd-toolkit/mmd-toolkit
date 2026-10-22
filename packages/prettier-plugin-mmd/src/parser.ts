@@ -7,8 +7,8 @@ import type {
   Root,
 } from "@mmd-toolkit/parser"
 import { parse } from "@mmd-toolkit/parser"
-import type { DiagramPrinter } from "./printers/index.ts"
-import { diagramPrinters } from "./printers/index.ts"
+import type { DiagramPrinter, DiagramTextRules } from "./printers/index.ts"
+import { diagramPrinters, diagramTextRules } from "./printers/index.ts"
 import type { Source } from "./printers/source.ts"
 import { createSource } from "./printers/source.ts"
 
@@ -38,6 +38,8 @@ export interface FormattedDocument {
   readonly printDiagram: DiagramPrinter
   /** The source text with the tree, for the printers. */
   readonly source: Source
+  /** Constraints selected with the diagram printer, when it needs them. */
+  readonly textRules: DiagramTextRules | undefined
 }
 
 /**
@@ -91,12 +93,14 @@ export function parseDocument(text: string): MermaidDocument {
   }
   const printDiagram = findDiagramPrinter(root.body.type)
   if (!printDiagram) return { type: "VerbatimDocument", range }
+  const textRules = diagramTextRules[root.body.type]
   return {
     type: "FormattedDocument",
     range,
     root,
     printDiagram,
-    source: createSource(text, root),
+    source: createSource(text, root, textRules?.keepsCommentLines),
+    textRules,
   }
 }
 

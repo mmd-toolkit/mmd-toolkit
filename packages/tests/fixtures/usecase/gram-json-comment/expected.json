@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does shared comment removal run inside JSON bodies?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "a": 1,
+          "b": 2
+        },
+        "propertyOrder": {
+          "": [
+            "a",
+            "b"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "a": 1,
+            "b": 2
+          },
+          "propertyOrder": {
+            "": [
+              "a",
+              "b"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

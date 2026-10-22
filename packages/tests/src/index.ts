@@ -32,7 +32,8 @@ export { dbFromTree } from "./db-from-tree/index.ts"
 export {
   exceedsMaxEdges,
   flowchartEdgeCount,
-} from "./db-from-tree/flowchart.ts"
+  agentflowEdgeCount,
+} from "./db-from-tree/graph-edges.ts"
 export type {
   ColorAnswer,
   DbTreeRoot,
@@ -62,6 +63,9 @@ export type DiagramType =
   | "kanban"
   | "c4"
   | "venn"
+  | "ishikawa"
+  | "agentflow"
+  | "usecase"
 
 /**
  * Where a fixture input came from.

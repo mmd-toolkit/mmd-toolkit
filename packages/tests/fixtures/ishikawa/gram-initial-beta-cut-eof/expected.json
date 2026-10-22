@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Rejections: initial beta cut at EOF; Mermaid rejects, so no divergence mark applies. Parser diagnostic precedence is defined in the parser documents."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nishikawa-beta\n-------------^\nExpecting 'SPACELINE', 'SPACELIST', 'TEXT', got 'EOF'"
+  }
+}

@@ -4,7 +4,7 @@ Japanese version:
 [bare-percent-line-before-header.ja.md](./bare-percent-line-before-header.ja.md)
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
-timeline, sankey, block, and c4. This is one of the
+timeline, sankey, block, c4, agentflow, and usecase. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -22,7 +22,7 @@ every diagram type (see [Diagram detection](../common.md#diagram-detection)):
 ```mmd
 %%
 sequenceDiagram
-  A->>B: x
+  A ->> B: x
 ```
 
 [fixture: sequence/header-after-bare-percent-line]
@@ -31,11 +31,11 @@ mermaid.js reads the same input differently: its detection strips every `%%`
 that has a line break after it together with the rest of its line, finds the
 header, and then hands the text with the bare `%%` lines still in it to the
 lexer of the detected diagram. Where that lexer reads such a line as a comment,
-as the lexers of sequence, class, and state read `%%` alone, both accept the
-input. Where it does not, as the lexers of er, sankey, and block never do, and
-as the lexers of gantt, journey, requirement, and timeline do not before the
-header, mermaid.js rejects the input, and this specification accepts it: that is
-this divergence.
+as the lexers of sequence, class, state, and agentflow read `%%` alone, both
+accept the input. Where it does not, as the lexers of er, sankey, and block
+never do, and as the lexers of gantt, journey, requirement, and timeline do not
+before the header, mermaid.js rejects the input, and this specification accepts
+it: that is this divergence.
 
 ## The difference
 
@@ -46,7 +46,7 @@ Each example is a whole diagram.
    ```mmd
    %%
    flowchart LR
-     A-->B
+     A --> B
    ```
 
 2. A line `%%{ }%%` before a flowchart header:
@@ -54,7 +54,7 @@ Each example is a whole diagram.
    ```mmd
    %%{ }%%
    flowchart LR
-     A-->B
+     A --> B
    ```
 
 3. A line `%%{ }%%` before a state header:
@@ -100,7 +100,7 @@ Each example is a whole diagram.
    ```mmd
    %%
    journey
-   A: 1
+     A: 1
    ```
 
 10. A line of `%%` alone, a line `%%{ }%%`, or a line of `%%` alone and a line
@@ -109,8 +109,8 @@ Each example is a whole diagram.
     ```mmd
     %%
     requirementDiagram
-    requirement r {
-    }
+      requirement r {
+      }
     ```
 
 11. A line of `%%` alone, a line `%%{ }%%`, or a line of `%%` alone and a line
@@ -198,10 +198,11 @@ flowchart/header-after-directive-then-bare-percent-line] [fixture:
 flowchart/header-after-frontmatter-then-bare-percent-line]
 
 Where mermaid.js accepts the input, both read it the same: a line of `%%` alone
-before a sequence, class, or state header, a line `%%{ }%%` before a sequence or
-class header, a line of whitespace only between such a line and a sequence or
-state header, and, in class, a line of whitespace only right before a comment
-line, which lies in the comment region. [fixture:
+before a sequence, class, state, or agentflow header, a line `%%{ }%%` before a
+sequence or class header, a line of whitespace only between such a line and a
+sequence or state header, and, in class, a line of whitespace only right before
+a comment line, which lies in the comment region. [fixture:
+agentflow/comment-bare-percent-line] [fixture:
 sequence/header-after-bare-percent-line] [fixture:
 class/header-after-bare-percent-line] [fixture:
 state/header-after-bare-percent-line] [fixture:
@@ -224,12 +225,15 @@ c4/header-leading-percent-before-different-header]
 
 ## What it means for an author
 
-A line of `%%` alone, or `%%{ }%%`, before the header is read as a comment by
-this toolkit in every diagram type, and by mermaid.js only in sequence, class,
-and state (and not before a line of spaces in class), never in er, gantt,
-journey, requirement, timeline, sankey, or block. To write a diagram that both
-read the same, write comments before the header as comment lines, with at least
-one character after the `%%`, and leave no line of spaces between them and the
+This toolkit reads a line of `%%` alone or `%%{ }%%` before the header as a
+comment in every diagram type. In mermaid.js, acceptance depends on the form and
+diagram type, as listed above. Agentflow accepts `%%` alone, including before a
+whitespace-only line, but rejects a non-directive percent-brace line. [fixture:
+agentflow/comment-bare-percent-line] [fixture:
+agentflow/comment-bare-before-spaces] [fixture:
+agentflow/div-percent-braces-before-header] To write a diagram that both read
+the same, write comments before the header as comment lines, with at least one
+character after the `%%`, and leave no line of spaces between them and the
 header.
 
 ## Why mermaid.js reads it so
@@ -269,6 +273,36 @@ specification would state: the second of the reasons for a known divergence (see
 type is stated instead, and the inputs that mermaid.js rejects for this reason
 are the divergence.
 
+### Agentflow
+
+Agentflow already accepts a bare %% line and a following whitespace-only line.
+Its preserving lexer rejects a non-directive %%{}%% or %%{ }%% line before the
+header, although detection passes it. The shared Comment record holds the entire
+line, so the common pre-header-comment rule accepts it. This is the existing
+reverse pipeline-order criterion; no authored text is discarded from the tree.
+[fixture: agentflow/comment-bare-percent-line] [fixture:
+agentflow/comment-bare-before-spaces] [fixture:
+agentflow/div-percent-braces-before-header] [fixture:
+agentflow/div-percent-braces-after-directive-before-header] [fixture:
+agentflow/div-comment-header-percent-brace]
+
+### Usecase
+
+In usecase, the affected range is a bare %% or non-directive %%{...} line before
+the header, excluding its line terminator. A common Comment already holds its
+mark and value, and following leading whitespace is trivia. Mermaid detects the
+header after skipping it, then rejects because its parser requires the header
+first; deleting that line gives the accepted reference. The existing reverse
+pipeline-order criterion accepts these common leading comments, with no
+additional usecase node and no rejection of a Mermaid-accepted input. Native
+bare comments after the header already work. [fixture:
+usecase/div-comment-preheader-bare] [fixture:
+usecase/div-comment-preheader-braces] [fixture:
+usecase/div-comment-preheader-bare-unicode-blank] [fixture:
+usecase/lex-comment-bare-percent-before-header-reference] [fixture:
+usecase/lex-comment-before-header-unicode-reference] [fixture:
+usecase/comment-bare-pair]
+
 ## The documentation of mermaid.js and its issues
 
 - The
@@ -293,3 +327,22 @@ are the divergence.
   describes the disagreement between detection and preprocessing comment removal
   without singling out C4. No report about a bare percent line followed by a
   spaces-only line before a C4 header was found.
+
+- The pinned
+  [Agentflow declaration documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L98-L108)
+  starts diagrams with agentflow-beta and does not describe a non-directive
+  percent-brace line before the header. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `agentflow comment in:title,body`
+  found the merged [PR #8073](https://github.com/mermaid-js/mermaid/pull/8073),
+  which describes comment-preserving input. No report about a non-directive
+  percent-brace line before an Agentflow header was found.
+
+- The pinned
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  describes one statement per line. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `usecase comment` found no inspected
+  report establishing a maintainer defect judgment for this acceptance behavior.
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048), closed and merged
+  on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
+  validation and JSON tables. This divergence follows the shared direct rule,
+  not a claim that a bug label approves a grammar change.

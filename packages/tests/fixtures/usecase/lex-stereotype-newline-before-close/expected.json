@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What happens when stereotype mode begins at a newline?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error lexing usecase diagram: unexpected character: ->\n<- at offset: 17, skipped 1 characters. at line 2, column 5 [17,18)"
+  }
+}

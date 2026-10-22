@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A non-breaking space is not the horizontal whitespace of a CSS property name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> WORD <-- but found --> ' ' <-- at line 3, column 11 [25,26)"
+  }
+}

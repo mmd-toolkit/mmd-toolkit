@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an additional literal semicolon reject after shared hash preprocessing?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: expecting at least one iteration which starts with one of these possible Token sequences::\n  <[WORD] ,[PLAIN_STRING] ,[NUMBER] ,[HASH_COLOR] ,[CSS_IDENTIFIER] ,[CSS_ESCAPED_COMMA] ,[DASH] ,[DOT] ,[PERCENT] ,[CSS_PUNCTUATION] ,[COLON] ,[LPAREN] ,[RPAREN] ,[LBRACKET] ,[RBRACKET] ,[LBRACE] ,[RBRACE] ,[AT] ,[MARKERLESS_SOLID]>\nbut found: 'ﬂ°' at line 3, column 14 [28,30)"
+  }
+}

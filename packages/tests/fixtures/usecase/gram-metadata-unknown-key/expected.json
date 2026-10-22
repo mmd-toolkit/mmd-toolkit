@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an unsupported native metadata property reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'fill' is invalid for actor 'A' at line 2, column 11 [23,27)"
+  }
+}

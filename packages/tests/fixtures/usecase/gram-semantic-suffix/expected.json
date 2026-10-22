@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a longer include-like word reject rather than match a keyword?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [INCLUDE]\n  2. [EXTEND]\nbut found: 'included' at line 2, column 9 [21,29)"
+  }
+}

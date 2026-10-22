@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P1: directive preprocessing] Does U+2029 stop an unclosed free-text directive in a child?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "AB",
+          "children": []
+        },
+        {
+          "text": "C",
+          "children": []
+        }
+      ]
+    }
+  }
+}

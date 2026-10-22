@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does directive stripping reconstruct every remaining statement keyword and a semantic keyword?"
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "Title",
+    "accDescr": "Description",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [
+          "hot"
+        ],
+        "styles": [
+          "color:blue"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "S",
+        "label": "S",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "A",
+        "target": "B",
+        "type": "include",
+        "arrowType": 0,
+        "label": "include",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "A",
+        "label": "text",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "color:red"
+        ]
+      }
+    ]
+  }
+}

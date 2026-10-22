@@ -1,3 +1,5 @@
+import { checkUsecaseTree, usecaseStringDelimitersOf } from "./usecase.ts"
+import { checkAgentflowTree, agentflowStringDelimitersOf } from "./agentflow.ts"
 import { checkBlockTree } from "./block.ts"
 import { checkVennTree } from "./venn.ts"
 import { checkC4Tree } from "./c4.ts"
@@ -7,6 +9,7 @@ import { checkErrorDiagramTokens } from "./error-diagram.ts"
 import { checkFlowchartTree, stringDelimitersOf } from "./flowchart.ts"
 import { checkGanttTree } from "./gantt.ts"
 import { checkInvariants } from "./invariants.ts"
+import { checkIshikawaTree } from "./ishikawa.ts"
 import { checkKanbanTree } from "./kanban.ts"
 import { checkJourneyTree } from "./journey.ts"
 import { checkMindmapTree, mindmapLabelDelimitersFor } from "./mindmap.ts"
@@ -35,6 +38,10 @@ function stringDelimitersFor(
   root: CheckedRoot,
 ): StringDelimitersOf {
   switch (root.body.type) {
+    case "UsecaseDiagram":
+      return usecaseStringDelimitersOf(text, root)
+    case "AgentflowDiagram":
+      return agentflowStringDelimitersOf(text, root)
     case "FlowchartDiagram":
       return stringDelimitersOf(text, root)
     case "KanbanDiagram":
@@ -69,6 +76,12 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   switch (root.body.type) {
     case "ErrorDiagram":
       checkErrorDiagramTokens(root, problems)
+      break
+    case "UsecaseDiagram":
+      checkUsecaseTree(text, root, problems)
+      break
+    case "AgentflowDiagram":
+      checkAgentflowTree(text, root, delimitersOf, problems)
       break
     case "FlowchartDiagram":
       checkFlowchartTree(text, root, delimitersOf, problems)
@@ -105,6 +118,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "MindmapDiagram":
       checkMindmapTree(text, root, problems)
+      break
+    case "IshikawaDiagram":
+      checkIshikawaTree(text, root, problems)
       break
     case "TimelineDiagram":
       checkTimelineTree(text, root, problems)

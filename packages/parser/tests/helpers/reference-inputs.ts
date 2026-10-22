@@ -1,3 +1,5 @@
+import type { AgentflowUnits } from "../../src/diagrams/agentflow/index.ts"
+import { lexAgentflow } from "../../src/diagrams/agentflow/index.ts"
 import type { Range, Root } from "../../src/index.ts"
 import { ParseError, traverseNodes, visitorKeys } from "../../src/index.ts"
 import { detectDiagram } from "../../src/detection.ts"
@@ -25,6 +27,9 @@ import { lexKanban } from "../../src/diagrams/kanban/index.ts"
 import type { Unit as KanbanUnit } from "../../src/diagrams/kanban/units.ts"
 import type { MindmapUnits } from "../../src/diagrams/mindmap/index.ts"
 import { lexMindmap } from "../../src/diagrams/mindmap/index.ts"
+import type { IshikawaUnits } from "../../src/diagrams/ishikawa/index.ts"
+import { lexIshikawa } from "../../src/diagrams/ishikawa/index.ts"
+import type { Unit as IshikawaUnit } from "../../src/diagrams/ishikawa/units.ts"
 import type { Unit as MindmapUnit } from "../../src/diagrams/mindmap/units.ts"
 import type { TimelineUnits } from "../../src/diagrams/timeline/index.ts"
 import { lexTimeline } from "../../src/diagrams/timeline/index.ts"
@@ -1541,16 +1546,30 @@ function mindmapLexingOf(text: string): MindmapUnits | null {
   }
 }
 
+/** The Ishikawa units and comments, or null for another diagram or a lexical rejection. */
+function ishikawaLexingOf(text: string): IshikawaUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "ishikawa") return null
+  try {
+    return lexIshikawa(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
 /**
  * known-divergences/blank-line-after-header-or-comments.md: one line of a
- * mindmap or kanban diagram, between two line breaks of its diagram text, as the parser's
+ * mindmap, kanban, or Ishikawa diagram, between two line breaks of its diagram text, as the parser's
  * lexer reads it: a line feed, or the end of a diagram comment that a
  * U+2028 or a U+2029 ends, is a line break (diagrams/mindmap.md, Whitespace
  * and lines).
  */
 interface IndentedLine {
   /** The units on the line, the `newline` units left out. */
-  readonly units: readonly (MindmapUnit | KanbanUnit)[]
+  readonly units: readonly (MindmapUnit | KanbanUnit | IshikawaUnit)[]
   /** The number of diagram comments on the line: one at most, as a comment runs to the end of its line. */
   readonly comments: number
   /** Whether the line starts at the U+2028 or the U+2029 that ended a diagram comment. */
@@ -1559,17 +1578,21 @@ interface IndentedLine {
   readonly endsWithWhitespace: boolean
 }
 
-/** The lines of mindmap or kanban `lexing`, in source order (see {@link IndentedLine}). */
-function indentedLinesOf(lexing: MindmapUnits | KanbanUnits): IndentedLine[] {
+/** The lines of mindmap, kanban, or Ishikawa `lexing`, in source order (see {@link IndentedLine}). */
+function indentedLinesOf(
+  lexing: MindmapUnits | KanbanUnits | IshikawaUnits,
+): IndentedLine[] {
   const lines: IndentedLine[] = []
-  let units: (MindmapUnit | KanbanUnit)[] = []
+  let units: (MindmapUnit | KanbanUnit | IshikawaUnit)[] = []
+  let trailingIndentation = false
   let afterSeparator = false
   // The comments are in source order; those before a line break are on the
   // line it ends.
   let nextComment = 0
   for (const unit of lexing.units) {
     if (unit.name !== "newline") {
-      units.push(unit)
+      trailingIndentation = unit.name === "indentation"
+      if (!trailingIndentation) units.push(unit)
       continue
     }
     const zeroWidth = unit.start === unit.end
@@ -1589,7 +1612,11 @@ function indentedLinesOf(lexing: MindmapUnits | KanbanUnits): IndentedLine[] {
       units,
       comments,
       afterSeparator,
-      endsWithWhitespace: units.length > 0 && unit.whitespaceBefore > 0,
+      endsWithWhitespace:
+        units.length > 0 &&
+        ("whitespaceBefore" in unit
+          ? unit.whitespaceBefore > 0
+          : trailingIndentation),
     })
     for (let empty = 1; empty < breaks; empty += 1) {
       lines.push({
@@ -1600,6 +1627,7 @@ function indentedLinesOf(lexing: MindmapUnits | KanbanUnits): IndentedLine[] {
       })
     }
     units = []
+    trailingIndentation = false
     afterSeparator = zeroWidth
   }
   return lines
@@ -1607,19 +1635,20 @@ function indentedLinesOf(lexing: MindmapUnits | KanbanUnits): IndentedLine[] {
 
 /**
  * known-divergences/blank-line-after-header-or-comments.md: the offsets, in
- * source order, of the statements of mindmap or kanban `text` before which
+ * source order, of the statements of mindmap, kanban, or Ishikawa `text` before which
  * mermaid.js rejects the blank lines and the diagram comments that stand
  * there, in the four cases of the divergence, and of the first node in
  * case 1 and 2. A statement is a node line, an icon line, or a class line;
  * the header line with a node on it is a statement line. The lines come
  * from the parser's lexer (see {@link IndentedLine}); a line with no unit
- * and no comment is a blank line. Null when `text` is neither mindmap nor
- * kanban, or its lexer rejects it.
+ * and no comment is a blank line. Null when `text` is no mindmap, kanban, or
+ * Ishikawa diagram, or its lexer rejects it.
  */
 export function indentationBlankLinesRejectedByMermaid(
   text: string,
 ): number[] | null {
-  const lexing = mindmapLexingOf(text) ?? kanbanLexingOf(text)
+  const lexing =
+    mindmapLexingOf(text) ?? kanbanLexingOf(text) ?? ishikawaLexingOf(text)
   if (lexing === null) return null
   const lines = indentedLinesOf(lexing)
   const offsets: number[] = []
@@ -2105,5 +2134,18 @@ function flowchartStatementStartsAfter(before: readonly AnyUnit[]): boolean {
       )
     default:
       return false
+  }
+}
+
+/** The specification's agentflow units, including retained forms and preserved comments. */
+export function agentflowLexingOf(text: string): AgentflowUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "agentflow") return null
+  try {
+    return lexAgentflow(diagramInputOf(opened, detection, "agentflow"))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
   }
 }

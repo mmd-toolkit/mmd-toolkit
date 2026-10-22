@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G] Do literal root quotes preserve inner padding on the header line?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\" R \"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\" R \"",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

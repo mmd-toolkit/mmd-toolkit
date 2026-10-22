@@ -1,7 +1,12 @@
 import type { Node, Range, VennStatement } from "@mmd-toolkit/parser"
-import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { lineEndOf, lineStartOf } from "./kept-lines.ts"
-import { collectAtoms, collectValueNodes, keptAsWritten } from "./layout.ts"
+import type { AtomLayout, GapRule } from "./atoms.ts"
+import { lineStartOf } from "./kept-lines.ts"
+import {
+  collectAtoms,
+  collectValueNodes,
+  keptAsWritten,
+  protectSemicolonPrefixes,
+} from "./layout.ts"
 import type { Source } from "./source.ts"
 import { findTriviaBetween } from "./source.ts"
 
@@ -85,29 +90,7 @@ export function layoutVennStatement(
   // Protect the textual prefix on every semicolon segment, including
   // nonmatches. Folding whole atoms keeps a crossing value exactly once
   // (common.md, Style and classDef lines; docs/venn.md, Line rule and kept lines).
-  const kept: Atom[] = []
-  for (let position = start; position < end;) {
-    const stop = lineEndOf(source, position, true)
-    const semicolon = source.text.lastIndexOf(";", stop - 1)
-    if (semicolon >= position) {
-      let from = position
-      let through = Math.min(end, semicolon + 1)
-      for (const atom of atoms) {
-        if (atom.start < through && from < atom.end) {
-          from = Math.min(from, atom.start)
-          through = Math.max(through, atom.end)
-        }
-      }
-      for (const item of findTriviaBetween(source, position, through))
-        through = Math.min(end, Math.max(through, item.range[1]))
-      const previous = kept.at(-1)
-      if (previous !== undefined && from <= previous.end)
-        kept[kept.length - 1] = { start: previous.start, end: through }
-      else kept.push({ start: from, end: through })
-      position = through
-    } else position = stop + 1
-  }
-  if (kept.length > 0) atoms = collectAtoms(source, start, end, values, kept)
+  atoms = protectSemicolonPrefixes(source, start, end, atoms)
   const rules = new Map<number, GapRule>()
   for (let index = 1; index < atoms.length; index++) {
     const previous = atoms[index - 1]

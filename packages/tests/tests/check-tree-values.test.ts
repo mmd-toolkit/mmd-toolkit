@@ -52,11 +52,27 @@ function valueFieldsOfTables(): Map<string, string> {
 function saidInSpecification(
   meaning: string,
 ): "written-text" | "units-joined" | "otherwise" {
+  // ast/agentflow.md names the written arrow, literal and retained ignored spelling.
+  if (
+    [
+      "The written text of this value.",
+      "Written text of this grammar position.",
+      "Written CSS property name, including any internal HWS.",
+      "Written --, <--, o--, or x--.",
+      "The written sole/final arrow.",
+      "The written arrow without surrounding whitespace.",
+      "The written --.",
+      "Nonempty written ignored text, including empty-form delimiters.",
+    ].includes(meaning)
+  )
+    return "written-text"
   // ast/venn.md, VennIgnoredText names its written code unit directly.
   if (meaning === "The swallowed non-whitespace fragment as written.")
     return "written-text"
   if (meaning.startsWith("Its written text between")) return "otherwise"
   if (meaning.startsWith("Its written text")) return "written-text"
+  // ast/ishikawa.md, IshikawaLiteral retains the written prose verbatim.
+  if (meaning === "The node text as written.") return "written-text"
   // ast/xychart.md, XychartLiteral: the units joined, but for the texts of the
   // accessibility statements, which `accessibilityTextsOf()` of `values.ts` lists.
   if (meaning.startsWith("For a text without quotes, the texts of its units")) {
@@ -156,6 +172,22 @@ interface BrokenValueRow {
  * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  { type: "UsecaseLabel", message: NOT_WRITTEN_TEXT },
+  { type: "UsecaseLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "UsecaseJsonDataBlock", message: NOT_WRITTEN_TEXT },
+  { type: "UsecaseArrow", message: NOT_WRITTEN_TEXT },
+  { type: "UsecaseOpeningArrow", message: NOT_WRITTEN_TEXT },
+  { type: "UsecaseIdentifier", message: "name is not its written text" },
+  { type: "AgentflowLabel", message: NOT_WRITTEN_TEXT },
+  { type: "AgentflowLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "AgentflowIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "AgentflowDataBlock", message: NOT_WRITTEN_TEXT },
+  { type: "AgentflowArrow", message: NOT_WRITTEN_TEXT },
+  { type: "AgentflowOpeningArrow", message: NOT_WRITTEN_TEXT },
+  {
+    type: "AgentflowShape",
+    message: "the shape name does not match its delimiters: ",
+  },
   { type: "C4Literal", message: NOT_WRITTEN_TEXT },
   { type: "VennLabel", message: "the label value is not its written interior" },
   { type: "VennLiteral", message: NOT_WRITTEN_TEXT },
@@ -199,6 +231,7 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "KanbanLiteral", message: NOT_WRITTEN_TEXT },
   { type: "MindmapLabel", message: NOT_WRITTEN_TEXT },
   { type: "MindmapLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "IshikawaLiteral", message: NOT_WRITTEN_TEXT },
   { type: "TimelineLiteral", message: NOT_WRITTEN_TEXT },
   {
     type: "SankeyIdentifier",
@@ -364,6 +397,123 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "UsecaseLabel",
+    name: "a bare usecase label retains leading Unicode whitespace",
+    diagram: "usecase",
+    fixture: "lex-actor-label-unicode-padding",
+    token: { type: "RawText", value: "\u00a0Actor\u00a0" },
+    side: "start",
+    problems: [
+      {
+        where: "UsecaseLabel at 21-28",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "UsecaseLabel at 21-28",
+        message: `${JOINED}: "Actor\u00a0", not "\u00a0Actor\u00a0"`,
+      },
+    ],
+  },
+  {
+    type: "UsecaseLiteral",
+    name: "an accessibility literal retains leading HWS",
+    diagram: "usecase",
+    fixture: "gram-a11y-line-raw-padding",
+    token: { type: "RawText", value: " \t value \t" },
+    side: "start",
+    problems: [
+      {
+        where: "UsecaseLiteral at 22-32",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "UsecaseLiteral at 22-32",
+        message: `${JOINED}: "value \\t", not " \\t value \\t"`,
+      },
+    ],
+  },
+  {
+    type: "UsecaseJsonDataBlock",
+    name: "an opaque JSON block retains its leading CRLF",
+    diagram: "usecase",
+    fixture: "gram-json-crlf",
+    token: { type: "RawText", value: '\r\n"a":1\r\n' },
+    side: "start",
+    problems: [
+      {
+        where: "UsecaseJsonDataBlock at 20-32",
+        message: `${JOINED}: "\\"a\\":1\\r\\n", not "\\r\\n\\"a\\":1\\r\\n"`,
+      },
+    ],
+  },
+
+  {
+    type: "AgentflowLabel",
+    name: "an Agentflow Name label keeps padding before its title",
+    diagram: "agentflow",
+    fixture: "gram-flow-name-space-before-title",
+    token: { type: "RawText", value: "F " },
+    side: "end",
+    problems: [
+      {
+        where: "AgentflowName at 23-25",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "AgentflowLabel at 23-25",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      { where: "AgentflowLabel at 23-25", message: `${JOINED}: "F", not "F "` },
+    ],
+  },
+  {
+    type: "AgentflowLiteral",
+    name: "an Agentflow style keeps leading whitespace",
+    diagram: "agentflow",
+    fixture: "db-style-leading-whitespace",
+    token: { type: "RawText", value: " fill:red" },
+    side: "start",
+    problems: [
+      {
+        where: "AgentflowLiteral at 36-45",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "AgentflowLiteral at 36-45",
+        message: `${JOINED}: "fill:red", not " fill:red"`,
+      },
+    ],
+  },
+  {
+    type: "AgentflowDataBlock",
+    name: "an Agentflow data interior keeps leading whitespace",
+    diagram: "agentflow",
+    fixture: "db-metadata-positive-infinity",
+    token: { type: "RawText", value: " custom: .inf " },
+    side: "start",
+    problems: [
+      {
+        where: "AgentflowDataBlock at 19-36",
+        message: `${JOINED}: "custom: .inf ", not " custom: .inf "`,
+      },
+    ],
+  },
+  {
+    type: "AgentflowIgnoredText",
+    name: "a retained empty description block keeps padding before an internal directive",
+    diagram: "agentflow",
+    fixture: "lex-directive-in-name-empty-block-padding",
+    token: { type: "RawText", value: "accDescr { " },
+    side: "end",
+    problems: [
+      {
+        where: "AgentflowIgnoredText at 25-52",
+        message: `${JOINED}: "accDescr { }", not "accDescr {  }"`,
+      },
+    ],
+  },
+
   {
     type: "VennLabel",
     name: "a VennLabel reports trailing bare-label padding taken off its RawText token",
@@ -856,6 +1006,24 @@ const VALUE_CASES: readonly ValueCase[] = [
     ],
   },
   {
+    type: "IshikawaLiteral",
+    name: "an IshikawaLiteral reports trailing written whitespace removed from its RawText token",
+    diagram: "ishikawa",
+    fixture: "gram-root-trailing-space",
+    token: { type: "RawText", value: "R   " },
+    side: "end",
+    problems: [
+      {
+        where: "IshikawaLiteral at 9-13",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "IshikawaLiteral at 9-13",
+        message: `${JOINED}: "R", not "R   "`,
+      },
+    ],
+  },
+  {
     type: "MindmapLiteral",
     name: "a MindmapLiteral reports the whitespace taken off the end of the RawText token of a node text",
     diagram: "mindmap",
@@ -996,6 +1164,40 @@ interface TypeWithoutTokenWhitespace {
 const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
   Record<string, TypeWithoutTokenWhitespace>
 > = {
+  UsecaseArrow: {
+    diagram: "usecase",
+    fixture: "db-arrows",
+    reason:
+      "its one Punctuator is the complete operator without surrounding whitespace",
+  },
+  UsecaseOpeningArrow: {
+    diagram: "usecase",
+    fixture: "db-labeled-arrows",
+    reason: "its one Punctuator is the complete split opening",
+  },
+  UsecaseIdentifier: {
+    diagram: "usecase",
+    fixture: "lex-class-property-custom-gap",
+    reason:
+      "its word and dash-prefix atoms contain no whitespace; their internal HWS is source trivia",
+  },
+  AgentflowArrow: {
+    diagram: "agentflow",
+    fixture: "gram-three-edge-kinds",
+    reason: "its one Punctuator is the operator without surrounding whitespace",
+  },
+  AgentflowOpeningArrow: {
+    diagram: "agentflow",
+    fixture: "gram-split-failure-label",
+    reason: "its one Punctuator is exactly the two opening dashes",
+  },
+  AgentflowShape: {
+    diagram: "agentflow",
+    fixture: "gram-bracket-shapes",
+    reason:
+      "its own tokens are the compound bracket delimiters; its label is a child",
+  },
+
   VennIgnoredText: {
     diagram: "venn",
     fixture: "lex-style-extra-id-eaten",

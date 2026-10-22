@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 40,
+    "test": "usecase parser publication and normalized AST > rejects conflicting parent declarations transactionally"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Element 'Login' belongs to more than one system boundary at line 5, column 16 [59,65); previous declaration at line 2, column 16 [28,33)"
+  }
+}

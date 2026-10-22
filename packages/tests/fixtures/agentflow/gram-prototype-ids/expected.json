@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Map-backed vertex ids include prototype-shaped names."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "__proto__",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "__proto__",
+        "props": {}
+      },
+      {
+        "id": "constructor",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "constructor",
+        "props": {}
+      },
+      {
+        "id": "prototype",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "prototype",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "__proto__",
+        "end": "constructor",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L___proto___constructor_0"
+      },
+      {
+        "start": "constructor",
+        "end": "prototype",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_constructor_prototype_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

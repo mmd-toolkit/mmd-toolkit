@@ -1,7 +1,6 @@
 import { describe, expect, expectTypeOf, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
 import type {
-  FlowchartLink,
   GanttClickStatement,
   Node,
   Root,
@@ -59,8 +58,9 @@ function inSourceOrder(parent: Node, children: readonly Node[]): Node[] {
       return child
     })
   }
-  if (parent.type !== "FlowchartLink") return [...children]
-  const { opening, arrow, label }: FlowchartLink = parent
+  if (parent.type !== "FlowchartLink" && parent.type !== "AgentflowLink")
+    return [...children]
+  const { opening, arrow, label } = parent
   if (opening === null || label === null) return [...children]
   return children.map((child) => {
     if (child === arrow) return label

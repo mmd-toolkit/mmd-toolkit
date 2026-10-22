@@ -3,7 +3,7 @@
 Japanese version:
 [blank-line-after-header-or-comments.ja.md](./blank-line-after-header-or-comments.ja.md)
 
-Diagram types: mindmap, kanban. This is one of the
+Diagram types: mindmap, kanban, ishikawa. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -78,6 +78,74 @@ accepted by both. [fixture: kanban/gram-between-comments-blank] A blank line
 before an icon is accepted by both. [fixture: kanban/gram-blank-before-icon]
 Blank lines at the end are accepted by both. [fixture:
 kanban/gram-shallower-then-empty]
+
+Ishikawa applies the same direct rule (see
+[Blank lines](../diagrams/ishikawa.md#blank-lines)). A statement here is a node
+line; there are no icon or class statements. The same four cases are accepted
+here and rejected by mermaid.js:
+
+1. After the header, an even diagram-comment count, including zero, followed by
+   a blank before the first node is accepted. With zero comments, trailing
+   header whitespace or a blank line suffices. [fixture:
+   ishikawa/div-header-two-comments-blank-node] [fixture:
+   ishikawa/div-header-blank-node] [fixture:
+   ishikawa/div-header-blank-indented-node] [fixture:
+   ishikawa/div-header-whitespace-indented-node] [fixture:
+   ishikawa/div-header-several-blank-node] [fixture:
+   ishikawa/div-header-spaces-line-node] [fixture:
+   ishikawa/div-header-ls-line-node] [fixture: ishikawa/div-header-ps-line-node]
+   [fixture: ishikawa/div-header-common-comment-blank-node] [fixture:
+   ishikawa/div-header-directive-blank-node] [fixture:
+   ishikawa/div-header-trailing-space-node] [fixture:
+   ishikawa/div-header-trailing-tab-node] [fixture:
+   ishikawa/div-header-trailing-nbsp-node] [fixture:
+   ishikawa/div-beta-header-trailing-space-node] [fixture:
+   ishikawa/div-header-space-directive-node] [fixture:
+   ishikawa/div-header-two-comments-blank-cr] [fixture:
+   ishikawa/div-header-two-comments-blank-crlf] [fixture:
+   ishikawa/div-header-two-comments-common-gap]
+
+2. After the header, an odd diagram-comment count ending at U+2028 or U+2029
+   before a node on the same physical line is accepted. [fixture:
+   ishikawa/div-header-comment-ls-node] [fixture:
+   ishikawa/div-header-comment-ps-node] [fixture:
+   ishikawa/div-header-inline-comment-ls-node] [fixture:
+   ishikawa/div-header-inline-comment-ps-node] [fixture:
+   ishikawa/div-header-comment-directive-value-ps] [fixture:
+   ishikawa/div-header-comment-directive-marker-ls]
+
+3. Between nodes, an odd diagram-comment count followed by a blank before the
+   next node is accepted, including a separator followed by a line feed at the
+   end of the comment. [fixture: ishikawa/div-between-comment-blank-node]
+   [fixture: ishikawa/div-between-comment-ls-blank-node] [fixture:
+   ishikawa/div-between-comment-ps-blank-node] [fixture:
+   ishikawa/div-between-comment-blank-cr] [fixture:
+   ishikawa/div-between-comment-blank-crlf] [fixture:
+   ishikawa/div-between-comment-directive-blank-node] [fixture:
+   ishikawa/div-between-comment-common-gap-blank-node]
+
+4. Between nodes, an even nonzero diagram-comment count ending at U+2028 or
+   U+2029 before a node on the same physical line is accepted. [fixture:
+   ishikawa/div-between-two-comments-ls-node] [fixture:
+   ishikawa/div-between-two-comments-ps-node]
+
+The counterparts accepted by both keep their tree: an odd count after the header
+followed by a blank, an even count between nodes followed by a blank, two
+comments before a header-line separator and node, and blanks before comments or
+at the end. [fixture: ishikawa/gram-header-comment-blank-node] [fixture:
+ishikawa/gram-between-two-comments-blank-node] [fixture:
+ishikawa/gram-header-comment-spaces-node] [fixture:
+ishikawa/gram-header-two-comments-ls-node] [fixture:
+ishikawa/gram-between-blank-comment-node] [fixture:
+ishikawa/gram-last-whitespace-line] [fixture:
+ishikawa/gram-last-comment-blank-line] [fixture:
+ishikawa/gram-header-two-comments-ps-node]
+
+The header alone at the end of the source, with no written line break or other
+following content, is still rejected; removed directives and the appended line
+feed do not supply that content. It is not this divergence. [fixture:
+ishikawa/header-only] [fixture: ishikawa/header-beta-only] [fixture:
+ishikawa/header-directive-only-eof] [fixture: ishikawa/header-only-lf]
 
 ## The difference
 
@@ -239,6 +307,19 @@ kanban/div-comment-blank-before-class] [fixture:
 kanban/div-between-real-comments-ls-node] [fixture:
 kanban/div-between-real-comments-ps-node]
 
+Ishikawa has the same pairing in
+[`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L6-L55):
+whitespace and diagram comments are both `SPACELINE`, used as a statement and as
+a statement end. Neither is a node: whitespace and line terminators are trivia,
+and comments are already held as comments. No node can preserve an acceptance
+condition that depends only on pairing those trivia units. The direct rule
+leaves all written node text and indentation intact; it accepts more inputs and
+rejects none that mermaid.js accepts for this reason. [fixture:
+ishikawa/div-header-blank-node] [fixture:
+ishikawa/div-between-comment-blank-node] [fixture:
+ishikawa/gram-header-comment-blank-node] [fixture:
+ishikawa/gram-between-two-comments-blank-node]
+
 ## The rule of this specification, and why
 
 A blank line and a comment hold nothing that the tree keeps: the tree is the
@@ -277,3 +358,9 @@ mindmap/div-two-comments-line-separator-between-nodes]
   `kanban parse`, `kanban error`, and `kanban`). The issues and pull requests
   found are about other things, such as `style` statements (#8118), `:::`
   classes (#8119), and `accTitle` (#8120).
+- The pinned
+  [Ishikawa syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L1-L41)
+  describes indentation but states no blank-line or comment-pairing rule.
+  Searches of issues and pull requests on 2026-10-21 with `ishikawa blank`,
+  `ishikawa comment`, and `ishikawa header` found no report about these four
+  cases.

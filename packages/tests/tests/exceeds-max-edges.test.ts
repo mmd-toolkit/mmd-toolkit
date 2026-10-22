@@ -4,14 +4,14 @@ import { describe, expect, it } from "vitest"
 import type { DbTreeRoot, DiagramType } from "../src/index.ts"
 import { exceedsMaxEdges, getFixturesRoot, loadFixtures } from "../src/index.ts"
 
-/** The diagram types whose fixtures can carry a flowchart. */
-const DIAGRAMS: readonly DiagramType[] = ["common", "flowchart"]
+/** The diagram types whose fixtures can carry a graph-family diagram. */
+const DIAGRAMS: readonly DiagramType[] = ["common", "flowchart", "agentflow"]
 
 /** The start of the message of mermaid.js for more edges than `maxEdges`. */
 const EDGE_LIMIT_MESSAGE = "Edge limit exceeded"
 
 describe("exceedsMaxEdges", () => {
-  it("agrees with the edge limit rejections of mermaid.js on every recorded flowchart tree", async () => {
+  it("agrees with the edge limit rejections of mermaid.js on every recorded graph-family tree", async () => {
     const differing: string[] = []
     const withoutTree: string[] = []
     let rejected = 0

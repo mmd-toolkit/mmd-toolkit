@@ -112,6 +112,12 @@ Other values of the summary:
   [embedded-data.md](./embedded-data.md). [fixture:
   flowchart/db-data-block-asset-width]
 
+On a vertex, YAML anchors and aliases in unknown data-block keys are accepted
+and then discarded with those keys. This includes a shared mapping and a
+self-referencing mapping: neither adds a summary field or a nonempty data-block
+effect. [fixture: flowchart/db-data-block-yaml-shared-alias] [fixture:
+flowchart/db-data-block-yaml-self-alias]
+
 ## sequence
 
 The fields of the summary:
@@ -7861,6 +7867,12 @@ line of the block is ignored. [fixture: kanban/db-metadata-multiline] [fixture:
 kanban/db-metadata-quoted-newline] [fixture:
 kanban/db-metadata-single-quoted-newline] [fixture:
 kanban/db-metadata-yaml-comment] [fixture: kanban/gram-metadata-two-blocks]
+
+YAML anchors and aliases in unknown data-block keys are accepted and then
+discarded with those keys. This includes a shared mapping and a self-referencing
+mapping: neither adds a summary field or a nonempty data-block effect. [fixture:
+kanban/db-metadata-yaml-shared-alias] [fixture:
+kanban/db-metadata-yaml-self-alias]
 
 Adjacent `@{ ... }` blocks of one kanban node are read as one suffix whose
 contents are concatenated, and one effect is recorded for the group. [fixture:
@@ -15644,3 +15656,1389 @@ venn/lex-title-entity-numeric]
 
 Double quotes of the HTML attribute become single quotes: `html-attribute`.
 [fixture: venn/lex-title-html-attribute]
+
+## agentflow
+
+`normalizeAgentflow()` (`src/normalizers/agentflow.ts`) summarizes
+[`AgentFlowDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L213-L265).
+The header `agentflow-beta` has the detector id `agentflow`. [fixture:
+agentflow/header-lf] [fixture: agentflow/header-without-beta] [fixture:
+agentflow/detect-letter-suffix]
+
+| Field                   | Content                                                                |
+| ----------------------- | ---------------------------------------------------------------------- |
+| `direction`             | Diagram direction, including symbol directions and `TD` normalization. |
+| `title`                 | Frontmatter title, or empty text.                                      |
+| `accTitle` / `accDescr` | Accessibility texts, or empty text.                                    |
+| `vertices`              | Raw vertices in insertion order, including connectors.                 |
+| `edges`                 | Raw edges in insertion order.                                          |
+| `edgeDefaults`          | `interpolate` and `style`, each null when unset.                       |
+| `classDefs`             | Class definitions in insertion order: `id`, `styles`.                  |
+| `subgraphs`             | Flow containers in completion order, with direct membership.           |
+| `tooltips`              | `id`, `text` in first-id order.                                        |
+| `clickCalls`            | `id`, `name`, `args` in call order; absent when none.                  |
+
+The summary reuses flowchart's record normalizer and Db patch because their
+getters, record shapes and metadata-call argument positions agree.
+[`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L17-L61)
+reads `direction` for layout and `title` for title insertion; the common
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+reads `accTitle` and `accDescr` for accessibility. [fixture:
+agentflow/db-all-fields]
+
+A vertex keeps `id`, `text`, `labelType`, `type`, `styles`, `classes`, `props`,
+and optional `dir`, `link`, `linkTarget`, `metadata`, `isConnector`.
+[`addNodeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1613-L1664)
+reads the id for node/parent lookup, text and label type for labels,
+styles/classes for CSS, direction for layout, and link/target for node links;
+[`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1571-L1587)
+chooses the shape from `type`. The map order determines node order.
+`isConnector` preserves the declaration kind needed to reconstruct the
+connector-id index that
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+uses for palette selection; drawing does not read that boolean itself. [fixture:
+agentflow/db-all-fields] [fixture: agentflow/gram-connector-all-forms]
+
+`props` keeps the authored property-bracket key/value pairs although layout
+nodes do not receive it. A new props object can keep an own `__proto__` entry;
+updating the props of an already bare vertex with that key loses the entry,
+while updating an existing own entry replaces its value. [fixture:
+agentflow/db-props-proto-after-bare] [fixture:
+agentflow/db-props-proto-repeated] [fixture: agentflow/gram-props] [fixture:
+agentflow/gram-props-repeated]
+
+An edge keeps `start`, `end`, `type`, `stroke`, `length`, `text`, `labelType`,
+`classes`, `id`, and optional `interpolate`, `style`, `animate`, `animation`,
+`metadata`.
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+uses endpoints and order to connect layout edges, `type` for arrowheads,
+`stroke` for pattern/thickness, `length` for minimum length, text/type for
+labels, classes for compiled CSS, and interpolation/style/animation fields for
+shared edge rendering. Ids, including generated ids, identify rendered edges and
+subsequent metadata targets. Defaults provide curve/style fallbacks, including
+for existing edges, so `edgeDefaults` stays separate. [fixture:
+agentflow/gram-three-edge-kinds] [fixture: agentflow/gram-edge-id] [fixture:
+agentflow/gram-linkstyle-interpolate-default]
+
+`classDefs.id` and `styles`, in definition order, supply
+[`getClasses()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/renderer.ts#L10-L16)
+and
+[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1666-L1678).
+`tooltips.id` and `text` supply
+[`setTooltip()` / `getTooltip()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L945-L1023)
+and node tooltip binding; the summary preserves the Map's first-id order.
+`clickCalls` records authored names, arguments and source order before secure
+settings discard browser callback closures; the closures are consumed by
+[`setClickFun()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L955-L1001)
+and post-render binding, rather than drawing reading the summary's `clickCalls`
+array. [fixture: agentflow/db-all-fields] [fixture:
+agentflow/db-click-missing-id]
+
+A container keeps `id`, `title`, `labelType`, `type`, `nodes`, `classes`, and
+optional `dir`, `metadata`.
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+uses ids/membership for nesting and collapsed ancestry, completion order for
+traversal/palette order, title/type for the group label and shape, classes for
+CSS, direction for layout, and `metadata.view` for collapsed view. `global`
+changes membership without emitting a container. A vertex with the same
+container id stays because its styles/classes can update the group's drawing
+record. [fixture: agentflow/gram-flow-nested] [fixture: agentflow/gram-global]
+[fixture: agentflow/gram-global-after-flow] [fixture: agentflow/db-all-fields]
+
+Raw records keep nested collapsed descendants and original edge endpoints,
+including hidden unsupported shapes. Global flow and connector ids remain
+excluded from later container membership. A later flow declaration without a
+title preserves the earlier title and merges membership. Empty lines, comments
+and directives before `end` leave the membership intact. An empty quoted flow
+title is rejected; a whitespace-only connector title falls back to its id.
+[fixture: agentflow/db-hidden-unsupported-shape] [fixture:
+agentflow/db-nested-collapse-descendants] [fixture: agentflow/db-global-flow-id]
+[fixture: agentflow/db-global-connector-membership] [fixture:
+agentflow/db-duplicate-flow-empty-last-title] [fixture:
+agentflow/db-end-before-blank-comment-directive] [fixture:
+agentflow/db-flow-empty-title-quoted] [fixture:
+agentflow/db-connector-whitespace-title] [fixture: agentflow/db-flow-collapse]
+
+The summary takes stored records rather than layout data, which hides
+descendants, redirects boundary endpoints and drops induced self-loops, or
+[`getSemanticModel()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L2017-L2145),
+which drops presentation metadata, class definitions and interactivity.
+[fixture: agentflow/db-flow-collapse] [fixture:
+agentflow/db-data-block-presentation-metadata]
+
+`metadata` keeps unknown authored keys on vertices, edges, flows and connectors
+even when drawing has no reader for them. `addNodeFromVertex()` copies vertex
+metadata to layout nodes, and `getData()` copies edge metadata to layout edges;
+copying does not mean that drawing uses every key. Shape/label metadata effects
+already appear in type/text; `getData()` reads flow `view` for collapse and
+derives layout `containerType` from the flow type. The shared elk
+[`buildSubgraphLayoutOptions()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/layout-algorithms/elk/render.ts#L369-L501)
+reads `algorithm`; the shared
+[`collapsedGroup()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes/collapsedGroup.ts#L76-L190)
+shape reads that derived `containerType`. The patch records before/after effects
+of
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+in `dataBlockEffects`, without reading YAML or reproducing routing. `animate`
+and `animation` are block-only promoted fields; icon/image controls remain
+metadata without flowchart's promoted asset fields. See
+[embedded-data.md](./embedded-data.md). [fixture:
+agentflow/db-data-block-routing] [fixture:
+agentflow/db-data-block-presentation-metadata] [fixture: agentflow/gram-edge-id]
+[fixture: agentflow/docs-syntax-agentflow-69451cfd] [fixture:
+agentflow/db-flow-collapse]
+
+Non-finite metadata numbers, recursively including arrays and mappings, use the
+shared `numberOrText()` summary rule: text `"Infinity"`, `"-Infinity"`, `"NaN"`.
+The numeric values remain accepted by Mermaid on nodes, edges, flows and
+connectors. YAML `1e999` is a string and stays `"1e999"`. Instrumentation
+records extraction problems for reporting after parsing; it never turns its own
+extraction error into a parse rejection. [fixture:
+agentflow/db-metadata-positive-infinity] [fixture:
+agentflow/db-metadata-negative-infinity] [fixture: agentflow/db-metadata-nan]
+[fixture: agentflow/db-metadata-overflow] [fixture:
+agentflow/db-metadata-edge-infinity] [fixture:
+agentflow/db-metadata-flow-infinity] [fixture:
+agentflow/db-metadata-connector-infinity] [fixture:
+agentflow/db-metadata-nested-nan] [fixture:
+agentflow/db-metadata-nested-map-infinity]
+
+Routing prefers an existing flow, then connector, then edge (including a
+generated edge id), then vertex; prototype-shaped metadata keys are stripped
+recursively. A block before a flow remains on its vertex descriptor; a later
+connector declaration replaces its earlier vertex metadata. Connector/edge and
+flow/connector id collisions follow the same priority. [fixture:
+agentflow/db-connector-edge-id-collision] [fixture:
+agentflow/db-flow-connector-collision] [fixture:
+agentflow/db-generated-edge-id-metadata-target] [fixture:
+agentflow/db-metadata-before-flow] [fixture:
+agentflow/db-metadata-before-connector] [fixture:
+agentflow/db-data-block-recursive-prototype-keys]
+
+Adjacent metadata blocks are combined into one call, so omitting the comma
+between adjacent single-line entries causes a YAML rejection. A multiline scalar
+or array becomes metadata with character/index keys; a YAML comment-only body
+adds no metadata. An empty-array label becomes empty text. Escaped quotes can
+end the lexer state early and reject the input. Directives inside multiline
+bodies disappear before YAML; a quoted multiline value folds to `<br/>`, while a
+comma on a valid plain scalar remains part of that scalar. [fixture:
+agentflow/db-metadata-scalar] [fixture: agentflow/db-metadata-array] [fixture:
+agentflow/db-metadata-single-line-comment] [fixture:
+agentflow/db-metadata-empty-array-label] [fixture:
+agentflow/db-metadata-escaped-quote] [fixture:
+agentflow/db-metadata-comment-directive-body] [fixture:
+agentflow/db-metadata-double-quoted-unicode-comma] [fixture:
+agentflow/db-metadata-adjacent-no-comma] [fixture:
+agentflow/db-data-block-adjacent]
+
+YAML anchors and shared aliases are accepted: both occurrences of the anchored
+mapping are kept as values in metadata and `dataBlockEffects`. The alias making
+`custom.deep` refer to its own mapping instead throws a `RangeError` in
+Mermaid's recursive
+[`stripPrototypeKeys()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L124-L139)
+before summary extraction; the same rejection occurs without the Db
+instrumentation. [fixture: agentflow/db-metadata-yaml-shared-alias] [fixture:
+agentflow/div-metadata-yaml-self-alias]
+
+Shape aliases resolve before storage. The six domain aliases and `round` are
+defined by
+[`SHAPE_ALIASES`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L16-L24);
+`round` stores `rect`, which drawing normalizes to `roundedRect`. Metadata shape
+checks occur in
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L347-L565)
+before drawing. Authored camel-case or underscore names reject, even when an
+internal resolved name or removed-shape entry has that spelling. `ellipse` and
+`connector` reject through the shape catalogue although inline ellipse syntax
+and the connector declaration parse. Empty text and zero do not set the type; a
+shape array rejects. [fixture: agentflow/db-alias-round] [fixture:
+agentflow/db-shape-collapsed-group-lowercase-rule] [fixture:
+agentflow/db-shape-canonical-roundedrect-lowercase-rule] [fixture:
+agentflow/db-removed-shape-type-declaration] [fixture:
+agentflow/db-removed-shape-underscore] [fixture:
+agentflow/db-shape-removed-lean-left-underscore] [fixture:
+agentflow/db-shape-removed-ellipse] [fixture: agentflow/db-shape-connector]
+[fixture: agentflow/db-shape-empty] [fixture: agentflow/db-shape-zero] [fixture:
+agentflow/db-shape-list] [fixture: agentflow/db-data-block-aliases] [fixture:
+agentflow/gram-bracket-shapes] [fixture: agentflow/gram-connector-all-forms]
+
+The accepted canonical metadata names `subproc`, `lean-right`, `lin-doc`,
+`lined-document`, `hexagon` and `hex` stay as written on the raw vertex.
+[fixture: agentflow/db-shape-subproc] [fixture: agentflow/db-shape-lean-right]
+[fixture: agentflow/db-shape-lin-doc] [fixture:
+agentflow/db-shape-lined-document] [fixture: agentflow/db-shape-hexagon]
+[fixture: agentflow/db-shape-hex]
+
+A removed shape that passes metadata validation still parses: its raw
+type/metadata stay, while
+[`normaliseNodeShapes()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/shapes.ts#L113-L147)
+emits `SHAPE_REMOVED` and substitutes `roundedRect` in layout data. This
+includes `doublecircle`, document/terminal/circle/trapezoid variants,
+lean-left/in-out/odd/procs, and the removed instance shapes. [fixture:
+agentflow/db-removed-shape-doublecircle] [fixture:
+agentflow/db-shape-removed-doc] [fixture: agentflow/db-shape-removed-stadium]
+[fixture: agentflow/db-shape-removed-terminal] [fixture:
+agentflow/db-shape-removed-circle] [fixture:
+agentflow/db-shape-removed-trapezoid] [fixture:
+agentflow/db-shape-removed-inv-trapezoid] [fixture:
+agentflow/db-shape-removed-double-circle] [fixture:
+agentflow/db-shape-removed-lean-left] [fixture:
+agentflow/db-shape-removed-in-out] [fixture: agentflow/db-shape-removed-odd]
+[fixture: agentflow/db-shape-removed-procs] [fixture:
+agentflow/db-shape-removed-tag-rect] [fixture:
+agentflow/db-shape-removed-tagged-rectangle] [fixture:
+agentflow/db-shape-removed-delay] [fixture:
+agentflow/db-shape-removed-half-rounded-rectangle] [fixture:
+agentflow/db-shape-removed-lin-rect] [fixture:
+agentflow/db-shape-removed-lined-rectangle] [fixture:
+agentflow/db-shape-removed-win-pane] [fixture:
+agentflow/db-shape-removed-window-pane] [fixture:
+agentflow/db-shape-removed-curv-trap] [fixture:
+agentflow/db-shape-removed-curved-trapezoid]
+
+Another known but unsupported shape emits `SHAPE_UNSUPPORTED` and draws as
+`roundedRect`; neither shape diagnostic rejects parsing, and collapsed
+descendants are not checked. Unknown metadata shapes instead throw during
+parsing. A containment cycle emits `CONTAINMENT_VIOLATION` while
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1696-L1972)
+omits the parent assignment closing the cycle; raw membership stays in the
+summary. The
+[`PARSER_EMITTED_DIAGNOSTICS` and `RESERVED_DIAGNOSTICS` definitions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/diagnostics.ts#L155-L169)
+distinguish these checks from external semantic checks: reference labels,
+missing connector references and flows without inputs do not emit the reserved
+ids here. Diagnostic records are outputs, not inputs to drawing, and are
+omitted; the normalizer does not call `getData()`. [fixture:
+agentflow/db-data-block-removed-shape] [fixture:
+agentflow/db-data-block-unsupported-shape] [fixture:
+agentflow/db-flow-collapsed-removed-shape] [fixture:
+agentflow/db-data-block-unknown-shape] [fixture:
+agentflow/db-diagnostics-containment-cycle] [fixture:
+agentflow/db-diagnostics-no-semantic-checks]
+
+The remaining state is omitted: `edgeSemantic` is derived from type/stroke;
+drawing does not read `isUserDefinedId`. Counters (`vertexCounter`, `subCount`,
+`firstGraphFlag`, `version`, `secCount`), `posCrossRef` and `diagramId` are
+parse/index/DOM bookkeeping; generated element ids already on records stay.
+`config` is recorded separately. `subGraphLookup`, `connectors` and
+`globalNodes` duplicate routing/membership indexes. `funs` holds callback
+closures already captured as authored calls. `frontmatterLineOffset`,
+`elementMappings`, `bareVertexMappings` and `preserveCommentsWhenParsing`
+concern source positions. `postParseValidationRun` guards the currently empty
+post-parse validator. DOM ids, `haveCallback`, derived class `textStyles` and
+layout geometry add no independent authored information. [fixture:
+agentflow/db-all-fields] [fixture: agentflow/db-diagnostic-position-variant]
+
+Trailing style whitespace is removed. Text is recorded before DOMPurify, URLs
+are trimmed without sanitization, and callbacks are captured before the security
+check. All four supported security levels give the same summary. Unsupported
+levels still use common `htmlLabels` processing, including
+`flowchart.htmlLabels` fallback; inherited flow directions use
+`flowchart.inheritDir`. Layout selection, including elk, adds no summary field.
+No time, random id or browser stand-in beyond the existing sanitizer setup is
+needed. [fixture: agentflow/config-security-strict] [fixture:
+agentflow/config-security-loose] [fixture: agentflow/config-security-antiscript]
+[fixture: agentflow/config-security-sandbox] [fixture:
+agentflow/lex-style-whitespace-complete] [fixture:
+agentflow/config-security-other] [fixture:
+agentflow/config-other-flowchart-html-false] [fixture:
+agentflow/config-other-root-true] [fixture: agentflow/config-other-root-false]
+[fixture: agentflow/config-inherit-site] [fixture: agentflow/config-elk]
+[fixture: agentflow/config-drawing-only]
+
+Shared preprocessing removes directives even inside the `flow`, `connector`,
+`global`, `end`, `style`, `classDef`, `class`, `linkStyle`, `click`, `call`,
+`href`, `direction`, accessibility, `default` and `interpolate` keywords; the
+fragments join into the keyword before lexing. [fixture:
+agentflow/div-directive-in-flow-keyword] [fixture:
+agentflow/div-directive-in-connector-keyword] [fixture:
+agentflow/div-directive-in-global-keyword] [fixture:
+agentflow/div-directive-in-end-keyword] [fixture:
+agentflow/div-directive-in-style-keyword] [fixture:
+agentflow/div-directive-in-classdef-keyword] [fixture:
+agentflow/div-directive-in-class-keyword] [fixture:
+agentflow/div-directive-in-linkstyle-keyword] [fixture:
+agentflow/div-directive-in-click-keyword] [fixture:
+agentflow/div-directive-in-call-keyword] [fixture:
+agentflow/div-directive-in-href-keyword] [fixture:
+agentflow/div-directive-in-direction-keyword] [fixture:
+agentflow/div-directive-in-acctitle-keyword] [fixture:
+agentflow/div-directive-in-accdescr-keyword] [fixture:
+agentflow/div-directive-in-default-keyword] [fixture:
+agentflow/div-directive-in-interpolate-keyword]
+
+A directive between a keyword and its value disappears without replacing the
+value. After an empty `accTitle:`, the next line's `A` becomes the title rather
+than a vertex. [fixture: agentflow/lex-directive-between-flow-value] [fixture:
+agentflow/lex-directive-between-connector-value] [fixture:
+agentflow/lex-directive-between-classdef-value] [fixture:
+agentflow/lex-directive-between-class-value] [fixture:
+agentflow/lex-directive-between-linkstyle-value] [fixture:
+agentflow/lex-directive-between-click-value] [fixture:
+agentflow/lex-directive-between-style-value] [fixture:
+agentflow/lex-directive-between-acctitle-value] [fixture:
+agentflow/lex-directive-between-accdescr-value] [fixture:
+agentflow/lex-directive-acctitle-next-line]
+
+Directives within accessibility text, props keys/values, class names,
+class-definition styles and edge styles disappear and join the surrounding value
+fragments. [fixture: agentflow/lex-directive-in-description-value] [fixture:
+agentflow/lex-directive-in-title-value] [fixture:
+agentflow/div-directive-in-props-field] [fixture:
+agentflow/div-directive-in-props-value] [fixture:
+agentflow/div-directive-in-class-name] [fixture:
+agentflow/lex-directive-in-classdef-value] [fixture:
+agentflow/lex-directive-in-linkstyle-value]
+
+At EOF, a closed or open directive after a header/node is removed; open
+directives truncate accessibility values to the preceding text. An inline
+comment after whitespace leaves the node, whereas glued `A%%tail` remains an id.
+[fixture: agentflow/lex-directive-open-node-eof] [fixture:
+agentflow/lex-directive-closed-node-eof] [fixture:
+agentflow/lex-directive-open-header-eof] [fixture:
+agentflow/lex-directive-closed-header-eof] [fixture:
+agentflow/lex-directive-open-title-eof] [fixture:
+agentflow/lex-directive-open-description-eof] [fixture:
+agentflow/lex-comment-node-eof] [fixture: agentflow/lex-comment-glued-id-eof]
+
+A closed description block, style, class definition, class assignment or click
+callback can end at EOF; an unclosed square, ellipse or trapezoid label still
+rejects when a comment runs to EOF. [fixture:
+agentflow/lex-description-closed-eof] [fixture: agentflow/lex-style-eof]
+[fixture: agentflow/lex-classdef-eof] [fixture: agentflow/lex-class-eof]
+[fixture: agentflow/lex-click-callback-eof] [fixture:
+agentflow/lex-comment-unclosed-square-eof] [fixture:
+agentflow/lex-comment-unclosed-ellipse-eof] [fixture:
+agentflow/lex-comment-unclosed-trap-eof]
+
+Spaced repeated semicolons separate nodes, edges, class/style/linkStyle/click
+statements, metadata, connectors, flow/global endings and closed descriptions
+without creating records for the separators. A colon before trailing space
+belongs to a node/edge/connector id; after flow/global `end` it becomes a
+separate colon vertex. [fixture: agentflow/lex-node-spaced-semis] [fixture:
+agentflow/lex-edge-spaced-semis] [fixture: agentflow/lex-class-spaced-semis]
+[fixture: agentflow/lex-style-spaced-semis] [fixture:
+agentflow/lex-classdef-spaced-semis] [fixture:
+agentflow/lex-linkstyle-spaced-semis] [fixture:
+agentflow/lex-click-spaced-semis] [fixture: agentflow/lex-metadata-spaced-semis]
+[fixture: agentflow/lex-connector-spaced-semis] [fixture:
+agentflow/lex-flow-end-spaced-semis] [fixture:
+agentflow/lex-global-end-spaced-semis] [fixture:
+agentflow/lex-description-spaced-semis] [fixture:
+agentflow/lex-node-colon-space] [fixture: agentflow/lex-edge-colon-space]
+[fixture: agentflow/lex-connector-colon-space] [fixture:
+agentflow/lex-flow-end-colon-space] [fixture:
+agentflow/lex-global-end-colon-space]
+
+A trailing tab rejects after a class name or bare click callback, but is
+accepted after a connector or edge; an edge also accepts trailing space.
+Header/edge trailing space lists accept a space followed by a tab. A space
+before the header's semicolon rejects because that branch requires a newline.
+[fixture: agentflow/lex-class-trailing-tab] [fixture:
+agentflow/lex-click-trailing-tab] [fixture:
+agentflow/lex-connector-trailing-tab] [fixture:
+agentflow/lex-edge-trailing-space] [fixture: agentflow/lex-edge-trailing-tab]
+[fixture: agentflow/lex-header-space-list-recursion] [fixture:
+agentflow/lex-edge-space-list-recursion] [fixture:
+agentflow/lex-header-space-then-semicolon]
+
+Comments and closed directives after a closed description or direction leave
+following statements. An open directive after a description consumes the
+following node; after a flow direction it also consumes the closing `end`, so
+the flow rejects. [fixture: agentflow/lex-description-tail-comment] [fixture:
+agentflow/lex-description-tail-directive] [fixture:
+agentflow/lex-description-tail-open-directive] [fixture:
+agentflow/lex-direction-tail-comment] [fixture:
+agentflow/lex-direction-tail-directive] [fixture:
+agentflow/lex-direction-tail-open-directive]
+
+CRLF works across the statement families. Shared preprocessing normalizes CR and
+CRLF: single-line accessibility values stop at them, description blocks keep
+normalized LF, and comment lines leave the following nodes. [fixture:
+agentflow/lex-all-statements-crlf] [fixture: agentflow/lex-description-line-cr]
+[fixture: agentflow/lex-description-line-crlf] [fixture:
+agentflow/lex-title-line-cr] [fixture: agentflow/lex-description-block-cr]
+[fixture: agentflow/lex-description-block-crlf] [fixture:
+agentflow/lex-comment-cr] [fixture: agentflow/lex-comment-crlf]
+
+The common style-line preprocessing also acts inside quoted node labels, edge
+labels, flow names/titles, connector names/titles, tooltips and accessibility
+values. With `style` or `classDef` before `:` and `#`, it removes one semicolon:
+three leave an encoded character reference plus one semicolon, even with
+trailing padding; one leaves none and two leave the encoded reference. Having
+both trigger keywords removes twice. [fixture:
+agentflow/lex-style-trigger-three] [fixture:
+agentflow/lex-style-trigger-one-padding] [fixture:
+agentflow/lex-style-trigger-two-padding] [fixture:
+agentflow/lex-style-trigger-three-padding] [fixture:
+agentflow/lex-both-style-triggers] [fixture: agentflow/lex-style-trigger-edge]
+[fixture: agentflow/lex-style-trigger-flow-title] [fixture:
+agentflow/lex-style-trigger-connector-title] [fixture:
+agentflow/lex-style-trigger-tooltip] [fixture:
+agentflow/lex-style-trigger-title] [fixture:
+agentflow/lex-style-trigger-description] [fixture:
+agentflow/lex-style-trigger-block-description] [fixture:
+agentflow/lex-flow-name-style-trigger] [fixture:
+agentflow/lex-connector-name-style-trigger]
+
+With three semicolons, actual style/classDef/linkStyle statements reject on the
+encoded text. Without the style trigger, accessibility values keep one, two or
+three trailing semicolons and trim trailing space. [fixture:
+agentflow/lex-style-statement-three-semis] [fixture:
+agentflow/lex-classdef-three-semis] [fixture:
+agentflow/lex-linkstyle-three-semis] [fixture:
+agentflow/lex-description-end-semicolon] [fixture:
+agentflow/lex-description-end-two-semis] [fixture:
+agentflow/lex-description-end-three-semis] [fixture:
+agentflow/lex-title-end-semicolon] [fixture: agentflow/lex-title-end-two-semis]
+[fixture: agentflow/lex-title-end-three-semis]
+
+A directive can join `sty` and `le` to make the style trigger before it runs.
+U+2028/U+2029 bound the trigger's dot-matched segment, so a later semicolon
+stays. A comment beginning after U+2028 can change which earlier semicolon is
+removed. [fixture: agentflow/lex-directive-in-style-trigger] [fixture:
+agentflow/lex-style-trigger-ls-segment] [fixture:
+agentflow/lex-style-trigger-ps-segment] [fixture:
+agentflow/lex-style-trigger-ls-comment]
+
+NBSP after a directionless header is whitespace; VT/FF inside quoted labels
+remain text. NEL before the header prevents detection and on its own line is a
+lexical error. Supplementary and combining characters reject in bare ids, while
+quoted and unquoted labels accept supplementary characters. A props value must
+be one `NODE_STRING`, so the Unicode token there rejects. [fixture:
+agentflow/lex-header-nbsp-only] [fixture: agentflow/lex-node-vt-inside]
+[fixture: agentflow/lex-node-ff-inside] [fixture:
+agentflow/lex-nel-before-header] [fixture: agentflow/lex-nel-only-line]
+[fixture: agentflow/lex-supplementary-id] [fixture: agentflow/lex-combining-id]
+[fixture: agentflow/lex-quoted-supplementary-label] [fixture:
+agentflow/lex-unquoted-supplementary-label] [fixture:
+agentflow/lex-props-unicode-value]
+
+U+2028/U+2029 within quoted flow/connector names, flow titles, accessibility
+values and metadata scalars stay inside those values rather than becoming LF.
+[fixture: agentflow/lex-flow-name-u2029] [fixture:
+agentflow/lex-flow-title-u2028] [fixture: agentflow/lex-connector-name-u2028]
+[fixture: agentflow/lex-connector-name-u2029] [fixture:
+agentflow/lex-title-u2029] [fixture: agentflow/lex-description-u2028] [fixture:
+agentflow/lex-metadata-raw-u2028] [fixture: agentflow/lex-metadata-raw-u2029]
+
+Directive removal between percent signs can expose a comment. After
+U+2028/U+2029, comment regions leave preceding/following nodes; inside a label
+the removed comment leaves the separator and LF. Open object directives ending
+at these separators join `A` to `B`; a closed multiline directive does so too. A
+CR/directive/LF boundary leaves `A` and `B` separate. [fixture:
+agentflow/lex-comment-directive-between-marks] [fixture:
+agentflow/lex-comment-ls-region] [fixture: agentflow/lex-comment-ps-bare-region]
+[fixture: agentflow/lex-comment-ls-eof] [fixture:
+agentflow/lex-comment-in-label-after-ls] [fixture:
+agentflow/div-directive-open-object-ls] [fixture:
+agentflow/div-directive-open-object-ps] [fixture:
+agentflow/div-directive-multiline-joins-id] [fixture:
+agentflow/lex-directive-cr-lf-separated]
+
+A directive inside percent text can leave adjacent node tokens that reject. The
+`%%{}%%` text after a header is not a valid recognized directive here; following
+U+2028/U+2029 at EOF does not make it parse. [fixture:
+agentflow/lex-directive-inside-percent-text] [fixture:
+agentflow/lex-header-comment-ls-eof] [fixture:
+agentflow/lex-header-comment-ps-eof]
+
+The lexer returns one `SPACE` at a time: two spaces reject after
+style/classDef/class/linkStyle keywords, before a class value, after
+`interpolate`, and before a click tooltip. Flow/connector names absorb a second
+space and trim it. NBSP after `end` can precede a separate node; `global`
+accepts tab then space before LF. [fixture:
+agentflow/lex-style-double-space-keyword] [fixture:
+agentflow/lex-classdef-double-space-keyword] [fixture:
+agentflow/lex-class-double-space-keyword] [fixture:
+agentflow/lex-linkstyle-double-space-keyword] [fixture:
+agentflow/lex-class-double-space-value] [fixture:
+agentflow/lex-linkstyle-interpolate-double-space] [fixture:
+agentflow/lex-click-double-space-before-tooltip] [fixture:
+agentflow/lex-flow-double-space] [fixture: agentflow/lex-connector-double-space]
+[fixture: agentflow/lex-end-nbsp-with-following-node] [fixture:
+agentflow/lex-global-tab-space]
+
+Ellipse labels accept `/)` and `))` as closers. Trapezoid labels accept `(]` and
+`]]`, reject `?]` and `=]`, and keep interior slash/backslash when they do not
+close the shape. A whitespace-only quoted node label is accepted and trimmed to
+empty text. [fixture: agentflow/lex-ellipse-close-slash] [fixture:
+agentflow/lex-ellipse-close-paren] [fixture: agentflow/lex-trap-close-question]
+[fixture: agentflow/lex-trap-close-equals] [fixture:
+agentflow/lex-trap-close-paren] [fixture:
+agentflow/lex-trap-close-double-bracket] [fixture:
+agentflow/lex-trap-interior-slash] [fixture:
+agentflow/lex-trap-interior-backslash] [fixture:
+agentflow/lex-node-empty-whitespace-label]
+
+Unquoted flow/connector names accept punctuation, numeric and Unicode tokens and
+keyword tokens, including `global`, style/class/container words, rare
+header/direction words and combinations of them. Former flowchart
+header/container words are ordinary bare vertex ids. A leading link token as a
+flow name and a standalone escaped pipe reject; `style` itself can be a style
+value. [fixture: agentflow/lex-flow-name-other-keywords] [fixture:
+agentflow/lex-flow-name-start-link] [fixture: agentflow/lex-escaped-pipe-token]
+[fixture: agentflow/lex-style-keyword-as-value] [fixture:
+agentflow/lex-id-token-punctuation-base] [fixture:
+agentflow/lex-name-token-punctuation] [fixture:
+agentflow/lex-unquoted-unicode-names] [fixture:
+agentflow/lex-flow-name-global-keyword] [fixture:
+agentflow/lex-unquoted-keyword-names] [fixture:
+agentflow/lex-unquoted-rare-keyword-names] [fixture:
+agentflow/lex-legacy-header-words-as-ids]
+
+The `click` token in a flow/connector name changes lexer state: the next line's
+`B` joins `A`, and neither is a vertex. A connector name ending after `click A`
+reaches the EOF separator because the click state consumes the appended LF.
+[fixture: agentflow/lex-flow-name-click-state] [fixture:
+agentflow/lex-connector-name-click-state] [fixture:
+agentflow/lex-connector-click-eof-separator]
+
+The greedy direction rule can consume a whole line containing `direction LR`:
+square/plain, string and markdown node labels, a quoted edge label and a
+metadata label then leave no node or edge. Flow names/titles, connector titles
+and tooltips instead reject after the line is consumed. At column zero
+accessibility values keep that text, but indentation lets the direction rule
+consume the line. After a semicolon the preceding node disappears; after
+U+2028/U+2029 the input rejects. [fixture:
+agentflow/lex-direction-greedy-square] [fixture:
+agentflow/lex-direction-greedy-string] [fixture:
+agentflow/lex-direction-greedy-markdown] [fixture:
+agentflow/lex-direction-greedy-edge] [fixture:
+agentflow/lex-direction-title-column-zero] [fixture:
+agentflow/lex-direction-title-indented] [fixture:
+agentflow/lex-direction-description-column-zero] [fixture:
+agentflow/lex-direction-description-indented] [fixture:
+agentflow/lex-direction-greedy-flow-name] [fixture:
+agentflow/lex-direction-greedy-flow-title] [fixture:
+agentflow/lex-direction-greedy-connector] [fixture:
+agentflow/lex-direction-after-semicolon] [fixture:
+agentflow/lex-direction-after-ls] [fixture: agentflow/lex-direction-after-ps]
+[fixture: agentflow/lex-direction-in-data-label] [fixture:
+agentflow/lex-direction-in-tooltip]
+
+Agentflow detection precedes C4 in
+[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126):
+C4 words in ids, plain/quoted labels, comments, frontmatter and directives do
+not change the diagram id. A leading semicolon prevents detection. [fixture:
+agentflow/lex-detect-c4-container-label] [fixture:
+agentflow/lex-detect-c4-component-id] [fixture:
+agentflow/lex-detect-c4-context-label] [fixture:
+agentflow/lex-detect-c4-deployment-suffix] [fixture:
+agentflow/lex-detect-c4-dynamic-string] [fixture:
+agentflow/lex-detect-c4-comment] [fixture: agentflow/lex-detect-c4-frontmatter]
+[fixture: agentflow/lex-detect-c4-directive] [fixture:
+agentflow/lex-detect-c4-inline-comment] [fixture:
+agentflow/lex-detect-leading-semicolon]
+
+Frontmatter after a comment or after the header rejects, as does an unclosed
+frontmatter block. Initial indentation and CRLF still allow frontmatter. Null
+titles, array roots and scalar roots leave the diagram title empty. HTML
+attribute quotes in a frontmatter title become single quotes. An invalid
+directive YAML body can be ignored while the diagram parses. [fixture:
+agentflow/db-frontmatter-null-title] [fixture:
+agentflow/db-frontmatter-title-html-quotes] [fixture:
+agentflow/db-frontmatter-root-array] [fixture:
+agentflow/db-frontmatter-root-scalar] [fixture:
+agentflow/db-directive-invalid-yaml] [fixture:
+agentflow/db-frontmatter-after-comment] [fixture:
+agentflow/db-frontmatter-unclosed] [fixture: agentflow/db-frontmatter-indented]
+[fixture: agentflow/db-frontmatter-crlf] [fixture:
+agentflow/db-frontmatter-after-header]
+
+Quoted edge ids reject. Normal and reference link lengths reach the cap of ten.
+Empty string and markdown edge labels reject, but a whitespace-only quoted edge
+label is accepted as empty text. Signed zero, exponent and hexadecimal-looking
+linkStyle indices reject syntactically; `00` and an out-of-range large integer
+reach a string-key array lookup and throw a TypeError. [fixture:
+agentflow/lex-edge-link-id-quoted] [fixture:
+agentflow/lex-reference-long-length-at-cap] [fixture:
+agentflow/lex-normal-long-length-at-cap] [fixture:
+agentflow/lex-edge-empty-string-label] [fixture:
+agentflow/lex-edge-empty-markdown-label] [fixture:
+agentflow/lex-edge-whitespace-label] [fixture:
+agentflow/lex-linkstyle-negative-zero] [fixture:
+agentflow/lex-linkstyle-plus-zero] [fixture:
+agentflow/lex-linkstyle-leading-zero] [fixture:
+agentflow/lex-linkstyle-over-safe-integer] [fixture:
+agentflow/lex-linkstyle-infinite-exponent] [fixture:
+agentflow/lex-linkstyle-numeric-suffix]
+
+A whitespace-only URL is omitted after trimming while its target remains.
+Tooltip redefinitions replace text without moving the first-id order. Href and
+call names can begin on the next line. Call names keep space before parentheses
+and embedded semicolons; bare callback names accept numeric/Unicode/punctuation
+tokens, including a hash. [fixture: agentflow/db-trailing-click-url-whitespace]
+[fixture: agentflow/db-tooltip-three-definitions] [fixture:
+agentflow/db-href-newline-value] [fixture: agentflow/db-call-newline-name]
+[fixture: agentflow/db-call-name-space-before-parentheses] [fixture:
+agentflow/db-callback-name-semicolon] [fixture:
+agentflow/db-callback-token-punctuation] [fixture:
+agentflow/db-callback-hash-name]
+
+Directive removal reconstructs the sequence, failure and reference operators,
+extended arrow length, and the `--` opening a split edge label, including an
+arrow immediately before a pipe label. [fixture:
+agentflow/div-directive-in-arrow-length] [fixture:
+agentflow/div-directive-in-opening-arrow] [fixture:
+agentflow/div-directive-inside-arrow] [fixture:
+agentflow/div-directive-in-arrow] [fixture:
+agentflow/div-directive-in-arrow-failure] [fixture:
+agentflow/div-directive-in-arrow-reference] [fixture:
+agentflow/div-directive-in-arrow-before-pipe]
+
+A directive inside either double-parenthesis circle delimiter, either
+double-brace hexagon delimiter, or the cylinder opener is removed before the
+shape is recognized. [fixture: agentflow/div-directive-in-circle-closing]
+[fixture: agentflow/div-directive-in-circle-opening] [fixture:
+agentflow/div-directive-in-hexagon-closing] [fixture:
+agentflow/div-directive-in-hexagon-opening] [fixture:
+agentflow/div-directive-in-cylinder-opening]
+
+A directive after the first or second colon joins the three characters of `:::`
+into the class delimiter. [fixture: agentflow/div-directive-in-style-separator]
+[fixture: agentflow/div-directive-in-triple-colon]
+
+Directive removal joins vertex ids (also ids beginning with `style`), click and
+edge ids, class-definition and class-target names, interpolation names, decimal
+linkStyle indices, and both id runs of property brackets. [fixture:
+agentflow/div-directive-in-id] [fixture:
+agentflow/div-directive-in-id-starting-with-style] [fixture:
+agentflow/div-directive-in-click-id] [fixture:
+agentflow/div-directive-in-edge-id] [fixture:
+agentflow/div-directive-in-class-def-id-list] [fixture:
+agentflow/div-directive-in-class-id-list] [fixture:
+agentflow/div-directive-in-interpolate-name] [fixture:
+agentflow/div-directive-in-linkstyle-number] [fixture:
+agentflow/div-directive-in-bar-rectangle-first-id-run] [fixture:
+agentflow/div-directive-in-bar-rectangle-second-id-run]
+
+Directives inside `href`, `interpolate` and `flow` reconstruct the keywords,
+with `flow` taking the place of flowchart's `subgraph`. [fixture:
+agentflow/div-directive-in-keyword-href] [fixture:
+agentflow/div-directive-in-keyword-interpolate] [fixture:
+agentflow/div-directive-in-subgraph-keyword]
+
+Before YAML is read, directive removal joins the two characters of `@{` and
+fragments of a metadata key. [fixture:
+agentflow/div-directive-in-data-block-start] [fixture:
+agentflow/lex-directive-in-metadata-key]
+
+A directive between `L` and `R` in the header direction leaves direction `LR`.
+[fixture: agentflow/div-directive-in-header-direction]
+
+On a line containing the `A[style:#x]` carrier, the style line rule can remove a
+semicolon inside a sequence, failure or reference operator, or the opening `--`
+of a split label; this also reconstructs the arrow immediately before a pipe
+label. [fixture: agentflow/div-ignored-semicolon-in-arrow] [fixture:
+agentflow/div-ignored-semicolon-in-arrow-failure] [fixture:
+agentflow/div-ignored-semicolon-in-arrow-reference] [fixture:
+agentflow/div-ignored-semicolon-in-opening-arrow] [fixture:
+agentflow/div-ignored-semicolon-in-arrow-before-pipe]
+
+The same line rule reconstructs circle, cylinder and hexagon openers from
+delimiters split by a semicolon. [fixture:
+agentflow/div-ignored-semicolon-in-circle-opening] [fixture:
+agentflow/div-ignored-semicolon-in-cylinder-opening] [fixture:
+agentflow/div-ignored-semicolon-in-hexagon-opening]
+
+It joins either split of the triple-colon delimiter, and joins
+vertex/group/click/edge/style ids, class-definition and class-target names, CSS
+class names and decimal linkStyle indices. [fixture:
+agentflow/div-ignored-semicolon-in-triple-colon] [fixture:
+agentflow/div-ignored-semicolon-in-style-separator] [fixture:
+agentflow/div-ignored-semicolon-in-id] [fixture:
+agentflow/div-ignored-semicolon-in-id-in-group] [fixture:
+agentflow/div-ignored-semicolon-in-click-id] [fixture:
+agentflow/div-ignored-semicolon-in-edge-id] [fixture:
+agentflow/div-ignored-semicolon-in-style-id] [fixture:
+agentflow/div-ignored-semicolon-in-class-def-name] [fixture:
+agentflow/div-ignored-semicolon-in-class-ids] [fixture:
+agentflow/div-ignored-semicolon-in-css-class] [fixture:
+agentflow/div-ignored-semicolon-in-linkstyle-number]
+
+It also reconstructs a split `flow` keyword and metadata opener, and removes the
+semicolon inside a metadata key before YAML sees it. [fixture:
+agentflow/div-ignored-semicolon-in-keyword] [fixture:
+agentflow/div-ignored-semicolon-in-data-block-start] [fixture:
+agentflow/lex-ignored-semicolon-in-metadata-key]
+
+As boundary controls, a directive or an ignored semicolon between a complete
+arrow and its opening label pipe also leaves a labeled edge. [fixture:
+agentflow/lex-directive-in-pipe-boundary] [fixture:
+agentflow/lex-ignored-semicolon-in-pipe-boundary]
+
+## ishikawa
+
+`normalizeIshikawa()` (`src/normalizers/ishikawa.ts`) summarizes
+[`IshikawaDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L20-L96).
+Both headers, `ishikawa` and `ishikawa-beta`, use the diagram id `ishikawa`.
+[fixture: ishikawa/gram-root-eof] [fixture: ishikawa/spec-ishikawa-36b2cea5]
+
+`root` is the ordered tree from
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L38-L40),
+or `null` when absent. [fixture: ishikawa/header-only-lf] [fixture:
+ishikawa/header-beta-only-lf] [fixture: ishikawa/gram-whitespace-only-document]
+
+Each node keeps exactly `text` and `children`, recursively, including repeated
+labels and the order of siblings. This is the representation the
+[`draw()`, `drawBranch()` and `flattenTree()` functions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaRenderer.ts#L36-L445)
+read: root text draws the head, root children are causes, and descendants draw
+the smaller branches. No second representation of the nodes is needed. [fixture:
+ishikawa/db-all-fields] [fixture: ishikawa/db-three-definitions] [fixture:
+ishikawa/demo-ishikawa-116a5f27] [fixture: ishikawa/spec-ishikawa-45c4f88f]
+[fixture: ishikawa/docs-syntax-ishikawa-b3ea7b01] [fixture:
+ishikawa/demo-ishikawa-224017d7] [fixture: ishikawa/demo-ishikawa-6040395b]
+[fixture: ishikawa/demo-ishikawa-611b5c9d] [fixture:
+ishikawa/demo-ishikawa-6d142918]
+
+The summary keeps `title`, `accTitle` and `accDescr` through the
+[`Db getters`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L73-L95).
+The generic rendering path reads both accessibility getters in
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628).
+The first node sets `title` to its sanitized label, replacing a frontmatter
+title set before parsing; with no node, a nonempty frontmatter title remains.
+[fixture: ishikawa/db-frontmatter-title] [fixture:
+ishikawa/db-frontmatter-rootless] An empty frontmatter title does not replace
+the root-derived title. [fixture: ishikawa/frontmatter-empty-title]
+
+With no root, an empty or null frontmatter title leaves `title` empty. [fixture:
+ishikawa/frontmatter-empty-title-rootless] [fixture:
+ishikawa/frontmatter-null-title-rootless] A frontmatter title of two spaces
+keeps both spaces, rather than undergoing node-text trimming. [fixture:
+ishikawa/frontmatter-whitespace-title-rootless] A numeric frontmatter title of
+`7` becomes the text `"7"`. [fixture:
+ishikawa/frontmatter-numeric-title-rootless]
+
+The grammar calls only
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L50-L55).
+Accessibility-looking lines and blocks are ordinary node text, and frontmatter
+accessibility keys do not set the common getters, so `accTitle` and `accDescr`
+stay empty for these inputs. [fixture: ishikawa/db-acctitle-is-node] [fixture:
+ishikawa/db-accdescr-is-node] [fixture: ishikawa/db-accdescr-block-is-nodes]
+[fixture: ishikawa/db-accdescr-empty-keeps-node] [fixture:
+ishikawa/db-frontmatter-accessibility]
+
+The private fields are `root`, `stack` and `baseLevel`. The summary keeps `root`
+and drops the following:
+
+- `stack` and its numeric `level` values: temporary state for choosing a node's
+  parent; the resulting parent-child relationship is already in the tree.
+  [fixture: ishikawa/db-indent-jump] [fixture: ishikawa/db-indent-pop-several]
+- `baseLevel`: the raw indentation of the first cause, used only to derive
+  relative levels, with nonpositive levels clamped to one. Root indentation does
+  not set this base. [fixture: ishikawa/db-indent-first-cause] [fixture:
+  ishikawa/db-indent-root-deeper] [fixture: ishikawa/db-indent-root-shallower]
+  [fixture: ishikawa/db-indent-clamped] [fixture:
+  ishikawa/db-indent-clamp-below-base] [fixture:
+  ishikawa/spec-ishikawa-c5953a5f] An exactly zero relative level also becomes a
+  level-one root child, so a following level-one cause is its sibling. [fixture:
+  ishikawa/db-indent-relative-zero]
+- Renderer geometry, marker ids, colors, font metrics and drawing settings:
+  these are made or read only while drawing, not stored syntax. The summary adds
+  none of them. [fixture: ishikawa/config-drawing-only]
+
+Node text is trimmed by the grammar and then passed through the common
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L85-L97);
+the common
+[`setDiagramTitle()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
+sanitizes the root label again. DOMPurify is disabled as described in
+[expected-results.md](./expected-results.md). Internal whitespace and literal
+quotes remain. [fixture: ishikawa/gram-root-trailing-space] [fixture:
+ishikawa/gram-child-trailing-space] [fixture: ishikawa/gram-spaces-inside-text]
+[fixture: ishikawa/gram-quotes-padding] [fixture: ishikawa/db-markup] [fixture:
+ishikawa/lex-header-quoted-label] [fixture: ishikawa/lex-quoted-crlf] [fixture:
+ishikawa/lex-quoted-u2028] [fixture: ishikawa/lex-quoted-u2029]
+
+A colon followed by a trailing space keeps the colon but loses the space, in
+both root and child text. [fixture: ishikawa/gram-after-root-colon-space]
+[fixture: ishikawa/gram-after-child-colon-space] An internal VT or FF in root
+text also remains in `title`. [fixture: ishikawa/lex-root-vt-inside] [fixture:
+ishikawa/lex-root-ff-inside] U+0085 (NEL) is retained as node text even on a
+line by itself. [fixture: ishikawa/lex-nel-only-line]
+
+In root `R; ;` and child `A; ;` text, the separated semicolons remain literal.
+[fixture: ishikawa/gram-after-root-spaced-semicolons] [fixture:
+ishikawa/gram-after-child-spaced-semicolons] Before text reaches the Db, the
+shared
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L916)
+preprocessing removes the last semicolon after a hash when a `style` or
+`classDef` fragment, in that exact case, precedes a colon and a hash on its line
+with no whitespace between the colon and hash. [fixture:
+ishikawa/lex-root-style-semicolon] [fixture:
+ishikawa/lex-child-classdef-semicolon] [fixture:
+ishikawa/lex-style-uppercase-semicolon] [fixture:
+ishikawa/lex-style-colon-space-semicolon] [fixture:
+ishikawa/lex-style-no-hash-semicolon] With `fill:#abc;;`, the remaining `#abc;`
+is encoded as a shared reference placeholder; with three semicolons, one literal
+semicolon follows that placeholder. The root reading also supplies the common
+title. [fixture: ishikawa/lex-style-two-semicolons] [fixture:
+ishikawa/lex-style-three-semicolons] [fixture:
+ishikawa/lex-root-style-two-semicolons] [fixture:
+ishikawa/lex-root-style-three-semicolons] Trailing spaces do not change these
+readings for one, two or three semicolons, because node-text trimming removes
+those spaces. [fixture: ishikawa/lex-style-semicolon-padding] [fixture:
+ishikawa/lex-style-two-semicolons-padding] [fixture:
+ishikawa/lex-style-three-semicolons-padding] [fixture:
+ishikawa/lex-root-style-semicolon-padding] [fixture:
+ishikawa/lex-root-style-two-semicolons-padding] [fixture:
+ishikawa/lex-root-style-three-semicolons-padding] With `text:#35;;;`, the
+numeric hash reference is encoded and one literal semicolon remains, in both
+child and root text. [fixture: ishikawa/lex-style-reference-three-semicolons]
+[fixture: ishikawa/lex-root-style-reference-three-semicolons] When both
+fragments occur in `style classDef A fill:#abc;;`, their two replacements each
+remove one semicolon, leaving `style classDef A fill:#abc` as the child text.
+[fixture: ishikawa/lex-style-and-classdef-semicolons]
+
+The summary is unchanged under the four supported security levels and ishikawa
+drawing settings. With an unsupported `securityLevel`, character replacement
+depends on root `htmlLabels`, falling back to `flowchart.htmlLabels`. [fixture:
+ishikawa/config-security-other] [fixture:
+ishikawa/config-security-other-html-false] [fixture:
+ishikawa/config-security-other-flowchart-html-false] [fixture:
+ishikawa/config-security-other-root-true] [fixture:
+ishikawa/config-security-other-root-false] [fixture:
+ishikawa/config-drawing-only]
+
+No Db patch is needed: parsing reads no browser global beyond the common
+sanitizer already handled by the runner, and has no URL or data-block action.
+Data-block-looking text is a label, with no recorded data-block effect.
+[fixture: ishikawa/db-data-block-is-text] A data-block-looking suffix on the
+root, or a closed suffix containing invalid YAML on a child, likewise remains
+literal text. [fixture: ishikawa/db-data-block-root-is-text] [fixture:
+ishikawa/db-invalid-data-block-is-text] A multiline form produces ordinary nodes
+from its text lines and their indentation, without parsing the apparent YAML.
+[fixture: ishikawa/db-data-block-multiline-is-nodes] No node id, random value,
+clock value or time zone enters the summary. [fixture: ishikawa/db-all-fields]
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/ishikawaDb.ts#L31-L36)
+resets the tree, parsing state and common strings between calls. [fixture:
+ishikawa/db-all-fields] [fixture: ishikawa/header-only-lf]
+
+## usecase
+
+`normalizeUsecase()` (`src/normalizers/usecase.ts`) summarizes the stored
+[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L35-L116).
+The header `usecase-beta` has the detector id `usecase`; the
+[`detector`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L7-L11)
+requires whitespace or end of text after the keyword. [fixture:
+usecase/spec-usecase-parser-7ae00acb] [fixture: usecase/header-letter-suffix]
+[fixture: usecase/header-semicolon] [fixture: usecase/header-spaced-semicolon]
+
+| Field                   | Content                                                            |
+| ----------------------- | ------------------------------------------------------------------ |
+| `direction`             | Resolved diagram direction.                                        |
+| `title`                 | The common title getter; empty after parsing at this pin.          |
+| `accTitle` / `accDescr` | Common accessibility strings, or empty text.                       |
+| `actors`                | Actor records, in map order.                                       |
+| `useCases`              | Use-case records, in map order.                                    |
+| `systemBoundaries`      | Boundary records, in map order, without `members`.                 |
+| `relationships`         | Relationship records, in source order, without internal ids.       |
+| `notes`                 | `target`, `label`, `labelType`, in source order.                   |
+| `jsonNodes`             | `id`, `value`, `propertyOrder`, `classes`, `styles`, in map order. |
+| `classDefs`             | `id`, `styles`, in definition order.                               |
+
+The normalizer reads the stored getters rather than `getAST()` or `getData()`.
+The AST duplicates the model and adds source/statement spans; layout data adds
+sanitization, geometry and compiled styles. The stored records retain authored
+text once, before those conversions. [fixture: usecase/db-all-fields]
+
+Actors keep `id`, `label`, `labelType`, `type`, `business`, `classes`, `styles`
+and optional `icon`, `stereotype`, `parentId`. Use cases keep `id`, `label`,
+`labelType`, `shape`, `business`, `classes`, `styles` and optional `stereotype`,
+`parentId`. The actor/use-case loops of
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L337-L387)
+use ids for endpoints, labels/types for text, type/shape/business/icon for
+geometry, stereotypes for visible and accessible names, parent ids for grouping,
+and classes/styles for presentation. Map order supplies layout node order.
+[fixture: usecase/db-all-fields] [fixture: usecase/db-actor-variants]
+
+Boundary records keep `id`, `label`, `labelType`, `type`, `classes`, `styles`.
+The
+[`boundary loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L427-L447)
+uses these for group identity, title, rect/package geometry and CSS. `members`
+is omitted: drawing reads each actor/use case's `parentId` instead, and the
+member list adds a second representation of containment. [fixture:
+usecase/db-all-fields] [fixture: usecase/db-boundary-three-definitions]
+
+Relationships keep `source`, `target`, `type`, `arrowType`, `minlen`, `classes`,
+`styles`, `animate`, optional `animation`, `label`, `labelType`, and `id` only
+for an explicit edge id. The
+[`relationship conversion`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L254-L283)
+selects solid/dotted patterns, arrow markers and semantic labels; the
+[`edge loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L449-L481)
+reads endpoints, labels, length, CSS and animation. Explicit ids are authored
+class/style/metadata targets. Anonymous ids and `explicitId` are omitted; the
+presence of `id` already identifies an explicit id. [fixture: usecase/db-arrows]
+[fixture: usecase/db-labeled-arrows] [fixture: usecase/db-arrow-length]
+[fixture: usecase/db-edge-id-style]
+
+Notes retain their target and text/type for the
+[`note node loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L389-L409).
+The
+[`note connector loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L483-L508)
+uses the same targets. Generated note ids and derived dotted connector edges are
+omitted. [fixture: usecase/db-note-order]
+
+JSON tables retain values and source property order because the
+[`JSON row conversion`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L139-L219)
+reads both; JavaScript key order alone would reorder integer-like keys. Classes
+and styles feed the
+[`table loop`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L411-L425).
+Class definitions feed
+[`getCompiledStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134).
+Rows and compiled CSS are derived and omitted. The shared number conversion
+writes non-finite JSON numbers as text and negative zero as zero. [fixture:
+usecase/db-json-integer-order] [fixture: usecase/db-json-duplicate-order]
+[fixture: usecase/db-json-pointer] [fixture: usecase/db-json-overflow] [fixture:
+usecase/db-classdef-replace]
+
+`direction` is the layout direction from
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L525-L545).
+`title` is read by
+[`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseRenderer.ts#L287-L295).
+The common accessibility getters are consumed by
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628).
+[fixture: usecase/db-all-fields] [fixture: usecase/db-direction-td]
+
+The remaining model state is omitted: `symbols` is a resolution index;
+`relationshipCounter` and `noteCounter` make internal ids; `ast` and all spans
+record source positions; `config` holds drawing settings already available
+separately. DOM ids, color indices, sanitized/escaped labels, accessible names,
+shapes derived from type/business, marker names, layout coordinates and font
+metrics add no independent syntax. Drawing reads no diagnostic records. Semantic
+ids derived from quoted element labels remain because relationship, class/style
+and metadata references can address them; these are model ids, rather than
+internal rendering ids. [fixture: usecase/db-all-fields] [fixture:
+usecase/gram-metadata-target-plain] [fixture: usecase/config-drawing-only]
+
+The Db patch records each JSON table's Mermaid-read `value` and `propertyOrder`
+as `{ id, set: { value, propertyOrder } }` in `dataBlockEffects`, in authored
+declaration order. It intercepts `commit` and uses the published statement list
+to locate each JSON reading; the JSON map may have a different order because a
+relationship referenced a table before its declaration. The tree holds the JSON
+interior opaquely, so `dbFromTree` consumes these effects without a JSON reader.
+[fixture: usecase/db-json-source-map-order] [fixture: usecase/gram-json-empty]
+
+The Chevrotain
+[`metadata rules`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
+parse a closed native property grammar, not opaque YAML, and produce no data
+block effects. Parsing requires no browser stand-in, URL sanitizer patch, time
+or random-id replacement. [fixture: usecase/gram-metadata-comma] [fixture:
+usecase/db-native-metadata-not-yaml]
+
+Stored element text bypasses layout-time sanitization. Common title and
+accessibility setters still use the shared sanitizer with DOMPurify disabled.
+The four supported security levels give the same summary; an unsupported level
+can change the common strings according to root `htmlLabels`, falling back to
+`flowchart.htmlLabels`. Usecase drawing settings leave the stored model
+unchanged. [fixture: usecase/html-all-texts] [fixture:
+usecase/config-security-strict] [fixture: usecase/config-security-loose]
+[fixture: usecase/config-security-antiscript] [fixture:
+usecase/config-security-sandbox] [fixture: usecase/config-security-other]
+[fixture: usecase/config-security-other-html-false] [fixture:
+usecase/config-security-other-flowchart-false] [fixture:
+usecase/config-security-other-usecase-false] [fixture:
+usecase/config-security-other-root-true] [fixture:
+usecase/config-security-other-root-false] [fixture: usecase/config-drawing-only]
+
+At this pin, the parser calls
+[`db.clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.chevrotain.ts#L10-L12)
+after the outer
+[`Diagram.fromText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L47-L54)
+sets a frontmatter title. Consequently `title` is empty even for nonempty,
+whitespace-only and numeric frontmatter titles; `embedded.title` still records
+the supplied title. The normalizer preserves that result. [fixture:
+usecase/frontmatter-title] [fixture: usecase/frontmatter-space-title] [fixture:
+usecase/frontmatter-number-title]
+
+Directive removal can rejoin the `json` and `extend` keywords and the `TB`
+direction value; the resulting JSON node, extend label and direction reach the
+Db. [fixture: usecase/div-lex-directive-in-json-keyword] [fixture:
+usecase/div-lex-directive-in-extend-keyword] [fixture:
+usecase/div-lex-directive-in-direction-value]
+
+Removal also allows a directive between `actor` or `systemBoundary` and its
+name, between `note` and `for`, and between the note target and its label.
+[fixture: usecase/lex-directive-between-actor-name] [fixture:
+usecase/lex-directive-between-boundary-name] [fixture:
+usecase/lex-directive-between-note-for] [fixture:
+usecase/lex-directive-between-note-target-label]
+
+Class targets and suffix names can be rejoined across a directive, and removal
+before a target-list comma still assigns the class to both nodes. [fixture:
+usecase/div-lex-directive-in-class-target] [fixture:
+usecase/div-lex-directive-in-class-suffix] [fixture:
+usecase/lex-directive-in-class-list-separator]
+
+Directives before a class-definition id, class target or style target are
+removed before those statements are read. [fixture:
+usecase/lex-directive-between-classdef-id] [fixture:
+usecase/lex-directive-between-class-target] [fixture:
+usecase/lex-directive-between-style-target]
+
+A directive before a direction value or JSON id is removed, as is one before an
+accessibility title or description value. [fixture:
+usecase/lex-directive-between-direction-value] [fixture:
+usecase/lex-directive-between-json-id] [fixture:
+usecase/lex-directive-between-acctitle-value] [fixture:
+usecase/lex-directive-between-accdescr-value]
+
+Metadata keys can be rejoined across a directive; directives immediately before
+or after a metadata value leave that value intact. [fixture:
+usecase/div-lex-directive-in-metadata-key] [fixture:
+usecase/lex-directive-before-metadata-value] [fixture:
+usecase/lex-directive-after-metadata-value]
+
+Removal can reconstruct `@{` for metadata, `<<` for a stereotype, `:::` for a
+class suffix and the `@{` part of a JSON declaration. [fixture:
+usecase/div-lex-directive-in-metadata-opener] [fixture:
+usecase/div-lex-directive-in-stereotype-opener] [fixture:
+usecase/div-lex-directive-in-class-delimiter] [fixture:
+usecase/lex-directive-in-json-declaration-at]
+
+Inside a JSON body, removal rejoins a quoted property name and removes a
+directive-only line between properties; `propertyOrder` follows the resulting
+keys. [fixture: usecase/lex-directive-in-json-key] [fixture:
+usecase/lex-directive-json-comment-line]
+
+Removal does not join the line after `actor` to its name, whether the gap
+contains a comment or an empty line. [fixture: usecase/lex-actor-comment-gap]
+[fixture: usecase/lex-actor-empty-gap]
+
+A comment gap after `direction`, after a note target, or between `json` and its
+id still leaves a rejected line break; a directive-only line after
+`systemBoundary` does the same. [fixture: usecase/lex-direction-comment-gap]
+[fixture: usecase/lex-note-label-comment-gap] [fixture:
+usecase/lex-json-id-comment-gap] [fixture:
+usecase/lex-boundary-name-directive-gap]
+
+A blank line before class-definition values and a comment line before style
+values do not make those values continue the preceding statement. [fixture:
+usecase/lex-classdef-value-empty-gap] [fixture:
+usecase/lex-style-value-comment-gap]
+
+The tested directive forms containing U+2028 or U+2029 inside the object are not
+removed into a valid declaration; both inputs are rejected. [fixture:
+usecase/lex-directive-open-object-ls] [fixture:
+usecase/lex-directive-open-object-ps]
+
+An unclosed directive at end of text is dropped after an accessibility line,
+retaining its title or description. [fixture:
+usecase/lex-directive-open-acctitle-eof] [fixture:
+usecase/lex-directive-open-accdescr-eof]
+
+Removal between percent signs can create a whole-line comment; a closed or
+unclosed directive immediately after the header at end of text leaves an
+accepted empty diagram. [fixture: usecase/lex-directive-between-percent-signs]
+[fixture: usecase/lex-header-closed-directive-eof] [fixture:
+usecase/lex-header-open-directive-eof]
+
+Two semicolons after an actor declaration are rejected, including when spaces
+separate them. [fixture: usecase/lex-actor-two-semis] [fixture:
+usecase/lex-actor-spaced-semis]
+
+Two trailing semicolons and a trailing colon followed by a space are rejected
+after a boundary header or `end`. [fixture: usecase/lex-boundary-two-semis]
+[fixture: usecase/lex-boundary-colon-space] [fixture: usecase/lex-end-two-semis]
+[fixture: usecase/lex-end-colon-space]
+
+A relationship rejects two trailing semicolons or a colon followed by a space; a
+standalone entity also rejects the colon form. [fixture:
+usecase/lex-edge-two-semis] [fixture: usecase/lex-edge-colon-space] [fixture:
+usecase/lex-entity-colon-space]
+
+Class assignments and standalone metadata reject both two trailing semicolons
+and a trailing colon followed by a space. [fixture: usecase/lex-class-two-semis]
+[fixture: usecase/lex-class-colon-space] [fixture:
+usecase/lex-metadata-two-semis] [fixture: usecase/lex-metadata-colon-space]
+
+JSON declarations and direction statements reject both two trailing semicolons
+and a trailing colon followed by a space. [fixture: usecase/lex-json-two-semis]
+[fixture: usecase/lex-json-colon-space] [fixture:
+usecase/lex-direction-two-semis] [fixture: usecase/lex-direction-colon-space]
+
+A closed accessibility description block likewise rejects two semicolons or a
+colon followed by a space after its closing brace. [fixture:
+usecase/lex-accdescr-block-two-semis] [fixture:
+usecase/lex-accdescr-block-colon-space]
+
+An unquoted note stores `" text; ;"` for the spaced-semicolon example and
+`"text:"` for the colon example, dropping the final space; a semicolon after a
+quoted note is rejected. [fixture: usecase/lex-note-plain-spaced-semis]
+[fixture: usecase/lex-note-plain-colon-space] [fixture:
+usecase/lex-note-quoted-semicolon]
+
+Style and class-definition values reject the spaced suffix `; ;`. [fixture:
+usecase/lex-style-spaced-semis] [fixture: usecase/lex-classdef-spaced-semis]
+
+A final TAB is accepted after an actor or class assignment, and after a boundary
+header and its final `end`. [fixture: usecase/lex-actor-final-tab] [fixture:
+usecase/lex-class-final-tab] [fixture: usecase/lex-boundary-final-tab]
+
+A closed directive at end of text after an actor is removed; closed directives
+after accessibility title/block values and an unclosed final directive after a
+description block also leave the values intact. [fixture:
+usecase/lex-actor-directive-final-eof] [fixture:
+usecase/lex-accessibility-tail-directives] [fixture:
+usecase/lex-accessibility-tail-open-directive]
+
+Shared style-line preprocessing runs before the usecase lexer. With `fill:#abc`,
+the tested two/three-semicolon style endings with trailing padding, and the
+tested class-definition endings, produce encoded entity markers that are
+rejected as CSS components. [fixture: usecase/lex-style-three-padding] [fixture:
+usecase/lex-style-two-padding] [fixture: usecase/lex-classdef-hash-three]
+[fixture: usecase/lex-classdef-hash-two-padding]
+
+The same preprocessing changes the text `style fill:#abc;;;` inside actor and
+boundary labels to `style fill:\uFB02\u00B0abc\u00B6\u00DF;` (escape notation).
+[fixture: usecase/lex-style-trigger-actor] [fixture:
+usecase/lex-style-trigger-boundary]
+
+Relationship labels and note labels keep that same preprocessed marker text,
+rather than decoding it in the stored Db. [fixture:
+usecase/lex-style-trigger-edge] [fixture: usecase/lex-style-trigger-note]
+
+Accessibility titles and description blocks also receive that style-triggered
+text change. [fixture: usecase/lex-style-trigger-a11y-title] [fixture:
+usecase/lex-style-trigger-a11y-description]
+
+Stereotypes, JSON string values and actor icon metadata also keep the
+style-triggered entity markers; the JSON example triggers across its quoted
+key/value separator. [fixture: usecase/lex-style-trigger-stereotype] [fixture:
+usecase/lex-style-trigger-json] [fixture:
+usecase/lex-style-trigger-metadata-icon]
+
+A frontmatter title with that text remains unchanged in `embedded.title`, while
+the common title is cleared as described above. [fixture:
+usecase/lex-style-trigger-frontmatter]
+
+U+2028 and U+2029 between the color and semicolon prevent the tested style-line
+match, so these label strings are preserved. [fixture:
+usecase/lex-style-trigger-ls] [fixture: usecase/lex-style-trigger-ps]
+
+Directive removal precedes that style-line preprocessing: rejoining `sty` and
+`le` inside a label can trigger it and remove the color semicolon. [fixture:
+usecase/lex-style-trigger-directive]
+
+Detection accepts U+2003 after the header keyword, but parsing the header
+followed only by that character is rejected; U+0085 before or immediately after
+the keyword does not detect usecase, and a U+0085-only body line is rejected.
+[fixture: usecase/lex-header-emspace-eof] [fixture: usecase/lex-header-nel-eof]
+[fixture: usecase/lex-nel-before-header] [fixture: usecase/lex-nel-only-line]
+
+Quoted metadata icon values preserve internal U+00A0, a trailing U+FEFF and
+U+2029; U+2028 between unquoted metadata entries is rejected. [fixture:
+usecase/lex-metadata-unicode-value] [fixture: usecase/lex-metadata-ps-string]
+[fixture: usecase/lex-metadata-ls-separator]
+
+JSON rejects U+2029 as object whitespace but preserves U+2028 inside a quoted
+value. [fixture: usecase/div-lex-json-ps-whitespace] [fixture:
+usecase/lex-json-ls-string]
+
+Actor labels preserve surrounding U+00A0, boundary labels preserve surrounding
+U+FEFF, relationship labels preserve surrounding U+3000, and note labels
+preserve surrounding U+00A0. [fixture: usecase/lex-actor-label-unicode-padding]
+[fixture: usecase/lex-boundary-label-unicode-padding] [fixture:
+usecase/lex-edge-label-unicode-padding] [fixture:
+usecase/lex-note-label-unicode-padding]
+
+Stereotype trimming removes surrounding U+FEFF, while a CR or CRLF inside a
+stereotype is rejected. [fixture: usecase/lex-stereotype-bom-padding] [fixture:
+usecase/lex-stereotype-cr] [fixture: usecase/lex-stereotype-crlf]
+
+CR and CRLF separate accessibility, direction, actor, boundary, entity,
+relationship, note, JSON, metadata, class-definition, class-assignment and style
+statements in the tested complete diagrams. [fixture: usecase/lex-statements-cr]
+[fixture: usecase/lex-statements-crlf]
+
+Whole-line comments terminate at either CR or CRLF; shared comment removal also
+accepts the tested U+00A0 indentation. [fixture: usecase/lex-comment-cr]
+[fixture: usecase/lex-comment-crlf] [fixture: usecase/lex-comment-nbsp-indent]
+
+A supplementary character and a combining sequence are rejected as ids in the
+tested forms, but both are preserved in an element label. [fixture:
+usecase/lex-supplementary-id] [fixture: usecase/lex-combining-id] [fixture:
+usecase/lex-supplementary-label]
+
+A markdown string closes at the first backtick followed by a double quote, even
+after a backslash; trailing label text after that close makes the tested inputs
+fail. Double quotes without that backtick are retained inside markdown text.
+[fixture: usecase/lex-markdown-earliest-close] [fixture:
+usecase/lex-markdown-close-backslash] [fixture:
+usecase/lex-markdown-embedded-double]
+
+A backslash does not escape an apostrophe in the tested single-quoted label.
+[fixture: usecase/lex-plain-single-apostrophe]
+
+Stereotype mode closes at the first `>>`, rejects a newline before its text, and
+preserves a nested `<<` as text. [fixture: usecase/lex-stereotype-first-close]
+[fixture: usecase/lex-stereotype-newline-before-close] [fixture:
+usecase/lex-stereotype-nested-open]
+
+An unclosed quoted JSON value consumes the following line into the
+unclosed-object token and is rejected; U+00A0 between `json` and its id does not
+form the JSON declaration mode-push token. [fixture:
+usecase/lex-json-mode-unclosed-string] [fixture: usecase/lex-json-nbsp-gap]
+
+Keyword priority splits `actor-name` in a CSS property and rejects it, while
+`actor-name actorName` is preserved in a label; `style:include` is accepted as
+CSS through the word category. [fixture: usecase/lex-css-hyphen-keyword-style]
+[fixture: usecase/lex-css-keyword-prefix-label-control] [fixture:
+usecase/lex-keyword-style-word-category]
+
+At statement start, `o--word` and `x--word` begin with backward-marker arrow
+tokens and are rejected as declarations. [fixture:
+usecase/lex-back-circle-id-prefix] [fixture: usecase/lex-back-cross-id-prefix]
+Forward markers `--o` and `--x` take the leading `o` or `x` of the following id:
+`A --order` and `A --xray` are accepted as circle and cross associations with
+target ids `rder` and `ray`, respectively. [fixture:
+usecase/lex-forward-circle-id-prefix] [fixture:
+usecase/lex-forward-cross-id-prefix] `A --oB` leaves the one-letter target `B`.
+[fixture: usecase/lex-forward-circle-id-prefix-one-letter]
+
+The header keyword can be label text. A decimal with a unit is a single number
+token and is rejected as an id, while `1.5px_tail` is accepted as a CSS value.
+[fixture: usecase/lex-keyword-header-label] [fixture:
+usecase/lex-number-decimal-id-unit] [fixture:
+usecase/lex-number-suffix-boundary]
+
+The tested label fallback preserves semicolon, angle brackets, backslash,
+backtick, and the other punctuation and symbols shown in the fixtures. [fixture:
+usecase/lex-label-fallback-punctuation] [fixture:
+usecase/lex-label-fallback-symbols]
+
+A metadata block containing only a comma is rejected; a newline followed by a
+comma and another property is accepted. [fixture:
+usecase/gram-metadata-empty-comma-only] [fixture:
+usecase/gram-metadata-newline-comma-same-line]
+
+Conflicting repeated inline `type` or `business` properties are rejected. A
+standalone `type:awesome` before an actor declaration takes precedence over its
+inline `type:hollow`. [fixture: usecase/gram-metadata-duplicate-inline-conflict]
+[fixture: usecase/gram-metadata-duplicate-inline-business] [fixture:
+usecase/gram-metadata-standalone-before-inline]
+
+Empty standalone metadata is accepted for a JSON node, but `business:true` is
+invalid for that target. [fixture: usecase/gram-metadata-json-empty] [fixture:
+usecase/gram-metadata-json-nonempty]
+
+Metadata rejects a space between `@` and `{`, an actor metadata block after its
+stereotype, and an entity metadata block after its class suffix. [fixture:
+usecase/gram-metadata-space-before-brace] [fixture:
+usecase/gram-actor-suffix-metadata-after-stereotype] [fixture:
+usecase/gram-entity-class-before-metadata]
+
+The keyword `actor` is rejected as either a class suffix name or a
+class-definition id. [fixture: usecase/gram-class-keyword-name] [fixture:
+usecase/gram-classdef-keyword-id]
+
+Standalone metadata inside a boundary can create a use case with that
+`parentId`; an `actor` declaration followed by a relationship on the same line
+is rejected there. [fixture: usecase/gram-boundary-standalone-metadata-inside]
+[fixture: usecase/gram-boundary-actor-relation]
+
+Repeating an actor label or boundary title with identical text but a different
+label type is a conflict. [fixture:
+usecase/gram-boundary-repeat-labeltype-conflict] [fixture:
+usecase/gram-actor-repeat-labeltype-conflict]
+
+Repeating the same quoted declaration collides on its generated semantic id.
+Referencing that id explicitly from a relationship, style and metadata instead
+updates the original node. [fixture: usecase/gram-generated-label-repeat]
+[fixture: usecase/gram-generated-reference-suffix]
+
+A class suffix on a relationship endpoint that only references a node is
+rejected, both for a declared actor id and for a quoted endpoint. [fixture:
+usecase/gram-classes-on-reference-only] [fixture:
+usecase/gram-classes-on-quoted-reference-only]
+
+The uppercase forbidden word `NEWPAGE` is rejected as a standalone entity.
+[fixture: usecase/gram-forbidden-uppercase]
+
+A longer left side in `A <--- text -- B` is rejected; longer right sides in
+labeled backward circle/cross arrows are accepted with `minlen: 1`. [fixture:
+usecase/gram-backward-long-labeled-left] [fixture:
+usecase/gram-back-circle-long-right-label] [fixture:
+usecase/gram-back-cross-long-right-label]
+
+A quoted whitespace-only relationship label retains its spaces, and an empty
+markdown relationship label retains an empty string with `labelType: markdown`.
+[fixture: usecase/gram-edge-whitespace-label] [fixture:
+usecase/gram-edge-empty-markdown-label]
+
+Class assignment order remains separate from class-definition order and direct
+styles; the stored node does not merge the class definitions into its styles.
+[fixture: usecase/gram-class-styles-resolution-order]
+
+Capitalized `True` and `False` are invalid business metadata values; a quoted
+empty property name is also invalid. [fixture:
+usecase/gram-metadata-uppercase-boolean] [fixture:
+usecase/gram-metadata-uppercase-false] [fixture:
+usecase/gram-metadata-empty-key]
+
+An integer icon value is stored as text and selects the icon actor type, but a
+decimal icon value is rejected. Updating an icon to an empty string clears it
+and restores the normal actor type. [fixture: usecase/gram-metadata-number-icon]
+[fixture: usecase/gram-metadata-decimal-icon] [fixture:
+usecase/gram-actor-icon-clear]
+
+Three declarations of the same boundary accumulate class suffixes and members;
+the tested package then rect updates finish with type `rect`. [fixture:
+usecase/gram-boundary-three-classes-types]
+
+Lowercase `td`, `tb`, `bt` and `rl` are rejected as direction values. [fixture:
+usecase/gram-direction-lower-td] [fixture: usecase/gram-direction-lower-tb]
+[fixture: usecase/gram-direction-lower-bt] [fixture:
+usecase/gram-direction-lower-rl]
+
+Null, boolean, object and array frontmatter titles leave the common Db title
+empty; scalar and array frontmatter roots are also accepted with an empty title.
+[fixture: usecase/gram-frontmatter-null-title] [fixture:
+usecase/gram-frontmatter-bool-title] [fixture:
+usecase/gram-frontmatter-object-title] [fixture:
+usecase/gram-frontmatter-array-title] [fixture:
+usecase/gram-frontmatter-scalar-root] [fixture:
+usecase/gram-frontmatter-array-root]
+
+Indented frontmatter is accepted. The tested frontmatter title containing a
+double-quoted HTML attribute is changed by preprocessing into invalid YAML and
+is rejected. [fixture: usecase/gram-frontmatter-indented] [fixture:
+usecase/div-gram-frontmatter-html-attribute-quotes]
+
+The tested invalid-YAML init directive is removed without rejecting the diagram
+or changing its node. [fixture: usecase/gram-directive-invalid-yaml]
+
+`C4Context` inside a label and `C4Container` in frontmatter do not steal
+detection from usecase; U+00A0 after the header passes detection but does not
+separate a following actor statement. [fixture:
+usecase/gram-detect-c4-context-label] [fixture:
+usecase/gram-detect-c4-frontmatter] [fixture:
+usecase/gram-header-unicode-space-statement]
+
+With an unsupported security level and root `htmlLabels: false`, both the
+description-block markup and stored element markup are preserved in the tested
+input. [fixture: usecase/gram-accessibility-unsupported-description]
+
+Actor icon metadata preserves HTML markup and stores `#amp;` as the entity
+marker `\uFB02\u00B0amp\u00B6\u00DF` (escape notation). A quoted entity label
+uses the encoded text to derive the addressable id `__amp___name`. [fixture:
+usecase/gram-html-actor-icon] [fixture: usecase/gram-entity-metadata-icon]
+[fixture: usecase/gram-entity-derived-id]
+
+Preprocessing converts double-quoted HTML attribute delimiters to single quotes
+inside the tested double-quoted label; the corresponding single-quoted outer
+label is rejected. [fixture: usecase/gram-html-double-attribute] [fixture:
+usecase/gram-html-single-attribute]
+
+JSON preserves an empty string property value. [fixture:
+usecase/gram-json-empty-string-value]
+
+When a repeated property replaces an object with a scalar, `value` keeps the
+scalar and `propertyOrder` drops the overwritten object paths. [fixture:
+usecase/gram-json-object-scalar-overwrite]
+
+JSON decodes the tested control, slash and Unicode escapes in keys and values;
+`propertyOrder` records the decoded key, while a malformed `\q` escape is
+rejected. [fixture: usecase/gram-json-control-escapes] [fixture:
+usecase/div-gram-json-malformed-escape]
+
+A pair of backslashes before a JSON closing quote represents one backslash
+without hiding that quote; the following object and its property-order entry are
+retained. [fixture: usecase/gram-json-double-backslash-before-quote]

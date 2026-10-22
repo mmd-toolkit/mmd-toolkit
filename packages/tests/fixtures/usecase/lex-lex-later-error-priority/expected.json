@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: All lexical errors are checked before parser errors."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error lexing usecase diagram: unexpected character: ->\"<- at offset: 21, skipped 1 characters. at line 3, column 3 [21,22)"
+  }
+}

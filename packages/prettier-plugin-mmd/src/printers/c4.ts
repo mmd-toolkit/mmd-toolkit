@@ -10,12 +10,8 @@ import {
   printDiagramBlock,
 } from "./blocks.ts"
 import type { BlockBounds, BlockRules, PrintedBlock } from "./blocks.ts"
-import {
-  c4DiagramLineEnd,
-  c4KeptGapEnd,
-  findC4KeptLines,
-  c4KeptPrefixEnd,
-} from "./c4-kept-lines.ts"
+import { c4KeptGapEnd, findC4KeptLines } from "./c4-kept-lines.ts"
+import { keptSemicolonPrefixEnd, semicolonSegmentEnd } from "./kept-lines.ts"
 import {
   c4BoundaryBraces,
   classifyC4Statement,
@@ -88,7 +84,8 @@ function printStatements(
         const before =
           gap.includes("\n") ||
           (previous !== undefined &&
-            statement.range[0] <= c4KeptPrefixEnd(source, previous.range[1])) ||
+            statement.range[0] <=
+              keptSemicolonPrefixEnd(source, previous.range[1])) ||
           findTriviaBetween(
             source,
             previous?.range[1] ?? statement.range[0],
@@ -170,9 +167,9 @@ function blockRules(
     keepsDirectiveLinesUnindented: true,
     keptGapEnd: (start, end, before) =>
       c4KeptGapEnd(source, start, end, before),
-    keptInlineGapEnd: (start) => c4KeptPrefixEnd(source, start),
+    keptInlineGapEnd: (start) => keptSemicolonPrefixEnd(source, start),
     keptClosingJoin: "",
     keepsOpeningLine,
-    diagramLineEnd: (offset) => c4DiagramLineEnd(source, offset),
+    diagramLineEnd: (offset) => semicolonSegmentEnd(source, offset),
   }
 }

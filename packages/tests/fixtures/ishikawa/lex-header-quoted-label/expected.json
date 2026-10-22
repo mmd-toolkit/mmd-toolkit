@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L2] Does a leading quote protect header-like label text?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"ishikawa\"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"ishikawa\"",
+      "children": [
+        {
+          "text": "\"ishikawa-beta\"",
+          "children": []
+        }
+      ]
+    }
+  }
+}

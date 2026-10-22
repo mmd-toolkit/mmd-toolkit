@@ -40,6 +40,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | 規則                                                                                       | 説明                                                                    | ✅  | 💡  | 🚧  |
 | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- | --- | --- | --- |
 | [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                      | ✅  | 💡  |     |
+| [flowchart-no-duplicate-direction](./flowchart-no-duplicate-direction.ja.md)               | その subgraph の方向を置き換える `direction` 文を禁止する。             | ✅  |     |     |
 | [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                  | ✅  | 💡  |     |
 | [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                        | ✅  | 💡  |     |
 | [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)                             | 方向の行にあって、mermaid.js が捨てるテキストを禁止する。               | ✅  | 💡  |     |
@@ -152,6 +153,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | 規則                                                               | 説明                                                                    | ✅  | 💡  | 🚧  |
 | ------------------------------------------------------------------ | ----------------------------------------------------------------------- | --- | --- | --- |
 | [c4-no-duplicate-description](./c4-no-duplicate-description.ja.md) | 異なる図の説明を置き換える説明文を禁止する。                            | ✅  |     |     |
+| [c4-no-duplicate-style](./c4-no-duplicate-style.ja.md)             | 前の更新が与えた値を置き換えるスタイル更新を禁止する。                  | ✅  |     |     |
 | [c4-no-duplicate-title](./c4-no-duplicate-title.ja.md)             | 別の title 文が設定した異なるタイトルを置き換える title 文を禁止する。  | ✅  |     |     |
 | [c4-no-invalid-attribute-key](./c4-no-invalid-attribute-key.ja.md) | C4 のスタイル更新で、色と offset のキーの大文字小文字の誤りを禁止する。 | ✅  |     |     |
 | [c4-no-redefined-element](./c4-no-redefined-element.ja.md)         | 前のラベル、種類、型を置き換える要素や境界の宣言を禁止する。            | ✅  |     |     |
@@ -213,5 +215,31 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | 規則                                                               | 説明                                               | ✅  | 💡  | 🚧  |
 | ------------------------------------------------------------------ | -------------------------------------------------- | --- | --- | --- |
 | [kanban-no-duplicate-section](./kanban-no-duplicate-section.ja.md) | 項目を重ねて列挙する、重複した列の id を禁止する。 | ✅  |     |     |
+
+## venn
+
+| 規則                                                           | 説明                                                               | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------- | ------------------------------------------------------------------ | --- | --- | --- |
+| [venn-no-duplicate-style](./venn-no-duplicate-style.ja.md)     | 同じ対象の前の値を置き換えるスタイルを禁止する。                   | ✅  |     |     |
+| [venn-no-duplicate-subset](./venn-no-duplicate-subset.ja.md)   | もう一度宣言する集合や和を禁止する。                               | ✅  |     |     |
+| [venn-no-duplicate-title](./venn-no-duplicate-title.ja.md)     | 別のタイトルを置き換えるタイトルを禁止する。                       | ✅  |     |     |
+| [venn-no-ignored-text](./venn-no-ignored-text.ja.md)           | 後のコメントが取り除く文字を禁止する。                             | ✅  |     |     |
+| [venn-no-invalid-style-key](./venn-no-invalid-style-key.ja.md) | 描画が読まないスタイルのプロパティを禁止する。                     | ✅  |     |     |
+| [venn-no-undef](./venn-no-undef.ja.md)                         | どの集合も和も宣言しない領域への文字のノードやスタイルを禁止する。 | ✅  |     |     |
+
+## agentflow
+
+| 規則                                                                                       | 説明                                                                        | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- | --- | --- | --- |
+| [agentflow-no-duplicate-description](./agentflow-no-duplicate-description.ja.md)           | 前に設定した説明を置き換える `accDescr` を禁止する。                        | ✅  |     |     |
+| [agentflow-no-duplicate-direction](./agentflow-no-duplicate-direction.ja.md)               | その flow の方向を置き換える `direction` 文を禁止する。                     | ✅  |     |     |
+| [agentflow-no-duplicate-title](./agentflow-no-duplicate-title.ja.md)                       | 前に設定したタイトルを置き換える `accTitle` を禁止する。                    | ✅  |     |     |
+| [agentflow-no-empty-description-block](./agentflow-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                            | ✅  |     |     |
+| [agentflow-no-ignored-text](./agentflow-no-ignored-text.ja.md)                             | mermaid.js が方向の行から捨てる文字を禁止する。                             | ✅  |     |     |
+| [agentflow-no-redefined-connector](./agentflow-no-redefined-connector.ja.md)               | その id に前に書いたタイトルや頂点を置き換える connector の宣言を禁止する。 | ✅  |     |     |
+| [agentflow-no-redefined-flow](./agentflow-no-redefined-flow.ja.md)                         | その id に前に書いたタイトルを置き換える flow の宣言を禁止する。            | ✅  |     |     |
+| [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.ja.md)                     | その id に前に書いたラベルや形を置き換える頂点を禁止する。                  | ✅  |     |     |
+| [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md) | `}` で閉じていない `accDescr {` のブロックを禁止する。                      |     |     |     |
+| [agentflow-no-undef](./agentflow-no-undef.ja.md)                                           | 何も宣言しない id への `style`、`class`、`click` の文を禁止する。           | ✅  |     |     |
 
 <!-- end auto-generated rules list -->

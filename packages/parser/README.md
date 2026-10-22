@@ -139,6 +139,10 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - C4 diagrams: `C4Context`, `C4Container`, `C4Component`, `C4Dynamic`, and
   `C4Deployment` (`c4`).
 - Venn diagrams: `venn` (`venn-beta`).
+- Ishikawa diagrams: `ishikawa` (`ishikawa` and `ishikawa-beta`).
+- Agentflow diagrams: `agentflow` (`agentflow-beta`).
+- Usecase diagrams: `usecase` (`usecase-beta`);
+  [node types](../spec/docs/ast/usecase.md).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -243,8 +247,10 @@ type ids. The names and fields are those of the specification's
 [`ast/quadrant.md`](../spec/docs/ast/quadrant.md),
 [`ast/block.md`](../spec/docs/ast/block.md),
 [`ast/kanban.md`](../spec/docs/ast/kanban.md),
-[`ast/c4.md`](../spec/docs/ast/c4.md), and
-[`ast/venn.md`](../spec/docs/ast/venn.md).
+[`ast/c4.md`](../spec/docs/ast/c4.md),
+[`ast/venn.md`](../spec/docs/ast/venn.md), and
+[`ast/ishikawa.md`](../spec/docs/ast/ishikawa.md), and
+[`ast/agentflow.md`](../spec/docs/ast/agentflow.md).
 
 ## Walking the tree
 
@@ -341,10 +347,11 @@ these differences:
   diagram, it holds for an empty icon (`::icon()`), an empty class line (`:::`
   with nothing after it on its line), and an empty string or empty markdown
   string in a shape, wherever they stand, as in `a[""x]`.
-- In a mindmap or kanban diagram, empty lines, lines of whitespace, and comments
-  change nothing wherever they stand after the header, while mermaid.js rejects
-  some of them, as an empty line between the header and the first node, or a
-  line `%%` alone followed by an empty line between two nodes
+- In a mindmap, kanban diagram, or Ishikawa diagram, empty lines, lines of
+  whitespace, and comments change nothing wherever they stand after the header,
+  while mermaid.js rejects some of them, as an empty line between the header and
+  the first node, or a line `%%` alone followed by an empty line between two
+  nodes
   ([`blank-line-after-header-or-comments`](../spec/docs/known-divergences/blank-line-after-header-or-comments.md)).
 - In a sequence diagram, a comment starts at its `%%`, and a number may be
   followed by `%%`, while mermaid.js takes the character before the `%%` into
@@ -419,7 +426,9 @@ these differences:
   [`ast/block.md`](../spec/docs/ast/block.md) (the block diagram nodes),
   [`ast/kanban.md`](../spec/docs/ast/kanban.md) (the kanban nodes),
   [`ast/c4.md`](../spec/docs/ast/c4.md) (the C4 nodes),
-  [`ast/venn.md`](../spec/docs/ast/venn.md) (the venn nodes), and
+  [`ast/venn.md`](../spec/docs/ast/venn.md) (the venn nodes),
+  [`ast/ishikawa.md`](../spec/docs/ast/ishikawa.md) (the Ishikawa nodes),
+  [`ast/agentflow.md`](../spec/docs/ast/agentflow.md) (the Agentflow nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

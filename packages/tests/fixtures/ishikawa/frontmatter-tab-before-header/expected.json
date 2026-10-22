@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P4] Can a tab precede the header after frontmatter extraction?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F3: A directive splits the common line-rule trigger within node text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R style:#xy",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R style:#xy",
+      "children": []
+    }
+  }
+}

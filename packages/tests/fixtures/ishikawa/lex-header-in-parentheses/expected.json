@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Header inside literal text after punctuation."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "(ishikawa)",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "(ishikawa)",
+      "children": []
+    }
+  }
+}

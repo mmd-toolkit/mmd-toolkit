@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A signed linkStyle index is outside numList."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n... TBA-->BlinkStyle -1 stroke:red\n---------------------^\nExpecting 'DEFAULT', 'NUM', got 'NODE_STRING'"
+  }
+}

@@ -52,10 +52,10 @@ accepted.
 
 ### Embedded data is not checked
 
-The YAML inside the frontmatter, the content of a directive, and the data blocks
-written as `@{ ... }` in the diagram are not parsed. A diagram whose embedded
-data is malformed, has the wrong shape, or names something unknown may be
-accepted or rejected by mermaid.js, and is formatted here in either case.
+The YAML inside the frontmatter, the content of a directive, and the opaque data
+blocks written as `@{ ... }` in the diagram are not parsed. A diagram whose
+embedded data is malformed, has the wrong shape, or names something unknown may
+be accepted or rejected by mermaid.js, and is formatted here in either case.
 mermaid.js accepts `%%{init:   {oops}}%%`, a data block of a participant that is
 not JSON, and an unknown key of the configuration, and rejects an unknown node
 shape in a data block and malformed YAML in the frontmatter. [fixture:
@@ -488,6 +488,21 @@ direction statement is kept as written, with its indentation. [fixture:
 flowchart/indentation/direction-text-kept] [fixture:
 flowchart/indentation/direction-text-with-directive-kept] See
 [Indentation](./flowchart.md#indentation).
+
+Flowchart bodies use the shared significant indentation minimum, at least one
+space per level even with `tabWidth: 0`. This prevents a direction statement
+from gaining column-one accessibility or keyword priority when its indentation
+is removed. [fixture: flowchart/indentation/zero-direction-description-subgraph]
+[fixture: flowchart/indentation/zero-direction-title] [fixture:
+flowchart/indentation/zero-direction-title-tab] [fixture:
+flowchart/indentation/zero-direction-description-block] [fixture:
+flowchart/indentation/zero-direction-title-prefix] [fixture:
+flowchart/indentation/zero-direction-directive] [fixture:
+flowchart/indentation/zero-direction-style-prefix] The same minimum protects
+[mindmap](./mindmap.md#indentation), [kanban](./kanban.md#indentation),
+[Venn](./venn.md#indentation), [Ishikawa](./ishikawa.md#indentation),
+[Agentflow](./agentflow.md#indentation) and [YAML](#frontmatter) where
+zero-width indentation would change the reading.
 
 ## Sequence messages from a number or `title`
 
@@ -1030,6 +1045,9 @@ What the Db or the lexer reads stays. See [Rows](./block.md#rows),
 
 ## A comment line after U+2028 or U+2029
 
+This common removal applies outside Agentflow's preserving size branch; see
+[Agentflow values, comments, and the default size boundary](#agentflow-values-comments-and-the-default-size-boundary).
+
 mermaid.js removes the comment lines from the text before it reads it. A comment
 line `%%` is removed with the whitespace-only lines and the directives before
 it, and with the line break that ends it (the comment region of the
@@ -1061,6 +1079,15 @@ to the region and are removed with it.
 The YAML between the `---` lines is formatted with Prettier's YAML formatter.
 The `---` lines are kept as written. [fixture:
 flowchart/frontmatter-yaml/formatted]
+
+YAML uses at least one space per indentation level, including with
+`tabWidth: 0`. Its indentation carries block scalars and nested values: zero
+width would make Mermaid reject a block scalar or change a title or
+configuration. This shared minimum preserves the reading for every diagram type.
+[fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title] [fixture:
+ishikawa/frontmatter-yaml/zero-width-nested-title] [fixture:
+ishikawa/frontmatter-yaml/zero-width-nested-config] [fixture:
+flowchart/frontmatter-yaml/zero-width-nested-title]
 
 The YAML is kept as written when the `---` lines are indented, and when a line
 of the formatted YAML has the form of a `---` line (the specification's
@@ -1236,3 +1263,202 @@ raw Db.
 venn/title/title-next-line] [fixture: venn/header/div-c4-detector] [fixture:
 venn/frontmatter-yaml/frontmatter-invalid-kept] [test: a venn diagram with other
 line endings] [test: venn: unicode-role-whitespace]
+
+## Ishikawa nesting and literal lines
+
+Ishikawa uses the nested AST, not written indentation widths or temporary Db
+levels: the root stands one configured positive step below the header, each
+child one deeper, with a one-character minimum at `tabWidth: 0`. Root column is
+not a parenting input. See the [Ishikawa rules](./ishikawa.md).
+
+[fixture: ishikawa/indentation/indent-depth] [fixture:
+ishikawa/indentation/indent-clamped] [fixture: ishikawa/indentation/indent-zero]
+
+Quotes, empty-looking forms, apparent accessibility/style/data statements and
+inline percent text remain literals. Internal directive gaps and joined
+physical-line continuation columns stay written, including every trailing
+literal character on ordinary and kept lines. The value is what was written; Db
+equality does not require erasing it, the same choice as mindmap. Every
+semicolon stays, with whole crossing literals and trivia protected by the shared
+kept-stretch path.
+
+[fixture: ishikawa/node-text/values-opaque] [fixture:
+ishikawa/inline-directives/directive-in-value] [fixture:
+ishikawa/trailing-whitespace/trailing-value-kept] [test: ishikawa:
+joined-common-region] [fixture:
+ishikawa/line-rule-and-kept-lines/line-rule-kept]
+
+Diagram-comment Unicode endings remain characters counted toward the following
+node's depth indentation; common comment regions instead keep their swallowed
+suffixes and joins. Ordinary blank runs collapse to one, including the
+separating blank after diagram comments, while complete terminal diagram-comment
+gaps stay written. Accepted divergences use their specified tree, and failures
+are not repaired; raw rejection supplies no raw Db. Guarded frontmatter,
+configured CR/LF conversion, EOF directives and Markdown host handling use
+shared paths.
+
+[test: ishikawa: ls-comment-boundary] [test: ishikawa: ps-comment-boundary]
+[fixture: ishikawa/blank-lines/blank-comment-div] [fixture:
+ishikawa/blank-lines/terminal-comment-complete-gap] [fixture:
+ishikawa/node-text/div-c4] [fixture:
+ishikawa/frontmatter-yaml/frontmatter-html-guard] [test: ishikawa: eol-crlf]
+[test: ishikawa Markdown: quote-list-clamped]
+
+Header-line directives touching the header stay there when a separated root
+moves below. A whitespace-separated directive instead moves with a same-line
+root and its following gaps count toward the root's indentation under
+[Inline directives](./ishikawa.md#inline-directives); otherwise its removal
+would leave header trailing whitespace that Mermaid rejects. A directive
+touching root text keeps the whole header group, and header directives without a
+same-line root keep their specified reading.
+
+[fixture: ishikawa/standalone-directives/header-spaced-directive] [fixture:
+ishikawa/standalone-directives/header-spaced-multiline-directive] [fixture:
+ishikawa/standalone-directives/header-spaced-two-directives] [fixture:
+ishikawa/standalone-directives/header-spaced-directive-comment] [fixture:
+ishikawa/standalone-directives/header-touching-directive] [fixture:
+ishikawa/standalone-directives/header-directive-touching-root] [corpus fixture:
+ishikawa/div-header-space-directive-node]
+
+## Agentflow values, comments, and the default size boundary
+
+Agentflow body indentation uses the shared significant width, at least one space
+per step even at `tabWidth: 0`. Moving an indented direction statement to column
+one can turn its prefix into accessibility text or a syntax error. [fixture:
+agentflow/direction/zero-title-indented] [fixture:
+agentflow/direction/zero-description-indented] [fixture:
+agentflow/direction/zero-style-direction]
+
+The [Agentflow rules](./agentflow.md) reuse flowchart layout with distinct value
+boundaries. Required one-unit gaps after style/classDef/class/linkStyle, before
+class values, interpolation names and tooltips stay written: following
+whitespace is value text. First-style leading whitespace and label-comment
+padding remain characters. Names keep erased click/empty parts and the one
+whitespace character that ends reading name text as a click id. A trailing
+whitespace-only part drops when replacing its separator with LF makes it
+exterior whitespace. [fixture:
+agentflow/names-and-headings/empty-description-space-flow] Click
+textBeforeUrl/textBeforeTooltip keeps each prefix and its source gaps. No
+reserved-click exception applies. [fixture:
+agentflow/single-space-gaps/style-first-spaces] [corpus fixture:
+agentflow/lex-flow-name-click-state] [corpus fixture:
+agentflow/gram-click-erased-before-url-tooltip]
+
+Normal-size Agentflow comments continue through LS/PS to LF/EOF; apparent
+comments inside strings, descriptions, callbacks and metadata are value text.
+End/global consume ASCII spaces/tabs rather than LF, and the brace fold takes
+only the whitespace immediately before the next LF. Metadata remains separate on
+its written occurrence, including content-only rejections under the specified
+opaque reading; raw rejection supplies no raw Db. [fixture:
+agentflow/comments/comment-looking-values] [fixture:
+agentflow/multiline-statements-and-values/brace-blank-kept] [corpus fixture:
+agentflow/db-data-block-invalid-yaml]
+
+At/above 50000 normalized UTF-16 units after frontmatter/directive removal,
+retain the complete diagram text and ending. Below it, ordinary layout is
+applied only if its planned measurement stays strictly below 50000. This keeps
+Mermaid's comment-preservation branch stable despite indentation, final LF,
+trimming and the host's restored BOM. Frontmatter keeps its shared YAML guards;
+CR/LF and Markdown retain their shared host handling, including final
+code-block-line trimming that can reject a null style. [fixture:
+agentflow/default-size-branches/size-preserving-to-fallback-unsafe] [fixture:
+agentflow/default-size-branches/size-below-planned-crossing] [test: agentflow
+Markdown: null style host limitation]
+
+## Usecase native syntax and authored values
+
+Usecase follows its written AST: boundary membership, endpoint occurrences,
+arrow/id boundaries, declaration/update roles and source order are not rebuilt
+from the resolved Db. Body indentation is structural presentation, so
+`tabWidth: 0` stays zero; guarded YAML retains the shared minimum of one.
+`A --order` prints `A --o rder`, while `A -- order` keeps its complete target.
+See the [usecase rules](./usecase.md). [fixture:
+usecase/arrow-id-boundaries/circle-prefix-suffixes] [fixture:
+usecase/indentation/indent-zero] [fixture:
+usecase/frontmatter-yaml/frontmatter-zero]
+
+Native `@{...}` metadata is parsed and validated syntax: only structural
+whitespace changes, with all written separators, blank lines, spelling, order
+and duplicates retained. JSON table data is opaque, including its @-to-brace
+gap, number/escape spelling and property order. Formatting fixtures without
+supplied effects use the shared null Db comparison and written-source check; the
+corpus uses recorded effects where available. Full CSS declarations keep both
+colon padding sides and the `--` name gap, which Mermaid stores. [fixture:
+usecase/native-metadata/metadata-inline] [fixture:
+usecase/native-metadata/metadata-blank-lines-kept] [fixture:
+usecase/json-tables/json-opaque] [fixture:
+usecase/classes-and-styles/css-colon-padding] [fixture:
+usecase/classes-and-styles/css-custom-gap]
+
+After common comment-region and line-terminator handling, the optional trailing
+comma and physical line breaks between the last property and `}` total at most
+two, with the comma allowed only before the line breaks. Keep the written line
+breaks and blank lines of accepted tails. [corpus fixture:
+usecase/gram-metadata-property-comma-no-newline] [corpus fixture:
+usecase/gram-native-trailing-newline] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-two-newlines] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-three-newlines] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-four-newlines] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-two-properties-two-newlines] [corpus
+fixture: usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines]
+[corpus fixture: usecase/gram-edge-metadata-two-newlines] [corpus fixture:
+usecase/gram-edge-metadata-three-newlines] [corpus fixture:
+usecase/gram-metadata-trailing-comma-no-newline] [corpus fixture:
+usecase/gram-native-trailing-comma-newline] [corpus fixture:
+usecase/gram-metadata-trailing-comma-two-newlines] [corpus fixture:
+usecase/gram-metadata-trailing-comma-three-newlines] [corpus fixture:
+usecase/gram-native-trailing-newline-comma] [corpus fixture:
+usecase/gram-metadata-tail-newline-before-comma] [corpus fixture:
+usecase/gram-metadata-tail-newline-before-comma-newline] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-two-crlf] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-three-crlf] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-two-whitespace-lines] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-whitespace-lines] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-two-tab-lines] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-tab-lines] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-comment-two-newlines] [corpus fixture:
+usecase/gram-metadata-no-trailing-comma-comment-three-newlines] A comma between
+properties permits zero or more line breaks. [corpus fixture:
+usecase/gram-metadata-property-comma-no-newline] [corpus fixture:
+usecase/gram-metadata-property-comma-one-newline] [corpus fixture:
+usecase/gram-metadata-property-comma-two-newlines] [corpus fixture:
+usecase/gram-metadata-property-comma-three-newlines]
+
+Accessibility lines reuse class/C4 spacing: one space precedes the trimmed
+value. Description text keeps its lines and columns, and a separate closing
+brace aligns with the statement. See the
+[usecase rule](./usecase.md#direction-and-accessibility). [fixture:
+usecase/direction-and-accessibility/a11y-padding] [fixture:
+usecase/direction-and-accessibility/a11y-closer-aligned]
+
+Stereotype declaration suffixes retain whether whitespace is present before `<<`
+and inside each delimiter, including inside system boundaries. A nonempty run
+becomes one space; absent whitespace stays absent. Mermaid trims the interior
+ends; whitespace before `<<` is structural. Interior text remains written;
+protected semicolon prefixes and common comment regions retain their complete
+values. This reuses the
+[class statement-annotation rule](./class.md#whitespace-between-tokens).
+[fixture: usecase/stereotypes/stereotype-padding] [fixture:
+usecase/stereotypes/opener-gap-sides] [test: usecase: stereotype-opener-tab]
+[fixture: usecase/stereotypes/stereotype-inner-kept] [fixture:
+usecase/stereotypes/side-padding] [fixture:
+usecase/stereotypes/boundary-suffixes] [fixture:
+usecase/stereotypes/semicolon-padding-kept] [test: usecase:
+stereotype-comment-region-padding-kept]
+
+Written labels/quotes, boundary title padding and continuation columns remain
+authored even where trimming or requoting would have equal Db. Common
+comment-region joins and native comments through LS/PS stay intact; semicolons
+never separate statements and every textual prefix remains protected. The six
+specified usecase divergences use their specified acceptance/reading, and
+rejected trees follow the shared failure path. [fixture:
+usecase/labels/label-quote-kinds] [fixture:
+usecase/system-boundaries/boundary-headings] [fixture:
+usecase/direction-and-accessibility/a11y-padding] [fixture:
+usecase/statements-and-semicolons/semicolon-selected-boundary] [test: usecase:
+comment-region-join] [test: usecase: unicode-comment]
+
+Shared EOL, BOM, frontmatter, final-newline and Markdown handling apply.
+Accessibility exterior whitespace is trimmed in standalone files and Markdown.
+[fixture: usecase/final-newline/final-value-padding] [test: usecase Markdown:
+last-value-padding]

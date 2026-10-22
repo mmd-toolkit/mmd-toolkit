@@ -62,6 +62,7 @@ function isRejected(fixture: Fixture): boolean {
 const allFixtures = [
   ...(await loadFixtures("common")),
   ...(await loadFixtures("flowchart")),
+  ...(await loadFixtures("agentflow")),
   ...(await loadFixtures("sequence")),
   ...(await loadFixtures("class")),
   ...(await loadFixtures("state")),
@@ -78,6 +79,8 @@ const allFixtures = [
   ...(await loadFixtures("kanban")),
   ...(await loadFixtures("c4")),
   ...(await loadFixtures("venn")),
+  ...(await loadFixtures("ishikawa")),
+  ...(await loadFixtures("usecase")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)
@@ -102,9 +105,8 @@ describe("the conformance corpus", () => {
     expect(await describeFrontmatterChange(input, formatted)).toBeNull()
     const recorded = fixture.specified ?? fixture.expected
     const embedded = embeddedValuesOf(fixture)
-    if (!recorded.accepted || recorded.db === null || embedded === undefined) {
+    if (!recorded.accepted || recorded.db === null || embedded === undefined)
       return
-    }
     expect(dbOfText(formatted, embedded), output).toEqual(recorded.db)
   })
 })

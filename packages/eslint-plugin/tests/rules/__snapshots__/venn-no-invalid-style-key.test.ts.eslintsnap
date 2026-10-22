@@ -1,0 +1,120 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: venn-no-invalid-style-key >> invalid >>> docs/rules/venn-no-invalid-style-key.md incorrect 1
+Filename: venn-no-invalid-style-key-incorrect-1.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A Fill:red, opacity:0.5
+    |         ^~~~ [1]  ^~~~~~~ [2]
+  4 |
+
+[1] mermaid.js does not read the style property `Fill` in the drawing.
+[2] mermaid.js does not read the style property `opacity` in the drawing.
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/key-case-all
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/key-case-all-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A COLOR:red, Stroke:blue, Stroke-Width:3, Fill-Opacity:0.5
+    |         ^~~~~      ^~~~~~       ^~~~~~~~~~~~    ^~~~~~~~~~~~
+    |         [1]        [2]          [3]             [4]
+  4 |
+
+[1] mermaid.js does not read the style property `COLOR` in the drawing.
+[2] mermaid.js does not read the style property `Stroke` in the drawing.
+[3] mermaid.js does not read the style property `Stroke-Width` in the drawing.
+[4] mermaid.js does not read the style property `Fill-Opacity` in the drawing.
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/key-documented-and-custom
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/key-documented-and-custom-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | style A fill:red,color:white,stroke:blue,stroke-width:2,fill-opacity:.5,custom:kept
+    |                                                                         ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js does not read the style property `custom` in the drawing.
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/key-misspelled
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/key-misspelled-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A colour:red
+    |         ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js does not read the style property `colour` in the drawing.
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/key-other-css
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/key-other-css-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A opacity:0.5
+    |         ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js does not read the style property `opacity` in the drawing.
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/key-prototype-names
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/key-prototype-names-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | style A __proto__:red,constructor:blue,hasOwnProperty:green,toString:yellow
+    |         ^~~~~~~~~ [1] ^~~~~~~~~~~ [2]  ^~~~~~~~~~~~~~ [3]   ^~~~~~~~ [4]
+  3 |
+
+[1] mermaid.js does not read the style property `__proto__` in the drawing.
+[2] mermaid.js does not read the style property `constructor` in the drawing.
+[3] mermaid.js does not read the style property `hasOwnProperty` in the drawing.
+[4] mermaid.js does not read the style property `toString` in the drawing.
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/key-twice
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/key-twice-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A Fill:red, Fill:blue
+    |         ^~~~ [1]  ^~~~ [2]
+  4 |
+
+[1] mermaid.js does not read the style property `Fill` in the drawing.
+[2] mermaid.js does not read the style property `Fill` in the drawing.
+---
+
+
+Test: venn-no-invalid-style-key >> invalid >>> invalid/venn/style-key-case
+Filename: tests/fixtures/rules/venn-no-invalid-style-key/invalid/venn/style-key-case-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,Fill:blue
+    |                  ^~~~ [1]
+  4 |
+
+[1] mermaid.js does not read the style property `Fill` in the drawing.
+---

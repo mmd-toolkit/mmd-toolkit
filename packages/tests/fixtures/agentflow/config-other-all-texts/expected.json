@@ -1,0 +1,102 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Unsupported-security text replacement reaches titles, labels, tooltips and metadata labels."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "a&lt;b&gt;&equals;c",
+    "accTitle": "a&lt;b&gt;&equals;c",
+    "accDescr": "a&lt;b&gt;&equals;c",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "a&lt;b&gt;&equals;c",
+        "type": "square",
+        "props": {},
+        "link": "https://example.com"
+      },
+      {
+        "id": "B",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "a&lt;b&gt;&equals;c",
+        "props": {},
+        "metadata": {
+          "label": "a<b>=c"
+        }
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "a&lt;b&gt;&equals;c"
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "a&lt;b&gt;&equals;c",
+        "labelType": "string",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "B",
+          "A"
+        ],
+        "title": "a&lt;b&gt;&equals;c",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "a&lt;b&gt;&equals;c"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "a<b>=c",
+    "dataBlockEffects": [
+      {
+        "id": "B",
+        "set": {
+          "labelType": "markdown",
+          "text": "a&lt;b&gt;&equals;c",
+          "metadata": {
+            "label": "a<b>=c"
+          }
+        }
+      }
+    ]
+  }
+}

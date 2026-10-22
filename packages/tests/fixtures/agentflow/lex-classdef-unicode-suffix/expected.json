@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII suffix does not supply the SPACE after CLASSDEF."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...low-beta TBclassDef猫\n----------------------^\nExpecting 'SPACE', got 'UNICODE_TEXT'"
+  }
+}

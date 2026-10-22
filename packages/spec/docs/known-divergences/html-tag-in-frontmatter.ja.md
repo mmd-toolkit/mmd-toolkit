@@ -24,18 +24,32 @@ flowchart LR
 
 どちらも、タイトル `<b class='x'>T</b>` を読みます。
 [fixture: flowchart/frontmatter-title-html-attribute]
+
 この文書は、フロントマターで始まってそこで終わらず、
 フロントマターの境界を越えて図のテキストまで続くタグについてのものです。
 
 venn では、frontmatter が `title: <a` を持つ場合、
 `set "b="c">d"` はここでは拒否します。
 [fixture: venn/div-html-tag-starts-in-frontmatter]
+
 mermaid.js は内側の属性の引用符を変換して受理します。
 [fixture: venn/div-html-tag-starts-in-frontmatter]
 
 frontmatter に開始タグがなければ、
 同じ venn の本文をどちらも拒否します。
 [fixture: venn/gram-html-tag-body-only-reference]
+
+Ishikawa では、frontmatter に `title: <a` があっても、
+裸の `b="c">d` と引用されたような `"b="c">d"` を両者とも節点のテキストとして
+受理します。
+mermaid.js は属性の引用符を単一引用符に変えますが、
+この仕様はそのタグと独立に本文を読みます。
+書かれた IshikawaLiteral は元の引用符を保ちます。
+[fixture: ishikawa/div-frontmatter-open-tag-bare-node]
+[fixture: ishikawa/div-frontmatter-open-tag-quoted-node]
+
+frontmatter のタグがなければ、両者とも `b="c">d` を変えずに受理します。
+[fixture: ishikawa/lex-quotes-without-frontmatter-tag]
 
 ## 差異
 
@@ -101,11 +115,11 @@ frontmatter に開始タグがなければ、
 | 4   | メッセージ `b='c'>d`                 | メッセージ `b="c">d`                 |
 | 5   | メッセージ `b="c">d`                 | 同じ                                 |
 
-[fixture: flowchart/html-tag-starts-in-frontmatter] [fixture:
-flowchart/html-tag-starts-in-frontmatter-value] [fixture:
-flowchart/html-tag-starts-in-frontmatter-acc-title] [fixture:
-sequence/div-html-tag-starts-in-frontmatter-message] [fixture:
-sequence/lex-html-tag-frontmatter-arrow-ends-tag]
+[fixture: flowchart/html-tag-starts-in-frontmatter]
+[fixture: flowchart/html-tag-starts-in-frontmatter-value]
+[fixture: flowchart/html-tag-starts-in-frontmatter-acc-title]
+[fixture: sequence/div-html-tag-starts-in-frontmatter-message]
+[fixture: sequence/lex-html-tag-frontmatter-arrow-ends-tag]
 
 つまり mermaid.js では、フロントマターで始まるタグは、
 その後の最初の `>` まで続き、その `>` はテキストの中にあり得ます。
@@ -125,6 +139,7 @@ kanban ではフロントマターに `title: <a` があるとき、
 mermaid.js は `S["b="c">d"]` の内側の属性引用符を変換して入力を受理します。
 この仕様はラベルの文字列を 2 つ目の引用符で終えて入力を拒否します。
 [fixture: kanban/div-frontmatter-open-tag]
+
 フロントマターに `<a` がなければ両者で拒否します。
 [fixture: kanban/gram-frontmatter-no-tag-reference]
 
@@ -162,7 +177,8 @@ mermaid.js は、
 フロントマターが何を持っていても、テキストの読み方は変わりません
 （[HTML 属性の引用符](../common.ja.md#html-属性の引用符) を参照）。
 タイトルのような、フロントマターから得る値は、mermaid.js が得るものと同じです
-（[フロントマターの設定](../../../tests/docs/configuration.ja.md#フロントマターの設定)
+（
+[フロントマターの設定](../../../tests/docs/configuration.ja.md#フロントマターの設定)
 を参照）。
 
 タグがフロントマターの境界を越えて本文まで続くことは、
@@ -172,11 +188,64 @@ mermaid.js の処理の順から生じます。
 これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
 
+### Agentflow
+
+agentflow にも本文だけの同じ HTML の規則を使います。
+Frontmatter の記録と Label と Literal のノードは書かれたテキストを保ちますが、
+隣の ignored-text では、
+その範囲のままフロントマターのタグで本文の引用符の役割を変えられません。
+mermaid.js に合わせるには、欠けた値の保持ではなく、
+共通の走査の範囲の変更が必要です。
+[fixture: agentflow/div-html-cross-frontmatter]
+[fixture: agentflow/div-frontmatter-tag-enables-label]
+[fixture: agentflow/div-frontmatter-tag-changes-title]
+
+比較は両方向です。
+あるフロントマターのタグは、
+独立した本文の規則が拒否するラベルを mermaid.js に受理させます。
+一方、閉じないフロントマターの属性は、
+正しい本文のタグを mermaid.js に拒否させます。
+既存の理由 2 の直接の規則が両方を扱い、
+逆方向の pipeline の順序の条件が後者の受理を認めます。
+[fixture: agentflow/div-frontmatter-tag-enables-label]
+[fixture: agentflow/html-label-without-frontmatter-tag]
+[fixture: agentflow/div-frontmatter-attribute-blocks-body-tag]
+[fixture: agentflow/html-body-tag-reference]
+
+### Usecase
+
+usecase の対象範囲は、
+frontmatter の閉じないタグや属性から本体の属性引用符までです。
+Frontmatter と UsecaseLabel は文字をすべて保持できますが、
+本体だけの探索で frontmatter のタグが本体の引用符の字句的役割を変えることを、
+欠落テキストの節点では表せません。
+mermaid の境界をまたぐ変換は、本体だけなら拒否する例を受理し、
+本体だけなら受理する例を拒否します。
+双方向に既存の理由 2 を適用します。
+後者の受理は pipeline 順序の逆方向の基準によるもので、ラベル文法は緩めません。
+[fixture: usecase/div-html-frontmatter-enables-label]
+[fixture: usecase/lex-html-body-label-reference]
+[fixture: usecase/div-html-frontmatter-blocks-label]
+[fixture: usecase/lex-html-body-tag-reference]
+
+両者が受理し、アクセシビリティの値だけが異なる場合もあります。
+frontmatter が `title: <a`、本文が `accTitle: b="c">d` なら、
+mermaid は `b='c'>d` と読み、この仕様は `b="c">d` を保ちます。
+Frontmatter と UsecaseLiteral に書かれたテキストを保持し、
+木の値を変換後の引用符には変えません。
+アクセシビリティ文の前に矢印があれば、その `>` が frontmatter のタグを閉じ、
+その値の変化は起きません。
+[fixture: usecase/div-html-frontmatter-acc-title-db]
+[fixture: usecase/lex-html-acc-title-body-control]
+[fixture: usecase/lex-html-frontmatter-arrow-closes-tag]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
+
   [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
   は引用された説明の内部で `<br/>` を使い、
+
   [折り返しの設定に YAML のフロントマターを示しています](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)。
   フロントマターで始まり C4 の引数へ続くタグは、
   説明していません。
@@ -187,9 +256,45 @@ mermaid.js の処理の順から生じます。
   この形式についての報告は見つかりませんでした。
 
 - ピン留めした
+
   [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
   は YAML frontmatter と引用ラベルを示し、
   frontmatter の境界をまたぐ HTML タグは示していません。
   2026-10-21 に `mermaid-js/mermaid` の issue と PR を
   `venn frontmatter in:title,body` と `venn HTML in:title,body` で検索し、
   その形に関する報告は見つかりませんでした。
+
+- ピン留めした
+
+  [Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  は字下げした節点のテキストを示しますが、
+  frontmatter やその境界をまたぐ HTML タグは示していません。
+  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+  `ishikawa`、`ishikawa frontmatter in:title,body`、
+  `ishikawa HTML in:title,body` で検索し、
+  frontmatter で始まり Ishikawa の節点のテキストへ続くタグの報告は
+  見つかりませんでした。
+
+- 固定版の
+
+  [Agentflow のフロントマターの例](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L67-L90)
+  は YAML の設定と本文の引用したラベルを併用しますが、
+  その境界をまたぐ HTML タグは説明していません。
+  2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
+  `agentflow frontmatter in:title,body` で検索し、merged の
+  [PR #8073](https://github.com/mermaid-js/mermaid/pull/8073) が見つかりました。
+  その説明はコメントの保持とフロントマターのオフセットを扱い、
+  本文の引用符まで続くタグは扱っていません。
+
+- pin の
+  [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  は引用ラベルと JSON を説明します。
+  2026-10-22 に mermaid-js/mermaid の issue と PR を
+  `usecase title` で検索し、
+  この受理挙動を保守者が欠陥と判断したと示す報告は、
+  調べた結果にはありませんでした。
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048) は
+  Type: Enhancement で、2026-08-14 にマージ済みで閉じています。
+  Chevrotain parser、モデル検証、JSON の表を導入します。
+  この差異は共有の直接の規則に従うもので、
+  bug ラベルを文法変更の承認とは読みません。

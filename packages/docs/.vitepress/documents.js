@@ -50,6 +50,7 @@ const diagramOrder = [
   "wardley",
   "cynefin",
   "treeView",
+  "agentflow",
 ]
 
 const sourceDirectories = [

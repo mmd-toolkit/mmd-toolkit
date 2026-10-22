@@ -1,0 +1,139 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.spec.ts",
+    "line": 640,
+    "test": "UseCase diagram with Chevrotain parser > projects complex source-ordered JSON, a forward edge, classes, and styles end to end"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "Inspect",
+        "label": "Inspect",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "id": "payloadEdge",
+        "source": "Inspect",
+        "target": "Payload",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [
+          "data"
+        ],
+        "styles": [
+          "stroke:#f00"
+        ],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "Payload",
+        "value": {
+          "1": "first",
+          "2": "second",
+          "colors": [
+            "Red",
+            "Green"
+          ],
+          "items": [
+            {
+              "name": "A"
+            },
+            {}
+          ],
+          "empty": {},
+          "duplicate": "new"
+        },
+        "propertyOrder": {
+          "": [
+            "2",
+            "1",
+            "colors",
+            "items",
+            "empty",
+            "duplicate"
+          ],
+          "/items/0": [
+            "name"
+          ],
+          "/items/1": [],
+          "/empty": []
+        },
+        "classes": [
+          "data"
+        ],
+        "styles": [
+          "stroke-width:4px"
+        ]
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "data",
+        "styles": [
+          "fill:#eef",
+          "stroke:#369"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Payload",
+        "set": {
+          "value": {
+            "1": "first",
+            "2": "second",
+            "colors": [
+              "Red",
+              "Green"
+            ],
+            "items": [
+              {
+                "name": "A"
+              },
+              {}
+            ],
+            "empty": {},
+            "duplicate": "new"
+          },
+          "propertyOrder": {
+            "": [
+              "2",
+              "1",
+              "colors",
+              "items",
+              "empty",
+              "duplicate"
+            ],
+            "/items/0": [
+              "name"
+            ],
+            "/items/1": [],
+            "/empty": []
+          }
+        }
+      }
+    ]
+  }
+}

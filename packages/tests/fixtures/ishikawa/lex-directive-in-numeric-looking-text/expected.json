@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F4: Numeric-looking node prose is a text unit that may contain a directive."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "12",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "12",
+      "children": []
+    }
+  }
+}

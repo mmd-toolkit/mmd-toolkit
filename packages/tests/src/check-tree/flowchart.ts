@@ -2,9 +2,9 @@ import {
   readConvertedCharacters,
   readWhitespaceAfterBraceAsLineFeed,
 } from "../db-from-tree/converted-text.ts"
-import { StringDelimiters } from "../db-from-tree/flowchart-strings.ts"
+import { StringDelimiters } from "../db-from-tree/graph.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
-import { FLOWCHART_SHAPES } from "./flowchart-shapes.ts"
+import { GRAPH_SHAPES } from "./graph-shapes.ts"
 import { diagramTokensOf } from "./invariants.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
@@ -110,7 +110,7 @@ function isSubgraph(node: CheckedNode): node is FlowchartSubgraphNode {
  * row has. `closing` is the source text of the closing unit.
  */
 function shapeNameOf(opening: string, closing: string): string | null {
-  const row = FLOWCHART_SHAPES.find(
+  const row = GRAPH_SHAPES.find(
     (shape) => shape.opening === opening && shape.closings.includes(closing),
   )
   return row === undefined ? null : row.name

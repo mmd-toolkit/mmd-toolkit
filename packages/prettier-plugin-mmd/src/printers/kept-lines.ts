@@ -95,6 +95,7 @@ function semicolonsSeparateStatements(source: Source): boolean {
   const { type } = source.root.body
   return (
     type === "FlowchartDiagram" ||
+    type === "AgentflowDiagram" ||
     type === "SequenceDiagram" ||
     type === "QuadrantDiagram" ||
     type === "XychartDiagram"
@@ -463,4 +464,47 @@ export function printedEndOf(
   textEnd: number,
 ): number {
   return Math.max(statementEnd, Math.min(textEnd, lineEndOf(source, textStart)))
+}
+
+/**
+ * The shared line rule ends its segments at Unicode separators too. They
+ * remain characters, rather than becoming LF statement separators
+ * (common.md, Style and classDef lines; docs/c4.md, Line terminators).
+ * A kept segment excludes exterior trailing whitespace; token and trivia
+ * ranges protect whitespace belonging to values (docs/c4.md, Trailing whitespace).
+ */
+export function semicolonSegmentEnd(source: Source, offset: number): number {
+  const end = lineEndOf(source, offset)
+  const separators = ["\u2028", "\u2029"].map((character) => {
+    let at = source.text.indexOf(character, offset)
+    // As in kanban's comment-end decision, trivia ranges are indivisible:
+    // a separator inside a comment or directive does not end that item.
+    while (at !== -1 && at < end) {
+      const inside = at
+      const item = source.trivia.find(
+        (candidate) =>
+          candidate.range[0] < inside && inside < candidate.range[1],
+      )
+      if (item === undefined) break
+      at = source.text.indexOf(character, item.range[1])
+    }
+    return at === -1 ? end : at
+  })
+  let stop = Math.min(end, ...separators)
+  const protectedEnd = Math.max(
+    offset,
+    ...findTokensBetween(source, offset, stop).map((token) => token.range[1]),
+    ...source.trivia
+      .filter((item) => offset <= item.range[0] && item.range[0] < stop)
+      .map((item) => item.range[1]),
+  )
+  while (stop > protectedEnd && isWhitespace(source.text[stop - 1])) stop--
+  return stop
+}
+
+/** The end of the protected prefix on the segment holding `offset`. */
+export function keptSemicolonPrefixEnd(source: Source, offset: number): number {
+  const end = semicolonSegmentEnd(source, offset)
+  const semicolon = source.text.lastIndexOf(";", end - 1)
+  return semicolon >= offset ? semicolon + 1 : offset
 }

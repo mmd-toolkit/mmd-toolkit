@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can cleanup make single-quoted HTML label syntax invalid?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> RPAREN <-- but found --> 'value' <-- at line 2, column 14 [26,31)"
+  }
+}

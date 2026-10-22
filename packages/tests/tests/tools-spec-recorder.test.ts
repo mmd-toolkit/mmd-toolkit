@@ -120,6 +120,31 @@ function textsOf(recording: SpecFileRecording): string[] {
 const FLOW_PARSER_IMPORT = `import flowParser from "./flowParser.ts"\n`
 
 describe("recordSpecFile: what is recorded", () => {
+  it("records agentflow parser, conformance runner and public render calls", async () => {
+    const recording = await recordSource(
+      [
+        'import agentflow from "./agentflowParser.js"',
+        'import { runFixture } from "../conformance/runner.js"',
+        'import { mermaidAPI } from "../../../mermaidAPI.js"',
+        'it("all entry points", async () => {',
+        '  agentflow.parser.parse("agentflow-beta\\n")',
+        '  agentflow.parse("agentflow-beta TB\\n")',
+        '  runFixture("agentflow-beta LR\\n")',
+        '  await mermaidAPI.render("id", "agentflow-beta RL\\n")',
+        "})",
+        "",
+      ].join("\n"),
+      "diagrams/agentflow/parser/example.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs.map(({ text, line }) => [text, line])).toEqual([
+      ["agentflow-beta\n", 5],
+      ["agentflow-beta TB\n", 6],
+      ["agentflow-beta LR\n", 7],
+      ["agentflow-beta RL\n", 8],
+    ])
+  })
+
   it("records a text passed to the parser with the line of the call and the title path of the test", async () => {
     const recording = await recordSource(
       [
@@ -453,6 +478,22 @@ describe("recordSpecFile: the functions that take a text", () => {
       "diagrams/venn/parser/venn.spec.ts",
     )
     expect(textsOf(recording)).toEqual(["venn-beta\nset A"])
+  })
+
+  it("records the ishikawa named parser with its constructed Db", async () => {
+    const recording = await recordSource(
+      [
+        `import { parser as ishikawa } from "./parser/ishikawa.jison"`,
+        `import { IshikawaDB } from "./ishikawaDb.js"`,
+        `import { setLogLevel } from "../../diagram-api/diagramAPI.js"`,
+        `beforeEach(() => { ishikawa.yy = new IshikawaDB(); ishikawa.yy.clear(); setLogLevel("trace") })`,
+        `it("t", () => { ishikawa.parse("ishikawa-beta\\nR\\n A") })`,
+        ``,
+      ].join("\n"),
+      "diagrams/ishikawa/ishikawa.spec.ts",
+    )
+    expect(textsOf(recording)).toEqual(["ishikawa-beta\nR\n A"])
+    expect(recording.inputs[0]?.line).toBe(5)
   })
 
   it("records the kanban parser with its Db and diagram API stubbed", async () => {
@@ -936,8 +977,8 @@ describe("recordSpecFile: what stops the run", () => {
 
   it("throws for a package import that has no stub, and for an import of a module with a stub under another extension", async () => {
     await expect(
-      recordSource(`import fs from "node:fs"\nit("t", () => {})\n`),
-    ).rejects.toThrow("imports node:fs, which has no stub")
+      recordSource(`import crypto from "node:crypto"\nit("t", () => {})\n`),
+    ).rejects.toThrow("imports node:crypto, which has no stub")
     await expect(
       recordSource(
         `import flowParser from "./flowParser.js"\nit("t", () => {})\n`,
@@ -1067,10 +1108,11 @@ describe("recordSpecFile: how the file is read", () => {
     const recordedSecond = await recordFile(checkout, second)
     expect(textsOf(recordedFirst)).toEqual(["from first"])
     expect(textsOf(recordedSecond)).toEqual(["from second"])
-    expect(readdirSync(checkout.workDir).sort()).toEqual([
-      "first.spec.js",
-      "second.spec.js",
-    ])
+    expect(
+      readdirSync(
+        path.join(checkout.workDir, "diagrams/flowchart/parser"),
+      ).sort(),
+    ).toEqual(["first.spec.js", "second.spec.js"])
   })
 
   it("does not change the test file of the checkout, and writes the copy and the stubs into the work directory", async () => {
@@ -1083,10 +1125,16 @@ describe("recordSpecFile: how the file is read", () => {
     )
     await recordFile(checkout, file)
     expect(
-      readdirSync(path.join(checkout.workDir, "example.spec.js"), {
-        recursive: true,
-        encoding: "utf8",
-      }).sort(),
+      readdirSync(
+        path.join(
+          checkout.workDir,
+          "diagrams/flowchart/parser/example.spec.js",
+        ),
+        {
+          recursive: true,
+          encoding: "utf8",
+        },
+      ).sort(),
     ).toEqual([
       "diagrams__flowchart__parser__flowParser.ts.mjs",
       "example.spec.mjs",
@@ -1094,4 +1142,112 @@ describe("recordSpecFile: how the file is read", () => {
     expect(existsSync(file)).toBe(true)
     expect(readdirSync(path.dirname(file)).sort()).toEqual(["example.spec.js"])
   })
+})
+
+it("records Chevrotain tokenization of complete diagrams", async () => {
+  const source = `import { it } from "vitest"
+import { usecaseLexer } from "./usecase.lexer.js"
+import { usecaseParser } from "./usecase.parser.js"
+it("grammar", () => {
+  const lexed = usecaseLexer.tokenize("usecase-beta\\nA --> B")
+  usecaseParser.input = lexed.tokens
+  usecaseParser.start()
+})
+`
+  const recording = await recordSource(
+    source,
+    "diagrams/usecase/parser/example.spec.ts",
+  )
+  expect(recording.failures).toEqual([])
+  expect(recording.inputs).toEqual([
+    { text: "usecase-beta\nA --> B", line: 5, test: "grammar" },
+  ])
+})
+
+it("keeps later usecase calls after helpers that inspect a caught error", async () => {
+  const source = `import { it, expect } from "vitest"
+import { parser } from "./parser/usecase.chevrotain.js"
+async function expectExactSemanticError(source) {
+  let error
+  try { await parser.parse(source) } catch (caught) { error = caught }
+  expect(error.message).toBe("ignored")
+}
+async function expectGrammarErrorAt(source) {
+  let error
+  try { await parser.parse(source) } catch (caught) { error = caught }
+  expect(error.message.endsWith("ignored")).toBe(true)
+}
+it("errors then success", async () => {
+  await expectExactSemanticError("usecase-beta\\nnote for Missing text")
+  await expectGrammarErrorAt("usecase-beta\\nA -->")
+  await parser.parse("usecase-beta\\nA")
+})
+`
+  const recording = await recordSource(
+    source,
+    "diagrams/usecase/example.spec.ts",
+  )
+  expect(recording.failures).toEqual([])
+  expect(recording.inputs).toEqual([
+    {
+      text: "usecase-beta\nnote for Missing text",
+      line: 5,
+      test: "errors then success",
+    },
+    { text: "usecase-beta\nA -->", line: 10, test: "errors then success" },
+    { text: "usecase-beta\nA", line: 16, test: "errors then success" },
+  ])
+})
+
+it("keeps equal spec basenames in separate stub directories", async () => {
+  const checkout = makeCheckout()
+  const first = writeTestFile(
+    checkout,
+    "diagrams/usecase/example.spec.ts",
+    `
+import { it } from "vitest"
+import { parser } from "./parser/usecase.chevrotain.js"
+it("first", () => parser.parse("usecase-beta\\nFirst"))
+`,
+  )
+  const second = writeTestFile(
+    checkout,
+    "diagrams/usecase/parser/example.spec.ts",
+    `
+import { it } from "vitest"
+import { usecaseLexer } from "./usecase.lexer.js"
+it("second", () => usecaseLexer.tokenize("usecase-beta\\nSecond"))
+`,
+  )
+  expect(textsOf(await recordFile(checkout, first))).toEqual([
+    "usecase-beta\nFirst",
+  ])
+  expect(textsOf(await recordFile(checkout, second))).toEqual([
+    "usecase-beta\nSecond",
+  ])
+})
+
+it("reads the usecase docs from the checkout while recording public render calls", async () => {
+  const checkout = makeCheckout()
+  const page = path.join(checkout.mermaidSource, "docs/syntax/usecase.md")
+  mkdirSync(path.dirname(page), { recursive: true })
+  writeFileSync(page, "usecase-beta\nFromDocs")
+  const file = writeTestFile(
+    checkout,
+    "diagrams/usecase/docs.spec.ts",
+    `
+import { it } from "vitest"
+import { existsSync, readFileSync } from "node:fs"
+import { resolve } from "node:path"
+import mermaidAPI from "../../mermaidAPI.js"
+it("docs", async () => {
+  const page = resolve(process.cwd(), "packages/mermaid/src/docs/syntax/usecase.md")
+  if (!existsSync(page)) throw new Error("missing docs")
+  await mermaidAPI.render("docs", readFileSync(page, "utf8"))
+})
+`,
+  )
+  const recording = await recordFile(checkout, file)
+  expect(recording.failures).toEqual([])
+  expect(textsOf(recording)).toEqual(["usecase-beta\nFromDocs"])
 })

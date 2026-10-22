@@ -1,0 +1,148 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/usecase.md",
+    "line": 54
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Customer",
+        "label": "Customer",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Support",
+        "label": "Support",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Browse",
+        "label": "Browse catalogue",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Storefront",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Checkout",
+        "label": "Checkout",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Storefront",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Track",
+        "label": "Track delivery",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Fulfilment",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "Storefront",
+        "label": "Storefront",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Fulfilment",
+        "label": "Fulfilment",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "Customer",
+        "target": "Browse",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Customer",
+        "target": "Checkout",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Customer",
+        "target": "Track",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Support",
+        "target": "Track",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Checkout",
+        "target": "Browse",
+        "type": "include",
+        "arrowType": 0,
+        "label": "include",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    }
+  }
+}

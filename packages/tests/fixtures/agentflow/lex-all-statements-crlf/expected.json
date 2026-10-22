@@ -1,0 +1,122 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read all statements crlf?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "D",
+    "vertices": [
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "API"
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "stroke:red"
+        ],
+        "classes": [
+          "hot",
+          "hot",
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "Later",
+        "props": {},
+        "metadata": {
+          "label": "Later"
+        }
+      },
+      {
+        "id": "G",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "G",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0",
+        "style": [
+          "stroke:red",
+          "fill:none"
+        ]
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "B",
+          "A"
+        ],
+        "title": "Group",
+        "classes": [],
+        "dir": "BT",
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "go",
+        "args": null
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "B",
+        "set": {
+          "labelType": "markdown",
+          "text": "Later",
+          "metadata": {
+            "label": "Later"
+          }
+        }
+      }
+    ]
+  }
+}

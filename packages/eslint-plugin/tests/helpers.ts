@@ -105,6 +105,9 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   kanban: true,
   c4: true,
   venn: true,
+  ishikawa: true,
+  agentflow: true,
+  usecase: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

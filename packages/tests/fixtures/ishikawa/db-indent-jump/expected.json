@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Does a depth jump choose the nearest lower existing ancestor?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            },
+            {
+              "text": "C",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "D",
+          "children": []
+        }
+      ]
+    }
+  }
+}

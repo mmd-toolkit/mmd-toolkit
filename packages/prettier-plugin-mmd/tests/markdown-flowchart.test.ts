@@ -4,6 +4,9 @@
  * reach the plugin; this file checks what comes back into the blocks.
  */
 import { describe, expect, it } from "vitest"
+import * as prettier from "prettier"
+import plugin from "../src/index.ts"
+import { dbOfText, defaultEmbedded, treeProblemsOfText } from "./db-reading.ts"
 import { formatMarkdown, formatMarkdownWithoutPlugin } from "./helpers.ts"
 
 /** Formats Markdown, and checks that formatting the result changes nothing. */
@@ -14,6 +17,21 @@ async function formatTwice(markdown: string): Promise<string> {
 }
 
 describe("a flowchart in a Markdown code block", () => {
+  it("keeps direction priority with tabWidth zero", async () => {
+    const input = "```mermaid\nflowchart LR\n  accTitle: t;direction TB\n```\n"
+    const output = "```mermaid\nflowchart LR\n accTitle: t;direction TB\n```\n"
+    const options = { parser: "markdown", tabWidth: 0, plugins: [plugin] }
+    expect(await prettier.format(input, options)).toBe(output)
+    expect(await prettier.format(output, options)).toBe(output)
+    const before = "flowchart LR\n  accTitle: t;direction TB\n"
+    const after = "flowchart LR\n accTitle: t;direction TB\n"
+    expect(dbOfText(after, defaultEmbedded())).toEqual(
+      dbOfText(before, defaultEmbedded()),
+    )
+    expect(treeProblemsOfText(before)).toEqual([])
+    expect(treeProblemsOfText(after)).toEqual([])
+  })
+
   it("is formatted at the top level", async () => {
     expect(
       await formatTwice(

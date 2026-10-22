@@ -43,8 +43,8 @@ diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 (`requirement`), the mindmap (`mindmap`), the timeline (`timeline`), the sankey
 diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
 (`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
-C4 (`c4`), and venn (`venn`). Every other detected type throws
-`UnsupportedDiagramError`.
+C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`), and
+usecase (`usecase`). Every other detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -64,8 +64,12 @@ The parser of each diagram follows its document,
 [`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.md),
 [`diagrams/block.md`](../../spec/docs/diagrams/block.md),
 [`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.md),
-[`diagrams/c4.md`](../../spec/docs/diagrams/c4.md), or
-[`diagrams/venn.md`](../../spec/docs/diagrams/venn.md). It has three parts:
+[`diagrams/c4.md`](../../spec/docs/diagrams/c4.md),
+[`diagrams/venn.md`](../../spec/docs/diagrams/venn.md), or
+[`diagrams/ishikawa.md`](../../spec/docs/diagrams/ishikawa.md), or
+[`diagrams/agentflow.md`](../../spec/docs/diagrams/agentflow.md), or
+[`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.md). It has three
+parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -89,8 +93,8 @@ requirement compare case-insensitively, and the Unicode letters of the letter
 rules of flowchart and class (`src/unicode-letters.ts`). A diagram whose lexer
 reads diagram comments, as the sequence lexer reads `#` and `%`, the class lexer
 `%%`, the state lexer `#` and `%%`, the Gantt lexer `%`, the journey,
-requirement, and timeline lexers `#` and `%`, and the mindmap, kanban, C4, and
-venn lexers `%%`, hands them to the common part, which records them in
+requirement, and timeline lexers `#` and `%`, and the mindmap, kanban, C4, venn,
+and Ishikawa lexers `%%`, hands them to the common part, which records them in
 `Root.comments`, cut at the comment regions that lie inside them, as tokens are.
 The rejections that mermaid.js makes while it builds the Db are made by the
 parser after the grammar: `subgraph-members.ts` for the flowchart, and
@@ -136,6 +140,10 @@ The venn lexer tracks implicit text mode across line starts. Its grammar keeps
 converted set names to check union members against earlier declarations, while
 the tree keeps written values.
 
+The Ishikawa grammar retains written indentation and selects parents using the
+first cause's indentation, independently of the root's indentation. [fixture:
+ishikawa/db-indent-clamped] [fixture: ishikawa/db-indent-root-deeper]
+
 ## Tools
 
 `tools/` holds scripts for working on the parser. They are not built and not
@@ -157,3 +165,34 @@ source, as the tests read it. Run them in `packages/parser`:
   rejected now. It then prints how many fixtures have each kind of difference:
   the same field of the same node type, or of the error, with the list indexes
   left out. Each difference follows, with the value before and after.
+
+The agentflow lexer and grammar have their own files under
+`src/diagrams/agentflow/`. Both it and flowchart use `GraphUnitLexer` in
+`src/graph-unit-lexer.ts` for identical lexical rules and `GraphGrammar` in
+`src/graph-grammar.ts` for identical productions, including data, shapes, and
+callbacks. Each diagram constructs its own AST nodes and keeps its own arrow
+vocabulary, comment rules, name grammar, and brace conversion. The existing
+shared reader, direction-line rule, and Unicode-letter helper are also reused.
+Its text wrapper folds only line whitespace immediately followed by the first LF
+after a closing brace. [fixture: agentflow/lex-brace-string-keeps-blank-line]
+[fixture: agentflow/lex-brace-line-whitespace-ls] [fixture:
+agentflow/lex-brace-ls-without-lf]
+
+At or below the default 50000 normalized UTF-16 code units after frontmatter and
+directive removal, SourceLexer reads line segments without removing common
+comment regions; agentflow reads leading trivia and its own comments. Above the
+limit it uses the common comment-removal path. [fixture:
+agentflow/comment-default-size-equal-crlf] [fixture:
+agentflow/comment-default-size-above-crlf] [fixture:
+agentflow/comment-default-size-equal-inline-directive] [fixture:
+agentflow/comment-default-size-above-frontmatter]
+
+The usecase lexer tries its default rules in specification order and uses
+exclusive JSON and stereotype contexts. Its grammar retains authored
+occurrences, parses native metadata properties and CSS declarations, and checks
+namespace, declaration compatibility, endpoint kinds and final metadata in
+`src/diagrams/usecase/rejections.ts`. JSON table bodies remain opaque; only the
+specified brace/string balancing finds their end. [fixture:
+usecase/db-all-fields] [fixture: usecase/lex-keyword-longer-number] [fixture:
+usecase/gram-native-final-invalid-then-valid] [fixture:
+usecase/div-json-balanced-invalid-array]

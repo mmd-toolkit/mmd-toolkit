@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-mappings.spec.ts",
+    "line": 185,
+    "test": "agentflow element mappings > lookup helpers > getElementAtPosition prefers the innermost span"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "inner",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "inner",
+        "props": {}
+      },
+      {
+        "id": "next",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "next",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "inner",
+        "end": "next",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_inner_next_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "pipeline",
+        "nodes": [
+          "next",
+          "inner"
+        ],
+        "title": "Pipeline",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

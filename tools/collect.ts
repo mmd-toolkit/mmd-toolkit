@@ -160,6 +160,34 @@ const SPEC_FILES: Readonly<
   // vennRenderer.spec.ts and vennPalette.spec.ts construct Db values and call
   // the renderer with an empty text; neither passes diagram text to a parser.
   venn: () => ["diagrams/venn/parser/venn.spec.ts"],
+  // The directory has only this spec file; all three tests pass parser text.
+  ishikawa: () => ["diagrams/ishikawa/ishikawa.spec.ts"],
+  // The lexer and JSON helper specs pass fragments, not complete diagrams.
+  // usecaseDb, usecaseRenderer and usecaseRoleColors build model/layout values.
+  // usecase.docs reads the canonical page and renders every example.
+  usecase: () => [
+    "diagrams/usecase/parser/usecase.parser.spec.ts",
+    "diagrams/usecase/usecase.parser.spec.ts",
+    "diagrams/usecase/usecase.spec.ts",
+    "diagrams/usecase/usecase-colorIndex.spec.ts",
+    "diagrams/usecase/usecase.docs.spec.ts",
+  ],
+  // Every parser spec passes text. renderer.spec.ts and colorSlots.spec.ts
+  // construct layout values only. The DOM integration specs record their
+  // public parse/render calls; expected failures after those calls are listed
+  // below. conformance.spec.ts reads the paired .mmd files collected directly.
+  agentflow: (filesIn) => [
+    ...filesIn("diagrams/agentflow/parser").filter((file) =>
+      file.endsWith(".spec.ts"),
+    ),
+    ...filesIn("diagrams/agentflow").filter(
+      (file) =>
+        file.endsWith(".spec.ts") &&
+        !file.endsWith("/renderer.spec.ts") &&
+        !file.endsWith("/colorSlots.spec.ts"),
+    ),
+    "diagrams/agentflow/conformance/runner.spec.ts",
+  ],
 }
 
 /**
@@ -178,6 +206,118 @@ const ERRORS_AFTER_THEIR_INPUT: Readonly<
     }[]
   >
 > = {
+  "diagrams/usecase/usecase.parser.spec.ts": [
+    {
+      test: "usecase parser publication and normalized AST > accepts markdown markers, punctuation, and non-ASCII characters in unquoted labels",
+      error: "Cannot read properties of undefined (reading 'label')",
+      reason:
+        "the only parse call precedes assertions on individual stubbed relationship and note records",
+    },
+  ],
+  "diagrams/usecase/usecase.spec.ts": [
+    {
+      test: "UseCase diagram with Chevrotain parser > when parsing relationships > should parse actor to use case relationship",
+      error: "Cannot read properties of undefined (reading 'source')",
+      reason:
+        "the only parse call precedes an assertion on the first stubbed relationship",
+    },
+    {
+      test: "UseCase diagram with Chevrotain parser > when parsing relationships > should parse multiple relationships",
+      error: "Cannot read properties of undefined (reading 'source')",
+      reason:
+        "the only parse call precedes assertions on individual stubbed relationships",
+    },
+    {
+      test: "UseCase diagram with Chevrotain parser > when parsing relationships > should parse relationship with label",
+      error: "Cannot read properties of undefined (reading 'label')",
+      reason:
+        "the only parse call precedes an assertion on the first stubbed relationship",
+    },
+  ],
+  "diagrams/agentflow/parser/agentflow-yaml-error-position.spec.ts": [
+    {
+      test: "issue #56 part 2: YAML @{ } errors report source coordinates > single-line block: maps (block 2:16) to the source line of the @{ } block",
+      error: "expected the parse to throw a YAML error",
+      reason:
+        "the helper throws after its only parse call because the recording stub never throws",
+    },
+    {
+      test: "issue #56 part 2: YAML @{ } errors report source coordinates > multi-line block: maps the body line into source space and keeps the tab caret",
+      error: "expected the parse to throw a YAML error",
+      reason:
+        "the helper throws after its only parse call because the recording stub never throws",
+    },
+    {
+      test: "issue #56 part 2: YAML @{ } errors report source coordinates > multi-line block: error on the @{ line itself maps with the content-column offset",
+      error: "expected the parse to throw a YAML error",
+      reason:
+        "the helper throws after its only parse call because the recording stub never throws",
+    },
+    {
+      test: "issue #56 part 2: YAML @{ } errors report source coordinates > composes with the blank-line fold fix: a block below a @{ }+blank keeps its source line",
+      error: "expected the parse to throw a YAML error",
+      reason:
+        "the helper throws after its only parse call because the recording stub never throws",
+    },
+    {
+      test: "issue #56 part 2: YAML @{ } errors report source coordinates > applies the frontmatter line offset on top of the block position",
+      error: "expected the parse to throw a YAML error",
+      reason:
+        "the helper throws after its only parse call because the recording stub never throws",
+    },
+    {
+      test: "issue #56 part 2: YAML @{ } errors report source coordinates > leaves the message of a non-YAML error alone but still locates it",
+      error: "expected the parse to throw a YAML error",
+      reason:
+        "the helper throws after its only parse call because the recording stub never throws",
+    },
+    {
+      test: "issue #56 part 2: YAML @{ } errors report source coordinates > applies the frontmatter offset to a shape error too",
+      error: "expected the parse to throw a YAML error",
+      reason:
+        "the helper throws after its only parse call because the recording stub never throws",
+    },
+  ],
+  "diagrams/agentflow/agentflow-max-text-size.spec.ts": [
+    {
+      test: "agentflow under maxTextSize > reports comment-stripped positions once the cap forces the fallback",
+      error: "Cannot read properties of undefined (reading 'getElementById')",
+      reason:
+        "all parse/render calls precede the inspection of Db instances; the recording stubs create no instances for the spy to capture",
+    },
+    {
+      test: "agentflow under maxTextSize > keeps comment-accurate positions when the source is under the cap",
+      error: "Cannot read properties of undefined (reading 'getElementById')",
+      reason:
+        "all parse/render calls precede the inspection of Db instances; the recording stubs create no instances for the spy to capture",
+    },
+    {
+      test: "agentflow under maxTextSize > caps the parse() path too, not only render()",
+      error: "Cannot read properties of undefined (reading 'getElementById')",
+      reason:
+        "all parse/render calls precede the inspection of Db instances; the recording stubs create no instances for the spy to capture",
+    },
+  ],
+  "diagrams/agentflow/agentflow-render-positions.spec.ts": [
+    {
+      test: "agentflow source positions on the public API paths > reports original-source positions through mermaidAPI.render()",
+      error: "Cannot read properties of undefined (reading 'getElementById')",
+      reason:
+        "all parse/render calls precede the inspection of Db instances; the recording stubs create no instances for the spy to capture",
+    },
+    {
+      test: "agentflow source positions on the public API paths > reports the same positions through mermaidAPI.parse()",
+      error: "Cannot read properties of undefined (reading 'getElementById')",
+      reason:
+        "all parse/render calls precede the inspection of Db instances; the recording stubs create no instances for the spy to capture",
+    },
+    {
+      test: "agentflow source positions on the public API paths > parse() and render() agree on the reported position",
+      error: "Cannot read properties of undefined (reading 'getElementById')",
+      reason:
+        "all parse/render calls precede the inspection of Db instances; the recording stubs create no instances for the spy to capture",
+    },
+  ],
   "diagrams/er/parser/erDiagram.spec.js": [
     {
       test: "when parsing ER diagram it... > entity name > cannot contain % because it interferes with parsing comments",
@@ -246,6 +386,7 @@ async function main(): Promise<void> {
   const ref = checkRef(checkout)
   const candidates = [
     ...(await specCandidates(diagram, checkout, ref)),
+    ...conformanceCandidates(diagram, checkout, ref),
     ...(await docCandidates(diagram, checkout, ref)),
     ...(await demoCandidates(diagram, checkout, ref)),
   ]
@@ -257,6 +398,25 @@ async function main(): Promise<void> {
   console.log(
     `${candidates.length} inputs found, ${entries.length} new; written to ${values.out}`,
   )
+}
+
+/** Agentflow ships paired source/expectation files alongside its spec files. */
+function conformanceCandidates(
+  diagram: CollectedDiagram,
+  checkout: string,
+  ref: string,
+): Candidate[] {
+  if (diagram !== "agentflow") return []
+  const relative =
+    "packages/mermaid/src/diagrams/agentflow/conformance/fixtures"
+  return readdirSync(path.join(checkout, relative))
+    .filter((name) => name.endsWith(".mmd"))
+    .sort()
+    .map((name) => ({
+      prefix: `spec-conformance-${kebab(name.slice(0, -4))}`,
+      input: readFileSync(path.join(checkout, relative, name), "utf8"),
+      source: { kind: "mermaid", ref, path: `${relative}/${name}` },
+    }))
 }
 
 /**

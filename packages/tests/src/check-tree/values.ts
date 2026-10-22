@@ -56,7 +56,9 @@ export interface ValueRule {
    * text that mermaid.js does not read, which show what was written. A run of
    * text (`RawText`) keeps the whitespace next to a cut in its fragments
    * (parser/docs/tokens.md, A token that a directive cuts). Every other
-   * character of the value lies in a token.
+   * character of the value lies in a token. UsecaseIdentifier also retains
+   * the HWS between its separate dash prefix and word, without a token for
+   * that HWS (ast/usecase.md, UsecaseIdentifier).
    */
   readonly gaps?: true
   /** Whether the text of the comments in the range of the node is left out as well: the nodes of text that mermaid.js does not read show the lines around a comment (ast.md, Nodes). */
@@ -109,6 +111,79 @@ const IGNORED_TEXT =
  * Meaning column of those tables on which of them are the written text.
  */
 export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
+  UsecaseLabel: {
+    field: "value",
+    kind: "written-text",
+    delimiters: "string",
+    spec: "Complete written content, excluding plain or markdown delimiters (ast/usecase.md, UsecaseLabel).",
+  },
+  UsecaseLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Written text of this grammar position (ast/usecase.md, UsecaseLiteral).",
+  },
+  UsecaseIdentifier: {
+    field: "name",
+    kind: "written-text",
+    gaps: true,
+    spec: "Written CSS property name, including internal HWS (ast/usecase.md, UsecaseIdentifier).",
+  },
+  UsecaseOpeningArrow: {
+    field: "value",
+    kind: "written-text",
+    oneToken: true,
+    spec: "Written --, <--, o--, or x-- (ast/usecase.md, UsecaseOpeningArrow).",
+  },
+  UsecaseArrow: {
+    field: "value",
+    kind: "written-text",
+    oneToken: true,
+    spec: "The written sole/final arrow (ast/usecase.md, UsecaseArrow).",
+  },
+  UsecaseJsonDataBlock: {
+    field: "value",
+    kind: "written-text",
+    delimiters: "data-block",
+    spec: "Written interior of the balanced object after its actual opening brace, checked by usecase.ts (ast/usecase.md, UsecaseJsonDataBlock).",
+  },
+  AgentflowLabel: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its initial string content and following written bare text (ast/agentflow.md, AgentflowLabel).",
+    delimiters: "string",
+  },
+  AgentflowDataBlock: {
+    field: "value",
+    kind: "written-text",
+    spec: "The written interior between @{ and } (ast/agentflow.md, AgentflowDataBlock).",
+    delimiters: "data-block",
+  },
+  AgentflowLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "The written text of this value (ast/agentflow.md, AgentflowLiteral).",
+  },
+  AgentflowIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "The retained written spelling, with full erased-form delimiters (ast/agentflow.md, AgentflowIgnoredText).",
+    withoutComments: true,
+  },
+  AgentflowArrow: {
+    field: "value",
+    kind: "written-text",
+    spec: "The written arrow without surrounding whitespace (ast/agentflow.md, AgentflowArrow).",
+  },
+  AgentflowOpeningArrow: {
+    field: "value",
+    kind: "written-text",
+    spec: "The written two opening dashes (ast/agentflow.md, AgentflowOpeningArrow).",
+  },
+  AgentflowShape: {
+    field: "name",
+    kind: "derived",
+    spec: "The full shape name determined by its delimiters (ast/agentflow.md, AgentflowShape).",
+  },
   Identifier: {
     field: "name",
     kind: "units-joined",
@@ -294,6 +369,11 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "written-text",
     spec: "Its written text (ast/mindmap.md, MindmapLiteral).",
   },
+  IshikawaLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "The node text as written (ast/ishikawa.md, IshikawaLiteral).",
+  },
   TimelineLiteral: {
     field: "value",
     kind: "written-text",
@@ -425,7 +505,20 @@ function delimitersOf(
   kind: DelimitersKind,
   delimitersOfStrings: StringDelimitersOf,
   problems: Problems,
+  root: CheckedRoot,
 ): TreeRange[] {
+  if (node.type === "UsecaseJsonDataBlock") {
+    const opening = root.tokens.find(
+      (token) =>
+        token.type === "Punctuator" &&
+        token.value === "{" &&
+        contains(node.range, token.range),
+    )
+    return [
+      [node.range[0], opening?.range[1] ?? node.range[0] + 2],
+      [node.range[1] - 1, node.range[1]],
+    ]
+  }
   if (kind === "string") return delimitersOfStrings(node, problems)
   const [start, end] = node.range
   return [
@@ -613,7 +706,13 @@ export function checkValues(
     const delimiters =
       rule.delimiters === undefined
         ? []
-        : delimitersOf(node, rule.delimiters, delimitersOfStrings, problems)
+        : delimitersOf(
+            node,
+            rule.delimiters,
+            delimitersOfStrings,
+            problems,
+            root,
+          )
     const joined = joinedTokenTextOf(text, root, node.range, delimiters)
     const kind = styles.has(node)
       ? "units-joined"

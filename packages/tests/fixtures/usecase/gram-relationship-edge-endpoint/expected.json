@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: An explicit edge cannot be a relationship endpoint."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Relationship source 'link' cannot be edge at line 3, column 1 [26,30); previous declaration at line 2, column 3 [15,19)"
+  }
+}

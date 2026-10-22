@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L1] Does a comment-looking line inside multiline child quotes disappear?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "\"A",
+          "children": [
+            {
+              "text": "B\"",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

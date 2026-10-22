@@ -1,7 +1,11 @@
 import type { Node, Range, Token } from "@mmd-toolkit/parser"
 import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom, AtomLayout } from "./atoms.ts"
-import { findSemicolonLines, lineStartOf } from "./kept-lines.ts"
+import {
+  findSemicolonLines,
+  lineStartOf,
+  semicolonSegmentEnd,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -268,11 +272,13 @@ export interface AccDescrBlock {
  * `{`. Its lines keep their columns (docs/flowchart.md, Multi-line values),
  * the first one included, and comment lines among them stay where they
  * are. The whitespace after the `{` is read with the `{`, so the text on
- * the line of the `{` is spaced as any other token.
+ * the line of the `{` is spaced as any other token. `valueRange` supplies the
+ * printed bounds when a Literal's AST range includes exterior whitespace.
  */
 export function findAccDescrBlockStretches(
   source: Source,
   statement: AccDescrBlock,
+  valueRange: Range | null = statement.value?.range ?? null,
 ): Atom[] {
   const brace = expectToken(
     findStructuralToken(
@@ -283,20 +289,19 @@ export function findAccDescrBlockStretches(
     "the `{` of an accDescr block",
   )
   expectValue(brace, "{")
-  const { value } = statement
-  if (value === null) return []
-  if (!source.text.slice(brace.range[1], value.range[0]).includes("\n")) {
+  if (valueRange === null) return []
+  if (!source.text.slice(brace.range[1], valueRange[0]).includes("\n")) {
     return []
   }
   const lastTrivia = findTriviaBetween(
     source,
-    value.range[1],
+    valueRange[1],
     statement.range[1],
   ).at(-1)
   return [
     {
       start: brace.range[0],
-      end: Math.max(value.range[1], lastTrivia?.range[1] ?? 0),
+      end: Math.max(valueRange[1], lastTrivia?.range[1] ?? 0),
     },
   ]
 }
@@ -335,4 +340,46 @@ export function toAsciiLowerCase(text: string): string {
         : character,
     )
     .join("")
+}
+
+/** Whole crossing values and CSS declarations stay inside a textual prefix. */
+export function protectSemicolonPrefixes(
+  source: Source,
+  start: number,
+  end: number,
+  atoms: readonly Atom[],
+): Atom[] {
+  const kept: Atom[] = []
+  for (let position = start; position < end;) {
+    const stop = semicolonSegmentEnd(source, position)
+    const semicolon = source.text.lastIndexOf(";", stop - 1)
+    if (semicolon < position) {
+      position = stop + 1
+      continue
+    }
+    let from = position
+    let through = Math.min(end, semicolon + 1)
+    for (const atom of atoms) {
+      if (atom.start < through && from < atom.end) {
+        from = Math.min(from, atom.start)
+        through = Math.max(through, atom.end)
+      }
+    }
+    for (const item of findTriviaBetween(source, position, through))
+      through = Math.min(end, Math.max(through, item.range[1]))
+    const previous = kept.at(-1)
+    if (previous !== undefined && from <= previous.end)
+      kept[kept.length - 1] = { start: previous.start, end: through }
+    else kept.push({ start: from, end: through })
+    position = through
+  }
+  return [
+    ...kept,
+    ...atoms.filter(
+      (atom) =>
+        !kept.some(
+          (stretch) => stretch.start <= atom.start && atom.end <= stretch.end,
+        ),
+    ),
+  ].sort((a, b) => a.start - b.start)
 }

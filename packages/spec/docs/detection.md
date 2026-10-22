@@ -124,6 +124,30 @@ common/detect-minimal-c4-component] [fixture: common/detect-minimal-c4-dynamic]
 [fixture: common/detect-c4-word-after] [fixture:
 common/detect-c4-keyword-after-word]
 
+Entry 6,
+[`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11),
+is the exact lower-case `agentflow-beta` detector, before C4. A following ASCII
+letter, digit, or underscore prevents detection. A hyphen or non-ASCII letter
+passes detection but the agentflow grammar rejects these suffix forms. There is
+no stable `agentflow` header or case folding; C4 words inside its body do not
+override it. [fixture: agentflow/header-only] [fixture:
+agentflow/header-without-beta] [fixture: agentflow/header-upper] [fixture:
+agentflow/detect-letter-suffix] [fixture: agentflow/detect-digit-suffix]
+[fixture: agentflow/detect-underscore-suffix] [fixture:
+agentflow/detect-hyphen-suffix] [fixture: agentflow/detect-non-ascii-suffix]
+[fixture: agentflow/lex-detect-c4-component-id]
+
+Entry 39,
+[`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14),
+requires exact lower-case `usecase-beta` followed by whitespace or the end of
+text. A colon, hyphen, letter, digit, or underscore prevents detection; Unicode
+whitespace can pass detection and still fail the usecase grammar. This detector
+is after C4, so its body follows `c4-keyword-anywhere`. [fixture:
+usecase/header-lf] [fixture: usecase/header-uppercase] [fixture:
+usecase/header-letter-suffix] [fixture: usecase/header-unicode-suffix] [fixture:
+usecase/header-semicolon] [fixture: usecase/header-u2028-eof] [fixture:
+usecase/lex-header-emspace-eof] [fixture: usecase/div-detect-c4-label]
+
 ## Notes
 
 - **Pseudo-diagrams.** Entries 1 and 2 are registered before all real diagrams
@@ -175,7 +199,12 @@ common/detect-c4-keyword-after-word]
   followed by `é` is detected as swimlane, whose grammar then rejects it.
   [fixture: common/detect-boundary-ishikawa-long-s] [fixture:
   common/detect-boundary-ishikawa-e-acute] [fixture:
-  common/detect-boundary-swimlane-e-acute]
+  common/detect-boundary-swimlane-e-acute] The
+  [Ishikawa grammar](./diagrams/ishikawa.md#units-and-contexts) distinguishes a
+  complete beta header from the stable-header fallback: `ishikawa-beta-x` starts
+  its node text at `-x`, whereas `ishikawa-betaX` starts it at `-betaX`.
+  [fixture: ishikawa/header-beta-dash-suffix] [fixture:
+  ishikawa/header-beta-letter-suffix]
 - **Specific characters after the keyword.** Entry 38 accepts `:` after
   `cynefin-beta`, and entry 39 does not accept `:` after `usecase-beta`.
   [fixture: common/detect-cynefin-colon] [fixture: common/detect-usecase-colon]

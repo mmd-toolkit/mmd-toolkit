@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A non-directive percent-brace line inside JSON is content."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "UsecaseJsonError",
+    "message": "Invalid JSON: Expected property name or '}' in JSON at position 2 (line 2 column 1) (line 3, column 1)"
+  }
+}

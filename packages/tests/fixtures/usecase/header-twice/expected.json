@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is a second header a statement?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Redundant input, expecting EOF but found: usecase-beta at line 2, column 1 [13,25)"
+  }
+}

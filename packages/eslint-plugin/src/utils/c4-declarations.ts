@@ -26,14 +26,16 @@ export interface C4Declaration {
   writtenType: boolean
 }
 
-/** Observations made before a declaration replaces its current matching entry. */
+/** Observations of declarations and updates on their matching entries. */
 interface Observers {
   declaration?(
     node: C4ElementStatement | C4BoundaryStatement,
     previous: C4Declaration | undefined,
     current: C4Declaration,
   ): void
-  update?(node: C4UpdateStatement, applied: boolean): void
+  /** Every field a declaration writes, on the stable matching entry. */
+  declared?(target: C4Declaration, fields: readonly string[]): void
+  update?(node: C4UpdateStatement, target: C4Declaration | undefined): void
 }
 
 /** The type reset by a boundary declaration, before optional assignments. */
@@ -50,10 +52,12 @@ function boundaryType(node: C4BoundaryStatement): string {
   }
 }
 
-/** Applies only assignments that affect a later comparison, keeping their form. */
-function assign(entry: C4Declaration, node: C4Call): void {
+/** Applies fields needed by later comparisons and returns every written field. */
+function assign(entry: C4Declaration, node: C4Call): string[] {
   const style = node.type === "C4UpdateStatement"
+  const fields: string[] = []
   for (const { key, value, index } of c4Assignments(node)) {
+    fields.push(key)
     const stored =
       node.keyword === "UpdateRelStyle" && index >= 4
         ? Number.parseInt(value, 10)
@@ -84,12 +88,15 @@ function assign(entry: C4Declaration, node: C4Call): void {
         break
     }
   }
+  return fields
 }
 
 /**
  * Keeps the first matching entries in insertion order. Matching and consumed
  * assignments follow the specification's Rejections outside the grammar; a
  * boundary is declared on entry, before any statement of its body is visited.
+ * Each matching entry keeps its identity across updates and redefinitions, so
+ * observers can associate state with the resolved target.
  */
 export function c4DeclarationVisitor(observers: Observers): MermaidRuleVisitor {
   const shapes: C4Declaration[] = []
@@ -125,10 +132,21 @@ export function c4DeclarationVisitor(observers: Observers): MermaidRuleVisitor {
         !isC4DeploymentNode(node) &&
         node.keyword !== "Boundary",
     }
-    assign(current, node)
+    const fields: string[] = [
+      "alias",
+      "label",
+      "parentBoundary",
+      "wrap",
+      node.type === "C4ElementStatement" ? "typeC4Shape" : "type",
+      ...assign(current, node),
+    ]
+    if (node.type === "C4BoundaryStatement" && isC4DeploymentNode(node)) {
+      fields.push("nodeType")
+    }
     observers.declaration?.(node, previous, current)
     if (previous === undefined) entries.push(current)
     else Object.assign(previous, current)
+    observers.declared?.(previous ?? current, fields)
   }
 
   return {
@@ -158,7 +176,15 @@ export function c4DeclarationVisitor(observers: Observers): MermaidRuleVisitor {
       }
       entry.from = from
       entry.to = to
-      assign(entry, node)
+      const fields = assign(entry, node)
+      observers.declared?.(entry, [
+        "type",
+        "from",
+        "to",
+        "label",
+        "wrap",
+        ...fields,
+      ])
     },
     C4UpdateStatement(node) {
       if (node.keyword === "UpdateLayoutConfig") return
@@ -171,7 +197,7 @@ export function c4DeclarationVisitor(observers: Observers): MermaidRuleVisitor {
           : relationships.find(
               (entry) => entry.from === first && entry.to === second,
             )
-      observers.update?.(node, target !== undefined)
+      observers.update?.(node, target)
       if (target !== undefined) assign(target, node)
     },
   }

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is a note label required?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [PLAIN_STRING]\n  2. [MARKDOWN_STRING]\n  3. [LABEL_TEXT]\nbut found: '\n' at line 3, column 11 [25,26)"
+  }
+}

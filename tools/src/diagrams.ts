@@ -32,6 +32,9 @@ export const diagramIds: Readonly<
   kanban: ["kanban"],
   c4: ["c4"],
   venn: ["venn"],
+  ishikawa: ["ishikawa"],
+  agentflow: ["agentflow"],
+  usecase: ["usecase"],
 }
 
 /**

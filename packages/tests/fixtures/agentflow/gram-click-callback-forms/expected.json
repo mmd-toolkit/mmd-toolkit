@@ -1,0 +1,95 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Bare and call-style callbacks retain names, optional arguments and tooltips."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "C",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "D",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "B",
+        "text": "tip"
+      },
+      {
+        "id": "D",
+        "text": "tip"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "run",
+        "args": null
+      },
+      {
+        "id": "B",
+        "name": "run",
+        "args": null
+      },
+      {
+        "id": "C",
+        "name": "go",
+        "args": null
+      },
+      {
+        "id": "D",
+        "name": "go",
+        "args": "1, \"two,three\""
+      }
+    ]
+  }
+}

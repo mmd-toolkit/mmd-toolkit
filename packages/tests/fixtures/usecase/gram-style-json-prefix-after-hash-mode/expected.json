@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The hash-color unit ends before json, where the earlier JSON prefix rule then switches mode inside the CSS value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'json J@ ' at line 3, column 22 [36,44)"
+  }
+}

@@ -6,8 +6,8 @@ import type { ItemRun } from "./gap.ts"
 import { walk } from "./layout.ts"
 import type { Source } from "./source.ts"
 
-const { hardline, literalline } = builders
-const { replaceEndOfLine } = utils
+const { align, hardline, literalline } = builders
+const { mapDoc, replaceEndOfLine } = utils
 
 /** One printed line. */
 export interface Line {
@@ -131,17 +131,50 @@ export function indentationOf(
 }
 
 /**
- * Indentation whose width mermaid.js reads as syntax or a node's level.
- * Formatting must not change the Db: one character is the smallest width
- * that keeps that reading, even when tabWidth is zero (docs/mindmap.md,
- * docs/kanban.md and docs/venn.md, Indentation).
+ * The step width for indentation that carries meaning: diagram node levels,
+ * graph direction priority, and YAML block scalars or nested values. One
+ * character is the smallest width that preserves the reading and Db when
+ * tabWidth is zero
+ * (docs/compatibility.md, Frontmatter; docs/mindmap.md, docs/kanban.md,
+ * docs/venn.md, docs/ishikawa.md, docs/flowchart.md and docs/agentflow.md,
+ * Indentation).
+ */
+export function significantIndentationWidth(tabWidth: number): number {
+  return Math.max(1, tabWidth)
+}
+
+/**
+ * Adapts the shared block printer's indent commands once, at the diagram
+ * boundary. Graph printers use the significant width for explicit columns;
+ * Prettier still renders these commands with its original options, so a
+ * zero-width body needs the same positive alignment (docs/flowchart.md and
+ * docs/agentflow.md, Indentation). Literal lines keep their written columns.
+ */
+export function withSignificantIndentation(
+  doc: Doc,
+  options: ParserOptions<MermaidAst>,
+): Doc {
+  const width = significantIndentationWidth(options.tabWidth)
+  if (options.tabWidth === width || options.useTabs) return doc
+  return mapDoc(doc, (part) =>
+    typeof part !== "string" && !Array.isArray(part) && part.type === "indent"
+      ? align(width, part.contents)
+      : part,
+  )
+}
+
+/**
+ * Indentation whose width mermaid.js reads as syntax or a node's level,
+ * using the minimum step width of `significantIndentationWidth`.
  */
 export function significantIndentationOf(
   options: ParserOptions<MermaidAst>,
   depth: number,
 ): string {
   return (
-    options.useTabs ? "\t" : " ".repeat(Math.max(1, options.tabWidth))
+    options.useTabs
+      ? "\t"
+      : " ".repeat(significantIndentationWidth(options.tabWidth))
   ).repeat(depth)
 }
 
@@ -173,7 +206,8 @@ export function withLeading(run: ItemRun | null, doc: Doc): Doc {
  * Whether the text ends inside something that mermaid.js reads to the end of
  * the text, so that a line break added after it would become part of it: a
  * directive that is not closed (see `endsInsideOpenDirective`), or a string
- * that is not closed (see `findOpenString`).
+ * that is not closed (see `findOpenString`). Diagram-specific EOF values
+ * are supplied by `BlockRules.endsInsideValue`.
  */
 export function endsInsideOpenText(source: Source): boolean {
   return endsInsideOpenDirective(source) || findOpenString(source) !== null
@@ -181,8 +215,10 @@ export function endsInsideOpenText(source: Source): boolean {
 
 /**
  * The string that is not closed, or null: a StringLiteral whose `closed` is
- * false (ast.md, StringLiteral). Only a backquoted name of a class diagram
- * can be one, and it runs to the end of the text. Its range ends at its
+ * false (ast.md, StringLiteral). A class backquoted name can be one;
+ * usecase plain strings, including single-quoted metadata strings, must be
+ * closed (diagrams/usecase.md, Ordered default-context rules). The class
+ * name runs to the end of the text. Its range ends at its
  * last character that is not whitespace, while mermaid.js reads the name to
  * the end of the text, the whitespace and line breaks after that character
  * included (diagrams/class.md, Strings, backquoted names, and generic

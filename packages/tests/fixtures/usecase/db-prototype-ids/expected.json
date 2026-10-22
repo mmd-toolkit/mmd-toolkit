@@ -1,0 +1,125 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do prototype-shaped semantic ids and JSON keys remain ordinary Map/own-property entries?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "__proto__",
+        "label": "__proto__",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "constructor",
+        "label": "constructor",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [
+          "__proto__"
+        ],
+        "styles": []
+      },
+      {
+        "id": "hasOwnProperty",
+        "label": "hasOwnProperty",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "toString",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "toString",
+        "label": "toString",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "constructor",
+        "target": "__proto__",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "valueOf",
+        "value": {
+          "__proto__": {
+            "polluted": true
+          },
+          "constructor": 1
+        },
+        "propertyOrder": {
+          "": [
+            "__proto__",
+            "constructor"
+          ],
+          "/__proto__": [
+            "polluted"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "__proto__",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "valueOf",
+        "set": {
+          "value": {
+            "__proto__": {
+              "polluted": true
+            },
+            "constructor": 1
+          },
+          "propertyOrder": {
+            "": [
+              "__proto__",
+              "constructor"
+            ],
+            "/__proto__": [
+              "polluted"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

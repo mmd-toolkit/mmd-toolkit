@@ -93,6 +93,7 @@ export function fieldSpecOf(typeCell: string): FieldSpec {
     .replace(/\[([^\]]*)\]\([^)]*\)/gu, "$1")
     .replaceAll("`", "")
     .trim()
+    .replace(/^nonempty /u, "")
   if (cell === "string") return { shape: "value", valueType: "string" }
   if (cell === "boolean") return { shape: "value", valueType: "boolean" }
   if (

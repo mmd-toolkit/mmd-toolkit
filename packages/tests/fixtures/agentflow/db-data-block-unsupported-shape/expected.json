@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A known Mermaid shape outside the allowed set produces a warning and draws roundedRect."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "shape": "triangle"
+        },
+        "type": "triangle"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "shape": "triangle"
+          },
+          "type": "triangle"
+        }
+      }
+    ]
+  }
+}

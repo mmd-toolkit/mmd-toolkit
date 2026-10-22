@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does classDef require Identifier rather than Word for class names?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> IDENTIFIER <-- but found --> 'actor' <-- at line 2, column 10 [22,27)"
+  }
+}

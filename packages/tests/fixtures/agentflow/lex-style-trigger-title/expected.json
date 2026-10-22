@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read style trigger title?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "style A fill:ﬂ°abc¶ß;",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

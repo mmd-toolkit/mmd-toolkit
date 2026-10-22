@@ -75,10 +75,10 @@ export interface Source {
   readonly removedLineFeeds: ReadonlySet<number>
   /**
    * Whether a diagram comment ends at a U+2028 or a U+2029, so that the text
-   * after it is a new line: the lexer of a mindmap ends it at the end of its
-   * line segment (diagrams/mindmap.md, Comments). The comment of the other
-   * diagram types runs to the line feed, and a U+2028 or U+2029 after it is
-   * whitespace to be printed as such.
+   * after it is a new line: the lexers of mindmap and ishikawa end it at the
+   * end of its line segment (diagrams/mindmap.md and diagrams/ishikawa.md,
+   * Comments). In other diagram types it runs to the line feed, and a
+   * U+2028 or U+2029 after it is whitespace to be printed as such.
    */
   readonly commentsEndAtLineSeparators: boolean
 }
@@ -405,10 +405,16 @@ function findRemovedLineFeeds(
 
 /**
  * Makes the printing context of a parsed document.
+ * `keepsCommentLines` disables the regions made by common comment removal;
+ * the selected diagram's text rules decide whether that removal applies.
  */
-export function createSource(text: string, root: Root): Source {
+export function createSource(
+  text: string,
+  root: Root,
+  keepsCommentLines = false,
+): Source {
   const comments = joinCommentFragments(text, root)
-  const joiningRegions = findJoiningRegions(text, root)
+  const joiningRegions = keepsCommentLines ? [] : findJoiningRegions(text, root)
   const directives = root.tokens
     .filter(
       (token) =>
@@ -434,7 +440,9 @@ export function createSource(text: string, root: Root): Source {
     ),
     joiningRegions,
     removedLineFeeds: findRemovedLineFeeds(text, root, joiningRegions),
-    commentsEndAtLineSeparators: root.body.type === "MindmapDiagram",
+    commentsEndAtLineSeparators:
+      root.body.type === "MindmapDiagram" ||
+      root.body.type === "IshikawaDiagram",
   }
 }
 

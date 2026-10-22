@@ -241,6 +241,10 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   fixture は文と一緒に書き、mermaid.js で 1 回確かめる。
   どこで見つかった失敗も、fixture と、欠けていた文で閉じる。
   テストもコマンドも入力を生成せず、入力を乱数や数（seed、件数）で選ばない。
+- fixtureは規則の文が分ける場合から作り、corpusの入力を写さない。
+  corpusの入力は`[corpus fixture: ...]`で引用する。
+- `rejected-inputs`フォルダーを作らない。
+  受理する差異の入力は規則のフォルダーへ置き、拒否はcorpusテストで確認する。
 - 文書のテスト（`tests/docs.test.ts`）: 規則の文書ごとに、その見出しと、
   図種の fixture のフォルダー、
   例のコードブロックと fixture のファイルが一致することを確かめる。
@@ -310,6 +314,11 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - `venn*.ts`: `format` と `corpus` を `-t venn` で。
     `-t` なしで `line-separators`、`markdown-venn`、
     `value-nodes`。
+  - `ishikawa*.ts`: `format` と `corpus` を `-t ishikawa` で。
+    `-t` なしで `ishikawa`、`markdown-ishikawa`、`value-nodes`。
+  - `agentflow*.ts`: `format` と `corpus` を `-t agentflow` で。
+    `-t` なしで `agentflow`、`markdown-agentflow`、`value-nodes`、
+    `dispatch`。
   - `statement-rules.ts`、`accessibility-lines.ts`:
     それを使う図種、ER と requirement のテスト。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:

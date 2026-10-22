@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A root suffix colon remains while its trailing space is trimmed."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R:",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R:",
+      "children": []
+    }
+  }
+}

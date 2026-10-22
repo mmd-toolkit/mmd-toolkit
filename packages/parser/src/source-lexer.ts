@@ -20,6 +20,7 @@ import type { CommentRegionEntry, LineEntry } from "./line-lookahead.ts"
 import {
   commentEnd,
   lookAheadFromCommentStart,
+  lookAheadLineSegments,
   nextCommentStart,
 } from "./line-lookahead.ts"
 import { firstIndexWhere } from "./ordered-search.ts"
@@ -188,9 +189,8 @@ type RuleAtPosition =
  * results it keeps as {@link LineEntry} values. No position is judged for a
  * directive twice.
  *
- * For agentflow, item 1 does not apply (its lexer reads comment lines
- * itself); the switch belongs in {@link SourceLexer.decideEntries}, which
- * would then ask the look-ahead for line segments only.
+ * Agentflow at or below its default size limit preserves comment lines;
+ * `preserveComments` selects line segments without common comment removal.
  */
 export class SourceLexer {
   public readonly text: string
@@ -219,6 +219,9 @@ export class SourceLexer {
   /** The decided entries, in source order. */
   private readonly entries: LineEntry[] = []
 
+  /** common.md: agentflow at its default size limit reads comment lines itself. */
+  private readonly preserveComments: boolean
+
   /** The comment start where the next entry begins, or the end of the source. */
   private nextEntryStart: number
 
@@ -237,12 +240,13 @@ export class SourceLexer {
    * `start` to the end, because a tag can start far before the `"` it
    * changes.
    */
-  public constructor(text: string, start: number) {
+  public constructor(text: string, start: number, preserveComments = false) {
     if (!Number.isInteger(start) || start < 0 || start > text.length) {
       throw new Error(
         `mmd-toolkit parser bug: a lexer starts at ${start}, outside the source of length ${text.length}`,
       )
     }
+    this.preserveComments = preserveComments
     this.text = text
     this.lines = new LineIndex(text)
     this.attributeQuotes = findAttributeQuotes(text, start)
@@ -723,7 +727,9 @@ export class SourceLexer {
   private decideEntries(): boolean {
     const start = this.nextEntryStart
     if (start >= this.text.length) return false
-    const entries = lookAheadFromCommentStart(this.text, start)
+    const entries = this.preserveComments
+      ? lookAheadLineSegments(this.text, start)
+      : lookAheadFromCommentStart(this.text, start)
     this.entries.push(...entries)
     this.nextEntryStart = nextCommentStart(this.text, entries)
     return true

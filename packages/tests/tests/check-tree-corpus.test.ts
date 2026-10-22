@@ -19,6 +19,8 @@ import { getFixturesRoot, loadFixtures } from "../src/index.ts"
 const DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "usecase",
+  "agentflow",
   "sequence",
   "class",
   "state",
@@ -35,6 +37,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "kanban",
   "c4",
   "venn",
+  "ishikawa",
 ]
 
 /** The recorded trees of the corpus, with the input of each, by fixture name. */

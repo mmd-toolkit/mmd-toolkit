@@ -79,6 +79,7 @@ ESLint の visitor keys で、
 flowchart の矢印の前後の空白がその例で、
 `A --> %%{init: {}}%% B` の矢印の書かれたテキストは `-->` です。
 [fixture: flowchart/lex-directive-after-arrow]
+
 値の書かれたテキストは、その最初の単位の書かれたテキストの始まりから、
 最後の単位の書かれたテキストの終わりまでで、単位の間の空白と行終端を含みます。
 どちらも、そこにあって値として書かれたものではないもの、つまりディレクティブ、
@@ -106,8 +107,10 @@ class 図のスタイル（[ClassLiteral](./ast/class.ja.md#classliteral) を参
 `A[" x "]` のラベルの値は、空白、`x`、空白です。
 `A@{`、改行、`shape: rect`、改行、`}` の最初のデータブロックの値は、改行、
 `shape: rect`、改行です。
-[fixture: flowchart/tokens-label-string-inner-whitespace] [fixture:
-flowchart/gram-data-consecutive-blocks] 2 つのリテラルのノード、
+[fixture: flowchart/tokens-label-string-inner-whitespace]
+[fixture: flowchart/gram-data-consecutive-blocks]
+
+2 つのリテラルのノード、
 [StringLiteral](#stringliteral) と [NumericLiteral](#numericliteral) は、
 ESTree の `Literal` と同じく、欄 `raw` も持ちます。
 これはリテラルの最初の文字から最後の文字までのソースのテキストで、
@@ -134,6 +137,7 @@ A に、`state`、空白、改行、空白 2 つ、`state` の `textBeforeBody` 
 [fixture: class/tokens-ignored-text-directive-before-direction]
 [fixture: class/tokens-ignored-text-directive-after-direction]
 [fixture: flowchart/tokens-ignored-text-directive-before-direction]
+
 コメント領域が切る図のコメントは、中の空白を含めて全体が除かれ、
 それを終える改行は残ります
 （[コメント行](./common.ja.md#コメント行) を参照）。
@@ -267,7 +271,10 @@ mermaid.js はこれらを
 [`BlockDiagram`](./ast/block.ja.md#blockdiagram)、
 [`KanbanDiagram`](./ast/kanban.ja.md#kanbandiagram)、
 [`C4Diagram`](./ast/c4.ja.md#c4diagram)、
-[`VennDiagram`](./ast/venn.ja.md#venndiagram) のどれかです。
+[`VennDiagram`](./ast/venn.ja.md#venndiagram)、
+[`IshikawaDiagram`](./ast/ishikawa.ja.md#ishikawadiagram)、
+[`AgentflowDiagram`](./ast/agentflow.ja.md#agentflowdiagram)、
+[`UsecaseDiagram`](./ast/usecase.ja.md#usecasediagram) のどれかです。
 
 ## ErrorDiagram
 
@@ -363,6 +370,10 @@ ESTree と同じく、識別子かどうかは構文上の形で決まり、
 引用符で囲んだ文字列です。
 引用符は二重引用符で、class 図のバッククォートの名前と
 ER 図のバッククォートの属性の語ではバッククォートです。
+図の字句規則が許す位置では、一重引用符の文字列も StringLiteral です。
+同じ引用符で閉じ、escape は復号しません。
+[fixture: usecase/lex-native-single-quoted-keys]
+[fixture: usecase/lex-native-string-backslashes]
 
 | 欄       | 型     | 意味                                                                                                                                                                                                                                                                   |
 | -------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -374,17 +385,17 @@ ER 図のバッククォートの属性の語ではバッククォートです�
 `click A "u" "one`、改行、`%% c`、改行、`two"` では、ツールチップの値は `one`、
 改行、`two` で、
 その `raw` はコメント行を含む文字列の全体です。
-[fixture: flowchart/gram-click-href] [fixture:
-flowchart/tokens-string-literal-comment-line]
+[fixture: flowchart/gram-click-href]
+[fixture: flowchart/tokens-string-literal-comment-line]
+
 同じように、`click A href "u%%{init: {}}%%v"` の URL の値は `uv` で、
 その `raw` はディレクティブを含む文字列の全体です。
 [fixture: flowchart/lex-directive-in-click-href-string]
 
-文字列は 2 つ目の引用符で閉じます。
+文字列は図の字句規則に従い、次の対応する引用符で閉じます。
 図がテキストの終わりまで閉じていない文字列を受理するところでは
 （class 図のバッククォートの名前だけです。
-[文字列、バッククォートの名前、
-ジェネリクスの型](./diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
+[文字列、バッククォートの名前、ジェネリクスの型](./diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
 を参照）、
 その書かれたテキストは、ディレクティブにもコメント領域にも入らない、
 ソースの最後の文字まで続き、
@@ -395,9 +406,11 @@ mermaid.js がそれらを名前に読むからです。
 テキストの終わりの `A --> `、`` `b``、空白、`%%{init: {}}%%` は、
 文字列 `` `b`` と空白を持ち、値は `b` と空白です。
 [fixture: class/lex-backquote-unclosed-directive-at-end]
+
 class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
 ディレクティブの後の改行を含めて、値 `x` と改行 2 つを持ちます。
 [fixture: class/lex-backquote-unclosed-directive-after-line-break]
+
 `raw` は閉じの引用符を持たず、
 `value` は書かれたテキストから開きの引用符を除いたものです。
 その `closed` は偽です。
@@ -410,8 +423,8 @@ class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
 最後の行のバッククォート 1 つは、閉じていないバッククォートの名前で、
 その `raw` は、バッククォートとその後の改行です。
 [fixture: class/lex-backquote-unclosed-alone]
-[fixture: class/lex-backquote-unclosed] [fixture:
-class/tokens-backquote-unclosed-trailing-whitespace]
+[fixture: class/lex-backquote-unclosed]
+[fixture: class/tokens-backquote-unclosed-trailing-whitespace]
 
 ### NumericLiteral
 
@@ -424,18 +437,21 @@ class/tokens-backquote-unclosed-trailing-whitespace]
 
 `linkStyle 0,1 stroke:red` の最初の数の値は 0 で、`raw` は `0` です。
 [fixture: flowchart/db-linkstyle-shared-fill]
+
 数が取れる形は、その位置の文法が決めます。
 flowchart では数字だけなので、どの数も整数です。
 sequence では小数も取れるので、`autonumber .5` は 2 分の 1 から始まり、
 その `raw` は `.5` です。
 `autonumber 05` は 5 から始まります。
-[fixture: sequence/db-autonumber-fraction] [fixture:
-sequence/db-autonumber-leading-zero]
+[fixture: sequence/db-autonumber-fraction]
+[fixture: sequence/db-autonumber-leading-zero]
+
 値は書かれた数に最も近い倍精度の数で、書かれた数と違うことがあります。
 XY chart で、`bar [`、20 個の 9、`]` は値が 1 の後に 20 個の 0 が続く数で、
 `line [.`、400 個の 0、`1]` は値が 0 です。
 [fixture: xychart/db-plot-values-large]
 [fixture: xychart/db-plot-values-underflow]
+
 倍精度に収まらない数は、
 mermaid.js が読むとおり、無限大、`-` があればマイナス無限大です。
 XY chart で、`bar [`、400 個の 9、`]` は値が無限大で、
@@ -474,6 +490,9 @@ linkStyle の番号では範囲の外です。
 - [Block diagram](./ast/block.ja.md): 図種 `block`。
 - [Kanban](./ast/kanban.ja.md): 図種 `kanban`。
 - [Venn](./ast/venn.ja.md): 図種 `venn`。
+- [Ishikawa](./ast/ishikawa.ja.md): 図種 `ishikawa`。
+- [Agentflow](./ast/agentflow.ja.md): 図種 `agentflow`。
+- [Usecase](./ast/usecase.ja.md): 図種 `usecase`。
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。

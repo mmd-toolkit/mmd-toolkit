@@ -11,6 +11,17 @@ import {
 import type { Source } from "./source.ts"
 
 /**
+ * A diagram's constraint on the completed layout, before it is applied.
+ * The callback defers ordinary layout construction when the source must stay
+ * whole, so that the plan also owns that choice.
+ */
+export type RootTextPlan = (
+  print: () => Doc,
+  frontmatterEnd: number,
+  frontmatterDoc: Doc | undefined,
+) => Doc
+
+/**
  * Prints what every diagram type shares: the frontmatter and the comments
  * and directives before the diagram, then the diagram body, which its
  * diagram printer prints to the end of the text.
@@ -25,13 +36,16 @@ export function printRoot(
   printBody: () => Doc,
   source: Source,
   yamlDoc?: Doc,
+  planText?: RootTextPlan,
 ): Doc {
   const lines: Line[] = []
   let offset = 0
+  let frontmatterDoc: Doc | undefined
   if (root.frontmatter !== null) {
     const end = findFrontmatterEnd(source, root.frontmatter)
+    frontmatterDoc = printFrontmatter(source, root.frontmatter, end, yamlDoc)
     lines.push({
-      doc: printFrontmatter(source, root.frontmatter, end, yamlDoc),
+      doc: frontmatterDoc,
       blankBefore: false,
       endsWithWhitespace: end > root.frontmatter.range[1],
     })
@@ -63,12 +77,25 @@ export function printRoot(
       endsWithWhitespace: line.run.endsWithWhitespace,
     })
   }
-  lines.push({
-    doc: withLeading(gap.leading, printBody()),
-    blankBefore: lines.length > 0 && gap.blankAfter,
-    endsWithWhitespace: false,
-  })
-  return joinLines(lines, "")
+
+  /** Build the ordinary root only if its text plan requests that layout. */
+  function print(): Doc {
+    return joinLines(
+      [
+        ...lines,
+        {
+          doc: withLeading(gap.leading, printBody()),
+          blankBefore: lines.length > 0 && gap.blankAfter,
+          endsWithWhitespace: false,
+        },
+      ],
+      "",
+    )
+  }
+
+  return planText === undefined
+    ? print()
+    : planText(print, offset, frontmatterDoc)
 }
 
 /**

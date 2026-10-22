@@ -201,6 +201,14 @@ the parser use the fixtures. The steps that build the summary from a tree are
 written here after the tree document of the specification
 (`docs/db-from-tree/<diagram>.md` and `src/db-from-tree/<diagram>.ts`).
 
+For a Chevrotain diagram, apply the same procedure with the token definitions as
+lexer rules: token order, active modes and explicit `longer_alt` decide the
+unit; there is no general longest match. Lexer errors reject before parser
+errors, even when the parser recovers a tree. Read the parser's rule methods as
+grammar productions and the model builder's validation as acceptance conditions.
+Collect distinguishing cases for each of these, including mode transitions and
+priority interactions that token counts alone cannot establish.
+
 ### 5.1 Input
 
 - The name of the diagram type to add, and the diagram ids that share its Db

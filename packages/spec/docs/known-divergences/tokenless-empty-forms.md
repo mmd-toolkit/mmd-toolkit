@@ -3,7 +3,7 @@
 Japanese version: [tokenless-empty-forms.ja.md](./tokenless-empty-forms.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, requirement,
-mindmap, xychart, quadrant, block, and kanban. This is one of the
+mindmap, xychart, quadrant, block, kanban, and agentflow. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -407,8 +407,8 @@ holds the empty strings of the state context and the empty description blocks
 before a separator, and inside a composite or alias statement of state, the
 blocks before the `{` of a body on the line after the name, in the
 `textBeforeBody` that holds the other text that mermaid.js does not read there.
-It holds no other empty description block inside a statement, for one of two
-reasons:
+Apart from agentflow's name and click-prefix positions below, it holds no other
+empty description block inside a statement, for one of two reasons:
 
 - (a) Between two units of a statement, holding the block would take a field for
   text that mermaid.js does not read in that gap of the statement's node. Such a
@@ -839,3 +839,145 @@ rejected. [fixture: kanban/db-decoration-empty-icon] [fixture:
 kanban/db-decoration-empty-class] [fixture:
 kanban/div-empty-string-before-label] [fixture:
 kanban/div-empty-markdown-before-label]
+
+### Agentflow
+
+Agentflow shares flowchart's empty-string, empty-markdown-string, and empty-call
+vocabulary. At statement start an IgnoredStatement could hold such a form, but
+the explicit empty-form exception applies there: these are strings or calls with
+their own written meaning that Mermaid discards whole, so no no-effect statement
+is introduced. [fixture: agentflow/div-empty-string-statement] [fixture:
+agentflow/div-empty-markdown-statement] [fixture:
+agentflow/div-empty-call-statement] [fixture:
+agentflow/div-empty-string-before-vertex] [fixture:
+agentflow/div-empty-call-before-vertex]
+
+Inside flow/connector names or before a following click URL/tooltip, the
+existing AgentflowName.parts, textBeforeUrl, or textBeforeTooltip field holds a
+recognized erased empty string, empty markdown string, or empty call as
+AgentflowIgnoredText. Accept it as written, like the erased click or closed
+empty description block there. The statement-start exception does not apply to
+those positions. [fixture: agentflow/lex-empty-string-in-flow-name] [fixture:
+agentflow/lex-empty-call-in-flow-name] [fixture:
+agentflow/lex-empty-markdown-in-flow-name] [fixture:
+agentflow/lex-empty-string-in-connector-name] [fixture:
+agentflow/lex-empty-call-in-connector-name] [fixture:
+agentflow/lex-empty-call-before-href] [fixture:
+agentflow/lex-empty-string-before-url] [fixture:
+agentflow/lex-empty-markdown-before-href] [fixture:
+agentflow/lex-empty-string-before-url-tooltip] [fixture:
+agentflow/lex-empty-call-before-url-tooltip] [fixture:
+agentflow/lex-empty-markdown-before-callback-tooltip] [fixture:
+agentflow/lex-mixed-empty-forms-before-url-tooltip]
+
+At other interior positions without a retained field, such as before an arrow or
+callback name or between the header and direction, reject the recognized erased
+form under tokenless-empty-forms reason 1. Holding it would require splitting a
+leaf or adding an arbitrary structural-gap field. [fixture:
+agentflow/div-empty-string-before-arrow] [fixture:
+agentflow/div-empty-call-before-arrow] [fixture:
+agentflow/div-empty-string-before-callback] [fixture:
+agentflow/div-empty-string-after-click] [fixture:
+agentflow/div-empty-string-between-header-and-direction]
+
+Closed empty description blocks do not use the statement-start exception. At
+statement start or after a completed statement they are
+AgentflowAccDescrBlockStatements; after the header direction they begin the
+diagram body, and after a flow title/global heading they begin that body. Within
+flow/connector names, AgentflowName.parts holds the whole form as
+AgentflowIgnoredText; existing click textBefore fields hold it too. The measured
+ordinary reading remains representable, so these inputs are accepted, not
+reason-1 rejections. [fixture: agentflow/lex-empty-description-before-node]
+[fixture: agentflow/gram-empty-description-after-vertex] [fixture:
+agentflow/gram-empty-description-after-header-direction] [fixture:
+agentflow/gram-empty-description-after-global] [fixture:
+agentflow/gram-empty-description-after-flow-title] [fixture:
+agentflow/lex-empty-description-in-flow-name] [fixture:
+agentflow/lex-empty-description-in-connector-name] [fixture:
+agentflow/gram-empty-description-before-href]
+
+An interior block without one of those places is rejected under reason 1: it can
+split an Identifier, precede a required class name or first style, or stand
+before a style comma. Retaining it would require changing a leaf value or adding
+an arbitrary structural-gap field. A terminal block after a complete class value
+is retained instead. Empty data blocks and whitespace-only strings remain real
+syntax, not erased empty forms. [fixture:
+agentflow/div-empty-description-inside-vertex-id] [fixture:
+agentflow/div-empty-description-before-class-name] [fixture:
+agentflow/div-empty-description-in-style] [fixture:
+agentflow/div-empty-description-in-classdef] [fixture:
+agentflow/div-empty-description-before-style-comma] [fixture:
+agentflow/gram-empty-description-after-class-glued] [fixture:
+agentflow/gram-data-null-document] [fixture:
+agentflow/gram-url-tooltip-whitespace-only]
+
+## The documentation of mermaid.js and its issues
+
+The pinned documentation describes the forms below, without specifying the lexer
+erasing the delimiters of these empty forms.
+
+- flowchart: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L53-L74)
+  shows quoted Unicode and markdown labels.
+
+- sequence: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/accessibility.md#L67-L93)
+  describes accDescr and a nonempty multiline description block.
+
+- class: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L150-L167)
+  shows quoted labels and nonempty backquoted class names.
+
+- state: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/accessibility.md#L67-L93)
+  describes the shared description-block syntax.
+  [PR #8498](https://github.com/mermaid-js/mermaid/pull/8498) is open as of
+  2026-10-22 and proposes requiring a state id after as; it concerns a missing
+  id, not a discarded empty description block.
+
+- er: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md#L225-L241)
+  shows attribute blocks with type/name pairs. The closed
+  [issue #1415](https://github.com/mermaid-js/mermaid/issues/1415), checked on
+  2026-10-22, reports empty relationship labels rather than empty attribute
+  backquotes.
+
+- gantt: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L450-L477)
+  shows click href and call statements with URLs and callback names.
+
+- requirement: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/requirementDiagram.md#L91-L109)
+  allows quoted or unquoted user text and shows nonempty fields.
+
+- mindmap: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md#L113-L139)
+  shows icon names inside ::icon() and class names after :::.
+
+- xychart: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/xyChart.md#L33-L56)
+  shows quoted chart titles, axis titles, and category labels.
+
+- quadrant: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/quadrantChart.md#L35-L62)
+  describes titles and axis text.
+
+- block: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/block.md#L175-L195)
+  shows nonempty quoted labels inside shapes.
+
+- kanban: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/kanban.md#L15-L47)
+  shows bracketed column and task labels.
+
+- agentflow: the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
+  describes flowchart-style node declarations. Searches on 2026-10-22 with
+  `agentflow empty in:title,body` found no report about erased empty strings,
+  calls, or interior description blocks.
+
+Searches of issues and pull requests in `mermaid-js/mermaid` on 2026-10-22 with
+`"empty string" in:title,body`, `"empty call" in:title,body`, and
+`accDescr empty in:title,body` found the state and ER reports noted above. They
+concern empty ids or relationship labels rather than a judgment about the
+delimiter-erasure rules of this divergence.

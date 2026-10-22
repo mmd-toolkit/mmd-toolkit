@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does strict JSON reject a trailing comma?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "UsecaseJsonError",
+    "message": "Invalid JSON: Expected double-quoted property name in JSON at position 7 (line 1 column 8) (line 2, column 15)"
+  }
+}

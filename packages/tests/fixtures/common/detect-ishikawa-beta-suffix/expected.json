@@ -5,5 +5,23 @@
   },
   "accepted": true,
   "diagramType": "ishikawa",
-  "db": null
+  "db": {
+    "title": "-betaX",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "-betaX",
+      "children": [
+        {
+          "text": "Problem",
+          "children": [
+            {
+              "text": "Cause",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
 }

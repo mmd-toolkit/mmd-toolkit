@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read frontmatter title html quotes?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "<b class='x'>Title</b>",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "<b class='x'>Title</b>"
+  }
+}

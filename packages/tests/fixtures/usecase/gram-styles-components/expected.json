@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do every style property/value alternative and escaped commas retain source spacing?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": [
+          "border:1px solid red"
+        ]
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "one",
+        "styles": [
+          "--custom:red",
+          "font-family:Arial Black",
+          "fill:#f96",
+          "stroke-width:1.5px",
+          "opacity:.5",
+          "margin:-2px",
+          "pct:50%",
+          "tokens:\"plain\" abc-def , !#$&*+/=?^_|~ : ( ) [ ] { } @ --"
+        ]
+      },
+      {
+        "id": "two",
+        "styles": [
+          "--custom:red",
+          "font-family:Arial Black",
+          "fill:#f96",
+          "stroke-width:1.5px",
+          "opacity:.5",
+          "margin:-2px",
+          "pct:50%",
+          "tokens:\"plain\" abc-def , !#$&*+/=?^_|~ : ( ) [ ] { } @ --"
+        ]
+      }
+    ]
+  }
+}

@@ -95,40 +95,81 @@ common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めて�
 mermaid.js がその id として受理する最小の入力があります。
 図の文法が見出しの行だけを受理する場合はその行だけ、
 そうでなければ見出しの行と最小の 1 文です。
-[fixture: common/error-pseudo-diagram] [fixture:
-common/detect-minimal-flowchart-elk] [fixture: common/detect-minimal-mindmap]
-[fixture: common/detect-minimal-architecture] [fixture:
-common/detect-minimal-agentflow] [fixture: common/detect-minimal-c4] [fixture:
-common/detect-minimal-kanban] [fixture: common/detect-minimal-class-diagram]
+[fixture: common/error-pseudo-diagram]
+[fixture: common/detect-minimal-flowchart-elk]
+[fixture: common/detect-minimal-mindmap]
+[fixture: common/detect-minimal-architecture]
+[fixture: common/detect-minimal-agentflow] [fixture: common/detect-minimal-c4]
+[fixture: common/detect-minimal-kanban]
+[fixture: common/detect-minimal-class-diagram]
 [fixture: common/detect-minimal-er] [fixture: common/detect-minimal-gantt]
 [fixture: common/detect-minimal-info] [fixture: common/detect-minimal-pie]
-[fixture: common/detect-minimal-requirement] [fixture:
-common/detect-minimal-sequence] [fixture: common/detect-minimal-swimlane]
-[fixture: common/detect-minimal-flowchart-v2] [fixture:
-common/detect-minimal-timeline] [fixture: common/detect-minimal-git-graph]
-[fixture: common/detect-minimal-state-diagram] [fixture:
-common/detect-minimal-journey] [fixture: common/detect-minimal-quadrant-chart]
-[fixture: common/detect-minimal-sankey] [fixture: common/detect-minimal-packet]
-[fixture: common/detect-minimal-xychart] [fixture: common/detect-minimal-block]
-[fixture: common/detect-minimal-eventmodeling] [fixture:
-common/detect-minimal-tree-view] [fixture: common/detect-minimal-radar]
-[fixture: common/detect-minimal-ishikawa] [fixture:
-common/detect-minimal-treemap] [fixture: common/detect-minimal-railroad]
-[fixture: common/detect-minimal-railroad-ebnf] [fixture:
-common/detect-minimal-railroad-abnf] [fixture:
-common/detect-minimal-railroad-peg] [fixture: common/detect-minimal-venn]
-[fixture: common/detect-minimal-wardley] [fixture:
-common/detect-minimal-cynefin] [fixture: common/detect-minimal-usecase]
+[fixture: common/detect-minimal-requirement]
+[fixture: common/detect-minimal-sequence]
+[fixture: common/detect-minimal-swimlane]
+[fixture: common/detect-minimal-flowchart-v2]
+[fixture: common/detect-minimal-timeline]
+[fixture: common/detect-minimal-git-graph]
+[fixture: common/detect-minimal-state-diagram]
+[fixture: common/detect-minimal-journey]
+[fixture: common/detect-minimal-quadrant-chart]
+[fixture: common/detect-minimal-sankey]
+[fixture: common/detect-minimal-packet]
+[fixture: common/detect-minimal-xychart]
+[fixture: common/detect-minimal-block]
+[fixture: common/detect-minimal-eventmodeling]
+[fixture: common/detect-minimal-tree-view]
+[fixture: common/detect-minimal-radar]
+[fixture: common/detect-minimal-ishikawa]
+[fixture: common/detect-minimal-treemap]
+[fixture: common/detect-minimal-railroad]
+[fixture: common/detect-minimal-railroad-ebnf]
+[fixture: common/detect-minimal-railroad-abnf]
+[fixture: common/detect-minimal-railroad-peg]
+[fixture: common/detect-minimal-venn] [fixture: common/detect-minimal-wardley]
+[fixture: common/detect-minimal-cynefin]
+[fixture: common/detect-minimal-usecase]
+
 項目 7 では、他の 4 つのキーワードも先頭にあれば `c4` を選びます。
 大文字小文字の違うキーワードは、比較が完全一致なので何も選びません。
 後に語の文字が続くキーワードは、何が続いてもよいので `c4` として検出され、
 その後 C4 の文法が拒否します。
 別の語の後のキーワードは先頭にありません。
-[fixture: common/detect-minimal-c4-container] [fixture:
-common/detect-minimal-c4-component] [fixture: common/detect-minimal-c4-dynamic]
-[fixture: common/detect-minimal-c4-deployment] [fixture: common/detect-c4-case]
-[fixture: common/detect-c4-word-after] [fixture:
-common/detect-c4-keyword-after-word]
+[fixture: common/detect-minimal-c4-container]
+[fixture: common/detect-minimal-c4-component]
+[fixture: common/detect-minimal-c4-dynamic]
+[fixture: common/detect-minimal-c4-deployment]
+[fixture: common/detect-c4-case] [fixture: common/detect-c4-word-after]
+[fixture: common/detect-c4-keyword-after-word]
+
+第 6 項の
+[`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11)
+は、
+小文字を区別する `agentflow-beta` の検出器であり、C4 より先です。
+直後の ASCII の文字、数字、アンダースコアは検出を妨げます。
+ハイフンと非 ASCII の文字は検出を通りますが、
+agentflow の文法はこれらの接尾部の形を拒否します。
+安定版の `agentflow` のヘッダーや大文字小文字の同一視はありません。
+本文の C4 の語も検出を上書きしません。
+[fixture: agentflow/header-only] [fixture: agentflow/header-without-beta]
+[fixture: agentflow/header-upper] [fixture: agentflow/detect-letter-suffix]
+[fixture: agentflow/detect-digit-suffix]
+[fixture: agentflow/detect-underscore-suffix]
+[fixture: agentflow/detect-hyphen-suffix]
+[fixture: agentflow/detect-non-ascii-suffix]
+[fixture: agentflow/lex-detect-c4-component-id]
+
+項目 39 の
+[`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14)
+は、正確な小文字の `usecase-beta` の後に空白かテキストの終わりを要求します。
+コロン、ハイフン、英字、数字、underscore は検出を妨げます。
+Unicode 空白は検出を通っても usecase 文法に失敗する場合があります。
+C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
+[fixture: usecase/header-lf] [fixture: usecase/header-uppercase]
+[fixture: usecase/header-letter-suffix]
+[fixture: usecase/header-unicode-suffix] [fixture: usecase/header-semicolon]
+[fixture: usecase/header-u2028-eof] [fixture: usecase/lex-header-emspace-eof]
+[fixture: usecase/div-detect-c4-label]
 
 ## 注記
 
@@ -146,14 +187,17 @@ common/detect-c4-keyword-after-word]
   結果は [表記](./common.ja.md#表記)
   の意味で大文字小文字を区別しない比較と同じです。
   [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
+
 - **大きな機能のときだけ登録される項目**: 項目 3〜5 は、
   mermaid.js が
+
   [`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
   を付けてビルドされたときだけ登録されます。
   npm パッケージの既定の入口はそのようにビルドされているので、
   この仕様はこれらを含め、この位置に置きます。
   疑似図種の後で、他のすべての検出器より前です。
   項目 3 はレイアウトの設定も `elk` にしますが、これは描画にだけ影響します。
+
 - **順序が効く**: 項目 3 は項目 17 より前にあるので、
   `flowchart-elk` は `flowchart` でも始まりますが、`flowchart-elk` を選びます。
   これ以外に条件が重なる組はありません。
@@ -173,34 +217,47 @@ common/detect-c4-keyword-after-word]
   [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md)
   です。
   `C4Context` は両者とも先頭にあるときだけ数えます。
-  [fixture: common/detect-c4-anywhere] [fixture:
-  common/detect-c4context-only-at-start]
+  [fixture: common/detect-c4-anywhere]
+  [fixture: common/detect-c4context-only-at-start]
+
 - **何が続いてもよい**: ほとんどのキーワードでは、検出器は次の文字を見ません。
   `flowchartLR` は `flowchart-v2` として検出され、
   その後 flowchart の文法が拒否します。
   `graphTD` も同じです。
-  [fixture: common/detect-no-boundary-flowchart] [fixture:
-  common/detect-no-boundary-graph]
+  [fixture: common/detect-no-boundary-flowchart]
+  [fixture: common/detect-no-boundary-graph]
+
 - **語の文字以外か、終わり**: 項目 6、16、30 では、
   キーワードの後に語の文字が続いてはいけません。
   `swimlane-betaX` は検出されず、他のどの検出器も一致しません。
   項目 30 の条件は `ishikawa` の直後に適用されるので、
   `ishikawa-beta` だけでなく `ishikawa-betaX` も検出され、
   `ishikawaX` は検出されません。
-  [fixture: common/detect-boundary-swimlane] [fixture:
-  common/detect-ishikawa-beta-suffix] [fixture:
-  common/detect-ishikawa-word-after] ASCII
-  の外の文字は語の文字ではありません（[表記](./common.ja.md#表記) を参照）。
-  `ishikawa` の後に U+017F や `é` が続くものは ishikawa
-  として検出されて受理され、
-  `swimlane-beta` の後に `é` が続くものは swimlane として検出され、
-  その文法が拒否します。
-  [fixture: common/detect-boundary-ishikawa-long-s] [fixture:
-  common/detect-boundary-ishikawa-e-acute] [fixture:
-  common/detect-boundary-swimlane-e-acute]
+  [fixture: common/detect-boundary-swimlane]
+  [fixture: common/detect-ishikawa-beta-suffix]
+  [fixture: common/detect-ishikawa-word-after]
+
+ASCII
+の外の文字は語の文字ではありません（[表記](./common.ja.md#表記) を参照）。
+`ishikawa` の後に U+017F や `é` が続くものは ishikawa
+として検出されて受理され、
+`swimlane-beta` の後に `é` が続くものは swimlane として検出され、
+その文法が拒否します。
+[fixture: common/detect-boundary-ishikawa-long-s]
+[fixture: common/detect-boundary-ishikawa-e-acute]
+[fixture: common/detect-boundary-swimlane-e-acute]
+
+[Ishikawa の文法](./diagrams/ishikawa.ja.md#単位と文脈)は、
+完全な beta の見出しと通常の見出しへの切り替えを区別します。
+`ishikawa-beta-x` は `-x` から節点のテキストを始め、
+`ishikawa-betaX` は `-betaX` から始めます。
+[fixture: ishikawa/header-beta-dash-suffix]
+[fixture: ishikawa/header-beta-letter-suffix]
+
 - **キーワードの後の特定の文字**: 項目 38 は `cynefin-beta` の後の `:` を認め、
   項目 39 は `usecase-beta` の後の `:` を認めません。
   [fixture: common/detect-cynefin-colon] [fixture: common/detect-usecase-colon]
+
 - **大文字小文字**: 項目 30、32〜35、37 は大文字小文字を区別しません。
   `ISHIKAWA` も `IsHiKaWa` も ishikawa を選びます。
   比べ方は [表記](./common.ja.md#表記) の大文字小文字を区別しない比べ方で、
@@ -210,7 +267,7 @@ common/detect-c4-keyword-after-word]
   `sequencediagram` は検出されません。
   大文字のキーワードをその図の文法が受理するかどうかは、その文法によるので、
   その図の文書で述べます。
-  [fixture: common/detect-case-insensitive-ishikawa] [fixture:
-  common/detect-case-mixed-ishikawa] [fixture: common/detect-case-kelvin-sign]
-  [fixture: common/detect-case-long-s] [fixture:
-  common/detect-case-sensitive-sequence]
+  [fixture: common/detect-case-insensitive-ishikawa]
+  [fixture: common/detect-case-mixed-ishikawa]
+  [fixture: common/detect-case-kelvin-sign] [fixture: common/detect-case-long-s]
+  [fixture: common/detect-case-sensitive-sequence]

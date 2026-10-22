@@ -1,0 +1,256 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid join the fragments in ignored semicolon in linkstyle number?"
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "N0",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N0",
+        "props": {}
+      },
+      {
+        "id": "N1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N1",
+        "props": {}
+      },
+      {
+        "id": "N2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N2",
+        "props": {}
+      },
+      {
+        "id": "N3",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N3",
+        "props": {}
+      },
+      {
+        "id": "N4",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N4",
+        "props": {}
+      },
+      {
+        "id": "N5",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N5",
+        "props": {}
+      },
+      {
+        "id": "N6",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N6",
+        "props": {}
+      },
+      {
+        "id": "N7",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N7",
+        "props": {}
+      },
+      {
+        "id": "N8",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N8",
+        "props": {}
+      },
+      {
+        "id": "N9",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N9",
+        "props": {}
+      },
+      {
+        "id": "N10",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N10",
+        "props": {}
+      },
+      {
+        "id": "N11",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N11",
+        "props": {}
+      },
+      {
+        "id": "Z",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "style:#x",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "N0",
+        "end": "N1",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N0_N1_0"
+      },
+      {
+        "start": "N1",
+        "end": "N2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N1_N2_0"
+      },
+      {
+        "start": "N2",
+        "end": "N3",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N2_N3_0"
+      },
+      {
+        "start": "N3",
+        "end": "N4",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N3_N4_0"
+      },
+      {
+        "start": "N4",
+        "end": "N5",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N4_N5_0"
+      },
+      {
+        "start": "N5",
+        "end": "N6",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N5_N6_0"
+      },
+      {
+        "start": "N6",
+        "end": "N7",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N6_N7_0"
+      },
+      {
+        "start": "N7",
+        "end": "N8",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N7_N8_0"
+      },
+      {
+        "start": "N8",
+        "end": "N9",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N8_N9_0"
+      },
+      {
+        "start": "N9",
+        "end": "N10",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N9_N10_0"
+      },
+      {
+        "start": "N10",
+        "end": "N11",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_N10_N11_0",
+        "style": [
+          "stroke:red",
+          "fill:none"
+        ]
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

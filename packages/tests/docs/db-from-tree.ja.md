@@ -77,6 +77,14 @@ Comment lines の規則で、テキストそのものから見つけます
 
 先頭の空白は読みません。テキストの終わりには、`\n` がもう 1 つあります。
 flowchart では、`}` の後の空白は、最後の改行までを 1 つの改行として読みます。
+Agentflow は既定のサイズ上限以下では先頭空白と字句上のコメントを保ち、
+閉じ括弧の直後の行内空白と最初の LF だけをまとめます。
+正確な変換と Name.parts の読みは
+[db-from-tree/agentflow.ja.md](./db-from-tree/agentflow.ja.md) にあります。
+[fixture: agentflow/comment-default-size-equal]
+[fixture: agentflow/comment-default-size-fallback]
+[fixture: agentflow/lex-brace-string-keeps-blank-line]
+[fixture: agentflow/lex-flow-name-click-state]
 
 HTML 属性の引用符の位置は、コメントやディレクティブを除く前に、
 フロントマターの後のソース全体から一度求めます。
@@ -160,6 +168,13 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   `checkTree` が暗黙のモードを検査した後の最後の部分集合です。
   手順は [db-from-tree/venn.md](./db-from-tree/venn.md) にあります。
   [fixture: venn/db-all-fields]
+- **Usecase の出現**: 宣言、ネイティブメタデータ、参照から保存済みモデルを作り、
+  JSON の値とプロパティ順はソース順の embedded effect だけから取ります。
+  手順は [db-from-tree/usecase.md](./db-from-tree/usecase.ja.md) にあります。
+  共通サニタイザーはアクセシビリティ文字列に適用し、
+  要素テキストには適用しません。
+  [fixture: usecase/db-all-fields] [fixture: usecase/db-json-source-map-order]
+  [fixture: usecase/config-security-other]
 - **C4 の呼び出し**: 引数、タイトル、アクセシビリティのテキストは、
   値ノードとその範囲の変換形だけから読みます。
   入れ子の本体が境界のスタックを定め、
@@ -213,7 +228,8 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   コメント領域、ディレクティブ、行の規則が無視する `;` は変換した形になく、
   `}` の後の空白は変換した形で 1 つの改行なので、どれも名前を終えません。
   [fixture: flowchart/lex-comment-line-in-markdown-subgraph-name]
-- **flowchart の辺**: `maxEdges` の上限は、パーサーが設定を知らないので、
+- **flowchart と Agentflow の辺**: `maxEdges` の上限は、
+  パーサーが設定を知らないので、
   木に対して `exceedsMaxEdges()` が確かめます。
   関数が読む `maxEdges` は、設定が辺の最大数として文書化する、
   負でない整数です。
@@ -517,7 +533,8 @@ HTML ラベルが有効で、`securityLevel` が
 
 ## 確かめ
 
-記録した木の比較には C4、block、kanban、Venn と common の検出例を含み、
+記録した木の比較には C4、block、kanban、Venn、Agentflow、Usecase と
+common の検出例を含み、
 C4 の五つの kind もすべて含みます。
 
 `tests/db-from-tree.test.ts` は、木と受理の結果（Db 付き）を記録する
@@ -543,6 +560,6 @@ fixture がどれかを教えます。
 3. テストを動かす。木で説明される失敗は、木の文書かパーサーの欠けである。
    入力を付けて報告する。
 
-Venn は手作りの木と記録済みの木の両方で検査します。
+Venn、Agentflow、Usecase は手作りの木と記録済みの木の両方で検査します。
 文字の置換は frontmatter の初期タイトルも含むタイトルだけに適用します。
 [fixture: venn/config-security-other]

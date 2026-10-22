@@ -334,6 +334,20 @@ Every link from the specification is a permalink to the commit recorded in
 4. Check the order of the preprocessing (Reading a source in common.md) and the
    detection (detection.md).
 
+#### Chevrotain diagrams
+
+For Chevrotain diagrams, read each active mode's token array in order, including
+custom matchers, skipped tokens, categories, push/pop transitions, and explicit
+`longer_alt`; do not assume longest match or infer precedence from declaration
+order outside those arrays. Read parser rule methods, gates and lookahead as the
+grammar, then visitor/model validation as acceptance conditions. Distinguish a
+composite token's authored components when stating directive and
+ignored-semicolon boundaries. Check mode-specific whitespace/comments, custom
+matcher failure, category versus exact-unit acceptance, and longer-alternative
+controls; Jison's automatic word boundary does not apply. Check full input
+consumption and the wrapper's error handling: the first lexer error is reported
+before any parser error, and a recovered CST need not be accepted.
+
 #### Langium diagrams
 
 To be written for pie.
@@ -357,6 +371,9 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
    difference with examples, what it means for an author, why mermaid.js reads
    it so, the rule and why, the documentation and issues of mermaid.js where any
    were found), and with a row in the table of known-divergences.md.
+   - When adding a diagram's paragraph to a divergence document, also add the
+     diagram's entry to the section The documentation of mermaid.js and its
+     issues.
 
 The Db summary of a diagram type and how it is built from the tree are documents
 of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
@@ -746,8 +763,12 @@ are sorted (the tests SKILL).
 - Do not try something by editing a tracked file temporarily. Copy it to the
   working directory outside the repository and edit the copy.
 
-## 8. Jison and Langium
+## 8. Jison, Langium, and Chevrotain
 
 Section 3.1 on Jison diagrams was written with flowchart. The steps for Langium
 diagrams (pie and others) are to be written for pie, in the Langium part of 3.1,
 together with what differs in 3.2 to 3.5.
+
+For Chevrotain, use the Chevrotain procedure in 3.1 and its checks of modes,
+ordered matches, `longer_alt`, authored boundaries, and error handling; the
+still-unwritten Langium procedure is not guidance for a Chevrotain parser.

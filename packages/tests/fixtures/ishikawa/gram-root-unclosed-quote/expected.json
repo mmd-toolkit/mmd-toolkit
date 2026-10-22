@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G: start, document, statement and stop] Does a quote require a closing delimiter?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"open",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"open",
+      "children": []
+    }
+  }
+}

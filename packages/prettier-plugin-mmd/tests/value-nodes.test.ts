@@ -5,11 +5,14 @@
  */
 import { visitorKeys } from "@mmd-toolkit/parser"
 import { describe, expect, it } from "vitest"
+import { agentflowValueNodeTypes } from "../src/printers/agentflow-layout.ts"
 import { valueNodeTypes } from "../src/printers/flowchart-layout.ts"
 import { blockValueNodeTypes } from "../src/printers/block-layout.ts"
 import { classValueNodeTypes } from "../src/printers/class-layout.ts"
+import { ishikawaValueNodeTypes } from "../src/printers/ishikawa-layout.ts"
 import { vennValueNodeTypes } from "../src/printers/venn-layout.ts"
 import { c4ValueNodeTypes } from "../src/printers/c4-layout.ts"
+import { usecaseValueNodeTypes } from "../src/printers/usecase-layout.ts"
 import { erValueNodeTypes } from "../src/printers/er-layout.ts"
 import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
 import { journeyValueNodeTypes } from "../src/printers/journey-layout.ts"
@@ -44,6 +47,31 @@ interface DiagramValues {
 }
 
 const diagrams: readonly DiagramValues[] = [
+  {
+    prefix: "Usecase",
+    values: usecaseValueNodeTypes,
+    notValues: new Set([
+      "NumericLiteral",
+      "UsecaseArrow",
+      "UsecaseOpeningArrow",
+      "UsecaseDirectionStatement",
+    ]),
+  },
+  {
+    prefix: "Agentflow",
+    values: agentflowValueNodeTypes,
+    notValues: new Set([
+      "AgentflowEmptyStatement",
+      "AgentflowArrow",
+      "AgentflowOpeningArrow",
+    ]),
+  },
+  {
+    prefix: "Ishikawa",
+    values: ishikawaValueNodeTypes,
+    // Every value, including quotes and numbers, is an IshikawaLiteral.
+    notValues: new Set(["Identifier", "StringLiteral", "NumericLiteral"]),
+  },
   {
     prefix: "Venn",
     values: vennValueNodeTypes,

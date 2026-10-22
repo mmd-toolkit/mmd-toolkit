@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Are nonpositive relative levels clamped before choosing the parent?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        },
+        {
+          "text": "B",
+          "children": []
+        },
+        {
+          "text": "C",
+          "children": [
+            {
+              "text": "D",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "E",
+          "children": []
+        }
+      ]
+    }
+  }
+}

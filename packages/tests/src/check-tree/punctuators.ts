@@ -1,8 +1,9 @@
+import { USECASE_PUNCTUATORS } from "./usecase.ts"
 import { VENN_PUNCTUATORS } from "./venn.ts"
 import { BLOCK_PUNCTUATORS } from "./block.ts"
 import { C4_PUNCTUATORS, c4PunctuatorText } from "./c4.ts"
 import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
-import { FLOWCHART_SHAPES } from "./flowchart-shapes.ts"
+import { GRAPH_SHAPES } from "./graph-shapes.ts"
 import { KANBAN_PUNCTUATORS } from "./kanban.ts"
 import { MINDMAP_PUNCTUATORS } from "./mindmap.ts"
 import { label } from "./problems.ts"
@@ -24,7 +25,7 @@ import { nodesOf } from "./walk.ts"
 // that is the whole of another entry glued to the next by the cut.
 
 /** The text of each opening and closing of a shape (ast/flowchart.md, FlowchartShape; diagrams/flowchart.md, Shapes). */
-const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = FLOWCHART_SHAPES.flatMap(
+const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = GRAPH_SHAPES.flatMap(
   (shape) => [shape.opening, ...shape.closings],
 )
 
@@ -38,6 +39,22 @@ const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = FLOWCHART_SHAPES.flatMap(
  * that row.
  */
 export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  UsecaseDiagram: USECASE_PUNCTUATORS,
+  AgentflowDiagram: [
+    ...FLOWCHART_SHAPE_DELIMITERS,
+    "|",
+    ":",
+    "&",
+    ":::",
+    ",",
+    ";",
+    "@",
+    "@{",
+    "}",
+    "{",
+    "(",
+    ")",
+  ],
   FlowchartDiagram: [
     ...FLOWCHART_SHAPE_DELIMITERS,
     "|",
@@ -105,6 +122,7 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   KanbanDiagram: KANBAN_PUNCTUATORS,
   // The row `Punctuator` of parser/docs/tokens/mindmap.md.
   MindmapDiagram: MINDMAP_PUNCTUATORS,
+  IshikawaDiagram: [],
   // The row `Punctuator` of parser/docs/tokens/timeline.md.
   TimelineDiagram: TIMELINE_PUNCTUATORS,
   // The row `Punctuator` of parser/docs/tokens/sankey.md.
@@ -123,8 +141,12 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
 
 /** The node types whose range holds the tokens of an arrow, which the check of the node reads. */
 const ARROW_NODE_TYPES: ReadonlySet<string> = new Set([
+  "UsecaseArrow",
+  "UsecaseOpeningArrow",
   "BlockArrow",
   "BlockOpeningArrow",
+  "AgentflowArrow",
+  "AgentflowOpeningArrow",
   "FlowchartArrow",
   "FlowchartOpeningArrow",
   "SequenceArrow",
@@ -146,7 +168,11 @@ export function checkPunctuatorsAreWhole(
 ): void {
   const texts = PUNCTUATOR_TEXTS[root.body.type] ?? []
   const textOfPunctuator =
-    root.body.type === "C4Diagram" ? c4PunctuatorText : (text: string) => text
+    root.body.type === "C4Diagram"
+      ? c4PunctuatorText
+      : root.body.type === "UsecaseDiagram"
+        ? (text: string) => (/^-{2,}$/u.test(text) ? "--" : text)
+        : (text: string) => text
   const arrows = nodesOf(root).filter((node) => ARROW_NODE_TYPES.has(node.type))
   const punctuators = diagramTokensOf(root).filter(
     (token) =>
@@ -159,14 +185,34 @@ export function checkPunctuatorsAreWhole(
   )
   for (const token of punctuators) {
     problems.expect(
-      texts.includes(textOfPunctuator(token.value)),
+      texts.includes(textOfPunctuator(token.value)) &&
+        !(
+          root.body.type === "UsecaseDiagram" &&
+          /^-{2,}$/u.test(token.value) &&
+          !nodesOf(root).some(
+            (node) =>
+              node.type === "UsecaseIdentifier" &&
+              node.range[0] <= token.range[0] &&
+              token.range[1] <= node.range[1],
+          )
+        ),
       label(token),
       `the Punctuator text ${JSON.stringify(token.value)} is none of those of a ${root.body.type}`,
     )
   }
+  const jsonBlocks =
+    root.body.type === "UsecaseDiagram"
+      ? nodesOf(root).filter((node) => node.type === "UsecaseJsonDataBlock")
+      : []
   reportCutEntries(
     root,
-    punctuators,
+    punctuators.filter(
+      (token) =>
+        !jsonBlocks.some(
+          (node) =>
+            node.range[0] <= token.range[0] && token.range[1] <= node.range[1],
+        ),
+    ),
     (joined) => texts.includes(textOfPunctuator(joined)),
     problems,
   )

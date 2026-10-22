@@ -36,6 +36,9 @@ const DIAGRAMS: readonly DiagramType[] = [
   "kanban",
   "c4",
   "venn",
+  "ishikawa",
+  "agentflow",
+  "usecase",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -62,6 +65,28 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads usecase fixtures", () => {
+    const fixtures = fixturesOf("usecase")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("usecase")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
+  it("loads agentflow fixtures", () => {
+    const fixtures = fixturesOf("agentflow")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("agentflow")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
   it("loads flowchart fixtures", () => {
     const fixtures = fixturesOf("flowchart")
     expect(fixtures.length).toBeGreaterThan(0)
@@ -134,6 +159,17 @@ describe("fixtures", () => {
     for (const fixture of fixtures) {
       if (fixture.expected.accepted) {
         expect(fixture.expected.diagramType).toBe("venn")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
+  it("loads ishikawa fixtures", () => {
+    const fixtures = fixturesOf("ishikawa")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("ishikawa")
         expect(fixture.expected.db).not.toBeNull()
       }
     }

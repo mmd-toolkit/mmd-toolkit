@@ -168,10 +168,21 @@ the parser's input, though not for detection, when the diagram's Db sets
 Step 7 then works on the text that the parser receives, so it also sees the
 comment lines and the leading whitespace. In the pinned mermaid.js only the
 agentflow Db does so: its parser receives comment lines and leading whitespace,
-unless the source after the frontmatter, without its directives and with each
-`\r\n` counted as one, is longer than `maxTextSize` UTF-16 code units, in which
-case Step 5 applies as usual. `maxTextSize` can only be set by the site
-configuration (see
+unless the source after the complete frontmatter trivia, including
+whitespace-only lines after the closing --- line, without its directives and
+with each `\r\n` counted as one, is longer than `maxTextSize` UTF-16 code units,
+in which case Step 5 applies as usual. [fixture:
+agentflow/comment-default-size-equal-crlf] [fixture:
+agentflow/comment-default-size-above-crlf] [fixture:
+agentflow/comment-default-size-equal-inline-directive] [fixture:
+agentflow/comment-default-size-above-inline-directive] [fixture:
+agentflow/comment-default-size-equal-frontmatter] [fixture:
+agentflow/comment-default-size-above-frontmatter] [fixture:
+agentflow/frontmatter-extra-trivia-below] [fixture:
+agentflow/frontmatter-extra-trivia-boundary] [fixture:
+agentflow/frontmatter-extra-whitespace-line-boundary] [fixture:
+agentflow/frontmatter-extra-trivia-above] `maxTextSize` can only be set by the
+site configuration (see
 [The effective configuration](../../tests/docs/configuration.md#the-effective-configuration));
 it is 50000 by default. The agentflow document says how its lexer treats them.
 

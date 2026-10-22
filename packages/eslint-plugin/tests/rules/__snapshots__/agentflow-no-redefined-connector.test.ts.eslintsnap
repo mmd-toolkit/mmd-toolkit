@@ -1,0 +1,281 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> docs/rules/agentflow-no-redefined-connector.md incorrect 1
+Filename: agentflow-no-redefined-connector-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   connector C[First]
+  3 |   connector C[Second]
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> docs/rules/agentflow-no-redefined-connector.md incorrect 2
+Filename: agentflow-no-redefined-connector-incorrect-2.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   github["create_issue"] --> done
+  3 |   connector github["GitHub API"]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `github` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-entity-written-limit
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-entity-written-limit-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C["#35;"]
+  3 | connector C["#"]
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-erased-click-name
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-erased-click-name-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C click A
+  3 | B[First]
+  4 | connector C AB[Second]
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the label of `C AB` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-html-written-limit
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-html-written-limit-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[<b x="a">t</b>]
+  3 | connector C[<b x='a'>t</b>]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-name-padding
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-name-padding-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector " C "[First]
+  3 | connector C[Second]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-replaces-diamond
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-replaces-diamond-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | C{API} --> B
+  3 | connector C[API]
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the drawn shape of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-replaces-input
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-replaces-input-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | C[/API/] --> B
+  3 | connector C[API]
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the kind of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-replaces-vertex
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-replaces-vertex-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | C[Ordinary] --> B
+  3 | connector C[API]
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-same-as-vertex
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-same-as-vertex-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | C[API] --> B
+  3 | connector C[API]
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the kind of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-shaped-vertex-excluded
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-shaped-vertex-excluded-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[First]
+  3 | C[Second]
+  4 | connector C[Third]
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the label of `C` written on line 3 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-title-comment-between
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-title-comment-between-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[First]
+  3 | %% comment
+  4 |
+  5 | %%{init: {}}%%
+  6 | connector C[Second]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-title-data
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-title-data-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[First]
+  3 | C@{label: Second}
+  4 | connector C[Third]
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-title-empty-latest
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-title-empty-latest-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[First]
+  3 | connector C[ ]
+  4 | connector C[Second]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-title
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-title-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[First]
+  3 | connector C[Second]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-title-three
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-title-three-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[First]
+  3 | connector C[Second]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | connector C[First]
+    | ^~~~~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+[2] mermaid.js replaces the label of `C` written on line 3 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-title-three-omitted
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-title-three-omitted-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C[First]
+  3 | connector C
+  4 | connector C[Second]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/connector-untitled-replaces-vertex
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/connector-untitled-replaces-vertex-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | C[Ordinary] --> B
+  3 | connector C
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label of `C` written on line 2 with that of this connector.
+---
+
+
+Test: agentflow-no-redefined-connector >> invalid >>> invalid/agentflow/ignored-vertex-keeps-connector-history
+Filename: tests/fixtures/rules/agentflow-no-redefined-connector/invalid/agentflow/ignored-vertex-keeps-connector-history-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A e@--> B
+  3 | connector e[First]
+  4 | e[Ignored]
+  5 | connector e[First]
+  6 | connector e[Second]
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the label of `e` written on line 5 with that of this connector.
+---

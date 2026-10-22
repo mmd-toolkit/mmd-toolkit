@@ -1,0 +1,80 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/ishikawa.html",
+    "line": 107
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Blurry Photo",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Blurry Photo",
+      "children": [
+        {
+          "text": "Process",
+          "children": [
+            {
+              "text": "Out of focus",
+              "children": []
+            },
+            {
+              "text": "Shutter speed too slow",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "User",
+          "children": [
+            {
+              "text": "Shaky hands",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "Equipment",
+          "children": [
+            {
+              "text": "LENS",
+              "children": [
+                {
+                  "text": "Dirty lens",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "text": "SENSOR",
+              "children": [
+                {
+                  "text": "Damaged sensor",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "Environment",
+          "children": [
+            {
+              "text": "Too dark",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "embedded": {
+    "config": {
+      "look": "handDrawn",
+      "handDrawnSeed": 1
+    }
+  }
+}

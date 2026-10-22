@@ -228,16 +228,37 @@ export function patchFlowDb(prototype: object): void {
       ;(originalAddVertex as AddVertex).apply(this, args)
       return
     }
-    const before = elementSummaries(this)
-    ;(originalAddVertex as AddVertex).apply(this, args)
-    const after = elementSummaries(this)
     const id = String(args[0])
+    const before = blockElementSummaries(this, id)
+    ;(originalAddVertex as AddVertex).apply(this, args)
+    if (!before) return
+    const after = blockElementSummaries(this, id)
+    if (!after) return
     const effect = blockEffect(before, after)
     if (typeof effect === "string") {
       recordDataBlockProblem(this, `the block after ${id}: ${effect}`)
       return
     }
     recordDataBlockEffect(this, { id, set: effect })
+  }
+}
+
+/**
+ * Defers extraction failures until after parsing, without catching errors from
+ * mermaid's own `addVertex` call or preventing that call from running.
+ */
+function blockElementSummaries(
+  db: FlowDbLike,
+  id: string,
+): Map<string, JsonObject> | undefined {
+  try {
+    return elementSummaries(db)
+  } catch (error) {
+    recordDataBlockProblem(
+      db,
+      `the block after ${id}: ${error instanceof Error ? error.message : String(error)}`,
+    )
+    return undefined
   }
 }
 

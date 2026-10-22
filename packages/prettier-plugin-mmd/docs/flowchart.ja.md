@@ -20,13 +20,40 @@ fixture の置き方と確かめ方は、
 ヘッダーの後の文はヘッダーより 1 段、
 subgraph の文はその `subgraph` の行より 1 段深く置き、
 `end` は `subgraph` と同じ段に置きます。
-1 段は Prettier の `useTabs` と `tabWidth` オプションのとおりで、
+1 段は Prettier の `useTabs` と `tabWidth` オプションで指定し、
+下記の下限を適用します。
 既定は空白 2 つで、Prettier が整形するほかの言語と同じです。
 ヘッダーの後の文を 1 段深くするのは、mermaid.js の文書の書き方です。
 [fixture: indentation/use-tabs]
-入力に書かれた字下げは保ちません。
-字下げは mermaid.js が読むものではないので、構造だけから決めます。
+通常の字下げは木の構造から決めます。
+入力の桁位置は subgraph の所属を決めません。
 [fixture: indentation/statements] [fixture: indentation/empty-description-block]
+
+本文の1段は共有の意味を持つ字下げ幅を使い、
+`tabWidth: 0`でも最低1つの空白にします。
+`useTabs`では1段をタブ1つにします。
+字下げをすべて取り除くと、方向文がaccessibilityの値や構文エラーに変わり、
+Mermaidの読みが変わるためです。
+この下限で実際の方向文を保護します。
+桁位置で読みが変わる非方向行は、後述の規則で元の字下げを保ちます。
+[fixture: indentation/zero-direction-description-subgraph]
+[fixture: indentation/zero-direction-title]
+[fixture: indentation/zero-direction-title-tab]
+[fixture: indentation/zero-direction-description-block]
+[fixture: indentation/zero-direction-title-prefix]
+[fixture: indentation/zero-direction-directive]
+[fixture: indentation/zero-direction-style-prefix]
+
+入力（エスケープ表記、`tabWidth: 0`）:
+`"flowchart LR\n  accTitle: t;direction TB\n"`。
+
+出力
+([indentation/zero-direction-title-output.mmd](../tests/fixtures/flowchart/indentation/zero-direction-title-output.mmd)):
+
+```mmd
+flowchart LR
+ accTitle: t;direction TB
+```
 
 入力
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-input.mmd)):
@@ -85,7 +112,6 @@ flowchart LR
 [fixture: indentation/direction-text-values-kept]
 [fixture: indentation/direction-text-with-directive-kept]
 [fixture: indentation/acc-descr-block-direction-text-kept]
-[fixture: indentation/compat-direction-text-indented]
 mermaid.js は、そうしたテキストを含む行を字下げすると、方向の文として読みます。
 `accTitle: t;direction TB` はアクセシビリティのタイトルですが、
 同じ行を字下げすると方向 `TB` になります。
@@ -1452,6 +1478,10 @@ flowchart TD
 ```
 
 ### subgraph のヘッダー
+
+タイトルの内側の空白を保ち、`[ T ]`を`[ T ]`のままにします。
+Dbは同じで、見出しには著者のタイトルの書き方を保つためです。
+[fixture: subgraph-header/title-interior-whitespace-kept]
 
 subgraph の id と角括弧のタイトルの間に空白があるかないかは、
 書かれたまま残します。

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Directive within node text with a quoted keyword result."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"ishikawa\"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"ishikawa\"",
+      "children": []
+    }
+  }
+}

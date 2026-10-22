@@ -44,13 +44,16 @@ describe("formatting fixtures", () => {
       const output = fixture.output as string
       expect(await format(fixture, fixture.input)).toBe(output)
       expect(await format(fixture, output)).toBe(output)
-      expect(dbOfText(output, defaultEmbedded())).toEqual(
-        dbOfText(fixture.input, defaultEmbedded()),
+      const embedded = defaultEmbedded()
+      expect(dbOfText(output, embedded)).toEqual(
+        dbOfText(fixture.input, embedded),
       )
       expect(writtenEmbeddedTexts(output)).toEqual(
         writtenEmbeddedTexts(fixture.input),
       )
-      expect(await describeFrontmatterChange(fixture.input, output)).toBeNull()
+      expect(
+        await describeFrontmatterChange(fixture.input, output, fixture.options),
+      ).toBeNull()
     },
   )
 })

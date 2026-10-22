@@ -454,7 +454,8 @@ export abstract class UnitGrammar<
    * delimiters each occupy one UTF-16 code unit, recorded as one `String`
    * item. Its value is the written interior, without common trivia. The
    * caller's lexer and grammar decide which units are strings and whether
-   * empty ones are allowed.
+   * empty ones are allowed, including single-quoted units in usecase. Both
+   * quotes occupy one code unit; no escape decoding is performed.
    */
   protected closedStringLiteralOf(unit: Unit): StringLiteral {
     this.addItem("String", [unit])

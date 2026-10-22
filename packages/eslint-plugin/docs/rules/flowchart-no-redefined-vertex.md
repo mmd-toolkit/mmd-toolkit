@@ -29,13 +29,21 @@ writing the shape and label that the vertex already has: after `A[x]` and
 set by a data block, as in `A@{ shape: rect }`, is not compared, also where it
 stands between two shapes of the vertex. Labels are compared without the
 whitespace at their ends, which mermaid.js removes: `A["x"]` and then `A["x "]`
-is not reported. mermaid.js also keeps every line break (LF, CRLF, or CR) as a
-line feed, and the quotes `"` around the value of an HTML attribute as `'`, so
-`A[<b class="x">t</b>]` and `A[<b class='x'>t</b>]` have the same label, and
-labels that differ only in these are not reported either. The kind of the label
-(text, string, or markdown string) is not compared: after `A["x"]`, ``A["`x`"]``
-writes the same text for the same vertex, which is no id reused for another
-vertex, and mermaid.js uses the label written last.
+is not reported. Every line break (LF, CRLF, or CR) is read as a line feed.
+Labels are otherwise compared as written: mermaid.js turns character references,
+as `#35;`, and the quotes of HTML attributes into other characters before it
+reads a label, so two labels that differ only in those, as
+`A[<b class="x">t</b>]` and `A[<b class='x'>t</b>]`, may be one label for
+mermaid.js and two for this rule. The kind of the label (text, string, or
+markdown string) is not compared: after `A["x"]`, ``A["`x`"]`` writes the same
+text for the same vertex, which is no id reused for another vertex, and
+mermaid.js uses the label written last.
+
+A shaped occurrence whose id is already the id of a link changes nothing and is
+not compared, nor counted as an earlier declaration. A link reads its target
+vertices before creating its links, so a shaped target can still replace a
+vertex before a link takes that id. This applies to both written and generated
+link ids.
 
 Examples of **incorrect** code for this rule:
 

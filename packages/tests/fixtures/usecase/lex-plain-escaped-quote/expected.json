@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a backslash fail to escape a plain-string quote?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error lexing usecase diagram: unexpected character: ->\"<- at offset: 20, skipped 1 characters. at line 2, column 8 [20,21)"
+  }
+}

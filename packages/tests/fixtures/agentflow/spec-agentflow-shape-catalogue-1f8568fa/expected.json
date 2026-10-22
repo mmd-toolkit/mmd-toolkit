@@ -1,0 +1,213 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/agentflow-shape-catalogue.spec.ts",
+    "line": 25,
+    "test": "agentflow shape catalogue > leaves the six domain shapes working"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "t",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "T",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "o",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "O",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine"
+        }
+      },
+      {
+        "id": "i",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "I",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "d",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "D",
+        "type": "diamond",
+        "props": {},
+        "metadata": {
+          "shape": "diamond"
+        }
+      },
+      {
+        "id": "r",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "R",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      },
+      {
+        "id": "c",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "type": "hexagon",
+        "props": {},
+        "metadata": {
+          "shape": "hexagon"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "t",
+        "end": "o",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_t_o_0"
+      },
+      {
+        "start": "o",
+        "end": "i",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_o_i_0"
+      },
+      {
+        "start": "i",
+        "end": "d",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_i_d_0"
+      },
+      {
+        "start": "d",
+        "end": "r",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_d_r_0"
+      },
+      {
+        "start": "r",
+        "end": "c",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_r_c_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "t",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      },
+      {
+        "id": "o",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine"
+          }
+        }
+      },
+      {
+        "id": "i",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "d",
+        "set": {
+          "type": "diamond",
+          "metadata": {
+            "shape": "diamond"
+          }
+        }
+      },
+      {
+        "id": "r",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      },
+      {
+        "id": "c",
+        "set": {
+          "type": "hexagon",
+          "metadata": {
+            "shape": "hexagon"
+          }
+        }
+      }
+    ]
+  }
+}

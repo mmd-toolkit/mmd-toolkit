@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does repeated actor declaration compare labelType as well as label?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "ID 'A' has conflicting labels at line 3, column 7 [36,37); previous declaration at line 2, column 7 [19,20)"
+  }
+}

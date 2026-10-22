@@ -522,8 +522,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     （Accessibility values）。
     閉じないブロックも最後の文です。テキストの終わりまで続くからです
     （ast/xychart.md の XychartAccDescrBlockStatement）。
-    数の書かれたテキストは、符号がなくてもよく、桁と小数部がなくてもよいか、
-    小数部だけです（The axis context）。
+    数の書かれたテキストでは、符号は任意で、
+    桁に任意の小数部が続くか、小数部だけです（The axis context）。
     文字列は閉じていて、`"` を含みません。
     ただし、HTML の属性の引用符の `"` は `'` として読みます（Strings）。
     図のコメントの印は `%%` です（Comments）。
@@ -603,6 +603,501 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `StringFragment` トークンで、
     その後ろの語は `RawText` トークンです。
 
+  - agentflow: 29 種のノードの子の型、フィールド順、空にできないリスト、
+    スカラーの語彙は
+    [ast/agentflow.ja.md](../../spec/docs/ast/agentflow.ja.md) に従います。
+    構造の範囲は自身のトークンと子の外包です。
+    分割ラベルはソース順では閉じ矢印の前、訪問順では矢印の後です。
+    EmptyStatement はセミコロン一つです。
+    ヘッダーは正確な小文字の agentflow-beta Keyword で、
+    同じ行の方向か null と、必要な最初の区切りを検査します。
+    [fixture: agentflow/gram-flow-all-forms]
+    [fixture: agentflow/gram-global]
+    [fixture: agentflow/gram-connector-all-forms]
+    [fixture: agentflow/gram-tail-node-semicolons]
+    [fixture: agentflow/gram-split-failure-label]
+    [fixture: agentflow/header-only]
+    [fixture: agentflow/header-td]
+    [fixture: agentflow/lex-header-space-then-semicolon]
+    [fixture: agentflow/gram-empty-description-after-header-direction]
+
+    AgentflowIgnoredText の kind と value は必須の文字列です。
+    Name の parts と click の前置きフィールドでは、
+    kind は認識された消される形式に一致する必要があります。
+    click、empty-string、empty-markdown-string、empty-call、
+    empty-description-block のいずれかです。
+    direction の前後は、綴りによらず direction-text です
+    （ast/agentflow.md の AgentflowIgnoredText）。
+    [fixture: agentflow/lex-flow-name-click-state]
+    [fixture: agentflow/lex-empty-string-in-flow-name]
+    [fixture: agentflow/lex-empty-markdown-in-flow-name]
+    [fixture: agentflow/lex-empty-call-in-connector-name]
+    [fixture: agentflow/lex-empty-description-in-flow-name]
+    [fixture: agentflow/lex-direction-line-greedy]
+    URL の前の閉じた空の説明ブロックは kind empty-description-block です。
+    URL と callback のツールチップの前も、同じ消される形式の規則に従います。
+    [fixture: agentflow/gram-empty-description-before-href]
+    [fixture: agentflow/lex-mixed-empty-forms-before-url-tooltip]
+    [fixture: agentflow/gram-click-erased-before-callback-tooltip]
+
+    Name.parts は少なくとも一つの Label を持ち、
+    認識された消される形式を個別の IgnoredText として保ちます。
+    通常の断片を最大にし、書かれた空白を保ちます。
+    string/markdown の kind は最初の寄与する断片だけが持てます。
+    click 文脈を抜けるちょうど一つの空白は断片外です。
+    click の後に認識された空文字列や空 markdown 文字列は、
+    Label を寄与せずに、単位を読むという要件を満たします。
+    flow では、後続の裸の断片には文脈を抜ける一空白が必要です。
+    何も読んでいない末尾の click は不正です。
+    [fixture: agentflow/lex-name-click-empty-string-before-text]
+    [fixture: agentflow/lex-name-click-empty-markdown-before-text]
+    [fixture: agentflow/lex-name-click-empty-string-before-string]
+    [fixture: agentflow/lex-name-click-empty-string-then-call]
+    [fixture: agentflow/lex-connector-name-click-empty-string-tail]
+    [fixture: agentflow/gram-name-click-empty-string-adjacent-text]
+    [fixture: agentflow/gram-flow-name-click-empty-markdown-adjacent-rejected]
+    connector では、click 後の消される空文字列や空 markdown 文字列に、
+    後続の text Label が接して構いません。
+    kind はそれぞれ empty-string と empty-markdown-string です。
+    先頭や末尾のセミコロン、名前の最初の寄与する断片も含みます
+    （diagrams/agentflow.md の Names, strings, and click text、
+    ast/agentflow.md の AgentflowName）。
+    [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-text]
+    [fixture: agentflow/lex-connector-name-click-empty-string-adjacent-semicolon]
+    [fixture: agentflow/lex-connector-name-click-empty-string-no-id-adjacent-semicolon]
+    [fixture: agentflow/lex-connector-name-click-empty-string-trailing-semicolon]
+    [fixture: agentflow/lex-connector-name-click-empty-markdown-adjacent-text]
+    [fixture: agentflow/lex-connector-name-click-empty-markdown-adjacent-semicolon]
+    [fixture: agentflow/lex-connector-name-click-empty-markdown-trailing-semicolon]
+    [fixture: agentflow/lex-connector-name-click-empty-markdown-no-id-adjacent-semicolon]
+    その Label の前で、空文字列に空 markdown 文字列が接して構いません。
+    消される各形式は、個別の IgnoredText part として保ちます。
+    [fixture: agentflow/lex-connector-name-click-empty-string-then-markdown]
+    flow と connector の見出しは一つの空白、タイトルの括弧、
+    接する隣接データを検査します。
+    名前の最後の click 文脈を抜ける空白は、タイトルの開き括弧、
+    見出しデータ、flow の見出し区切りの前で Name の外に保ちます。
+    最後の part が消される空文字列や空 markdown 文字列でも同じで、
+    後続の単位を検査する前に、この一空白を消費します。
+    （diagrams/agentflow.md の Names, strings, and click text、
+    ast/agentflow.md の AgentflowName）。
+    [fixture: agentflow/name-click-exit-before-title-tab]
+    [fixture: agentflow/name-click-exit-before-title-lf]
+    [fixture: agentflow/name-click-exit-before-title-ls]
+    [fixture: agentflow/name-click-exit-before-data-tab]
+    [fixture: agentflow/name-click-exit-before-separator-space]
+    裸の見出しタイトルでは、開き括弧の後の内側の余白は、
+    trim された Label の範囲外です（ast/agentflow.md の AgentflowLabel）。
+    [fixture: agentflow/name-heading-title-interior-padding]
+    global は本文だけ、無名 flow はタイトルも見出しデータも持ちません。
+    名前の区切り前の空ブロックは Name 内、
+    明示タイトルや global 後は本文の文です。
+    [fixture: agentflow/lex-flow-name-click-mixed]
+    [fixture: agentflow/lex-name-click-exit-extra-space]
+    [fixture: agentflow/lex-name-click-exit-crlf]
+    [fixture: agentflow/lex-name-click-initial-markdown]
+    [fixture: agentflow/lex-empty-call-in-flow-name]
+    [fixture: agentflow/gram-flow-name-space-between-empty-blocks]
+    [fixture: agentflow/gram-connector-name-terminal-click-eof]
+    [fixture: agentflow/gram-flow-inline-data]
+    [fixture: agentflow/gram-empty-description-after-flow-title]
+    [fixture: agentflow/gram-empty-description-after-global]
+
+    葉の綴りと token kind は、その位置の優先順つき字句規則にも従います。
+    頂点 id とクラス接尾辞は id 単位を使い、
+    カンマ区切りの id リストは各スロットからカンマを除きます。
+    shape property は単独の id-run、interpolation と裸の callback は name、
+    裸のコンテナー名はキーワードの優先順を含む name-piece を使います。
+    click id は固有の空白以外の文字の連続です。
+    [fixture: agentflow/lex-vertex-equals-alone]
+    [fixture: agentflow/lex-vertex-supplementary-alone]
+    [fixture: agentflow/gram-bare-callback-global]
+    [fixture: agentflow/gram-connector-name-default]
+    [fixture: agentflow/gram-style-suffix]
+    [fixture: agentflow/gram-class-target-empty-ends]
+    [fixture: agentflow/gram-props]
+    [fixture: agentflow/gram-linkstyle-interpolate-default]
+    [fixture: agentflow/gram-click-punctuation-id]
+    [fixture: agentflow/lex-class-suffix-equals]
+    [fixture: agentflow/gram-class-target-global]
+    [fixture: agentflow/gram-props-number-unit]
+    [fixture: agentflow/gram-interpolate-default-name]
+
+    click 名の断片の初期文字列の後で、
+    裸の続きが別の文字列単位を始めることはできません。
+    [fixture: agentflow/gram-name-click-second-string]
+
+    裸のラベルの続きは、通常、slanted、ellipse、分割リンクの文脈と、
+    その区切りの優先順に従います。
+    style リテラルは style 単位からなり、
+    エスケープされたカンマは classDef だけが持てます。
+    [fixture: agentflow/gram-bare-label-open-bracket]
+    [fixture: agentflow/gram-bare-label-pipe]
+    [fixture: agentflow/gram-slanted-label-open-bracket]
+    [fixture: agentflow/gram-ellipse-label-open-paren]
+    [fixture: agentflow/lex-style-equals-in-value]
+    [fixture: agentflow/gram-classdef-escaped-comma-whitespace-tail]
+    [fixture: agentflow/gram-split-edge-string-bare-tail]
+
+    頂点、グループ、リンクは、繰り返しを含む書かれた出現を保ちます。
+    グループの & の両側には空白が必要で、頂点の接尾辞は接します。
+    プロパティの両項はコロンに接します。
+    図形は共有の区切りと名前の表を使い、[| の場合だけプロパティを持ちます。
+    ラベルは空でない書かれた内容と初期の kind を保ちます。
+    完全な矢印は一つの Punctuator で、実線のダッシュは > か x で終わり、
+    reference のドットの両側にはダッシュがあります。
+    startMarker は none、line/endMarker は綴りに対応し、長さは上限を適用しません。
+    開き矢印は正確に -- で、ラベルと実線の閉じ矢印を必要とします。
+    パイプラベルの後の空白単位は高々一つです。
+    [fixture: agentflow/gram-group-spaces]
+    [fixture: agentflow/gram-group-unspaced]
+    [fixture: agentflow/gram-node-three-definitions]
+    [fixture: agentflow/gram-bracket-shapes]
+    [fixture: agentflow/gram-props]
+    [fixture: agentflow/gram-three-edge-kinds]
+    [fixture: agentflow/db-edge-length-cap]
+    [fixture: agentflow/gram-split-failure-label]
+    [fixture: agentflow/gram-reference-quoted-pipe-label]
+    [fixture: agentflow/gram-pipe-label-two-spaces-after]
+
+    DataBlock は完全な @{ と }、RawText の内部、正確な書かれた値を持ちます。
+    空ブロックと隣接ブロックも別々に保ちます。
+    内部のキャレットや閉じ括弧を保護するのは二重引用符だけで、
+    バックスラッシュは引用符のエスケープではありません。
+    YAML、エイリアスの解決、メタデータの型、図形一覧は検証しません。
+    [fixture: agentflow/gram-data-adjacent-multiline-blocks]
+    [fixture: agentflow/db-data-block-empty-multiline]
+    [fixture: agentflow/lex-data-block-caret]
+    [fixture: agentflow/lex-data-block-quoted-caret]
+    [fixture: agentflow/lex-data-backslash-quote-is-not-escape]
+    [fixture: agentflow/db-data-block-invalid-yaml]
+    [fixture: agentflow/div-metadata-yaml-self-alias]
+    共通の前処理後のテキストでは、データブロック、リテラル、名前、
+    分割リンクのテキスト、初期文字列を図のコメントで切れません。
+    これらの文脈はパーセントの対を内容として読みます。
+    既定のサイズ上限を超えると、
+    共通のコメント領域が字句解析前に値を切れます。
+    [fixture: agentflow/div-data-percent-line-is-content]
+    [fixture: agentflow/comment-split-edge-label]
+    [fixture: agentflow/lex-flow-name-string-comment-content]
+    [fixture: agentflow/lex-accessibility-block-comment]
+    [fixture: agentflow/comment-default-size-fallback-inline-label]
+
+    style/class/linkStyle のリストは、
+    末尾も含めカンマの枠と null の穴を保ちます。
+    id リストには実際の id かカンマが必要です。
+    null のスタイルも、必要な隙間とは別に書かれた空白単位を必要とします。
+    [fixture: agentflow/gram-class-one-operand]
+    [fixture: agentflow/gram-style-empty-value]
+    後続コメントに取られる ASCII の余白はスタイル単位になりません。
+    ASCII 以外の空白は単位として残ります。
+    [fixture: agentflow/gram-style-null-before-comment]
+    [fixture: agentflow/gram-style-null-before-comment-nbsp]
+    スタイルのリテラルは先頭空白を保ち、末尾の余白を除きます。
+    キーワード、id/クラスの値、補間の隙間は Agentflow の正確な一空白単位です。
+    classDef はエスケープされたカンマをリテラル内に保ちます。
+    linkStyle は補間かスタイルを持ち、番号は正準形で、
+    入れ子を含め先行する鎖とグループの辺を指します。
+    別の exceedsMaxEdges ヘルパーがサイトの上限を検査します。
+    [fixture: agentflow/gram-class-target-empty-ends]
+    [fixture: agentflow/gram-classdef-trailing-empty-name]
+    [fixture: agentflow/gram-style-all-null]
+    [fixture: agentflow/gram-linkstyle-trailing-null-style]
+    [fixture: agentflow/db-node-style-first-leading-spaces]
+    [fixture: agentflow/gram-classdef-escaped-comma]
+    [fixture: agentflow/lex-style-double-space-keyword]
+    [fixture: agentflow/lex-class-double-space-value]
+    [fixture: agentflow/lex-linkstyle-interpolate-double-space]
+    [fixture: agentflow/lex-linkstyle-leading-zero]
+    [fixture: agentflow/gram-linkstyle-style-out-of-bounds]
+    [fixture: agentflow/config-max-edges-group]
+
+    URL と tooltip はそれぞれ完全な文字列単位を一つだけ占め、
+    裸の続きや、結合した後続の文字列を持ちません。
+    [fixture: agentflow/gram-click-url-merged-strings]
+
+    click の id リストは空の両端を null として保ちます。
+    裸のコールバックは Identifier、
+    call の名前と任意の引数は不透明な Literal です。
+    余白を保ち、空白だけの引数は null にします。
+    最初の括弧が空なら、二つ目の call が引数を供給できます。
+    URL とツールチップは閉じた空でない文字列で、
+    target は最後に書かれた対象の Keyword か null です。
+    textBeforeUrl/textBeforeTooltip は、
+    認識された消される形式全体を所定の位置で保ち、
+    後続の値を必要とします。
+    コールバック名や target の前には prefix フィールドがありません。
+    ツールチップと target の隙間は一空白単位です。
+    [fixture: agentflow/gram-click-id-empty-ends]
+    [fixture: agentflow/gram-click-callback-forms]
+    [fixture: agentflow/gram-click-callback-space-args]
+    [fixture: agentflow/gram-callback-arguments-after-second-call]
+    [fixture: agentflow/gram-url-tooltip-whitespace-only]
+    [fixture: agentflow/gram-click-link-forms]
+    [fixture: agentflow/gram-click-erased-before-url]
+    [fixture: agentflow/gram-click-erased-before-callback-tooltip]
+    [fixture: agentflow/lex-mixed-empty-forms-before-url-tooltip]
+    [fixture: agentflow/div-empty-description-before-callback-name]
+    [fixture: agentflow/div-empty-description-before-link-target]
+
+    direction は TB、BT、RL、LR、TD の優先順で家族を選び、
+    その家族の最後の一致を使います。
+    trim した空でない前後のテキストは IgnoredText です。
+    アクセシビリティの行の値は先頭空白を飛ばして行全体を保ち、
+    次の物理行から始まることもあります。
+    null になるのは EOF だけです。
+    ブロックの closed は書かれた括弧に従い、閉じていなければ EOF まで伸びます。
+    字句上の隙間は dbFromTree と同じ既定サイズのコメント規則と、
+    閉じ括弧直後の変換を使います。
+    ブロックの値は最初の閉じ括弧で止まり、後続の文を値に含めません。
+    [fixture: agentflow/db-accessibility-block]
+    [fixture: agentflow/lex-direction-value-priority]
+    [fixture: agentflow/lex-direction-last-selected-occurrence]
+    [fixture: agentflow/lex-direction-unclosed-bracket-prefix]
+    [fixture: agentflow/db-acctitle-next-line]
+    [fixture: agentflow/db-acctitle-eof]
+    [fixture: agentflow/db-accessibility-unclosed-block]
+    完全な frontmatter trivia は閉じ区切り後の空行や空白だけの行を含み、
+    本文の最初の空でない行の字下げは保ちます。
+    [fixture: agentflow/frontmatter-extra-trivia-boundary]
+    [fixture: agentflow/frontmatter-extra-trivia-below]
+    [fixture: agentflow/frontmatter-extra-whitespace-line-boundary]
+    [fixture: agentflow/frontmatter-extra-trivia-above]
+    [fixture: agentflow/frontmatter-extra-trivia-indent-above]
+    [fixture: agentflow/comment-default-size-equal-frontmatter]
+    [fixture: agentflow/comment-default-size-above-frontmatter]
+    [fixture: agentflow/lex-brace-string-keeps-blank-line]
+
+    所属を除外する前の候補で、
+    hasOwnProperty の後に空でない候補があれば拒否します。
+    direction/global/style/class/linkStyle/click は候補を寄与しません。
+    id の重複、未解決の参照、包含の循環、既知の削除済み図形は拒否しません。
+    共有の単位全体の検査が、
+    内部の directive と無視されるセミコロンを拒否します。
+    保持先のない空形式用に、自由な文や隙間のフィールドはありません。
+    [fixture: agentflow/gram-flow-named-member-hasownproperty]
+    [fixture: agentflow/gram-hasownproperty-last-member]
+    [fixture: agentflow/gram-flow-hasownproperty-before-empty-statement]
+    [fixture: agentflow/db-flow-three-definitions]
+    [fixture: agentflow/db-diagnostics-no-semantic-checks]
+    [fixture: agentflow/db-diagnostics-containment-cycle]
+    [fixture: agentflow/db-data-block-removed-shape]
+    [fixture: agentflow/div-directive-in-arrow]
+    [fixture: agentflow/div-ignored-semicolon-in-arrow]
+    [fixture: agentflow/div-empty-string-statement]
+
+  - usecase: 26 種のノード、null 条件、空にできないリスト、子の型、
+    スカラーの語は
+    [ast/usecase.md](../../spec/docs/ast/usecase.ja.md) に従います。
+    構造の範囲は記述されたトークンと子の外周で、子はソース順です。
+    ヘッダーは完全な小文字 usecase-beta 一つで、文は物理改行で区切ります。
+    ネイティブな隙間は ASCII HWS だけで、Unicode 空白は許される値の内容です。
+    Identifier、引用文字列、裸のラベル、ステレオタイプ、CSS の名前と値は、
+    それぞれの位置の字句単位でなければなりません。
+    キーワード・演算子の優先順位と数値の代替規則も検査します。
+    単一引用符の StringLiteral は同じ単一引用符で閉じ、
+    バックスラッシュはそれをエスケープしません。
+    [fixture: usecase/db-all-fields] [fixture: usecase/lex-whitespace-leading]
+    [fixture: usecase/lex-unicode-indent]
+    [fixture: usecase/lex-number-decimal-id-unit]
+    [fixture: usecase/lex-forward-circle-id-prefix]
+    [fixture: usecase/lex-native-single-quoted-keys]
+    [fixture: usecase/lex-plain-single-apostrophe]
+
+    CSS 名は Identifier の原子一つ、またはダッシュ接頭部の Punctuator と
+    Identifier の語一つです。間の HWS は名前に残り、どのトークンにも入りません。
+    RawText と String の単位は、共通のソース分割がある場合だけ分かれます。
+    [fixture: usecase/lex-class-property-custom-gap]
+    [fixture: usecase/lex-css-name-custom-tab]
+    [fixture: usecase/directive-in-label]
+    [fixture: usecase/lex-directive-css-name-gap]
+
+    分割矢印の opening は、後続ラベルのソースを含めて選ばれる完全な演算子です。
+    `--o`、`--x`、より長いダッシュ列を、
+    短い opening とラベルの文字へ分割できません。
+    opening 後の HWS はラベルを別の単位に保ちます。
+    [fixture: usecase/gram-split-opening-forward-circle-prefix]
+    [fixture: usecase/gram-split-opening-forward-cross-prefix]
+    [fixture: usecase/gram-split-opening-extra-dash]
+    [fixture: usecase/gram-split-backward-opening-extra-dash]
+    [fixture: usecase/gram-split-opening-circle-prefix-hws-control]
+    [fixture: usecase/gram-split-backward-opening-dash-hws-control]
+
+    style と classDef のどちらでも、JSON 接頭部は CSS 値の成分より先に
+    コンテキストを切り替えます。
+    JSON のオブジェクトが空でも空でなくても、妥当であることは
+    CSS Literal として読める理由にはなりません。
+    [fixture: usecase/gram-style-json-prefix-mode]
+    [fixture: usecase/gram-classdef-json-prefix-mode]
+    [fixture: usecase/gram-style-json-prefix-nonempty-mode]
+
+    この接頭部は Word や hash-color の後も含め、各成分の境界で検査します。
+    plain string、CSS identifier、より長い Identifier の内部からは
+    照合し直しません。
+    [fixture: usecase/gram-style-json-prefix-after-word-mode]
+    [fixture: usecase/gram-style-json-prefix-after-hash-mode]
+    [fixture: usecase/gram-style-json-prefix-in-string-control]
+    [fixture: usecase/gram-style-json-prefix-css-word-control]
+    [fixture: usecase/gram-style-json-prefix-identifier-control]
+
+    actor/entity の接尾部、図形、引用だけの名前、actor リスト、
+    分割・意味付き関連、一段の boundary、メタデータ更新、ノート、
+    JSON の接頭部、class/style リスト、アクセシビリティは、
+    記述された子と句読記号だけを持ちます。
+    矢印のフィールドは記述された記号・線種・ダッシュまたはドット数です。
+    ネイティブメタデータでは、コンマ・改行の区切り、
+    キーとコロンと値の行内継続、スカラー型、対象別の値の集合、
+    最終モデルの条件を検査し、宣言の衝突は後の更新で修復できません。
+    アクセシビリティ値はコロン後または括弧の内部を全部保持し、
+    空白も残して、完全に空の場合だけ null にします。
+    [fixture: usecase/gram-actor-list] [fixture: usecase/db-labeled-arrows]
+    [fixture: usecase/db-semantic-case] [fixture: usecase/gram-boundary-nested]
+    [fixture: usecase/gram-native-key-newline-colon]
+    [fixture: usecase/gram-native-value-newline]
+    [fixture: usecase/gram-native-trailing-newline-comma]
+    [fixture: usecase/gram-native-quoted-business]
+    [fixture: usecase/gram-native-final-invalid-then-valid]
+    [fixture: usecase/gram-native-inline-conflict-later-fix]
+    [fixture: usecase/gram-a11y-line-raw-padding]
+    [fixture: usecase/gram-a11y-whitespace-block]
+
+    共通 trivia の除去と CR/CRLF の正規化後、
+    最後のプロパティから `}` までにある末尾コンマと物理改行は、
+    合計 2 個までで、コンマは改行より前にだけ置けます。
+    ASCII HWS は改行数を変えません。
+    [fixture: usecase/gram-metadata-trailing-comma-no-newline]
+    [fixture: usecase/gram-native-trailing-comma-newline]
+    [fixture: usecase/gram-metadata-trailing-comma-two-newlines]
+    [fixture: usecase/gram-metadata-trailing-comma-three-newlines]
+    [fixture: usecase/gram-metadata-trailing-comma-one-newline-hws]
+    [fixture: usecase/gram-metadata-trailing-comma-two-newlines-hws]
+    [fixture: usecase/gram-metadata-trailing-comma-one-newline-crlf]
+    [fixture: usecase/gram-metadata-trailing-comma-two-newlines-crlf]
+    [fixture: usecase/gram-metadata-trailing-comma-three-newlines-crlf]
+    [fixture: usecase/gram-metadata-trailing-comma-comment-line]
+    [fixture: usecase/gram-metadata-trailing-comma-comment-line-blank-after]
+    [fixture: usecase/gram-metadata-no-trailing-comma-two-newlines]
+    [fixture: usecase/gram-metadata-no-trailing-comma-three-newlines]
+    [fixture: usecase/gram-metadata-no-trailing-comma-four-newlines]
+    [fixture: usecase/gram-metadata-no-trailing-comma-two-crlf]
+    [fixture: usecase/gram-metadata-no-trailing-comma-three-crlf]
+    [fixture: usecase/gram-metadata-no-trailing-comma-two-whitespace-lines]
+    [fixture: usecase/gram-metadata-no-trailing-comma-whitespace-lines]
+    [fixture: usecase/gram-metadata-no-trailing-comma-two-tab-lines]
+    [fixture: usecase/gram-metadata-no-trailing-comma-tab-lines]
+    [fixture:
+    usecase/gram-metadata-no-trailing-comma-two-properties-two-newlines]
+    [fixture:
+    usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines]
+    [fixture: usecase/gram-edge-metadata-two-newlines]
+    [fixture: usecase/gram-edge-metadata-three-newlines]
+    [fixture: usecase/gram-metadata-no-trailing-comma-comment-two-newlines]
+    [fixture: usecase/gram-metadata-no-trailing-comma-comment-three-newlines]
+    コンマと次のプロパティの間では、引き続き複数の改行を許します。
+    [fixture: usecase/gram-metadata-property-comma-two-newlines]
+    [fixture: usecase/gram-metadata-property-comma-three-newlines]
+
+    UsecaseJsonDataBlock は @、任意の HWS、開き括弧、
+    不透明な RawText の内部、最初の対応する閉じ括弧を持ちます。
+    二重引用符とそのバックスラッシュエスケープだけが括弧を保護します。
+    JSON の内容は検証せず、ネイティブな UsecaseMetadata は構文として扱います。
+    共通の完全単位検査は、原子の語や演算子内のソース分割を拒否します。
+    CSS のダッシュ接頭部後の HWS や、
+    JSON 接頭部の完全な成分間は trivia を許します。
+    図種のテストは固定の木を手で作って壊し、corpus の検査は、
+    記録された usecase の木と common の検出 fixture をすべて使います。
+    [fixture: usecase/gram-json-space-after-at]
+    [fixture: usecase/gram-json-double-backslash-before-quote]
+    [fixture: usecase/div-json-balanced-invalid-array]
+    [fixture: usecase/gram-json-brace-in-single-quote]
+    [fixture: usecase/div-directive-raw-json-id]
+    [fixture: usecase/lex-directive-whole-json-prefix-boundary]
+    [fixture: usecase/lex-directive-css-name-gap]
+    [fixture: usecase/div-semicolon-css-property-selected]
+
+  - ishikawa: 子フィールドは ast/ishikawa.md と照合する
+    `ISHIKAWA_CHILD_TYPES` に従います。
+    根は任意で、各ノードはリテラル 1 個と順序付きの子ノードを持ちます。
+    図とノードの範囲は、自身のトークンと子の包絡です。
+    ノードは文字列と子孫の外にトークンを書きません。
+    [fixture: ishikawa/header-only-lf]
+    [fixture: ishikawa/header-comment-ps-whitespace-eof]
+    [fixture: ishikawa/db-all-fields]
+    [fixture: ishikawa/db-three-definitions]
+    `indent` は書かれた行の空白数と等しい非負整数です。
+    タブも 1 と数え、ディレクティブ内部と共通のコメント領域は除きます。
+    ヘッダー行ではヘッダー後の空白だけを数えます。
+    図コメントを終える U+2028 と U+2029 は後続の空白と共に数え、
+    コメント内部の空白は除きます。
+    [fixture: ishikawa/db-indent-tab-character]
+    [fixture: ishikawa/db-indent-equal-mixed-whitespace]
+    [fixture: ishikawa/db-indent-around-directives]
+    [fixture: ishikawa/header-same-line-root]
+    [fixture: ishikawa/comment-preserved-u2028]
+    [fixture: ishikawa/comment-preserved-u2029]
+    [fixture: ishikawa/lex-indent-multiline-directive]
+    [fixture: ishikawa/lex-header-indent-multiline-directive]
+    [fixture: ishikawa/lex-indent-comment-region-ls]
+    [fixture: ishikawa/lex-indent-comment-region-ps]
+    [fixture: ishikawa/lex-comment-ps-indent-excludes-body-padding]
+    最初の原因は根の子で、根の字下げは親を決めません。
+    後続の原因の字下げが最初の原因以下なら根の子です。
+    それ以外では、字下げがより小さい直前の原因が親です。
+    兄弟はソース順です。
+    [fixture: ishikawa/db-indent-first-cause]
+    [fixture: ishikawa/db-indent-root-deeper]
+    [fixture: ishikawa/db-indent-root-shallower]
+    [fixture: ishikawa/db-indent-relative-zero]
+    [fixture: ishikawa/db-indent-clamp-below-base]
+    [fixture: ishikawa/db-indent-nearest-smaller-cause]
+    [fixture: ishikawa/db-indent-jump]
+    [fixture: ishikawa/db-indent-pop-several]
+    リテラルは空でない書かれた値を持ち、末尾空白、引用符、文字参照も保持します。
+    ディレクティブ、共通のコメント領域、選ばれた無視するセミコロンは除きます。
+    RawText トークンはその切断だけで分かれます。
+    [fixture: ishikawa/gram-root-trailing-space]
+    [fixture: ishikawa/gram-empty-quotes]
+    [fixture: ishikawa/header-root-inline-entity]
+    [fixture: ishikawa/directive-root-middle]
+    [fixture: ishikawa/comment-ls-region-in-text]
+    [fixture: ishikawa/lex-root-style-semicolon]
+    文字列は字下げ、`%%`、境界を持つヘッダーの単語で始まりません。
+    除かれる trivia の外に改行を持たず、論理行の末尾まで続きます。
+    [fixture: ishikawa/lex-header-nonascii-child]
+    [fixture: ishikawa/lex-header-middle-label]
+    [fixture: ishikawa/gram-root-unclosed-quote]
+    [fixture: ishikawa/directive-multiline-joins-node-text]
+    [fixture: ishikawa/lex-kelvin-node-text]
+    図は完全な `ishikawa` または `ishikawa-beta` の Keyword を 1 個書きます。
+    ASCII 英字の大文字小文字を区別せず、他の文字は変えずに比べます。
+    beta の規則が先で、元の文字で ASCII の語境界を判断します。
+    選ばれたヘッダーの分割と、
+    除かれるディレクティブ以外に何も続かないヘッダーを拒否します。
+    [fixture: ishikawa/header-uppercase]
+    [fixture: ishikawa/header-beta-mixed-case]
+    [fixture: ishikawa/detect-kelvin-in-header]
+    [fixture: ishikawa/lex-header-kelvin-boundary]
+    [fixture: ishikawa/lex-header-dotted-i-boundary]
+    [fixture: ishikawa/header-beta-letter-suffix]
+    [fixture: ishikawa/directive-in-header]
+    [fixture: ishikawa/div-directive-beta-prefix]
+    [fixture: ishikawa/header-only]
+    [fixture: ishikawa/header-directive-only-eof]
+    空行、コメント、ディレクティブはノードを作りません。
+    連続するノード文字列の間には、改行か図コメントを終える LS/PS があります。
+    それ以外の隙間と末尾の文字は空白です。
+    [fixture: ishikawa/div-header-blank-node]
+    [fixture: ishikawa/div-header-trailing-space-node]
+    [fixture: ishikawa/gram-between-directive-line]
+    [fixture: ishikawa/gram-root-and-child-one-line]
+    [fixture: ishikawa/comment-preserved-u2028]
+    [fixture: ishikawa/comment-preserved-u2029]
+    図コメントのマークは `%%` で、
+    物理改行、U+2028、U+2029、EOF の前で終わります。
+    [fixture: ishikawa/gram-preserved-comment-after-root]
+    [fixture: ishikawa/comment-preserved-u2028]
+    [fixture: ishikawa/comment-preserved-u2029]
+    [fixture: ishikawa/comment-only-eof]
   - venn: 子の型、null 条件、空にできない名前とプロパティのリスト、
     部分集合の名前の数、数値 id のラベルの禁止、
     kind の語は ast/venn.md に従います。

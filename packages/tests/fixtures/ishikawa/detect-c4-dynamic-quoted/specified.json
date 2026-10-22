@@ -1,0 +1,13 @@
+{
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"C4Dynamic\"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"C4Dynamic\"",
+      "children": []
+    }
+  }
+}

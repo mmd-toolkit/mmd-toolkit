@@ -5,5 +5,13 @@
   },
   "accepted": true,
   "diagramType": "ishikawa",
-  "db": null
+  "db": {
+    "title": "P",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "P",
+      "children": []
+    }
+  }
 }

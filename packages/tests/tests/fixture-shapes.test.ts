@@ -12,6 +12,7 @@ import {
 import type { ShapeSource, ShapeToken } from "../src/fixture-shapes.ts"
 import type { DiagramType } from "../src/index.ts"
 import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import { mayHaveRecordedTrees } from "./check-tree-recorded.ts"
 
 // docs/maintaining-fixtures.md, Choosing inputs by shape: two texts of one
 // shape differ only in what the author named, as far as the names are the same
@@ -483,6 +484,7 @@ describe("the data block node types of the shape", () => {
     }
     expect([...headings].sort()).toEqual([...DATA_BLOCK_NODE_TYPES].sort())
     for (const type of DATA_BLOCK_NODE_TYPES) {
+      if (!mayHaveRecordedTrees(type)) continue
       expect(NODE_FIELDS[type], type).toBeDefined()
     }
   })

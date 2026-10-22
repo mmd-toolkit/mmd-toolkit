@@ -71,7 +71,8 @@ description:
 - 仕様の文書は、mermaid.js が入力を Db にどう読むかを書かない。
   既定値、値がどの項目に付くか、数や型の読み方、文が Db に何を足すか、
   Db での名前を書かず、tests パッケージの要約
-  （`packages/tests/docs/db-summaries.md`、`packages/tests/docs/db-from-tree.md`）
+  （`packages/tests/docs/db-summaries.md`、
+  `packages/tests/docs/db-from-tree.md`）
   を引く。
   残すのは、入力を受理するかどうかを決める文、木の型と欄の値とその理由、
   字句の読みである。
@@ -352,6 +353,22 @@ pin した版のタグで clone する。
 4. 前処理の順序（common.md の Reading a source）と、
    検出（detection.md）を確かめる。
 
+#### Chevrotain の図
+
+Chevrotain の図では、使用中の各 mode の token 配列を順に読み、
+custom matcher、読み飛ばす単位、category、push/pop、明示した `longer_alt`
+を含めて字句規則とする。
+最長一致や、配列外の宣言順による優先順位は仮定しない。
+parser の規則メソッド、gate、先読みを文法、
+visitor/model の検証を受理条件とする。
+複合 token の書かれた構成要素を区別して、
+directive と無視するセミコロンの境界を定める。
+mode ごとの空白とコメント、custom matcher の失敗、category と正確な単位の受理、
+長い代替の対照例を調べる。Jison の自動的な語境界は適用しない。
+入力全体の消費と wrapper のエラー処理を調べる。
+最初の字句エラーは構文エラーより先に報告され、回復した CST が
+受理されるとは限らない。
+
 #### Langium の図
 
 pie のときに書く。
@@ -377,6 +394,8 @@ index.md の「How to read a diagram document」の 4 節で書く。
    文書は、known-divergences.md が挙げる部分を持つ
    （構文、例のある差異、書き手にとっての結果、mermaid.js がそう読む理由、
    規則とその理由、見つかったときの mermaid.js の文書と issue）。
+   - 差異の文書に図種の段落を足すときは、
+     「mermaid.js の文書と issue」の節にも、その図種の項を足す。
 
 図種の Db の要約と、それを木から作る手順は、
 `@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と
@@ -439,7 +458,7 @@ index.md の「How to read a diagram document」の 4 節で書く。
    入力の見た目だけで判断しない。
 3. なければ足す（2.3）。
    対照の例（規則が当たらない最も近い入力）も足す。
-4. 仕様の文に `[fixture: <区分>/<名前>]` で引く。
+4. 仕様の文に `[fixture: <category>/<name>]` で引く。
    英語と日本語の両方に、同じ集合を引く。
 5. mermaid.js と仕様の判断が違う入力（Known divergences）には、
    `fixtures:set-divergence` で識別子を付ける。
@@ -794,8 +813,12 @@ fixture の追加だけが要るとき（規則のアイディアの根拠など
 - 追跡されているファイルを一時的に書き換えて試さない。
   試すときは、リポジトリの外の作業用のディレクトリに写してから書き換える。
 
-## 8. Jison と Langium
+## 8. Jison、Langium、Chevrotain
 
 3.1 の Jison の節は flowchart で書いた。
 Langium の図（pie など）の手順は、
 pie のときに 3.1 の Langium の節に書き、3.2 から 3.5 で違うところを足す。
+
+Chevrotain は 3.1 の Chevrotain の手順に従い、mode、順序つきの一致、
+`longer_alt`、書かれた境界、エラー処理を調べる。
+未執筆の Langium の手順は Chevrotain パーサーの手順ではない。

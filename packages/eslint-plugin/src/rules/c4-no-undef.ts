@@ -25,8 +25,8 @@ export const c4NoUndef: MermaidRuleDefinition<{
   },
   create(context) {
     return c4DeclarationVisitor({
-      update(node, applied) {
-        if (applied) return
+      update(node, target) {
+        if (target !== undefined) return
         context.report({
           node:
             node.keyword === "UpdateElementStyle"

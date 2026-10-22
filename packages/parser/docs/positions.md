@@ -68,9 +68,10 @@ Every node has these fields besides those of
 | `range` | offset pair | Where the node is in the source.     |
 | `loc`   | location    | The same place as lines and columns. |
 
-A node's range runs from the start of its first token to the end of its last
-token; only `Root.range` covers the whole input. A node's tokens are the tokens
-of the construct it stands for, never a `Directive` token or a token of the
+A node's range normally runs from the start of its first token to the end of its
+last token; a node type may explicitly require an extension to source EOF.
+`Root.range` always covers the whole input. A node's tokens are the tokens of
+the construct it stands for, never a `Directive` token or a token of the
 frontmatter, although a `Directive` token may lie inside the range of a node,
 between two of its tokens; each node type says which they are where that is not
 plain, and a token between two nodes, such as a separator, may belong to
@@ -82,17 +83,21 @@ common/entity-css-in-string-label] So the tokens of the node in `Root.body` are
 all the tokens of the diagram text other than the `Directive` and the
 `IgnoredSemicolon` tokens, from the first to the last: its range also covers the
 tokens that belong to no statement, such as a separator after the last
-statement, but not a directive or an ignored `;` after the last of its tokens.
-The range of the flowchart diagram of `A;` ends after the `;`, a separator,
-while that of a class diagram whose last line is `classDef c fill:#f00;` ends
-before the `;`, which the line rule ignores. [fixture:
+statement, but normally not a directive or an ignored `;` after the last of its
+tokens; an EOF-ending child may extend the diagram range past them. The range of
+the flowchart diagram of `A;` ends after the `;`, a separator, while that of a
+class diagram whose last line is `classDef c fill:#f00;` ends before the `;`,
+which the line rule ignores. [fixture:
 flowchart/tokens-diagram-trailing-separator] [fixture:
 class/tokens-class-def-ignored-semicolon] [fixture:
 flowchart/gram-separator-before-directive] The range of a node covers the ranges
 of all its child nodes, as tools that walk an ESTree tree, such as those that
 find the node at a position or that attach comments, expect; where the tokens of
 a construct alone would not give that, the node type says how its range is
-extended.
+extended. An unclosed AgentflowAccDescrBlockStatement and its containing diagram
+reach source EOF, including trailing whitespace and directives, without adding
+tokens for skipped trivia. [fixture: agentflow/db-accessibility-unclosed-block]
+[fixture: agentflow/db-accessibility-empty-unclosed]
 
 `Root.range` is `[0, input.length]`. [fixture: common/crlf]
 
@@ -151,10 +156,12 @@ Every tree satisfies these conditions:
   (see [Frontmatter](../../spec/docs/ast.md#frontmatter)). They come before all
   comments and directives. [fixture: common/config-directive-after-frontmatter]
   [fixture: common/frontmatter-empty-body]
-- The range of a node runs from the start of its first token to the end of its
-  last token, and `Root.range` covers the whole input. Apart from `Root`, every
-  node defined in this document has at least one token: an `ErrorDiagram` has
-  the tokens that hold the characters of `error`, one or more (see
+- Except for node types that explicitly extend to source EOF and their
+  containing nodes, the range of a node runs from the start of its first token
+  to the end of its last token; `Root.range` covers the whole input. Apart from
+  `Root`, every node defined in this document has at least one token: an
+  `ErrorDiagram` has the tokens that hold the characters of `error`, one or more
+  (see
   [Tokens of the error pseudo-diagram](./tokens.md#tokens-of-the-error-pseudo-diagram)),
   and a [FlowchartLabel](../../spec/docs/ast/flowchart.md#flowchartlabel) that
   is all whitespace the token of that whitespace (see

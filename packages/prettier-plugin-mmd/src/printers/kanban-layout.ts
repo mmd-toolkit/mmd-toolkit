@@ -6,6 +6,8 @@ import type {
   Node,
   Range,
 } from "@mmd-toolkit/parser"
+import { findCommentEnds, findLeadingDirectives } from "./indentation-lines.ts"
+import type { LeadingDirectives } from "./indentation-lines.ts"
 import type { AtomLayout } from "./atoms.ts"
 import { keptAsWritten } from "./layout.ts"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
@@ -23,15 +25,6 @@ export const kanbanValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
  * A node or decoration, with the extent of its printed line and what decides
  * its indentation (docs/kanban.md, Indentation).
  */
-export interface LeadingDirectives {
-  /** The directives before the text, in source order; may be none. */
-  readonly directives: readonly Range[]
-  /** The number of whitespace characters after each directive. */
-  readonly gaps: readonly number[]
-  /** Where the text of the node or decoration starts. */
-  readonly textStart: number
-}
-
 export interface KanbanLine {
   readonly range: Range
   /**
@@ -51,23 +44,6 @@ export interface KanbanLine {
    * any other line.
    */
   readonly leading: LeadingDirectives | null
-}
-
-/**
- * The offsets of the U+2028 and U+2029 that end a diagram comment. Such a
- * separator is a node-line boundary even without a line feed
- * (diagrams/kanban.md, Comments). Joined comment fragments are already one
- * trivia item, so their internal separators cannot split a line.
- */
-export function findCommentEnds(source: Source): number[] {
-  return source.trivia
-    .filter(
-      (item) =>
-        item.type === "Comment" &&
-        (source.text[item.range[1]] === "\u2028" ||
-          source.text[item.range[1]] === "\u2029"),
-    )
-    .map((item) => item.range[1])
 }
 
 /**
@@ -139,28 +115,6 @@ export function kanbanLines(
       leading: findLeadingDirectives(source, content, node.range[0]),
     }
   }
-}
-
-/**
- * The directives that stand before the text of a line, which starts at
- * `textStart`, and the whitespace after each of them. The text of a node is
- * read without its directives, so all the whitespace before it is its
- * indentation, whatever lies between (diagrams/kanban.md, Directives inside
- * units).
- */
-function findLeadingDirectives(
-  source: Source,
-  from: number,
-  textStart: number,
-): LeadingDirectives {
-  const directives = findTriviaBetween(source, from, textStart)
-    .filter((item) => item.type === "Directive")
-    .map((item) => item.range)
-  const gaps = directives.map((range, index) => {
-    const next = directives[index + 1]?.[0] ?? textStart
-    return source.text.slice(range[1], next).length
-  })
-  return { directives, gaps, textStart }
 }
 
 /** Every character inside a node, decoration, or opaque suffix is retained. */

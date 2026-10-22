@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read legacy header words as ids?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "graph",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "graph",
+        "props": {}
+      },
+      {
+        "id": "flowchart",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "flowchart",
+        "props": {}
+      },
+      {
+        "id": "flowchart-elk",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "flowchart-elk",
+        "props": {}
+      },
+      {
+        "id": "swimlane-beta",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "swimlane-beta",
+        "props": {}
+      },
+      {
+        "id": "subgraph",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "subgraph",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

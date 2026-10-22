@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L3] Does an internal BOM remain in root TEXT?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R﻿X",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R﻿X",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

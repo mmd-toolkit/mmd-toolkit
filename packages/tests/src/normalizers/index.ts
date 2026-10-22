@@ -1,10 +1,12 @@
 import type { DbSummary } from "../types.ts"
+import { normalizeAgentflow, patchAgentflowDb } from "./agentflow.ts"
 import { normalizeBlock, patchBlockDb } from "./block.ts"
 import { normalizeC4, patchC4Db } from "./c4.ts"
 import { normalizeClass, patchClassDb } from "./class.ts"
 import { normalizeEr } from "./er.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
 import { normalizeGantt, patchGanttDb } from "./gantt.ts"
+import { normalizeIshikawa } from "./ishikawa.ts"
 import { normalizeJourney } from "./journey.ts"
 import { normalizeKanban, patchKanbanDb } from "./kanban.ts"
 import { normalizeMindmap } from "./mindmap.ts"
@@ -14,6 +16,7 @@ import { normalizeSankey } from "./sankey.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
 import { normalizeTimeline } from "./timeline.ts"
+import { normalizeUsecase, patchUsecaseDb } from "./usecase.ts"
 import { normalizeVenn } from "./venn.ts"
 import { normalizeXyChart } from "./xychart.ts"
 
@@ -54,6 +57,10 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["kanban", normalizeKanban],
   ["c4", normalizeC4],
   ["venn", normalizeVenn],
+  // Both `ishikawa` and `ishikawa-beta` are detected as `ishikawa`.
+  ["ishikawa", normalizeIshikawa],
+  ["agentflow", normalizeAgentflow],
+  ["usecase", normalizeUsecase],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])
@@ -101,6 +108,15 @@ const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
   string,
   DbPatchEntry
 >([
+  ["agentflow", { sampleText: "agentflow-beta TB\n", patch: patchAgentflowDb }],
+  [
+    "usecase",
+    {
+      sampleText: "usecase-beta\n",
+      patch: patchUsecaseDb,
+      appliedTo: "object",
+    },
+  ],
   ["flowchart-v2", { sampleText: "flowchart LR\n", patch: patchFlowDb }],
   ["flowchart-elk", { sampleText: "flowchart-elk LR\n", patch: patchFlowDb }],
   ["swimlane", { sampleText: "swimlane-beta LR\n", patch: patchFlowDb }],

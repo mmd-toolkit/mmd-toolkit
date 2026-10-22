@@ -1,0 +1,17 @@
+{
+  "message": "A note target must resolve to an actor or usecase",
+  "range": [
+    172,
+    179
+  ],
+  "loc": {
+    "start": {
+      "line": 9,
+      "column": 9
+    },
+    "end": {
+      "line": 9,
+      "column": 16
+    }
+  }
+}

@@ -4,7 +4,8 @@
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
-mindmap、timeline、xychart、quadrant、block、kanban、c4、venn。
+mindmap、timeline、xychart、quadrant、block、kanban、c4、venn、agentflow、
+usecase。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -20,6 +21,7 @@ mermaid.js もこの仕様も、それを読みません
 `style` を `classDef` に替えて同じことを行うので、
 1 つの行に無視される `;` が 2 つあることもあります。
 [fixture: common/entity-style-then-classdef-rule]
+
 この規則は、`style A fill:#f00;` のように色を終える `;` によって、
 色が [エンティティ](../common.ja.md#エンティティ)
 （`#name;` の形の文字参照）として
@@ -101,12 +103,12 @@ sequence 図の参加者の id、クラスの名前、
 | 5   | クラス c を持つ頂点 A                          | 拒否     |
 | 6   | ラベル `style:#x`、空白 2 つ、`y` を持つ頂点 A | 同じ     |
 
-[fixture: flowchart/div-ignored-semicolon-in-id] [fixture:
-sequence/div-ignored-semicolon-in-autonumber-start] [fixture:
-flowchart/div-ignored-semicolon-in-keyword] [fixture:
-flowchart/div-ignored-semicolon-in-arrow] [fixture:
-flowchart/div-ignored-semicolon-in-triple-colon] [fixture:
-flowchart/tokens-ignored-semicolon-label-spaces]
+[fixture: flowchart/div-ignored-semicolon-in-id]
+[fixture: sequence/div-ignored-semicolon-in-autonumber-start]
+[fixture: flowchart/div-ignored-semicolon-in-keyword]
+[fixture: flowchart/div-ignored-semicolon-in-arrow]
+[fixture: flowchart/div-ignored-semicolon-in-triple-colon]
+[fixture: flowchart/tokens-ignored-semicolon-label-spaces]
 
 つまり mermaid.js は、そのような入力を、どれも `;` のない行として読みます。
 この仕様もそうしますが、
@@ -123,6 +125,7 @@ mermaid.js は、本体の続く `state style:#x;B` を合成状態 `style:#xB` 
 この仕様はそれを拒否します。
 [fixture: state/div-ignored-semicolon-in-state-name]
 [fixture: state/div-ignored-semicolon-in-state-name-without-body]
+
 `style`、`:`、`#` を持てるほかの文は、行の残りをテキストとして読みます。
 ER 図では、`style`、`:`、`#` は、`;` より前の行のどこにあってもかまいません。
 `Bstyle` のような実体の名前、関係の `:` とロール `"#"`、
@@ -134,6 +137,7 @@ mermaid.js は `A ||--o{ Bstyle :"#" C;D` を Bstyle への関係と実体 `CD` 
 [fixture: er/div-ignored-semicolon-in-name]
 [fixture: er/div-ignored-semicolon-in-attribute-word]
 [fixture: er/div-ignored-semicolon-in-relationship-line]
+
 ガントチャートでは、`style`、`:`、`#` は、click の文の URL 文字列や
 コールバック引数、その行の文の前の説明ブロック、click の id そのものに
 置けるので、無視される `;` は click の id、キーワード、
@@ -144,6 +148,7 @@ mermaid.js は `click style:#y,id;1 href "u"` を `id1` のリンクと読み、
 [fixture: gantt/div-ignored-semicolon-in-click-id]
 [fixture: gantt/div-ignored-semicolon-in-call-keyword]
 [fixture: gantt/div-ignored-semicolon-in-list-item]
+
 ユーザージャーニー図では、`#` はタイトルのテキスト、section のテキスト、
 タスクのテキスト、タスクのデータを終えてコメントを始めるので、
 `style`、`:`、`#` はその行の文の前の説明ブロックにあり、
@@ -153,18 +158,21 @@ mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
 この仕様はそれらを拒否します。
 [fixture: journey/div-ignored-semicolon-in-title-keyword]
 [fixture: journey/div-ignored-semicolon-in-section-keyword]
+
 要求図では、`style`、`:`、`#` は `;` の前の、
 `"style:#x"` のような文字列の名前に置けるので、
 無視される `;` はキーワードの中に置けます。
 mermaid.js は `"style:#x" - sati;sfies -> b` を関係 `satisfies` の関係と読み、
 この仕様はそれを拒否します。
 [fixture: requirement/div-ignored-semicolon-in-relationship-keyword]
+
 マインドマップでは、`style`、`:`、`#` は `;` の前の
 ノードのテキストに置けるので、
 無視される `;` は開きか閉じの中に置けます。
 mermaid.js は `style:#x{;{b}}` を六角形の形でテキスト `b` のノードと読み、
 この仕様はそれを拒否します。
 [fixture: mindmap/div-ignored-semicolon-in-opener]
+
 timeline では、ユーザージャーニー図と同じく、
 `style`、`:`、`#` はその行の文の前の説明ブロックにあり、
 無視される `;` はキーワードの中に置けます。
@@ -173,6 +181,7 @@ mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
 [fixture: timeline/div-ignored-semicolon-in-title-keyword]
 [fixture: timeline/div-ignored-semicolon-in-section-keyword]
 [fixture: timeline/div-ignored-semicolon-in-acc-title-keyword]
+
 XY chart では、`style`、`:`、
 `#` は `"style:#a"` のように `;` の前の文字列の中に置けるので、
 無視される `;` は値やキーワードの中に置けます。
@@ -181,12 +190,14 @@ mermaid.js は `line "style:#a" [1;2]` を値 12 の line として、
 この仕様はそれらを拒否します。
 [fixture: xychart/div-ignored-semicolon-in-value]
 [fixture: xychart/div-ignored-semicolon-in-keyword]
+
 quadrant chart では、`style` か `classDef`、`:`、`#` は、
 名前である `classDef` のクラスの名前の中に置けるので、
 無視される `;` は名前の中に置かれます。
 mermaid.js は `classDef style:#x;y color: #f00` をクラス `style:#xy` と読み、
 この仕様はそれを拒否します。
 [fixture: quadrant/div-grid-style-classdef-name]
+
 block diagram では、`style`、`:`、`#` は、ラベル `"style:#a"` のように
 `;` の前の文字列の中に置けるので、
 無視される `;` は id やキーワードの中に置けます。
@@ -214,16 +225,15 @@ kanban では開きと閉じの中で選ばれたセミコロンは区切りを�
 入力を拒否させます。
 mermaid.js は `style:#x{;{b}}` と `style:#x{{b};}` を、
 `style:#x{{b}}` と同じ形として受理します。
-[fixture: kanban/div-semicolon-opener]
-[fixture: kanban/div-semicolon-closer]
+[fixture: kanban/div-semicolon-opener] [fixture: kanban/div-semicolon-closer]
 [fixture: kanban/gram-semicolon-text-reference]
 
 ノード本文、ラベル本文、文字列、データ本文の中では、
 選ばれたセミコロンを無視します。
-[fixture: kanban/lex-id-style-rule]
-[fixture: kanban/lex-id-classdef-rule]
+[fixture: kanban/lex-id-style-rule] [fixture: kanban/lex-id-classdef-rule]
 [fixture: kanban/lex-label-style-rule]
 [fixture: kanban/lex-metadata-style-rule]
+
 次の行のセミコロンは選びません。
 `style:#x` の行の後の `::ic;on` はノード本文です
 （[単位の中のディレクティブ](../diagrams/kanban.ja.md#単位の中のディレクティブ)
@@ -253,6 +263,7 @@ venn では、
 [fixture: venn/div-ignored-semicolon-title-keyword-selected]
 [fixture: venn/div-ignored-semicolon-style-key-selected]
 [fixture: venn/div-ignored-semicolon-style-value-selected]
+
 mermaid.js はその前後を連結します。
 [fixture: venn/div-ignored-semicolon-set-name-selected]
 [fixture: venn/div-ignored-semicolon-size]
@@ -310,6 +321,67 @@ mermaid.js がその中の無視される `;` を読めるのは、
 これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
 
+### Agentflow
+
+agentflow では、id、クラス名、click の id、辺の id、linkStyle の番号、
+キーワード、矢印、複合区切りの内部の選ばれたセミコロンを、
+EmptyStatement では保持できません。
+その不可分の単位を分けるか、値を変える必要があるためです。
+mermaid.js は両側を結合しますが、
+既存の全体の単位の直接の規則は理由 2 で拒否します。
+[fixture: agentflow/div-ignored-semicolon-in-id]
+[fixture: agentflow/div-ignored-semicolon-in-css-class]
+[fixture: agentflow/div-ignored-semicolon-in-click-id]
+[fixture: agentflow/div-ignored-semicolon-in-edge-id]
+[fixture: agentflow/div-ignored-semicolon-in-linkstyle-number]
+[fixture: agentflow/div-ignored-semicolon-in-keyword]
+[fixture: agentflow/div-ignored-semicolon-in-arrow]
+[fixture: agentflow/div-ignored-semicolon-in-data-block-start]
+
+名前のテキスト、ラベル、style、不透明な metadata のキーは、
+選ばれたセミコロンを trivia に保てます。
+その位置では Identifier の境界ではありません。
+完全な縦棒の境界のセミコロンも単位を変えません。
+これらの対照例に印は付けません。
+[fixture: agentflow/lex-ignored-semicolon-in-flow-name-text]
+[fixture: agentflow/lex-ignored-semicolon-in-metadata-key]
+[fixture: agentflow/lex-ignored-semicolon-in-pipe-boundary]
+
+### Usecase
+
+usecase で対象となるテキストは、CSS プロパティ名の語を含む原子的な名前、
+キーワード、矢印、区切りの内部で選ばれた `;` の 1 文字の範囲です。
+空の文は原子的な単位の内部に置けません。
+mermaid は結合した id、include、矢印、metadata のキーと値、区切りを受理します。
+直接の完全な単位の規則により理由 2 で拒否します。
+この規則によって mermaid の拒否が受理に変わることはありません。
+[fixture: usecase/div-semicolon-identifier-selected]
+[fixture: usecase/div-semicolon-keyword-selected]
+[fixture: usecase/div-semicolon-joins-arrow-selected]
+[fixture: usecase/div-semicolon-native-key-valid]
+[fixture: usecase/div-semicolon-native-value-selected]
+[fixture: usecase/div-semicolon-native-opener-selected]
+[fixture: usecase/div-semicolon-css-property-selected]
+[fixture: usecase/div-semicolon-stereotype-closer-selected]
+[fixture: usecase/lex-semicolon-stereotype-closer-control]
+
+`style` と `classDef` の CSS プロパティ名では、
+`--` と後の語の間の HWS にある、選ばれた `;` を trivia として受理します。
+UsecaseIdentifier に前後のテキストを保持できます。
+セミコロンの有無によらず `--` と語は別々の単位なので、
+結合するものがなく理由 2 を適用しません。
+[fixture: usecase/lex-semicolon-css-name-gap]
+[fixture: usecase/lex-semicolon-classdef-css-name-gap]
+
+ラベル、CSS 値、文字列、不透明な JSON は既存のテキスト節点で保持でき、
+選ばれたセミコロンを trivia として扱えます。完全な単位間でも許します。
+選択の引き金より前のセミコロンや、結合後も別の理由で無効な図は、
+差異の印を付けない通常の拒否です。
+[fixture: usecase/lex-semicolon-complete-unit-boundary]
+[fixture: usecase/lex-semicolon-css-number-text]
+[fixture: usecase/lex-semicolon-joins-id-selected]
+[fixture: usecase/lex-semicolon-native-key-selected]
+
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
@@ -335,6 +407,7 @@ mermaid.js がその中の無視される `;` を読めるのは、
   2026-10-03 に検索しました。
 
 - 固定した版の
+
   [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L43-L49)
   は `UpdateElementStyle` と `UpdateRelStyle` を `;` なしで示し、
   呼び出し語の内部から除かれる `;` を説明していません。
@@ -349,8 +422,30 @@ mermaid.js がその中の無視される `;` を読めるのは、
   見つかりませんでした。
 
 - ピン留めした
+
   [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
   はプロパティをカンマで区切り、
   キーワード、名前、数の内部のセミコロンは示していません。
   2026-10-21 に `mermaid-js/mermaid` の issue と PR を
   `venn semicolon in:title,body` で検索し、結果は 0 件でした。
+
+- 固定版の
+
+  [Agentflow の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
+  はノードの宣言を flowchart の構文とし、括弧のラベルを示します。
+  キーワード、id、矢印の内部の選ばれたセミコロンの除去は説明していません。
+  2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
+  `agentflow semicolon in:title,body` で検索した結果は 0 件でした。
+
+- pin の
+  [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  は文の構文を説明します。
+  2026-10-22 に mermaid-js/mermaid の issue と PR を
+  `usecase semicolon` で検索し、
+  この受理挙動を保守者が欠陥と判断したと示す報告は、
+  調べた結果にはありませんでした。
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048) は
+  Type: Enhancement で、2026-08-14 にマージ済みで閉じています。
+  Chevrotain parser、モデル検証、JSON の表を導入します。
+  この差異は共有の直接の規則に従うもので、
+  bug ラベルを文法変更の承認とは読みません。

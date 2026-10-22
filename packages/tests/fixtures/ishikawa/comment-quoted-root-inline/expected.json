@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L1] Are inline percent pairs literal within root quote characters?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"R %% literal\"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"R %% literal\"",
+      "children": []
+    }
+  }
+}

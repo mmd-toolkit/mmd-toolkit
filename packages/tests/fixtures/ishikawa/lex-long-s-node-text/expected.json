@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Units: U+017F LONG S in a header-looking node spelling does not match ASCII s and stays ordinary node text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "iſhikawa",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "iſhikawa",
+      "children": []
+    }
+  }
+}

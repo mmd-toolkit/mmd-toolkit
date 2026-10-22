@@ -88,6 +88,52 @@ const REQUIREMENT_PARTS =
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
+  "UsecaseEntity.shape": { message: "the shape from the written delimiters: " },
+  "UsecaseRelationshipStatement.kind": { message: "the field kind is " },
+  "UsecaseLabel.kind": { message: "the field kind is " },
+  "UsecaseLabel.value": { message: "value is not its written text" },
+  "UsecaseLiteral.value": { message: "value is not its written text" },
+  "UsecaseIdentifier.name": { message: "name is not its written text" },
+  "UsecaseJsonDataBlock.value": { message: "value is not its written text" },
+  "UsecaseArrow.value": { message: "value is not its written text" },
+  "UsecaseArrow.startMarker": { message: "the field startMarker is " },
+  "UsecaseArrow.endMarker": { message: "the field endMarker is " },
+  "UsecaseArrow.line": { message: "the field line is " },
+  "UsecaseArrow.length": { message: "the length of the arrow: " },
+  "UsecaseOpeningArrow.value": { message: "value is not its written text" },
+  "UsecaseOpeningArrow.startMarker": { message: "the field startMarker is " },
+  "UsecaseOpeningArrow.line": { message: "the field line is " },
+  "UsecaseOpeningArrow.length": { message: "the length of the arrow: " },
+  "UsecaseDirectionStatement.direction": { message: "the field direction is " },
+  "AgentflowDiagram.direction": { message: "the direction of the header: " },
+  "AgentflowShape.name": {
+    message: "the shape name does not match its delimiters: ",
+  },
+  "AgentflowArrow.value": { message: "value is not its written text" },
+  "AgentflowArrow.startMarker": { message: "the field startMarker is " },
+  "AgentflowArrow.line": { message: "the field line is " },
+  "AgentflowArrow.length": {
+    message: "the written arrow length, before the Db cap: ",
+  },
+  "AgentflowArrow.endMarker": { message: "the field endMarker is " },
+  "AgentflowOpeningArrow.value": { message: "value is not its written text" },
+  "AgentflowOpeningArrow.startMarker": { message: "the field startMarker is " },
+  "AgentflowOpeningArrow.line": { message: "the field line is " },
+  "AgentflowLabel.kind": { message: "the field kind is " },
+  "AgentflowLabel.value": { message: "value is not its written text" },
+  "AgentflowLiteral.value": { message: "value is not its written text" },
+  "AgentflowDataBlock.value": { message: "value is not its written text" },
+  "AgentflowIgnoredText.kind": { message: "the field kind is " },
+  "AgentflowIgnoredText.value": { message: "value is not its written text" },
+  "AgentflowClickUrlStatement.target": {
+    message: "the target, which is the last token: ",
+  },
+  "AgentflowDirectionStatement.direction": {
+    message: "the field direction is ",
+  },
+  "AgentflowAccDescrBlockStatement.closed": {
+    message: "closed is not whether the last token is }: ",
+  },
   "BlockArrow.endMarker": { message: "the endMarker of the arrow: " },
   "BlockArrow.length": { message: "the length of the arrow: " },
   "BlockArrow.line": { message: "the line of the arrow: " },
@@ -194,6 +240,10 @@ const VALUE_FIELD_REPORTS: Readonly<
     message: "the day, which is the day token in lower case: ",
   },
   "Identifier.name": { message: "name is not the texts of its tokens joined" },
+  "IshikawaLiteral.value": { message: "value is not its written text" },
+  "IshikawaNode.indent": {
+    message: "the indent is not the written line whitespace count",
+  },
   "JourneyIgnoredText.value": { message: "value is not its written text" },
   "JourneyLiteral.value": { message: "value is not its written text" },
   "KanbanDataBlock.value": { message: "value is not its written text" },
@@ -341,8 +391,10 @@ const WANTED_BY_SHAPE: Readonly<Record<string, string>> = {
  * holds, so that it lies in a place where a punctuator of the diagram is none.
  */
 const PUNCTUATOR_FIELDS: ReadonlySet<string> = new Set([
+  "UsecaseRelationshipStatement.opening",
   "BlockLink.opening",
   "FlowchartLink.opening",
+  "AgentflowLink.opening",
 ])
 
 /** An object of a tree, a node or a record, with its fields. */
@@ -724,6 +776,56 @@ function problemsOf(testCase: FieldCase): {
  * field.
  */
 const STRING_FIELD_CASES: readonly FieldCase[] = [
+  {
+    diagram: "usecase",
+    fixture: "gram-label-quoted-padding",
+    type: "UsecaseEntity",
+    field: "shape",
+    set: null,
+    message: 'the shape from the written delimiters: null, not "ellipse"',
+  },
+  {
+    diagram: "usecase",
+    fixture: "db-arrows",
+    type: "UsecaseEntity",
+    field: "shape",
+    set: "Z",
+    message: 'the shape from the written delimiters: "Z", not null',
+  },
+
+  {
+    diagram: "agentflow",
+    fixture: "gram-click-link-forms",
+    type: "AgentflowClickUrlStatement",
+    field: "target",
+    set: null,
+    message: 'the target, which is the last token: null, not "_self"',
+  },
+  {
+    diagram: "agentflow",
+    fixture: "gram-click-link-forms",
+    type: "AgentflowClickUrlStatement",
+    field: "target",
+    set: "Z",
+    message: 'the target, which is the last token: "Z", not null',
+  },
+  {
+    diagram: "agentflow",
+    fixture: "header-td",
+    type: "AgentflowDiagram",
+    field: "direction",
+    set: null,
+    message: 'the direction of the header: null, not "TD"',
+  },
+  {
+    diagram: "agentflow",
+    fixture: "header-only",
+    type: "AgentflowDiagram",
+    field: "direction",
+    set: "Z",
+    message: 'the direction of the header: "Z", not null',
+  },
+
   {
     diagram: "class",
     fixture: "config-security-level-loose-click",

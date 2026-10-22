@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does JSON reject U+2028 as object whitespace?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "UsecaseJsonError",
+    "message": "Invalid JSON: Expected property name or '}' in JSON at position 1 (line 1 column 2) (line 2, column 9)"
+  }
+}

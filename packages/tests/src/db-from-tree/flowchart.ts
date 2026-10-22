@@ -1,3 +1,9 @@
+import {
+  classDefStyleOf,
+  dbTypeOf,
+  diagramDirectionOf,
+  styleValues,
+} from "./graph-values.ts"
 import type { DataBlockEffect, EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { isWhitespace } from "./characters.ts"
@@ -24,7 +30,6 @@ import type {
   FlowchartOpeningArrow,
   FlowchartOpeningArrowLine,
   FlowchartShape,
-  FlowchartShapeName,
   FlowchartStatement,
   FlowchartStyleStatement,
   FlowchartSubgraphStatement,
@@ -32,14 +37,14 @@ import type {
   FlowchartVertexGroup,
   FlowchartVertexStatement,
 } from "./flowchart-tree.ts"
-import { StringDelimiters } from "./flowchart-strings.ts"
-import type {
-  Identifier,
-  StringLiteral,
-  TreeNode,
-  TreeRange,
-  TreeRoot,
-} from "./tree.ts"
+import {
+  applyGraphClass,
+  applyGraphClick,
+  applyGraphLinkStyle,
+  lastGraphWithId,
+  StringDelimiters,
+} from "./graph.ts"
+import type { Identifier, StringLiteral, TreeRange, TreeRoot } from "./tree.ts"
 import type { TextReplacement } from "./text-replacement.ts"
 import { textReplacementOf } from "./text-replacement.ts"
 import {
@@ -61,13 +66,6 @@ const LINE_FEED = 0x0a
 const SEMICOLON = 0x3b
 const OPENING_BRACKET = 0x5b
 
-/** The text `text` without the whitespace at its end. */
-function withoutWhitespaceAtEnd(text: string): string {
-  let end = text.length
-  while (end > 0 && isWhitespace(text.charCodeAt(end - 1))) end -= 1
-  return text.slice(0, end)
-}
-
 /** Whether `text` is empty or all whitespace. */
 function isBlank(text: string): boolean {
   return trimmed(text) === ""
@@ -79,14 +77,6 @@ function holdsWhitespace(text: string): boolean {
     if (isWhitespace(text.charCodeAt(index))) return true
   }
   return false
-}
-
-/**
- * The summary: the style values of vertices, classes, edges, and the edge
- * defaults without the whitespace at their end, which the summary drops.
- */
-function styleValues(values: readonly string[]): string[] {
-  return values.map(withoutWhitespaceAtEnd)
 }
 
 /** The parts of `text` between its `,` characters. */
@@ -164,35 +154,6 @@ interface ArrowValues {
   readonly stroke: string
   /** Null when there is no length. */
   readonly length: number | null
-}
-
-/** Shapes: the Db type of each shape name, for `rectangle` without a property. */
-const SHAPE_DB_TYPES: Readonly<Record<FlowchartShapeName, string>> = {
-  rectangle: "square",
-  rounded: "round",
-  circle: "circle",
-  "double-circle": "doublecircle",
-  diamond: "diamond",
-  hexagon: "hexagon",
-  stadium: "stadium",
-  "framed-rectangle": "subroutine",
-  cylinder: "cylinder",
-  odd: "odd",
-  ellipse: "ellipse",
-  "trapezoid-bottom": "trapezoid",
-  "lean-right": "lean_right",
-  "trapezoid-top": "inv_trapezoid",
-  "lean-left": "lean_left",
-}
-
-/**
- * Shapes: the Db type of the shape `shape`, from its name, and `rect` for
- * a rectangle written with a property, `[|name:value|...]`.
- */
-function dbTypeOf(shape: FlowchartShape): string {
-  return shape.name === "rectangle" && shape.property !== null
-    ? "rect"
-    : SHAPE_DB_TYPES[shape.name]
 }
 
 /** Arrows: the type that a marker gives. */
@@ -276,29 +237,6 @@ function linkArrowValues(
   return invalid
 }
 
-/** Direction: the direction of the diagram that the header's direction gives. */
-function diagramDirectionOf(direction: string | null): string {
-  switch (direction) {
-    case null:
-    case "v":
-    case "TD":
-      return "TB"
-    case "<":
-      return "RL"
-    case "^":
-      return "BT"
-    case ">":
-      return "LR"
-    default:
-      return direction
-  }
-}
-
-/** Style statements: `classDef` reads each `\,` in a style as `,`. */
-function classDefStyleOf(style: string): string {
-  return style.split("\\,").join(",")
-}
-
 /** The statements whose `styles` hold styles. */
 type StatementWithStyles =
   | FlowchartStyleStatement
@@ -345,7 +283,11 @@ class FlowchartDbBuilder {
 
   private readonly tooltips = new Map<string, string>()
 
-  private readonly clickCalls: JsonObject[] = []
+  private readonly clickCalls: {
+    id: string
+    name: string
+    args: string | null
+  }[] = []
 
   private defaultInterpolate: string | null = null
 
@@ -532,25 +474,14 @@ class FlowchartDbBuilder {
   private applyLinkStyleStatement(
     statement: FlowchartLinkStyleStatement,
   ): void {
-    const interpolate =
-      statement.interpolate === null ? null : this.nameOf(statement.interpolate)
-    const styles = this.stylesOf(statement)
-    if (
-      styles.length > 0 &&
-      !styles.some((style) => style.startsWith("fill"))
-    ) {
-      styles.push("fill:none")
-    }
-    for (const index of statement.indices) {
-      const edge = this.edges[index.value]
-      if (edge === undefined) {
-        throw new Error(
-          `flowchart Db: linkStyle numbers the link ${index.value}, which no statement before it made`,
-        )
-      }
-      if (interpolate !== null) edge.interpolate = interpolate
-      if (styles.length > 0) edge.style = styles
-    }
+    applyGraphLinkStyle(
+      statement.indices.map((index) => index.value),
+      statement.interpolate === null
+        ? null
+        : this.nameOf(statement.interpolate),
+      this.stylesOf(statement),
+      this.edges,
+    )
   }
 
   /**
@@ -687,10 +618,7 @@ class FlowchartDbBuilder {
 
   /** The subgraph added last with the id `id`, if there is one. */
   private lastSubgraphWithId(id: string): Subgraph | undefined {
-    for (let index = this.subgraphs.length - 1; index >= 0; index -= 1) {
-      if (this.subgraphs[index].id === id) return this.subgraphs[index]
-    }
-    return undefined
+    return lastGraphWithId(this.subgraphs, id)
   }
 
   /**
@@ -699,11 +627,7 @@ class FlowchartDbBuilder {
    * last subgraph added with that id.
    */
   private classStep(ids: readonly string[], cssClass: string): void {
-    for (const id of ids) {
-      this.vertices.get(id)?.classes.push(cssClass)
-      this.edges.find((edge) => edge.id === id)?.classes.push(cssClass)
-      this.lastSubgraphWithId(id)?.classes.push(cssClass)
-    }
+    applyGraphClass(ids, cssClass, this.vertices, this.edges, this.subgraphs)
   }
 
   /**
@@ -938,29 +862,28 @@ class FlowchartDbBuilder {
   private applyClickStatement(
     statement: FlowchartClickCallbackStatement | FlowchartClickUrlStatement,
   ): void {
-    const ids = statement.ids.map((id) => this.nameOf(id))
-    if (statement.type === "FlowchartClickCallbackStatement") {
-      // The Db is called for each id, whether or not it names a vertex.
-      const name = this.text.of(statement.callback.range)
-      const args = this.literalTextOf(statement.arguments)
-      for (const id of ids) this.clickCalls.push({ id, name, args })
-    }
-    if (statement.type === "FlowchartClickUrlStatement") {
-      const url = trimmed(this.stringTextOf(statement.url))
-      for (const id of ids) {
-        const vertex = this.vertices.get(id)
-        if (vertex === undefined) continue
-        if (url === "") delete vertex.link
-        else vertex.link = url
-        if (statement.target === null) delete vertex.linkTarget
-        else vertex.linkTarget = statement.target
-      }
-    }
-    this.classStep(ids, "clickable")
-    if (statement.tooltip !== null) {
-      const tooltip = this.replace(this.stringTextOf(statement.tooltip))
-      for (const id of ids) this.tooltips.set(id, tooltip)
-    }
+    applyGraphClick(
+      statement.ids.map((id) => this.nameOf(id)),
+      statement.type === "FlowchartClickCallbackStatement"
+        ? {
+            kind: "callback",
+            name: this.text.of(statement.callback.range),
+            args: this.literalTextOf(statement.arguments),
+          }
+        : {
+            kind: "url",
+            url: trimmed(this.stringTextOf(statement.url)),
+            target: statement.target,
+          },
+      statement.tooltip === null
+        ? null
+        : this.replace(this.stringTextOf(statement.tooltip)),
+      this.vertices,
+      this.edges,
+      this.subgraphs,
+      this.clickCalls,
+      this.tooltips,
+    )
   }
 }
 
@@ -982,64 +905,4 @@ export function flowchartDbOf(
   )
 }
 
-/**
- * diagrams/flowchart.md, Rejections outside the grammar, Too many edges:
- * the default of the site configuration's `maxEdges`.
- */
-const DEFAULT_MAX_EDGES = 500
-
-/** Whether `value`, a part of the tree, is a node: an object that has a `type`. */
-function isTreeNode(value: object): value is TreeNode {
-  return "type" in value && typeof value.type === "string"
-}
-
-/**
- * Calls `visit` for each node in `value`, a part of the tree that is JSON:
- * a node, a list, or a value of a field, the node itself first.
- */
-function visitNodes(value: unknown, visit: (node: TreeNode) => void): void {
-  if (typeof value !== "object" || value === null) return
-  if (isTreeNode(value)) visit(value)
-  // The tree is JSON: an object holds values by name, a list by position.
-  for (const child of Object.values(value as Record<string, unknown>)) {
-    visitNodes(child, visit)
-  }
-}
-
-/** Whether the node `node` is a vertex statement. */
-function isVertexStatement(node: TreeNode): node is FlowchartVertexStatement {
-  return node.type === "FlowchartVertexStatement"
-}
-
-/**
- * docs/db-from-tree/flowchart.md, Links: how many Db edges the
- * vertex statements of a flowchart tree make: for each link, one edge for
- * each pair of a vertex of the group before it and a vertex of its target.
- */
-export function flowchartEdgeCount(root: TreeRoot): number {
-  let edges = 0
-  visitNodes(root.body, (node) => {
-    if (!isVertexStatement(node)) return
-    let source = node.first
-    for (const link of node.links) {
-      edges += source.vertices.length * link.target.vertices.length
-      source = link.target
-    }
-  })
-  return edges
-}
-
-/**
- * Rejections outside the grammar, Too many edges: whether mermaid.js
- * rejects the input of `root` for having more Db edges than `maxEdges` of
- * the site configuration `config`. A tree does not say it, because the site
- * configuration is not part of the text.
- */
-export function exceedsMaxEdges(
-  root: TreeRoot,
-  config: { readonly maxEdges?: unknown } | undefined,
-): boolean {
-  const maxEdges =
-    typeof config?.maxEdges === "number" ? config.maxEdges : DEFAULT_MAX_EDGES
-  return flowchartEdgeCount(root) > maxEdges
-}
+export { exceedsMaxEdges, flowchartEdgeCount } from "./graph-edges.ts"

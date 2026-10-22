@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Rejections: second stable EOF; Mermaid rejects, so no divergence mark applies. Parser diagnostic precedence is defined in the parser documents."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nishikawaishikawa\n--------^\nExpecting 'SPACELINE', 'SPACELIST', 'TEXT', got 'ISHIKAWA'"
+  }
+}

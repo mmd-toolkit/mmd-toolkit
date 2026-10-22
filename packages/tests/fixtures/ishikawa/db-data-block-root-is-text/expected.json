@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A data-block-looking suffix on the root remains text and has no data-block effect."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "A@{shape: rect}",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "A@{shape: rect}",
+      "children": []
+    }
+  }
+}

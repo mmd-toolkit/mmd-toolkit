@@ -19,13 +19,37 @@ organized and checked is described in
 
 The statements after the header stand one level deeper than the header, and the
 statements of a subgraph one level deeper than its `subgraph` line, with `end`
-at the level of `subgraph`. A level is what Prettier's `useTabs` and `tabWidth`
-options say: two spaces by default, as in the other languages that Prettier
-formats. The statements after the header stand one level deeper, as the
-documentation of mermaid.js writes them. [fixture: indentation/use-tabs] The
-indentation written in the input is not kept: it is no part of what mermaid.js
-reads, so the printer chooses it from the structure alone. [fixture:
+at the level of `subgraph`. A level follows Prettier's `useTabs` and `tabWidth`
+options, subject to the minimum below: two spaces by default, as in the other
+languages that Prettier formats. The statements after the header stand one level
+deeper, as the documentation of mermaid.js writes them. [fixture:
+indentation/use-tabs] The ordinary indentation follows the tree's structure:
+authored columns do not decide subgraph membership. [fixture:
 indentation/statements] [fixture: indentation/empty-description-block]
+
+Each body step uses the shared significant indentation width: at least one space
+even with `tabWidth: 0`; `useTabs` still supplies one tab per level. Removing
+all indentation can turn a direction statement into accessibility text or
+rejected syntax, changing what Mermaid reads. This minimum protects actual
+direction statements, while non-direction lines whose columns affect their
+reading keep their written indentation as described below. [fixture:
+indentation/zero-direction-description-subgraph] [fixture:
+indentation/zero-direction-title] [fixture:
+indentation/zero-direction-title-tab] [fixture:
+indentation/zero-direction-description-block] [fixture:
+indentation/zero-direction-title-prefix] [fixture:
+indentation/zero-direction-directive] [fixture:
+indentation/zero-direction-style-prefix]
+
+Input (escaped, `tabWidth: 0`): `"flowchart LR\n  accTitle: t;direction TB\n"`.
+
+Output
+([indentation/zero-direction-title-output.mmd](../tests/fixtures/flowchart/indentation/zero-direction-title-output.mmd)):
+
+```mmd
+flowchart LR
+ accTitle: t;direction TB
+```
 
 Input
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-input.mmd)):
@@ -78,8 +102,7 @@ flowchart LR
 
 A line that holds `direction` followed by whitespace and `TB`, `BT`, `RL`, `LR`,
 or `TD`, but is not a direction statement, is kept as written, with its
-indentation. [fixture: indentation/compat-direction-text-indented] [fixture:
-indentation/direction-text-values-kept] [fixture:
+indentation. [fixture: indentation/direction-text-values-kept] [fixture:
 indentation/direction-text-with-directive-kept] [fixture:
 indentation/acc-descr-block-direction-text-kept] mermaid.js reads an indented
 line that holds such a text as a direction statement: `accTitle: t;direction TB`
@@ -1408,6 +1431,10 @@ flowchart TD
 ```
 
 ### Subgraph header
+
+The title's interior whitespace stays as written, so `[ T ]` remains `[ T ]`:
+both forms have the same Db, and the heading keeps the author's title spelling.
+[fixture: subgraph-header/title-interior-whitespace-kept]
 
 Whether there is whitespace between the id of a subgraph and its title in
 brackets is kept as written; a run of it becomes one space. [fixture:

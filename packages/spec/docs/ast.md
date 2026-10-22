@@ -245,8 +245,11 @@ the diagram sections below: a
 [`QuadrantDiagram`](./ast/quadrant.md#quadrantdiagram), a
 [`BlockDiagram`](./ast/block.md#blockdiagram), a
 [`KanbanDiagram`](./ast/kanban.md#kanbandiagram), a
-[`C4Diagram`](./ast/c4.md#c4diagram), or a
-[`VennDiagram`](./ast/venn.md#venndiagram).
+[`C4Diagram`](./ast/c4.md#c4diagram), a
+[`VennDiagram`](./ast/venn.md#venndiagram), an
+[`IshikawaDiagram`](./ast/ishikawa.md#ishikawadiagram), an
+[`AgentflowDiagram`](./ast/agentflow.md#agentflowdiagram), or a
+[`UsecaseDiagram`](./ast/usecase.md#usecasediagram).
 
 ## ErrorDiagram
 
@@ -335,7 +338,11 @@ units, so the name contains none.
 ### StringLiteral
 
 A string in quotes: double quotes, or, for the backquoted names of class
-diagrams and the backquoted attribute words of ER diagrams, backquotes.
+diagrams and the backquoted attribute words of ER diagrams, backquotes. A
+single-quoted string is also a StringLiteral where a diagram's lexical rules
+accept it; it closes with the same quote, and no escapes are decoded. [fixture:
+usecase/lex-native-single-quoted-keys] [fixture:
+usecase/lex-native-string-backslashes]
 
 | Field    | Type    | Meaning                                                                                                                                                                                                                                                                                  |
 | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -352,9 +359,9 @@ flowchart/tokens-string-literal-comment-line] In the same way, the URL of
 string, the directive included. [fixture:
 flowchart/lex-directive-in-click-href-string]
 
-A string is closed by its second quote. Where a diagram accepts a string that is
-not closed when the text ends, which only a backquoted name in a class diagram
-is (see
+A string is closed by the next matching quote, as its diagram's lexical rules
+define. Where a diagram accepts a string that is not closed when the text ends,
+which only a backquoted name in a class diagram is (see
 [Strings, backquoted names, and generic types](./diagrams/class.md#strings-backquoted-names-and-generic-types)),
 its written text runs to the last character of the source that is not part of a
 directive or a comment region, the whitespace and line terminators at the end
@@ -433,6 +440,9 @@ in a document of their own under `ast/`:
 - [Block diagram](./ast/block.md): the diagram type `block`.
 - [Kanban](./ast/kanban.md): the diagram type `kanban`.
 - [Venn](./ast/venn.md): the diagram type `venn`.
+- [Ishikawa](./ast/ishikawa.md): the diagram type `ishikawa`.
+- [Agentflow](./ast/agentflow.md): the diagram type `agentflow`.
+- [Usecase](./ast/usecase.md): the diagram type `usecase`.
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of

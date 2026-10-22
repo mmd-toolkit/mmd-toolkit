@@ -46,6 +46,8 @@ export interface CorpusTree {
 const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "usecase",
+  "agentflow",
   "sequence",
   "class",
   "state",
@@ -62,6 +64,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "kanban",
   "c4",
   "venn",
+  "ishikawa",
 ]
 
 /**

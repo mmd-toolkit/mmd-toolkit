@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can preprocessing alter a strict JSON string value?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "style": "fill:ﬂ°abc¶ß;"
+        },
+        "propertyOrder": {
+          "": [
+            "style"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "style": "fill:ﬂ°abc¶ß;"
+          },
+          "propertyOrder": {
+            "": [
+              "style"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

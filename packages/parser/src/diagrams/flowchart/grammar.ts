@@ -1,9 +1,7 @@
-import type {
-  Identifier,
-  NumericLiteral,
-  Range,
-  StringLiteral,
-} from "../../ast.ts"
+import { GraphGrammar } from "../../graph-grammar.ts"
+import type { NodePlace } from "../../unit-grammar.ts"
+import type { ClosedArrowParts, OpeningArrowParts } from "./arrows.ts"
+import type { Identifier, Range, StringLiteral } from "../../ast.ts"
 import type {
   FlowchartAccDescrBlockStatement,
   FlowchartAccDescrStatement,
@@ -36,12 +34,11 @@ import type {
   FlowchartVertexGroup,
   FlowchartVertexStatement,
 } from "../../ast/flowchart.ts"
-import { DIGIT_ZERO } from "../../code-points.ts"
+
 import { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
-import { UnitGrammar } from "../../unit-grammar.ts"
-import { significantRangeOf } from "../../diagram-units.ts"
+
 import type { FlowchartLexing, Unit, UnitName } from "./units.ts"
 import type { SubgraphMember } from "./subgraph-members.ts"
 import { isNumberedSubgraph, subgraphNameTextOf } from "./subgraph-ids.ts"
@@ -72,38 +69,6 @@ export interface FlowchartSyntax {
 /** Diagram and statements: the units of a `separator`, besides the end of the text. */
 const SEPARATORS: readonly UnitName[] = ["newline", ";"]
 
-/** Grammar, Vertex statements: the units that an id is made of. */
-const ID_PIECES: readonly UnitName[] = [
-  "number",
-  "id-run",
-  "letter",
-  "v",
-  "-",
-  "default",
-  ",",
-  ":",
-  "&",
-  "#",
-  "*",
-]
-
-/**
- * Grammar, Style, class, and link style statements: the units that a part
- * of an `id-list` is made of: those of an id, other than `,`.
- */
-const ID_LIST_PART_PIECES: readonly UnitName[] = [
-  "number",
-  "id-run",
-  "letter",
-  "v",
-  "-",
-  "default",
-  ":",
-  "&",
-  "#",
-  "*",
-]
-
 /** Grammar, Subgraphs: the units of a `name-piece`. */
 const NAME_PIECES: readonly UnitName[] = [
   "number",
@@ -124,46 +89,6 @@ const NAME_PIECES: readonly UnitName[] = [
   "header-keyword",
   "subgraph",
   "end",
-]
-
-/** Grammar, Style, class, and link style statements: the units that a style is made of. */
-const STYLE_PIECES: readonly UnitName[] = [
-  "number",
-  "id-run",
-  ":",
-  "#",
-  "space",
-  "style",
-]
-
-/** Grammar, Style, class, and link style statements: the units that a name is made of. */
-const NAME_UNITS: readonly UnitName[] = [
-  "number",
-  "letter",
-  "id-run",
-  "v",
-  "-",
-  ",",
-  ":",
-  "&",
-  "#",
-  "*",
-]
-
-/** Grammar, Shapes: the units that start a shape. */
-const SHAPE_STARTS: readonly UnitName[] = [
-  "[",
-  "(",
-  "(((",
-  "{",
-  "([",
-  "[[",
-  "[(",
-  ">",
-  "(-",
-  "[/",
-  "[\\",
-  "[|",
 ]
 
 /**
@@ -193,7 +118,15 @@ interface LabelUnits {
  * empty form (known-divergences/tokenless-empty-forms.md), for which
  * {@link FlowchartGrammar.unexpected} names the form.
  */
-export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
+export class FlowchartGrammar extends GraphGrammar<
+  "subgraph",
+  ClosedArrowParts | OpeningArrowParts,
+  FlowchartDataBlock,
+  FlowchartShape,
+  FlowchartShapeProperty,
+  FlowchartLabel,
+  FlowchartLiteral
+> {
   /**
    * Rejections outside the grammar, Subgraph members: the member that each subgraph read so far
    * gives the subgraph around it, its Db id; null when that id is empty or
@@ -204,13 +137,6 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     SubgraphMember | null
   >()
 
-  /**
-   * Rejections outside the grammar, Link style numbers: how many edges the
-   * statements read so far make; a `linkStyle` number must name one of
-   * them.
-   */
-  private edgeCount = 0
-
   /** The units of the lexer, with the empty description blocks that the grammar takes out of its units. */
   private readonly lexedUnits: readonly Unit[]
 
@@ -218,6 +144,33 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     // The flowchart lexer reads no diagram comments.
     super(lexing.units, lexer, EMPTY_FORM_KINDS.flowchart, [])
     this.lexedUnits = lexing.units
+  }
+
+  /** The data block node of ast/flowchart.md. */
+  protected override dataBlockOf(
+    value: string,
+    place: NodePlace,
+  ): FlowchartDataBlock {
+    return { type: "FlowchartDataBlock", value, ...place }
+  }
+
+  /** The shape node of ast/flowchart.md. */
+  protected override shapeOf(
+    name: FlowchartShapeName,
+    property: FlowchartShapeProperty | null,
+    label: FlowchartLabel,
+    place: NodePlace,
+  ): FlowchartShape {
+    return { type: "FlowchartShape", name, property, label, ...place }
+  }
+
+  /** The property node of ast/flowchart.md. */
+  protected override shapePropertyOf(
+    name: Identifier,
+    value: Identifier,
+    place: NodePlace,
+  ): FlowchartShapeProperty {
+    return { type: "FlowchartShapeProperty", name, value, ...place }
   }
 
   /**
@@ -436,302 +389,32 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /**
-   * Vertex statements: `vertex-statement = vertex-group ( data | space+ )?
-   * ( link vertex-group ( data | space+ )? )*`. A data block is read with
-   * the vertex right before it (see {@link FlowchartGrammar.parseVertex}),
-   * so what is left here of `( data | space+ )?` is the `space+` after a
-   * group whose last vertex has no data block.
-   */
+  /** FlowchartVertexStatement: the diagram's node for the shared production. */
   private parseVertexStatement(): FlowchartVertexStatement {
-    const start = this.next
-    const first = this.parseVertexGroup()
-    this.takeSpacesAfterGroup(first)
-    const links: FlowchartLink[] = []
-    let source = first
-    while (this.startsLink()) {
-      const link = this.parseLink()
-      this.takeSpacesAfterGroup(link.target)
-      // Rejections outside the grammar, Link style numbers: one edge for each
-      // pair of vertices.
-      this.edgeCount += source.vertices.length * link.target.vertices.length
-      links.push(link)
-      source = link.target
-    }
     return {
       type: "FlowchartVertexStatement",
-      first,
-      links,
-      ...this.placeFrom(start),
+      ...this.readVertexStatement(
+        () => this.parseVertexGroup(),
+        () => this.parseLink(),
+      ),
     }
   }
 
-  /** Vertex statements: the `space+` of `( data | space+ )?` after `group`. */
-  private takeSpacesAfterGroup(group: FlowchartVertexGroup): void {
-    const last = group.vertices[group.vertices.length - 1]
-    if (last.data.length === 0) this.takeAll("space")
-  }
-
-  /**
-   * Vertex statements: `vertex-group = vertex ( data? space+ "&" space+
-   * vertex )*`. The `data?` is read with the vertex before it. A repetition
-   * that cannot be completed is not taken; one where an empty form stands
-   * in place of the vertex is rejected at the form, which lies inside the
-   * statement (known-divergences/tokenless-empty-forms.md), also right after
-   * the `&`, as in `A &accDescr {} B`, which mermaid.js reads as `A & B`.
-   */
+  /** FlowchartVertexGroup: the diagram's node for the shared production. */
   private parseVertexGroup(): FlowchartVertexGroup {
-    const start = this.next
-    const vertices = [this.parseVertex()]
-    for (;;) {
-      const ampersand = this.afterSpaces(this.next)
-      const ampersandUnit = this.unitAt(ampersand)
-      if (ampersand === this.next || ampersandUnit?.name !== "&") break
-      const afterAmpersand = this.positionAfter(ampersand)
-      const vertex = this.afterSpaces(afterAmpersand)
-      const unit = this.unitAt(vertex)
-      if (unit === null) break
-      const emptyForm = this.emptyFormErrorAt(unit)
-      if (emptyForm !== null) throw emptyForm
-      if (vertex === afterAmpersand || !this.isIdPieceAt(vertex)) break
-      this.addItem("Punctuator", [ampersandUnit])
-      this.moveTo(vertex)
-      vertices.push(this.parseVertex())
-    }
     return {
       type: "FlowchartVertexGroup",
-      vertices,
-      ...this.placeFrom(start),
+      ...this.readVertexGroup(() => this.parseVertex()),
     }
   }
 
-  /**
-   * Vertex statements: `vertex = id shape? ( ":::" id )?`, and the data
-   * blocks that belong to the vertex right before them: the `data?` of
-   * `vertex-group` and the `data` of `vertex-statement`.
-   */
+  /** FlowchartVertex: the diagram's node for the shared production. */
   private parseVertex(): FlowchartVertex {
-    const start = this.next
-    const id = this.parseId()
-    const shape = this.startsShape() ? this.parseShape() : null
-    let cssClass: Identifier | null = null
-    const classMark = this.takeIf(":::")
-    if (classMark !== null) {
-      this.addItem("Punctuator", [classMark])
-      cssClass = this.parseId()
-    }
-    const data = this.parseData()
-    return {
-      type: "FlowchartVertex",
-      id,
-      shape,
-      cssClass,
-      data,
-      ...this.placeFrom(start),
-    }
-  }
-
-  /** Vertex statements: `id = id-piece+`, one Identifier, commas included. */
-  private parseId(): Identifier {
-    const pieces = this.takeWhile(ID_PIECES)
-    if (pieces.length === 0) throw this.unexpected(this.peek())
-    return this.identifierOf(pieces)
-  }
-
-  /**
-   * Style, class, and link style statements: `id-list = ( id-list-part |
-   * "," )+`, read as a list: its elements are the parts between its `,`
-   * units, each one Identifier, and null for a part that is empty.
-   */
-  private parseIdList(): (Identifier | null)[] {
-    return this.parseCommaList(ID_LIST_PART_PIECES, ",")
-  }
-
-  /**
-   * The lists of Style, class, and link style statements (`id-list`) and
-   * of Click statements (`click-ids`): one or more units that are `comma`,
-   * a `,` or a `click-comma` unit, or have one of `partPieces`. The
-   * elements are the parts between the `comma` units, so there is one more
-   * element than there are `comma` units; a part is one Identifier, or null
-   * when it is empty. Each `comma` unit is a `Punctuator`.
-   */
-  private parseCommaList(
-    partPieces: readonly UnitName[],
-    comma: UnitName,
-  ): (Identifier | null)[] {
-    const parts: (Identifier | null)[] = []
-    let pieces: Unit[] = []
-    const first = this.peek()
-    for (;;) {
-      const unit = this.peek()
-      if (unit === null) break
-      if (unit.name === comma) {
-        this.advance()
-        parts.push(pieces.length === 0 ? null : this.identifierOf(pieces))
-        this.addItem("Punctuator", [unit])
-        pieces = []
-      } else if (partPieces.includes(unit.name)) {
-        this.advance()
-        pieces.push(unit)
-      } else {
-        break
-      }
-    }
-    if (this.peek() === first) throw this.unexpected(first)
-    parts.push(pieces.length === 0 ? null : this.identifierOf(pieces))
-    return parts
-  }
-
-  /**
-   * Vertex statements: `data = ( data-start ( data-text | data-quote )*
-   * "}" )+`, read as a list: each block, from its `@{` to its `}`, is a
-   * FlowchartDataBlock, whose value is its written text between them.
-   * No block is an empty list.
-   */
-  private parseData(): FlowchartDataBlock[] {
-    const blocks: FlowchartDataBlock[] = []
-    while (this.nameAt(this.next) === "data-start") {
-      const start = this.next
-      const opening = this.take("data-start")
-      this.addItem("Punctuator", [opening])
-      this.addItem("RawText", this.takeWhile(["data-text", "data-quote"]))
-      const closing = this.take("}")
-      this.addItem("Punctuator", [closing])
-      blocks.push({
-        type: "FlowchartDataBlock",
-        value: this.textOf([
-          significantRangeOf(opening)[1],
-          significantRangeOf(closing)[0],
-        ]),
-        ...this.placeFrom(start),
-      })
-    }
-    return blocks
-  }
-
-  /**
-   * Shapes: `shape`. Each alternative gives the shape its name. The units
-   * that open the shape are one `Punctuator` item, and so are those that
-   * close it.
-   */
-  private parseShape(): FlowchartShape {
-    const start = this.next
-    const opener = this.peek()
-    if (opener === null) throw this.unexpected(null)
-    switch (opener.name) {
-      case "[":
-        return this.parseDelimitedShape(start, ["["], () => ["]", "rectangle"])
-      case "(":
-        return this.nameAt(this.positionAfter(this.next)) === "("
-          ? this.parseDelimitedShape(start, ["(", "("], () => [
-              [")", ")"],
-              "circle",
-            ])
-          : this.parseDelimitedShape(start, ["("], () => [")", "rounded"])
-      case "(((":
-        return this.parseDelimitedShape(start, ["((("], () => [
-          ")))",
-          "double-circle",
-        ])
-      case "{":
-        return this.nameAt(this.positionAfter(this.next)) === "{"
-          ? this.parseDelimitedShape(start, ["{", "{"], () => [
-              ["}", "}"],
-              "hexagon",
-            ])
-          : this.parseDelimitedShape(start, ["{"], () => ["}", "diamond"])
-      case "([":
-        return this.parseDelimitedShape(start, ["(["], () => ["])", "stadium"])
-      case "[[":
-        return this.parseDelimitedShape(start, ["[["], () => [
-          "]]",
-          "framed-rectangle",
-        ])
-      case "[(":
-        return this.parseDelimitedShape(start, ["[("], () => [")]", "cylinder"])
-      case ">":
-        return this.parseDelimitedShape(start, [">"], () => ["]", "odd"])
-      case "(-":
-        return this.parseDelimitedShape(start, ["(-"], () => [
-          "ellipse-end",
-          "ellipse",
-        ])
-      case "[/":
-        return this.parseDelimitedShape(start, ["[/"], () =>
-          this.nameAt(this.next) === "backslash-end"
-            ? ["backslash-end", "trapezoid-bottom"]
-            : ["slash-end", "lean-right"],
-        )
-      case "[\\":
-        return this.parseDelimitedShape(start, ["[\\"], () =>
-          this.nameAt(this.next) === "slash-end"
-            ? ["slash-end", "trapezoid-top"]
-            : ["backslash-end", "lean-left"],
-        )
-      case "[|":
-        return this.parseRectShape(start)
-      default:
-        throw this.unexpected(opener)
-    }
-  }
-
-  /**
-   * Shapes: an alternative of the form opening units, `label`, closing
-   * units. `closing` is asked after the label, because for the slanted
-   * shapes the closing unit decides the name.
-   */
-  private parseDelimitedShape(
-    start: number,
-    opening: readonly UnitName[],
-    closing: () => readonly [
-      UnitName | readonly UnitName[],
-      FlowchartShapeName,
-    ],
-  ): FlowchartShape {
-    const openingUnits = opening.map((name) => this.take(name))
-    this.addItem("Punctuator", openingUnits)
-    const label = this.parseLabel()
-    const [closingNames, name] = closing()
-    const closingUnits = (
-      typeof closingNames === "string" ? [closingNames] : closingNames
-    ).map((closingName) => this.take(closingName))
-    this.addItem("Punctuator", closingUnits)
-    return {
-      type: "FlowchartShape",
-      name,
-      property: null,
-      label,
-      ...this.placeFrom(start),
-    }
-  }
-
-  /** Shapes: `"[|" id-run ":" id-run "|" label "]"`, a rectangle with its property. */
-  private parseRectShape(start: number): FlowchartShape {
-    this.addItem("Punctuator", [this.take("[|")])
-    const propertyStart = this.next
-    const propertyName = this.identifierOf([this.take("id-run")])
-    this.addItem("Punctuator", [this.take(":")])
-    const propertyValue = this.identifierOf([this.take("id-run")])
-    const property: FlowchartShapeProperty = {
-      type: "FlowchartShapeProperty",
-      name: propertyName,
-      value: propertyValue,
-      ...this.placeFrom(propertyStart),
-    }
-    this.addItem("Punctuator", [this.take("|")])
-    const label = this.parseLabel()
-    this.addItem("Punctuator", [this.take("]")])
-    return {
-      type: "FlowchartShape",
-      name: "rectangle",
-      property,
-      label,
-      ...this.placeFrom(start),
-    }
+    return { type: "FlowchartVertex", ...this.readVertex() }
   }
 
   /** Labels: `label = ( string | markdown-string | text-run ) text-run*`. */
-  private parseLabel(): FlowchartLabel {
+  protected override parseLabel(): FlowchartLabel {
     return this.labelOf(
       this.parseStartingWithString(() => this.takeWhile(["text-run"])),
     )
@@ -796,57 +479,16 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Whether a shape starts at the next unit. */
-  private startsShape(): boolean {
-    const name = this.nameAt(this.next)
-    return name !== null && SHAPE_STARTS.includes(name)
-  }
-
-  /** Whether a link starts at the next unit: an edge id or an arrow. */
-  private startsLink(): boolean {
-    const name = this.nameAt(this.next)
-    return name === "edge-id" || name === "arrow" || name === "opening-arrow"
-  }
-
-  /**
-   * Links: `link = ( edge-id "@" )? arrow ( "|" label "|" space? )? |
-   * ( edge-id "@" )? opening-arrow link-text arrow`, and the vertex group
-   * after it, which is the link's target.
-   */
+  /** FlowchartLink: the diagram's node for the shared production. */
   private parseLink(): FlowchartLink {
-    const start = this.next
-    let id: Identifier | null = null
-    const edgeId = this.takeIf("edge-id")
-    if (edgeId !== null) {
-      id = this.identifierOf([edgeId])
-      this.addItem("Punctuator", [this.take("@")])
-    }
-    let opening: FlowchartOpeningArrow | null = null
-    let label: FlowchartLabel | null = null
-    const openingArrow = this.takeIf("opening-arrow")
-    if (openingArrow !== null) {
-      opening = this.openingArrowOf(openingArrow)
-      label = this.parseLinkText()
-    }
-    const arrow = this.arrowOf(this.take("arrow"))
-    if (openingArrow === null) {
-      const bar = this.takeIf("|")
-      if (bar !== null) {
-        this.addItem("Punctuator", [bar])
-        label = this.parseLabel()
-        this.addItem("Punctuator", [this.take("|")])
-        this.takeIf("space")
-      }
-    }
-    const target = this.parseVertexGroup()
     return {
       type: "FlowchartLink",
-      id,
-      opening,
-      arrow,
-      label,
-      target,
-      ...this.placeFrom(start),
+      ...this.readLink(
+        () => this.parseVertexGroup(),
+        (unit) => this.arrowOf(unit),
+        (unit) => this.openingArrowOf(unit),
+        () => this.parseLinkText(),
+      ),
     }
   }
 
@@ -1025,52 +667,22 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Style, class, and link style statements: `style-statement = "style" space id space styles`. */
+  /** FlowchartStyleStatement: the diagram's node for the shared production. */
   private parseStyleStatement(): FlowchartStyleStatement {
-    const start = this.next
-    this.addItem("Keyword", [this.take("style")])
-    this.take("space")
-    const id = this.parseId()
-    this.take("space")
-    const styles = this.parseStyles(false)
-    return {
-      type: "FlowchartStyleStatement",
-      id,
-      styles,
-      ...this.placeFrom(start),
-    }
+    return { type: "FlowchartStyleStatement", ...this.readStyleStatement() }
   }
 
-  /** Style, class, and link style statements: `class-def-statement = "classDef" space id-list space styles`. */
+  /** FlowchartClassDefStatement: the diagram's node for the shared production. */
   private parseClassDefStatement(): FlowchartClassDefStatement {
-    const start = this.next
-    this.addItem("Keyword", [this.take("classDef")])
-    this.take("space")
-    const cssClasses = this.parseIdList()
-    this.take("space")
-    const styles = this.parseStyles(true)
     return {
       type: "FlowchartClassDefStatement",
-      cssClasses,
-      styles,
-      ...this.placeFrom(start),
+      ...this.readClassDefStatement(),
     }
   }
 
-  /** Style, class, and link style statements: `class-statement = "class" space id-list space id`. */
+  /** FlowchartClassStatement: the diagram's node for the shared production. */
   private parseClassStatement(): FlowchartClassStatement {
-    const start = this.next
-    this.addItem("Keyword", [this.take("class")])
-    this.take("space")
-    const ids = this.parseIdList()
-    this.take("space")
-    const cssClass = this.parseId()
-    return {
-      type: "FlowchartClassStatement",
-      ids,
-      cssClass,
-      ...this.placeFrom(start),
-    }
+    return { type: "FlowchartClassStatement", ...this.readClassStatement() }
   }
 
   /**
@@ -1084,7 +696,9 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    * its two sides, with the `,`, are one style. The grammar still needs a
    * style after that `,`.
    */
-  private parseStyles(inClassDef: boolean): (FlowchartLiteral | null)[] {
+  protected override parseStyles(
+    inClassDef: boolean,
+  ): (FlowchartLiteral | null)[] {
     const styles: (FlowchartLiteral | null)[] = []
     let afterComma = false
     for (;;) {
@@ -1116,110 +730,30 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Style, class, and link style statements: whether the next unit is a
-   * `,` right after a `\` of the diagram text, which ends `pieces`.
-   */
-  private escapedCommaFollows(pieces: readonly Unit[]): boolean {
-    const last = pieces.at(-1)
-    return (
-      last !== undefined &&
-      last.text.endsWith("\\") &&
-      this.nameAt(this.next) === ","
-    )
-  }
-
-  /** Style, class, and link style statements: `style`, the units of one style of the grammar. */
-  private takeStylePieces(): Unit[] {
-    const pieces = this.takeWhile(STYLE_PIECES)
-    if (pieces.length === 0) throw this.unexpected(this.peek())
-    return pieces
-  }
-
-  /**
    * Style, class, and link style statements: `link-style-statement =
    * "linkStyle" space ( "default" | number ( "," number )* ) space
    * ( "interpolate" space name ( space styles )? | styles )`.
    */
   private parseLinkStyleStatement():
     FlowchartLinkStyleStatement | FlowchartDefaultLinkStyleStatement {
-    const start = this.next
-    this.addItem("Keyword", [this.take("linkStyle")])
-    this.take("space")
-    const defaultKeyword = this.takeIf("default")
-    const indices: NumericLiteral[] = []
-    if (defaultKeyword !== null) {
-      this.addItem("Keyword", [defaultKeyword])
-    } else {
-      do {
-        indices.push(this.parseLinkStyleNumber())
-      } while (this.takeComma())
-    }
-    this.take("space")
-    let interpolate: Identifier | null = null
-    let styles: (FlowchartLiteral | null)[] = []
-    const interpolateKeyword = this.takeIf("interpolate")
-    if (interpolateKeyword !== null) {
-      this.addItem("Keyword", [interpolateKeyword])
-      this.take("space")
-      interpolate = this.parseName()
-      if (this.takeIf("space") !== null) styles = this.parseStyles(false)
-    } else {
-      styles = this.parseStyles(false)
-    }
-    return defaultKeyword === null
+    const parsed = this.readLinkStyleStatement()
+    const { interpolate, styles, range, loc } = parsed
+    return parsed.indices === null
       ? {
-          type: "FlowchartLinkStyleStatement",
-          indices,
-          interpolate,
-          styles,
-          ...this.placeFrom(start),
-        }
-      : {
           type: "FlowchartDefaultLinkStyleStatement",
           interpolate,
           styles,
-          ...this.placeFrom(start),
+          range,
+          loc,
         }
-  }
-
-  /**
-   * Style, class, and link style statements: `name = ( number | letter |
-   * id-run | "v" | "-" | "," | ":" | "&" | "#" | "*" )+`, one Identifier.
-   */
-  private parseName(): Identifier {
-    const units = this.takeWhile(NAME_UNITS)
-    if (units.length === 0) throw this.unexpected(this.peek())
-    return this.identifierOf(units)
-  }
-
-  /** Reads a `,` when it is the next unit, as a `Punctuator`; says whether it did. */
-  private takeComma(): boolean {
-    const comma = this.takeIf(",")
-    if (comma === null) return false
-    this.addItem("Punctuator", [comma])
-    return true
-  }
-
-  /**
-   * A number of a `linkStyle` statement, and Rejections outside the
-   * grammar, Link style numbers: its text must be an integer written
-   * without leading zeros, and less than the number of Db edges that the
-   * statements before it have made.
-   */
-  private parseLinkStyleNumber(): NumericLiteral {
-    const number = this.take("number")
-    const literal = this.numericLiteralOf(number)
-    const hasLeadingZero =
-      number.text.length > 1 && number.text.codePointAt(0) === DIGIT_ZERO
-    if (hasLeadingZero || literal.value >= this.edgeCount) {
-      const range = significantRangeOf(number)
-      throw new ParseError(
-        `linkStyle ${number.text} does not name a link that exists`,
-        range,
-        this.lines.location(range),
-      )
-    }
-    return literal
+      : {
+          type: "FlowchartLinkStyleStatement",
+          indices: parsed.indices,
+          interpolate,
+          styles,
+          range,
+          loc,
+        }
   }
 
   /**
@@ -1305,35 +839,6 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     if (after !== this.next) throw this.unexpected(this.peek())
   }
 
-  /**
-   * Click statements: `callback = "call" callback-name "(" (
-   * callback-arguments ")" | ")" ( "call" "(" callback-arguments ")" )? )`.
-   * The `call` units are `Keyword` tokens and the parentheses `Punctuator`
-   * tokens of the statement, in no field. When the parentheses after the
-   * name are empty, the arguments may follow a second `call`.
-   */
-  private parseCallback(): {
-    readonly callback: FlowchartLiteral
-    readonly callbackArguments: FlowchartLiteral | null
-  } {
-    this.addItem("Keyword", [this.take("call")])
-    const callback = this.textLiteralOf([this.take("callback-name")])
-    this.addItem("Punctuator", [this.take("(")])
-    let argumentsUnit = this.takeIf("callback-arguments")
-    this.addItem("Punctuator", [this.take(")")])
-    if (argumentsUnit === null && this.nameAt(this.next) === "call") {
-      this.addItem("Keyword", [this.take("call")])
-      this.addItem("Punctuator", [this.take("(")])
-      argumentsUnit = this.take("callback-arguments")
-      this.addItem("Punctuator", [this.take(")")])
-    }
-    return {
-      callback,
-      callbackArguments:
-        argumentsUnit === null ? null : this.textLiteralOf([argumentsUnit]),
-    }
-  }
-
   /** Click statements: `( space string )?`. Returns the string, or null when the two units do not follow. */
   private takeSpaceAndString(): StringLiteral | null {
     if (
@@ -1351,20 +856,15 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    * "direction" direction-value direction-text?`.
    */
   private parseDirectionStatement(): FlowchartDirectionStatement {
-    const start = this.next
-    const before = this.takeIf("direction-text")
-    if (before !== null) this.addItem("RawText", [before])
-    this.addItem("Keyword", [this.take("direction")])
-    const value = this.take("direction-value")
-    this.addItem("Keyword", [value])
-    const after = this.takeIf("direction-text")
-    if (after !== null) this.addItem("RawText", [after])
+    const { before, direction, after, range, loc } =
+      this.readDirectionStatement()
     return {
       type: "FlowchartDirectionStatement",
       textBefore: this.ignoredTextOf(before),
-      direction: statementDirectionOf(value.text),
+      direction: statementDirectionOf(direction),
       textAfter: this.ignoredTextOf(after),
-      ...this.placeFrom(start),
+      range,
+      loc,
     }
   }
 
@@ -1385,14 +885,9 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
 
   /** Diagram and statements: `title-statement = "accTitle" ":" title-text?`. */
   private parseTitleStatement(): FlowchartAccTitleStatement {
-    const start = this.next
-    this.addItem("Keyword", [this.take("accTitle")])
-    this.addItem("Punctuator", [this.take(":")])
-    const text = this.takeIf("title-text")
     return {
       type: "FlowchartAccTitleStatement",
-      value: text === null ? null : this.textLiteralOf([text]),
-      ...this.placeFrom(start),
+      ...this.readAccessibilityLine("accTitle"),
     }
   }
 
@@ -1403,17 +898,11 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    */
   private parseDescriptionStatement():
     FlowchartAccDescrStatement | FlowchartAccDescrBlockStatement {
-    if (this.nameAt(this.positionAfter(this.next)) !== ":") {
+    if (this.nameAt(this.positionAfter(this.next)) !== ":")
       return this.parseDescriptionBlock()
-    }
-    const start = this.next
-    this.addItem("Keyword", [this.take("accDescr")])
-    this.addItem("Punctuator", [this.take(":")])
-    const text = this.takeIf("description-text")
     return {
       type: "FlowchartAccDescrStatement",
-      value: text === null ? null : this.textLiteralOf([text]),
-      ...this.placeFrom(start),
+      ...this.readAccessibilityLine("accDescr"),
     }
   }
 
@@ -1438,65 +927,12 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Whether the unit at the position `position` is one that an id can start with. */
-  private isIdPieceAt(position: number): boolean {
-    const name = this.nameAt(position)
-    return name !== null && ID_PIECES.includes(name)
-  }
-
-  /** The position after the `space` units from the position `position`. */
-  private afterSpaces(position: number): number {
-    return this.afterUnitsNamed(position, ["space"])
-  }
-
-  /**
-   * diagrams/flowchart.md, Strings: the delimiters of the `string` or
-   * `markdown-string` unit `unit`: what lies in it before and after its
-   * content.
-   */
-  private delimitersOf(unit: Unit): Range[] {
-    if (unit.content === null) {
-      throw new Error(
-        `mmd-toolkit parser bug: the unit ${unit.name} at ${unit.start} has no content`,
-      )
-    }
-    const [start, end] = significantRangeOf(unit)
-    return [
-      [start, unit.content[0]],
-      [unit.content[1], end],
-    ]
-  }
-
   /**
    * FlowchartLiteral: the literal whose units are `units`, one `RawText`
    * item. Its value is its written text.
    */
-  private textLiteralOf(units: readonly Unit[]): FlowchartLiteral {
-    this.addItem("RawText", units)
-    const place = this.placeOf(units)
-    return {
-      type: "FlowchartLiteral",
-      value: this.textOf(place.range),
-      ...place,
-    }
-  }
-
-  /**
-   * ast.md, Shared leaf nodes > StringLiteral: the StringLiteral of the
-   * `string` unit `unit`, one `String` item. Its value is its content: its
-   * written text without the delimiters of the string contexts.
-   */
-  private stringLiteralOf(unit: Unit): StringLiteral {
-    this.addItem("String", [unit])
-    const place = this.placeOf([unit])
-    return {
-      type: "StringLiteral",
-      value: this.textOf(place.range, this.delimitersOf(unit)),
-      raw: this.lexer.text.slice(...place.range),
-      // Strings: the lexer rejects a string that the text ends in.
-      closed: true,
-      ...place,
-    }
+  protected override textLiteralOf(units: readonly Unit[]): FlowchartLiteral {
+    return { type: "FlowchartLiteral", ...this.readTextLiteral(units) }
   }
 
   /**

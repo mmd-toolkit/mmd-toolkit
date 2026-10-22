@@ -16,7 +16,8 @@ the sentence of the specification or of the parser's documents that defines it.
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
 `sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
 `mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, `block/`,
-`kanban/`, `c4/`, and `venn/`, and checks:
+`kanban/`, `c4/`, `venn/`, `ishikawa/`, `agentflow/`, and `usecase/`, and
+checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -50,6 +51,15 @@ exact token text, raw literal text, and child-node containment and source order.
 `tests/fixtures.test.ts` compares their recorded parse results, including the
 common venn detection fixture. `tests/ast-venn-examples.test.ts` checks the
 ranges in the type comment examples.
+
+Ishikawa fixtures are checked and recorded by `tests/ishikawa.test.ts`: every
+input is compared with its specified acceptance and declared divergence.
+Accepted trees check token/comment coverage, exact token text, child-node
+containment, and source order. `tests/fixtures.test.ts` also compares their
+records, including the common Ishikawa detection fixture.
+`tests/ast-ishikawa-examples.test.ts` checks the type comment example ranges.
+The tests package's `checkTree` and `dbFromTree` validate the recorded trees and
+their Db content.
 
 ## Known divergences
 
@@ -101,12 +111,12 @@ compares it with the Db built from the recorded tree.
   outside the comment.
 - `percent-brace-after-unit`: the Gantt chart has a `%%{` that starts no
   directive and that mermaid.js reaches directly, found in the same way.
-- `blank-line-after-header-or-comments`: the mindmap or kanban diagram has,
-  after the header or between two statements, blank lines and diagram comments
-  in one of the four cases of the divergence, found from the lines of the
-  parser's units and diagram comments: a `newline` unit ends a line, one of n
-  line feeds ends n lines, and one with no characters ends the line of a diagram
-  comment at a U+2028 or a U+2029.
+- `blank-line-after-header-or-comments`: the mindmap, kanban, or Ishikawa
+  diagram has, after the header or between two statements, blank lines and
+  diagram comments in one of the four cases of the divergence, found from the
+  lines of the parser's units and diagram comments: a `newline` unit ends a
+  line, one of n line feeds ends n lines, and one with no characters ends the
+  line of a diagram comment at a U+2028 or a U+2029.
 - `name-start-reads-unit`: the class diagram has a backquoted name or a generic
   type whose text starts with `"`, `~` (in a backquoted name), `<<`, `>>`, or
   one of the keywords that the divergence names, found from the parser's
@@ -336,3 +346,22 @@ looks for files left behind names any that remain.
   `traverseNodes`, the flowchart tree and its tokens, and the sequence tree, the
   class tree, and the state tree, their tokens, and the rejections outside their
   grammars.
+
+Agentflow fixtures are checked and recorded by `tests/agentflow.test.ts`, with
+acceptance taken from expected.json or the declared divergence's specified.json
+reading. The test checks character coverage, token boundaries, raw spelling,
+child containment and source order, and the Name, comment, heading, arrow,
+metadata, and click-prefix structures. Site maxEdges acceptance is checked apart
+from parse(), as for flowchart. `tests/ast-agentflow-examples.test.ts` checks
+all node comment examples, and `tests/fixtures.test.ts` compares the same
+records.
+
+Usecase fixtures are checked and recorded by `tests/usecase.test.ts`, with
+specified.json taking precedence, unqualified divergence fixtures rejected, and
+embedded-data-opaque fixtures accepted. It checks acceptance, character
+coverage, exact token and raw text, node boundaries, child containment and
+source order, and calls the corpus tree checker on every accepted tree.
+Structure assertions cover native metadata, single quotes, CSS padding, arrow
+halves and opaque JSON. `tests/ast-usecase-examples.test.ts` checks all 26 node
+comment examples. The tests package supplies the tree checker and Db builder for
+the separate corpus comparisons.

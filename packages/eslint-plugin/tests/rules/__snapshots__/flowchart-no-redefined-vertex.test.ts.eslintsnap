@@ -129,39 +129,6 @@ Code:
 ---
 
 
-Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-label-differs-by-cr-and-lf
-Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-label-differs-by-cr-and-lf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A["ab"]
-  3 |   A["a
-  4 | b"]
-    |    ^\ [1]
-  5 |
-    | ~~~ [1]
-
-[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
----
-
-
-Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-label-differs-by-crlf-and-lf
-Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-label-differs-by-crlf-and-lf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A["a
-  3 | b"]
-  4 |   A["a
-    |    ^~~\ [1]
-  5 | b"]
-    | ~~~ [1]
-  6 |
-
-[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
----
-
-
 Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-redefined-vertex-label-differs-by-html-attribute-quotes
 Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-redefined-vertex-label-differs-by-html-attribute-quotes-input.mmd
 
@@ -277,39 +244,6 @@ Code:
 ---
 
 
-Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-vertex-label-carriage-return-no-line-feed
-Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-vertex-label-carriage-return-no-line-feed-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A["a
-  3 | b"]
-  4 |   A["ab"]
-    |    ^~~~~~~\ [1]
-  5 |
-    | ~~~ [1]
-
-[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
----
-
-
-Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-vertex-label-carriage-return-redefined
-Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-vertex-label-carriage-return-redefined-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A["a
-  3 | b"]
-  4 |   A["a
-    |    ^~~\ [1]
-  5 | b"]
-    | ~~~ [1]
-  6 |
-
-[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
----
-
-
 Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/db-vertex-label-redefined
 Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/db-vertex-label-redefined-input.mmd
 
@@ -321,4 +255,47 @@ Code:
   4 |
 
 [1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/label-attribute-quotes
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/label-attribute-quotes-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[<b class="x">t</b>] --> B
+  3 |   C --> A[<b class='x'>t</b>]
+    |          ^~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/link-id-declared-later-keeps-replacements
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/link-id-declared-later-keeps-replacements-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | e[First]
+  3 | e[Second]
+    |  ^~~~~~~~ [1]
+  4 | A e@--> B
+  5 |
+
+[1] mermaid.js replaces the shape and the label of `e` written on line 2 with these.
+---
+
+
+Test: flowchart-no-redefined-vertex >> invalid >>> invalid/flowchart/link-target-before-link-created
+Filename: tests/fixtures/rules/flowchart-no-redefined-vertex/invalid/flowchart/link-target-before-link-created-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | e[First]
+  3 | A e@--> e[Second]
+    |          ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `e` written on line 2 with these.
 ---

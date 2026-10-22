@@ -1,0 +1,131 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/conformance/fixtures/pattern-parallel-agentflow.mmd"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "query",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "query",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "orchestrator",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Orchestrate",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "search",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Search",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "analyze",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Analyze",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "validate",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Validate",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "query",
+        "end": "orchestrator",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_query_orchestrator_0"
+      },
+      {
+        "start": "orchestrator",
+        "end": "search",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_orchestrator_search_0"
+      },
+      {
+        "start": "orchestrator",
+        "end": "analyze",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_orchestrator_analyze_0"
+      },
+      {
+        "start": "orchestrator",
+        "end": "validate",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_orchestrator_validate_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "query",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      }
+    ]
+  }
+}

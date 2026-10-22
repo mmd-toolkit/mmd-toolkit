@@ -4,10 +4,13 @@ import { printBlockDiagram } from "./block.ts"
 import { printClass } from "./class.ts"
 import { printVenn } from "./venn.ts"
 import { printC4 } from "./c4.ts"
+import { printUsecase } from "./usecase.ts"
 import { printEr } from "./er.ts"
+import { printAgentflow } from "./agentflow.ts"
 import { printFlowchart } from "./flowchart.ts"
 import { printGantt } from "./gantt.ts"
 import { printJourney } from "./journey.ts"
+import { printIshikawa } from "./ishikawa.ts"
 import { printKanban } from "./kanban.ts"
 import { printMindmap } from "./mindmap.ts"
 import { printQuadrant } from "./quadrant.ts"
@@ -18,6 +21,29 @@ import { printState } from "./state.ts"
 import { printTimeline } from "./timeline.ts"
 import { printXychart } from "./xychart.ts"
 import type { Source } from "./source.ts"
+import type { RootTextPlan } from "./root.ts"
+import { agentflowTextPlan } from "./agentflow-size.ts"
+
+/** Diagram-specific constraints on the source and the complete root layout. */
+export interface DiagramTextRules {
+  readonly keepsCommentLines: boolean
+  readonly plan: (
+    source: Source,
+    options: ParserOptions<MermaidAst>,
+  ) => RootTextPlan
+}
+
+/** Selected once alongside the diagram printer, rather than in shared scans. */
+export const diagramTextRules: Readonly<
+  Partial<Record<string, DiagramTextRules>>
+> = {
+  AgentflowDiagram: {
+    // Normal-size comments are real text; the size plan retains larger input
+    // whole (diagrams/agentflow.md, Preserved comments and the default size limit).
+    keepsCommentLines: true,
+    plan: agentflowTextPlan,
+  },
+}
 
 /**
  * Prints one diagram type. It is called for the diagram body and for every
@@ -45,6 +71,7 @@ export const diagramPrinters: Readonly<
   Partial<Record<string, DiagramPrinter>>
 > = {
   FlowchartDiagram: printFlowchart,
+  AgentflowDiagram: printAgentflow,
   SequenceDiagram: printSequence,
   ClassDiagram: printClass,
   StateDiagram: printState,
@@ -55,7 +82,9 @@ export const diagramPrinters: Readonly<
   MindmapDiagram: printMindmap,
   KanbanDiagram: printKanban,
   C4Diagram: printC4,
+  UsecaseDiagram: printUsecase,
   VennDiagram: printVenn,
+  IshikawaDiagram: printIshikawa,
   QuadrantDiagram: printQuadrant,
   RequirementDiagram: printRequirement,
   SankeyDiagram: printSankey,

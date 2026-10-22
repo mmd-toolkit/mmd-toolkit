@@ -1,3 +1,4 @@
+import type { UsecaseNode } from "../../src/ast/usecase.ts"
 import type {
   ClassNode,
   ErNode,
@@ -16,6 +17,8 @@ import type {
   KanbanTreeNode,
   C4Node,
   VennNode,
+  IshikawaTreeNode,
+  AgentflowNode,
 } from "../../src/index.ts"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
@@ -431,6 +434,81 @@ export const allVennNodeTypes: Readonly<Record<VennNode["type"], true>> = {
   VennIgnoredText: true,
 }
 
+/** Every node type of ast/ishikawa.md, in document order. */
+export const allIshikawaNodeTypes: Readonly<
+  Record<IshikawaTreeNode["type"], true>
+> = {
+  IshikawaDiagram: true,
+  IshikawaNode: true,
+  IshikawaLiteral: true,
+}
+
+/** Every node type of ast/agentflow.md, in source declaration order. */
+export const allAgentflowNodeTypes: Readonly<
+  Record<AgentflowNode["type"], true>
+> = {
+  AgentflowDiagram: true,
+  AgentflowEmptyStatement: true,
+  AgentflowVertexStatement: true,
+  AgentflowVertexGroup: true,
+  AgentflowVertex: true,
+  AgentflowShape: true,
+  AgentflowShapeProperty: true,
+  AgentflowLink: true,
+  AgentflowArrow: true,
+  AgentflowOpeningArrow: true,
+  AgentflowLabel: true,
+  AgentflowDataBlock: true,
+  AgentflowFlowStatement: true,
+  AgentflowStyleStatement: true,
+  AgentflowClassDefStatement: true,
+  AgentflowClassStatement: true,
+  AgentflowClickCallbackStatement: true,
+  AgentflowClickUrlStatement: true,
+  AgentflowLinkStyleStatement: true,
+  AgentflowDefaultLinkStyleStatement: true,
+  AgentflowDirectionStatement: true,
+  AgentflowAccTitleStatement: true,
+  AgentflowAccDescrStatement: true,
+  AgentflowAccDescrBlockStatement: true,
+  AgentflowLiteral: true,
+  AgentflowIgnoredText: true,
+  AgentflowGlobalStatement: true,
+  AgentflowConnectorStatement: true,
+  AgentflowName: true,
+}
+
+/** Every node type of ast/usecase.md, in document order. */
+export const allUsecaseNodeTypes: Readonly<Record<UsecaseNode["type"], true>> =
+  {
+    UsecaseDiagram: true,
+    UsecaseActorStatement: true,
+    UsecaseActor: true,
+    UsecaseEntityStatement: true,
+    UsecaseEntity: true,
+    UsecaseSystemBoundaryStatement: true,
+    UsecaseRelationshipStatement: true,
+    UsecaseOpeningArrow: true,
+    UsecaseArrow: true,
+    UsecaseLabel: true,
+    UsecaseLiteral: true,
+    UsecaseMetadata: true,
+    UsecaseMetadataProperty: true,
+    UsecaseMetadataAssignmentStatement: true,
+    UsecaseNoteStatement: true,
+    UsecaseJsonStatement: true,
+    UsecaseJsonDataBlock: true,
+    UsecaseDirectionStatement: true,
+    UsecaseClassDefStatement: true,
+    UsecaseClassStatement: true,
+    UsecaseStyleStatement: true,
+    UsecaseStyleDeclaration: true,
+    UsecaseIdentifier: true,
+    UsecaseAccTitleStatement: true,
+    UsecaseAccDescrStatement: true,
+    UsecaseAccDescrBlockStatement: true,
+  }
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -451,6 +529,9 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allKanbanNodeTypes),
   ...Object.keys(allC4NodeTypes),
   ...Object.keys(allVennNodeTypes),
+  ...Object.keys(allIshikawaNodeTypes),
+  ...Object.keys(allAgentflowNodeTypes),
+  ...Object.keys(allUsecaseNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

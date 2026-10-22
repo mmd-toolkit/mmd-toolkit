@@ -17,6 +17,8 @@ const SPEC_DOCS = path.join(
 )
 
 const DIAGRAMS = [
+  "usecase",
+  "agentflow",
   "flowchart",
   "sequence",
   "class",
@@ -34,6 +36,7 @@ const DIAGRAMS = [
   "kanban",
   "c4",
   "venn",
+  "ishikawa",
 ] as const
 
 /** Documented type aliases have their own headings, but are not node types. */

@@ -1,0 +1,82 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does shared directive stripping apply to all remaining text fields, including frontmatter?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "FirstLast",
+    "accDescr": "FirstLast",
+    "actors": [
+      {
+        "id": "A",
+        "label": "FirstLast",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": [
+          "color:blue"
+        ]
+      }
+    ],
+    "useCases": [
+      {
+        "id": "B",
+        "label": "B",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "S",
+        "label": "FirstLast",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 0,
+        "label": "FirstLast",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "B",
+        "label": "FirstLast",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "color:red"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "title": "First%%{init: {}}%%Last"
+  }
+}

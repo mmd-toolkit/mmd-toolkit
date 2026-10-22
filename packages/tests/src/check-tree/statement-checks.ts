@@ -13,6 +13,7 @@ import {
   AttributeQuotes,
   ConvertedText,
   readConvertedCharacters,
+  readAgentflowCharacters,
 } from "../db-from-tree/converted-text.ts"
 
 // The checks that the diagrams whose statements are a keyword and a text
@@ -60,7 +61,9 @@ export function readingOf(
     problems,
     get converted() {
       return (converted ??= new ConvertedText(
-        readConvertedCharacters(text, root, attributeQuotes()),
+        root.body.type === "AgentflowDiagram"
+          ? readAgentflowCharacters(text, root)
+          : readConvertedCharacters(text, root, attributeQuotes()),
       ))
     },
     attributeTextOf: (range) =>
@@ -488,7 +491,8 @@ export function checkLayout(
     if (next === undefined) continue
     // C4 diagram comments are trivia between statements and boundary parts.
     const gap =
-      reading.root.body.type === "C4Diagram"
+      reading.root.body.type === "C4Diagram" ||
+      reading.root.body.type === "UsecaseDiagram"
         ? reading.written.of(
             [part.range[1], next.range[0]],
             reading.root.comments.map((comment) => comment.range),

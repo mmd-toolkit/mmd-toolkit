@@ -1,0 +1,287 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/agentflow.md",
+    "line": 68
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "brief",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Release brief",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "draft",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Draft the notes",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "lookup",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "changelog_search",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine"
+        }
+      },
+      {
+        "id": "guide",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Tone of voice",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      },
+      {
+        "id": "check",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Check the claims",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "ok",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Accurate?",
+        "type": "diamond",
+        "props": {},
+        "metadata": {
+          "shape": "diamond"
+        }
+      },
+      {
+        "id": "publish",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Publish",
+        "type": "hexagon",
+        "props": {},
+        "metadata": {
+          "shape": "hexagon"
+        }
+      },
+      {
+        "id": "writer",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "writer",
+        "props": {}
+      },
+      {
+        "id": "reviewer",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "reviewer",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "draft",
+        "end": "lookup",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_draft_lookup_0"
+      },
+      {
+        "start": "draft",
+        "end": "guide",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_draft_guide_0"
+      },
+      {
+        "start": "check",
+        "end": "ok",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_check_ok_0"
+      },
+      {
+        "start": "brief",
+        "end": "writer",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_brief_writer_0"
+      },
+      {
+        "start": "writer",
+        "end": "reviewer",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_writer_reviewer_0"
+      },
+      {
+        "start": "ok",
+        "end": "publish",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_ok_publish_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "writer",
+        "nodes": [
+          "draft",
+          "lookup",
+          "guide"
+        ],
+        "title": "Drafting Agent",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "reviewer",
+        "nodes": [
+          "check",
+          "ok"
+        ],
+        "title": "Review Agent",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    },
+    "dataBlockEffects": [
+      {
+        "id": "brief",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "draft",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      },
+      {
+        "id": "lookup",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine"
+          }
+        }
+      },
+      {
+        "id": "guide",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      },
+      {
+        "id": "check",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      },
+      {
+        "id": "ok",
+        "set": {
+          "type": "diamond",
+          "metadata": {
+            "shape": "diamond"
+          }
+        }
+      },
+      {
+        "id": "publish",
+        "set": {
+          "type": "hexagon",
+          "metadata": {
+            "shape": "hexagon"
+          }
+        }
+      }
+    ]
+  }
+}

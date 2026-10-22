@@ -632,6 +632,230 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   venn/div-directive-style-value-word] [fixture:
   venn/div-ignored-semicolon-style-value-selected]
 
+## In an Ishikawa diagram
+
+- An initial header that is not cut by a directive and is followed only by
+  removed directives and the appended LF is reported at its selected keyword,
+  with `The header cannot end the text`. [fixture: ishikawa/header-only]
+  [fixture: ishikawa/header-beta-only] [fixture:
+  ishikawa/header-directive-only-eof]
+- A later header is reported at its keyword, including its beta suffix when
+  selected and any directive inside it, with `Unexpected token`. Leading
+  indentation is outside the range. [fixture: ishikawa/header-twice] [fixture:
+  ishikawa/header-beta-twice] [fixture: ishikawa/header-indented-second]
+  [fixture: ishikawa/gram-header-ls-second-header] [fixture:
+  ishikawa/gram-header-second-beta-prefix] [fixture:
+  ishikawa/gram-directive-joins-second-header] [fixture:
+  ishikawa/gram-second-header-eof] [fixture:
+  ishikawa/gram-second-beta-header-eof] [fixture:
+  ishikawa/gram-second-header-cut-eof]
+- A directive cutting the initial selected header uses the shared
+  `Unexpected directive` error below. Node text has no unclosed-string or
+  empty-form error. [fixture: ishikawa/directive-in-header] [fixture:
+  ishikawa/directive-in-beta-header] [fixture:
+  ishikawa/div-directive-beta-prefix] [fixture:
+  ishikawa/gram-root-unclosed-quote] [fixture: ishikawa/gram-empty-quotes]
+  [fixture: ishikawa/gram-initial-header-cut-eof] [fixture:
+  ishikawa/gram-initial-beta-cut-eof]
+
+The later-header and directive-cut rules take precedence over the bare-header
+EOF rule. Their messages are the same with or without a following source LF.
+[fixture: ishikawa/header-twice] [fixture: ishikawa/gram-second-header-eof]
+[fixture: ishikawa/header-beta-twice] [fixture:
+ishikawa/gram-second-beta-header-eof] [fixture:
+ishikawa/gram-directive-joins-second-header] [fixture:
+ishikawa/gram-second-header-cut-eof] [fixture: ishikawa/directive-in-header]
+[fixture: ishikawa/gram-initial-header-cut-eof] [fixture:
+ishikawa/directive-in-beta-header] [fixture: ishikawa/gram-initial-beta-cut-eof]
+
+## In an agentflow diagram
+
+| Rejection                                | Range and message                                                                                                                                                                          |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No lexical rule matches                  | The one character, including both UTF-16 units of a non-BMP character, with `Unexpected character`. An unclosed string or markdown string reports its opening quote.                       |
+| Unfinished callback context              | The call keyword with `The callback after call has no ( before the end of the text`, or its opening parenthesis with `The arguments of the callback have no ) before the end of the text`. |
+| A click context reads nothing before EOF | Its click keyword, with `click has no click id before the end of the text`.                                                                                                                |
+| The grammar cannot read a unit           | Its significant token range, or the empty range at the start of an all-whitespace unit, with `Unexpected token`; at source EOF, the empty range there with `Unexpected end of text`.       |
+| An invalid linkStyle index               | The number, with `linkStyle <number> does not name a link that exists`.                                                                                                                    |
+| A member after hasOwnProperty            | The first following candidate member's id, name, accessibility value, or empty-statement semicolon, with `A flow member follows the member hasOwnProperty`.                                |
+
+Cases of the lexical-rule row: [fixture: agentflow/lex-class-suffix-equals]
+[fixture: agentflow/lex-vertex-equals-alone] [fixture:
+agentflow/lex-vertex-supplementary-alone] [fixture:
+agentflow/gram-bare-label-pipe] [fixture:
+agentflow/gram-slanted-label-open-bracket] [fixture:
+agentflow/gram-ellipse-label-open-paren] [fixture:
+agentflow/lex-style-equals-in-value]
+
+Cases of the grammar-unit row: [fixture:
+agentflow/gram-click-url-merged-strings] [fixture:
+agentflow/gram-name-click-second-string] [fixture:
+agentflow/gram-class-target-global] [fixture: agentflow/gram-props-number-unit]
+[fixture: agentflow/gram-interpolate-default-name] [fixture:
+agentflow/gram-bare-label-open-bracket] [fixture:
+agentflow/gram-bare-callback-global] [fixture:
+agentflow/gram-connector-name-default]
+
+[fixture: agentflow/lex-supplementary-id] [fixture:
+agentflow/lex-unclosed-string] [fixture: agentflow/lex-unclosed-markdown]
+[fixture: agentflow/lex-call-without-parenthesis] [fixture:
+agentflow/lex-callback-args-unclosed] [fixture:
+agentflow/gram-connector-name-click-only-eof] [fixture:
+agentflow/gram-node-empty-label] [fixture:
+agentflow/lex-class-double-space-value] [fixture: agentflow/gram-flow-open]
+[fixture: agentflow/lex-linkstyle-leading-zero] [fixture:
+agentflow/gram-linkstyle-style-out-of-bounds] [fixture:
+agentflow/lex-flow-hasownproperty-member] [fixture:
+agentflow/gram-flow-named-member-hasownproperty] [fixture:
+agentflow/gram-connector-member-hasownproperty] [fixture:
+agentflow/gram-accessibility-hasownproperty-member] [fixture:
+agentflow/gram-flow-hasownproperty-before-empty-statement] [fixture:
+agentflow/gram-name-click-empty-string-adjacent-text]
+
+When followed by a newline, a class statement with one operand or a style
+statement with an empty value reports that newline unit at its empty significant
+range. When a statement comment takes the required style gap, the error covers
+that comment from its first percent through its last character before LF.
+[fixture: agentflow/gram-class-one-operand] [fixture:
+agentflow/gram-style-empty-value] [fixture:
+agentflow/gram-style-null-before-comment]
+
+In a flow name, bare text adjacent to an empty string or empty markdown string
+in a click context reports that text's significant unit range with
+`Unexpected token`. [fixture:
+agentflow/gram-name-click-empty-string-adjacent-text] [fixture:
+agentflow/gram-flow-name-click-empty-markdown-adjacent-rejected]
+
+Directives and selected ignored semicolons inside atomic items use the shared
+boundary errors below. An unretained empty form uses the shared empty-form error
+and its whole range; retained Name and click-prefix forms have no such error.
+Agentflow has no reserved-click error. [fixture: agentflow/div-directive-in-id]
+[fixture: agentflow/div-ignored-semicolon-in-arrow] [fixture:
+agentflow/div-empty-call-before-arrow] [fixture:
+agentflow/div-empty-description-before-style-comma] [fixture:
+agentflow/lex-empty-call-in-flow-name] [fixture:
+agentflow/gram-click-erased-before-url]
+
+## In a usecase diagram
+
+The lexer reads the complete diagram before the grammar, so an unreadable later
+character is reported before a grammar error in an earlier prefix; no recovery
+accepts that prefix. [fixture: usecase/lex-lex-first-error-not-recovered]
+[fixture: usecase/lex-lex-later-error-priority]
+
+A physical line break retained before a comment has an empty error range when it
+separates a native property's key/colon/value or a CSS dash prefix from its
+word; U+2028 in that CSS gap is reported over its label-symbol unit. [fixture:
+usecase/gram-native-key-comment-region-keeps-line-break] [fixture:
+usecase/gram-native-value-comment-region-keeps-line-break] [fixture:
+usecase/gram-css-name-comment-region-lf] [fixture:
+usecase/gram-css-name-comment-region-ls]
+
+When the trailing comma and remaining line breaks after the last native metadata
+property total more than two, the closing brace is read where another property
+key is required: `Unexpected token` covers that brace. Count after the common
+comment-region and line-terminator rules, while ranges retain the original
+source positions. [fixture: usecase/gram-metadata-trailing-comma-two-newlines]
+[fixture: usecase/gram-metadata-trailing-comma-three-newlines] [fixture:
+usecase/gram-metadata-trailing-comma-two-newlines-hws] [fixture:
+usecase/gram-metadata-trailing-comma-two-newlines-crlf] [fixture:
+usecase/gram-metadata-trailing-comma-three-newlines-crlf] [fixture:
+usecase/gram-metadata-trailing-comma-comment-line-blank-after] [fixture:
+usecase/gram-metadata-no-trailing-comma-three-newlines] [fixture:
+usecase/gram-metadata-no-trailing-comma-four-newlines] [fixture:
+usecase/gram-metadata-no-trailing-comma-three-crlf] [fixture:
+usecase/gram-metadata-no-trailing-comma-whitespace-lines] [fixture:
+usecase/gram-metadata-no-trailing-comma-tab-lines] [fixture:
+usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines] [fixture:
+usecase/gram-edge-metadata-three-newlines] [fixture:
+usecase/gram-metadata-no-trailing-comma-comment-three-newlines]
+
+A native metadata comma after a line break requires another property; if a
+closing brace follows, `Unexpected token` covers that brace. [fixture:
+usecase/gram-metadata-tail-newline-before-comma] [fixture:
+usecase/gram-metadata-tail-newline-before-comma-newline]
+
+| Rejection                            | Range and message                                                                                                                                                            | Fixtures                                                                                                                                                       |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No lexical rule matches              | The character, with `Unexpected character`; an unclosed plain string reports its opening quote.                                                                              | [fixture: usecase/lex-plain-crlf] [fixture: usecase/lex-plain-escaped-quote]                                                                                   |
+| The grammar cannot read a unit       | Its significant range, retaining whitespace where the token rules keep it, with `Unexpected token`; newline has an empty range, and source EOF has `Unexpected end of text`. | [fixture: usecase/gram-empty-label] [fixture: usecase/gram-native-key-newline-colon] [fixture: usecase/gram-boundary-open]                                     |
+| Conflicting element declaration      | The conflicting Actor or Entity occurrence, with `An element declaration conflicts with an existing symbol`.                                                                 | [fixture: usecase/gram-generated-label-repeat] [fixture: usecase/gram-bare-declaration-label-conflict] [fixture: usecase/gram-actor-repeat-labeltype-conflict] |
+| Conflicting membership               | The conflicting Actor or Entity occurrence, with `An element cannot belong to two nonempty boundaries`.                                                                      | [fixture: usecase/spec-usecase-parser-0996ad58]                                                                                                                |
+| Conflicting boundary declaration     | The complete conflicting boundary, with `A boundary declaration conflicts with an existing symbol`.                                                                          | [fixture: usecase/gram-boundary-repeat-labeltype-conflict]                                                                                                     |
+| Duplicate JSON or explicit edge id   | The conflicting id, with `A JSON or explicit edge id must be unique`.                                                                                                        | [fixture: usecase/gram-json-duplicate-id] [fixture: usecase/spec-usecase-parser-31b56285]                                                                      |
+| Classes on a reference-only endpoint | That endpoint, with `A reference-only endpoint cannot have a class suffix`.                                                                                                  | [fixture: usecase/gram-classes-on-reference-only] [fixture: usecase/gram-classes-on-quoted-reference-only]                                                     |
+| Boundary or explicit edge endpoint   | The whole relationship, with `A relationship cannot connect a boundary or explicit edge`.                                                                                    | [fixture: usecase/gram-relationship-boundary-endpoint]                                                                                                         |
+| Actor/JSON in include or extend      | The whole relationship, with `Include and extend require two usecases`.                                                                                                      | [fixture: usecase/spec-usecase-parser-81a7a3d7] [fixture: usecase/spec-usecase-parser-5c692f7f]                                                                |
+| Incompatible generalization          | The whole relationship, with `Generalization requires two actors or two usecases of the same kind`.                                                                          | [fixture: usecase/spec-usecase-parser-70ebd0e2]                                                                                                                |
+| Invalid JSON association markers     | The whole relationship, with `JSON permits only point or markerless associations`.                                                                                           | [fixture: usecase/spec-usecase-parser-800c93e6]                                                                                                                |
+| Invalid note target                  | The target id, with `A note target must resolve to an actor or usecase`.                                                                                                     | [fixture: usecase/gram-note-unresolved] [fixture: usecase/spec-usecase-parser-67cf728b]                                                                        |
+| Unresolved metadata target           | The target id or quoted label, with `A metadata target must resolve to a stored symbol`.                                                                                     | [fixture: usecase/gram-metadata-empty]                                                                                                                         |
+| Unresolved class/style target        | The target id, with `A class or style target must resolve to a stored symbol`.                                                                                               | [fixture: usecase/gram-class-unknown] [fixture: usecase/gram-style-unknown]                                                                                    |
+| Invalid native property              | The property from key through value, with `The native metadata property is invalid for its target`.                                                                          | [fixture: usecase/gram-native-quoted-business] [fixture: usecase/gram-native-unknown-empty-value] [fixture: usecase/gram-native-invalid-property-later-fix]    |
+| Conflicting declaration property     | The later property, with `Repeated declaration metadata values must agree`.                                                                                                  | [fixture: usecase/gram-metadata-duplicate-inline-conflict] [fixture: usecase/gram-metadata-duplicate-inline-business]                                          |
+| Final icon/type conflict             | The first declaration occurrence, with `An actor icon cannot coexist with a non-normal explicit type`.                                                                       | [fixture: usecase/spec-usecase-parser-ca3ba61c]                                                                                                                |
+| Final business actor conflict        | The first declaration occurrence, with `A business actor must have normal or hollow geometry`.                                                                               | [fixture: usecase/spec-usecase-parser-3f58fb81]                                                                                                                |
+| Final business rectangle conflict    | The first declaration occurrence, with `A rectangle cannot be a business usecase`.                                                                                           | [fixture: usecase/spec-usecase-parser-49661584]                                                                                                                |
+
+Lexical and grammar cases: [fixture: usecase/lex-plain-crlf] [fixture:
+usecase/lex-plain-escaped-quote] [fixture: usecase/lex-markdown-unclosed]
+[fixture: usecase/gram-empty-label] [fixture: usecase/gram-stereotype-empty]
+[fixture: usecase/gram-stereotype-space] [fixture:
+usecase/gram-stereotype-newline] [fixture:
+usecase/gram-json-empty-delimiter-only] [fixture:
+usecase/lex-json-mode-unclosed-string] [fixture: usecase/gram-boundary-open]
+[fixture: usecase/gram-native-key-newline-colon] [fixture:
+usecase/gram-native-value-newline] [fixture:
+usecase/gram-css-whitespace-without-component] [fixture:
+usecase/gram-forbidden-uppercase] [fixture:
+usecase/gram-split-opening-forward-circle-prefix] [fixture:
+usecase/gram-split-opening-forward-cross-prefix] [fixture:
+usecase/gram-split-opening-extra-dash] [fixture:
+usecase/gram-split-backward-opening-extra-dash] [fixture:
+usecase/gram-style-json-prefix-mode] [fixture:
+usecase/gram-style-json-prefix-nonempty-mode] [fixture:
+usecase/gram-classdef-json-prefix-mode] [fixture:
+usecase/gram-style-json-prefix-after-word-mode] [fixture:
+usecase/gram-style-json-prefix-after-hash-mode].
+
+Namespace, compatibility and reference cases: [fixture:
+usecase/gram-generated-label-repeat] [fixture:
+usecase/gram-bare-declaration-label-conflict] [fixture:
+usecase/gram-actor-repeat-labeltype-conflict] [fixture:
+usecase/spec-usecase-parser-0996ad58] [fixture:
+usecase/gram-boundary-repeat-labeltype-conflict] [fixture:
+usecase/gram-json-duplicate-id] [fixture: usecase/spec-usecase-parser-31b56285]
+[fixture: usecase/gram-classes-on-reference-only] [fixture:
+usecase/gram-classes-on-quoted-reference-only].
+
+Relationship and target cases: [fixture: usecase/spec-usecase-parser-81a7a3d7]
+[fixture: usecase/spec-usecase-parser-70ebd0e2] [fixture:
+usecase/spec-usecase-parser-5c692f7f] [fixture:
+usecase/spec-usecase-parser-800c93e6] [fixture: usecase/gram-note-unresolved]
+[fixture: usecase/spec-usecase-parser-67cf728b] [fixture:
+usecase/gram-metadata-empty] [fixture: usecase/gram-class-unknown] [fixture:
+usecase/gram-style-unknown].
+
+Native property and final-geometry cases: [fixture:
+usecase/gram-native-quoted-business] [fixture:
+usecase/gram-metadata-unknown-key] [fixture:
+usecase/gram-native-unknown-empty-value] [fixture:
+usecase/gram-native-invalid-property-later-fix] [fixture:
+usecase/gram-metadata-duplicate-inline-conflict] [fixture:
+usecase/gram-metadata-duplicate-inline-business] [fixture:
+usecase/gram-native-inline-conflict-later-fix] [fixture:
+usecase/spec-usecase-parser-ca3ba61c] [fixture:
+usecase/spec-usecase-parser-3f58fb81] [fixture:
+usecase/spec-usecase-parser-49661584].
+
+An unclosed markdown or JSON fallback is a grammar unit, reported over its whole
+written range; an unclosed stereotype fallback is likewise reported over its
+non-LF run. Atomic cuts use the shared boundary errors below. [fixture:
+usecase/lex-markdown-unclosed] [fixture: usecase/gram-json-empty-delimiter-only]
+[fixture: usecase/gram-stereotype-open] [fixture:
+usecase/div-directive-stereotype-closer] [fixture:
+usecase/div-semicolon-stereotype-closer-selected]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

@@ -2,6 +2,20 @@ import { describe, expect, it } from "vitest"
 import { belongsIn, isDiagramType } from "../../../tools/src/diagrams.ts"
 
 describe("belongsIn", () => {
+  it("takes only the usecase detector id for the beta header", () => {
+    expect(isDiagramType("usecase")).toBe(true)
+    expect(belongsIn("usecase", "usecase")).toBe(true)
+    expect(belongsIn("usecase", "usecase-beta")).toBe(false)
+    expect(belongsIn("usecase", "agentflow")).toBe(false)
+  })
+
+  it("takes the agentflow detector id for the beta header", () => {
+    expect(isDiagramType("agentflow")).toBe(true)
+    expect(belongsIn("agentflow", "agentflow")).toBe(true)
+    expect(belongsIn("agentflow", "agentflow-beta")).toBe(false)
+    expect(belongsIn("agentflow", "flowchart-v2")).toBe(false)
+  })
+
   it("takes any diagram id in common/, which shows its syntax with any diagram type", () => {
     for (const id of ["flowchart-v2", "sequence", "pie", "error", "unknown"]) {
       expect(belongsIn("common", id)).toBe(true)
@@ -22,6 +36,13 @@ describe("belongsIn", () => {
   it("takes only sequence in sequence/", () => {
     expect(belongsIn("sequence", "sequence")).toBe(true)
     expect(belongsIn("sequence", "flowchart-v2")).toBe(false)
+  })
+
+  it("takes the shared ishikawa id for both header spellings", () => {
+    expect(isDiagramType("ishikawa")).toBe(true)
+    expect(belongsIn("ishikawa", "ishikawa")).toBe(true)
+    expect(belongsIn("ishikawa", "ishikawa-beta")).toBe(false)
+    expect(belongsIn("ishikawa", "venn")).toBe(false)
   })
 
   it("takes classDiagram in class/, the id both classDiagram and classDiagram-v2 are detected as", () => {

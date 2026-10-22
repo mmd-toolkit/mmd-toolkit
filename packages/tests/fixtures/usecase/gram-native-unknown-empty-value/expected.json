@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: Native unknown empty string property still fails semantic validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'extra' is invalid for actor 'A' at line 2, column 10 [22,27)"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does shared entity encoding preserve placeholders in all authored text positions?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "ﬂ°°35¶ß title",
+    "accDescr": "&amp; description",
+    "actors": [
+      {
+        "id": "A",
+        "label": "ﬂ°quot¶ßActorﬂ°quot¶ß",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "stereotype": "ﬂ°amp¶ß role",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "B",
+        "label": "ﬂ°°40¶ßUse caseﬂ°°41¶ß",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "label": "ﬂ°°96¶ßMarkdownﬂ°°96¶ß",
+        "labelType": "markdown",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "S",
+        "label": "ﬂ°°91¶ßSystemﬂ°°93¶ß",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 0,
+        "label": "ﬂ°amp¶ß edge",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "B",
+        "label": "ﬂ°°39¶ßNoteﬂ°°39¶ß",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "ﬂ°amp¶ß": "&ﬂ°°35¶ß &amp; ﬂ°°35¶ß"
+        },
+        "propertyOrder": {
+          "": [
+            "ﬂ°amp¶ß"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "#amp; title",
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "ﬂ°amp¶ß": "&ﬂ°°35¶ß &amp; ﬂ°°35¶ß"
+          },
+          "propertyOrder": {
+            "": [
+              "ﬂ°amp¶ß"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 is observed as whitespace rather than NEWLINE."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nagentflow-beta TBA B\n-------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'START_LINK', 'LINK', 'LINK_ID', got 'NODE_STRING'"
+  }
+}

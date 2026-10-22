@@ -2,6 +2,7 @@ import type { Frontmatter } from "@mmd-toolkit/parser"
 import type { Doc, Options, ParserOptions } from "prettier"
 import { printer } from "prettier/doc"
 import type { MermaidAst } from "../parser.ts"
+import { significantIndentationWidth } from "./lines.ts"
 import { isWhitespace } from "./source.ts"
 
 const { printDocToString } = printer
@@ -36,11 +37,16 @@ export async function formatFrontmatterYaml(
   ) {
     return undefined
   }
-  const yamlDoc = await textToDoc(frontmatter.value, { parser: "yaml" })
+  const tabWidth = significantIndentationWidth(options.tabWidth)
+  const yamlDoc = await textToDoc(frontmatter.value, {
+    parser: "yaml",
+    tabWidth,
+  })
   // The parser reads line feeds: Prettier converts line endings of the
   // input to them before parsing, and of the output after printing.
   const withLineFeeds: ParserOptions<MermaidAst> = {
     ...options,
+    tabWidth,
     endOfLine: "lf",
   }
   const formatted = printDocToString(yamlDoc, withLineFeeds).formatted

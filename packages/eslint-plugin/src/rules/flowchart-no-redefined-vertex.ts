@@ -1,24 +1,15 @@
-import type { FlowchartShape } from "@mmd-toolkit/parser"
+import type { FlowchartLink, FlowchartShape } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
-
-/** The double quotes around the value of an HTML attribute, as in `class="x"`. */
-const ATTRIBUTE_VALUE_IN_DOUBLE_QUOTES = /(=)"([^"]*)"/gu
+import { normalizeLineTerminators } from "../utils/acc-text.ts"
+import { flowchartLinkIdsOf } from "../utils/flowchart-links.ts"
 
 /**
- * The text of the label of `shape` that the rule compares: the text as
- * mermaid.js keeps it (`addVertex`). It has no whitespace at its ends, every
- * line break (LF, CRLF, or CR) is a line feed, and the double quotes around
- * the value of an HTML attribute are single quotes. So `A["x"]` and `A["x "]`
- * write the same label, and so do `A[<b class="x">]` and `A[<b class='x'>]`.
- * The value of the tree keeps the text as written.
+ * The written label without exterior whitespace, with CRLF and CR read as LF.
+ * HTML attribute quotes and character references keep their written spelling.
  */
 function labelText(shape: FlowchartShape): string {
-  return shape.label.value
-    .trim()
-    .replaceAll("\r\n", "\n")
-    .replaceAll("\r", "\n")
-    .replaceAll(ATTRIBUTE_VALUE_IN_DOUBLE_QUOTES, "$1'$2'")
+  return normalizeLineTerminators(shape.label.value).trim()
 }
 
 /**
@@ -51,9 +42,15 @@ export const flowchartNoRedefinedVertex: MermaidRuleDefinition<{
   create(context) {
     /** The shape that each id was last written with. */
     const shapes = new Map<string, FlowchartShape>()
+    const linkIds = new Set<string>()
+    let links: ReadonlyMap<FlowchartLink, readonly string[]> = new Map()
     return {
+      FlowchartDiagram(node) {
+        links = flowchartLinkIdsOf(node)
+      },
       FlowchartVertex(node) {
         if (node.shape === null) return
+        if (linkIds.has(normalizeLineTerminators(node.id.name))) return
         const previous = shapes.get(node.id.name)
         if (
           previous !== undefined &&
@@ -70,6 +67,9 @@ export const flowchartNoRedefinedVertex: MermaidRuleDefinition<{
           })
         }
         shapes.set(node.id.name, node.shape)
+      },
+      "FlowchartLink:exit"(node) {
+        for (const id of links.get(node) ?? []) linkIds.add(id)
       },
     }
   },

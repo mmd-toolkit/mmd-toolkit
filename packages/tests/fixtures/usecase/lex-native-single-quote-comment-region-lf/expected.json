@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A physical newline retained before a common comment region is not permitted in a plain native string."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error lexing usecase diagram: unexpected character: ->'<- at offset: 27, skipped 1 characters. at line 2, column 15 [27,28)"
+  }
+}

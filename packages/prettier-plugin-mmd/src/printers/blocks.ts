@@ -53,6 +53,18 @@ export interface Positioned {
 export interface BlockRules<Statement extends Positioned> {
   /** The lines whose statements stay together (see `KeptLines`). */
   readonly kept: KeptLines
+  /** Overrides ordinary blank placement before a statement, when supplied. */
+  readonly blankBeforeStatement?: (statement: Statement, gap: Gap) => boolean
+  /**
+   * A retained break after trivia, excluding the next line's indentation.
+   * Ishikawa preserves diagram-comment Unicode boundaries and terminal gaps
+   * while still aligning the comments themselves (docs/ishikawa.md, Comments).
+   */
+  readonly triviaLineBreak?: (
+    start: number,
+    end: number,
+    terminal: boolean,
+  ) => Doc | undefined
   /**
    * Where the source text of a gap that is kept stops, or undefined for a gap
    * that is formatted as usual (docs/kanban.md, Blank lines; docs/c4.md,
@@ -161,6 +173,10 @@ export interface BlockRules<Statement extends Positioned> {
    * to be joined by the diagram's kept-line rules.
    */
   readonly keepsInlineDirectivesWithPrevious?: boolean
+  /** Whether separator semicolons before real comments can be dropped. */
+  readonly dropsSeparatorsBeforeComments?: boolean
+  /** Whether EOF is inside a diagram-specific value that must gain no LF. */
+  readonly endsInsideValue?: () => boolean
   /**
    * The indentation that a statement stands deeper than the block, for a
    * diagram type whose tree keeps statements of different levels in one flat
@@ -229,6 +245,8 @@ export interface PrintedBlock {
   readonly headerTrailing: ItemRun | null
   /** An exact terminal gap, including its final newline, when protected. */
   readonly writtenEnd?: Doc
+  /** Whether EOF belongs to a value, so no final newline is added. */
+  readonly endsInsideValue?: boolean
   /**
    * Whether the first line continues the line that opens the block (see
    * `KeptLines`).
@@ -415,6 +433,16 @@ export function printBlock<Statement extends Positioned>(
     return gap.leadingPercentBraceGaps !== null
   }
 
+  /** A break after the last trivia item in this gap, if the diagram retains it. */
+  function triviaBreakBefore(end: number, terminal = false): Doc | undefined {
+    const previous = source.trivia.findLast(
+      (item) => offset <= item.range[1] && item.range[1] <= end,
+    )
+    return previous === undefined
+      ? undefined
+      : rules.triviaLineBreak?.(previous.range[1], end, terminal)
+  }
+
   /**
    * Adds the items of a gap: those on the line before it to that line, and
    * those on lines of their own as lines.
@@ -446,6 +474,9 @@ export function printBlock<Statement extends Positioned>(
         (afterBareMarker && line.commentLinesOnly)
       pushLine({
         doc: line.run.doc,
+        ...(triviaBreakBefore(line.run.range[0]) === undefined
+          ? {}
+          : { writtenBreakBefore: triviaBreakBefore(line.run.range[0]) }),
         blankBefore: hasBodyLines() && line.blankBefore,
         endsWithWhitespace: line.run.endsWithWhitespace,
         spaceLineBefore: keepsWhitespaceLines && line.whitespaceLineBefore,
@@ -667,16 +698,21 @@ export function printBlock<Statement extends Positioned>(
     // directive before its first statement stays on it, unless the line of
     // the diagram starts later on the line of the source.
     const contentStart = findContentStart(source, statement.range[0])
+    const contentEnd = rules.diagramLineEnd?.(contentStart)
     const start =
+      (contentEnd === undefined || statement.range[0] <= contentEnd) &&
       startsStretch &&
       isKept(statement.range[0]) &&
       (rules.diagramLineEnd === undefined || contentStart >= offset)
         ? Math.max(offset, contentStart)
         : statement.range[0]
     const keptEnd = rules.keptGapEnd?.(offset, start, true)
+    const triviaBreak = triviaBreakBefore(start)
     const writtenBreak =
       keptEnd === undefined
-        ? {}
+        ? triviaBreak === undefined
+          ? {}
+          : { writtenBreakBefore: triviaBreak }
         : { writtenBreakBefore: printAsWritten(source, offset, keptEnd) }
     const gap = readGap(
       source,
@@ -685,6 +721,7 @@ export function printBlock<Statement extends Positioned>(
       false,
       false,
       rules.keepsInlineDirectivesWithPrevious,
+      rules.dropsSeparatorsBeforeComments,
     )
     addItemLines(gap, statements[index - 1])
     if (!startsStretch) {
@@ -693,7 +730,9 @@ export function printBlock<Statement extends Positioned>(
         doc: withLeading(gap.leading, docs[index]),
         ...writtenBreak,
         ...(writtenIndentation === undefined ? {} : { writtenIndentation }),
-        blankBefore: hasBodyLines() && gap.blankAfter,
+        blankBefore:
+          rules.blankBeforeStatement?.(statement, gap) ??
+          (hasBodyLines() && gap.blankAfter),
         endsWithWhitespace: endsWithSpaceOrTab(
           source.text.slice(statement.range[0], end),
         ),
@@ -715,7 +754,9 @@ export function printBlock<Statement extends Positioned>(
       ...line,
       ...writtenBreak,
       doc: withLeading(gap.leading, line.doc),
-      blankBefore: hasBodyLines() && gap.blankAfter,
+      blankBefore:
+        rules.blankBeforeStatement?.(statement, gap) ??
+        (hasBodyLines() && gap.blankAfter),
       ...(keepsIndentation
         ? {
             writtenIndentation:
@@ -743,23 +784,40 @@ export function printBlock<Statement extends Positioned>(
     bounds.end,
     false,
     bounds.isTopLevel,
+    false,
+    rules.dropsSeparatorsBeforeComments,
   )
   addItemLines(gap, lastStatement)
   const closingJoin = findClosingJoin()
+  const triviaEnd = triviaBreakBefore(bounds.end, bounds.isTopLevel)
+  const endsInsideValue = rules.endsInsideValue?.() ?? false
   return {
     headerTrailing,
+    endsInsideValue,
     ...(keepsEnd
       ? {
           writtenEnd: [
             printAsWritten(source, offset, keptEnd),
             !bounds.isTopLevel ||
             source.text.endsWith("\n") ||
-            endsInsideOpenText(source)
+            endsInsideOpenText(source) ||
+            endsInsideValue
               ? ""
               : builders.literalline,
           ],
         }
-      : {}),
+      : triviaEnd === undefined
+        ? {}
+        : {
+            writtenEnd: [
+              triviaEnd,
+              source.text.endsWith("\n") ||
+              endsInsideOpenText(source) ||
+              endsInsideValue
+                ? ""
+                : builders.literalline,
+            ],
+          }),
     continuesOpeningLine,
     lines,
     endLeading: gap.leading,
@@ -834,7 +892,10 @@ export function printDiagramBlock(
         ]
   const last = lines.at(-1) ?? header
   const endOfText =
-    block.writtenEnd ?? (endsInsideOpenText(source) ? "" : breakAfter(last, ""))
+    block.writtenEnd ??
+    (endsInsideOpenText(source) || block.endsInsideValue
+      ? ""
+      : breakAfter(last, ""))
   if (lines.length === 0) return [header.doc, endOfText]
   const headerBreak = block.continuesOpeningLine
     ? ""

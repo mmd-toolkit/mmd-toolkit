@@ -1,0 +1,347 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: c4-no-duplicate-style >> invalid >>> docs/rules/c4-no-duplicate-style.md incorrect 1
+Filename: c4-no-duplicate-style-incorrect-1.mmd
+
+Code:
+  1 | C4Context
+  2 |   Person(a, "A")
+  3 |   UpdateElementStyle(a, $bgColor="red")
+  4 |   UpdateElementStyle(a, $bgColor="blue")
+    |                         ^~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> docs/rules/c4-no-duplicate-style.md incorrect 2
+Filename: c4-no-duplicate-style-incorrect-2.mmd
+
+Code:
+  1 | C4Context
+  2 |   Person(a, "A")
+  3 |   UpdateElementStyle(a, $bgColor="red")
+  4 |   UpdateElementStyle(a, , "white")
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/boundary
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/boundary-input.mmd
+
+Code:
+  1 | C4Context
+  2 | System_Boundary(g, "G") {
+  3 | Person(a, "A")
+  4 | }
+  5 | UpdateElementStyle(g, $bgColor="red")
+  6 | UpdateElementStyle(g, $bgColor="blue")
+    |                       ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 5 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/c4-from-renamed
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/c4-from-renamed-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel(a,b,"Uses")
+  3 | UpdateRelStyle(a,b,$textColor="red",$from="c")
+  4 | UpdateRelStyle(c,b,$textColor="blue")
+    |                    ^~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `textColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/c4-to-renamed
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/c4-to-renamed-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Rel(a,b,"Uses")
+  3 | UpdateRelStyle(a,b,$to="c",$lineColor="red")
+  4 | UpdateRelStyle(a,c,$lineColor="blue")
+    |                    ^~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `lineColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/crlf
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/crlf-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $bgColor="red")
+  4 | UpdateElementStyle(a, $bgColor="blue")
+    |                       ^~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/empty-entry-after-value
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/empty-entry-after-value-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $bgColor="red")
+  4 | UpdateElementStyle(a, , "blue")
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/empty-string-after-value
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/empty-string-after-value-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $bgColor="red")
+  4 | UpdateElementStyle(a, "")
+    |                       ^~ [1]
+  5 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/global-boundary
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/global-boundary-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(global, $bgColor="red")
+  4 | UpdateElementStyle(global, $bgColor="blue")
+    |                            ^~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/named-twice
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/named-twice-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $bgColor="red")
+  4 | UpdateElementStyle(a, $bgColor="blue")
+    |                       ^~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/one-update-named-twice
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/one-update-named-twice-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $bgColor="red", $bgColor="blue")
+    |                                       ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/one-update-positional-and-named
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/one-update-positional-and-named-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, "red", $bgColor="blue")
+    |                              ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/other-style-field
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/other-style-field-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $shape="RoundedBoxShape()")
+  4 | UpdateElementStyle(a, $shape="EightSidedShape()")
+    |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `shape` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/positional-then-named
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/positional-then-named-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, "red")
+  4 | UpdateElementStyle(a, $bgColor="blue")
+    |                       ^~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/redefined-between
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/redefined-between-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $bgColor="red")
+  4 | Person(a, "A2")
+  5 | UpdateElementStyle(a, $bgColor="blue")
+    |                       ^~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/rel-named-twice
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/rel-named-twice-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Rel(a, b, "Uses")
+  5 | UpdateRelStyle(a, b, $textColor="red")
+  6 | UpdateRelStyle(a, b, $textColor="blue")
+    |                      ^~~~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the `textColor` given by an update on line 5 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/rel-offset-named
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/rel-offset-named-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Rel(a, b, "Uses")
+  5 | UpdateRelStyle(a, b, $offsetX="10")
+  6 | UpdateRelStyle(a, b, $offsetX="20")
+    |                      ^~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the `offsetX` given by an update on line 5 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/rel-offset-spelling
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/rel-offset-spelling-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Rel(a, b, "Uses")
+  5 | UpdateRelStyle(a, b, "red", "blue", "10")
+  6 | UpdateRelStyle(a, b, "red", "blue", "010")
+    |                                     ^~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the `offsetX` given by an update on line 5 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/rel-positional-then-named
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/rel-positional-then-named-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | Person(b, "B")
+  4 | Rel(a, b, "Uses")
+  5 | UpdateRelStyle(a, b, "red")
+  6 | UpdateRelStyle(a, b, $textColor="blue")
+    |                      ^~~~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the `textColor` given by an update on line 5 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/renamed-target
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/renamed-target-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $alias="b")
+  4 | UpdateElementStyle(b, $bgColor="red")
+  5 | UpdateElementStyle(b, $bgColor="blue")
+    |                       ^~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 4 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/three-values
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/three-values-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $bgColor="red")
+  4 | UpdateElementStyle(a, $bgColor="blue")
+    |                       ^~~~~~~~~~~~~~~ [1]
+  5 | UpdateElementStyle(a, $bgColor="red")
+    |                       ^~~~~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+[2] mermaid.js replaces the `bgColor` given by an update on line 4 with this value.
+---
+
+
+Test: c4-no-duplicate-style >> invalid >>> invalid/c4/trivia-between
+Filename: tests/fixtures/rules/c4-no-duplicate-style/invalid/c4/trivia-between-input.mmd
+
+Code:
+  1 | C4Context
+  2 | Person(a, "A")
+  3 | UpdateElementStyle(a, $bgColor="red")
+  4 |
+  5 | %% c
+  6 | %%{init: {}}%%
+  7 | UpdateElementStyle(a, $bgColor="blue")
+    |                       ^~~~~~~~~~~~~~~ [1]
+  8 |
+
+[1] mermaid.js replaces the `bgColor` given by an update on line 3 with this value.
+---

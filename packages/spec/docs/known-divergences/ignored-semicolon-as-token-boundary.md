@@ -4,9 +4,10 @@ Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
-requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, and venn.
-This is one of the [known divergences](../known-divergences.md) of this
-specification from mermaid.js.
+requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, venn,
+agentflow, and usecase. This is one of the
+[known divergences](../known-divergences.md) of this specification from
+mermaid.js.
 
 ## The syntax
 
@@ -271,6 +272,61 @@ reading, which is nothing that a specification would state as a rule of the
 syntax; this is the second of the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
 
+### Agentflow
+
+In agentflow, a selected semicolon inside an id, class name, click id, edge id,
+linkStyle number, keyword, arrow, or compound delimiter cannot be retained by an
+EmptyStatement without splitting that atom or changing its value. Mermaid joins
+the parts; the existing direct whole-unit rule rejects them under reason 2.
+[fixture: agentflow/div-ignored-semicolon-in-id] [fixture:
+agentflow/div-ignored-semicolon-in-css-class] [fixture:
+agentflow/div-ignored-semicolon-in-click-id] [fixture:
+agentflow/div-ignored-semicolon-in-edge-id] [fixture:
+agentflow/div-ignored-semicolon-in-linkstyle-number] [fixture:
+agentflow/div-ignored-semicolon-in-keyword] [fixture:
+agentflow/div-ignored-semicolon-in-arrow] [fixture:
+agentflow/div-ignored-semicolon-in-data-block-start]
+
+Name text, labels, styles, and opaque metadata keys retain the selected
+semicolon as trivia; it is not an Identifier boundary there. A semicolon at a
+complete pipe boundary also changes no unit. Those controls remain unmarked.
+[fixture: agentflow/lex-ignored-semicolon-in-flow-name-text] [fixture:
+agentflow/lex-ignored-semicolon-in-metadata-key] [fixture:
+agentflow/lex-ignored-semicolon-in-pipe-boundary]
+
+### Usecase
+
+In usecase, the affected text is the one-character range of a selected `;`
+inside an atomic name, keyword, arrow or delimiter, including a word within a
+CSS property name. An empty statement cannot stand inside that atom. Mermaid
+accepts the joined id, include word, arrow, metadata key/value or delimiter; the
+direct whole-unit rule rejects it for reason 2. No Mermaid rejection becomes
+accepted under this rule. [fixture: usecase/div-semicolon-identifier-selected]
+[fixture: usecase/div-semicolon-keyword-selected] [fixture:
+usecase/div-semicolon-joins-arrow-selected] [fixture:
+usecase/div-semicolon-native-key-valid] [fixture:
+usecase/div-semicolon-native-value-selected] [fixture:
+usecase/div-semicolon-native-opener-selected] [fixture:
+usecase/div-semicolon-css-property-selected] [fixture:
+usecase/div-semicolon-stereotype-closer-selected] [fixture:
+usecase/lex-semicolon-stereotype-closer-control]
+
+In CSS property names in `style` and `classDef`, a selected `;` in the HWS
+between `--` and the following word is accepted as trivia. UsecaseIdentifier can
+hold the surrounding text; `--` and the word remain separate units with or
+without the semicolon, so nothing is joined and reason 2 does not apply.
+[fixture: usecase/lex-semicolon-css-name-gap] [fixture:
+usecase/lex-semicolon-classdef-css-name-gap]
+
+In labels, CSS values, strings and opaque JSON, existing text nodes already hold
+the written content and the semicolon can be trivia. A selected semicolon
+between complete units is allowed too. A semicolon before the selection trigger,
+or an independently invalid joined diagram, remains an ordinary rejection with
+no divergence mark. [fixture: usecase/lex-semicolon-complete-unit-boundary]
+[fixture: usecase/lex-semicolon-css-number-text] [fixture:
+usecase/lex-semicolon-joins-id-selected] [fixture:
+usecase/lex-semicolon-native-key-selected]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -308,3 +364,20 @@ syntax; this is the second of the reasons for a known divergence (see
   uses comma-separated properties and shows no semicolon inside a keyword, name,
   or number. Searches of issues and pull requests in `mermaid-js/mermaid` on
   2026-10-21 with `venn semicolon in:title,body` returned no results.
+
+- The pinned
+  [Agentflow documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
+  describes node declarations as flowchart syntax and shows bracket labels. It
+  does not describe a selected semicolon removed from inside a keyword, id, or
+  arrow. Searches of issues and pull requests in `mermaid-js/mermaid` on
+  2026-10-22 with `agentflow semicolon in:title,body` returned no results.
+
+- The pinned
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  describes statement syntax. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `usecase semicolon` found no inspected
+  report establishing a maintainer defect judgment for this acceptance behavior.
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048), closed and merged
+  on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
+  validation and JSON tables. This divergence follows the shared direct rule,
+  not a claim that a bug label approves a grammar change.

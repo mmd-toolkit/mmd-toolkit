@@ -31,6 +31,8 @@ export type GapItem = Trivia | Token
  * they touch.
  */
 export interface ItemRun {
+  /** Source extent of the printed items, excluding exterior whitespace. */
+  readonly range: readonly [number, number]
   readonly doc: Doc
   /** Whether the source had whitespace or a `;` before the first item. */
   readonly spaceBefore: boolean
@@ -166,6 +168,8 @@ interface ScannedLine {
  * before the gap, as it is when a line terminator follows it.
  * With `keepsInlineDirectivesWithPrevious`, directives on an unbroken gap
  * remain with the preceding statement when the block splits its statements.
+ * `dropsSeparatorsBeforeComments` lets a block drop separator semicolons before
+ * real comments, while still keeping them before directives.
  *
  * Throws when the gap holds any other text than whitespace, line
  * terminators, comments, directives, and `;` tokens: the tree places every
@@ -179,6 +183,7 @@ export function readGap(
   keepsSeparators: boolean,
   endsText = false,
   keepsInlineDirectivesWithPrevious = false,
+  dropsSeparatorsBeforeComments = false,
 ): Gap {
   const lines = scanLines(source, start, end, keepsSeparators)
   if (lines.length === 1) {
@@ -187,6 +192,7 @@ export function readGap(
       lines[0],
       endsText,
       keepsInlineDirectivesWithPrevious,
+      dropsSeparatorsBeforeComments,
     )
   }
   const [first, ...rest] = lines
@@ -232,7 +238,13 @@ export function readGap(
     whitespaceLineSeen = false
   }
   return {
-    trailing: toRun(source, first.parts, first.spaceAfter, true),
+    trailing: toRun(
+      source,
+      first.parts,
+      first.spaceAfter,
+      true,
+      dropsSeparatorsBeforeComments,
+    ),
     lines: ownLines,
     leading: toRun(source, last.parts, last.spaceAfter, false),
     leadingDirectivesOnly:
@@ -291,6 +303,7 @@ function readSingleLine(
   line: ScannedLine,
   endsText: boolean,
   keepsInlineDirectivesWithPrevious: boolean,
+  dropsSeparatorsBeforeComments: boolean,
 ): Gap {
   const lastDirective = keepsInlineDirectivesWithPrevious
     ? line.parts.findLastIndex((part) => part.item.type === "Directive") + 1
@@ -301,7 +314,13 @@ function readSingleLine(
   const before = line.parts.slice(0, split)
   const after = line.parts.slice(split)
   return {
-    trailing: toRun(source, before, after.length > 0 || line.spaceAfter, true),
+    trailing: toRun(
+      source,
+      before,
+      after.length > 0 || line.spaceAfter,
+      true,
+      dropsSeparatorsBeforeComments,
+    ),
     lines: [],
     leading: toRun(source, after, line.spaceAfter, false),
     leadingDirectivesOnly: false,
@@ -544,6 +563,7 @@ function toRun(
   parts: readonly Part[],
   spaceAfter: boolean,
   keepsSeparatorsBeforeItems: boolean,
+  dropsSeparatorsBeforeComments = false,
 ): ItemRun | null {
   let lastItem = -1
   for (const [index, part] of parts.entries()) {
@@ -552,21 +572,32 @@ function toRun(
   const doc: Doc[] = []
   let spaceBefore = false
   let spacePending = false
-  let printed: Part | undefined
+  let firstPrinted: Part | undefined, printed: Part | undefined
   for (const [index, part] of parts.entries()) {
     const space = spacePending || part.spaceBefore
-    if (part.separates && !(keepsSeparatorsBeforeItems && index < lastItem)) {
+    const beforeComment =
+      dropsSeparatorsBeforeComments &&
+      parts
+        .slice(index + 1)
+        .filter((following) => !following.separates)
+        .every((following) => following.item.type === "Comment")
+    if (
+      part.separates &&
+      !(keepsSeparatorsBeforeItems && index < lastItem && !beforeComment)
+    ) {
       spacePending = true
       continue
     }
     if (printed === undefined) spaceBefore = space
     else if (space) doc.push(" ")
+    firstPrinted ??= part
     doc.push(printItem(source, part.item))
     printed = part
     spacePending = false
   }
   if (printed === undefined) return null
   return {
+    range: [(firstPrinted as Part).item.range[0], printed.item.range[1]],
     doc,
     spaceBefore,
     spaceAfter: spaceAfter || spacePending,

@@ -62,7 +62,7 @@ mermaid.js が拒否する入力を受理することはありません。
 ### 埋め込みデータは検査しない
 
 フロントマターの YAML、ディレクティブの中身、
-図の中に `@{ ... }` で書くデータブロックは、解析しません。
+図の中に `@{ ... }` で書く不透明なデータブロックは、解析しません。
 埋め込みデータの書式が壊れている図、データの構造が違う図、
 mermaid.js が知らない名前などを書いた図は、
 mermaid.js が受理することも拒否することもあり、ここではどちらも整形します。
@@ -182,7 +182,8 @@ sequence 図には文字列も `call` もなく、
 [corpus fixture: sequence/div-empty-description-block-before-activation]
 [corpus fixture: sequence/div-empty-description-block-after-create]
 木に場所がある所の空の説明ブロックは、ほかの図と同じく文です。
-[fixture: sequence/statements-one-per-line/empty-description-block-moves-next-statement]
+[fixture:
+sequence/statements-one-per-line/empty-description-block-moves-next-statement]
 
 この違いは一方向だけです。
 mermaid.js が拒否する入力を受理することはありません。
@@ -313,13 +314,20 @@ mermaid.js は、`accTitle`、`accDescr`、`direction`、`click`、`call`、
 そうでない図種（class 図、state 図、ブロック図など）では、
 行を `;` とともに残し、隙間もそのままです。
 [fixture: flowchart/semicolons/style-line-dropped-semicolon-formats-the-gap]
-[fixture: xychart/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
-[fixture: quadrant/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
-[fixture: class/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-touching-kept]
-[fixture: class/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-becomes-one-space]
-[fixture: state/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-touching-kept]
-[fixture: state/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-becomes-one-space]
-[fixture: block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
+[fixture:
+xychart/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
+[fixture:
+quadrant/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
+[fixture:
+class/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-touching-kept]
+[fixture:
+class/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-becomes-one-space]
+[fixture:
+state/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-touching-kept]
+[fixture:
+state/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-becomes-one-space]
+[fixture:
+block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
 [fixture: block/multi-line-statements/line-rule-semicolon-after-an-id-kept]
 [fixture: block/multi-line-statements/semicolon-after-spaced-arrow-is-an-id]
 
@@ -535,6 +543,22 @@ mermaid.js は、行の中で単位が始まる最初の位置で、
 [fixture: flowchart/indentation/direction-text-kept]
 [fixture: flowchart/indentation/direction-text-with-directive-kept]
 [字下げ](./flowchart.ja.md#字下げ)を参照してください。
+
+flowchart本文は共有の意味を持つ字下げの下限を使い、
+`tabWidth: 0`でも1段に最低1つの空白を置きます。
+字下げを落として、方向文が1桁目のaccessibilityやキーワードの優先順位を
+取り戻さないようにするためです。
+[fixture: flowchart/indentation/zero-direction-description-subgraph]
+[fixture: flowchart/indentation/zero-direction-title]
+[fixture: flowchart/indentation/zero-direction-title-tab]
+[fixture: flowchart/indentation/zero-direction-description-block]
+[fixture: flowchart/indentation/zero-direction-title-prefix]
+[fixture: flowchart/indentation/zero-direction-directive]
+[fixture: flowchart/indentation/zero-direction-style-prefix]
+同じ下限を、幅0で読みが変わる
+[mindmap](./mindmap.md#indentation)、[kanban](./kanban.md#indentation)、
+[Venn](./venn.md#indentation)、[Ishikawa](./ishikawa.md#indentation)、
+[Agentflow](./agentflow.md#indentation)、[YAML](#フロントマター)でも使います。
 
 ## 数か `title` の送り元からの sequence のメッセージ
 
@@ -838,7 +862,8 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、
   複数行に書かれた文の最後の行に、後ろの文の `;` があるときも、
   1 行にした行が全体として読まれるので、書かれたまま残します。
   [fixture: requirement/statements-one-per-line/ignored-semicolon-line-kept]
-  [fixture: requirement/multi-line-statements/relationship-last-line-semicolon-kept]
+  [fixture:
+  requirement/multi-line-statements/relationship-last-line-semicolon-kept]
 - フィールドのない本体。
   mermaid.js は `{` の後に改行を要するので、`{` と `}` を 2 行に置きます。
   [fixture: requirement/bodies/empty-body-on-two-lines]
@@ -1111,6 +1136,9 @@ Db や字句解析器が読むものは変えません。
 
 ## U+2028 か U+2029 の後のコメント行
 
+この共通の除去はagentflowのコメント保持サイズ分岐の外で適用します。
+[Agentflowの値、コメント、既定のサイズ境界](#agentflowの値コメント既定のサイズ境界)を参照してください。
+
 mermaid.js は、本文を読む前に、コメント行を取り除きます。
 コメント行 `%%` は、その前の空白だけの行とディレクティブ、
 そして行を終える改行と一緒に取り除かれます
@@ -1146,6 +1174,16 @@ mermaid.js がこう読む行は、ソースの何行にもまたがります。
 `---` の行の間の YAML は、Prettier の YAML 整形で整形します。
 `---` の行は書かれたまま残します。
 [fixture: flowchart/frontmatter-yaml/formatted]
+
+YAML の字下げは、`tabWidth: 0` でも 1 段に最低 1 つの空白を使います。
+字下げはブロックスカラーと入れ子の値を表します。
+幅 0 では、Mermaid がブロックスカラーを拒否するか、
+title や設定の値が変わるためです。
+全図種に共通の下限で、読みを保ちます。
+[fixture: ishikawa/frontmatter-yaml/zero-width-block-scalar-title]
+[fixture: ishikawa/frontmatter-yaml/zero-width-nested-title]
+[fixture: ishikawa/frontmatter-yaml/zero-width-nested-config]
+[fixture: flowchart/frontmatter-yaml/zero-width-nested-title]
 
 `---` の行が字下げされているときと、
 整形した YAML の行が `---` の行の形
@@ -1357,3 +1395,215 @@ C4 の検出と不透明な YAML の乖離は仕様の読み方を使います�
 [fixture: venn/frontmatter-yaml/frontmatter-invalid-kept]
 [test: a venn diagram with other line endings]
 [test: venn: unicode-role-whitespace]
+
+## Ishikawa の入れ子と literal の行
+
+Ishikawa は、入力の字下げ幅や Db の一時的なレベルを使わず、
+入れ子の AST を使います。
+根は見出しの正の 1 段下、子はさらに 1 段下です。
+`tabWidth: 0` でも最低 1 文字にします。
+根の列は親子を決めません。
+[Ishikawa の規則](./ishikawa.ja.md)を参照してください。
+
+[fixture: ishikawa/indentation/indent-depth]
+[fixture: ishikawa/indentation/indent-clamped]
+[fixture: ishikawa/indentation/indent-zero]
+
+引用符、空に見える形、accessibility、style、データらしい文、
+インラインの percent のテキストは literal として保ちます。
+内部の directive の隙間と、結合した物理行の継続列は保ちます。
+普通の行でも保持する行でも、literal の末尾の文字は全て保ちます。
+値は書かれたものであり、Db が等しいことは値を消す理由になりません。
+mindmap と同じ選択です。
+semicolon は全て残し、共有の区間保持の経路で、
+交差する literal と trivia 全体を保護します。
+
+[fixture: ishikawa/node-text/values-opaque]
+[fixture: ishikawa/inline-directives/directive-in-value]
+[fixture: ishikawa/trailing-whitespace/trailing-value-kept]
+[test: ishikawa: joined-common-region]
+[fixture: ishikawa/line-rule-and-kept-lines/line-rule-kept]
+
+図コメントの Unicode 終端は、次の節点の深さの字下げに数える文字です。
+共通コメント領域は、飲み込む接尾部と結合を保ちます。
+図コメントの後の区切りも含め、普通の空行の連続は 1 つにします。
+末尾の図コメントの隙間は全体を保ちます。
+受理した差異は仕様の木を使い、失敗は修復しません。
+生の拒否には生の Db はありません。
+ガード付き frontmatter、設定の CR と LF への変換、
+EOF の directive、Markdown のホストの処理は、共有の経路を使います。
+
+[test: ishikawa: ls-comment-boundary]
+[test: ishikawa: ps-comment-boundary]
+[fixture: ishikawa/blank-lines/blank-comment-div]
+[fixture: ishikawa/blank-lines/terminal-comment-complete-gap]
+[fixture: ishikawa/node-text/div-c4]
+[fixture: ishikawa/frontmatter-yaml/frontmatter-html-guard]
+[test: ishikawa: eol-crlf]
+[test: ishikawa Markdown: quote-list-clamped]
+
+見出し行で見出しに接する directive は、空白で離れた根を下へ移しても残します。
+空白で隔てられた directive は、同じ行の根と一緒に移し、
+その後ろの隙間を [Inline directives](./ishikawa.ja.md#inline-directives)
+の根の字下げに数えます。
+残すと、除去後に見出しの行末に空白が残り、Mermaid が拒否するためです。
+根に接する directive は見出しとの組全体を保ちます。
+同じ行に根がない directive は、仕様の読みを保ちます。
+
+[fixture: ishikawa/standalone-directives/header-spaced-directive]
+[fixture: ishikawa/standalone-directives/header-spaced-multiline-directive]
+[fixture: ishikawa/standalone-directives/header-spaced-two-directives]
+[fixture: ishikawa/standalone-directives/header-spaced-directive-comment]
+[fixture: ishikawa/standalone-directives/header-touching-directive]
+[fixture: ishikawa/standalone-directives/header-directive-touching-root]
+[corpus fixture: ishikawa/div-header-space-directive-node]
+
+## Agentflowの値、コメント、既定のサイズ境界
+
+agentflow本文は共有の意味を持つ字下げ幅を使い、
+`tabWidth: 0`でも1段に最低1つの空白を置きます。
+字下げのある方向文を1桁目へ移すと、
+前置きがaccessibilityの値や構文エラーに変わり得るためです。
+[fixture: agentflow/direction/zero-title-indented]
+[fixture: agentflow/direction/zero-description-indented]
+[fixture: agentflow/direction/zero-style-direction]
+
+[Agentflowの規則](./agentflow.ja.md)はflowchartの配置を共有し、
+値の境界を区別します。
+style/classDef/class/linkStyleの後、classの値、interpolate名、
+tooltipの前の必須の1単位は、その後の空白が値なので保ちます。
+最初のstyleの先頭空白とラベルコメント脇の空白も文字です。
+名前の消されるclickと空の断片を保ちます。
+clickのIDとして名前を読むのを終える空白1文字も保ちます。
+区切りをLFへ変えると名前でなくなる、末尾の空白だけの断片は落とします。
+[fixture: agentflow/names-and-headings/empty-description-space-flow]
+clickのtextBeforeUrl/textBeforeTooltipも各prefixと元の隙間を保ちます。
+click予約語の例外は使いません。
+[fixture: agentflow/single-space-gaps/style-first-spaces]
+[corpus fixture: agentflow/lex-flow-name-click-state]
+[corpus fixture: agentflow/gram-click-erased-before-url-tooltip]
+
+通常サイズのコメントはLS/PSを通りLFかEOFまで続きます。
+文字列、説明、callback、データでコメントに見える文字も値です。
+end/globalはLFではなくASCIIの空白とタブを取り、
+波括弧後に畳むのは直後のLF前の空白だけです。
+データは書かれた出現に別々に保ちます。
+内容だけの拒否には仕様の不透明な読みを使い、rawの拒否にはDbがありません。
+[fixture: agentflow/comments/comment-looking-values]
+[fixture: agentflow/multiline-statements-and-values/brace-blank-kept]
+[corpus fixture: agentflow/db-data-block-invalid-yaml]
+
+frontmatterとdirectiveを除き、正規化したUTF-16で50000単位以上なら、
+図の全文と末尾を保ちます。
+未満でも、印字計画が50000未満に収まるときだけ通常配置を適用します。
+字下げ、末尾LF、空白削除、ホストが戻すBOMで、
+Mermaidのコメント保持の分岐を変えないためです。
+frontmatterは共通の保護付きYAML整形を使います。
+CR/LFとMarkdownも共通のホスト処理に従います。
+ブロック最終行の末尾空白の削除でnullのstyleが拒否され得る制限も同じです。
+[fixture: agentflow/default-size-branches/size-preserving-to-fallback-unsafe]
+[fixture: agentflow/default-size-branches/size-below-planned-crossing]
+[test: agentflow Markdown: null style host limitation]
+
+## Usecase native syntax and authored values
+
+usecase は書かれた AST に従います。
+境界の所属、端点の出現、矢印と id の境界、宣言と更新の役割、
+原文の順序を解決後の Db から作り直しません。
+本文の字下げは構造の表示なので `tabWidth: 0` は 0 のままです。
+保護条件付きの YAML は共有の最小幅 1 を保ちます。
+`A --order` は `A --o rder`、`A -- order` は端点全体を保ちます。
+[usecase の規則](./usecase.ja.md)を参照してください。
+[fixture: usecase/arrow-id-boundaries/circle-prefix-suffixes]
+[fixture: usecase/indentation/indent-zero]
+[fixture: usecase/frontmatter-yaml/frontmatter-zero]
+
+native の `@{...}` metadata は解析と検証を行う構文です。
+構造の空白だけを変え、書かれた区切り、空行、綴り、順序、重複をすべて保ちます。
+JSON の表データは不透明で、@ と波括弧の隙間、数とエスケープの綴り、
+プロパティの順序も含みます。
+効果を渡さない整形 fixture では、共有の Db 比較を null とし、原文を比較します。
+コーパスは存在する記録済みの効果を使います。
+CSS 宣言全体は、Mermaid が保存するコロンの両側と `--` の隙間を保ちます。
+[fixture: usecase/native-metadata/metadata-inline]
+[fixture: usecase/native-metadata/metadata-blank-lines-kept]
+[fixture: usecase/json-tables/json-opaque]
+[fixture: usecase/classes-and-styles/css-colon-padding]
+[fixture: usecase/classes-and-styles/css-custom-gap]
+
+共通コメント領域と改行の処理後、最後のプロパティから `}` までの、
+末尾コンマと物理改行の合計は 2 個以下で、
+コンマは改行の前にだけ置けます。
+受理される末尾では、書かれた改行と空行を保ちます。
+[corpus fixture: usecase/gram-metadata-property-comma-no-newline]
+[corpus fixture: usecase/gram-native-trailing-newline]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-two-newlines]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-three-newlines]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-four-newlines]
+[corpus fixture:
+usecase/gram-metadata-no-trailing-comma-two-properties-two-newlines]
+[corpus fixture:
+usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines]
+[corpus fixture: usecase/gram-edge-metadata-two-newlines]
+[corpus fixture: usecase/gram-edge-metadata-three-newlines]
+[corpus fixture: usecase/gram-metadata-trailing-comma-no-newline]
+[corpus fixture: usecase/gram-native-trailing-comma-newline]
+[corpus fixture: usecase/gram-metadata-trailing-comma-two-newlines]
+[corpus fixture: usecase/gram-metadata-trailing-comma-three-newlines]
+[corpus fixture: usecase/gram-native-trailing-newline-comma]
+[corpus fixture: usecase/gram-metadata-tail-newline-before-comma]
+[corpus fixture: usecase/gram-metadata-tail-newline-before-comma-newline]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-two-crlf]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-three-crlf]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-two-whitespace-lines]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-whitespace-lines]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-two-tab-lines]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-tab-lines]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-comment-two-newlines]
+[corpus fixture: usecase/gram-metadata-no-trailing-comma-comment-three-newlines]
+プロパティ間のコンマの後は、改行を 0 個以上置けます。
+[corpus fixture: usecase/gram-metadata-property-comma-no-newline]
+[corpus fixture: usecase/gram-metadata-property-comma-one-newline]
+[corpus fixture: usecase/gram-metadata-property-comma-two-newlines]
+[corpus fixture: usecase/gram-metadata-property-comma-three-newlines]
+
+accessibility 行は class と C4 の規則を再利用し、
+両端の空白を除いた値の前を空白 1 個にします。
+説明本文の行と列を保ち、独立した閉じ波括弧は文に揃えます。
+[usecase の規則](./usecase.ja.md#direction-and-accessibility)を
+参照してください。
+[fixture: usecase/direction-and-accessibility/a11y-padding]
+[fixture: usecase/direction-and-accessibility/a11y-closer-aligned]
+
+stereotype の宣言接尾辞は、systemBoundary 内も含め、
+`<<` の前と、各区切りの内側の空白の有無を保ちます。
+空白があれば 1 個に縮め、なければ足しません。
+Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白です。
+内部のテキストは書かれたままです。
+保護したセミコロンの接頭部と共通コメント領域は、値の全体を保ちます。
+[class の文に付く注釈の規則](./class.ja.md#whitespace-between-tokens)を
+再利用します。
+[fixture: usecase/stereotypes/stereotype-padding]
+[fixture: usecase/stereotypes/opener-gap-sides]
+[test: usecase: stereotype-opener-tab]
+[fixture: usecase/stereotypes/stereotype-inner-kept]
+[fixture: usecase/stereotypes/side-padding]
+[fixture: usecase/stereotypes/boundary-suffixes]
+[fixture: usecase/stereotypes/semicolon-padding-kept]
+[test: usecase: stereotype-comment-region-padding-kept]
+
+ラベルと引用、境界タイトルの余白、継続列は、
+除去や引用の変更で Db が等しい場合も書かれたままです。
+共通コメント領域の結合と LS、PS を越える native コメントを保ちます。
+セミコロンは文を区切らず、文字列の保持部分をすべて保護します。
+六つの既存の乖離は指定の受理と読みに従い、拒否する木は共有の失敗経路に従います。
+[fixture: usecase/labels/label-quote-kinds]
+[fixture: usecase/system-boundaries/boundary-headings]
+[fixture: usecase/direction-and-accessibility/a11y-padding]
+[fixture: usecase/statements-and-semicolons/semicolon-selected-boundary]
+[test: usecase: comment-region-join] [test: usecase: unicode-comment]
+
+共有の EOL、BOM、frontmatter、末尾改行、Markdown の処理を適用します。
+accessibility 行の外側の空白は、単独ファイルと Markdown の両方で除きます。
+[fixture: usecase/final-newline/final-value-padding]
+[test: usecase Markdown: last-value-padding]

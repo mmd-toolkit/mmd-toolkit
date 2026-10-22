@@ -306,3 +306,11 @@ function segment(
     directives: inside,
   }
 }
+
+/** common.md, agentflow comment preservation: decide segments without removing comment regions. */
+export function lookAheadLineSegments(
+  text: string,
+  start: number,
+): LineEntry[] {
+  return segmentsUpTo(text, start, [], [], start)
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared shapeData lexer excludes an unquoted caret."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...beta TBA@{ label: a^b }\n----------------------^"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F3: An HTML tag spans a directive in one node; both written surrounding spaces remain."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "<a  href='u'>R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "<a  href='u'>R",
+      "children": []
+    }
+  }
+}

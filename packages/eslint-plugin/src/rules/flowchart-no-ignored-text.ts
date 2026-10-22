@@ -11,6 +11,10 @@ import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { isSemicolonToken, isStatementOfItsOwn } from "../utils/semicolons.ts"
+import {
+  isIgnoredDirectionText,
+  isSeparatorOrSpace,
+} from "../utils/direction-text.ts"
 
 /**
  * Where a text stands on a direction line: before `direction`, or after the
@@ -44,11 +48,6 @@ interface Split {
   readonly keepsSeparators: boolean
 }
 
-/** Whether `character` is a `;` or whitespace. */
-function isSeparatorOrSpace(character: string): boolean {
-  return character === ";" || character.trim() === ""
-}
-
 /** Where the `;` and whitespace at the end of `value` start. */
 function trailingSeparatorsStart(value: string): number {
   let index = value.length
@@ -74,9 +73,7 @@ function leadingSeparatorsEnd(value: string): number {
  * statement, as before.
  */
 function isReported(text: FlowchartIgnoredText, side: Side): boolean {
-  const comment = side === "after" ? text.value.indexOf("%%") : -1
-  const counted = comment === -1 ? text.value : text.value.slice(0, comment)
-  return ![...counted].every(isSeparatorOrSpace)
+  return isIgnoredDirectionText(text.value, side)
 }
 
 /** The texts of the direction statement `node` that the rule reports. */

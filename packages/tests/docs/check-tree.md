@@ -435,24 +435,24 @@ const problems: TreeProblem[] = checkTree(text, tree)
     is the first line after the keyword that has one (Accessibility values), and
     so is a block that is not closed, which runs to the end of the text
     (ast/xychart.md, XychartAccDescrBlockStatement). The written text of a
-    number is an optional sign, digits with an optional fraction, or a fraction
-    alone (The axis context), and a string is closed and holds no `"` but the
-    `"` of an HTML attribute quote, which is read as `'` (Strings). A diagram
-    comment has the mark `%%` (Comments). The kinds of the tokens are those of
-    `parser/docs/tokens/xychart.md`: a token that a node writes itself is
-    `Punctuator` for `[`, `]`, `,`, `;`, `:`, `{`, `}`, and `-->`, and `Keyword`
-    for the header, the orientation, and the keywords; the tokens of a text
-    without quotes and of the text of an accessibility statement are `RawText`,
-    those of a number `Numeric`. The tokens that a node writes itself and its
-    child nodes lie in this order, with only whitespace between them: the
-    header, the orientation if there is one; `title` and its text; `x-axis` or
-    `y-axis`, the title, and the data, the title first; `[`, the categories with
-    a `,` between each two, and `]`; the start, `-->`, and the end; `line` or
-    `bar`, the title, and `[`, the values with a `,` between each two, and `]`;
-    a number and its label; `accTitle` or `accDescr`, `:`, and the text, which
-    runs to the end of its line; and `accDescr`, `{`, the text, and `}` (the `}`
-    only when `closed` is true). The diagram writes itself the `;` that end
-    lines. The orientation is the second token of the header as written, or
+    number has an optional sign followed by digits with an optional fraction or
+    by a fraction alone (The axis context), and a string is closed and holds no
+    `"` but the `"` of an HTML attribute quote, which is read as `'` (Strings).
+    A diagram comment has the mark `%%` (Comments). The kinds of the tokens are
+    those of `parser/docs/tokens/xychart.md`: a token that a node writes itself
+    is `Punctuator` for `[`, `]`, `,`, `;`, `:`, `{`, `}`, and `-->`, and
+    `Keyword` for the header, the orientation, and the keywords; the tokens of a
+    text without quotes and of the text of an accessibility statement are
+    `RawText`, those of a number `Numeric`. The tokens that a node writes itself
+    and its child nodes lie in this order, with only whitespace between them:
+    the header, the orientation if there is one; `title` and its text; `x-axis`
+    or `y-axis`, the title, and the data, the title first; `[`, the categories
+    with a `,` between each two, and `]`; the start, `-->`, and the end; `line`
+    or `bar`, the title, and `[`, the values with a `,` between each two, and
+    `]`; a number and its label; `accTitle` or `accDescr`, `:`, and the text,
+    which runs to the end of its line; and `accDescr`, `{`, the text, and `}`
+    (the `}` only when `closed` is true). The diagram writes itself the `;` that
+    end lines. The orientation is the second token of the header as written, or
     null; the kind of a plot is its keyword in lower case; `closed` is whether
     the last token of a block is `}`, and a block that is not closed has only
     whitespace after its text. The words of a text without quotes that follow
@@ -499,6 +499,457 @@ const problems: TreeProblem[] = checkTree(text, tree)
     The tokens of a string label are one `String` token, or `StringFragment`
     tokens where a directive, a comment region, or an ignored `;` cuts the
     string, and the `RawText` tokens of the words after it.
+  - agentflow: all 29 node types, child types, field order, required nonempty
+    lists and scalar vocabularies follow
+    [ast/agentflow.md](../../spec/docs/ast/agentflow.md). Structural ranges are
+    the hull of their own tokens and children; source order places a split label
+    before its closing arrow while visitation keeps arrow before label.
+    EmptyStatement is exactly one semicolon. The header is one exact lower-case
+    agentflow-beta Keyword, with the written same-line direction or null and the
+    required first separator. [fixture: agentflow/gram-flow-all-forms] [fixture:
+    agentflow/gram-global] [fixture: agentflow/gram-connector-all-forms]
+    [fixture: agentflow/gram-tail-node-semicolons] [fixture:
+    agentflow/gram-split-failure-label] [fixture: agentflow/header-only]
+    [fixture: agentflow/header-td] [fixture:
+    agentflow/lex-header-space-then-semicolon] [fixture:
+    agentflow/gram-empty-description-after-header-direction]
+
+    AgentflowIgnoredText has required string fields kind and value. In Name
+    parts and click-prefix fields, kind must match the recognized erased form:
+    click, empty-string, empty-markdown-string, empty-call, or
+    empty-description-block. Direction prefixes and suffixes require
+    direction-text, regardless of their spelling (ast/agentflow.md,
+    AgentflowIgnoredText). [fixture: agentflow/lex-flow-name-click-state]
+    [fixture: agentflow/lex-empty-string-in-flow-name] [fixture:
+    agentflow/lex-empty-markdown-in-flow-name] [fixture:
+    agentflow/lex-empty-call-in-connector-name] [fixture:
+    agentflow/lex-empty-description-in-flow-name] [fixture:
+    agentflow/lex-direction-line-greedy] A closed empty description block before
+    a URL has kind empty-description-block; the same erased-form rules apply
+    before URL and callback tooltips. [fixture:
+    agentflow/gram-empty-description-before-href] [fixture:
+    agentflow/lex-mixed-empty-forms-before-url-tooltip] [fixture:
+    agentflow/gram-click-erased-before-callback-tooltip]
+
+    Name.parts has a contributing Label, retains each recognized erased form as
+    IgnoredText, keeps ordinary fragments maximal and their written whitespace,
+    permits string/markdown kind only on the initial contributing fragment, and
+    excludes exactly one click-context exit whitespace from its fragments. An
+    empty string or empty markdown string recognized after click satisfies its
+    need to read a unit without contributing a Label; in a flow, a following
+    bare fragment still requires the one-whitespace exit. A terminal click that
+    has read nothing is invalid. [fixture:
+    agentflow/lex-name-click-empty-string-before-text] [fixture:
+    agentflow/lex-name-click-empty-markdown-before-text] [fixture:
+    agentflow/lex-name-click-empty-string-before-string] [fixture:
+    agentflow/lex-name-click-empty-string-then-call] [fixture:
+    agentflow/lex-connector-name-click-empty-string-tail] [fixture:
+    agentflow/gram-name-click-empty-string-adjacent-text] [fixture:
+    agentflow/gram-flow-name-click-empty-markdown-adjacent-rejected] In a
+    connector, an erased empty string or empty markdown string after click, with
+    kind empty-string or empty-markdown-string respectively, may touch a
+    following text Label, including a leading or trailing semicolon and a Label
+    that supplies the name's first contributing fragment (diagrams/agentflow.md,
+    Names, strings, and click text; ast/agentflow.md, AgentflowName). [fixture:
+    agentflow/lex-connector-name-click-empty-string-adjacent-text] [fixture:
+    agentflow/lex-connector-name-click-empty-string-adjacent-semicolon]
+    [fixture:
+    agentflow/lex-connector-name-click-empty-string-no-id-adjacent-semicolon]
+    [fixture:
+    agentflow/lex-connector-name-click-empty-string-trailing-semicolon]
+    [fixture: agentflow/lex-connector-name-click-empty-markdown-adjacent-text]
+    [fixture:
+    agentflow/lex-connector-name-click-empty-markdown-adjacent-semicolon]
+    [fixture:
+    agentflow/lex-connector-name-click-empty-markdown-trailing-semicolon]
+    [fixture:
+    agentflow/lex-connector-name-click-empty-markdown-no-id-adjacent-semicolon]
+    An empty string may touch an empty markdown string before that Label; each
+    erased form remains a separate IgnoredText part. [fixture:
+    agentflow/lex-connector-name-click-empty-string-then-markdown] Flow and
+    connector headings require one space, title brackets, and touching adjacent
+    data. The final click-context exit stays outside Name before a title opener,
+    heading data, or a flow heading separator, including when the last part is
+    an erased empty string or markdown string; the exit is consumed before
+    checking those following units (diagrams/agentflow.md, Names, strings, and
+    click text; ast/agentflow.md, AgentflowName). [fixture:
+    agentflow/name-click-exit-before-title-tab] [fixture:
+    agentflow/name-click-exit-before-title-lf] [fixture:
+    agentflow/name-click-exit-before-title-ls] [fixture:
+    agentflow/name-click-exit-before-data-tab] [fixture:
+    agentflow/name-click-exit-before-separator-space] Bare heading titles leave
+    their bracket-interior padding outside the trimmed Label, after the opener
+    (ast/agentflow.md, AgentflowLabel). [fixture:
+    agentflow/name-heading-title-interior-padding] Global has only a body, and
+    unnamed flows have no title or heading data. Empty blocks before a name
+    separator belong to the Name; after an explicit title or global heading they
+    are body statements. [fixture: agentflow/lex-flow-name-click-mixed]
+    [fixture: agentflow/lex-name-click-exit-extra-space] [fixture:
+    agentflow/lex-name-click-exit-crlf] [fixture:
+    agentflow/lex-name-click-initial-markdown] [fixture:
+    agentflow/lex-empty-call-in-flow-name] [fixture:
+    agentflow/gram-flow-name-space-between-empty-blocks] [fixture:
+    agentflow/gram-connector-name-terminal-click-eof] [fixture:
+    agentflow/gram-flow-inline-data] [fixture:
+    agentflow/gram-empty-description-after-flow-title] [fixture:
+    agentflow/gram-empty-description-after-global]
+
+    Leaf spelling and token kind must also agree with the ordered lexical rule
+    at that position. Vertex ids and class suffixes use id units;
+    comma-separated id lists exclude comma from each slot; shape properties are
+    single id-run units; interpolation and bare callbacks use name units; bare
+    container names use name-piece units with their keyword priority. Click ids
+    use their own nonwhitespace runs. [fixture:
+    agentflow/lex-vertex-equals-alone] [fixture:
+    agentflow/lex-vertex-supplementary-alone] [fixture:
+    agentflow/gram-bare-callback-global] [fixture:
+    agentflow/gram-connector-name-default] [fixture:
+    agentflow/gram-style-suffix] [fixture:
+    agentflow/gram-class-target-empty-ends] [fixture: agentflow/gram-props]
+    [fixture: agentflow/gram-linkstyle-interpolate-default] [fixture:
+    agentflow/gram-click-punctuation-id] [fixture:
+    agentflow/lex-class-suffix-equals] [fixture:
+    agentflow/gram-class-target-global] [fixture:
+    agentflow/gram-props-number-unit] [fixture:
+    agentflow/gram-interpolate-default-name]
+
+    After an initial string in a click name fragment, a bare continuation cannot
+    start another string unit. [fixture:
+    agentflow/gram-name-click-second-string]
+
+    Bare label continuations use the ordinary, slanted, ellipse or split-link
+    text context, including its delimiter priority; a style literal consists of
+    style units, with escaped commas only in classDef. [fixture:
+    agentflow/gram-bare-label-open-bracket] [fixture:
+    agentflow/gram-bare-label-pipe] [fixture:
+    agentflow/gram-slanted-label-open-bracket] [fixture:
+    agentflow/gram-ellipse-label-open-paren] [fixture:
+    agentflow/lex-style-equals-in-value] [fixture:
+    agentflow/gram-classdef-escaped-comma-whitespace-tail] [fixture:
+    agentflow/gram-split-edge-string-bare-tail]
+
+    Vertex/group/link fields hold their written occurrences, including repeats:
+    group ampersands require whitespace on both sides, vertex suffixes touch,
+    property operands touch their colon, and shapes use the shared
+    delimiter/name table and property only for [|. Labels retain their nonempty
+    written content and initial kind. A complete arrow is one Punctuator: solid
+    dashes end in > or x; reference dots have both surrounding dashes. Fields
+    give none as startMarker, the matching line/endMarker and the uncapped
+    written count. An opening arrow is exactly -- and requires a solid closing
+    arrow and label. A pipe label allows at most one following space unit.
+    [fixture: agentflow/gram-group-spaces] [fixture:
+    agentflow/gram-group-unspaced] [fixture:
+    agentflow/gram-node-three-definitions] [fixture:
+    agentflow/gram-bracket-shapes] [fixture: agentflow/gram-props] [fixture:
+    agentflow/gram-three-edge-kinds] [fixture: agentflow/db-edge-length-cap]
+    [fixture: agentflow/gram-split-failure-label] [fixture:
+    agentflow/gram-reference-quoted-pipe-label] [fixture:
+    agentflow/gram-pipe-label-two-spaces-after]
+
+    DataBlock has complete @{ and } delimiters, RawText interior, and the exact
+    written value, including empty and adjacent blocks separately. Only double
+    quotes protect an interior caret or brace; the data context does not treat
+    backslash as a quote escape. YAML, alias resolution, metadata types and
+    shape catalogues are not validated. [fixture:
+    agentflow/gram-data-adjacent-multiline-blocks] [fixture:
+    agentflow/db-data-block-empty-multiline] [fixture:
+    agentflow/lex-data-block-caret] [fixture:
+    agentflow/lex-data-block-quoted-caret] [fixture:
+    agentflow/lex-data-backslash-quote-is-not-escape] [fixture:
+    agentflow/db-data-block-invalid-yaml] [fixture:
+    agentflow/div-metadata-yaml-self-alias] In the text left after common
+    preprocessing, a diagram comment cannot cut a data block, literal, name,
+    split-link text or initial string: those contexts read percent pairs as
+    content. Above the default size limit, the common comment regions may still
+    cut those values before lexing. [fixture:
+    agentflow/div-data-percent-line-is-content] [fixture:
+    agentflow/comment-split-edge-label] [fixture:
+    agentflow/lex-flow-name-string-comment-content] [fixture:
+    agentflow/lex-accessibility-block-comment] [fixture:
+    agentflow/comment-default-size-fallback-inline-label]
+
+    Style/class/linkStyle lists retain comma slots and null holes, including
+    terminal holes. An id list needs an actual id or comma, and a null style
+    still needs a written whitespace unit beyond its required gap. [fixture:
+    agentflow/gram-class-one-operand] [fixture:
+    agentflow/gram-style-empty-value] ASCII padding consumed by a following
+    comment supplies no style unit; non-ASCII whitespace remains a unit.
+    [fixture: agentflow/gram-style-null-before-comment] [fixture:
+    agentflow/gram-style-null-before-comment-nbsp] Style literals keep leading
+    whitespace and exclude trailing padding. Keyword, id/class-value and
+    interpolation gaps have the exact one-space width of Agentflow. ClassDef
+    retains escaped commas inside its literal; linkStyle has interpolation or
+    styles and canonical indices naming preceding chain/group edges, including
+    nested bodies. The separate exceedsMaxEdges helper checks the site limit.
+    [fixture: agentflow/gram-class-target-empty-ends] [fixture:
+    agentflow/gram-classdef-trailing-empty-name] [fixture:
+    agentflow/gram-style-all-null] [fixture:
+    agentflow/gram-linkstyle-trailing-null-style] [fixture:
+    agentflow/db-node-style-first-leading-spaces] [fixture:
+    agentflow/gram-classdef-escaped-comma] [fixture:
+    agentflow/lex-style-double-space-keyword] [fixture:
+    agentflow/lex-class-double-space-value] [fixture:
+    agentflow/lex-linkstyle-interpolate-double-space] [fixture:
+    agentflow/lex-linkstyle-leading-zero] [fixture:
+    agentflow/gram-linkstyle-style-out-of-bounds] [fixture:
+    agentflow/config-max-edges-group]
+
+    A URL or tooltip occupies exactly one complete string unit, with no bare
+    continuation or merged following string. [fixture:
+    agentflow/gram-click-url-merged-strings]
+
+    Click id lists keep null ends. Bare callbacks are Identifier; call names and
+    optional arguments are opaque Literals, with padding retained and
+    whitespace-only arguments null. A second call can supply arguments after
+    empty first parentheses. URL/tooltip strings are closed and nonempty; target
+    is the written final target Keyword or null. Each
+    textBeforeUrl/textBeforeTooltip item is a complete recognized erased form at
+    its declared position, with the following value required. No prefix field
+    exists before a callback name or target. Tooltip and target gaps remain one
+    space unit. [fixture: agentflow/gram-click-id-empty-ends] [fixture:
+    agentflow/gram-click-callback-forms] [fixture:
+    agentflow/gram-click-callback-space-args] [fixture:
+    agentflow/gram-callback-arguments-after-second-call] [fixture:
+    agentflow/gram-url-tooltip-whitespace-only] [fixture:
+    agentflow/gram-click-link-forms] [fixture:
+    agentflow/gram-click-erased-before-url] [fixture:
+    agentflow/gram-click-erased-before-callback-tooltip] [fixture:
+    agentflow/lex-mixed-empty-forms-before-url-tooltip] [fixture:
+    agentflow/div-empty-description-before-callback-name] [fixture:
+    agentflow/div-empty-description-before-link-target]
+
+    Direction uses family priority TB, BT, RL, LR, TD and the last matching
+    occurrence within that family; trimmed nonempty prefixes/suffixes are
+    IgnoredText. Accessibility line values retain their complete line after
+    leading whitespace, including a later physical line, with null only at EOF;
+    block closed follows the written brace and an unclosed block reaches EOF. A
+    block value stops at its first closing brace, leaving following statements
+    outside the value. [fixture: agentflow/db-accessibility-block] The same
+    default-size comment and immediate-brace conversion as dbFromTree supplies
+    the lexical gaps. Complete frontmatter trivia includes empty and
+    whitespace-only lines after its closing delimiter, but preserves the
+    indentation of the first nonblank body line. [fixture:
+    agentflow/frontmatter-extra-trivia-boundary] [fixture:
+    agentflow/frontmatter-extra-trivia-below] [fixture:
+    agentflow/frontmatter-extra-whitespace-line-boundary] [fixture:
+    agentflow/frontmatter-extra-trivia-above] [fixture:
+    agentflow/frontmatter-extra-trivia-indent-above] [fixture:
+    agentflow/lex-direction-value-priority] [fixture:
+    agentflow/lex-direction-last-selected-occurrence] [fixture:
+    agentflow/lex-direction-unclosed-bracket-prefix] [fixture:
+    agentflow/db-acctitle-next-line] [fixture: agentflow/db-acctitle-eof]
+    [fixture: agentflow/db-accessibility-unclosed-block] [fixture:
+    agentflow/comment-default-size-equal-frontmatter] [fixture:
+    agentflow/comment-default-size-above-frontmatter] [fixture:
+    agentflow/lex-brace-string-keeps-blank-line]
+
+    Before membership filtering, hasOwnProperty followed by another nonempty
+    flow candidate rejects; direction/global/style/class/linkStyle/click do not
+    contribute candidates. Duplicate ids, unresolved references, containment
+    cycles and known removed shapes do not reject. Shared whole-unit checks
+    reject internal directive/ignored-semicolon boundaries; unsupported empty
+    forms have no free statement or gap field. [fixture:
+    agentflow/gram-flow-named-member-hasownproperty] [fixture:
+    agentflow/gram-hasownproperty-last-member] [fixture:
+    agentflow/gram-flow-hasownproperty-before-empty-statement] [fixture:
+    agentflow/db-flow-three-definitions] [fixture:
+    agentflow/db-diagnostics-no-semantic-checks] [fixture:
+    agentflow/db-diagnostics-containment-cycle] [fixture:
+    agentflow/db-data-block-removed-shape] [fixture:
+    agentflow/div-directive-in-arrow] [fixture:
+    agentflow/div-ignored-semicolon-in-arrow] [fixture:
+    agentflow/div-empty-string-statement]
+
+  - usecase: all 26 node types, nullable fields, nonempty lists, child types and
+    scalar words follow [ast/usecase.md](../../spec/docs/ast/usecase.md).
+    Structural ranges are the hull of written tokens and children, in source
+    order, with one complete lower-case usecase-beta header and physical line
+    separators. Native gaps use only ASCII HWS; Unicode whitespace remains value
+    content where permitted. Each Identifier, quoted string, bare label,
+    stereotype, CSS name and CSS value must be a lexical unit of its particular
+    position, with keyword/operator priority and numeric alternatives checked. A
+    single-quoted StringLiteral must be closed by the same single quote;
+    backslash does not escape it. [fixture: usecase/db-all-fields] [fixture:
+    usecase/lex-whitespace-leading] [fixture: usecase/lex-unicode-indent]
+    [fixture: usecase/lex-number-decimal-id-unit] [fixture:
+    usecase/lex-forward-circle-id-prefix] [fixture:
+    usecase/lex-native-single-quoted-keys] [fixture:
+    usecase/lex-plain-single-apostrophe]
+
+    A CSS name has one Identifier atom, or a dash-prefix Punctuator and one
+    Identifier word; HWS between them stays in the name but in no token. RawText
+    and String items fragment only at common source cuts. [fixture:
+    usecase/lex-class-property-custom-gap] [fixture:
+    usecase/lex-css-name-custom-tab] [fixture: usecase/directive-in-label]
+    [fixture: usecase/lex-directive-css-name-gap]
+
+    A split opening must be the complete operator selected with its following
+    label source: `--o`, `--x` and longer dash runs cannot be split into a
+    shorter opening and label text. HWS after the opening keeps that label
+    separate. [fixture: usecase/gram-split-opening-forward-circle-prefix]
+    [fixture: usecase/gram-split-opening-forward-cross-prefix] [fixture:
+    usecase/gram-split-opening-extra-dash] [fixture:
+    usecase/gram-split-backward-opening-extra-dash] [fixture:
+    usecase/gram-split-opening-circle-prefix-hws-control] [fixture:
+    usecase/gram-split-backward-opening-dash-hws-control]
+
+    A JSON prefix switches context before a CSS value component in both style
+    and classDef; neither an empty nor a nonempty valid JSON object makes it a
+    CSS Literal. [fixture: usecase/gram-style-json-prefix-mode] [fixture:
+    usecase/gram-classdef-json-prefix-mode] [fixture:
+    usecase/gram-style-json-prefix-nonempty-mode]
+
+    That prefix is checked at each component boundary, including after a Word or
+    hash-color, and is not retried inside a plain string, CSS identifier or
+    longer Identifier unit. [fixture:
+    usecase/gram-style-json-prefix-after-word-mode] [fixture:
+    usecase/gram-style-json-prefix-after-hash-mode] [fixture:
+    usecase/gram-style-json-prefix-in-string-control] [fixture:
+    usecase/gram-style-json-prefix-css-word-control] [fixture:
+    usecase/gram-style-json-prefix-identifier-control]
+
+    Actor/entity suffixes, shapes, quoted-only names, actor lists, split and
+    semantic relationships, one-level boundaries, metadata assignments, notes,
+    JSON prefixes, class/style lists and accessibility forms retain exactly
+    their authored children and punctuation. Arrow fields keep written marker,
+    line and dash/dot counts. Native metadata validates comma/newline
+    separators, key/colon/value line continuity, exact scalar types, target
+    vocabularies and final native model constraints; declaration conflicts
+    cannot be repaired by later updates. Accessibility values fill the whole
+    colon/brace interior, keeping padding and using null only for exactly empty
+    content. [fixture: usecase/gram-actor-list] [fixture:
+    usecase/db-labeled-arrows] [fixture: usecase/db-semantic-case] [fixture:
+    usecase/gram-boundary-nested] [fixture:
+    usecase/gram-native-key-newline-colon] [fixture:
+    usecase/gram-native-value-newline] [fixture:
+    usecase/gram-native-trailing-newline-comma] [fixture:
+    usecase/gram-native-quoted-business] [fixture:
+    usecase/gram-native-final-invalid-then-valid] [fixture:
+    usecase/gram-native-inline-conflict-later-fix] [fixture:
+    usecase/gram-a11y-line-raw-padding] [fixture:
+    usecase/gram-a11y-whitespace-block]
+
+    After common trivia removal and CR/CRLF normalization, the optional trailing
+    comma and physical line breaks between the last property and `}` total at
+    most two, with the comma allowed only before the line breaks. ASCII HWS does
+    not change the count. [fixture:
+    usecase/gram-metadata-trailing-comma-no-newline] [fixture:
+    usecase/gram-native-trailing-comma-newline] [fixture:
+    usecase/gram-metadata-trailing-comma-two-newlines] [fixture:
+    usecase/gram-metadata-trailing-comma-three-newlines] [fixture:
+    usecase/gram-metadata-trailing-comma-one-newline-hws] [fixture:
+    usecase/gram-metadata-trailing-comma-two-newlines-hws] [fixture:
+    usecase/gram-metadata-trailing-comma-one-newline-crlf] [fixture:
+    usecase/gram-metadata-trailing-comma-two-newlines-crlf] [fixture:
+    usecase/gram-metadata-trailing-comma-three-newlines-crlf] [fixture:
+    usecase/gram-metadata-trailing-comma-comment-line] [fixture:
+    usecase/gram-metadata-trailing-comma-comment-line-blank-after] [fixture:
+    usecase/gram-metadata-no-trailing-comma-two-newlines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-three-newlines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-four-newlines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-two-crlf] [fixture:
+    usecase/gram-metadata-no-trailing-comma-three-crlf] [fixture:
+    usecase/gram-metadata-no-trailing-comma-two-whitespace-lines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-whitespace-lines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-two-tab-lines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-tab-lines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-two-properties-two-newlines]
+    [fixture:
+    usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines]
+    [fixture: usecase/gram-edge-metadata-two-newlines] [fixture:
+    usecase/gram-edge-metadata-three-newlines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-comment-two-newlines] [fixture:
+    usecase/gram-metadata-no-trailing-comma-comment-three-newlines] A comma
+    between properties still permits multiple line breaks. [fixture:
+    usecase/gram-metadata-property-comma-two-newlines] [fixture:
+    usecase/gram-metadata-property-comma-three-newlines]
+
+    UsecaseJsonDataBlock has @, optional HWS, its opening brace, opaque RawText
+    interior and the first balancing close. Only double quotes and their
+    backslash escapes protect braces. JSON content is not validated; native
+    UsecaseMetadata remains syntax. Common whole-unit checks reject source cuts
+    inside atomic words/operators, while the HWS after a CSS dash prefix and
+    complete JSON-prefix components may contain trivia. The per-diagram tests
+    construct and break fixed trees; corpus checks use every recorded usecase
+    tree and the common detection fixture. [fixture:
+    usecase/gram-json-space-after-at] [fixture:
+    usecase/gram-json-double-backslash-before-quote] [fixture:
+    usecase/div-json-balanced-invalid-array] [fixture:
+    usecase/gram-json-brace-in-single-quote] [fixture:
+    usecase/div-directive-raw-json-id] [fixture:
+    usecase/lex-directive-whole-json-prefix-boundary] [fixture:
+    usecase/lex-directive-css-name-gap] [fixture:
+    usecase/div-semicolon-css-property-selected]
+
+  - ishikawa: child fields follow `ISHIKAWA_CHILD_TYPES`, checked against
+    ast/ishikawa.md: an optional root, one literal per node, and ordered node
+    children. Diagram and node ranges are the hull of their tokens and children;
+    a node writes no token outside its text and descendants. [fixture:
+    ishikawa/header-only-lf] [fixture:
+    ishikawa/header-comment-ps-whitespace-eof] [fixture: ishikawa/db-all-fields]
+    [fixture: ishikawa/db-three-definitions] `indent` is a nonnegative integer
+    equal to the written line whitespace count, with a tab counted as one,
+    excluding directive interiors and common comment regions; on the header line
+    only whitespace after the header counts, and a U+2028 or U+2029 ending a
+    diagram comment counts with following whitespace, excluding whitespace
+    inside that comment. [fixture: ishikawa/db-indent-tab-character] [fixture:
+    ishikawa/db-indent-equal-mixed-whitespace] [fixture:
+    ishikawa/db-indent-around-directives] [fixture:
+    ishikawa/header-same-line-root] [fixture: ishikawa/comment-preserved-u2028]
+    [fixture: ishikawa/comment-preserved-u2029] [fixture:
+    ishikawa/lex-indent-multiline-directive] [fixture:
+    ishikawa/lex-header-indent-multiline-directive] [fixture:
+    ishikawa/lex-indent-comment-region-ls] [fixture:
+    ishikawa/lex-indent-comment-region-ps] [fixture:
+    ishikawa/lex-comment-ps-indent-excludes-body-padding] The first cause is a
+    root child, root indentation decides no parent, and later causes at or below
+    the first cause's indentation are root children; otherwise the nearest
+    earlier cause with strictly smaller indentation is the parent, with siblings
+    in source order. [fixture: ishikawa/db-indent-first-cause] [fixture:
+    ishikawa/db-indent-root-deeper] [fixture: ishikawa/db-indent-root-shallower]
+    [fixture: ishikawa/db-indent-relative-zero] [fixture:
+    ishikawa/db-indent-clamp-below-base] [fixture:
+    ishikawa/db-indent-nearest-smaller-cause] [fixture: ishikawa/db-indent-jump]
+    [fixture: ishikawa/db-indent-pop-several] A literal has its nonempty written
+    value, including trailing whitespace, quotes and entities, with directives,
+    common comment regions and selected ignored semicolons excluded; its RawText
+    tokens are split only at those cuts. [fixture:
+    ishikawa/gram-root-trailing-space] [fixture: ishikawa/gram-empty-quotes]
+    [fixture: ishikawa/header-root-inline-entity] [fixture:
+    ishikawa/directive-root-middle] [fixture:
+    ishikawa/comment-ls-region-in-text] [fixture:
+    ishikawa/lex-root-style-semicolon] Text starts with neither indentation,
+    `%%`, nor a bounded header keyword, has no line break outside removed
+    trivia, and runs to the end of its logical line. [fixture:
+    ishikawa/lex-header-nonascii-child] [fixture:
+    ishikawa/lex-header-middle-label] [fixture:
+    ishikawa/gram-root-unclosed-quote] [fixture:
+    ishikawa/directive-multiline-joins-node-text] [fixture:
+    ishikawa/lex-kelvin-node-text] A diagram writes one complete `ishikawa` or
+    `ishikawa-beta` Keyword, ignoring the case of ASCII letters and leaving
+    other characters unchanged, with the beta rule first and the ASCII word
+    boundary judged on the original characters; split selected headers and a
+    header with nothing after it but removed directives are rejected. [fixture:
+    ishikawa/header-uppercase] [fixture: ishikawa/header-beta-mixed-case]
+    [fixture: ishikawa/detect-kelvin-in-header] [fixture:
+    ishikawa/lex-header-kelvin-boundary] [fixture:
+    ishikawa/lex-header-dotted-i-boundary] [fixture:
+    ishikawa/header-beta-letter-suffix] [fixture: ishikawa/directive-in-header]
+    [fixture: ishikawa/div-directive-beta-prefix] [fixture:
+    ishikawa/header-only] [fixture: ishikawa/header-directive-only-eof] Blank
+    lines, comments and directives create no nodes; successive node texts have a
+    line break or a diagram-comment-ending LS/PS between them, and all other gap
+    and tail characters are whitespace. [fixture:
+    ishikawa/div-header-blank-node] [fixture:
+    ishikawa/div-header-trailing-space-node] [fixture:
+    ishikawa/gram-between-directive-line] [fixture:
+    ishikawa/gram-root-and-child-one-line] [fixture:
+    ishikawa/comment-preserved-u2028] [fixture:
+    ishikawa/comment-preserved-u2029] Diagram comments have mark `%%` and end
+    before a physical line break, U+2028, U+2029, or EOF. [fixture:
+    ishikawa/gram-preserved-comment-after-root] [fixture:
+    ishikawa/comment-preserved-u2028] [fixture:
+    ishikawa/comment-preserved-u2029] [fixture: ishikawa/comment-only-eof]
   - venn: child types, nullable fields, nonempty name and property lists, subset
     arity, the numeric-id label restriction and kind sets follow ast/venn.md.
     Implicit targets are null exactly at an enabled indented text marker;

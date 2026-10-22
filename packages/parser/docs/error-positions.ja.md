@@ -757,6 +757,253 @@
   [fixture: venn/div-directive-style-value-word]
   [fixture: venn/div-ignored-semicolon-style-value-selected]
 
+## Ishikawa 図
+
+- ディレクティブで切られていない最初のヘッダーの後が、
+  除かれるディレクティブと追加の LF だけなら、
+  選ばれたキーワードを範囲として報告します。
+  メッセージは `The header cannot end the text` です。
+  [fixture: ishikawa/header-only] [fixture: ishikawa/header-beta-only]
+  [fixture: ishikawa/header-directive-only-eof]
+- 後続のヘッダーは、そのキーワードを範囲とし、
+  選ばれた beta 接尾辞と中のディレクティブも含みます。
+  メッセージは `Unexpected token` で、先行する字下げは範囲外です。
+  [fixture: ishikawa/header-twice] [fixture: ishikawa/header-beta-twice]
+  [fixture: ishikawa/header-indented-second] [fixture:
+  ishikawa/gram-header-ls-second-header] [fixture:
+  ishikawa/gram-header-second-beta-prefix] [fixture:
+  ishikawa/gram-directive-joins-second-header] [fixture:
+  ishikawa/gram-second-header-eof] [fixture:
+  ishikawa/gram-second-beta-header-eof] [fixture:
+  ishikawa/gram-second-header-cut-eof]
+- 最初に選ばれたヘッダーを切るディレクティブには、
+  後述の共通の `Unexpected directive` エラーを使います。
+  ノードのテキストには、未閉鎖の文字列や空の形のエラーはありません。
+  [fixture: ishikawa/directive-in-header] [fixture:
+  ishikawa/directive-in-beta-header] [fixture:
+  ishikawa/div-directive-beta-prefix] [fixture:
+  ishikawa/gram-root-unclosed-quote] [fixture: ishikawa/gram-empty-quotes]
+  [fixture: ishikawa/gram-initial-header-cut-eof] [fixture:
+  ishikawa/gram-initial-beta-cut-eof]
+
+後続ヘッダーとディレクティブによる切断の規則は、
+裸のヘッダーの EOF 規則より優先します。
+後続のソースの LF があってもなくても、メッセージは同じです。
+[fixture: ishikawa/header-twice] [fixture: ishikawa/gram-second-header-eof]
+[fixture: ishikawa/header-beta-twice] [fixture:
+ishikawa/gram-second-beta-header-eof] [fixture:
+ishikawa/gram-directive-joins-second-header] [fixture:
+ishikawa/gram-second-header-cut-eof] [fixture: ishikawa/directive-in-header]
+[fixture: ishikawa/gram-initial-header-cut-eof] [fixture:
+ishikawa/directive-in-beta-header] [fixture: ishikawa/gram-initial-beta-cut-eof]
+
+## Agentflow での位置
+
+| 拒否                                      | 範囲とメッセージ                                                                                                                                                           |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| lexer の規則に一致しない                  | その一文字。非 BMP 文字は UTF-16 の二単位を含み、`Unexpected character`。閉じない通常・markdown 文字列は開始引用符。                                                       |
+| 未完のコールバックコンテキスト            | call キーワードで `The callback after call has no ( before the end of the text`、または開始丸括弧で `The arguments of the callback have no ) before the end of the text`。 |
+| EOF まで click コンテキストが何も読まない | click キーワードで `click has no click id before the end of the text`。                                                                                                    |
+| 文法が単位を読めない                      | 有意なトークン範囲、空白だけなら先頭の空範囲で `Unexpected token`。ソース EOF ではその空範囲で `Unexpected end of text`。                                                  |
+| 無効な linkStyle 添字                     | その数値で `linkStyle <number> does not name a link that exists`。                                                                                                         |
+| hasOwnProperty に続くメンバー             | 最初の後続候補の id、名前、アクセシビリティ値、または空文のセミコロンで `A flow member follows the member hasOwnProperty`。                                                |
+
+字句規則に一致しない場合の行の例:
+[fixture: agentflow/lex-class-suffix-equals]
+[fixture: agentflow/lex-vertex-equals-alone]
+[fixture: agentflow/lex-vertex-supplementary-alone]
+[fixture: agentflow/gram-bare-label-pipe]
+[fixture: agentflow/gram-slanted-label-open-bracket]
+[fixture: agentflow/gram-ellipse-label-open-paren]
+[fixture: agentflow/lex-style-equals-in-value]
+
+文法が単位を読めない場合の行の例:
+[fixture: agentflow/gram-click-url-merged-strings]
+[fixture: agentflow/gram-name-click-second-string]
+[fixture: agentflow/gram-class-target-global]
+[fixture: agentflow/gram-props-number-unit]
+[fixture: agentflow/gram-interpolate-default-name]
+[fixture: agentflow/gram-bare-label-open-bracket]
+[fixture: agentflow/gram-bare-callback-global]
+[fixture: agentflow/gram-connector-name-default]
+
+[fixture: agentflow/lex-supplementary-id]
+[fixture: agentflow/lex-unclosed-string]
+[fixture: agentflow/lex-unclosed-markdown]
+[fixture: agentflow/lex-call-without-parenthesis]
+[fixture: agentflow/lex-callback-args-unclosed]
+[fixture: agentflow/gram-connector-name-click-only-eof]
+[fixture: agentflow/gram-node-empty-label]
+[fixture: agentflow/lex-class-double-space-value]
+[fixture: agentflow/gram-flow-open]
+[fixture: agentflow/lex-linkstyle-leading-zero]
+[fixture: agentflow/gram-linkstyle-style-out-of-bounds]
+[fixture: agentflow/lex-flow-hasownproperty-member]
+[fixture: agentflow/gram-flow-named-member-hasownproperty]
+[fixture: agentflow/gram-connector-member-hasownproperty]
+[fixture: agentflow/gram-accessibility-hasownproperty-member]
+[fixture: agentflow/gram-flow-hasownproperty-before-empty-statement]
+[fixture: agentflow/gram-name-click-empty-string-adjacent-text]
+
+オペランドが一つの class 文と、値が空の style 文に改行が続く場合は、
+その改行単位の空の有意範囲を報告する。
+文のコメントが必須のスタイルの間隙を読む場合は、
+最初の % から LF の直前までのコメント範囲を報告する。
+[fixture: agentflow/gram-class-one-operand]
+[fixture: agentflow/gram-style-empty-value]
+[fixture: agentflow/gram-style-null-before-comment]
+
+flow 名で click コンテキスト内の空文字列または空 markdown 文字列に
+裸のテキストが隣接した場合は、
+そのテキストの有意な単位範囲を `Unexpected token` で報告する。
+[fixture: agentflow/gram-name-click-empty-string-adjacent-text]
+[fixture: agentflow/gram-flow-name-click-empty-markdown-adjacent-rejected]
+
+原子的な項目内の directive と選択された無視セミコロンは、
+以下の共通境界エラーになる。
+保持できない空形式は、共通の空形式エラーでその全範囲を報告する。
+Name と click 接頭辞で保持する形式にはこのエラーはない。
+agentflow に予約語 click のエラーはない。
+[fixture: agentflow/div-directive-in-id]
+[fixture: agentflow/div-ignored-semicolon-in-arrow]
+[fixture: agentflow/div-empty-call-before-arrow]
+[fixture: agentflow/div-empty-description-before-style-comma]
+[fixture: agentflow/lex-empty-call-in-flow-name]
+[fixture: agentflow/gram-click-erased-before-url]
+
+## usecase 図の中
+
+字句解析器は文法の前に図全体を読むため、
+前の接頭部の文法エラーより、後の読めない文字を先に報告します。
+回復によって接頭部だけを受理することはありません。
+[fixture: usecase/lex-lex-first-error-not-recovered]
+[fixture: usecase/lex-lex-later-error-priority]
+
+コメントの前に残る物理改行が、ネイティブプロパティのキー・コロン・値や、
+CSS のダッシュ接頭部と語を分ける場合、そのエラー範囲は空です。
+CSS のその間の U+2028 は、label-symbol 単位全体を報告します。
+[fixture: usecase/gram-native-key-comment-region-keeps-line-break]
+[fixture: usecase/gram-native-value-comment-region-keeps-line-break]
+[fixture: usecase/gram-css-name-comment-region-lf]
+[fixture: usecase/gram-css-name-comment-region-ls]
+
+ネイティブ metadata の最後のプロパティからの末尾コンマと残る改行が、
+合計 2 個を超える場合、
+次のプロパティのキーが必要な位置の閉じ波括弧全体で、
+`Unexpected token` を報告します。
+改行は共通のコメント領域と行終端の規則を適用した後で数え、
+範囲は元のソース位置を保ちます。
+[fixture: usecase/gram-metadata-trailing-comma-two-newlines]
+[fixture: usecase/gram-metadata-trailing-comma-three-newlines]
+[fixture: usecase/gram-metadata-trailing-comma-two-newlines-hws]
+[fixture: usecase/gram-metadata-trailing-comma-two-newlines-crlf]
+[fixture: usecase/gram-metadata-trailing-comma-three-newlines-crlf]
+[fixture: usecase/gram-metadata-trailing-comma-comment-line-blank-after]
+[fixture: usecase/gram-metadata-no-trailing-comma-three-newlines]
+[fixture: usecase/gram-metadata-no-trailing-comma-four-newlines]
+[fixture: usecase/gram-metadata-no-trailing-comma-three-crlf]
+[fixture: usecase/gram-metadata-no-trailing-comma-whitespace-lines]
+[fixture: usecase/gram-metadata-no-trailing-comma-tab-lines]
+[fixture: usecase/gram-metadata-no-trailing-comma-two-properties-three-newlines]
+[fixture: usecase/gram-edge-metadata-three-newlines]
+[fixture: usecase/gram-metadata-no-trailing-comma-comment-three-newlines]
+
+ネイティブ metadata の改行後のコンマには、次のプロパティが必要です。
+閉じ波括弧が続く場合、その全体で `Unexpected token` を報告します。
+[fixture: usecase/gram-metadata-tail-newline-before-comma]
+[fixture: usecase/gram-metadata-tail-newline-before-comma-newline]
+
+| 拒否                                | 範囲とメッセージ                                                                                                    | fixture                                                                                                                                                        |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 合う字句規則がない                  | その文字で `Unexpected character`。閉じない通常文字列は開き引用符。                                                 | [fixture: usecase/lex-plain-crlf] [fixture: usecase/lex-plain-escaped-quote]                                                                                   |
+| 文法が単位を読めない                | トークン規則が保つ空白も含む有意な範囲で `Unexpected token`。改行は空範囲、ソース EOF は `Unexpected end of text`。 | [fixture: usecase/gram-empty-label] [fixture: usecase/gram-native-key-newline-colon] [fixture: usecase/gram-boundary-open]                                     |
+| 要素宣言の不一致                    | 衝突する Actor または Entity で `An element declaration conflicts with an existing symbol`。                        | [fixture: usecase/gram-generated-label-repeat] [fixture: usecase/gram-bare-declaration-label-conflict] [fixture: usecase/gram-actor-repeat-labeltype-conflict] |
+| 所属の不一致                        | 衝突する Actor または Entity で `An element cannot belong to two nonempty boundaries`。                             | [fixture: usecase/spec-usecase-parser-0996ad58]                                                                                                                |
+| 境界宣言の不一致                    | 衝突する境界全体で `A boundary declaration conflicts with an existing symbol`。                                     | [fixture: usecase/gram-boundary-repeat-labeltype-conflict]                                                                                                     |
+| JSON または明示した辺 id の重複     | 衝突する id で `A JSON or explicit edge id must be unique`。                                                        | [fixture: usecase/gram-json-duplicate-id] [fixture: usecase/spec-usecase-parser-31b56285]                                                                      |
+| 参照だけの端点のクラス              | その端点で `A reference-only endpoint cannot have a class suffix`。                                                 | [fixture: usecase/gram-classes-on-reference-only] [fixture: usecase/gram-classes-on-quoted-reference-only]                                                     |
+| 境界または明示した辺の端点          | 関係全体で `A relationship cannot connect a boundary or explicit edge`。                                            | [fixture: usecase/gram-relationship-boundary-endpoint]                                                                                                         |
+| include/extend の actor または JSON | 関係全体で `Include and extend require two usecases`。                                                              | [fixture: usecase/spec-usecase-parser-81a7a3d7] [fixture: usecase/spec-usecase-parser-5c692f7f]                                                                |
+| 互換性のない汎化                    | 関係全体で `Generalization requires two actors or two usecases of the same kind`。                                  | [fixture: usecase/spec-usecase-parser-70ebd0e2]                                                                                                                |
+| JSON 関連の不正なマーカー           | 関係全体で `JSON permits only point or markerless associations`。                                                   | [fixture: usecase/spec-usecase-parser-800c93e6]                                                                                                                |
+| 不正な note 対象                    | 対象 id で `A note target must resolve to an actor or usecase`。                                                    | [fixture: usecase/gram-note-unresolved] [fixture: usecase/spec-usecase-parser-67cf728b]                                                                        |
+| 未解決の metadata 対象              | 対象 id または引用ラベルで `A metadata target must resolve to a stored symbol`。                                    | [fixture: usecase/gram-metadata-empty]                                                                                                                         |
+| 未解決の class/style 対象           | 対象 id で `A class or style target must resolve to a stored symbol`。                                              | [fixture: usecase/gram-class-unknown] [fixture: usecase/gram-style-unknown]                                                                                    |
+| 不正なネイティブプロパティ          | キーから値までで `The native metadata property is invalid for its target`。                                         | [fixture: usecase/gram-native-quoted-business] [fixture: usecase/gram-native-unknown-empty-value] [fixture: usecase/gram-native-invalid-property-later-fix]    |
+| 宣言プロパティの不一致              | 後のプロパティで `Repeated declaration metadata values must agree`。                                                | [fixture: usecase/gram-metadata-duplicate-inline-conflict] [fixture: usecase/gram-metadata-duplicate-inline-business]                                          |
+| 最終的な icon/type の衝突           | 最初の宣言の出現で `An actor icon cannot coexist with a non-normal explicit type`。                                 | [fixture: usecase/spec-usecase-parser-ca3ba61c]                                                                                                                |
+| 最終的な business actor の衝突      | 最初の宣言の出現で `A business actor must have normal or hollow geometry`。                                         | [fixture: usecase/spec-usecase-parser-3f58fb81]                                                                                                                |
+| 最終的な business rectangle の衝突  | 最初の宣言の出現で `A rectangle cannot be a business usecase`。                                                     | [fixture: usecase/spec-usecase-parser-49661584]                                                                                                                |
+
+字句と文法の場合は次の fixture にあります。
+[fixture: usecase/lex-plain-crlf]
+[fixture: usecase/lex-plain-escaped-quote]
+[fixture: usecase/lex-markdown-unclosed]
+[fixture: usecase/gram-empty-label]
+[fixture: usecase/gram-stereotype-empty]
+[fixture: usecase/gram-stereotype-space]
+[fixture: usecase/gram-stereotype-newline]
+[fixture: usecase/gram-json-empty-delimiter-only]
+[fixture: usecase/lex-json-mode-unclosed-string]
+[fixture: usecase/gram-boundary-open]
+[fixture: usecase/gram-native-key-newline-colon]
+[fixture: usecase/gram-native-value-newline]
+[fixture: usecase/gram-css-whitespace-without-component]
+[fixture: usecase/gram-forbidden-uppercase]
+[fixture: usecase/gram-split-opening-forward-circle-prefix]
+[fixture: usecase/gram-split-opening-forward-cross-prefix]
+[fixture: usecase/gram-split-opening-extra-dash]
+[fixture: usecase/gram-split-backward-opening-extra-dash]
+[fixture: usecase/gram-style-json-prefix-mode]
+[fixture: usecase/gram-style-json-prefix-nonempty-mode]
+[fixture: usecase/gram-classdef-json-prefix-mode]
+[fixture: usecase/gram-style-json-prefix-after-word-mode]
+[fixture: usecase/gram-style-json-prefix-after-hash-mode]
+
+名前空間、互換性、参照の場合は次の fixture にあります。
+[fixture: usecase/gram-generated-label-repeat]
+[fixture: usecase/gram-bare-declaration-label-conflict]
+[fixture: usecase/gram-actor-repeat-labeltype-conflict]
+[fixture: usecase/spec-usecase-parser-0996ad58]
+[fixture: usecase/gram-boundary-repeat-labeltype-conflict]
+[fixture: usecase/gram-json-duplicate-id]
+[fixture: usecase/spec-usecase-parser-31b56285]
+[fixture: usecase/gram-classes-on-reference-only]
+[fixture: usecase/gram-classes-on-quoted-reference-only]
+
+関係と対象の場合は次の fixture にあります。
+[fixture: usecase/spec-usecase-parser-81a7a3d7]
+[fixture: usecase/spec-usecase-parser-70ebd0e2]
+[fixture: usecase/spec-usecase-parser-5c692f7f]
+[fixture: usecase/spec-usecase-parser-800c93e6]
+[fixture: usecase/gram-note-unresolved]
+[fixture: usecase/spec-usecase-parser-67cf728b]
+[fixture: usecase/gram-metadata-empty] [fixture: usecase/gram-class-unknown]
+[fixture: usecase/gram-style-unknown]
+
+ネイティブプロパティと最終形状の場合は次の fixture にあります。
+[fixture: usecase/gram-native-quoted-business]
+[fixture: usecase/gram-metadata-unknown-key]
+[fixture: usecase/gram-native-unknown-empty-value]
+[fixture: usecase/gram-native-invalid-property-later-fix]
+[fixture: usecase/gram-metadata-duplicate-inline-conflict]
+[fixture: usecase/gram-metadata-duplicate-inline-business]
+[fixture: usecase/gram-native-inline-conflict-later-fix]
+[fixture: usecase/spec-usecase-parser-ca3ba61c]
+[fixture: usecase/spec-usecase-parser-3f58fb81]
+[fixture: usecase/spec-usecase-parser-49661584]
+
+閉じない markdown や JSON のフォールバックは文法の単位で、
+書かれた範囲全体を報告します。
+閉じないステレオタイプのフォールバックも、LF を含まない並び全体です。
+不可分な項目の切断は、
+以下の共通の境界エラーを使います。
+[fixture: usecase/lex-markdown-unclosed]
+[fixture: usecase/gram-json-empty-delimiter-only]
+[fixture: usecase/gram-stereotype-open]
+[fixture: usecase/div-directive-stereotype-closer]
+[fixture: usecase/div-semicolon-stereotype-closer-selected]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

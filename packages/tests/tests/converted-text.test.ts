@@ -4,7 +4,10 @@ import {
   convertedValuesOf,
   readConvertedCharacters,
   readWhitespaceAfterBraceAsLineFeed,
+  agentflowPreservesComments,
+  readAgentflowCharacters,
 } from "../src/db-from-tree/converted-text.ts"
+import { loadFixtures } from "../src/index.ts"
 import type { TreeRoot, TreeToken } from "../src/db-from-tree/tree.ts"
 
 /** A tree of `text` with only the given parts. */
@@ -155,6 +158,66 @@ describe("ConvertedText.of", () => {
         ],
       ),
     ).toBe("ab")
+  })
+})
+
+describe("Agentflow conversion", () => {
+  const sizes = [
+    ["comment-default-size-equal", true],
+    ["comment-default-size-fallback", false],
+    ["comment-default-size-equal-crlf", true],
+    ["comment-default-size-above-crlf", false],
+    ["comment-default-size-equal-inline-directive", true],
+    ["comment-default-size-above-inline-directive", false],
+    ["comment-default-size-equal-frontmatter", true],
+    ["comment-default-size-above-frontmatter", false],
+  ] as const
+  for (const [name, preserved] of sizes)
+    it(`measures ${name} before comment removal`, async () => {
+      const fixture = (await loadFixtures("agentflow")).find(
+        (candidate) => candidate.name === name,
+      )
+      if (fixture === undefined) throw new Error(name)
+      const base = rootOf(fixture.input)
+      const root: TreeRoot = {
+        ...base,
+        body: { type: "AgentflowDiagram", range: base.range },
+        frontmatter: name.endsWith("frontmatter")
+          ? { type: "Frontmatter", range: [0, 16] }
+          : null,
+      }
+      expect(agentflowPreservesComments(fixture.input, root)).toBe(preserved)
+      expect(readAgentflowCharacters(fixture.input, root)[0]?.start).toBe(
+        fixture.input.indexOf("agentflow-beta"),
+      )
+    })
+  it("folds only line whitespace through the immediately following LF", () => {
+    const text = "a} \u2028\t\n \n  b}  c"
+    const base = rootOf(text)
+    const root = {
+      ...base,
+      body: { type: "AgentflowDiagram", range: base.range },
+    }
+    expect(
+      new ConvertedText(readAgentflowCharacters(text, root)).of([
+        0,
+        text.length + 1,
+      ]),
+    ).toBe("a}\n \n  b}  c\n")
+  })
+  it("keeps leading whitespace and comment-looking string content below the default limit", () => {
+    const text = '  agentflow-beta\nA["a\n%% b\nc"]\n'
+    const base = rootOf(text)
+    const root = {
+      ...base,
+      body: { type: "AgentflowDiagram", range: base.range },
+    }
+    expect(
+      new ConvertedText(readAgentflowCharacters(text, root)).of([
+        0,
+        text.length + 1,
+      ]),
+    ).toBe(`${text}\n`)
   })
 })
 

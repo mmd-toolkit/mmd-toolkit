@@ -884,3 +884,41 @@ describe("specifiedRunOf: blank-line-after-header-or-comments", () => {
     )
   })
 })
+
+describe("blank-line references with multiline directives", () => {
+  for (const [name, input, reference, transformed, rootText, rawAccepted] of [
+    [
+      "joined node text after header padding",
+      "ishikawa \nR%%{wrap: {\n}}%%A\n",
+      "ishikawa\nR%%{wrap: {\n}}%%A\n",
+      "%%{wrap: {\n}}%%\nishikawa\nRA\n",
+      "RA",
+      false,
+    ],
+    [
+      "joined node text without header padding",
+      "ishikawa\nR%%{wrap: {\n}}%%A\n",
+      "ishikawa\nRA\n",
+      "%%{wrap: {\n}}%%\nishikawa\nRA\n",
+      "RA",
+      true,
+    ],
+    [
+      "continued header comment before LS",
+      "ishikawa%% x%%{wrap: {\n}}%%y\u2028 R\n",
+      "ishikawa\u2028 R\n",
+      "%%{wrap: {\n}}%%\nishikawa%% xy\n\u2028 R\n",
+      "R",
+      false,
+    ],
+  ] as const)
+    it(`keeps directive line terminators out of ${name}`, async () => {
+      expect(withoutBlankLinesAfterHeader(input)).toBe(transformed)
+      const raw = await runMermaidWithEmbeddedData(input)
+      expect(raw.outcome.accepted).toBe(rawAccepted)
+      const control = await runMermaidWithEmbeddedData(reference)
+      const specified = await specifiedRunOf(input, BLANK_LINES_MARK, undefined)
+      expect(specified?.outcome).toEqual(control.outcome)
+      expect(dbOf(specified).root).toEqual({ text: rootText, children: [] })
+    })
+})

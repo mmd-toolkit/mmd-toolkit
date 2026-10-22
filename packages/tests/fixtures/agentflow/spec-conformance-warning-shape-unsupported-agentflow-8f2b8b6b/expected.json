@@ -1,0 +1,103 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/conformance/fixtures/warning-shape-unsupported-agentflow.mmd"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "input",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "q",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "x",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "X",
+        "type": "triangle",
+        "props": {},
+        "metadata": {
+          "shape": "triangle"
+        }
+      },
+      {
+        "id": "y",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Y",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "input",
+        "end": "x",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_input_x_0"
+      },
+      {
+        "start": "x",
+        "end": "y",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_x_y_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "input",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "x",
+        "set": {
+          "type": "triangle",
+          "metadata": {
+            "shape": "triangle"
+          }
+        }
+      }
+    ]
+  }
+}

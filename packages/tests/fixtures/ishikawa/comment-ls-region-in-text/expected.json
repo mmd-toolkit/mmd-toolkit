@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Inline LS then common comment removes its suffix."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R  A",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R  A",
+      "children": []
+    }
+  }
+}

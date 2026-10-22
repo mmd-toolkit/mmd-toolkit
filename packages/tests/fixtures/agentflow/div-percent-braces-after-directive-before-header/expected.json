@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Malformed bare percent brace before header with preceding directive."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n%%{ }%%agentflow-be\n^\nExpecting 'COMMENT', 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

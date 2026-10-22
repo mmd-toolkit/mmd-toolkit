@@ -10,16 +10,25 @@
  * only if it keeps the embedded data as written, so that is checked as well:
  * `writtenEmbeddedTexts` is the same before and after.
  */
-import type { DbSummary, DbTreeRoot, EmbeddedValues } from "@mmd-toolkit/tests"
+import type {
+  CheckedRoot,
+  TreeProblem,
+  DbSummary,
+  DbTreeRoot,
+  EmbeddedValues,
+} from "@mmd-toolkit/tests"
 import {
+  checkTree,
   DATA_BLOCK_NODE_TYPES,
   cssSupportsColor,
   dbFromTree,
   getDefaultConfig,
 } from "@mmd-toolkit/tests"
 import * as prettier from "prettier"
+import type { Options } from "prettier"
 import type { Root } from "@mmd-toolkit/parser"
 import { parse, visitorKeys } from "@mmd-toolkit/parser"
+import { significantIndentationWidth } from "../src/printers/lines.ts"
 
 /** Whether a node is a data block, whose written text is embedded data. */
 function isDataBlock(node: { type: string }): boolean {
@@ -110,14 +119,16 @@ function withLineFeeds(text: string): string {
 
 /**
  * How the frontmatter changed from `before` to `after`, or null when it is
- * as written or as Prettier's YAML formatter prints its body, which is what
- * the printer does where that is safe (docs/flowchart.md, Frontmatter YAML).
+ * as written or as Prettier's YAML formatter prints its body with the chosen
+ * options and at least one indentation character per level, which is what
+ * the printer does where that is safe (docs/compatibility.md, Frontmatter).
  * Prettier keeps the value of the YAML, so the values mermaid.js derives
  * from it stay.
  */
 export async function describeFrontmatterChange(
   before: string,
   after: string,
+  options: Options = {},
 ): Promise<string | null> {
   const [beforeRoot, afterRoot] = [parse(before), parse(after)]
   const written = beforeRoot.frontmatter
@@ -131,9 +142,19 @@ export async function describeFrontmatterChange(
   ) {
     return null
   }
-  const formatted = await prettier.format(written.value, { parser: "yaml" })
+  const formatted = await prettier.format(written.value, {
+    ...options,
+    parser: "yaml",
+    tabWidth: significantIndentationWidth(options.tabWidth ?? 2),
+    endOfLine: "lf",
+  })
   const body = formatted.endsWith("\n") ? formatted.slice(0, -1) : formatted
   return body === withLineFeeds(printed.value)
     ? null
     : "the frontmatter is neither as written nor formatted as YAML"
+}
+
+/** Checks the public parser tree as the corpus's JSON-shaped tree interface. */
+export function treeProblemsOfText(text: string): TreeProblem[] {
+  return checkTree(text, JSON.parse(JSON.stringify(parse(text))) as CheckedRoot)
 }

@@ -1,0 +1,18 @@
+---
+title: Workflow
+---
+agentflow-beta LR
+accTitle: Accessible
+accDescr: Description
+classDef hot fill:red,color:blue
+connector C[API]
+C@{ endpoint: x }
+flow F[Group]
+A[Task]:::hot-->B{Check}
+end
+style A stroke:green
+class F hot
+linkStyle default interpolate linear stroke:gray
+linkStyle 0 stroke:red
+click A href " https://example.com " "tip" _blank
+click B call run("x", 2) "callback"

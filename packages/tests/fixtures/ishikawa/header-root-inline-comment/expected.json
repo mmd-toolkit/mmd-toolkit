@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L1] Does inline comment text remain within a root on the header line?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R %% literal",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R %% literal",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Every bracket-shape production preserves its raw type and receives the corresponding drawing diagnostic."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Square",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Double",
+        "type": "doublecircle",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Circle",
+        "type": "circle",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Ellipse",
+        "type": "ellipse",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Stadium",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Tool",
+        "type": "subroutine",
+        "props": {}
+      },
+      {
+        "id": "G",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Cylinder",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "H",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Round",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "I",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Decision",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "J",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Action",
+        "type": "hexagon",
+        "props": {}
+      },
+      {
+        "id": "K",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Odd",
+        "type": "odd",
+        "props": {}
+      },
+      {
+        "id": "L",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Trap",
+        "type": "trapezoid",
+        "props": {}
+      },
+      {
+        "id": "M",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Inverse",
+        "type": "inv_trapezoid",
+        "props": {}
+      },
+      {
+        "id": "N",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Input",
+        "type": "lean_right",
+        "props": {}
+      },
+      {
+        "id": "O",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Left",
+        "type": "lean_left",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

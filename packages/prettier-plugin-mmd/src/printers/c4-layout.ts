@@ -10,7 +10,6 @@ import type {
   Token,
 } from "@mmd-toolkit/parser"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { c4DiagramLineEnd, c4KeptPrefixEnd } from "./c4-kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -19,7 +18,11 @@ import {
   layoutDescriptionBlock,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import {
+  keptSemicolonPrefixEnd,
+  lineStartOf,
+  semicolonSegmentEnd,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokenEndingBefore,
@@ -229,7 +232,7 @@ export function layoutC4Call(
   // opaque even when the semicolon is inside a value (common.md, Style and
   // classDef lines; docs/c4.md, Line rule and semicolons). A value stays whole.
   for (let line = lineStartOf(source, start); line < end;) {
-    const lineEnd = c4DiagramLineEnd(source, line)
+    const lineEnd = semicolonSegmentEnd(source, line)
     const last = source.text.lastIndexOf(";", Math.min(end, lineEnd) - 1)
     if (last >= Math.max(start, line)) {
       let from = Math.max(start, line)
@@ -352,7 +355,8 @@ export function layoutC4Call(
  */
 export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
   const [start, end] = statement.range
-  if (c4KeptPrefixEnd(source, start) > start) return keptAsWritten(start, end)
+  if (keptSemicolonPrefixEnd(source, start) > start)
+    return keptAsWritten(start, end)
   if (statement.type === "C4AccDescrBlockStatement") {
     if (
       findTriviaBetween(source, start, end).length > 0 ||

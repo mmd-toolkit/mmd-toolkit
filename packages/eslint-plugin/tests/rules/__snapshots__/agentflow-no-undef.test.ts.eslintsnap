@@ -1,0 +1,267 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-undef >> invalid >>> docs/rules/agentflow-no-undef.md incorrect 1
+Filename: agentflow-no-undef-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   style C fill:red
+    |         ^ [1]
+  4 |
+
+[1] The id `C` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> docs/rules/agentflow-no-undef.md incorrect 2
+Filename: agentflow-no-undef-incorrect-2.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow review["Review Agent"]
+  3 |     A
+  4 |   end
+  5 |   class reveiw highlighted
+    |         ^~~~~~ [1]
+  6 |
+
+[1] The id `reveiw` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/reserved-explicit-undef-class
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/reserved-explicit-undef-class-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connectors[First]
+  3 | class connectors hot
+    |       ^~~~~~~~~~ [1]
+  4 |
+
+[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/reserved-repeated-style
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/reserved-repeated-style-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | style connectors fill:red
+    |       ^~~~~~~~~~ [1]
+  3 | style connectors stroke:blue
+    |       ^~~~~~~~~~ [2]
+  4 |
+
+[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
+[2] The id `connectors` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/reserved-shape-then-click
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/reserved-shape-then-click-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connectors[First]
+  3 | click connectors href "u"
+    |       ^~~~~~~~~~ [1]
+  4 |
+
+[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/reserved-style-claim
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/reserved-style-claim-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | style connectors fill:red
+    |       ^~~~~~~~~~ [1]
+  3 |
+
+[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/reserved-style-then-class
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/reserved-style-then-class-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | style connectors fill:red
+    |       ^~~~~~~~~~ [1]
+  3 | class connectors hot
+    |       ^~~~~~~~~~ [2]
+  4 |
+
+[1] The id `connectors` is not declared by any vertex, flow, connector, or link.
+[2] The id `connectors` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-class
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-class-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | classDef hot fill:red
+  3 | A --> B
+  4 | class Typo hot
+    |       ^~~~ [1]
+  5 |
+
+[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-class-list
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-class-list-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | class A,Typo hot
+    |         ^~~~ [1]
+  4 |
+
+[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-click-callback
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-click-callback-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | click Typo callback
+    |       ^~~~ [1]
+  4 |
+
+[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-click
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-click-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A --> B
+  3 | click Typo href "https://example.com"
+    |       ^~~~ [1]
+  4 |
+
+[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-entity-written-limit
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-entity-written-limit-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector "#35;"
+  3 | click # href "u"
+    |       ^ [1]
+  4 |
+
+[1] The id `#` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-generated-edge-missing
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-generated-edge-missing-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A --> B
+  3 | A --> B
+  4 | classDef hot fill:red
+  5 | class L_A_B_1 hot
+    |       ^~~~~~~ [1]
+  6 |
+
+[1] The id `L_A_B_1` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-generated-flow-missing
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-generated-flow-missing-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow
+  3 |   A
+  4 | end
+  5 | classDef hot fill:red
+  6 | class subGraph1 hot
+    |       ^~~~~~~~~ [1]
+  7 |
+
+[1] The id `subGraph1` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-html-written-limit-corrected
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-html-written-limit-corrected-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector "<b='a'>t</b>"
+  3 | click <b="a">t</b> href "u"
+    |       ^~~~~~~~~~~~ [1]
+  4 |
+
+[1] The id `<b="a">t</b>` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-style
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-style-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A --> B
+  3 | style Typo fill:red
+    |       ^~~~ [1]
+  4 |
+
+[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-style-twice
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-style-twice-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | style Typo fill:red
+    |       ^~~~ [1]
+  3 | style Typo stroke:blue
+  4 | class Typo hot
+  5 |
+
+[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+---
+
+
+Test: agentflow-no-undef >> invalid >>> invalid/agentflow/undef-unsafe-name-inventory
+Filename: tests/fixtures/rules/agentflow-no-undef/invalid/agentflow/undef-unsafe-name-inventory-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow click A
+  3 | B
+  4 | end
+  5 | style Typo fill:red
+    |       ^~~~ [1]
+  6 |
+
+[1] The id `Typo` is not declared by any vertex, flow, connector, or link.
+---

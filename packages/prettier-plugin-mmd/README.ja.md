@@ -84,6 +84,9 @@ flowchart LR
   `flowchart`、`graph`、`flowchart-elk`、`swimlane-beta` で始まる図です。
   整形の規則は、
   例とともに [docs/flowchart.ja.md](./docs/flowchart.ja.md) にあります。
+- agentflow。
+  `agentflow-beta`で始まる図です。
+  整形規則と例は[docs/agentflow.ja.md](./docs/agentflow.ja.md)にあります。
 - sequence 図。
   `sequenceDiagram` で始まる図です。
   整形の規則は、
@@ -142,6 +145,13 @@ flowchart LR
 - Venn 図。
   `venn-beta` で始まる図です。
   整形の規則は、例とともに [docs/venn.ja.md](./docs/venn.ja.md) にあります。
+- Ishikawa 図。
+  `ishikawa` と `ishikawa-beta` で始まる図で、
+  受理する大文字小文字の表記も扱います。
+  整形の規則は [docs/ishikawa.ja.md](./docs/ishikawa.ja.md) にあります。
+- Usecase 図。
+  `usecase-beta` で始まる図です。
+  整形の規則は [docs/usecase.ja.md](./docs/usecase.ja.md) にあります。
 - ブロック図。
   `block-beta` か `block` で始まる図です。
   整形の規則は、
@@ -173,9 +183,9 @@ flowchart LR
   flowchart では、`click` は予約語です。
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
-- flowchart、sequence、class、state、ER、Gantt、journey、
+- flowchart、agentflow、sequence、class、state、ER、Gantt、journey、
   requirement、mindmap、timeline、sankey、XY チャート、象限チャート、
-  kanban、C4、Venn、
+  kanban、C4、Venn、Ishikawa、usecase、
   ブロック図以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
@@ -188,11 +198,12 @@ flowchart LR
   `style`、`classDef`、`linkStyle` の行の末尾の空白を取り除きます。
   mermaid.js は、その空白を最後のスタイルの末尾に残します。
 - 整形した図をもう一度整形しても、何も変わりません。
-- ディレクティブ、`@{ ... }` のデータブロック、
+- ディレクティブ、不透明な `@{ ... }` のデータブロック、
   フロントマターの中身は検査しません。
   その中身のために mermaid.js が拒否する図も整形します。
   ディレクティブとデータブロックは書かれたまま残し、
   フロントマターは Prettier が YAML として読めるときだけ整形します。
+  usecase の native metadata は構文として解析し、プロパティを検証します。
 - mermaid.js が許すより多くの辺を持つ flowchart は、mermaid.js は拒否しますが、
   ここでは整形します。
   許す数は、サイト設定の `maxEdges` で、既定で 500 本です。
@@ -210,6 +221,7 @@ flowchart LR
 ## 文書
 
 - [docs/flowchart.ja.md](./docs/flowchart.ja.md): flowchart の整形の規則。
+- [docs/agentflow.ja.md](./docs/agentflow.ja.md): agentflow の整形の規則。
 - [docs/sequence.ja.md](./docs/sequence.ja.md): sequence 図の整形の規則。
 - [docs/class.ja.md](./docs/class.ja.md): class 図の整形の規則。
 - [docs/state.ja.md](./docs/state.ja.md): state 図の整形の規則。
@@ -226,6 +238,8 @@ flowchart LR
 - [docs/kanban.ja.md](./docs/kanban.ja.md): kanban の整形の規則。
 - [docs/c4.ja.md](./docs/c4.ja.md): C4 図の整形の規則。
 - [docs/venn.ja.md](./docs/venn.ja.md): Venn 図の整形の規則。
+- [docs/ishikawa.ja.md](./docs/ishikawa.ja.md): Ishikawa 図の整形の規則。
+- [docs/usecase.ja.md](./docs/usecase.ja.md): usecase 図の整形の規則。
 - [docs/block.ja.md](./docs/block.ja.md): ブロック図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):
   mermaid.js と違う箇所と、その理由。

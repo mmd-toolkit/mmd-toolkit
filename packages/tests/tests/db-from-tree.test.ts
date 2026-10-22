@@ -19,6 +19,8 @@ const BUILDS_EVERY_DB = 60_000
 const DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "usecase",
+  "agentflow",
   "sequence",
   "class",
   "state",
@@ -35,6 +37,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "kanban",
   "c4",
   "venn",
+  "ishikawa",
 ]
 
 /** The file in which a parser records the tree of a fixture it accepts. */

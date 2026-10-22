@@ -20,12 +20,12 @@ C4Container
 [fixture: common/detect-minimal-c4]
 
 mermaid.js の C4 の検出器は、`C4Context` をテキストの先頭に、
-他の 4 つのキーワードをテキストのどこにでも探します。
+他の 4 つのキーワードを、検出に残るテキストのどこにでも探します。
 この仕様は図種を図のテキストの最初の単位で決めるので
 （[図種の検出](../common.ja.md#図種の検出) を参照）、
 5 つとも先頭にだけ探します。
-差異は、ヘッダーが別の図のもので、その後に 4 つのキーワードのどれかを持つ
-テキストです。
+差異は、ヘッダーが別の図のもので、
+その後の検出に残るテキストに 4 つのキーワードのどれかを持つものです。
 mermaid.js は mindmap の検出器を C4 のものより先に試すので、
 マインドマップにはそうしたテキストはありません。
 `C4Container` は、どちらでもノードのテキストです。
@@ -43,12 +43,12 @@ mermaid.js は C4 を選び入力を拒否します。
 [fixture: kanban/lex-c4-c4deployment-id]
 [fixture: kanban/lex-c4-c4deployment-label]
 [fixture: kanban/lex-c4-c4deployment-metadata]
-[fixture: kanban/lex-c4-c4dynamic-id]
-[fixture: kanban/lex-c4-c4dynamic-label]
+[fixture: kanban/lex-c4-c4dynamic-id] [fixture: kanban/lex-c4-c4dynamic-label]
 [fixture: kanban/lex-c4-c4dynamic-metadata]
 
 kanban のノード名 `C4Context` は両者で検出を変えません。
 [fixture: kanban/lex-c4-c4context-id]
+
 除かれるコメントとフロントマターの中の `C4Container` は、
 両者で検出を変えません。
 [fixture: kanban/lex-c4-c4container-comment]
@@ -68,13 +68,13 @@ venn では、
 [fixture: venn/lex-c4-c4component-style]
 [fixture: venn/lex-c4-c4component-title]
 [fixture: venn/lex-c4-c4dynamic-identifier]
-[fixture: venn/lex-c4-c4dynamic-label]
-[fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-label] [fixture: venn/lex-c4-c4dynamic-style]
 [fixture: venn/lex-c4-c4dynamic-title]
 [fixture: venn/lex-c4-c4deployment-identifier]
 [fixture: venn/lex-c4-c4deployment-label]
 [fixture: venn/lex-c4-c4deployment-style]
 [fixture: venn/lex-c4-c4deployment-title]
+
 mermaid.js は C4 を選び、入力を拒否します。
 [fixture: venn/lex-c4-c4container-identifier]
 [fixture: venn/lex-c4-c4container-label]
@@ -85,25 +85,52 @@ mermaid.js は C4 を選び、入力を拒否します。
 [fixture: venn/lex-c4-c4component-style]
 [fixture: venn/lex-c4-c4component-title]
 [fixture: venn/lex-c4-c4dynamic-identifier]
-[fixture: venn/lex-c4-c4dynamic-label]
-[fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-label] [fixture: venn/lex-c4-c4dynamic-style]
 [fixture: venn/lex-c4-c4dynamic-title]
 [fixture: venn/lex-c4-c4deployment-identifier]
 [fixture: venn/lex-c4-c4deployment-label]
 [fixture: venn/lex-c4-c4deployment-style]
 [fixture: venn/lex-c4-c4deployment-title]
-[fixture: venn/div-c4-bare-identifier]
-[fixture: venn/div-c4-bare-style-value]
+[fixture: venn/div-c4-bare-identifier] [fixture: venn/div-c4-bare-style-value]
 
 venn の見出しより後の `C4Context` と、
 除かれるコメントか frontmatter 内の C4 語は、
 どちらの読みでも検出を変えません。
 [fixture: venn/lex-c4-c4context-identifier]
-[fixture: venn/lex-c4-c4context-label]
-[fixture: venn/lex-c4-c4context-style]
+[fixture: venn/lex-c4-c4context-label] [fixture: venn/lex-c4-c4context-style]
 [fixture: venn/lex-c4-c4context-title]
 [fixture: venn/lex-c4-c4container-comment]
 [fixture: venn/lex-c4-c4container-frontmatter]
+
+Ishikawa の節点のテキスト内の `C4Container`、`C4Component`、`C4Dynamic`、
+`C4Deployment` は、この仕様では Ishikawa のテキストです。
+引用されたようなテキストや、より長い語の中でも同じです。
+その語が検出するテキストに残ると、mermaid.js は C4 を選んで拒否します。
+[fixture: ishikawa/detect-c4-container-text]
+[fixture: ishikawa/detect-c4-component-root]
+[fixture: ishikawa/detect-c4-dynamic-quoted]
+[fixture: ishikawa/detect-c4-deployment-suffix]
+
+`C4Context`、frontmatter 内の C4 の語、
+共通のコメントや directive として除かれる語は、どちらの検出も変えません。
+[fixture: ishikawa/detect-c4-context-text]
+[fixture: ishikawa/detect-c4-frontmatter]
+[fixture: ishikawa/detect-c4-comment]
+[fixture: ishikawa/detect-c4-in-directive]
+
+行内の `R %% C4Container` は、`%` の接尾部の後に物理行終端があれば、
+両者が受理します（「[行終端](../common.ja.md#行終端)」）。
+検出ではその接尾部を除きますが、Ishikawa は節点のテキスト全体を保ちます。
+[fixture: ishikawa/detect-inline-comment-c4-text]
+[fixture: ishikawa/detect-inline-comment-c4-cr]
+
+EOF では、接尾部の後が U+2028 や U+2029 だけの形も含め、
+検出で接尾部を除きません。
+mermaid.js は C4 を選んで拒否しますが、
+この仕様はこの識別子の下で Ishikawa のテキストとして受理します。
+[fixture: ishikawa/div-c4-inline-percent-eof]
+[fixture: ishikawa/div-c4-inline-percent-ls-eof]
+[fixture: ishikawa/div-c4-inline-percent-ps-eof]
 
 ## 差異
 
@@ -113,7 +140,7 @@ venn の見出しより後の `C4Context` と、
 
    ```mmd
    sequenceDiagram
-     A->>B: C4Container
+     A ->> B: C4Container
    ```
 
 2. ラベルとしてのキーワード:
@@ -141,7 +168,7 @@ venn の見出しより後の `C4Context` と、
 
    ```mmd
    flowchart LR
-     A-->C4Context
+     A --> C4Context
    ```
 
 6. コメント行の中のキーワード:
@@ -149,7 +176,7 @@ venn の見出しより後の `C4Context` と、
    ```mmd
    flowchart LR
      %% C4Container
-     A-->B
+     A --> B
    ```
 
 | 例  | mermaid.js                        | この仕様                                       |
@@ -161,12 +188,12 @@ venn の見出しより後の `C4Context` と、
 | 5   | 頂点 `C4Context` を持つ flowchart | 同じ                                           |
 | 6   | 頂点 A と B を持つ flowchart      | 同じ                                           |
 
-[fixture: common/detect-c4-anywhere] [fixture:
-flowchart/div-c4-keyword-in-label] [fixture:
-class/div-c4-keyword-as-class-name] [fixture:
-state/div-c4-keyword-as-state-id] [fixture:
-common/detect-c4context-only-at-start] [fixture:
-flowchart/detect-c4-keyword-on-comment-line]
+[fixture: common/detect-c4-anywhere]
+[fixture: flowchart/div-c4-keyword-in-label]
+[fixture: class/div-c4-keyword-as-class-name]
+[fixture: state/div-c4-keyword-as-state-id]
+[fixture: common/detect-c4context-only-at-start]
+[fixture: flowchart/detect-c4-keyword-on-comment-line]
 
 差異は一方向です。
 この仕様は、mermaid.js が拒否するテキストをヘッダーの図として受理します。
@@ -178,7 +205,7 @@ C4 のパーサーは別の図種のヘッダーを受理しないからです�
 ## 書き手にとっての意味
 
 別の図種の図が `C4Container`、`C4Component`、`C4Dynamic`、`C4Deployment` を
-ラベル、メッセージ、名前など、テキストのどこかに含むとき、
+ラベル、メッセージ、名前など、検出に残るテキストのどこかに含むとき、
 このツールキットはヘッダーの図として読み、mermaid.js は C4 図として読んで
 失敗します。
 両者が同じに読む図を書くには、別の図種の図でこの 4 語を使わないことです。
@@ -187,18 +214,27 @@ C4 のパーサーは別の図種のヘッダーを受理しないからです�
 ## mermaid.js がそう読む理由
 
 C4 の検出器
-（[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10)）
+（
+[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10)）
 は 5 つの選択肢を持つ 1 つの正規表現で、
 テキストの先頭に固定されているのは最初の `C4Context` だけです。
 他の 4 つはどこにでも一致します。
 検出器は、フロントマター、ディレクティブ、コメント行を除いた後の
 テキスト全体に対して動き
-（[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48)）、
+（
+[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48)）、
 C4 の検出器は、`flowchart-elk`、`mindmap`、`architecture`、`agentflow`
 を除く、独自の文法を持つすべての図種の検出器より前に登録されています
-（[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126)）。
+（
+[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126)）。
 そのため、ヘッダーの図種の検出器が試される前に、
 そのようなテキストを引き受けます。
+
+検出時に inline `%%` 接尾部を除くのは、LF がそれを終える場合だけです。
+EOF ではその接尾部が検出器に見えるまま残ります
+（[`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L40-L72)）。
+[fixture: usecase/lex-c4-inline-percent-with-lf]
+[fixture: usecase/div-c4-inline-percent-eof]
 
 ## この仕様の規則とその理由
 
@@ -211,6 +247,35 @@ mermaid.js は、どの字句解析器がソースを読むよりも前に、
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
 違って読まれる入力は、別のヘッダーの後に 4 つのキーワードのどれかを持つもので、
 この仕様はそれをヘッダーの図として読みます。
+
+### Usecase
+
+usecase は C4 より後に登録されます。
+対象の C4Container、C4Component、C4Dynamic、C4Deployment は、
+UsecaseLabel、UsecaseLiteral、UsecaseJsonDataBlock にそのまま保てます。
+その語が検出に残る場合、pin の検出器は C4 を選んで例を拒否します。
+その検出だけを除けば同じ入力を usecase として受理します。
+欠落テキストの節点は不要です。
+既存の pipeline 順序の逆方向の基準によりヘッダーの文法を選び、
+この理由で mermaid が受理する入力を拒否することはありません。
+C4Context と、frontmatter、directive、コメントと共に除く語は、
+差異ではなく対照例です。
+[fixture: usecase/div-detect-c4-label]
+[fixture: usecase/div-c4-component-label]
+[fixture: usecase/div-c4-dynamic-json]
+[fixture: usecase/div-c4-deployment-stereotype]
+[fixture: usecase/gram-detect-c4-context-label]
+[fixture: usecase/gram-detect-c4-frontmatter]
+[fixture: usecase/detect-c4-directive] [fixture: usecase/detect-c4-comment]
+
+usecase はラベル内の inline `%%` を保ちます。
+`A(C4Context %% C4Container)` の行が LF で終わると、
+検出はパーセント接尾部を除いて usecase を選び、
+ラベルには書かれた全文を保ちます。
+EOF では検出がその接尾部を残すので、C4 を選んで拒否します。
+この仕様は既存の逆方向の基準により、同じラベルを usecase として受理します。
+[fixture: usecase/lex-c4-inline-percent-with-lf]
+[fixture: usecase/div-c4-inline-percent-eof]
 
 ## mermaid.js の文書と issue
 
@@ -231,6 +296,7 @@ mermaid.js は、どの字句解析器がソースを読むよりも前に、
   キーワードをどこに探すかには触れていません。
 
 - ピン留めした
+
   [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
   は図を `venn-beta` で始めます。
   2026-10-21 に `mermaid-js/mermaid` の issue と PR を
@@ -244,3 +310,27 @@ mermaid.js は、どの字句解析器がソースを読むよりも前に、
   [fixture: venn/lex-c4-c4component-label]
   [fixture: venn/lex-c4-c4dynamic-style]
   [fixture: venn/lex-c4-c4deployment-title]
+
+- ピン留めした
+
+  [Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  は例を `ishikawa-beta` で始めます。
+  [issue #4784](https://github.com/mermaid-js/mermaid/issues/4784)
+  は mindmap と同様の構文を提案し、
+  節点のテキスト内で C4 を検出する規則は述べていません。
+  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+  `ishikawa` と `ishikawa C4 in:title,body` で検索し、
+  C4 語が Ishikawa の見出しを上書きする報告は見つかりませんでした。
+
+- pin の
+  [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  は beta ヘッダーを説明します。
+  2026-10-22 に mermaid-js/mermaid の issue と PR を
+  `usecase` で検索し、
+  この受理挙動を保守者が欠陥と判断したと示す報告は、
+  調べた結果にはありませんでした。
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048) は
+  Type: Enhancement で、2026-08-14 にマージ済みで閉じています。
+  Chevrotain parser、モデル検証、JSON の表を導入します。
+  この差異は共有の直接の規則に従うもので、
+  bug ラベルを文法変更の承認とは読みません。

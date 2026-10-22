@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NaN is not a numeric style index."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n... TBA-->BlinkStyle NaN stroke:red\n---------------------^\nExpecting 'DEFAULT', 'NUM', got 'NODE_STRING'"
+  }
+}

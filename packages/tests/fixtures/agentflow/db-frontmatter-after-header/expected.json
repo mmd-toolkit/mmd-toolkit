@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read frontmatter after header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nagentflow-beta TB---title: Title--\n-----------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'SPACE', got 'START_LINK'"
+  }
+}

@@ -1,3 +1,5 @@
+import type { UsecaseDiagram, UsecaseNode } from "./ast/usecase.ts"
+import type { AgentflowDiagram, AgentflowNode } from "./ast/agentflow.ts"
 /**
  * The abstract syntax tree, as defined in `packages/spec/docs/ast.md`.
  *
@@ -23,6 +25,7 @@ import type { BlockDiagram, BlockTreeNode } from "./ast/block.ts"
 import type { KanbanDiagram, KanbanTreeNode } from "./ast/kanban.ts"
 import type { C4Diagram, C4Node } from "./ast/c4.ts"
 import type { VennDiagram, VennNode } from "./ast/venn.ts"
+import type { IshikawaDiagram, IshikawaTreeNode } from "./ast/ishikawa.ts"
 import type { RequirementDiagram, RequirementNode } from "./ast/requirement.ts"
 import type { SequenceDiagram, SequenceNode } from "./ast/sequence.ts"
 
@@ -223,7 +226,8 @@ export interface Identifier extends NodeBase {
 
 /**
  * ast.md, Shared leaf nodes > StringLiteral: a string that the author
- * writes in quotes. Its token is one `String` token, quotes included, and
+ * writes in quotes, including single quotes where the diagram accepts them.
+ * A string closes with the same quote and decodes no escapes. Its token is one `String` token, quotes included, and
  * its range is that of the token, so `raw` equals the token's `value`. No
  * child fields.
  *
@@ -284,6 +288,9 @@ export type DiagramBody =
   | KanbanDiagram
   | C4Diagram
   | VennDiagram
+  | IshikawaDiagram
+  | AgentflowDiagram
+  | UsecaseDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -378,3 +385,6 @@ export type Node =
   | KanbanTreeNode
   | C4Node
   | VennNode
+  | IshikawaTreeNode
+  | AgentflowNode
+  | UsecaseNode

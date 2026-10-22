@@ -127,11 +127,25 @@ function fixtureCases(name: string, kind: "valid" | "invalid"): RuleCase[] {
 }
 
 /**
+ * The cases that a test builds itself from the fixtures of the conformance
+ * corpus: the rule that cites them has no fixture directory.
+ */
+export interface CorpusCases {
+  readonly valid: readonly RuleCase[]
+  readonly invalid: readonly RuleCase[]
+}
+
+/**
  * The test cases of the rule `name` for the tester: the incorrect examples of
  * its document and the inputs of `invalid/` are invalid, the correct examples
- * and the inputs of `valid/` valid.
+ * and the inputs of `valid/` valid. A rule given `corpusCases` has no fixture
+ * directory, and those cases stand for its `valid/` and `invalid/`; any other
+ * rule without the directory fails.
  */
-export function ruleCases(name: string): {
+export function ruleCases(
+  name: string,
+  corpusCases?: CorpusCases,
+): {
   valid: RuleCase[]
   invalid: RuleCase[]
 } {
@@ -141,13 +155,13 @@ export function ruleCases(name: string): {
       ...examples.correct.map((code, index) =>
         exampleCase(name, "correct", code, index),
       ),
-      ...fixtureCases(name, "valid"),
+      ...(corpusCases?.valid ?? fixtureCases(name, "valid")),
     ],
     invalid: [
       ...examples.incorrect.map((code, index) =>
         exampleCase(name, "incorrect", code, index),
       ),
-      ...fixtureCases(name, "invalid"),
+      ...(corpusCases?.invalid ?? fixtureCases(name, "invalid")),
     ],
   }
 }

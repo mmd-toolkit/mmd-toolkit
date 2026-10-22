@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Tab and NBSP are each one indent character."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        },
+        {
+          "text": "B",
+          "children": [
+            {
+              "text": "C",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

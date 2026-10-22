@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Dedent between two observed deeper levels."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            },
+            {
+              "text": "C",
+              "children": [
+                {
+                  "text": "D",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -100,6 +100,17 @@ describe("checkTree: the ranges of the nodes", () => {
     let sentences = 0
     for (const text of readTreeDocuments()) {
       const flat = text.replaceAll(/\s+/gu, " ")
+      // ast/agentflow.md names Link relative to its Agentflow document instead
+      // of repeating the full type name used by the older order sentence.
+      if (
+        flat.includes(
+          "Link is the one exception to source order: its arrow is visited before its label for both spellings.",
+        )
+      ) {
+        expect(flat.startsWith("# Agentflow nodes ")).toBe(true)
+        excepted.add("AgentflowLink")
+        sentences++
+      }
       const found =
         /The child fields of every node below are in source order(?:, except ([^(]*))?/u.exec(
           flat,

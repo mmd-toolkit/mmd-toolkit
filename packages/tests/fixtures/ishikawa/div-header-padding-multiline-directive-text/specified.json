@@ -1,0 +1,18 @@
+{
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "RA",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "RA",
+      "children": []
+    }
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

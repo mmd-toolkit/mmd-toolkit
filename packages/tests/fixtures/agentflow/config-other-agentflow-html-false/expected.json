@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An agentflow.htmlLabels key does not select the common sanitizer branch."
+  },
+  "config": {
+    "securityLevel": "other",
+    "agentflow": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a&lt;b&gt;&equals;c<br/>next",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

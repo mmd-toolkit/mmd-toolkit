@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A percent-brace run without a directive name is not the ordinary COMMENT rule."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{ }%%agentflow-be\n^\nExpecting 'COMMENT', 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

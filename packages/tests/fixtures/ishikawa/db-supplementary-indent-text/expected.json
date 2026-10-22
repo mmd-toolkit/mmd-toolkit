@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Does a supplementary character belong to label text rather than indentation?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "😀",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "😀",
+      "children": [
+        {
+          "text": "😀A",
+          "children": [
+            {
+              "text": "😀B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

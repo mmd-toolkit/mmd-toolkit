@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F4: A directive follows the complete stable header before failed beta suffix text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "-betaX",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "-betaX",
+      "children": []
+    }
+  }
+}

@@ -24,8 +24,8 @@ export const c4NoInvalidAttributeKey: MermaidRuleDefinition<{
   },
   create(context) {
     return c4DeclarationVisitor({
-      update(node, applied) {
-        if (!applied) return
+      update(node, target) {
+        if (target === undefined) return
         const keys =
           node.keyword === "UpdateElementStyle"
             ? ["bgColor", "fontColor", "borderColor"]

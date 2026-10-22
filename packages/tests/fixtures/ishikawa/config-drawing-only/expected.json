@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[C: configuration and sanitizeText] Do drawing options avoid changing the Db summary?"
+  },
+  "config": {
+    "ishikawa": {
+      "diagramPadding": 99,
+      "useMaxWidth": true
+    },
+    "look": "handDrawn",
+    "handDrawnSeed": 7,
+    "fontSize": 30,
+    "theme": "dark"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

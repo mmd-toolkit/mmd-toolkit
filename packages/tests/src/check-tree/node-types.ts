@@ -5,6 +5,14 @@
  * made of other nodes and of keywords and punctuation.
  */
 export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "UsecaseLabel",
+  "UsecaseLiteral",
+  "UsecaseIdentifier",
+  "UsecaseJsonDataBlock",
+  "AgentflowLabel",
+  "AgentflowLiteral",
+  "AgentflowDataBlock",
+  "AgentflowIgnoredText",
   "Identifier",
   "StringLiteral",
   "NumericLiteral",
@@ -37,6 +45,7 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "KanbanDataBlock",
   "MindmapLabel",
   "MindmapLiteral",
+  "IshikawaLiteral",
   "TimelineLiteral",
   "SankeyIdentifier",
   "SankeyLiteral",
@@ -58,6 +67,53 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
  * one of the two, so that a new node type is classified when it is added.
  */
 export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "UsecaseDiagram",
+  "UsecaseActorStatement",
+  "UsecaseActor",
+  "UsecaseEntityStatement",
+  "UsecaseEntity",
+  "UsecaseSystemBoundaryStatement",
+  "UsecaseRelationshipStatement",
+  "UsecaseOpeningArrow",
+  "UsecaseArrow",
+  "UsecaseMetadata",
+  "UsecaseMetadataProperty",
+  "UsecaseMetadataAssignmentStatement",
+  "UsecaseNoteStatement",
+  "UsecaseJsonStatement",
+  "UsecaseDirectionStatement",
+  "UsecaseClassDefStatement",
+  "UsecaseClassStatement",
+  "UsecaseStyleStatement",
+  "UsecaseStyleDeclaration",
+  "UsecaseAccTitleStatement",
+  "UsecaseAccDescrStatement",
+  "UsecaseAccDescrBlockStatement",
+  "AgentflowDiagram",
+  "AgentflowEmptyStatement",
+  "AgentflowFlowStatement",
+  "AgentflowGlobalStatement",
+  "AgentflowConnectorStatement",
+  "AgentflowName",
+  "AgentflowVertexStatement",
+  "AgentflowVertexGroup",
+  "AgentflowVertex",
+  "AgentflowShape",
+  "AgentflowShapeProperty",
+  "AgentflowLink",
+  "AgentflowArrow",
+  "AgentflowOpeningArrow",
+  "AgentflowStyleStatement",
+  "AgentflowClassDefStatement",
+  "AgentflowClassStatement",
+  "AgentflowLinkStyleStatement",
+  "AgentflowDefaultLinkStyleStatement",
+  "AgentflowClickCallbackStatement",
+  "AgentflowClickUrlStatement",
+  "AgentflowDirectionStatement",
+  "AgentflowAccTitleStatement",
+  "AgentflowAccDescrStatement",
+  "AgentflowAccDescrBlockStatement",
   "Root",
   "ErrorDiagram",
   "FlowchartDiagram",
@@ -214,6 +270,8 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "KanbanIconStatement",
   "KanbanClassStatement",
   "MindmapDiagram",
+  "IshikawaDiagram",
+  "IshikawaNode",
   "MindmapNode",
   "MindmapShape",
   "MindmapIconStatement",
@@ -285,9 +343,11 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
 
 /** The node types of the data blocks, whose delimiters lie in their range. */
 export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
+  "AgentflowDataBlock",
   "KanbanDataBlock",
   "FlowchartDataBlock",
   "SequenceDataBlock",
+  "UsecaseJsonDataBlock",
 ])
 
 /**
@@ -301,9 +361,12 @@ export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
  * held to a document of the parser. ast/block.md, BlockLiteral: a direction of
  * a block arrow holds the `Keyword` token of its word; the kinds of the tokens
  * of each BlockLiteral are held to parser/docs/tokens/block.md by
- * `checkBlockTree()` itself.
+ * `checkBlockTree()` itself. ast/usecase.md, UsecaseIdentifier retains the
+ * HWS between its separate dash Punctuator and Identifier word; usecase.ts
+ * checks those exact atom kinds.
  */
 export const NODE_TYPES_WITH_TOKENS_OF_ANY_KIND: ReadonlySet<string> = new Set([
+  "UsecaseIdentifier",
   "VennLabel",
   "StateIgnoredText",
   "RequirementIgnoredText",

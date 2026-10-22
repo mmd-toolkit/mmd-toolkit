@@ -18,7 +18,7 @@ fixture としてコーパスに足します。
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
 `class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/`、`mindmap/`、
 `timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/`、`kanban/`、`c4/`、
-`venn/` の、
+`venn/`、`ishikawa/`、`agentflow/`、`usecase/` の、
 すべての fixture を parse し、
 次を確かめます。
 
@@ -61,6 +61,15 @@ venn の fixture は `tests/venn.test.ts` が検査します。
 `tests/fixtures.test.ts` は、共通の venn 検出 fixture も含めて、
 解析結果の記録を比べます。
 `tests/ast-venn-examples.test.ts` は型のコメントの例の範囲を検査します。
+
+Ishikawa の fixture は `tests/ishikawa.test.ts` が検査し、記録します。
+各入力を、仕様の受理判定と宣言された差異に照らして比べます。
+受理した木では、トークンとコメントによる文字被覆、
+正確なトークンのテキスト、子ノードの包含とソース順を検査します。
+`tests/fixtures.test.ts` も、共通の Ishikawa 検出 fixture を含む記録を比べます。
+`tests/ast-ishikawa-examples.test.ts` は型のコメントの例の範囲を検査します。
+tests パッケージの `checkTree` と `dbFromTree` が、
+記録された木とその Db の内容を検査します。
 
 ## 既知の差異
 
@@ -124,7 +133,7 @@ venn の fixture は `tests/venn.test.ts` が検査します。
   同じように求めます。
 - `blank-line-after-header-or-comments`: 入力が、ヘッダーの後か 2 つの文の間に、
   差異の 4 つの場合のどれかの空行と図のコメントを持つ、
-  mindmap または kanban 図であること。
+  mindmap、kanban 図、Ishikawa 図のいずれかであること。
   パーサーの単位と図のコメントの行から求めます。
   `newline` 単位は行を終え、n 個の改行の単位は n 行を終えます。
   文字のない単位は、U+2028 や U+2029 で終わる図のコメントの行を終えます。
@@ -391,3 +400,25 @@ fixture を改名・削除するときは、古いファイルも一緒に動か
   `visitorKeys`（子の欄の順も。[木の検査](#木の検査)を参照）と
   `traverseNodes`、flowchart の木とそのトークン、
   シーケンス図とクラス図と状態図の木とそのトークンと文法の外の拒否を扱います。
+
+agentflow の fixture は `tests/agentflow.test.ts` が検査し、記録します。
+受理結果は expected.json、または宣言された差異の specified.json
+の読みに従います。
+文字の被覆、トークン境界、raw の綴り、子の包含とソース順序を検査します。
+Name、コメント、見出し、矢印、メタデータ、click 接頭辞の構造も検査します。
+サイト設定の maxEdges による受理結果は、flowchart と同様に parse()
+と別に検査します。
+`tests/ast-agentflow-examples.test.ts` は全ノードのコメントの例を検査します。
+`tests/fixtures.test.ts` も同じ記録を比較します。
+
+usecase の fixture は `tests/usecase.test.ts` が検査し、記録します。
+specified.json を優先し、指定の読みがない差異の fixture は拒否しますが、
+embedded-data-opaque は受理します。
+受理判定、文字被覆、トークンと raw の元の綴り、ノード境界、
+子の包含とソース順を確かめます。
+受理した木はすべて、コーパスの木の検査器でも確かめます。
+構造の検査はネイティブ metadata、一重引用符、CSS の余白、
+矢印の半分、不透明な JSON を扱います。
+`tests/ast-usecase-examples.test.ts` は、26 ノードのコメント例を検査します。
+木の検査器と Db builder は tests パッケージが提供し、
+コーパスの比較は別に行います。

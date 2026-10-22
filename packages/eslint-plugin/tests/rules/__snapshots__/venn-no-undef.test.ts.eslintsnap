@@ -1,0 +1,254 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: venn-no-undef >> invalid >>> docs/rules/venn-no-undef.md incorrect 1
+Filename: venn-no-undef-incorrect-1.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | text Typo A1[Review]
+    |      ^~~~ [1]
+  4 |
+
+[1] mermaid.js shows no text node for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> docs/rules/venn-no-undef.md incorrect 2
+Filename: venn-no-undef-incorrect-2.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | style A, B fill:red
+    |       ^~~~ [1]
+  5 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/style-missing-region
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/style-missing-region-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | style A,B fill:red
+    |       ^~~ [1]
+  5 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/style-text-id-multiple
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/style-text-id-multiple-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | text A A1
+  4 | style A1,A fill:red
+    |       ^~~~ [1]
+  5 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/style-unknown-target
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/style-unknown-target-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style Typo fill:red
+    |       ^~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-case
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-case-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style a fill:red
+    |       ^ [1]
+  4 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-empty-unknown
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-empty-unknown-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style "" fill:red
+    |       ^~ [1]
+  4 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-html-attribute-quotes
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-html-attribute-quotes-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set "a<a href="x">b"
+  3 | style "a<a href='x'>b" fill:red
+    |       ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-inner-padding
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-inner-padding-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set " A "
+  3 | style A fill:red
+    |       ^ [1]
+  4 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-joined-name
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-joined-name-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set "A|B"
+  3 | set A
+  4 | set B
+  5 | style A,B fill:red
+    |       ^~~ [1]
+  6 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-repeated-unknown
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-repeated-unknown-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style Typo fill:red
+    |       ^~~~ [1]
+  4 | style Typo color:blue
+    |       ^~~~ [2]
+  5 |
+
+[1] mermaid.js applies no style for these names.
+[2] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-three-unknown
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-three-unknown-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | set C
+  5 | style A,B,C fill:red
+    |       ^~~~~ [1]
+  6 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-trivia
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-trivia-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | %% c
+  4 |
+  5 | %%{init: {}}%%
+  6 | style Typo fill:red
+    |       ^~~~ [1]
+  7 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/target-unknown-with-entity-name
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/target-unknown-with-entity-name-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set "A#amp;B"
+  3 | style Typo color:red
+    |       ^~~~ [1]
+  4 |
+
+[1] mermaid.js applies no style for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/text-id-not-region
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/text-id-not-region-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | text A note[Review]
+  4 | text note other[Other]
+    |      ^~~~ [1]
+  5 |
+
+[1] mermaid.js shows no text node for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/text-missing-region
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/text-missing-region-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | text A,B note[Review]
+    |      ^~~ [1]
+  5 |
+
+[1] mermaid.js shows no text node for these names.
+---
+
+
+Test: venn-no-undef >> invalid >>> invalid/venn/text-unknown
+Filename: tests/fixtures/rules/venn-no-undef/invalid/venn/text-unknown-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | text Typo note[Review]
+    |      ^~~~ [1]
+  4 |
+
+[1] mermaid.js shows no text node for these names.
+---

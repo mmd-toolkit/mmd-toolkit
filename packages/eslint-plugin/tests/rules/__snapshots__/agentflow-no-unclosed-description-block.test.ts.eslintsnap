@@ -1,0 +1,122 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-unclosed-description-block >> invalid >>> docs/rules/agentflow-no-unclosed-description-block.md incorrect 1
+Filename: agentflow-no-unclosed-description-block-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A --> B
+  3 |   accDescr { x
+    |   ^~~~~~~~~~ [1]
+  4 |   B --> C
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: agentflow-no-unclosed-description-block >> invalid >>> docs/rules/agentflow-no-unclosed-description-block.md incorrect 2
+Filename: agentflow-no-unclosed-description-block-incorrect-2.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   accDescr { first
+    |   ^~~~~~~~~~ [1]
+  3 |   B --> C
+  4 |   A{y}
+  5 |   D
+  6 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: agentflow-no-unclosed-description-block >> invalid >>> invalid/agentflow/closed-block-literal-brace
+Filename: tests/fixtures/rules/agentflow-no-unclosed-description-block/invalid/agentflow/closed-block-literal-brace-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr {
+    | ^~~~~~~~~~ [1]
+  3 | a {b }
+  4 | A
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: agentflow-no-unclosed-description-block >> invalid >>> invalid/agentflow/closed-block-other-brace
+Filename: tests/fixtures/rules/agentflow-no-unclosed-description-block/invalid/agentflow/closed-block-other-brace-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr { First
+    | ^~~~~~~~~~ [1]
+  3 | B --> C
+  4 | A{Decision}
+  5 | D
+  6 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: agentflow-no-unclosed-description-block >> invalid >>> invalid/agentflow/closed-by-data-block
+Filename: tests/fixtures/rules/agentflow-no-unclosed-description-block/invalid/agentflow/closed-by-data-block-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr { first
+    | ^~~~~~~~~~ [1]
+  3 | B --> C
+  4 | A@{ shape: task }
+  5 | D
+  6 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: agentflow-no-unclosed-description-block >> invalid >>> invalid/agentflow/unclosed-block-empty
+Filename: tests/fixtures/rules/agentflow-no-unclosed-description-block/invalid/agentflow/unclosed-block-empty-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | accDescr {
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: agentflow-no-unclosed-description-block >> invalid >>> invalid/agentflow/unclosed-block
+Filename: tests/fixtures/rules/agentflow-no-unclosed-description-block/invalid/agentflow/unclosed-block-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | accDescr { Description
+    | ^~~~~~~~~~ [1]
+  4 | B --> C
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: agentflow-no-unclosed-description-block >> invalid >>> invalid/agentflow/unclosed-block-prior
+Filename: tests/fixtures/rules/agentflow-no-unclosed-description-block/invalid/agentflow/unclosed-block-prior-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr { Second
+    | ^~~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---

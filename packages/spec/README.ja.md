@@ -46,6 +46,8 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 | state     | [`docs/diagrams/state.ja.md`](./docs/diagrams/state.ja.md)         | [`docs/ast/state.ja.md`](./docs/ast/state.ja.md)         |
 | er        | [`docs/diagrams/er.ja.md`](./docs/diagrams/er.ja.md)               | [`docs/ast/er.ja.md`](./docs/ast/er.ja.md)               |
 | venn      | [`docs/diagrams/venn.ja.md`](./docs/diagrams/venn.ja.md)           | [`docs/ast/venn.ja.md`](./docs/ast/venn.ja.md)           |
+| ishikawa  | [`docs/diagrams/ishikawa.ja.md`](./docs/diagrams/ishikawa.ja.md)   | [`docs/ast/ishikawa.ja.md`](./docs/ast/ishikawa.ja.md)   |
+| agentflow | [`docs/diagrams/agentflow.ja.md`](./docs/diagrams/agentflow.ja.md) | [`docs/ast/agentflow.ja.md`](./docs/ast/agentflow.ja.md) |
 
 mermaid.js のほかの図種は、まだ定めていません。
 

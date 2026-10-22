@@ -78,9 +78,10 @@ parser from its build in `lib/`: rebuild it with
   the examples of its English document and the inputs of its fixture directory.
   Incorrect examples and `invalid/` inputs must report; correct examples and
   `valid/` inputs must not. The snapshots record each report and the text that
-  each suggestion produces. Inputs with U+2028, U+2029, or a lone carriage
-  return use ESLint's `RuleTester`, with the input and each suggestion's
-  expected output written as template literals with escapes in the test source.
+  each suggestion produces. Inputs with a character that `pnpm run lint:chars`
+  checks for (U+2028, U+2029, a lone carriage return, U+00A0, and the like) use
+  ESLint's `RuleTester`, with the input and each suggestion's expected output
+  written as template literals with escapes in the test source.
 
 The tests of the language do not run on the whole corpus, which holds one input
 for each claim of the specification and is tested one by one by the parser and
@@ -115,12 +116,13 @@ case, also in a subdirectory, and a file or a directory whose name starts with
   subdirectory such as `flowchart/`, and name it after its case.
 - No fixture file holds a character that `pnpm run lint:chars` checks for (the
   list is in [`packages/spec/docs/index.md`](../../spec/docs/index.md)). Inputs
-  with U+2028 or U+2029 are written in the test source with `\u2028` or `\u2029`
-  and tested with ESLint's `RuleTester`. A lone carriage return is written as
-  `\r` and tested there too. Use template literals for `code` and each
-  suggestion's `output`, preserving the input's line terminators.
+  with such a character are written in the test source with an escape (`\u2028`,
+  `\u2029`, `\u00a0`, or `\r` for a lone carriage return) and tested with
+  ESLint's `RuleTester`. Use template literals for `code` and each suggestion's
+  `output`, preserving the input's line terminators.
 - The common directive rule keeps its named corpus inputs in the `INVALID` and
-  `VALID` tables; its inputs that need Unicode escapes use `RuleTester`.
+  `VALID` tables, which its test passes to `testRule` as its corpus cases, so it
+  has no fixture directory; its inputs that need escapes use `RuleTester`.
 
 The examples of the rule document are cases too, read from the document; they
 are not copied into the directory.
@@ -353,11 +355,12 @@ These choices hold for every rule, so that the rules read alike:
 - The snapshot test of a rule is one call of `testRule(name, rule)`. It checks
   the reports and suggestions on the examples of the English document and the
   inputs of the rule's fixture directory. A rule test does not run mermaid.js.
-  Use ESLint's `RuleTester` for inputs that need U+2028, U+2029, or a lone
-  carriage return: write the input as a template literal with escapes in `code`,
-  list the expected reports in `errors`, and write the full expected text of
-  each suggestion as a template literal in `output`. The fixture files and
-  snapshots of ordinary inputs remain the main cases of the rule.
+  Use ESLint's `RuleTester` for inputs with a character that
+  `pnpm run lint:chars` checks for (U+2028, U+2029, a lone carriage return,
+  U+00A0, and the like): write the input as a template literal with escapes in
+  `code`, list the expected reports in `errors`, and write the full expected
+  text of each suggestion as a template literal in `output`. The fixture files
+  and snapshots of ordinary inputs remain the main cases of the rule.
 
 ## Types for rules
 

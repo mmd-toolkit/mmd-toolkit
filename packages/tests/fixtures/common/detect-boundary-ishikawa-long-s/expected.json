@@ -5,5 +5,18 @@
   },
   "accepted": true,
   "diagramType": "ishikawa",
-  "db": null
+  "db": {
+    "title": "ſ",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "ſ",
+      "children": [
+        {
+          "text": "P",
+          "children": []
+        }
+      ]
+    }
+  }
 }

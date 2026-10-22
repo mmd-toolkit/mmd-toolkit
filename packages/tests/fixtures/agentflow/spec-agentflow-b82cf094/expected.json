@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow.spec.ts",
+    "line": 57,
+    "test": "parsing an agentflow diagram > smoke > captures node labels"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "research",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Research",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "write",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "write",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "research",
+        "end": "write",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_research_write_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

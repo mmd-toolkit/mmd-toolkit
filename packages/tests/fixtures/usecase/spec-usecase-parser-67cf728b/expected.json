@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 71,
+    "test": "usecase parser publication and normalized AST > rejects notes targeting JSON, boundary, and explicit edge IDs with both locations"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Note target 'Auth' must be an actor or use case, not boundary at line 5, column 10 [52,56); previous declaration at line 2, column 16 [28,32)"
+  }
+}

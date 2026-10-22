@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/ishikawa/ishikawa.spec.ts",
+    "line": 22,
+    "test": "when parsing an Ishikawa diagram > should parse a basic Ishikawa hierarchy"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Blurry Photo",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Blurry Photo",
+      "children": [
+        {
+          "text": "Process",
+          "children": [
+            {
+              "text": "Out of focus",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "User",
+          "children": [
+            {
+              "text": "Shaky hands",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

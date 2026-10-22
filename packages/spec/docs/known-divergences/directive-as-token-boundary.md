@@ -113,6 +113,23 @@ venn/lex-title-directive-middle] [fixture: venn/lex-directive-style-value-color]
 [fixture: venn/lex-style-value-rgb-directive-in-comma] [fixture:
 venn/lex-directive-label-delimiter-gap]
 
+In Ishikawa, a directive splitting the selected `ishikawa` or `ishikawa-beta`
+keyword, including before `-beta` in a complete beta header, is rejected here.
+mermaid.js joins the parts and accepts these inputs. [fixture:
+ishikawa/directive-in-header] [fixture: ishikawa/directive-in-beta-header]
+[fixture: ishikawa/div-directive-beta-prefix]
+
+If the beta word boundary fails, the suffix is node text after the stable header
+and may contain a directive, also immediately before `-betaX`. Numeric-looking
+node text may contain directives too. These inputs are accepted by both and have
+no divergence mark. [fixture: ishikawa/lex-directive-before-beta-fallback-text]
+[fixture: ishikawa/lex-directive-in-beta-fallback-text] [fixture:
+ishikawa/lex-directive-in-numeric-looking-text]
+
+Node text is prose, including quotes, and may contain directives; its value
+leaves them out. [fixture: ishikawa/directive-root-middle] [fixture:
+ishikawa/directive-in-quoted-root] [fixture: ishikawa/directive-child-middle]
+
 ## The difference
 
 Each example is a whole diagram.
@@ -158,7 +175,7 @@ Each example is a whole diagram.
 
    ```mmd
    flowchart LR
-     A["a %%{init: {}}%% b"]-->B
+     A["a %%{init: {}}%% b"] --> B
    ```
 
 7. A directive inside the text of a label:
@@ -243,6 +260,75 @@ that a specification would state as a rule of the syntax; this is the second of
 the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
 
+### Agentflow
+
+In agentflow, the whole-unit rule also covers its beta header,
+flow/connector/global/end keywords, three arrow kinds, opening arrow, edge id,
+shape/property delimiters, click ids, interpolation name, and linkStyle indices.
+Their spelling spans both sides of the removed directive. An Identifier or arrow
+sibling cannot hold that internal text without changing its value or delimiter;
+apply reason 2 rather than reconstructing the atom. [fixture:
+agentflow/div-directive-in-header] [fixture:
+agentflow/div-directive-in-flow-keyword] [fixture:
+agentflow/div-directive-in-connector-keyword] [fixture:
+agentflow/div-directive-in-global-keyword] [fixture:
+agentflow/div-directive-in-end-keyword] [fixture:
+agentflow/div-directive-in-arrow-reference] [fixture:
+agentflow/div-directive-in-opening-arrow] [fixture:
+agentflow/div-directive-in-edge-id] [fixture:
+agentflow/div-directive-in-props-field] [fixture:
+agentflow/div-directive-in-linkstyle-number]
+
+Flow/connector Name fragments, labels, styles, accessibility text, callback
+text, strings, and opaque data interiors already retain directives as common
+trivia. In particular, a metadata key is data text. Complete-unit pipe
+boundaries stay accepted. These cases need no mark; a joined input already
+rejected by Mermaid needs none either. [fixture:
+agentflow/lex-directive-in-flow-name-text] [fixture:
+agentflow/lex-directive-in-classdef-value] [fixture:
+agentflow/lex-directive-in-metadata-key] [fixture:
+agentflow/lex-directive-in-pipe-boundary] [fixture:
+agentflow/lex-directive-joins-invalid-linkstyle-index]
+
+### Usecase
+
+In usecase, the affected text is a directive strictly inside a header or
+statement keyword, direction word, id, edge id, class name, native bare metadata
+key/value, word within a CSS property name, arrow, or compound `@{`, `:::`,
+`<<`, or `>>`. Root.directives retains the directive, but the atomic spelling
+cannot contain it as a child or sibling and remain a whole unit. Mermaid accepts
+the joined spellings; the whole-unit rule rejects them for reason 2, rather than
+copying its preprocessing. This rule introduces no reverse-direction acceptance.
+[fixture: usecase/div-directive-in-header] [fixture:
+usecase/div-directive-in-id] [fixture: usecase/div-directive-splits-operator]
+[fixture: usecase/div-lex-directive-in-metadata-key] [fixture:
+usecase/div-directive-in-native-boolean] [fixture:
+usecase/div-directive-stereotype-closer] [fixture:
+usecase/div-directive-raw-json-id] [fixture:
+usecase/div-directive-explicit-edge-id] [fixture:
+usecase/lex-stereotype-closer-control] [fixture:
+usecase/gram-json-prefix-id-control] [fixture:
+usecase/gram-explicit-edge-id-control]
+
+CSS property names are name units that may include the internal HWS of
+`-- color`. A directive in that HWS is accepted as trivia: the name node can
+hold the text around it just as a string or raw-text node can. Mermaid reads
+`--` and the following word as separate units with or without the directive, so
+nothing is joined and reason 2 does not apply. [fixture:
+usecase/lex-directive-css-name-gap] [fixture:
+usecase/lex-class-property-custom-gap] A directive inside the word, as in
+`co%%{init: {}}%%lor`, remains this divergence. [fixture:
+usecase/div-directive-css-property]
+
+CSS values, quoted native metadata keys/values, labels, stereotypes, and JSON
+contents retain their written text and allow trivia fragments. [fixture:
+usecase/lex-directive-css-number] [fixture:
+usecase/lex-directive-native-quoted-key] The json-prefix matcher packages json,
+id and @ together, but they are separate authored components: a directive
+between the complete id and @ or between @ and { is allowed; native `@{` is
+atomic. [fixture: usecase/lex-directive-whole-json-prefix-boundary] [fixture:
+usecase/lex-directive-in-json-declaration-at]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -284,3 +370,23 @@ the reasons for a known divergence (see
   issues and pull requests in `mermaid-js/mermaid` on 2026-10-21 with
   `venn directive in:title,body` found no report about a directive inside a venn
   keyword, name, or number.
+
+- The pinned
+  [Ishikawa documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+  shows a complete `ishikawa-beta` header and indented node text, but no
+  directive inside the header.
+  [Issue #4784](https://github.com/mermaid-js/mermaid/issues/4784) proposes
+  syntax like mindmap's. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-21 with `ishikawa` and
+  `ishikawa directive in:title,body` found no report about a directive splitting
+  an Ishikawa header.
+
+- The pinned
+  [usecase documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
+  describes native metadata and CSS. Searches of issues and pull requests in
+  `mermaid-js/mermaid` on 2026-10-22 with `usecase directive` found no inspected
+  report establishing a maintainer defect judgment for this acceptance behavior.
+  [PR #8048](https://github.com/mermaid-js/mermaid/pull/8048), closed and merged
+  on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
+  validation and JSON tables. This divergence follows the shared direct rule,
+  not a claim that a bug label approves a grammar change.

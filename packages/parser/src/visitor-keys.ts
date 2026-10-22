@@ -1,3 +1,5 @@
+import { usecaseVisitorKeys } from "./visitor-keys/usecase.ts"
+import { agentflowVisitorKeys } from "./visitor-keys/agentflow.ts"
 import type { Node } from "./ast.ts"
 import { classVisitorKeys } from "./visitor-keys/class.ts"
 import { erVisitorKeys } from "./visitor-keys/er.ts"
@@ -13,6 +15,7 @@ import { blockVisitorKeys } from "./visitor-keys/block.ts"
 import { kanbanVisitorKeys } from "./visitor-keys/kanban.ts"
 import { c4VisitorKeys } from "./visitor-keys/c4.ts"
 import { vennVisitorKeys } from "./visitor-keys/venn.ts"
+import { ishikawaVisitorKeys } from "./visitor-keys/ishikawa.ts"
 import { requirementVisitorKeys } from "./visitor-keys/requirement.ts"
 import { sequenceVisitorKeys } from "./visitor-keys/sequence.ts"
 import { stateVisitorKeys } from "./visitor-keys/state.ts"
@@ -53,4 +56,7 @@ export const visitorKeys: VisitorKeys = {
   ...kanbanVisitorKeys,
   ...c4VisitorKeys,
   ...vennVisitorKeys,
+  ...ishikawaVisitorKeys,
+  ...agentflowVisitorKeys,
+  ...usecaseVisitorKeys,
 }

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removing the last of two style semicolons leaves an encoded reference in the root and title."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "style R fill:ﬂ°abc¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "style R fill:ﬂ°abc¶ß",
+      "children": []
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Adjacent multiline heading data blocks remain separate AgentflowDataBlock nodes."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "A"
+        ],
+        "title": "T",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow",
+        "metadata": {
+          "model": "x",
+          "instruction": "y"
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "F",
+        "set": {
+          "metadata": {
+            "model": "x",
+            "instruction": "y"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is differently cased True a string rather than a native boolean?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'business' is invalid for actor 'A' at line 2, column 10 [22,30)"
+  }
+}

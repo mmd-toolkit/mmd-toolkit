@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The v key becomes a DOWN token, which is not a styleComponent; the separate complete-whitespace fixture avoids that keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...r:x ,s:x ,t:x ,u:x ,v:x　,w:x﻿\n-----------------------^\nExpecting 'SPACE', 'COLON', 'STYLE', 'NUM', 'NODE_STRING', 'UNIT', 'BRKT', 'PCT', got 'DOWN'"
+  }
+}

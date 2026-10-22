@@ -6,14 +6,14 @@ import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import { findKanbanKeptLines } from "./kanban-kept-lines.ts"
 import type { KanbanLine } from "./kanban-layout.ts"
 import {
-  findCommentEnds,
   findKeptGapEnd,
   kanbanLines,
   layoutKanbanLine,
 } from "./kanban-layout.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { lineEndOf } from "./kept-lines.ts"
-import { significantIndentationOf, printAsWritten } from "./lines.ts"
+import { significantIndentationOf } from "./lines.ts"
+import { findCommentEnds, placeLeadingDirectives } from "./indentation-lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 
@@ -112,22 +112,7 @@ function placeLine(
       column: character.repeat(column),
     }
   }
-  const gaps = [...leading.gaps]
-  let excess = gaps.reduce((sum, gap) => sum + gap, 0) - column
-  for (let index = gaps.length - 1; index >= 0 && excess > 0; index--) {
-    const cut = Math.min(gaps[index], excess)
-    gaps[index] -= cut
-    excess -= cut
-  }
-  const written = gaps.reduce((sum, gap) => sum + gap, 0)
-  return {
-    indentation: character.repeat(column - written),
-    head: leading.directives.map((range, index) => [
-      printAsWritten(source, range[0], range[1]),
-      character.repeat(gaps[index]),
-    ]),
-    column: character.repeat(column),
-  }
+  return placeLeadingDirectives(source, leading, column, character)
 }
 
 /**

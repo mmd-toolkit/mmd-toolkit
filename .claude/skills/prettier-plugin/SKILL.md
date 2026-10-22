@@ -229,6 +229,10 @@ built is in `docs/development.md`.
   anywhere is closed by a fixture and by the sentence that was missing. No test
   and no command generates inputs, and no input is chosen by a random source or
   by a number (a seed, a count).
+- Fixtures come from the cases of the rule sentences, never copies of corpus
+  inputs; cite a corpus input as `[corpus fixture: ...]` instead.
+- No `rejected-inputs` folder: accepted divergence inputs belong to their rule
+  folders, and the corpus test covers rejected inputs.
 - The document test (`tests/docs.test.ts`): the headings of each rules document
   match the fixture folders of its diagram type, and its example code blocks
   match the fixture files. Add a new rules document to `ruleDocuments` there.
@@ -282,6 +286,10 @@ Running tests; this is what belongs to this package):
     `dispatch`.
   - `venn*.ts`: `format` and `corpus` with `-t venn`; and, without `-t`,
     `line-separators`, `markdown-venn`, and `value-nodes`.
+  - `ishikawa*.ts`: `format` and `corpus` with `-t ishikawa`; and, without `-t`,
+    `ishikawa`, `markdown-ishikawa`, and `value-nodes`.
+  - `agentflow*.ts`: `format` and `corpus` with `-t agentflow`; and, without
+    `-t`, `agentflow`, `markdown-agentflow`, `value-nodes`, and `dispatch`.
   - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
     types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:

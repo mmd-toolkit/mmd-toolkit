@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an empty unquoted rectangular label reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [PLAIN_STRING]\n  2. [MARKDOWN_STRING]\n  3. [LABEL_TEXT]\nbut found: ']' at line 2, column 3 [15,16)"
+  }
+}

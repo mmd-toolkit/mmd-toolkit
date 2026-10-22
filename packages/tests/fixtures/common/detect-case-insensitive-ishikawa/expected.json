@@ -5,5 +5,18 @@
   },
   "accepted": true,
   "diagramType": "ishikawa",
-  "db": null
+  "db": {
+    "title": "Problem",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Problem",
+      "children": [
+        {
+          "text": "Cause",
+          "children": []
+        }
+      ]
+    }
+  }
 }

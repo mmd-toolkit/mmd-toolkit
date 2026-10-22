@@ -1,0 +1,17 @@
+{
+  "message": "A relationship cannot connect a boundary or explicit edge",
+  "range": [
+    26,
+    36
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 10
+    }
+  }
+}

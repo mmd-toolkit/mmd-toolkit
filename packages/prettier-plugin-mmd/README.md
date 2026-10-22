@@ -76,6 +76,8 @@ flowchart LR
 - Flowcharts: diagrams that start with `flowchart`, `graph`, `flowchart-elk`, or
   `swimlane-beta`. The formatting rules, with examples, are in
   [docs/flowchart.md](./docs/flowchart.md).
+- Agentflow: diagrams that start with `agentflow-beta`. The formatting rules,
+  with examples, are in [docs/agentflow.md](./docs/agentflow.md).
 - Sequence diagrams: diagrams that start with `sequenceDiagram`. The formatting
   rules, with examples, are in [docs/sequence.md](./docs/sequence.md).
 - Class diagrams: diagrams that start with `classDiagram` or `classDiagram-v2`.
@@ -108,6 +110,10 @@ flowchart LR
   [docs/c4.md](./docs/c4.md).
 - Venn diagrams: diagrams that start with `venn-beta`. The formatting rules,
   with examples, are in [docs/venn.md](./docs/venn.md).
+- Ishikawa diagrams: `ishikawa` and `ishikawa-beta`, including accepted case
+  variants. The formatting rules are in [docs/ishikawa.md](./docs/ishikawa.md).
+- Usecase diagrams: diagrams that start with `usecase-beta`. The formatting
+  rules are in [docs/usecase.md](./docs/usecase.md).
 - Block diagrams: diagrams that start with `block-beta` or `block`. The
   formatting rules, with examples, are in [docs/block.md](./docs/block.md).
 - The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
@@ -131,10 +137,11 @@ Other diagram types are not formatted yet (see below).
   `subgraph Handle click events`: in flowchart, `click` is a reserved word. An
   empty string between tokens, as in `A-->|x""|B`, is reported too. The full
   list is in [docs/compatibility.md](./docs/compatibility.md).
-- A diagram type other than flowchart, sequence, class, state, ER, Gantt, user
-  journey, requirement, mindmap, timeline, sankey, XY chart, quadrant chart,
-  kanban, C4, Venn, and block diagram is not changed, except that line endings
-  follow `endOfLine`. In Markdown, it is left to Prettier.
+- A diagram type other than flowchart, agentflow, sequence, class, state, ER,
+  Gantt, user journey, requirement, mindmap, timeline, sankey, XY chart,
+  quadrant chart, kanban, C4, Venn, Ishikawa, usecase, and block diagram is not
+  changed, except that line endings follow `endOfLine`. In Markdown, it is left
+  to Prettier.
 
 ## Guarantees and limitations
 
@@ -143,10 +150,11 @@ Other diagram types are not formatted yet (see below).
 - One exception: whitespace at the end of a `style`, `classDef`, or `linkStyle`
   line is removed. mermaid.js keeps it at the end of the last style.
 - Formatting a formatted diagram again changes nothing.
-- The content of directives, of `@{ ... }` data blocks, and of the frontmatter
-  is not checked. A diagram that mermaid.js rejects because of that content is
-  still formatted. Directives and data blocks are kept as written; the
-  frontmatter is formatted only when Prettier can read it as YAML.
+- The content of directives, of opaque `@{ ... }` data blocks, and of the
+  frontmatter is not checked. A diagram that mermaid.js rejects because of that
+  content is still formatted. Directives and data blocks are kept as written;
+  the frontmatter is formatted only when Prettier can read it as YAML. Native
+  usecase metadata properties are parsed and validated as syntax.
 - A flowchart with more edges than mermaid.js allows, 500 by default (its
   `maxEdges` site setting), is rejected by mermaid.js but still formatted: the
   plugin does not know the site settings.
@@ -163,6 +171,7 @@ The reasons and the details are in
 ## Documentation
 
 - [docs/flowchart.md](./docs/flowchart.md): the formatting rules for flowcharts.
+- [docs/agentflow.md](./docs/agentflow.md): the formatting rules for Agentflow.
 - [docs/sequence.md](./docs/sequence.md): the formatting rules for sequence
   diagrams.
 - [docs/class.md](./docs/class.md): the formatting rules for class diagrams.
@@ -181,6 +190,10 @@ The reasons and the details are in
 - [docs/kanban.md](./docs/kanban.md): the formatting rules for kanban boards.
 - [docs/c4.md](./docs/c4.md): the formatting rules for C4 diagrams.
 - [docs/venn.md](./docs/venn.md): the formatting rules for Venn diagrams.
+- [docs/ishikawa.md](./docs/ishikawa.md): the formatting rules for Ishikawa
+  diagrams.
+- [docs/usecase.md](./docs/usecase.md): the formatting rules for usecase
+  diagrams.
 - [docs/block.md](./docs/block.md): the formatting rules for block diagrams.
 - [docs/compatibility.md](./docs/compatibility.md): where the plugin differs
   from mermaid.js, and why.

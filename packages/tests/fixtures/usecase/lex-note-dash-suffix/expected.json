@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a dash suffix fail after note?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> FOR <-- but found --> '-' <-- at line 2, column 5 [17,18)"
+  }
+}

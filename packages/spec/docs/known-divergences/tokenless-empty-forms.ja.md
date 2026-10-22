@@ -3,7 +3,7 @@
 英語版: [tokenless-empty-forms.md](./tokenless-empty-forms.md)
 
 図種: flowchart、sequence、class、state、er、gantt、requirement、mindmap、
-xychart、quadrant、block、kanban。
+xychart、quadrant、block、kanban、agentflow。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -456,8 +456,8 @@ state/div-empty-description-block-before-label]
 木は、state の文脈の空の文字列と、区切りの前の空の説明ブロックを持ち、
 state の合成状態と別名の文の中では、名前の次の行の本体の `{` の前のブロックを、
 そこで mermaid.js が読まないほかのテキストを持つ `textBeforeBody` に持ちます。
-ほかの、文の中の空の説明ブロックは持ちません。
-理由は、次の 2 つのどちらかです。
+以下の agentflow の名前と click の前置の位置を除き、
+文の中にある他の空の説明ブロックは、次のどちらかの理由で持ちません。
 
 - (a) 文の 2 つの単位の間では、それを持つには、
   その文のノードのその隙間に、mermaid.js が読まないテキストの欄が要ります。
@@ -913,3 +913,150 @@ mermaid.js はそれらを丸ごと捨てます。
 [fixture: kanban/db-decoration-empty-class]
 [fixture: kanban/div-empty-string-before-label]
 [fixture: kanban/div-empty-markdown-before-label]
+
+### Agentflow
+
+agentflow は、flowchart と空の文字列、
+空の markdown 文字列、空の call の語彙を共有します。
+文の始まりでは IgnoredStatement に保つこともできますが、
+その位置には明示の空の形の例外を適用します。
+それ自体の意味を持って書かれた文字列や呼び出しを mermaid.js が丸ごと捨てるため、
+何も変えない文は作りません。
+[fixture: agentflow/div-empty-string-statement]
+[fixture: agentflow/div-empty-markdown-statement]
+[fixture: agentflow/div-empty-call-statement]
+[fixture: agentflow/div-empty-string-before-vertex]
+[fixture: agentflow/div-empty-call-before-vertex]
+
+flow と connector の名前の中や、後続の click の URL・tooltip の前では、
+既存の AgentflowName.parts、textBeforeUrl、textBeforeTooltip の欄が、
+認識した消される空の文字列、空の markdown 文字列、空の call を
+AgentflowIgnoredText として保てます。
+その位置の消される click や閉じた空の説明ブロックと同じく、
+書かれたまま受理します。
+文の始まりの例外は、これらの位置には当たりません。
+[fixture: agentflow/lex-empty-string-in-flow-name]
+[fixture: agentflow/lex-empty-call-in-flow-name]
+[fixture: agentflow/lex-empty-markdown-in-flow-name]
+[fixture: agentflow/lex-empty-string-in-connector-name]
+[fixture: agentflow/lex-empty-call-in-connector-name]
+[fixture: agentflow/lex-empty-call-before-href]
+[fixture: agentflow/lex-empty-string-before-url]
+[fixture: agentflow/lex-empty-markdown-before-href]
+[fixture: agentflow/lex-empty-string-before-url-tooltip]
+[fixture: agentflow/lex-empty-call-before-url-tooltip]
+[fixture: agentflow/lex-empty-markdown-before-callback-tooltip]
+[fixture: agentflow/lex-mixed-empty-forms-before-url-tooltip]
+
+矢印やコールバック名の前、ヘッダーと方向の間など、
+保持する欄がない他の内部の位置では、
+認識した消される形を tokenless-empty-forms の理由 1 で拒否します。
+保持するには葉を分けるか任意の構造の間の欄を足す必要があります。
+[fixture: agentflow/div-empty-string-before-arrow]
+[fixture: agentflow/div-empty-call-before-arrow]
+[fixture: agentflow/div-empty-string-before-callback]
+[fixture: agentflow/div-empty-string-after-click]
+[fixture: agentflow/div-empty-string-between-header-and-direction]
+
+閉じた空の説明ブロックには、文の始まりの例外を適用しません。
+文の始まりや完成した文の後では AgentflowAccDescrBlockStatement とし、
+ヘッダーの方向の後では図の body、
+flow の題や global の見出しの後ではその body の先頭に置きます。
+flow と connector の名前の中では、
+AgentflowName.parts が全体を AgentflowIgnoredText として保ち、
+既存の click の textBefore の欄も保てます。
+計測した通常の読み方を表せるため、理由 1 で拒否せず受理します。
+[fixture: agentflow/lex-empty-description-before-node]
+[fixture: agentflow/gram-empty-description-after-vertex]
+[fixture: agentflow/gram-empty-description-after-header-direction]
+[fixture: agentflow/gram-empty-description-after-global]
+[fixture: agentflow/gram-empty-description-after-flow-title]
+[fixture: agentflow/lex-empty-description-in-flow-name]
+[fixture: agentflow/lex-empty-description-in-connector-name]
+[fixture: agentflow/gram-empty-description-before-href]
+
+それらの置き場のない内部のブロックだけを理由 1 で拒否します。
+Identifier を分ける場合、必須のクラス名や最初の style の前、
+style のコンマの前などです。
+保持するには葉の値を変えるか、任意の構造の間の欄を加える必要があります。
+完成したクラスの値の後の末尾のブロックは保ちます。
+空のデータブロックと空白だけの文字列も、消される空の形ではなく実際の構文です。
+[fixture: agentflow/div-empty-description-inside-vertex-id]
+[fixture: agentflow/div-empty-description-before-class-name]
+[fixture: agentflow/div-empty-description-in-style]
+[fixture: agentflow/div-empty-description-in-classdef]
+[fixture: agentflow/div-empty-description-before-style-comma]
+[fixture: agentflow/gram-empty-description-after-class-glued]
+[fixture: agentflow/gram-data-null-document]
+[fixture: agentflow/gram-url-tooltip-whitespace-only]
+
+## mermaid.js の文書と issue
+
+以下は固定版の文書が説明する形です。
+空の形の区切りを lexer が消す規則としては説明されていません。
+
+- flowchart:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L53-L74)
+  引用した Unicode と markdown のラベルを示します。
+
+- sequence:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/accessibility.md#L67-L93)
+  accDescr と空でない複数行の説明ブロックを説明します。
+
+- class:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L150-L167)
+  引用したラベルと空でないバッククォートのクラス名を示します。
+
+- state:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/accessibility.md#L67-L93)
+  共通の説明ブロックの構文を説明します。
+  [PR #8498](https://github.com/mermaid-js/mermaid/pull/8498) は
+  2026-10-22 時点で open であり、as の後の state の id を必須にする提案です。
+  消される空の説明ブロックではなく、id の欠落を扱うものです。
+
+- er:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md#L225-L241)
+  type と name の対を持つ属性ブロックを示します。
+  2026-10-22 に確認した closed の
+  [issue #1415](https://github.com/mermaid-js/mermaid/issues/1415) は、
+  属性内の空のバッククォートではなく、空の関係ラベルを報告します。
+
+- gantt:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L450-L477)
+  URL とコールバック名を持つ click href と call の文を示します。
+
+- requirement:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/requirementDiagram.md#L91-L109)
+  ユーザーのテキストの引用を任意とし、空でない欄を示します。
+
+- mindmap:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md#L113-L139)
+  ::icon() の中のアイコン名と ::: の後のクラス名を示します。
+
+- xychart:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/xyChart.md#L33-L56)
+  引用した図の題、軸の題、カテゴリーのラベルを示します。
+
+- quadrant:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/quadrantChart.md#L35-L62)
+  題と軸のテキストを説明します。
+
+- block:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/block.md#L175-L195)
+  形の中の空でない引用したラベルを示します。
+
+- kanban:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/kanban.md#L15-L47)
+  括弧で囲む列とタスクのラベルを示します。
+
+- agentflow:
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
+  flowchart と同じノードの宣言を説明します。
+  2026-10-22 に `agentflow empty in:title,body` で検索し、
+  消される空の文字列、call、内部の説明ブロックの報告は見つかりませんでした。
+
+2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
+`"empty string" in:title,body`、`"empty call" in:title,body`、
+`accDescr empty in:title,body` で検索しました。
+上に挙げた state と ER の報告は、空の id や関係ラベルを扱います。
+この差異の、空の形の区切りの消去についての判断ではありません。

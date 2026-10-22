@@ -1,0 +1,17 @@
+{
+  "message": "A class or style target must resolve to a stored symbol",
+  "range": [
+    33,
+    44
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 6
+    },
+    "end": {
+      "line": 3,
+      "column": 17
+    }
+  }
+}

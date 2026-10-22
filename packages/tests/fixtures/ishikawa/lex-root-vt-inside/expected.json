@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An internal vertical tab remains in root text and the common title."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R\u000bX",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R\u000bX",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

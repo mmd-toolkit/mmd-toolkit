@@ -1,0 +1,165 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: venn-no-ignored-text >> invalid >>> docs/rules/venn-no-ignored-text.md incorrect 1
+Filename: venn-no-ignored-text-incorrect-1.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A:%% size to fill in
+    |      ^ [1]
+  3 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-after-label
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-after-label-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A[x]y%% c
+    |         ^ [1]
+  3 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-comma
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-comma-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red,%% more later
+    |                 ^ [1]
+  4 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-crlf
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-crlf-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A:%% c
+    |      ^ [1]
+  3 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-directive
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-directive-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A %%{init: {}}%%:%% c
+    |                     ^ [1]
+  3 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-header
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-header-input.mmd
+
+Code:
+  1 | venn-beta x%% leftover
+    |           ^ [1]
+  2 | set A
+  3 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-header-semicolon
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-header-semicolon-input.mmd
+
+Code:
+  1 | venn-beta;%% c
+    |          ^ [1]
+  2 | set A
+  3 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-own-line
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-own-line-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | x%% c
+    | ^ [1]
+  4 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-semicolon
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-semicolon-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A;%% c
+    |      ^ [1]
+  3 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-style-interior
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-style-interior-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | style A fill:red x%% c
+    |                  ^ [1]
+  4 |
+
+[1] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-two
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-two-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A:%% c
+    |      ^ [1]
+  3 | set B:%% c
+    |      ^ [2]
+  4 |
+
+[1] mermaid.js removes this character with the comment after it.
+[2] mermaid.js removes this character with the comment after it.
+---
+
+
+Test: venn-no-ignored-text >> invalid >>> invalid/venn/ignored-union-comma
+Filename: tests/fixtures/rules/venn-no-ignored-text/invalid/venn/ignored-union-comma-input.mmd
+
+Code:
+  1 | venn-beta
+  2 | set A
+  3 | set B
+  4 | union A,B,%% C later
+    |          ^ [1]
+  5 |
+
+[1] mermaid.js removes this character with the comment after it.
+---

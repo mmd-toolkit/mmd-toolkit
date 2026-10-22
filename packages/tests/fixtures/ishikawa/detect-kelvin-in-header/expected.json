@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Detection: a Kelvin sign inside the initial header does not match ASCII k, so no diagram type is detected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: ishiKawa\nR\n"
+  }
+}

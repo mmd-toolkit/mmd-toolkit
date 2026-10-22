@@ -149,10 +149,11 @@ after writing it.
   and do not duplicate a document example or another input of the same rule. The
   common directive rule keeps its existing named corpus input tables.
 - A fixture file holds no character that `pnpm run lint:chars` checks for. Use
-  ESLint's `RuleTester` for U+2028, U+2029, or a lone carriage return. Write
-  `code` and each suggestion's expected `output` as template literals, with
-  `\u2028`, `\u2029`, or `\r`. State the expected reports in `errors`, and the
-  full output text of each suggestion. These cases do not read the corpus.
+  ESLint's `RuleTester` for U+2028, U+2029, a lone carriage return, U+00A0, and
+  the like. Write `code` and each suggestion's expected `output` as template
+  literals, with `\u2028`, `\u2029`, `\u00a0`, or `\r`. State the expected
+  reports in `errors`, and the full output text of each suggestion. These cases
+  do not read the corpus.
 - Regenerate snapshots with `test:update` (without `CI=true`) when an output
   intentionally changes. Read the differences and account for each one. When
   adding a case, keep existing snapshots and add only its missing snapshot.

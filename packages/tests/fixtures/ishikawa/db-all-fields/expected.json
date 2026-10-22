@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Does the summary keep the frontmatter title and ordered recursive tree?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Effect",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Effect",
+      "children": [
+        {
+          "text": "Cause B",
+          "children": [
+            {
+              "text": "Detail B",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "Cause A",
+          "children": [
+            {
+              "text": "Detail A",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "embedded": {
+    "title": "Diagram title"
+  }
+}

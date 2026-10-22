@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read click double space before tooltip?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...eta TBAclick A go  \"tip\"\n---------------------^\nExpecting 'STR', got 'SPACE'"
+  }
+}

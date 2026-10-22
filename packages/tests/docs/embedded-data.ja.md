@@ -110,6 +110,17 @@ kanban の 1 つのノードに隣り合う `@{ ... }` ブロックは、
 テキストにデータブロックがないとき、また、Db のパッチがまだ記録しない図種では、
 一覧は空です。
 
+usecase の JSON 表は、Mermaid が読んだ値とプロパティ順の全体を、
+空オブジェクトも含め `{ id, set: { value, propertyOrder } }` として記録します。
+effect は JSON 宣言の記述順で、前方参照があると Db の Map 順と異なります。
+ネイティブな usecase メタデータは構文であり、この effect を持ちません。
+usecase のパッチは `commit` で公開モデルを捕捉し、JSON 文をソース順にたどって、
+Mermaid が読んだ値を取得します。JSON の内部を読み直しません。
+`clear` は effect をリセットします。
+[fixture: usecase/gram-json-empty]
+[fixture: usecase/db-json-source-map-order]
+[fixture: usecase/db-native-metadata-not-yaml]
+
 ### 記録のしかた
 
 flowchart の Db のパッチが、

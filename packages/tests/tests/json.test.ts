@@ -19,8 +19,17 @@ describe("toJson", () => {
     })
   })
 
-  it("rejects values JSON cannot represent", () => {
-    expect(() => toJson({ n: Number.NaN })).toThrow(/non-finite/u)
+  it("uses the shared numeric form recursively", () => {
+    expect(
+      toJson({ n: Number.NaN, nested: [Infinity, -Infinity, -0] }),
+    ).toEqual({
+      n: "NaN",
+      nested: ["Infinity", "-Infinity", 0],
+    })
+    expect(Object.is(toJson(-0), 0)).toBe(true)
+  })
+
+  it("rejects other values JSON cannot represent", () => {
     expect(() => toJson({ d: new Date(0) })).toThrow(/instance of Date/u)
   })
 })

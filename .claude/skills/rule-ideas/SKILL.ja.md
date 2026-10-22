@@ -206,7 +206,36 @@ description:
 | C4 図で、どの要素も境界も宣言しない alias への関係（`Rel(a, typo, "Uses")`）                                                                                                              | 黙ってはいない。図を描くとき、その関係を挙げるエラーで止まる（`drawRels` を読んだ）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | C4 図で、0、負、数でない `UpdateLayoutConfig` の数                                                                                                                                        | 図を描く人が書くものではない。1 行の形の数は正の数である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | C4 図で、見える題名を設定する `accTitle:` と、同じ順の組の関係の 2 度書き（後のものが最初のものを置き換える）                                                                             | 修正が open な mermaid.js の不具合である（[#8040](https://github.com/mermaid-js/mermaid/issues/8040) と [#8041](https://github.com/mermaid-js/mermaid/pull/8041)、[#8143](https://github.com/mermaid-js/mermaid/pull/8143)）                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| C4 図で、`RelIndex` の番号、配置ノードの sprite、知られたキーの大文字小文字違いでないキー（`$colour`）、2 度書いたスタイル更新                                                            | 文書は、番号を読まないことと sprite が未完であることを書く。mermaid.js は名前付きの属性をどれも持ち、挙げられていないキーのいくつか（`alias`、`from`、`to`）は後の文の照合を変えるので、正しいキーの一覧が立たない。2 つ目の更新は与えた欄だけを置き換え、何も失われない                                                                                                                                                                                                                                                                                                                                                                                    |
+| C4 図で、`RelIndex` の番号、配置ノードの sprite、知られたキーの大文字小文字違いでないキー（`$colour`）                                                                                    | 文書は、番号を読まないことと sprite が未完であることを書く。mermaid.js は名前付きの属性をどれも持ち、挙げられていないキーのいくつか（`alias`、`from`、`to`）は後の文の照合を変えるので、正しいキーの一覧が立たない                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| venn 図で、2 度使った文字のノードの id（`text A note[First]` の後の `text A note[Second]`）                                                                                               | 文字のノードは両方描かれ、その id の `style` は両方にスタイルを付ける。2 つ目を貼り付けた写しと呼ぶのは推測である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| venn 図で、別の集合のつもりの字下げした `text`（`set A` の後の `  text B[Backend]`）                                                                                                      | mermaid.js は文法どおり A の文字のノード `B` として読み、何も失わない。`B` を集合と呼ぶのは推測である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| venn 図で、0 以下の大きさ、数が持てない桁数の大きさ、和の中で繰り返した名前（`union A, A`）                                                                                               | 0 は空の集合で、描画はそれを除く。負の大きさや大きすぎる大きさは、図を描く人が書くものではない。和の名前は書いたとおりに持つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| venn 図で、前の `set` が宣言しない名前の和、数でない大きさ、`accTitle`、`accDescr`、説明のブロック                                                                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| venn 図で、集合も和もない図                                                                                                                                                               | 黙ってはいない。描画は失敗する（[#8471](https://github.com/mermaid-js/mermaid/pull/8471) が open で、はっきりしたエラーにする）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| venn 図で、HTML のラベルの正しい CSS の宣言が `;` を失うもの                                                                                                                              | 上の flowchart の同じラベルと同じく、mermaid.js の不具合である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| venn 図で、引用符のない単位付きの値（`stroke-width:2px` は `2 px` として持たれる）                                                                                                        | 構文を知らないことから来る。仕様は、引用符のない値の部分を 1 つの空白でつなぐと書く。引用符の中の `"2px"` は書いたとおりに持たれる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| venn 図で、文字のノードへの `color` 以外のスタイルのプロパティ（`style A1 fill:red` は描画が使わない）                                                                                    | mermaid.js の文書は、文字のノードがどのプロパティを取るかを述べずにスタイルを文字のノードに当てるので、規則は文書が示す書き方を報告することになる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| venn 図で、フロントマターの `accTitle` と `accDescr`（どちらの文も設定しない）                                                                                                            | 規則はフロントマターの YAML を読むことになり、kanban と同じくリリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| 石川図で、原因として書いた `title`、`accTitle:`、`accDescr`（原因 `title Delivery causes`。`{` のブロックは原因 `accDescr {`、その行、`}` を与える）                                      | mermaid.js は文法どおり各行を原因として読み、何も失わない。石川図の文書はタイトルを示さず、最初の行が事象である。アクセシビリティの文は、すべての図種が対応すると書く mermaid.js のアクセシビリティの文書が示すとおりに書かれ、ほかに保つ書き方もない（フロントマターはどちらも設定しない）ので、mermaid.js の不具合である。カンバン図の `title` と `accTitle:` と同じ                                                                                                                                                                                                                                                                                      |
+| 石川図で、最初の原因より浅く字下げした原因、前の原因より 2 段以上深い原因、空白の中のタブ（タブは 1 文字と数える）                                                                        | 整形が見えるようにする。整形は各原因を mermaid.js が与える深さで印字する。マインドマップの不明瞭な字下げと同じく、字下げは書き手のつもりを示さない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 石川図で、1 つの原因の下の同じ文字の 2 つの原因                                                                                                                                           | 両方が、それぞれの原因とともに描かれ、何も失われない。2 つ目を写しと呼ぶのは推測である。同じ項目を 2 度挙げるカンバン図の同じ id の 2 つの列とは違う                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| 石川図で、`A@{shape: rect}`、`[]`、`""`、閉じる `"` のない `"`                                                                                                                            | mermaid.js は原因の文字として読み、何も失わない。形、空の原因、引用符の付いた文字と呼ぶのは推測である。`[]` は mermaid.js 12.0.0 では文字である（[#7891](https://github.com/mermaid-js/mermaid/pull/7891) が open で、隙間にする）                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 石川図で、原因の文字の後の `%%`（`Process %% note` が原因になる）                                                                                                                         | flowchart の `subgraph S %% group` と同じく、構文を知らないことから来る                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| 石川図で、`style` か `classDef` で始まる行の終わりで失われる `;`（原因 `style R fill:#abc`）                                                                                              | 上の flowchart のラベルの CSS の同じ書き換えと同じく、mermaid.js の不具合である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| 石川図で、原因の文字の中の指示子、2 つ目の `ishikawa` のヘッダー、ヘッダー `ishikawa-betaX`（事象 `-betaX`）                                                                              | 語の中の指示子は通常の書き方ではなく、行の終わりのものは設定の書き方である。2 つ目のヘッダーは受理されない。接尾辞の付いたヘッダーは通常の書き方ではない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| 石川図で、フロントマターの `title`、`accTitle`、`accDescr`（最初の行がタイトルを置き換え、アクセシビリティの文字は空のまま）                                                              | 規則はフロントマターの YAML を読むことになり、カンバンと同じくリリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| agentflow で、タイトルやラベルなしにもう一度書いた flow、connector、頂点                                                                                                                  | 何も失われない。もう一度書いた flow はその id の flow にメンバーを足し、参照はラベルと形を保つ（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| agentflow で、どの `classDef` も定義しないクラス、2 度書いた `classDef`、1 つの中で 2 度与えたプロパティ                                                                                  | 上の flowchart とブロック図と同じく、クラスはページのスタイルから来ることがあり、描画がどの宣言を使うかは CSS が決める                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| agentflow で、範囲外か先頭に 0 のある `linkStyle` の番号                                                                                                                                  | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| agentflow で、参照のリンクのラベル（`A -.-\|x\| B`）、2 度書いた `global` のブロック、リンクの生成された id へのメタデータ、スタイルの先頭の余分な空白                                    | mermaid.js はそれらを保ち、何も失われない（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| agentflow で、flow の外の `direction` 文                                                                                                                                                  | 上の flowchart の subgraph の外の `direction LR` と同じく、構文を知らないことから来る                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| agentflow で、何も宣言しない flow や connector へのリンクと、どれも名指さない `connectorRef`                                                                                              | リンクは flowchart と同じく頂点を足す。`connectorRef` はデータブロックの YAML の中にあり、カンバンと同じくリリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| agentflow で、flow や connector の名前の中の `click`（`flow Handle click events` は `click` を失い、次の行を名前に取る）                                                                  | 上の flowchart の subgraph のタイトルの予約語 `click` と同じく、mermaid.js の不具合である。書き手は正しい名前を書いている                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| agentflow で、名前の中や `click` の URL とツールチップの前の空の文字列、空のマークダウン文字列、空の呼び出し（`click A href """u"`）                                                      | 何も持たないので何も失われない。名前、URL、ツールチップは書いたとおりに保たれる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| agentflow で、同じ id の flow と connector、同じ id の flow と頂点                                                                                                                        | mermaid.js は両方の記録を保つ（実行）。2 つ目を誤りと呼ぶのは推測である。同じ id の connector と頂点は 1 つの要素であり、agentflow-no-redefined-vertex と agentflow-no-redefined-connector が調べる                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| agentflow で、agentflow が取り除いたか認めない括弧の形（`A((x))` は角の丸い長方形で描かれる）                                                                                             | 黙ってはいない。mermaid.js は診断 `SHAPE_REMOVED` か `SHAPE_UNSUPPORTED` を出す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| agentflow で、HTML のラベルの正しい CSS の宣言が `;` を失うもの、正しいラベルの中の `direction`、`accDescr` のブロックの中のコメント行（その文字として保たれる）                          | 上の flowchart と同じく mermaid.js の不具合である。2 つ目は agentflow-no-ignored-text が、3 つ目は説明を置き換えるところで agentflow-no-duplicate-description が、誤りとともに報告する                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| agentflow で、データブロックの YAML の形、ラベル、ほかのキー                                                                                                                              | 規則は YAML を読むことになり、カンバンと同じくリリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ### 迷ったときの問い
 
@@ -608,6 +637,7 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | flowchart-no-duplicate-title              | 入れる               |                                                                          |
 | flowchart-no-redefined-vertex             | 入れる               |                                                                          |
 | flowchart-no-undef                        | 入れる               |                                                                          |
+| flowchart-no-duplicate-direction          | 入れる               |                                                                          |
 | no-unclosed-directive                     | 入れない（いったん） | 文書が 4 図種しか書いていない                                            |
 | no-invalid-init-directive                 | 入れない（いったん） | 文書が 4 図種しか書いていない                                            |
 | sequence-no-create-destroy                | 入れる               |                                                                          |
@@ -704,6 +734,23 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | c4-no-duplicate-title                     | 入れる               |                                                                          |
 | c4-no-duplicate-description               | 入れる               |                                                                          |
 | c4-no-redefined-element                   | 入れる               |                                                                          |
+| c4-no-duplicate-style                     | 入れる               |                                                                          |
+| venn-no-duplicate-title                   | 入れる               |                                                                          |
+| venn-no-duplicate-subset                  | 入れる               |                                                                          |
+| venn-no-duplicate-style                   | 入れる               |                                                                          |
+| venn-no-invalid-style-key                 | 入れる               |                                                                          |
+| venn-no-undef                             | 入れる               |                                                                          |
+| venn-no-ignored-text                      | 入れる               |                                                                          |
+| agentflow-no-duplicate-title              | 入れる               |                                                                          |
+| agentflow-no-duplicate-description        | 入れる               |                                                                          |
+| agentflow-no-empty-description-block      | 入れる               |                                                                          |
+| agentflow-no-unclosed-description-block   | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| agentflow-no-ignored-text                 | 入れる               |                                                                          |
+| agentflow-no-redefined-vertex             | 入れる               |                                                                          |
+| agentflow-no-redefined-connector          | 入れる               |                                                                          |
+| agentflow-no-redefined-flow               | 入れる               |                                                                          |
+| agentflow-no-duplicate-direction          | 入れる               |                                                                          |
+| agentflow-no-undef                        | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -830,6 +877,12 @@ flowchart-no-undef:
 [#7441](https://github.com/mermaid-js/mermaid/pull/7441)
 （merged、12.0.0 に入っている）は、警告を出し、頂点はなお作る。
 (4) id を直す。
+id なしで書いたリンクに mermaid.js が与える `L_A_B_0` のような id は、
+図の id である
+（実行: `class L_A_B_0 hot` はリンクにクラスを与える）。
+それは名指すものに届くので、使っても報告しない。
+リンクが変わるとそのような id も変わることは、出力の事実ではない
+（2026-10-22 に決めた）。
 
 class-no-undef:
 (1) 文は何も変えないか、注釈が線を持たない。
@@ -878,13 +931,31 @@ requirement-no-undef:
 
 flowchart-no-redefined-vertex:
 (1) 後の形やラベルは、前のものを置き換える。
-改行か HTML の属性の引用符だけが違うラベルのように、
-mermaid.js が同じに保つラベルは報告しない。
+改行だけが違うラベルは報告せず、ラベルはそのほかは書いたとおりに比べるので、
+mermaid.js が同じに保つ、HTML の属性の引用符だけが違う 2 つのラベルは、
+文書が言うとおり報告する
+（2026-10-22 に、引用符を変換して比べる形から、
+規則は書いた値を比べるという決定に合わせて変えた）。
 (2) なし。
 (3) 「node label overwritten」「redefine node label」「node label」。
 [#3789](https://github.com/mermaid-js/mermaid/issues/3789)
 （open、Type: Enhancement）は、ラベルのための別の文を提案している。
 (4) 別の id を使うか、ラベルを 1 度だけ書く。
+
+flowchart-no-duplicate-direction:
+(1) subgraph の本体の後の `direction` 文は、subgraph の方向を置き換える
+（`flowchart`、`flowchart-elk`、`swimlane-beta` で実行）。
+同じ id の 2 つの subgraph は、最初のものの方向で 1 つとして描かれる
+（`getData` を読んだ。
+subgraph を最後のものから最初のものの順にレイアウトに与え、
+レイアウトは id ごとに 1 つの節点を保つ）。
+そのため、Db は両方を保つが、後のものの違う方向は失われ、報告する。
+文書が言うとおり、`TD` と `TB` は 1 つの方向である。
+(2) なし。
+(3) 上の方向の規則の検索。
+(4) subgraph ごとに `direction` 文を 1 つ書く。
+同じ事実を報告する agentflow-no-duplicate-direction とともに、
+2026-10-22 に決めた。
 
 class-no-redefined-class:
 (1) 前のラベルは失われる。
@@ -1314,6 +1385,127 @@ UpdateElementStyle before、attribute case、accTitle、sprite、offset の語�
   (2) なし。同じラベルの繰り返し、最初のラベル、要素を足すために書き直した境界、
   誰も書いていない既定の型は報告しない。
   (4) 要素と境界ごとに自分の alias を与える。
+- c4-no-duplicate-style:
+  (1) 欄をもう一度与える後のスタイル更新や同じ更新の後の引数は、
+  空の引数の空の値でも、前の値を置き換える（実行）。
+  (2) なし。欄が持つ値を与えるもの、対象がまだ持たない欄、
+  `$alias`、`$from`、`$to`、宣言の値は報告しない。
+  (3) 「UpdateElementStyle」「UpdateRelStyle」:
+  [#8087](https://github.com/mermaid-js/mermaid/pull/8087)（open）は
+  色を検査するが、
+  どの値が保たれるかは変えない。
+  (4) 欄はそれぞれ 1 度与え、1 つの欄には名前付きの属性を使う。
+  2026-10-21 に venn の規則の後で決めた。
+  前の判定は、2 度書いたスタイル更新を何も失わないとして除いていたが、
+  それはほかの欄を与える更新にだけ当たる
+  （`$bgColor="red"` の後の `$bgColor="blue"` は `blue` だけを残す。実行）。
+
+venn 図の規則の注は次のとおりである。
+検索は題名の「venn」と「venn-beta」と、「venn」に style、stroke-width、text、
+title、duplicate、comment、union label、px の語を加えたもので、
+読み方を変えるものはなかった。
+open の [#8089](https://github.com/mermaid-js/mermaid/pull/8089) は、
+描画がスタイルや領域を探す前に対象の名前を並べ替えるが、
+Db はすでに並べ替えている。
+open の [#8471](https://github.com/mermaid-js/mermaid/pull/8471) は、
+集合のない図をエラーにする。
+[#8076](https://github.com/mermaid-js/mermaid/issues/8076) と
+[#7692](https://github.com/mermaid-js/mermaid/issues/7692)（open）は、
+文字と円を置く場所についてである。
+描画は `vennRenderer.ts` と @upsetjs/venn.js 2.0.0 で読み、
+そのレイアウトを例の Db で実行もした（SVG は描いていない）。
+
+- venn-no-duplicate-title:
+  上のタイトルの規則の注を持つ。
+  タイトルは引用符と行の残りを持ち、フロントマターのタイトルは比べない。
+- venn-no-duplicate-subset:
+  (1) 描画は文ごとに 1 度領域を描く。
+  もう一度書いた集合は次の色の 2 つ目の円になり、後のラベルは前のラベルを、
+  集合の後の大きさは前の大きさを置き換え、
+  和の 2 つの大きさはその間の重なりを与える
+  （大きさは実行、円とラベルは読んだ）。
+  (2) なし。字下げした `text` を続けるためにもう一度書いた集合は、
+  2 度描かれるので報告し、文書はそのために行の初めの `text A A3` を示す。
+  (4) 領域はそれぞれ 1 度宣言する。
+  subset は、木（VennSubsetStatement）と mermaid.js の Db（`getSubsetData`）
+  と同じく、`set` 文か `union` 文である。
+- venn-no-duplicate-style、venn-no-invalid-style-key:
+  (1) プロパティの後の値は、1 つの文の中で（実行）、
+  また 1 つの対象の文どうしで（`buildStyleByKey` を読んだ）、
+  前の値を置き換える。
+  描画は文書が挙げる 5 つのプロパティだけを読み、
+  mermaid.js はほかのものを書いたとおりの名前で持つ（Db は実行、描画は読んだ）。
+  (2) なし。対象がすでに持つ値、まだ持たないプロパティ、
+  5 つのプロパティは報告しない。
+  (4) プロパティはそれぞれ 1 度与え、5 つのどれかを書く。
+  venn-no-invalid-style-key の名前は、上の invalid の名前と同じく、
+  ESLint 自身の規則の語に合わせる。
+- venn-no-undef:
+  (1) どの文も宣言しない領域の文字のノードは置かれず、
+  そのスタイルは何にも付かない
+  （レイアウトの領域は実行、`renderTextNodes` とスタイルの探し方は読んだ）。
+  (2) なし。後で宣言する領域、より大きな和が足す組、
+  名前が 1 つのスタイルに対する文字のノードの id は報告しない。
+  (4) 名前を直すか、領域を宣言する。
+- venn-no-ignored-text:
+  (1) その文字はコメントとともに捨てられる（実行）。
+  (2) なし。`%%` の前の空白と、
+  ラベルや引用符の付いた名前の中の `%%` は報告しない。
+  (4) その文字を取り除くか、文を書き終える。
+
+agentflow の規則の注は次のとおりである。
+検索は題名の「agentflow」と「agentflow-beta」と、「agentflow」に connector、
+flow title、direction、accDescr、duplicate、shape の語を加えたもので、
+読み方を変えるものはなかった。
+mermaid.js 12.0.0 の後にマージされた
+[#8443](https://github.com/mermaid-js/mermaid/pull/8443) は
+`[/…/]` を入力として描くので、agentflow-no-redefined-vertex は
+それへの、またはそれからの変化を見逃すが、何も変えないものは報告しない。
+
+- agentflow-no-duplicate-title、agentflow-no-duplicate-description、
+  agentflow-no-empty-description-block、agentflow-no-unclosed-description-block、
+  agentflow-no-ignored-text:
+  上の flowchart の規則の注を持ち、agentflow の読みの違いは次のとおりである。
+  `accTitle:` と `accDescr:` の後とブロックの中では、
+  コメント行は文字である（実行）。
+  そのため、コメントだけのブロックは空ではなく、説明を設定する。
+  flow や connector の名前の中と `click` の欄の前の空のブロックは、
+  説明を設定せず、これも報告する（実行）。
+  閉じないブロックの規則は flowchart の規則の条件を持ち、同じ理由で入れない。
+- agentflow-no-redefined-vertex、agentflow-no-redefined-connector:
+  (1) 形を付けた頂点や connector の宣言は id が持っていたラベル、描かれる形、
+  種類を置き換え、connector の最初の宣言はその id の頂点を置き換える（実行）。
+  形は描かれるとおりに、ひし形、六角形、サブルーチンを別に、
+  ほかの括弧の形を角の丸い長方形として比べる
+  （`getTypeFromVertex` と `normaliseNodeShapes` を読んだ）。
+  種類は agentflow が導くとおり
+  （task、input、decision、action、tool、connector）
+  に比べ、既定のテーマ `redux-color` は種類ごとの色で描く
+  （`deriveVertexKind` と `styles.ts` を読んだ。
+  種類は agentflow の既定の描画の一部なので、2026-10-22 に決めた）。
+  (2) なし。タイトルのない connector が示す id、参照、データブロック、
+  同じラベル、描かれる形、種類は報告しない。
+  (4) 要素ごとに自分の id を与える。
+  2 つの規則は id ごとの 1 つの記録を共有し、報告する文で分かれる。
+- agentflow-no-redefined-flow:
+  (1) 同じ id の flow は合わされ、空でない後のタイトルが前のものを、
+  flow が終わる順に置き換える（実行）。
+  (2) なし。メンバーを足すためにタイトルなしでもう一度書いた flow は報告しない。
+  (4) id ごとにタイトルを 1 つ書く。
+- agentflow-no-duplicate-direction:
+  (1) flow の本体の中か、その id の後の宣言の中の後の方向は、
+  前の方向を置き換える（実行）。
+  flowchart の文書が言うとおり、`TD` と `TB` は 1 つの方向である。
+  (2) なし。
+  (4) flow ごとに方向を 1 つ書く。
+  flowchart の 1 つの subgraph の 2 つの `direction` 文も
+  同じに振る舞い（実行）、
+  flowchart-no-duplicate-direction がそれを報告する。
+- agentflow-no-undef:
+  flowchart-no-undef の注を持つ。
+  flow と connector の名前は id であり、mermaid.js が自分で与える id
+  （`subGraph0`、`L_A_B_0`）も図の id で、名指すものに届くので報告しない
+  （実行。2026-10-22 に決めた）。
 
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
@@ -1387,6 +1579,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | flowchart-no-ignored-text               | `;` の所で分け、方向を 1 行にする                |
 | flowchart-no-redefined-vertex           | なし: 基準 1（ありうる直しは新しい id）          |
 | flowchart-no-undef                      | なし: 基準 1（どの id のつもりかが分からない）   |
+| flowchart-no-duplicate-direction        | いまはなし（2026-10-22。この節の終わりを見る）   |
 | sequence-*（8 件すべて）                | いまはなし（2026-10-08。この節の終わりを見る）   |
 | class-*（8 件すべて）                   | いまはなし（2026-10-08。この節の終わりを見る）   |
 | state-*（6 件すべて）                   | いまはなし（2026-10-08。この節の終わりを見る）   |
@@ -1402,7 +1595,9 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | quadrant-*（9 件すべて）                | いまはなし（2026-10-16。この節の終わりを見る）   |
 | block-*（11 件すべて）                  | いまはなし（2026-10-21。この節の終わりを見る）   |
 | kanban-*（3 件すべて）                  | いまはなし（2026-10-21。この節の終わりを見る）   |
-| c4-*（6 件すべて）                      | いまはなし（2026-10-21。この節の終わりを見る）   |
+| c4-*（7 件すべて）                      | いまはなし（2026-10-21。この節の終わりを見る）   |
+| venn-*（6 件すべて）                    | いまはなし（2026-10-21。この節の終わりを見る）   |
+| agentflow-*（10 件すべて）              | いまはなし（2026-10-22。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1526,7 +1721,9 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `sequence-*`、`class-*`、`state-*`（2026-10-08）と
 `er-*`、`gantt-*`、`journey-*`（2026-10-14）と
 `requirement-*`、`mindmap-*`、`timeline-*`、`sankey-*`、`xychart-*`（2026-10-15）と
-`quadrant-*`（2026-10-16）と `block-*`、`kanban-*`、`c4-*`（2026-10-21）:
+`quadrant-*`（2026-10-16）と
+`block-*`、`kanban-*`、`c4-*`、`venn-*`（2026-10-21）と
+`agentflow-*` と flowchart-no-duplicate-direction（2026-10-22）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hyphen after connector is not its required space."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ow-beta TBconnector-x\n----------------------^\nExpecting 'SPACE', got 'NODE_STRING'"
+  }
+}

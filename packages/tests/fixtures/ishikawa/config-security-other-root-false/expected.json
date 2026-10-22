@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[C: configuration and sanitizeText] Does root htmlLabels false override flowchart.htmlLabels true?"
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false,
+    "flowchart": {
+      "htmlLabels": true
+    }
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "<b>Root</b> = value",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "<b>Root</b> = value",
+      "children": [
+        {
+          "text": "<i>Cause</i><BR>next",
+          "children": []
+        }
+      ]
+    }
+  }
+}

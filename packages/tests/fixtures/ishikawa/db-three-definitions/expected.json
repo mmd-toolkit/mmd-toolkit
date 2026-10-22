@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Do repeated labels create separate nodes with their own children?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "First",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "B",
+          "children": []
+        },
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "Second",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "C",
+          "children": []
+        },
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "Third",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

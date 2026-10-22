@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Does accessibility-looking root text become the diagram title?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "accTitle: T",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "accTitle: T",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

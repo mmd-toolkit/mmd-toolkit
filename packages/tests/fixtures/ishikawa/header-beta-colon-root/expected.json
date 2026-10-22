@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Header followed by beta punctuation."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": ": R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": ": R",
+      "children": []
+    }
+  }
+}

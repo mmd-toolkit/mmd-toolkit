@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: accDescr inside a label is ordinary label text, with braces reserved."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> RPAREN <-- but found --> '{' <-- at line 2, column 12 [24,25)"
+  }
+}

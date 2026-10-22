@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A %% comment in the gap after a CSS -- prefix does not remove the preceding U+2028; it is label-symbol content rather than ASCII HWS, so the property name is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> WORD <-- but found --> ' ' <-- at line 3, column 12 [26,27)"
+  }
+}

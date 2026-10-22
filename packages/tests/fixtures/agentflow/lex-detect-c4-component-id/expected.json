@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read detect c4 component id?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "C4Component",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C4Component",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -187,9 +187,21 @@ mermaid.js が書き換えたテキストの上で何かを決めるとき（図
 コメント行と先頭の空白も見ます。
 pin した mermaid.js でそうしているのは agentflow の Db だけです。
 そのパーサーは、コメント行と先頭の空白を受け取ります。
-ただし、フロントマターの後のソースから、ディレクティブを除き、
-`\r\n` を 1 つと数えたものが `maxTextSize` UTF-16 コード単位より長い場合は、
+ただし、大きさはフロントマターの完全なトリビアの後のソースで測ります。
+閉じの --- の行の後に続く空白だけの行も、そのトリビアに含めます。
+ディレクティブを除き、`\r\n` を 1 つと数えます。
+その長さが `maxTextSize` UTF-16 コード単位を超える場合は、
 段階 5 がいつもどおり適用されます。
+[fixture: agentflow/comment-default-size-equal-crlf]
+[fixture: agentflow/comment-default-size-above-crlf]
+[fixture: agentflow/comment-default-size-equal-inline-directive]
+[fixture: agentflow/comment-default-size-above-inline-directive]
+[fixture: agentflow/comment-default-size-equal-frontmatter]
+[fixture: agentflow/comment-default-size-above-frontmatter]
+[fixture: agentflow/frontmatter-extra-trivia-below]
+[fixture: agentflow/frontmatter-extra-trivia-boundary]
+[fixture: agentflow/frontmatter-extra-whitespace-line-boundary]
+[fixture: agentflow/frontmatter-extra-trivia-above]
 `maxTextSize` はサイト設定でしか設定できず
 （[有効な設定](../../tests/docs/configuration.ja.md#有効な設定) を参照）、
 既定値は 50000 です。

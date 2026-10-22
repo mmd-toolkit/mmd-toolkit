@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an integer metadata value remain a string and fail boolean validation?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'business' is invalid for actor 'A' at line 2, column 11 [23,31)"
+  }
+}

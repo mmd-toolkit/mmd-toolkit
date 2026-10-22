@@ -97,6 +97,55 @@ describe("patchFlowDb", () => {
     expect(dataBlockEffectsOf(db)).toEqual([{ id: "A", set: { type: "rect" } }])
   })
 
+  it.each(["before", "after"])(
+    "defers an extraction failure %s the block without skipping mermaid",
+    (when) => {
+      const db = new FakeFlowDb()
+      db.addVertex("A")
+      if (when === "before") db.vertices.get("A")!.custom = 1n
+      let applied = false
+      db.onBlock = (flow) => {
+        applied = true
+        flow.vertices.get("A")!.custom = 2n
+      }
+      expect(() =>
+        db.addVertex(
+          "A",
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          "custom: value",
+        ),
+      ).not.toThrow()
+      expect(applied).toBe(true)
+      expect(() => dataBlockEffectsOf(db)).toThrow("toJson: bigint at custom")
+    },
+  )
+
+  it("preserves mermaid's own rejection when extraction also fails", () => {
+    const db = new FakeFlowDb()
+    db.addVertex("A")
+    db.vertices.get("A")!.custom = 1n
+    db.onBlock = () => {
+      throw new Error("mermaid rejected the block")
+    }
+    expect(() =>
+      db.addVertex(
+        "A",
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        "invalid",
+      ),
+    ).toThrow("mermaid rejected the block")
+  })
+
   it.each([
     [
       "creates an element",

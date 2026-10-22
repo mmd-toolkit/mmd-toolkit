@@ -1,3 +1,4 @@
+import { lowercaseAscii } from "../db-from-tree/characters.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
 import { contains, diagramTokensOf } from "./invariants.ts"
 import {
@@ -241,7 +242,7 @@ export function checkTokensAreNotCut(
 
 /** Whether `text` is the text of a `Keyword` token of the diagram of `root`, in any case. */
 function isKeywordText(root: CheckedRoot, text: string): boolean {
-  return (KEYWORD_TEXTS[root.body.type] ?? []).includes(text.toLowerCase())
+  return (KEYWORD_TEXTS[root.body.type] ?? []).includes(lowercaseAscii(text))
 }
 
 /** Whether only directives and ignored `;` lie between the tokens `a` and `b`, with at least one, and nothing else, not even whitespace. */
@@ -286,7 +287,8 @@ export function checkStringsAreWhole(
     if (token.type !== "String") continue
     const first = token.value.charAt(0)
     problems.expect(
-      STRING_QUOTES.has(first),
+      STRING_QUOTES.has(first) ||
+        (root.body.type === "UsecaseDiagram" && first === "'"),
       label(token),
       `a String token does not start with a quote: ${JSON.stringify(token.value)}`,
     )

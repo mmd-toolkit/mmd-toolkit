@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G: start, document, statement and stop] Are empty quote pairs nonempty literal labels?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"\"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"\"",
+      "children": [
+        {
+          "text": "\"\"",
+          "children": []
+        }
+      ]
+    }
+  }
+}

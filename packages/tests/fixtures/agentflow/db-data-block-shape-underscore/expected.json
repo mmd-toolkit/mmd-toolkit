@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An authored underscore shape spelling is rejected."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: lean_right. Shape names should be lowercase."
+  }
+}
