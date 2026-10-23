@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A line-oriented title consumes later keyword-looking text."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "T accTitle: AT accDescr: AD",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -319,3 +319,32 @@ C4 の既存の区間境界を共有します。
 `protectSemicolonPrefixes` は、
 atom 全体を含む保持部分の処理を Venn と共有します。
 共有 printer に図種による分岐は加えません。
+
+## Pie fixture coverage
+
+[pie の規則](./pie.ja.md)は固定した整形 fixture、
+`pie-cases.ts` の escape で表した Unicode・CR の例、
+`markdown-pie.test.ts` の実際の Markdown host を引用します。
+`format.test.ts` と `pie.test.ts` は正確な出力、冪等性、
+Db の一致、embedded の原文を確認します。
+escape 表記の例では木の不変条件も確認します。
+`corpus.test.ts` は、印付きの指定の読みと解析失敗も含む全 pie 入力を読みます。
+fixture の出力全体で、保持する隠れた原文を確認します。
+`describeFrontmatterChange` は ignored YAML が frontmatter に変わらないかを
+確かめます。
+dispatch と値 node の行にも pie を加えています。
+
+printer は共有の accessibility のコロン規則と
+`layoutDescriptionBlock` を呼びます。
+pie の行形式は次行の値を結合しません。
+`AtomLayout.writtenGapsBefore` は hidden node 外で消費する LF と、
+閉じ境界の空白を保ちます。
+`BlockRules.joiningRegionsInValues` は共通の結合を値 atom 全体に任せ、
+安全な後続部分を整えます。
+他の printer は従来の行全体の経路を使います。
+既存の `triviaLineBreak` は直前に trivia がない場合も印字境界を受け、
+hidden の LF を保ちつつ独立した trivia を揃えます。
+`formatsEmptyTrivia` は共有の説明 layout でコメントだけの block を揃えます。
+図種が選ぶ root の `keepsPrefix` は通常の root の整理より前に前置きを保ち、
+ignored YAML が実際の frontmatter になるのを防ぎます。
+既存の図種にはこれらの option を渡しません。

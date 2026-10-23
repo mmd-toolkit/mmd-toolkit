@@ -7,8 +7,8 @@
 common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めています。
 ここでも同じ 2 つの言葉を使います。
 **検出点**は、先頭のトリビアでないテキストの最初の位置、
-**たどり着いた位置**は、検出点から、検出が飛ばす `%%` だけの行と
-ディレクティブの先へ進んだ位置です。
+**たどり着いた位置**は、検出点から、検出が飛ばす 1 つのフロントマター形の
+ブロック、`%%` だけの行、ディレクティブの先へ進んだ位置です。
 検出器はたどり着いた位置からの図のテキストを見ます。
 ただし `error` 疑似図種の検出器の条件は、検出点から述べます。
 条件が最初に成り立った検出器が図種を選び、
@@ -99,11 +99,14 @@ mermaid.js がその id として受理する最小の入力があります。
 [fixture: common/detect-minimal-flowchart-elk]
 [fixture: common/detect-minimal-mindmap]
 [fixture: common/detect-minimal-architecture]
-[fixture: common/detect-minimal-agentflow] [fixture: common/detect-minimal-c4]
+[fixture: common/detect-minimal-agentflow]
+[fixture: common/detect-minimal-c4]
 [fixture: common/detect-minimal-kanban]
 [fixture: common/detect-minimal-class-diagram]
-[fixture: common/detect-minimal-er] [fixture: common/detect-minimal-gantt]
-[fixture: common/detect-minimal-info] [fixture: common/detect-minimal-pie]
+[fixture: common/detect-minimal-er]
+[fixture: common/detect-minimal-gantt]
+[fixture: common/detect-minimal-info]
+[fixture: common/detect-minimal-pie]
 [fixture: common/detect-minimal-requirement]
 [fixture: common/detect-minimal-sequence]
 [fixture: common/detect-minimal-swimlane]
@@ -126,7 +129,8 @@ mermaid.js がその id として受理する最小の入力があります。
 [fixture: common/detect-minimal-railroad-ebnf]
 [fixture: common/detect-minimal-railroad-abnf]
 [fixture: common/detect-minimal-railroad-peg]
-[fixture: common/detect-minimal-venn] [fixture: common/detect-minimal-wardley]
+[fixture: common/detect-minimal-venn]
+[fixture: common/detect-minimal-wardley]
 [fixture: common/detect-minimal-cynefin]
 [fixture: common/detect-minimal-usecase]
 
@@ -139,7 +143,8 @@ mermaid.js がその id として受理する最小の入力があります。
 [fixture: common/detect-minimal-c4-component]
 [fixture: common/detect-minimal-c4-dynamic]
 [fixture: common/detect-minimal-c4-deployment]
-[fixture: common/detect-c4-case] [fixture: common/detect-c4-word-after]
+[fixture: common/detect-c4-case]
+[fixture: common/detect-c4-word-after]
 [fixture: common/detect-c4-keyword-after-word]
 
 第 6 項の
@@ -151,13 +156,48 @@ mermaid.js がその id として受理する最小の入力があります。
 agentflow の文法はこれらの接尾部の形を拒否します。
 安定版の `agentflow` のヘッダーや大文字小文字の同一視はありません。
 本文の C4 の語も検出を上書きしません。
-[fixture: agentflow/header-only] [fixture: agentflow/header-without-beta]
-[fixture: agentflow/header-upper] [fixture: agentflow/detect-letter-suffix]
+[fixture: agentflow/header-only]
+[fixture: agentflow/header-without-beta]
+[fixture: agentflow/header-upper]
+[fixture: agentflow/detect-letter-suffix]
 [fixture: agentflow/detect-digit-suffix]
 [fixture: agentflow/detect-underscore-suffix]
 [fixture: agentflow/detect-hyphen-suffix]
 [fixture: agentflow/detect-non-ascii-suffix]
 [fixture: agentflow/lex-detect-c4-component-id]
+
+項目 13 の
+[`pieDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDetector.ts#L9-L11)
+は、正確な小文字の接頭部 `pie` だけを要求します。
+`pieChart` は pie を選んだ後、字句規則に失敗します。
+`Pie` と `PIE` は pie を選びません。
+[fixture: pie/header-only]
+[fixture: pie/header-letter-suffix]
+[fixture: pie/header-capitalized]
+[fixture: pie/header-uppercase]
+
+検出点で通過させたフロントマター形のブロックは、図のテキストのままです。
+コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び、
+隠れた YAML の規則がタイトルを適用せずにブロックを読み飛ばします。
+対応する入力は、pie 以外の対応するすべての図種で、字句規則か文法が拒否します。
+隣り合う区切りの空ブロック、閉じない区切り、ブロックの前の裸の `%%` の行では、
+代わりに拒否する `---` 疑似図種が選ばれます。
+[fixture: pie/frontmatter-nonleading-comment]
+[fixture: common/directive-before-frontmatter]
+[fixture: common/frontmatter-nonleading-sequence]
+[fixture: common/frontmatter-nonleading-class]
+[fixture: common/frontmatter-nonleading-state]
+[fixture: pie/lex-yaml-after-comment-adjacent-fences]
+[fixture: pie/frontmatter-unclosed]
+[fixture: pie/lex-yaml-after-bare-comment]
+[fixture: common/frontmatter-adjacent-delimiters]
+[fixture: common/frontmatter-unclosed]
+[fixture: common/frontmatter-after-bare-percent-flowchart]
+[fixture: agentflow/db-frontmatter-after-comment]
+[fixture: block/gram-frontmatter-comment-before]
+[fixture: ishikawa/frontmatter-after-comment]
+[fixture: usecase/frontmatter-after-comment]
+[fixture: venn/frontmatter-comment-before]
 
 項目 39 の
 [`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14)
@@ -165,10 +205,13 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 コロン、ハイフン、英字、数字、underscore は検出を妨げます。
 Unicode 空白は検出を通っても usecase 文法に失敗する場合があります。
 C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
-[fixture: usecase/header-lf] [fixture: usecase/header-uppercase]
+[fixture: usecase/header-lf]
+[fixture: usecase/header-uppercase]
 [fixture: usecase/header-letter-suffix]
-[fixture: usecase/header-unicode-suffix] [fixture: usecase/header-semicolon]
-[fixture: usecase/header-u2028-eof] [fixture: usecase/lex-header-emspace-eof]
+[fixture: usecase/header-unicode-suffix]
+[fixture: usecase/header-semicolon]
+[fixture: usecase/header-u2028-eof]
+[fixture: usecase/lex-header-emspace-eof]
 [fixture: usecase/div-detect-c4-label]
 
 ## 注記
@@ -186,7 +229,8 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
   `error` には `k` がないので、
   結果は [表記](./common.ja.md#表記)
   の意味で大文字小文字を区別しない比較と同じです。
-  [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
+  [fixture: common/error-pseudo-diagram]
+  [fixture: common/error-uppercase]
 
 - **大きな機能のときだけ登録される項目**: 項目 3〜5 は、
   mermaid.js が
@@ -256,7 +300,8 @@ ASCII
 
 - **キーワードの後の特定の文字**: 項目 38 は `cynefin-beta` の後の `:` を認め、
   項目 39 は `usecase-beta` の後の `:` を認めません。
-  [fixture: common/detect-cynefin-colon] [fixture: common/detect-usecase-colon]
+  [fixture: common/detect-cynefin-colon]
+  [fixture: common/detect-usecase-colon]
 
 - **大文字小文字**: 項目 30、32〜35、37 は大文字小文字を区別しません。
   `ISHIKAWA` も `IsHiKaWa` も ishikawa を選びます。
@@ -269,5 +314,6 @@ ASCII
   その図の文書で述べます。
   [fixture: common/detect-case-insensitive-ishikawa]
   [fixture: common/detect-case-mixed-ishikawa]
-  [fixture: common/detect-case-kelvin-sign] [fixture: common/detect-case-long-s]
+  [fixture: common/detect-case-kelvin-sign]
+  [fixture: common/detect-case-long-s]
   [fixture: common/detect-case-sensitive-sequence]

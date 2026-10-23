@@ -34,6 +34,15 @@ beforeEach(() => {
 })
 
 describe("dispatch to diagram printers", () => {
+  it("registers the pie body printer", async () => {
+    const actual = await vi.importActual<typeof ParserModule>(
+      "@mmd-toolkit/parser",
+    )
+    parse.mockImplementation(actual.parse)
+    expect(await formatMermaid('pie showData "Dispatch":2')).toBe(
+      'pie showData\n  "Dispatch" : 2\n',
+    )
+  })
   it("registers the usecase body printer", async () => {
     const actual = await vi.importActual<typeof ParserModule>(
       "@mmd-toolkit/parser",
@@ -128,7 +137,9 @@ describe("dispatch to diagram printers", () => {
   })
 
   it("prints a parsed diagram type without a printer unchanged", async () => {
-    parse.mockImplementation((text: string) => stubRoot(text, "PieDiagram"))
+    parse.mockImplementation((text: string) =>
+      stubRoot(text, "UnprintedDiagram"),
+    )
     const input = "erDiagram\n  A ||--o{ B : has  \n\n\n"
     expect(await formatMermaid(input)).toBe(input)
   })
@@ -215,7 +226,9 @@ describe("dispatch to diagram printers", () => {
       "- item\n\n  ```mermaid\n  erDiagram  \n\n    A ||--o{ B : has\t\n  ```\n",
       "> ```mmd\n> erDiagram\n>\n>   A ||--o{ B : has\n> ```\n",
     ])("%j", async (markdown) => {
-      parse.mockImplementation((text: string) => stubRoot(text, "PieDiagram"))
+      parse.mockImplementation((text: string) =>
+        stubRoot(text, "UnprintedDiagram"),
+      )
       expect(await formatMarkdown(markdown)).toBe(
         await formatMarkdownWithoutPlugin(markdown),
       )
@@ -229,7 +242,7 @@ describe("dispatch to diagram printers", () => {
     const first = input.indexOf("erDiagram")
     const last = input.indexOf("has") + 3
     parse.mockImplementation((text: string) => ({
-      ...stubRoot(text, "PieDiagram"),
+      ...stubRoot(text, "UnprintedDiagram"),
       range: [first, last],
     }))
     expect(await formatMermaid(input)).toBe(input)

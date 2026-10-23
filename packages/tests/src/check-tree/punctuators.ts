@@ -1,3 +1,4 @@
+import { PIE_PUNCTUATORS } from "./pie.ts"
 import { USECASE_PUNCTUATORS } from "./usecase.ts"
 import { VENN_PUNCTUATORS } from "./venn.ts"
 import { BLOCK_PUNCTUATORS } from "./block.ts"
@@ -39,6 +40,7 @@ const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = GRAPH_SHAPES.flatMap(
  * that row.
  */
 export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  PieDiagram: PIE_PUNCTUATORS,
   UsecaseDiagram: USECASE_PUNCTUATORS,
   AgentflowDiagram: [
     ...FLOWCHART_SHAPE_DELIMITERS,

@@ -63,7 +63,8 @@ kanban の隣り合うデータブロックは別々のノードに保ちます�
 二重引用符の外の `^`、閉じないデータブロック、
 入れ子のマッピングがブロックを閉じた後に残る波括弧は構文エラーです。
 この差異には当たりません。
-[fixture: kanban/gram-metadata-caret] [fixture: kanban/gram-metadata-unclosed]
+[fixture: kanban/gram-metadata-caret]
+[fixture: kanban/gram-metadata-unclosed]
 [fixture: kanban/gram-metadata-assigned-mapping]
 
 C4 では frontmatter とディレクティブの内容は不透明なので、
@@ -80,12 +81,14 @@ venn では、
 [fixture: venn/frontmatter-invalid]
 
 venn に `@{ ... }` のデータブロックの形はありません。
-[fixture: venn/gram-data-block] [fixture: venn/frontmatter-empty]
+[fixture: venn/gram-data-block]
+[fixture: venn/frontmatter-empty]
 [fixture: venn/frontmatter-unclosed]
 
 隣り合う frontmatter の区切りの行と、
 閉じていない frontmatter は構文エラーのままです。
-[fixture: venn/gram-data-block] [fixture: venn/frontmatter-empty]
+[fixture: venn/gram-data-block]
+[fixture: venn/frontmatter-empty]
 [fixture: venn/frontmatter-unclosed]
 
 Ishikawa でも、正しく区切られた frontmatter と directive の内容は不透明です。
@@ -96,7 +99,8 @@ mermaid.js はこれらの frontmatter を拒否します。
 [fixture: ishikawa/frontmatter-html-title]
 
 空の区切り行の隣接と、閉じていない frontmatter は構文エラーのままです。
-[fixture: ishikawa/frontmatter-empty] [fixture: ishikawa/frontmatter-unclosed]
+[fixture: ishikawa/frontmatter-empty]
+[fixture: ishikawa/frontmatter-unclosed]
 
 Ishikawa の `@{...}` にデータブロックの構文はなく、通常の節点のテキストです。
 不正に見える内容や閉じていない内容も、
@@ -343,6 +347,27 @@ mermaid が受理する入力を拒否することはありません。
 [fixture: usecase/gram-metadata-unknown-key]
 [fixture: usecase/lex-native-single-quoted-keys]
 
+### Pie
+
+Frontmatter は不正な YAML の本文を書かれたまま持てるので、
+構文のノードが足りないわけではありません。
+内容は木の構造を決めず、検査しません。
+先頭のフロントマターの本文 `title: [` を、mermaid.js は YAML として拒否し、
+この仕様は受理します。
+HTML 属性の引用符の変換で、書かれた YAML のタイトルが不正になる場合も、
+usecase の場合と同じく含みます。
+[fixture: pie/div-review-frontmatter-html-invalid-yaml]
+[fixture: usecase/div-gram-frontmatter-html-attribute-quotes]
+これは逆方向の場合だけで、不透明な内容を理由に、
+mermaid.js が受理する入力をこの規則が拒否することはありません。
+先頭以外の隠れた YAML は mermaid.js でもすでに不透明なので、
+不正な本文は PieIgnoredText に持ち、印を付けません。
+下の不正な init 引数も両者が受理し、印を持ちません。
+[fixture: pie/div-review-yaml-leading-invalid]
+[fixture: pie/review-yaml-hidden-invalid]
+[fixture: pie/lex-yaml-after-comment-invalid-body]
+[fixture: pie/review-directive-invalid-init]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -410,3 +435,13 @@ mermaid が受理する入力を拒否することはありません。
   Chevrotain parser、モデル検証、JSON の表を導入します。
   この差異は共有の直接の規則に従うもので、
   bug ラベルを文法変更の承認とは読みません。
+
+- pie では、2024-02-11 にマージされた
+  [PR #4751](https://github.com/mermaid-js/mermaid/pull/4751) が、
+  共通の先頭フロントマターの抽出とは別の、隠れた YAML の規則を導入しました。
+  pin した
+  [構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  は、この隠れた本文の検証を定めません。
+  2026-10-23 に `pie`、`pie YAML`、`pie frontmatter` で検索しましたが、
+  その本文の検証を必要とする保守者の判断は見つかりませんでした。
+  この仕様は、共通の不透明なデータの方針を先頭のフロントマターに適用します。

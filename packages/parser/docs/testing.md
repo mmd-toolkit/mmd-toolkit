@@ -16,8 +16,8 @@ the sentence of the specification or of the parser's documents that defines it.
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
 `sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
 `mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, `block/`,
-`kanban/`, `c4/`, `venn/`, `ishikawa/`, `agentflow/`, and `usecase/`, and
-checks:
+`kanban/`, `c4/`, `venn/`, `ishikawa/`, `agentflow/`, `usecase/`, and `pie/`,
+and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -365,3 +365,13 @@ Structure assertions cover native metadata, single quotes, CSS padding, arrow
 halves and opaque JSON. `tests/ast-usecase-examples.test.ts` checks all 26 node
 comment examples. The tests package supplies the tree checker and Db builder for
 the separate corpus comparisons.
+
+Pie fixtures are checked and recorded by `tests/pie.test.ts`: specified.json
+takes precedence, opaque-data divergences accept, and other unqualified
+divergence fixtures reject. Accepted trees check source coverage, token and raw
+spelling, node boundaries, child containment and source order, and call the
+corpus tree checker. The recorded Db is compared directly with `dbFromTree`;
+atomic-boundary references are also compared with the original expected Db.
+Structure checks cover hidden-form ownership, common-value padding/nulls, both
+quote kinds and double conversion. `tests/ast-pie-examples.test.ts` checks all
+eight node comment examples.

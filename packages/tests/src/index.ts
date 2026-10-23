@@ -29,6 +29,11 @@ export { checkTree } from "./check-tree/index.ts"
 export { DATA_BLOCK_NODE_TYPES } from "./check-tree/node-types.ts"
 export type { CheckedRoot, TreeProblem } from "./check-tree/index.ts"
 export { dbFromTree } from "./db-from-tree/index.ts"
+export { DIVERGENCE_PROPERTIES, fixtureAccepts } from "./fixture-acceptance.ts"
+export type {
+  DivergenceDirection,
+  DivergenceProperties,
+} from "./fixture-acceptance.ts"
 export {
   exceedsMaxEdges,
   flowchartEdgeCount,
@@ -66,6 +71,7 @@ export type DiagramType =
   | "ishikawa"
   | "agentflow"
   | "usecase"
+  | "pie"
 
 /**
  * Where a fixture input came from.
@@ -143,9 +149,7 @@ export type Expectation =
  */
 export const KNOWN_DIVERGENCES: readonly string[] = [
   // A `%%{ ... }%%` directive is a token boundary. mermaid removes it and joins
-  // the text on both sides; the spec does not join them. The results differ
-  // both ways: the spec rejects some inputs mermaid accepts, and accepts some
-  // mermaid rejects.
+  // the text on both sides; the spec does not join them.
   "directive-as-token-boundary",
   // A `;` that the line rule ignores is a token boundary in the same way,
   // inside a name, a number, a keyword, an arrow, or a delimiter. mermaid.js
@@ -288,8 +292,10 @@ export interface Fixture {
    * What an implementation of the specification gives for the input, where
    * that is not what mermaid.js did: the result of mermaid.js read without
    * the known divergence that changes how it reads the input (see
-   * `docs/expected-results.md`). Only fixtures that carry such a mark have
-   * it. Without it, the result to match is `expected`.
+   * `docs/expected-results.md`). The mark's explicit properties in
+   * `DIVERGENCE_PROPERTIES` say when it is required; `fixtureAccepts()` checks
+   * that requirement and decides acceptance. For a comparable Db, use this
+   * reading where present, otherwise `expected`.
    */
   readonly specified?: Expectation
 }

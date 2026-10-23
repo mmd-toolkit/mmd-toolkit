@@ -148,6 +148,18 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。                 |     |     |     |
 | [requirement-no-undef](./requirement-no-undef.ja.md)                                           | どの requirement も element も名指さない、`style`、`class`、`:::`、関係の名前を禁止する。 | ✅  |     |     |
 
+## usecase
+
+| 規則                                                                                   | 説明                                                                  | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------------------------------- | --------------------------------------------------------------------- | --- | --- | --- |
+| [usecase-no-duplicate-description](./usecase-no-duplicate-description.ja.md)           | 前に設定した説明を置き換える `accDescr` を禁止する。                  | ✅  |     |     |
+| [usecase-no-duplicate-direction](./usecase-no-duplicate-direction.ja.md)               | 前に設定した方向を置き換える `direction` 文を禁止する。               | ✅  |     |     |
+| [usecase-no-duplicate-metadata](./usecase-no-duplicate-metadata.ja.md)                 | 同じキーで前に設定した値を置き換えるメタデータの値を禁止する。        | ✅  |     |     |
+| [usecase-no-duplicate-title](./usecase-no-duplicate-title.ja.md)                       | 前に設定したタイトルを置き換える `accTitle` を禁止する。              | ✅  |     |     |
+| [usecase-no-empty-description-block](./usecase-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                      | ✅  |     |     |
+| [usecase-no-redefined-class](./usecase-no-redefined-class.ja.md)                       | 前に定義したクラスのスタイルを落とすか変える `classDef` を禁止する。  | ✅  |     |     |
+| [usecase-no-unclosed-description-block](./usecase-no-unclosed-description-block.ja.md) | 後の文のために書いた `}` が閉じる `accDescr {` のブロックを禁止する。 |     |     |     |
+
 ## c4
 
 | 規則                                                               | 説明                                                                    | ✅  | 💡  | 🚧  |

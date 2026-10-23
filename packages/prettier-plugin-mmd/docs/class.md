@@ -30,10 +30,16 @@ indentation/namespaces] [fixture: indentation/namespace-brace-after-one-space]
 member-bodies/in-namespace-indented] A level is what Prettier's `useTabs` and
 `tabWidth` options say: two spaces by default. [fixture: indentation/namespaces]
 [fixture: indentation/tab-width-4] [fixture: indentation/use-tabs] The
-indentation written in the input is not kept. Whitespace at the start of a line
-is nothing to mermaid.js, so the printer chooses the indentation from the
-structure alone, and one rule per level prints the same text whatever the input
-was indented with. [fixture: indentation/namespaces] [fixture:
+indentation written in the input is replaced by the indentation of the
+structure. Body indentation has a minimum width of one character even with
+`tabWidth: 0`: an indented member line such as `[*]` is an attribute, but at
+column zero mermaid.js and the parser reject it. Thus `"class Zero {\n  [*]\n}"`
+prints as `" class Zero {\n  [*]\n }"` at width zero; `useTabs` uses a tab per
+level. [fixture: indentation/member-edge-state-zero-width] [fixture:
+indentation/member-edge-state-zero-width-tabs] [corpus fixture:
+class/lex-member-edge-state-indented] The shared minimum is the same as for
+[flowchart](./flowchart.md#indentation), where the column also affects the
+reading. [fixture: indentation/namespaces] [fixture:
 indentation/written-indentation-dropped]
 
 Input
@@ -813,10 +819,10 @@ classDiagram
 
 ### Multi-line statements
 
-A statement written over several lines is printed on one line. In a class
-diagram, a line break ends a statement except after `direction`, where the value
-may be on the next line, and after the `:` of `accTitle` and `accDescr`, where
-the text may be: so `direction`, a line break, and `LR` is printed as
+An ordinary statement written over several lines is printed on one line. In a
+class diagram, a line break ends a statement except after `direction`, where the
+value may be on the next line, and after the `:` of `accTitle` and `accDescr`,
+where the text may be: so `direction`, a line break, and `LR` is printed as
 `direction LR`. [fixture: multi-line-statements/joined] [fixture:
 multi-line-statements/acc-descr-joined] [fixture:
 multi-line-statements/empty-line-inside-joined] [corpus fixture:
@@ -866,6 +872,41 @@ classDiagram
   direction
 %% c
 LR
+```
+
+Next-line `accTitle:` and `accDescr:` values keep their line break when joining
+would expose the greedy direction-line rule: lowercase `direction` followed by
+whitespace and uppercase TB, BT, LR or RL, even within longer text. Continuation
+values use the previous multiline layout, one level deeper than the keyword, so
+the accessibility value is not consumed as a direction statement. [fixture:
+multi-line-statements/title-next-direction-tb] [fixture:
+multi-line-statements/title-next-direction-bt] [fixture:
+multi-line-statements/title-next-direction-lr] [fixture:
+multi-line-statements/title-next-direction-rl] [fixture:
+multi-line-statements/description-next-direction-tb] [fixture:
+multi-line-statements/description-next-direction-bt] [fixture:
+multi-line-statements/description-next-direction-lr] [fixture:
+multi-line-statements/description-next-direction-rl] [fixture:
+multi-line-statements/direction-value-with-prefix] TD and other letter cases are
+not that direction rule, so their ordinary next-line values still join.
+[fixture: multi-line-statements/title-next-direction-td] [fixture:
+multi-line-statements/description-next-direction-td] [fixture:
+multi-line-statements/lower-case-direction-value] The protected continuation
+uses the configured step at `tabWidth: 0` and `useTabs`; CR normalizes before
+this same decision. [fixture: multi-line-statements/direction-value-zero-width]
+[fixture: multi-line-statements/direction-value-tabs] [test: accessibility
+revisions: class direction-value-cr]
+
+Input (escaped): `"classDiagram\nclass A11y\naccTitle:\n direction LR"`.
+
+Output
+([multi-line-statements/title-next-direction-lr-output.mmd](../tests/fixtures/class/multi-line-statements/title-next-direction-lr-output.mmd)):
+
+```mmd
+classDiagram
+  class A11y
+  accTitle:
+    direction LR
 ```
 
 ### Direction lines

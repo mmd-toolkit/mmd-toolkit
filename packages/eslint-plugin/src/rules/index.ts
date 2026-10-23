@@ -107,6 +107,13 @@ import { stateNoUndef } from "./state-no-undef.ts"
 import { timelineNoDuplicateDescription } from "./timeline-no-duplicate-description.ts"
 import { timelineNoDuplicateTitle } from "./timeline-no-duplicate-title.ts"
 import { timelineNoEmptyDescriptionBlock } from "./timeline-no-empty-description-block.ts"
+import { usecaseNoDuplicateDescription } from "./usecase-no-duplicate-description.ts"
+import { usecaseNoDuplicateDirection } from "./usecase-no-duplicate-direction.ts"
+import { usecaseNoDuplicateMetadata } from "./usecase-no-duplicate-metadata.ts"
+import { usecaseNoDuplicateTitle } from "./usecase-no-duplicate-title.ts"
+import { usecaseNoEmptyDescriptionBlock } from "./usecase-no-empty-description-block.ts"
+import { usecaseNoRedefinedClass } from "./usecase-no-redefined-class.ts"
+import { usecaseNoUnclosedDescriptionBlock } from "./usecase-no-unclosed-description-block.ts"
 import { vennNoDuplicateStyle } from "./venn-no-duplicate-style.ts"
 import { vennNoDuplicateSubset } from "./venn-no-duplicate-subset.ts"
 import { vennNoDuplicateTitle } from "./venn-no-duplicate-title.ts"
@@ -237,6 +244,13 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "timeline-no-duplicate-description": timelineNoDuplicateDescription,
   "timeline-no-duplicate-title": timelineNoDuplicateTitle,
   "timeline-no-empty-description-block": timelineNoEmptyDescriptionBlock,
+  "usecase-no-duplicate-description": usecaseNoDuplicateDescription,
+  "usecase-no-duplicate-direction": usecaseNoDuplicateDirection,
+  "usecase-no-duplicate-metadata": usecaseNoDuplicateMetadata,
+  "usecase-no-duplicate-title": usecaseNoDuplicateTitle,
+  "usecase-no-empty-description-block": usecaseNoEmptyDescriptionBlock,
+  "usecase-no-redefined-class": usecaseNoRedefinedClass,
+  "usecase-no-unclosed-description-block": usecaseNoUnclosedDescriptionBlock,
   "venn-no-duplicate-style": vennNoDuplicateStyle,
   "venn-no-duplicate-subset": vennNoDuplicateSubset,
   "venn-no-duplicate-title": vennNoDuplicateTitle,

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a final whitespace-only body title retain the frontmatter title?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

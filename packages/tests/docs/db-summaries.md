@@ -17042,3 +17042,525 @@ usecase/div-gram-json-malformed-escape]
 A pair of backslashes before a JSON closing quote represents one backslash
 without hiding that quote; the following object and its property-order entry are
 retained. [fixture: usecase/gram-json-double-backslash-before-quote]
+
+## pie
+
+`normalizePie()` (`src/normalizers/pie.ts`) summarizes the stored
+[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L18-L71).
+The header `pie` has detector id `pie`. [fixture: pie/header-only]
+
+| Field                   | Content                                             |
+| ----------------------- | --------------------------------------------------- |
+| `title`                 | Diagram title, or empty text.                       |
+| `accTitle` / `accDescr` | Common accessibility strings, or empty text.        |
+| `showData`              | Whether legend labels include their numeric values. |
+| `sections`              | `label`, `value` in first-label insertion order.    |
+
+The renderer's
+[`createPieArcs()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L12-L23)
+reads values for slice proportions and preserves section order. Its
+[`legend`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L149-L180)
+reads every label and value, including zero and small sections omitted from the
+arcs; `showData` selects whether values are appended to labels. The summary
+therefore keeps every stored section without sorting or filtering. [fixture:
+pie/db-slice-order] [fixture: pie/db-small-slice] [fixture: pie/db-all-fields]
+
+[`addSection()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L48)
+keeps the first value of each converted label, using a Map. Prototype-shaped
+labels are ordinary keys. Non-finite numbers use the shared summary convention:
+text `"Infinity"`; negative zero becomes zero. [fixture:
+pie/db-three-definitions] [fixture: pie/db-prototype-labels] [fixture:
+pie/number-overflow] [fixture: pie/number-negative-zero]
+
+A duplicate `-0` after a positive value is accepted: `-0 < 0` is false, and the
+Map retains the first value. When `-0` is first, a later positive duplicate
+leaves it in place and the summary records zero. [fixture:
+pie/db-duplicate-negative-zero] [fixture: pie/db-duplicate-first-negative-zero]
+
+The renderer reads `title` for its
+[`title text`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L142-L147).
+The common accessibility getters supply
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628).
+Frontmatter supplies a title before the Langium AST is published;
+[`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
+applies only nonempty final AST strings. The summary takes these getters rather
+than the AST or source positions. [fixture: pie/db-all-fields] [fixture:
+pie/frontmatter-title] [fixture: pie/frontmatter-title-overridden] [fixture:
+pie/frontmatter-empty-title-body]
+
+The remaining drawing inputs are omitted from the Db summary:
+
+- `config`: the Db's `getConfig()` returns a clone of fixed defaults. The
+  renderer
+  [merges configuration](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L33-L65)
+  separately, including `textPosition`, `donutHole`, `legendPosition` and
+  `highlightSlice`. Site settings and text configuration are already recorded as
+  `config` and `embedded.config`; none changes stored sections or `showData`.
+  [fixture: pie/config-drawing-only] [fixture: pie/frontmatter-config] [fixture:
+  pie/directive-before-header]
+- Totals, percentages, filtered arc lists, colors, angles, centroids, legend
+  positions, SVG dimensions and font measurements are derived during drawing.
+  They add no independent authored Db state. [fixture: pie/db-all-fields]
+
+Section labels bypass the common sanitizer. Common title and accessibility
+strings use it with DOMPurify disabled. All four supported security levels give
+the same summary; unsupported levels can still escape common strings according
+to root `htmlLabels`, with `flowchart.htmlLabels` as fallback. The summary
+retains Mermaid's stored entity markers, without decoding them. [fixture:
+pie/html-all-texts] [fixture: pie/config-security-strict] [fixture:
+pie/config-security-loose] [fixture: pie/config-security-antiscript] [fixture:
+pie/config-security-sandbox] [fixture: pie/config-security-other] [fixture:
+pie/config-other-html-false] [fixture: pie/config-other-flowchart-false]
+[fixture: pie/config-other-root-true] [fixture: pie/config-other-root-false]
+[fixture: pie/config-other-pie-html-false]
+
+No Db patch, browser stand-in beyond the shared sanitizer setup, data-block
+recording, generated-id replacement or time-dependent normalization is needed.
+
+These readings follow the
+[pie grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20),
+the
+[common terminals and EOL](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34),
+and
+[preprocessDiagram()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L65).
+
+### Directives before and during lexing
+
+Global
+[directive removal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L199-L202)
+uses the
+[directive pattern](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10);
+the hidden terminal is a separate lexer rule.
+
+Global directive removal can join `accTitle` to its colon and `accDescr` to its
+block opener. [fixture: pie/review-directive-acc-title-colon] [fixture:
+pie/review-directive-acc-descr-block-opener]
+
+Removal at the start or end of a description block value preserves the remaining
+text and closing brace. [fixture: pie/review-directive-block-value-start]
+[fixture: pie/review-directive-block-value-end]
+
+Removal can rejoin a minus sign with zero, or a decimal point with its
+fractional digits. [fixture: pie/div-review-directive-number-sign] [fixture:
+pie/div-review-directive-number-decimal]
+
+A directive-only line between label and colon or between colon and number does
+not remove the preceding LF, so these sections are rejected. [fixture:
+pie/review-directive-number-line-gap] [fixture:
+pie/review-directive-label-colon-line-gap]
+
+The tested unknown-type directive and malformed init contents are removed
+without changing the stored pie values. [fixture:
+pie/review-directive-unknown-type] [fixture: pie/review-directive-invalid-init]
+
+An unclosed directive inside `pie`, `showData`, `title`, `accTitle` or
+`accDescr` leaves a prefix that is rejected, with the incomplete header failing
+detection. [fixture: pie/review-directive-open-inside-header] [fixture:
+pie/review-directive-open-inside-showdata] [fixture:
+pie/review-directive-open-inside-title] [fixture:
+pie/review-directive-open-inside-acctitle] [fixture:
+pie/review-directive-open-inside-accdescr]
+
+An unclosed word-type directive after an accessibility title or line description
+removes the following section in the tested inputs. [fixture:
+pie/review-directive-open-acctitle-word] [fixture:
+pie/review-directive-open-accdescr-word]
+
+The typeless unclosed `%%{` instead acts as a comment ending before LF: it
+preserves a later section after a complete value, but cannot bridge a colon to a
+later number. [fixture: pie/review-directive-open-no-type] [fixture:
+pie/review-directive-hidden-unclosed]
+
+Empty `%%{}%%` and punctuation-only `%%{!}%%` survive global removal and are
+read by the hidden `DIRECTIVE` terminal, which consumes a following LF,
+including a normalized CRLF, and can join a colon to a number on the next
+physical line. [fixture: pie/review-directive-empty-body] [fixture:
+pie/review-directive-punctuation-body] [fixture:
+pie/review-directive-hidden-crlf]
+
+A hidden directive closes before a whitespace boundary, but when a digit follows
+`}%%` directly the comment fallback consumes that digit and the section is
+rejected for its missing number. [fixture:
+pie/review-directive-hidden-word-boundary] [fixture:
+pie/review-directive-hidden-space-boundary]
+
+U+2028 satisfies that closing boundary but remains unlexable between tokens, so
+it still causes rejection. [fixture: pie/review-hidden-directive-ls-boundary]
+
+A hidden directive immediately after the header can consume LF and let
+`showData` occupy the next physical line while remaining the next token.
+[fixture: pie/review-hidden-directive-before-showdata]
+
+A directive-looking form that survives global removal remains label text when
+`STRING` has already started. [fixture: pie/review-hidden-directive-in-string]
+
+Inside a description block, `A%%{}%% B` instead ends the `ACC_DESCR` token at
+its first `}`, leaving the stored description `A%%{` while the following comment
+consumes the rest. [fixture: pie/review-hidden-directive-in-block]
+
+After a title, accessibility title, line description, block or section, a
+trailing hidden directive can consume its required EOL newline and cause
+rejection at the next section. [fixture:
+pie/review-hidden-directive-after-title] [fixture:
+pie/review-hidden-directive-after-acctitle] [fixture:
+pie/review-hidden-directive-after-accdescr] [fixture:
+pie/review-hidden-directive-after-block] [fixture:
+pie/review-hidden-directive-after-section]
+
+At original EOF the same hidden terminal can consume the LF appended for
+parsing, and each of those five statement forms then satisfies EOL through EOF.
+[fixture: pie/review-directive-hidden-eof] [fixture:
+pie/review-hidden-directive-title-eof] [fixture:
+pie/review-hidden-directive-acctitle-eof] [fixture:
+pie/review-hidden-directive-accdescr-eof] [fixture:
+pie/review-hidden-directive-block-eof]
+
+### Statement endings
+
+A comment between a section label and its colon leaves a line break where the
+grammar permits none, so the section is rejected. [fixture:
+pie/comment-between-label-colon]
+
+After a whitespace-bounded header, `;;`, `; ;` and a colon followed by a space
+are rejected rather than terminating a statement. [fixture:
+pie/review-eol-header-two-semicolons] [fixture:
+pie/review-eol-header-spaced-semicolons] [fixture: pie/review-eol-header-colon]
+
+A glued semicolon prevents `showData` keyword recognition, whereas a separated
+semicolon is rejected after the keyword has been read. [fixture:
+pie/review-eol-showdata-semicolon] [fixture:
+pie/review-eol-showdata-space-semicolon]
+
+Two semicolons, spaced semicolons and a colon followed by a space are also
+rejected after `showData`. [fixture: pie/review-eol-showdata-two-semicolons]
+[fixture: pie/review-eol-showdata-spaced-semicolons] [fixture:
+pie/review-eol-showdata-colon]
+
+A complete section rejects a trailing colon, and a completed description block
+rejects `; ;` or a trailing colon at EOL. [fixture:
+pie/review-eol-section-colon] [fixture: pie/review-eol-block-spaced-semicolons]
+[fixture: pie/review-eol-block-colon]
+
+ASCII space and TAB after a block are hidden, while U+2028 after its closing
+brace is rejected. [fixture: pie/review-eol-block-space-tab] [fixture:
+pie/review-eol-block-ls]
+
+A title keeps `; ;` and a trailing colon as text, trimming the space after the
+colon. [fixture: pie/review-eol-title-spaced-semicolons] [fixture:
+pie/review-eol-title-colon]
+
+An accessibility title keeps a glued semicolon, a separated semicolon, `; ;` and
+glued `;;` as value text. [fixture: pie/review-eol-acctitle-semicolon] [fixture:
+pie/review-eol-acctitle-space-semicolon] [fixture:
+pie/review-eol-acctitle-spaced-semicolons] [fixture:
+pie/review-eol-acctitle-two-glued]
+
+A line description likewise keeps a glued semicolon, a separated semicolon,
+`; ;` and glued `;;` as value text. [fixture: pie/review-eol-accdescr-semicolon]
+[fixture: pie/review-eol-accdescr-space-semicolon] [fixture:
+pie/review-eol-accdescr-spaced-semicolons] [fixture:
+pie/review-eol-accdescr-two-glued]
+
+Accessibility titles and line descriptions retain a trailing colon but trim its
+following space. [fixture: pie/review-eol-acctitle-colon] [fixture:
+pie/review-eol-accdescr-colon]
+
+The three common line converters trim a final TAB. [fixture:
+pie/review-eol-title-tab] [fixture: pie/review-eol-acctitle-tab] [fixture:
+pie/review-eol-accdescr-tab]
+
+At original EOF, title text trims U+2029, accessibility title text trims U+2028,
+and line description text trims U+2029. [fixture: pie/review-title-eof-ps]
+[fixture: pie/review-acctitle-eof-ls] [fixture: pie/review-accdescr-eof-ps]
+
+A header ending in TAB at EOF or space before LF, and a `showData` header ending
+in space at EOF or TAB before LF, remain accepted. [fixture:
+pie/review-header-trailing-tab-eof] [fixture:
+pie/review-showdata-trailing-space-eof] [fixture: pie/review-eol-header-space]
+[fixture: pie/review-eol-showdata-tab]
+
+### Leading frontmatter and body YAML
+
+[extractFrontMatter()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L68)
+reads only leading frontmatter, before body lexing.
+
+Malformed YAML in a delimited leading frontmatter block is rejected, while the
+same malformed body after `pie` is skipped by the hidden `YAML` terminal without
+being parsed as YAML. [fixture: pie/div-review-yaml-leading-invalid] [fixture:
+pie/review-yaml-hidden-invalid]
+
+Leading empty frontmatter requires a blank body line between the delimiters,
+whereas a body hidden YAML block accepts adjacent delimiter lines. [fixture:
+pie/frontmatter-empty] [fixture: pie/review-yaml-hidden-empty] [fixture:
+pie/review-frontmatter-empty-blank-body]
+
+A body YAML token can consume LF between the header and `showData`, or between a
+label and its colon. [fixture: pie/review-yaml-before-showdata] [fixture:
+pie/review-yaml-between-label-colon]
+
+Immediately after a section or description block on the same line, a hidden YAML
+block consumes the LF immediately after its closing `---`. With no remaining EOL
+newline, a following statement is rejected, whereas EOF satisfies EOL. [fixture:
+pie/review-yaml-after-section] [fixture: pie/review-yaml-after-block] [fixture:
+pie/gram-section-eof-hidden-yaml] [fixture: pie/gram-block-eof-hidden-yaml]
+
+A space after the closing fence makes the YAML token stop before that space,
+leaving LF for EOL after either statement form; an extra blank line also
+supplies EOL after a section. [fixture: pie/review-yaml-after-section-space]
+[fixture: pie/review-yaml-after-block-space] [fixture:
+pie/review-yaml-after-section-blank-line]
+
+After a title, accessibility title or line description, a glued `---` belongs to
+the one-line value rather than a hidden YAML token; the following `x: y` line is
+rejected with a lexer error. [fixture: pie/review-yaml-after-title] [fixture:
+pie/review-yaml-after-acctitle] [fixture: pie/review-yaml-after-accdescr]
+
+CRLF and lone CR in hidden YAML fences and contents work after common
+line-ending normalization. [fixture: pie/review-yaml-hidden-crlf] [fixture:
+pie/review-yaml-hidden-cr]
+
+Tabs and spaces after the opening body YAML delimiter are allowed, but
+indentation before the closing delimiter prevents the token from closing.
+[fixture: pie/review-yaml-opening-tabs] [fixture:
+pie/review-yaml-closing-indent]
+
+Whitespace after the closing body YAML delimiter permits a following colon on
+the same line or a final TAB before the appended LF. [fixture:
+pie/review-yaml-closing-space-boundary] [fixture:
+pie/review-yaml-closing-tab-eof]
+
+Leading frontmatter with matching TAB indentation is dedented and supplies its
+title. [fixture: pie/review-yaml-frontmatter-indented]
+
+An array or scalar frontmatter root supplies no title. [fixture:
+pie/review-yaml-frontmatter-root-array] [fixture:
+pie/review-yaml-frontmatter-root-scalar]
+
+Null, false, zero and empty-string frontmatter titles supply no Db title.
+[fixture: pie/review-yaml-frontmatter-null-title] [fixture:
+pie/review-frontmatter-false-title] [fixture: pie/review-frontmatter-zero-title]
+[fixture: pie/review-frontmatter-empty-string-title]
+
+True, object and array frontmatter titles become `true`, `[object Object]` and
+`A,B` in the tested inputs. [fixture: pie/review-frontmatter-true-title]
+[fixture: pie/review-frontmatter-object-title] [fixture:
+pie/review-frontmatter-array-title]
+
+YAML-looking fences inside an already started `STRING` or description block
+remain text rather than hidden YAML tokens. [fixture:
+pie/review-label-hidden-yaml-text] [fixture: pie/review-block-hidden-yaml-text]
+
+HTML attribute quote cleanup can span from an open tag in frontmatter into a
+later label, changing that label to `A='B'>C` in the tested input. [fixture:
+pie/div-review-frontmatter-html-cross-label]
+
+The same cleanup can introduce single quotes into a single-quoted YAML title and
+make leading frontmatter invalid. [fixture:
+pie/div-review-frontmatter-html-invalid-yaml]
+
+### Stored values and conversion
+
+The
+[common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L43-L70)
+treats line and block values separately.
+
+A section can follow `pie showData` on the same line, separated from `showData`
+by an ASCII space. [fixture: pie/showdata-section-inline]
+
+A digit glued after `showData` fails its keyword boundary and leaves a number
+token in the rejected input. [fixture: pie/review-showdata-digit-suffix]
+
+`showData` after title text is part of that title and leaves the flag false.
+[fixture: pie/review-showdata-after-title]
+
+`showData` cannot start after a section, a header/comment newline gap or a
+header/global-directive newline gap. [fixture:
+pie/review-showdata-after-section] [fixture: pie/review-showdata-comment-gap]
+[fixture: pie/review-showdata-directive-gap]
+
+`title2` leaves a TITLE prefix followed by a number that fails EOL, while
+`accTitle2:` and `accDescr2:` fail their common terminal recognition. [fixture:
+pie/review-title-digit-suffix] [fixture: pie/review-acc-title-digit-suffix]
+[fixture: pie/review-acc-descr-digit-suffix]
+
+A title before the mandatory `pie` header prevents detection, but a bare title
+after the header at EOF is accepted with empty title text. [fixture:
+pie/review-title-bare-before-pie] [fixture: pie/review-title-bare-lone-eof]
+
+Single-quoted empty and whitespace-only labels remain actual Map keys, with
+whitespace preserved. [fixture: pie/review-label-empty-single] [fixture:
+pie/review-label-space-single]
+
+STRING preserves every ECMAScript whitespace character in the tested label,
+including U+2028 and U+2029. [fixture: pie/review-label-whitespace-boundaries]
+
+Single-quoted labels normalize literal CRLF to LF while preserving literal
+U+2028 and U+2029. [fixture: pie/review-label-single-crlf] [fixture:
+pie/review-label-single-ls] [fixture: pie/review-label-single-ps]
+
+A backslash before literal U+2029 or normalized CRLF cannot form a STRING
+escape, and an escaped final single quote leaves the string unclosed; these
+inputs are rejected. [fixture: pie/review-label-single-escaped-ps] [fixture:
+pie/review-label-escaped-crlf] [fixture:
+pie/review-label-lone-escaped-quote-single]
+
+HTML attribute quote cleanup can make a single-quoted label invalid by inserting
+unescaped single quotes. [fixture: pie/review-html-single-attribute-cleanup]
+
+The common line converters trim every ECMAScript whitespace character admitted
+at their value edges; CR and LF are line separators outside those value tokens.
+[fixture: pie/review-common-all-whitespace-trim]
+
+A single interior TAB remains in title, accessibility title, line description
+and block description values. [fixture: pie/review-common-single-tab-lines]
+[fixture: pie/review-common-tab-alone]
+
+Quotes and backslash escape spellings in the three common line fields and in
+description blocks remain text without STRING conversion. [fixture:
+pie/review-common-quotes-backslashes] [fixture:
+pie/review-block-quotes-backslashes]
+
+Whitespace-only block lines collapse, and either a blank line or U+2028/U+2029
+between `accDescr` and `{` can be consumed inside the block terminal. [fixture:
+pie/review-block-whitespace-only-lines] [fixture:
+pie/review-block-unicode-opener-separators] [fixture:
+pie/review-accdescr-block-blank-before-opener]
+
+A colon after `accDescr` selects the line form with literal brace text, whereas
+common keyword spellings inside a block are ordinary description text. [fixture:
+pie/review-block-brace-colon-priority] [fixture: pie/review-block-metadata-text]
+
+The tested leading-zero negative fraction reaches the Db as `-1.2` and is
+rejected, while long finite fractions are rounded to JavaScript number
+precision. [fixture: pie/review-number-minus-decimal-leading-zero] [fixture:
+pie/review-number-fraction-precision]
+
+Fractions below the subnormal range round to zero or negative zero before the Db
+comparison, so both signs are accepted and summarized as zero. [fixture:
+pie/review-number-positive-underflow-final] [fixture:
+pie/review-number-negative-underflow-final]
+
+An all-zero section list remains intact even though no arc survives the
+renderer's proportion filter. [fixture: pie/review-number-all-zero-sections]
+
+Single- and double-quoted spellings of the same converted label collide and
+retain the first value. [fixture:
+pie/review-db-converted-duplicate-single-double]
+
+A third nonempty accessibility definition after a section and an empty
+description block supplies the final common value. [fixture:
+pie/review-db-common-third-definitions]
+
+A whitespace-only final accessibility value clears the earlier AST value, while
+a whitespace-only final body title leaves the frontmatter title in the Db.
+[fixture: pie/review-acctitle-whitespace-final] [fixture:
+pie/review-accdescr-whitespace-final] [fixture:
+pie/review-frontmatter-whitespace-body-final]
+
+A percent pair at the start of accessibility line values leaves them empty,
+while a bare comment before the header, a triple-percent comment line and a
+spaced comment after a block are accepted. [fixture:
+pie/review-common-comment-value-start] [fixture:
+pie/review-comment-bare-header-eof] [fixture: pie/review-comment-triple-percent]
+[fixture: pie/review-comment-marker-after-block-space]
+
+An empty description block may also start the body before any nonempty
+description or section. [fixture: pie/review-accdescr-empty-block-first]
+
+### Entity preprocessing in each text field
+
+[encodeEntities()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L916)
+runs on body text in
+[Diagram.fromText()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L49-L83),
+before parsing.
+
+Its two semicolon-removal patterns are `style.*:\S*#.*;` and
+`classDef.*:\S*#.*;`; each match loses only its last semicolon before entity
+encoding. [fixture: pie/style-label-trigger] [fixture:
+pie/style-acctitle-trigger]
+
+In a quoted label, the style preprocessing pass removes only the last of one,
+two or three semicolons before entity encoding and preserves the following
+padding. [fixture: pie/review-style-label-trailing-spaces] [fixture:
+pie/review-style-label-two-padding] [fixture:
+pie/review-style-label-three-padding]
+
+In title text, two or three semicolons likewise lose only the last one before
+entity encoding. [fixture: pie/review-style-title-two] [fixture:
+pie/review-style-title-three]
+
+The title converter trims the padding left after preprocessing one, two or three
+semicolons. [fixture: pie/review-style-title-one-padding] [fixture:
+pie/review-style-title-two-padding] [fixture:
+pie/review-style-title-trailing-spaces]
+
+Uppercase STYLE and a space between colon and hash prevent title style removal;
+without a hash, the literal semicolon also remains. [fixture:
+pie/review-style-title-upper] [fixture: pie/review-style-title-space] [fixture:
+pie/review-style-title-nohash]
+
+In accessibility title text, the classDef pass removes only the last of two or
+three semicolons before encoding. [fixture: pie/review-style-acctitle-two]
+[fixture: pie/review-style-acctitle-three]
+
+The accessibility title converter trims padding after one-, two- and
+three-semicolon classDef forms. [fixture: pie/review-style-acctitle-one-padding]
+[fixture: pie/review-style-acctitle-two-padding] [fixture:
+pie/review-style-acctitle-trailing-spaces]
+
+Uppercase CLASSDEF, colon-space-hash and no-hash controls prevent classDef
+removal in accessibility titles. [fixture: pie/review-style-acctitle-upper]
+[fixture: pie/review-style-acctitle-space] [fixture:
+pie/review-style-acctitle-nohash]
+
+In line description text, the style pass removes only the last of two or three
+semicolons before encoding. [fixture: pie/review-style-accdescr-two] [fixture:
+pie/review-style-accdescr-three]
+
+The line description converter trims padding after one-, two- and
+three-semicolon style forms. [fixture: pie/review-style-accdescr-one-padding]
+[fixture: pie/review-style-accdescr-two-padding] [fixture:
+pie/review-style-accdescr-trailing-spaces]
+
+Uppercase STYLE, colon-space-hash and no-hash controls prevent style removal in
+line descriptions. [fixture: pie/review-style-accdescr-upper] [fixture:
+pie/review-style-accdescr-space] [fixture: pie/review-style-accdescr-nohash]
+
+On a description block line, the style pass removes only the last of two or
+three semicolons before encoding. [fixture: pie/review-style-block-two]
+[fixture: pie/review-style-block-three]
+
+The block converter trims padding after one-, two- and three-semicolon style
+forms. [fixture: pie/review-style-block-one-padding] [fixture:
+pie/review-style-block-two-padding] [fixture:
+pie/review-style-block-trailing-spaces]
+
+Uppercase STYLE, colon-space-hash, no hash and a hash on a separate line prevent
+style removal in description blocks. [fixture: pie/review-style-block-upper]
+[fixture: pie/review-style-block-space] [fixture: pie/review-style-block-nohash]
+[fixture: pie/review-style-block-hash-other-line]
+
+When both style and classDef triggers occur, their separate passes remove two
+final semicolons in label, title, accessibility title, line description and
+block text. [fixture: pie/review-style-both-triggers-label] [fixture:
+pie/review-style-both-triggers-title] [fixture:
+pie/review-style-both-triggers-acctitle] [fixture:
+pie/review-style-both-triggers-accdescr] [fixture:
+pie/review-style-both-triggers-block]
+
+Global directive removal runs first and can recreate the style trigger in each
+of those five text consumers. [fixture: pie/review-style-directive-rejoin-label]
+[fixture: pie/review-style-directive-rejoin-title] [fixture:
+pie/review-style-directive-rejoin-acctitle] [fixture:
+pie/review-style-directive-rejoin-accdescr] [fixture:
+pie/review-style-directive-rejoin-block]
+
+U+2028 and U+2029 split the style matcher segment, preserving a semicolon beyond
+the separator in labels, the three common line fields and description blocks.
+[fixture: pie/review-style-ls-boundaries] [fixture:
+pie/review-style-ps-boundaries] [fixture:
+pie/review-style-block-separator-boundaries]
+
+A frontmatter title bypasses this entity-preprocessing stage and retains its
+style-looking semicolons as written. [fixture:
+pie/review-style-frontmatter-title]

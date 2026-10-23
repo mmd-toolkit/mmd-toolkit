@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/pie/pie.spec.ts",
+    "line": 88,
+    "test": "pie > parse > should handle simple pie with an acc description (accDescr)"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "a neat chart",
+    "accTitle": "",
+    "accDescr": "a neat description",
+    "showData": false,
+    "sections": [
+      {
+        "label": "ash",
+        "value": 60
+      },
+      {
+        "label": "bat",
+        "value": 40
+      }
+    ]
+  }
+}

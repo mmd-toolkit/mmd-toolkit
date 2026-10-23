@@ -575,16 +575,28 @@ gets the same compact form as the sibling diagrams. Internal characters and
 whitespace, comments, directives, percent and semicolon text stay. Empty and
 whitespace-only lines print the colon form without a value. The next physical
 line remains a separate statement; the siblings' next-line joining does not
-apply. [fixture: direction-and-accessibility/a11y-trimmed] [test: usecase:
-a11y-unicode-exterior]
+apply. In particular, direction text after an empty colon line remains a
+separate direction statement, rather than becoming accessibility value text.
+[fixture: direction-and-accessibility/title-next-direction-separate] [fixture:
+direction-and-accessibility/description-next-direction-separate] [fixture:
+direction-and-accessibility/a11y-trimmed] [test: usecase: a11y-unicode-exterior]
 
 Description blocks reuse [class multiline values](./class.md#multi-line-values):
 keep the body's lines and columns and align a separate `}` with the statement.
-One space precedes `{`; empty and whitespace-only blocks print `accDescr {}`.
-The source retention rules for protected common comment regions and semicolon
-prefixes still take priority. Structural indentation keeps the same layout with
-zero width or tabs. [fixture: direction-and-accessibility/a11y-closer-aligned]
-[fixture: direction-and-accessibility/a11y-closer-tabs] [fixture:
+The keyword-to-brace gap reuses
+[flowchart's Whitespace between tokens](./flowchart.md#whitespace-between-tokens)
+with the same reason: the common token-gap rule keeps contact that Mermaid may
+need to read a token. Usecase has no reason to differ among these Db-equal
+forms: `accDescr{ a }` stays touching; a space, run of spaces or tab becomes one
+space. [fixture: direction-and-accessibility/keyword-brace-touching] [fixture:
+direction-and-accessibility/keyword-brace-space] [fixture:
+direction-and-accessibility/keyword-brace-run] [test: accessibility revisions:
+usecase keyword-brace-tab] Empty and whitespace-only interiors print `{}`,
+keeping that exterior gap. The source retention rules for protected common
+comment regions and semicolon prefixes still take priority. Structural
+indentation keeps the same layout with zero width or tabs. [fixture:
+direction-and-accessibility/a11y-closer-aligned] [fixture:
+direction-and-accessibility/a11y-closer-tabs] [fixture:
 direction-and-accessibility/a11y-closer-zero] [fixture:
 direction-and-accessibility/a11y-directive-padding]
 
@@ -611,6 +623,17 @@ usecase-beta
   A
   direction BT
   direction RL
+```
+
+Input (escaped): `"usecase-beta\naccDescr{ a }\nA[Keyword gap]"`.
+
+Output
+([direction-and-accessibility/keyword-brace-touching-output.mmd](../tests/fixtures/usecase/direction-and-accessibility/keyword-brace-touching-output.mmd)):
+
+```mmd
+usecase-beta
+  accDescr{ a }
+  A[Keyword gap]
 ```
 
 ### Blank lines

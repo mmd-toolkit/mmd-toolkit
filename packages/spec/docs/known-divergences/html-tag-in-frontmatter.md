@@ -122,8 +122,8 @@ stays, and mermaid.js rejects the label. In example 5 the `>` of the arrow ends
 the tag before the message. This specification looks for tags only in the text
 after the frontmatter, and reads each of these texts as it would without the
 frontmatter. A tag that starts and ends inside the frontmatter makes no
-difference. The difference goes both ways, and it can change acceptance or the
-Db.
+difference to the HTML reading of the diagram. [fixture: pie/frontmatter-html]
+The difference goes both ways, and it can change acceptance or the Db.
 
 In kanban, with `title: <a` in frontmatter, mermaid.js converts the inner
 attribute quotes of `S["b="c">d"]` and accepts the input. This specification
@@ -143,7 +143,7 @@ the first `>` of the diagram as `'`, and so can accept a label that it would
 reject, reject one that it would accept, or change the text of a label, a title,
 or a message. This toolkit reads the diagram as it would without the
 frontmatter. Closing the tag in the title, or leaving out the `<`, makes both
-read the same.
+read the same. [fixture: pie/frontmatter-html]
 
 ## Why mermaid.js reads it so
 
@@ -160,8 +160,11 @@ In this specification, the lexer starts reading after the frontmatter, and looks
 for tags only in the text it reads; what the frontmatter contains does not
 change how the text is read (see
 [HTML attribute quotes](../common.md#html-attribute-quotes)). A value derived
-from the frontmatter, such as the title, is the one that mermaid.js derives (see
+from the frontmatter, such as the title, is the one that mermaid.js derives in
+every diagram type (see
 [Frontmatter configuration](../../../tests/docs/configuration.md#frontmatter-configuration)).
+[fixture: pie/frontmatter-html] [fixture:
+flowchart/frontmatter-title-html-attribute]
 
 That a tag can reach from the frontmatter into the text comes from the order of
 the steps of mermaid.js: the replacement runs before the frontmatter is removed.
@@ -214,6 +217,24 @@ usecase/div-html-frontmatter-acc-title-db] [fixture:
 usecase/lex-html-acc-title-body-control] [fixture:
 usecase/lex-html-frontmatter-arrow-closes-tag]
 
+### Pie
+
+Frontmatter holds its written body and StringLiteral holds a label. An ignored
+sibling cannot represent a tag opened in frontmatter rewriting a later label's
+quotes. The direct rule excludes frontmatter from the diagram's HTML scan; a tag
+crossing the fence can therefore make Mermaid accept a label rejected here. A
+tag closed inside accepted frontmatter has no such difference, and the
+frontmatter title is Mermaid's converted value. If attribute conversion instead
+makes the YAML invalid, Mermaid rejects while the shared
+[opaque-data rule](./embedded-data-opaque.md) accepts; this is recorded like the
+corresponding usecase input. Only the fence-crossing effect and the
+post-conversion YAML rejection differ. A tag entirely in diagram text still
+follows the common HTML rule. [fixture: pie/frontmatter-html] [fixture:
+pie/div-review-frontmatter-html-cross-label] [fixture:
+pie/div-review-frontmatter-html-invalid-yaml] [fixture:
+usecase/div-gram-frontmatter-html-attribute-quotes] [fixture:
+pie/html-all-texts]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -259,3 +280,10 @@ usecase/lex-html-frontmatter-arrow-closes-tag]
   on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
   validation and JSON tables. This divergence follows the shared direct rule,
   not a claim that a bug label approves a grammar change.
+
+- For pie, the pinned
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  does not describe an HTML tag crossing the frontmatter fence. Searches on
+  2026-10-23 for `pie`, `pie frontmatter` and `pie HTML` found no maintainer
+  decision on this cross-fence rewriting. The shared exclusion of opaque
+  frontmatter determines the difference.

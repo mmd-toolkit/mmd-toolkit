@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does HTML attribute cleanup make unescaped single-quoted labels invalid?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->x<- at offset: 15, skipped 1 characters. Parse error on line 2, column 13: Expecting token of type ':' but found `'>A</b>'`."
+  }
+}

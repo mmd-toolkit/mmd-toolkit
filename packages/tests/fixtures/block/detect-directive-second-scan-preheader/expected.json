@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does block reject a directive found only by detection's second scan before its header? It rejects the retained prefix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{x}%%blocka\n^\nExpecting 'BLOCK_DIAGRAM_KEY', got 'NODE_ID'"
+  }
+}

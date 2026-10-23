@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can common comment regions join common line values across LS/PS? The title and accessibility values preserve the separator and joined suffix."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "A B",
+    "accTitle": "C D",
+    "accDescr": "E F",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A style keyword on a different line does not trigger final-semicolon removal."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "style fill:red\nﬂ°f00¶ß",
+        "value": 1
+      }
+    ]
+  }
+}

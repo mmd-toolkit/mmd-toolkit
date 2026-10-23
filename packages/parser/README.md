@@ -143,6 +143,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Agentflow diagrams: `agentflow` (`agentflow-beta`).
 - Usecase diagrams: `usecase` (`usecase-beta`);
   [node types](../spec/docs/ast/usecase.md).
+- Pie charts: `pie` (`pie`); [node types](../spec/docs/ast/pie.md).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -248,9 +249,10 @@ type ids. The names and fields are those of the specification's
 [`ast/block.md`](../spec/docs/ast/block.md),
 [`ast/kanban.md`](../spec/docs/ast/kanban.md),
 [`ast/c4.md`](../spec/docs/ast/c4.md),
-[`ast/venn.md`](../spec/docs/ast/venn.md), and
-[`ast/ishikawa.md`](../spec/docs/ast/ishikawa.md), and
-[`ast/agentflow.md`](../spec/docs/ast/agentflow.md).
+[`ast/venn.md`](../spec/docs/ast/venn.md),
+[`ast/ishikawa.md`](../spec/docs/ast/ishikawa.md),
+[`ast/agentflow.md`](../spec/docs/ast/agentflow.md), and
+[`ast/pie.md`](../spec/docs/ast/pie.md).
 
 ## Walking the tree
 
@@ -428,7 +430,8 @@ these differences:
   [`ast/c4.md`](../spec/docs/ast/c4.md) (the C4 nodes),
   [`ast/venn.md`](../spec/docs/ast/venn.md) (the venn nodes),
   [`ast/ishikawa.md`](../spec/docs/ast/ishikawa.md) (the Ishikawa nodes),
-  [`ast/agentflow.md`](../spec/docs/ast/agentflow.md) (the Agentflow nodes), and
+  [`ast/agentflow.md`](../spec/docs/ast/agentflow.md) (the Agentflow nodes),
+  [`ast/pie.md`](../spec/docs/ast/pie.md) (the pie nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

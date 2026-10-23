@@ -33,7 +33,12 @@ pin した版は mermaid 12.0.0 です。
 - [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams)
   の下の各図のディレクトリにある文法（例:
   [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)）
-  とその字句状態
+  とその字句状態。Langium の図では、
+  [language/](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language)
+  の下の文法とインポート先。例は
+  [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium)
+  と
+  [common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium)。
 - 各図の `Db` クラス。
   解析の一部はここで行われます（例:
   [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
@@ -57,6 +62,7 @@ pin した版は mermaid 12.0.0 です。
    `ast/` の下のその図種の文書で定める木を作る。
    木はソースを何も失わない。
    どの文字も、単位、コメント、ディレクティブ、フロントマター、
+   図の無視するテキストのノード、
    行単位の規則が無視する `;` のどれかに含まれるか
    （[common.ja.md](./common.ja.md) と図の文書で定めます）、
    [表記](./common.ja.md#表記) で定めた空白か、行終端である。

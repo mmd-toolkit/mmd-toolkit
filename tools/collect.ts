@@ -162,6 +162,9 @@ const SPEC_FILES: Readonly<
   venn: () => ["diagrams/venn/parser/venn.spec.ts"],
   // The directory has only this spec file; all three tests pass parser text.
   ishikawa: () => ["diagrams/ishikawa/ishikawa.spec.ts"],
+  // Both files parse diagram text. The renderer spec only reads the resulting
+  // DOM in assertions; the recorder can leave drawing and those reads empty.
+  pie: () => ["diagrams/pie/pie.spec.ts", "diagrams/pie/pieRenderer.spec.ts"],
   // The lexer and JSON helper specs pass fragments, not complete diagrams.
   // usecaseDb, usecaseRenderer and usecaseRoleColors build model/layout values.
   // usecase.docs reads the canonical page and renders every example.

@@ -319,6 +319,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - `agentflow*.ts`: `format` と `corpus` を `-t agentflow` で。
     `-t` なしで `agentflow`、`markdown-agentflow`、`value-nodes`、
     `dispatch`。
+  - `pie*.ts`: `format` と `corpus` を `-t pie` で。
+    `-t` なしで `pie`、`markdown-pie`、`value-nodes`、`dispatch`。
   - `statement-rules.ts`、`accessibility-lines.ts`:
     それを使う図種、ER と requirement のテスト。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:
@@ -445,4 +447,28 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 - Jison の図（flowchart など）: 上の手順のとおり。
   字句の規則は仕様の「字句の規則」の節にあり、
   木に現れない字句の事実は、その節にある。
-- Langium の図（pie など）: pie のときに書く。
+- Langium の図: 上の手順のとおり、仕様の AST から印字する。
+  エンジン自体は印字の規則を変えない。図種の仕様で次を確かめる。
+  - 最初の一致の優先順と、キーワード・構成要素の境界。
+  - 字句規則が定める場合の、隠れた YAML・ディレクティブ。
+    `...IgnoredText` は、仕様が定める AST のフィールドか本体の要素に
+    原文のまま保持する。
+    規則が node の範囲外で消費する LF と、閉じの後の空白も保持する。
+    どちらも受理を決める場合がある。
+    atom 間のこれらの隙間を原文のまま保つには `writtenGapsBefore` を使う。
+    例:
+    [Hidden yaml](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#hidden-yaml)
+    と
+    [Hidden directives](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#hidden-directives)。
+  - 検出がヘッダーに達する前に読み飛ばしたテキスト。
+    先頭の空行やコメントを整えると無視された YAML がフロントマターに
+    なる場合は、図種自身の述語で判断し、`keepsPrefix` で前置き全体を保つ。
+    例:
+    [Frontmatter yaml](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#frontmatter-yaml)。
+  - 行の値: 文法が次行の値を読まない場所では結合しない。
+    例: [Title](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#title)
+    と
+    [Accessibility lines](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#accessibility-lines)。
+  - 図種のコーパスが印を付けた差異の識別子: その識別子の仕様の読みを使う。
+    例:
+    [Specified readings](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#specified-readings)。

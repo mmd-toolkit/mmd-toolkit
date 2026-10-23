@@ -119,11 +119,13 @@ flowchart/gram-empty-description-block-before-link] An empty description block
 is not reported where the tree has a place for it, where a statement starts or
 before the separator that ends a statement: as on a line of its own, or after
 another statement on its line (`A accDescr {}` is the vertex A and an empty
-description block), it is a description block statement, and it is formatted as
-any other: the whitespace between its tokens follows
-[Whitespace between tokens](./flowchart.md#whitespace-between-tokens), and a
-line break inside it is kept, with the `}` at the level of the `accDescr`.
-[fixture:
+description block), it is a description block statement. An ordinary closed
+block without text or trivia prints an empty interior `{}`, including when it
+contained a line break. A touching keyword stays touching, as `accDescr{}`.
+[fixture: flowchart/accessibility-lines/empty-block-touching-keyword] Under
+[Accessibility lines](./flowchart.md#accessibility-lines), there is no text for
+an interior space to surround, so follow the sibling usecase form among Db-equal
+forms. [fixture:
 flowchart/statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture:
 flowchart/statements-one-per-line/compat-empty-description-block-after-statement]
@@ -501,8 +503,8 @@ flowchart/indentation/zero-direction-directive] [fixture:
 flowchart/indentation/zero-direction-style-prefix] The same minimum protects
 [mindmap](./mindmap.md#indentation), [kanban](./kanban.md#indentation),
 [Venn](./venn.md#indentation), [Ishikawa](./ishikawa.md#indentation),
-[Agentflow](./agentflow.md#indentation) and [YAML](#frontmatter) where
-zero-width indentation would change the reading.
+[Agentflow](./agentflow.md#indentation), [class](./class.md#indentation) and
+[YAML](#frontmatter) where zero-width indentation would change the reading.
 
 ## Sequence messages from a number or `title`
 
@@ -1462,3 +1464,42 @@ Shared EOL, BOM, frontmatter, final-newline and Markdown handling apply.
 Accessibility exterior whitespace is trimmed in standalone files and Markdown.
 [fixture: usecase/final-newline/final-value-padding] [test: usecase Markdown:
 last-value-padding]
+
+## Pie hidden boundaries and authored values
+
+The [pie rules](./pie.md) retain written quotes, escapes, number spelling, value
+continuation columns, duplicates and source order. Common title/accessibility
+line edges compact like C4, but pie never joins a next-physical-line value.
+Empty labels and description blocks are real syntax. [fixture:
+pie/labels/label-quotes] [fixture: pie/numbers/number-spellings] [fixture:
+pie/title/title-next-trivia] [fixture: pie/description-blocks/block-empty]
+
+Hidden YAML and hidden DIRECTIVE are PieIgnoredText, separate from leading
+frontmatter and Root directives. Their source stays in place, including LF
+consumed outside the range, spare EOL and closing whitespace that can determine
+acceptance. Hidden YAML closers keep column one. A detection-skipped prefix
+stays whole, including its leading LF and comments, so ignored YAML cannot be
+promoted into frontmatter. Guarded YAML formatting applies only to real
+frontmatter. [fixture: pie/hidden-yaml/yaml-after-space-boundary] [fixture:
+pie/hidden-directives/hidden-after-extra-lf] [fixture:
+pie/frontmatter-yaml/preheader-leading-lf] [fixture:
+pie/frontmatter-yaml/frontmatter-safe]
+
+Pie uses zero body indentation at `tabWidth: 0`; YAML retains its shared
+positive minimum. Every semicolon remains, with complete crossing value/trivia
+prefixes protected. Physical EOL/BOM and final-newline handling are shared.
+Markdown hosts trim final code-block-line padding, including final hidden
+boundary padding; interior hidden boundary padding remains necessary before a
+later statement. [fixture: pie/indentation/indent-zero] [fixture:
+pie/frontmatter-yaml/frontmatter-zero] [fixture:
+pie/directives-and-semicolons/selected-two-passes] [test: pie Markdown:
+hidden-boundary] [test: pie Markdown: final-hidden-padding]
+
+The pie corpus includes marked divergences with specified acceptance and Db
+readings. Raw-rejected C4 detection, preheader Unicode and opaque YAML do not
+supply raw Db evidence; available specified Dbs and trees are checked
+separately. Rejected payloads follow the shared failure path. See
+[Specified readings](./pie.md#specified-readings). [corpus fixture:
+pie/div-detect-c4-label] [corpus fixture: pie/div-review-yaml-leading-invalid]
+[corpus fixture: pie/div-preheader-retained-yaml-bare-ls] [test: pie Markdown:
+rejected]

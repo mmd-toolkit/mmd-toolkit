@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a global directive between pie and a label supply a keyword boundary? No: boundaries use text with directives removed."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 1: unexpected character: ->p<- at offset: 0, skipped 3 characters. Parse error on line 1, column 4: Expecting token of type 'pie' but found `\"A\"`."
+  }
+}

@@ -1,7 +1,10 @@
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import type { Fixture } from "@mmd-toolkit/tests"
-import { getFixturesRoot, loadFixtures } from "@mmd-toolkit/tests"
+import {
+  fixtureAccepts,
+  getFixturesRoot,
+  loadFixtures,
+} from "@mmd-toolkit/tests"
 import type { Root, IshikawaDiagram } from "../src/index.ts"
 import { ParseError, parse, traverseNodes } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
@@ -13,21 +16,6 @@ import {
   indentationBlankLinesRejectedByMermaid,
   withoutTokenCuts,
 } from "./helpers/reference-inputs.ts"
-
-/** Acceptance defined by the corpus and the five Ishikawa divergences. */
-function accepts(fixture: Fixture): boolean {
-  if (fixture.specified !== undefined) return fixture.specified.accepted
-  switch (fixture.knownDivergence) {
-    case "directive-as-token-boundary":
-      return false
-    case "blank-line-after-header-or-comments":
-    case "c4-keyword-anywhere":
-    case "embedded-data-opaque":
-      return true
-    default:
-      return fixture.expected.accepted
-  }
-}
 
 /** Project invariant 3, and containment and source order of every child node. */
 function expectCoverage(text: string, root: Root): void {
@@ -195,7 +183,7 @@ describe("ishikawa acceptance fixtures", async () => {
         if (!(error instanceof ParseError)) throw error
         rejection = error
       }
-      expect(root !== null).toBe(accepts(fixture))
+      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (fixture.knownDivergence === "directive-as-token-boundary") {
         const outcome = outcomeOf(fixture.input)
         if (outcome.kind === "unsupported")

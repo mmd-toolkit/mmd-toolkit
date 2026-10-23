@@ -144,6 +144,18 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.                            |     |     |     |
 | [requirement-no-undef](./requirement-no-undef.md)                                           | Disallow a name in `style`, `class`, `:::`, or a relationship that names no requirement and no element. | ✅  |     |     |
 
+## usecase
+
+| Rule                                                                                | Description                                                                            | ✅  | 💡  | 🚧  |
+| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | --- | --- | --- |
+| [usecase-no-duplicate-description](./usecase-no-duplicate-description.md)           | Disallow an `accDescr` that replaces the description set before it.                    | ✅  |     |     |
+| [usecase-no-duplicate-direction](./usecase-no-duplicate-direction.md)               | Disallow a `direction` statement that replaces the direction set before it.            | ✅  |     |     |
+| [usecase-no-duplicate-metadata](./usecase-no-duplicate-metadata.md)                 | Disallow a metadata value that replaces the value of the same key set before it.       | ✅  |     |     |
+| [usecase-no-duplicate-title](./usecase-no-duplicate-title.md)                       | Disallow an `accTitle` that replaces the title set before it.                          | ✅  |     |     |
+| [usecase-no-empty-description-block](./usecase-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                                | ✅  |     |     |
+| [usecase-no-redefined-class](./usecase-no-redefined-class.md)                       | Disallow a `classDef` that drops or changes the styles of the class defined before it. | ✅  |     |     |
+| [usecase-no-unclosed-description-block](./usecase-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for a later statement closes.        |     |     |     |
+
 ## c4
 
 | Rule                                                            | Description                                                                                       | ✅  | 💡  | 🚧  |

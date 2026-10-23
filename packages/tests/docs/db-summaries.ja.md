@@ -20142,3 +20142,608 @@ JSON は、例のキーと値の制御文字、スラッシュ、Unicode のエ�
 JSON の閉じ引用符の前のバックスラッシュ二つは、一つのバックスラッシュを表し、
 引用符を隠さない。後続のオブジェクトと、その property-order エントリーも残る。
 [fixture: usecase/gram-json-double-backslash-before-quote]
+
+## pie
+
+`normalizePie()`（`src/normalizers/pie.ts`）は、保存された
+[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L18-L71)
+を要約する。
+ヘッダー `pie` の検出 id は `pie`。
+[fixture: pie/header-only]
+
+| フィールド              | 内容                                       |
+| ----------------------- | ------------------------------------------ |
+| `title`                 | 図のタイトル。なければ空のテキスト。       |
+| `accTitle` / `accDescr` | 共通のアクセシビリティ文字列。なければ空。 |
+| `showData`              | 凡例のラベルに数値を添えるか。             |
+| `sections`              | ラベルの初出順の `label`、`value`。        |
+
+描画の
+[`createPieArcs()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L12-L23)
+は値から扇形の割合を求め、区分の順序を保つ。
+[`凡例`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L149-L180)
+は扇形から除かれるゼロや小さい区分も含め、全ラベルと値を読む。
+`showData` はラベルへ値を添えるかを選ぶ。
+このため要約は、保存された全区分を並べ替えも絞り込みもせず保つ。
+[fixture: pie/db-slice-order] [fixture: pie/db-small-slice]
+[fixture: pie/db-all-fields]
+
+[`addSection()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L48)
+は Map を使い、変換後の各ラベルの最初の値を保つ。
+プロトタイプと同じ名前も通常のキーになる。
+非有限数は共通の要約規約でテキスト `"Infinity"` とし、負のゼロはゼロとする。
+[fixture: pie/db-three-definitions] [fixture: pie/db-prototype-labels]
+[fixture: pie/number-overflow] [fixture: pie/number-negative-zero]
+
+正の値の後の重複値 `-0` は受理される。
+`-0 < 0` は偽で、Map は最初の値を保つ。
+`-0` が最初なら、後の正の重複値はそれを置き換えず、要約はゼロを記録する。
+[fixture: pie/db-duplicate-negative-zero]
+[fixture: pie/db-duplicate-first-negative-zero]
+
+描画は `title` を
+[`タイトルのテキスト`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L142-L147)
+として読む。
+共通のアクセシビリティ getter は
+[`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+へ値を渡す。
+Langium の AST を反映する前に、frontmatter がタイトルを設定する。
+[`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
+は AST の最後の文字列が空でない場合だけ反映する。
+要約は AST やソース位置ではなく、これらの getter を読む。
+[fixture: pie/db-all-fields] [fixture: pie/frontmatter-title]
+[fixture: pie/frontmatter-title-overridden]
+[fixture: pie/frontmatter-empty-title-body]
+
+残りの描画入力は Db の要約に含めない。
+
+- `config`：Db の `getConfig()` は固定の既定値の複製を返す。
+  描画は `textPosition`、`donutHole`、`legendPosition`、
+  `highlightSlice` を含む
+  [設定を別途マージする](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L33-L65)。
+  サイトと入力の設定は `config` と `embedded.config` に記録済み。
+  どれも保存された区分や `showData` を変えない。
+  [fixture: pie/config-drawing-only] [fixture: pie/frontmatter-config]
+  [fixture: pie/directive-before-header]
+- 合計、割合、絞り込んだ扇形のリスト、色、角度、重心、凡例の位置、
+  SVG の寸法、フォントの計測値は描画時の派生値。
+  独立した、作者が指定する Db の状態を加えない。
+  [fixture: pie/db-all-fields]
+
+区分のラベルは共通のサニタイザーを通らない。
+共通のタイトルとアクセシビリティ文字列は、DOMPurify を無効にしてそれを通る。
+対応する4つの securityLevel では要約は同じになる。
+非対応の値では、root の `htmlLabels`、なければ
+`flowchart.htmlLabels` に応じて共通文字列がエスケープされる場合がある。
+要約は Mermaid が保存した文字参照のマーカーを復号せず保つ。
+[fixture: pie/html-all-texts] [fixture: pie/config-security-strict]
+[fixture: pie/config-security-loose] [fixture: pie/config-security-antiscript]
+[fixture: pie/config-security-sandbox] [fixture: pie/config-security-other]
+[fixture: pie/config-other-html-false]
+[fixture: pie/config-other-flowchart-false]
+[fixture: pie/config-other-root-true] [fixture: pie/config-other-root-false]
+[fixture: pie/config-other-pie-html-false]
+
+Db のパッチ、共通サニタイザーの準備以外のブラウザー代替、
+データブロックの記録、生成 id の置換、時刻依存の正規化は不要。
+
+これらの読み方は、
+[pie の生成規則](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)、
+[共通の terminal と EOL](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34)、
+[preprocessDiagram()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L58-L65)
+に従う。
+
+### 字句解析前と字句解析中の directive
+
+global な
+[directive の除去](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L199-L202)
+は
+[directive のパターン](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10)
+を使い、hidden terminal は別の字句規則となる。
+
+global な directive 除去は、`accTitle` とコロン、
+`accDescr` とブロック開始の波括弧をつなげられる。
+[fixture: pie/review-directive-acc-title-colon]
+[fixture: pie/review-directive-acc-descr-block-opener]
+
+説明ブロックの値の先頭や末尾にある directive の除去後も、
+残りのテキストと閉じ波括弧は保たれる。
+[fixture: pie/review-directive-block-value-start]
+[fixture: pie/review-directive-block-value-end]
+
+除去はマイナス符号とゼロ、
+小数点と小数部の数字もつなげられる。
+[fixture: pie/div-review-directive-number-sign]
+[fixture: pie/div-review-directive-number-decimal]
+
+ラベルとコロン、コロンと数値の間にある directive だけの行を除いても、
+直前の LF は残るため、これらの区分は拒否される。
+[fixture: pie/review-directive-number-line-gap]
+[fixture: pie/review-directive-label-colon-line-gap]
+
+例の未知の種類の directive と不正な init の内容は除去され、
+保存される pie の値を変えない。
+[fixture: pie/review-directive-unknown-type]
+[fixture: pie/review-directive-invalid-init]
+
+`pie`、`showData`、`title`、`accTitle`、
+`accDescr` の中の未閉 directive は、拒否される接頭部分を残す。
+不完全なヘッダーの場合は検出に失敗する。
+[fixture: pie/review-directive-open-inside-header]
+[fixture: pie/review-directive-open-inside-showdata]
+[fixture: pie/review-directive-open-inside-title]
+[fixture: pie/review-directive-open-inside-acctitle]
+[fixture: pie/review-directive-open-inside-accdescr]
+
+アクセシビリティタイトルや一行の説明の後の、
+種類を単語で書いた未閉 directive は、例では後続の区分も除去する。
+[fixture: pie/review-directive-open-acctitle-word]
+[fixture: pie/review-directive-open-accdescr-word]
+
+種類のない未閉の `%%{` は、LF の前で終わるコメントとして働く。
+値が完成していれば後続の区分を保つが、
+コロンと後の行の数値をつなげられない。
+[fixture: pie/review-directive-open-no-type]
+[fixture: pie/review-directive-hidden-unclosed]
+
+空の `%%{}%%` と記号だけの `%%{!}%%` は global な除去を通過し、
+hidden の `DIRECTIVE` terminal に読まれる。
+この terminal は正規化された CRLF を含む後続の LF を消費し、
+コロンと次の物理行の数値をつなげられる。
+[fixture: pie/review-directive-empty-body]
+[fixture: pie/review-directive-punctuation-body]
+[fixture: pie/review-directive-hidden-crlf]
+
+hidden directive は空白の境界の前で閉じるが、
+`}%%` の直後に数字が続く場合はコメントへの切り替わりが数字も消費し、
+数値のない区分として拒否される。
+[fixture: pie/review-directive-hidden-word-boundary]
+[fixture: pie/review-directive-hidden-space-boundary]
+
+U+2028 はその閉じ境界を満たすが、
+token 間では字句として読めず、拒否の原因になる。
+[fixture: pie/review-hidden-directive-ls-boundary]
+
+ヘッダー直後の hidden directive は LF を消費でき、
+`showData` は次の物理行にあっても次の token として読まれる。
+[fixture: pie/review-hidden-directive-before-showdata]
+
+global な除去を通過した directive に見える形は、
+`STRING` が既に始まっていればラベルのテキストとして残る。
+[fixture: pie/review-hidden-directive-in-string]
+
+説明ブロック内の `A%%{}%% B` は、最初の `}` で
+`ACC_DESCR` token を終え、保存される説明は `A%%{` となる。
+残りは後続のコメントが消費する。
+[fixture: pie/review-hidden-directive-in-block]
+
+タイトル、アクセシビリティタイトル、一行の説明、
+ブロック、区分の後では、末尾の hidden directive が EOL に必要な改行を
+消費し、次の区分で拒否される場合がある。
+[fixture: pie/review-hidden-directive-after-title]
+[fixture: pie/review-hidden-directive-after-acctitle]
+[fixture: pie/review-hidden-directive-after-accdescr]
+[fixture: pie/review-hidden-directive-after-block]
+[fixture: pie/review-hidden-directive-after-section]
+
+元の入力の EOF では、同じ hidden terminal が解析用に付加された LF を
+消費でき、それら五つの文の形はいずれも EOF で EOL を満たす。
+[fixture: pie/review-directive-hidden-eof]
+[fixture: pie/review-hidden-directive-title-eof]
+[fixture: pie/review-hidden-directive-acctitle-eof]
+[fixture: pie/review-hidden-directive-accdescr-eof]
+[fixture: pie/review-hidden-directive-block-eof]
+
+### 文の終わり
+
+区分のラベルとコロンの間のコメントは、生成規則で許されない改行を残すため、
+その区分は拒否される。
+[fixture: pie/comment-between-label-colon]
+
+空白で境界があるヘッダーの後の `;;`、`; ;`、
+空白を伴うコロンは、文の終端にはならず拒否される。
+[fixture: pie/review-eol-header-two-semicolons]
+[fixture: pie/review-eol-header-spaced-semicolons]
+[fixture: pie/review-eol-header-colon]
+
+`showData` に直結するセミコロンはキーワードの認識を妨げ、
+離れたセミコロンはキーワードを読んだ後で拒否される。
+[fixture: pie/review-eol-showdata-semicolon]
+[fixture: pie/review-eol-showdata-space-semicolon]
+
+`showData` の後では、二つのセミコロン、空白で離したセミコロン、
+空白を伴うコロンも拒否される。
+[fixture: pie/review-eol-showdata-two-semicolons]
+[fixture: pie/review-eol-showdata-spaced-semicolons]
+[fixture: pie/review-eol-showdata-colon]
+
+完成した区分の後のコロンは拒否され、
+完成した説明ブロックの後の `; ;` やコロンも EOL で拒否される。
+[fixture: pie/review-eol-section-colon]
+[fixture: pie/review-eol-block-spaced-semicolons]
+[fixture: pie/review-eol-block-colon]
+
+ブロックの後の ASCII 空白と TAB は読み飛ばされるが、
+閉じ波括弧の後の U+2028 は拒否される。
+[fixture: pie/review-eol-block-space-tab]
+[fixture: pie/review-eol-block-ls]
+
+タイトルは `; ;` と末尾のコロンをテキストとして保ち、
+コロンの後の空白を除く。
+[fixture: pie/review-eol-title-spaced-semicolons]
+[fixture: pie/review-eol-title-colon]
+
+アクセシビリティタイトルは、直結したセミコロン、
+離れたセミコロン、`; ;`、直結した `;;` を値のテキストとして保つ。
+[fixture: pie/review-eol-acctitle-semicolon]
+[fixture: pie/review-eol-acctitle-space-semicolon]
+[fixture: pie/review-eol-acctitle-spaced-semicolons]
+[fixture: pie/review-eol-acctitle-two-glued]
+
+一行の説明も、直結したセミコロン、離れたセミコロン、
+`; ;`、直結した `;;` を値のテキストとして保つ。
+[fixture: pie/review-eol-accdescr-semicolon]
+[fixture: pie/review-eol-accdescr-space-semicolon]
+[fixture: pie/review-eol-accdescr-spaced-semicolons]
+[fixture: pie/review-eol-accdescr-two-glued]
+
+アクセシビリティタイトルと一行の説明は末尾のコロンを保つが、
+その後の空白は除く。
+[fixture: pie/review-eol-acctitle-colon]
+[fixture: pie/review-eol-accdescr-colon]
+
+三つの共通の一行 converter は末尾の TAB を除く。
+[fixture: pie/review-eol-title-tab]
+[fixture: pie/review-eol-acctitle-tab]
+[fixture: pie/review-eol-accdescr-tab]
+
+元の入力の EOF では、タイトル末尾の U+2029、
+アクセシビリティタイトル末尾の U+2028、
+一行の説明末尾の U+2029 も除かれる。
+[fixture: pie/review-title-eof-ps]
+[fixture: pie/review-acctitle-eof-ls]
+[fixture: pie/review-accdescr-eof-ps]
+
+EOF の前の TAB または LF の前の空白で終わるヘッダー、
+EOF の前の空白または LF の前の TAB で終わる `showData` 付きヘッダーは、
+いずれも受理される。
+[fixture: pie/review-header-trailing-tab-eof]
+[fixture: pie/review-showdata-trailing-space-eof]
+[fixture: pie/review-eol-header-space]
+[fixture: pie/review-eol-showdata-tab]
+
+### 先頭の frontmatter と本文の YAML
+
+[extractFrontMatter()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L68)
+は本文の字句解析前に、先頭の frontmatter だけを読む。
+
+区切りのある先頭の frontmatter 内の不正な YAML は拒否されるが、
+`pie` の後の同じ不正な本体は、hidden の `YAML` terminal が
+YAML として解析せず読み飛ばす。
+[fixture: pie/div-review-yaml-leading-invalid]
+[fixture: pie/review-yaml-hidden-invalid]
+
+先頭の空の frontmatter は、区切り行の間に空の本体の行を必要とするが、
+本文の hidden YAML ブロックは隣り合う区切り行を受理する。
+[fixture: pie/frontmatter-empty]
+[fixture: pie/review-yaml-hidden-empty]
+[fixture: pie/review-frontmatter-empty-blank-body]
+
+本文の YAML token は、ヘッダーと `showData`、
+ラベルとコロンの間の LF を消費できる。
+[fixture: pie/review-yaml-before-showdata]
+[fixture: pie/review-yaml-between-label-colon]
+
+区分や説明ブロックの直後の同じ行にある hidden YAML ブロックは、
+閉じの `---` の直後の LF を消費する。
+EOL 用の改行が残らない場合、後続の文は拒否されるが、EOF は EOL を満たす。
+[fixture: pie/review-yaml-after-section]
+[fixture: pie/review-yaml-after-block]
+[fixture: pie/gram-section-eof-hidden-yaml]
+[fixture: pie/gram-block-eof-hidden-yaml]
+
+閉じ区切りの後に空白があれば、YAML token はその空白の前で止まり、
+どちらの文の形でも LF が EOL 用に残る。
+区分の後では、追加の空行も EOL を与える。
+[fixture: pie/review-yaml-after-section-space]
+[fixture: pie/review-yaml-after-block-space]
+[fixture: pie/review-yaml-after-section-blank-line]
+
+タイトル、アクセシビリティタイトル、一行の説明に直結する `---` は、
+hidden YAML token ではなく一行の値の文字となり、
+後続の `x: y` の行は字句の誤りで拒否される。
+[fixture: pie/review-yaml-after-title]
+[fixture: pie/review-yaml-after-acctitle]
+[fixture: pie/review-yaml-after-accdescr]
+
+hidden YAML の区切りと内容の CRLF や単独 CR は、
+共通の行末の正規化を経て読まれる。
+[fixture: pie/review-yaml-hidden-crlf]
+[fixture: pie/review-yaml-hidden-cr]
+
+本文の YAML の開始区切りの後には TAB と空白を置けるが、
+閉じ区切りの前のインデントは token の閉鎖を妨げる。
+[fixture: pie/review-yaml-opening-tabs]
+[fixture: pie/review-yaml-closing-indent]
+
+本文の YAML の閉じ区切りの後が空白なら、
+同じ行の後続のコロンや、付加された LF の前の末尾 TAB を置ける。
+[fixture: pie/review-yaml-closing-space-boundary]
+[fixture: pie/review-yaml-closing-tab-eof]
+
+先頭の frontmatter の TAB インデントが開始と終了で一致すれば、
+インデントを除いて読まれ、そのタイトルが渡される。
+[fixture: pie/review-yaml-frontmatter-indented]
+
+frontmatter の根が配列やスカラーの場合はタイトルを渡さない。
+[fixture: pie/review-yaml-frontmatter-root-array]
+[fixture: pie/review-yaml-frontmatter-root-scalar]
+
+frontmatter のタイトルが null、false、ゼロ、空文字列の場合は、
+Db のタイトルを渡さない。
+[fixture: pie/review-yaml-frontmatter-null-title]
+[fixture: pie/review-frontmatter-false-title]
+[fixture: pie/review-frontmatter-zero-title]
+[fixture: pie/review-frontmatter-empty-string-title]
+
+例の frontmatter の true、オブジェクト、配列のタイトルは、
+`true`、`[object Object]`、`A,B` になる。
+[fixture: pie/review-frontmatter-true-title]
+[fixture: pie/review-frontmatter-object-title]
+[fixture: pie/review-frontmatter-array-title]
+
+既に始まった `STRING` や説明ブロックの中の YAML に見える区切りは、
+hidden YAML token にはならずテキストとして残る。
+[fixture: pie/review-label-hidden-yaml-text]
+[fixture: pie/review-block-hidden-yaml-text]
+
+HTML 属性の引用符の前処理は、frontmatter 内の未閉タグから
+後のラベルまで及び、例のラベルを `A='B'>C` に変える。
+[fixture: pie/div-review-frontmatter-html-cross-label]
+
+同じ前処理は、単一引用符で囲む YAML タイトルの中に
+単一引用符を作り、先頭の frontmatter を不正にもする。
+[fixture: pie/div-review-frontmatter-html-invalid-yaml]
+
+### 保存される値と変換
+
+[共通の converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L43-L70)
+は一行の値とブロックの値を別に扱う。
+
+`pie showData` と区分は、`showData` とラベルの間を ASCII 空白で区切り、
+同じ行に書ける。
+[fixture: pie/showdata-section-inline]
+
+`showData` に直結する数字はキーワードの境界を満たさず、
+拒否される入力に数値 token を残す。
+[fixture: pie/review-showdata-digit-suffix]
+
+タイトルのテキストの後の `showData` はタイトルの一部になり、
+フラグは false のままとなる。
+[fixture: pie/review-showdata-after-title]
+
+`showData` は、区分の後、ヘッダーとコメントの改行の後、
+ヘッダーと global な directive の改行の後では始められない。
+[fixture: pie/review-showdata-after-section]
+[fixture: pie/review-showdata-comment-gap]
+[fixture: pie/review-showdata-directive-gap]
+
+`title2` は TITLE の接頭部分の後に数値を残し、EOL で失敗する。
+`accTitle2:` と `accDescr2:` は共通 terminal の認識に失敗する。
+[fixture: pie/review-title-digit-suffix]
+[fixture: pie/review-acc-title-digit-suffix]
+[fixture: pie/review-acc-descr-digit-suffix]
+
+必須の `pie` ヘッダーの前のタイトルは検出を妨げるが、
+ヘッダーの後の EOF にある値のないタイトルは、空の値で受理される。
+[fixture: pie/review-title-bare-before-pie]
+[fixture: pie/review-title-bare-lone-eof]
+
+単一引用符で囲む空や空白だけのラベルも Map のキーとして存在し、
+空白も保たれる。
+[fixture: pie/review-label-empty-single]
+[fixture: pie/review-label-space-single]
+
+例のラベルの `STRING` は、U+2028 と U+2029 を含む
+ECMAScript の各空白文字を保つ。
+[fixture: pie/review-label-whitespace-boundaries]
+
+単一引用符のラベルは、リテラルの CRLF を LF に正規化する一方、
+リテラルの U+2028 と U+2029 は保つ。
+[fixture: pie/review-label-single-crlf]
+[fixture: pie/review-label-single-ls]
+[fixture: pie/review-label-single-ps]
+
+リテラルの U+2029 や正規化された CRLF の前のバックスラッシュは、
+STRING のエスケープにならない。
+末尾の単一引用符をエスケープした未閉文字列も、これらの入力も拒否される。
+[fixture: pie/review-label-single-escaped-ps]
+[fixture: pie/review-label-escaped-crlf]
+[fixture: pie/review-label-lone-escaped-quote-single]
+
+HTML 属性の引用符の前処理は、エスケープのない単一引用符を作り、
+単一引用符で囲むラベルを不正にする場合がある。
+[fixture: pie/review-html-single-attribute-cleanup]
+
+共通の一行 converter は、値の端で許される ECMAScript の各空白文字を
+除くが、CR と LF はその値の token の外の行の区切りとなる。
+[fixture: pie/review-common-all-whitespace-trim]
+
+値の内部の単独 TAB は、タイトル、アクセシビリティタイトル、
+一行の説明、ブロックの説明の値に残る。
+[fixture: pie/review-common-single-tab-lines]
+[fixture: pie/review-common-tab-alone]
+
+三つの共通の一行フィールドと説明ブロックの引用符や
+バックスラッシュのエスケープ表記は、STRING の変換を受けずに残る。
+[fixture: pie/review-common-quotes-backslashes]
+[fixture: pie/review-block-quotes-backslashes]
+
+ブロック内の空白だけの行は縮約され、
+`accDescr` と `{` の間の空の行や U+2028、U+2029 は、
+ブロックの terminal の中で消費され得る。
+[fixture: pie/review-block-whitespace-only-lines]
+[fixture: pie/review-block-unicode-opener-separators]
+[fixture: pie/review-accdescr-block-blank-before-opener]
+
+`accDescr` の後のコロンは、波括弧をリテラルとして持つ一行の形を選び、
+ブロック内の共通キーワードの表記は通常の説明テキストになる。
+[fixture: pie/review-block-brace-colon-priority]
+[fixture: pie/review-block-metadata-text]
+
+例の先頭にゼロがある負の小数は、Db では `-1.2` となり拒否され、
+長い有限の小数は JavaScript の数値の精度に丸められる。
+[fixture: pie/review-number-minus-decimal-leading-zero]
+[fixture: pie/review-number-fraction-precision]
+
+非正規化数の範囲を下回る小数は、Db の比較前にゼロや負のゼロに丸められ、
+どちらの符号も受理され、ゼロとして要約される。
+[fixture: pie/review-number-positive-underflow-final]
+[fixture: pie/review-number-negative-underflow-final]
+
+全区分の値がゼロの場合も、描画の割合の絞り込みに残る扇形はないが、
+区分のリストは保たれる。
+[fixture: pie/review-number-all-zero-sections]
+
+変換後の同じラベルを単一引用符と二重引用符で書くと、
+キーが衝突し、最初の値が残る。
+[fixture: pie/review-db-converted-duplicate-single-double]
+
+区分や空の説明ブロックの後の、空でない三度目のアクセシビリティの定義が、
+共通の最後の値を渡す。
+[fixture: pie/review-db-common-third-definitions]
+
+空白だけの最後のアクセシビリティの値は、それより前の AST の値を消し、
+空白だけの最後の本文タイトルは、Db の frontmatter のタイトルを保つ。
+[fixture: pie/review-acctitle-whitespace-final]
+[fixture: pie/review-accdescr-whitespace-final]
+[fixture: pie/review-frontmatter-whitespace-body-final]
+
+アクセシビリティの一行の値の先頭の二つのパーセントは、値を空にする。
+ヘッダー前の本文のないコメント、三つのパーセントのコメント行、
+ブロック後の空白を伴うコメントも受理される。
+[fixture: pie/review-common-comment-value-start]
+[fixture: pie/review-comment-bare-header-eof]
+[fixture: pie/review-comment-triple-percent]
+[fixture: pie/review-comment-marker-after-block-space]
+
+空の説明ブロックは、空でない説明や区分より前の本文の先頭にも置ける。
+[fixture: pie/review-accdescr-empty-block-first]
+
+### 各テキストフィールドの文字参照の前処理
+
+[encodeEntities()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L916)
+は
+[Diagram.fromText()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L49-L83)
+で、解析前の本文テキストに適用される。
+
+セミコロンを除く二つのパターンは `style.*:\S*#.*;` と
+`classDef.*:\S*#.*;` であり、一致部分は文字参照の符号化前に
+最後のセミコロンだけを失う。
+[fixture: pie/style-label-trigger]
+[fixture: pie/style-acctitle-trigger]
+
+引用符で囲むラベルでは、style の前処理は文字参照の符号化前に
+一つ、二つ、三つのセミコロンのうち最後の一つだけを除き、
+後続の空白を保つ。
+[fixture: pie/review-style-label-trailing-spaces]
+[fixture: pie/review-style-label-two-padding]
+[fixture: pie/review-style-label-three-padding]
+
+タイトルのテキストでも、二つや三つのセミコロンのうち最後の一つだけが、
+文字参照の符号化前に除かれる。
+[fixture: pie/review-style-title-two]
+[fixture: pie/review-style-title-three]
+
+タイトルの converter は、一つ、二つ、三つのセミコロンの前処理後に
+残る末尾の空白を除く。
+[fixture: pie/review-style-title-one-padding]
+[fixture: pie/review-style-title-two-padding]
+[fixture: pie/review-style-title-trailing-spaces]
+
+大文字の STYLE とコロンとハッシュの間の空白は、
+タイトルでの style の除去を妨げる。
+ハッシュがない場合もリテラルのセミコロンが残る。
+[fixture: pie/review-style-title-upper]
+[fixture: pie/review-style-title-space]
+[fixture: pie/review-style-title-nohash]
+
+アクセシビリティタイトルのテキストでは、classDef の処理が
+符号化前に二つや三つのセミコロンの最後の一つだけを除く。
+[fixture: pie/review-style-acctitle-two]
+[fixture: pie/review-style-acctitle-three]
+
+アクセシビリティタイトルの converter は、
+一つ、二つ、三つのセミコロンを持つ classDef の形の後の空白を除く。
+[fixture: pie/review-style-acctitle-one-padding]
+[fixture: pie/review-style-acctitle-two-padding]
+[fixture: pie/review-style-acctitle-trailing-spaces]
+
+大文字の CLASSDEF、コロンとハッシュの間の空白、ハッシュのない対照例は、
+アクセシビリティタイトルでの classDef の除去を妨げる。
+[fixture: pie/review-style-acctitle-upper]
+[fixture: pie/review-style-acctitle-space]
+[fixture: pie/review-style-acctitle-nohash]
+
+一行の説明のテキストでは、style の処理が
+符号化前に二つや三つのセミコロンの最後の一つだけを除く。
+[fixture: pie/review-style-accdescr-two]
+[fixture: pie/review-style-accdescr-three]
+
+一行の説明の converter は、
+一つ、二つ、三つのセミコロンを持つ style の形の後の空白を除く。
+[fixture: pie/review-style-accdescr-one-padding]
+[fixture: pie/review-style-accdescr-two-padding]
+[fixture: pie/review-style-accdescr-trailing-spaces]
+
+大文字の STYLE、コロンとハッシュの間の空白、ハッシュのない対照例は、
+一行の説明での style の除去を妨げる。
+[fixture: pie/review-style-accdescr-upper]
+[fixture: pie/review-style-accdescr-space]
+[fixture: pie/review-style-accdescr-nohash]
+
+説明ブロックの行では、style の処理が
+符号化前に二つや三つのセミコロンの最後の一つだけを除く。
+[fixture: pie/review-style-block-two]
+[fixture: pie/review-style-block-three]
+
+ブロックの converter は、
+一つ、二つ、三つのセミコロンを持つ style の形の後の空白を除く。
+[fixture: pie/review-style-block-one-padding]
+[fixture: pie/review-style-block-two-padding]
+[fixture: pie/review-style-block-trailing-spaces]
+
+大文字の STYLE、コロンとハッシュの間の空白、ハッシュのない形、
+別の行のハッシュは、説明ブロックでの style の除去を妨げる。
+[fixture: pie/review-style-block-upper]
+[fixture: pie/review-style-block-space]
+[fixture: pie/review-style-block-nohash]
+[fixture: pie/review-style-block-hash-other-line]
+
+style と classDef の両方の条件を満たすと、別々の処理が
+ラベル、タイトル、アクセシビリティタイトル、一行の説明、ブロックの
+テキストの末尾の二つのセミコロンを除く。
+[fixture: pie/review-style-both-triggers-label]
+[fixture: pie/review-style-both-triggers-title]
+[fixture: pie/review-style-both-triggers-acctitle]
+[fixture: pie/review-style-both-triggers-accdescr]
+[fixture: pie/review-style-both-triggers-block]
+
+global な directive 除去が先に行われ、
+それら五つのテキストを読む箇所で style の条件を再び作り得る。
+[fixture: pie/review-style-directive-rejoin-label]
+[fixture: pie/review-style-directive-rejoin-title]
+[fixture: pie/review-style-directive-rejoin-acctitle]
+[fixture: pie/review-style-directive-rejoin-accdescr]
+[fixture: pie/review-style-directive-rejoin-block]
+
+U+2028 と U+2029 は style の一致範囲を分け、
+ラベル、三つの共通の一行フィールド、説明ブロックの
+区切りの向こうのセミコロンを保つ。
+[fixture: pie/review-style-ls-boundaries]
+[fixture: pie/review-style-ps-boundaries]
+[fixture: pie/review-style-block-separator-boundaries]
+
+frontmatter のタイトルはこの文字参照の前処理を通らず、
+style に見えるテキストのセミコロンをそのまま保つ。
+[fixture: pie/review-style-frontmatter-title]

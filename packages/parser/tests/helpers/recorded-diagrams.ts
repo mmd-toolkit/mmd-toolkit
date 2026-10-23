@@ -23,4 +23,5 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "ishikawa",
   "agentflow",
   "usecase",
+  "pie",
 ]

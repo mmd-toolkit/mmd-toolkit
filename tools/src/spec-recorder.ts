@@ -83,6 +83,9 @@ const STUBS_GLOBAL = "__mmdSpecStubs"
  * test file imports and others do not costs nothing.
  */
 const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
+  "diagrams/pie/pieParser.js": ["parser"],
+  "diagrams/pie/pieDb.js": ["db", "DEFAULT_PIE_DB"],
+  "diagrams/pie/pieRenderer.js": ["draw"],
   "diagrams/usecase/parser/usecase.chevrotain.js": ["parser"],
   "diagrams/usecase/parser/usecase.lexer.js": ["usecaseLexer"],
   "diagrams/usecase/parser/usecase.parser.js": ["usecaseParser"],
@@ -450,6 +453,11 @@ export async function recordSpecFile(
     getData: () => ({ nodes: [], edges: [] }),
   })
   const stubs: Record<string, Record<string, unknown>> = {
+    "diagrams/pie/pieParser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/pie/pieDb.js": { db: anything, DEFAULT_PIE_DB: anything },
+    "diagrams/pie/pieRenderer.js": { draw: () => undefined },
     "diagrams/usecase/parser/usecase.chevrotain.js": {
       parser: {
         parse: (text: unknown) => {
@@ -625,16 +633,31 @@ export async function recordSpecFile(
     "diagram-api/diagram-orchestration.js": { addDiagrams: () => undefined },
   }
 
+  // The pie renderer spec reads its drawing only in assertions after parsing.
+  // Supply empty drawing reads, without executing the renderer or a real DOM.
+  const drawingGlobals =
+    path.relative(mermaidSource, file) ===
+    path.join("diagrams", "pie", "pieRenderer.spec.ts")
+      ? {
+          document: {
+            body: { innerHTML: "" },
+            querySelectorAll: () => [],
+          },
+        }
+      : {}
+
   // Most test files use vitest's functions as globals, without importing them.
   const saved = Object.fromEntries(
-    [...Object.keys(vitest), STUBS_GLOBAL, "__dirname"].map((name) => [
-      name,
-      Object.getOwnPropertyDescriptor(globalThis, name),
-    ]),
+    [
+      ...Object.keys(vitest),
+      ...Object.keys(drawingGlobals),
+      STUBS_GLOBAL,
+      "__dirname",
+    ].map((name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)]),
   )
   // A spec file that reads a file next to it takes the directory from this
   // global, as it does under vitest.
-  Object.assign(globalThis, vitest, {
+  Object.assign(globalThis, vitest, drawingGlobals, {
     [STUBS_GLOBAL]: stubs,
     __dirname: path.dirname(file),
   })

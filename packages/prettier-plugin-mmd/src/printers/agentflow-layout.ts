@@ -8,7 +8,11 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { addLinkRules, addShapeRules } from "./graph-layout.ts"
+import {
+  addLinkRules,
+  addShapeRules,
+  layoutGraphAccessibility,
+} from "./graph-layout.ts"
 import { findAgentflowKeptLines } from "./agentflow-kept-lines.ts"
 import {
   collectAtoms,
@@ -22,11 +26,7 @@ import {
 import { readGapElement } from "./gap.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import {
-  findStructuralToken,
-  findTriviaBetween,
-  isWhitespace,
-} from "./source.ts"
+import { findStructuralToken, isWhitespace } from "./source.ts"
 
 /** Written leaf values; the leaf coverage test accounts for the other leaves. */
 export const agentflowValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -270,6 +270,13 @@ export function layoutStatement(
   const start = statement.range[0]
   if (statement.type === "AgentflowConnectorStatement")
     return layoutContainerHeader(source, statement, end)
+  const accessibility = layoutGraphAccessibility(
+    source,
+    statement,
+    end,
+    findAgentflowKeptLines(source),
+  )
+  if (accessibility !== null) return accessibility
   const rules = new Map<number, GapRule>()
   const kept: Atom[] = []
   switch (statement.type) {
@@ -339,16 +346,6 @@ export function layoutStatement(
       ...layout,
       outdented: closing === null ? new Set() : new Set([closing]),
     }
-  }
-  if (
-    (statement.type === "AgentflowAccTitleStatement" ||
-      statement.type === "AgentflowAccDescrStatement") &&
-    statement.value !== null &&
-    findTriviaBetween(source, start, statement.value.range[0]).length === 0
-  ) {
-    // The colon consumes whitespace through the value's first line; use the
-    // shared joined-gap path (docs/agentflow.md, Accessibility).
-    return { ...layout, joinedBefore: new Set([statement.value.range[0]]) }
   }
   return layout
 }

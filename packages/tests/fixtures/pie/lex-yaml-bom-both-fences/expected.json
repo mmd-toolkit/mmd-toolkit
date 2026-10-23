@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Detection: Matching byte order marks on both fences can instead form real leading frontmatter. Case: yaml-bom-both-fences."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

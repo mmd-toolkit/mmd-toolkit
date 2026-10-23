@@ -874,6 +874,20 @@ flowchart と同じです。
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/accdescr-block-single-line-kept]
 [fixture: multi-line-values/accdescr-block-empty-and-comment-lines-kept]
+閉じたブロックに本文がなければ、内側を `{}` と印字します。
+`accDescr { }` は `accDescr {}` になり、
+空白の連続、改行、NBSP だけの内側も同じです。
+すでに空の内側は空のまま、`accDescr{}` は接したままです。
+空白で囲む本文がないので、Db が同じ形の選択は、
+[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
+agentflow、usecase に合わせます。
+前の説明は Db に残ります。
+[fixture: multi-line-values/empty-description-interiors]
+[test: accessibility revisions: state empty-description-nbsp]
+コメントやディレクティブがあるブロックの配置は従来どおり保ち、
+閉じられていないブロックは開いたままにします。
+[fixture: multi-line-values/empty-description-trivia-kept]
+[corpus fixture: state/lex-acc-descr-block-unclosed]
 複数行に書かれた独立したノートの本文も、書かれたまま残します。
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/floating-note-empty-line-kept]
@@ -917,6 +931,28 @@ state 図で文が次の行に続けられるのは、
 [fixture: multi-line-statements/joined-style-and-classdef]
 [fixture: multi-line-statements/joined-accdescr]
 [fixture: multi-line-statements/empty-line-inside-joined]
+`accTitle:` や `accDescr:` の次行の値は、
+結合すると方向文になる場合、改行と通常の継続行の字下げを保ちます。
+判定するのは `direction`、空白の連続と、
+`TB`、`BT`、`RL`、`LR` のいずれかで、大文字小文字を区別しません。
+値の他のテキストの後にある場合も同じです。
+図の方向に変えず、タイトルや説明を保つためです。
+そのため `"accTitle:\n direction LR"` は
+`"  accTitle:\n    direction LR"` と印字します。
+`TD` は state の方向ではないので、`direction TD` は結合します。
+[fixture: multi-line-statements/next-line-direction-title]
+[fixture: multi-line-statements/next-line-direction-description]
+[fixture: multi-line-statements/next-line-direction-lower-value]
+[fixture: multi-line-statements/next-line-direction-mixed-keyword]
+[fixture: multi-line-statements/next-line-direction-spaced-bt]
+[fixture: multi-line-statements/next-line-direction-after-text]
+[fixture: multi-line-statements/next-line-direction-tb]
+[fixture: multi-line-statements/next-line-direction-rl]
+[fixture: multi-line-statements/next-line-direction-td-joined]
+値の前の CRLF と NBSP の字下げも同じ規則に従い、
+設定された改行と継続行の字下げで印字します。
+[test: accessibility revisions: state next-line-direction-crlf]
+[test: accessibility revisions: state next-line-direction-nbsp]
 そのため、`classDef c` の次の行の `fill:red` は、
 `classDef c fill:red` と印字します。
 `classDef a` の後の行の `B --> C` は、遷移ではなく `a` のスタイルで、

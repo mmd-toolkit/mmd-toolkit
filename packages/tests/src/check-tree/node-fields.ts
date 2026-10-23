@@ -18,6 +18,40 @@ import type { FieldSpec } from "./field-spec.ts"
 export const NODE_FIELDS: Readonly<
   Record<string, Readonly<Record<string, FieldSpec>>>
 > = {
+  PieDiagram: {
+    showData: { shape: "value", valueType: "boolean" },
+    textBeforeHeader: { shape: "nodeList" },
+    textBeforeShowData: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  PieSectionStatement: {
+    label: { shape: "node" },
+    textBeforeColon: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  PieTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  PieAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  PieAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  PieAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  PieLiteral: { value: { shape: "value", valueType: "string" } },
+  PieIgnoredText: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
   UsecaseDiagram: { body: { shape: "nodeList" } },
   UsecaseActorStatement: { actors: { shape: "nodeList" } },
   UsecaseActor: {

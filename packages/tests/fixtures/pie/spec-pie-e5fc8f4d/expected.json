@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/pie/pie.spec.ts",
+    "line": 170,
+    "test": "pie > parse > should handle unsafe properties"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Unsafe props test",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "__proto__",
+        "value": 386
+      },
+      {
+        "label": "constructor",
+        "value": 85
+      },
+      {
+        "label": "prototype",
+        "value": 15
+      }
+    ]
+  }
+}

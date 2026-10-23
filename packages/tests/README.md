@@ -63,8 +63,8 @@ Each fixture is a directory `fixtures/<diagram>/<name>/` in this package
 (`getFixturesRoot()` gives its absolute path). `<diagram>` is a diagram type
 (`flowchart`, `sequence`, `class`, `state`, `er`, `gantt`, `journey`,
 `requirement`, `mindmap`, `timeline`, `sankey`, `xychart`, `quadrant`, `block`,
-`kanban`, `c4`, `venn`, `ishikawa`, `agentflow`, `usecase`) or `common`, for
-syntax that every diagram type shares (frontmatter, directives, comments,
+`kanban`, `c4`, `venn`, `ishikawa`, `agentflow`, `usecase`, `pie`) or `common`,
+for syntax that every diagram type shares (frontmatter, directives, comments,
 diagram detection).
 
 - `input.mmd`: the text under test, byte for byte.
@@ -72,12 +72,10 @@ diagram detection).
 - `specified.json`: what an implementation of the specification gives for the
   input, present only where that is not what mermaid.js did: the result of
   mermaid.js read without the known divergence that changes how it reads the
-  input. Only fixtures with the mark `comment-takes-character`,
-  `comment-takes-line-break`, `name-start-reads-unit`,
-  `percent-brace-after-unit`, `html-tag-in-frontmatter`, `c4-keyword-anywhere`,
-  `bare-percent-line-before-header` or `blank-line-after-header-or-comments`
-  have it. Where it is there, it is the result to match; where it is not, the
-  result to match is `expected.json`. See
+  input. `DIVERGENCE_PROPERTIES` declares which marks require it. Use
+  `fixtureAccepts(fixture)` for acceptance; for a comparable Db, match
+  `specified` where present, otherwise `expected`, with `embeddedValuesOf()`.
+  Opaque embedded data can be accepted without a comparison Db. See
   [docs/expected-results.md](./docs/expected-results.md).
 - `ast.json`: the tree that the reference implementation (`@mmd-toolkit/parser`)
   returns for the input, present only for inputs it accepts.
@@ -141,9 +139,10 @@ Reads the fixtures. It does not load mermaid.js.
   `"sequence"`, `"class"`, `"state"`, `"er"`, `"gantt"`, `"journey"`,
   `"requirement"`, `"mindmap"`, `"timeline"`, `"sankey"`, `"xychart"`,
   `"quadrant"`, `"block"`, `"kanban"`, `"c4"`, `"venn"`, `"ishikawa"`,
-  `"agentflow"` or `"usecase"`, sorted by name. Each has `diagram`, `name`,
-  `input` (the text of `input.mmd`), `source`, `config` and `knownDivergence`
-  (when set), and `expected`: either `{ accepted: true, diagramType, db }` or
+  `"agentflow"`, `"usecase"` or `"pie"`, sorted by name. Each has `diagram`,
+  `name`, `input` (the text of `input.mmd`), `source`, `config` and
+  `knownDivergence` (when set), `specified` (when its file is present), and
+  `expected`: either `{ accepted: true, diagramType, db }` or
   `{ accepted: false, error }`. It reads the files one at a time, so that test
   files loading the fixtures in parallel workers stay within the system's limit
   of open files.
@@ -180,6 +179,18 @@ Reads the fixtures. It does not load mermaid.js.
   - `title-digit-after-axis-statement`: see
     [known-divergences/title-digit-after-axis-statement.md](../spec/docs/known-divergences/title-digit-after-axis-statement.md).
 - `getFixturesRoot()`: the absolute path of the `fixtures/` directory.
+- `DIVERGENCE_PROPERTIES`: a `ReadonlyMap<string, DivergenceProperties>` with
+  one explicit `{ direction, requiresSpecifiedReading }` entry per known
+  identifier. `direction` is `"accept"`, `"reject"` or `"both"`; the separate
+  boolean says whether `specified.json` is required for the comparison reading,
+  including accept-only divergences that need a Db reading.
+- `fixtureAccepts(fixture)`: whether the specification accepts the fixture. It
+  checks the mark's reading requirement first, throwing with the identifier and
+  `<diagram>/<name>` if the required `specified.json` is missing. It then uses
+  `specified.accepted` where present; otherwise it uses the mark's direction. An
+  unmarked fixture uses `expected.accepted`. `embedded-data-opaque` accepts
+  without a reading and can have no comparison Db. Unknown identifiers also
+  throw with the fixture name and identifier.
 - `getDefaultConfig()`: the configuration that `embedded.config` is a difference
   from (`fixtures/default-config.json`).
 - `embeddedValuesOf(fixture)`: the values `resolveEmbeddedData()` gives for the
@@ -199,7 +210,7 @@ Reads the fixtures. It does not load mermaid.js.
   [docs/expected-results.md](./docs/expected-results.md).
 - Types: `DiagramType`, `Fixture`, `FixtureSource`, `Expectation`,
   `ExpectedFile`, `RecordedEmbedded`, `DbSummary`, `MermaidConfig`,
-  `MermaidError`.
+  `MermaidError`, `DivergenceDirection`, `DivergenceProperties`.
 
 ### `@mmd-toolkit/tests/mermaid`
 

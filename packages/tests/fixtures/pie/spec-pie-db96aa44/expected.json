@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/pie/pie.spec.ts",
+    "line": 135,
+    "test": "pie > parse > should handle simple pie with negative decimal"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "\"ash\" has invalid value: -60.67. Negative values are not allowed in pie charts. All slice values must be >= 0."
+  }
+}

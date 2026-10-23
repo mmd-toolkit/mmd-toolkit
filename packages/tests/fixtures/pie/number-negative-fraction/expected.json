@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A negative fraction is rejected even with a zero integer part."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "\"A\" has invalid value: -0.01. Negative values are not allowed in pie charts. All slice values must be >= 0."
+  }
+}

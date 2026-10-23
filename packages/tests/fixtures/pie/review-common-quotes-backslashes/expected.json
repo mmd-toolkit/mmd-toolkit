@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do single-line common strings retain quote and backslash escape spellings without STRING conversion?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "\"A\\nB\" 'C\\tD'",
+    "accTitle": "\"A\\nB\" 'C\\tD'",
+    "accDescr": "\"A\\nB\" 'C\\tD'",
+    "showData": false,
+    "sections": []
+  }
+}

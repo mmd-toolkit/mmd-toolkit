@@ -488,10 +488,11 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
-Venn, Agentflow and Usecase are checked with both hand-made and recorded trees.
+Pie, Venn, Agentflow and Usecase are checked with both hand-made and recorded
+trees.
 
 The recorded-tree comparisons include C4, block, kanban, Venn, Agentflow,
-Usecase, and their common detection fixtures, including all five C4 diagram
+Usecase, pie, and their common detection fixtures, including all five C4 diagram
 kinds.
 
 `tests/db-from-tree.test.ts` builds the Db of every fixture that records a tree

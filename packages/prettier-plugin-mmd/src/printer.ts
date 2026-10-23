@@ -81,10 +81,11 @@ function embed(
         // `print`; its types name them `Options`, with optional widths.
         options as ParserOptions<MermaidAst>,
       ),
-      document.textRules?.plan(
+      document.textRules?.plan?.(
         document.source,
         options as ParserOptions<MermaidAst>,
       ),
+      document.textRules?.keepsPrefix?.(document.source),
     )
 }
 
@@ -120,7 +121,8 @@ export const mermaidPrinter: Printer<MermaidAst> = {
         () => path.call(print, "body"),
         document.source,
         undefined,
-        document.textRules?.plan(document.source, options),
+        document.textRules?.plan?.(document.source, options),
+        document.textRules?.keepsPrefix?.(document.source),
       )
     }
     return document.printDiagram(path, options, print, document.source)

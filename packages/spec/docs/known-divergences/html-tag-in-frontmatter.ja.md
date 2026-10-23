@@ -132,7 +132,8 @@ mermaid.js の flowchart の文法はそれを受理します。
 例 5 では、矢印の `>` が、メッセージの前でタグを終えます。
 この仕様は、フロントマターの後のテキストでだけタグを探し、
 これらのテキストを、フロントマターがないときと同じに読みます。
-フロントマターの中で始まって終わるタグは、差異を生みません。
+フロントマター内で始まって終わるタグは、図の HTML の読み方に差異を生みません。
+[fixture: pie/frontmatter-html]
 差異は両方向にあり、受理も Db も変わることがあります。
 
 kanban ではフロントマターに `title: <a` があるとき、
@@ -158,6 +159,7 @@ mermaid.js は内側の属性引用符を変換して受理します。
 ラベル、タイトル、メッセージのテキストを変えたりします。
 mmd-toolkit のパーサーは、図をフロントマターがないときと同じに読みます。
 タイトルのタグを閉じるか、`<` を書かなければ、どちらも同じに読みます。
+[fixture: pie/frontmatter-html]
 
 ## mermaid.js がそう読む理由
 
@@ -176,10 +178,12 @@ mermaid.js は、
 読むテキストの中でだけタグを探します。
 フロントマターが何を持っていても、テキストの読み方は変わりません
 （[HTML 属性の引用符](../common.ja.md#html-属性の引用符) を参照）。
-タイトルのような、フロントマターから得る値は、mermaid.js が得るものと同じです
-（
-[フロントマターの設定](../../../tests/docs/configuration.ja.md#フロントマターの設定)
+どの図種でも、タイトルのようなフロントマターから得る値は、
+mermaid.js が得るものと同じです
+（[フロントマターの設定](../../../tests/docs/configuration.ja.md#フロントマターの設定)
 を参照）。
+[fixture: pie/frontmatter-html]
+[fixture: flowchart/frontmatter-title-html-attribute]
 
 タグがフロントマターの境界を越えて本文まで続くことは、
 mermaid.js の処理の順から生じます。
@@ -238,6 +242,27 @@ Frontmatter と UsecaseLiteral に書かれたテキストを保持し、
 [fixture: usecase/div-html-frontmatter-acc-title-db]
 [fixture: usecase/lex-html-acc-title-body-control]
 [fixture: usecase/lex-html-frontmatter-arrow-closes-tag]
+
+### Pie
+
+Frontmatter は書かれた本文を、StringLiteral はラベルを持ちます。
+無視する兄弟節点では、フロントマターで始まるタグが、
+後のラベルの引用符を書き換えることを表せません。
+直接の規則は、フロントマターを図の HTML の走査から除きます。
+そのため区切りをまたぐタグによって、
+Mermaid が受理するラベルをここでは拒否します。
+受理するフロントマター内で閉じるタグにはその差異はなく、
+フロントマターのタイトルは Mermaid の変換後の値です。
+属性の変換で YAML が不正になる場合は、Mermaid が拒否しても、
+共通の [不透明なデータの規則](./embedded-data-opaque.ja.md) が受理します。
+対応する usecase の入力と同じ扱いです。
+異なるのは、区切りをまたぐ効果と、変換後の YAML の拒否だけです。
+図のテキスト内で完結するタグは、共通の HTML の規則に従います。
+[fixture: pie/frontmatter-html]
+[fixture: pie/div-review-frontmatter-html-cross-label]
+[fixture: pie/div-review-frontmatter-html-invalid-yaml]
+[fixture: usecase/div-gram-frontmatter-html-attribute-quotes]
+[fixture: pie/html-all-texts]
 
 ## mermaid.js の文書と issue
 
@@ -298,3 +323,10 @@ Frontmatter と UsecaseLiteral に書かれたテキストを保持し、
   Chevrotain parser、モデル検証、JSON の表を導入します。
   この差異は共有の直接の規則に従うもので、
   bug ラベルを文法変更の承認とは読みません。
+
+- pie の pin した
+  [構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  は、フロントマターの区切りをまたぐ HTML タグを述べません。
+  2026-10-23 に `pie`、`pie frontmatter`、`pie HTML` で検索しましたが、
+  この区切りをまたぐ書き換えへの保守者の判断は見つかりませんでした。
+  共通の不透明なフロントマターの除外が差異を決めます。

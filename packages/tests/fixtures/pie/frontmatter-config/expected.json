@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Drawing configuration is embedded data rather than stored section state."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "pie": {
+        "textPosition": 0.2,
+        "donutHole": 0.4,
+        "legendPosition": "left",
+        "highlightSlice": "A"
+      }
+    }
+  }
+}

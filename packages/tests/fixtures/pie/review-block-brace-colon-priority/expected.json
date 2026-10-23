@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a colon select the single-line ACC_DESCR form before a brace can open a block?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "{ A }",
+    "showData": false,
+    "sections": []
+  }
+}

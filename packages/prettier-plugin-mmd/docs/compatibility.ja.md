@@ -139,10 +139,12 @@ mermaid.js は、そうした位置の多くでそれらを受理し、ないも
 空の description ブロックは報告しません。
 行に単独で書いたときや、同じ行の別の文の後に書いたときは
 （`A accDescr {}` は頂点 A と空の description ブロックです）、
-description ブロックの文で、ほかのブロックと同じく整形します。
-トークンの間の空白は
-[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)に従い、
-ブロックの中の改行は保ち、`}` は `accDescr` と同じ段に置きます。
+descriptionブロックの文です。
+文字とtriviaのない通常の閉じたブロックの内側は、改行があっても`{}`です。
+接する語は`accDescr{}`と接したままにします。
+[fixture: flowchart/accessibility-lines/empty-block-touching-keyword]
+[アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)に従い、
+囲む文字がないので内側の空白も不要で、Dbが同じ兄弟のusecaseの形に揃えます。
 [fixture:
 flowchart/statements-one-per-line/compat-empty-description-block-before-statement]
 [fixture:
@@ -558,7 +560,8 @@ flowchart本文は共有の意味を持つ字下げの下限を使い、
 同じ下限を、幅0で読みが変わる
 [mindmap](./mindmap.md#indentation)、[kanban](./kanban.md#indentation)、
 [Venn](./venn.md#indentation)、[Ishikawa](./ishikawa.md#indentation)、
-[Agentflow](./agentflow.md#indentation)、[YAML](#フロントマター)でも使います。
+[Agentflow](./agentflow.md#indentation)、[class](./class.ja.md#字下げ)、
+[YAML](#フロントマター)でも使います。
 
 ## 数か `title` の送り元からの sequence のメッセージ
 
@@ -1607,3 +1610,48 @@ Mermaid は内部の両端を除き、`<<` の前の空白は構造上の空白�
 accessibility 行の外側の空白は、単独ファイルと Markdown の両方で除きます。
 [fixture: usecase/final-newline/final-value-padding]
 [test: usecase Markdown: last-value-padding]
+
+## Pie hidden boundaries and authored values
+
+[pie の規則](./pie.ja.md)は引用符、escape、数値の綴り、
+値の継続列、重複と原文の順序を保ちます。
+共通の title/accessibility 行の両端は C4 と同様に整えますが、
+pie は次の物理行の値を結合しません。
+空のラベルと説明 block も実際の構文です。
+[fixture: pie/labels/label-quotes] [fixture: pie/numbers/number-spellings]
+[fixture: pie/title/title-next-trivia]
+[fixture: pie/description-blocks/block-empty]
+
+Hidden YAML と hidden DIRECTIVE は PieIgnoredText であり、
+先頭の frontmatter や Root の directive とは別です。
+範囲外で消費する LF、余分な EOL、受理を決める閉じの空白も含め、
+原文の位置に保ちます。
+Hidden YAML の閉じは先頭列を保ちます。
+検出が飛ばした前置きは先頭 LF とコメントも全体を保ち、
+ignored YAML が frontmatter になるのを防ぎます。
+保護した YAML 整形は実際の frontmatter だけに適用します。
+[fixture: pie/hidden-yaml/yaml-after-space-boundary]
+[fixture: pie/hidden-directives/hidden-after-extra-lf]
+[fixture: pie/frontmatter-yaml/preheader-leading-lf]
+[fixture: pie/frontmatter-yaml/frontmatter-safe]
+
+pie の本文は `tabWidth: 0` で字下げ0幅です。
+YAML は共有の最小幅を保ちます。
+セミコロンをすべて残し、交差する値と trivia の prefix 全体を保護します。
+物理改行、BOM、末尾改行の処理は共有します。
+Markdown host は最後の code block 行の空白を hidden 境界も含め削ります。
+後続の文の前にある内部の hidden 境界の空白は必要です。
+[fixture: pie/indentation/indent-zero]
+[fixture: pie/frontmatter-yaml/frontmatter-zero]
+[fixture: pie/directives-and-semicolons/selected-two-passes]
+[test: pie Markdown: hidden-boundary] [test: pie Markdown: final-hidden-padding]
+
+pie の corpus は、受理と Db の読みを仕様が定める、印付きの差異を含みます。
+raw が拒否する C4 判定、前置きの Unicode、opaque YAML には raw Db がなく、
+利用できる指定の Db と木を別に確認します。
+拒否する payload は共有の失敗経路を使います。
+[Specified readings](./pie.ja.md#specified-readings)を参照してください。
+[corpus fixture: pie/div-detect-c4-label]
+[corpus fixture: pie/div-review-yaml-leading-invalid]
+[corpus fixture: pie/div-preheader-retained-yaml-bare-ls]
+[test: pie Markdown: rejected]

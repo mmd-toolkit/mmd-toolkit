@@ -329,6 +329,33 @@ between the complete id and @ or between @ and { is allowed; native `@{` is
 atomic. [fixture: usecase/lex-directive-whole-json-prefix-boundary] [fixture:
 usecase/lex-directive-in-json-declaration-at]
 
+### Pie
+
+PieIgnoredText can hold a hidden DIRECTIVE at a unit boundary, including one
+that consumes the line break after a value; a common Directive holds a global
+directive between complete authored components. Neither can stand inside the
+fixed spelling of `pie`, `showData`, `title`, `accTitle`, `accDescr` or a single
+number. The direct boundary rule rejects the latter inputs where mermaid.js
+removes the directive and joins their fragments. A directive between a complete
+`accTitle` and its colon, or between `accDescr` and its brace, is a component
+boundary; a directive inside a quoted label or a common statement value remains
+allowed trivia. Hidden forms retain their own written text and do not join
+numeric fragments. These accepted forms need no divergence. The differing
+fixtures below are all accepted by mermaid.js and rejected here; this rule adds
+no pie input accepted here and rejected by mermaid.js. An unclosed global
+directive that both reject is not marked. [fixture: pie/div-directive-in-header]
+[fixture: pie/div-directive-in-showdata] [fixture:
+pie/div-directive-in-title-keyword] [fixture:
+pie/div-directive-in-acctitle-keyword] [fixture:
+pie/div-directive-in-accdescr-keyword] [fixture: pie/div-directive-number]
+[fixture: pie/div-review-directive-number-sign] [fixture:
+pie/div-review-directive-number-decimal] [fixture:
+pie/review-directive-acc-title-colon] [fixture:
+pie/review-directive-acc-descr-block-opener] [fixture:
+pie/directive-label-middle] [fixture: pie/directive-title-middle] [fixture:
+pie/lex-hidden-eof-extra-lf] [fixture: pie/review-directive-open-inside-header]
+[fixture: pie/div-directive-in-accdescr-block-keyword]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -390,3 +417,13 @@ usecase/lex-directive-in-json-declaration-at]
   on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
   validation and JSON tables. This divergence follows the shared direct rule,
   not a claim that a bug label approves a grammar change.
+
+- For pie, the pinned
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  describes the header, sections and titles, without directives inside their
+  spellings. [PR #4751](https://github.com/mermaid-js/mermaid/pull/4751), merged
+  on 2024-02-11, introduced the Langium grammar and its ignored YAML, directives
+  and comments. Searches of `mermaid-js/mermaid` issues and pull requests on
+  2026-10-23 for `pie`, `pie directive` and `pie Langium` found no maintainer
+  decision that directives inside these atoms are a defect. The boundary rule is
+  a direct syntax choice, not such a decision.

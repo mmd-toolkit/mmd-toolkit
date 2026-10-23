@@ -372,7 +372,6 @@ function layoutUsecaseAccessibility(
         "prettier-plugin-mmd: an unclosed usecase description block",
       )
     const stretches = findAccDescrBlockStretches(source, block, valueRange)
-    rules.set(separator.range[0], "space")
     if (stretches.length > 0) atoms.push(...stretches)
     else {
       atoms.push({ start: separator.range[0], end: separator.range[1] })

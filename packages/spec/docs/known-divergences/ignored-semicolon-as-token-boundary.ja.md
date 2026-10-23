@@ -5,7 +5,7 @@
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
 mindmap、timeline、xychart、quadrant、block、kanban、c4、venn、agentflow、
-usecase。
+usecase、pie。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -225,12 +225,14 @@ kanban では開きと閉じの中で選ばれたセミコロンは区切りを�
 入力を拒否させます。
 mermaid.js は `style:#x{;{b}}` と `style:#x{{b};}` を、
 `style:#x{{b}}` と同じ形として受理します。
-[fixture: kanban/div-semicolon-opener] [fixture: kanban/div-semicolon-closer]
+[fixture: kanban/div-semicolon-opener]
+[fixture: kanban/div-semicolon-closer]
 [fixture: kanban/gram-semicolon-text-reference]
 
 ノード本文、ラベル本文、文字列、データ本文の中では、
 選ばれたセミコロンを無視します。
-[fixture: kanban/lex-id-style-rule] [fixture: kanban/lex-id-classdef-rule]
+[fixture: kanban/lex-id-style-rule]
+[fixture: kanban/lex-id-classdef-rule]
 [fixture: kanban/lex-label-style-rule]
 [fixture: kanban/lex-metadata-style-rule]
 
@@ -382,6 +384,32 @@ UsecaseIdentifier に前後のテキストを保持できます。
 [fixture: usecase/lex-semicolon-joins-id-selected]
 [fixture: usecase/lex-semicolon-native-key-selected]
 
+### Pie
+
+PieIgnoredText は、数やキーワード内の任意の文字ではなく、
+隠れた YAML や DIRECTIVE の形全体を持ちます。
+そのため、`1;2`、`title`、`showData`、`accTitle`、`accDescr` の中の
+選ばれたセミコロンには、その場所で持つノードがありません。
+直接の規則は、断片をつなぐ代わりに境界にします。
+下の fixture では、`style` や `classDef` の印が原子内のセミコロンも選びます。
+隠れた DIRECTIVE がその印を囲んでいても、
+共通の行規則は同じ行の後のセミコロンを選びます。
+mermaid.js はつないだ原子を受理し、この仕様は拒否します。
+この規則が加える逆方向の pie の入力はありません。
+ラベルや値の中のセミコロンは、共通の無視したセミコロンの記録とともに、
+書かれたテキストを保ちます。
+隠れたブロック内の無視するセミコロンは、ブロックを分割しません。
+結果が一致するこれらの形には印を付けません。
+[fixture: pie/div-atomic-semicolon-number]
+[fixture: pie/div-selected-semicolon-title-keyword]
+[fixture: pie/div-selected-semicolon-showdata]
+[fixture: pie/div-selected-semicolon-acctitle]
+[fixture: pie/div-selected-semicolon-accdescr]
+[fixture: pie/div-selected-semicolon-block-keyword]
+[fixture: pie/style-label-trigger]
+[fixture: pie/style-title-trigger]
+[fixture: pie/lex-yaml-opener-selected-semicolon]
+
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
@@ -449,3 +477,11 @@ UsecaseIdentifier に前後のテキストを保持できます。
   Chevrotain parser、モデル検証、JSON の表を導入します。
   この差異は共有の直接の規則に従うもので、
   bug ラベルを文法変更の承認とは読みません。
+
+- pie の pin した
+  [構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  に `style` 文と `classDef` 文はありません。
+  2026-10-23 に `pie`、`pie semicolon`、`pie classDef` で検索しましたが、
+  選ばれたセミコロンが pie の原子の断片をつなぐことへの保守者の判断は
+  見つかりませんでした。
+  これは共通の境界規則に従い、欠陥という分類を主張しません。

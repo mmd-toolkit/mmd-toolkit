@@ -356,14 +356,19 @@ HTML タグが始まらないようにした入力を mermaid.js に読ませた
 [fixture: flowchart/html-tag-starts-in-frontmatter-other-key]
 [fixture: flowchart/html-tag-starts-in-frontmatter-crlf]
 [fixture: flowchart/html-tag-starts-in-frontmatter-closing-line-blank]
-Db の title は、書かれたとおりの入力のフロントマターの title を、
-`extractFrontmatterTitle` が返すとおりにしたものです。
+指定読みのフロントマターの title は、すべての図種で、
+[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)
+の後に `extractFrontmatterTitle` が返す Mermaid の変換後の値です。
 タグの中の `=` の後の `"` は `'` になります。
+同じ値を Db と `embedded.title` に渡し、
+Db でそれを上書きする本文の title は保ちます。
 [fixture: flowchart/html-tag-starts-in-frontmatter-value]
+[fixture: pie/frontmatter-html]
+[fixture: pie/frontmatter-title-overridden]
 `embedded` の値は、書かれたとおりの入力に mermaid.js が与えるものです。
 mermaid.js がその入力を拒否するときは、`(` にした入力に与えるものになり、
 設定の値の `<` は `(` として記録されます。
-`embedded` の title は、Db の title と同じです。
+`embedded` のフロントマターの title は、Db と同じ reader から得ます。
 [fixture: flowchart/html-tag-starts-in-frontmatter-config-value]
 mermaid.js が書かれたとおりの入力を受理するときは、
 書かれたとおりの入力の値になり、`(` にした入力は読みません。
@@ -454,6 +459,13 @@ kanban にも同じ差異があり、mindmap と同じ規則です。
 仕様が何を出すかは、
 [既知の差異](../../spec/docs/known-divergences.ja.md)の、
 その差異の文書が述べています。
+
+HTML 属性の引用符の変換で不正になるフロントマターの YAML も、
+同じ `embedded-data-opaque` の扱いです。
+`specifiedRunOf` は別の Db を求めず `undefined` を返し、
+生成器は `specified.json` を作りません。
+[fixture: usecase/div-gram-frontmatter-html-attribute-quotes]
+[fixture: pie/div-review-frontmatter-html-invalid-yaml]
 
 規則は `src/divergence-removals.ts` に挙げてあり、
 pin した mermaid.js の字句解析器の中で、

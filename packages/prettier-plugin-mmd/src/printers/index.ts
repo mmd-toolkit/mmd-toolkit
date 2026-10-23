@@ -20,6 +20,7 @@ import { printSequence } from "./sequence.ts"
 import { printState } from "./state.ts"
 import { printTimeline } from "./timeline.ts"
 import { printXychart } from "./xychart.ts"
+import { printPie, keepsPiePrefix } from "./pie.ts"
 import type { Source } from "./source.ts"
 import type { RootTextPlan } from "./root.ts"
 import { agentflowTextPlan } from "./agentflow-size.ts"
@@ -27,7 +28,8 @@ import { agentflowTextPlan } from "./agentflow-size.ts"
 /** Diagram-specific constraints on the source and the complete root layout. */
 export interface DiagramTextRules {
   readonly keepsCommentLines: boolean
-  readonly plan: (
+  readonly keepsPrefix?: (source: Source) => boolean
+  readonly plan?: (
     source: Source,
     options: ParserOptions<MermaidAst>,
   ) => RootTextPlan
@@ -37,6 +39,7 @@ export interface DiagramTextRules {
 export const diagramTextRules: Readonly<
   Partial<Record<string, DiagramTextRules>>
 > = {
+  PieDiagram: { keepsCommentLines: false, keepsPrefix: keepsPiePrefix },
   AgentflowDiagram: {
     // Normal-size comments are real text; the size plan retains larger input
     // whole (diagrams/agentflow.md, Preserved comments and the default size limit).
@@ -90,4 +93,5 @@ export const diagramPrinters: Readonly<
   SankeyDiagram: printSankey,
   TimelineDiagram: printTimeline,
   XychartDiagram: printXychart,
+  PieDiagram: printPie,
 }

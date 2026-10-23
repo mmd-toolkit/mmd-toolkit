@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The line description terminal keeps the glued --- as value text, so the next YAML-looking content line causes a lexer error."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: ->x<- at offset: 19, skipped 1 characters.\nLexer error on line 3, column 4: unexpected character: ->y<- at offset: 22, skipped 1 characters.\nLexer error on line 4, column 1: unexpected character: ->-<- at offset: 24, skipped 3 characters. Parse error on line 3, column 2: Expecting token of type 'EOF' but found `:`."
+  }
+}

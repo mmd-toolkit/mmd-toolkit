@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An overflowing negative number is still rejected by the Db."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "\"A\" has invalid value: -Infinity. Negative values are not allowed in pie charts. All slice values must be >= 0."
+  }
+}

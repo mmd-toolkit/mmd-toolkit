@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Sections retain input order rather than descending numeric order."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 10
+      },
+      {
+        "label": "B",
+        "value": 100
+      },
+      {
+        "label": "C",
+        "value": 50
+      }
+    ]
+  }
+}

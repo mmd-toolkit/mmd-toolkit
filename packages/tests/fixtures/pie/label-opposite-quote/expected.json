@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The opposite quote is ordinary text in each quote style."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A'B",
+        "value": 1
+      },
+      {
+        "label": "A\"B",
+        "value": 2
+      }
+    ]
+  }
+}

@@ -44,7 +44,7 @@ sankey 図（`sankey`）と、XY チャート（`xychart`）と、
 四象限チャート（`quadrantChart`）と、ブロック図（`block`）と、
 kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）と、
 Ishikawa 図（`ishikawa`）と、agentflow（`agentflow`）と、
-usecase 図（`usecase`）です。
+usecase 図（`usecase`）と、円グラフ（`pie`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -69,7 +69,8 @@ usecase 図（`usecase`）です。
 [`diagrams/venn.md`](../../spec/docs/diagrams/venn.ja.md)、
 [`diagrams/ishikawa.md`](../../spec/docs/diagrams/ishikawa.ja.md)、
 [`diagrams/agentflow.md`](../../spec/docs/diagrams/agentflow.ja.md)、
-[`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.ja.md)
+[`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.ja.md)、
+[`diagrams/pie.md`](../../spec/docs/diagrams/pie.ja.md)
 のどれかに従います。
 3 つの部分からなります。
 
@@ -222,3 +223,20 @@ JSON table の本文は不透明で、
 [fixture: usecase/lex-keyword-longer-number]
 [fixture: usecase/gram-native-final-invalid-then-valid]
 [fixture: usecase/div-json-balanced-invalid-array]
+
+pie の字句解析器は、仕様の優先順位で、最初に一致した規則を採ります。
+共通の複合形式と、
+直後の LF を 1 つ消費する隠し YAML/DIRECTIVE 形式を含みます。
+文法は、保持する形式を指定されたソースの隙間に所有させます。
+セクションの値は、double 変換後にゼロ未満なら拒否します。
+検出はフロントマター形のブロックを 1 回だけ通過し、pie のために保持します。
+pie は 2 回目の走査のディレクティブも読みます。
+検出が通過した裸の行はコメントのままです。
+[fixture: pie/db-all-fields]
+[fixture: pie/frontmatter-nonleading-comment]
+[fixture: pie/lex-hidden-directive-second-detection-scan]
+[fixture:
+pie/lex-hidden-before-colon-lf]
+[fixture: pie/review-hidden-directive-after-title]
+[fixture: pie/number-negative]
+[fixture: pie/number-negative-zero]

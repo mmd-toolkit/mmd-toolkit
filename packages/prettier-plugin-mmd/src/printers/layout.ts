@@ -177,22 +177,53 @@ export function layoutKeywordHeader(
 /**
  * The layout of an `accDescr {}` block without text, which changes nothing: a
  * statement of its own, or an item of the body of a block. It is printed on
- * one line, as any statement is, unless it holds a comment or a directive
- * over several lines (see `spansLinesThatCannotJoin`).
+ * one line unless it holds a comment or a directive over several lines (see
+ * `spansLinesThatCannotJoin`); that case stays as written by default.
+ * `formatsTriviaLines` instead keeps the line breaks while formatting the
+ * tokens and trivia with the caller's statement and continuation indentation.
  */
 export function layoutEmptyDescriptionBlock(
   source: Source,
   start: number,
   end: number,
+  formatsTriviaLines = false,
 ): AtomLayout {
-  if (spansLinesThatCannotJoin(source, start, end)) {
+  if (!formatsTriviaLines && spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)
   }
   return {
     atoms: collectAtoms(source, start, end, [], []),
     rules: new Map(),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: formatsTriviaLines ? "kept" : "joined",
+  }
+}
+
+/**
+ * A closed empty block without trivia prints `{}`: no text needs surrounding
+ * whitespace. Graph, state and ER follow usecase's Db-equal form. Null leaves
+ * each caller's previous trivia or nonjoining layout in charge (their rules
+ * documents, Accessibility lines or Multi-line values).
+ */
+export function layoutCompactEmptyDescriptionBlock(
+  source: Source,
+  start: number,
+  end: number,
+): AtomLayout | null {
+  if (
+    findTriviaBetween(source, start, end).length > 0 ||
+    spansLinesThatCannotJoin(source, start, end)
+  )
+    return null
+  const closing = expectToken(
+    findTokenEndingBefore(source, end),
+    "the closing empty description brace",
+  )
+  expectValue(closing, "}")
+  return {
+    ...layoutEmptyDescriptionBlock(source, start, end),
+    rules: new Map([[closing.range[0], "none"]]),
+    joinedBefore: new Set([closing.range[0]]),
   }
 }
 
@@ -213,10 +244,25 @@ export function layoutDescriptionBlock(
   },
   end: number,
   valueTypes: ReadonlySet<Node["type"]>,
+  options: {
+    readonly keepsTrailingTrivia?: boolean
+    readonly compactEmpty?: boolean
+    /** Formats an empty block's tokens and trivia lines, keeping its breaks. */
+    readonly formatsEmptyTrivia?: boolean
+  } = {},
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.value === null) {
-    return layoutEmptyDescriptionBlock(source, start, end)
+    if (options.compactEmpty === true && statement.closed !== false) {
+      const compact = layoutCompactEmptyDescriptionBlock(source, start, end)
+      if (compact !== null) return compact
+    }
+    return layoutEmptyDescriptionBlock(
+      source,
+      start,
+      end,
+      options.formatsEmptyTrivia,
+    )
   }
   const block = {
     range: statement.range,
@@ -230,7 +276,12 @@ export function layoutDescriptionBlock(
       start,
       end,
       collectValueNodes(statement, valueTypes),
-      findAccDescrBlockStretches(source, block),
+      findAccDescrBlockStretches(
+        source,
+        block,
+        statement.value.range,
+        options.keepsTrailingTrivia,
+      ),
     ),
     rules: new Map(),
     outdented: closing === null ? new Set() : new Set([closing]),
@@ -274,11 +325,14 @@ export interface AccDescrBlock {
  * are. The whitespace after the `{` is read with the `{`, so the text on
  * the line of the `{` is spaced as any other token. `valueRange` supplies the
  * printed bounds when a Literal's AST range includes exterior whitespace.
+ * `keepsTrailingTrivia` also keeps trivia lines after an opener-line value,
+ * without absorbing the closing brace (docs/c4.md, Description blocks).
  */
 export function findAccDescrBlockStretches(
   source: Source,
   statement: AccDescrBlock,
   valueRange: Range | null = statement.value?.range ?? null,
+  keepsTrailingTrivia = false,
 ): Atom[] {
   const brace = expectToken(
     findStructuralToken(
@@ -290,17 +344,19 @@ export function findAccDescrBlockStretches(
   )
   expectValue(brace, "{")
   if (valueRange === null) return []
-  if (!source.text.slice(brace.range[1], valueRange[0]).includes("\n")) {
-    return []
-  }
   const lastTrivia = findTriviaBetween(
     source,
     valueRange[1],
     statement.range[1],
   ).at(-1)
+  const startsLater = source.text
+    .slice(brace.range[1], valueRange[0])
+    .includes("\n")
+  if (!startsLater && (!keepsTrailingTrivia || lastTrivia === undefined))
+    return []
   return [
     {
-      start: brace.range[0],
+      start: startsLater ? brace.range[0] : valueRange[0],
       end: Math.max(valueRange[1], lastTrivia?.range[1] ?? 0),
     },
   ]

@@ -603,6 +603,112 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `StringFragment` トークンで、
     その後ろの語は `RawText` トークンです。
 
+  - pie: 8 種のノードと子の順序は
+    [ast/pie.md](../../spec/docs/ast/pie.md) に従う。
+    showData は書かれたフラグだけを表す。
+    textBeforeHeader は保持した hidden form だけを持つ。
+    フラグがなければ textBeforeShowData は空である。
+    その場合の見出し後、またはフラグ後の hidden form は body を始める。
+    空・重複ラベルもそれぞれ区分の文として残す。[fixture:
+    pie/db-all-fields] [fixture: pie/header-only] [fixture:
+    pie/frontmatter-nonleading-comment] [fixture:
+    pie/review-hidden-directive-before-showdata] [fixture:
+    pie/frontmatter-after-header] [fixture: pie/label-empty] [fixture:
+    pie/db-three-definitions]
+    見出しの前の YAML は本文の行がある 1 ブロックだけで、
+    二度目の directive scan と裸の percent 行より前に立つ。
+    検出が通した空・句読点だけの percent-brace 行は Comment になる。
+    hidden directive にはしない。
+    保持した二度目の directive は共通の除去後に単語の type を持つ。
+    [fixture: pie/detect-two-nonleading-blocks]
+    [fixture: pie/detect-second-scan-directive-before-block] [fixture:
+    pie/lex-yaml-after-comment-adjacent-fences] [fixture:
+    pie/lex-yaml-after-bare-comment] [fixture:
+    pie/lex-preheader-yaml-empty-line-control] [fixture:
+    pie/lex-hidden-directive-second-detection-scan] [fixture:
+    pie/lex-bare-percent-braces-before-header] [fixture:
+    pie/lex-hidden-comment-before-header]
+    裸行と、その後に検出が通した共通の空白・改行は trivia のままである。
+    保持した形式とヘッダーの間でも、保持した形式同士の間でも同じ。
+    本文の gap と hidden の閉じ境界は広げない。
+    [fixture: pie/div-preheader-retained-yaml-bare-ls]
+    [fixture: pie/div-preheader-retained-directive-bare-ls]
+    [fixture: pie/div-preheader-retained-yaml-bare-bom]
+    [fixture: pie/div-preheader-retained-directive-bare-bom]
+    [fixture: pie/div-preheader-retained-yaml-bare-ls-line]
+    [fixture: pie/div-preheader-retained-directive-bare-ls-line]
+    [fixture: pie/div-preheader-retained-yaml-bare-then-directive]
+    [fixture: pie/lex-preheader-retained-yaml-bare-ascii]
+    [fixture: pie/lex-preheader-retained-directive-bare-ascii]
+    [fixture: pie/lex-preheader-retained-yaml-bare-ascii-line]
+    [fixture: pie/lex-preheader-retained-directive-bare-ascii-line]
+    [fixture: pie/lex-preheader-retained-yaml-bare-then-directive-ascii]
+    pie・showData は大文字小文字を区別する。
+    直後には共通の空白、EOF、percent ペアが要る。
+    間に残る読めない Unicode 空白は拒否する。
+    StringLiteral は閉じた単引用符・二重引用符の単位である。
+    escape は物理 LF・LS・PS を越せないが、escape していない改行は内容になる。
+    NumericLiteral は完全な、任意の minus と整数・小数の単位である。
+    先頭のゼロは小数だけで許し、共有の double が負なら重複でも拒否する。
+    負のゼロ・負の underflow は受理する。[fixture: pie/header-letter-suffix]
+    [fixture: pie/showdata-quote-glued] [fixture: pie/lex-header-nbsp]
+    [fixture: pie/label-single-quote] [fixture: pie/label-escaped-quotes]
+    [fixture: pie/label-multiline] [fixture: pie/label-backslash-ls]
+    [fixture: pie/number-leading-zero]
+    [fixture: pie/number-decimal-leading-zero]
+    [fixture: pie/db-duplicate-negative] [fixture: pie/number-negative-zero]
+    [fixture: pie/review-number-negative-underflow-final]
+    共通値は複合した字句の値を完全に満たす。
+    title は ASCII space・tab 1 つの後から始まる。
+    accessibility の行の値は colon の直後から始まる。
+    colon の前の隙間は ASCII space・tab だけである。
+    行の値は書かれた両端を保ち、LF・percent ペアの前で終わる。
+    description ブロックは開きの前に共通の空白を許す。
+    最初の閉じ括弧で閉じ、内部を trim する。
+    null は書かれた値がないことを表し、空白だけのブロックも含む。
+    文自体は消えない。
+    [fixture: pie/title-spaces] [fixture: pie/acctitle-spaces] [fixture:
+    pie/acctitle-eof] [fixture: pie/ast-title-tab-null-eof] [fixture:
+    pie/title-comment] [fixture: pie/accdescr-block-gap] [fixture:
+    pie/accdescr-block-nested] [fixture: pie/review-accdescr-empty-block-first]
+    PieIgnoredText は完全な hidden YAML・DIRECTIVE の形を 1 つ持つ。
+    文字を明示的に走査し、境界を満たす最初の閉じを検査する。消費した直後の LF は
+    ノードに含めない。
+    指定の区分の隙間、共通の textAfter、図の位置だけが所有できる。
+    文字列・description ブロックの中の hidden らしい形は内容になる。
+    区分の部品の間・showData の前には可視の LF を許さない。
+    完成した文の後の項目には hidden が消費しても残る LF が要る。EOF なら不要。
+    可視の EOL の後の hidden form は直前の文でなく body に属する。[fixture:
+    pie/review-yaml-between-label-colon] [fixture:
+    pie/frontmatter-between-section-parts] [fixture:
+    pie/lex-yaml-closer-suffix-skip-later] [fixture:
+    pie/lex-hidden-multiple-closers] [fixture: pie/gram-newline-before-colon]
+    [fixture: pie/showdata-next-line] [fixture: pie/review-yaml-after-section]
+    [fixture: pie/review-yaml-after-section-space] [fixture:
+    pie/gram-section-eof-hidden-yaml] [fixture:
+    pie/lex-hidden-after-title-before-comment] [fixture:
+    pie/review-label-hidden-yaml-text]
+    [fixture: pie/review-block-hidden-yaml-text]
+    ヘッダー後の native Comment の開始点では、
+    先行する hidden DIRECTIVE 規則が一致してはならない。
+    STRING・複合 description block が開始点を包んでいてもならない。
+    検出が通したヘッダー前の裸の percent-brace Comment は有効なまま。
+    [fixture: pie/review-hidden-directive-after-section]
+    [fixture: pie/review-hidden-directive-after-title]
+    [fixture: pie/review-hidden-directive-after-acctitle]
+    [fixture: pie/review-hidden-directive-after-accdescr]
+    [fixture: pie/review-hidden-directive-after-block]
+    [fixture: pie/review-directive-empty-body]
+    [fixture: pie/lex-bare-percent-braces-before-header]
+    native comment は末尾の空白も消費し、LS・PS も含む。
+    その空白は trim した Comment 記録の外にあるが、
+    共通の領域が後続へつなぐ場合もコメントの trivia のままである。
+    [fixture: pie/lex-comment-ls-region-bridge]
+    共有の coverage・書かれた値・raw・範囲・token の検査も適用する。
+    hidden form と共通の literal は RawText、数は Numeric、文字列は
+    String・StringFragment。
+    手作りの木と壊れた木で検証し、記録した木の検査は parser を import しない。
+
   - agentflow: 29 種のノードの子の型、フィールド順、空にできないリスト、
     スカラーの語彙は
     [ast/agentflow.ja.md](../../spec/docs/ast/agentflow.ja.md) に従います。

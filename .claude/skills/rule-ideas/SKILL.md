@@ -226,6 +226,18 @@ Dropped:
 | In an agentflow, a bracket shape that agentflow removed or does not allow (`A((x))`, drawn as a rounded rectangle)                                                                                             | Not silent: mermaid.js gives the diagnostic `SHAPE_REMOVED` or `SHAPE_UNSUPPORTED`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | In an agentflow, a correct CSS declaration in an HTML label that loses its `;`, `direction` inside a correct label, and a comment line in an `accDescr` block (kept as its text)                               | Defects of mermaid.js, as in a flowchart above; agentflow-no-ignored-text reports the second, and agentflow-no-duplicate-description the third where it replaces a description, with the mistakes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | In an agentflow, the shape, the label, or other keys in the YAML of a data block                                                                                                                               | A rule would read the YAML, which waits until after the release, as for kanban                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| In a usecase diagram, a relationship to an id that no `actor` declares (`User --> Login` draws two use cases)                                                                                                  | It is the documented way to declare a use case (run); calling `User` an actor that was not declared is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| In a usecase diagram, `A --order` and `A --xray` (the circle or the cross to `rder` or `ray`)                                                                                                                  | The formatter makes it visible: it prints `A --o rder` and `A --x ray`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| In a usecase diagram, `animate: false` after `animation: slow` (the relationship is drawn animated)                                                                                                            | A defect of mermaid.js: the documentation writes `animate: false` to stop the animation; usecase-no-duplicate-metadata does not compare `animate`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In a usecase diagram, a metadata update over the metadata of an actor or a use case declaration, before or after it                                                                                            | The way that the documentation writes to change inline metadata; the update wins wherever it stands (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| In a usecase diagram, a class that no `classDef` defines, and a `classDef` that only adds styles to its earlier definition                                                                                     | Nothing is lost: the class name stays on the element, where the styles of the page can match it, and the added styles keep the earlier ones (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In a usecase diagram, a property given twice in one `style` or `classDef` (`fill:red,fill:var(--brand)`)                                                                                                       | It is correct CSS, a fallback; a `style` keeps both, and a `classDef` draws the last only, a defect of mermaid.js (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| In a usecase diagram, a `systemBoundary` written again with the same title, two notes on one element, and a relationship written twice                                                                         | Nothing is lost: the members of the boundaries are merged, and every note and relationship is kept (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| In a usecase diagram, `A -- include --> B`                                                                                                                                                                     | mermaid.js keeps `include` as the label of an association, as written (run); calling it a meant include relationship is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a usecase diagram, two declarations of one id with different labels, kinds, shapes, stereotypes, or metadata, and a `systemBoundary` written again with another title                                       | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a usecase diagram, a note, a `style`, or a `class` on an id that nothing declares, `o--` or `x--` at the start of a statement, and two quoted labels that give one id                                       | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a usecase diagram, a relationship id written twice, an unknown metadata key, a `direction` with other text after it, and an `accDescr` block that no `}` closes                                             | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a usecase diagram, a key written twice in a JSON table (the last value is kept)                                                                                                                             | A rule would read the JSON, which waits until after the release, as for the YAML of kanban                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
 ### Questions for unclear cases
 
@@ -743,6 +755,13 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | agentflow-no-redefined-flow               | yes              |                                                                              |
 | agentflow-no-duplicate-direction          | yes              |                                                                              |
 | agentflow-no-undef                        | yes              |                                                                              |
+| usecase-no-duplicate-title                | yes              |                                                                              |
+| usecase-no-duplicate-description          | yes              |                                                                              |
+| usecase-no-empty-description-block        | yes              |                                                                              |
+| usecase-no-unclosed-description-block     | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
+| usecase-no-duplicate-direction            | yes              |                                                                              |
+| usecase-no-duplicate-metadata             | yes              |                                                                              |
+| usecase-no-redefined-class                | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -1089,8 +1108,10 @@ ranges of the axes.
   counted as lost; (2) none; (4) write one statement for each axis and each
   quadrant.
 - quadrant-no-redefined-class: (1) the class has the styles of its last
-  definition only, with no merge (run); (2) none; (4) write the styles in one
-  definition.
+  definition only, with no merge (run); a style that the later definition drops
+  or changes is lost, and one that it adds loses nothing (changed on 2026-10-23,
+  as for usecase-no-redefined-class: the rule had reported an added style); (2)
+  none; (4) write the styles in one definition.
 - quadrant-no-undef: (1) the class name stays on the point and no class of that
   name is defined (run); the layout finds no class for it, and the drawn point
   has no CSS class of that name (read); (2) none; (4) define the class, or
@@ -1329,6 +1350,50 @@ report nothing that changes nothing.
   `L_A_B_0`) is an id of the diagram and is not reported, since it reaches what
   it names (run; decided on 2026-10-22).
 
+The usecase rules have these notes; the searches were "usecase" and "use case"
+in titles, and "usecase" with the words duplicate, classDef, metadata,
+direction, accDescr, animate, and animation, and found nothing that changes the
+readings: [#8392](https://github.com/mermaid-js/mermaid/issues/8392) and
+[#8402](https://github.com/mermaid-js/mermaid/pull/8402), both open, concern the
+guillemets of include and extend.
+
+- usecase-no-duplicate-title, usecase-no-duplicate-description,
+  usecase-no-empty-description-block, usecase-no-unclosed-description-block: the
+  notes of the flowchart rules above, with what usecase reads differently:
+  mermaid.js trims a title and a description and removes the whitespace after
+  each line break of a description (read in the visitor and in
+  `setAccDescription`); a comment line in a block is removed, so a block of only
+  a comment line sets the empty description (run), which is reported by
+  usecase-no-duplicate-description after a description and not reported alone,
+  as a block left to be filled in later (decided on 2026-10-23); a block that no
+  `}` closes is rejected, and one that the `}` of later metadata or of a JSON
+  object closes takes the lines up to it (run), which the unclosed block rule
+  reports with the condition of the flowchart rule and is not enabled for the
+  same reason.
+- usecase-no-duplicate-direction: (1) the last `direction` statement sets the
+  direction, and `TD` is recorded as `TB` (read in `usecaseModelBuilder`; run);
+  (2) none; (4) write one `direction` statement.
+- usecase-no-duplicate-metadata: (1) an update of a key replaces the value that
+  an earlier update gave the actor, the use case, the boundary, or the
+  relationship (run); the metadata of a boundary heading takes part in source
+  order, and an update after a heading is not reported, since the documentation
+  writes it to change the type of the heading (decided on 2026-10-23); an update
+  wins over the metadata of an actor or a use case declaration wherever it
+  stands, the way that the documentation writes to change it, so that metadata
+  is not compared (run); (2) none: `animate` is not compared, since
+  `animate: false` after `animation: slow` is drawn animated, a defect of
+  mermaid.js; names that mermaid.js turns into one id (`"Place order"` and
+  `Place_order`) are compared as written, which the document states (run); (4)
+  give each key of an element one value.
+- usecase-no-redefined-class: (1) a later `classDef` replaces the whole
+  definition of the class (read in `applyClassDefinitions`), and the drawing
+  takes the last value of each property in it (read in `getCompiledStyles`;
+  run), so a style that the later definition drops or changes is lost, and one
+  that it adds loses nothing; in a flowchart, a block diagram, and an agentflow,
+  CSS decides instead (see section 2); (2) none: a definition that adds styles
+  or writes them in another order is not reported; (4) write one `classDef` for
+  each class.
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -1414,6 +1479,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | c4-* (all 7 rules)                      | None for now (2026-10-21; see the end of this section)         |
 | venn-* (all 6 rules)                    | None for now (2026-10-21; see the end of this section)         |
 | agentflow-* (all 10 rules)              | None for now (2026-10-22; see the end of this section)         |
+| usecase-* (all 7 rules)                 | None for now (2026-10-23; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1512,8 +1578,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 `journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`,
 `sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
 `block-*`, `kanban-*`, `c4-*`, and `venn-*` (2026-10-21), and `agentflow-*` and
-flowchart-no-duplicate-direction (2026-10-22): the rules are implemented without
-suggestions for now. No suggestion had been decided for them or described in
-their documents, and the one planned for the empty block of a sequence diagram
-rested on generated inputs. Whether they get suggestions is decided later, in
-the form of the flowchart rules, with a fixture for each case.
+flowchart-no-duplicate-direction (2026-10-22), and `usecase-*` (2026-10-23): the
+rules are implemented without suggestions for now. No suggestion had been
+decided for them or described in their documents, and the one planned for the
+empty block of a sequence diagram rested on generated inputs. Whether they get
+suggestions is decided later, in the form of the flowchart rules, with a fixture
+for each case.

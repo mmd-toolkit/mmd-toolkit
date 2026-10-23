@@ -5,5 +5,11 @@
   },
   "accepted": true,
   "diagramType": "pie",
-  "db": null
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
 }

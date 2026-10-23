@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Global trivia inside values: A directive or selected semicolon inside a fixed keyword or number follows the existing atomic-boundary divergences. Case: atomic-semicolon-number."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "style:#x",
+        "value": 12
+      }
+    ]
+  }
+}

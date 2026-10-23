@@ -598,11 +598,101 @@ agentflow-beta TB
 
 ### Accessibility
 
-[Multi-line values](./flowchart.md#multi-line-values)と
-通常のトークン配置を再利用します。
-後続行の桁位置は値の文字で、説明の閉じ括弧はaccDescrに揃えるためです。
-次行の値も含め、通常の行値の外側空白を整えます。
-セミコロンとパーセント文字、EOFのnull値、反復を保ちます。
+[アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)を
+同じ理由で再利用します。
+Dbが同じ形から選ぶ場合は、その図種の理由がなければ兄弟の図種に揃えるためです。
+agentflowの通常のアクセシビリティ行に固有の理由はないので、
+C4、class、usecaseと両方のgraphで、
+`accTitle: value`と`accDescr: value`に揃えます。
+コロンを語に接し、両端をtrimした値の前にASCII空白1つを置き、
+内部の空白とインラインの`%%`と`#`を値の文字として保ちます。
+[fixture: accessibility/tight-colon]
+[fixture: accessibility/spaced-colon]
+[fixture: accessibility/value-padding]
+[fixture: accessibility/inline-percent-hash]
+空と空白だけの値も`accTitle:`または`accDescr:`の文として保ち、
+後ろに空白を足しません。
+[fixture: accessibility/empty-title]
+[fixture: accessibility/empty-description]
+[fixture: accessibility/accessibility-empty-null]
+[corpus fixture: agentflow/db-acctitle-eof]
+[corpus fixture: agentflow/db-accdescr-eof]
+
+通常の次行の値はMermaidの読みどおりにつなぎます。
+[fixture: accessibility/next-line-values]
+flowchartと異なり、コロンの後のコメントらしい行も値の文字なので、
+その行を値としてつなぎ、次の文を別に保ちます。
+[fixture: accessibility/next-line-percent-value]
+文中にdirectiveがあれば通常の結合をせず、従来の複数行の文の配置を保ちます。
+継続行とdirective行をキーワードより1段深く置き、文字と著者の改行を保ちます。
+flowchartの継続行の規則を同じ理由で再利用するためです。
+[fixture: accessibility/inline-directive-kept]
+[fixture: accessibility/next-line-directive-kept]
+[fixture: accessibility/title-directive-continuation]
+[corpus fixture: agentflow/db-accdescr-directive-next-line]
+[corpus fixture: agentflow/lex-directive-acctitle-next-line]
+
+例外も同じです。
+[Kept lines](#kept-lines)の非区切りの`;`を含む行は、
+アクセシビリティの文字と`;`の脇の空白を保ちます。
+セミコロンが別の文や次行の値にある場合も同じです。
+[fixture: accessibility/semicolon-value-kept]
+[fixture: accessibility/neighbour-semicolon-kept]
+[fixture: accessibility/next-line-semicolon-kept]
+方向の文字列がある行は[Direction](#direction)に従い、
+原文、改行、桁位置を保ちます。
+ほかの文書化された保持行の理由も優先します。
+[fixture: accessibility/direction-text-kept]
+[fixture: accessibility/next-line-direction-kept]
+通常の字下げは`tabWidth: 0`でも同じ正の最小幅を使い、
+`useTabs`も同じタブの1段を使います。
+両方の設定で保持の例外も保ちます。
+[fixture: accessibility/zero-width]
+[fixture: accessibility/tabs]
+
+CRの正規化と、外側の隙間で受理するNBSP・U+2028・U+2029、
+値内部のUnicodeの文字と保持する`;`の脇のUnicode空白も、
+flowchartと同じ理由で同じ規則を使います。
+これらのケースはエスケープしたテストに置きます。
+[test: graph accessibility: agentflow cr-lines]
+[test: graph accessibility: agentflow unicode-gaps]
+[test: graph accessibility: agentflow unicode-values]
+[test: graph accessibility: agentflow unicode-semicolon-kept]
+
+説明ブロックも兄弟の図種に揃える同じ理由で、
+[アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)と
+[Multi-line values](./flowchart.md#multi-line-values)を再利用します。
+文字とtriviaのない通常の閉じたブロックの内側は、空白や空行があっても`{}`です。
+外側の語と波括弧の隙間も接するトークンを接したままにするので、
+`accDescr{}`も接したままにします。
+[fixture: accessibility/empty-block-touching-keyword]
+囲む文字がないので内側の空白も不要で、usecaseのDbが同じ形に従います。
+[fixture: accessibility/empty-block-tight]
+[fixture: accessibility/empty-block-spaced]
+[fixture: accessibility/empty-block-lines]
+内側で受理するNBSP・U+2028・U+2029の空白も落とします。
+[test: accessibility blocks: agentflow empty-block-unicode]
+保持行とdirectiveがあるブロックは従来の配置を保ちます。
+[fixture: accessibility/empty-block-semicolon-kept]
+[fixture: accessibility/empty-block-directive-kept]
+
+空でないブロックは`{a}`と`{ a }`を保ち、`{  a  }`は`{ a }`です。
+兄弟の図種と同じく、文字の両側の空白列を1つにし、空白がなければ足しません。
+[fixture: accessibility/block-tight-text]
+[fixture: accessibility/block-spaced-text]
+[fixture: accessibility/block-padded-text]
+左右を別々に扱い、`{  a}`は`{ a}`、`{a  }`は`{a }`にします。
+[fixture: accessibility/block-left-padding-only]
+[fixture: accessibility/block-right-padding-only]
+後続の値とコメントの桁位置は書かれた文字で、
+単独行の閉じ括弧は、0桁目でも字下げされていても`accDescr`に揃えます。
+[fixture: accessibility/block-close-column-zero]
+[fixture: accessibility/block-close-indented]
+[fixture: accessibility/block-comment-close-column-zero]
+[fixture: accessibility/block-comment-close-indented]
+`tabWidth: 0`の本文の最小幅でも同じ空ブロックと閉じ括弧の規則を使います。
+[fixture: accessibility/block-zero-width]
+
 未閉鎖ブロックの内容とEOFの末尾を保ち、括弧や改行を足しません。
 flowchartと異なり、コメントに見える説明行も値なので桁位置を保ちます。
 文法が割り当てる閉じた空の説明文は別の文で、
@@ -615,18 +705,62 @@ Nameとclick内ではIgnoredTextです。
 [fixture: accessibility/accessibility-lines]
 [fixture: accessibility/accessibility-open-eof]
 
-入力（エスケープ表記）: `"agentflow-beta TB\naccTitle:\n"`。
-[fixture: accessibility/accessibility-empty-null]
+入力（エスケープ表記）:
+`"agentflow-beta TB\naccTitle:Compact title\naccDescr:Compact description"`。
 
 Output
-([accessibility/accessibility-empty-null-output.mmd](../tests/fixtures/agentflow/accessibility/accessibility-empty-null-output.mmd)):
+([accessibility/tight-colon-output.mmd](../tests/fixtures/agentflow/accessibility/tight-colon-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  accTitle: Compact title
+  accDescr: Compact description
+```
+
+入力（エスケープ表記）: `"agentflow-beta TB\naccDescr {a}\nA[Block spacing]"`.
+
+出力
+([accessibility/block-tight-text-output.mmd](../tests/fixtures/agentflow/accessibility/block-tight-text-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  accDescr {a}
+  A[Block spacing]
+```
+
+入力（エスケープ表記）:
+`"agentflow-beta TB\naccDescr: previous description\naccDescr { }\nA[Empty spacing]"`.
+
+出力
+([accessibility/empty-block-spaced-output.mmd](../tests/fixtures/agentflow/accessibility/empty-block-spaced-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  accDescr: previous description
+  accDescr {}
+  A[Empty spacing]
+```
+
+入力（エスケープ表記）:
+`"agentflow-beta TB\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]"`。
+
+出力
+([accessibility/title-directive-continuation-output.mmd](../tests/fixtures/agentflow/accessibility/title-directive-continuation-output.mmd)):
 
 ```mmd
 agentflow-beta TB
   accTitle:
+    %%{init: {}}%%
+    Title after directive
+  A[Continuation]
 ```
 
 ### Multiline statements and values
+
+通常のアクセシビリティのコロン行と、triviaのない閉じた空の説明ブロックは、
+[Accessibility](#accessibility)に従い行をつなぎます。
+[fixture: accessibility/next-line-values]
+[fixture: accessibility/empty-block-lines]
 
 [Multi-line statements](./flowchart.md#multi-line-statements)と
 [Multi-line values](./flowchart.md#multi-line-values)を同じ理由で再利用します。

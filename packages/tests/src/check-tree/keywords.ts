@@ -17,6 +17,7 @@
  * recorded tree to have a text here.
  */
 export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  PieDiagram: ["pie", "showdata", "title", "acctitle", "accdescr"],
   UsecaseDiagram: [
     "usecase-beta",
     "actor",

@@ -94,9 +94,10 @@ const BLANK_LINES_MARK = "blank-line-after-header-or-comments"
  * For `html-tag-in-frontmatter` the input is read once more with every `<` of
  * its frontmatter replaced by `(`: mermaid.js finds HTML tags from the start
  * of the source, so a tag that starts in the frontmatter changes how it reads
- * the text, and the reference input has none. The values that depend on the
- * frontmatter (the title, the configuration) are those of the input as
- * written, since the specification reads the frontmatter as it is written.
+ * the text, and the reference input has none. The frontmatter title in both
+ * the Db and `embedded` is Mermaid's converted value in every diagram type,
+ * as returned by {@link extractFrontmatterTitle} after `cleanupText`.
+ * The configuration keeps the existing Mermaid/reference-run derivation.
  */
 export async function specifiedRunOf(
   input: string,
@@ -159,10 +160,10 @@ export async function specifiedRunOf(
 
 /**
  * The outcome of the reference run, where the title of the Db is `title`, the
- * title of the frontmatter as written: the Db of the reference input holds
- * the title with the `(` that stands in for a `<`, which is not what the
- * specification gives. The title is read from the frontmatter whether or not
- * mermaid.js accepts the input.
+ * frontmatter title derived by Mermaid: the reference Db holds the title
+ * with the `(` that stands in for a `<`, which is not what the specification
+ * gives. The title is read from the frontmatter whether or not mermaid.js
+ * accepts the input.
  */
 function withTitle(
   reference: MermaidRun,
@@ -185,9 +186,11 @@ function withTitle(
  * whitespace only among the lines before the header. A bare `%%` line is a
  * line that holds, after whitespace, `%%` alone, or `%%{` where no directive
  * starts (known-divergences/bare-percent-line-before-header.md). The lines
- * before the header are those after the frontmatter that are such lines,
- * comment lines, or directives, or hold whitespace only; the first other line
- * is the header, and nothing after it changes. A directive that starts on a
+ * before the header follow detection: one retained frontmatter-shaped block
+ * may precede them, and directives found only after source directives and
+ * comment regions are left out are passed before testing for a bare line.
+ * Both retained forms stay as written. Nothing after the header changes.
+ * A directive that starts on a
  * line stays, with the lines it spans and without the whitespace around it
  * on its line.
  */
@@ -195,12 +198,39 @@ export function withoutBarePercentLinesBeforeHeader(text: string): string {
   const frontmatter = frontmatterLength(text)
   // The frontmatter ends with the line of its closing `---`.
   const start = frontmatter === 0 ? 0 : lineEnd(text, frontmatter).next
-  const directiveEnds = new Map(
-    scanSource(text, start).directives.map((directive) => [
-      directive.range[0],
-      directive.scanEnd,
-    ]),
+  const scan = scanSource(text, start)
+  const retainedEnds = new Map(
+    scan.directives.map((directive) => [directive.range[0], directive.scanEnd]),
   )
+  // Detection reads through source directives and comment regions. Preserve
+  // source offsets: a second-scan directive or retained YAML keeps its source
+  // removals inside it, rather than replacing the form with converted text.
+  const removed = new Uint8Array(text.length)
+  for (const directive of scan.directives)
+    removed.fill(1, directive.range[0], directive.scanEnd)
+  for (const comment of scan.commentLines)
+    removed.fill(1, comment.region[0], comment.region[1])
+  let visible = ""
+  const offsets: number[] = []
+  for (let index = start; index < text.length; index++) {
+    if (removed[index] === 1) continue
+    visible += text.charAt(index)
+    offsets.push(index)
+  }
+  for (const directive of scanSource(visible, 0).directives) {
+    const from = offsets[directive.range[0]]
+    const last = offsets[directive.scanEnd - 1]
+    if (from !== undefined && last !== undefined)
+      retainedEnds.set(from, last + 1)
+  }
+  const first = visible.length - visible.trimStart().length
+  const retainedLength = frontmatterLength(visible.slice(first))
+  if (retainedLength > 0) {
+    const from = offsets[first]
+    const last = offsets[first + retainedLength - 1]
+    if (from !== undefined && last !== undefined)
+      retainedEnds.set(from, last + 1)
+  }
   let kept = ""
   let at = start
   while (at < text.length) {
@@ -208,31 +238,28 @@ export function withoutBarePercentLinesBeforeHeader(text: string): string {
     const line = text.slice(at, end.content)
     const trimmed = line.trimStart()
     const marker = at + (line.length - trimmed.length)
+    const retainedEnd = retainedEnds.get(marker)
+    if (retainedEnd !== undefined) {
+      const through = lineEnd(text, retainedEnd)
+      const rest = text.slice(retainedEnd, through.content)
+      kept +=
+        text.slice(marker, retainedEnd) +
+        (rest.trim() === "" ? "" : rest) +
+        text.slice(through.content, through.next)
+      at = through.next
+      continue
+    }
     if (trimmed.trim() === "") {
       // A line of whitespace only: dropped.
     } else if (trimmed.startsWith("%%")) {
       const afterMarks = trimmed.slice(2)
-      const directiveEnd = directiveEnds.get(marker)
-      if (directiveEnd !== undefined) {
-        // A directive stays, with the lines it spans, but not the whitespace
-        // around it on its line: without the directive, that line would be a
-        // line of whitespace only.
-        const through = lineEnd(text, directiveEnd)
-        const rest = text.slice(directiveEnd, through.content)
-        kept +=
-          text.slice(marker, directiveEnd) +
-          (rest.trim() === "" ? "" : rest) +
-          text.slice(through.content, through.next)
-        at = through.next
-        continue
-      }
       if (afterMarks.trim() === "" || afterMarks.startsWith("{")) {
         // A bare `%%` line: dropped.
       } else {
         kept += text.slice(at, end.next)
       }
     } else {
-      return text.slice(0, start) + kept + text.slice(at)
+      return text.slice(0, start) + kept + text.slice(marker)
     }
     at = end.next
   }

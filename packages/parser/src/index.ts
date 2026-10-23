@@ -473,3 +473,16 @@ export type {
   UsecaseStatement,
   UsecaseNode,
 } from "./ast/usecase.ts"
+
+export type {
+  PieDiagram,
+  PieBodyItem,
+  PieSectionStatement,
+  PieTitleStatement,
+  PieAccTitleStatement,
+  PieAccDescrStatement,
+  PieAccDescrBlockStatement,
+  PieLiteral,
+  PieIgnoredText,
+  PieNode,
+} from "./ast/pie.ts"

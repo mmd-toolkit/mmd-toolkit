@@ -350,7 +350,81 @@ before any parser error, and a recovered CST need not be accepted.
 
 #### Langium diagrams
 
-To be written for pie.
+1. Read the entry rule, every imported grammar and all reachable rules. Follow
+   the generated grammar, service modules and token builder to the effective
+   terminal array. Record its priority order, including inherited terminals,
+   custom keyword matchers and longer alternatives. Declaration order alone and
+   a general longest-match assumption do not establish that order.
+2. Read the actual keyword matcher and its boundary test. State the exact
+   characters that satisfy the boundary and distinguish them from whitespace
+   skipped between units. Judge the boundary on the diagram text after global
+   directives and the semicolons selected by the common line rule are left out.
+   Through the tests package's Mermaid runner, probe a global directive glued
+   immediately after a keyword and before the next component. Compare cases
+   where removal leaves a valid boundary with cases where it joins the two
+   components. Do not import Jison's word-boundary rule. Check competing
+   keywords and terminals at the same position, including composite line forms
+   whose keyword and value are read together.
+3. Read hidden terminals in priority order, including their flags and where
+   their match ends. Separate them from global preprocessing. Check whether they
+   consume a following line feed, use it only as a boundary, or consume the
+   appended line feed at EOF. Check an earlier terminal enclosing the same text,
+   fallback to comments when a hidden form fails, and matches between complete
+   units versus inside an atom. First ask where the tree can hold every skipped
+   form; do not propose a divergence merely because it is hidden.
+4. Follow the diagram's module to its custom, common and default value
+   converters. Match each conversion branch to the grammar rule name that
+   actually calls it; an unused branch is not behavior. Record string escapes,
+   numeric conversion, trimming and whitespace collapse separately. Keep the
+   tree's authored values distinct from converted Db values, and state which
+   spelling the tree preserves under 3.3.
+5. Follow the public parse wrapper and the diagram's adapter through complete
+   consumption and every error check. Determine whether any lexer error or
+   parser error prevents publication, including errors attached to a recovered
+   tree. Read model validation and Db rejection after conversion too. Do not
+   infer acceptance from the existence of a recovered tree or from the grammar
+   alone.
+6. Read the shared preprocessing and detection rules in
+   [common.md](../../../packages/spec/docs/common.md): Reading a source,
+   Frontmatter, Leading whitespace and Diagram detection. Read the diagram's
+   detector in [detection.md](../../../packages/spec/docs/detection.md). Before
+   writing Detection in 3.2, record the following as direct sentences with fixed
+   cases:
+   - Distinguish real leading frontmatter from the single retained
+     frontmatter-shaped block at the detection point. Record the one-block skip
+     and its order before bare `%%` lines and the second directive scan.
+   - Record the skip's stopping cases: adjacent fences without a body line, a
+     missing closer, mismatched indentation, four dashes, closing-fence suffix
+     text, a closer without a following line break, and a preceding bare `%%`
+     line. Check a second block, both orders of a block and a second-scan
+     directive, real frontmatter before a retained block, and leading
+     indentation that changes which fences match.
+   - Distinguish the detection point from the header position reached. Record
+     which retained forms the diagram's lexer still reads from the detection
+     point, under its own terminal boundaries and acceptance gate. Record which
+     bare `%%` lines and accompanying whitespace and line breaks detection
+     passes and the lexer does not read again: shared Comments for the bare
+     lines, trivia for that whitespace and those line breaks. Distinguish
+     leading trivia before the detection point from later whitespace the diagram
+     still reads.
+   - List fixed cases with retained forms before and between passed bare lines,
+     and with passed lines and trivia between retained forms. Compare Unicode
+     whitespace after a passed line with the same whitespace without a passed
+     line and with ASCII space/tab and LF controls; include whitespace
+     immediately before the header and on a line of its own. Record what
+     detection passes or retains, which terminal boundary must match, acceptance
+     and tree ownership for each case, using 3.4–3.5.
+   - Recheck any shared claim that other diagram types reject a form against
+     their current rules and fixed fixtures. State only the scope supported by
+     that evidence; do not carry forward a historical list of diagram types.
+7. Apply 3.2–3.5 to the resulting detection rules, ordered units, authored
+   components, hidden forms, conversions and acceptance gate. Write direct
+   sentences and the tree before considering divergences. For each sentence,
+   probe explicit cases at its named boundaries and rule intersections through
+   the tests package's Mermaid runner; cover hidden-form ownership, delimiters,
+   consumed line feeds, EOF and the reverse direction of any divergence. Add
+   only the cases the sentence distinguishes, with the fixture CLI. Do not
+   generate inputs.
 
 ### 3.2 Writing the diagram document
 
@@ -765,10 +839,14 @@ are sorted (the tests SKILL).
 
 ## 8. Jison, Langium, and Chevrotain
 
-Section 3.1 on Jison diagrams was written with flowchart. The steps for Langium
-diagrams (pie and others) are to be written for pie, in the Langium part of 3.1,
-together with what differs in 3.2 to 3.5.
+Use the matching procedure in 3.1. For Langium, use step 6 under
+[Langium diagrams](#langium-diagrams) to establish the shared preprocessing and
+detection boundary before writing Detection in 3.2. Establish the effective
+terminal priority and keyword boundaries, the scope and line-feed consumption of
+hidden terminals, the active value converters, and the wrapper's acceptance
+gate. Apply those findings to the sentences, tree and explicit fixture cases in
+3.2–3.5; a recovered tree is not evidence of acceptance.
 
-For Chevrotain, use the Chevrotain procedure in 3.1 and its checks of modes,
-ordered matches, `longer_alt`, authored boundaries, and error handling; the
-still-unwritten Langium procedure is not guidance for a Chevrotain parser.
+For Chevrotain, use its procedure and checks of modes, ordered matches,
+`longer_alt`, authored boundaries and error handling. Check the actual engine;
+neither Jison's boundaries nor Langium's service wiring applies automatically.

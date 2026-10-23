@@ -111,6 +111,16 @@ const IGNORED_TEXT =
  * Meaning column of those tables on which of them are the written text.
  */
 export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
+  PieLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written common value (ast/pie.md, PieLiteral).",
+  },
+  PieIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its complete written hidden form (ast/pie.md, PieIgnoredText).",
+  },
   UsecaseLabel: {
     field: "value",
     kind: "written-text",

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a C4 word in line accDescr override pie detection? Mermaid selects C4 and rejects; the specification keeps pie."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npieaccDescr: C4Dyna\n^"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The summary keeps titles, showData, section order, small sections and zero."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Chart",
+    "accTitle": "Accessible",
+    "accDescr": "First line\nSecond line",
+    "showData": true,
+    "sections": [
+      {
+        "label": "B",
+        "value": 10
+      },
+      {
+        "label": "A",
+        "value": 100
+      },
+      {
+        "label": "Small",
+        "value": 0.1
+      },
+      {
+        "label": "Zero",
+        "value": 0
+      }
+    ]
+  }
+}

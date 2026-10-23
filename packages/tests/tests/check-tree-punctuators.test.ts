@@ -61,6 +61,7 @@ function textsOfRow(diagram: string): string[] {
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [string, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["pie", "PieDiagram"],
   ["usecase", "UsecaseDiagram"],
   ["agentflow", "AgentflowDiagram"],
   ["sequence", "SequenceDiagram"],
@@ -88,6 +89,8 @@ const DIAGRAMS: readonly [string, string][] = [
  */
 function textsBesidesTheRow(diagram: string): string[] {
   switch (diagram) {
+    case "pie":
+      return [":", "{", "}"]
     // The row names the shapes by their rule, and the `data-start` unit,
     // which is `@{`, by its name.
     // The usecase row names each punctuation family; arrow nodes check their operators.

@@ -152,6 +152,9 @@ flowchart LR
 - Usecase 図。
   `usecase-beta` で始まる図です。
   整形の規則は [docs/usecase.ja.md](./docs/usecase.ja.md) にあります。
+- Pie 図。
+  `pie` で始まる図で、`showData` も扱います。
+  整形の規則は [docs/pie.ja.md](./docs/pie.ja.md) にあります。
 - ブロック図。
   `block-beta` か `block` で始まる図です。
   整形の規則は、
@@ -185,7 +188,7 @@ flowchart LR
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
 - flowchart、agentflow、sequence、class、state、ER、Gantt、journey、
   requirement、mindmap、timeline、sankey、XY チャート、象限チャート、
-  kanban、C4、Venn、Ishikawa、usecase、
+  kanban、C4、Venn、Ishikawa、usecase、pie、
   ブロック図以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
@@ -240,6 +243,7 @@ flowchart LR
 - [docs/venn.ja.md](./docs/venn.ja.md): Venn 図の整形の規則。
 - [docs/ishikawa.ja.md](./docs/ishikawa.ja.md): Ishikawa 図の整形の規則。
 - [docs/usecase.ja.md](./docs/usecase.ja.md): usecase 図の整形の規則。
+- [docs/pie.ja.md](./docs/pie.ja.md): pie 図の整形の規則。
 - [docs/block.ja.md](./docs/block.ja.md): ブロック図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):
   mermaid.js と違う箇所と、その理由。

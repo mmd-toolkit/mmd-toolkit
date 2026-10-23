@@ -8,7 +8,7 @@ import {
 import { COLON, LEFT_CURLY_BRACKET, PERCENT_SIGN } from "./code-points.ts"
 import type { DirectiveRuleText } from "./directives.ts"
 import { findDirectives, matchDirective } from "./directives.ts"
-import { matchFrontmatter } from "./frontmatter.ts"
+import { matchFrontmatter, matchFrontmatterIn } from "./frontmatter.ts"
 import type { SourceLexer } from "./source-lexer.ts"
 import {
   findCodePoints,
@@ -43,7 +43,8 @@ function characterAt(lexer: SourceLexer, offset: number): DetectionCharacter {
     return { codePoint: undefined, start: text.length, end: text.length }
   }
   return {
-    codePoint: text.codePointAt(start),
+    codePoint:
+      lineTerminatorEnd(text, start) === null ? text.codePointAt(start) : 0x0a,
     start,
     end: lineTerminatorEnd(text, start) ?? nextOffset(text, start),
   }
@@ -446,9 +447,14 @@ export type PassedPart =
 function positionReached(
   lexer: SourceLexer,
   detectionPoint: number,
-): { readonly position: number; readonly passed: readonly PassedPart[] } {
+): {
+  readonly position: number
+  readonly passed: readonly PassedPart[]
+  readonly retainedFrontmatterStart: number | null
+} {
   const passed: PassedPart[] = []
-  let position = detectionPoint
+  const block = matchFrontmatterIn(detectionRuleText(lexer), detectionPoint)
+  let position = block === null ? detectionPoint : lexer.skipTrivia(block.end)
   for (;;) {
     const afterDirective = afterDirectiveFoundOnceMore(lexer, position)
     if (afterDirective !== null) {
@@ -460,7 +466,12 @@ function positionReached(
       continue
     }
     const valueStart = bareCommentLineAt(lexer, position)
-    if (valueStart === null) return { position, passed }
+    if (valueStart === null)
+      return {
+        position,
+        passed,
+        retainedFrontmatterStart: block === null ? null : detectionPoint,
+      }
     const line = lineEndFrom(lexer, valueStart)
     passed.push({
       kind: "bare-percent-line",
@@ -480,6 +491,8 @@ export interface Detection {
   readonly detectionPoint: number
   /** The position that detection reaches from the detection point ({@link positionReached}), where every detector but that of the `error` pseudo-diagram looks, and where the diagram's lexer starts. */
   readonly positionReached: number
+  /** A block passed once at the detection point, retained for pie; null when absent. */
+  readonly retainedFrontmatterStart: number | null
   /** What detection passed before {@link Detection.positionReached}, in source order; none for the `error` pseudo-diagram. */
   readonly passed: readonly PassedPart[]
 }
@@ -499,11 +512,20 @@ export function detectDiagram(lexer: SourceLexer): Detection {
       detected: "error",
       detectionPoint,
       positionReached: detectionPoint,
+      retainedFrontmatterStart: null,
       passed: [],
     }
   }
-  const { position, passed } = positionReached(lexer, detectionPoint)
-  const reached = { detectionPoint, positionReached: position, passed }
+  const { position, passed, retainedFrontmatterStart } = positionReached(
+    lexer,
+    detectionPoint,
+  )
+  const reached = {
+    detectionPoint,
+    positionReached: position,
+    retainedFrontmatterStart,
+    passed,
+  }
   if (keywordEnd(lexer, position, "---", exactly) !== null) {
     return { detected: "---", ...reached }
   }

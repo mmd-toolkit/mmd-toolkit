@@ -825,10 +825,20 @@ of those lines are not in the Db, so keeping them is a choice, whose reason is
 in a flowchart (see [Multi-line values](./flowchart.md#multi-line-values)).
 [fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-single-line-kept] [fixture:
-multi-line-values/accdescr-block-empty-and-comment-lines-kept] The text of a
-floating note written over several lines is kept as written too. [fixture:
-multi-line-values/kept] [fixture:
-multi-line-values/floating-note-empty-line-kept]
+multi-line-values/accdescr-block-empty-and-comment-lines-kept] A closed block
+with no text prints `{}` internally: `accDescr { }` becomes `accDescr {}`,
+including whitespace runs, line breaks and an NBSP-only interior; an already
+empty interior stays empty, and `accDescr{}` stays touching. There is no text
+for interior whitespace to surround, so the Db-equal choice follows
+[flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
+and usecase. A prior description stays in the Db. [fixture:
+multi-line-values/empty-description-interiors] [test: accessibility revisions:
+state empty-description-nbsp] Blocks with comments or directives retain their
+previous layout, and unclosed blocks stay open. [fixture:
+multi-line-values/empty-description-trivia-kept] [corpus fixture:
+state/lex-acc-descr-block-unclosed] The text of a floating note written over
+several lines is kept as written too. [fixture: multi-line-values/kept]
+[fixture: multi-line-values/floating-note-empty-line-kept]
 
 Input
 ([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):
@@ -866,10 +876,30 @@ the position of a note, after `classDef` or `style` and their names, after
 multi-line-statements/joined] [fixture: multi-line-statements/joined-after-as]
 [fixture: multi-line-statements/joined-style-and-classdef] [fixture:
 multi-line-statements/joined-accdescr] [fixture:
-multi-line-statements/empty-line-inside-joined] So `classDef c` followed by a
-line `fill:red` is printed as `classDef c fill:red`; a line `B --> C` after
-`classDef a` is a style of `a`, not a transition, and the printed text shows it.
-[fixture: multi-line-statements/joined] [fixture:
+multi-line-statements/empty-line-inside-joined] A next-line `accTitle:` or
+`accDescr:` value keeps its line break and the usual continuation indentation
+when joining would make a direction statement: `direction` and a whitespace run
+followed by `TB`, `BT`, `RL` or `LR`, compared case-insensitively, even after
+other value text. This preserves the title or description instead of changing
+the diagram's direction. Thus `"accTitle:\n direction LR"` prints
+`"  accTitle:\n    direction LR"`; `direction TD` still joins because `TD` is
+not a state direction. [fixture:
+multi-line-statements/next-line-direction-title] [fixture:
+multi-line-statements/next-line-direction-description] [fixture:
+multi-line-statements/next-line-direction-lower-value] [fixture:
+multi-line-statements/next-line-direction-mixed-keyword] [fixture:
+multi-line-statements/next-line-direction-spaced-bt] [fixture:
+multi-line-statements/next-line-direction-after-text] [fixture:
+multi-line-statements/next-line-direction-tb] [fixture:
+multi-line-statements/next-line-direction-rl] [fixture:
+multi-line-statements/next-line-direction-td-joined] CRLF before the value and
+NBSP indentation follow the same rule, printed with the configured line ending
+and continuation indentation. [test: accessibility revisions: state
+next-line-direction-crlf] [test: accessibility revisions: state
+next-line-direction-nbsp] So `classDef c` followed by a line `fill:red` is
+printed as `classDef c fill:red`; a line `B --> C` after `classDef a` is a style
+of `a`, not a transition, and the printed text shows it. [fixture:
+multi-line-statements/joined] [fixture:
 multi-line-statements/classdef-takes-next-line] A statement written over several
 lines with a comment or a directive in it is kept as written, from its start to
 its end, as in a sequence diagram (see

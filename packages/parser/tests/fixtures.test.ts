@@ -1,5 +1,3 @@
-import { usecaseAccepts } from "./helpers/usecase-fixtures.ts"
-import { agentflowAccepts } from "./helpers/agentflow-fixtures.ts"
 /**
  * The fixtures of `@mmd-toolkit/tests`, parsed: for each fixture, what
  * `parse()` gives must be what the fixture records for this parser, the tree
@@ -49,6 +47,8 @@ import path from "node:path"
 import { describe, expect, it } from "vitest"
 import type { EmbeddedValues, Expectation, Fixture } from "@mmd-toolkit/tests"
 import {
+  fixtureAccepts,
+  DIVERGENCE_PROPERTIES,
   embeddedValuesOf,
   getFixturesRoot,
   loadFixtures,
@@ -227,75 +227,48 @@ function clickReferenceOutcomeOf(
   return clickIdsWithinLeafNodes(reference, outcome.root) ? outcome : null
 }
 
-/** The known divergences that go one way only: the parser rejects what mermaid.js accepts. */
-const ONE_WAY_DIVERGENCES: readonly (string | undefined)[] = [
-  "directive-as-token-boundary",
-  "ignored-semicolon-as-token-boundary",
-  "click-reserved-word",
-  "tokenless-empty-forms",
-  "headerless-empty-ending",
-]
-
 /**
  * The acceptance of one fixture, as its mark, or the lack of one, asks for
  * it: `outcome` is what `parse()` gives for its input, with the rejection
  * by the site configuration (`outcomeOf`).
  */
 function checkAcceptance(fixture: Fixture, outcome: Outcome): void {
-  if (fixture.diagram === "usecase") {
-    expect(outcome.kind === "tree").toBe(usecaseAccepts(fixture))
-    return
-  }
-  if (fixture.diagram === "agentflow") {
-    expect(outcome.kind === "tree").toBe(agentflowAccepts(fixture))
-    return
-  }
+  const accepted = fixtureAccepts(fixture)
   const { expected, knownDivergence } = fixture
-  if (knownDivergence === undefined) {
-    expectSameAcceptance(outcome, expected)
-  } else if (knownDivergence === "embedded-data-opaque") {
-    // The parser never rejects for what embedded data contains.
-    expect(expected.accepted).toBe(false)
-    expect(outcome.kind).not.toBe("reject")
-  } else if (knownDivergence === "blank-line-after-header-or-comments") {
-    // This divergence accepts the blank lines that mermaid.js rejects.
-    expect(expected.accepted).toBe(false)
-    expect(outcome.kind).toBe("tree")
-    if (outcome.kind === "tree") {
-      expect(outcome.root.diagramType).toBe(fixture.diagram)
-    }
-  } else if (outcome.kind === "unsupported") {
-    // The divergence shows in the diagram's own grammar, which this
-    // parser does not have yet; only the detected type can be checked.
-    if (expected.accepted) {
+  if (outcome.kind === "unsupported") {
+    if (knownDivergence === undefined) {
+      expectSameAcceptance(outcome, expected)
+    } else if (expected.accepted) {
+      // A diagram's own divergence is checked once its parser is supported.
       expect(outcome.diagramType).toBe(expected.diagramType)
     }
-  } else if (ONE_WAY_DIVERGENCES.includes(knownDivergence)) {
-    // One way only: a directive inside a unit that may not have one, a
-    // `click` that does not start a click statement, an empty form that no
-    // rule takes, and a class diagram without its header are rejected here
-    // and accepted by mermaid.js. The input has the form of its mark,
-    // found by the rule of that divergence, and the rejection is that of
-    // such a divergence, where the parser rejects for it, as
-    // `helpers/known-divergences.ts` declares it. An input may have two of
-    // them, as an empty string before a `click` that does not start a
-    // click statement; the parser rejects at the first, whose divergence
-    // is then the one declared.
-    expect(expected.accepted).toBe(true)
-    expect(outcome.kind).toBe("reject")
-    expect(oneWayDivergencesIn(fixture.input, fixture.config)).toContain(
-      knownDivergence,
-    )
-    expect(ONE_WAY_DIVERGENCES).toContain(
-      declaredDivergence(fixture.input, fixture.config, outcome),
-    )
-  } else {
-    // Both ways: the acceptance and the diagram type of the reading of the
-    // specification, which the corpus records where it differs from that
-    // of mermaid.js (`specified.json`); the Db of that reading is checked
-    // by the corpus.
-    expectSameAcceptance(outcome, fixture.specified ?? expected)
+    return
   }
+  expect(outcome.kind === "tree").toBe(accepted)
+  const reading = fixture.specified ?? expected
+  if (outcome.kind === "tree" && reading.accepted) {
+    expect(outcome.root.diagramType).toBe(reading.diagramType)
+  }
+  if (
+    knownDivergence === undefined ||
+    fixture.specified !== undefined ||
+    // These diagram suites check their marked forms with their own units.
+    ["pie", "usecase", "agentflow"].includes(fixture.diagram) ||
+    DIVERGENCE_PROPERTIES.get(knownDivergence)?.direction !== "reject"
+  )
+    return
+  // The reference-input helpers check the form independently of the rejection.
+  // With two such forms, the first rejection can declare either rejecting mark.
+  expect(expected.accepted).toBe(true)
+  expect(oneWayDivergencesIn(fixture.input, fixture.config)).toContain(
+    knownDivergence,
+  )
+  const declared = declaredDivergence(fixture.input, fixture.config, outcome)
+  expect(
+    declared === undefined
+      ? undefined
+      : DIVERGENCE_PROPERTIES.get(declared)?.direction,
+  ).toBe("reject")
 }
 
 for (const diagram of RECORDED_DIAGRAMS) {

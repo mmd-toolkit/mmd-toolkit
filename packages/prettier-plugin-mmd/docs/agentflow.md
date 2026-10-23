@@ -558,14 +558,89 @@ agentflow-beta TB
 
 ### Accessibility
 
-Reuse [Multi-line values](./flowchart.md#multi-line-values) and ordinary token
-layout: later value columns are authored text, and a closed description brace
-aligns with accDescr. Ordinary line-value exterior whitespace normalizes,
-including a next-line value; semicolons/percent text, null EOF values and
-repetition remain. Keep unclosed block content and its EOF ending without adding
-a brace or newline. Unlike flowchart, comment-looking description lines are real
-values and keep their columns. Closed empty descriptions stay separate
-statements where the grammar places them; Name/click placements stay
+Reuse [Accessibility lines](./flowchart.md#accessibility-lines) with the same
+reason: among Db-equal forms, follow the sibling diagram types unless there is a
+reason of this diagram's own. Agentflow has none for an ordinary accessibility
+line, so C4, class, usecase and both graph types share `accTitle: value` and
+`accDescr: value`. The colon touches the keyword, one ASCII space precedes the
+trimmed value, and internal whitespace, inline `%%` and `#` remain value text.
+[fixture: accessibility/tight-colon] [fixture: accessibility/spaced-colon]
+[fixture: accessibility/value-padding] [fixture:
+accessibility/inline-percent-hash] Empty and whitespace-only values keep
+`accTitle:` or `accDescr:` without a following space. [fixture:
+accessibility/empty-title] [fixture: accessibility/empty-description] [fixture:
+accessibility/accessibility-empty-null] [corpus fixture:
+agentflow/db-acctitle-eof] [corpus fixture: agentflow/db-accdescr-eof]
+
+Ordinary next-line values join, as Mermaid reads them. [fixture:
+accessibility/next-line-values] Unlike flowchart, a comment-looking line after
+the colon is itself value text; join it as such and leave the next statement
+separate. [fixture: accessibility/next-line-percent-value] A directive inside
+the statement declines ordinary joining and keeps the previous multiline
+statement layout: continuation and directive lines stand one level deeper than
+the keyword, with their text and authored line breaks retained. This reuses
+flowchart's continuation rule for the same reason. [fixture:
+accessibility/inline-directive-kept] [fixture:
+accessibility/next-line-directive-kept] [fixture:
+accessibility/title-directive-continuation] [corpus fixture:
+agentflow/db-accdescr-directive-next-line] [corpus fixture:
+agentflow/lex-directive-acctitle-next-line]
+
+The same exceptions apply: non-separator `;` lines under
+[Kept lines](#kept-lines) retain the accessibility text and whitespace beside
+`;`, including when the semicolon is in another statement or a next-line value.
+[fixture: accessibility/semicolon-value-kept] [fixture:
+accessibility/neighbour-semicolon-kept] [fixture:
+accessibility/next-line-semicolon-kept] Direction-text lines keep their text,
+line breaks and columns under [Direction](#direction), and other documented
+kept-line reasons still take priority. [fixture:
+accessibility/direction-text-kept] [fixture:
+accessibility/next-line-direction-kept] Ordinary indentation uses the same
+positive minimum at `tabWidth: 0` and the same `useTabs` step; both options keep
+the exceptions. [fixture: accessibility/zero-width] [fixture:
+accessibility/tabs]
+
+CR normalization, accepted NBSP/U+2028/U+2029 in exterior gaps, internal Unicode
+value characters and Unicode whitespace beside a kept `;` follow the same
+flowchart rule, for the same reasons. These cases use escaped tests. [test:
+graph accessibility: agentflow cr-lines] [test: graph accessibility: agentflow
+unicode-gaps] [test: graph accessibility: agentflow unicode-values] [test: graph
+accessibility: agentflow unicode-semicolon-kept]
+
+Description blocks also reuse
+[Accessibility lines](./flowchart.md#accessibility-lines) and
+[Multi-line values](./flowchart.md#multi-line-values) with the same sibling
+reason: ordinary closed blocks with no text or trivia print their interior as
+`{}`, even with interior spaces or blank lines. The exterior keyword-to-brace
+gap keeps touching tokens touching, so `accDescr{}` stays touching too.
+[fixture: accessibility/empty-block-touching-keyword] No text needs surrounding
+whitespace, so this follows usecase's Db-equal form. [fixture:
+accessibility/empty-block-tight] [fixture: accessibility/empty-block-spaced]
+[fixture: accessibility/empty-block-lines] Accepted NBSP/U+2028/U+2029 interior
+whitespace also disappears. [test: accessibility blocks: agentflow
+empty-block-unicode] Kept lines and blocks containing directives retain their
+existing layout. [fixture: accessibility/empty-block-semicolon-kept] [fixture:
+accessibility/empty-block-directive-kept]
+
+For nonempty blocks, `{a}` stays `{a}`, `{ a }` stays `{ a }`, and `{  a  }`
+becomes `{ a }`: collapse whitespace runs around text without adding absent
+whitespace, as in the sibling diagrams. [fixture:
+accessibility/block-tight-text] [fixture: accessibility/block-spaced-text]
+[fixture: accessibility/block-padded-text] Independently, `{  a}` becomes `{ a}`
+and `{a  }` becomes `{a }`; each side keeps whether it had whitespace. [fixture:
+accessibility/block-left-padding-only] [fixture:
+accessibility/block-right-padding-only] Later value and comment columns are
+authored text, and a closed description brace on its own line aligns with
+`accDescr`, whether written at column zero or indented. [fixture:
+accessibility/block-close-column-zero] [fixture:
+accessibility/block-close-indented] [fixture:
+accessibility/block-comment-close-column-zero] [fixture:
+accessibility/block-comment-close-indented] The same empty-block and closer
+rules apply with the minimum body step at `tabWidth: 0`. [fixture:
+accessibility/block-zero-width] Keep unclosed block content and its EOF ending
+without adding a brace or newline. Unlike flowchart, comment-looking description
+lines are real values and keep their columns. Closed empty descriptions stay
+separate statements where the grammar places them; Name/click placements stay
 IgnoredText, and style statements with a final empty style stay with following
 empty description blocks under Kept lines. [fixture:
 accessibility/accessibility-block] [fixture:
@@ -575,18 +650,62 @@ accessibility/accessibility-empty-block] [fixture:
 accessibility/accessibility-lines] [fixture:
 accessibility/accessibility-open-eof]
 
-Input (escaped): `"agentflow-beta TB\naccTitle:\n"`. [fixture:
-accessibility/accessibility-empty-null]
+Input (escaped):
+`"agentflow-beta TB\naccTitle:Compact title\naccDescr:Compact description"`.
 
 Output
-([accessibility/accessibility-empty-null-output.mmd](../tests/fixtures/agentflow/accessibility/accessibility-empty-null-output.mmd)):
+([accessibility/tight-colon-output.mmd](../tests/fixtures/agentflow/accessibility/tight-colon-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  accTitle: Compact title
+  accDescr: Compact description
+```
+
+Input (escaped): `"agentflow-beta TB\naccDescr {a}\nA[Block spacing]"`.
+
+Output
+([accessibility/block-tight-text-output.mmd](../tests/fixtures/agentflow/accessibility/block-tight-text-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  accDescr {a}
+  A[Block spacing]
+```
+
+Input (escaped):
+`"agentflow-beta TB\naccDescr: previous description\naccDescr { }\nA[Empty spacing]"`.
+
+Output
+([accessibility/empty-block-spaced-output.mmd](../tests/fixtures/agentflow/accessibility/empty-block-spaced-output.mmd)):
+
+```mmd
+agentflow-beta TB
+  accDescr: previous description
+  accDescr {}
+  A[Empty spacing]
+```
+
+Input (escaped):
+`"agentflow-beta TB\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]"`.
+
+Output
+([accessibility/title-directive-continuation-output.mmd](../tests/fixtures/agentflow/accessibility/title-directive-continuation-output.mmd)):
 
 ```mmd
 agentflow-beta TB
   accTitle:
+    %%{init: {}}%%
+    Title after directive
+  A[Continuation]
 ```
 
 ### Multiline statements and values
+
+Ordinary accessibility colon lines and closed empty description blocks without
+trivia instead follow [Accessibility](#accessibility), joining their lines.
+[fixture: accessibility/next-line-values] [fixture:
+accessibility/empty-block-lines]
 
 Reuse [Multi-line statements](./flowchart.md#multi-line-statements) and
 [Multi-line values](./flowchart.md#multi-line-values) for the same reasons: the

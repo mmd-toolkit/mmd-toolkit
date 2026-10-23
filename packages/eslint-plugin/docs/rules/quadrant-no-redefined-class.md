@@ -19,8 +19,8 @@ also those that the later one does not name.
 ## Rule Details
 
 This rule reports a `classDef` statement after the first one of the same name,
-when it gives the class styles other than those it had. It applies to
-`quadrantChart`.
+when it drops a style that the class had or gives it another value. It applies
+to `quadrantChart`.
 
 After `classDef c color: #f00`, the statement `classDef c radius: 9` gives the
 class `c` the radius 9 and no colour. The names of classes are compared with
@@ -28,7 +28,9 @@ their case, so `classDef C` defines another class than `classDef c`. The keyword
 is read in any case. Where a point stands does not count: a point takes the
 class of the last definition, also when the point is written first.
 
-A definition that gives the same styles is not reported. Styles are compared as
+A definition that keeps every style that the class had is not reported, also
+when it adds styles: after `classDef c color: #f00`, the statement
+`classDef c color: #f00, radius: 9` loses nothing. Styles are compared as
 mermaid.js keeps them: the order of the styles does not count, a radius is a
 number, so `radius: 05` is `radius: 5`, and of a style written twice in one
 definition the last value counts; a colour and a stroke width are compared as

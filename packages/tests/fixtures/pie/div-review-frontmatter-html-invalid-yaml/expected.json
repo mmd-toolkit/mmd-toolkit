@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can HTML quote cleanup make a quoted YAML frontmatter title invalid?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "bad indentation of a mapping entry (1:19)\n\n 1 | title: '<b class='x'>Front</b>'\n-----------------------^"
+  }
+}

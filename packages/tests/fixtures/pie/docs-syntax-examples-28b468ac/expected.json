@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/examples.md",
+    "line": 12
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "NETFLIX",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "Time spent looking for movie",
+        "value": 90
+      },
+      {
+        "label": "Time spent watching it",
+        "value": 10
+      }
+    ]
+  }
+}

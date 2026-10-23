@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden YAML consumes the appended LF after a description block, so the common fragment's EOL uses EOF."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A",
+    "showData": false,
+    "sections": []
+  }
+}

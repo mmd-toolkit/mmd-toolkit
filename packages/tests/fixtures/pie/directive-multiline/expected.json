@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A multiline directive after a section is removed and configures pie drawing."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      },
+      {
+        "label": "B",
+        "value": 2
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "pie": {
+        "textPosition": 0.6
+      }
+    }
+  }
+}

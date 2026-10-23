@@ -43,7 +43,8 @@ mermaid.js は C4 を選び入力を拒否します。
 [fixture: kanban/lex-c4-c4deployment-id]
 [fixture: kanban/lex-c4-c4deployment-label]
 [fixture: kanban/lex-c4-c4deployment-metadata]
-[fixture: kanban/lex-c4-c4dynamic-id] [fixture: kanban/lex-c4-c4dynamic-label]
+[fixture: kanban/lex-c4-c4dynamic-id]
+[fixture: kanban/lex-c4-c4dynamic-label]
 [fixture: kanban/lex-c4-c4dynamic-metadata]
 
 kanban のノード名 `C4Context` は両者で検出を変えません。
@@ -68,7 +69,8 @@ venn では、
 [fixture: venn/lex-c4-c4component-style]
 [fixture: venn/lex-c4-c4component-title]
 [fixture: venn/lex-c4-c4dynamic-identifier]
-[fixture: venn/lex-c4-c4dynamic-label] [fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-label]
+[fixture: venn/lex-c4-c4dynamic-style]
 [fixture: venn/lex-c4-c4dynamic-title]
 [fixture: venn/lex-c4-c4deployment-identifier]
 [fixture: venn/lex-c4-c4deployment-label]
@@ -85,19 +87,22 @@ mermaid.js は C4 を選び、入力を拒否します。
 [fixture: venn/lex-c4-c4component-style]
 [fixture: venn/lex-c4-c4component-title]
 [fixture: venn/lex-c4-c4dynamic-identifier]
-[fixture: venn/lex-c4-c4dynamic-label] [fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4dynamic-label]
+[fixture: venn/lex-c4-c4dynamic-style]
 [fixture: venn/lex-c4-c4dynamic-title]
 [fixture: venn/lex-c4-c4deployment-identifier]
 [fixture: venn/lex-c4-c4deployment-label]
 [fixture: venn/lex-c4-c4deployment-style]
 [fixture: venn/lex-c4-c4deployment-title]
-[fixture: venn/div-c4-bare-identifier] [fixture: venn/div-c4-bare-style-value]
+[fixture: venn/div-c4-bare-identifier]
+[fixture: venn/div-c4-bare-style-value]
 
 venn の見出しより後の `C4Context` と、
 除かれるコメントか frontmatter 内の C4 語は、
 どちらの読みでも検出を変えません。
 [fixture: venn/lex-c4-c4context-identifier]
-[fixture: venn/lex-c4-c4context-label] [fixture: venn/lex-c4-c4context-style]
+[fixture: venn/lex-c4-c4context-label]
+[fixture: venn/lex-c4-c4context-style]
 [fixture: venn/lex-c4-c4context-title]
 [fixture: venn/lex-c4-c4container-comment]
 [fixture: venn/lex-c4-c4container-frontmatter]
@@ -266,7 +271,8 @@ C4Context と、frontmatter、directive、コメントと共に除く語は、
 [fixture: usecase/div-c4-deployment-stereotype]
 [fixture: usecase/gram-detect-c4-context-label]
 [fixture: usecase/gram-detect-c4-frontmatter]
-[fixture: usecase/detect-c4-directive] [fixture: usecase/detect-c4-comment]
+[fixture: usecase/detect-c4-directive]
+[fixture: usecase/detect-c4-comment]
 
 usecase はラベル内の inline `%%` を保ちます。
 `A(C4Context %% C4Container)` の行が LF で終わると、
@@ -276,6 +282,39 @@ EOF では検出がその接尾部を残すので、C4 を選んで拒否しま�
 この仕様は既存の逆方向の基準により、同じラベルを usecase として受理します。
 [fixture: usecase/lex-c4-inline-percent-with-lf]
 [fixture: usecase/div-c4-inline-percent-eof]
+
+### Pie
+
+StringLiteral のラベル、PieLiteral のタイトル、アクセシビリティの行の値と
+説明ブロック、PieIgnoredText の YAML ブロック、共通の Comment は、
+C4 の語を書かれたまま持てます。
+コメントの場合は、区分の後の EOF とヘッダー行の EOF を含みます。
+そのため木は pie のヘッダーを読み、この入力を受理します。
+mermaid.js は、検出の見るテキストに残る、先頭に限定しない 4 語のいずれかで
+C4 を選び、これらの入力を拒否します。
+これは逆方向の差異で、mermaid.js が拒否するものをこの仕様が受理します。
+この規則は、受理された pie の入力を拒否しません。
+対照の fixture の、除去するディレクティブの中の C4 の語は、
+検出器に見えず、印を持ちません。
+[fixture: pie/div-detect-c4-label]
+[fixture: pie/div-detect-c4-title]
+[fixture: pie/div-yaml-body-c4-hidden]
+[fixture: pie/detect-c4-directive-control]
+[fixture: pie/div-detect-c4-acctitle]
+[fixture: pie/div-detect-c4-accdescr-line]
+[fixture: pie/div-detect-c4-accdescr-block]
+[fixture: pie/div-detect-c4-section-comment-eof]
+[fixture: pie/div-detect-c4-header-comment-eof]
+
+ラベル `C4Context %% C4Container` の後に最後の LF があれば、
+検出は行中のパーセント接尾部を除いて pie を選び、
+ラベルは書かれた全文を保ちます。
+EOF ではその接尾部が検出のテキストに残るため、Mermaid は C4 を選んで拒否します。
+この仕様は、既存の逆方向の基準により、同じ pie のラベルを受理します。
+ラベル内の `C4Context` 単独では C4 を選びません。
+[fixture: pie/lex-c4-inline-percent-with-lf]
+[fixture: pie/div-c4-inline-percent-eof]
+[fixture: pie/lex-c4context-label]
 
 ## mermaid.js の文書と issue
 
@@ -334,3 +373,14 @@ EOF では検出がその接尾部を残すので、C4 を選んで拒否しま�
   Chevrotain parser、モデル検証、JSON の表を導入します。
   この差異は共有の直接の規則に従うもので、
   bug ラベルを文法変更の承認とは読みません。
+
+- pie の pin した
+  [構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  は、図を `pie` で始めます。
+  2026-10-23 に `pie` と `C4 detection` を検索しましたが、
+  pie 固有の例外は見つかりませんでした。
+  [PR #8501](https://github.com/mermaid-js/mermaid/pull/8501) と
+  [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504) は、
+  C4 のすべての選択肢を先頭に限定する提案です。
+  この事実は共通の検出規則を支えますが、pin した版には先頭に限定しない選択肢が
+  残っています。

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Unicode whitespace at EOF remains before the LF appended for parsing and causes a lexer error."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: -> <- at offset: 9, skipped 3 characters. "
+  }
+}

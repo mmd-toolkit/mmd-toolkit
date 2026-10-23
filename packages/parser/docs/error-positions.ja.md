@@ -17,9 +17,14 @@
   [fixture: common/empty]
   [fixture: common/comment-only]
   [fixture: common/whitespace-only]
-- `---` 疑似図種: `range` は、ブロックの先頭の `-` 3 文字。
+- `---` 疑似図種、または pie 以外の対応図種の前で保持した非先頭ブロック:
+  `range` は、ブロックの先頭の `-` 3 文字。
   [fixture: common/frontmatter-adjacent-delimiters]
-- ヘッダーの前で、もう一度の読みで見つかるディレクティブ
+  [fixture: common/frontmatter-nonleading-class]
+  [fixture: common/frontmatter-nonleading-sequence]
+  [fixture: common/frontmatter-nonleading-state]
+  [fixture: common/frontmatter-after-bare-percent-flowchart]
+- pie 以外で、ヘッダーの前のもう一度の読みで見つかるディレクティブ
   （[図種の検出](../../spec/docs/common.ja.md#図種の検出)）:
   `range` は、その開きの `%%{`。
   最初の `%` から `{` までで、
@@ -30,6 +35,11 @@
   [fixture: sequence/detect-directive-across-comment-line-closed]
   [fixture: class/detect-directive-across-directive]
   [fixture: state/detect-directive-across-directive]
+  [fixture: block/detect-directive-second-scan-preheader]
+  [fixture: venn/detect-directive-second-scan-preheader]
+  [fixture: ishikawa/detect-directive-second-scan-preheader]
+  [fixture: agentflow/detect-directive-second-scan-preheader]
+  [fixture: usecase/detect-directive-second-scan-preheader]
 
 ## flowchart の中
 
@@ -1003,6 +1013,29 @@ CSS のその間の U+2028 は、label-symbol 単位全体を報告します。
 [fixture: usecase/gram-stereotype-open]
 [fixture: usecase/div-directive-stereotype-closer]
 [fixture: usecase/div-semicolon-stereotype-closer-selected]
+
+## pie 図内
+
+再帰下降より先に、字句解析を最後まで行います。
+そのため、後方の読めない文字は、前方の文法違反より先に報告します。
+[fixture: pie/recover-lexer-after-parser] [fixture: pie/recover-lexer-first]
+
+| 拒否                                   | 範囲とメッセージ                                                                              | fixture                                                                                                                                                                                        |
+| -------------------------------------- | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 一致する字句規則がない                 | ソースの 1 文字に `Unexpected character`。閉じない文字列は開き引用符。                        | [fixture: pie/lex-nbsp] [fixture: pie/label-unclosed] [fixture: pie/label-unclosed-single]                                                                                                     |
+| 説明ブロックか YAML 形式が閉じない     | 複合形式全体に一致しないため、キーワードの先頭文字か開きのダッシュに `Unexpected character`。 | [fixture: pie/accdescr-block-unclosed] [fixture: pie/yaml-unclosed-in-body]                                                                                                                    |
+| 文法が単位を読めない                   | 有意範囲に `Unexpected token`。改行は先頭の空範囲、ソース EOF は `Unexpected end of text`。   | [fixture: pie/gram-adjacent-sections] [fixture: pie/gram-newline-before-colon] [fixture: pie/gram-missing-number] [fixture: pie/gram-common-same-line]                                         |
+| 隠し形式が唯一の区切り LF を消費       | 次の見える単位に `Unexpected token`。EOF なら EOL を満たす。                                  | [fixture: pie/review-hidden-directive-after-title] [fixture: pie/lex-yaml-after-value-before-eol] [fixture: pie/review-hidden-directive-title-eof] [fixture: pie/gram-section-eof-hidden-yaml] |
+| セクションの変換後の double がゼロ未満 | 数値に `A pie section value cannot be negative`。重複セクションと負の無限大を含む。           | [fixture: pie/number-negative] [fixture: pie/db-duplicate-negative] [fixture: pie/number-negative-overflow]                                                                                    |
+
+固定キーワードや数値の内部にある共通ディレクティブと、
+選ばれたセミコロンは、後述の共通境界エラーで報告します。
+一致しない隠し DIRECTIVE は、代わりにコメントに一致することがあります。
+その場合、不足する構成要素は文法が報告します。
+[fixture: pie/div-directive-in-header] [fixture: pie/div-directive-number]
+[fixture: pie/div-atomic-semicolon-number]
+[fixture: pie/review-directive-hidden-unclosed]
+[fixture: pie/lex-hidden-comment-fallback-no-boundary]
 
 ## 既知の差異
 

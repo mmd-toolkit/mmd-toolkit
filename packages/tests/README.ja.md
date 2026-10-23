@@ -65,7 +65,7 @@ fixture は 1 件ごとに、
 `<diagram>` は、
 図種（`flowchart`、`sequence`、`class`、`state`、`er`、`gantt`、`journey`、
 `requirement`、`mindmap`、`timeline`、`sankey`、`xychart`、`quadrant`、
-`block`、`kanban`、`c4`、`venn`、`ishikawa`、`agentflow`、`usecase`）か、
+`block`、`kanban`、`c4`、`venn`、`ishikawa`、`agentflow`、`usecase`、`pie`）か、
 `common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
@@ -76,12 +76,11 @@ fixture は 1 件ごとに、
 - `specified.json`: 仕様どおりの実装がその入力に対して出す結果。
   それが mermaid.js の結果と違うときにだけある。
   入力の読み方を変える既知の差異を外して、mermaid.js に読ませた結果である。
-  印が `comment-takes-character`、`comment-takes-line-break`、
-  `name-start-reads-unit`、`percent-brace-after-unit`、
-  `html-tag-in-frontmatter`、`c4-keyword-anywhere`、
-  `bare-percent-line-before-header`、`blank-line-after-header-or-comments` の
-  fixture だけにある。
-  あるときは、これが合わせる結果で、ないときは `expected.json` が合わせる結果。
+  どの印に必要かは `DIVERGENCE_PROPERTIES` が定める。
+  受理には `fixtureAccepts(fixture)` を使う。
+  比較する Db がある場合は、`specified`、なければ `expected` を使い、
+  `embeddedValuesOf()` と合わせる。
+  不透明な埋め込みの内容は、比較する Db なしで受理できる。
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - `ast.json`: 参照実装（`@mmd-toolkit/parser`）がその入力に対して返す木。
   参照実装が受理する入力にだけある。
@@ -146,10 +145,12 @@ mermaid.js は読み込みません。
   `"common"`、`"flowchart"`、`"sequence"`、`"class"`、`"state"`、
   `"er"`、`"gantt"`、`"journey"`、`"requirement"`、`"mindmap"`、
   `"timeline"`、`"sankey"`、`"xychart"`、`"quadrant"`、`"block"`、
-  `"kanban"`、`"c4"`、`"venn"`、`"ishikawa"`、`"agentflow"`、`"usecase"` の
+  `"kanban"`、`"c4"`、`"venn"`、`"ishikawa"`、`"agentflow"`、`"usecase"`、
+  `"pie"` の
   どれかの fixture を、名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
-  `config` と `knownDivergence`（あるとき）、`expected` を持つ。
+  `config` と `knownDivergence`（あるとき）、
+  `specified`（ファイルがあるとき）、`expected` を持つ。
   `expected` は `{ accepted: true, diagramType, db }` か
   `{ accepted: false, error }`。
   ファイルは 1 つずつ読む。
@@ -203,6 +204,19 @@ mermaid.js は読み込みません。
     [known-divergences/title-digit-after-axis-statement.ja.md](../spec/docs/known-divergences/title-digit-after-axis-statement.ja.md)
     を参照。
 - `getFixturesRoot()`: `fixtures/` ディレクトリの絶対パス。
+- `DIVERGENCE_PROPERTIES`: `ReadonlyMap<string, DivergenceProperties>`。
+  各識別子の `{ direction, requiresSpecifiedReading }` を明記した表。
+  `direction` は `"accept"`、`"reject"`、`"both"` のいずれか。
+  別の boolean は、比較する読みの `specified.json` が必要かを示す。
+  受理の向きだけでも、Db の読みに必要な差異を含む。
+- `fixtureAccepts(fixture)`: 仕様が fixture を受理するか。
+  先に印の指定読みの要否を検査する。
+  必要な `specified.json` がなければ、
+  識別子と `<diagram>/<name>` を含めて投げる。
+  次に、`specified` があればその `accepted`、なければ印の向きを使う。
+  無印の fixture は `expected.accepted` を使う。
+  `embedded-data-opaque` は指定読みなしで受理し、比較する Db がない場合がある。
+  未知の識別子でも、fixture 名と識別子を含めて投げる。
 - `getDefaultConfig()`: `embedded.config` がそれとの差になる設定
   （`fixtures/default-config.json`）。
 - `embeddedValuesOf(fixture)`: fixture の入力について
@@ -225,7 +239,8 @@ mermaid.js は読み込みません。
   この答えを外から受け取る実装のためのもの。
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - 型: `DiagramType`、`Fixture`、`FixtureSource`、`Expectation`、`ExpectedFile`、
-  `RecordedEmbedded`、`DbSummary`、`MermaidConfig`、`MermaidError`。
+  `RecordedEmbedded`、`DbSummary`、`MermaidConfig`、`MermaidError`、
+  `DivergenceDirection`、`DivergenceProperties`。
 
 ### `@mmd-toolkit/tests/mermaid`
 

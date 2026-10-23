@@ -1032,11 +1032,158 @@ flowchart LR
   AAAAAAAAAAAAAAAAAAAA --> BBBBBBBBBBBBBBBBBBBB --> CCCCCCCCCCCCCCCCCCCC --> DDDDDDDDDDDDDDDDDDDD
 ```
 
+### Accessibility lines
+
+An ordinary accessibility line prints `accTitle: value` or `accDescr: value`:
+the colon touches the keyword, one ASCII space precedes the value, and
+whitespace at both ends of the value is dropped. [fixture:
+accessibility-lines/tight-colon] [fixture: accessibility-lines/spaced-colon]
+[fixture: accessibility-lines/value-padding] Among Db-equal forms, follow the
+sibling diagram types unless the diagram has a reason of its own. Flowchart has
+none for an ordinary accessibility line, so it uses the same compact form as
+[C4](./c4.md#accessibility-lines), [class](./class.md#labels) and
+[usecase](./usecase.md#direction-and-accessibility).
+
+Internal whitespace and inline `%%` and `#` remain value text. [fixture:
+accessibility-lines/inline-percent-hash] An empty or whitespace-only value keeps
+the statement form, `accTitle:` or `accDescr:`, without a following space.
+[fixture: accessibility-lines/empty-title] [fixture:
+accessibility-lines/empty-description] [corpus fixture:
+flowchart/gram-acc-title-empty-at-end] [corpus fixture:
+flowchart/db-acc-descr-empty-replaces] Mermaid reads ordinary text on the next
+line after the colon as the value; join that text onto the keyword's line.
+[fixture: accessibility-lines/next-line-values]
+
+A real comment or directive prevents compact joining. Keep the previous
+[Multi-line statements](#multi-line-statements) layout: continuation lines,
+including comment and directive lines, stand one level deeper than the keyword;
+the comment/directive text and the authored statement breaks remain. Flowchart
+skips a comment after the colon to read the later value. This preserves the
+existing continuation rule when ordinary joining does not apply. [fixture:
+accessibility-lines/next-line-comment-kept] [fixture:
+accessibility-lines/description-comment-continuation] [fixture:
+accessibility-lines/inline-directive-kept] [fixture:
+accessibility-lines/next-line-directive-kept] [fixture:
+accessibility-lines/title-directive-continuation]
+
+The compact form does not override
+[Statements one per line](#statements-one-per-line): a line holding a
+non-separator `;`, including one in the value or another statement, keeps the
+accessibility text and the whitespace beside its `;` as written. A next-line
+value containing a `;` keeps its line break too. [fixture:
+accessibility-lines/semicolon-value-kept] [fixture:
+accessibility-lines/neighbour-semicolon-kept] [fixture:
+accessibility-lines/next-line-semicolon-kept] Direction-text lines keep their
+written text, line breaks and indentation under [Indentation](#indentation), and
+other documented kept-line reasons still take priority. [fixture:
+accessibility-lines/direction-text-kept] [fixture:
+accessibility-lines/next-line-direction-kept] Configured indentation, including
+its minimum at `tabWidth: 0` and `useTabs`, applies to ordinary lines; those
+options also retain these exceptions. [fixture: accessibility-lines/zero-width]
+[fixture: accessibility-lines/tabs]
+
+CR follows the shared line-ending normalization. Accepted NBSP, U+2028 and
+U+2029 in the exterior gaps normalize under the same colon/value rules, while
+internal value characters and whitespace beside a kept `;` stay written. These
+characters use escaped inline tests. [test: graph accessibility: flowchart
+cr-lines] [test: graph accessibility: flowchart unicode-gaps] [test: graph
+accessibility: flowchart unicode-values] [test: graph accessibility: flowchart
+unicode-semicolon-kept]
+
+A closed description block with no text or trivia prints its interior as `{}`,
+including when its braces contained spaces or blank lines. The exterior
+keyword-to-brace gap still follows
+[Whitespace between tokens](#whitespace-between-tokens): a touching keyword
+stays touching, as `accDescr{}`. [fixture:
+accessibility-lines/empty-block-touching-keyword] There is no text for an
+interior space to surround, so follow usecase's Db-equal form, with the same
+sibling-diagram reason as the colon lines. [fixture:
+accessibility-lines/empty-block-tight] [fixture:
+accessibility-lines/empty-block-spaced] [fixture:
+accessibility-lines/empty-block-lines] Accepted NBSP, U+2028 and U+2029 inside
+an otherwise empty block also disappear. [test: accessibility blocks: flowchart
+empty-block-unicode] Kept-line exceptions still take priority, and blocks with
+comments or directives retain their existing layout. [fixture:
+accessibility-lines/empty-block-semicolon-kept] [fixture:
+accessibility-lines/empty-block-directive-kept] [fixture:
+multi-line-values/accdescr-block-comment-only]
+
+Nonempty blocks follow [Multi-line values](#multi-line-values): `{a}` stays
+`{a}`, `{ a }` stays `{ a }`, and `{  a  }` becomes `{ a }`. Whitespace runs
+around the text collapse; absent whitespace is not added. [fixture:
+accessibility-lines/block-tight-text] [fixture:
+accessibility-lines/block-spaced-text] [fixture:
+accessibility-lines/block-padded-text] Independently, `{  a}` becomes `{ a}` and
+`{a  }` becomes `{a }`; each side keeps whether it had whitespace. [fixture:
+accessibility-lines/block-left-padding-only] [fixture:
+accessibility-lines/block-right-padding-only] Multiline value and comment
+columns stay written, and a closing brace on its own line aligns with
+`accDescr`, whether written at column zero or indented. This is the same form as
+the sibling diagrams, with no flowchart-specific reason to differ. [fixture:
+accessibility-lines/block-close-column-zero] [fixture:
+accessibility-lines/block-close-indented] [fixture:
+accessibility-lines/block-comment-close-column-zero] [fixture:
+accessibility-lines/block-comment-close-indented] The same empty-block and
+closer rules apply with the minimum body step at `tabWidth: 0`. [fixture:
+accessibility-lines/block-zero-width]
+
+Input (escaped):
+`"flowchart LR\naccTitle:Compact title\naccDescr:Compact description"`.
+
+Output
+([accessibility-lines/tight-colon-output.mmd](../tests/fixtures/flowchart/accessibility-lines/tight-colon-output.mmd)):
+
+```mmd
+flowchart LR
+  accTitle: Compact title
+  accDescr: Compact description
+```
+
+Input (escaped): `"flowchart LR\naccDescr {a}\nA[Block spacing]"`.
+
+Output
+([accessibility-lines/block-tight-text-output.mmd](../tests/fixtures/flowchart/accessibility-lines/block-tight-text-output.mmd)):
+
+```mmd
+flowchart LR
+  accDescr {a}
+  A[Block spacing]
+```
+
+Input (escaped):
+`"flowchart LR\naccDescr: previous description\naccDescr { }\nA[Empty spacing]"`.
+
+Output
+([accessibility-lines/empty-block-spaced-output.mmd](../tests/fixtures/flowchart/accessibility-lines/empty-block-spaced-output.mmd)):
+
+```mmd
+flowchart LR
+  accDescr: previous description
+  accDescr {}
+  A[Empty spacing]
+```
+
+Input (escaped):
+`"flowchart LR\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]"`.
+
+Output
+([accessibility-lines/title-directive-continuation-output.mmd](../tests/fixtures/flowchart/accessibility-lines/title-directive-continuation-output.mmd)):
+
+```mmd
+flowchart LR
+  accTitle:
+    %%{init: {}}%%
+    Title after directive
+  A[Continuation]
+```
+
 ### Multi-line statements
 
-A statement written over several lines keeps its line breaks, and each of its
-later lines stands one level deeper than its first. Where the author breaks a
-statement is the author's choice, as with chains and long lines, and a line
+A statement written over several lines keeps its line breaks, except ordinary
+accessibility colon lines and closed empty description blocks without trivia,
+which join under [Accessibility lines](#accessibility-lines). Each later line of
+other statements stands one level deeper than the first. Where the author breaks
+a statement is the author's choice, as with chains and long lines, and a line
 break between tokens needs no whitespace at the end of the line, which the
 printer never writes; a sequence diagram, a class diagram, and a state diagram
 join such lines instead, because there a line break counts only after
@@ -1124,8 +1271,9 @@ stands at the level of the `accDescr` it closes. [fixture:
 multi-line-values/accdescr-block-kept] Comment lines inside such a block are
 kept as written too. [fixture:
 multi-line-values/accdescr-block-comment-line-in-subgraph-kept] When the text
-starts on the line of the `{`, the whitespace around it becomes one space, as
-between tokens. [fixture:
+starts on the line of the `{`, whitespace runs around it become one space, as
+between tokens; absent whitespace is not added. Empty blocks without trivia
+instead follow [Accessibility lines](#accessibility-lines). [fixture:
 multi-line-values/accdescr-block-text-starts-on-brace-line] A block without
 text, whose lines are only comment lines, holds no value: its comment lines
 stand one level deeper than the `accDescr`, as comment lines inside a statement
@@ -1189,8 +1337,7 @@ flowchart LR
   text
 %% note
   }
-  accDescr {
-  }
+  accDescr {}
 ```
 
 Input

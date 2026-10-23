@@ -117,6 +117,7 @@ When the working tree is shared with other work:
   | Code changed                                                | Test files to run (`tests/`)                                 |
   | ----------------------------------------------------------- | ------------------------------------------------------------ |
   | `src/index.ts` (format, loader, `KNOWN_DIVERGENCES`)        | `fixtures.test.ts`, `expected-changes.test.ts`               |
+  | `src/fixture-acceptance.ts`                                 | `fixture-acceptance.test.ts`, `fixtures.test.ts`             |
   | `src/mermaid.ts`, `rejections.ts`, `run-mermaid-options.ts` | `mermaid.test.ts`, `mermaid-run-store.test.ts`               |
   | `src/mermaid-run-store.ts`                                  | `mermaid-run-store.test.ts`                                  |
   | `src/divergence-removals.ts`                                | `divergence-removals.test.ts`, `mermaid.test.ts`             |
@@ -189,7 +190,7 @@ When the working tree is shared with other work:
   once. `lib/` is what the name of the package loads anywhere else, as in a
   plain `node` script.
 
-## 5. Adding a diagram type (Jison)
+## 5. Adding a diagram type
 
 Diagram types are added one at a time. Each is finished in this order before the
 next one starts: the normalizer and the fixtures (this section), the
@@ -208,6 +209,65 @@ errors, even when the parser recovers a tree. Read the parser's rule methods as
 grammar productions and the model builder's validation as acceptance conditions.
 Collect distinguishing cases for each of these, including mode transitions and
 priority interactions that token counts alone cannot establish.
+
+For a Langium diagram, derive the following from its own grammar and services.
+The pie examples illustrate the checks; derive terminal order and value rules
+anew for each diagram.
+
+1. Start at the `entry` rule and follow imports and rule calls. Read the
+   generated grammar as well as the written grammar, and the service modules
+   that inject its token builder and value converter. List only reachable
+   terminals in their resulting order, including hidden ones; an imported
+   terminal's declaration alone does not make it reachable. In
+   [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20),
+   `NUMBER_PIE` is reached, while its FLOAT_PIE/INT_PIE components and the
+   unused common BOOLEAN, NUMBER and ID do not become separate lexer units.
+   Check the
+   [service wiring](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/module.ts#L31-L77)
+   against the generated module and grammar of the installed pin; generated
+   files may be absent from the clone.
+2. Read keyword patterns too. The
+   [shared token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
+   adds whitespace/EOF-or-percent-pair lookahead to pie/showData. In pie, the
+   reachable order is showData, pie, colon, NUMBER_PIE, ACC_DESCR, ACC_TITLE,
+   TITLE, STRING, NEWLINE, WHITESPACE, YAML, DIRECTIVE, SINGLE_LINE_COMMENT.
+   First matching rule, keyword boundaries and explicit alternatives decide the
+   unit, rather than a general longest match. Probe glued suffixes and priority
+   against strings and composite common terminals.
+3. Treat hidden terminals as lexer rules with consumed text, not as global
+   removals. In pie, the imported
+   [YAML and DIRECTIVE terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
+   consume an immediately following LF, whereas another whitespace boundary is
+   only looked at. Probe each unit gap and each statement's EOL and EOF: a
+   consumed sole LF prevents a later statement, but consuming the common
+   appended LF can leave EOF satisfying EOL. Keep leading frontmatter, common
+   directive removal and these body terminals distinct.
+4. Follow the actual terminal rule name through each converter branch. In pie,
+   the
+   [common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
+   handles TITLE/ACC_TITLE/ACC_DESCR, with different line and block whitespace
+   readings. The
+   [pie custom branch](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
+   names PIE_SECTION_LABEL, which this grammar never calls: STRING instead
+   reaches Langium's default escape conversion, and NUMBER_PIE its number
+   conversion. Collect both quote styles, unknown escapes, precision, overflow
+   and negative underflow; do not infer conversion from a method's presence.
+5. Read the public acceptance gate, not just the recoverable AST. The
+   [public parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+   rejects any lexer or parser error. Then follow the diagram's AST-to-Db
+   publication. For example,
+   [populateDb in pie](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieParser.ts#L9-L21)
+   publishes common final strings conditionally, copies showData, and adds
+   sections in order. Semantic rejection can occur there after publication: pie
+   rejects negative converted values even on duplicate labels. Test errors at
+   the beginning, in a recovered statement and after a valid prefix, together
+   with publication and duplicate cases.
+6. Keep the collector's parse stub asynchronous so that specs awaiting parse are
+   recorded: `Promise.resolve(record(text))` records the call without running
+   Langium or imitating acceptance. Run the spec against this shared recorder
+   and check that every recorded location is an actual parse call. Continue with
+   the normalizer, fixed-fixture and stable-generation steps in §5.2–5.3; once
+   the AST is defined, implement its checker with §6.
 
 ### 5.1 Input
 
@@ -446,10 +506,33 @@ priority interactions that token counts alone cannot establish.
      several lines;
    - numbers that the Db reads from text: a sign, `-0` (the Db has -0 and JSON
      writes 0), `NaN`, `Infinity`, a number too large for a double, and text
-     after the number (journey and sankey, review 441).
+     after the number (journey and sankey, review 441);
+   - a hidden form immediately after a statement (a body `---` block or
+     `%%{...}%%`): a following statement after its consumed LF, a blank line
+     supplying a spare LF, a space after its closer leaving the LF visible, and
+     EOF; include line values that absorb the opener as text (pie12-1);
+   - a statement on the same line after an optional header flag (pie12-2);
+   - a duplicate definition whose second value is on a semantic boundary, such
+     as `-0`, in both orders: which value is retained, and whether semantic
+     rejection precedes duplicate suppression (pie12-3);
+   - the four C4 detection words (`C4Container`, `C4Component`, `C4Dynamic`,
+     `C4Deployment`) in every text field: labels, titles, accessibility titles,
+     and line and block accessibility descriptions; also in EOF comments after a
+     statement and on the header line, with LF-terminated controls (pie3-4);
+   - whitespace between a passed bare `%%` line and the header: VT, FF, NBSP,
+     BOM, U+1680, U+2000–U+200A, U+202F, U+205F, U+3000, LS and PS, each on a
+     whitespace-only line and immediately before the header; include ASCII
+     space/tab controls (pie3-3);
+   - the one-block detection skip: a second block, a block after a bare `%%{`
+     line, a block after real frontmatter, a block before and a block after a
+     second-scan directive as separate cases, and a block whose opening and
+     closing fences share indentation (six cases, pie3-6);
+   - a global directive glued immediately after a keyword, with the next keyword
+     or value glued after it: judge the keyword boundary in the text without
+     global directives and selected semicolons (pie3-7).
 
-   When a review finds a kind that the list lacks, the session of tests adds it
-   here, with the number of the review, in the change that closes that review.
+   When a review finds a kind that the list lacks, add it here, with the review
+   number, in the change that closes the review.
 
 10. Show as the result the number of fixtures per source (accepted and
     rejected), the unusual rejections, the fixtures marked, and the time
@@ -457,7 +540,59 @@ priority interactions that token counts alone cannot establish.
 
 ## 6. Langium diagrams
 
-To be written with pie (the first Langium diagram).
+Use §5 to extract the diagram's behavior and collect its fixed fixtures. Before
+generating specified readings for newly retained forms, follow §7.1. Once the
+syntax and AST are defined, implement the tree checker as follows. Paths below
+are relative to `packages/tests`.
+
+1. Read the diagram's syntax and AST documents, the parser's token and position
+   contracts, and `docs/check-tree.md`. Implement `src/check-tree/<diagram>.ts`
+   from those definitions and the corpus, reusing the shared coverage, field,
+   range, token and written-value checks. Register the diagram and its fields in
+   the shared dispatch and tables as needed.
+2. Check each leaf as a complete lexical unit at its position, with that
+   position's first-match priority and keyword/component boundaries. Check
+   composite forms against their authored keyword, punctuation and value
+   components, including the AST's empty/null and whitespace rules. Keep the
+   written spelling checked here distinct from the converter's Db reading.
+3. Check every retained hidden match exactly once, in source order, in its named
+   gap or body position. Use explicit character scanning to find the earliest
+   closer satisfying the terminal's boundaries. Check the whole authored form,
+   not just its kind or value field. Enforce the AST's boundary between a
+   statement's trailing gap and body, including whether a visible EOL precedes
+   the form.
+4. Where a hidden terminal consumes the following LF, keep that LF outside the
+   retained form's range. Apply its consumption before checking separators: a
+   following statement must have the surviving visible EOL its production
+   requires. Check spare LF, lookahead-only closing boundaries, the appended LF
+   and EOF separately; EOF can satisfy a production without a written EOL.
+5. At each native Comment after the header, check that no earlier-priority
+   terminal matches at that unit position and that no earlier string or
+   composite value encloses its start. Use explicit character scanning for
+   terminal matches. Distinguish source comment regions from native Comments.
+   Before the header, bare lines passed by detection are Comments and their
+   accompanying passed whitespace and line terminators are trivia; do not read
+   them again as diagram units. Retained prefixes still follow their own
+   terminal rules. Keep ordinary body gaps and hidden closing boundaries as
+   strict as the diagram specifies; the detection exception applies only to the
+   intervals it passed.
+6. Write explicit accepted and broken trees in
+   `tests/check-tree-<diagram>.test.ts`. Break ownership by losing, duplicating
+   or moving a hidden form; choose a later closer; include its consumed LF in
+   its range; remove the surviving EOL; change authored components; and disguise
+   an earlier terminal as Comment. Include accepted controls for hidden-looking
+   text inside enclosing values, spare LF and EOF. Write fixed cases for each
+   retained prefix followed by detection-passed bare lines and their Unicode
+   trivia, and with passed trivia between retained forms. Include controls
+   without a passed line. Check that ordinary body gaps stay strict. Derive
+   these cases from each sentence and its rule intersections, not from corpus
+   success alone.
+7. Document the checks in both versions of `docs/check-tree.md`, with the
+   fixtures that distinguish their cases. Once trees are recorded, run the
+   checker on every recorded tree and compare every comparable `dbFromTree`
+   result with its recorded reading, using the shared embedded-value helpers.
+   Report tree and Db counts, and each mismatch with its input. Keep cases
+   without a comparison Db explicit as in §7.1.
 
 ## 7. Fixture tools and lists for the other packages
 
@@ -473,9 +608,11 @@ the spec's skill). This skill does the following.
 2. When the Known divergences of the specification
    (`packages/spec/docs/known-divergences.md`) change, update the list of
    identifiers (`KNOWN_DIVERGENCES` in `src/index.ts`, and the list in the
-   README) to match. The loader rejects an identifier outside the list, so to
-   rename an identifier: (1) add the new identifier to the list (keep the old
-   one), (2) move the fixtures to the new identifier with
+   README) to match. Set each identifier's direction and specified-reading
+   requirement explicitly in `DIVERGENCE_PROPERTIES` of
+   `src/fixture-acceptance.ts`. The loader rejects an identifier outside the
+   list, so to rename an identifier: (1) add the new identifier to the list
+   (keep the old one), (2) move the fixtures to the new identifier with
    `fixtures:set-divergence`, (3) remove the old identifier from the list. To
    withdraw an identifier, remove the marks first, then remove it from the list.
    A test checks the list in the README (both READMEs have an item for each
@@ -512,6 +649,28 @@ the spec's skill). This skill does the following.
    failure's input is then removed from the package that had it.
 5. Show as the result what changed, the names added, the counts, and the result
    of `fixtures:check`.
+
+### 7.1 Specified readings for retained forms
+
+1. Before generating `specified.json` for a newly admitted retained form, write
+   fixed marked cases where each new retained prefix meets each relevant
+   divergence removal, including prefixes before and between passed bare lines
+   and their trivia. Run them through the existing `specifiedRunOf` in
+   `tools/src/specified-reading.ts` and the fixture CLI's dry-run path. Inspect
+   the reference text, acceptance, Db and embedded title, configuration and data
+   block effects against the specification's intended reading. Preserve retained
+   source text and the shared frontmatter and configuration reading.
+2. If a shared helper needs extending, read its other callers and check their
+   marked fixtures, including other diagram types. Add fixed regression tests to
+   the shared helper's tests. Hash every existing `specified.json` before and
+   after generation, run `generate --check` across all categories, and classify
+   every record change before accepting it, including acceptance, Db, embedded
+   values and added or removed records. Extend the existing shared path; do not
+   add a diagram-local reading or assume the tools already cover a newly
+   retained form.
+3. After checking the reference path, run the stable-generation steps of §5.3.8.
+   Keep opaque-data cases with no comparison Db explicit in tests and the
+   report; do not invent a specified reading or Db to make them comparable.
 
 ## 8. Updating mermaid.js
 

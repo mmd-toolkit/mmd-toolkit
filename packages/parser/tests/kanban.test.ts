@@ -1,25 +1,8 @@
 import { describe, expect, it } from "vitest"
-import type { Fixture } from "@mmd-toolkit/tests"
-import { loadFixtures } from "@mmd-toolkit/tests"
+import { fixtureAccepts, loadFixtures } from "@mmd-toolkit/tests"
 import type { KanbanDiagram, Root } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
-
-/** The specification's acceptance, with the fixture's declared divergence. */
-function accepts(fixture: Fixture): boolean {
-  if (fixture.specified !== undefined) return fixture.specified.accepted
-  switch (fixture.knownDivergence) {
-    case "tokenless-empty-forms":
-    case "directive-as-token-boundary":
-    case "ignored-semicolon-as-token-boundary":
-      return false
-    case "blank-line-after-header-or-comments":
-    case "embedded-data-opaque":
-      return true
-    default:
-      return fixture.expected.accepted
-  }
-}
 
 /** Project invariant 3: exact token text, no overlaps, and no lost nontrivia characters. */
 function expectCoverage(text: string, root: Root): void {
@@ -169,7 +152,7 @@ describe("kanban acceptance fixtures", async () => {
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
       }
-      expect(root !== null).toBe(accepts(fixture))
+      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (root !== null) {
         expect(root.diagramType).toBe(
           fixture.specified?.accepted === true

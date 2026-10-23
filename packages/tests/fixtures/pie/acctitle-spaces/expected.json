@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Horizontal spaces surround the accessibility title colon and collapse in its value."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "A B C",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

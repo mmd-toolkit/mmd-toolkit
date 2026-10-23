@@ -16,6 +16,21 @@ Code:
 ---
 
 
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-adds-and-changes
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-adds-and-changes-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   Point A:::c: [0.3, 0.6]
+  3 |   classDef c color: #f00
+  4 |   classDef c color: #00f, radius: 9
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 3, with those of this `classDef`.
+---
+
+
 Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-after-point
 Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-after-point-input.mmd
 

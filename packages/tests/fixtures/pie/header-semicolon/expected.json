@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Semicolon directly after the header tests the keyword boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 1: unexpected character: ->p<- at offset: 0, skipped 4 characters. Parse error on line ?, column ?: Expecting token of type 'pie' but found ``."
+  }
+}

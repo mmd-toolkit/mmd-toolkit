@@ -38,6 +38,25 @@ fixture の読み方は [README](../README.ja.md) にあります。
   識別子は、それぞれ `@mmd-toolkit/spec` の
   `docs/known-divergences.md` の表の行。
 
+`@mmd-toolkit/tests` が export する `DIVERGENCE_PROPERTIES` は、
+各識別子の `direction`（`"accept"`、`"reject"`、`"both"`）と、
+`requiresSpecifiedReading` を明記します。
+表のキーと `KNOWN_DIVERGENCES` を仕様に合わせます。
+読み込んだ後は `fixtureAccepts(fixture)` で必要な指定読みを検査し、
+受理を決めます。別の向きや指定読みの要否の一覧は持ちません。
+必要な `specified.json` がなければ、
+識別子と `<diagram>/<name>` を含めて投げます。
+受理の向きだけでも、比較する読みに指定読みが要る差異を含みます。
+指定読みがあれば、それが受理を決め、なければ向きで決めます。
+無印の fixture は `expected.accepted` を使います。
+ローダーはファイルを読み、この関数が受理を検査します。
+
+比較する Db の値には、記録された読み（`specified`、なければ `expected`）と、
+`embeddedValuesOf()` を使います。
+`embedded-data-opaque` は指定読みなしで受理し、
+比較する Db がない場合があります。
+mermaid.js の拒否を仕様の拒否と扱わず、この場合を明示します。
+
 ## 名前
 
 fixture の名前は、小文字のケバブケースで `<接頭辞>-<話題>` です。

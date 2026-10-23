@@ -5,7 +5,7 @@ Japanese version:
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
 requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, venn,
-agentflow, and usecase. This is one of the
+agentflow, usecase, and pie. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -327,6 +327,29 @@ no divergence mark. [fixture: usecase/lex-semicolon-complete-unit-boundary]
 usecase/lex-semicolon-joins-id-selected] [fixture:
 usecase/lex-semicolon-native-key-selected]
 
+### Pie
+
+PieIgnoredText holds a whole hidden YAML or DIRECTIVE form, not an arbitrary
+character inside a number or keyword. A selected semicolon inside `1;2`,
+`title`, `showData`, `accTitle` or `accDescr` therefore has no node at that
+location. The direct rule makes it a boundary instead of joining those
+fragments. In the fixtures below, a `style` or `classDef` trigger selects the
+semicolon even inside the atom. A hidden DIRECTIVE can enclose the trigger while
+the common line rule still selects the semicolon later on that line. Mermaid.js
+then accepts the joined atom, while this specification rejects it. There is no
+reverse-direction pie input introduced by this rule. A semicolon inside a label
+or value is kept as written text with the shared ignored-semicolon record, and
+an ignored semicolon inside a hidden block does not split that block; these
+forms are not marked when the result agrees. [fixture:
+pie/div-atomic-semicolon-number] [fixture:
+pie/div-selected-semicolon-title-keyword] [fixture:
+pie/div-selected-semicolon-showdata] [fixture:
+pie/div-selected-semicolon-acctitle] [fixture:
+pie/div-selected-semicolon-accdescr] [fixture:
+pie/div-selected-semicolon-block-keyword] [fixture: pie/style-label-trigger]
+[fixture: pie/style-title-trigger] [fixture:
+pie/lex-yaml-opener-selected-semicolon]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -381,3 +404,10 @@ usecase/lex-semicolon-native-key-selected]
   on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
   validation and JSON tables. This divergence follows the shared direct rule,
   not a claim that a bug label approves a grammar change.
+
+- For pie, the pinned
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  has no `style` or `classDef` statement. Searches on 2026-10-23 for `pie`,
+  `pie semicolon` and `pie classDef` found no maintainer decision about a
+  selected semicolon joining parts of a pie atom. This follows the shared
+  boundary rule, not an asserted defect classification.

@@ -433,10 +433,10 @@ describe("generateExpected", () => {
   })
 
   it("records db null in common/ for a diagram type that has no normalizer", async () => {
-    const file = await generateExpected("common", 'pie\n  "a": 1\n', AUTHORED)
+    const file = await generateExpected("common", "info\n", AUTHORED)
     expect(acceptedOf(file)).toMatchObject({
       accepted: true,
-      diagramType: "pie",
+      diagramType: "info",
       db: null,
     })
   })
@@ -476,6 +476,30 @@ describe("generateExpected", () => {
 })
 
 describe("generateSpecified", () => {
+  it("leaves converted invalid frontmatter YAML opaque, with no specified Db for usecase or pie", async () => {
+    const cases: readonly { diagram: DiagramType; name: string }[] = [
+      {
+        diagram: "usecase",
+        name: "div-gram-frontmatter-html-attribute-quotes",
+      },
+      { diagram: "pie", name: "div-review-frontmatter-html-invalid-yaml" },
+    ]
+    for (const { diagram, name } of cases) {
+      const fixture = readFixtures(diagram).find((entry) => entry.name === name)
+      if (fixture === undefined) throw new Error(`missing fixture: ${name}`)
+      const head = headOf(fixture.file)
+      expect(head.knownDivergence).toBe("embedded-data-opaque")
+      expect(fixture.file).toMatchObject({
+        accepted: false,
+        error: { name: "YAMLException" },
+      })
+      await expect(
+        generateSpecified(diagram, fixture.input, head, fixture.file),
+      ).resolves.toBeUndefined()
+      expect(fixture.specified).toBeUndefined()
+    }
+  })
+
   /** `comment-takes-character` reads `p%%` as a keyword's first letter: accepted by mermaid.js, rejected by the specification. */
   const SEQUENCE_COMMENT_AFTER_LETTER =
     "sequenceDiagram\np%% carticipant A\nA->>B: x\n"

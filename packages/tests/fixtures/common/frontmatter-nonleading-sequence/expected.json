@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Frontmatter: sequence rejects the retained nonleading frontmatter-shaped block that pie skips."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n---title: Hidden--\n^\nExpecting 'SPACE', 'NEWLINE', 'SD', got '-'"
+  }
+}

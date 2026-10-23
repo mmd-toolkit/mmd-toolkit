@@ -31,7 +31,13 @@ The specification is derived from three sources in the mermaid.js repository:
   [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams)
   (for example
   [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)),
-  including its lexer states;
+  including its lexer states; for Langium diagrams, the grammar and its imports
+  under
+  [language/](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language),
+  such as
+  [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium)
+  and
+  [common.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium);
 - the `Db` class of each diagram, which performs part of the parsing (for
   example
   [`destructLink()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L915-L946)
@@ -53,9 +59,10 @@ An implementation of this specification reads a source text and does two things:
 2. For an accepted source, it produces the tree defined in [ast.md](./ast.md)
    and in the document of its diagram type under `ast/`. The tree loses nothing
    of the source: every character is in a unit, a comment, a directive, the
-   frontmatter, or a `;` that the line rule ignores, as defined in
-   [common.md](./common.md) and the diagram documents, or it is whitespace, as
-   defined in [Notation](./common.md#notation), or a line terminator.
+   frontmatter, an ignored-text node of the diagram, or a `;` that the line rule
+   ignores, as defined in [common.md](./common.md) and the diagram documents, or
+   it is whitespace, as defined in [Notation](./common.md#notation), or a line
+   terminator.
 
 The tokens that an implementation records, the positions of the tree, and how
 the tree is checked against the values that the Db of mermaid.js holds, are

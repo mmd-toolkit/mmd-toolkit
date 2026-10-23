@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does NBSP after a nonleading closing fence become hidden whitespace? The fence qualifies, but the unreadable NBSP rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 4: unexpected character: -> <- at offset: 12, skipped 1 characters. "
+  }
+}

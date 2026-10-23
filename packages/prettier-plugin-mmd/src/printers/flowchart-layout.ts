@@ -4,7 +4,12 @@ import type {
   FlowchartSubgraphStatement,
   Node,
 } from "@mmd-toolkit/parser"
-import { addShapeRules, addLinkRules } from "./graph-layout.ts"
+import {
+  addShapeRules,
+  addLinkRules,
+  layoutGraphAccessibility,
+} from "./graph-layout.ts"
+import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
@@ -91,6 +96,13 @@ export function layoutStatement(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
+  const accessibility = layoutGraphAccessibility(
+    source,
+    statement,
+    end,
+    findFlowchartKeptLines(source),
+  )
+  if (accessibility !== null) return accessibility
   if (holdsJoiningRegion(source, start, end)) {
     return keptAsWritten(start, end)
   }

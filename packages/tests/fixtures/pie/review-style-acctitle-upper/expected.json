@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is CLASSDEF case-sensitive in the preprocessing of accTitle?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "CLASSDEF:ﬂ°x¶ß",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

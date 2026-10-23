@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Root htmlLabels false disables common string escaping."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "<b>T</b>",
+    "accTitle": "<i>AT</i>",
+    "accDescr": "<br> AD",
+    "showData": false,
+    "sections": [
+      {
+        "label": "<b>A</b>",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does venn reject a directive found only by detection's second scan before its header? It rejects the retained prefix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n%%{x}%%venn-beta\n---^\nExpecting 'VENN', 'NEWLINE', got 'IDENTIFIER'"
+  }
+}

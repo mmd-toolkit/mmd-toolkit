@@ -83,7 +83,8 @@ mermaid.js のソースへの参照は、
   （`k` は `K` になり、U+212A はそのまま）、
   BMP の外の文字は他の文字と一致しません。
   mermaid.js の大文字小文字を区別しない検出器は、この方法で比べます。
-  [fixture: common/detect-case-kelvin-sign] [fixture: common/detect-case-long-s]
+  [fixture: common/detect-case-kelvin-sign]
+  [fixture: common/detect-case-long-s]
 - **トークン**は、字句解析器がテキストから切り出して文法に渡すものの一般名です。
   「mermaid.js は空の文字列にトークンを読まない」のように使います。
   この仕様の規則は、トークンでなく単位を読みます
@@ -121,7 +122,8 @@ mermaid.js のソースへの参照は、
   その規則は、できるだけ少なく読むからです。
   `note right of A`、`x`、`end note`、`B`、`note left of B`、`y`、`end note`
   の 7 行は 2 つのノートで、A の `x` と B の `y` です。
-  [fixture: flowchart/gram-click-call] [fixture: state/lex-note-block-two-notes]
+  [fixture: flowchart/gram-click-call]
+  [fixture: state/lex-note-block-two-notes]
 - すべての規則は、[行終端](#行終端) の規則を適用した状態でソースを読みます。
   そのため、どの行終端も 1 つの改行として数えます。
 
@@ -269,11 +271,27 @@ agentflow では、字句解析器がコメント行を自分で読むので、
 書き手が書いたとおりのテキストを保ちます
 （[ast.ja.md](./ast.ja.md#ノード) を参照）。
 
-図の字句解析器の最初の単位より前の空白、行終端、ディレクティブ、
-コメント領域はトリビアです（[先頭の空白](#先頭の空白)）。
-最初の単位で図種を決め、それが図の字句解析器を選びます
-（[図種の検出](#図種の検出)）。
+先頭の空白、行終端、ディレクティブ、コメント領域はトリビアです
+（[先頭の空白](#先頭の空白)）。
+検出が図種と図の字句解析器を選びます（[図種の検出](#図種の検出)）。
 これは入力を拒否することがあります。
+検出は、ヘッダーの前の先頭以外のフロントマター形のブロックを、
+1 つ通過させる場合があります。
+ブロックは図のテキストのままです。
+pie は隠れた YAML の規則を適用し、ほかの対応するすべての図種は拒否します。
+共通のフロントマターやトリビアではありません。
+[fixture: pie/frontmatter-nonleading-comment]
+[fixture: pie/lex-yaml-leading-config-not-applied]
+[fixture: common/directive-before-frontmatter]
+[fixture: common/frontmatter-nonleading-sequence]
+[fixture: common/frontmatter-nonleading-class]
+[fixture: common/frontmatter-nonleading-state]
+[fixture: agentflow/db-frontmatter-after-comment]
+[fixture: block/gram-frontmatter-comment-before]
+[fixture: ishikawa/frontmatter-after-comment]
+[fixture: usecase/frontmatter-after-comment]
+[fixture: venn/frontmatter-comment-before]
+
 ソースの最後の文字の後には、
 `\n` をもう 1 つ読みます（[テキストの終わり](#テキストの終わり)）。
 上の段階 9 の追加の書き換えを含め、図がほかに何をするかは、
@@ -291,7 +309,7 @@ agentflow では、字句解析器がコメント行を自分で読むので、
 それ以外の規則は、位置の周りの文字で決まります。
 ディレクティブはその `%%{` からの文字で、
 コメント領域はコメント開始位置からそのコメントの行の終わりまでで、
-図種はその最初の単位の図のテキストで、
+図種は「図種の検出」で定める通過後の図のテキストで、
 行単位の規則はその行区間で、エンティティは `#`、語、`;` で決まります。
 
 agentflow では、項目 1 は字句解析器には適用されません。
@@ -313,8 +331,11 @@ Db の値が設定に依存する場合、
 字句の規則: 字句解析器は、`\r\n` と単独の `\r` を `\n` として読みます。
 そのため、単独の `\r` はフロントマターやディレクティブの中を含め、
 どこでも改行です。
-[fixture: common/cr-only] [fixture: common/crlf] [fixture:
-common/frontmatter-lone-cr] [fixture: common/directive-spans-lone-cr]
+[fixture: common/cr-only]
+[fixture: common/crlf]
+[fixture:
+common/frontmatter-lone-cr]
+[fixture: common/directive-spans-lone-cr]
 
 `\r` の後に `\n` が続くかどうかは、何かを除く前に、ソースの上で決めます。
 間にディレクティブかコメント領域がある `\r` と `\n` は、どの規則でも、
@@ -392,7 +413,8 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
   その属性部は `>` まで届くので、ラベルは `b='c'>d` です。
   同じコメント行が `accTitle: b="c">d` の前にあると、
   アクセシビリティのタイトルは `b='c'>d` になります。
-  [fixture: flowchart/html-tag-starts-in-comment-line] [fixture:
+  [fixture: flowchart/html-tag-starts-in-comment-line]
+  [fixture:
   flowchart/html-tag-starts-in-comment-line-acc-title]
 - タグはディレクティブをまたぎえます。
   `A[<a %%{init: {}}%% href="u">t]` のラベルは `<a  href='u'>t` です。
@@ -408,7 +430,8 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
   flowchart の文法がそれを拒否します。
   `A[<a`、コメント行 `%% x="`、`y" z>e]` では、値はコメント行の `="` で始まり、
   `y` の後の `"` で終わるので、ラベルは `<a`、改行、`y' z>e` です。
-  [fixture: flowchart/html-tag-value-closed-in-comment-line] [fixture:
+  [fixture: flowchart/html-tag-value-closed-in-comment-line]
+  [fixture:
   flowchart/html-tag-value-opened-in-comment-line]
 - 行単位の規則が無視する `;` も数に入ります。
   `A[<a style:#x=;"u">t]` では、
@@ -428,8 +451,10 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
    省略可能な行内の空白からなり、行終端で終わります。
    前に改行があるとフロントマターになりません。
    バイトオーダーマークは行内の空白なので、字下げの一部になります。
-   [fixture: common/frontmatter-leading-newline] [fixture:
-   common/frontmatter-bom] [fixture: common/frontmatter-bom-both-delimiters]
+   [fixture: common/frontmatter-leading-newline]
+   [fixture:
+   common/frontmatter-bom]
+   [fixture: common/frontmatter-bom-both-delimiters]
 2. `----` は「`---` の後に行内の空白」ではないので、フロントマターを始めません。
    [fixture: common/frontmatter-four-dashes]
 3. **区切り行**は、開始行とまったく同じ字下げ、`---`、
@@ -441,22 +466,28 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
    閉じる区切りの前にも同じものが必要です。
    `---` の後に文字がある行や、テキストの最後にあって行終端のない行は、
    区切り行ではありません。
-   [fixture: common/frontmatter-indented] [fixture:
-   common/frontmatter-indent-mismatch] [fixture:
-   common/frontmatter-nested-dashes] [fixture:
-   common/frontmatter-closing-trailing-text] [fixture:
+   [fixture: common/frontmatter-indented]
+   [fixture:
+   common/frontmatter-indent-mismatch]
+   [fixture:
+   common/frontmatter-nested-dashes]
+   [fixture:
+   common/frontmatter-closing-trailing-text]
+   [fixture:
    common/frontmatter-no-newline-after] 区切りが空白 2 つで字下げされていれば、
    本文のブロックスカラーの中の空白 6 つで字下げした `---` は区切り行ではなく、
    タイトルは `---` と改行です。
    本文を 0 桁にし、ブロックスカラーの `---` を空白 2 つで字下げすると、
    その行がフロントマターを閉じ、入力は拒否されます。
-   [fixture: common/frontmatter-indented-block-scalar-dashes] [fixture:
+   [fixture: common/frontmatter-indented-block-scalar-dashes]
+   [fixture:
    common/frontmatter-indented-closing-in-body] `--- !!map`
    は区切り行ではないので、`---`、`%YAML 1.2`、`--- !!map`、`title: x`、
    `---` はタイトルが `x` のフロントマターです。
    `--- !!map` を `---` と `!!map` に分けると、
    `%YAML 1.2` の後の `---` の行がフロントマターを閉じ、入力は拒否されます。
-   [fixture: common/frontmatter-yaml-document-marker-with-tag] [fixture:
+   [fixture: common/frontmatter-yaml-document-marker-with-tag]
+   [fixture:
    common/frontmatter-yaml-document-marker-split]
 4. 開始行の後で最初の、
    空白だけの行ではない行を、**最初の内容行**と呼びます。
@@ -475,7 +506,8 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
    [fixture: common/frontmatter-blank-line-then-delimiter-only]
    それ以外の場合はフロントマターではありません。
    特に、`---` の直後に `---` が続く場合はフロントマターではありません。
-   [fixture: common/frontmatter-empty-body] [fixture:
+   [fixture: common/frontmatter-empty-body]
+   [fixture:
    common/frontmatter-adjacent-delimiters]
 
 フロントマターのトリビアは、ソースの先頭から、終了行の行終端までと、
@@ -498,54 +530,83 @@ mermaid.js が本文をどう読むかは、
 [フロントマターの本文の読み方](../../tests/docs/configuration.ja.md#フロントマターの本文の読み方)
 で述べます。
 
-これらの条件が成り立たない場合、フロントマターはなく、
-`---` のブロックはテキストです。
-その前にあったトリビア
-（改行、空白、バイトオーダーマーク、ディレクティブ、コメント行）は
-先頭のトリビアで、図のテキストは `---` で始まります。
-そのため、`---` 疑似図種がテキストを引き受けて拒否します
-（[図種の検出](#図種の検出) を参照）。
-ブロックの前の改行やディレクティブ、
-開始の区切りだけが字下げされ閉じる区切りが字下げされていない場合
-（開始の区切りの前にだけバイトオーダーマークがある場合を含む）、
-そしてブロック自体の形がフロントマターでない場合がこれに当たります。
-後者は、`----`、閉じる `---` の後の文字、
-テキストの最後にある行終端のない閉じる `---`、隣り合う区切り、
-閉じる区切りの欠落、
-開始の区切りが字下げされておらず閉じる区切りだけが字下げされている場合、
-空でない異なる字下げが 2 つある場合です。
-[fixture: common/frontmatter-leading-newline] [fixture:
-common/directive-before-frontmatter] [fixture:
-common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
-common/frontmatter-indent-closing-only] [fixture:
-common/frontmatter-indent-different-depths] [fixture:
-common/frontmatter-four-dashes] [fixture:
-common/frontmatter-closing-trailing-text] [fixture:
-common/frontmatter-no-newline-after] [fixture:
-common/frontmatter-adjacent-delimiters] [fixture: common/frontmatter-unclosed]
+これらの条件が成り立たなければ、フロントマターはなく、
+ブロックは図のテキストです。
+検出点では、`%%` だけの行を通り過ぎる前に、
+上のフロントマターの形を持つブロックを 1 つ通過させ、後のヘッダーを探します。
+図の字句解析器が読むテキストからブロックを除くわけではありません。
+ブロックの前にトリビアがあると、
+pie は残されたテキストに隠れた YAML の規則を適用します。
+一致すればブロックを PieIgnoredText に持ち、タイトルも設定も適用しません。
+ほかの対応するすべての図種は拒否します。
+先頭の空白、開始の区切りだけのバイトオーダーマーク、コメント行、
+ディレクティブは、この場合を生じさせます。
+両方の区切りで一致するバイトオーダーマークは、
+代わりに本来のフロントマターの規則を満たす場合があります。
+[fixture: pie/frontmatter-nonleading-comment]
+[fixture: pie/lex-yaml-leading-config-not-applied]
+[fixture: pie/lex-yaml-after-leading-lf]
+[fixture: pie/lex-yaml-bom-opening-only]
+[fixture: pie/lex-yaml-bom-both-fences]
+[fixture: pie/lex-yaml-after-directive-line]
+[fixture: pie/lex-yaml-after-directive-glued]
+[fixture: common/frontmatter-leading-newline]
+[fixture: common/directive-before-frontmatter]
+[fixture: common/frontmatter-bom]
+[fixture: common/frontmatter-indent-mismatch]
+[fixture: common/frontmatter-nonleading-sequence]
+[fixture: common/frontmatter-nonleading-class]
+[fixture: common/frontmatter-nonleading-state]
+[fixture: agentflow/db-frontmatter-after-comment]
+[fixture: block/gram-frontmatter-comment-before]
+[fixture: ishikawa/frontmatter-after-comment]
+[fixture: usecase/frontmatter-after-comment]
+[fixture: venn/frontmatter-comment-before]
 
-mermaid.js もこれらの入力を拒否しますが、例外が 1 つあります。
-mermaid.js の検出は先頭のトリビアを除いてからフロントマターをもう一度探すので、
-前に何かがあったことだけが理由で成り立たなかったブロックは、
-検出器が見るテキストからは除かれ、図の文法には `---` の行が渡されます。
-その文法が `---` の行を許すとき、入力は受理されます。
-`error` 疑似図種は許し、[図種の検出](#図種の検出) にあるその条件も
-同じようにこのブロックを除くので、
-改行、バイトオーダーマーク、コメント行の後の `---` のブロックと `error`
-は両者が受理します。
-flowchart の文法はこの行を拒否するので、
-ブロックの後が flowchart なら両者が入力を拒否します。
-この仕様にまだない図種のうち Langium で定義された図のいくつかもこの行を許します
-（pie、info、gitGraph、packet、radar、architecture で確認）。
-それをどう読むかは、それぞれの文書で述べます。
-どの場合も、mermaid.js はブロックの `title` と `config` を適用しません。
-フロントマターではないからです。
-[fixture: common/frontmatter-bom-error] [fixture:
-common/detect-lone-cr-directive-lf] [fixture:
-common/detect-lone-cr-comment-lf] [fixture:
-common/detect-frontmatter-after-line-break-error] [fixture:
-common/detect-frontmatter-after-comment-line-error] [fixture:
-common/detect-crlf-no-directive]
+この飛ばしは、裸の行の通過やディレクティブの再走査の前に、1 回だけ試します。
+2 つ目のブロックや、再走査のディレクティブの後のブロックは飛ばしません。
+先にブロックを飛ばし、その後でディレクティブを再走査する場合は通ります。
+本来の先頭のフロントマターの後に、この別の保持するブロックを置けます。
+検出点の先頭の字下げはトリビアなので、
+先頭以外の両方の区切りの字下げが等しければ、
+閉じだけに字下げが残り、飛ばしを妨げます。
+[fixture: pie/detect-two-nonleading-blocks]
+[fixture: pie/detect-block-after-real-frontmatter]
+[fixture: pie/detect-second-scan-directive-before-block]
+[fixture: pie/detect-block-before-second-scan-directive]
+[fixture: pie/detect-block-equally-indented-fences]
+
+その形を満たさないブロックは通過させません。
+本文の行がない隣り合う `---`、閉じる区切りの欠落、
+開始は字下げがなく閉じる区切りだけが字下げされる形、異なる空でない字下げ、
+4 個のダッシュ、閉じる区切りの後の文字、後に改行のない閉じる区切りは、
+検出点に `---` を残し、拒否する `---` 疑似図種を選びます。
+一致するブロックの前に裸の `%%` の行がある場合も、
+ブロックは検出点にないため、この 1 回の通過を妨げます。
+ディレクティブが始まらないパーセントと波括弧の行も含みます。
+[fixture: common/frontmatter-indent-closing-only]
+[fixture: common/frontmatter-indent-different-depths]
+[fixture: common/frontmatter-four-dashes]
+[fixture: common/frontmatter-closing-trailing-text]
+[fixture: common/frontmatter-no-newline-after]
+[fixture: common/frontmatter-adjacent-delimiters]
+[fixture: common/frontmatter-unclosed]
+[fixture: pie/lex-yaml-after-comment-adjacent-fences]
+[fixture: pie/frontmatter-unclosed]
+[fixture: pie/lex-yaml-after-bare-comment]
+[fixture: common/frontmatter-after-bare-percent-flowchart]
+[fixture: pie/detect-block-after-bare-brace-line]
+
+`error` 疑似図種も、改行、バイトオーダーマーク、コメント行の後に、
+一致するブロックと `error` が続く入力を受理します。
+その条件はブロックを除きます。
+そこでもブロックのタイトルと設定は適用しません。
+[fixture: common/frontmatter-bom-error]
+[fixture: common/detect-lone-cr-directive-lf]
+[fixture: common/detect-lone-cr-comment-lf]
+[fixture: common/detect-frontmatter-after-line-break-error]
+[fixture: common/detect-frontmatter-after-comment-line-error]
+[fixture: common/detect-crlf-no-directive]
 
 ## ディレクティブ
 
@@ -641,12 +702,18 @@ mermaid.js で確かめた帰結は次のとおりです。
   state は、状態の後の行ではそれを拒否し、
   `state X` の後の行では、その `%%` を本体の前の mermaid.js が読まないテキスト、
   `{}` を X の空の本体として読みます。
-  [fixture: common/directive-empty-braces] [fixture:
-  flowchart/lex-percent-brace-line-after-vertex] [fixture:
-  sequence/lex-percent-brace-line-after-message] [fixture:
-  class/lex-percent-brace-line-after-class] [fixture:
-  state/lex-percent-brace-line-after-reference] [fixture:
-  state/lex-percent-brace-line-after-state] [fixture:
+  [fixture: common/directive-empty-braces]
+  [fixture:
+  flowchart/lex-percent-brace-line-after-vertex]
+  [fixture:
+  sequence/lex-percent-brace-line-after-message]
+  [fixture:
+  class/lex-percent-brace-line-after-class]
+  [fixture:
+  state/lex-percent-brace-line-after-reference]
+  [fixture:
+  state/lex-percent-brace-line-after-state]
+  [fixture:
   common/directive-non-word-start]
 - 名前も、その大文字小文字も関係ありません。
   `%%{INIT: ...}%%` も `%%{init: ...}%%` と同じくディレクティブです。
@@ -702,8 +769,10 @@ mermaid.js はディレクティブを取り除く前にそれを探すので、
   空白は、それがあってもなくても同じに読まれるからです。
   矢印の単位がその前後の空白を読む `A --> %%{init: {}}%% B` と、
   sequence の `accTitle %%{init: {}}%% : x` がそうです。
-  [fixture: flowchart/lex-directive-after-arrow] [fixture:
-  flowchart/db-subgraph-id-directive-in-statement-space] [fixture:
+  [fixture: flowchart/lex-directive-after-arrow]
+  [fixture:
+  flowchart/db-subgraph-id-directive-in-statement-space]
+  [fixture:
   sequence/lex-acc-title-directive-before-colon]
 
 - コメント領域の中のディレクティブは、
@@ -712,13 +781,16 @@ mermaid.js はディレクティブを取り除く前にそれを探すので、
   1 つの単位の読む中にある領域でも同じです。
   コメントの `%%` の後のディレクティブはコメントの一部で、
   その前のディレクティブはコメントの一部ではありません。
-  [fixture: common/comment-region-directive-in-string] [fixture:
+  [fixture: common/comment-region-directive-in-string]
+  [fixture:
   common/comment-directive-in-string]
 
 2 つの単位の間や、単位がその始まりか終わりで読む空白の中にあるディレクティブは、
 mermaid.js とまったく同じに振る舞います。
-[fixture: common/directive-mid-line] [fixture: common/directive-after-link]
-[fixture: common/comment-after-directive] [fixture:
+[fixture: common/directive-mid-line]
+[fixture: common/directive-after-link]
+[fixture: common/comment-after-directive]
+[fixture:
 common/directive-joins-lines]
 
 字句解析器はディレクティブのないテキストを読むので、
@@ -727,26 +799,31 @@ mermaid.js と同じ結果になります。
 flowchart では、`A[x%%{init: {}}%%y]` のラベルは `xy` です。
 `flowchart%%{init: {}}%%LR` は、テキストが `flowchartLR` なので、
 mermaid.js と同じく拒否されます。
-[fixture: common/directive-in-label-text] [fixture:
+[fixture: common/directive-in-label-text]
+[fixture:
 common/directive-between-header-and-direction]
 文字列の中では、ディレクティブの周りの空白が残ります。
 `A["a %%{init: {}}%% b"]` のラベルは `a`、空白 2 つ、`b` で、
 文字列の中のディレクティブの引用符は、文字列を終えません。
-[fixture: common/directive-in-string] [fixture:
+[fixture: common/directive-in-string]
+[fixture:
 flowchart/lex-directive-in-string-with-quotes]
 2 つの単位の間の空白の中のディレクティブは、何も変えません。
 `flowchart %%{init: {}}%%LR` は方向 `LR` を持ち、
 `style A %%{init: {}}%%fill:red` のスタイルは `fill:red` です。
 一方、`style A%%{init: {}}%%fill:red` は、
 テキストが `style Afill:red` なので拒否されます。
-[fixture: common/directive-in-header-whitespace] [fixture:
-common/directive-after-style-space] [fixture:
+[fixture: common/directive-in-header-whitespace]
+[fixture:
+common/directive-after-style-space]
+[fixture:
 common/directive-between-id-and-style] `A[mysty%%{init: {}}%%le:#x;]`
 のラベルは、行が `style` の規則に当てはまるので `mystyle:#x` で、
 `A[a#qu%%{init: {}}%%ot;b]` のラベルはエンティティ `#quot;`
 のプレースホルダを持ちます。
 どちらも mermaid.js と同じです。
-[fixture: common/directive-in-style-rule] [fixture: common/directive-in-entity]
+[fixture: common/directive-in-style-rule]
+[fixture: common/directive-in-entity]
 名前、キーワード、区切り記号、矢印、数の中のディレクティブは、
 入力を拒否させます。
 mermaid.js はそれを受理します。
@@ -783,8 +860,10 @@ U+2028、U+2029 の直後の位置です。**コメント**は、
    `subgraph S %% group` のタイトルは `S %% group`、
    `accTitle: Title %% note` のタイトルは `Title %% note`、
    `style A fill:red %% red` のスタイルは `fill:red %% red` です。
-   [fixture: common/comment-mid-line-subgraph-name] [fixture:
-   common/comment-mid-line-acc-title] [fixture: common/comment-mid-line-style]
+   [fixture: common/comment-mid-line-subgraph-name]
+   [fixture:
+   common/comment-mid-line-acc-title]
+   [fixture: common/comment-mid-line-style]
 2. `%%` の後の、ディレクティブの一部でない最初の文字が存在し、`{` でなく、
    行終端の一部でもない。
    そのため `%%` だけの行はコメント行でなく、何行かにわたるテキストの中では、
@@ -792,7 +871,8 @@ U+2028、U+2029 の直後の位置です。**コメント**は、
    flowchart の `A -->|a`、行 `%%`、`b| B` の辺のテキストは、
    `a`、行 `%%`、`b` で、
    同じように書いた subgraph のタイトルも同じです。
-   [fixture: flowchart/lex-percent-line-in-edge-label] [fixture:
+   [fixture: flowchart/lex-percent-line-in-edge-label]
+   [fixture:
    flowchart/lex-percent-line-in-subgraph-title]
 
 コメントは、その `%%` の最初の `%` から行の終わり、
@@ -841,24 +921,29 @@ mermaid.js は `A` も `B --> C` も読みません。
   `A-->B` U+2028 `%% note` では、`%% note` はコメントで、
   その前の文は受理されます。
   U+2029 でも同じです。
-  [fixture: common/comment-after-u2028] [fixture: common/comment-after-u2029]
+  [fixture: common/comment-after-u2028]
+  [fixture: common/comment-after-u2029]
   `%%` までに空白しかなければ、コメント領域は U+2028 の直後から始まります。
   `error`、U+2028、空白 2 つ、`%% c` では、領域は空白 2 つとコメントです。
   `%%` の前に空白と 2 つ目の U+2028 があるときは、
   領域は最も早いコメント開始位置、つまり最初の U+2028 の直後から始まります。
-  [fixture: common/whitespace-cut-at-comment-region] [fixture:
+  [fixture: common/whitespace-cut-at-comment-region]
+  [fixture:
   common/whitespace-cut-at-earliest-comment-start]
 - `%%` だけの行はコメント行ではありません。
   コメントには `%%` の後の文字が要るからです。
   flowchart では `%%` という名前のノードを宣言します。
   `%%` の後に空白が続く行はコメント行です。
-  [fixture: common/comment-bare] [fixture: common/comment-bare-with-space]
+  [fixture: common/comment-bare]
+  [fixture: common/comment-bare-with-space]
   そのため、コメントにした行の間の `%%` の行は文です。
   `A-->B` の後の `%% C-->D`、`%%`、`%% D-->E` の行は、
   2 つのコメントのほかに頂点 `%%` を作ります。
   一方、`%%` の行の代わりに空行や、`%%` と空白の行を置くと、すべてコメントです。
-  [fixture: common/comment-bare-between-comment-lines] [fixture:
-  common/comment-bare-between-comment-lines-empty] [fixture:
+  [fixture: common/comment-bare-between-comment-lines]
+  [fixture:
+  common/comment-bare-between-comment-lines-empty]
+  [fixture:
   common/comment-bare-between-comment-lines-space] ラベルの中では、
   そのような行はテキストに残ります。
   `A[a`、改行、`%%`、改行、`b]` のラベルは、`a`、改行、`%%`、改行、`b` です。
@@ -867,12 +952,14 @@ mermaid.js は `A` も `B --> C` も読みません。
   改行、`third` です。
   一方、`%%` と空白だけの行は、ラベルの中でもコメント行です。
   `A[a`、改行、`%%` と空白、改行、`b]` のラベルは、`a`、改行、`b` です。
-  [fixture: common/comment-bare-line-in-string-label] [fixture:
+  [fixture: common/comment-bare-line-in-string-label]
+  [fixture:
   common/comment-percent-space-line-in-label]
   説明のブロック（コメント行の後でも）、ツールチップの文字列、
   `accTitle:` の次の行のタイトルにも、同じく残ります。
   [fixture: flowchart/lex-acc-descr-block-bare-marker-line-after-comment-line]
-  [fixture: flowchart/lex-tooltip-bare-marker-line] [fixture:
+  [fixture: flowchart/lex-tooltip-bare-marker-line]
+  [fixture:
   flowchart/lex-acc-title-bare-marker-next-line]
 - コメント行だけからなるテキストは図のテキストを持たず、検出で拒否されます。
   [fixture: common/comment-only]
@@ -885,9 +972,12 @@ mermaid.js は `A` も `B --> C` も読みません。
   ディレクティブを除くと、その `%%` の後に何もないからです。
   flowchart では、mermaid.js と同じく、ノード `%%` を宣言します。
   コメント行の `%%` の後にあるディレクティブは、コメント行の一部です。
-  [fixture: common/comment-after-directive] [fixture:
-  common/comment-percent-joined-by-directive] [fixture:
-  flowchart/comment-percent-before-directive] [fixture:
+  [fixture: common/comment-after-directive]
+  [fixture:
+  common/comment-percent-joined-by-directive]
+  [fixture:
+  flowchart/comment-percent-before-directive]
+  [fixture:
   common/directive-in-comment]
 - `%%{` で始まり、ディレクティブではない行も、コメント行ではありません。
   `%%` の後の文字が `{` だからです。
@@ -898,7 +988,8 @@ mermaid.js は `A` も `B --> C` も読みません。
 複数行の引用符付きラベルのように、
 テキストがコメント領域をまたいで続く単位は 1 つの単位で、
 その値は領域の前後のテキストをつないだものです。
-[fixture: common/comment-in-string] [fixture:
+[fixture: common/comment-in-string]
+[fixture:
 common/comment-blank-line-before-in-string]
 
 これにより、単位の中で特別な意味を持つ文字がコメント行に含まれていても、
@@ -929,11 +1020,21 @@ mermaid.js は、
 
 ## 図種の検出
 
-図種は、図のテキストの最初の単位で決めます。
+検出は、図のテキストから図種を選びます。
 **検出点**は、テキストの中で先頭のトリビアでない最初の位置です。
 空白でも行終端でもなく、ディレクティブの中でも
 コメント領域の中でもない位置です（[先頭の空白](#先頭の空白)）。
-検出は、検出点から、**`%%` だけの行**があればそれを読んで通り過ぎます。
+その点のブロックが [フロントマター](#フロントマター) の形を満たせば、
+検出は、`%%` だけの行を探す前に、ブロックを 1 回通過させます。
+ブロックは、選んだ図が読む図のテキストのままです。
+pie と拒否する対照例はフロントマターの節にあります。
+[fixture: pie/frontmatter-nonleading-comment]
+[fixture: pie/lex-yaml-leading-config-not-applied]
+[fixture: common/directive-before-frontmatter]
+[fixture: common/frontmatter-nonleading-sequence]
+[fixture: common/frontmatter-nonleading-class]
+[fixture: common/frontmatter-nonleading-state]
+そこから、検出は、**`%%` だけの行**があればそれを読んで通り過ぎます。
 `%%` だけの行とは、行の空白の後の図のテキストが、`%%` と、
 それに続く行終端、テキストの終わり、
 またはディレクティブの始まらない `{`（ソースでも、
@@ -965,19 +1066,42 @@ mermaid.js は、
 ヘッダーが残らず、テキストは mermaid.js と同じく拒否されます。
 mermaid.js の 2 回目のディレクティブの走査が、
 同じディレクティブを見つけるからです。
-このディレクティブは木にはなく、入力を拒否させます。
+
+flowchart、sequence、class、state では、
+このディレクティブは木になく、入力を拒否させます。
+pie 以外のほかの対応する図種もすべて、この形を拒否します。
 ディレクティブが閉じていてヘッダーが続くとき
 （`%%{`、行 `%%{wrap}%%`、`x}%%flowchart LR`）、検出はヘッダーに届き、
-入力は 4 図種のどれでも拒否されます。
+入力は pie 以外の対応するすべての図種で拒否されます。
 mermaid.js と同じで、その字句解析器はヘッダーの前の `%%{` と `x}%%` を
 テキストとして読みます。
+[fixture: flowchart/detect-directive-across-directive]
+[fixture: sequence/detect-directive-across-directive]
+[fixture: class/detect-directive-across-directive]
+[fixture: state/detect-directive-across-directive]
+[fixture: agentflow/detect-directive-second-scan-preheader]
+[fixture: block/detect-directive-second-scan-preheader]
+[fixture: ishikawa/detect-directive-second-scan-preheader]
+[fixture: usecase/detect-directive-second-scan-preheader]
+[fixture: venn/detect-directive-second-scan-preheader]
+
+pie は、検出の 2 回目の走査でだけ見つかるディレクティブを
+隠れた DIRECTIVE として読み、
+textBeforeHeader の PieIgnoredText に持ちます。
+`%%{`、`%% gap`、`wrap}%%`、`pie` の各行は受理します。
+閉じの直後に `pie` を接着すると、隠れた形の閉じの境界を満たさず、拒否します。
+[fixture: pie/lex-hidden-directive-second-detection-scan]
+[fixture: pie/lex-hidden-directive-second-detection-scan-glued]
+
 たどり着いた位置で、[detection.ja.md](./detection.ja.md) の検出器を登録順に、
 図のテキスト（[ソースの読み方](#ソースの読み方)）、
 つまりそこからの文字からディレクティブとコメント領域を除いたものに対して
 試します。
-条件が最初に成り立った検出器が図種を選び、
-図の字句解析器はテキストをたどり着いた位置から読みます。
-検出が通り過ぎたものを読み直すことはありません。
+条件が最初に成り立った検出器が図種を選びます。
+図の字句解析器は、残したフロントマター形のブロックがあればそれを読み、
+pie は上記の隠れた DIRECTIVE も読みます。
+たどり着いた位置からのテキストも読みます。
+検出が通過させた `%%` だけの行は、ここでは読み直しません。
 `%%` だけの行はそれぞれ、どの図種でも、`%%` から行の終わりまでの、
 印 `%%` の図のコメントです。
 mermaid.js はこの行を検出した図の字句解析器で読み、
@@ -999,50 +1123,95 @@ class はそのような行の後の空白だけの行を `newline` の単位と
 `%%`、U+2028、`sequenceDiagram` ではコメント行がキーワードを含みます。
 最初の単位がヘッダーの前の空の説明ブロック `accDescr {}` であるテキストも
 同じです。
-[fixture: common/empty] [fixture: common/comment-only] [fixture:
-common/bare-percent-line-only] [fixture:
-common/bare-percent-line-only-with-line-feed] [fixture:
-sequence/header-after-indented-bare-percent-line] [fixture:
-sequence/header-after-bare-percent-crlf] [fixture:
-sequence/header-after-bare-percent-cr] [fixture:
-sequence/header-after-bare-percent-lines-with-blank-and-comment] [fixture:
-sequence/header-after-bare-percent-lines-with-directive] [fixture:
-sequence/header-after-bare-percent-then-directive] [fixture:
-sequence/header-after-bare-percent-then-whitespace-line] [fixture:
-class/header-after-bare-percent-then-empty-line] [fixture:
-class/header-after-bare-percent-then-whitespace-line] [fixture:
-sequence/header-after-empty-braces-no-space] [fixture:
-sequence/header-after-empty-braces-then-keyword-same-line] [fixture:
-sequence/header-after-non-word-brace-then-keyword-same-line] [fixture:
-flowchart/header-after-acc-descr-block] [fixture:
-sequence/header-after-triple-percent-line] [fixture:
-sequence/header-after-percent-joined-by-directive-line] [fixture:
-sequence/header-after-empty-braces-line-text] [fixture:
-sequence/header-after-non-word-brace-line] [fixture:
-class/header-after-non-word-brace-line] [fixture:
-state/header-after-empty-braces-line] [fixture:
-flowchart/header-after-empty-braces-line] [fixture:
-sequence/header-after-unclosed-brace-line] [fixture:
-sequence/header-after-unclosed-brace-and-comment-line] [fixture:
-common/detect-directive-across-comment-line] [fixture:
-common/detect-directive-second-scan-once] [fixture:
-sequence/detect-directive-across-comment-line-closed] [fixture:
-flowchart/detect-directive-across-directive] [fixture:
-sequence/detect-directive-across-directive] [fixture:
-class/detect-directive-across-directive] [fixture:
-state/detect-directive-across-directive] [fixture:
-sequence/header-after-percent-line-separator] [fixture:
-sequence/header-after-bare-percent-line] [fixture:
-sequence/header-after-empty-braces-line] [fixture:
-sequence/header-after-empty-braces-semicolon] [fixture:
-sequence/header-after-two-bare-percent-lines] [fixture:
-class/header-after-bare-percent-line] [fixture:
-class/header-after-empty-braces-line] [fixture:
-state/header-after-bare-percent-line] [fixture:
-flowchart/header-after-bare-percent-line] [fixture:
-sequence/header-after-hash-line] [fixture:
-sequence/header-after-semicolon-line] [fixture:
-sequence/header-after-bare-percent-on-same-line] [fixture:
+[fixture: common/empty]
+[fixture: common/comment-only]
+[fixture:
+common/bare-percent-line-only]
+[fixture:
+common/bare-percent-line-only-with-line-feed]
+[fixture:
+sequence/header-after-indented-bare-percent-line]
+[fixture:
+sequence/header-after-bare-percent-crlf]
+[fixture:
+sequence/header-after-bare-percent-cr]
+[fixture:
+sequence/header-after-bare-percent-lines-with-blank-and-comment]
+[fixture:
+sequence/header-after-bare-percent-lines-with-directive]
+[fixture:
+sequence/header-after-bare-percent-then-directive]
+[fixture:
+sequence/header-after-bare-percent-then-whitespace-line]
+[fixture:
+class/header-after-bare-percent-then-empty-line]
+[fixture:
+class/header-after-bare-percent-then-whitespace-line]
+[fixture:
+sequence/header-after-empty-braces-no-space]
+[fixture:
+sequence/header-after-empty-braces-then-keyword-same-line]
+[fixture:
+sequence/header-after-non-word-brace-then-keyword-same-line]
+[fixture:
+flowchart/header-after-acc-descr-block]
+[fixture:
+sequence/header-after-triple-percent-line]
+[fixture:
+sequence/header-after-percent-joined-by-directive-line]
+[fixture:
+sequence/header-after-empty-braces-line-text]
+[fixture:
+sequence/header-after-non-word-brace-line]
+[fixture:
+class/header-after-non-word-brace-line]
+[fixture:
+state/header-after-empty-braces-line]
+[fixture:
+flowchart/header-after-empty-braces-line]
+[fixture:
+sequence/header-after-unclosed-brace-line]
+[fixture:
+sequence/header-after-unclosed-brace-and-comment-line]
+[fixture:
+common/detect-directive-across-comment-line]
+[fixture:
+common/detect-directive-second-scan-once]
+[fixture:
+sequence/detect-directive-across-comment-line-closed]
+[fixture:
+flowchart/detect-directive-across-directive]
+[fixture:
+sequence/detect-directive-across-directive]
+[fixture:
+class/detect-directive-across-directive]
+[fixture:
+state/detect-directive-across-directive]
+[fixture:
+sequence/header-after-percent-line-separator]
+[fixture:
+sequence/header-after-bare-percent-line]
+[fixture:
+sequence/header-after-empty-braces-line]
+[fixture:
+sequence/header-after-empty-braces-semicolon]
+[fixture:
+sequence/header-after-two-bare-percent-lines]
+[fixture:
+class/header-after-bare-percent-line]
+[fixture:
+class/header-after-empty-braces-line]
+[fixture:
+state/header-after-bare-percent-line]
+[fixture:
+flowchart/header-after-bare-percent-line]
+[fixture:
+sequence/header-after-hash-line]
+[fixture:
+sequence/header-after-semicolon-line]
+[fixture:
+sequence/header-after-bare-percent-on-same-line]
+[fixture:
 class/header-after-hash-line]
 39 個の検出器すべての順序と条件は [detection.ja.md](./detection.ja.md) にあり、
 各図の文書はその検出の節で該当する項目を参照します。
@@ -1065,14 +1234,22 @@ class/header-after-hash-line]
 ディレクティブがヘッダーのキーワードの中にあるために拒否されます
 （[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md)
 を参照）。
-[fixture: common/leading-trivia-before-header] [fixture:
-common/leading-whitespace-before-header] [fixture:
-common/detect-line-separator-before-header] [fixture:
-common/detect-paragraph-separator-before-header] [fixture:
-common/detect-bom-before-header] [fixture:
-common/detect-cr-before-header] [fixture: common/detect-crlf-before-header]
-[fixture: common/directive-in-header-whitespace] [fixture:
-common/detect-directive-adjacent-before-header] [fixture:
+[fixture: common/leading-trivia-before-header]
+[fixture:
+common/leading-whitespace-before-header]
+[fixture:
+common/detect-line-separator-before-header]
+[fixture:
+common/detect-paragraph-separator-before-header]
+[fixture:
+common/detect-bom-before-header]
+[fixture:
+common/detect-cr-before-header]
+[fixture: common/detect-crlf-before-header]
+[fixture: common/directive-in-header-whitespace]
+[fixture:
+common/detect-directive-adjacent-before-header]
+[fixture:
 common/directive-in-header-keyword]
 
 すべての実際の図より前に、2 つの疑似図種が登録されています。
@@ -1110,28 +1287,50 @@ common/directive-in-header-keyword]
   図のテキスト `%%{`、改行 2 つ、`x}%%error` がディレクティブを含むからです。
   `x}%%error` の代わりに `error` だと、ディレクティブが `error` を
   語の引数として取り、テキストは拒否されます。
-  [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
-  [fixture: common/error-trailing-comment-line] [fixture:
-  common/error-trailing-blank-lines] [fixture:
-  common/error-directive-adjacent] [fixture: common/error-split-by-directive]
-  [fixture: common/whitespace-cut-at-comment-region] [fixture:
-  common/whitespace-cut-at-earliest-comment-start] [fixture:
-  common/error-word-after] [fixture: common/error-trailing-percent-at-end]
-  [fixture: common/error-trailing-percent] [fixture:
-  common/error-comment-inside] [fixture: common/error-directive-inside]
-  [fixture: common/error-style-semicolon-inside] [fixture:
-  common/error-style-semicolon-trailing] [fixture:
-  common/error-bare-percent-line] [fixture:
-  common/detect-percent-joined-by-directive] [fixture:
-  common/error-percent-before-directive] [fixture:
-  common/detect-frontmatter-after-line-break-error] [fixture:
-  common/frontmatter-bom-error] [fixture: common/detect-lone-cr-directive-lf]
-  [fixture: common/detect-lone-cr-comment-lf] [fixture:
-  common/detect-frontmatter-after-comment-line-error] [fixture:
-  common/detect-crlf-no-directive] [fixture:
-  common/error-bare-percent-line-then-frontmatter-block] [fixture:
-  common/detect-directive-across-directive-closed] [fixture:
-  common/detect-directive-joined-by-directive] [fixture:
+  [fixture: common/error-pseudo-diagram]
+  [fixture: common/error-uppercase]
+  [fixture: common/error-trailing-comment-line]
+  [fixture:
+  common/error-trailing-blank-lines]
+  [fixture:
+  common/error-directive-adjacent]
+  [fixture: common/error-split-by-directive]
+  [fixture: common/whitespace-cut-at-comment-region]
+  [fixture:
+  common/whitespace-cut-at-earliest-comment-start]
+  [fixture:
+  common/error-word-after]
+  [fixture: common/error-trailing-percent-at-end]
+  [fixture: common/error-trailing-percent]
+  [fixture:
+  common/error-comment-inside]
+  [fixture: common/error-directive-inside]
+  [fixture: common/error-style-semicolon-inside]
+  [fixture:
+  common/error-style-semicolon-trailing]
+  [fixture:
+  common/error-bare-percent-line]
+  [fixture:
+  common/detect-percent-joined-by-directive]
+  [fixture:
+  common/error-percent-before-directive]
+  [fixture:
+  common/detect-frontmatter-after-line-break-error]
+  [fixture:
+  common/frontmatter-bom-error]
+  [fixture: common/detect-lone-cr-directive-lf]
+  [fixture: common/detect-lone-cr-comment-lf]
+  [fixture:
+  common/detect-frontmatter-after-comment-line-error]
+  [fixture:
+  common/detect-crlf-no-directive]
+  [fixture:
+  common/error-bare-percent-line-then-frontmatter-block]
+  [fixture:
+  common/detect-directive-across-directive-closed]
+  [fixture:
+  common/detect-directive-joined-by-directive]
+  [fixture:
   common/detect-directive-across-directive]
 - `---`: `error` 以外のどの検出器とも同じく、
   たどり着いた位置の図のテキストが `---` で始まる。
@@ -1144,9 +1343,12 @@ common/directive-in-header-keyword]
   `error` の条件は検出点から見るのでブロックは検出点になく、除かれません。
   検出がもう一度の読みで見つけるディレクティブの後でも同じです
   （`%%{`、コメント行、`wrap}%%---`）。
-  [fixture: common/frontmatter-four-dashes] [fixture:
-  common/frontmatter-leading-newline] [fixture:
-  common/error-bare-percent-line-then-frontmatter-block] [fixture:
+  [fixture: common/frontmatter-four-dashes]
+  [fixture:
+  common/frontmatter-leading-newline]
+  [fixture:
+  common/error-bare-percent-line-then-frontmatter-block]
+  [fixture:
   common/detect-dashes-after-directive-found-once-more]
 
 mermaid.js は、先に書き換えたテキストの上で図種を決めます。
@@ -1163,14 +1365,34 @@ C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこ
 `%%` だけの行は、mermaid.js の字句解析器がコメントとして読むところでは
 どちらでもコメントで、そうでないところでだけ両者が分かれます（上の既知の差異）。
 2 回目の走査でだけ見つかるディレクティブは、どちらでも検出が通り過ぎ、
-どちらでも拒否されます。
-この除去が取るそれ以外のもの（ヘッダーの前の `---` のブロックなど）は、
-mermaid.js の字句解析器が入力を拒否する原因になります。
-パーサーがテキストを読まない `error` 疑似図種では、
-その条件が除く 3 つがこの除去です。
-[fixture: common/directive-before-frontmatter] [fixture:
-common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
-flowchart/detect-directive-across-directive]
+pie 以外の対応するすべての図種で、どちらでも拒否されます。
+[fixture: flowchart/detect-directive-across-directive]
+[fixture: sequence/detect-directive-across-directive]
+[fixture: class/detect-directive-across-directive]
+[fixture: state/detect-directive-across-directive]
+[fixture: agentflow/detect-directive-second-scan-preheader]
+[fixture: block/detect-directive-second-scan-preheader]
+[fixture: ishikawa/detect-directive-second-scan-preheader]
+[fixture: usecase/detect-directive-second-scan-preheader]
+[fixture: venn/detect-directive-second-scan-preheader]
+
+一致する先頭以外の `---` ブロックは、どちらでも検出が通過させ、
+選んだ図が読みます。
+pie は隠れた YAML の規則を適用し、
+一致したブロックを無視するテキストとして持ちます。
+ほかの対応するすべての図種は拒否します。
+[フロントマター](#フロントマター) で述べたとおりです。
+[fixture: common/directive-before-frontmatter]
+[fixture: common/frontmatter-indent-mismatch]
+[fixture: common/frontmatter-bom]
+[fixture: agentflow/db-frontmatter-after-comment]
+[fixture: block/gram-frontmatter-comment-before]
+[fixture: ishikawa/frontmatter-after-comment]
+[fixture: usecase/frontmatter-after-comment]
+[fixture: venn/frontmatter-comment-before]
+
+`error` 疑似図種では、その条件が除く 3 つがこの除去です。
+
 mermaid.js がこの段階を通して検出し、この仕様が別に読む入力は 1 つで、
 既知の差異
 [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md) です。
@@ -1178,7 +1400,8 @@ mermaid.js がこの段階を通して検出し、この仕様が別に読む入
 `C4Component`、`C4Dynamic`、`C4Deployment` のどれかを持つテキストを、
 mermaid.js は C4 のパーサーに渡し、この仕様はヘッダーの図として読みます。
 `C4Context` は両者とも先頭でだけ数えます。
-[fixture: common/detect-c4-anywhere] [fixture:
+[fixture: common/detect-c4-anywhere]
+[fixture:
 common/detect-c4context-only-at-start]
 
 テキストに init ディレクティブがあるときは、
@@ -1220,11 +1443,16 @@ U+2029 の後のその最後の `;` が無視されるので、
   コメント行の前の改行も同じです。
   1 行目の最後の `;`、つまり `C` と `participant E` の間のものが無視され、
   参加者は A、`Cparticipant E`、D、B です。
-  [fixture: sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
-  sequence/tokens-ignored-semicolon-separator-carriage-return] [fixture:
-  sequence/tokens-ignored-semicolon-separator-crlf] [fixture:
-  sequence/tokens-ignored-semicolon-separator-line-separator] [fixture:
-  sequence/tokens-ignored-semicolon-separator-paragraph-separator] [fixture:
+  [fixture: sequence/tokens-ignored-semicolon-separator-line-feed]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-carriage-return]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-crlf]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-line-separator]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-paragraph-separator]
+  [fixture:
   sequence/tokens-ignored-semicolon-separator-closed-directive-line-separator]
   [fixture:
   sequence/tokens-ignored-semicolon-separator-closed-directive-paragraph-separator]
@@ -1234,8 +1462,10 @@ U+2029 の後のその最後の `;` が無視されるので、
   ディレクティブがそれを空白として取り込むときは、
   行区間は続き、区切りの後の `;` が無視されます。
   参加者は A、C、`Eparticipant D`、B です。
-  [fixture: sequence/tokens-ignored-semicolon-separator-none] [fixture:
-  sequence/tokens-ignored-semicolon-separator-closed-directive] [fixture:
+  [fixture: sequence/tokens-ignored-semicolon-separator-none]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-closed-directive]
+  [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-separator]
   [fixture:
   sequence/tokens-ignored-semicolon-separator-unclosed-directive-paragraph-separator]
@@ -1283,7 +1513,8 @@ mermaid.js では、`A[style:#x] --> B;b` は頂点 `Bb` を、
 `A[style:#x] -;-> B` は辺 `-->` を持ちます。
 [`ignored-semicolon-as-token-boundary`](./known-divergences/ignored-semicolon-as-token-boundary.ja.md)
 を見てください。
-[fixture: flowchart/div-ignored-semicolon-in-id] [fixture:
+[fixture: flowchart/div-ignored-semicolon-in-id]
+[fixture:
 flowchart/div-ignored-semicolon-in-arrow]
 
 この規則は、`style` 行や `classDef` 行の `#f00;` のような CSS の色が、
@@ -1295,13 +1526,15 @@ flowchart/div-ignored-semicolon-in-arrow]
   ラベルは `mystyle:#x` になります。
   一方 `A[mystyle: #x;]` は一致せず（`:` と `#` の間に空白がある）、
   ラベルは `mystyle: ﬂ°x¶ß` です。
-  [fixture: common/entity-style-in-label] [fixture:
+  [fixture: common/entity-style-in-label]
+  [fixture:
   common/entity-style-in-label-space] 空白でなければ、
   `:` と `#` の間にほかの文字があってもかまいません。
   `A[style:a#b;]` は当てはまり、ラベルは `style:a#b` です。
   一方、`A[style:a #b;]` は当てはまらず、ラベルは `style:a`、空白、
   `#b;` のプレースホルダです。
-  [fixture: common/entity-style-colon-text-before-hash] [fixture:
+  [fixture: common/entity-style-colon-text-before-hash]
+  [fixture:
   common/entity-style-colon-space-before-hash] ラベルの HTML の `style`
   属性もこれに当たります。
   `A[<span style='color:#f00;font-weight:bold;'>x</span>]` は当てはまるので、
@@ -1310,13 +1543,16 @@ flowchart/div-ignored-semicolon-in-arrow]
   は区切りが無視されるので `#fff;` はエンティティです。
   一方、区切りがなければ、最後の `;` は `#fff` の後のもので、
   ラベルは `#fff` を保ちます。
-  [fixture: common/entity-css-in-label] [fixture:
-  common/entity-css-in-label-separator-ignored] [fixture:
+  [fixture: common/entity-css-in-label]
+  [fixture:
+  common/entity-css-in-label-separator-ignored]
+  [fixture:
   common/entity-css-in-label-last-semicolon-ignored] ラベルが文字列
   `A["<span style='color:#f00;font-weight:bold;'>x</span>"]` のときも、
   リンクのテキスト
   `A-- <span style='color:#f00;font-weight:bold;'>t</span> -->B` でも同じです。
-  [fixture: common/entity-css-in-string-label] [fixture:
+  [fixture: common/entity-css-in-string-label]
+  [fixture:
   common/entity-css-in-link-text] `:` の後に `#` がなければ行は当てはまらず、
   `A[<span style='color:red;font-size:12px'>x</span>]` は 2 つの `;`
   を保ちます。
@@ -1324,14 +1560,16 @@ flowchart/div-ignored-semicolon-in-arrow]
   では行が当てはまるので、`f00` の後の `;` が無視され、
   `#35;` はエンティティです。
   ラベルは、そのプレースホルダに `f00font-weight:bold` が続くものです。
-  [fixture: common/entity-css-in-label-no-hash] [fixture:
+  [fixture: common/entity-css-in-label-no-hash]
+  [fixture:
   common/entity-css-numeric-entity-then-semicolon]
 - 無視するのは行の最後の `;` だけです。
   `style A fill:#f00;B-->C` では、無視される `;` は 2 つの文を区切るものです。
   `style A fill:#fff;color:#000;` は `#fff;`
   を残してそれがエンティティになります。
   flowchart の文法はどちらも拒否します。
-  [fixture: common/entity-style-semicolon-separator] [fixture:
+  [fixture: common/entity-style-semicolon-separator]
+  [fixture:
   common/entity-style-two-colours] `style A fill:#f00; style B fill:#0f0` は、
   ただ 1 つの `;` が無視されるので、1 つの文です。
   A は 1 つのスタイル `fill:#f00 style B fill:#0f0` を持ち、
@@ -1351,10 +1589,14 @@ flowchart/div-ignored-semicolon-in-arrow]
   そのスタイルは 1 つの `fill:#f00stroke:#0f0` です。
   `style A fill:#f00;stroke:#0f0;` は最後の `;` だけを無視するので、
   `#f00;` はエンティティで、スタイルはそれを拒否します。
-  [fixture: common/entity-css-two-labels-one-line] [fixture:
-  common/entity-css-two-labels-two-lines] [fixture:
-  common/entity-css-semicolon-between-declarations] [fixture:
-  common/entity-style-last-semicolon-only-ignored] [fixture:
+  [fixture: common/entity-css-two-labels-one-line]
+  [fixture:
+  common/entity-css-two-labels-two-lines]
+  [fixture:
+  common/entity-css-semicolon-between-declarations]
+  [fixture:
+  common/entity-style-last-semicolon-only-ignored]
+  [fixture:
   common/entity-classdef-semicolon-between-styles] 無視される `;` は 2
   つのスタイルの間にあることもあります。
   `style A fill:#f00;stroke:#0f0` は 1 つのスタイル `fill:#f00stroke:#0f0`
@@ -1365,8 +1607,10 @@ flowchart/div-ignored-semicolon-in-arrow]
   `#f00;` はエンティティになり、flowchart の文法はその行を拒否します。
   最後の `;` がない場合や、その前の色が `#` で始まらない場合は、
   同じ行が受理されます。
-  [fixture: common/entity-linkstyle-colour] [fixture:
-  common/entity-linkstyle-colour-no-semicolon] [fixture:
+  [fixture: common/entity-linkstyle-colour]
+  [fixture:
+  common/entity-linkstyle-colour-no-semicolon]
+  [fixture:
   common/entity-linkstyle-named-colour-semicolon]
 - 最後の `;` は、ラベルの後の区切りであることもあります。
   `A[style:#x;];` では区切りが無視されるので、ラベルの中の `;` は残り、
@@ -1376,9 +1620,12 @@ flowchart/div-ignored-semicolon-in-arrow]
   ラベルは `style:#x` です。
   アクセシビリティの文の行もほかの行と同じで、
   `accTitle: style:#x;y;` のタイトルは `style:`、プレースホルダ、`y` です。
-  [fixture: common/entity-style-separator-ignored] [fixture:
-  common/entity-style-label-semicolon-ignored] [fixture:
-  common/entity-style-separator-ignored-string] [fixture:
+  [fixture: common/entity-style-separator-ignored]
+  [fixture:
+  common/entity-style-label-semicolon-ignored]
+  [fixture:
+  common/entity-style-separator-ignored-string]
+  [fixture:
   common/entity-style-acc-title]
 
 ## エンティティ
@@ -1393,7 +1640,8 @@ flowchart/div-ignored-semicolon-in-arrow]
 の規則が当てはまります。
 テキストの単位の中でも文字列の中でも、
 エンティティは mermaid.js と同じに読まれます。
-[fixture: common/directive-in-entity] [fixture:
+[fixture: common/directive-in-entity]
+[fixture:
 flowchart/lex-directive-in-string-entity]
 エンティティは、
 次の連続した文字からなります。
@@ -1425,18 +1673,30 @@ sequence では、メッセージのテキストは `#` の手前で終わり、
 `#` からは行の残りを取る図のコメントになるからです
 （[文の文脈](./diagrams/sequence.ja.md#文の文脈) を参照）。
 [fixture: common/entity-hash-inside-word-second-hash-starts]
-[fixture: common/entity-double-hash] [fixture:
-common/entity-cut-by-line-terminator] [fixture:
-common/entity-not-across-comment-line] [fixture:
-common/entity-semicolon-after-comment-line] [fixture:
-common/entity-cut-by-line-separator] [fixture: common/entity-hyphen-not-word]
-[fixture: common/entity-underscore-word] [fixture:
-common/entity-directive-after-hash] [fixture:
-common/entity-directive-before-semicolon] [fixture:
-common/entity-directive-in-word-in-message] [fixture:
-common/entity-directive-after-hash-in-message] [fixture:
-common/entity-directive-before-semicolon-in-message] [fixture:
-common/entity-two-directives-before-semicolon-in-message] [fixture:
+[fixture: common/entity-double-hash]
+[fixture:
+common/entity-cut-by-line-terminator]
+[fixture:
+common/entity-not-across-comment-line]
+[fixture:
+common/entity-semicolon-after-comment-line]
+[fixture:
+common/entity-cut-by-line-separator]
+[fixture: common/entity-hyphen-not-word]
+[fixture: common/entity-underscore-word]
+[fixture:
+common/entity-directive-after-hash]
+[fixture:
+common/entity-directive-before-semicolon]
+[fixture:
+common/entity-directive-in-word-in-message]
+[fixture:
+common/entity-directive-after-hash-in-message]
+[fixture:
+common/entity-directive-before-semicolon-in-message]
+[fixture:
+common/entity-two-directives-before-semicolon-in-message]
+[fixture:
 common/entity-not-across-comment-line-in-message]
 
 字句の規則: 字句解析器は、エンティティをそのプレースホルダとして読みます。
@@ -1457,8 +1717,10 @@ flowchart では、そのような規則は、リンクテキストの文脈と�
 プレースホルダの最初の文字だけを読む規則は変わりません。
 flowchart では、文字の規則は U+FB02 を読みますが、
 その後の U+00B0 を読む規則はないので、`A#x;-->B` は拒否されます。
-[fixture: flowchart/lex-link-text-entity-dash] [fixture:
-flowchart/lex-ellipse-entity-start] [fixture:
+[fixture: flowchart/lex-link-text-entity-dash]
+[fixture:
+flowchart/lex-ellipse-entity-start]
+[fixture:
 flowchart/lex-entity-in-vertex-id]プレースホルダの文字がどこで許されるかは、
 図の字句解析器によります。
 flowchart ではラベルの文字列の中で許され、
@@ -1469,7 +1731,8 @@ flowchart ではラベルの文字列の中で許され、
 mermaid.js はプレースホルダを図を描画するときにだけ HTML
 エンティティに戻すので、Db はプレースホルダの形を持ちます。
 `A[a #amp; b]` のラベルは、Db では `a ﬂ°amp¶ß b` で、木の値は `a #amp; b` です。
-[fixture: common/entity-named] [fixture: common/entity-numeric]
+[fixture: common/entity-named]
+[fixture: common/entity-numeric]
 
 `#+123;` はエンティティではありません。
 `+` は語の文字ではないからです。
@@ -1483,8 +1746,10 @@ mermaid.js はプレースホルダを図を描画するときにだけ HTML
 のプレースホルダを持ちます。
 一方、`A[<span style='color:#f00'>x</span>]` のように `;` のない `#f00` は、
 書かれたままです。
-[fixture: common/entity-css-in-label-spaces] [fixture:
-common/entity-css-in-label-no-semicolon] [fixture:
+[fixture: common/entity-css-in-label-spaces]
+[fixture:
+common/entity-css-in-label-no-semicolon]
+[fixture:
 common/entity-numeric-in-label-text] タグの外でも同じで、
 `A[color: #f00; is red]` は `#f00;` のプレースホルダを持ちます。
 [fixture: common/entity-in-label-outside-tag]
@@ -1504,7 +1769,8 @@ common/entity-numeric-in-label-text] タグの外でも同じで、
 mermaid.js のパターンから作った字句解析器は、
 たいてい [表記](#表記) で定めた空白をすべて、
 U+00A0 や U+FEFF も含めて空白として扱います。
-[fixture: common/nbsp-as-space] [fixture: common/bom-mid-text]
+[fixture: common/nbsp-as-space]
+[fixture: common/bom-mid-text]
 
 ## 既知の差異
 

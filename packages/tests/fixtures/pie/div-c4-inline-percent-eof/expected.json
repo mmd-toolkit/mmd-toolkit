@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does EOF leave the C4 percent suffix visible to detection? Mermaid selects C4 and rejects; the specified pie label accepts."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npie\"C4Context %% C4\n^"
+  }
+}

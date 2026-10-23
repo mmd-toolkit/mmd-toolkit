@@ -3,9 +3,11 @@ import path from "node:path"
 import { beforeAll, describe, expect, it } from "vitest"
 import type { DiagramType, Fixture } from "../src/index.ts"
 import {
+  DIVERGENCE_PROPERTIES,
   KNOWN_DIVERGENCES,
   allowsUnsummarizedDb,
   embeddedValuesOf,
+  fixtureAccepts,
   getDefaultConfig,
   getFixturesRoot,
   loadFixtures,
@@ -39,6 +41,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "ishikawa",
   "agentflow",
   "usecase",
+  "pie",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -65,6 +68,17 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads pie fixtures", () => {
+    const fixtures = fixturesOf("pie")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("pie")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
   it("loads usecase fixtures", () => {
     const fixtures = fixturesOf("usecase")
     expect(fixtures.length).toBeGreaterThan(0)
@@ -278,37 +292,14 @@ describe("fixtures", () => {
     }
   })
 
-  /**
-   * The marks of the known divergences whose fixtures hold the reading of the
-   * specification in `specified.json` where it differs from `expected.json`:
-   * one changes the detector of C4 of mermaid.js, five change its lexer, and
-   * three change the text it reads (the frontmatter, the bare `%%` lines, the
-   * blank lines of a mindmap).
-   */
-  const READING_MARKS = [
-    "c4-keyword-anywhere",
-    "comment-takes-character",
-    "comment-takes-line-break",
-    "name-start-reads-unit",
-    "percent-brace-after-unit",
-    "title-digit-after-axis-statement",
-    "html-tag-in-frontmatter",
-    "bare-percent-line-before-header",
-    "blank-line-after-header-or-comments",
-  ]
-
-  it("has a specified reading for the fixtures of each mark that changes how mermaid.js reads", () => {
-    for (const mark of READING_MARKS) {
+  it("has every required specified reading and fixtures for each reading mark", () => {
+    for (const fixture of allFixtures) fixtureAccepts(fixture)
+    for (const [mark, properties] of DIVERGENCE_PROPERTIES) {
+      if (!properties.requiresSpecifiedReading) continue
       const marked = allFixtures.filter(
         (fixture) => fixture.knownDivergence === mark,
       )
       expect(marked.length, mark).toBeGreaterThan(0)
-      // A reading that changed nothing would make the comparison with it the
-      // comparison with mermaid.js as it is.
-      expect(
-        marked.filter((fixture) => fixture.specified !== undefined).length,
-        mark,
-      ).toBeGreaterThan(0)
     }
   })
 
@@ -316,7 +307,10 @@ describe("fixtures", () => {
     for (const fixture of allFixtures) {
       if (fixture.specified === undefined) continue
       const label = `${fixture.diagram}/${fixture.name}`
-      expect(READING_MARKS, label).toContain(fixture.knownDivergence)
+      const properties = DIVERGENCE_PROPERTIES.get(
+        fixture.knownDivergence ?? "",
+      )
+      expect(properties?.requiresSpecifiedReading, label).toBe(true)
       const { embedded: _expectedEmbedded, ...expected } =
         fixture.expected as Record<string, unknown>
       const { embedded: _specifiedEmbedded, ...specified } =

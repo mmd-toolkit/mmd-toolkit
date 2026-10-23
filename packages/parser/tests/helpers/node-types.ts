@@ -1,3 +1,4 @@
+import type { PieNode } from "../../src/ast/pie.ts"
 import type { UsecaseNode } from "../../src/ast/usecase.ts"
 import type {
   ClassNode,
@@ -509,6 +510,18 @@ export const allUsecaseNodeTypes: Readonly<Record<UsecaseNode["type"], true>> =
     UsecaseAccDescrBlockStatement: true,
   }
 
+/** Every node type of ast/pie.md, in document order. */
+export const allPieNodeTypes: Readonly<Record<PieNode["type"], true>> = {
+  PieDiagram: true,
+  PieSectionStatement: true,
+  PieTitleStatement: true,
+  PieAccTitleStatement: true,
+  PieAccDescrStatement: true,
+  PieAccDescrBlockStatement: true,
+  PieLiteral: true,
+  PieIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -532,6 +545,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allIshikawaNodeTypes),
   ...Object.keys(allAgentflowNodeTypes),
   ...Object.keys(allUsecaseNodeTypes),
+  ...Object.keys(allPieNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

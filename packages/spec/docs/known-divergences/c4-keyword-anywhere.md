@@ -242,6 +242,32 @@ specification accepts that same label as usecase under the existing reverse
 criterion. [fixture: usecase/lex-c4-inline-percent-with-lf] [fixture:
 usecase/div-c4-inline-percent-eof]
 
+### Pie
+
+StringLiteral labels, PieLiteral titles, accessibility line values and
+description blocks, PieIgnoredText YAML blocks, and shared Comments can hold a
+C4 word as written. The comment cases include EOF after a section and EOF on the
+header line. The tree therefore reads the pie header and accepts these inputs.
+Mermaid.js instead selects C4 for one of the four unanchored words that remains
+in the text detection sees and rejects these inputs. These are reverse-direction
+divergences: this specification accepts what mermaid.js rejects; this rule
+rejects no accepted pie input. A C4 word in the removed directive of the control
+fixture is not seen by the detector and does not receive a mark. [fixture:
+pie/div-detect-c4-label] [fixture: pie/div-detect-c4-title] [fixture:
+pie/div-yaml-body-c4-hidden] [fixture: pie/detect-c4-directive-control]
+[fixture: pie/div-detect-c4-acctitle] [fixture: pie/div-detect-c4-accdescr-line]
+[fixture: pie/div-detect-c4-accdescr-block] [fixture:
+pie/div-detect-c4-section-comment-eof] [fixture:
+pie/div-detect-c4-header-comment-eof]
+
+In the label `C4Context %% C4Container`, a final LF makes detection leave out
+the inline percent suffix and select pie, while the label keeps its entire
+written text. At EOF the suffix remains in detection's text, so Mermaid selects
+C4 and rejects; this specification accepts the same pie label under the existing
+reverse criterion. `C4Context` alone inside a label does not select C4.
+[fixture: pie/lex-c4-inline-percent-with-lf] [fixture:
+pie/div-c4-inline-percent-eof] [fixture: pie/lex-c4context-label]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -292,3 +318,12 @@ usecase/div-c4-inline-percent-eof]
   on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
   validation and JSON tables. This divergence follows the shared direct rule,
   not a claim that a bug label approves a grammar change.
+
+- For pie, the pinned
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  begins diagrams with `pie`. Searches of `pie` and `C4 detection` on 2026-10-23
+  found no pie-specific exception.
+  [PR #8501](https://github.com/mermaid-js/mermaid/pull/8501) and
+  [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504) propose anchoring
+  every C4 alternative; this fact supports the shared detection rule, while the
+  pinned version still has the unanchored alternatives.

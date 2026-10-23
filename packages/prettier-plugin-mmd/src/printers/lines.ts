@@ -132,12 +132,12 @@ export function indentationOf(
 
 /**
  * The step width for indentation that carries meaning: diagram node levels,
- * graph direction priority, and YAML block scalars or nested values. One
- * character is the smallest width that preserves the reading and Db when
- * tabWidth is zero
+ * graph direction priority, class member syntax, and YAML block scalars or
+ * nested values. One character is the smallest width that preserves the
+ * reading and Db when tabWidth is zero
  * (docs/compatibility.md, Frontmatter; docs/mindmap.md, docs/kanban.md,
- * docs/venn.md, docs/ishikawa.md, docs/flowchart.md and docs/agentflow.md,
- * Indentation).
+ * docs/venn.md, docs/ishikawa.md, docs/flowchart.md, docs/agentflow.md and
+ * docs/class.md, Indentation).
  */
 export function significantIndentationWidth(tabWidth: number): number {
   return Math.max(1, tabWidth)
@@ -145,10 +145,11 @@ export function significantIndentationWidth(tabWidth: number): number {
 
 /**
  * Adapts the shared block printer's indent commands once, at the diagram
- * boundary. Graph printers use the significant width for explicit columns;
- * Prettier still renders these commands with its original options, so a
- * zero-width body needs the same positive alignment (docs/flowchart.md and
- * docs/agentflow.md, Indentation). Literal lines keep their written columns.
+ * boundary. Graph and class printers use the significant width for explicit
+ * columns; Prettier still renders these commands with its original options,
+ * so a zero-width body needs the same positive alignment (docs/flowchart.md,
+ * docs/agentflow.md and docs/class.md, Indentation). Literal lines keep their
+ * written columns.
  */
 export function withSignificantIndentation(
   doc: Doc,

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can detection-passed U+3000 on a line after a nonleading block evade pie lexical rules? It cannot; pie rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: ->　<- at offset: 13, skipped 1 characters. "
+  }
+}

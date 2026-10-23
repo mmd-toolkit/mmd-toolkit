@@ -37,6 +37,7 @@ export function printRoot(
   source: Source,
   yamlDoc?: Doc,
   planText?: RootTextPlan,
+  keepsPrefix = false,
 ): Doc {
   const lines: Line[] = []
   let offset = 0
@@ -50,6 +51,15 @@ export function printRoot(
       endsWithWhitespace: end > root.frontmatter.range[1],
     })
     offset = end
+  }
+  // A detection-skipped prefix must not become leading frontmatter after
+  // ordinary root blank/comment cleanup (docs/pie.md, Frontmatter yaml).
+  if (keepsPrefix) {
+    return [
+      frontmatterDoc ?? "",
+      printAsWritten(source, offset, root.body.range[0]),
+      printBody(),
+    ]
   }
   const gap = readGap(source, offset, root.body.range[0], false)
   if (gap.trailing !== null) {

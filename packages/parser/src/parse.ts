@@ -1,3 +1,4 @@
+import { parsePieDiagram } from "./diagrams/pie/index.ts"
 import { parseUsecaseDiagram } from "./diagrams/usecase/index.ts"
 import { parseAgentflowDiagram } from "./diagrams/agentflow/index.ts"
 import type { DiagramType, Frontmatter, Range, Root } from "./ast.ts"
@@ -83,7 +84,14 @@ export function diagramInputOf(
     lexer: opened.lexer,
     frontmatter: opened.frontmatter,
     diagramType,
-    textStart: detection.positionReached,
+    textStart:
+      detection.retainedFrontmatterStart ??
+      (diagramType === "pie"
+        ? detection.passed.find(
+            (part) => part.kind === "directive-found-once-more",
+          )?.opening[0]
+        : null) ??
+      detection.positionReached,
     passed: detection.passed,
   }
 }
@@ -106,8 +114,12 @@ export function parse(text: string): Root {
       lines.location(range),
     )
   }
-  if (detected === "---") {
-    const range: Range = [positionReached, positionReached + 3]
+  if (
+    detected === "---" ||
+    (detected !== "pie" && detection.retainedFrontmatterStart !== null)
+  ) {
+    const start = detection.retainedFrontmatterStart ?? positionReached
+    const range: Range = [start, start + 3]
     throw new ParseError(
       "Diagrams beginning with --- are not valid: the block is not frontmatter",
       range,
@@ -138,6 +150,8 @@ export function parse(text: string): Root {
       return parseRequirementDiagram(input)
     case "mindmap":
       return parseMindmapDiagram(input)
+    case "pie":
+      return parsePieDiagram(input)
     case "timeline":
       return parseTimelineDiagram(input)
     case "sankey":

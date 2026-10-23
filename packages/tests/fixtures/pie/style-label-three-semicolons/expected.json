@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A third semicolon distinguishes final-semicolon removal from entity encoding."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "style fill:ﬂ°f00¶ß;",
+        "value": 1
+      }
+    ]
+  }
+}

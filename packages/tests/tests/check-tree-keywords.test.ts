@@ -18,6 +18,7 @@ import { directiveOf, handMadeRoot } from "./check-tree-trees.ts"
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [DiagramType, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["pie", "PieDiagram"],
   ["usecase", "UsecaseDiagram"],
   ["agentflow", "AgentflowDiagram"],
   ["sequence", "SequenceDiagram"],
@@ -331,6 +332,8 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
     case "quadrant":
       return ["quadrantchart", "quadrant-2", "quadrant-3"]
     // The header, and the two values of the `direction` unit.
+    case "pie":
+      return ["pie", "showdata", "title", "acctitle", "accdescr"]
     case "timeline":
       return ["timeline", "lr", "td"]
     case "requirement":

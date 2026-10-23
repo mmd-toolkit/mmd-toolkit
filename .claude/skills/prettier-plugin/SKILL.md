@@ -290,6 +290,8 @@ Running tests; this is what belongs to this package):
     `ishikawa`, `markdown-ishikawa`, and `value-nodes`.
   - `agentflow*.ts`: `format` and `corpus` with `-t agentflow`; and, without
     `-t`, `agentflow`, `markdown-agentflow`, `value-nodes`, and `dispatch`.
+  - `pie*.ts`: `format` and `corpus` with `-t pie`; and, without `-t`, `pie`,
+    `markdown-pie`, `value-nodes`, and `dispatch`.
   - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
     types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
@@ -418,4 +420,26 @@ When the working tree or the machine is shared with other work:
 - Jison diagrams (such as flowchart): as above. The lexical rules are in the
   specification's lexical sections, which hold the lexical facts that the tree
   does not show.
-- Langium diagrams (such as pie): to be written with pie.
+- Langium diagrams: as above, from the specification's AST. The engine itself
+  changes no printing rule. Check the diagram's specification for:
+  - First-match priority and keyword/component boundaries.
+  - Hidden YAML/directive forms, when its lexical rules define them. Keep
+    `...IgnoredText` as written in its specified AST field or body entry.
+    Preserve any LF the rule consumes outside the node range and whitespace
+    after its closer: both can decide acceptance. Use `writtenGapsBefore` to
+    keep these gaps between atoms as written. Examples:
+    [Hidden yaml](../../../packages/prettier-plugin-mmd/docs/pie.md#hidden-yaml)
+    and
+    [Hidden directives](../../../packages/prettier-plugin-mmd/docs/pie.md#hidden-directives).
+  - Text that detection skips before reaching the header. If formatting leading
+    blank lines or comments could turn ignored YAML into frontmatter, preserve
+    the complete prefix with `keepsPrefix`, decided by the diagram's own
+    predicate. Example:
+    [Frontmatter yaml](../../../packages/prettier-plugin-mmd/docs/pie.md#frontmatter-yaml).
+  - Line values: do not join a next-line value where the grammar reads none.
+    Examples: [Title](../../../packages/prettier-plugin-mmd/docs/pie.md#title)
+    and
+    [Accessibility lines](../../../packages/prettier-plugin-mmd/docs/pie.md#accessibility-lines).
+  - Divergence identifiers marked by the diagram's corpus: use the
+    specification's reading for those identifiers. Example:
+    [Specified readings](../../../packages/prettier-plugin-mmd/docs/pie.md#specified-readings).

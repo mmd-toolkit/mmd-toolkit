@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A negative integer is rejected by the Db."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "\"A\" has invalid value: -1. Negative values are not allowed in pie charts. All slice values must be >= 0."
+  }
+}

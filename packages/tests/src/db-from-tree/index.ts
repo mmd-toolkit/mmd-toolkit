@@ -1,3 +1,5 @@
+import { pieDbOf } from "./pie.ts"
+import type { PieDiagram } from "./pie-tree.ts"
 import { agentflowDbOf } from "./agentflow.ts"
 import type { AgentflowDiagram } from "./agentflow-tree.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
@@ -52,6 +54,7 @@ export interface ErrorDiagram extends TreeNode {
 
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
+  | PieDiagram
   | AgentflowDiagram
   | BlockDiagram
   | C4Diagram
@@ -99,6 +102,8 @@ export function dbFromTree(
     // The error pseudo-diagram has no Db.
     case "ErrorDiagram":
       return {}
+    case "PieDiagram":
+      return pieDbOf(text, root, root.body, embedded)
     case "AgentflowDiagram":
       return agentflowDbOf(text, root, root.body, embedded)
     case "UsecaseDiagram":

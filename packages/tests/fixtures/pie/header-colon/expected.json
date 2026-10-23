@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A colon is not allowed after the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 1: unexpected character: ->p<- at offset: 0, skipped 3 characters. Parse error on line 1, column 4: Expecting token of type 'pie' but found `:`.\nParse error on line ?, column ?: Expecting token of type 'pie' but found ``."
+  }
+}

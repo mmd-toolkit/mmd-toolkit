@@ -4,7 +4,7 @@
 [bare-percent-line-before-header.md](./bare-percent-line-before-header.md)
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
-sankey、block、c4、agentflow、usecase。
+sankey、block、c4、agentflow、usecase、pie。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 対象の構文
@@ -326,6 +326,59 @@ parser が最初にヘッダーを要求するので拒否します。
 [fixture: usecase/lex-comment-before-header-unicode-reference]
 [fixture: usecase/comment-bare-pair]
 
+### Pie
+
+裸の `%%` の行は共通の Comment 記録が持ちます。
+その行とヘッダーの間の空白は既存のトリビアなので、pie の新しい節点は要りません。
+共通の CR/CRLF 変換の後、Mermaid の pie の字句規則は、
+裸の行の後の ASCII 空白、タブ、LF を受理し、ほかの共通の空白は、
+空白だけの行でもヘッダーの直前でも拒否します。
+VT、FF、U+1680、U+2003、U+202F、U+205F、U+3000、LS、PS、NBSP、
+バイトオーダーマークを含みます。
+LS とバイトオーダーマークはヘッダーの直前でも拒否します。
+裸の行がなければ、LS の行は先頭のトリビアとして両者が受理します。
+共通の規則は、これらの先頭のコメントと空白をすべて受理します。
+既存の処理順による逆方向の基準であり、これらの拒否された入力を受理し、
+Mermaid が受理する入力は拒否しません。
+[fixture: pie/div-preheader-bare-ls-blank]
+[fixture: pie/div-preheader-bare-ps-blank]
+[fixture: pie/div-preheader-bare-nbsp-blank]
+[fixture: pie/div-preheader-bare-bom-blank]
+[fixture: pie/lex-preheader-bare-ascii-blank-control]
+[fixture: pie/lex-preheader-ls-without-bare-control]
+[fixture: pie/div-preheader-bare-vt-blank]
+[fixture: pie/div-preheader-bare-ff-blank]
+[fixture: pie/div-preheader-bare-u1680-blank]
+[fixture: pie/div-preheader-bare-u2003-blank]
+[fixture: pie/div-preheader-bare-u202f-blank]
+[fixture: pie/div-preheader-bare-u205f-blank]
+[fixture: pie/div-preheader-bare-u3000-blank]
+[fixture: pie/div-preheader-bare-ls-before-header]
+[fixture: pie/div-preheader-bare-bom-before-header]
+
+保持した先頭以外のブロックや再走査のディレクティブの後に、
+裸の行がある場合にも、同じ差異を適用します。
+保持したブロックと再走査のディレクティブの間に、
+裸の行と通過させたトリビアがある場合も同じです。
+ヘッダー前の LS やバイトオーダーマーク、LS だけの行、
+後のディレクティブ前の LS は、
+ここでは受理し、Mermaid は拒否します。
+対応する ASCII 空白とタブの形は両者が受理します。
+保持した隠れた形は textBeforeHeader に残し、
+裸の行は共通の Comment、通過させた空白と改行はトリビアとします。
+[fixture: pie/div-preheader-retained-directive-bare-bom]
+[fixture: pie/div-preheader-retained-directive-bare-ls]
+[fixture: pie/div-preheader-retained-directive-bare-ls-line]
+[fixture: pie/div-preheader-retained-yaml-bare-bom]
+[fixture: pie/div-preheader-retained-yaml-bare-ls]
+[fixture: pie/div-preheader-retained-yaml-bare-ls-line]
+[fixture: pie/div-preheader-retained-yaml-bare-then-directive]
+[fixture: pie/lex-preheader-retained-directive-bare-ascii]
+[fixture: pie/lex-preheader-retained-directive-bare-ascii-line]
+[fixture: pie/lex-preheader-retained-yaml-bare-ascii]
+[fixture: pie/lex-preheader-retained-yaml-bare-ascii-line]
+[fixture: pie/lex-preheader-retained-yaml-bare-then-directive-ascii]
+
 ## mermaid.js の文書と issue
 
 - [構文のリファレンス](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
@@ -382,3 +435,11 @@ parser が最初にヘッダーを要求するので拒否します。
   Chevrotain parser、モデル検証、JSON の表を導入します。
   この差異は共有の直接の規則に従うもので、
   bug ラベルを文法変更の承認とは読みません。
+
+- 固定した版の
+  [pie の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  は例を pie で始め、
+  裸のパーセント行とヘッダーの間の Unicode 空白は説明しません。
+  [issue #8196](https://github.com/mermaid-js/mermaid/issues/8196)
+  は検出と前処理の異なるコメント除去を報告します。
+  この場合を pie 固有の欠陥とする保守者の判断を示すものではありません。

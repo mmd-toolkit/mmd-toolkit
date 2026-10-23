@@ -373,19 +373,33 @@ diagram to:
 | `tests/helpers/reference-inputs.ts`    | the diagram's units for the references |
 | `tests/<diagram>.test.ts`              | unit tests of the tree and tokens      |
 
+Use these test steps for Jison, Chevrotain and Langium diagrams. Pre-record
+probes (4.7), diagram tests and `tests/fixtures.test.ts` use `fixtureAccepts`
+from `@mmd-toolkit/tests` for acceptance. Its shared `DIVERGENCE_PROPERTIES`
+table defines each identifier's acceptance direction and specified-reading
+requirement. A missing required `specified.json` is an error that fails the
+probe or test. Specified readings decide acceptance when present; unmarked
+fixtures use `expected.json`.
+
+For Db comparisons, set `reading` to `fixture.specified ?? fixture.expected`.
+When that reading is accepted and has a non-null Db, compare the tree's Db with
+its recorded Db using `embeddedValuesOf(fixture, reading)` and the existing
+`dbOfTree`/`dbFromTree` helpers. Keep accepted opaque fixtures without a
+comparison Db explicit. Separately verify that each marked input has its
+declared lexical form (section 6); acceptance alone does not prove it.
+
 Steps:
 
 1. `tests/fixtures.test.ts` compares the parse result of each fixture with the
-   one recorded next to it, and checks the acceptance against mermaid.js as the
-   mark of the fixture asks (4.7). It checks neither the tree nor the Db:
-   `@mmd-toolkit/tests` checks each recorded tree (`checkTree`) and builds its
-   Db, which it compares with the Db that the fixture records (the tests skill).
-   Where the Db needs what the tree does not hold, the tree lacks it: report it
-   to the specification, with the input and the result of mermaid.js. What
-   `ast/<diagram>.md` states about the tree of a new diagram type is checked by
-   `@mmd-toolkit/tests` (`checkTree`); ask the tests package for it. The unit
-   tests check their own trees with the same check
-   (`tests/helpers/tree-problems.ts`).
+   one recorded next to it, and checks acceptance with the shared helper above
+   (4.7). It checks neither the tree nor the Db: `@mmd-toolkit/tests` checks
+   each recorded tree (`checkTree`) and builds its Db, which it compares with
+   the Db that the fixture records (the tests skill). Where the Db needs what
+   the tree does not hold, the tree lacks it: report it to the specification,
+   with the input and the result of mermaid.js. What `ast/<diagram>.md` states
+   about the tree of a new diagram type is checked by `@mmd-toolkit/tests`
+   (`checkTree`); ask the tests package for it. The unit tests check their own
+   trees with the same check (`tests/helpers/tree-problems.ts`).
 2. Find where text outside a node's range decides a reading. Example from the
    flowchart: the name text of a subgraph runs to its separator, and where empty
    description blocks follow the name, the whitespace between them lies outside
@@ -409,7 +423,9 @@ part of the result.
 
 1. Write and read these files only for fixtures whose rules are implemented. Run
    earlier, the fixture test writes the result of the current parser, which is
-   wrong, and it then passes as recorded.
+   wrong, and it then passes as recorded. Before writing, probe every fixed
+   fixture with the shared acceptance and Db checks of 4.6 and inspect its tree
+   against the specification. Report undecided inputs without recording them.
 2. Run the fixture test once outside CI, in `packages/parser`, without `-u`; it
    writes the missing files (in CI, a missing file fails). Use `-u` only for a
    change that changes existing results (step 4):
@@ -525,9 +541,21 @@ it was run, read, or not checked.
 
 ## 5. Langium diagrams
 
-To be written with pie, the first Langium diagram. The steps of the lexer (4.4)
-and the grammar (4.5) are expected to change with the grammar definition of
-Langium.
+For Langium-based diagrams, use section 4 for the inputs, wiring, records and
+checks, but implement the specification's lexical rules in their stated
+first-match priority order; do not assume Jison contexts, longest-match behavior
+or recovery. Split composite matches at authored component boundaries, retain
+hidden forms in their specified AST gaps, and keep any consumed following LF
+outside their ranges while allowing EOF to satisfy EOL. Preserve what detection
+leaves for the diagram to read, and do not read passed bare lines or their
+accompanying trivia again. Apply semantic rejections after shared conversion,
+including double underflow and negative zero where numeric leaves use doubles.
+Before recording (4.7), probe every fixed fixture using `fixtureAccepts` for
+acceptance and the recorded reading, `embeddedValuesOf` and Db helpers of 4.6
+for comparable Db values. Keep the separate lexical verification of declared
+divergences (section 6), inspect the trees of the specified cases, and report
+undecided inputs without recording them. The diagram tests use the same shared
+checks.
 
 ## 6. When fixtures are added or a rule changes
 
@@ -560,14 +588,18 @@ Langium.
   first (4.2, step 2), then do the above.
 - A known divergence is added (its document `known-divergences/<id>.md`, listed
   in known-divergences.md): the parser does not tell it apart, so the tests do.
-  Add its branch to the checks of `tests/fixtures.test.ts`, with a check under
-  "marked fixtures differ only by their divergence" that the input has the form
-  of the divergence, found by the parser's lexer, and, for a divergence that
-  goes one way, a reference input in `tests/helpers/reference-inputs.ts` whose
-  Db must be that of mermaid.js for the input. For a divergence that goes both
-  ways, the reading of the specification is recorded in the corpus
-  (`specified.json`, by mermaid.js with the divergence removed from its lexer),
-  which the tests package makes; ask for it. Add its declaration to
+  For an existing identifier, reuse `fixtureAccepts` (4.6); adding a diagram
+  adds no acceptance table or diagram-local helper. For a new identifier, ask
+  the tests package to add its direction and specified-reading requirement to
+  the shared `DIVERGENCE_PROPERTIES` table and run its checks. Extend the
+  lexical checks in `tests/fixtures.test.ts` and the diagram tests. Under
+  "marked fixtures differ only by their divergence", check that the input has
+  the form of the divergence, found by the parser's lexer. For a one-way
+  divergence with acceptance and a non-null Db recorded in `fixture.expected`,
+  use a reference input in `tests/helpers/reference-inputs.ts` whose Db matches
+  that recorded Db. When the shared table requires a specified reading, it is
+  recorded in the corpus (`specified.json`) through the tests package's shared
+  specified-reading path; ask the tests package for it. Add its declaration to
   `tests/helpers/known-divergences.ts`. Take every lexical decision of the
   reference input and of the declaration from the parser's units, not from rules
   of its own. Add it to "Known divergences" in `docs/testing.md` and to the

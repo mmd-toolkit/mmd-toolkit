@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a removed directive-only line make a number follow its colon across LF?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting token of type 'NUMBER_PIE' but found `\n`.\nParse error on line 4, column 1: Expecting token of type 'EOF' but found `1`."
+  }
+}

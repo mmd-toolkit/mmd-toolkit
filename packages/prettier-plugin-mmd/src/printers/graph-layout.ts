@@ -1,11 +1,14 @@
 import type {
   AgentflowLabel,
   Node,
+  Range,
   AgentflowLink,
   AgentflowShape,
   FlowchartLabel,
   FlowchartLink,
   FlowchartShape,
+  AgentflowStatement,
+  FlowchartStatement,
   Token,
 } from "@mmd-toolkit/parser"
 import type { AtomLayout, GapRule } from "./atoms.ts"
@@ -14,8 +17,12 @@ import {
   expectToken,
   expectValue,
   keptAsWritten,
+  layoutCompactEmptyDescriptionBlock,
+  spansLinesThatCannotJoin,
 } from "./layout.ts"
-import { holdsJoiningRegion } from "./kept-lines.ts"
+import type { KeptLines } from "./kept-lines.ts"
+import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
+import { accessibilityRules } from "./statement-rules.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import type { Source } from "./source.ts"
 import {
@@ -23,6 +30,7 @@ import {
   findStructuralTokenEndingBefore,
   findTokenStartingAt,
   findTokenEndingBefore,
+  findTriviaBetween,
   isWhitespace,
 } from "./source.ts"
 
@@ -221,4 +229,107 @@ export function findGraphEndKeyword(source: Source, container: Node): Token {
   if (token.range[1] !== container.range[1])
     throw new Error("prettier-plugin-mmd: no token at the container end")
   return token
+}
+
+/**
+ * Graph accessibility lines share the sibling diagrams' compact colon form.
+ * Their Literal ranges already exclude exterior value whitespace. Keep the
+ * graph line exceptions and trivia before choosing a joined layout, so neither
+ * direction priority nor semicolon selection changes
+ * (diagrams/flowchart.md, Direction and accessibility statements;
+ * docs/flowchart.md, Accessibility lines; docs/agentflow.md, Accessibility).
+ */
+export function layoutGraphAccessibility(
+  source: Source,
+  statement: AgentflowStatement | FlowchartStatement,
+  end: number,
+  kept: KeptLines,
+): AtomLayout | null {
+  switch (statement.type) {
+    case "AgentflowAccTitleStatement":
+    case "AgentflowAccDescrStatement":
+    case "FlowchartAccTitleStatement":
+    case "FlowchartAccDescrStatement":
+      return layoutGraphAccessibilityLine(source, statement, end, kept)
+    case "AgentflowAccDescrBlockStatement":
+    case "FlowchartAccDescrBlockStatement":
+      return statement.value === null && statement.closed
+        ? layoutGraphEmptyDescriptionBlock(
+            source,
+            statement.range[0],
+            end,
+            kept,
+          )
+        : null
+    default:
+      return null
+  }
+}
+
+/** Compact colon spacing follows the shared dispatch and graph exceptions. */
+function layoutGraphAccessibilityLine(
+  source: Source,
+  statement: { readonly range: Range; readonly value: Node | null },
+  end: number,
+  kept: KeptLines,
+): AtomLayout | null {
+  const start = statement.range[0]
+  if (keepsGraphAccessibility(source, start, end, kept)) {
+    // Trivia declines compact spacing without replacing the caller's previous
+    // continuation layout. The approved raw semicolon/direction exceptions
+    // still keep their written text (docs/flowchart.md, Accessibility lines).
+    return findTriviaBetween(source, start, end).length > 0
+      ? null
+      : keptAsWritten(start, end)
+  }
+  const rules = accessibilityRules(source, statement)
+  return {
+    atoms: collectAtoms(
+      source,
+      start,
+      end,
+      statement.value === null ? [] : [statement.value],
+      [],
+    ),
+    rules,
+    outdented: new Set(),
+    lineBreaks: "joined",
+    joinedBefore: new Set(rules.keys()),
+  }
+}
+
+/**
+ * A closed graph description with no text prints `{}`: there is no text for
+ * an interior space to surround. Blocks with trivia retain their existing
+ * comment/directive layout instead. Follow usecase's Db-equal form while
+ * keeping the graph line exceptions (diagrams/flowchart.md, Accessibility values;
+ * docs/flowchart.md, Accessibility lines; docs/agentflow.md, Accessibility).
+ */
+function layoutGraphEmptyDescriptionBlock(
+  source: Source,
+  start: number,
+  end: number,
+  kept: KeptLines,
+): AtomLayout | null {
+  if (keepsGraphAccessibility(source, start, end, kept)) return null
+  return layoutCompactEmptyDescriptionBlock(source, start, end)
+}
+
+/** Existing graph line and trivia exceptions precede accessibility spacing. */
+function keepsGraphAccessibility(
+  source: Source,
+  start: number,
+  end: number,
+  kept: KeptLines,
+): boolean {
+  const firstLine = lineStartOf(source, start)
+  const lastLine = lineStartOf(source, end - 1)
+  return (
+    kept.joined.has(firstLine) ||
+    kept.verbatim.has(firstLine) ||
+    kept.verbatim.has(lastLine) ||
+    holdsJoiningRegion(source, start, end) ||
+    spansLinesThatCannotJoin(source, start, end) ||
+    findTriviaBetween(source, start, end).length > 0
+  )
 }

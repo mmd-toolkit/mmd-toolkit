@@ -81,6 +81,7 @@ const allFixtures = [
   ...(await loadFixtures("venn")),
   ...(await loadFixtures("ishikawa")),
   ...(await loadFixtures("usecase")),
+  ...(await loadFixtures("pie")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)

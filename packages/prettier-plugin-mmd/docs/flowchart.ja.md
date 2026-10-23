@@ -1064,9 +1064,155 @@ flowchart LR
   AAAAAAAAAAAAAAAAAAAA --> BBBBBBBBBBBBBBBBBBBB --> CCCCCCCCCCCCCCCCCCCC --> DDDDDDDDDDDDDDDDDDDD
 ```
 
+### アクセシビリティの行
+
+通常の行は`accTitle: value`または`accDescr: value`と印字します。
+コロンを語に接し、値の前にASCII空白1つを置き、値の両端の空白を落とします。
+[fixture: accessibility-lines/tight-colon]
+[fixture: accessibility-lines/spaced-colon]
+[fixture: accessibility-lines/value-padding]
+Dbが同じ形から選ぶ場合は、その図種の理由がなければ兄弟の図種に揃えます。
+flowchartの通常のアクセシビリティ行に固有の理由はないので、
+[C4](./c4.ja.md#accessibility-lines)、[class](./class.ja.md#ラベル)、
+[usecase](./usecase.ja.md#direction-and-accessibility)と同じ短い形にします。
+
+値の内部の空白、インラインの`%%`と`#`は値の文字として保ちます。
+[fixture: accessibility-lines/inline-percent-hash]
+値が空または空白だけでも文の形を保ち、
+`accTitle:`または`accDescr:`とし、後ろに空白を足しません。
+[fixture: accessibility-lines/empty-title]
+[fixture: accessibility-lines/empty-description]
+[corpus fixture: flowchart/gram-acc-title-empty-at-end]
+[corpus fixture: flowchart/db-acc-descr-empty-replaces]
+Mermaidはコロンの次行の通常の文字を値と読むので、語と同じ行につなぎます。
+[fixture: accessibility-lines/next-line-values]
+
+文中の実コメントやdirectiveがあれば短い形につなぎません。
+従来の[複数行の文](#複数行の文)の配置を保ち、
+コメントやdirectiveを含む継続行はキーワードより1段深く置きます。
+コメントやdirectiveの文字と、著者が文を区切った改行を保ちます。
+flowchartはコロンの後のコメントを読み飛ばして後の値を読みます。
+通常の結合が使えない場合も、従来の継続行の規則を保つためです。
+[fixture: accessibility-lines/description-comment-continuation]
+[fixture: accessibility-lines/title-directive-continuation]
+[fixture: accessibility-lines/next-line-comment-kept]
+[fixture: accessibility-lines/inline-directive-kept]
+[fixture: accessibility-lines/next-line-directive-kept]
+
+この短い形は[1行に1文](#1-行に-1-文)の規則に優先しません。
+値や別の文にある非区切りの`;`を含む行では、
+アクセシビリティの文字と`;`の両側の空白を保ちます。
+`;`を含む次行の値も改行を保ちます。
+[fixture: accessibility-lines/semicolon-value-kept]
+[fixture: accessibility-lines/neighbour-semicolon-kept]
+[fixture: accessibility-lines/next-line-semicolon-kept]
+方向の文字列がある行は[字下げ](#字下げ)に従い、原文、改行、桁位置を保ちます。
+ほかの文書化された保持行の理由も優先します。
+[fixture: accessibility-lines/direction-text-kept]
+[fixture: accessibility-lines/next-line-direction-kept]
+通常の行には`tabWidth: 0`での最小幅と`useTabs`を含む設定の字下げを使い、
+これらの設定でも保持の例外を保ちます。
+[fixture: accessibility-lines/zero-width]
+[fixture: accessibility-lines/tabs]
+
+CRには共通の改行の正規化を使います。
+受理する外側の隙間のNBSP、U+2028、U+2029も同じコロンと値の規則で整え、
+値内部の文字と保持する`;`の脇の空白は保ちます。
+これらの文字はエスケープしたinlineテストに置きます。
+[test: graph accessibility: flowchart cr-lines]
+[test: graph accessibility: flowchart unicode-gaps]
+[test: graph accessibility: flowchart unicode-values]
+[test: graph accessibility: flowchart unicode-semicolon-kept]
+文字とtriviaのない閉じた説明ブロックの内側は、空白や空行があっても`{}`です。
+外側の語と波括弧の隙間は[トークンの間の空白](#トークンの間の空白)に従い、
+接する語は`accDescr{}`と接したままにします。
+[fixture: accessibility-lines/empty-block-touching-keyword]
+囲む文字がないので内側の空白も不要で、コロン行と同じ兄弟の図種に揃える理由で、
+usecaseのDbが同じ形に従います。
+[fixture: accessibility-lines/empty-block-tight]
+[fixture: accessibility-lines/empty-block-spaced]
+[fixture: accessibility-lines/empty-block-lines]
+空ブロック内で受理するNBSP、U+2028、U+2029も落とします。
+[test: accessibility blocks: flowchart empty-block-unicode]
+保持行の例外を優先し、コメントやdirectiveがあるブロックは従来の配置を保ちます。
+[fixture: accessibility-lines/empty-block-semicolon-kept]
+[fixture: accessibility-lines/empty-block-directive-kept]
+[fixture: multi-line-values/accdescr-block-comment-only]
+
+空でないブロックは[複数行の値](#複数行の値)に従います。
+`{a}`と`{ a }`はそのまま、`{  a  }`は`{ a }`です。
+文字の両側の空白列を1つにし、空白がなければ足しません。
+[fixture: accessibility-lines/block-tight-text]
+[fixture: accessibility-lines/block-spaced-text]
+[fixture: accessibility-lines/block-padded-text]
+左右を別々に扱い、`{  a}`は`{ a}`、`{a  }`は`{a }`にします。
+[fixture: accessibility-lines/block-left-padding-only]
+[fixture: accessibility-lines/block-right-padding-only]
+複数行の値とコメントの桁位置を保ち、単独行の閉じ括弧を`accDescr`に揃えます。
+閉じ括弧が0桁目でも字下げされていても同じです。
+兄弟の図種と同じ形で、flowchart固有の理由はありません。
+[fixture: accessibility-lines/block-close-column-zero]
+[fixture: accessibility-lines/block-close-indented]
+[fixture: accessibility-lines/block-comment-close-column-zero]
+[fixture: accessibility-lines/block-comment-close-indented]
+`tabWidth: 0`の本文の最小幅でも同じ空ブロックと閉じ括弧の規則を使います。
+[fixture: accessibility-lines/block-zero-width]
+
+入力（エスケープ表記）:
+`"flowchart LR\naccTitle:Compact title\naccDescr:Compact description"`。
+
+出力
+([accessibility-lines/tight-colon-output.mmd](../tests/fixtures/flowchart/accessibility-lines/tight-colon-output.mmd)):
+
+```mmd
+flowchart LR
+  accTitle: Compact title
+  accDescr: Compact description
+```
+
+入力（エスケープ表記）: `"flowchart LR\naccDescr {a}\nA[Block spacing]"`.
+
+出力
+([accessibility-lines/block-tight-text-output.mmd](../tests/fixtures/flowchart/accessibility-lines/block-tight-text-output.mmd)):
+
+```mmd
+flowchart LR
+  accDescr {a}
+  A[Block spacing]
+```
+
+入力（エスケープ表記）:
+`"flowchart LR\naccDescr: previous description\naccDescr { }\nA[Empty spacing]"`.
+
+出力
+([accessibility-lines/empty-block-spaced-output.mmd](../tests/fixtures/flowchart/accessibility-lines/empty-block-spaced-output.mmd)):
+
+```mmd
+flowchart LR
+  accDescr: previous description
+  accDescr {}
+  A[Empty spacing]
+```
+
+入力（エスケープ表記）:
+`"flowchart LR\naccTitle:\n%%{init: {}}%%\nTitle after directive\nA[Continuation]"`。
+
+出力
+([accessibility-lines/title-directive-continuation-output.mmd](../tests/fixtures/flowchart/accessibility-lines/title-directive-continuation-output.mmd)):
+
+```mmd
+flowchart LR
+  accTitle:
+    %%{init: {}}%%
+    Title after directive
+  A[Continuation]
+```
+
 ### 複数行の文
 
-複数行に書かれた文は改行を保ち、2 行目以降を 1 行目より 1 段深く置きます。
+通常のアクセシビリティのコロン行と、triviaのない閉じた空の説明ブロックは、
+[アクセシビリティの行](#アクセシビリティの行)に従い行をつなぎます。
+それ以外の複数行の文は改行を保ち、2行目以降を1行目より1段深く置きます。
 文をどこで折るかは、連鎖や長い行と同じく書き手の選択です。
 トークンの間の改行は、印字が書かない行末の空白を要しません。
 sequence、class、state は、そこでは改行が空白の後でだけ数えられるので、
@@ -1158,8 +1304,10 @@ subgraph の外では、行の桁は Db に入りませんが、同じに残し�
 [fixture: multi-line-values/accdescr-block-kept]
 そうしたブロックの中のコメント行も、書かれたまま残します。
 [fixture: multi-line-values/accdescr-block-comment-line-in-subgraph-kept]
-テキストが `{` と同じ行から始まるときは、その前後の空白を、
-トークンの間と同じく空白 1 つにします。
+テキストが`{`と同じ行から始まるときは、その前後の空白列を、
+トークンの間と同じく空白1つにし、空白がなければ足しません。
+triviaのない空ブロックは、
+[アクセシビリティの行](#アクセシビリティの行)に従います。
 [fixture: multi-line-values/accdescr-block-text-starts-on-brace-line]
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく、
@@ -1224,8 +1372,7 @@ flowchart LR
   text
 %% note
   }
-  accDescr {
-  }
+  accDescr {}
 ```
 
 入力

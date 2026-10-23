@@ -285,6 +285,24 @@ usecase/gram-native-quoted-business] [fixture:
 usecase/gram-metadata-unknown-key] [fixture:
 usecase/lex-native-single-quoted-keys]
 
+### Pie
+
+Frontmatter holds an invalid YAML body as written, so no syntax node is missing.
+Its content does not decide the tree's structure and is not checked: this
+specification accepts a leading frontmatter body `title: [` that mermaid.js
+rejects as YAML. This includes a written YAML title made invalid by HTML
+attribute-quote conversion, like the usecase case. [fixture:
+pie/div-review-frontmatter-html-invalid-yaml] [fixture:
+usecase/div-gram-frontmatter-html-attribute-quotes] This is the
+reverse-direction case only; opaque content never makes this rule reject an
+input that mermaid.js accepts. Nonleading hidden YAML is already opaque in
+mermaid.js too, so an invalid body there is held by PieIgnoredText and is not
+marked. The malformed init argument below is also accepted by both and has no
+mark. [fixture: pie/div-review-yaml-leading-invalid] [fixture:
+pie/review-yaml-hidden-invalid] [fixture:
+pie/lex-yaml-after-comment-invalid-body] [fixture:
+pie/review-directive-invalid-init]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -335,3 +353,12 @@ usecase/lex-native-single-quoted-keys]
   on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
   validation and JSON tables. This divergence follows the shared direct rule,
   not a claim that a bug label approves a grammar change.
+
+- For pie, [PR #4751](https://github.com/mermaid-js/mermaid/pull/4751), merged
+  on 2024-02-11, introduced a hidden YAML rule, separate from global leading
+  frontmatter extraction. The pinned
+  [syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  does not define validation of these hidden bodies. Searches on 2026-10-23 for
+  `pie`, `pie YAML` and `pie frontmatter` found no maintainer decision that
+  requires those bodies to be validated. This specification applies the shared
+  opaque-data policy to leading frontmatter.

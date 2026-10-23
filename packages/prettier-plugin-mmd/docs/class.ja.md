@@ -35,10 +35,18 @@ namespace が 1 行に書かれていても同じです。
 既定は空白 2 つです。
 [fixture: indentation/namespaces] [fixture: indentation/tab-width-4]
 [fixture: indentation/use-tabs]
-入力に書かれた字下げは保ちません。
-文の行頭の空白は、Mermaid による図の解釈に影響しないためです。
-字下げは構造だけで決められるので、1 つの規則で、
-入力の字下げによらず同じテキストになります。
+入力の字下げは、構造に応じた字下げに置き換えます。
+本文の字下げは、`tabWidth: 0` でも最低 1 文字にします。
+`[*]` のようなメンバー行は、字下げがあれば属性ですが、
+列 0 では mermaid.js とパーサーが拒否するからです。
+そのため、幅 0 では `"class Zero {\n  [*]\n}"` を
+`" class Zero {\n  [*]\n }"` と印字します。
+`useTabs` は 1 段にタブ 1 つを使います。
+[fixture: indentation/member-edge-state-zero-width]
+[fixture: indentation/member-edge-state-zero-width-tabs]
+[corpus fixture: class/lex-member-edge-state-indented]
+桁で読みが変わる [flowchart](./flowchart.ja.md#字下げ) と同じ、
+共有の下限を使います。
 [fixture: indentation/namespaces]
 [fixture: indentation/written-indentation-dropped]
 
@@ -858,7 +866,7 @@ classDiagram
 
 ### 複数行の文
 
-複数行に書かれた文は、1 行にまとめて印字します。
+通常の複数行の文は、1行にまとめて印字します。
 class 図では、改行は文を終えます。
 ただし、`direction` の後では値が次の行にあってよく、
 `accTitle` と `accDescr` の `:` の後ではテキストが次の行にあってよいので、
@@ -912,6 +920,42 @@ classDiagram
   direction
 %% c
 LR
+```
+
+`accTitle:`と`accDescr:`の次行の値は、結合で貪欲な方向行の規則が現れる場合、
+改行を保ちます。小文字の`direction`、空白、大文字のTB・BT・LR・RLの並びで、
+長い文字列の一部でも同じです。
+従来の複数行の配置で値を語より1段深く置き、
+値が方向文として読まれるのを防ぎます。
+[fixture: multi-line-statements/title-next-direction-tb]
+[fixture: multi-line-statements/title-next-direction-bt]
+[fixture: multi-line-statements/title-next-direction-lr]
+[fixture: multi-line-statements/title-next-direction-rl]
+[fixture: multi-line-statements/description-next-direction-tb]
+[fixture: multi-line-statements/description-next-direction-bt]
+[fixture: multi-line-statements/description-next-direction-lr]
+[fixture: multi-line-statements/description-next-direction-rl]
+[fixture: multi-line-statements/direction-value-with-prefix]
+TDとほかの大小文字はその方向行の規則ではないので、通常の次行の値をつなぎます。
+[fixture: multi-line-statements/title-next-direction-td]
+[fixture: multi-line-statements/description-next-direction-td]
+[fixture: multi-line-statements/lower-case-direction-value]
+`tabWidth: 0`と`useTabs`でも設定の継続幅を使い、CRも正規化後に同じ判断をします。
+[fixture: multi-line-statements/direction-value-zero-width]
+[fixture: multi-line-statements/direction-value-tabs]
+[test: accessibility revisions: class direction-value-cr]
+
+入力（エスケープ表記）:
+`"classDiagram\nclass A11y\naccTitle:\n direction LR"`。
+
+出力
+([multi-line-statements/title-next-direction-lr-output.mmd](../tests/fixtures/class/multi-line-statements/title-next-direction-lr-output.mmd)):
+
+```mmd
+classDiagram
+  class A11y
+  accTitle:
+    direction LR
 ```
 
 ### 方向の行

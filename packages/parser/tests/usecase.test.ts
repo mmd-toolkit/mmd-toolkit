@@ -1,6 +1,7 @@
 import path from "node:path"
 import { describe, expect, it } from "vitest"
 import {
+  fixtureAccepts,
   getFixturesRoot,
   loadFixtures,
   DATA_BLOCK_NODE_TYPES,
@@ -8,7 +9,6 @@ import {
 import type { Node, Root, UsecaseDiagram } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
-import { usecaseAccepts } from "./helpers/usecase-fixtures.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
 import {
   frontmatterChangesAttributeQuotes,
@@ -219,7 +219,7 @@ describe("usecase fixtures", async () => {
         if (!(error instanceof ParseError)) throw error
         rejection = error
       }
-      expect(root !== null).toBe(usecaseAccepts(fixture))
+      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (
         fixture.knownDivergence === "directive-as-token-boundary" ||
         fixture.knownDivergence === "ignored-semicolon-as-token-boundary"

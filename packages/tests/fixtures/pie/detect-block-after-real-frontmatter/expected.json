@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a retained block follow real frontmatter? Pie accepts, preserving the real frontmatter title A."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "A"
+  }
+}

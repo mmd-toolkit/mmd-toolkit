@@ -359,7 +359,9 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
     return keptAsWritten(start, end)
   if (statement.type === "C4AccDescrBlockStatement") {
     if (
-      findTriviaBetween(source, start, end).length > 0 ||
+      findTriviaBetween(source, start, end).some(
+        (item) => item.type === "Directive",
+      ) ||
       source.text.slice(start, end).includes(";")
     )
       return keptAsWritten(start, end)
@@ -368,19 +370,13 @@ export function layoutC4Text(source: Source, statement: C4Text): AtomLayout {
       statement,
       end,
       c4ValueNodeTypes,
+      { keepsTrailingTrivia: true },
     )
-    if (statement.value === null) return layout
-    const tokens = findTokensBetween(source, start, end).filter((token) =>
-      isStructural(source, token),
-    )
-    const opening = expectToken(tokens[1], "the opening description brace")
-    const closing = expectToken(tokens.at(-1), "the closing description brace")
-    const rules = new Map<number, GapRule>([[opening.range[0], "space"]])
-    if (!source.text.slice(start, end).includes("\n")) {
-      rules.set(statement.value.range[0], "space")
-      rules.set(closing.range[0], "space")
-    }
-    return { ...layout, rules }
+    // Ordinary block spacing and closing-brace alignment follow the sibling
+    // diagrams. The shared layout keeps value/comment columns and aligns the
+    // closer; absent token-gap whitespace is not added (diagrams/c4.md, Title
+    // and accessibility statements; docs/c4.md, Description blocks).
+    return layout
   }
   if (
     findTriviaBetween(source, start, end).length > 0 ||

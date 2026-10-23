@@ -10,6 +10,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import { lineEndOf, lineStartOf, printedEndOf } from "./kept-lines.ts"
 import {
@@ -20,6 +21,7 @@ import {
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
   keptAsWritten,
+  layoutCompactEmptyDescriptionBlock,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
@@ -267,6 +269,10 @@ export function layoutStateStatement(
     return keptAsWritten(start, end)
   }
   if (statement.type === "StateAccDescrBlockStatement") {
+    if (statement.value === null && statement.closed) {
+      const compact = layoutCompactEmptyDescriptionBlock(source, start, end)
+      if (compact !== null) return compact
+    }
     const closing = findAccDescrBlockClosing(source, statement)
     return {
       atoms: collectAtoms(
@@ -300,6 +306,18 @@ export function layoutStateStatement(
     ...findSecondDescriptionStretches(source, statement, end),
     ...findBlankDescriptionStretches(source, statement, end),
   ]
+  // Joining a next-line value exposes state's case-insensitive direction
+  // rule. Keep the previous continuation layout instead (diagrams/state.md,
+  // The direction line; docs/state.md, Multi-line statements).
+  const keepsDirectionValue =
+    (statement.type === "StateAccTitleStatement" ||
+      statement.type === "StateAccDescrStatement") &&
+    statement.value !== null &&
+    source.text.slice(start, statement.value.range[0]).includes("\n") &&
+    holdsDirection(source, {
+      range: statement.range,
+      text: statement.value.value,
+    })
   return {
     atoms: collectAtoms(
       source,
@@ -316,7 +334,7 @@ export function layoutStateStatement(
     ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsDirectionValue ? "kept" : "joined",
   }
 }
 

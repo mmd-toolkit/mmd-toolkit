@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest"
-import type { Fixture } from "@mmd-toolkit/tests"
-import { loadFixtures } from "@mmd-toolkit/tests"
+import { fixtureAccepts, loadFixtures } from "@mmd-toolkit/tests"
 import type { C4Diagram, Root } from "../src/index.ts"
 import { ParseError, parse, traverseNodes } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
@@ -8,22 +7,6 @@ import { detectDiagram } from "../src/detection.ts"
 import { lexC4 } from "../src/diagrams/c4/index.ts"
 import { diagramInputOf, openSource } from "../src/parse.ts"
 import { declaredDivergence, outcomeOf } from "./helpers/known-divergences.ts"
-
-/** Acceptance specified by the corpus, including its declared C4 divergences. */
-function accepts(fixture: Fixture): boolean {
-  if (fixture.specified !== undefined) return fixture.specified.accepted
-  switch (fixture.knownDivergence) {
-    case "directive-as-token-boundary":
-    case "ignored-semicolon-as-token-boundary":
-      return false
-    case "comment-takes-line-break":
-    case "bare-percent-line-before-header":
-    case "embedded-data-opaque":
-      return true
-    default:
-      return fixture.expected.accepted
-  }
-}
 
 /** Project invariant 3, together with containment and source order of child nodes. */
 function expectCoverage(text: string, root: Root): void {
@@ -237,7 +220,7 @@ describe("c4 acceptance fixtures", async () => {
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
       }
-      expect(root !== null).toBe(accepts(fixture))
+      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (
         fixture.knownDivergence === "directive-as-token-boundary" ||
         fixture.knownDivergence === "ignored-semicolon-as-token-boundary"

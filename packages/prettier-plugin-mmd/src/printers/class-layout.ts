@@ -10,6 +10,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { holdsDirection } from "./accessibility-lines.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import { findClassSemicolonLines } from "./class-kept-lines.ts"
 import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
@@ -222,7 +223,9 @@ export function layoutBlockOpening(
  * `end` (see `findClassPrintedEnd`): a statement that holds no other, and
  * a class statement without a member block (see `hasMemberBlock`).
  *
- * - A statement written over several lines stands on one line. A line
+ * - An ordinary statement written over several lines stands on one line; a
+ *   next-line accessibility value that would become a direction line keeps
+ *   its break. A line
  *   break inside a statement is whitespace to the lexer only after
  *   `direction` and after the `:` of `accTitle` and `accDescr`
  *   (diagrams/class.md, The statement context); one with a comment or a
@@ -284,6 +287,19 @@ export function layoutClassStatement(
     ...findBlankLabelStretches(source, statement),
     ...findOpenNameStretches(source, statement),
   ]
+  // Joining a next-line accessibility value can expose class's greedy,
+  // case-sensitive direction rule. Keep the previous continuation layout;
+  // TD is value text, not a class direction (diagrams/class.md, The direction
+  // line; docs/class.md, Multi-line statements).
+  const keepsDirectionValue =
+    (statement.type === "ClassAccTitleStatement" ||
+      statement.type === "ClassAccDescrStatement") &&
+    source.text.slice(start, statement.value.range[0]).includes("\n") &&
+    holdsDirection(
+      source,
+      { range: statement.range, text: statement.value.value },
+      { caseSensitive: true },
+    )
   return {
     atoms: collectAtoms(
       source,
@@ -296,7 +312,7 @@ export function layoutClassStatement(
     ),
     rules: statementRules(source, statement),
     outdented: new Set(),
-    lineBreaks: "joined",
+    lineBreaks: keepsDirectionValue ? "kept" : "joined",
   }
 }
 

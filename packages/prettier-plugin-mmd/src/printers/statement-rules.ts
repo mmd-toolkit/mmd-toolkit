@@ -128,7 +128,7 @@ export function directionRules(
  */
 export function accessibilityRules(
   source: Source,
-  statement: { readonly range: Range; readonly value: Node },
+  statement: { readonly range: Range; readonly value: Node | null },
 ): Map<number, GapRule> {
   const keyword = expectToken(
     findStructuralToken(source, statement.range[0]),
@@ -139,8 +139,7 @@ export function accessibilityRules(
     "the `:` after `accTitle` or `accDescr`",
   )
   expectValue(colon, ":")
-  return new Map<number, GapRule>([
-    [colon.range[0], "none"],
-    [statement.value.range[0], "space"],
-  ])
+  const rules = new Map<number, GapRule>([[colon.range[0], "none"]])
+  if (statement.value !== null) rules.set(statement.value.range[0], "space")
+  return rules
 }

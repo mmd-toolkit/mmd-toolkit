@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The title terminal stops before an inline percent comment."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

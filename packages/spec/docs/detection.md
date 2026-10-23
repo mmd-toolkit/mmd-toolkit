@@ -6,13 +6,13 @@ The detectors that select the diagram type, in the order in which mermaid.js
 tries them. [Diagram detection](./common.md#diagram-detection) in common.md
 defines where they look, with two terms used here as there: the **detection
 point**, the first position of the text that is not leading trivia, and the
-**position reached**, the detection point moved past the bare `%%` lines and the
-directives that detection skips. The detectors look at the diagram text from the
-position reached, except the detector of the `error` pseudo-diagram, whose
-condition is stated from the detection point. The first detector whose condition
-holds selects the diagram type, whose id is also the `diagramType` of the tree
-(see [ast.md](./ast.md#root)). When no condition holds, the input is rejected
-with `UnknownDiagramError`. [fixture: common/empty]
+**position reached**, the detection point moved past the one frontmatter-shaped
+block, bare `%%` lines and directives that detection skips. The detectors look
+at the diagram text from the position reached, except the detector of the
+`error` pseudo-diagram, whose condition is stated from the detection point. The
+first detector whose condition holds selects the diagram type, whose id is also
+the `diagramType` of the tree (see [ast.md](./ast.md#root)). When no condition
+holds, the input is rejected with `UnknownDiagramError`. [fixture: common/empty]
 
 The registration order is in
 [`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126),
@@ -136,6 +136,33 @@ agentflow/detect-letter-suffix] [fixture: agentflow/detect-digit-suffix]
 [fixture: agentflow/detect-underscore-suffix] [fixture:
 agentflow/detect-hyphen-suffix] [fixture: agentflow/detect-non-ascii-suffix]
 [fixture: agentflow/lex-detect-c4-component-id]
+
+Entry 13,
+[`pieDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDetector.ts#L9-L11),
+requires only the exact lower-case prefix `pie`. `pieChart` selects pie and then
+fails its lexical rules; `Pie` and `PIE` do not select it. [fixture:
+pie/header-only] [fixture: pie/header-letter-suffix] [fixture:
+pie/header-capitalized] [fixture: pie/header-uppercase]
+
+The frontmatter-shaped block passed at the detection point is still diagram
+text. A comment line followed by `---`, `title: Hidden`, `---`, and `pie`
+selects pie, whose hidden YAML rule skips the block without applying its title.
+Every other supported diagram type rejects the corresponding input through its
+lexical or grammar rules. An adjacent-fence empty block, an unmatched fence, or
+a bare `%%` line before the block instead leaves the rejecting `---`
+pseudo-diagram selected. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+common/directive-before-frontmatter] [fixture:
+common/frontmatter-nonleading-sequence] [fixture:
+common/frontmatter-nonleading-class] [fixture:
+common/frontmatter-nonleading-state] [fixture:
+pie/lex-yaml-after-comment-adjacent-fences] [fixture: pie/frontmatter-unclosed]
+[fixture: pie/lex-yaml-after-bare-comment] [fixture:
+common/frontmatter-adjacent-delimiters] [fixture: common/frontmatter-unclosed]
+[fixture: common/frontmatter-after-bare-percent-flowchart] [fixture:
+agentflow/db-frontmatter-after-comment] [fixture:
+block/gram-frontmatter-comment-before] [fixture:
+ishikawa/frontmatter-after-comment] [fixture: usecase/frontmatter-after-comment]
+[fixture: venn/frontmatter-comment-before]
 
 Entry 39,
 [`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14),

@@ -1,3 +1,4 @@
+import type { PieDiagram, PieNode } from "./ast/pie.ts"
 import type { UsecaseDiagram, UsecaseNode } from "./ast/usecase.ts"
 import type { AgentflowDiagram, AgentflowNode } from "./ast/agentflow.ts"
 /**
@@ -291,6 +292,7 @@ export type DiagramBody =
   | IshikawaDiagram
   | AgentflowDiagram
   | UsecaseDiagram
+  | PieDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -388,3 +390,4 @@ export type Node =
   | IshikawaTreeNode
   | AgentflowNode
   | UsecaseNode
+  | PieNode

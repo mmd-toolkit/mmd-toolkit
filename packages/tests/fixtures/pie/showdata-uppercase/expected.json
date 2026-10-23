@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Uppercase showData is not a keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 5: unexpected character: ->S<- at offset: 4, skipped 8 characters. "
+  }
+}

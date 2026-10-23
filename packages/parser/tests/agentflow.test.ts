@@ -1,11 +1,14 @@
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import { getFixturesRoot, loadFixtures } from "@mmd-toolkit/tests"
+import {
+  fixtureAccepts,
+  getFixturesRoot,
+  loadFixtures,
+} from "@mmd-toolkit/tests"
 import type { AgentflowDiagram, Node, Root } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
 import { EMPTY_FORM_KINDS, emptyFormsOf } from "../src/empty-forms.ts"
-import { agentflowAccepts } from "./helpers/agentflow-fixtures.ts"
 import { outcomeOf } from "./helpers/known-divergences.ts"
 import {
   agentflowLexingOf,
@@ -371,7 +374,7 @@ describe("agentflow fixtures", async () => {
         rejection = error
       }
       expect(outcomeOf(fixture.input, fixture.config).kind === "tree").toBe(
-        agentflowAccepts(fixture),
+        fixtureAccepts(fixture),
       )
       if (
         fixture.knownDivergence === "directive-as-token-boundary" ||

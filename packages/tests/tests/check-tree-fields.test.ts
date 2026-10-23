@@ -88,6 +88,10 @@ const REQUIREMENT_PARTS =
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
+  "PieDiagram.showData": { message: "the header and showData flag: " },
+  "PieLiteral.value": { message: "value is not its written text" },
+  "PieIgnoredText.kind": { message: "the field kind is " },
+  "PieIgnoredText.value": { message: "value is not its written text" },
   "UsecaseEntity.shape": { message: "the shape from the written delimiters: " },
   "UsecaseRelationshipStatement.kind": { message: "the field kind is " },
   "UsecaseLabel.kind": { message: "the field kind is " },

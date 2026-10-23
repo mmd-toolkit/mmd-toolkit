@@ -2,6 +2,7 @@ import type { QuadrantLiteral } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { styleOf } from "../utils/quadrant-styles.ts"
+import { dropsOrChangesStyles } from "../utils/class-styles.ts"
 
 /** The styles that a definition sets: the last value of each name. */
 function stylesOf(
@@ -18,7 +19,7 @@ function stylesOf(
 /**
  * The rule `quadrant-no-redefined-class`, described in
  * `docs/rules/quadrant-no-redefined-class.md`: a later definition of the
- * same class that sets different styles. A definition replaces the whole
+ * same class that drops or changes an earlier style. A definition replaces the whole
  * set, so omitted styles are lost and style order does not count. Names
  * are case sensitive and point positions do not affect definitions.
  */
@@ -52,10 +53,7 @@ export const quadrantNoRedefinedClass: MermaidRuleDefinition<{
         const earlier = classes.get(name)
         if (
           earlier !== undefined &&
-          (earlier.styles.size !== styles.size ||
-            [...styles].some(
-              ([key, value]) => earlier.styles.get(key) !== value,
-            ))
+          dropsOrChangesStyles(earlier.styles, styles)
         ) {
           context.report({
             node,

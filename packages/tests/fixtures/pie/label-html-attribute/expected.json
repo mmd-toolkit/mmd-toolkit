@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "HTML attribute quote cleanup acts before string lexing."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "<b class='x'>A</b>",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The escape dot does not match a literal U+2028."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->\"<- at offset: 4, skipped 6 characters. Parse error on line 2, column 7: Expecting token of type 'EOF' but found `:`."
+  }
+}

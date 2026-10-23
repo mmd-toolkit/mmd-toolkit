@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does gluing pie to the second-scan hidden DIRECTIVE closer satisfy its boundary? It rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->w<- at offset: 4, skipped 5 characters. Parse error on line ?, column ?: Expecting token of type 'pie' but found ``."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does U+2028 bound the dot-matched style segment in each one-line text consumer?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "style:#x ;",
+    "accTitle": "style:#x ;",
+    "accDescr": "style:#x ;",
+    "showData": false,
+    "sections": [
+      {
+        "label": "style:#x ;",
+        "value": 1
+      }
+    ]
+  }
+}

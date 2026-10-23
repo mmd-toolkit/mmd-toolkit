@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can global directive removal create the style trigger in accTitle?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "style:#x",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

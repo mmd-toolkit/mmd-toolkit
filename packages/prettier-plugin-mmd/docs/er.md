@@ -862,7 +862,7 @@ erDiagram
   subgraph S accDescr {} accDescr {}
     A
   end
-  subgraph T [Title] accDescr { }
+  subgraph T [Title] accDescr {}
     B
   end
   subgraph U
@@ -1057,10 +1057,15 @@ the author, which the printer does not format. Its `}` stands at the level of
 its statement; a text on the line of the `{` has one space inside the braces
 where it was written apart. [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
-accessibility-statements/block-text-on-opening-line] An empty block, which
-changes nothing, is a statement of its own and follows the rule of whitespace
-between tokens: a run of whitespace in it, line breaks included, becomes one
-space, and braces that touch keep touching. [fixture:
+accessibility-statements/block-text-on-opening-line] An empty block is a
+statement of its own that keeps any prior description in the Db. It prints `{}`
+internally: `accDescr { }` becomes `accDescr {}`, including whitespace runs,
+line breaks and an NBSP-only interior. An already empty interior stays empty,
+and `accDescr{}` stays touching. No text needs surrounding whitespace, so the
+Db-equal choice follows
+[flowchart's accessibility lines](./flowchart.md#accessibility-lines), agentflow
+and usecase. [test: accessibility revisions: er empty-description-nbsp] Blocks
+with comments or directives retain their previous layout. [fixture:
 accessibility-statements/empty-blocks] [fixture:
 accessibility-statements/empty-block-with-directive-or-comment-line] [corpus
 fixture: er/gram-acc-descr-block-empty]

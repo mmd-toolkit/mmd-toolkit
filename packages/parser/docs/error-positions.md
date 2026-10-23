@@ -13,9 +13,14 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   text: `[2, 2]` for two spaces. [fixture: common/detect-boundary-swimlane]
   [fixture: common/empty] [fixture: common/comment-only] [fixture:
   common/whitespace-only]
-- The `---` pseudo-diagram: `range` covers the three `-` characters that start
-  the block. [fixture: common/frontmatter-adjacent-delimiters]
-- A directive found once more before the header
+- The `---` pseudo-diagram, or a retained nonleading block before a supported
+  diagram other than pie: `range` covers the three `-` characters that start the
+  block. [fixture: common/frontmatter-adjacent-delimiters] [fixture:
+  common/frontmatter-nonleading-class] [fixture:
+  common/frontmatter-nonleading-sequence] [fixture:
+  common/frontmatter-nonleading-state] [fixture:
+  common/frontmatter-after-bare-percent-flowchart]
+- A directive found once more before the header, except in pie,
   ([Diagram detection](../../spec/docs/common.md#diagram-detection)): `range`
   covers its opening `%%{`, from its first `%` to its `{`, with the directives
   and comment regions of the source between them; of several, the first.
@@ -23,7 +28,12 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   sequence/detect-directive-across-directive] [fixture:
   sequence/detect-directive-across-comment-line-closed] [fixture:
   class/detect-directive-across-directive] [fixture:
-  state/detect-directive-across-directive]
+  state/detect-directive-across-directive] [fixture:
+  block/detect-directive-second-scan-preheader] [fixture:
+  venn/detect-directive-second-scan-preheader] [fixture:
+  ishikawa/detect-directive-second-scan-preheader] [fixture:
+  agentflow/detect-directive-second-scan-preheader] [fixture:
+  usecase/detect-directive-second-scan-preheader]
 
 ## In a flowchart
 
@@ -855,6 +865,27 @@ usecase/lex-markdown-unclosed] [fixture: usecase/gram-json-empty-delimiter-only]
 [fixture: usecase/gram-stereotype-open] [fixture:
 usecase/div-directive-stereotype-closer] [fixture:
 usecase/div-semicolon-stereotype-closer-selected]
+
+## In a pie diagram
+
+The complete lexical scan precedes recursive descent, so a later unreadable
+character takes precedence over an earlier grammatical failure. [fixture:
+pie/recover-lexer-after-parser] [fixture: pie/recover-lexer-first]
+
+| Rejection                                     | Range and message                                                                                                                      | Fixtures                                                                                                                                                                                       |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No lexical rule matches                       | The source character, with `Unexpected character`; an unclosed string reports its opening quote.                                       | [fixture: pie/lex-nbsp] [fixture: pie/label-unclosed] [fixture: pie/label-unclosed-single]                                                                                                     |
+| An unclosed description block or YAML form    | The first keyword character or opening dash, with `Unexpected character`, because no complete composite match exists.                  | [fixture: pie/accdescr-block-unclosed] [fixture: pie/yaml-unclosed-in-body]                                                                                                                    |
+| The grammar cannot read a unit                | Its significant range with `Unexpected token`; a newline has an empty range at its start, and source EOF has `Unexpected end of text`. | [fixture: pie/gram-adjacent-sections] [fixture: pie/gram-newline-before-colon] [fixture: pie/gram-missing-number] [fixture: pie/gram-common-same-line]                                         |
+| A hidden form consumes the only separating LF | The next visible unit, with `Unexpected token`; EOF instead satisfies EOL.                                                             | [fixture: pie/review-hidden-directive-after-title] [fixture: pie/lex-yaml-after-value-before-eol] [fixture: pie/review-hidden-directive-title-eof] [fixture: pie/gram-section-eof-hidden-yaml] |
+| A section's converted double is below zero    | The number, with `A pie section value cannot be negative`, including duplicate sections and negative infinity.                         | [fixture: pie/number-negative] [fixture: pie/db-duplicate-negative] [fixture: pie/number-negative-overflow]                                                                                    |
+
+A keyword or number cut by a global directive or selected semicolon uses the
+shared boundary errors below. A failed hidden DIRECTIVE may instead match a
+comment, leaving a missing component to the grammar. [fixture:
+pie/div-directive-in-header] [fixture: pie/div-directive-number] [fixture:
+pie/div-atomic-semicolon-number] [fixture: pie/review-directive-hidden-unclosed]
+[fixture: pie/lex-hidden-comment-fallback-no-boundary]
 
 ## Known divergences
 

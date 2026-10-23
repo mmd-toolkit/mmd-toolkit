@@ -238,12 +238,24 @@ placeholder. It is how the lexer reads the text, and the form in which
 mermaid.js holds a text in its Db. The values of the tree are not in converted
 form: they keep the text as the author wrote it (see [ast.md](./ast.md#nodes)).
 
-Before the first unit of the diagram's lexer, whitespace, line terminators,
-directives, and comment regions are trivia
-([Leading whitespace](#leading-whitespace)). At the first unit, the diagram type
-is decided, which selects the diagram's lexer
-([Diagram detection](#diagram-detection)); this can reject the input. After the
-last character of the source, the lexer reads one more `\n`
+Leading whitespace, line terminators, directives and comment regions are trivia
+([Leading whitespace](#leading-whitespace)). Detection selects the diagram type
+and its lexer ([Diagram detection](#diagram-detection)); this can reject the
+input. Detection can pass one nonleading frontmatter-shaped block before the
+header. The block remains diagram text: pie applies its hidden YAML rule, while
+every other supported diagram type rejects it. It is not common frontmatter or
+trivia. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+pie/lex-yaml-leading-config-not-applied] [fixture:
+common/directive-before-frontmatter] [fixture:
+common/frontmatter-nonleading-sequence] [fixture:
+common/frontmatter-nonleading-class] [fixture:
+common/frontmatter-nonleading-state] [fixture:
+agentflow/db-frontmatter-after-comment] [fixture:
+block/gram-frontmatter-comment-before] [fixture:
+ishikawa/frontmatter-after-comment] [fixture: usecase/frontmatter-after-comment]
+[fixture: venn/frontmatter-comment-before]
+
+After the last character of the source, the lexer reads one more `\n`
 ([End of text](#end-of-text)). Whatever else the diagram does, including the
 extra rewrites of Step 9 above, is in its document.
 
@@ -256,8 +268,8 @@ several lines. The tags are found by reading the whole text from left to right
 Every other rule is decided by the characters around the position: a directive
 by the characters from its `%%{`, a comment region by what follows a comment
 start up to the end of the comment's line, the diagram type by the diagram text
-at its first unit, the line rule by its line segment, and an entity by `#`, a
-word, and `;`.
+after the passes defined under Diagram detection, the line rule by its line
+segment, and an entity by `#`, a word, and `;`.
 
 For agentflow, item 1 does not apply to the lexer: it reads comment lines and
 leading whitespace itself, and the line rule and entities apply to them too, as
@@ -438,44 +450,67 @@ contains; mermaid.js parses it as YAML and can reject the input (see
 mermaid.js reads the body is described in
 [Reading the frontmatter body](../../tests/docs/configuration.md#reading-the-frontmatter-body).
 
-When these conditions do not hold, there is no frontmatter, and the `---` block
-is text. Whatever came before it that is trivia (a line break, whitespace, a
-byte order mark, a directive, a comment line) is leading trivia, and the diagram
-text then starts with `---`, so the `---` pseudo-diagram claims the text and
-rejects it (see [Diagram detection](#diagram-detection)). This holds for a line
-break or a directive before the block, an opening delimiter that is indented
-while the closing one is not, including a byte order mark before the opening
-delimiter only, and for a block that is no frontmatter by its own shape: `----`,
-text after the closing `---`, a closing `---` at the very end of the text,
-adjacent delimiters, a missing closing delimiter, a closing delimiter that is
-indented while the opening one is not, or two different non-empty indents.
+When these conditions do not hold, there is no frontmatter: the block is diagram
+text. At the detection point, before passing bare `%%` lines, detection passes
+one block having the frontmatter shape above and looks for a header after it.
+This does not remove the block from the text the diagram lexer reads. With
+trivia before a block, pie applies its hidden YAML rule to the retained text. If
+it matches, PieIgnoredText holds the block and its title and configuration do
+not apply. Every other supported diagram type rejects it. Leading whitespace, a
+byte order mark on the opening fence only, a comment line or a directive can
+expose this case. Matching byte order marks on both fences can instead satisfy
+the real frontmatter rule. [fixture: pie/frontmatter-nonleading-comment]
+[fixture: pie/lex-yaml-leading-config-not-applied] [fixture:
+pie/lex-yaml-after-leading-lf] [fixture: pie/lex-yaml-bom-opening-only]
+[fixture: pie/lex-yaml-bom-both-fences] [fixture:
+pie/lex-yaml-after-directive-line] [fixture: pie/lex-yaml-after-directive-glued]
 [fixture: common/frontmatter-leading-newline] [fixture:
-common/directive-before-frontmatter] [fixture:
-common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
-common/frontmatter-indent-closing-only] [fixture:
+common/directive-before-frontmatter] [fixture: common/frontmatter-bom] [fixture:
+common/frontmatter-indent-mismatch] [fixture:
+common/frontmatter-nonleading-sequence] [fixture:
+common/frontmatter-nonleading-class] [fixture:
+common/frontmatter-nonleading-state] [fixture:
+agentflow/db-frontmatter-after-comment] [fixture:
+block/gram-frontmatter-comment-before] [fixture:
+ishikawa/frontmatter-after-comment] [fixture: usecase/frontmatter-after-comment]
+[fixture: venn/frontmatter-comment-before]
+
+This skip is tried only once, before passing bare lines or performing the second
+directive scan. A second block is not skipped, nor is a block after a
+second-scan directive; a second-scan directive may instead follow the skipped
+block. Real leading frontmatter may precede this separate retained block.
+Leading indentation at the detection point is trivia, so equal indentation on
+the two nonleading fences leaves only the closer indented and prevents the skip.
+[fixture: pie/detect-two-nonleading-blocks] [fixture:
+pie/detect-block-after-real-frontmatter] [fixture:
+pie/detect-second-scan-directive-before-block] [fixture:
+pie/detect-block-before-second-scan-directive] [fixture:
+pie/detect-block-equally-indented-fences]
+
+A block that does not satisfy that shape is not passed. Adjacent `---` fences
+with no body line, a missing closing fence, a closing fence indented when the
+opener is not, unequal nonempty indents, four dashes, closing-fence suffix text
+and a closing fence with no following line break leave `---` at the detection
+point and select the rejecting `---` pseudo-diagram. A bare `%%` line, including
+a percent-brace line on which no directive starts, before an otherwise matching
+block also prevents this one skip: the block is not at the detection point.
+[fixture: common/frontmatter-indent-closing-only] [fixture:
 common/frontmatter-indent-different-depths] [fixture:
 common/frontmatter-four-dashes] [fixture:
 common/frontmatter-closing-trailing-text] [fixture:
 common/frontmatter-no-newline-after] [fixture:
 common/frontmatter-adjacent-delimiters] [fixture: common/frontmatter-unclosed]
+[fixture: pie/lex-yaml-after-comment-adjacent-fences] [fixture:
+pie/frontmatter-unclosed] [fixture: pie/lex-yaml-after-bare-comment] [fixture:
+common/frontmatter-after-bare-percent-flowchart] [fixture:
+pie/detect-block-after-bare-brace-line]
 
-mermaid.js rejects these inputs too, with one exception. Its detection removes
-the leading trivia and then looks for frontmatter once more, so a block that
-only failed because of what came before it is removed from the text that its
-detectors see, while the diagram's grammar still receives the `---` lines. The
-input is then accepted when that grammar tolerates them. The `error`
-pseudo-diagram does, and its condition in
-[Diagram detection](#diagram-detection) leaves such a block out in the same way,
-so both accept a line break, a byte order mark, or a comment line before a `---`
-block, then `error`. The flowchart grammar rejects the lines, so with a
-flowchart after the block both reject the input. Several Langium-based diagrams
-among the diagram types not yet in this specification also tolerate the lines
-(pie, info, gitGraph, packet, radar, and architecture were observed); their
-documents will say how they read them. In every case the block's `title` and
-`config` are not applied by mermaid.js, because it is not frontmatter. [fixture:
-common/frontmatter-bom-error] [fixture: common/detect-lone-cr-directive-lf]
-[fixture: common/detect-lone-cr-comment-lf] [fixture:
-common/detect-frontmatter-after-line-break-error] [fixture:
+The `error` pseudo-diagram also accepts a line break, byte order mark or comment
+line before a matching block and then `error`; its condition leaves out the
+block. The block's title and configuration are not applied there either.
+[fixture: common/frontmatter-bom-error] [fixture:
+common/detect-lone-cr-directive-lf] [fixture: common/detect-lone-cr-comment-lf]
+[fixture: common/detect-frontmatter-after-line-break-error] [fixture:
 common/detect-frontmatter-after-comment-line-error] [fixture:
 common/detect-crlf-no-directive]
 
@@ -796,17 +831,25 @@ common/leading-trivia-before-header]
 
 ## Diagram detection
 
-The diagram type is decided at the first unit of the diagram text. The
-**detection point** is the first position of the text that is not leading
-trivia: not whitespace, not a line terminator, not inside a directive, and not
-inside a comment region ([Leading whitespace](#leading-whitespace)). From the
-detection point, detection reads and passes the **bare `%%` lines**, if there
-are any: a line whose diagram text, after line whitespace, begins with `%%`
-followed by a line terminator, the end of the text, or `{` where no directive
-starts, neither in the source nor in the reading once more below; the whole line
-is skipped, whatever follows on it, a header among it: `%%{ }%%` and
-`sequenceDiagram` on one line leave no header, and the text is rejected. Such a
-line is neither a comment line nor a directive (see
+Detection chooses the diagram type from the diagram text. The **detection
+point** is the first position of the text that is not leading trivia: not
+whitespace, not a line terminator, not inside a directive, and not inside a
+comment region ([Leading whitespace](#leading-whitespace)). If one block at that
+point satisfies the [Frontmatter](#frontmatter) shape, detection passes it once
+before looking for bare `%%` lines. The block remains diagram text for the
+selected diagram to read; see Frontmatter for pie and rejecting controls.
+[fixture: pie/frontmatter-nonleading-comment] [fixture:
+pie/lex-yaml-leading-config-not-applied] [fixture:
+common/directive-before-frontmatter] [fixture:
+common/frontmatter-nonleading-sequence] [fixture:
+common/frontmatter-nonleading-class] [fixture:
+common/frontmatter-nonleading-state] From there, detection reads and passes the
+**bare `%%` lines**, if there are any: a line whose diagram text, after line
+whitespace, begins with `%%` followed by a line terminator, the end of the text,
+or `{` where no directive starts, neither in the source nor in the reading once
+more below; the whole line is skipped, whatever follows on it, a header among
+it: `%%{ }%%` and `sequenceDiagram` on one line leave no header, and the text is
+rejected. Such a line is neither a comment line nor a directive (see
 [Comment lines](#comment-lines)); the whitespace, line terminators, directives,
 and comment regions between bare `%%` lines are trivia, passed with them. A bare
 `%%` line may be indented and may end with any line terminator. With the
@@ -824,24 +867,45 @@ order would skip the first line as a bare `%%` line and find no header at
 `wrap}%%`. `%%{`, a comment line, and `sequenceDiagram` hold such a directive:
 it takes the keyword as its name, and `A` on the next line as its argument, so
 no header follows, and the text is rejected, as in mermaid.js, whose second scan
-for directives finds the same directive. Such a directive is not in the tree,
-and it makes the input rejected: where it is closed and a header follows, as in
-`%%{`, a line `%%{wrap}%%`, and `x}%%flowchart LR`, detection reaches the
-header, and the input is rejected in each of the four diagram types, as in
-mermaid.js, whose lexer reads `%%{` and `x}%%` as text before the header. At the
-position reached, the detectors of [detection.md](./detection.md) are tried in
-registration order against the diagram text
+for directives finds the same directive.
+
+For flowchart, sequence, class and state, such a directive is not in the tree
+and makes the input rejected; every other supported diagram type except pie also
+rejects this form: where it is closed and a header follows, as in `%%{`, a line
+`%%{wrap}%%`, and `x}%%flowchart LR`, detection reaches the header, and the
+input is rejected in every supported diagram type except pie, as in mermaid.js,
+whose lexer reads `%%{` and `x}%%` as text before the header. [fixture:
+flowchart/detect-directive-across-directive] [fixture:
+sequence/detect-directive-across-directive] [fixture:
+class/detect-directive-across-directive] [fixture:
+state/detect-directive-across-directive] [fixture:
+agentflow/detect-directive-second-scan-preheader] [fixture:
+block/detect-directive-second-scan-preheader] [fixture:
+ishikawa/detect-directive-second-scan-preheader] [fixture:
+usecase/detect-directive-second-scan-preheader] [fixture:
+venn/detect-directive-second-scan-preheader]
+
+Pie instead reads a directive found only by detection's second scan as a hidden
+DIRECTIVE and holds it as PieIgnoredText in textBeforeHeader. The lines `%%{`,
+`%% gap`, `wrap}%%`, and `pie` are accepted; gluing `pie` immediately to the
+closer rejects, because the hidden form's closing boundary is not satisfied.
+[fixture: pie/lex-hidden-directive-second-detection-scan] [fixture:
+pie/lex-hidden-directive-second-detection-scan-glued]
+
+At the position reached, the detectors of [detection.md](./detection.md) are
+tried in registration order against the diagram text
 ([Reading a source](#reading-a-source)), that is, the characters from there on,
 directives and comment regions left out. The first detector whose condition
-holds selects the diagram type, and the diagram's lexer reads the text from the
-position reached. Nothing that detection passed is read again: each bare `%%`
-line is a comment of the diagram, with the mark `%%`, from its `%%` to the end
-of its line, in every diagram type. mermaid.js reads such a line with the lexer
-of the detected diagram, and some of its lexers reject it: flowchart reads `%%`
-as an id before the header, state does not take the `{` of a line that begins
-with `%%{`, and class reads a line of whitespace only after such a line as a
-`newline` unit that its grammar does not take before the header. These inputs
-are the known divergence
+holds selects the diagram type. The diagram's lexer reads the retained
+frontmatter-shaped block, if any, and pie also reads the hidden DIRECTIVE forms
+above, as well as the text from the position reached. Bare `%%` lines passed by
+detection are not read again here: each is a comment of the diagram, with the
+mark `%%`, from its `%%` to the end of its line, in every diagram type.
+mermaid.js reads such a line with the lexer of the detected diagram, and some of
+its lexers reject it: flowchart reads `%%` as an id before the header, state
+does not take the `{` of a line that begins with `%%{`, and class reads a line
+of whitespace only after such a line as a `newline` unit that its grammar does
+not take before the header. These inputs are the known divergence
 [`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.md).
 No detector matching means the text is rejected with `UnknownDiagramError`; so
 is a text with no diagram text at all, such as an empty text or a text of
@@ -1005,20 +1069,39 @@ the text without these last removals. For a diagram with a grammar, the rules
 above give the same result: a bare `%%` line is a comment in both where the
 lexer of mermaid.js reads it as one, and only where it does not do the two
 differ (the known divergence above); a directive that only the second scan finds
-is passed by detection in both and rejected by both; and the rest of what these
-removals take makes the lexer of mermaid.js reject the input, a `---` block
-before the header among it. For the `error` pseudo-diagram, whose parser ignores
-the text, the three things left out by its condition are these removals.
-[fixture: common/directive-before-frontmatter] [fixture:
+is passed by detection in both and rejected by both in every supported diagram
+type except pie. [fixture: flowchart/detect-directive-across-directive]
+[fixture: sequence/detect-directive-across-directive] [fixture:
+class/detect-directive-across-directive] [fixture:
+state/detect-directive-across-directive] [fixture:
+agentflow/detect-directive-second-scan-preheader] [fixture:
+block/detect-directive-second-scan-preheader] [fixture:
+ishikawa/detect-directive-second-scan-preheader] [fixture:
+usecase/detect-directive-second-scan-preheader] [fixture:
+venn/detect-directive-second-scan-preheader]
+
+A matching nonleading `---` block is passed by detection in both and read by the
+selected diagram: pie applies its hidden YAML rule and retains a matching block
+as ignored text, while every other supported diagram type rejects it, as stated
+under [Frontmatter](#frontmatter). [fixture:
+common/directive-before-frontmatter] [fixture:
 common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
-flowchart/detect-directive-across-directive] The one input that mermaid.js
-detects through these steps and this specification reads otherwise is the known
-divergence [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.md):
-a text whose header is another diagram's and whose diagram text holds
-`C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` after it is handed
-to the C4 parser by mermaid.js and read as the diagram of its header here.
-`C4Context` counts at the start only, in both. [fixture:
-common/detect-c4-anywhere] [fixture: common/detect-c4context-only-at-start]
+agentflow/db-frontmatter-after-comment] [fixture:
+block/gram-frontmatter-comment-before] [fixture:
+ishikawa/frontmatter-after-comment] [fixture: usecase/frontmatter-after-comment]
+[fixture: venn/frontmatter-comment-before]
+
+For the `error` pseudo-diagram, the three things left out by its condition are
+these removals.
+
+The one input that mermaid.js detects through these steps and this specification
+reads otherwise is the known divergence
+[`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.md): a text
+whose header is another diagram's and whose diagram text holds `C4Container`,
+`C4Component`, `C4Dynamic`, or `C4Deployment` after it is handed to the C4
+parser by mermaid.js and read as the diagram of its header here. `C4Context`
+counts at the start only, in both. [fixture: common/detect-c4-anywhere]
+[fixture: common/detect-c4context-only-at-start]
 
 When the text has an init directive, mermaid.js also runs the detectors once
 more on a text derived differently, and that run can reject the input; this

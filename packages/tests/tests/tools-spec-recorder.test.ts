@@ -120,6 +120,36 @@ function textsOf(recording: SpecFileRecording): string[] {
 const FLOW_PARSER_IMPORT = `import flowParser from "./flowParser.ts"\n`
 
 describe("recordSpecFile: what is recorded", () => {
+  it("records pie parser calls before drawing assertions and restores the drawing global", async () => {
+    const checkout = makeCheckout()
+    const file = writeTestFile(
+      checkout,
+      "diagrams/pie/pieRenderer.spec.ts",
+      [
+        'import { parser } from "./pieParser.js"',
+        'import { db } from "./pieDb.js"',
+        'import { draw } from "./pieRenderer.js"',
+        'beforeEach(() => { document.body.innerHTML = "<svg></svg>"; db.clear() })',
+        'it("slices", async () => {',
+        '  const text = "pie\\n\\"A\\":1"',
+        "  await parser.parse(text)",
+        '  await draw(text, "id", "1", { db })',
+        '  const slices = [...document.querySelectorAll(".pieCircle")]',
+        '  expect(slices.map(el => el.__data__.data.label)).toEqual(["A"])',
+        "})",
+        "",
+      ].join("\n"),
+    )
+    expect(await runRecorder(checkout, file)).toEqual({
+      recording: {
+        inputs: [{ text: 'pie\n"A":1', line: 7, test: "slices" }],
+        tests: 1,
+        failures: [],
+      },
+      globalsLeft: [],
+    })
+  })
+
   it("records agentflow parser, conformance runner and public render calls", async () => {
     const recording = await recordSource(
       [

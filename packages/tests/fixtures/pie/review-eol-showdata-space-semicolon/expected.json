@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is a semicolon after a bounded showData rejected by the lexer?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 14: unexpected character: ->;<- at offset: 13, skipped 1 characters. "
+  }
+}

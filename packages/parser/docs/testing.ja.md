@@ -18,7 +18,7 @@ fixture としてコーパスに足します。
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
 `class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/`、`mindmap/`、
 `timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/`、`kanban/`、`c4/`、
-`venn/`、`ishikawa/`、`agentflow/`、`usecase/` の、
+`venn/`、`ishikawa/`、`agentflow/`、`usecase/`、`pie/` の、
 すべての fixture を parse し、
 次を確かめます。
 
@@ -422,3 +422,14 @@ embedded-data-opaque は受理します。
 `tests/ast-usecase-examples.test.ts` は、26 ノードのコメント例を検査します。
 木の検査器と Db builder は tests パッケージが提供し、
 コーパスの比較は別に行います。
+
+pie の fixture は `tests/pie.test.ts` が検査し、記録します。
+specified.json を優先し、不透明データの乖離は受理し、
+ほかの指定読みがない乖離 fixture は拒否します。
+受理した木で、ソースの被覆、トークンと raw の綴り、ノード境界、
+子の包含関係とソース順を検査し、コーパスの木の検査器も呼びます。
+記録した Db を `dbFromTree` と直接比較します。
+不可分な境界の参照入力も、元の expected Db と比較します。
+構造の検査は隠し形式の所有先、共通値の余白と null、
+両方の引用符、double 変換を扱います。
+`tests/ast-pie-examples.test.ts` は、8 ノードのコメント例を検査します。

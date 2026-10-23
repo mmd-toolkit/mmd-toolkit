@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does frontmatter bypass style-line semicolon removal before the title getter?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "style:#x;;;",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "style:#x;;;"
+  }
+}

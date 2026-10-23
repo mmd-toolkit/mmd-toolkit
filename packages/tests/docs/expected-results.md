@@ -302,18 +302,22 @@ mermaid.js finds it, which includes a closing `---` line with blanks after it
 and CRLF line breaks. [fixture:
 flowchart/html-tag-starts-in-frontmatter-other-key] [fixture:
 flowchart/html-tag-starts-in-frontmatter-crlf] [fixture:
-flowchart/html-tag-starts-in-frontmatter-closing-line-blank] The title of the Db
-is the title of the frontmatter of the input as written, as
-`extractFrontmatterTitle` gives it, which writes `'` for a `"` after an `=` in a
-tag. [fixture: flowchart/html-tag-starts-in-frontmatter-value] The values in
+flowchart/html-tag-starts-in-frontmatter-closing-line-blank] The frontmatter
+title in the specified reading is Mermaid's converted value in every diagram
+type, as `extractFrontmatterTitle` gives it after
+[`cleanupText()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17).
+In a tag, a `"` after an `=` becomes `'`. The same derived title supplies the Db
+and `embedded.title`; a body title that overrides it in the Db stays in place.
+[fixture: flowchart/html-tag-starts-in-frontmatter-value] [fixture:
+pie/frontmatter-html] [fixture: pie/frontmatter-title-overridden] The values in
 `embedded` are those that mermaid.js gives for the input as written, and, where
 it rejects that input, those it gives for the input with `(`: a `<` in a value
-of the configuration is then recorded as `(`. The title in `embedded` is the one
-of the Db. [fixture: flowchart/html-tag-starts-in-frontmatter-config-value]
-Where mermaid.js accepts the input as written, they are the values of the
-written input, and the input with `(` is not read: mermaid.js leaves a value
-that holds `<` out of the configuration, so `embedded` has none, and not the
-value with `(`. [fixture:
+of the configuration is then recorded as `(`. The frontmatter title in
+`embedded` uses the same title reader as the Db. [fixture:
+flowchart/html-tag-starts-in-frontmatter-config-value] Where mermaid.js accepts
+the input as written, they are the values of the written input, and the input
+with `(` is not read: mermaid.js leaves a value that holds `<` out of the
+configuration, so `embedded` has none, and not the value with `(`. [fixture:
 flowchart/html-tag-starts-in-frontmatter-config-value-accepted] When mermaid.js
 rejects the input with `(`, the specified reading is the rejection
 (`accepted: false` and the error). If the replacement itself made the YAML of
@@ -389,6 +393,12 @@ accepts what it rejects (`embedded-data-opaque`). None of them has a removal
 here, so mermaid.js is not run to read the input as the specification does, and
 what the specification gives is stated by the document of the divergence in
 [known-divergences](../../spec/docs/known-divergences.md).
+
+Frontmatter YAML that becomes invalid after HTML attribute-quote conversion has
+the same `embedded-data-opaque` treatment: `specifiedRunOf` returns `undefined`
+without deriving another Db, and the generator writes no `specified.json`.
+[fixture: usecase/div-gram-frontmatter-html-attribute-quotes] [fixture:
+pie/div-review-frontmatter-html-invalid-yaml]
 
 The rules are listed in `src/divergence-removals.ts` and found in the lexer of
 the pinned mermaid.js by their compiled pattern, not by their position. When one

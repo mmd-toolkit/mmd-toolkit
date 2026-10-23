@@ -5,13 +5,7 @@ import {
   isWhitespace,
 } from "./character-classes.ts"
 import type { LineIndex } from "./positions.ts"
-import {
-  lineTerminatorEnd,
-  matchCharacters,
-  matchCodePoints,
-  nextOffset,
-  skipWhile,
-} from "./text-cursor.ts"
+import { lineTerminatorEnd, nextOffset } from "./text-cursor.ts"
 
 /**
  * common.md, Frontmatter: where the parts of a frontmatter block are. Every
@@ -44,62 +38,63 @@ interface Line {
   readonly hasTerminator: boolean
 }
 
-/** Reads the line that starts at `offset`. */
-function readLine(text: string, offset: number): Line {
+/** Source-positioned text for the frontmatter shape, including detection's second reading. */
+export interface FrontmatterText {
+  readonly codePointAt: (offset: number) => number | undefined
+  readonly after: (offset: number) => number
+}
+
+/** Reads one physical line without making a rewritten detection text. */
+function readLine(text: FrontmatterText, offset: number): Line {
   let current = offset
-  while (current < text.length) {
-    const terminatorEnd = lineTerminatorEnd(text, current)
-    if (terminatorEnd !== null) {
+  for (;;) {
+    const codePoint = text.codePointAt(current)
+    if (codePoint === undefined || codePoint === 0x0a) {
       return {
         start: offset,
         contentEnd: current,
-        next: terminatorEnd,
-        hasTerminator: true,
+        next: codePoint === undefined ? current : text.after(current),
+        hasTerminator: codePoint !== undefined,
       }
     }
-    current = nextOffset(text, current)
+    current = text.after(current)
   }
-  return {
-    start: offset,
-    contentEnd: current,
-    next: current,
-    hasTerminator: false,
-  }
+}
+
+/** The first position after characters accepted by `accepts`. */
+function afterWhile(
+  text: FrontmatterText,
+  start: number,
+  accepts: (codePoint: number) => boolean,
+): number {
+  let at = start
+  for (
+    let codePoint = text.codePointAt(at);
+    codePoint !== undefined && accepts(codePoint);
+    codePoint = text.codePointAt(at)
+  )
+    at = text.after(at)
+  return at
 }
 
 /** Notation: a whitespace-only line is empty or consists of line whitespace. */
-function isWhitespaceOnly(text: string, line: Line): boolean {
-  return skipWhile(text, line.start, isLineWhitespace) >= line.contentEnd
+function isWhitespaceOnly(text: FrontmatterText, line: Line): boolean {
+  return afterWhile(text, line.start, isLineWhitespace) >= line.contentEnd
 }
 
-/**
- * Frontmatter, condition 3: the indent of a delimiter line equals the
- * opening indent character for character. `indent` is the line whitespace
- * cut from the opening line. Returns the offset after it, or null.
- */
-function matchIndent(
-  text: string,
-  offset: number,
-  indent: string,
+/** Frontmatter, condition 3: the same indent, three dashes, padding and a physical LF. */
+function delimiterEnd(
+  text: FrontmatterText,
+  line: Line,
+  indent: readonly number[],
 ): number | null {
-  return matchCharacters(text, offset, indent)
-}
-
-/**
- * Frontmatter, condition 3: a delimiter line consists of exactly `indent`,
- * `---`, optional line whitespace, and a line terminator. Returns the offset
- * after the `---`, or null.
- */
-function delimiterEnd(text: string, line: Line, indent: string): number | null {
   if (!line.hasTerminator) return null
-  const afterIndent = matchIndent(text, line.start, indent)
-  if (afterIndent === null) return null
-  const afterDashes = matchCodePoints(text, afterIndent, FRONTMATTER_DELIMITER)
-  if (afterDashes === null) return null
-  if (skipWhile(text, afterDashes, isLineWhitespace) !== line.contentEnd) {
-    return null
+  let at = line.start
+  for (const expected of [...indent, ...FRONTMATTER_DELIMITER]) {
+    if (text.codePointAt(at) !== expected) return null
+    at = text.after(at)
   }
-  return afterDashes
+  return afterWhile(text, at, isLineWhitespace) === line.contentEnd ? at : null
 }
 
 /**
@@ -110,10 +105,32 @@ export function matchFrontmatter(
   text: string,
   start: number,
 ): FrontmatterMatch | null {
-  // Condition 1: the opening line is an indent, `---`, optional line
-  // whitespace, and a line terminator.
-  const indentEnd = skipWhile(text, start, isLineWhitespace)
-  const indent = text.slice(start, indentEnd)
+  return matchFrontmatterIn(
+    {
+      codePointAt: (offset) =>
+        text.codePointAt(offset) === 0x0d ? 0x0a : text.codePointAt(offset),
+      after: (offset) =>
+        lineTerminatorEnd(text, offset) ?? nextOffset(text, offset),
+    },
+    start,
+  )
+}
+
+/** Common Frontmatter shape on source-positioned text; detection retains any matching block. */
+export function matchFrontmatterIn(
+  text: FrontmatterText,
+  start: number,
+): FrontmatterMatch | null {
+  const indent: number[] = []
+  let indentEnd = start
+  for (
+    let codePoint = text.codePointAt(indentEnd);
+    codePoint !== undefined && isLineWhitespace(codePoint);
+    codePoint = text.codePointAt(indentEnd)
+  ) {
+    indent.push(codePoint)
+    indentEnd = text.after(indentEnd)
+  }
   const openingLine = readLine(text, start)
   if (delimiterEnd(text, openingLine, indent) === null) return null
 
@@ -174,7 +191,7 @@ export function matchFrontmatter(
  * end of the source that has no line terminator is not part of it.
  */
 function finish(
-  text: string,
+  text: FrontmatterText,
   start: number,
   openingDelimiterStart: number,
   bodyStart: number,
@@ -183,7 +200,7 @@ function finish(
   closingDelimiterEnd: number,
 ): FrontmatterMatch {
   let end = closingLine.next
-  while (end < text.length) {
+  while (text.codePointAt(end) !== undefined) {
     const line = readLine(text, end)
     if (!isWhitespaceOnly(text, line) || !line.hasTerminator) break
     end = line.next

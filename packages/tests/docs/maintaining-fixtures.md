@@ -36,6 +36,22 @@ existing fixtures with `fixtures:set-note` and `fixtures:set-divergence`.
   specification deliberately departs from mermaid.js. Each identifier is a row
   of the table in `docs/known-divergences.md` in `@mmd-toolkit/spec`.
 
+`DIVERGENCE_PROPERTIES`, exported from `@mmd-toolkit/tests`, defines each
+identifier's `direction` (`"accept"`, `"reject"`, `"both"`) and
+`requiresSpecifiedReading` explicitly. Keep its keys and `KNOWN_DIVERGENCES`
+aligned with the specification. Use `fixtureAccepts(fixture)` after loading to
+check the required reading and decide acceptance; do not keep another direction
+or reading-requirement list. A required missing `specified.json` throws with the
+identifier and `<diagram>/<name>`, including for accept-only divergences that
+need a comparison reading. A present specified reading decides acceptance;
+without one, the direction decides. Unmarked fixtures use `expected.accepted`.
+The loader reads the files; this function performs the acceptance check.
+
+For comparable Db values, use the recorded reading (`specified`, otherwise
+`expected`) and `embeddedValuesOf()`. `embedded-data-opaque` accepts without a
+specified reading and can have no Db to compare. Keep that case explicit rather
+than treating mermaid.js's rejection as the specification's rejection.
+
 ## Names
 
 Fixture names are lowercase kebab-case, `<prefix>-<topic>`, with the first 8

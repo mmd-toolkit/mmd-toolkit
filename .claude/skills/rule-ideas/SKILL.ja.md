@@ -236,6 +236,18 @@ description:
 | agentflow で、agentflow が取り除いたか認めない括弧の形（`A((x))` は角の丸い長方形で描かれる）                                                                                             | 黙ってはいない。mermaid.js は診断 `SHAPE_REMOVED` か `SHAPE_UNSUPPORTED` を出す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | agentflow で、HTML のラベルの正しい CSS の宣言が `;` を失うもの、正しいラベルの中の `direction`、`accDescr` のブロックの中のコメント行（その文字として保たれる）                          | 上の flowchart と同じく mermaid.js の不具合である。2 つ目は agentflow-no-ignored-text が、3 つ目は説明を置き換えるところで agentflow-no-duplicate-description が、誤りとともに報告する                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | agentflow で、データブロックの YAML の形、ラベル、ほかのキー                                                                                                                              | 規則は YAML を読むことになり、カンバンと同じくリリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| usecase で、どの `actor` も宣言しない id への関係（`User --> Login` は 2 つのユースケースを描く）                                                                                         | 文書に書かれたユースケースの宣言の仕方である（実行）。`User` を宣言し忘れたアクターと呼ぶのは推測である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| usecase で、`A --order` と `A --xray`（`rder` や `ray` への円や十字）                                                                                                                     | フォーマッターで見える。整形すると `A --o rder` と `A --x ray` になる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| usecase で、`animation: slow` の後の `animate: false`（関係はアニメーションして描かれる）                                                                                                 | mermaid.js の不具合である。文書はアニメーションを止めるために `animate: false` を書く。usecase-no-duplicate-metadata は `animate` を比べない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| usecase で、アクターやユースケースの宣言のメタデータに、その前か後で当てるメタデータの更新                                                                                                | 文書がインラインのメタデータを変えるために書く方法であり、更新はどこにあっても勝つ（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| usecase で、どの `classDef` も定義しないクラスと、前の定義にスタイルを足すだけの `classDef`                                                                                               | 何も失われない。クラス名は要素に残り、ページのスタイルがそれに合うことがある。足したスタイルは前のものを保つ（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| usecase で、1 つの `style` や `classDef` の中で 2 度与えたプロパティ（`fill:red,fill:var(--brand)`）                                                                                      | 正しい CSS のフォールバックである。`style` は両方を保ち、`classDef` は最後のものだけを描くが、これは mermaid.js の不具合である（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| usecase で、同じタイトルでもう一度書いた `systemBoundary`、1 つの要素への 2 つのノート、2 度書いた関係                                                                                    | 何も失われない。境界のメンバーは合わされ、ノートと関係はすべて保たれる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| usecase で、`A -- include --> B`                                                                                                                                                          | mermaid.js は `include` を関連のラベルとして書いたとおりに保つ（実行）。それを include の関係のつもりと呼ぶのは推測である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| usecase で、ラベル、種類、形、ステレオタイプ、メタデータの違う 1 つの id の 2 つの宣言と、別のタイトルでもう一度書いた `systemBoundary`                                                   | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| usecase で、何も宣言しない id へのノート、`style`、`class`、文の先頭の `o--` や `x--`、1 つの id を与える 2 つの引用符付きのラベル                                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| usecase で、2 度書いた関係の id、知らないメタデータのキー、後にほかの文字のある `direction`、どの `}` も閉じない `accDescr` のブロック                                                    | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| usecase で、JSON のテーブルで 2 度書いたキー（最後の値が保たれる）                                                                                                                        | 規則は JSON を読むことになり、カンバンの YAML と同じくリリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ### 迷ったときの問い
 
@@ -751,6 +763,13 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | agentflow-no-redefined-flow               | 入れる               |                                                                          |
 | agentflow-no-duplicate-direction          | 入れる               |                                                                          |
 | agentflow-no-undef                        | 入れる               |                                                                          |
+| usecase-no-duplicate-title                | 入れる               |                                                                          |
+| usecase-no-duplicate-description          | 入れる               |                                                                          |
+| usecase-no-empty-description-block        | 入れる               |                                                                          |
+| usecase-no-unclosed-description-block     | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| usecase-no-duplicate-direction            | 入れる               |                                                                          |
+| usecase-no-duplicate-metadata             | 入れる               |                                                                          |
+| usecase-no-redefined-class                | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1227,6 +1246,9 @@ open の [#8084](https://github.com/mermaid-js/mermaid/pull/8084) は、
   (4) 軸ごと、象限ごとに 1 つの文を書く。
 - quadrant-no-redefined-class:
   (1) クラスは、併合なしに、最後の定義のスタイルだけを持つ（実行）。
+  後の定義が落とすか変えるスタイルは失われ、足すスタイルは何も失わない
+  （usecase-no-redefined-class と同じく、2026-10-23 に変えた。
+  規則は足したスタイルを報告していた）。
   (2) なし。
   (4) スタイルを 1 つの定義に書く。
 - quadrant-no-undef:
@@ -1507,6 +1529,59 @@ mermaid.js 12.0.0 の後にマージされた
   （`subGraph0`、`L_A_B_0`）も図の id で、名指すものに届くので報告しない
   （実行。2026-10-22 に決めた）。
 
+usecase の規則の注は次のとおりである。
+検索は題名の「usecase」と「use case」と、「usecase」に duplicate、classDef、
+metadata、direction、accDescr、animate、animation の語を加えたもので、
+読み方を変えるものはなかった。
+[#8392](https://github.com/mermaid-js/mermaid/issues/8392) と
+[#8402](https://github.com/mermaid-js/mermaid/pull/8402) はどちらも open で、
+include と extend のギュメに関するものである。
+
+- usecase-no-duplicate-title、usecase-no-duplicate-description、
+  usecase-no-empty-description-block、usecase-no-unclosed-description-block:
+  上の flowchart の規則の注を持ち、usecase の読みの違いは次のとおりである。
+  mermaid.js はタイトルと説明の両端の空白を除き、
+  説明の各改行の後の空白を除く（visitor と `setAccDescription` を読んだ）。
+  ブロックの中のコメント行は取り除かれるので、
+  コメント行だけのブロックは空の説明を設定する（実行）。
+  それは、説明の後では usecase-no-duplicate-description が報告し、
+  単独では、後で埋めるために残したブロックとして報告しない
+  （2026-10-23 に決めた）。
+  どの `}` も閉じないブロックは受理されず、
+  後のメタデータや JSON のオブジェクトの `}` が閉じるブロックは
+  そこまでの行を取る（実行）。
+  閉じないブロックの規則は、それを flowchart の規則の条件で報告し、
+  同じ理由で入れない。
+- usecase-no-duplicate-direction:
+  (1) 最後の `direction` 文が方向を設定し、`TD` は `TB` として記録される
+  （`usecaseModelBuilder` を読んだ。実行）。
+  (2) なし。
+  (4) `direction` 文を 1 つ書く。
+- usecase-no-duplicate-metadata:
+  (1) キーの更新は、前の更新がアクター、ユースケース、境界、関係に与えた値を
+  置き換える（実行）。
+  境界の見出しのメタデータは書いた順に加わり、見出しの後の更新は報告しない。
+  文書は見出しの型を変えるためにそれを書くからである（2026-10-23 に決めた）。
+  更新はアクターやユースケースの宣言のメタデータに、どこにあっても勝ち、
+  それは文書がそれを変えるために書く方法なので、そのメタデータは比べない
+  （実行）。
+  (2) なし。`animate` は比べない。
+  `animation: slow` の後の `animate: false` はアニメーションして描かれ、
+  mermaid.js の不具合だからである。
+  mermaid.js が 1 つの id に変える名前（`"Place order"` と `Place_order`）は
+  書いたとおりに比べ、文書がそれを述べる（実行）。
+  (4) 要素のキーごとに値を 1 つ与える。
+- usecase-no-redefined-class:
+  (1) 後の `classDef` はクラスの定義全体を置き換え
+  （`applyClassDefinitions` を読んだ）、
+  描画はその中の各プロパティの最後の値を取る
+  （`getCompiledStyles` を読んだ。実行）。
+  そのため、後の定義が落とすか変えるスタイルは失われ、
+  足すスタイルは何も失わない。
+  flowchart、ブロック図、agentflow では、代わりに CSS が決める（2 節を見る）。
+  (2) なし。スタイルを足すか、別の順に書く定義は報告しない。
+  (4) クラスごとに `classDef` を 1 つ書く。
+
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
 mermaid.js は次の行を書き手のつもりどおりに別に読むが、
@@ -1598,6 +1673,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | c4-*（7 件すべて）                      | いまはなし（2026-10-21。この節の終わりを見る）   |
 | venn-*（6 件すべて）                    | いまはなし（2026-10-21。この節の終わりを見る）   |
 | agentflow-*（10 件すべて）              | いまはなし（2026-10-22。この節の終わりを見る）   |
+| usecase-*（7 件すべて）                 | いまはなし（2026-10-23。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1723,7 +1799,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `requirement-*`、`mindmap-*`、`timeline-*`、`sankey-*`、`xychart-*`（2026-10-15）と
 `quadrant-*`（2026-10-16）と
 `block-*`、`kanban-*`、`c4-*`、`venn-*`（2026-10-21）と
-`agentflow-*` と flowchart-no-duplicate-direction（2026-10-22）:
+`agentflow-*` と flowchart-no-duplicate-direction（2026-10-22）と
+`usecase-*`（2026-10-23）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

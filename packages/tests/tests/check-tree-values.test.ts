@@ -55,6 +55,8 @@ function saidInSpecification(
   // ast/agentflow.md names the written arrow, literal and retained ignored spelling.
   if (
     [
+      "Written text of the common value.",
+      "Nonempty written ignored form, including fences.",
       "The written text of this value.",
       "Written text of this grammar position.",
       "Written CSS property name, including any internal HWS.",
@@ -172,6 +174,8 @@ interface BrokenValueRow {
  * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  { type: "PieLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "PieIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "UsecaseLabel", message: NOT_WRITTEN_TEXT },
   { type: "UsecaseLiteral", message: NOT_WRITTEN_TEXT },
   { type: "UsecaseJsonDataBlock", message: NOT_WRITTEN_TEXT },
@@ -397,6 +401,49 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "PieLiteral",
+    name: "a pie line value retains trailing written whitespace",
+    diagram: "pie",
+    fixture: "title-spaces",
+    token: { type: "RawText", value: "  A  B\t\tC  " },
+    side: "end",
+    problems: [
+      {
+        where: "PieTitleStatement at 4-21",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "PieLiteral at 10-21",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "PieLiteral at 10-21",
+        message:
+          'the texts of its tokens joined are not its written text: "  A  B\\t\\tC", not "  A  B\\t\\tC  "',
+      },
+      {
+        where: "PieLiteral at 10-21",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [10,21], not [10,19]",
+      },
+    ],
+  },
+  {
+    type: "PieIgnoredText",
+    name: "a pie hidden form retains whitespace next to a global directive cut",
+    diagram: "pie",
+    fixture: "lex-yaml-body-directive-content",
+    token: { type: "RawText", value: "---\nx: " },
+    side: "end",
+    problems: [
+      {
+        where: "PieIgnoredText at 4-29",
+        message:
+          'the texts of its tokens joined are not its written text: "---\\nx:\\n---", not "---\\nx: \\n---"',
+      },
+    ],
+  },
   {
     type: "UsecaseLabel",
     name: "a bare usecase label retains leading Unicode whitespace",

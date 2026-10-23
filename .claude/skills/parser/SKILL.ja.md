@@ -419,11 +419,29 @@ flowchart のテストが手本になる。
 | `tests/helpers/reference-inputs.ts`  | 参照入力のための図種の単位        |
 | `tests/<図種>.test.ts`               | 木とトークンの単体テスト          |
 
+このテストの手順は、Jison、Chevrotain、Langium の図に使う。
+記録前の probe（4.7 節）、図種のテスト、`tests/fixtures.test.ts` は、
+受理の判定に `@mmd-toolkit/tests` の `fixtureAccepts` を使う。
+共有の `DIVERGENCE_PROPERTIES` 表が、
+各識別子の受理の方向と指定の読みの要否を定める。
+必須の `specified.json` がなければエラーとなり、probe やテストを失敗させる。
+指定の読みがあれば受理の判定に使う。
+印のない fixture は `expected.json` を使う。
+
+Db を比較するときは、`reading` を
+`fixture.specified ?? fixture.expected` とする。
+その読みが受理され、Db が null でない場合は、
+`embeddedValuesOf(fixture, reading)` と既存の `dbOfTree`/`dbFromTree` を使い、
+木の Db を記録された Db と比べる。
+受理する不透明な fixture に比較用の Db がない場合は、明示する。
+印のある各入力が宣言した字句の形を持つことは、別に確かめる（6 節）。
+受理の判定だけでは、その形を持つ証明にならない。
+
 手順:
 
 1. `tests/fixtures.test.ts` は、各 fixture のパースの結果を、
    その隣に記録したものと比べ、
-   受理・拒否を、fixture の印の求めるとおりに mermaid.js と比べる（4.7 節）。
+   上の共通ヘルパーで受理を確かめる（4.7 節）。
    木も Db も確かめない。
    `@mmd-toolkit/tests` が、記録した各木を確かめ（`checkTree`）、
    その木から Db を組んで、fixture が記録した Db と比べる（tests の SKILL）。
@@ -461,6 +479,9 @@ fixture のテストが、各結果をそのファイルと比べる。
 1. これらのファイルを書いて読むのは、規則を実装した fixture だけにする。
    先に走らせると、いまのパーサーの誤った結果が書かれ、
    記録として通ってしまう。
+   書く前に、4.6 節の共通の受理・Db 検査で、すべての固定 fixture を
+   probe に通し、その木を仕様と照らして読む。
+   決まらない入力は報告し、その結果を記録しない。
 2. fixture のテストを、CI の外で 1 回、`packages/parser` で、
    `-u` を付けずに走らせる。
    足りないファイルが書かれる（CI では、足りないファイルは失敗になる）。
@@ -585,9 +606,24 @@ pnpm run format:check
 
 ## 5. Langium の図
 
-最初の Langium の図である pie のときに書く。
-字句解析器（4.4 節）と文法（4.5 節）の手順は、
-Langium の文法定義に合わせて変わる見込み。
+Langium の図では、入力、つなぎ込み、記録、検査は 4 節の手順を使うが、
+字句規則は仕様に書かれた優先順位で、最初に一致したものを採る。
+Jison の文脈、最長一致、回復処理を前提にしない。
+複合した一致は、書かれた構成要素の境界で分ける。
+隠れた形式は、指定された AST の隙間に保持する。
+直後の LF を消費しても、その LF は形式の範囲に含めず、
+EOF でも EOL を満たせるようにする。
+検出が図に読ませるために残したものを保持し、
+通過済みの裸の行と、それに伴う trivia は再び読まない。
+意味による拒否は、共通の変換を行ってから適用する。
+数値の葉が double を使う箇所では、アンダーフローと負のゼロも含める。
+記録する前（4.7 節）に、すべての固定 fixture を probe に通す。
+受理には `fixtureAccepts`、比較できる Db の値には
+4.6 節の記録された読み、`embeddedValuesOf`、Db のヘルパーを使う。
+宣言された差異の字句検証は別に保ち（6 節）、
+仕様が区別する場合の木を確認する。
+決まらない入力は報告し、その結果を記録しない。
+図種のテストにも同じ共通の検査を使う。
 
 ## 6. fixture が足されたとき、規則が変わったとき
 
@@ -621,14 +657,19 @@ Langium の文法定義に合わせて変わる見込み。
 - 既知の差異が足された
   （文書は `known-divergences/<識別子>.md`。known-divergences.md が一覧）:
   パーサーは差異を区別しないので、テストが区別する。
-  `tests/fixtures.test.ts` の検査にその分岐を足す。
+  既存の識別子には `fixtureAccepts` を再利用する（4.6 節）。
+  図種を足すことで、受理の表や図種専用のヘルパーを足さない。
+  新しい識別子では、tests パッケージに、
+  方向と指定の読みの要否を共有の `DIVERGENCE_PROPERTIES` 表に足し、
+  検査を行うよう頼む。
+  `tests/fixtures.test.ts` と図種のテストの字句検証を広げる。
   「marked fixtures differ only by their divergence」で、
   入力がその差異の形を持つことを、パーサーの字句解析器で確かめる。
-  一方向の差異では、`tests/helpers/reference-inputs.ts` に参照入力を置き、
-  その Db が、元の入力に対する mermaid.js の Db と合うことを確かめる。
-  両方向の差異では、仕様どおりの読みをコーパスに記録する
-  （`specified.json`。字句解析器からその差異を除いた mermaid.js で作る）。
-  それは tests パッケージが作るので、頼む。
+  一方向の差異で、`fixture.expected` が受理を記録し、Db が null でない場合は、
+  `tests/helpers/reference-inputs.ts` に参照入力を置き、
+  その Db を記録された Db と比べる。
+  共有の表が指定の読みを必須とする場合は、tests パッケージに、
+  共通の指定の読みの経路でコーパスの `specified.json` を作るよう頼む。
   申告を `tests/helpers/known-divergences.ts` に足す。
   参照入力と申告の字句の判断は、独自の規則でなく、すべてパーサーの単位から取る。
   `docs/testing.md` の「既知の差異」と、README の違いの一覧に足す。

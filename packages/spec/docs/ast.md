@@ -248,8 +248,9 @@ the diagram sections below: a
 [`C4Diagram`](./ast/c4.md#c4diagram), a
 [`VennDiagram`](./ast/venn.md#venndiagram), an
 [`IshikawaDiagram`](./ast/ishikawa.md#ishikawadiagram), an
-[`AgentflowDiagram`](./ast/agentflow.md#agentflowdiagram), or a
-[`UsecaseDiagram`](./ast/usecase.md#usecasediagram).
+[`AgentflowDiagram`](./ast/agentflow.md#agentflowdiagram), a
+[`UsecaseDiagram`](./ast/usecase.md#usecasediagram), or a
+[`PieDiagram`](./ast/pie.md#piediagram).
 
 ## ErrorDiagram
 
@@ -443,6 +444,7 @@ in a document of their own under `ast/`:
 - [Ishikawa](./ast/ishikawa.md): the diagram type `ishikawa`.
 - [Agentflow](./ast/agentflow.md): the diagram type `agentflow`.
 - [Usecase](./ast/usecase.md): the diagram type `usecase`.
+- [Pie](./ast/pie.md): the diagram type `pie`. [fixture: pie/header-only]
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of

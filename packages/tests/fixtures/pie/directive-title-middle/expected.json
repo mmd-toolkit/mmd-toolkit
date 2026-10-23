@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive inside title text joins its fragments."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "AB",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

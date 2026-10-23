@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are two semicolons after the header a lexer error?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 5: unexpected character: ->;<- at offset: 4, skipped 2 characters. "
+  }
+}

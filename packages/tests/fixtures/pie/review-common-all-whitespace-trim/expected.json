@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do common one-line converters trim every ECMAScript whitespace admitted by their terminal at its edges?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "T",
+    "accTitle": "AT",
+    "accDescr": "AD",
+    "showData": false,
+    "sections": []
+  }
+}

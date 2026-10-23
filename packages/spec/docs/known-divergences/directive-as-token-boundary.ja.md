@@ -42,7 +42,8 @@ sequence 図の参加者の id、クラスの名前、
 図の文書がテキストの単位と数える名前は、テキストとして読まれます。
 [fixture: sequence/div-directive-in-wrap-prefix]
 [fixture: sequence/lex-directive-in-participant-id]
-[fixture: class/lex-directive-in-name] [fixture: er/div-directive-in-name]
+[fixture: class/lex-directive-in-name]
+[fixture: er/div-directive-in-name]
 [fixture: er/lex-directive-in-tilde-word]
 [fixture: gantt/div-directive-in-click-id]
 [fixture: gantt/lex-directive-in-task-text]
@@ -52,7 +53,8 @@ kanban では `kanban`、形の開きと閉じ、`::icon(`、`:::`、
 データの開き `@{` の中のディレクティブは拒否します。
 mermaid.js は前後をつないで受理します。
 [fixture: kanban/header-directive-inside]
-[fixture: kanban/div-directive-opener] [fixture: kanban/div-directive-closer]
+[fixture: kanban/div-directive-opener]
+[fixture: kanban/div-directive-closer]
 [fixture: kanban/div-directive-icon-marker]
 [fixture: kanban/div-directive-class-marker]
 [fixture: kanban/div-directive-data-marker]
@@ -73,15 +75,18 @@ mermaid.js は前後をつないで受理します。
 
 C4 では見出し語、呼び出し語、`accTitle`、`accDescr` の内部の、
 ディレクティブを拒否し、mermaid.js は前後をつなぎます。
-[fixture: c4/lex-directive-keyword] [fixture: c4/div-directive-header]
+[fixture: c4/lex-directive-keyword]
+[fixture: c4/div-directive-header]
 [fixture: c4/div-acc-title-directive]
 [fixture: c4/div-acc-block-marker-directive]
 
 裸の引数と名前付きキーはテキスト単位なので、
 引用引数やタイトル・説明のテキストと同様に、
 内部にディレクティブを置けます。
-[fixture: c4/lex-directive-bare-alias] [fixture: c4/lex-directive-named-key]
-[fixture: c4/lex-directive-quoted] [fixture: c4/lex-title-directive-value]
+[fixture: c4/lex-directive-bare-alias]
+[fixture: c4/lex-directive-named-key]
+[fixture: c4/lex-directive-quoted]
+[fixture: c4/lex-title-directive-value]
 
 名前付き値の等号と開き引用符は別の区切りなので、
 その間のディレクティブを許します。
@@ -90,9 +95,12 @@ C4 では見出し語、呼び出し語、`accTitle`、`accDescr` の内部の�
 venn では、
 見出し、文のキーワード、名前、size、数値の text id、
 裸の style 値の識別子か数の中のディレクティブをここでは拒否します。
-[fixture: venn/header-directive-inside] [fixture: venn/lex-directive-in-set]
-[fixture: venn/lex-directive-in-union] [fixture: venn/lex-directive-in-text]
-[fixture: venn/lex-directive-in-style] [fixture: venn/lex-directive-in-title]
+[fixture: venn/header-directive-inside]
+[fixture: venn/lex-directive-in-set]
+[fixture: venn/lex-directive-in-union]
+[fixture: venn/lex-directive-in-text]
+[fixture: venn/lex-directive-in-style]
+[fixture: venn/lex-directive-in-title]
 [fixture: venn/db-grid-directive-identifier-bare]
 [fixture: venn/db-grid-directive-size]
 [fixture: venn/db-grid-directive-style-key]
@@ -107,9 +115,12 @@ venn では、
 [fixture: venn/lex-unterminated-colon-directive-next-line]
 
 mermaid.js はその前後を連結します。
-[fixture: venn/header-directive-inside] [fixture: venn/lex-directive-in-set]
-[fixture: venn/lex-directive-in-union] [fixture: venn/lex-directive-in-text]
-[fixture: venn/lex-directive-in-style] [fixture: venn/lex-directive-in-title]
+[fixture: venn/header-directive-inside]
+[fixture: venn/lex-directive-in-set]
+[fixture: venn/lex-directive-in-union]
+[fixture: venn/lex-directive-in-text]
+[fixture: venn/lex-directive-in-style]
+[fixture: venn/lex-directive-in-title]
 [fixture: venn/db-grid-directive-identifier-bare]
 [fixture: venn/db-grid-directive-size]
 [fixture: venn/db-grid-directive-style-key]
@@ -383,6 +394,38 @@ native の `@{` は原子的です。
 [fixture: usecase/lex-directive-whole-json-prefix-boundary]
 [fixture: usecase/lex-directive-in-json-declaration-at]
 
+### Pie
+
+PieIgnoredText は、値の後の改行を取るものも含め、
+単位の境界の隠れた DIRECTIVE を持てます。
+共通の Directive は、書かれた完全な構成要素の間のディレクティブを持ちます。
+どちらも `pie`、`showData`、`title`、`accTitle`、`accDescr`、
+1 個の数の固定した綴りの中には置けません。
+mermaid.js がディレクティブを除いて断片をつなぐ場合に、
+直接の境界規則はその入力を拒否します。
+完全な `accTitle` とコロン、`accDescr` と波括弧の間は構成要素の境界です。
+引用したラベルや共通の文の値の中のディレクティブは、トリビアとして許します。
+隠れた形は自分の書かれたテキストを保ち、数の断片をつなぎません。
+これらの受理する形は差異ではありません。
+下の差異の fixture はすべて mermaid.js が受理し、この仕様が拒否します。
+この規則は、この仕様だけが受理する pie の入力を加えません。
+閉じない共通のディレクティブを両者が拒否するときは印を付けません。
+[fixture: pie/div-directive-in-header]
+[fixture: pie/div-directive-in-showdata]
+[fixture: pie/div-directive-in-title-keyword]
+[fixture: pie/div-directive-in-acctitle-keyword]
+[fixture: pie/div-directive-in-accdescr-keyword]
+[fixture: pie/div-directive-number]
+[fixture: pie/div-review-directive-number-sign]
+[fixture: pie/div-review-directive-number-decimal]
+[fixture: pie/review-directive-acc-title-colon]
+[fixture: pie/review-directive-acc-descr-block-opener]
+[fixture: pie/directive-label-middle]
+[fixture: pie/directive-title-middle]
+[fixture: pie/lex-hidden-eof-extra-lf]
+[fixture: pie/review-directive-open-inside-header]
+[fixture: pie/div-directive-in-accdescr-block-keyword]
+
 ## mermaid.js の文書と issue
 
 - [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
@@ -466,3 +509,14 @@ native の `@{` は原子的です。
   Chevrotain parser、モデル検証、JSON の表を導入します。
   この差異は共有の直接の規則に従うもので、
   bug ラベルを文法変更の承認とは読みません。
+
+- pie の pin した
+  [構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  はヘッダー、区分、タイトルを述べ、その綴りの中のディレクティブは述べません。
+  2024-02-11 にマージされた
+  [PR #4751](https://github.com/mermaid-js/mermaid/pull/4751)
+  は Langium の文法と、読み飛ばす YAML、ディレクティブ、コメントを導入しました。
+  2026-10-23 に `mermaid-js/mermaid` の issue と PR を
+  `pie`、`pie directive`、`pie Langium` で検索しましたが、
+  この原子の中のディレクティブを欠陥とする保守者の判断は見つかりませんでした。
+  境界規則は直接の構文上の選択で、そのような判断ではありません。

@@ -108,6 +108,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   ishikawa: true,
   agentflow: true,
   usecase: true,
+  pie: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

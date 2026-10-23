@@ -274,7 +274,8 @@ mermaid.js はこれらを
 [`VennDiagram`](./ast/venn.ja.md#venndiagram)、
 [`IshikawaDiagram`](./ast/ishikawa.ja.md#ishikawadiagram)、
 [`AgentflowDiagram`](./ast/agentflow.ja.md#agentflowdiagram)、
-[`UsecaseDiagram`](./ast/usecase.ja.md#usecasediagram) のどれかです。
+[`UsecaseDiagram`](./ast/usecase.ja.md#usecasediagram)、
+[`PieDiagram`](./ast/pie.ja.md#piediagram) のどれかです。
 
 ## ErrorDiagram
 
@@ -493,6 +494,7 @@ linkStyle の番号では範囲の外です。
 - [Ishikawa](./ast/ishikawa.ja.md): 図種 `ishikawa`。
 - [Agentflow](./ast/agentflow.ja.md): 図種 `agentflow`。
 - [Usecase](./ast/usecase.ja.md): 図種 `usecase`。
+- [Pie](./ast/pie.ja.md): 図種 `pie`。[fixture: pie/header-only]
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。

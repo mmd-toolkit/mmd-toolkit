@@ -5,7 +5,7 @@ import {
   withoutBlankLinesAfterHeader,
   withoutFrontmatterTagStarts,
 } from "../../../tools/src/specified-reading.ts"
-import { KNOWN_DIVERGENCES } from "../src/index.ts"
+import { KNOWN_DIVERGENCES, loadFixtures } from "../src/index.ts"
 import type { MermaidRun } from "../src/mermaid.ts"
 import {
   extractFrontmatterTitle,
@@ -484,6 +484,30 @@ describe("specifiedRunOf: marks of lexer rules", () => {
 })
 
 describe("specifiedRunOf: html-tag-in-frontmatter", () => {
+  it("uses Mermaid's converted frontmatter title for pie as for the other diagram types", async () => {
+    const fixture = (await loadFixtures("pie")).find(
+      (entry) => entry.name === "frontmatter-html",
+    )
+    if (fixture === undefined) throw new Error("missing pie HTML title fixture")
+    expect(fixture.knownDivergence).toBeUndefined()
+    const mermaid = await runMermaidWithEmbeddedData(fixture.input)
+    const specified = await specifiedRunOf(
+      fixture.input,
+      HTML_TAG_MARK,
+      fixture.config,
+    )
+    expect(dbOf(mermaid).title).toBe("<b class='x'>Front</b> &amp;")
+    expect(dbOf(specified).title).toBe("<b class='x'>Front</b> &amp;")
+    expect(specified?.embedded?.title).toBe("<b class='x'>Front</b> &amp;")
+    expect(
+      await specifiedRunOf(
+        fixture.input,
+        fixture.knownDivergence,
+        fixture.config,
+      ),
+    ).toBeUndefined()
+  })
+
   it("reads the input with the `<` of the frontmatter replaced by `(`: the specification rejects what mermaid.js accepts", async () => {
     const input = '---\ntitle: <a\n---\nflowchart LR\nA[b="c">d]\n'
     expect((await runMermaidWithEmbeddedData(input)).outcome.accepted).toBe(
@@ -584,11 +608,11 @@ describe("specifiedRunOf: html-tag-in-frontmatter", () => {
   })
 
   it("gives the title to embedded where the diagram type has no Db to summarize", async () => {
-    const input = '---\ntitle: <a\n---\npie\n  "a" : 1\n'
+    const input = "---\ntitle: <a\n---\ninfo\n"
     const run = await specifiedRunOf(input, HTML_TAG_MARK, undefined)
     expect(run?.outcome).toEqual({
       accepted: true,
-      diagramType: "pie",
+      diagramType: "info",
       db: null,
     })
     expect(run?.embedded?.title).toBe("<a")
@@ -647,6 +671,36 @@ describe("specifiedRunOf: html-tag-in-frontmatter", () => {
 })
 
 describe("withoutBarePercentLinesBeforeHeader", () => {
+  it("keeps nonleading YAML before removing a bare line and its Unicode trivia", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "%% c\n---\nx: y\n---\n%%\n\u2028pie",
+      ),
+    ).toBe("%% c\n---\nx: y\n---\npie")
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "%% c\n---\nx: y\n---\n%%\n\ufeffpie",
+      ),
+    ).toBe("%% c\n---\nx: y\n---\npie")
+  })
+
+  it("keeps a second-scan directive rather than dropping its opener as a bare line", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader("%%{\n%% c\nwrap}%%\n%%\n\u2028pie"),
+    ).toBe("%%{\n%% c\nwrap}%%\npie")
+    expect(
+      withoutBarePercentLinesBeforeHeader("%%{\n%% c\nwrap}%%\n%%\n\ufeffpie"),
+    ).toBe("%%{\n%% c\nwrap}%%\npie")
+  })
+
+  it("passes a bare line's trivia between retained YAML and a second-scan directive", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "%% c\n---\nx: y\n---\n%%\n\u2028%%{\n%% gap\nwrap}%%\npie",
+      ),
+    ).toBe("%% c\n---\nx: y\n---\n%%{\n%% gap\nwrap}%%\npie")
+  })
+
   it("drops a line of `%%` alone before the header", () => {
     expect(
       withoutBarePercentLinesBeforeHeader("%%\nflowchart LR\nA-->B\n"),

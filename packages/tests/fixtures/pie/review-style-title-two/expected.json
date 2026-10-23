@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the style rule remove only the last of two semicolons in a title?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "style:ﬂ°x¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

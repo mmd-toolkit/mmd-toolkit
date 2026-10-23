@@ -51,12 +51,19 @@ export interface Positioned {
  * is the statement type of the diagram type.
  */
 export interface BlockRules<Statement extends Positioned> {
+  /**
+   * Joining regions already belong to complete value atoms in this layout:
+   * skip whole-line joining and verbatim fallback for those regions, so gaps
+   * outside the atoms can still format. Kept-line rules otherwise apply.
+   */
+  readonly joiningRegionsInValues?: boolean
   /** The lines whose statements stay together (see `KeptLines`). */
   readonly kept: KeptLines
   /** Overrides ordinary blank placement before a statement, when supplied. */
   readonly blankBeforeStatement?: (statement: Statement, gap: Gap) => boolean
   /**
-   * A retained break after trivia, excluding the next line's indentation.
+   * A retained break after trivia or the preceding printed boundary,
+   * excluding the next line's indentation.
    * Ishikawa preserves diagram-comment Unicode boundaries and terminal gaps
    * while still aligning the comments themselves (docs/ishikawa.md, Comments).
    */
@@ -322,7 +329,10 @@ export function printBlock<Statement extends Positioned>(
   rules: BlockRules<Statement>,
 ): PrintedBlock {
   const { statements } = bounds
-  const kept = withJoinedLines(source, rules.kept)
+  const kept =
+    rules.joiningRegionsInValues === true
+      ? rules.kept
+      : withJoinedLines(source, rules.kept)
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
   let offset = bounds.start
@@ -438,9 +448,7 @@ export function printBlock<Statement extends Positioned>(
     const previous = source.trivia.findLast(
       (item) => offset <= item.range[1] && item.range[1] <= end,
     )
-    return previous === undefined
-      ? undefined
-      : rules.triviaLineBreak?.(previous.range[1], end, terminal)
+    return rules.triviaLineBreak?.(previous?.range[1] ?? offset, end, terminal)
   }
 
   /**
@@ -575,7 +583,8 @@ export function printBlock<Statement extends Positioned>(
     if (
       (holdsVerbatimLine(source, kept, stretch.start, stretch.end) &&
         !isEdgeLinesOfBlock(stretch, covered)) ||
-      holdsJoiningRegion(source, stretch.start, stretch.end)
+      (rules.joiningRegionsInValues !== true &&
+        holdsJoiningRegion(source, stretch.start, stretch.end))
     ) {
       return {
         doc: printAsWritten(source, stretch.start, stretch.end),

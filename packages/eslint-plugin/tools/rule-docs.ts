@@ -242,6 +242,7 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "gantt",
   "quadrant",
   "requirement",
+  "usecase",
   "c4",
   "mindmap",
   "timeline",

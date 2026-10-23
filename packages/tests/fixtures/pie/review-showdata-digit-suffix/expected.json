@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a numeric suffix become a number token after a failed showData keyword boundary?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 5: unexpected character: ->s<- at offset: 4, skipped 8 characters. Parse error on line 1, column 13: Expecting token of type 'EOF' but found `2`."
+  }
+}

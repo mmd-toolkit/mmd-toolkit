@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CRLF ends accessibility title text."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "B",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -5,6 +5,8 @@
  * made of other nodes and of keywords and punctuation.
  */
 export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "PieLiteral",
+  "PieIgnoredText",
   "UsecaseLabel",
   "UsecaseLiteral",
   "UsecaseIdentifier",
@@ -67,6 +69,12 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
  * one of the two, so that a new node type is classified when it is added.
  */
 export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "PieDiagram",
+  "PieSectionStatement",
+  "PieTitleStatement",
+  "PieAccTitleStatement",
+  "PieAccDescrStatement",
+  "PieAccDescrBlockStatement",
   "UsecaseDiagram",
   "UsecaseActorStatement",
   "UsecaseActor",

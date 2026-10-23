@@ -4,7 +4,7 @@ Japanese version:
 [bare-percent-line-before-header.ja.md](./bare-percent-line-before-header.ja.md)
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
-timeline, sankey, block, c4, agentflow, and usecase. This is one of the
+timeline, sankey, block, c4, agentflow, usecase, and pie. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -303,6 +303,52 @@ usecase/lex-comment-bare-percent-before-header-reference] [fixture:
 usecase/lex-comment-before-header-unicode-reference] [fixture:
 usecase/comment-bare-pair]
 
+### Pie
+
+The common Comment record holds a bare `%%` line; the whitespace between it and
+the header already has its ordinary trivia place, so no pie node is needed.
+After common CR/CRLF conversion, Mermaid's pie lexical rules accept ASCII space,
+tab and LF after the bare line but reject any other common whitespace there, on
+a whitespace-only line or immediately before the header. These include VT, FF,
+U+1680, U+2003, U+202F, U+205F, U+3000, LS, PS, NBSP and a byte order mark; LS
+and a byte order mark also reject immediately before the header. Without the
+bare line, an LS line is leading trivia and is accepted by both. The shared rule
+accepts all these leading comments and whitespace. This is the existing reverse
+pipeline-order criterion: it accepts these rejected inputs and rejects no input
+Mermaid accepts. [fixture: pie/div-preheader-bare-ls-blank] [fixture:
+pie/div-preheader-bare-ps-blank] [fixture: pie/div-preheader-bare-nbsp-blank]
+[fixture: pie/div-preheader-bare-bom-blank] [fixture:
+pie/lex-preheader-bare-ascii-blank-control] [fixture:
+pie/lex-preheader-ls-without-bare-control] [fixture:
+pie/div-preheader-bare-vt-blank] [fixture: pie/div-preheader-bare-ff-blank]
+[fixture: pie/div-preheader-bare-u1680-blank] [fixture:
+pie/div-preheader-bare-u2003-blank] [fixture:
+pie/div-preheader-bare-u202f-blank] [fixture:
+pie/div-preheader-bare-u205f-blank] [fixture:
+pie/div-preheader-bare-u3000-blank] [fixture:
+pie/div-preheader-bare-ls-before-header] [fixture:
+pie/div-preheader-bare-bom-before-header]
+
+The same difference applies when a bare line follows a retained nonleading block
+or second-scan directive, and when that line and its passed trivia lie between a
+retained block and a second-scan directive. LS or a byte order mark before the
+header, an LS-only line, and LS before the later directive are accepted here and
+rejected by Mermaid; the corresponding ASCII space/tab forms are accepted by
+both. The retained hidden forms stay in textBeforeHeader; the bare line is a
+shared Comment and its passed whitespace and line breaks are trivia. [fixture:
+pie/div-preheader-retained-directive-bare-bom] [fixture:
+pie/div-preheader-retained-directive-bare-ls] [fixture:
+pie/div-preheader-retained-directive-bare-ls-line] [fixture:
+pie/div-preheader-retained-yaml-bare-bom] [fixture:
+pie/div-preheader-retained-yaml-bare-ls] [fixture:
+pie/div-preheader-retained-yaml-bare-ls-line] [fixture:
+pie/div-preheader-retained-yaml-bare-then-directive] [fixture:
+pie/lex-preheader-retained-directive-bare-ascii] [fixture:
+pie/lex-preheader-retained-directive-bare-ascii-line] [fixture:
+pie/lex-preheader-retained-yaml-bare-ascii] [fixture:
+pie/lex-preheader-retained-yaml-bare-ascii-line] [fixture:
+pie/lex-preheader-retained-yaml-bare-then-directive-ascii]
+
 ## The documentation of mermaid.js and its issues
 
 - The
@@ -346,3 +392,11 @@ usecase/comment-bare-pair]
   on 2026-08-14 with Type: Enhancement, introduces the Chevrotain parser, model
   validation and JSON tables. This divergence follows the shared direct rule,
   not a claim that a bug label approves a grammar change.
+
+- The pinned
+  [pie documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/pie.md)
+  starts its examples with pie and does not describe Unicode whitespace between
+  a bare percent line and the header.
+  [Issue #8196](https://github.com/mermaid-js/mermaid/issues/8196) reports
+  different comment removal in detection and preprocessing; it does not
+  establish a pie-specific maintainer defect judgment for this case.

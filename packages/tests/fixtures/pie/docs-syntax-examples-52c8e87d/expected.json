@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/examples.md",
+    "line": 18
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "What Voldemort doesn't have?",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "FRIENDS",
+        "value": 2
+      },
+      {
+        "label": "FAMILY",
+        "value": 3
+      },
+      {
+        "label": "NOSE",
+        "value": 45
+      }
+    ]
+  }
+}

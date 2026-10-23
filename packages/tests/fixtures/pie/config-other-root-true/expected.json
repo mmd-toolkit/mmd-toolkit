@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Root htmlLabels true wins over the flowchart fallback."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true,
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "&lt;b&gt;T&lt;/b&gt;",
+    "accTitle": "&lt;i&gt;AT&lt;/i&gt;",
+    "accDescr": "<br/> AD",
+    "showData": false,
+    "sections": [
+      {
+        "label": "<b>A</b>",
+        "value": 1
+      }
+    ]
+  }
+}

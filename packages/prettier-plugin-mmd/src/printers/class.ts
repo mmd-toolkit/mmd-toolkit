@@ -29,7 +29,12 @@ import {
 } from "./class-layout.ts"
 import { expectToken, expectValue } from "./layout.ts"
 import { narrowPath } from "./paths.ts"
-import { indentationOf, printAsWritten } from "./lines.ts"
+import {
+  indentationOf,
+  printAsWritten,
+  significantIndentationWidth,
+  withSignificantIndentation,
+} from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
   findTokenEndingBefore,
@@ -57,10 +62,20 @@ export function printClass(
   print: (path: AstPath<MermaidAst>) => Doc,
   source: Source,
 ): Doc {
+  // An indented member line such as `[*]` becomes rejected syntax at column
+  // zero. Keep a positive body step, including tabWidth zero
+  // (diagrams/class.md, The member context; docs/class.md, Indentation).
+  const bodyOptions = {
+    ...options,
+    tabWidth: significantIndentationWidth(options.tabWidth),
+  }
   const node = path.node
   switch (node.type) {
     case "ClassDiagram":
-      return printDiagram(path, options, print, source, node)
+      return withSignificantIndentation(
+        printDiagram(path, bodyOptions, print, source, node),
+        options,
+      )
     case "ClassMethod":
     case "ClassAttribute":
     case "ClassAnnotation":
@@ -81,7 +96,7 @@ export function printClass(
     case "namespace":
       return printNamespace(
         path,
-        options,
+        bodyOptions,
         print,
         source,
         classified.statement,
@@ -91,7 +106,7 @@ export function printClass(
       if (hasMemberBlock(source, classified.statement)) {
         return printMemberBlock(
           path,
-          options,
+          bodyOptions,
           print,
           source,
           classified.statement,
@@ -100,7 +115,7 @@ export function printClass(
       }
       return printLine(
         source,
-        options,
+        bodyOptions,
         layoutClassStatement(
           source,
           classified.statement,
@@ -111,7 +126,7 @@ export function printClass(
     case "simple":
       return printLine(
         source,
-        options,
+        bodyOptions,
         layoutClassStatement(
           source,
           classified.statement,

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are all-zero sections preserved even though no slice survives proportion filtering?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": true,
+    "sections": [
+      {
+        "label": "A",
+        "value": 0
+      },
+      {
+        "label": "B",
+        "value": 0
+      }
+    ]
+  }
+}

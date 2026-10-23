@@ -1,3 +1,4 @@
+import { pieVisitorKeys } from "./visitor-keys/pie.ts"
 import { usecaseVisitorKeys } from "./visitor-keys/usecase.ts"
 import { agentflowVisitorKeys } from "./visitor-keys/agentflow.ts"
 import type { Node } from "./ast.ts"
@@ -59,4 +60,5 @@ export const visitorKeys: VisitorKeys = {
   ...ishikawaVisitorKeys,
   ...agentflowVisitorKeys,
   ...usecaseVisitorKeys,
+  ...pieVisitorKeys,
 }

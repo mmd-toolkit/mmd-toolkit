@@ -15,6 +15,8 @@ import {
  * boundary (the direction line of the diagram type, in its specification). The line is judged as the
  * lexer reads it, without the directives and the comment lines. The direction
  * may stand after the line, in the source that follows it.
+ * `caseSensitive` follows a lexer that requires the written keyword and values
+ * in exactly this case, rather than the default case-insensitive rule.
  */
 export function holdsDirection(
   source: Source,
@@ -27,7 +29,9 @@ export function holdsDirection(
      */
     readonly text: string | null
   },
+  options: { readonly caseSensitive?: boolean } = {},
 ): boolean {
+  const caseSensitive = options.caseSensitive === true
   const [start, end] = statement.range
   let view: string
   if (
@@ -43,7 +47,9 @@ export function holdsDirection(
   }
   let headEnd = 0
   while (headEnd < view.length && !isLineEnd(view[headEnd])) headEnd++
-  const head = toAsciiLowerCase(view.slice(0, headEnd))
+  const head = caseSensitive
+    ? view.slice(0, headEnd)
+    : toAsciiLowerCase(view.slice(0, headEnd))
   const remainder = view.slice(headEnd)
   let from = head.indexOf("direction")
   while (from !== -1) {
@@ -53,12 +59,18 @@ export function holdsDirection(
     if (position < head.length) {
       if (
         position > afterKeyword &&
-        isDirection(head.slice(position, position + 2))
+        isDirection(head.slice(position, position + 2), caseSensitive)
       ) {
         return true
       }
     } else if (
-      isDirectionAfterHead(source, remainder, end, position > afterKeyword)
+      isDirectionAfterHead(
+        source,
+        remainder,
+        end,
+        position > afterKeyword,
+        caseSensitive,
+      )
     ) {
       return true
     }
@@ -78,19 +90,20 @@ function isDirectionAfterHead(
   remainder: string,
   statementEnd: number,
   separated: boolean,
+  caseSensitive: boolean,
 ): boolean {
   let index = 0
   while (index < remainder.length && isWhitespace(remainder[index])) index++
   if (index < remainder.length) {
     return (
       (separated || index > 0) &&
-      isDirection(toAsciiLowerCase(remainder.slice(index, index + 2)))
+      isDirection(remainder.slice(index, index + 2), caseSensitive)
     )
   }
   const next = skipWhitespaceAndTrivia(source, statementEnd)
   return (
     (separated || index > 0 || next > statementEnd) &&
-    isDirection(toAsciiLowerCase(source.text.slice(next, next + 2)))
+    isDirection(source.text.slice(next, next + 2), caseSensitive)
   )
 }
 
@@ -113,9 +126,12 @@ function readableText(source: Source, from: number, to: number): string {
   return text
 }
 
-/** Whether a text of two characters is a direction, in lower case. */
-function isDirection(text: string): boolean {
-  return ["tb", "bt", "rl", "lr"].includes(text)
+/** Whether two characters match the direction values under the selected case rule. */
+function isDirection(text: string, caseSensitive: boolean): boolean {
+  const candidate = caseSensitive ? text : toAsciiLowerCase(text)
+  return ["TB", "BT", "RL", "LR"].some(
+    (value) => candidate === (caseSensitive ? value : value.toLowerCase()),
+  )
 }
 
 /**

@@ -908,7 +908,7 @@ erDiagram
   subgraph S accDescr {} accDescr {}
     A
   end
-  subgraph T [Title] accDescr { }
+  subgraph T [Title] accDescr {}
     B
   end
   subgraph U
@@ -1118,9 +1118,15 @@ erDiagram
 [fixture: accessibility-statements/block-lines-kept]
 [fixture: accessibility-statements/block-comment-and-empty-lines-kept]
 [fixture: accessibility-statements/block-text-on-opening-line]
-何も変えない空のブロックは、文の 1 つで、トークンの間の空白の規則に従います。
-中の空白の連続は、改行も含めて空白 1 つにし、
-接している波括弧は接したままにします。
+空のブロックは文の 1 つで、前の説明を Db に残します。
+内側は `{}` と印字し、`accDescr { }` は `accDescr {}` になります。
+空白の連続、改行、NBSP だけの内側も同じです。
+すでに空の内側は空のまま、`accDescr{}` は接したままです。
+空白で囲む本文がないので、Db が同じ形の選択は、
+[flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
+agentflow、usecase に合わせます。
+[test: accessibility revisions: er empty-description-nbsp]
+コメントやディレクティブがあるブロックの配置は従来どおり保ちます。
 [fixture: accessibility-statements/empty-blocks]
 [fixture: accessibility-statements/empty-block-with-directive-or-comment-line]
 [corpus fixture: er/gram-acc-descr-block-empty]

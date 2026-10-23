@@ -1,3 +1,4 @@
+import type { PieDiagram, PieNode } from "../src/ast/pie.ts"
 import type { UsecaseDiagram, UsecaseNode } from "../src/ast/usecase.ts"
 import type { AgentflowDiagram, AgentflowNode } from "../src/ast/agentflow.ts"
 import { readdirSync } from "node:fs"
@@ -70,6 +71,7 @@ describe("the types of ast.md", () => {
       | IshikawaTreeNode["type"]
       | AgentflowNode["type"]
       | UsecaseNode["type"]
+      | PieNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -93,6 +95,7 @@ describe("the types of ast.md", () => {
       | IshikawaDiagram
       | AgentflowDiagram
       | UsecaseDiagram
+      | PieDiagram
     >()
   })
 

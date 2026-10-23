@@ -634,13 +634,26 @@ Db が同じになる外側の空白を、兄弟の図種と同じ形に揃え�
 内部の文字と空白、コメント、directive、パーセントとセミコロンを保ちます。
 空と空白だけの行は、値のないコロン形式にします。
 次の物理行は別の文のままで、兄弟の次行の結合は取り込みません。
+空のコロン行の次の方向の文字も、値の文字ではなく独立した方向文のままです。
+[fixture: direction-and-accessibility/title-next-direction-separate]
+[fixture: direction-and-accessibility/description-next-direction-separate]
 [fixture: direction-and-accessibility/a11y-trimmed]
 [test: usecase: a11y-unicode-exterior]
 
 説明ブロックは、
 [class の複数行の値](./class.ja.md#multi-line-values)と同じく、
 本文の行と列を保ち、独立した `}` を文の字下げに揃えます。
-`{` の前は空白 1 個とし、空と空白だけのブロックは `accDescr {}` にします。
+語と波括弧の隙間には、
+[flowchartのトークンの間の空白](./flowchart.ja.md#トークンの間の空白)を、
+同じ理由で再利用します。
+Mermaidがトークンを読むために要する接触を、共通の隙間の規則で保つためです。
+このDbが同じ形からの選択でusecase固有の理由はありません。
+`accDescr{ a }`は接したまま、空白1つ・空白列・タブは空白1つにします。
+[fixture: direction-and-accessibility/keyword-brace-touching]
+[fixture: direction-and-accessibility/keyword-brace-space]
+[fixture: direction-and-accessibility/keyword-brace-run]
+[test: accessibility revisions: usecase keyword-brace-tab]
+空と空白だけの内部は`{}`にし、外側の隙間はその規則に従います。
 書かれた原文を保つ共有コメント領域とセミコロンの規則は、そのまま優先します。
 usecase の字下げは構造の表示なので、幅 0 とタブにも同じ配置を使います。
 [fixture: direction-and-accessibility/a11y-closer-aligned]
@@ -672,6 +685,18 @@ usecase-beta
   A
   direction BT
   direction RL
+```
+
+入力（エスケープ表記）:
+`"usecase-beta\naccDescr{ a }\nA[Keyword gap]"`。
+
+出力
+([direction-and-accessibility/keyword-brace-touching-output.mmd](../tests/fixtures/usecase/direction-and-accessibility/keyword-brace-touching-output.mmd)):
+
+```mmd
+usecase-beta
+  accDescr{ a }
+  A[Keyword gap]
 ```
 
 ### Blank lines

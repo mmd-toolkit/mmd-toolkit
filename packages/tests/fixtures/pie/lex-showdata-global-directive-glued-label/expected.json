@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a global directive between showData and a label supply a keyword boundary? No: boundaries use text with directives removed."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 5: unexpected character: ->s<- at offset: 4, skipped 8 characters. "
+  }
+}

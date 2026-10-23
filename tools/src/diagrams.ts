@@ -35,6 +35,7 @@ export const diagramIds: Readonly<
   ishikawa: ["ishikawa"],
   agentflow: ["agentflow"],
   usecase: ["usecase"],
+  pie: ["pie"],
 }
 
 /**

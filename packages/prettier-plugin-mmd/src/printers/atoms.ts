@@ -66,6 +66,8 @@ export interface AtomLayout {
   readonly joinedBefore?: ReadonlySet<number>
   /** Gaps that retain every blank line while their items and tokens align. */
   readonly keptBreaksBefore?: ReadonlySet<number>
+  /** Exact gaps after hidden forms, including a consumed LF outside the node. */
+  readonly writtenGapsBefore?: ReadonlySet<number>
 }
 
 /** Where the lines of a statement start. */
@@ -127,6 +129,13 @@ export function printAtoms(
   for (const atom of layout.atoms) {
     const text = source.text.slice(atom.start, atom.end)
     if (previous !== undefined) {
+      if (layout.writtenGapsBefore?.has(atom.start) === true) {
+        current.push(printAsWritten(source, previous.end, atom.start))
+        current.push(printAsWritten(source, atom.start, atom.end))
+        currentEndsWithWhitespace = endsWithSpaceOrTab(text)
+        previous = atom
+        continue
+      }
       const gap = readGap(source, previous.end, atom.start, true)
       if (
         gap.breaksLine &&

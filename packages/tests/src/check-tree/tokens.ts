@@ -288,7 +288,8 @@ export function checkStringsAreWhole(
     const first = token.value.charAt(0)
     problems.expect(
       STRING_QUOTES.has(first) ||
-        (root.body.type === "UsecaseDiagram" && first === "'"),
+        (["UsecaseDiagram", "PieDiagram"].includes(root.body.type) &&
+          first === "'"),
       label(token),
       `a String token does not start with a quote: ${JSON.stringify(token.value)}`,
     )

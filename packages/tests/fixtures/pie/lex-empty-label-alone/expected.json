@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Grammar: A section requires a string, colon, number and EOL. Case: empty-label-alone."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 3: Expecting token of type ':' but found `\n`."
+  }
+}

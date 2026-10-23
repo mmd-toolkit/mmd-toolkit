@@ -278,3 +278,26 @@ brace. Other layouts omit it and retain their blank-line policy.
 `semicolonSegmentEnd` and `keptSemicolonPrefixEnd` share C4's existing segment
 bounds; `protectSemicolonPrefixes` shares whole-atom prefix protection with
 Venn. No diagram branch is added to a shared printer.
+
+## Pie fixture coverage
+
+The [pie rules](./pie.md) cite fixed formatting fixtures, escaped Unicode/CR
+cases in `pie-cases.ts`, and actual Markdown hosts in `markdown-pie.test.ts`.
+`format.test.ts` and `pie.test.ts` check exact output, idempotence, Db agreement
+and embedded source; the escaped cases also check parser tree invariants.
+`corpus.test.ts` loads every pie input, including marked specified readings and
+parser failures. Complete fixture outputs check retained hidden source;
+`describeFrontmatterChange` checks that ignored YAML does not become
+frontmatter. Dispatch and value-node rows include pie.
+
+The printer calls shared accessibility colon rules and `layoutDescriptionBlock`;
+pie line forms never join a next-line value. `AtomLayout.writtenGapsBefore`
+keeps the LF consumed outside a hidden node and its closing-boundary whitespace.
+`BlockRules.joiningRegionsInValues` lets complete value atoms own common joins
+while safe suffixes format; other printers retain their previous whole-line
+path. The existing `triviaLineBreak` also receives a preceding printed boundary
+when no trivia precedes it, retaining hidden LFs while standalone trivia still
+aligns. `formatsEmptyTrivia` lets the shared description layout align pie
+comment-only blocks. A diagram-selected `keepsPrefix` root option retains the
+detection-skipped prefix before normal root cleanup, preventing ignored YAML
+from becoming real frontmatter. All options are absent for existing diagrams.

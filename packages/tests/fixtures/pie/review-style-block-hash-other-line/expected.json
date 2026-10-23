@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the style matcher stop at a block LF before a hash?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style:red\nﬂ°x¶ß",
+    "showData": false,
+    "sections": []
+  }
+}

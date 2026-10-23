@@ -26,6 +26,7 @@ const GLOBAL_NAMES: readonly string[] = [
   "expect",
   "vi",
   "__mmdSpecStubs",
+  "document",
 ]
 
 const [file, mermaidSource, workDir] = process.argv.slice(2)

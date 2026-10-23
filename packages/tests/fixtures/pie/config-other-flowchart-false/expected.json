@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common sanitization falls back to flowchart.htmlLabels."
+  },
+  "config": {
+    "securityLevel": "other",
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "<b>T</b>",
+    "accTitle": "<i>AT</i>",
+    "accDescr": "<br> AD",
+    "showData": false,
+    "sections": [
+      {
+        "label": "<b>A</b>",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an object frontmatter title use its string conversion?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "[object Object]",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "[object Object]"
+  }
+}

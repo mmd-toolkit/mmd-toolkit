@@ -144,6 +144,8 @@ const tokenCount = root.tokens.length // 8
 - Agentflow 図: `agentflow`（`agentflow-beta`）。
 - Usecase 図: `usecase`（`usecase-beta`）。
   [ノードの型](../spec/docs/ast/usecase.ja.md)を参照。
+- 円グラフ: `pie`（`pie`）。
+  [ノードの型](../spec/docs/ast/pie.ja.md)を参照。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -265,7 +267,8 @@ try {
 [`ast/c4.md`](../spec/docs/ast/c4.ja.md)、
 [`ast/venn.md`](../spec/docs/ast/venn.ja.md)、
 [`ast/ishikawa.md`](../spec/docs/ast/ishikawa.ja.md)、
-[`ast/agentflow.md`](../spec/docs/ast/agentflow.ja.md) のものです。
+[`ast/agentflow.md`](../spec/docs/ast/agentflow.ja.md)、
+[`ast/pie.md`](../spec/docs/ast/pie.ja.md) のものです。
 
 ## 木を辿る
 
@@ -495,6 +498,7 @@ mindmap と kanban 図では、空の icon（`::icon()`）、
   [`ast/ishikawa.md`](../spec/docs/ast/ishikawa.ja.md)（Ishikawa 図のノード）、
   [`ast/agentflow.md`](../spec/docs/ast/agentflow.ja.md)
   （Agentflow 図のノード）、
+  [`ast/pie.md`](../spec/docs/ast/pie.ja.md)（円グラフのノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

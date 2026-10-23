@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common statements may stand between sections."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "T",
+    "accTitle": "AT",
+    "accDescr": "AD",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      },
+      {
+        "label": "B",
+        "value": 2
+      }
+    ]
+  }
+}

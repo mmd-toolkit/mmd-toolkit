@@ -499,6 +499,105 @@ const problems: TreeProblem[] = checkTree(text, tree)
     The tokens of a string label are one `String` token, or `StringFragment`
     tokens where a directive, a comment region, or an ignored `;` cuts the
     string, and the `RawText` tokens of the words after it.
+  - pie: all eight pie node types and their child order follow
+    [ast/pie.md](../../spec/docs/ast/pie.md). The diagram keeps showData only
+    for its written flag; textBeforeHeader holds only retained hidden forms,
+    textBeforeShowData is empty without the flag, and hidden forms following the
+    header or flag otherwise begin body. Every section, including empty and
+    duplicate labels, remains a statement. [fixture: pie/db-all-fields]
+    [fixture: pie/header-only] [fixture: pie/frontmatter-nonleading-comment]
+    [fixture: pie/review-hidden-directive-before-showdata] [fixture:
+    pie/frontmatter-after-header] [fixture: pie/label-empty] [fixture:
+    pie/db-three-definitions] Before the header, detection permits one retained
+    YAML block with a body line, before second-scan directives and native bare
+    percent lines. Empty or punctuation-only percent-brace lines passed by
+    detection are Comments, rather than hidden directives; a retained
+    second-scan directive has a word type after common removal. [fixture:
+    pie/detect-two-nonleading-blocks] [fixture:
+    pie/detect-second-scan-directive-before-block] [fixture:
+    pie/lex-yaml-after-comment-adjacent-fences] [fixture:
+    pie/lex-yaml-after-bare-comment] [fixture:
+    pie/lex-preheader-yaml-empty-line-control] [fixture:
+    pie/lex-hidden-directive-second-detection-scan] [fixture:
+    pie/lex-bare-percent-braces-before-header] [fixture:
+    pie/lex-hidden-comment-before-header] Bare lines and the common whitespace
+    and line terminators detection passes after them remain trivia even between
+    a retained form and the header or another retained form. This does not widen
+    body gaps or hidden closing boundaries. [fixture:
+    pie/div-preheader-retained-yaml-bare-ls] [fixture:
+    pie/div-preheader-retained-directive-bare-ls] [fixture:
+    pie/div-preheader-retained-yaml-bare-bom] [fixture:
+    pie/div-preheader-retained-directive-bare-bom] [fixture:
+    pie/div-preheader-retained-yaml-bare-ls-line] [fixture:
+    pie/div-preheader-retained-directive-bare-ls-line] [fixture:
+    pie/div-preheader-retained-yaml-bare-then-directive] [fixture:
+    pie/lex-preheader-retained-yaml-bare-ascii] [fixture:
+    pie/lex-preheader-retained-directive-bare-ascii] [fixture:
+    pie/lex-preheader-retained-yaml-bare-ascii-line] [fixture:
+    pie/lex-preheader-retained-directive-bare-ascii-line] [fixture:
+    pie/lex-preheader-retained-yaml-bare-then-directive-ascii] The
+    case-sensitive pie/showData keywords require common whitespace, EOF or a
+    percent pair immediately afterwards; intervening unreadable Unicode
+    whitespace is rejected. StringLiteral is a complete closed single- or
+    double-quoted unit: backslash escapes cannot cross a physical LF or LS/PS,
+    while unescaped line breaks are content. NumericLiteral is a complete
+    optional-minus integer or fraction, with leading zeroes allowed only in a
+    fraction, and its shared double must not be negative, even on duplicates.
+    Negative zero and negative underflow are accepted. [fixture:
+    pie/header-letter-suffix] [fixture: pie/showdata-quote-glued] [fixture:
+    pie/lex-header-nbsp] [fixture: pie/label-single-quote] [fixture:
+    pie/label-escaped-quotes] [fixture: pie/label-multiline] [fixture:
+    pie/label-backslash-ls] [fixture: pie/number-leading-zero] [fixture:
+    pie/number-decimal-leading-zero] [fixture: pie/db-duplicate-negative]
+    [fixture: pie/number-negative-zero] [fixture:
+    pie/review-number-negative-underflow-final] Common values fill their entire
+    composite lexical form. A title starts after one ASCII space/tab;
+    accessibility line text starts immediately after its colon, whose preceding
+    gap allows only ASCII spaces/tabs. These line values preserve their written
+    edges and end before LF or a percent pair. Description blocks permit common
+    whitespace before the opener, close at the first brace, and retain a trimmed
+    interior. Null means no written value, including whitespace-only block
+    interiors; it does not erase the statement. [fixture: pie/title-spaces]
+    [fixture: pie/acctitle-spaces] [fixture: pie/acctitle-eof] [fixture:
+    pie/ast-title-tab-null-eof] [fixture: pie/title-comment] [fixture:
+    pie/accdescr-block-gap] [fixture: pie/accdescr-block-nested] [fixture:
+    pie/review-accdescr-empty-block-first] Each PieIgnoredText is one complete
+    hidden YAML or DIRECTIVE form. Explicit character scanning checks the
+    earliest bounded closer and excludes its consumed following LF from the
+    node. Only the specified section gaps, common textAfter lists and diagram
+    positions can own it; strings and description blocks absorb hidden-looking
+    text as content. A visible LF cannot stand between section components or
+    before showData. After a completed statement, a following item needs an LF
+    that remains after hidden consumption; EOF needs none. A hidden form after a
+    visible EOL belongs to body, rather than the preceding statement. [fixture:
+    pie/review-yaml-between-label-colon] [fixture:
+    pie/frontmatter-between-section-parts] [fixture:
+    pie/lex-yaml-closer-suffix-skip-later] [fixture:
+    pie/lex-hidden-multiple-closers] [fixture: pie/gram-newline-before-colon]
+    [fixture: pie/showdata-next-line] [fixture: pie/review-yaml-after-section]
+    [fixture: pie/review-yaml-after-section-space] [fixture:
+    pie/gram-section-eof-hidden-yaml] [fixture:
+    pie/lex-hidden-after-title-before-comment] [fixture:
+    pie/review-label-hidden-yaml-text] [fixture:
+    pie/review-block-hidden-yaml-text] At each native Comment after the header,
+    the earlier hidden DIRECTIVE rule must not match, and no STRING or composite
+    description block may already enclose its start. Detection's pre-header bare
+    percent-brace Comments remain valid. [fixture:
+    pie/review-hidden-directive-after-section] [fixture:
+    pie/review-hidden-directive-after-title] [fixture:
+    pie/review-hidden-directive-after-acctitle] [fixture:
+    pie/review-hidden-directive-after-accdescr] [fixture:
+    pie/review-hidden-directive-after-block] [fixture:
+    pie/review-directive-empty-body] [fixture:
+    pie/lex-bare-percent-braces-before-header] Native comments also consume
+    their trailing whitespace, including LS/PS; that padding is outside the
+    trimmed Comment record and remains comment trivia when a common region
+    bridges its continuation. [fixture: pie/lex-comment-ls-region-bridge] Shared
+    coverage, written-value, raw, range and token checks also apply; hidden
+    forms and common literals use RawText, numbers Numeric, and strings String
+    or StringFragment. Hand-built and broken trees exercise these rules;
+    recorded trees are checked without importing a parser.
+
   - agentflow: all 29 node types, child types, field order, required nonempty
     lists and scalar vocabularies follow
     [ast/agentflow.md](../../spec/docs/ast/agentflow.md). Structural ranges are

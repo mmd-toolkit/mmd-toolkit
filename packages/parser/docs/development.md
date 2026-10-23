@@ -44,7 +44,8 @@ diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
 (`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
 C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`), and
-usecase (`usecase`). Every other detected type throws `UnsupportedDiagramError`.
+usecase (`usecase`), and pie (`pie`). Every other detected type throws
+`UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -68,8 +69,8 @@ The parser of each diagram follows its document,
 [`diagrams/venn.md`](../../spec/docs/diagrams/venn.md), or
 [`diagrams/ishikawa.md`](../../spec/docs/diagrams/ishikawa.md), or
 [`diagrams/agentflow.md`](../../spec/docs/diagrams/agentflow.md), or
-[`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.md). It has three
-parts:
+[`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.md), or
+[`diagrams/pie.md`](../../spec/docs/diagrams/pie.md). It has three parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -196,3 +197,15 @@ specified brace/string balancing finds their end. [fixture:
 usecase/db-all-fields] [fixture: usecase/lex-keyword-longer-number] [fixture:
 usecase/gram-native-final-invalid-then-valid] [fixture:
 usecase/div-json-balanced-invalid-array]
+
+The pie lexer implements the first-match rules in the specification's priority
+order, including composite common forms and hidden YAML/DIRECTIVE forms that
+consume one following LF. Its grammar owns retained forms in their specified
+source gaps and rejects section values below zero after double conversion.
+Detection passes one frontmatter-shaped block once, retaining it for pie, and
+pie also reads second-scan directives; detection's bare lines remain comments.
+[fixture: pie/db-all-fields] [fixture: pie/frontmatter-nonleading-comment]
+[fixture: pie/lex-hidden-directive-second-detection-scan] [fixture:
+pie/lex-hidden-before-colon-lf] [fixture:
+pie/review-hidden-directive-after-title] [fixture: pie/number-negative]
+[fixture: pie/number-negative-zero]

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does final LF remove the C4 percent suffix from detection while the full quoted label remains? Pie accepts."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "C4Context %% C4Container",
+        "value": 1
+      }
+    ]
+  }
+}

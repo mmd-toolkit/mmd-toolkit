@@ -65,6 +65,7 @@ The plugin reads these diagram types:
 - Venn diagrams: `venn` (`venn-beta`).
 - Ishikawa diagrams: `ishikawa` (`ishikawa` and `ishikawa-beta`).
 - Agent flow diagrams: `agentflow` (`agentflow-beta`).
+- Pie charts: `pie` (`pie`).
 
 ER diagrams and Gantt charts have no rules of their own yet. Other diagram types
 are reported as parse errors until they are supported.

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a truthy boolean frontmatter title stringify?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "true",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "true"
+  }
+}

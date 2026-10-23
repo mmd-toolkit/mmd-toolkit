@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a C4 word in an EOF comment after a section override pie detection? Mermaid selects C4 and rejects; the specification retains the Comment."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npie\"A\":1 %% C4Conta\n^"
+  }
+}

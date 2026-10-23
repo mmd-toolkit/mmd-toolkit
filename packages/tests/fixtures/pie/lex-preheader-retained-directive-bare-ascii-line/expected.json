@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An ASCII whitespace-only line after a retained second-scan directive and a bare percent line is accepted, yielding an empty pie."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}
