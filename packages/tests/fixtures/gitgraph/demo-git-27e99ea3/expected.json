@@ -1,0 +1,80 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/git.html",
+    "line": 236
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "BT",
+    "title": "Cherry-pick from branch (bottom-to-top)",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "Pick me",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "newbranch"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 2,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-3",
+        "seq": 3,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "Pick me"
+        ],
+        "branch": "newbranch"
+      },
+      {
+        "id": "generated-commit-4",
+        "seq": 4,
+        "type": 4,
+        "tags": [
+          "cherry-pick:Pick me"
+        ],
+        "parents": [
+          "generated-commit-2",
+          "Pick me"
+        ],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "newbranch"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Cherry-pick from branch (bottom-to-top)"
+  }
+}

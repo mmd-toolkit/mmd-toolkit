@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`SystemDb_Ext` followed by a directive line before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ContextSystemDb_Ext(a, \"A\", \"D\", \"spr\n----------------------^"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Three definitions of a section id test duplication and association with an intervening section."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "First",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "One",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "C",
+        "label": "Three",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "D",
+        "label": "Four",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "T",
+        "label": "Other",
+        "isGroup": true
+      },
+      {
+        "id": "B",
+        "label": "Two",
+        "isGroup": false,
+        "parentId": "T"
+      },
+      {
+        "id": "S",
+        "label": "Second",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "One",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "C",
+        "label": "Three",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "D",
+        "label": "Four",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "S",
+        "label": "Third",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "One",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "C",
+        "label": "Three",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "D",
+        "label": "Four",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

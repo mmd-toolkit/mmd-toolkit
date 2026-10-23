@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: inside a title text, `%` is a character of the text."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "T % c",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

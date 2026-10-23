@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With the site configuration `wrap` true, the prefix `nowrap:` gives the box `wrap` false, whether the name follows a colour or not."
+  },
+  "config": {
+    "wrap": true
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": true,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B",
+        "box": 0
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": true,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 1
+      }
+    ],
+    "boxes": [
+      {
+        "name": "H",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      },
+      {
+        "name": "J",
+        "wrap": false,
+        "fill": "aqua",
+        "actorKeys": [
+          "B"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

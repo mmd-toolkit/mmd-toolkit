@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does accTitle trim padding after one removed classDef semicolon?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "classDef:#x",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

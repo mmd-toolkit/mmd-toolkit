@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note text context: `end note` needs one space between the words; with a tab, the note does not end, and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...  A  note left of A    t  end\tnote\n----------------------^"
+  }
+}

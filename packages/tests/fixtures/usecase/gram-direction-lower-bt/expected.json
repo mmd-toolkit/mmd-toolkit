@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is lowercase bt rejected as a direction value?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [TD]\n  2. [TB]\n  3. [BT]\n  4. [LR]\n  5. [RL]\nbut found: 'bt' at line 2, column 11 [23,25)"
+  }
+}

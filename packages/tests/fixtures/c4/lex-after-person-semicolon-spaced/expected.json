@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A person semicolon spaced suffix after the call or boundary body is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...e\", \"tags\", \"link\") ;\n-----------------------^"
+  }
+}

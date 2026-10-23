@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The style context, rule 2: a space before a blank line; accepted, `fill:redA`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:redA"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

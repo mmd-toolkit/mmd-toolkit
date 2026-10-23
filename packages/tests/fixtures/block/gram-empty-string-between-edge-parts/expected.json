@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, empty forms: after the start of an edge label an empty string is the label, and a second string is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nblock-beta  A -- \"\" \"x\" --> B\n-------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, level: a tab is not expanded to a tab stop, so a node indented with one tab is less indented than a root of four spaces and is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "There can be only one root. No parent could be found for (\"child\")"
+  }
+}

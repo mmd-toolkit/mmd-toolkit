@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Empty description blocks: inside a section, `accDescr {}` is text."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S accDescr {}"
+    ],
+    "tasks": []
+  }
+}

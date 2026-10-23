@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The reserved connectors id creates no ordinary vertex, and its block changes nothing."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "connectors",
+        "set": {}
+      }
+    ]
+  }
+}

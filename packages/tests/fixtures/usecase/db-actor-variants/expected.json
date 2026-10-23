@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do actor type, icon and business values retain their resolved geometry?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Normal",
+        "label": "Normal",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Hollow",
+        "label": "Hollow",
+        "labelType": "text",
+        "type": "hollow",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Awesome",
+        "label": "Awesome",
+        "labelType": "text",
+        "type": "awesome",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Icon",
+        "label": "Icon",
+        "labelType": "text",
+        "type": "icon",
+        "icon": "fa:user",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

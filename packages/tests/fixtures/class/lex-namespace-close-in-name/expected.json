@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A closing brace inside a nested namespace name: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ace A {namespace B }\n----------------------^\nExpecting 'SQS', 'DOT', 'STRUCT_START', 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'STRUCT_STOP'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The namespace body context: no comment rule applies there."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...espace N {note \"x\" %% c}\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_STOP', got 'PCT'"
+  }
+}

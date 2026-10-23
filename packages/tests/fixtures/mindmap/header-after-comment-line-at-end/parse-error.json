@@ -1,0 +1,17 @@
+{
+  "message": "The header cannot end the text",
+  "range": [
+    5,
+    12
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 7
+    }
+  }
+}

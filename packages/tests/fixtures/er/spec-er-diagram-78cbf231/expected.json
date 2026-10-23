@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 190,
+    "test": "when parsing ER diagram it... > attribute name > should allow alphanumeric characters, dashes, underscores and brackets (not leading chars)"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-BOOK-0",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "myBookTitle",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "MYBOOKSUBTITLE_1",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "author-ref[name](1)",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "BOOK",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

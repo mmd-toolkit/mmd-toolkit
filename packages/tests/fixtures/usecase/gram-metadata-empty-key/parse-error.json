@@ -1,0 +1,17 @@
+{
+  "message": "The native metadata property is invalid for its target",
+  "range": [
+    22,
+    28
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 9
+    },
+    "end": {
+      "line": 2,
+      "column": 15
+    }
+  }
+}

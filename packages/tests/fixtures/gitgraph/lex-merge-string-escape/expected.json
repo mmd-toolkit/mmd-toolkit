@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Merge name and option strings share default escape conversion."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "B",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "aq"
+      },
+      {
+        "id": "mq",
+        "seq": 2,
+        "type": 3,
+        "tags": [
+          "tq"
+        ],
+        "parents": [
+          "A",
+          "B"
+        ],
+        "branch": "main",
+        "customId": true
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "aq"
+      }
+    ]
+  }
+}

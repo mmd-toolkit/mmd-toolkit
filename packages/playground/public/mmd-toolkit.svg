@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <title>mmd-toolkit</title>
+  <rect width="64" height="64" rx="18" fill="#ff3670" />
+  <g fill="#fff">
+    <rect x="10" y="14" width="18" height="9" rx="4.5" />
+    <rect x="36" y="14" width="18" height="9" rx="4.5" />
+    <rect x="10" y="27.5" width="12" height="9" rx="4.5" />
+    <rect x="26" y="27.5" width="12" height="9" rx="4.5" />
+    <rect x="42" y="27.5" width="12" height="9" rx="4.5" />
+    <rect x="10" y="41" width="14" height="9" rx="4.5" />
+    <rect x="40" y="41" width="14" height="9" rx="4.5" />
+  </g>
+</svg>

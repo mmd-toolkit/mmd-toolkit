@@ -1,0 +1,17 @@
+{
+  "message": "A branch cannot merge itself",
+  "range": [
+    64,
+    74
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 14
+    },
+    "end": {
+      "line": 4,
+      "column": 24
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "UpdateRelStyle keyword with a glued letter is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...tRel(a, b, \"Uses\")UpdateRelStylex(a, b\n---------------------^"
+  }
+}

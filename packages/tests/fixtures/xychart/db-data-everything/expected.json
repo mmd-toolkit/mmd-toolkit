@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, all fields: the frontmatter title replaced by a statement, the accessibility texts, and a short bar."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "horizontal",
+    "title": "T",
+    "accTitle": "AT",
+    "accDescr": "AD",
+    "xAxis": {
+      "type": "band",
+      "title": "X",
+      "categories": [
+        "a",
+        "b c"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "Y",
+      "min": -1,
+      "max": 10
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "L",
+        "data": [
+          [
+            "a",
+            1
+          ],
+          [
+            "b c",
+            2
+          ]
+        ],
+        "pointLabels": [
+          "p",
+          ""
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "a",
+            3
+          ],
+          [
+            "b c",
+            null
+          ]
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "title": "FM"
+  }
+}

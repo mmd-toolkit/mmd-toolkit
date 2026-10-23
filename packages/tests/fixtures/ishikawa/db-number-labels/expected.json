@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Are numeric-looking labels kept as text without number conversion?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "-0",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "-0",
+      "children": [
+        {
+          "text": "+1",
+          "children": []
+        },
+        {
+          "text": "NaN",
+          "children": []
+        },
+        {
+          "text": "Infinity",
+          "children": []
+        },
+        {
+          "text": "9007199254740993tail",
+          "children": []
+        }
+      ]
+    }
+  }
+}

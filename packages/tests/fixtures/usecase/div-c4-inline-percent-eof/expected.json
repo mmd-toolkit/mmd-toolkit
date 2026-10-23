@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: The inline percent suffix at EOF remains visible to C4 detection although it is valid usecase label text."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nusecase-betaA(C4Con\n^"
+  }
+}

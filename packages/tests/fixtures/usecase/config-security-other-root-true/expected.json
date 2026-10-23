@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does root htmlLabels true override the false flowchart fallback?"
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true,
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "&lt;b&gt;Title&lt;/b&gt;",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "A",
+        "label": "<i>Label</i>",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

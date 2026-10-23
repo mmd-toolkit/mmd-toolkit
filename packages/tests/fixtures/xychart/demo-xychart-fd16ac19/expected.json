@@ -1,0 +1,79 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/xychart.html",
+    "line": 84
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Basic xychart showDataLabel and showDataLabelOutsideBar",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "this is x axis",
+      "categories": [
+        "category1",
+        "category 2",
+        "category3",
+        "category4",
+        "category5",
+        "category6",
+        "category7"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "yaxisText",
+      "min": 10,
+      "max": 150
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "sample bar",
+        "data": [
+          [
+            "category1",
+            52
+          ],
+          [
+            "category 2",
+            96
+          ],
+          [
+            "category3",
+            35
+          ],
+          [
+            "category4",
+            10
+          ],
+          [
+            "category5",
+            87
+          ],
+          [
+            "category6",
+            34
+          ],
+          [
+            "category7",
+            67
+          ]
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "xyChart": {
+        "showDataLabel": true,
+        "showDataLabelOutsideBar": true
+      }
+    }
+  }
+}

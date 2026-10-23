@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The id context: an id cannot contain `:`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Diagramparticipant A:B\n----------------------^\nExpecting 'ACTOR', got 'INVALID'"
+  }
+}

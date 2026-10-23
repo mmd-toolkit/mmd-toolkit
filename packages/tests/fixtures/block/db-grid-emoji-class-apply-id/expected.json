@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, non-ASCII: an emoji in the middle of the id of a `class` statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a😀b",
+          "label": "a😀b",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "a",
+        "type": "na",
+        "classes": [
+          "😀b c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

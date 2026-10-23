@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Trailing empty class-definition name is kept."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "FF qualifies the header boundary but is not a hidden gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 5: unexpected character: ->\f<- at offset: 4, skipped 1 characters. "
+  }
+}

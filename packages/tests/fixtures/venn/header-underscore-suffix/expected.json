@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header underscore suffix form is rejected by the grammar or its validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nvenn-beta_\n^\nExpecting 'VENN', 'NEWLINE', got 'IDENTIFIER'"
+  }
+}

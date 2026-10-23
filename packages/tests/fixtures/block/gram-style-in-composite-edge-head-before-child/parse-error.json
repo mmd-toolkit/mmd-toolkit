@@ -1,0 +1,17 @@
+{
+  "message": "style names no block made before it",
+  "range": [
+    37,
+    38
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 10
+    },
+    "end": {
+      "line": 3,
+      "column": 11
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: a `tickInterval` text ends before `;`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntttickInterval 1w;\n----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

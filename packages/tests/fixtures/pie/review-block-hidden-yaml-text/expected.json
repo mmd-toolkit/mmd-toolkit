@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does ACC_DESCR priority preserve YAML fences inside its block?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "---\nx: y\n---",
+    "showData": false,
+    "sections": []
+  }
+}

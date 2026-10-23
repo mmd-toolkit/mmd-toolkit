@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, header: a header and a comment line are rejected, since they have no record."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nsankey\n------^\nExpecting 'NEWLINE', got 'EOF'"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Container header with a glued comment is rejected."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...Container%% commentPerson(a, \"A\")\n----------------------^\nExpecting 'NEWLINE', got 'PERSON'"
+  }
+}

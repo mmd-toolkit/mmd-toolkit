@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, styles: a `style` for a block that a class made."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [
+      {
+        "id": "A",
+        "type": "na",
+        "classes": [
+          "c"
+        ],
+        "styles": [
+          "fill:#f00"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

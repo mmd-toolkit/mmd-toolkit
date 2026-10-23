@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A U+0085 before the header is rejected with UnknownDiagramError."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: C4Context\nPerson(a, \"A\")\n"
+  }
+}

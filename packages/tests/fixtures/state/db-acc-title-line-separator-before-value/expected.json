@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 is whitespace, so the title is `x`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "x",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

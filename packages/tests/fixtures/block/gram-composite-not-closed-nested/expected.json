@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: the outer composite is not closed: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 7:\n...:H      A    end\n-------------------^\nExpecting 'end', got 'EOF'"
+  }
+}

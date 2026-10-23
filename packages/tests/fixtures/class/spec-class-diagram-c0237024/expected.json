@@ -1,0 +1,77 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 1480,
+    "test": "given a class diagram with generics,  > when parsing valid generic classes > should handle namespace with generic types"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Square",
+        "type": "Shape",
+        "label": "Square",
+        "text": "Square&lt;Shape&gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "setPoints",
+            "parameters": "List~int~ points",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "getPoints",
+            "parameters": "",
+            "returnType": "List~int~"
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "int id"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "List~int~ position"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "space"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "space",
+        "label": "space",
+        "classes": [
+          "Square"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

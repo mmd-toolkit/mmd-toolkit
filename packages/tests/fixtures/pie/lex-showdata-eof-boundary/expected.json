@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Keyword boundaries: The words `pie` and `showData` are case-sensitive and must be followed immediately by common whitespace, the end of text, or `%%`. Case: showdata-eof-boundary."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": true,
+    "sections": []
+  }
+}

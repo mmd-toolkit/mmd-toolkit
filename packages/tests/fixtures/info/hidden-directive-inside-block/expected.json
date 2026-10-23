@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The brace in directive-looking text ends ACC_DESCR first and leaves invalid later text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 2: unexpected character: ->B<- at offset: 26, skipped 1 characters.\nLexer error on line 3, column 4: unexpected character: ->}<- at offset: 28, skipped 1 characters. "
+  }
+}

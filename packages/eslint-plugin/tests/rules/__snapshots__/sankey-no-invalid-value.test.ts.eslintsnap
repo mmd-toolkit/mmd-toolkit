@@ -1,0 +1,401 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: sankey-no-invalid-value >> invalid >>> docs/rules/sankey-no-invalid-value.md incorrect 1
+Filename: sankey-no-invalid-value-incorrect-1.mmd
+
+Code:
+  1 | sankey
+  2 | Electricity grid,Homes,"1,234"
+    |                        ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> docs/rules/sankey-no-invalid-value.md incorrect 2
+Filename: sankey-no-invalid-value-incorrect-2.mmd
+
+Code:
+  1 | sankey
+  2 | Electricity grid,Homes,unknown
+    |                        ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-quoted-value-not-a-number
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-quoted-value-not-a-number-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,"abc"
+    |     ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-quoted-value-with-comma
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-quoted-value-with-comma-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,"1,5"
+    |     ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-quoted-value-with-quotes
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-quoted-value-with-quotes-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,"1"""
+    |     ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-spaces-only-value
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-spaces-only-value-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b, 
+    |     ^ [1]
+  3 | c,d,1
+  4 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-hash-after-number
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-hash-after-number-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1 #c
+    |     ^~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-hexadecimal
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-hexadecimal-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,0x10
+    |     ^~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-nan-text
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-nan-text-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,NaN
+    |     ^~~ [1]
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-not-a-number
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-not-a-number-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,abc
+    |     ^~~ [1]
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-number-after-text
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-number-after-text-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,abc1
+    |     ^~~~ [1]
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-semicolon-after-number
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-semicolon-after-number-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1;
+    |     ^~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-space-semicolon-after-number
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-space-semicolon-after-number-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1 ;
+    |     ^~~ [1]
+  3 | c,d,2
+  4 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-text-after-number
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-text-after-number-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1abc
+    |     ^~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-two-dots
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-two-dots-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1.2.3
+    |     ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-two-numbers
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-two-numbers-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1 2
+    |     ^~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-two-semicolons-after-number
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-two-semicolons-after-number-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1;;
+    |     ^~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/db-value-underscore
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/db-value-underscore-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1_000
+    |     ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-directive-and-spaces
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-directive-and-spaces-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b, %%{init: {}}%% 
+    |     ^~~~~~~~~~~~~~~~ [1]
+  3 | c,d,2
+  4 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-exponent-without-digits
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-exponent-without-digits-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1e
+    |     ^~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-infinity-lower-case
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-infinity-lower-case-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,infinity
+    |     ^~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-infinity-then-text
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-infinity-then-text-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,Infinityx
+    |     ^~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-percent-only
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-percent-only-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,%% c
+    |     ^~~~ [1]
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-quoted-comment-line
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-quoted-comment-line-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,"1
+    |     ^~\ [1]
+  3 | %% c
+    | ~~~~\ [1]
+  4 | 2"
+    | ~~ [1]
+  5 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-quoted-line-feed
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-quoted-line-feed-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,"1
+    |     ^~\ [1]
+  3 | 2"
+    | ~~ [1]
+  4 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-quoted-thousands
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-quoted-thousands-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,"1,234"
+    |     ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-second-record
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-second-record-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1
+  3 | c,d,"1,5"
+    |     ^~~~~ [1]
+  4 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-sign-only
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-sign-only-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,+
+    |     ^ [1]
+  3 |
+
+[1] mermaid.js reads this value as NaN, because it does not start with a number: the link has no size.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-text-after-number-crlf
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-text-after-number-crlf-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1x
+    |     ^~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---
+
+
+Test: sankey-no-invalid-value >> invalid >>> invalid/sankey/value-with-unit
+Filename: tests/fixtures/rules/sankey-no-invalid-value/invalid/sankey/value-with-unit-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,5 TWh
+    |     ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads only the number at the start of this value and drops the rest of it.
+---

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P2: line endings and whitespace] Are CRLF boundaries normalized to LF before parsing?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

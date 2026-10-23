@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: the line feed before a line `%%` is read with the comment in mermaid.js and takes away no level; a title with a digit after it is rejected there."
+  },
+  "knownDivergence": "title-digit-after-axis-statement",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n... line [1]%%title Q1\n---------------------^\nExpecting 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'NUMBER_WITH_DECIMAL'"
+  }
+}

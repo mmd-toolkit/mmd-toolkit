@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, parent: the parent of a node is the nearest node before it that is less indented, not the one before it."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 4,
+          "descr": "a",
+          "type": 0,
+          "children": []
+        },
+        {
+          "nodeId": "b",
+          "level": 2,
+          "descr": "b",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "c",
+              "level": 6,
+              "descr": "c",
+              "type": 0,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, y-axis: letters and then digits are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n... y-axis Revenue2024\n----------------------^\nExpecting 'ARROW_DELIMITER', got 'NEWLINE'"
+  }
+}

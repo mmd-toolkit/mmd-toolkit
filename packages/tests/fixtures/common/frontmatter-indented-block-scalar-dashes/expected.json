@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Frontmatter: the delimiter lines are indented by two spaces, so `---` indented by six spaces in the block scalar is not a delimiter line, and the title is `---` and a line feed."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "---\n",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "---\n"
+  }
+}

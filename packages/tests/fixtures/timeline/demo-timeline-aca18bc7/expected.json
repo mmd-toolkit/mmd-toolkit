@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/timeline.html",
+    "line": 27
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "TD",
+    "title": "My day",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Wake up",
+      "Go to work"
+    ],
+    "tasks": [
+      {
+        "section": "Wake up",
+        "task": "0600 ",
+        "events": [
+          "step",
+          "step"
+        ]
+      },
+      {
+        "section": "Go to work",
+        "task": "0800 ",
+        "events": [
+          "first step ",
+          "second step",
+          "third step very very very very very loooooong"
+        ]
+      },
+      {
+        "section": "Go to work",
+        "task": "1940 ",
+        "events": [
+          "fourth step ",
+          "fifth step"
+        ]
+      }
+    ]
+  }
+}

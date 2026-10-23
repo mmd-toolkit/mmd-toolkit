@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "style-rule-other-line inside metadata tests preprocessing before tokenization."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "astyle:#x<br/>;yb",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "label": "astyle:#x<br/>;yb"
+        }
+      }
+    ]
+  }
+}

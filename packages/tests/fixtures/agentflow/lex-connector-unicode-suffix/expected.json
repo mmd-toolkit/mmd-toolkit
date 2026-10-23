@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A non-ASCII character after connector is not its required space."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ow-beta TBconnector猫\n----------------------^\nExpecting 'SPACE', got 'UNICODE_TEXT'"
+  }
+}

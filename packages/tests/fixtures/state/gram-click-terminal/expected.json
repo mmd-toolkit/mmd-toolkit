@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar: the state of a click statement may be [*]."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "[*]",
+        "url": "\"u\"",
+        "tooltip": ""
+      }
+    ]
+  }
+}

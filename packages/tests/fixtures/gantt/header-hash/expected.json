@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Detection: the header followed by `#`, a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\ngantt#\n------^\nExpecting 'taskData', got 'NL'"
+  }
+}

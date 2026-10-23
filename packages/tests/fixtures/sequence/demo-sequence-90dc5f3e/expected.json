@@ -1,0 +1,330 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/sequence.html",
+    "line": 18
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "test the accTitle",
+    "accDescr": "Test a description",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "links": {
+          "Dashboard": "https://dashboard.contoso.com/alice",
+          "Wiki": "https://wiki.contoso.com/alice"
+        },
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "John"
+      },
+      {
+        "name": "John",
+        "description": "John<br />Second Line",
+        "wrap": false,
+        "prevActor": "Bob",
+        "links": {
+          "Dashboard": "https://dashboard.contoso.com/john",
+          "Wiki": "https://wiki.contoso.com/john"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": {
+          "start": 10,
+          "step": 10,
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "message": "rgb(200, 220, 100)",
+        "wrap": false,
+        "type": 22,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "rgb(200, 255, 200)",
+        "wrap": false,
+        "type": 22,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Hello Bob, how are you?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "to": "John",
+        "message": "How about you John?",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 23,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "to": "Alice",
+        "message": "I am good thanks!",
+        "wrap": false,
+        "type": 4,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "to": "John",
+        "message": "I am good thanks!",
+        "wrap": false,
+        "type": 3,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "to": "John",
+        "message": "John thinks a long<br />long time, so long<br />that the text does<br />not fit on a row.",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      },
+      {
+        "from": "Bob",
+        "to": "Alice",
+        "message": "Checking with John...",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "to": "John",
+        "message": "John looks like he's still thinking, so Bob prods him a bit.",
+        "wrap": true,
+        "type": 2,
+        "placement": 2
+      },
+      {
+        "from": "Bob",
+        "to": "John",
+        "message": "Hey John - we're still waiting to know<br />how you're doing",
+        "wrap": false,
+        "type": 3,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "to": "John",
+        "message": "John's trying hard not to break his train of thought.",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      },
+      {
+        "from": "Bob",
+        "to": "John",
+        "message": "John! Are you still debating about how you're doing? How long does it take??",
+        "wrap": true,
+        "type": 3,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "to": "John",
+        "message": "After a few more moments, John<br />finally snaps out of it.",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 23,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": {
+          "visible": false
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "message": "either this",
+        "wrap": false,
+        "type": 12,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "John",
+        "message": "Yes",
+        "wrap": false,
+        "type": 0,
+        "activate": true,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "to": "Alice",
+        "message": "OK",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "John",
+        "message": "",
+        "wrap": false,
+        "type": 18,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "or this",
+        "wrap": false,
+        "type": 13,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": {
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "from": "Alice",
+        "to": "John",
+        "message": "No",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "or this will happen",
+        "wrap": false,
+        "type": 13,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "John",
+        "message": "Maybe",
+        "wrap": false,
+        "type": 5,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 14,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": {
+          "start": 200,
+          "step": 1,
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "message": "this happens in parallel",
+        "wrap": false,
+        "type": 19,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Parallel message 1",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 20,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "John",
+        "message": "Parallel message 2",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 21,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

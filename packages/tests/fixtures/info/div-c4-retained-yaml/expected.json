@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: C4 specified reading preserves retained YAML before info."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\n---x: y---infoti\n^"
+  }
+}

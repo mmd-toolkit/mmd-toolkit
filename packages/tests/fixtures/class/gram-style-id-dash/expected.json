@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Other statements: the id after `style` is one word."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...amclass A-Bstyle A-B fill:red\n---------------------^\nExpecting 'LABEL', 'SPACE', 'ALPHA', 'STYLE', 'NUM', 'COLON', 'UNIT', 'BRKT', 'PCT', got 'MINUS'"
+  }
+}

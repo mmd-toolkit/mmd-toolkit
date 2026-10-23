@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Unsupported securityLevel and HTML-label settings control character replacement in the common title only."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "<b>T</b> = value",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "<b>A</b>"
+        ],
+        "size": 10,
+        "label": "<b>L</b>"
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "<b>A</b>"
+        ],
+        "id": "<b>I</b>"
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "<b>A</b>"
+        ],
+        "styles": {
+          "color": "<b>red</b>"
+        }
+      }
+    ]
+  }
+}

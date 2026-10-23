@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Empty description blocks: an unclosed empty block inside the values at the end of the text; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...line [1, accDescr {\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'acc_descr_multiline_value'"
+  }
+}

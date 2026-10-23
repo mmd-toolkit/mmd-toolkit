@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ASCII space immediately before the header after a bare line."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

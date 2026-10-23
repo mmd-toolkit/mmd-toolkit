@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does CRLF normalize before stereotype newline rejection?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> STEREOTYPE_TEXT <-- but found --> 'first' <-- at line 2, column 5 [17,22)"
+  }
+}

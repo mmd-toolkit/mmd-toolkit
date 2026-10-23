@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Grammar: The end of the source supplies the common appended LF, without adding written text. Case: yaml-after-value-before-eol."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 5, column 1: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: '\"B\"'"
+  }
+}

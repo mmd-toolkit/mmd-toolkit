@@ -1,0 +1,17 @@
+{
+  "message": "click has no click id before the end of the text",
+  "range": [
+    18,
+    23
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 5
+    }
+  }
+}

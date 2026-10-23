@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A title keyword and one space without a value are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4Contexttitle \n---------^"
+  }
+}

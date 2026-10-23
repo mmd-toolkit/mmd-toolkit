@@ -1,0 +1,118 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 34,
+    "test": "given a basic class diagram,  > when parsing class definition > should handle classes within namespaces"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "User",
+        "type": "",
+        "label": "User",
+        "text": "User",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "login",
+            "parameters": "username: String, password: String",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "logout",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Company.Project"
+      },
+      {
+        "id": "Admin",
+        "type": "",
+        "label": "Admin",
+        "text": "Admin",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "addUser",
+            "parameters": "user: User",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "removeUser",
+            "parameters": "user: User",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Company.Project.Module"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Company",
+        "label": "Company",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "Company.Project"
+        ],
+        "explicit": false
+      },
+      {
+        "id": "Company.Project",
+        "label": "Project",
+        "classes": [
+          "User"
+        ],
+        "notes": [],
+        "children": [
+          "Company.Project.Module"
+        ],
+        "parent": "Company",
+        "explicit": true
+      },
+      {
+        "id": "Company.Project.Module",
+        "label": "Module",
+        "classes": [
+          "Admin"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "Company.Project",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

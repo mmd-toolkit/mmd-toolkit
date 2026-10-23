@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accDescr block followed by plain text on the same line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...textaccDescr { D } tailPerson(a, \"A\")\n----------------------^"
+  }
+}

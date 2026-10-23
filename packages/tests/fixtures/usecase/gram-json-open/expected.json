@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an unclosed JSON body reject as one unclosed token?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> JSON_OBJECT_LITERAL <-- but found --> '{\"a\":1\n' <-- at line 2, column 8 [20,27)"
+  }
+}

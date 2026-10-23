@@ -1,0 +1,132 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The complete summary retains titles, records, defaults, styles, tooltips, URLs and callback calls."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "Workflow",
+    "accTitle": "Accessible",
+    "accDescr": "Description",
+    "vertices": [
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "API",
+        "props": {},
+        "metadata": {
+          "endpoint": "x"
+        }
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "stroke:green"
+        ],
+        "classes": [
+          "hot",
+          "clickable"
+        ],
+        "text": "Task",
+        "type": "square",
+        "props": {},
+        "link": "https://example.com",
+        "linkTarget": "_blank"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "Check",
+        "type": "diamond",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0",
+        "style": [
+          "stroke:red",
+          "fill:none"
+        ]
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": "linear",
+      "style": [
+        "stroke:gray"
+      ]
+    },
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "fill:red",
+          "color:blue"
+        ]
+      }
+    ],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "B",
+          "A"
+        ],
+        "title": "Group",
+        "classes": [
+          "hot"
+        ],
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "tip"
+      },
+      {
+        "id": "B",
+        "text": "callback"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "B",
+        "name": "run",
+        "args": "\"x\", 2"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Workflow",
+    "dataBlockEffects": [
+      {
+        "id": "C",
+        "set": {
+          "metadata": {
+            "endpoint": "x"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,92 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-unclosed-description-block >> invalid >>> docs/rules/requirement-no-unclosed-description-block.md incorrect 1
+Filename: requirement-no-unclosed-description-block-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   accDescr { x
+    |   ^~~~~~~~~~ [1]
+  3 |   requirement r {
+  4 |     id: 1
+  5 |   }
+  6 |   element e {
+  7 |     type: simulation
+  8 |   }
+  9 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: requirement-no-unclosed-description-block >> invalid >>> invalid/requirement/unclosed-closed-by-body-crlf
+Filename: tests/fixtures/rules/requirement-no-unclosed-description-block/invalid/requirement/unclosed-closed-by-body-crlf-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr { d
+    | ^~~~~~~~~~ [1]
+  3 | requirement r {
+  4 |   id: 1
+  5 | }
+  6 | element e {
+  7 | }
+  8 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: requirement-no-unclosed-description-block >> invalid >>> invalid/requirement/unclosed-closed-by-element-body
+Filename: tests/fixtures/rules/requirement-no-unclosed-description-block/invalid/requirement/unclosed-closed-by-element-body-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr { d
+    | ^~~~~~~~~~ [1]
+  3 | element e {
+  4 |   type: t
+  5 | }
+  6 | requirement r {
+  7 | }
+  8 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: requirement-no-unclosed-description-block >> invalid >>> invalid/requirement/unclosed-closed-by-requirement-body
+Filename: tests/fixtures/rules/requirement-no-unclosed-description-block/invalid/requirement/unclosed-closed-by-requirement-body-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr { d
+    | ^~~~~~~~~~ [1]
+  3 | requirement r {
+  4 |   id: 1
+  5 | }
+  6 | element e {
+  7 | }
+  8 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: requirement-no-unclosed-description-block >> invalid >>> invalid/requirement/unclosed-own-brace-on-later-line
+Filename: tests/fixtures/rules/requirement-no-unclosed-description-block/invalid/requirement/unclosed-own-brace-on-later-line-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr {
+    | ^~~~~~~~~~ [1]
+  3 | uses { here
+  4 | }
+  5 | requirement r {
+  6 |   id: 1
+  7 | }
+  8 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---

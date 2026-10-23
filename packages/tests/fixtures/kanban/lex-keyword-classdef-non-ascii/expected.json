@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "classDefé in a node position tests keyword recognition and carryover names."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "classDefé",
+        "label": "classDefé",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Member lines: a `[*]` at the start of a member line is an edge-state unit, which no member line takes, so `[*] x` in a body is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ssDiagramclass A {[*] x}\n---------------------^\nExpecting 'STRUCT_STOP', 'MEMBER', got 'EDGE_STATE'"
+  }
+}

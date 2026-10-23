@@ -1,0 +1,78 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A relationship before the subgraph refers to the entity S; one after it refers to the subgraph. The entity S stays in the list."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-S-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "S",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-A-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-C-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-S-0",
+        "roleA": "r",
+        "entityB": "entity-B-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-C-3",
+        "roleA": "q",
+        "entityB": "S",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

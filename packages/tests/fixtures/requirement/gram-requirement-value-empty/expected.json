@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Requirements: a field needs a value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...equirement r {text:}\n----------------------^\nExpecting 'unqString', 'qString', got 'NEWLINE'"
+  }
+}

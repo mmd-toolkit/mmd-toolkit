@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Lexical structure: `title` and a space start a `title` unit, so the name is never read."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Diagramrequirement title page {}\n----------------------^\nExpecting 'unqString', 'qString', got 'title'"
+  }
+}

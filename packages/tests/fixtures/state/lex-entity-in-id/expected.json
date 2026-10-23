@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: an entity is read as its placeholder before # is read, so #amp; is no comment but an id."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "ﬂ°amp¶ß",
+        "shape": "rect",
+        "label": "ﬂ°amp¶ß",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "x",
+        "shape": "rect",
+        "label": "x",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

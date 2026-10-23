@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/xychart/parser/xychart.jison.spec.ts",
+    "line": 8,
+    "test": "Testing xychart jison file > parse bar should throw error if comma is not proper"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...h space\"   [  +23 , , -45  , 56.6 ]   \n-----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'COMMA'"
+  }
+}

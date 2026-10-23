@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do theme, look, layout and usecase drawing options leave the stored model unchanged?"
+  },
+  "config": {
+    "theme": "dark",
+    "look": "handDrawn",
+    "layout": "dagre",
+    "handDrawnSeed": 7,
+    "usecase": {
+      "nodeSpacing": 80,
+      "rankSpacing": 90,
+      "diagramPadding": 30,
+      "wrappingWidth": 70,
+      "minNodeWidth": 100,
+      "actorFontSize": 20,
+      "usecaseFontSize": 25,
+      "colorScheme": "rotate"
+    }
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "B",
+        "label": "B",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

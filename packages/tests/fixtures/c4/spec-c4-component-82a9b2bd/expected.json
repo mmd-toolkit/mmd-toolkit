@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/c4/parser/c4Component.spec.ts",
+    "line": 24,
+    "test": "parsing a C4 ComponentDb_Ext > should parse a C4 diagram with one Component correctly"
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Component",
+    "title": "Component diagram for Internet Banking Component",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "ComponentAA",
+        "label": {
+          "text": "Internet Banking Component"
+        },
+        "techn": {
+          "text": "Technology"
+        },
+        "descr": {
+          "text": "Allows customers to view information about their bank accounts, and make payments."
+        },
+        "typeC4Shape": {
+          "text": "external_component_db"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

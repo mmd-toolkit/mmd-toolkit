@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A case of the rules documents of the diagram type: gram invalid in box."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...quenceDiagrambox G)end\n---------------------^\nExpecting 'SPACE', 'NEWLINE', 'end', 'participant', 'participant_actor', 'destroy', got 'INVALID'"
+  }
+}

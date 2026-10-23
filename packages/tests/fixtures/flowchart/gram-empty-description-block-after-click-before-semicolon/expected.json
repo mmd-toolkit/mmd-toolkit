@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the grammar reads the statement without its empty description blocks, so the spaces before, between, and after them are the whitespace at the end of the statement, which a click statement does not take, so the input is rejected, as is `click A href \"u\" ;B`, in both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...href \"u\"accDescr {} ;B\n-----------------------^\nExpecting 'STR', 'LINK_TARGET', got 'SEMI'"
+  }
+}

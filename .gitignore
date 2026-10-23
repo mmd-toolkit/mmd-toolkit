@@ -141,3 +141,14 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# build output
+lib/
+playwright-report/
+test-results/
+
+# per-session git worktrees created by the Claude app
+.claude/worktrees/
+
+# the pinned mermaid.js checkout that the tools read (.work/mermaid), not committed
+.work/

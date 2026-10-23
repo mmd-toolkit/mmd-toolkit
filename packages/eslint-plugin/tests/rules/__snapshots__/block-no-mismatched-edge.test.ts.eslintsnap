@@ -1,0 +1,79 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: block-no-mismatched-edge >> invalid >>> docs/rules/block-no-mismatched-edge.md incorrect 1
+Filename: block-no-mismatched-edge-incorrect-1.mmd
+
+Code:
+  1 | block
+  2 |   A -- "x" ==> B
+    |     ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes this edge's line and markers only from the arrow after the label, losing part of the opening arrow.
+---
+
+
+Test: block-no-mismatched-edge >> invalid >>> docs/rules/block-no-mismatched-edge.md incorrect 2
+Filename: block-no-mismatched-edge-incorrect-2.mmd
+
+Code:
+  1 | block
+  2 |   A <-- "x" --> B
+    |     ^~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes this edge's line and markers only from the arrow after the label, losing part of the opening arrow.
+---
+
+
+Test: block-no-mismatched-edge >> invalid >>> invalid/block/both-facts-one-report
+Filename: tests/fixtures/rules/block-no-mismatched-edge/invalid/block/both-facts-one-report-input.mmd
+
+Code:
+  1 | block
+  2 |   A <== "x" --> B
+    |     ^~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes this edge's line and markers only from the arrow after the label, losing part of the opening arrow.
+---
+
+
+Test: block-no-mismatched-edge >> invalid >>> invalid/block/solid-then-dotted
+Filename: tests/fixtures/rules/block-no-mismatched-edge/invalid/block/solid-then-dotted-input.mmd
+
+Code:
+  1 | block
+  2 |   A -- "x" .-> B
+    |     ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes this edge's line and markers only from the arrow after the label, losing part of the opening arrow.
+---
+
+
+Test: block-no-mismatched-edge >> invalid >>> invalid/block/solid-then-thick
+Filename: tests/fixtures/rules/block-no-mismatched-edge/invalid/block/solid-then-thick-input.mmd
+
+Code:
+  1 | block
+  2 |   A -- "x" ==> B
+    |     ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes this edge's line and markers only from the arrow after the label, losing part of the opening arrow.
+---
+
+
+Test: block-no-mismatched-edge >> invalid >>> invalid/block/start-marker-on-opening
+Filename: tests/fixtures/rules/block-no-mismatched-edge/invalid/block/start-marker-on-opening-input.mmd
+
+Code:
+  1 | block
+  2 |   A <-- "x" --> B
+    |     ^~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes this edge's line and markers only from the arrow after the label, losing part of the opening arrow.
+---

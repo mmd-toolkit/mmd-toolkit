@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Uppercase STYLE keeps the rejecting suffix semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 26: unexpected character: ->;<- at offset: 30, skipped 1 characters. "
+  }
+}

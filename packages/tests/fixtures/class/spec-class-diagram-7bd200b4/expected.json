@@ -1,0 +1,179 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 544,
+    "test": "given a basic class diagram,  > when parsing class definition > should parse classes with different text labels"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "C1",
+        "type": "",
+        "label": "OneWord",
+        "text": "OneWord",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C2",
+        "type": "",
+        "label": "With, Comma",
+        "text": "With, Comma",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C3",
+        "type": "",
+        "label": "With (Brackets)",
+        "text": "With (Brackets)",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C4",
+        "type": "",
+        "label": "With [Brackets]",
+        "text": "With [Brackets]",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C5",
+        "type": "",
+        "label": "With {Brackets}",
+        "text": "With {Brackets}",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C6",
+        "type": "",
+        "label": " ",
+        "text": " ",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C7",
+        "type": "",
+        "label": "With 1 number",
+        "text": "With 1 number",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C8",
+        "type": "",
+        "label": "With . period...",
+        "text": "With . period...",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C9",
+        "type": "",
+        "label": "With - dash",
+        "text": "With - dash",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C10",
+        "type": "",
+        "label": "With _ underscore",
+        "text": "With _ underscore",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C11",
+        "type": "",
+        "label": "With ' single quote",
+        "text": "With ' single quote",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C12",
+        "type": "",
+        "label": "With ~!@#$%^&*()_+=-/?",
+        "text": "With ~!@#$%^&*()_+=-/?",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C13",
+        "type": "",
+        "label": "With Città foreign language",
+        "text": "With Città foreign language",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

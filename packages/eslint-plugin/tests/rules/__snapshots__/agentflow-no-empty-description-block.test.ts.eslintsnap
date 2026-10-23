@@ -1,0 +1,217 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> docs/rules/agentflow-no-empty-description-block.md incorrect 1
+Filename: agentflow-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   A
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |   }
+    | ~~~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> docs/rules/agentflow-no-empty-description-block.md incorrect 2
+Filename: agentflow-no-empty-description-block-incorrect-2.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 |   flow F accDescr {}
+    |          ^~~~~~~~~~~ [1]
+  3 |     A
+  4 |   end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-before-tooltip
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-before-tooltip-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | click A "https://example.com" accDescr {}"Details"
+    |                               ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-before-url
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-before-url-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | click A accDescr {}"https://example.com"
+    |         ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-connector-name
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-connector-name-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | connector C accDescr {}
+    |             ^~~~~~~~~~~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-directive
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-directive-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | accDescr {%%{init: {}}%%}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-header
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-header-input.mmd
+
+Code:
+  1 | agentflow-beta TB accDescr {}
+    |                   ^~~~~~~~~~~ [1]
+  2 | A
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-multiline
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-multiline-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | }
+    | ~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-name
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-name-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow F accDescr {}
+    |        ^~~~~~~~~~~ [1]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-name-prefix
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-name-prefix-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | flow accDescr {}F
+    |      ^~~~~~~~~~~ [1]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-prior
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-prior-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-space
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-space-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | accDescr { }
+    | ^~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-block-terminal
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-block-terminal-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: agentflow-no-empty-description-block >> invalid >>> invalid/agentflow/empty-callback-tooltip
+Filename: tests/fixtures/rules/agentflow-no-empty-description-block/invalid/agentflow/empty-callback-tooltip-input.mmd
+
+Code:
+  1 | agentflow-beta TB
+  2 | A
+  3 | click A callback accDescr {}"Tip"
+    |                  ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---

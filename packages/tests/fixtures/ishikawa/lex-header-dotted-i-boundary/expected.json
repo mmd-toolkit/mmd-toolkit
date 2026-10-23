@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Detection and Units: U+0130 after the stable header is not an ASCII word character and starts a one-character root."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "İ",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "İ",
+      "children": []
+    }
+  }
+}

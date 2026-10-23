@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A CRLF in accTitle: is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...ContextaccTitle: abPerson(a, \"A\")\n---------------------^"
+  }
+}

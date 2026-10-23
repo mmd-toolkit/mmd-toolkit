@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, headerless-empty-ending: without a header, mermaid.js accepts the text because it ends with an empty callback name. Here it is rejected."
+  },
+  "knownDivergence": "headerless-empty-ending",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "",
+        "args": null
+      }
+    ]
+  }
+}

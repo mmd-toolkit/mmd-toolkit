@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: values with no brackets are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychart-beta line 1, 2\n-------------------^\nExpecting 'SQUARE_BRACES_START', got 'COMMA'"
+  }
+}

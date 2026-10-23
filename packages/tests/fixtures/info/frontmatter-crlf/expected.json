@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CRLF frontmatter delimiters."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "title": "Front"
+  }
+}

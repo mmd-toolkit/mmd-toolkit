@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/block.md BlockLiteral: a directive before a , of classDef is left out of the style, as in style; the Db steps trim the styles."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:#f00",
+          "stroke:#333"
+        ]
+      }
+    ]
+  }
+}

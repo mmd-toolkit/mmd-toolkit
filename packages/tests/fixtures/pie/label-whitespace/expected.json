@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "String labels retain surrounding and whitespace-only text."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "  A  ",
+        "value": 1
+      },
+      {
+        "label": "  ",
+        "value": 2
+      }
+    ]
+  }
+}

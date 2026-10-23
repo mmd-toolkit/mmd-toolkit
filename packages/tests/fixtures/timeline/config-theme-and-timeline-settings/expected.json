@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, settings: the theme and the settings of the timeline change nothing in the Db."
+  },
+  "config": {
+    "theme": "dark",
+    "timeline": {
+      "disableMulticolor": true,
+      "padding": 10
+    }
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "TD",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "S",
+        "task": "a ",
+        "events": [
+          "e"
+        ]
+      }
+    ]
+  }
+}

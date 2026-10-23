@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Units and contexts (Entities): the attribute quotes of an HTML tag are read as `'`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "<b a='x'>t</b>",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Does a missing accessibility value take the next line or form a parent node?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "accTitle:",
+          "children": [
+            {
+              "text": "Next",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

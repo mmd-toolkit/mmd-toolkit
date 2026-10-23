@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "BT with a colon sets direction."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "BT",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

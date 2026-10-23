@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, every requirement and element is a member of the class `default`: its definition adds its styles to all those defined before it, and to none defined after it."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r1",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "classes": []
+      },
+      {
+        "name": "r2",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "e1",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "default",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

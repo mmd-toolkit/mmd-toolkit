@@ -1,0 +1,75 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 835,
+    "test": "usecase parser publication and normalized AST > declares a boundary with an explicit id, a label, inline metadata, and classes"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Clerk",
+        "label": "Payment clerk",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "parentId": "sb1",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Authorize",
+        "label": "Authorize payment",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "sb1",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "sb1",
+        "label": "Payment service",
+        "labelType": "text",
+        "type": "package",
+        "classes": [
+          "system"
+        ],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "Clerk",
+        "target": "Authorize",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "system",
+        "styles": [
+          "fill:#f8f8ff"
+        ]
+      }
+    ]
+  }
+}

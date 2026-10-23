@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-blank-line-fold.spec.ts",
+    "line": 27,
+    "test": "issue #56: blank line after @{ } block must not fold source positions > a thrown parse error reports the source line, not a folded line"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...rounded }  c[\"C\"]\"]\n---------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'SHAPE_DATA', 'STYLE_SEPARATOR', 'START_LINK', 'LINK', 'LINK_ID', got 'STR'"
+  }
+}

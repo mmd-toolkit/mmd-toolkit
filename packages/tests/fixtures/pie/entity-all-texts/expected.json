@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Entity encoding is visible in every stored text position."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "ﬂ°amp¶ß &ﬂ°°65¶ß &ﬂ°x41¶ß ﬂ°°35¶ß",
+    "accTitle": "ﬂ°amp¶ß &ﬂ°°65¶ß &ﬂ°x41¶ß ﬂ°°35¶ß",
+    "accDescr": "ﬂ°amp¶ß &ﬂ°°65¶ß &ﬂ°x41¶ß ﬂ°°35¶ß",
+    "showData": false,
+    "sections": [
+      {
+        "label": "ﬂ°amp¶ß &ﬂ°°65¶ß &ﬂ°x41¶ß ﬂ°°35¶ß",
+        "value": 1
+      }
+    ]
+  }
+}

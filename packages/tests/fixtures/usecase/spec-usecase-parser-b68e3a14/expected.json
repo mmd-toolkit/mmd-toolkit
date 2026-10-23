@@ -1,0 +1,95 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/parser/usecase.parser.spec.ts",
+    "line": 6,
+    "test": "usecase canonical line-oriented grammar > accepts canonical actors, use cases, metadata, stereotypes, and class suffixes"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Admin",
+        "label": "Main Administrator",
+        "labelType": "text",
+        "type": "hollow",
+        "business": true,
+        "stereotype": "Human",
+        "classes": [
+          "external"
+        ],
+        "styles": []
+      },
+      {
+        "id": "System_Administrator",
+        "label": "System Administrator",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "__Automation__",
+        "label": "**Automation**",
+        "labelType": "markdown",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Login",
+        "label": "Sign in",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "stereotype": "Primary",
+        "classes": [
+          "critical"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Report",
+        "label": "Generate report",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Reset_password",
+        "label": "Reset password",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "__Markdown___use_case",
+        "label": "**Markdown** use case",
+        "labelType": "markdown",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

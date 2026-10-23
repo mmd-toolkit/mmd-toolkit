@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary from the tree: each value is read in converted form, so the entity in the text of a note is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "xﬂ°amp¶ßy"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

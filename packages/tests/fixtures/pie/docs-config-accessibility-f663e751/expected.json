@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/accessibility.md",
+    "line": 216
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Key elements in Product X",
+    "accTitle": "My Pie Chart Accessibility Title",
+    "accDescr": "My Pie Chart Accessibility Description",
+    "showData": false,
+    "sections": [
+      {
+        "label": "Calcium",
+        "value": 42.96
+      },
+      {
+        "label": "Potassium",
+        "value": 50.05
+      },
+      {
+        "label": "Magnesium",
+        "value": 10.01
+      },
+      {
+        "label": "Iron",
+        "value": 5
+      }
+    ]
+  }
+}

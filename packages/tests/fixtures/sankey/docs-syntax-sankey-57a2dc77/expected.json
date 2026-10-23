@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sankey.md",
+    "line": 197
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "Electricity grid",
+      "Heating and cooling - homes",
+      "Industry",
+      "Losses"
+    ],
+    "links": [
+      {
+        "source": "Electricity grid",
+        "target": "Heating and cooling - homes",
+        "value": 113.726
+      },
+      {
+        "source": "Electricity grid",
+        "target": "Industry",
+        "value": 342.165
+      },
+      {
+        "source": "Electricity grid",
+        "target": "Losses",
+        "value": 56.691
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "sankey": {
+        "showValues": false,
+        "labelStyle": "outlined"
+      }
+    }
+  }
+}

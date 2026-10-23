@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: the rule reads one line: a `;` on the next line stays."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "style:#x",
+      "b",
+      "a;c",
+      "d"
+    ],
+    "links": [
+      {
+        "source": "style:#x",
+        "target": "b",
+        "value": 1
+      },
+      {
+        "source": "a;c",
+        "target": "d",
+        "value": 1
+      }
+    ]
+  }
+}

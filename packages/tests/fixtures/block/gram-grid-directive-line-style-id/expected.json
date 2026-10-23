@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, directives: a directive on a line of its own in the middle of the id of a `style` statement: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 7. Unrecognized text.\n...b  style ab fill:red\n-------------------^"
+  }
+}

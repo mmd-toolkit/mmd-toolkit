@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "BiRel keyword with a glued dash is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextBiRel-(a, b, \"Uses\", \"HTT\n--------------^"
+  }
+}

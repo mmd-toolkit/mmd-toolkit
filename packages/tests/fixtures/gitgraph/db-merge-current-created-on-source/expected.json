@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Merge rejects when the current tip was created on the source branch."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Cannot merge branch 'b' into itself."
+  }
+}

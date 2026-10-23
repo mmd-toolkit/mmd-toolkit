@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read comment glued id eof?"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A%%tail",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A%%tail",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

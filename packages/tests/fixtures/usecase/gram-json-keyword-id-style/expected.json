@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A keyword-shaped JSON id cannot be addressed by a bare style target."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> IDENTIFIER <-- but found --> 'actor' <-- at line 3, column 7 [33,38)"
+  }
+}

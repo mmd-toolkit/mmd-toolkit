@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named $unknown in Deployment_Node argument 2 is accepted; boundaries[1].label.text is {\"unknown\":\"V\"}."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "b"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": {
+            "unknown": "V"
+          }
+        },
+        "type": {
+          "text": "type"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "tags": "tags",
+        "link": "link",
+        "nodeType": "node",
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed free-text directive removes the later commit after a complete merge."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "b"
+      },
+      {
+        "id": "generated-commit-3",
+        "seq": 2,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "generated-commit-1",
+          "generated-commit-2"
+        ],
+        "branch": "main",
+        "customId": false
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  }
+}

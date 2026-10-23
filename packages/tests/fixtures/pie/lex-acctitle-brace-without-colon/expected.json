@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Composite common forms: These forms have their own component rules, not the pie/showData boundary. Case: acctitle-brace-without-colon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 4, skipped 9 characters.\nLexer error on line 2, column 11: unexpected character: ->A<- at offset: 14, skipped 1 characters.\nLexer error on line 2, column 13: unexpected character: ->}<- at offset: 16, skipped 1 characters. "
+  }
+}

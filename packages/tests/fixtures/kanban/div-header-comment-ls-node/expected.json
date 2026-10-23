@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md C04 (Decorations and comments): Comment ends at U+2028 before a node."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nkanban %% c  S\n-----------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'SPACELIST'"
+  }
+}

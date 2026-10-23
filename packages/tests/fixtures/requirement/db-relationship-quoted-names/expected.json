@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, the names of a relationship may be quoted, and the Db keeps their characters."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "traces",
+        "src": "my req",
+        "dst": "my el"
+      }
+    ],
+    "classes": []
+  }
+}

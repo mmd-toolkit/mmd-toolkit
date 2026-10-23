@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A call after a boundary closing brace requires a newline."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...\") {Person(a,\"A\")}Person(c,\"C\")\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'RBRACE', got 'PERSON'"
+  }
+}

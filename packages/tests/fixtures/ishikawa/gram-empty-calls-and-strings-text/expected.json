@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Empty calls are plain text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "call ()",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "call ()",
+      "children": [
+        {
+          "text": "href \"\"",
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the classDef rule remove the final of two semicolons in accTitle?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "classDef:ﬂ°x¶ß",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

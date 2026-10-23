@@ -1,0 +1,172 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart.html",
+    "line": 649
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable",
+          "someclass"
+        ],
+        "text": "stadium shape test",
+        "type": "stadium",
+        "props": {},
+        "link": "flowchart.html#link-clicked"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "Go shopping",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "someclass"
+        ],
+        "text": "Let me think...<br />Do I want something for work,<br />something to spend every free second with,<br />or something to get around?",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Laptop",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "iPhone",
+        "type": "stadium",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Car<br/>wroom wroom",
+        "type": "stadium",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "Get money",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      },
+      {
+        "start": "B",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B_C_0"
+      },
+      {
+        "start": "C",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "One",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_D_0"
+      },
+      {
+        "start": "C",
+        "end": "E",
+        "type": "arrow_point",
+        "text": "Two",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_E_0"
+      },
+      {
+        "start": "C",
+        "end": "F",
+        "type": "arrow_point",
+        "text": "Three",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_F_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "someclass",
+        "styles": [
+          "fill:#f96"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "link test"
+      },
+      {
+        "id": "B",
+        "text": "click test"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "B",
+        "name": "testClick",
+        "args": null
+      }
+    ]
+  }
+}

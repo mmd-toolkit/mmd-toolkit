@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: An inline comment between a boundary call and brace takes the required newline in mermaid.js."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...undary(b,\"B\") %% c{Person(a,\"A\")}\n----------------------^\nExpecting 'NEWLINE', got 'PERSON'"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3] Are HTML attributes rewritten in a root on the header line?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "<a href='x'>R</a>",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "<a href='x'>R</a>",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

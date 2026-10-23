@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Does a beta underscore suffix remain root text?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "-beta_",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "-beta_",
+      "children": [
+        {
+          "text": "R",
+          "children": []
+        }
+      ]
+    }
+  }
+}

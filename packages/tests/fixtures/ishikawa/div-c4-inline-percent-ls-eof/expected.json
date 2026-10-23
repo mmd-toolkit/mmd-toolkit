@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F1: LS alone does not terminate the detector comment suffix."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nishikawaR %% C4Cont\n^"
+  }
+}

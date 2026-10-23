@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The links of a participant, written one at a time under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): mermaid.js finds the `@` in the text with the characters replaced and cuts the text with `&equals;` written as `=` again, so a `=` before the `@` moves the cut."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "a&lt;b": "https://example.com?d&lt;e",
+          "f": "https://example.com?g=h",
+          "i=j @ http": "//example.com"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The summary keeps the title, sorted set lists, sizes, labels, text ids and style fields in declaration order."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "All fields",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 12,
+        "label": "Beta"
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 20,
+        "label": "Alpha"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 3,
+        "label": "Overlap"
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "id": "item",
+        "label": "Shared note"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "id": "explicit item",
+        "label": "Explicit"
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          "A",
+          "B"
+        ],
+        "styles": {
+          "fill": "rgb(1, 2, 3)",
+          "color": " dark blue "
+        }
+      }
+    ]
+  }
+}

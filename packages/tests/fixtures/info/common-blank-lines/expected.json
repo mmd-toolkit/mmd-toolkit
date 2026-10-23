@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "NEWLINE+ permits blank lines between common forms."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

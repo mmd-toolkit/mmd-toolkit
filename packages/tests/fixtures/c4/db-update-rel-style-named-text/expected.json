@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Input with named label and custom fields in a relationship style update is accepted; rels[0].label is \"Raw\", and rels[0].custom is \"Own\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": "Raw",
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        },
+        "custom": "Own"
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

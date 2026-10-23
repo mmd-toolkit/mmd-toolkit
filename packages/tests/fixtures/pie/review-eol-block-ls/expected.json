@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is U+2028 after a block rejected like the covered U+2029?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 15: unexpected character: -> <- at offset: 18, skipped 1 characters. "
+  }
+}

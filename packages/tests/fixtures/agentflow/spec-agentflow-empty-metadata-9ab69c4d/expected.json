@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-empty-metadata.spec.ts",
+    "line": 18,
+    "test": "issue #83: empty/whitespace @{ } metadata block > a genuinely malformed block still throws a positioned YAML error, not a TypeError"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line (3:1)\n\n 2 | \n 3 | :\n-----^\n 4 | "
+  }
+}

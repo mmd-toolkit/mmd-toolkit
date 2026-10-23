@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "blank-line between accTitle: and a node tests whether an earlier-diagram keyword takes a later line."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "accTitle:",
+        "label": "accTitle:",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "A",
+        "label": "Work",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

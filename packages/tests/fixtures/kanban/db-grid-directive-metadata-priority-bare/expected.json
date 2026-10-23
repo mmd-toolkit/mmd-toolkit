@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind directive in metadata-priority-bare tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "I",
+        "label": "I",
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "ab"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "I",
+        "set": {
+          "priority": "ab"
+        }
+      }
+    ]
+  }
+}

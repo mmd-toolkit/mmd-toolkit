@@ -1,0 +1,88 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/user-journey/parser/journey.spec.js",
+    "line": 6,
+    "test": "when parsing a journey diagram it > should handle a task definition"
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "Adding journey diagram functionality to mermaid",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Documentation",
+      "Another section"
+    ],
+    "tasks": [
+      {
+        "section": "Documentation",
+        "task": "A task",
+        "people": [
+          "Alice",
+          "Bob",
+          "Charlie"
+        ],
+        "score": 5
+      },
+      {
+        "section": "Documentation",
+        "task": "B task",
+        "people": [
+          "Bob",
+          "Charlie"
+        ],
+        "score": 3
+      },
+      {
+        "section": "Documentation",
+        "task": "C task",
+        "people": [],
+        "score": 5
+      },
+      {
+        "section": "Documentation",
+        "task": "D task",
+        "people": [
+          "Charlie",
+          "Alice"
+        ],
+        "score": 5
+      },
+      {
+        "section": "Documentation",
+        "task": "E task",
+        "people": [
+          ""
+        ],
+        "score": 5
+      },
+      {
+        "section": "Another section",
+        "task": "P task",
+        "people": [
+          ""
+        ],
+        "score": 5
+      },
+      {
+        "section": "Another section",
+        "task": "Q task",
+        "people": [
+          ""
+        ],
+        "score": 5
+      },
+      {
+        "section": "Another section",
+        "task": "R task",
+        "people": [
+          ""
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

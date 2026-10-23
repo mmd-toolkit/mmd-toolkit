@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Title text is not converted as a STRING."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "\"A\\nB\"",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

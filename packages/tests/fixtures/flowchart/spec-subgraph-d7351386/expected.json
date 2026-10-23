@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/subgraph.spec.js",
+    "line": 313,
+    "test": "when parsing subgraphs > should correctly parse direction TD inside a subgraph"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A1",
+        "props": {}
+      },
+      {
+        "id": "A2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A2",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A1",
+        "end": "A2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A1_A2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "WithTD",
+        "nodes": [
+          "A2",
+          "A1"
+        ],
+        "title": "WithTD",
+        "classes": [],
+        "dir": "TD",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

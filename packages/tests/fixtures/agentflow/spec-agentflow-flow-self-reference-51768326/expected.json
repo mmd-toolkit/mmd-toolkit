@@ -1,0 +1,77 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-flow-self-reference.spec.ts",
+    "line": 16,
+    "test": "issue #70: edge from a task to its own containing flow > nested subgraphs > a nested flow referencing its own id degrades the same way"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "b",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Task B",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "inner",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "inner",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "b",
+        "end": "inner",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_b_inner_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "inner",
+        "nodes": [
+          "b"
+        ],
+        "title": "Inner",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "outer",
+        "nodes": [
+          "inner"
+        ],
+        "title": "Outer",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

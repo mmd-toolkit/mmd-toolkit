@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Duplicate IDs retain source-order nodes, including former head object."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Cannot merge branch 'main' into itself."
+  }
+}

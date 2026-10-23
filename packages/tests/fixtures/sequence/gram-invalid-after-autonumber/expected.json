@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A case of the rules documents of the diagram type: gram invalid after autonumber."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eDiagramautonumber )A->>B: x\n----------------------^\nExpecting 'NEWLINE', 'NUM', 'off', got 'INVALID'"
+  }
+}

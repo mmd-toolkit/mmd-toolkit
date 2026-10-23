@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/xychart.html",
+    "line": 331
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Quarterly Performance",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "Q1",
+        "Q2",
+        "Q3",
+        "Q4"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "Revenue ($M)",
+      "min": 0,
+      "max": 100
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "Q1",
+            25
+          ],
+          [
+            "Q2",
+            45
+          ],
+          [
+            "Q3",
+            72
+          ],
+          [
+            "Q4",
+            90
+          ]
+        ],
+        "pointLabels": [
+          "Launch",
+          "",
+          "",
+          "Target Hit"
+        ]
+      }
+    ]
+  }
+}

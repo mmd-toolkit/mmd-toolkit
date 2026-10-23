@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native trailing comment ending at EOF."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

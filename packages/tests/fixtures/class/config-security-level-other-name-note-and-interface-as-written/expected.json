@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A note for a class, and a lollipop relation, whose class names the replacement changes under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the class of the note, and the label and the class id of the interface, are the written names; the classes and the relation have the replaced ids."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "a&equals;b",
+        "type": "",
+        "label": "a&equals;b",
+        "text": "a&equals;b",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "c&lt;d",
+        "type": "",
+        "label": "c&lt;d",
+        "text": "c&lt;d",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "interface0",
+        "id2": "c&lt;d",
+        "relation": {
+          "type1": 4,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "a=b",
+        "text": "hi"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": [
+      {
+        "id": "interface0",
+        "label": "a=b",
+        "classId": "c<d"
+      }
+    ]
+  }
+}

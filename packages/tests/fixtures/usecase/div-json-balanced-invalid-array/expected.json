@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: Balanced JSON syntax remains content even when invalid."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "UsecaseJsonError",
+    "message": "Invalid JSON: Unexpected token ']', \"{\"a\":[1,]}\" is not valid JSON (line 2, column 16)"
+  }
+}

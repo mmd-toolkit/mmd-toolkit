@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Both lexer and parser errors are reported rather than publishing the recovered Db."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: ->@<- at offset: 9, skipped 1 characters. Parse error on line 2, column 5: Expecting token of type 'NUMBER_PIE' but found `\n`."
+  }
+}

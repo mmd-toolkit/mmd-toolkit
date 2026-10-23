@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A generic type that starts with two less-than signs: mermaid.js rejects it; the specification accepts it."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ssDiagramclass A~<<a~\n----------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', got 'GENERICTYPE'"
+  }
+}

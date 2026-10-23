@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: click before - is a keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...teDiagram-v2  click-x --> B\n----------------------^\nExpecting 'ID', 'EDGE_STATE', got 'INVALID'"
+  }
+}

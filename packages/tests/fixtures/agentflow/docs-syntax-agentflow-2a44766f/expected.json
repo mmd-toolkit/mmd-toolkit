@@ -1,0 +1,108 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/agentflow.md",
+    "line": 280
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "github",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "GitHub API",
+        "props": {},
+        "metadata": {
+          "protocol": "http",
+          "endpoint": "https://api.github.com"
+        }
+      },
+      {
+        "id": "title",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Issue title",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "create",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "create_issue",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "connectorRef": "github.create_issue"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "title",
+        "end": "create",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_title_create_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "github",
+        "set": {
+          "metadata": {
+            "protocol": "http",
+            "endpoint": "https://api.github.com"
+          }
+        }
+      },
+      {
+        "id": "title",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "create",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "connectorRef": "github.create_issue"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LS satisfies the hidden closer but is unlexable outside it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 17: unexpected character: -> <- at offset: 25, skipped 1 characters. "
+  }
+}

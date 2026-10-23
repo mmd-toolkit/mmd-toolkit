@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The ignored semicolon inside a section text is not in the section name."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "sections": [
+      "ST"
+    ],
+    "tasks": []
+  }
+}

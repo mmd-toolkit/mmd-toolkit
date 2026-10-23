@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-style.spec.js",
+    "line": 213,
+    "test": "ClassDefs and classes when parsing a State diagram > class for a state (classDef) > applying to states in the diagram > ::: syntax inside composite states > can be applied to a [*] state inside a composite state"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "A_start",
+        "shape": "stateStart",
+        "label": "A_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "a",
+        "shape": "rect",
+        "label": "a",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A_start",
+        "end": "a",
+        "label": ""
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "exampleStyleClass",
+        "styles": [
+          "background:#bbb",
+          "border:1px solid red"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

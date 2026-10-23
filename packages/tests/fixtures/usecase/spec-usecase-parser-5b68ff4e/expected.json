@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 40,
+    "test": "usecase parser publication and normalized AST > still rejects a single quote inside an unquoted label"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error lexing usecase diagram: unexpected character: ->'<- at offset: 29, skipped 1 characters. at line 2, column 17 [29,30)"
+  }
+}

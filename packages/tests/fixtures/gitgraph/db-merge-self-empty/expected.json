@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Merging the current branch into itself rejects even without commits."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"merge\". Cannot merge a branch to itself"
+  }
+}

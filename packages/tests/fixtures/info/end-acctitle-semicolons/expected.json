@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Accessibility title line values take semicolons as text."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Beta keyword prefix after stable keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nishikawa ishikawa-betaX\n---------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'TEXT', got 'ISHIKAWA'"
+  }
+}

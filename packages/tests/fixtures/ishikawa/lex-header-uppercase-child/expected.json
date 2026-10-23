@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L2] Is a reserved header token case insensitive inside the document?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nishikawaR ISHIKAWA\n----------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'TEXT', got 'ISHIKAWA'"
+  }
+}

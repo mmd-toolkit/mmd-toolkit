@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A generated supplementary label collides with its two-underscore spelling."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Generated ID '__' collides with another declaration at line 3, column 1 [18,20); previous declaration at line 2, column 2 [14,16) (label \"😀\")"
+  }
+}

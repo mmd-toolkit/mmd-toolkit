@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokenless-empty-forms: two blocks between direction and its value; mermaid.js joins the two name parts, and the reference input is directionLR."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

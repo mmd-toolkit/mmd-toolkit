@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, directives: `%%{}%%` is not a directive (it names no word), and the lexer cannot read it: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  %%{}%%  A\n---------------^\nExpecting 'STR', got 'NODE_DEND'"
+  }
+}

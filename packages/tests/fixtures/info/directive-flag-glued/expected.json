@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removal glues the flag to a common keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 6: unexpected character: ->s<- at offset: 5, skipped 8 characters. "
+  }
+}

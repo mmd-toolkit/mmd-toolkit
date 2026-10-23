@@ -1,0 +1,23 @@
+{
+  "name": "@mmd-toolkit/docs",
+  "description": "Documentation site for the mmd-toolkit parser, formatter, and linter",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vitepress dev --open",
+    "build": "vitepress build",
+    "preview": "vitepress preview --open",
+    "test": "vitest run",
+    "clean": "rimraf lib"
+  },
+  "devDependencies": {
+    "@eslint/markdown": "^8.0.3",
+    "@mmd-toolkit/eslint-plugin": "workspace:*",
+    "@shikijs/vitepress-twoslash": "4.5.0",
+    "eslint": "^10.11.0",
+    "twoslash-eslint": "0.3.9",
+    "vitepress": "2.0.0-alpha.20"
+  }
+}

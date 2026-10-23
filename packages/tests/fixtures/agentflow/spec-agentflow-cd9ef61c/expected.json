@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow.spec.ts",
+    "line": 238,
+    "test": "parsing an agentflow diagram > shape aliases (v0.8.1) > accepts `shape: refdoc`"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "r",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Guide",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "r",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      }
+    ]
+  }
+}

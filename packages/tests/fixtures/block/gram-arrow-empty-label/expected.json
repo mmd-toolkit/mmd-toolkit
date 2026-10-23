@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, block arrows: an empty block arrow label is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...lock-beta  A<[\"\"]>(right)\n----------------------^\nExpecting 'STR', got 'DIR'"
+  }
+}

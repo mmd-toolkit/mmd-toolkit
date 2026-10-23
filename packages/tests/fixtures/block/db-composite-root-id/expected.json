@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: the id `root` is the root block: the composite is held apart."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "label": "",
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [
+      {
+        "id": "A",
+        "label": "A",
+        "type": "na",
+        "widthInColumns": 1
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

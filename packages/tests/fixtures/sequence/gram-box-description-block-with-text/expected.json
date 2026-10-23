@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Participants and boxes: a description block with text is no statement of a box, and both reject it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...box G    accDescr {x}    participant B\n----------------------^\nExpecting 'SPACE', 'NEWLINE', 'end', 'participant', 'participant_actor', 'destroy', got 'acc_descr_multiline_value'"
+  }
+}

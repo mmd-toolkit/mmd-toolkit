@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure: A %% comment in the gap after a CSS -- prefix leaves the first physical LF, so no property-name word can follow on that line and the name is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> WORD <-- but found --> '\n' <-- at line 3, column 12 [26,27)"
+  }
+}

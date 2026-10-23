@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An extra blank line supplies EOL after hidden YAML consumes the LF directly after its closing fence."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      },
+      {
+        "label": "B",
+        "value": 2
+      }
+    ]
+  }
+}

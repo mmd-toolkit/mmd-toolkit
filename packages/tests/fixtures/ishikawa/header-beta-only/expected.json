@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Can the document be empty after the beta header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nishikawa-beta\n-------------^\nExpecting 'SPACELINE', 'SPACELIST', 'TEXT', got 'EOF'"
+  }
+}

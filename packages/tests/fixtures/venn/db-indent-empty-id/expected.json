@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The db indent empty id form stores {\"subsets\":[{\"sets\":[\"A\"],\"size\":10}],\"texts\":[{\"sets\":[\"A\"],\"id\":\"\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": ""
+      }
+    ],
+    "styles": []
+  }
+}

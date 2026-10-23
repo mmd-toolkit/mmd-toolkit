@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md gitGraph: cannot be followed by a direction."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 10: Expecting token of type 'EOF' but found `TB`."
+  }
+}

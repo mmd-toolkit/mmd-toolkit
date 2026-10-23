@@ -1,0 +1,17 @@
+{
+  "message": "A flow member follows the member hasOwnProperty",
+  "range": [
+    41,
+    42
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 1
+    }
+  }
+}

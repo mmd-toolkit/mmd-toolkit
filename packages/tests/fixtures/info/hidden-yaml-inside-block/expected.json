@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A description block encloses YAML-looking lines."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

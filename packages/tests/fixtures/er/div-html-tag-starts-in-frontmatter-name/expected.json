@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Known divergences: an HTML tag that starts in the frontmatter changes the quotes of a name; mermaid.js reads one string (html-tag-in-frontmatter)."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-b='c'>d-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "b='c'>d",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

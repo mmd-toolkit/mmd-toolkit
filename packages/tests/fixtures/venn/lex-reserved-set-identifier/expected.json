@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex reserved set identifier form is rejected by the grammar or its validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betaset set\n-------------^\nExpecting 'IDENTIFIER', 'STRING', got 'SET'"
+  }
+}

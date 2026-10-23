@@ -1,0 +1,20 @@
+{
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "C4Component"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

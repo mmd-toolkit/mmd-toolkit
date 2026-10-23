@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS prevents the classDef trigger from reaching the later block suffix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 29: unexpected character: ->;<- at offset: 33, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site pie settings do not change parse-time Db values."
+  },
+  "config": {
+    "pie": {
+      "textPosition": 0.2,
+      "donutHole": 0.4,
+      "legendPosition": "left",
+      "highlightSlice": "A",
+      "useWidth": 850,
+      "useMaxWidth": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

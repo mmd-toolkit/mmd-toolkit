@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a closed JSON object with an invalid string escape yield UsecaseJsonError?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "UsecaseJsonError",
+    "message": "Invalid JSON: Bad escaped character in JSON at position 7 (line 1 column 8) (line 2, column 15)"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, label: a label before the value is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ychart-beta line [\"a\" 1]\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'STR'"
+  }
+}

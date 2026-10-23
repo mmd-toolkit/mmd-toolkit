@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Class definitions and assignments support comma-separated ids and retain style lists."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "hot",
+          "cold"
+        ],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "fill:red",
+          "color:blue"
+        ]
+      },
+      {
+        "id": "cold",
+        "styles": [
+          "fill:red",
+          "color:blue"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

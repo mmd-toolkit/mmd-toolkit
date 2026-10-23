@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Input with two equal-looking named alias objects is accepted; shapes is [{\"alias\":{\"alias\":\"a\"},\"label\":{\"text\":\"First\"},\"descr\":{\"text\":\"\"},\"typeC4Shape\":{\"text\":\"person\"},\"parentBoundary\":\"global\"},{\"alias\":{\"alias\":\"a\"},\"label\":{\"text\":\"Second\"},\"descr\":{\"text\":\"\"},\"typeC4Shape\":{\"text\":\"person\"},\"parentBoundary\":\"global\"}]."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": {
+          "alias": "a"
+        },
+        "label": {
+          "text": "First"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      },
+      {
+        "alias": {
+          "alias": "a"
+        },
+        "label": {
+          "text": "Second"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

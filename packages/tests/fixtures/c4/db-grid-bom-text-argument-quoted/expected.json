@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A BOM in Person argument 2 (label) is accepted; shapes[0].label.text is \"a\\ufeffb\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "a﻿b"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "sprite": "S",
+        "tags": "T",
+        "link": "L",
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read direction greedy connector?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ow-beta TBconnector C[\"direction LR\"]\n----------------------^\nExpecting 'SPACE', got 'direction_lr'"
+  }
+}

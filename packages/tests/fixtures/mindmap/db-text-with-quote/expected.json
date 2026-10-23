@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, text: a quote in the text of a node without a shape is a character of the text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "a\"b",
+      "level": 0,
+      "descr": "a\"b",
+      "type": 0,
+      "children": []
+    }
+  }
+}

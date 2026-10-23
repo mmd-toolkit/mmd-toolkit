@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Description blocks: after frontmatter, an unclosed empty block includes the two opening-whitespace spaces through source EOF."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sankey.md Detection: a directive right after `sankey-beta` changes nothing."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

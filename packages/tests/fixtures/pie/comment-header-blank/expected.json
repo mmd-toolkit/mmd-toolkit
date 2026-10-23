@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty line after a header comment leaves later sections visible."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

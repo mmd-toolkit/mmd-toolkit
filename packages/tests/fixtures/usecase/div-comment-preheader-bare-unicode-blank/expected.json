@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A bare pre-header percent line followed by Unicode whitespace is rejected by Mermaid and accepted by the proposed shared leading-trivia rule."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> USECASE <-- but found --> '%%' <-- at line 1, column 1 [0,2)"
+  }
+}

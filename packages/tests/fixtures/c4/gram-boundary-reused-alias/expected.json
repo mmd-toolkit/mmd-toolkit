@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A Boundary alias reused by a shape is accepted; boundaries is [{\"alias\":\"global\",\"label\":{\"text\":\"global\"},\"type\":{\"text\":\"global\"},\"tags\":null,\"link\":null,\"parentBoundary\":\"\"},{\"alias\":\"b\",\"label\":{\"text\":\"B\"},\"type\":{\"text\":\"system\"},\"parentBoundary\":\"global\"}], and shapes[0].parentBoundary is \"b\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "b"
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "Shape B"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "system"
+        },
+        "parentBoundary": "global",
+        "bgColor": "red"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "B"
+        },
+        "type": {
+          "text": "system"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

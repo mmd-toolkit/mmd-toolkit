@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/venn.html",
+    "line": 94
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "Three concatenated sets and one isolated set",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 15,
+        "label": "ALPHA"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 5,
+        "label": "BETA"
+      },
+      {
+        "sets": [
+          "C"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "D"
+        ],
+        "size": 10,
+        "label": "DELTA"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 1,
+        "label": "AB"
+      },
+      {
+        "sets": [
+          "B",
+          "D"
+        ],
+        "size": 1
+      }
+    ],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A",
+          "B"
+        ],
+        "styles": {
+          "fill": "gold"
+        }
+      }
+    ]
+  }
+}

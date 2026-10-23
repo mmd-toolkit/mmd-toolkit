@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A body YAML terminal ignores its contents and consumes the closing LF."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

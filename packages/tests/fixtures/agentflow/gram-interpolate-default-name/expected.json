@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An interpolation name cannot take the default keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...default interpolate default\n-----------------------^\nExpecting 'DIR', 'AMP', 'COLON', 'DOWN', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'DEFAULT'"
+  }
+}

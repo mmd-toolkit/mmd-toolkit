@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Hidden YAML: Consume an LF immediately after the closing fence; another whitespace boundary is only looked at. Case: yaml-opening-unicode-gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->-<- at offset: 4, skipped 4 characters.\nLexer error on line 3, column 1: unexpected character: ->x<- at offset: 9, skipped 1 characters.\nLexer error on line 3, column 4: unexpected character: ->y<- at offset: 12, skipped 1 characters.\nLexer error on line 4, column 1: unexpected character: ->-<- at offset: 14, skipped 3 characters. Parse error on line 3, column 2: Expecting token of type 'EOF' but found `:`."
+  }
+}

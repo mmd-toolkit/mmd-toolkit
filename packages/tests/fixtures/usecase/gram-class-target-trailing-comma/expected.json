@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A target list comma cannot replace its following target."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> IDENTIFIER <-- but found --> '\n' <-- at line 3, column 13 [27,28)"
+  }
+}

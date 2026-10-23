@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Directives inside units: a directive inside a section text: the section `ST`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "ST"
+    ],
+    "tasks": [
+      {
+        "section": "ST",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

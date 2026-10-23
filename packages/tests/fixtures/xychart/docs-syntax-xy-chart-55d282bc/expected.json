@@ -1,0 +1,74 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/xyChart.md",
+    "line": 222
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Genres in top 100 book survey of 2025",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "comedy",
+        "romance",
+        "mystery",
+        "crime",
+        "non fiction",
+        "other"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "Number of Books",
+      "min": 0,
+      "max": 30
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "comedy",
+            12
+          ],
+          [
+            "romance",
+            2
+          ],
+          [
+            "mystery",
+            20
+          ],
+          [
+            "crime",
+            25
+          ],
+          [
+            "non fiction",
+            17
+          ],
+          [
+            "other",
+            24
+          ]
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "xyChart": {
+        "showDataLabel": true,
+        "showDataLabelOutsideBar": true
+      }
+    }
+  }
+}

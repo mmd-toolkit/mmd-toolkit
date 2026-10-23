@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md Description blocks: an unclosed empty block is accepted; its range includes the opening delimiter's consumed CRLF through source EOF."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

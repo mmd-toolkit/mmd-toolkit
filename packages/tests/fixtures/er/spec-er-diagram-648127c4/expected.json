@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 1161,
+    "test": "when parsing ER diagram it... > prototype properties > should work with a prototype property"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-prototype-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "prototype",
+        "classes": []
+      },
+      {
+        "id": "entity-ORDER-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "ORDER",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-prototype-0",
+        "roleA": "place",
+        "entityB": "entity-ORDER-1",
+        "cardA": "ONE_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

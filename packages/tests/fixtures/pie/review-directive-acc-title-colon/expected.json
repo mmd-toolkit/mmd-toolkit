@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can removal join accTitle to its required colon?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "AT",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

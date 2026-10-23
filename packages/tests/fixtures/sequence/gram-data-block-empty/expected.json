@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Participants and boxes: a data block needs a data-text unit, so @{} is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...gramparticipant A@{}\n----------------------^\nExpecting 'CONFIG_CONTENT', got 'CONFIG_END'"
+  }
+}

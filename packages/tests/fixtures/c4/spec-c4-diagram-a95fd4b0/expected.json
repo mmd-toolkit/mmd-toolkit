@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/c4/parser/c4Diagram.spec.ts",
+    "line": 18,
+    "test": "parsing a C4 diagram > should handle a trailing whitespaces after statements"
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "System Context diagram for Internet Banking System ",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "customerA",
+        "label": {
+          "text": "Banking Customer A"
+        },
+        "descr": {
+          "text": "A customer of the bank, with personal bank accounts."
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

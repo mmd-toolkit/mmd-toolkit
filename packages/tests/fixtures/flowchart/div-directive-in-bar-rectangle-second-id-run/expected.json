@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Directives inside units: a directive inside the second id-run of a rectangle written with [| makes the input rejected here; mermaid.js accepts it with the value bc."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "rect",
+        "props": {
+          "a": "bc"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

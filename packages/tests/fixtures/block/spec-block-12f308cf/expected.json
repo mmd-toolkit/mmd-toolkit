@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/parser/block.spec.ts",
+    "line": 413,
+    "test": "Block diagram > when parsing a block diagram graph it should handle >  > style statements applied to a block"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 1,
+      "children": [
+        {
+          "id": "B",
+          "label": "A wide one in the middle",
+          "type": "square",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:#f9F",
+            "stroke:#333",
+            "stroke-width:4px"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

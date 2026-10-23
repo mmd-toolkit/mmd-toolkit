@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: `style` requires a nonempty target list and at least one comma-separated property whose key is a bare identifier followed by a colon and a value. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betastyle A \"\":\"\"\n-----------------^\nExpecting 'IDENTIFIER', 'COMMA', got 'STRING'"
+  }
+}

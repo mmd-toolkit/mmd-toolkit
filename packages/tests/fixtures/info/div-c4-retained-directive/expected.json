@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: C4 specified reading preserves a retained second-scan directive."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n%%{wrap}%%infoaccTitl\n---^"
+  }
+}

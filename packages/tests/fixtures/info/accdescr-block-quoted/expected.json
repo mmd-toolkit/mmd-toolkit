@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quotes and escapes inside a description block are block text."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With inheritDir true, I has no direction statement and takes the direction of the diagram, LR, and not the direction TB of O around it."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "I",
+        "nodes": [
+          "A"
+        ],
+        "title": "I",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text"
+      },
+      {
+        "id": "O",
+        "nodes": [
+          "I"
+        ],
+        "title": "O",
+        "classes": [],
+        "dir": "TB",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "flowchart": {
+        "inheritDir": true
+      }
+    }
+  }
+}

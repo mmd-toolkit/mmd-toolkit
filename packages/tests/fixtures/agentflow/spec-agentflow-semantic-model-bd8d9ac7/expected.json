@@ -1,0 +1,92 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/agentflow-semantic-model.spec.ts",
+    "line": 25,
+    "test": "agentflow getSemanticModel() > semantic fields preserved > keeps domain metadata on flow containers (model, memory)"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "props": {}
+      },
+      {
+        "id": "researcher",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "researcher",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "researcher",
+        "nodes": [
+          "b",
+          "a"
+        ],
+        "title": "Researcher",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "model": "claude-opus-4-6",
+          "memory": "shared"
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "researcher",
+        "set": {
+          "metadata": {
+            "model": "claude-opus-4-6",
+            "memory": "shared"
+          }
+        }
+      }
+    ]
+  }
+}

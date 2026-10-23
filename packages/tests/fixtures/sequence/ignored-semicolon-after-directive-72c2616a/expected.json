@@ -1,0 +1,78 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A ; that the line rule ignores and that follows a directive, or a line that a directive's whitespace joins: the line is printed as written, since the ; stops the whitespace that the scan of the directive takes"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Z",
+        "description": "Z",
+        "wrap": true,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "C"
+      },
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": true,
+        "prevActor": "Z",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      },
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": true,
+        "prevActor": "C",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": true,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "B",
+        "message": "y",
+        "wrap": true,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    },
+    "dataBlockEffects": [
+      {
+        "id": "Z",
+        "set": {}
+      }
+    ]
+  }
+}

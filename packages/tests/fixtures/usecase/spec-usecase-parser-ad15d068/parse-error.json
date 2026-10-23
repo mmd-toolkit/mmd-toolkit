@@ -1,0 +1,17 @@
+{
+  "message": "An element declaration conflicts with an existing symbol",
+  "range": [
+    31,
+    50
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 19
+    }
+  }
+}

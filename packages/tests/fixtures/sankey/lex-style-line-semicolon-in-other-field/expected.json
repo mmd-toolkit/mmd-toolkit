@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: the dropped `;` can be in another field than the `style`."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "style:#x",
+      "bc"
+    ],
+    "links": [
+      {
+        "source": "style:#x",
+        "target": "bc",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "SystemDb_Ext keyword with a glued letter is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nC4ContextSystemDb_Extx(a, \"A\"\n---------^"
+  }
+}

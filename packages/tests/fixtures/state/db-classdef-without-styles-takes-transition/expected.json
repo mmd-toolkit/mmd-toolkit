@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The classDef, class, and style contexts: the whitespace after the class name may hold a line feed, so the next line is the styles: the class a has the style `B --> C`, and there is no transition."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "B --> C"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

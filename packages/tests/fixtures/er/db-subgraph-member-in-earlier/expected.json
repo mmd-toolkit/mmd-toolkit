@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity that an earlier subgraph holds is not a node of a later one: S2 has only C."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-C-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S1",
+        "nodes": [
+          "A",
+          "B"
+        ],
+        "title": "S1",
+        "classes": [],
+        "cssStyles": []
+      },
+      {
+        "id": "S2",
+        "nodes": [
+          "C"
+        ],
+        "title": "S2",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

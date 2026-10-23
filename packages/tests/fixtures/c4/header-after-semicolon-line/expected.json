@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A C4 header preceded by a semicolon line is rejected with UnknownDiagramError."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: ;\nC4Context\nPerson(a, \"A\")\n"
+  }
+}

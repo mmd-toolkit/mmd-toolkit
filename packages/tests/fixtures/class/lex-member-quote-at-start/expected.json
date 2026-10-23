@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The member context: `\"` right after a line feed starts a string, which the grammar does not take in a body."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...sDiagramclass A {\"x\"}\n---------------------^\nExpecting 'STRUCT_STOP', 'MEMBER', got 'STR'"
+  }
+}

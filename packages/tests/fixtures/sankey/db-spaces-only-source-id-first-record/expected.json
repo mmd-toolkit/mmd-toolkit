@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a source of spaces only in the first record is the empty id, the spaces after the header line being no part of the whitespace at the start of the text."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

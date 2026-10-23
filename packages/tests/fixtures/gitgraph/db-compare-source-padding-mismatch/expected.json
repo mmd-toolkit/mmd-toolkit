@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Semantic acceptance conditions: Unpadded source text does not name a padded commit id."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"cherryPick\". Source commit id should exist and provided"
+  }
+}

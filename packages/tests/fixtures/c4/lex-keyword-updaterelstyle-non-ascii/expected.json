@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "UpdateRelStyle keyword with a glued non-ASCII text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...ses\")UpdateRelStyleé(a, b, \"red\", \"blue\n----------------------^"
+  }
+}

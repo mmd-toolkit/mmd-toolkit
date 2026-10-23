@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Numeric frontmatter title is converted to text."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "42",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "42"
+  }
+}

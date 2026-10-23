@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/pie.md",
+    "line": 9
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Pets adopted by volunteers",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "Dogs",
+        "value": 386
+      },
+      {
+        "label": "Cats",
+        "value": 85
+      },
+      {
+        "label": "Rats",
+        "value": 15
+      }
+    ]
+  }
+}

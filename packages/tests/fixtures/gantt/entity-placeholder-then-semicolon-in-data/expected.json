@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: after the placeholder, a `;` ends the data and is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\ngantta : 1d ﬂ°x¶ß;\n------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

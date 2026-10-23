@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md C04 (Decorations and comments): Comment ends at U+2028 after a shape."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

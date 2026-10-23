@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/c4/parser/c4NamedAttributes.spec.ts",
+    "line": 128,
+    "test": "named attributes arriving in a positional text slot > one named attribute, whichever slot it lands in > Node(x, \"L\", $type=\"V\")"
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Deployment",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "i",
+        "label": {
+          "text": "I"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "container"
+        },
+        "parentBoundary": "x"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "x",
+        "label": {
+          "text": "L"
+        },
+        "type": {
+          "text": "V"
+        },
+        "descr": {
+          "text": ""
+        },
+        "nodeType": "node",
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

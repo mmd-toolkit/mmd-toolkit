@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, accessibility: a brace with nothing after it is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...antChartaccDescr {\n---------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got '1'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sankey.md Detection: a line `# c` before the header is the start of the text, and no detector matches."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: # c\nsankey\na,b,1\n"
+  }
+}

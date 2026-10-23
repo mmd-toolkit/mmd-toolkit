@@ -1,0 +1,303 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/usecase.html",
+    "line": 118
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "User1",
+        "label": "Customer",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "User2",
+        "label": "Account owner",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "User3",
+        "label": "Analyst",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "User4",
+        "label": "Auditor",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Admin1",
+        "label": "Module A administrator",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Admin2",
+        "label": "Module B administrator",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "NotificationService",
+        "label": "Notification service",
+        "labelType": "text",
+        "type": "icon",
+        "icon": "fa:bell",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "DataService",
+        "label": "Data service",
+        "labelType": "text",
+        "type": "icon",
+        "icon": "fa:database",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "FeatureA1",
+        "label": "Feature A1",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Module_A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "FeatureA2",
+        "label": "Feature A2",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Module_A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "AdminA1",
+        "label": "Admin A1",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Module_A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "FeatureB1",
+        "label": "Feature B1",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Module_B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "FeatureB2",
+        "label": "Feature B2",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Module_B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "AdminB1",
+        "label": "Admin B1",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Module_B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "Module_A",
+        "label": "Module A",
+        "labelType": "text",
+        "type": "package",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Module_B",
+        "label": "Module B",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "User1",
+        "target": "FeatureA1",
+        "type": "association",
+        "arrowType": 0,
+        "label": "important",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "User2",
+        "target": "FeatureA2",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Admin1",
+        "target": "AdminA1",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "User3",
+        "target": "FeatureB1",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "User4",
+        "target": "FeatureB2",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Admin2",
+        "target": "AdminB1",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "FeatureA1",
+        "target": "NotificationService",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "FeatureB1",
+        "target": "NotificationService",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "AdminA1",
+        "target": "DataService",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "AdminB1",
+        "target": "DataService",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "User1",
+        "target": "User2",
+        "type": "association",
+        "arrowType": 0,
+        "label": "collaborates",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Admin1",
+        "target": "Admin2",
+        "type": "association",
+        "arrowType": 0,
+        "label": "supervises",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

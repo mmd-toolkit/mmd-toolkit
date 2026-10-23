@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "vt before the header tests preprocessing and the lexical boundary."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

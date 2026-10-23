@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L1: percent-pair comment] Does a glued inline percent pair stay inside root TEXT?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R%% tail",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R%% tail",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

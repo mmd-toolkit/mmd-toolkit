@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The empty alternative of TITLE tests a letter suffix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->x<- at offset: 9, skipped 1 characters.\nLexer error on line 2, column 8: unexpected character: ->A<- at offset: 11, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Hidden YAML: Retain each recognized block as PieIgnoredText with kind `yaml-block`. Case: yaml-between-numeric-sign-and-digit."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 5: unexpected character: ->-<- at offset: 8, skipped 1 characters. "
+  }
+}

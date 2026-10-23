@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-style.spec.js",
+    "line": 41,
+    "test": "[Style] when parsing > should handle multiple styles in a graph"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "S",
+        "labelType": "text",
+        "styles": [
+          "background:#aaa"
+        ],
+        "classes": [],
+        "text": "S",
+        "props": {}
+      },
+      {
+        "id": "T",
+        "labelType": "text",
+        "styles": [
+          "background:#bbb",
+          "border:1px solid red"
+        ],
+        "classes": [],
+        "text": "T",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

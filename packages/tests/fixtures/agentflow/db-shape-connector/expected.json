@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read shape connector?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: connector."
+  }
+}

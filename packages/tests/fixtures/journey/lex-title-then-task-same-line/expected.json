@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 6: the title text takes the rest of its line: the title `T A: 5`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "T A: 5",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

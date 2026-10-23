@@ -1,0 +1,114 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2463,
+    "test": "sequence db class > when parsing extended participant syntax > should parse mixed participant types with extended syntax"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "lead",
+        "description": "lead",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "dsa"
+      },
+      {
+        "name": "dsa",
+        "description": "dsa",
+        "wrap": false,
+        "prevActor": "lead",
+        "links": {},
+        "properties": {},
+        "type": "queue",
+        "nextActor": "API"
+      },
+      {
+        "name": "API",
+        "description": "API",
+        "wrap": false,
+        "prevActor": "dsa",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Database"
+      },
+      {
+        "name": "Database",
+        "description": "Database",
+        "wrap": false,
+        "prevActor": "API",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "API",
+        "to": "Database",
+        "message": "getUserb",
+        "wrap": false,
+        "type": 0,
+        "activate": true,
+        "centralConnection": 0
+      },
+      {
+        "from": "Database",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Database",
+        "to": "API",
+        "message": "userb",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Database",
+        "message": "",
+        "wrap": false,
+        "type": 18,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "dsa",
+        "to": "Database",
+        "message": "hello",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "dsa",
+        "set": {
+          "type": "queue"
+        }
+      }
+    ]
+  }
+}

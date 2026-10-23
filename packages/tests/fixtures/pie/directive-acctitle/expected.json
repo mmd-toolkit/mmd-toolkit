@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accessibility title is read after directive removal."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "AB",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Units and contexts (Entities): the section holds the placeholder of `#35;`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "x ﬂ°°35¶ß y"
+    ],
+    "tasks": [
+      {
+        "section": "x ﬂ°°35¶ß y",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

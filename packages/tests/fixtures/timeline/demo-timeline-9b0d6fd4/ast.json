@@ -1,0 +1,2081 @@
+{
+  "type": "Root",
+  "diagramType": "timeline",
+  "body": {
+    "type": "TimelineDiagram",
+    "direction": null,
+    "body": [
+      {
+        "type": "TimelineTitleStatement",
+        "value": {
+          "type": "TimelineLiteral",
+          "value": "Medical Device Lifecycle",
+          "range": [
+            15,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 30
+            }
+          }
+        },
+        "range": [
+          9,
+          39
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "TimelineSectionStatement",
+        "name": {
+          "type": "TimelineLiteral",
+          "value": "Planning",
+          "range": [
+            48,
+            56
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 16
+            }
+          }
+        },
+        "range": [
+          40,
+          56
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "Quality Management System (4) ",
+          "range": [
+            59,
+            89
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 2
+            },
+            "end": {
+              "line": 4,
+              "column": 32
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Regulatory Compliance (4.1) ",
+            "range": [
+              91,
+              119
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 34
+              },
+              "end": {
+                "line": 4,
+                "column": 62
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Risk Management (4.1.3) ",
+            "range": [
+              121,
+              145
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 64
+              },
+              "end": {
+                "line": 4,
+                "column": 88
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Management Review (5.6) ",
+            "range": [
+              147,
+              171
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 90
+              },
+              "end": {
+                "line": 4,
+                "column": 114
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Infrastructure (6.3)",
+            "range": [
+              173,
+              193
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 116
+              },
+              "end": {
+                "line": 4,
+                "column": 136
+              }
+            }
+          }
+        ],
+        "range": [
+          59,
+          193
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 2
+          },
+          "end": {
+            "line": 4,
+            "column": 136
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "Management Responsibility (5) ",
+          "range": [
+            196,
+            226
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 2
+            },
+            "end": {
+              "line": 5,
+              "column": 32
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Planning Activities (5.2) ",
+            "range": [
+              228,
+              254
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 34
+              },
+              "end": {
+                "line": 5,
+                "column": 60
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Human Resources (6.2) ",
+            "range": [
+              256,
+              278
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 62
+              },
+              "end": {
+                "line": 5,
+                "column": 84
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "RnD Planning (7.3.2) ",
+            "range": [
+              280,
+              301
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 86
+              },
+              "end": {
+                "line": 5,
+                "column": 107
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Purchasing Process (7.4.1) ",
+            "range": [
+              303,
+              330
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 109
+              },
+              "end": {
+                "line": 5,
+                "column": 136
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Production Activities (7.5.1) ",
+            "range": [
+              332,
+              362
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 138
+              },
+              "end": {
+                "line": 5,
+                "column": 168
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Installation Activities (7.5.3) ",
+            "range": [
+              364,
+              396
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 170
+              },
+              "end": {
+                "line": 5,
+                "column": 202
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Servicing Activities (7.5.4)",
+            "range": [
+              398,
+              426
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 204
+              },
+              "end": {
+                "line": 5,
+                "column": 232
+              }
+            }
+          }
+        ],
+        "range": [
+          196,
+          426
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 232
+          }
+        }
+      },
+      {
+        "type": "TimelineSectionStatement",
+        "name": {
+          "type": "TimelineLiteral",
+          "value": "Realization",
+          "range": [
+            435,
+            446
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 8
+            },
+            "end": {
+              "line": 6,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          427,
+          446
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "Research and Development (7.3) ",
+          "range": [
+            449,
+            480
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 2
+            },
+            "end": {
+              "line": 7,
+              "column": 33
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Inputs (7.3.3) ",
+            "range": [
+              482,
+              497
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 35
+              },
+              "end": {
+                "line": 7,
+                "column": 50
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Outputs (7.3.4) ",
+            "range": [
+              499,
+              515
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 52
+              },
+              "end": {
+                "line": 7,
+                "column": 68
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Review (7.3.5) ",
+            "range": [
+              517,
+              532
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 70
+              },
+              "end": {
+                "line": 7,
+                "column": 85
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Verification (7.3.6) ",
+            "range": [
+              534,
+              555
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 87
+              },
+              "end": {
+                "line": 7,
+                "column": 108
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Validation (7.3.7)",
+            "range": [
+              557,
+              575
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 110
+              },
+              "end": {
+                "line": 7,
+                "column": 128
+              }
+            }
+          }
+        ],
+        "range": [
+          449,
+          575
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 2
+          },
+          "end": {
+            "line": 7,
+            "column": 128
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "Purchasing (7.4) ",
+          "range": [
+            578,
+            595
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 2
+            },
+            "end": {
+              "line": 8,
+              "column": 19
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Purchasing Information (7.4.2) ",
+            "range": [
+              597,
+              628
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 21
+              },
+              "end": {
+                "line": 8,
+                "column": 52
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Production Feedback (8.2.1)",
+            "range": [
+              630,
+              657
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 54
+              },
+              "end": {
+                "line": 8,
+                "column": 81
+              }
+            }
+          }
+        ],
+        "range": [
+          578,
+          657
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 2
+          },
+          "end": {
+            "line": 8,
+            "column": 81
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "Production (7.5) ",
+          "range": [
+            660,
+            677
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 9,
+              "column": 19
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Production Feedback (8.2.1)",
+            "range": [
+              679,
+              706
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 21
+              },
+              "end": {
+                "line": 9,
+                "column": 48
+              }
+            }
+          }
+        ],
+        "range": [
+          660,
+          706
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 2
+          },
+          "end": {
+            "line": 9,
+            "column": 48
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "Installation (7.5.3) ",
+          "range": [
+            709,
+            730
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 23
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Installation Activities (7.5.3)",
+            "range": [
+              732,
+              763
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 25
+              },
+              "end": {
+                "line": 10,
+                "column": 56
+              }
+            }
+          }
+        ],
+        "range": [
+          709,
+          763
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 56
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "Servicing (7.5.4) ",
+          "range": [
+            766,
+            784
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 2
+            },
+            "end": {
+              "line": 11,
+              "column": 20
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Servicing Activities (7.5.4)",
+            "range": [
+              786,
+              814
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 22
+              },
+              "end": {
+                "line": 11,
+                "column": 50
+              }
+            }
+          }
+        ],
+        "range": [
+          766,
+          814
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 2
+          },
+          "end": {
+            "line": 11,
+            "column": 50
+          }
+        }
+      },
+      {
+        "type": "TimelineSectionStatement",
+        "name": {
+          "type": "TimelineLiteral",
+          "value": "Post-Production",
+          "range": [
+            823,
+            838
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 8
+            },
+            "end": {
+              "line": 12,
+              "column": 23
+            }
+          }
+        },
+        "range": [
+          815,
+          838
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 0
+          },
+          "end": {
+            "line": 12,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "TimelinePeriodStatement",
+        "period": {
+          "type": "TimelineLiteral",
+          "value": "Post-Market Activities (8) ",
+          "range": [
+            841,
+            868
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 2
+            },
+            "end": {
+              "line": 13,
+              "column": 29
+            }
+          }
+        },
+        "events": [
+          {
+            "type": "TimelineLiteral",
+            "value": "Feedback (8.2.1) ",
+            "range": [
+              870,
+              887
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 31
+              },
+              "end": {
+                "line": 13,
+                "column": 48
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Complaints (8.2.2) ",
+            "range": [
+              889,
+              908
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 50
+              },
+              "end": {
+                "line": 13,
+                "column": 69
+              }
+            }
+          },
+          {
+            "type": "TimelineLiteral",
+            "value": "Adverse Events (8.2.3)",
+            "range": [
+              910,
+              932
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 71
+              },
+              "end": {
+                "line": 13,
+                "column": 93
+              }
+            }
+          }
+        ],
+        "range": [
+          841,
+          932
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 2
+          },
+          "end": {
+            "line": 13,
+            "column": 93
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      932
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 13,
+        "column": 93
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "timeline",
+      "range": [
+        0,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        9,
+        14
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Medical Device Lifecycle",
+      "range": [
+        15,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        40,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Planning",
+      "range": [
+        48,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Quality Management System (4) ",
+      "range": [
+        59,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        89,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 32
+        },
+        "end": {
+          "line": 4,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Regulatory Compliance (4.1) ",
+      "range": [
+        91,
+        119
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 34
+        },
+        "end": {
+          "line": 4,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        119,
+        120
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 62
+        },
+        "end": {
+          "line": 4,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Risk Management (4.1.3) ",
+      "range": [
+        121,
+        145
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 64
+        },
+        "end": {
+          "line": 4,
+          "column": 88
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        145,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 88
+        },
+        "end": {
+          "line": 4,
+          "column": 89
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Management Review (5.6) ",
+      "range": [
+        147,
+        171
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 90
+        },
+        "end": {
+          "line": 4,
+          "column": 114
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        171,
+        172
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 114
+        },
+        "end": {
+          "line": 4,
+          "column": 115
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Infrastructure (6.3)",
+      "range": [
+        173,
+        193
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 116
+        },
+        "end": {
+          "line": 4,
+          "column": 136
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Management Responsibility (5) ",
+      "range": [
+        196,
+        226
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        226,
+        227
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 32
+        },
+        "end": {
+          "line": 5,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Planning Activities (5.2) ",
+      "range": [
+        228,
+        254
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 34
+        },
+        "end": {
+          "line": 5,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        254,
+        255
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 60
+        },
+        "end": {
+          "line": 5,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Human Resources (6.2) ",
+      "range": [
+        256,
+        278
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 62
+        },
+        "end": {
+          "line": 5,
+          "column": 84
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        278,
+        279
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 84
+        },
+        "end": {
+          "line": 5,
+          "column": 85
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "RnD Planning (7.3.2) ",
+      "range": [
+        280,
+        301
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 86
+        },
+        "end": {
+          "line": 5,
+          "column": 107
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        301,
+        302
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 107
+        },
+        "end": {
+          "line": 5,
+          "column": 108
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Purchasing Process (7.4.1) ",
+      "range": [
+        303,
+        330
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 109
+        },
+        "end": {
+          "line": 5,
+          "column": 136
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        330,
+        331
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 136
+        },
+        "end": {
+          "line": 5,
+          "column": 137
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Production Activities (7.5.1) ",
+      "range": [
+        332,
+        362
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 138
+        },
+        "end": {
+          "line": 5,
+          "column": 168
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        362,
+        363
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 168
+        },
+        "end": {
+          "line": 5,
+          "column": 169
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Installation Activities (7.5.3) ",
+      "range": [
+        364,
+        396
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 170
+        },
+        "end": {
+          "line": 5,
+          "column": 202
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        396,
+        397
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 202
+        },
+        "end": {
+          "line": 5,
+          "column": 203
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Servicing Activities (7.5.4)",
+      "range": [
+        398,
+        426
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 204
+        },
+        "end": {
+          "line": 5,
+          "column": 232
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        427,
+        434
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Realization",
+      "range": [
+        435,
+        446
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Research and Development (7.3) ",
+      "range": [
+        449,
+        480
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        480,
+        481
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 33
+        },
+        "end": {
+          "line": 7,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Inputs (7.3.3) ",
+      "range": [
+        482,
+        497
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 35
+        },
+        "end": {
+          "line": 7,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        497,
+        498
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 50
+        },
+        "end": {
+          "line": 7,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Outputs (7.3.4) ",
+      "range": [
+        499,
+        515
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 52
+        },
+        "end": {
+          "line": 7,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        515,
+        516
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 68
+        },
+        "end": {
+          "line": 7,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Review (7.3.5) ",
+      "range": [
+        517,
+        532
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 70
+        },
+        "end": {
+          "line": 7,
+          "column": 85
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        532,
+        533
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 85
+        },
+        "end": {
+          "line": 7,
+          "column": 86
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Verification (7.3.6) ",
+      "range": [
+        534,
+        555
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 87
+        },
+        "end": {
+          "line": 7,
+          "column": 108
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        555,
+        556
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 108
+        },
+        "end": {
+          "line": 7,
+          "column": 109
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Validation (7.3.7)",
+      "range": [
+        557,
+        575
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 110
+        },
+        "end": {
+          "line": 7,
+          "column": 128
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Purchasing (7.4) ",
+      "range": [
+        578,
+        595
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 2
+        },
+        "end": {
+          "line": 8,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        595,
+        596
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 19
+        },
+        "end": {
+          "line": 8,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Purchasing Information (7.4.2) ",
+      "range": [
+        597,
+        628
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 21
+        },
+        "end": {
+          "line": 8,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        628,
+        629
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 52
+        },
+        "end": {
+          "line": 8,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Production Feedback (8.2.1)",
+      "range": [
+        630,
+        657
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 54
+        },
+        "end": {
+          "line": 8,
+          "column": 81
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Production (7.5) ",
+      "range": [
+        660,
+        677
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        677,
+        678
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 19
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Production Feedback (8.2.1)",
+      "range": [
+        679,
+        706
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 21
+        },
+        "end": {
+          "line": 9,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Installation (7.5.3) ",
+      "range": [
+        709,
+        730
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        730,
+        731
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 23
+        },
+        "end": {
+          "line": 10,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Installation Activities (7.5.3)",
+      "range": [
+        732,
+        763
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 25
+        },
+        "end": {
+          "line": 10,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Servicing (7.5.4) ",
+      "range": [
+        766,
+        784
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        784,
+        785
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 20
+        },
+        "end": {
+          "line": 11,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Servicing Activities (7.5.4)",
+      "range": [
+        786,
+        814
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 22
+        },
+        "end": {
+          "line": 11,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        815,
+        822
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Post-Production",
+      "range": [
+        823,
+        838
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Post-Market Activities (8) ",
+      "range": [
+        841,
+        868
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        868,
+        869
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 29
+        },
+        "end": {
+          "line": 13,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Feedback (8.2.1) ",
+      "range": [
+        870,
+        887
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 31
+        },
+        "end": {
+          "line": 13,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        887,
+        888
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 48
+        },
+        "end": {
+          "line": 13,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Complaints (8.2.2) ",
+      "range": [
+        889,
+        908
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 50
+        },
+        "end": {
+          "line": 13,
+          "column": 69
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        908,
+        909
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 69
+        },
+        "end": {
+          "line": 13,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Adverse Events (8.2.3)",
+      "range": [
+        910,
+        932
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 71
+        },
+        "end": {
+          "line": 13,
+          "column": 93
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    932
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 13,
+      "column": 93
+    }
+  }
+}

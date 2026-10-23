@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A third empty block remains an AST assignment only."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

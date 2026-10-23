@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Arrows: `<--` is an opening arrow, and no closing arrow follows, so the input is rejected; the input of mermaid.js issue #6402."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n... A --> B  B <-- C\n--------------------^\nExpecting 'LINK', 'UNICODE_TEXT', 'EDGE_TEXT', got '1'"
+  }
+}

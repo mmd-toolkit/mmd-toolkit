@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex text style rule other line form stores {\"texts\":[{\"sets\":[\"A\"],\"id\":\"astyle:\\n\\ufb02\\u00b0f00\\u00b6\\u00dfb\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "astyle:\nﬂ°f00¶ßb"
+      }
+    ],
+    "styles": []
+  }
+}

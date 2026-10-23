@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The scale context: the number is ASCII digits, so an Arabic-Indic digit makes the input rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...eDiagram-v2  scale ٣ width\n----------------------^"
+  }
+}

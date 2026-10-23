@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Is a second beta header token rejected?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nishikawaishikawa-beta\n--------^\nExpecting 'SPACELINE', 'SPACELIST', 'TEXT', got 'ISHIKAWA'"
+  }
+}

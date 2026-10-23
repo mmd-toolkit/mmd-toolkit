@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A closing space preserves merge EOL."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "B",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "b"
+      },
+      {
+        "id": "generated-commit-1",
+        "seq": 2,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "A",
+          "B"
+        ],
+        "branch": "main",
+        "customId": false
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 3,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  }
+}

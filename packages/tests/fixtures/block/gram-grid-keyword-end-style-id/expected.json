@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, keywords: the word `end` in the middle of the id of a `style` statement: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  a end b  style a end \n--------------^\nExpecting 'EOF', got 'end'"
+  }
+}

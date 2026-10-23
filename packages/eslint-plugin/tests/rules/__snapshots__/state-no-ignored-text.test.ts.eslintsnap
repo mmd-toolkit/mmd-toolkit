@@ -1,0 +1,213 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: state-no-ignored-text >> invalid >>> docs/rules/state-no-ignored-text.md incorrect 1
+Filename: state-no-ignored-text-incorrect-1.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B direction LR
+    |   ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `A --> B`.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> docs/rules/state-no-ignored-text.md incorrect 2
+Filename: state-no-ignored-text-incorrect-2.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   direction TBX
+    |               ^ [1]
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `X`.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/direction-then-hash-comment
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/direction-then-hash-comment-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   direction LR # c
+    |                ^~~ [1]
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `# c`.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/direction-then-slashes-comment
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/direction-then-slashes-comment-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   direction LR // c
+    |                ^~~~ [1]
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `// c`.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/gram-empty-description-block-before-alias-body-next-line
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/gram-empty-description-block-before-alias-body-next-line-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | state "d" as A
+  3 | accDescr {} {
+    | ^~~~~~~~~~~ [1]
+  4 | B
+  5 | }
+  6 |
+
+[1] mermaid.js does not read `accDescr {}` and drops it.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/gram-ignored-state-before-body-next-line
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/gram-ignored-state-before-body-next-line-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   state X ""
+    |           ^~\ [1]
+  3 |   state {
+    | ~~~~~~~ [1]
+  4 |     B
+  5 |   }
+  6 |
+
+[1] mermaid.js does not read `""
+      state` and drops it.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/gram-state-empty-string-after-name
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/gram-state-empty-string-after-name-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | state x ""
+    |         ^~ [1]
+  3 | B
+  4 |
+
+[1] mermaid.js does not read the empty strings `""` and drops them.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/gram-state-empty-string-before-name
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/gram-state-empty-string-before-name-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | state "" x
+    |       ^~ [1]
+  3 |
+
+[1] mermaid.js does not read `""` and drops it.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/lex-alias-id-ignored-percent-before-body
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/lex-alias-id-ignored-percent-before-body-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   state "d" as %% c {
+    |                ^~~~ [1]
+  3 |     B
+  4 |   }
+  5 |
+
+[1] mermaid.js does not read `%% c` and drops it.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/lex-alias-third-part
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/lex-alias-third-part-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   state "d" as A : x : y
+    |                      ^~~ [1]
+  3 |
+
+[1] mermaid.js does not read `: y` and drops it.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/lex-direction-line-in-description
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/lex-direction-line-in-description-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   B : x direction LR
+    |   ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `B : x`.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/lex-direction-line-value-then-semicolon
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/lex-direction-line-value-then-semicolon-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | direction LR;
+    |             ^ [1]
+  3 | A --> B
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `;`.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/lex-note-colon-then-one-character
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/lex-note-colon-then-one-character-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | note left of A:h
+    |                ^ [1]
+  4 |
+
+[1] mermaid.js does not read `h` and drops it.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/lex-note-colon-without-space
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/lex-note-colon-without-space-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   note left of A:hi
+    |                  ^ [1]
+  3 |
+
+[1] mermaid.js does not read `h` and drops it.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/note-colon-without-space
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/note-colon-without-space-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   note left of A:hi
+    |                  ^ [1]
+  4 |
+
+[1] mermaid.js does not read `h` and drops it.
+---

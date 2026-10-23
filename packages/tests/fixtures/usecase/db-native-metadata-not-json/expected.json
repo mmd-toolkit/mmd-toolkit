@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a JSON-like null value fail native property validation?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'business' is invalid for actor 'A' at line 2, column 12 [24,32)"
+  }
+}

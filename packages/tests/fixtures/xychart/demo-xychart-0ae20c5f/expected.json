@@ -1,0 +1,173 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/xychart.html",
+    "line": 289
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Sales Revenue",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "Months",
+      "categories": [
+        "jan",
+        "feb",
+        "mar",
+        "apr",
+        "may",
+        "jun",
+        "jul",
+        "aug",
+        "sep",
+        "oct",
+        "nov",
+        "dec"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "Revenue (in $)",
+      "min": 4000,
+      "max": 11000
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "jan",
+            5000
+          ],
+          [
+            "feb",
+            6000
+          ],
+          [
+            "mar",
+            7500
+          ],
+          [
+            "apr",
+            8200
+          ],
+          [
+            "may",
+            9500
+          ],
+          [
+            "jun",
+            10500
+          ],
+          [
+            "jul",
+            11000
+          ],
+          [
+            "aug",
+            10200
+          ],
+          [
+            "sep",
+            9200
+          ],
+          [
+            "oct",
+            8500
+          ],
+          [
+            "nov",
+            7000
+          ],
+          [
+            "dec",
+            6000
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "jan",
+            5000
+          ],
+          [
+            "feb",
+            6000
+          ],
+          [
+            "mar",
+            7500
+          ],
+          [
+            "apr",
+            8200
+          ],
+          [
+            "may",
+            9500
+          ],
+          [
+            "jun",
+            10500
+          ],
+          [
+            "jul",
+            11000
+          ],
+          [
+            "aug",
+            10200
+          ],
+          [
+            "sep",
+            9200
+          ],
+          [
+            "oct",
+            8500
+          ],
+          [
+            "nov",
+            7000
+          ],
+          [
+            "dec",
+            6000
+          ]
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "xyChart": {
+        "showDataLabel": true
+      },
+      "themeVariables": {
+        "xyChart": {
+          "backgroundColor": "#f0f8ff",
+          "titleColor": "#ff0000",
+          "dataLabelColor": "#eeeeee",
+          "xAxisTitleColor": "#ee82ee",
+          "xAxisLabelColor": "#7fffd4",
+          "xAxisTickColor": "#ff6347",
+          "xAxisLineColor": "#87ceeb",
+          "yAxisTitleColor": "#7fffd4",
+          "yAxisLabelColor": "#ee82ee",
+          "yAxisTickColor": "#87ceeb",
+          "yAxisLineColor": "#ff6347",
+          "plotColorPalette": "#008000, #faba63"
+        }
+      }
+    }
+  }
+}

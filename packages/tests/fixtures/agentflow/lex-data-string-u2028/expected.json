@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 in metadata strings is interpreted by YAML rather than the newline-to-br rewrite."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "first second",
+        "props": {},
+        "metadata": {
+          "label": "first second"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "first second",
+          "metadata": {
+            "label": "first second"
+          }
+        }
+      }
+    ]
+  }
+}

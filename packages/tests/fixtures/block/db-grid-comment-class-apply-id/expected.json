@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, comments: a comment `%% c` in the middle of the id of a `class` statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a%%",
+          "label": "a%%",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "cb",
+          "label": "cb",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "a",
+        "type": "na",
+        "classes": [
+          "%% cb c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

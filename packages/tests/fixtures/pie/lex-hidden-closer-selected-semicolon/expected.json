@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a selected semicolon split a hidden DIRECTIVE closer? It accepts with section style:#x = 1."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "style:#x",
+        "value": 1
+      }
+    ]
+  }
+}

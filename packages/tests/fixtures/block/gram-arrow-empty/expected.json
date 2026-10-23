@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, block arrows: no direction is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ock-beta  A<[\"x\"]>()\n----------------------^\nExpecting 'DIR', got 'BLOCK_ARROW_END'"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "message": "Repeated declaration metadata values must agree",
+  "range": [
+    34,
+    45
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 21
+    },
+    "end": {
+      "line": 2,
+      "column": 32
+    }
+  }
+}

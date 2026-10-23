@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Directives inside units: a directive inside `::icon(`; mermaid.js reads the icon."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "icon": "x",
+      "children": []
+    }
+  }
+}

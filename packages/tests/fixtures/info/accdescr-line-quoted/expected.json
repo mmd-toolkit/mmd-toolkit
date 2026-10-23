@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Description line quotes and escapes are raw common text."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

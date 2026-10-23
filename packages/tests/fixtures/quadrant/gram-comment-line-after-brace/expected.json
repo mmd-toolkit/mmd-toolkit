@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, comments: a `}` before `%%` is a character that no rule reads, since the rule of a comment that takes the character before it excludes the brace, so the line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nquadrantChart}%% ctitle T\n-------------^"
+  }
+}

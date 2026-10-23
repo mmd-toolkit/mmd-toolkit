@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/venn/parser/venn.spec.ts",
+    "line": 144,
+    "test": "Venn diagram > with style statement for intersection"
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A",
+          "B"
+        ],
+        "styles": {
+          "color": "#333"
+        }
+      }
+    ]
+  }
+}

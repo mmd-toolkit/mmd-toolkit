@@ -1,0 +1,121 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/state.html",
+    "line": 49
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "Very simple diagram",
+    "accTitle": "This is the accessible title",
+    "accDescr": "This is an accessible description",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Still",
+        "shape": "rect",
+        "label": "Still",
+        "classes": [
+          "notMoving"
+        ],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Moving",
+        "shape": "rect",
+        "label": "Moving",
+        "classes": [
+          "movement"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Crash",
+        "shape": "rect",
+        "label": "Crash",
+        "classes": [
+          "movement",
+          "badBadEvent"
+        ],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Still",
+        "label": ""
+      },
+      {
+        "start": "Still",
+        "end": "root_end",
+        "label": ""
+      },
+      {
+        "start": "Still",
+        "end": "Moving",
+        "label": ""
+      },
+      {
+        "start": "Moving",
+        "end": "Still",
+        "label": ""
+      },
+      {
+        "start": "Moving",
+        "end": "Crash",
+        "label": ""
+      },
+      {
+        "start": "Crash",
+        "end": "root_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "notMoving",
+        "styles": [
+          "fill:white"
+        ]
+      },
+      {
+        "id": "movement",
+        "styles": [
+          "font-style:italic"
+        ]
+      },
+      {
+        "id": "badBadEvent",
+        "styles": [
+          "fill:#f00",
+          "color:white",
+          "font-weight:bold",
+          "stroke-width:2px",
+          "stroke:yellow"
+        ]
+      }
+    ],
+    "links": []
+  },
+  "embedded": {
+    "title": "Very simple diagram"
+  }
+}

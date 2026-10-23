@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: An empty metadata assignment does not declare a top-level node."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata target 'A' is unresolved at line 2, column 1 [13,14)"
+  }
+}

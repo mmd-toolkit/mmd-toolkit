@@ -1,0 +1,151 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-undef >> invalid >>> docs/rules/requirement-no-undef.md incorrect 1
+Filename: requirement-no-undef-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     id: 1
+  4 |   }
+  5 |   style rr fill:red
+    |         ^~ [1]
+  6 |
+
+[1] mermaid.js does nothing with `rr` in this statement: no requirement and no element of the diagram has this name.
+---
+
+
+Test: requirement-no-undef >> invalid >>> docs/rules/requirement-no-undef.md incorrect 2
+Filename: requirement-no-undef-incorrect-2.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     id: 1
+  4 |   }
+  5 |   element e {
+  6 |     type: simulation
+  7 |   }
+  8 |   r - satisfies -> ee
+    |                    ^~ [1]
+  9 |
+
+[1] mermaid.js adds this relationship with the end `ee`, which is no box: no requirement and no element of the diagram has this name.
+---
+
+
+Test: requirement-no-undef >> invalid >>> invalid/requirement/db-class-statement-unknown-name-first
+Filename: tests/fixtures/rules/requirement-no-undef/invalid/requirement/db-class-statement-unknown-name-first-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | }
+  4 | element e {
+  5 | }
+  6 | class missing,r,e a
+    |       ^~~~~~~ [1]
+  7 | style missing,r fill:red
+    |       ^~~~~~~ [2]
+  8 |
+
+[1] mermaid.js does nothing with `missing` in this statement: no requirement and no element of the diagram has this name.
+[2] mermaid.js does nothing with `missing` in this statement: no requirement and no element of the diagram has this name.
+---
+
+
+Test: requirement-no-undef >> invalid >>> invalid/requirement/db-relationship-undefined-names
+Filename: tests/fixtures/rules/requirement-no-undef/invalid/requirement/db-relationship-undefined-names-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | }
+  4 | r - satisfies -> nothing
+    |                  ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js adds this relationship with the end `nothing`, which is no box: no requirement and no element of the diagram has this name.
+---
+
+
+Test: requirement-no-undef >> invalid >>> invalid/requirement/db-style-unknown-name
+Filename: tests/fixtures/rules/requirement-no-undef/invalid/requirement/db-style-unknown-name-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | }
+  4 | requirement s {
+  5 | }
+  6 | style r,missing,s fill:red
+    |         ^~~~~~~ [1]
+  7 | style missing2,s fill:blue
+    |       ^~~~~~~~ [2]
+  8 |
+
+[1] mermaid.js does nothing with `missing` in this statement: no requirement and no element of the diagram has this name.
+[2] mermaid.js does nothing with `missing2` in this statement: no requirement and no element of the diagram has this name.
+---
+
+
+Test: requirement-no-undef >> invalid >>> invalid/requirement/name-other-case
+Filename: tests/fixtures/rules/requirement-no-undef/invalid/requirement/name-other-case-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | }
+  4 | style R fill:red
+    |       ^ [1]
+  5 |
+
+[1] mermaid.js does nothing with `R` in this statement: no requirement and no element of the diagram has this name.
+---
+
+
+Test: requirement-no-undef >> invalid >>> invalid/requirement/relationship-backward-unknown
+Filename: tests/fixtures/rules/requirement-no-undef/invalid/requirement/relationship-backward-unknown-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | }
+  4 | r <- copies - ee
+    |               ^~ [1]
+  5 |
+
+[1] mermaid.js adds this relationship with the end `ee`, which is no box: no requirement and no element of the diagram has this name.
+---
+
+
+Test: requirement-no-undef >> invalid >>> invalid/requirement/relationship-unknown-source
+Filename: tests/fixtures/rules/requirement-no-undef/invalid/requirement/relationship-unknown-source-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element e {
+  3 | }
+  4 | rr - satisfies -> e
+    | ^~ [1]
+  5 |
+
+[1] mermaid.js adds this relationship with the end `rr`, which is no box: no requirement and no element of the diagram has this name.
+---
+
+
+Test: requirement-no-undef >> invalid >>> invalid/requirement/shorthand-unknown-name
+Filename: tests/fixtures/rules/requirement-no-undef/invalid/requirement/shorthand-unknown-name-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | }
+  4 | rr:::c
+    | ^~ [1]
+  5 |
+
+[1] mermaid.js does nothing with `rr` in this statement: no requirement and no element of the diagram has this name.
+---

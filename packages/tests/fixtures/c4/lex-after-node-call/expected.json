@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A node call suffix after the call or boundary body is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n... {Person(a, \"A\")} Person(a, \"A\")\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'RBRACE', got 'PERSON'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/quadrant.md QuadrantAccTitleStatement: an accessibility title of U+00A0 alone has no text and is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ntChartaccTitle: \n--------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got '1'"
+  }
+}

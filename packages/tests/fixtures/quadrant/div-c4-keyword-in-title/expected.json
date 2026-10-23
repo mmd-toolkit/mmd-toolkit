@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: detection: the word `C4Container` anywhere in the text makes mermaid.js detect a C4 diagram, which rejects the text."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nquadrantCharttitle \n^"
+  }
+}

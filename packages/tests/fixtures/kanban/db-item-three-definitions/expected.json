@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Three definitions of an item id remain separate across sections."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "First",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "T",
+        "label": "T",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "Second",
+        "isGroup": false,
+        "parentId": "T"
+      },
+      {
+        "id": "B",
+        "label": "Partner",
+        "isGroup": false,
+        "parentId": "T"
+      },
+      {
+        "id": "A",
+        "label": "Third",
+        "isGroup": false,
+        "parentId": "T"
+      }
+    ]
+  }
+}

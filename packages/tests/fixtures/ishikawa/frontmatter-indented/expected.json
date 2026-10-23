@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P4: frontmatter] Can indented frontmatter supply the title?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  },
+  "embedded": {
+    "title": "Indented"
+  }
+}

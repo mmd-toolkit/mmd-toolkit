@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed object directive ending at EOF removes the root suffix but keeps the earlier root text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": []
+    }
+  }
+}

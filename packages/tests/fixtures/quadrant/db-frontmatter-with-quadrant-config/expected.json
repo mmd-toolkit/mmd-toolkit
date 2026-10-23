@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, settings: the settings of the chart in the frontmatter change nothing in the Db."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "L",
+      "right": "R"
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  },
+  "embedded": {
+    "config": {
+      "quadrantChart": {
+        "chartWidth": 100,
+        "chartHeight": 100,
+        "pointRadius": 9,
+        "yAxisPosition": "right"
+      }
+    }
+  }
+}

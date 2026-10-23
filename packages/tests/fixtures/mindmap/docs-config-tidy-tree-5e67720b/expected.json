@@ -1,0 +1,108 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/tidy-tree.md",
+    "line": 27
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "mindmap",
+      "type": 3,
+      "children": [
+        {
+          "nodeId": "Origins",
+          "level": 4,
+          "descr": "Origins",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "Long history",
+              "level": 6,
+              "descr": "Long history",
+              "type": 0,
+              "icon": "fa fa-book",
+              "children": []
+            },
+            {
+              "nodeId": "Popularisation",
+              "level": 6,
+              "descr": "Popularisation",
+              "type": 0,
+              "children": [
+                {
+                  "nodeId": "British popular psychology author Tony Buzan",
+                  "level": 8,
+                  "descr": "British popular psychology author Tony Buzan",
+                  "type": 0,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nodeId": "Research",
+          "level": 4,
+          "descr": "Research",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "On effectiveness<br/>and features",
+              "level": 6,
+              "descr": "On effectiveness<br/>and features",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "On Automatic creation",
+              "level": 6,
+              "descr": "On Automatic creation",
+              "type": 0,
+              "children": [
+                {
+                  "nodeId": "Uses",
+                  "level": 8,
+                  "descr": "Uses",
+                  "type": 0,
+                  "children": [
+                    {
+                      "nodeId": "Creative techniques",
+                      "level": 12,
+                      "descr": "Creative techniques",
+                      "type": 0,
+                      "children": []
+                    },
+                    {
+                      "nodeId": "Strategic planning",
+                      "level": 12,
+                      "descr": "Strategic planning",
+                      "type": 0,
+                      "children": []
+                    },
+                    {
+                      "nodeId": "Argument mapping",
+                      "level": 12,
+                      "descr": "Argument mapping",
+                      "type": 0,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "embedded": {
+    "config": {
+      "layout": "tidy-tree"
+    }
+  }
+}

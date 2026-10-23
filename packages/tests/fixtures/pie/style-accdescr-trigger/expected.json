@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The global style rule also reaches single-line descriptions."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style fill:#f00",
+    "showData": false,
+    "sections": []
+  }
+}

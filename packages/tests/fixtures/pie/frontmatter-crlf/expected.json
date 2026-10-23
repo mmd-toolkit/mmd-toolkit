@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frontmatter and diagram CRLF normalize consistently."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

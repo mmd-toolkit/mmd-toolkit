@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty line does not make a multiline link style header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...w-beta TBlinkStyle default stroke:red\n----------------------^\nExpecting 'DEFAULT', 'NUM', got 'NEWLINE'"
+  }
+}

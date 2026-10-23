@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md F3: A PS-started common comment region joins the next physical line into one node text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R  A",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R  A",
+      "children": []
+    }
+  }
+}

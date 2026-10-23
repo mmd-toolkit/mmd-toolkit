@@ -1,0 +1,13 @@
+{
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "C4Component",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "C4Component",
+      "children": []
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: U+2028 is a comment start, and only whitespace follows it up to the `%%`, so the comment region starts right after U+2028 and consists of the two spaces and the comment; `error` before it is the error pseudo-diagram. The input contains a real U+2028."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

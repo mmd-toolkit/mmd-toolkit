@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The nonzero INT dot boundary prevents accepting a trailing dot."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 17: unexpected character: ->.<- at offset: 25, skipped 1 characters. Parse error on line 2, column 16: Expecting token of type 'INT' but found `1`."
+  }
+}

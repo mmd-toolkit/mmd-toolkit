@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/parser/block.spec.ts",
+    "line": 121,
+    "test": "Block diagram > when parsing a block diagram graph it should handle >  > a diagram with multiple nodes with edges abc123"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "id1",
+          "label": "first",
+          "type": "square"
+        },
+        {
+          "id": "id2",
+          "label": "second",
+          "type": "square"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "id1",
+        "end": "id2",
+        "label": "a label",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

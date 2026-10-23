@@ -1,0 +1,93 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gantt.md",
+    "line": 118
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2017-07-20"
+          },
+          "endTime": {
+            "data": "1w"
+          }
+        },
+        "task": "apple ",
+        "classes": [],
+        "id": "a",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2017-07-23"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "banana ",
+        "classes": [],
+        "id": "b",
+        "crit": true,
+        "order": 1
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after b a"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "cherry ",
+        "classes": [],
+        "id": "c",
+        "active": true,
+        "order": 2
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2017-07-20"
+          },
+          "endTime": {
+            "data": "until b c"
+          }
+        },
+        "task": "kiwi   ",
+        "classes": [],
+        "id": "d",
+        "order": 3
+      }
+    ],
+    "links": []
+  }
+}

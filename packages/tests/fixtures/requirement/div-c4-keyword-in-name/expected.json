@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Known divergences: `C4Container` makes mermaid.js hand the text to the C4 parser."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nrequirementDiagramr\n^"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CR normalization terminates all three common line values."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

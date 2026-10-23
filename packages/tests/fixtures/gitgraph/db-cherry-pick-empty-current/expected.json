@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Cherry-pick rejects an empty destination branch."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"cherry-pick\". Current branch (main)has no commits"
+  }
+}

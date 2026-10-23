@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are all ECMAScript whitespace characters preserved inside a quoted label?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "\t\u000b\f                  　﻿",
+        "value": 1
+      }
+    ]
+  }
+}

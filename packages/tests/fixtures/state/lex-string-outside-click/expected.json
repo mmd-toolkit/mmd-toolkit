@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: a string is taken only by a click statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eDiagram-v2  A --> \"B\"\n----------------------^\nExpecting 'ID', 'EDGE_STATE', got 'STRING'"
+  }
+}

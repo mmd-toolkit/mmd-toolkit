@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A task without an id is numbered task1, task2 ... among the tasks without one."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "A ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-02"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "B ",
+        "classes": [],
+        "id": "b",
+        "order": 1
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "b"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "C ",
+        "classes": [],
+        "id": "task2",
+        "order": 2
+      }
+    ],
+    "links": []
+  }
+}

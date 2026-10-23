@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: two values with no comma are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...chart-beta line [1 2]\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', 'STR', got 'NUMBER_WITH_DECIMAL'"
+  }
+}

@@ -1,0 +1,213 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: usecase-no-duplicate-title >> invalid >>> docs/rules/usecase-no-duplicate-title.md incorrect 1
+Filename: usecase-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | usecase-beta
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   A
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-after-empty
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-after-empty-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | accTitle: Second
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-comment-gap
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-comment-gap-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | %% comment
+  4 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-crlf
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-crlf-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-directive-gap
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-directive-gap-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | %%{init: {}}%%
+  4 |
+  5 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-empty-clears
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-empty-clears-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-empty-eof
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-empty-eof-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-empty-next-line
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-empty-next-line-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% comment
+  5 | A
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-entity-barrier
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-entity-barrier-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: #35;
+  3 | accTitle: Other
+    | ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-html-barrier
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-html-barrier-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: <b title="x">First</b>
+  3 | accTitle: <b title='x'>First</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-padding-barrier
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-padding-barrier-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | accTitle:  First  
+  4 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 3 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-three
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-three-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: First
+    | ^~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-two
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-two-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   A
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: usecase-no-duplicate-title >> invalid >>> invalid/usecase/title-whitespace-clears
+Filename: tests/fixtures/rules/usecase-no-duplicate-title/invalid/usecase/title-whitespace-clears-input.mmd
+
+Code:
+  1 | usecase-beta
+  2 | accTitle: First
+  3 | accTitle:   
+    | ^~~~~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+---

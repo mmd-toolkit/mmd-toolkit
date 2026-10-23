@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind classdef-rule in header-line tests the kanban reading at this text position."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nkanbanclassDef:#xy \n^\nExpecting 'SPACELINE', 'KANBAN', got 'NODE_ID'"
+  }
+}

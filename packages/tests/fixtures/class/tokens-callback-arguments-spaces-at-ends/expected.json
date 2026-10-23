@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassCallbackStatement: the arguments are the text between `(` and `)` with the whitespace at its ends, as mermaid.js passes it on (` x, y `); mermaid.js then divides it at each `,` outside quotes and trims each argument."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "f",
+        "args": " x, y "
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Empty brackets test the required description token."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S[]\n---------^\nExpecting 'NODE_DESCR', got 'NODE_DEND'"
+  }
+}

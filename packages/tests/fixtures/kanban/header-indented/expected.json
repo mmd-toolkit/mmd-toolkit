@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Leading spaces test preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  }
+}

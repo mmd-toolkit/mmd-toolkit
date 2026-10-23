@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Three semicolons after a numeric hash reference leave its encoded value and one literal semicolon in child text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "style A text:ﬂ°°35¶ß;",
+          "children": []
+        }
+      ]
+    }
+  }
+}

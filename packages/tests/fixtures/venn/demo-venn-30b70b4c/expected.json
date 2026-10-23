@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/venn.html",
+    "line": 35
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "Very Basic Venn Diagram",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 2.5,
+        "label": "AB"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

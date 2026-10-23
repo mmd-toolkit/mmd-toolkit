@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Composite states, aliases, and pseudostates: in a composite body, the line feed after the name leaves the state context, and the composite body context has no rule for `{`, so a `{` on a line after the name is rejected; only `state {` starts the body there."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 4. Unrecognized text.\n...tate Y {state X \"\"{B}}\n---------------------^"
+  }
+}

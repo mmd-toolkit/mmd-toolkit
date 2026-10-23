@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The header directive inside form stores {}."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

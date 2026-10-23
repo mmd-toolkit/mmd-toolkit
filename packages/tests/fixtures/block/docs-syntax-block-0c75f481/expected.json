@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/block.md",
+    "line": 254
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "id1",
+          "label": "This is the text in the box",
+          "type": "lean_right",
+          "widthInColumns": 1
+        },
+        {
+          "id": "id2",
+          "label": "This is the text in the box",
+          "type": "lean_left",
+          "widthInColumns": 1
+        },
+        {
+          "id": "A",
+          "label": "Christmas",
+          "type": "trapezoid",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B",
+          "label": "Go shopping",
+          "type": "inv_trapezoid",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

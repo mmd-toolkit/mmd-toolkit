@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does style take a later-line property?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [WORD]\n  2. [CSS_IDENTIFIER]\n  3. [MARKERLESS_SOLID]\nbut found: '\n' at line 3, column 8 [22,23)"
+  }
+}

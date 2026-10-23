@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: once the directive is left out, the third line is `%%`, which is not a comment line; the removals of detection leave `error` and `ERROR ` on two lines, and the input is rejected, as in mermaid.js. Pair of flowchart/comment-percent-before-directive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: error\n\nERROR "
+  }
+}

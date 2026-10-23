@@ -1,0 +1,303 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 276
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "classA",
+        "type": "",
+        "label": "classA",
+        "text": "classA",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classB",
+        "type": "",
+        "label": "classB",
+        "text": "classB",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classC",
+        "type": "",
+        "label": "classC",
+        "text": "classC",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classD",
+        "type": "",
+        "label": "classD",
+        "text": "classD",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classE",
+        "type": "",
+        "label": "classE",
+        "text": "classE",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classF",
+        "type": "",
+        "label": "classF",
+        "text": "classF",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classG",
+        "type": "",
+        "label": "classG",
+        "text": "classG",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classH",
+        "type": "",
+        "label": "classH",
+        "text": "classH",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classI",
+        "type": "",
+        "label": "classI",
+        "text": "classI",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classJ",
+        "type": "",
+        "label": "classJ",
+        "text": "classJ",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classK",
+        "type": "",
+        "label": "classK",
+        "text": "classK",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classL",
+        "type": "",
+        "label": "classL",
+        "text": "classL",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classM",
+        "type": "",
+        "label": "classM",
+        "text": "classM",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classN",
+        "type": "",
+        "label": "classN",
+        "text": "classN",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classO",
+        "type": "",
+        "label": "classO",
+        "text": "classO",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "classP",
+        "type": "",
+        "label": "classP",
+        "text": "classP",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "classA",
+        "id2": "classB",
+        "relation": {
+          "type1": 1,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "classC",
+        "id2": "classD",
+        "relation": {
+          "type1": 2,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "classE",
+        "id2": "classF",
+        "relation": {
+          "type1": 0,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "classG",
+        "id2": "classH",
+        "relation": {
+          "type1": 3,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "classI",
+        "id2": "classJ",
+        "relation": {
+          "type1": "none",
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "classK",
+        "id2": "classL",
+        "relation": {
+          "type1": 3,
+          "type2": "none",
+          "lineType": 1
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "classM",
+        "id2": "classN",
+        "relation": {
+          "type1": 1,
+          "type2": "none",
+          "lineType": 1
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "classO",
+        "id2": "classP",
+        "relation": {
+          "type1": "none",
+          "type2": "none",
+          "lineType": 1
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: a name that is no style is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named fill is not supported."
+  }
+}

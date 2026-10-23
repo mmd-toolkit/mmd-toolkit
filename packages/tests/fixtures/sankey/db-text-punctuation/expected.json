@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a dash and an underscore are characters of a field."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a-b",
+      "c_d"
+    ],
+    "links": [
+      {
+        "source": "a-b",
+        "target": "c_d",
+        "value": 1
+      }
+    ]
+  }
+}

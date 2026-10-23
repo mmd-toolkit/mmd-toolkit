@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Escaped closing quotes become quote characters in labels."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A\"B",
+        "value": 1
+      },
+      {
+        "label": "A'B",
+        "value": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Input with two equal-looking named endpoint objects is accepted; rels is [{\"type\":\"rel\",\"from\":{\"from\":\"a\"},\"to\":\"b\",\"label\":{\"text\":\"First\"},\"techn\":{\"text\":\"\"},\"descr\":{\"text\":\"\"}},{\"type\":\"rel\",\"from\":{\"from\":\"a\"},\"to\":\"b\",\"label\":{\"text\":\"Second\"},\"techn\":{\"text\":\"\"},\"descr\":{\"text\":\"\"}}]."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": {
+          "from": "a"
+        },
+        "to": "b",
+        "label": {
+          "text": "First"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        }
+      },
+      {
+        "type": "rel",
+        "from": {
+          "from": "a"
+        },
+        "to": "b",
+        "label": {
+          "text": "Second"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        }
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

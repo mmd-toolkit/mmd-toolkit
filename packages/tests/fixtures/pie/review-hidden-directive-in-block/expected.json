@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does ACC_DESCR priority retain a directive that global preprocessing does not remove?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A%%{",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Keywords and what follows them: `accTitle` at the end of the text is a task text without data."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  accTitle\n-----------------^\nExpecting 'taskData', got 'NEWLINE'"
+  }
+}

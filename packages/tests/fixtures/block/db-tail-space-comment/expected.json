@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, what stands after a statement: comment after a space."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "type": "space",
+          "width": 1
+        },
+        {
+          "id": "%%",
+          "label": "%%",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "c",
+          "label": "c",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

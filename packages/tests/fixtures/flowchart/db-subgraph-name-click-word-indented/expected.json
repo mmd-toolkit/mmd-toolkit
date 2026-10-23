@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/click-reserved-word.md: mermaid.js reads `events` as a click id and joins the next line, with its indentation, to the title of the subgraph, which has no vertex A. Here `click` that starts no click statement is rejected."
+  },
+  "knownDivergence": "click-reserved-word",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [],
+        "title": "Handle events    A",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

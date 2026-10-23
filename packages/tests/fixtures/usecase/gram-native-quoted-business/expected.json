@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: Quoted true cannot replace the native boolean."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'business' is invalid for usecase 'A' at line 3, column 4 [18,26)"
+  }
+}

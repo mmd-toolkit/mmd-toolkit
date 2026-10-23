@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A section too small for an arc is still stored and used by the legend."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 10
+      },
+      {
+        "label": "B",
+        "value": 100
+      },
+      {
+        "label": "C",
+        "value": 0.1
+      },
+      {
+        "label": "D",
+        "value": 50
+      }
+    ]
+  }
+}

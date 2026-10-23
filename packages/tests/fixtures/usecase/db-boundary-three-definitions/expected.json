@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do three matching boundary declarations merge members without moving the boundary?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "label": "C",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "S",
+        "label": "S",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

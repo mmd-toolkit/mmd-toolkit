@@ -1,0 +1,17 @@
+{
+  "message": "A JSON or explicit edge id must be unique",
+  "range": [
+    31,
+    37
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 5
+    },
+    "end": {
+      "line": 3,
+      "column": 11
+    }
+  }
+}

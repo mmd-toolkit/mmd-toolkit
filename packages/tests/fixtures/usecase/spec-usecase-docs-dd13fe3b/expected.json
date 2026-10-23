@@ -1,0 +1,246 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.docs.spec.ts",
+    "line": 40,
+    "test": "usecase public documentation examples > parses and renders every mermaid-example fence from the canonical page"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "Online ordering use cases",
+    "accDescr": "A customer places an order through the storefront.\nStaff review the order and inspect its data.",
+    "actors": [
+      {
+        "id": "Customer",
+        "label": "Customer",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Staff",
+        "label": "Order staff",
+        "labelType": "text",
+        "type": "hollow",
+        "business": true,
+        "stereotype": "Employee",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Browse",
+        "label": "Browse products",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "ordering",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Checkout",
+        "label": "Checkout",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "stereotype": "Core",
+        "parentId": "ordering",
+        "classes": [
+          "critical"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Payment",
+        "label": "Process payment",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "ordering",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Review",
+        "label": "Review order",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "parentId": "ordering",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "ordering",
+        "label": "Ordering System",
+        "labelType": "text",
+        "type": "package",
+        "classes": [
+          "system"
+        ],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "id": "starts",
+        "source": "Customer",
+        "target": "Checkout",
+        "type": "association",
+        "arrowType": 0,
+        "label": "places order",
+        "labelType": "text",
+        "minlen": 2,
+        "classes": [],
+        "styles": [],
+        "animate": true,
+        "animation": "fast"
+      },
+      {
+        "source": "Customer",
+        "target": "Browse",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "id": "pays",
+        "source": "Checkout",
+        "target": "Payment",
+        "type": "include",
+        "arrowType": 0,
+        "label": "include",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [
+          "stroke:#6b46c1",
+          "stroke-width:2px"
+        ],
+        "animate": false
+      },
+      {
+        "source": "Staff",
+        "target": "Review",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Review",
+        "target": "OrderData",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "Checkout",
+        "label": "Validates the **cart** before payment",
+        "labelType": "markdown"
+      }
+    ],
+    "jsonNodes": [
+      {
+        "id": "OrderData",
+        "value": {
+          "status": "pending",
+          "items": [
+            {
+              "name": "Book",
+              "quantity": 1
+            }
+          ],
+          "total": 29.95
+        },
+        "propertyOrder": {
+          "": [
+            "status",
+            "items",
+            "total"
+          ],
+          "/items/0": [
+            "name",
+            "quantity"
+          ]
+        },
+        "classes": [
+          "data"
+        ],
+        "styles": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "system",
+        "styles": [
+          "stroke:#c8a02a",
+          "stroke-width:2px"
+        ]
+      },
+      {
+        "id": "critical",
+        "styles": [
+          "stroke:#c33",
+          "stroke-width:3px"
+        ]
+      },
+      {
+        "id": "data",
+        "styles": [
+          "stroke:#3572a5"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "OrderData",
+        "set": {
+          "value": {
+            "status": "pending",
+            "items": [
+              {
+                "name": "Book",
+                "quantity": 1
+              }
+            ],
+            "total": 29.95
+          },
+          "propertyOrder": {
+            "": [
+              "status",
+              "items",
+              "total"
+            ],
+            "/items/0": [
+              "name",
+              "quantity"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

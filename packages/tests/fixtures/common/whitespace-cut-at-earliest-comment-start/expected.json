@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: a space and a second U+2028 lie between the first U+2028 and the `%%`, so the comment region starts at the earliest comment start, right after the first U+2028; `error` before it is the error pseudo-diagram. The input contains real U+2028 characters."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

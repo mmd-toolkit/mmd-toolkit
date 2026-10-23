@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A global block has no metadata production."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tflow-beta TBglobal@{ model: x }Aend\n----------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'EOF', got 'SHAPE_DATA'"
+  }
+}

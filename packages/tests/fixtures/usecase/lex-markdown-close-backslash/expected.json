@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does backslash fail to escape the first markdown closing pair?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> RPAREN <-- but found --> 'tail' <-- at line 2, column 14 [26,30)"
+  }
+}

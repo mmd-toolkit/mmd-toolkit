@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Two semicolons after a size leave one unselected semicolon and are rejected, including with a following space."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...set A[style:#abc]:1; \n----------------------^"
+  }
+}

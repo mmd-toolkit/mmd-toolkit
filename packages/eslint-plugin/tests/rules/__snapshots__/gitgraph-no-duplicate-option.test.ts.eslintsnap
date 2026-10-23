@@ -1,0 +1,251 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> docs/rules/gitgraph-no-duplicate-option.md incorrect 1
+Filename: gitgraph-no-duplicate-option-incorrect-1.mmd
+
+Code:
+  1 | gitGraph
+  2 |   commit id: "a" id: "b"
+    |                  ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/docs-incorrect-1
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/docs-incorrect-1-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   commit id: "a" id: "b"
+    |                  ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-commit-empty-last
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-commit-empty-last-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"a" id:""
+    |               ^~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-commit-id
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-commit-id-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   commit id: "a" id: "b"
+    |                  ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-commit-third
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-commit-third-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"a" id:"b" id:"a" type:NORMAL type:REVERSE type:REVERSE
+    |               ^~~~~~ ^~~~~~             ^~~~~~~~~~~~
+    |               [1]    [2]                [3]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+[2] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+[3] mermaid.js uses this `type:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-commit-type
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-commit-type-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"a" type:NORMAL type:HIGHLIGHT
+    |                           ^~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `type:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-merge-invalid-shadow
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-merge-invalid-shadow-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | branch b
+  4 | commit id:"B"
+  5 | checkout main
+  6 | merge b id:"A" id:"M"
+    |                ^~~~~~ [1]
+  7 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-merge-scalars
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-merge-scalars-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | branch b
+  4 | commit id:"B"
+  5 | checkout main
+  6 | merge b id:"X" id:"Y" type:NORMAL type:REVERSE
+    |                ^~~~~~ [1]         ^~~~~~~~~~~~ [2]
+  7 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+[2] mermaid.js uses this `type:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-options-crlf
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-options-crlf-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"a" id:"b"
+    |               ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-options-escaped-equal
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-options-escaped-equal-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"aq" id:"a\q"
+    |                ^~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-options-global-gap
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-options-global-gap-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"a" %%{wrap}%% id:"b"
+    |                          ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-options-hidden-gap
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-options-hidden-gap-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"a"%%{}%% id:"b"
+    |              ^~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-options-html-quotes-written
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-options-html-quotes-written-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"<b x="a">Text</b>" id:"<b x='a'>Text</b>"
+    |                               ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-pick-id-parent
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-pick-id-parent-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | branch b
+  4 | commit id:"B"
+  5 | commit id:"C"
+  6 | checkout main
+  7 | cherry-pick id:"B" id:"C" parent:"A" parent:"B"
+    |                    ^~~~~~ [1]        ^~~~~~~~~~ [2]
+  8 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+[2] mermaid.js uses this `parent:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-pick-merge-parent
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-pick-merge-parent-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | branch b
+  4 | commit id:"B"
+  5 | checkout main
+  6 | merge b id:"M"
+  7 | branch c
+  8 | cherry-pick id:"M" parent:"A" parent:"B"
+    |                               ^~~~~~~~~~ [1]
+  9 |
+
+[1] mermaid.js uses this `parent:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/repeat-pick-shadow-invalid
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/repeat-pick-shadow-invalid-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | branch b
+  4 | commit id:"B"
+  5 | checkout main
+  6 | cherry-pick id:"missing" id:"B" parent:"missing" parent:"A"
+    |                          ^~~~~~ [1]              ^~~~~~~~~~ [2]
+  7 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+[2] mermaid.js uses this `parent:` value instead of the earlier one in this statement.
+---
+
+
+Test: gitgraph-no-duplicate-option >> invalid >>> invalid/gitgraph/scalar-case-distinct
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-option/invalid/gitgraph/scalar-case-distinct-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"a" id:"A"
+    |               ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `id:` value instead of the earlier one in this statement.
+---

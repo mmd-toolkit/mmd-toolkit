@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, Create and destroy: `create participant A` adds A, records it in createdActors at message index 0, and the next message goes to A."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "A",
+        "messageIndex": 0
+      }
+    ],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "B",
+        "to": "A",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

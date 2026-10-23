@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Are punctuation, Unicode and emoji ordinary text?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R: [x] (y) {z} | a->b `code` 'single' \\ path",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R: [x] (y) {z} | a->b `code` 'single' \\ path",
+      "children": [
+        {
+          "text": "日本語 😀",
+          "children": []
+        }
+      ]
+    }
+  }
+}

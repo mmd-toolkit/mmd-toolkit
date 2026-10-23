@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-node-data.spec.js",
+    "line": 210,
+    "test": "when parsing directions > should error on internal-only shape"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: rect_left_inv_arrow. Shape names should be lowercase."
+  }
+}

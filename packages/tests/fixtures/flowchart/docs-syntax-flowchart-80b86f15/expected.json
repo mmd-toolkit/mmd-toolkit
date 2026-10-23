@@ -1,0 +1,189 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/flowchart.md",
+    "line": 143
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "UI",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Web app",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "Cache",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Local cache",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "API",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "API gateway",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "Auth",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Auth service",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "Orders",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Order service",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "DB",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Orders DB",
+        "type": "cylinder",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "UI",
+        "end": "API",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_UI_API_0"
+      },
+      {
+        "start": "UI",
+        "end": "Cache",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_UI_Cache_0"
+      },
+      {
+        "start": "API",
+        "end": "Auth",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_API_Auth_0"
+      },
+      {
+        "start": "API",
+        "end": "Orders",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_API_Orders_0"
+      },
+      {
+        "start": "Orders",
+        "end": "DB",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Orders_DB_0"
+      },
+      {
+        "start": "Auth",
+        "end": "UI",
+        "type": "arrow_point",
+        "text": "token",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_Auth_UI_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Client",
+        "nodes": [
+          "UI",
+          "Cache"
+        ],
+        "title": "Client",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Services",
+        "nodes": [
+          "API",
+          "Auth",
+          "Orders"
+        ],
+        "title": "Services",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Storage",
+        "nodes": [
+          "DB"
+        ],
+        "title": "Storage",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    }
+  }
+}

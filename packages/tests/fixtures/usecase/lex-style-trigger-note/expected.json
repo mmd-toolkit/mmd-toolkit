@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a quoted note retain the encoded hash and remaining semicolon?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [
+      {
+        "target": "A",
+        "label": "style fill:ﬂ°abc¶ß;",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

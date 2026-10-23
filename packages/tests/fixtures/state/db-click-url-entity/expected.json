@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity is its placeholder in a text; this shows it for the string of a click statement, which keeps its quotes in the link."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "A",
+        "url": "\"uﬂ°amp¶ßv\"",
+        "tooltip": ""
+      }
+    ]
+  }
+}

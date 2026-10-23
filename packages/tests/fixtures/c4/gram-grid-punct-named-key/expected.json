@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The punct text in Person argument 3, $<key>=\"V\" is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...n(a, \"A\", $a!$&*+.,/=?^_~@b=\"V\")\n-----------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`UpdateElementStyle` followed by a blank line before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...)UpdateElementStyle(a, \"red\", \"white\"\n----------------------^"
+  }
+}

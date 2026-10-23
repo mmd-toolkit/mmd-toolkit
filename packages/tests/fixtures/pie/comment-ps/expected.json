@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2029 inside an inline comment tests shared preprocessing and terminal scope."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

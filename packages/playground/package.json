@@ -1,0 +1,39 @@
+{
+  "name": "@mmd-toolkit/playground",
+  "version": "0.0.0",
+  "description": "Browser playground for the mmd-toolkit parser and formatter",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
+  },
+  "scripts": {
+    "dev": "vite --open",
+    "build": "vite build",
+    "preview": "vite preview --open",
+    "typecheck": "vue-tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "clean": "rimraf lib test-results playwright-report"
+  },
+  "dependencies": {
+    "@mermaid-js/examples": "^2.0.0",
+    "@mmd-toolkit/parser": "workspace:*",
+    "@shikijs/monaco": "^4.5.0",
+    "monaco-editor-core": "^0.57.0",
+    "prettier": "^3.9.0",
+    "prettier-plugin-mmd": "workspace:*",
+    "shiki": "^4.5.0",
+    "shine-and-bright": "^0.3.0",
+    "vue": "^3.6.0-rc.10"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^24.0.0",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "vite": "^8.3.2",
+    "vitest": "^5.0.2",
+    "vue-tsc": "^3.3.12"
+  }
+}

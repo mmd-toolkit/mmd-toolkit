@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L3] Does an internal TAB remain in root TEXT?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R\tX",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R\tX",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

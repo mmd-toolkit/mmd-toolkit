@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The classDef pass removes the last semicolon in accessibility text."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

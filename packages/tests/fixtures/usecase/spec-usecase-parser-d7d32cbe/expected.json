@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/parser/usecase.parser.spec.ts",
+    "line": 6,
+    "test": "usecase canonical line-oriented grammar > accepts restricted system-boundary declarations, blanks, and comments"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "User",
+        "label": "User",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "parentId": "Authentication_System",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Admin",
+        "label": "Administrator",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "parentId": "Authentication_System",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Login",
+        "label": "Sign in",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "Authentication_System",
+        "classes": [
+          "critical"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Report",
+        "label": "Generate report",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "parentId": "Authentication_System",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "Authentication_System",
+        "label": "Authentication System",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [
+          "system"
+        ],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "User",
+        "target": "Login",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

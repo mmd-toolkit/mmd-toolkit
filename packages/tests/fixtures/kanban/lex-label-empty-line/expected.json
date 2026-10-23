@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty line inside a quoted label tests multiline preservation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "one\n\ntwo",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

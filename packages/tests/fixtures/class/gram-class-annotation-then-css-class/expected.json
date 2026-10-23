@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Class statements: a class statement has at most one of a CSS class and an annotation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...iagramclass A <<x>>:::c\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_START', 'STRUCT_STOP', got 'STYLE_SEPARATOR'"
+  }
+}

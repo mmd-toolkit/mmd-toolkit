@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: `call` is a keyword only with whitespace after it; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...01-01, 1dclick id1 callf()\n----------------------^\nExpecting 'callbackname', 'href', got 'taskTxt'"
+  }
+}

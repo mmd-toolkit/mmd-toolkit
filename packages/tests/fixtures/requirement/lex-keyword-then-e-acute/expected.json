@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Keywords and what follows them: `é` ends the keyword `requirement`, and no rule reads it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tDiagramrequirementé r {}\n----------------------^"
+  }
+}

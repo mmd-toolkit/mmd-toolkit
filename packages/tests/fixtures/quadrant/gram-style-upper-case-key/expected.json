@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: the name of a style is read in lower case only."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named RADIUS is not supported."
+  }
+}

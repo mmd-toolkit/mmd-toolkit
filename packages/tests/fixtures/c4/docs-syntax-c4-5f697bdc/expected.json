@@ -1,0 +1,160 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/c4.md",
+    "line": 310
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Dynamic",
+    "title": "Dynamic diagram for Internet Banking System - API Application",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "c4",
+        "label": {
+          "text": "Database"
+        },
+        "techn": {
+          "text": "Relational Database Schema"
+        },
+        "descr": {
+          "text": "Stores user registration information, hashed authentication credentials, access logs, etc."
+        },
+        "typeC4Shape": {
+          "text": "container_db"
+        },
+        "parentBoundary": "global"
+      },
+      {
+        "alias": "c1",
+        "label": {
+          "text": "Single-Page Application"
+        },
+        "techn": {
+          "text": "JavaScript and Angular"
+        },
+        "descr": {
+          "text": "Provides all of the Internet banking functionality to customers via their web browser."
+        },
+        "typeC4Shape": {
+          "text": "container"
+        },
+        "parentBoundary": "global"
+      },
+      {
+        "alias": "c3",
+        "label": {
+          "text": "Security Component"
+        },
+        "techn": {
+          "text": "Spring Bean"
+        },
+        "descr": {
+          "text": "Provides functionality Related to signing in, changing passwords, etc."
+        },
+        "typeC4Shape": {
+          "text": "component"
+        },
+        "parentBoundary": "b"
+      },
+      {
+        "alias": "c2",
+        "label": {
+          "text": "Sign In Controller"
+        },
+        "techn": {
+          "text": "Spring MVC Rest Controller"
+        },
+        "descr": {
+          "text": "Allows users to sign in to the Internet Banking System."
+        },
+        "typeC4Shape": {
+          "text": "component"
+        },
+        "parentBoundary": "b"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "API Application"
+        },
+        "type": {
+          "text": "CONTAINER"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "c1",
+        "to": "c2",
+        "label": {
+          "text": "Submits credentials to"
+        },
+        "techn": {
+          "text": "JSON/HTTPS"
+        },
+        "descr": {
+          "text": ""
+        },
+        "textColor": "red",
+        "offsetY": "-40"
+      },
+      {
+        "type": "rel",
+        "from": "c2",
+        "to": "c3",
+        "label": {
+          "text": "Calls isAuthenticated() on"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        },
+        "textColor": "red",
+        "offsetX": "-40",
+        "offsetY": 60
+      },
+      {
+        "type": "rel",
+        "from": "c3",
+        "to": "c4",
+        "label": {
+          "text": "select * from users where username = ?"
+        },
+        "techn": {
+          "text": "JDBC"
+        },
+        "descr": {
+          "text": ""
+        },
+        "textColor": "red",
+        "offsetY": "-40",
+        "offsetX": 10
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

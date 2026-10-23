@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity in the text of a description block is its placeholder in the Db."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a ﬂ°amp¶ß b",
+    "sections": [],
+    "tasks": []
+  }
+}

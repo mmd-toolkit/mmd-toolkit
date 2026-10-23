@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A whitespace-only frontmatter title keeps both spaces when there is no root."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "  ",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  },
+  "embedded": {
+    "title": "  "
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A shared YAML alias repeats the anchored mapping without a cycle."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "custom": {
+            "deep": "value"
+          },
+          "copy": {
+            "deep": "value"
+          }
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "custom": {
+              "deep": "value"
+            },
+            "copy": {
+              "deep": "value"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

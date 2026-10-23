@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The style-rule fragment in size is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...nn-betaset A:1style:#xy2\n----------------------^\nExpecting 'IDENTIFIER', 'STRING', got 'COLON'"
+  }
+}

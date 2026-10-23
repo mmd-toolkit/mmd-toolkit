@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[C: configuration and sanitizeText] Does an unsupported securityLevel escape both root and child text?"
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "&lt;b&gt;Root&lt;/b&gt; &equals; value",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "&lt;b&gt;Root&lt;/b&gt; &equals; value",
+      "children": [
+        {
+          "text": "&lt;i&gt;Cause&lt;/i&gt;<br/>next",
+          "children": []
+        }
+      ]
+    }
+  }
+}

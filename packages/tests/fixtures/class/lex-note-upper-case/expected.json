@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Lexical structure: the lexer is case-sensitive; `Note` is a word, not the keyword `note`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...lassDiagramNote \"x\"\n----------------------^\nExpecting 'AGGREGATION', 'EXTENSION', 'COMPOSITION', 'DEPENDENCY', 'LOLLIPOP', 'LINE', 'DOTTED_LINE', got 'NEWLINE'"
+  }
+}

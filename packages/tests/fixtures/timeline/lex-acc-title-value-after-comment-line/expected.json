@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, accessibility: a comment line between `accTitle:` and the text is removed, so the text is the line after it."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

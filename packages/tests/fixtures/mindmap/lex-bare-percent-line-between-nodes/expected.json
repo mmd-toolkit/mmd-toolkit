@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Comments: a line `%%` alone between nodes is a diagram comment."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "a",
+          "type": 0,
+          "children": []
+        },
+        {
+          "nodeId": "b",
+          "level": 2,
+          "descr": "b",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A line of `%%` alone after a directive and before the flowchart header: the specification reads it as a diagram comment with the mark %%, and mermaid.js, whose flowchart lexer does not read it so, rejects the input."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%flowchart LRA-->\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

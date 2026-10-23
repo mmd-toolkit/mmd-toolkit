@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden body YAML does not replace the title already read."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: `class A a,b c` has the entity c after it; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": [
+          "a",
+          "b"
+        ]
+      },
+      {
+        "id": "entity-c-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "c",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

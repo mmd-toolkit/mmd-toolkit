@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: An empty accessibility block is not skipped between native metadata atoms."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> RBRACE <-- but found --> '{' <-- at line 2, column 24 [36,37)"
+  }
+}

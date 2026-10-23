@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A rel style double semicolon suffix after the call or boundary body is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n..., \"blue\", \"-4\", \"5\");;\n-----------------------^"
+  }
+}

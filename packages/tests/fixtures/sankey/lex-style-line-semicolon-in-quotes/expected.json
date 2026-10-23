@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: the rule drops the `;` inside quotes too."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "style:#xy",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "style:#xy",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,120 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: block-no-invalid-direction >> invalid >>> docs/rules/block-no-invalid-direction.md incorrect 1
+Filename: block-no-invalid-direction-incorrect-1.mmd
+
+Code:
+  1 | block
+  2 |   A<["Next"]>( left )
+    |               ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---
+
+
+Test: block-no-invalid-direction >> invalid >>> invalid/block/axis-space-before-comma
+Filename: tests/fixtures/rules/block-no-invalid-direction/invalid/block/axis-space-before-comma-input.mmd
+
+Code:
+  1 | block
+  2 |   A<["x"]>(x ,down)
+    |            ^~ [1]
+  3 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---
+
+
+Test: block-no-invalid-direction >> invalid >>> invalid/block/edge-endpoint
+Filename: tests/fixtures/rules/block-no-invalid-direction/invalid/block/edge-endpoint-input.mmd
+
+Code:
+  1 | block
+  2 |   A<["x"]>( left ) --> B
+    |            ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---
+
+
+Test: block-no-invalid-direction >> invalid >>> invalid/block/in-composite
+Filename: tests/fixtures/rules/block-no-invalid-direction/invalid/block/in-composite-input.mmd
+
+Code:
+  1 | block
+  2 |   block:G
+  3 |     A<["x"]>( up )
+    |              ^~~~ [1]
+  4 |   end
+  5 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---
+
+
+Test: block-no-invalid-direction >> invalid >>> invalid/block/space-after-open
+Filename: tests/fixtures/rules/block-no-invalid-direction/invalid/block/space-after-open-input.mmd
+
+Code:
+  1 | block
+  2 |   A<["x"]>( left)
+    |            ^~~~~ [1]
+  3 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---
+
+
+Test: block-no-invalid-direction >> invalid >>> invalid/block/space-before-close
+Filename: tests/fixtures/rules/block-no-invalid-direction/invalid/block/space-before-close-input.mmd
+
+Code:
+  1 | block
+  2 |   A<["x"]>(left )
+    |            ^~~~~ [1]
+  3 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---
+
+
+Test: block-no-invalid-direction >> invalid >>> invalid/block/space-before-comma
+Filename: tests/fixtures/rules/block-no-invalid-direction/invalid/block/space-before-comma-input.mmd
+
+Code:
+  1 | block
+  2 |   A<["x"]>(left ,right)
+    |            ^~~~~ [1]
+  3 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---
+
+
+Test: block-no-invalid-direction >> invalid >>> invalid/block/spaces-inside-parentheses
+Filename: tests/fixtures/rules/block-no-invalid-direction/invalid/block/spaces-inside-parentheses-input.mmd
+
+Code:
+  1 | block
+  2 |   A<["x"]>( left )
+    |            ^~~~~~ [1]
+  3 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---
+
+
+Test: block-no-invalid-direction >> invalid >>> invalid/block/tab-before-word
+Filename: tests/fixtures/rules/block-no-invalid-direction/invalid/block/tab-before-word-input.mmd
+
+Code:
+  1 | block
+  2 |   A<["x"]>(	left)
+    |            ^~~~~ [1]
+  3 |
+
+[1] mermaid.js keeps the whitespace in this direction, and the block arrow does not point that way.
+---

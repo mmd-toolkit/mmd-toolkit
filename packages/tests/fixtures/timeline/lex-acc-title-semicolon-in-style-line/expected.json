@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, accessibility: the line rule drops the last `;` of an accessibility title as well."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "style:#xy",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

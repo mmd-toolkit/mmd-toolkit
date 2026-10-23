@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A global comment line inside a block disappears before lexing."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Empty markdown is plain text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"``\"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"``\"",
+      "children": [
+        {
+          "text": "[]",
+          "children": []
+        }
+      ]
+    }
+  }
+}

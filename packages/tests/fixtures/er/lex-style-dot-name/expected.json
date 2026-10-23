@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The style context, rule 6: `.` in the name after `style`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\nerDiagramAstyle A.B fill:red\n-----------------^"
+  }
+}

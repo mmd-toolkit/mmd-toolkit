@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-v2.spec.js",
+    "line": 350,
+    "test": "state diagram V2,  > when parsing an info graph it > should handle note statements"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Active",
+        "shape": "rect",
+        "label": "Active",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Inactive",
+        "shape": "rect",
+        "label": "Inactive",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "Active",
+        "position": "left of",
+        "text": "this is a short<br/>note"
+      },
+      {
+        "state": "Inactive",
+        "position": "right of",
+        "text": "A note can also\n      be defined on\n      several lines"
+      }
+    ],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Active",
+        "label": ""
+      },
+      {
+        "start": "Active",
+        "end": "Inactive",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

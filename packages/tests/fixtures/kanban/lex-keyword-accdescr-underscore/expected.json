@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "accDescr_ in a node position tests keyword recognition and carryover names."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "accDescr_",
+        "label": "accDescr_",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

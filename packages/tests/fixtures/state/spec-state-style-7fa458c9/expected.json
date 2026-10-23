@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-style.spec.js",
+    "line": 346,
+    "test": "ClassDefs and classes when parsing a State diagram > class for a state (classDef) > applying to states in the diagram > comments parsing > should correctly handle inline %% comments in state syntax"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Moving",
+        "shape": "rect",
+        "label": "Moving",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Still%Active",
+        "shape": "rect",
+        "label": "Still%Active",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Moving",
+        "label": ""
+      },
+      {
+        "start": "Moving",
+        "end": "Still%Active",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

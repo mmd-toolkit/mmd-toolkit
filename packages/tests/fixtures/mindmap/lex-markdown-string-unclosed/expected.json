@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md The shape context: a markdown string not closed at the end of the text makes the input rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...indmaproot  a[\"`x\n--------------------^\nExpecting 'NODE_DEND', got '1'"
+  }
+}

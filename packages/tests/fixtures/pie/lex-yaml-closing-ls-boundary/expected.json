@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Hidden YAML: Consume an LF immediately after the closing fence; another whitespace boundary is only looked at. Case: yaml-closing-ls-boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 4: unexpected character: -> <- at offset: 20, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Hidden DIRECTIVE: A closing spelling followed by a digit does not qualify; a later closer may finish the form. Case: hidden-comment-fallback-no-boundary."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      },
+      {
+        "label": "B",
+        "value": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Members that start with `#br#` under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): mermaid.js replaces the characters before it reads the visibility, so `#` is no visibility there, and `#` followed by anything else is the visibility protected."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "<br/>y",
+            "parameters": "z",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "#",
+            "classifier": "",
+            "id": "m",
+            "parameters": "n",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "<br/>x"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "#",
+            "classifier": "",
+            "id": "x"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "<br/>w"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The accTitle in a subgraph is replaced in the title of the diagram under a securityLevel that is not one of mermaid.js's values, while the node is the text as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "a&lt;b",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "a<b"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

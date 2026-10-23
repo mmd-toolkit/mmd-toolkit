@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M03 (Data context): Double-quoted caret is allowed."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "a^b",
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "label": "a^b"
+        }
+      }
+    ]
+  }
+}

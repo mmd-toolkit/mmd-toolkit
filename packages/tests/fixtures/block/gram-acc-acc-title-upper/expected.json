@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, accessibility and titles: `ACCTITLE:` is not the keyword: the colon cannot be read, and the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...lock-beta  ACCTITLE: t\n----------------------^"
+  }
+}

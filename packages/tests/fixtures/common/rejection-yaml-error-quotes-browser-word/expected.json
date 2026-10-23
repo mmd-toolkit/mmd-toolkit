@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The YAML error of the frontmatter quotes the line of the input, here with the browser word `document`; it is a rejection of the input, not a missing browser feature."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "unexpected end of the stream within a flow collection (2:1)\n\n 1 | title: [document\n 2 | \n-----^"
+  }
+}

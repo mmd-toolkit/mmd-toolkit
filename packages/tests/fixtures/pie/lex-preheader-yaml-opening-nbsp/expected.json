@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a nonleading opening fence followed by NBSP pass pie hidden YAML? Detection passes the block but pie rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 1: unexpected character: ->-<- at offset: 0, skipped 4 characters.\nLexer error on line 2, column 1: unexpected character: ->x<- at offset: 5, skipped 1 characters.\nLexer error on line 2, column 4: unexpected character: ->y<- at offset: 8, skipped 1 characters.\nLexer error on line 3, column 1: unexpected character: ->-<- at offset: 10, skipped 3 characters. Parse error on line 2, column 2: Expecting token of type 'pie' but found `:`."
+  }
+}

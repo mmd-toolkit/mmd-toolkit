@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A `direction` statement inside a subgraph does not set the diagram direction; the last one outside subgraphs does: RL."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "RL",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "BT"
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/parser/block.spec.ts",
+    "line": 361,
+    "test": "Block diagram > when parsing a block diagram graph it should handle >  > blocks with different widths"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 3,
+      "children": [
+        {
+          "id": "one",
+          "label": "One Slot",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "id": "two",
+          "label": "Two slots",
+          "type": "square",
+          "widthInColumns": 2
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

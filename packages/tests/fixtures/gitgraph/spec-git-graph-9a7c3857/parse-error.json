@@ -1,0 +1,17 @@
+{
+  "message": "A merge id must not already name a commit",
+  "range": [
+    167,
+    174
+  ],
+  "loc": {
+    "start": {
+      "line": 7,
+      "column": 29
+    },
+    "end": {
+      "line": 7,
+      "column": 36
+    }
+  }
+}

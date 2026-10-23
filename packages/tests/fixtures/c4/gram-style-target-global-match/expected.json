@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The initial global boundary is an existing target; __proto__ in the border-color position is rejected without an explicit declaration."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "undefined is not iterable (cannot read property Symbol(Symbol.iterator))"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-singlenode.spec.js",
+    "line": 332,
+    "test": "[Singlenodes] when parsing > should throw error at nodes beginning with class"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\ngraph TD;class.node;class-node;cla\n--------------^\nExpecting 'SPACE', got 'NODE_STRING'"
+  }
+}

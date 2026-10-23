@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A prior style update's named alias assignment changes the shape target for the next update; the new alias matches and rejects __proto__."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "undefined is not iterable (cannot read property Symbol(Symbol.iterator))"
+  }
+}

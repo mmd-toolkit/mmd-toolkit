@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A quoted name retains the unselected characters when only the last of three semicolons is selected."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "style:ﬂ°abc¶ß;"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

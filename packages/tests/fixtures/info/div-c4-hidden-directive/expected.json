@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: non-global hidden DIRECTIVE visible to C4 detection at EOF"
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\ninfo %%{! C4Containe\n^"
+  }
+}

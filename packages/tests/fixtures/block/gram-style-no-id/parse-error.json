@@ -1,0 +1,17 @@
+{
+  "message": "style has no ids before the end of the text",
+  "range": [
+    17,
+    22
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 2
+    },
+    "end": {
+      "line": 3,
+      "column": 7
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Bare node ids and labels retain internal spaces."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "In progress",
+        "label": "In progress",
+        "isGroup": true
+      },
+      {
+        "id": "Work item",
+        "label": "Work item",
+        "isGroup": false,
+        "parentId": "In progress"
+      }
+    ]
+  }
+}

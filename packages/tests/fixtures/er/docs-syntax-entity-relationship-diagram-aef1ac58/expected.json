@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 422
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-CUSTOMER-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "CUSTOMER",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "id1",
+        "nodes": [
+          "CUSTOMER"
+        ],
+        "title": "title 1",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/containerOrder.spec.ts",
+    "line": 18,
+    "test": "agentflow container order > gives the first declared container the first container slot"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "c",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "c",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "first",
+        "nodes": [
+          "a"
+        ],
+        "title": "First",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "second",
+        "nodes": [
+          "b"
+        ],
+        "title": "Second",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "third",
+        "nodes": [
+          "c"
+        ],
+        "title": "Third",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  }
+}

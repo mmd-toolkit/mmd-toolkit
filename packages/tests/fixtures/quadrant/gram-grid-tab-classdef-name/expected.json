@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, white space: a tab in the name of a class."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named b color is not supported."
+  }
+}

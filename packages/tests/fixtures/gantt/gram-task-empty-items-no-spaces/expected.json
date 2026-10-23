@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: three empty items without spaces."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": ""
+          },
+          "endTime": {
+            "data": ""
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Do frontmatter accessibility keys populate the common getters?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Effect",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Effect",
+      "children": []
+    }
+  }
+}

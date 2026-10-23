@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Diagram securityLevel loose avoids the extra HTML escaping of commit fields."
+  },
+  "config": {
+    "gitGraph": {
+      "securityLevel": "loose"
+    }
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "<b>A</b>",
+        "seq": 0,
+        "type": 0,
+        "tags": [
+          "<u>T</u>"
+        ],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

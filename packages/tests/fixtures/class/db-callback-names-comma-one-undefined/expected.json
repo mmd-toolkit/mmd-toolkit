@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The class A is changed, and Z records a click call too, because a call is recorded whether or not the name is a class."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "fn",
+        "args": null
+      },
+      {
+        "id": "Z",
+        "name": "fn",
+        "args": null
+      }
+    ]
+  }
+}

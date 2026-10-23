@@ -1,0 +1,17 @@
+{
+  "message": "A merge must name an existing source branch",
+  "range": [
+    38,
+    48
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 14
+    },
+    "end": {
+      "line": 3,
+      "column": 24
+    }
+  }
+}

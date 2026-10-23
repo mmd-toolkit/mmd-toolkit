@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md Comments: inline diagram comments continue past U+2028 and U+2029 to LF; the apparent set X and set Y declarations remain comment text."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

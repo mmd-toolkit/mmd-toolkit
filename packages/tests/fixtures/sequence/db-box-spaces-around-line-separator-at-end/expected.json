@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Box colours and ast/sequence.md SequenceBoxText: the U+2028 near the end makes the split fail, so the box has no name and the fill transparent; the box text ends at the U+2028, and the space after it is outside."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [
+      {
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": []
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

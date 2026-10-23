@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Spaced semicolons after a bounded header are not statements."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 10: unexpected character: ->;<- at offset: 9, skipped 1 characters.\nLexer error on line 1, column 12: unexpected character: ->;<- at offset: 11, skipped 1 characters. "
+  }
+}

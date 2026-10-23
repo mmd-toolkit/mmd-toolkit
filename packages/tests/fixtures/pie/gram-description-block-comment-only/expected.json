@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/pie.md PieAccDescrBlockStatement: a block containing only a comment line and whitespace has null value; its final empty assignment is retained."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

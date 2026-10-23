@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Strings, bracket labels, titles, and colors are whole units, with no separate lexical context. This input is accepted by mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "x": "rgb(1,\n2,3)"
+        }
+      }
+    ]
+  }
+}

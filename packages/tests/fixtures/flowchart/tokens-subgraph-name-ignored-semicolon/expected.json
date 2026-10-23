@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens/flowchart.md: an ignored `;` cuts the RawText token of a subgraph name: the id is style:#xb."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "style:#xb",
+        "nodes": [
+          "A"
+        ],
+        "title": "style:#xb",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

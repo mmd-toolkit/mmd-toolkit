@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: a `%` followed by `{` is a character of a task text: the task `%{x}`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "%{x}",
+        "people": [],
+        "score": 5
+      }
+    ]
+  }
+}

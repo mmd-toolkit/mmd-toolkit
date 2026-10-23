@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "One matching style semicolon is removed before trailing spaces are trimmed from the root and title."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "style R fill:#abc",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "style R fill:#abc",
+      "children": []
+    }
+  }
+}

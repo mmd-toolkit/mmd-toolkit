@@ -1,0 +1,102 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does lone CR normalize for every statement rather than only the header?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "Title",
+    "accDescr": "Description",
+    "actors": [
+      {
+        "id": "A",
+        "label": "A",
+        "labelType": "text",
+        "type": "normal",
+        "business": true,
+        "classes": [
+          "hot"
+        ],
+        "styles": [
+          "color:blue"
+        ]
+      }
+    ],
+    "useCases": [
+      {
+        "id": "B",
+        "label": "B",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "S",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "S",
+        "label": "S",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [
+      {
+        "source": "A",
+        "target": "B",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "A",
+        "label": "text",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {},
+        "propertyOrder": {
+          "": []
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "color:red"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {},
+          "propertyOrder": {
+            "": []
+          }
+        }
+      }
+    ]
+  }
+}

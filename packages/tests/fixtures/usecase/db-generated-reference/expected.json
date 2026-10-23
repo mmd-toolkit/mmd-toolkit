@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a generated model id be explicitly referenced without a duplicate declaration?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "Display_name",
+        "label": "Display name",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [
+          "hot"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Other",
+        "label": "Other",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "Display_name",
+        "target": "Other",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

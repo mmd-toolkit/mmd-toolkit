@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Signed Infinity is not a numeric terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 5: unexpected character: ->-<- at offset: 8, skipped 9 characters. Parse error on line 2, column 14: Expecting token of type 'NUMBER_PIE' but found `\n`."
+  }
+}

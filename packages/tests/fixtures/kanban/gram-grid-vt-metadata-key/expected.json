@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Known divergences (embedded-data-opaque): The delimited embedded content is opaque; Mermaid rejects its content."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "the stream contains non-printable characters (2:4)\n\n 1 | {\n 2 | a\u000bb: value\n--------^\n 3 | }"
+  }
+}

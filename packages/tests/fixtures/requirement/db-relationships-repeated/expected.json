@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, a relationship written again is kept again."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "traces",
+        "src": "a",
+        "dst": "b"
+      },
+      {
+        "type": "traces",
+        "src": "a",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

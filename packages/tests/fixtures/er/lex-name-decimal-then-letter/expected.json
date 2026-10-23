@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The cardinalities, numbers, and lines: `2.5x` is the entities `2.5` and `x`; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-2.5-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "2.5",
+        "classes": []
+      },
+      {
+        "id": "entity-x-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "x",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind constructor in section-id tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "aconstructorb",
+        "label": "Column",
+        "isGroup": true
+      },
+      {
+        "id": "I",
+        "label": "Item",
+        "isGroup": false,
+        "parentId": "aconstructorb"
+      }
+    ]
+  }
+}

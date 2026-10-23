@@ -1,0 +1,110 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 626
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Consumer",
+        "description": "Consumer",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "API"
+      },
+      {
+        "name": "API",
+        "description": "API",
+        "wrap": false,
+        "prevActor": "Consumer",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "BookingService"
+      },
+      {
+        "name": "BookingService",
+        "description": "BookingService",
+        "wrap": false,
+        "prevActor": "API",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "BillingService"
+      },
+      {
+        "name": "BillingService",
+        "description": "BillingService",
+        "wrap": false,
+        "prevActor": "BookingService",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Consumer",
+        "to": "API",
+        "message": "Book something",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "API",
+        "to": "BookingService",
+        "message": "Start booking process",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "when the booking process fails",
+        "wrap": false,
+        "type": 30,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "API",
+        "to": "Consumer",
+        "message": "show failure",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 31,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "API",
+        "to": "BillingService",
+        "message": "Start billing process",
+        "wrap": false,
+        "type": 6,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "embedded-data-opaque: content of only a YAML comment and a line break has no value; mermaid.js fails with a TypeError, this specification accepts the input."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of null (reading 'shape')"
+  }
+}

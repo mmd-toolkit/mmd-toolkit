@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LF control for C4Dynamic in a native header comment."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

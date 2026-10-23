@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An authored uppercase shape is rejected even if alias resolution is available."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: Rounded. Shape names should be lowercase."
+  }
+}

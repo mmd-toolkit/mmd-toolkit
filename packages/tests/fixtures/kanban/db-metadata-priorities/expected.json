@@ -1,0 +1,86 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Documented priorities and an unknown priority test enumeration validation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "Very High"
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "High"
+      },
+      {
+        "id": "C",
+        "label": "C",
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "Low"
+      },
+      {
+        "id": "D",
+        "label": "D",
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "Very Low"
+      },
+      {
+        "id": "E",
+        "label": "E",
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "unexpected"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "priority": "Very High"
+        }
+      },
+      {
+        "id": "B",
+        "set": {
+          "priority": "High"
+        }
+      },
+      {
+        "id": "C",
+        "set": {
+          "priority": "Low"
+        }
+      },
+      {
+        "id": "D",
+        "set": {
+          "priority": "Very Low"
+        }
+      },
+      {
+        "id": "E",
+        "set": {
+          "priority": "unexpected"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context: rule 7 reads X, the line break, the word accDescr, and the {, so the input is rejected by both, as mermaid.js reads accDescr as a second word."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error: State name must be a single word. Found: \"X\naccDescr {\""
+  }
+}

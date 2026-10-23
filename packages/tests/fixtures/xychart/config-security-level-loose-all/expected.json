@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, settings: under loose they are as written."
+  },
+  "config": {
+    "securityLevel": "loose"
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "T<b>x</b>",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "X<i>",
+      "categories": [
+        "c<b>"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "L<b>",
+        "data": [
+          [
+            "c<b>",
+            1
+          ]
+        ],
+        "pointLabels": [
+          "p<i>"
+        ]
+      }
+    ]
+  }
+}

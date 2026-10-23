@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, node ids: `linkStyle 0 stroke:red`, a flowchart statement, is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ck-beta  A --> B  linkStyle 0 stroke:r\n---------------------^\nExpecting 'EOF', 'BLOCK_DIAGRAM_KEY', 'LINK', 'START_LINK', 'SPACE_BLOCK', 'SIZE', 'COLUMNS', 'id-block', 'end', 'NODE_ID', 'NODE_DSTART', 'BLOCK_ARROW_START', 'classDef', 'class', 'style', got 'LINKSTYLE'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Member lines: the opening parenthesis cannot be the first character, so `(a)` cannot be divided."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'startsWith')"
+  }
+}

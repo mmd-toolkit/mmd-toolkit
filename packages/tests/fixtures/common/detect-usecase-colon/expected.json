@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Specific characters after the keyword: entry 39 does not accept : after usecase-beta, so the text is not detected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: usecase-beta:\n"
+  }
+}

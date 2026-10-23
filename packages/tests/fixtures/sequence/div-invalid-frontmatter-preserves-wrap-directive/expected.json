@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gg4-6: remove only invalid frontmatter; retain the valid init directive and message wrap true in the specified reading."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "unexpected end of the stream within a flow collection (2:1)\n\n 1 | title: [\n 2 | \n-----^"
+  }
+}

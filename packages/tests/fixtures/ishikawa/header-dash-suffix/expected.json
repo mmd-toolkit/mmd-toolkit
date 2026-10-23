@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Is a dash suffix root text after the header?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "-x",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "-x",
+      "children": [
+        {
+          "text": "R",
+          "children": []
+        }
+      ]
+    }
+  }
+}

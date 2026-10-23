@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Known divergences (embedded-data-opaque): The delimited embedded content is opaque; Mermaid rejects its content."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "missed comma between flow collection entries (2:20)\n\n 1 | {\n 2 | assigned: Adaticket: TASK-1\n------------------------^\n 3 | }"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/gantt.html",
+    "line": 89
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "Z",
+    "axisFormat": "%d/%m",
+    "todayMarker": "off",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "Hide today marker (vertical line should not be visible)",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Section1"
+    ],
+    "tasks": [
+      {
+        "section": "Section1",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "08-08-09-01:00"
+          },
+          "endTime": {
+            "data": "5min"
+          }
+        },
+        "task": "Today",
+        "classes": [],
+        "id": "1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

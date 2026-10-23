@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Blank lines: a comment and a blank line before an icon line are accepted here; mermaid.js rejects the input."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...root  a%%::icon(x)\n-------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'ICON'"
+  }
+}

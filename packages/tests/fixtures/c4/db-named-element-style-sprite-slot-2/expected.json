@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named $sprite in UpdateElementStyle argument 2 is accepted; shapes[0].sprite is \"sprite\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global",
+        "sprite": "sprite",
+        "fontColor": "white",
+        "borderColor": "black",
+        "shadowing": "yes",
+        "shape": "box",
+        "techn": "Java",
+        "legendText": "Legend",
+        "legendSprite": "star"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A global block has no id or label production."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...flow-beta TBglobal G[Label]Aend\n----------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'EOF', got 'NODE_STRING'"
+  }
+}

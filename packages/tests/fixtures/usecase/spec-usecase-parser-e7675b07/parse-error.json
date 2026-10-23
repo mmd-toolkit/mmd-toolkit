@@ -1,0 +1,17 @@
+{
+  "message": "A metadata target must resolve to a stored symbol",
+  "range": [
+    26,
+    30
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 4
+    }
+  }
+}

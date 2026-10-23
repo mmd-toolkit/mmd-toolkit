@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Must note targets use semantic identifiers instead of quoted names?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> IDENTIFIER <-- but found --> '\"Target name\"' <-- at line 3, column 10 [36,49)"
+  }
+}

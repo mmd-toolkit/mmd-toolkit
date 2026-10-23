@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Of three semicolons inside a quoted label, only the last is selected; the remaining characters stay value text."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "style:ﬂ°abc¶ß;"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

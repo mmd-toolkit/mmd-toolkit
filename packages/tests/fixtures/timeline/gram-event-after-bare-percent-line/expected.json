@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Grammar: a bare `%%` line between a period and its event line is a comment."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": [
+          "e"
+        ]
+      }
+    ]
+  }
+}

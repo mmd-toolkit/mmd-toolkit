@@ -1,0 +1,223 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gantt-no-undef >> invalid >>> docs/rules/gantt-no-undef.md incorrect 1
+Filename: gantt-no-undef-incorrect-1.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   Design :des1, 2024-01-06, 3d
+  4 |   click des2 href "https://example.com"
+    |         ^~~~ [1]
+  5 |
+
+[1] mermaid.js binds nothing to `des2` in this `click` statement: no task has this id.
+---
+
+
+Test: gantt-no-undef >> invalid >>> docs/rules/gantt-no-undef.md incorrect 2
+Filename: gantt-no-undef-incorrect-2.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   Design :des1, 2024-01-06, 3d
+  4 |   Build :after des2, 5d
+    |          ^~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js finds no task with the id `des2` for this `after`, so the task does not start after it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> docs/rules/gantt-no-undef.md incorrect 3
+Filename: gantt-no-undef-incorrect-3.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   Design :des1, 2024-01-06, 3d
+  4 |   Review :2024-01-01, until des2
+    |                       ^~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js finds no task with the id `des2` for this `until`, so the task does not end at it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/after-and-until-one-unknown
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/after-and-until-one-unknown-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : a1, 2024-01-01, 1d
+  4 | b : b1, 2024-01-05, 1d
+  5 | c : after a1, until b2
+    |               ^~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js finds no task with the id `b2` for this `until`, so the task does not end at it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/after-id-other-case
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/after-id-other-case-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : Des1, 2024-01-01, 1d
+  4 | b : after des1, 1d
+    |     ^~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js finds no task with the id `des1` for this `after`, so the task does not start after it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/after-id-with-dot
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/after-id-with-dot-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : a.1, 2024-01-01, 1d
+  4 | b : after a.1, 1d
+    |     ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js finds no task with the id `a` for this `after`, so the task does not start after it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/after-id-with-non-ascii-letters
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/after-id-with-non-ascii-letters-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : a設計, 2024-01-01, 1d
+  4 | c : after a設計, 1d
+    |     ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js finds no task with the id `a` for this `after`, so the task does not start after it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/click-ids-one-unknown
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/click-ids-one-unknown-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : id1, 2024-01-01, 1d
+  4 | click id1,id3 href "https://x"
+    |           ^~~ [1]
+  5 |
+
+[1] mermaid.js binds nothing to `id3` in this `click` statement: no task has this id.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/db-click-unknown-id
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/db-click-unknown-id-input.mmd
+
+Code:
+  1 | gantt
+  2 |   A :a, 2024-01-01, 1d
+  3 |   click zz href "u"
+    |         ^~ [1]
+  4 |   click zz call f()
+    |         ^~ [2]
+  5 |
+
+[1] mermaid.js binds nothing to `zz` in this `click` statement: no task has this id.
+[2] mermaid.js binds nothing to `zz` in this `click` statement: no task has this id.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/db-task-end-until-unknown
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/db-task-end-until-unknown-input.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   A :a, 2024-01-01, until nowhere
+    |                     ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js finds no task with the id `nowhere` for this `until`, so the task does not end at it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/db-task-start-after-unknown
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/db-task-start-after-unknown-input.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   A :a, after nowhere, 2d
+    |         ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js finds no task with the id `nowhere` for this `after`, so the task does not start after it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/gram-click-unknown-id
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/gram-click-unknown-id-input.mmd
+
+Code:
+  1 | gantt
+  2 | click zz href "u"
+    |       ^~ [1]
+
+[1] mermaid.js binds nothing to `zz` in this `click` statement: no task has this id.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/gram-task-after-ids
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/gram-task-after-ids-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : id1, 2024-01-01, 1d
+  3 | b : after id1 id2, 2d
+    |     ^~~~~~~~~~~~~ [1]
+
+[1] mermaid.js finds no task with the id `id2` for this `after`, so the task does not start after it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/until-ids-one-unknown
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/until-ids-one-unknown-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : a1, 2024-01-01, 1d
+  4 | b : b1, 2024-01-10, 1d
+  5 | c : 2024-01-02, until b1 zz
+    |                 ^~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js finds no task with the id `zz` for this `until`, so the task does not end at it.
+---
+
+
+Test: gantt-no-undef >> invalid >>> invalid/gantt/until-one-item-unknown
+Filename: tests/fixtures/rules/gantt-no-undef/invalid/gantt/until-one-item-unknown-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : a1, 2024-01-05, 1d
+  4 | b : until a2
+    |     ^~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js finds no task with the id `a2` for this `until`, so the task does not end at it.
+---

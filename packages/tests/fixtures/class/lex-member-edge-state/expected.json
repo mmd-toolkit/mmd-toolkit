@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The member context: `[*]` at the start of a member is a `[*]` unit, which the grammar rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ssDiagramclass A {[*]}\n---------------------^\nExpecting 'STRUCT_STOP', 'MEMBER', got 'EDGE_STATE'"
+  }
+}

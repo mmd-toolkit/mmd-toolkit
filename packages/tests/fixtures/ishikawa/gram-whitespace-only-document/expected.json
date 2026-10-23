@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G: start, document, statement and stop] Does preprocessing remove every prospective whitespace statement?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

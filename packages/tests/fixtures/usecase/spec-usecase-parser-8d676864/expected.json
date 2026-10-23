@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/parser/usecase.parser.spec.ts",
+    "line": 6,
+    "test": "usecase canonical line-oriented grammar > rejects uppercase header"
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: Usecase\nA"
+  }
+}

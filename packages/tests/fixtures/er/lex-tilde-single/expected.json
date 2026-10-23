@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context, rule 3: `a~b` holds one `~`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nerDiagramA { a~b c}\n--------------^\nExpecting 'ATTRIBUTE_WORD', '?', got '~'"
+  }
+}

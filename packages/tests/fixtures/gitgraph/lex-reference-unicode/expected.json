@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Non-ASCII letters do not match the word class in REFERENCE."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 8: unexpected character: ->日<- at offset: 16, skipped 2 characters. Parse error on line 2, column 10: Expecting: one of these possible Token sequences:\n  1. [REFERENCE]\n  2. [STRING]\nbut found: '\n'"
+  }
+}

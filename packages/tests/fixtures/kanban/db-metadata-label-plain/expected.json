@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "label metadata with plain tests truthiness, conversion, or validation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "High",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "label": "High"
+        }
+      }
+    ]
+  }
+}

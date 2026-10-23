@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does strict JSON reject text after a number?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "UsecaseJsonError",
+    "message": "Invalid JSON: Expected ',' or '}' after property value in JSON at position 10 (line 1 column 11) (line 2, column 18)"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The zero INT alternative has no dot lookahead, so zero-prefixed version-like bare names are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->.<- at offset: 17, skipped 1 characters. Parse error on line 2, column 8: Expecting: one of these possible Token sequences:\n  1. [REFERENCE]\n  2. [STRING]\nbut found: '0'"
+  }
+}

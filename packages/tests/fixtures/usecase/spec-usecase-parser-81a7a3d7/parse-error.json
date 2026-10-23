@@ -1,0 +1,17 @@
+{
+  "message": "Include and extend require two usecases",
+  "range": [
+    36,
+    60
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 24
+    }
+  }
+}

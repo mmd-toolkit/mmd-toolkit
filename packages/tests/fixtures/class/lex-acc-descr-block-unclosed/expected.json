@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Lexical structure: a description block that is not closed when the text ends is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...agramaccDescr {x\n-------------------^\nExpecting 'NEWLINE', 'EOF', got 'acc_descr_multiline_value'"
+  }
+}

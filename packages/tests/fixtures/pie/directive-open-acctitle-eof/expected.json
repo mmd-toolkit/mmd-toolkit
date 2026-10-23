@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed directive at the end of accessibility title text tests preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, tokenless-empty-forms: an empty string after a name, at the end of its line: mermaid.js reads no token for it and makes no class."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

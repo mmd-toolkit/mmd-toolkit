@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do doubled metadata commas reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> RBRACE <-- but found --> ',' <-- at line 2, column 23 [35,36)"
+  }
+}

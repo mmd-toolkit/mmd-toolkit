@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Title retains the whitespace after its first separator and at the line end."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "  padded  ",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  }
+}

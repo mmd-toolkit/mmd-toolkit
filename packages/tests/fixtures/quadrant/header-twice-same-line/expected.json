@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, header: a second header on the header line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nquadrantChart quadrantChart\n--------------^\nExpecting 'ALPHA', 'NUM', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', 'CLASSDEF', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'X-AXIS', 'Y-AXIS', 'QUADRANT_1', 'QUADRANT_2', 'QUADRANT_3', 'QUADRANT_4', 'NEWLINE', 'SEMI', 'EOF', 'STR', 'MD_STR', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'QUADRANT'"
+  }
+}

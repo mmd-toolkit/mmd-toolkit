@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A second-scan directive can follow the skipped retained block."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

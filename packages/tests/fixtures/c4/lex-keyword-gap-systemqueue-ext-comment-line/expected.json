@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`SystemQueue_Ext` followed by a comment line before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...textSystemQueue_Ext(a, \"A\", \"D\", \"spri\n----------------------^"
+  }
+}

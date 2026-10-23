@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A `%` comment after `autonumber` in a sequence diagram, with U+2028 before the comment line, with a directive that is not closed. mermaid.js reads one autonumber entry and no message."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": {
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      }
+    ]
+  }
+}

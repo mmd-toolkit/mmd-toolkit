@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Semicolon in initial header prevents detection before the line rule."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: ishi;kawa R style:#x\n"
+  }
+}

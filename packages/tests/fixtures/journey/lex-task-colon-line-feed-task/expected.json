@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: `a:` followed by a line feed is a task text and a `:` unit."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  a:  B: 3\n----------^\nExpecting 'taskData', got ':'"
+  }
+}

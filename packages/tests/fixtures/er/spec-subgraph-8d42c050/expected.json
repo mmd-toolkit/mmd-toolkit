@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/subgraph.spec.js",
+    "line": 170,
+    "test": "when parsing ER subgraphs > should handle relationship between entities in different subgraphs"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A-0",
+        "roleA": "relates to",
+        "entityB": "entity-B-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONE_OR_MORE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "G1",
+        "nodes": [
+          "A"
+        ],
+        "title": "G1",
+        "classes": [],
+        "cssStyles": []
+      },
+      {
+        "id": "G2",
+        "nodes": [
+          "B"
+        ],
+        "title": "G2",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

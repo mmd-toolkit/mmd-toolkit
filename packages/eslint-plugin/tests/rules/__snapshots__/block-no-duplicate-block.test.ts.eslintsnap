@@ -1,0 +1,403 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: block-no-duplicate-block >> invalid >>> docs/rules/block-no-duplicate-block.md incorrect 1
+Filename: block-no-duplicate-block-incorrect-1.mmd
+
+Code:
+  1 | block
+  2 |   columns 2
+  3 |   A B
+  4 |   A
+    |   ^ [1]
+  5 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> docs/rules/block-no-duplicate-block.md incorrect 2
+Filename: block-no-duplicate-block-incorrect-2.mmd
+
+Code:
+  1 | block
+  2 |   A["First"]
+  3 |   A["Second"]
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/after-class-only
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/after-class-only-input.mmd
+
+Code:
+  1 | block
+  2 |   classDef c fill:#f00
+  3 |   B
+  4 |   class B c
+  5 |   B
+    |   ^ [1]
+  6 |
+
+[1] mermaid.js already has the block `B`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/arrow-after-square
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/arrow-after-square-input.mmd
+
+Code:
+  1 | block
+  2 |   A["a"]
+  3 |   A<["a"]>(down)
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/arrow-first-shape-after-bare
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/arrow-first-shape-after-bare-input.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   A<["a"]>(down)
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js gives the block `A` the kind and the label of this arrow but none of its directions.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/arrow-first-shape-on-edge-after-edge
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/arrow-first-shape-on-edge-after-edge-input.mmd
+
+Code:
+  1 | block
+  2 |   A --> B
+  3 |   A<["a"]>(down) --> C
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js gives the block `A` the kind and the label of this arrow but none of its directions.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/bare-after-edge
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/bare-after-edge-input.mmd
+
+Code:
+  1 | block
+  2 |   A --> B
+  3 |   A
+    |   ^ [1]
+  4 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/bare-in-other-composite
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/bare-in-other-composite-input.mmd
+
+Code:
+  1 | block
+  2 |   block:G
+  3 |     A
+  4 |   end
+  5 |   A
+    |   ^ [1]
+  6 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/bare-in-two-composites
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/bare-in-two-composites-input.mmd
+
+Code:
+  1 | block
+  2 |   block:G
+  3 |     A
+  4 |   end
+  5 |   block:H
+  6 |     A
+    |     ^ [1]
+  7 |   end
+  8 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/bare-root
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/bare-root-input.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   root
+    |   ^~~~ [1]
+  4 |
+
+[1] mermaid.js already has the block `root`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/bare-twice
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/bare-twice-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 2
+  3 |   A B
+  4 |   A
+    |   ^ [1]
+  5 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/bare-twice-one-line
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/bare-twice-one-line-input.mmd
+
+Code:
+  1 | block
+  2 |   A B A
+    |       ^ [1]
+  3 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/block-root
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/block-root-input.mmd
+
+Code:
+  1 | block
+  2 |   block:root
+    |         ^~~~ [1]
+  3 |     B
+  4 |   end
+  5 |
+
+[1] mermaid.js already has the block `root`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/chain-target-declared
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/chain-target-declared-input.mmd
+
+Code:
+  1 | block
+  2 |   A --> B --> C
+  3 |   C
+    |   ^ [1]
+  4 |
+
+[1] mermaid.js already has the block `C`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/composite-then-bare
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/composite-then-bare-input.mmd
+
+Code:
+  1 | block
+  2 |   block:G
+  3 |     B
+  4 |   end
+  5 |   G
+    |   ^ [1]
+  6 |
+
+[1] mermaid.js already has the block `G`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/composite-twice
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/composite-twice-input.mmd
+
+Code:
+  1 | block
+  2 |   block:G
+  3 |     A
+  4 |   end
+  5 |   block:G
+    |         ^ [1]
+  6 |     B
+  7 |   end
+  8 |
+
+[1] mermaid.js already has the block `G`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/edge-endpoint-arrow-other-directions
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/edge-endpoint-arrow-other-directions-input.mmd
+
+Code:
+  1 | block
+  2 |   A<["a"]>(right)
+  3 |   A<["a"]>(down) --> B
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses the block `A`; its earlier declaration and this shape differ.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/edge-endpoint-other-label
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/edge-endpoint-other-label-input.mmd
+
+Code:
+  1 | block
+  2 |   A["x"]
+  3 |   A["y"] --> B
+    |   ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses the block `A`; its earlier declaration and this shape differ.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/edge-target-other-shape
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/edge-target-other-shape-input.mmd
+
+Code:
+  1 | block
+  2 |   B["b"]
+  3 |   A --> B("b")
+    |         ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js reuses the block `B`; its earlier declaration and this shape differ.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/first-shape-with-width-after-bare
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/first-shape-with-width-after-bare-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 3
+  3 |   A
+  4 |   A["x"]:2
+    |   ^~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/first-shape-with-width-after-edge
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/first-shape-with-width-after-edge-input.mmd
+
+Code:
+  1 | block
+  2 |   A --> B
+  3 |   B["Output"]:2
+    |   ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js already has the block `B`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/label-back-to-first
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/label-back-to-first-input.mmd
+
+Code:
+  1 | block
+  2 |   A["x"]
+  3 |   A["y"] --> B
+    |   ^~~~~~ [1]
+  4 |   A["x"] --> B
+    |   ^~~~~~ [2]
+  5 |
+
+[1] mermaid.js reuses the block `A`; its earlier declaration and this shape differ.
+[2] mermaid.js reuses the block `A`; its earlier declaration and this shape differ.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/label-replaced
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/label-replaced-input.mmd
+
+Code:
+  1 | block
+  2 |   A["First"]
+  3 |   A["Second"]
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/node-then-composite
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/node-then-composite-input.mmd
+
+Code:
+  1 | block
+  2 |   A
+  3 |   block:A
+    |         ^ [1]
+  4 |     B
+  5 |   end
+  6 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/same-shape-twice
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/same-shape-twice-input.mmd
+
+Code:
+  1 | block
+  2 |   A["x"]
+  3 |   A["x"]
+    |   ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/width-replaced
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/width-replaced-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 3
+  3 |   A:2
+  4 |   A:3
+    |   ^~~ [1]
+  5 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---
+
+
+Test: block-no-duplicate-block >> invalid >>> invalid/block/width-twice-same
+Filename: tests/fixtures/rules/block-no-duplicate-block/invalid/block/width-twice-same-input.mmd
+
+Code:
+  1 | block
+  2 |   columns 3
+  3 |   A:2
+  4 |   A:2
+    |   ^~~ [1]
+  5 |
+
+[1] mermaid.js already has the block `A`; this declaration places no second block.
+---

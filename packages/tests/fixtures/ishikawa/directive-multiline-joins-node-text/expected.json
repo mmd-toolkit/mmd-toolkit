@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Directive crosses written line inside one text value."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "RA",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "RA",
+      "children": [
+        {
+          "text": "B",
+          "children": []
+        }
+      ]
+    }
+  }
+}

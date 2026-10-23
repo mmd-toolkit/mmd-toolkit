@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Can a frontmatter title coexist with a missing root?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Title only",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  },
+  "embedded": {
+    "title": "Title only"
+  }
+}

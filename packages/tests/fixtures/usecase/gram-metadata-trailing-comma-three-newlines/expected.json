@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Native metadata: trailing comma followed by three LF; Mermaid rejects the native property list. Count line breaks after common comment removal and CRLF normalization."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [IDENTIFIER]\n  2. [PLAIN_STRING]\nbut found: '}' at line 5, column 1 [37,38)"
+  }
+}

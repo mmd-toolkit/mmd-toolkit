@@ -1,0 +1,18 @@
+{
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "x%%{ }%%",
+        "events": []
+      }
+    ]
+  }
+}

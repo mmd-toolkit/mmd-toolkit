@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: a class name of `classDef` may be a string."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "classes": [
+          "my c"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "my c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

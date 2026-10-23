@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'annotations')"
+  }
+}

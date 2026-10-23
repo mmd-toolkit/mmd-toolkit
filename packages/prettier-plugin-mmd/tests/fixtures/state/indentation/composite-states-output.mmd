@@ -1,0 +1,8 @@
+stateDiagram-v2
+  [*] --> Active
+  state Active {
+    [*] --> Working
+    state Working {
+      Step1 --> Step2
+    }
+  }

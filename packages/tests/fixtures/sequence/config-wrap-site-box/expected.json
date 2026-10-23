@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With the site configuration `wrap` true, a box without text, a box with only a colour, and a box with a name all have `wrap` true."
+  },
+  "config": {
+    "wrap": true
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": true,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B",
+        "box": 0
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": true,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "C",
+        "box": 1
+      },
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": true,
+        "prevActor": "B",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 2
+      }
+    ],
+    "boxes": [
+      {
+        "wrap": true,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      },
+      {
+        "wrap": true,
+        "fill": "aqua",
+        "actorKeys": [
+          "B"
+        ]
+      },
+      {
+        "name": "G",
+        "wrap": true,
+        "fill": "transparent",
+        "actorKeys": [
+          "C"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

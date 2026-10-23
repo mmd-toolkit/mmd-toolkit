@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex keyword style upper form stores {\"subsets\":[{\"sets\":[\"A\"],\"size\":10}],\"styles\":[{\"targets\":[\"A\"],\"styles\":{\"color\":\"red\"}}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "color": "red"
+        }
+      }
+    ]
+  }
+}

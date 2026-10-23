@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Does literal quote punctuation keep otherwise-trimmable label padding?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\" R \"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\" R \"",
+      "children": [
+        {
+          "text": "'\tA\t'",
+          "children": []
+        }
+      ]
+    }
+  }
+}

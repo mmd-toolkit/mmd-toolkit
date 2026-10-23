@@ -1,0 +1,122 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/classchart.html",
+    "line": 135
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "RL",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Apple",
+        "type": "",
+        "label": "Apple",
+        "text": "Apple",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "color",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "-",
+            "classifier": "",
+            "id": "int leafCount",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "Pineapple",
+        "type": "",
+        "label": "Pineapple",
+        "text": "Pineapple",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "color",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "-",
+            "classifier": "",
+            "id": "int leafCount",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "-",
+            "classifier": "",
+            "id": "int spikeCount",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "interface0",
+        "id2": "Apple",
+        "relation": {
+          "type1": 4,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "interface1",
+        "id2": "Pineapple",
+        "relation": {
+          "type1": 4,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [
+      {
+        "id": "interface0",
+        "label": "Fruit",
+        "classId": "Apple"
+      },
+      {
+        "id": "interface1",
+        "label": "Fruit",
+        "classId": "Pineapple"
+      }
+    ]
+  }
+}

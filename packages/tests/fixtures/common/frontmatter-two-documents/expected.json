@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > Reading the frontmatter body: a body with two YAML documents is a YAML syntax error, and the input is rejected with a YAMLException."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "expected a single document in the stream, but found more"
+  }
+}

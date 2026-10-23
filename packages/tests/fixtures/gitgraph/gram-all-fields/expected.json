@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All stored commit and common fields are published in order."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "TB",
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 1,
+        "tags": [
+          "v1",
+          "v2"
+        ],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "B",
+        "seq": 1,
+        "type": 2,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "b"
+      },
+      {
+        "id": "M",
+        "seq": 2,
+        "type": 3,
+        "tags": [
+          "v3"
+        ],
+        "parents": [
+          "A",
+          "B"
+        ],
+        "branch": "main",
+        "customType": 0,
+        "customId": true
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`ContainerQueue` followed by a blank line before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ntextContainerQueue(a, \"A\", \"Java\", \"\n----------------------^"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md A token that a directive cuts: the spaces around a directive in a participant id belong to the fragments: the tokens are `A ` and ` B`, and the participant is `A  B`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A  B",
+        "description": "A  B",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

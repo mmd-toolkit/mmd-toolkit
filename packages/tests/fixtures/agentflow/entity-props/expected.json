@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Entity preprocessing meets the property-value token production."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ow-beta TBA[|field:ﬂ°°35¶ß|Label]\n----------------------^\nExpecting 'NODE_STRING', got 'UNICODE_TEXT'"
+  }
+}

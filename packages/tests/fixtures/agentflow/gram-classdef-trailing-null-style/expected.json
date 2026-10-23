@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/agentflow.md F5: A terminal null classDef style leaves the written comma as the last unit."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red",
+          ""
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

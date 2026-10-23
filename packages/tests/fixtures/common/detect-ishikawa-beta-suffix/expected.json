@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md A non-word character or the end: the condition applies right after ishikawa, so ishikawa-betaX is detected as ishikawa."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "-betaX",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "-betaX",
+      "children": [
+        {
+          "text": "Problem",
+          "children": [
+            {
+              "text": "Cause",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

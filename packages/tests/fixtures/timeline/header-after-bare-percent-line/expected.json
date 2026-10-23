@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Detection: a bare `%%` line before the header is a comment here; mermaid.js rejects the input."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%timeline  a\n--^\nExpecting 'timeline', 'timeline_lr', 'timeline_td', got 'NEWLINE'"
+  }
+}

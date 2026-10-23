@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Names: `note for` keeps the written name of its class name, the generic type with its spaces included: the note's class is `A~ T ~`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": " T ",
+        "label": "A",
+        "text": "A&lt; T &gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "A~ T ~",
+        "text": "x"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

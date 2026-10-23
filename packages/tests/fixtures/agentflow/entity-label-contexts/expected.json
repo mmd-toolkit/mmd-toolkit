@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hash-style Mermaid entities and HTML references are observed in every ordinary text context."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "ﬂ°°35¶ß &amp;",
+    "accDescr": "ﬂ°quot¶ß &lt;",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "ﬂ°quot¶ß &lt;",
+        "type": "square",
+        "props": {},
+        "link": "https://example.com/ﬂ°°35¶ß"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "ﬂ°°35¶ß &amp;"
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "ﬂ°°35¶ß &gt;",
+        "labelType": "string",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "B",
+          "A"
+        ],
+        "title": "ﬂ°°35¶ß &amp;",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "ﬂ°quot¶ß &amp;"
+      }
+    ]
+  }
+}

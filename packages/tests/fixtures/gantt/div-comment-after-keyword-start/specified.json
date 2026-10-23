@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nganttt%itle T\n-------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

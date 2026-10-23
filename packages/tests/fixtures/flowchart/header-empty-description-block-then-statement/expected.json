@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the header needs a line feed after the blocks, so a statement on the same line is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...hart LR accDescr {} A\n-----------------------^\nExpecting 'NEWLINE', got 'NODE_STRING'"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Metadata effects follow connector, flow, edge and ordinary vertex routing."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "C",
+        "props": {},
+        "metadata": {
+          "protocol": "http"
+        }
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {},
+        "metadata": {
+          "returns": "result"
+        }
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "F",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "interpolate": "linear",
+        "stroke": "normal",
+        "length": 1,
+        "id": "e",
+        "metadata": {
+          "instruction": "go",
+          "curve": "linear"
+        }
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "F",
+        "nodes": [
+          "B",
+          "A"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow",
+        "metadata": {
+          "model": "x",
+          "view": "collapsed"
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "C",
+        "set": {
+          "metadata": {
+            "protocol": "http"
+          }
+        }
+      },
+      {
+        "id": "F",
+        "set": {
+          "metadata": {
+            "model": "x",
+            "view": "collapsed"
+          }
+        }
+      },
+      {
+        "id": "e",
+        "set": {
+          "interpolate": "linear",
+          "metadata": {
+            "instruction": "go",
+            "curve": "linear"
+          }
+        }
+      },
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "returns": "result"
+          }
+        }
+      }
+    ]
+  }
+}

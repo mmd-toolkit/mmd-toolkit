@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Arbitrary named attributes remain in the Db even when their names resemble geometry or Object.prototype members."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "x": "17",
+        "width": "20",
+        "constructor": "own",
+        "hasOwnProperty": "yes",
+        "typeC4Shape": {
+          "text": "container"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "startPoint": "written",
+        "descr": {
+          "text": ""
+        }
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Empty quoted identifiers and style strings remain empty strings."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          ""
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "",
+          "A"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          ""
+        ],
+        "id": ""
+      }
+    ],
+    "styles": [
+      {
+        "targets": [
+          ""
+        ],
+        "styles": {
+          "color": ""
+        }
+      }
+    ]
+  }
+}

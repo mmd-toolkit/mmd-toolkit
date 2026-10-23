@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-metadata-no-validation.spec.ts",
+    "line": 15,
+    "test": "issue #64: parser does not validate metadata (semantics owns it) > metadata is carried, never validated > keeps a \"misapplied\" known key (model on a flow-only? no — execution on a flow) and does not warn"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "props": {}
+      },
+      {
+        "id": "b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "props": {}
+      },
+      {
+        "id": "f",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "f",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a",
+        "end": "b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "f",
+        "nodes": [
+          "b",
+          "a"
+        ],
+        "title": "F",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "execution": "parallel"
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "f",
+        "set": {
+          "metadata": {
+            "execution": "parallel"
+          }
+        }
+      }
+    ]
+  }
+}

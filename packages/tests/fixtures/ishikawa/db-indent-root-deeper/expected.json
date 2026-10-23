@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Does effect indentation leave cause-relative levels unchanged?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": []
+            }
+          ]
+        },
+        {
+          "text": "C",
+          "children": []
+        }
+      ]
+    }
+  }
+}

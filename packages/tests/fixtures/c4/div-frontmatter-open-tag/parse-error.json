@@ -1,0 +1,17 @@
+{
+  "message": "The arguments have no ) before the end of the text",
+  "range": [
+    34,
+    35
+  ],
+  "loc": {
+    "start": {
+      "line": 5,
+      "column": 6
+    },
+    "end": {
+      "line": 5,
+      "column": 7
+    }
+  }
+}

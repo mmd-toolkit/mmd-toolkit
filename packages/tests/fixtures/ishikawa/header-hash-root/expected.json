@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Header boundary before #."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "#",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "#",
+      "children": []
+    }
+  }
+}

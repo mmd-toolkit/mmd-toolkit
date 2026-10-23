@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 848,
+    "test": "when parsing ER diagram it... > should handle \"1\" alias directly followed by mixed relationship operator \"-.\""
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-CUSTOMER-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "CUSTOMER",
+        "classes": []
+      },
+      {
+        "id": "entity-DELIVERY-ADDRESS-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "DELIVERY-ADDRESS",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-CUSTOMER-0",
+        "roleA": "has",
+        "entityB": "entity-DELIVERY-ADDRESS-1",
+        "cardA": "ONE_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "NON_IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

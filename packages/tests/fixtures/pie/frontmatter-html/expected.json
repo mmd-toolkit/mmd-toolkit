@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "HTML attribute cleanup applies to frontmatter titles."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "<b class='x'>Front</b> &amp;",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "<b class='x'>Front</b> &amp;"
+  }
+}

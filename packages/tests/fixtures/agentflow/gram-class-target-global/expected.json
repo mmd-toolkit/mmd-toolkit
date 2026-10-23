@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An id-list slot cannot take the global keyword at a unit start."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntflow-betaclass A,global hot\n----------------------^\nExpecting 'COMMENT', 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'SQS', 'SHAPE_DATA', 'AMP', 'STYLE_SEPARATOR', 'DOUBLECIRCLESTART', 'PS', '(-', 'STADIUMSTART', 'SUBROUTINESTART', 'VERTEX_WITH_PROPS_START', 'COLON', 'CYLINDERSTART', 'DIAMOND_START', 'TAGEND', 'TRAPSTART', 'INVTRAPSTART', 'START_LINK', 'LINK', 'LINK_ID', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'global'"
+  }
+}

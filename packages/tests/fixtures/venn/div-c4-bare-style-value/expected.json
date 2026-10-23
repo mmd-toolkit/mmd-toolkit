@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A bare C4Container style value is rejected by original Mermaid and accepted as venn under c4-keyword-anywhere."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nvenn-betastyle A x:\n^"
+  }
+}

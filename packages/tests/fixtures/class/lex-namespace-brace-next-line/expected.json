@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The namespace context: a line feed leaves the context, so the `{` must be on the line of the name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...sDiagramnamespace A{class C}\n----------------------^\nExpecting 'SQS', 'DOT', 'STRUCT_START', 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does strict JSON reject Infinity?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "UsecaseJsonError",
+    "message": "Invalid JSON: Unexpected token 'I', \"{\"value\":Infinity}\" is not valid JSON (line 2, column 17)"
+  }
+}

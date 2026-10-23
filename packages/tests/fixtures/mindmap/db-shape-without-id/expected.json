@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, type: a shape without an id uses its text as the id."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "text",
+      "level": 0,
+      "descr": "text",
+      "type": 2,
+      "children": []
+    }
+  }
+}

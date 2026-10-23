@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar: [*] may have a class."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [
+          "c"
+        ],
+        "styles": []
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "A",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

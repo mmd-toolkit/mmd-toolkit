@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context, rule 16: number units as ids; the vertices 1 and 2."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "1",
+        "props": {}
+      },
+      {
+        "id": "2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "2",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "1",
+        "end": "2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_1_2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A multiline data-block-looking form produces ordinary nodes from its three text lines without parsing YAML."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "@{",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "@{",
+      "children": [
+        {
+          "text": "invalid: [",
+          "children": []
+        },
+        {
+          "text": "}",
+          "children": []
+        }
+      ]
+    }
+  }
+}

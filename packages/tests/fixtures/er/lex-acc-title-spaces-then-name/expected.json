@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Accessibility values: spaces and a line feed after the `:` are read with it; accepted, title A."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

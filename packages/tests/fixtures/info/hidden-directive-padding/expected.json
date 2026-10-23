@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden DIRECTIVE admits nonword content and leading ASCII blanks."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

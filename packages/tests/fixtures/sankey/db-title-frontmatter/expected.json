@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, title: the title of the frontmatter is the title of the diagram."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "T",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "title": "T"
+  }
+}

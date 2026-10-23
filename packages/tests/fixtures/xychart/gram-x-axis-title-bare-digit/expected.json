@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: a title without quotes cannot hold a digit: a digit starts a number."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...hart-beta x-axis Q1\n----------------------^\nExpecting 'ARROW_DELIMITER', got 'NEWLINE'"
+  }
+}

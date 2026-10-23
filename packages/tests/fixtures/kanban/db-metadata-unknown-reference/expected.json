@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M04 (Data context): Unknown metadata key remains in opaque text."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {}
+      }
+    ]
+  }
+}

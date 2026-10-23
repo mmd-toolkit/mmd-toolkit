@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The note has the placeholder of `#amp;` in `from` and `to`, with placement 0."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Cﬂ°amp¶ß",
+        "description": "Cﬂ°amp¶ß",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Cﬂ°amp¶ß",
+        "to": "Cﬂ°amp¶ß",
+        "message": "x",
+        "wrap": false,
+        "type": 2,
+        "placement": 0
+      }
+    ]
+  }
+}

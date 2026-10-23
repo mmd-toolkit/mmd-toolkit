@@ -1,0 +1,132 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gitgraph.md",
+    "line": 210
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "2",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "1"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "3",
+        "seq": 2,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "2"
+        ],
+        "branch": "nice_feature"
+      },
+      {
+        "id": "4",
+        "seq": 3,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "2"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "5",
+        "seq": 4,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "3"
+        ],
+        "branch": "very_nice_feature"
+      },
+      {
+        "id": "6",
+        "seq": 5,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "4"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "7",
+        "seq": 6,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "3"
+        ],
+        "branch": "nice_feature"
+      },
+      {
+        "id": "customID",
+        "seq": 7,
+        "type": 3,
+        "tags": [
+          "customTag"
+        ],
+        "parents": [
+          "6",
+          "7"
+        ],
+        "branch": "main",
+        "customType": 1,
+        "customId": true
+      },
+      {
+        "id": "8",
+        "seq": 8,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "5"
+        ],
+        "branch": "very_nice_feature"
+      },
+      {
+        "id": "9",
+        "seq": 9,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "customID"
+        ],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "nice_feature"
+      },
+      {
+        "name": "very_nice_feature"
+      }
+    ]
+  }
+}

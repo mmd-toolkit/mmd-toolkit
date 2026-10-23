@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Detection: Common leading trivia, frontmatter, directives, comment regions, HTML attribute quotes, entities and selected semicolons apply. Case: hidden-comment-before-header."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

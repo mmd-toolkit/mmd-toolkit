@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 71,
+    "test": "usecase parser publication and normalized AST > rejects inline boundary metadata that a boundary does not accept"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'animate' is invalid for boundary 'sb1' at line 2, column 41 [53,60)"
+  }
+}

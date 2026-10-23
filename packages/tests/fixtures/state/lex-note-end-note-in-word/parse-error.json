@@ -1,0 +1,17 @@
+{
+  "message": "The note has no end note before the end of the text",
+  "range": [
+    18,
+    22
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 2
+    },
+    "end": {
+      "line": 2,
+      "column": 6
+    }
+  }
+}

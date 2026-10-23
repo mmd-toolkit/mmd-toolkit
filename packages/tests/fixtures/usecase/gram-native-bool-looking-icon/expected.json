@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: Bare true is boolean while quoted true is an icon string."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'icon' is invalid for actor 'A' at line 2, column 10 [22,26)"
+  }
+}

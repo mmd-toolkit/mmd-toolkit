@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Text ending in ignored semicolon before directive."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R style:#x",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R style:#x",
+      "children": []
+    }
+  }
+}

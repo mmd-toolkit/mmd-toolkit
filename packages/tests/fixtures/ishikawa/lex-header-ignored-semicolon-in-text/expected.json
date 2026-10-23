@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Selected semicolon inside text joins a header spelling."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "style:#x ishikawa",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "style:#x ishikawa",
+      "children": []
+    }
+  }
+}

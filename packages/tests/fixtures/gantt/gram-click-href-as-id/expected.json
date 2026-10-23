@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Click statements: `href` after `click` is the click id, and `\"u\"` a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...1-01, 1dclick href \"u\"\n----------------------^\nExpecting 'callbackname', 'href', got 'taskTxt'"
+  }
+}

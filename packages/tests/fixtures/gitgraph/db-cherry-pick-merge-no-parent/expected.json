@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A merge source requires its parent option."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of cherry-pick: If the source commit is a merge commit, an immediate parent commit must be specified."
+  }
+}

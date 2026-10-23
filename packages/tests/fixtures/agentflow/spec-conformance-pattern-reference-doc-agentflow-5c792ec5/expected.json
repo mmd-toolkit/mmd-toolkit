@@ -1,0 +1,103 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/conformance/fixtures/pattern-reference-doc-agentflow.mmd"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "query",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "query",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "gen_html",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "generate_html",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "style_guide",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Brand Guide",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "query",
+        "end": "gen_html",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_query_gen_html_0"
+      },
+      {
+        "start": "gen_html",
+        "end": "style_guide",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_gen_html_style_guide_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "query",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "style_guide",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      }
+    ]
+  }
+}

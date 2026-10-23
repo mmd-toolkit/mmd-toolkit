@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: two commas are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n....3, 0.6] radius: 10,, color: #f00\n-----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'MINUS', 'COLON', 'BRKT', 'UNIT', 'SPACE', 'STYLE', 'PCT', got 'COMMA'"
+  }
+}

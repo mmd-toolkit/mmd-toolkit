@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unsupported security level changes common strings but not raw section labels."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "&lt;b&gt;T&lt;/b&gt;",
+    "accTitle": "&lt;i&gt;AT&lt;/i&gt;",
+    "accDescr": "<br/> AD",
+    "showData": false,
+    "sections": [
+      {
+        "label": "<b>A</b>",
+        "value": 1
+      }
+    ]
+  }
+}

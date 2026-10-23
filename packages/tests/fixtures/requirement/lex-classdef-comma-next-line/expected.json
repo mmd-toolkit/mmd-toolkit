@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Styles and classes: `stroke` on the next line is an unquoted text of the statement context, which is no style."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...lassDef c fill:red,stroke:blue\n----------------------^\nExpecting 'ALPHA', 'NUM', 'COLON', 'UNIT', 'SPACE', 'BRKT', 'PCT', 'MINUS', 'LABEL', 'SEMICOLON', got 'unqString'"
+  }
+}

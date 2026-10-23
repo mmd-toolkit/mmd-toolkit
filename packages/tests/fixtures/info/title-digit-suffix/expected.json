@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TITLE's empty alternative before a digit leaves an error."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->2<- at offset: 10, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Strings: an empty string between `->` and the target makes the input rejected here; mermaid.js reads no token for it."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "a",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

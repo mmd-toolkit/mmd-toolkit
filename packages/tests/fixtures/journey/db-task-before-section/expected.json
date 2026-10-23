@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A task before any section has the empty section."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "x"
+        ],
+        "score": 3
+      },
+      {
+        "section": "S",
+        "task": "B",
+        "people": [
+          "y"
+        ],
+        "score": 4
+      }
+    ]
+  }
+}

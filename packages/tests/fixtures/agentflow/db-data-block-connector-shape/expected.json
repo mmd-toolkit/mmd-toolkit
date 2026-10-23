@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Connector metadata is carried without promoting shape or label."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "C",
+        "props": {},
+        "metadata": {
+          "shape": "nonexistent",
+          "label": "Later"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "C",
+        "set": {
+          "metadata": {
+            "shape": "nonexistent",
+            "label": "Later"
+          }
+        }
+      }
+    ]
+  }
+}

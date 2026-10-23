@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, level: a space, a fullwidth space, and a tab are three characters, as three spaces are."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child",
+          "level": 1,
+          "descr": "child",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "sibling",
+              "level": 2,
+              "descr": "sibling",
+              "type": 0,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

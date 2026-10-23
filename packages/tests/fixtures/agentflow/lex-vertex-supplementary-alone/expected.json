@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A supplementary character is outside the specification's BMP letter ranges and cannot form a vertex Identifier."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nagentflow-beta😀\n--------------^"
+  }
+}

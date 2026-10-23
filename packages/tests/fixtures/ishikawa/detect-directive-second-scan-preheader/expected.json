@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does ishikawa reject a directive found only by detection's second scan before its header? It rejects the retained prefix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n%%{x}%%ishikawaP\n---^\nExpecting 'SPACELINE', 'NL', 'ISHIKAWA', got 'TEXT'"
+  }
+}

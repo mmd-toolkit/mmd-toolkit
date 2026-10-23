@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block diagram block-arrow shape tests kanban delimiter recognition rather than assuming shared shape syntax."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S<[Work]>(right)\n---------------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'SHAPE_DATA', got 'NODE_ID'"
+  }
+}

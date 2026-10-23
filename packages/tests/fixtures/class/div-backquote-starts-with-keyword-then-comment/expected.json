@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text has both a backquoted name that starts with a keyword and a comment after the statement. mermaid.js rejects it for both reasons, so the specified reading is taken with both divergences removed."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nclassDiagramA --> `note x` %% cclass Z\n-------------------^\nExpecting 'STR', 'ALPHA', 'LINE', 'DOTTED_LINE', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'NOTE'"
+  }
+}

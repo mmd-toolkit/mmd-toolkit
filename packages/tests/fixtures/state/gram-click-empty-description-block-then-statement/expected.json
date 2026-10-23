@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Click statements: after the empty description block, the state B comes before the newline that the click statement needs, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...\"u\" \"t\" accDescr {} B\n-----------------------^\nExpecting 'NL', got 'ID'"
+  }
+}

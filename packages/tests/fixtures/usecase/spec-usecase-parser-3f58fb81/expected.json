@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 71,
+    "test": "usecase parser publication and normalized AST > rejects business icon, awesome, and rectangular declarations at exact locations"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Business actor 'Icon' must use normal or hollow geometry at line 2, column 7 [19,23)"
+  }
+}

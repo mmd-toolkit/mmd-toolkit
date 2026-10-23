@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can an accessibility keyword be separated from its colon by a newline?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Redundant input, expecting EOF but found: : at line 3, column 1 [22,23)"
+  }
+}

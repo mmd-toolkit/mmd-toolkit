@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, click-reserved-word: mermaid.js reads `m;e` as a click id inside the subgraph name and accepts the input; this specification rejects the `click` unit. In the reference input `subgraph m;e` the `;` is a separator, so mermaid.js reads it otherwise."
+  },
+  "knownDivergence": "click-reserved-word",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "m;e",
+        "nodes": [],
+        "title": "m;e",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

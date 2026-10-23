@@ -1,0 +1,158 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/git.html",
+    "line": 509
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "TB",
+    "title": "Three branches and a cherry-pick from each (top-to-bottom)",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "ZERO",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "A",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "ZERO"
+        ],
+        "branch": "develop"
+      },
+      {
+        "id": "ONE",
+        "seq": 2,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "ZERO"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "B",
+        "seq": 3,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "develop"
+      },
+      {
+        "id": "FIX",
+        "seq": 4,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "B"
+        ],
+        "branch": "featureA"
+      },
+      {
+        "id": "FIX-2",
+        "seq": 5,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "FIX"
+        ],
+        "branch": "featureA"
+      },
+      {
+        "id": "TWO",
+        "seq": 6,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "ONE"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-1",
+        "seq": 7,
+        "type": 4,
+        "tags": [
+          "cherry-pick:A"
+        ],
+        "parents": [
+          "TWO",
+          "A"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "THREE",
+        "seq": 8,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 9,
+        "type": 4,
+        "tags": [
+          "cherry-pick:FIX"
+        ],
+        "parents": [
+          "THREE",
+          "FIX"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "C",
+        "seq": 10,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "B"
+        ],
+        "branch": "develop"
+      },
+      {
+        "id": "generated-commit-3",
+        "seq": 11,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "C",
+          "FIX-2"
+        ],
+        "branch": "develop",
+        "customId": false
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "develop"
+      },
+      {
+        "name": "featureA"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Three branches and a cherry-pick from each (top-to-bottom)"
+  }
+}

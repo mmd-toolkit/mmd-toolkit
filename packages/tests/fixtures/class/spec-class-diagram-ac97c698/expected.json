@@ -1,0 +1,179 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 1476,
+    "test": "given a class diagram with generics,  > when parsing valid generic classes > should handle \"namespace\""
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Class1",
+        "type": "",
+        "label": "Class1",
+        "text": "Class1",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "test",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "foo",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "test",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "foo",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "int : test"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "string : foo"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "int : test"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "string : foo"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "Namespace4"
+      },
+      {
+        "id": "Class2",
+        "type": "",
+        "label": "Class2",
+        "text": "Class2",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "test",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "foo",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "int : test"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "string : foo"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "Namespace4"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Namespace1",
+        "label": "Namespace1",
+        "classes": [
+          "Class1"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      },
+      {
+        "id": "Namespace2",
+        "label": "Namespace2",
+        "classes": [
+          "Class1"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      },
+      {
+        "id": "Namespace3",
+        "label": "Namespace3",
+        "classes": [
+          "Class1"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      },
+      {
+        "id": "Namespace4",
+        "label": "Namespace4",
+        "classes": [
+          "Class1",
+          "Class2"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

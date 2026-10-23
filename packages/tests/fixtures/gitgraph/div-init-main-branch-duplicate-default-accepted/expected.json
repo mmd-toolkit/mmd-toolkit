@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gg4-2: init mainBranchName makes dev a duplicate in mermaid; opaque arguments leave default main and accept branch dev."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to create an existing branch. (Help: Either use a new name if you want create a new branch or try using \"checkout dev\")"
+  }
+}

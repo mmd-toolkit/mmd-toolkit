@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/info/info.spec.ts",
+    "line": 11,
+    "test": "info > should handle an info definition with showInfo"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

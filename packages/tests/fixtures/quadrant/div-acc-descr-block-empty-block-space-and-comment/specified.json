@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Descr {x}accDescr {} %% c\n-----------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got 'SPACE'"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, columns: a text of only `columns` after the header is accepted."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 2,
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: A later standalone update cannot repair conflicting declarations."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Actor 'A' has conflicting type metadata at line 3, column 10 [44,48); previous declaration at line 2, column 7 [19,20)"
+  }
+}

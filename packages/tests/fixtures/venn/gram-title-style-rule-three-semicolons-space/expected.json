@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: Trailing spaces do not make a title with remaining unselected semicolons accepted."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...title style:ﬂ°abc¶ß;  \n----------------------^"
+  }
+}

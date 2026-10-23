@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TITLE stops before the first percent pair."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

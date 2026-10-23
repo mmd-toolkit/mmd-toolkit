@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P1: directive preprocessing] Can an unclosed directive consume the entire document?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

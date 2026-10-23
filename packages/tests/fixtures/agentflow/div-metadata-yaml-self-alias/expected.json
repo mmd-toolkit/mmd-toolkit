@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does Mermaid itself reject a self-referencing YAML metadata mapping?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "RangeError",
+    "message": "Maximum call stack size exceeded"
+  }
+}

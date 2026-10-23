@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/git/gitGraph.spec.ts",
+    "line": 121,
+    "test": "when parsing a gitGraph > when parsing basic gitGraph > reset can take an argument"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 7, column 11: unexpected character: ->^<- at offset: 77, skipped 1 characters. Parse error on line 7, column 1: Expecting token of type 'EOF' but found `reset`."
+  }
+}

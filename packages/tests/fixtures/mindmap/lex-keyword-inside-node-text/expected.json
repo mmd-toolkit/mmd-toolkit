@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Lexical structure: `mindmap` after the start of a node text is part of it."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a mindmap",
+          "level": 2,
+          "descr": "a mindmap",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

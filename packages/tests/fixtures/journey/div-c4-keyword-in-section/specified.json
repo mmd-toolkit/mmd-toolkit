@@ -1,0 +1,20 @@
+{
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "C4Component"
+    ],
+    "tasks": [
+      {
+        "section": "C4Component",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

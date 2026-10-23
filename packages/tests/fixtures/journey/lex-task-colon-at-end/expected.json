@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 13: `:` with nothing after it on its line is a `:` unit, which no rule takes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  A:\n----------^\nExpecting 'taskData', got ':'"
+  }
+}

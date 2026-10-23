@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class statement after the subgraph gives its classes to the subgraph; `S:::c3` gives its class to the subgraph and to the entity S that it makes."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-S-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "S",
+        "classes": [
+          "c3"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [
+          "c1",
+          "c2",
+          "c3"
+        ],
+        "cssStyles": []
+      }
+    ]
+  }
+}

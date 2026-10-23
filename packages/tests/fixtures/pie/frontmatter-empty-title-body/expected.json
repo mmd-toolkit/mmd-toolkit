@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty final AST title leaves the frontmatter title unchanged."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

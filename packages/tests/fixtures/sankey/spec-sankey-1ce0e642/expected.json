@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sankey/parser/sankey.spec.ts",
+    "line": 33,
+    "test": "Sankey diagram > when parsing an info graph it > allows __proto__ as id with sankey-beta syntax"
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "__proto__",
+      "A"
+    ],
+    "links": [
+      {
+        "source": "__proto__",
+        "target": "A",
+        "value": 0.597
+      },
+      {
+        "source": "A",
+        "target": "__proto__",
+        "value": 0.403
+      }
+    ]
+  }
+}

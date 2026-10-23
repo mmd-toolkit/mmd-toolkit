@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note id context: without a `%%` right after it, the note id needs one or more characters, so `note left of : x` is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...gram-v2note left of : x\n----------------------^"
+  }
+}

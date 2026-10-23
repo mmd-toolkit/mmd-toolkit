@@ -1,0 +1,193 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> docs/rules/quadrant-no-duplicate-description.md incorrect 1
+Filename: quadrant-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: first
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |     second
+    | ~~~~~~~~~~\ [1]
+  5 |   }
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-back-to-first
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-back-to-first-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-block-then-block
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-block-then-block-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr { a }
+  3 |   accDescr { b }
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-empty-block-between
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-empty-block-between-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: a
+  3 |   accDescr {}
+  4 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-line-then-block
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-line-then-block-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: first
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |     second
+    | ~~~~~~~~~~\ [1]
+  5 |   }
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-mixed-back-to-first
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-mixed-back-to-first-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: a
+  3 |   accDescr { b }
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-next-line-after-comment
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-next-line-after-comment-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: a
+  3 |   accDescr:
+    |   ^~~~~~~~~\ [1]
+  4 |   %% c
+    | ~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-next-line-after-directive
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-next-line-after-directive-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: a
+  3 |   accDescr:
+    |   ^~~~~~~~~\ [1]
+  4 |   %%{init: {}}%%
+    | ~~~~~~~~~~~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-next-line-after-empty-line
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-next-line-after-empty-line-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: a
+  3 |   accDescr:
+    |   ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   A: [0.3, 0.6]
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-twice
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-twice-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: quadrant-no-duplicate-description >> invalid >>> invalid/quadrant/acc-descr-upper-case-second
+Filename: tests/fixtures/rules/quadrant-no-duplicate-description/invalid/quadrant/acc-descr-upper-case-second-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   accDescr: a
+  3 |   ACCDESCR { b }
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---

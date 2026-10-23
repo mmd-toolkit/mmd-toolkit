@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 19: minimal accepted example of `gitGraph`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

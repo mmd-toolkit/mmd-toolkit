@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a class assignment require a resolved target?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Class/style target 'Missing' is unresolved or anonymous at line 2, column 7 [19,26)"
+  }
+}

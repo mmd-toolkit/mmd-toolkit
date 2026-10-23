@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Under strict, mermaid.js stores about:blank for this URL; the summary has the URL as written, as under every securityLevel."
+  },
+  "config": {
+    "securityLevel": "strict"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "A ",
+        "classes": [
+          "clickable"
+        ],
+        "id": "a",
+        "order": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "a",
+        "url": "javascript:alert(1)"
+      }
+    ]
+  }
+}

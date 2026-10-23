@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Subgraphs: a quoted name as the id; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S 1",
+        "nodes": [
+          "A"
+        ],
+        "title": "S 1",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

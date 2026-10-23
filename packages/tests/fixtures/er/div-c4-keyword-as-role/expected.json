@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Known divergences: `C4Container` as a role makes mermaid.js hand the text to C4 (c4-keyword-anywhere)."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nerDiagramA ||--o{ B\n^"
+  }
+}

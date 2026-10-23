@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: styles: a comment glued to a number of one digit takes that digit, so the radius has no value and is rejected."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for radius  is invalid, please use a valid number"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[L2] Are reserved header words inside an already-started TEXT kept literally?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R ishikawa",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R ishikawa",
+      "children": [
+        {
+          "text": "A ishikawa-beta",
+          "children": []
+        }
+      ]
+    }
+  }
+}

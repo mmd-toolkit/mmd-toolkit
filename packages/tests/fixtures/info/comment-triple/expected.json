@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Triple-percent comment lines are removed globally."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

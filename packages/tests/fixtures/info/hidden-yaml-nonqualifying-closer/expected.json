@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hidden YAML match passes an earlier nonqualifying closer."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

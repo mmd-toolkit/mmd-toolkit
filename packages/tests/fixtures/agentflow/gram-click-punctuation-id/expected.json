@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Flowchart-style click id punctuation."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "---",
+        "name": "abc",
+        "args": null
+      }
+    ]
+  }
+}

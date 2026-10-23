@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Frontmatter HTML tag reaches literal node text."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "b='c'>d",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "b='c'>d",
+      "children": []
+    }
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

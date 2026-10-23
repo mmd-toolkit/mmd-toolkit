@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The style rgba negative component input is rejected at this statement or argument boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tastyle A fill:rgba(-1,2,3,.5)\n----------------------^"
+  }
+}

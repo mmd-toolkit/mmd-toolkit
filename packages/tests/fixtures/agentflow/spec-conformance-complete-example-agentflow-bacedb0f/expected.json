@@ -1,0 +1,370 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/conformance/fixtures/complete-example-agentflow.mmd"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "llm_api",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "LLM API",
+        "props": {},
+        "metadata": {
+          "protocol": "http",
+          "endpoint": "https://api.example.com/chat"
+        }
+      },
+      {
+        "id": "city",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "city",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right",
+          "type": "String",
+          "value": "Stockholm"
+        }
+      },
+      {
+        "id": "research_loc",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "research_location",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "params": "city :: String",
+          "returns": "String",
+          "cache": "24h"
+        }
+      },
+      {
+        "id": "write_copy",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "write_copy",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "connectorRef": "llm_api.chat",
+          "params": "brief :: String",
+          "returns": "CoffeeCopy",
+          "retry": 2
+        }
+      },
+      {
+        "id": "researcher",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "researcher",
+        "props": {}
+      },
+      {
+        "id": "translate_sv",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "translate_to_swedish",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "connectorRef": "llm_api.chat",
+          "params": "english :: CoffeeCopy",
+          "returns": "BilingualPage"
+        }
+      },
+      {
+        "id": "translator",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "translator",
+        "props": {}
+      },
+      {
+        "id": "gen_html",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "generate_html",
+        "type": "subroutine",
+        "props": {},
+        "metadata": {
+          "shape": "subroutine",
+          "connectorRef": "llm_api.chat",
+          "params": "page :: BilingualPage",
+          "returns": "String"
+        }
+      },
+      {
+        "id": "style_guide",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Nordic Brand Guide",
+        "type": "lin-doc",
+        "props": {},
+        "metadata": {
+          "shape": "lin-doc"
+        }
+      },
+      {
+        "id": "designer",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "designer",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "city",
+        "end": "research_loc",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_city_research_loc_0"
+      },
+      {
+        "start": "research_loc",
+        "end": "write_copy",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_research_loc_write_copy_0"
+      },
+      {
+        "start": "gen_html",
+        "end": "style_guide",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_gen_html_style_guide_0"
+      },
+      {
+        "start": "researcher",
+        "end": "translator",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_researcher_translator_0"
+      },
+      {
+        "start": "translator",
+        "end": "designer",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_translator_designer_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "researcher",
+        "nodes": [
+          "research_loc",
+          "write_copy",
+          "city"
+        ],
+        "title": "Researcher",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "model": "claude-sonnet-4-20250514",
+          "instruction": "Research the city and draft English coffee copy citing sources."
+        }
+      },
+      {
+        "id": "translator",
+        "nodes": [
+          "translate_sv"
+        ],
+        "title": "Translator",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "model": "claude-sonnet-4-20250514"
+        }
+      },
+      {
+        "id": "designer",
+        "nodes": [
+          "gen_html",
+          "style_guide"
+        ],
+        "title": "Designer",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "model": "claude-sonnet-4-20250514",
+          "instruction": "Render the bilingual page as semantic HTML following the brand guide."
+        }
+      },
+      {
+        "id": "coffee_team",
+        "nodes": [
+          "researcher",
+          "translator",
+          "designer"
+        ],
+        "title": "Coffee Team",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "llm_api",
+        "set": {
+          "metadata": {
+            "protocol": "http",
+            "endpoint": "https://api.example.com/chat"
+          }
+        }
+      },
+      {
+        "id": "city",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right",
+            "type": "String",
+            "value": "Stockholm"
+          }
+        }
+      },
+      {
+        "id": "research_loc",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "params": "city :: String",
+            "returns": "String",
+            "cache": "24h"
+          }
+        }
+      },
+      {
+        "id": "write_copy",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "connectorRef": "llm_api.chat",
+            "params": "brief :: String",
+            "returns": "CoffeeCopy",
+            "retry": 2
+          }
+        }
+      },
+      {
+        "id": "researcher",
+        "set": {
+          "metadata": {
+            "model": "claude-sonnet-4-20250514",
+            "instruction": "Research the city and draft English coffee copy citing sources."
+          }
+        }
+      },
+      {
+        "id": "translate_sv",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "connectorRef": "llm_api.chat",
+            "params": "english :: CoffeeCopy",
+            "returns": "BilingualPage"
+          }
+        }
+      },
+      {
+        "id": "translator",
+        "set": {
+          "metadata": {
+            "model": "claude-sonnet-4-20250514"
+          }
+        }
+      },
+      {
+        "id": "gen_html",
+        "set": {
+          "type": "subroutine",
+          "metadata": {
+            "shape": "subroutine",
+            "connectorRef": "llm_api.chat",
+            "params": "page :: BilingualPage",
+            "returns": "String"
+          }
+        }
+      },
+      {
+        "id": "style_guide",
+        "set": {
+          "type": "lin-doc",
+          "metadata": {
+            "shape": "lin-doc"
+          }
+        }
+      },
+      {
+        "id": "designer",
+        "set": {
+          "metadata": {
+            "model": "claude-sonnet-4-20250514",
+            "instruction": "Render the bilingual page as semantic HTML following the brand guide."
+          }
+        }
+      }
+    ]
+  }
+}

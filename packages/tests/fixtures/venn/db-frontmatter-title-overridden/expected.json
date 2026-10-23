@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A title statement overrides the frontmatter title."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "From text",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": []
+  },
+  "embedded": {
+    "title": "From YAML"
+  }
+}

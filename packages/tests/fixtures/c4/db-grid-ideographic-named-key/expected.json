@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An ideographic space in Person argument 3, $<key>=\"V\" is accepted; shapes[0] is {\"alias\":\"a\",\"label\":{\"text\":\"A\"},\"a\\u3000b\":\"V\",\"typeC4Shape\":{\"text\":\"person\"},\"parentBoundary\":\"global\"}."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "a　b": "V",
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

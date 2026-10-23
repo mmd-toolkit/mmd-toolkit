@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, header: a word that starts with the header is not the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nsankeyxa,b,1\n^\nExpecting 'SANKEY', got 'NON_ESCAPED_TEXT'"
+  }
+}

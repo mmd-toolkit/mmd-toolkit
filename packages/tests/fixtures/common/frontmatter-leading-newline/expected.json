@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Frontmatter: a line break before the opening delimiter prevents frontmatter; detection ignores the block, and the flowchart grammar rejects the `---` lines."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n---title: Hello---\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'LINK'"
+  }
+}

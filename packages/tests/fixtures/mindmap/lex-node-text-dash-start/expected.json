@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Units and contexts: a node text may start with `-` that no `)` follows."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "-x",
+          "level": 2,
+          "descr": "-x",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

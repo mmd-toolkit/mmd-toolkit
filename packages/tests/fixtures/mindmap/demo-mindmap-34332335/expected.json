@@ -1,0 +1,95 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/mindmap.html",
+    "line": 18
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child1",
+          "level": 4,
+          "descr": "Circle",
+          "type": 3,
+          "children": [
+            {
+              "nodeId": "grandchild 1",
+              "level": 8,
+              "descr": "grandchild 1",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "grandchild 2",
+              "level": 8,
+              "descr": "grandchild 2",
+              "type": 0,
+              "children": []
+            }
+          ]
+        },
+        {
+          "nodeId": "child2",
+          "level": 4,
+          "descr": "Round rectangle",
+          "type": 1,
+          "children": [
+            {
+              "nodeId": "grandchild 3",
+              "level": 8,
+              "descr": "grandchild 3",
+              "type": 0,
+              "children": []
+            },
+            {
+              "nodeId": "grandchild 4",
+              "level": 8,
+              "descr": "grandchild 4",
+              "type": 0,
+              "children": []
+            }
+          ]
+        },
+        {
+          "nodeId": "child3",
+          "level": 4,
+          "descr": "Square",
+          "type": 2,
+          "children": [
+            {
+              "nodeId": "grandchild 5",
+              "level": 8,
+              "descr": "grandchild 5",
+              "type": 0,
+              "icon": "mdi mdi-fire",
+              "children": []
+            },
+            {
+              "nodeId": "gc6",
+              "level": 8,
+              "descr": "grand<br/>child 6",
+              "type": 3,
+              "icon": "mdi mdi-fire",
+              "children": []
+            },
+            {
+              "nodeId": "gc7",
+              "level": 8,
+              "descr": "grand<br/>grand<br/>child 8",
+              "type": 3,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

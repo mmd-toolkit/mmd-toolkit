@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All 23 non-CR/LF JavaScript whitespace characters at style-value ends are trimmed."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "aa:x",
+          "bb:x",
+          "cc:x",
+          "dd:x",
+          "ee:x",
+          "ff:x",
+          "gg:x",
+          "hh:x",
+          "ii:x",
+          "jj:x",
+          "kk:x",
+          "ll:x",
+          "mm:x",
+          "nn:x",
+          "oo:x",
+          "pp:x",
+          "qq:x",
+          "rr:x",
+          "ss:x",
+          "tt:x",
+          "uu:x",
+          "vv:x",
+          "ww:x"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

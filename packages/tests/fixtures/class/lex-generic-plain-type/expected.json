@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/name-start-reads-unit.md: a generic type that starts with no keyword or `\"` is read as the type by both; the class A with the type T."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "T",
+        "label": "A",
+        "text": "A&lt;T&gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

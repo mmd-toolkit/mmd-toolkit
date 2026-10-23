@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Does an empty description-looking form itself become the root?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "accDescr {}",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "accDescr {}",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

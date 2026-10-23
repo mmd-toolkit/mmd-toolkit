@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "preprocess rewrites double-quoted HTML attribute values to single quotes before the frontmatter is parsed, so the title gets class='x'."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "<b class='x'>T</b>",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "<b class='x'>T</b>"
+  }
+}

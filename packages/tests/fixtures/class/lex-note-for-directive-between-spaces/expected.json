@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The shared rules: without the directive, two spaces lie between `note` and `for`, so this is no `note for`, and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...m  class A  note  for A \"t\"\n---------------------^\nExpecting 'STR', got 'ALPHA'"
+  }
+}

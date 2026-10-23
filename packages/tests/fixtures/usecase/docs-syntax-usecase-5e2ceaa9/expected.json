@@ -1,0 +1,95 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/usecase.md",
+    "line": 132
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "SalesAgent",
+        "label": "Sales agent",
+        "labelType": "text",
+        "type": "normal",
+        "business": true,
+        "stereotype": "Employee",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Broker",
+        "label": "Broker",
+        "labelType": "text",
+        "type": "hollow",
+        "business": true,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Quote",
+        "label": "Prepare quote",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": true,
+        "stereotype": "Core",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Archive",
+        "label": "Archive quote",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "stereotype": "Record",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "SalesAgent",
+        "target": "Quote",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Broker",
+        "target": "Quote",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Quote",
+        "target": "Archive",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

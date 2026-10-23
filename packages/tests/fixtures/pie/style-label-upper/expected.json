@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Uppercase STYLE does not trigger the global line rule."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "STYLE fill:ﬂ°f00¶ß",
+        "value": 1
+      }
+    ]
+  }
+}

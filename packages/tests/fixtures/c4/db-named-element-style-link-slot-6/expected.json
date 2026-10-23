@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A named $link in UpdateElementStyle argument 6 is accepted; shapes[0].link is \"V\"."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "A"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global",
+        "bgColor": "red",
+        "fontColor": "white",
+        "borderColor": "black",
+        "shadowing": "yes",
+        "link": "V",
+        "sprite": "sprite",
+        "techn": "Java",
+        "legendText": "Legend",
+        "legendSprite": "star"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

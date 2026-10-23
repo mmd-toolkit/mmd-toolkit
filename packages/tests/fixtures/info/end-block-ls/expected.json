@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LS after a closed block is not EOL or native gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 15: unexpected character: -> <- at offset: 19, skipped 1 characters. "
+  }
+}

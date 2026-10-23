@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: a comma before the closing bracket is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...chart-beta line [1,]\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'SQUARE_BRACES_END'"
+  }
+}

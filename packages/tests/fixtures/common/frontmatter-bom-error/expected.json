@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Frontmatter: when the body after a U+FEFF-indented `---` block is `error`, the leftover block reaches the error pseudo-diagram, which accepts it."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

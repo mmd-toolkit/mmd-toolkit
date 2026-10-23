@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Grammar: An invalid declaration property is not repaired by a later update."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Metadata property 'type' is invalid for actor 'A' at line 2, column 10 [22,26)"
+  }
+}

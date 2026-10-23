@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click statements: the click context reads every run of characters other than whitespace as click ids, as mermaid.js does. `click --- abc;` is a click statement on the id `---` with the callback name `abc`, and the diagram has no vertices and no edges. This is the input of mermaid.js issue #7023."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "---",
+        "name": "abc",
+        "args": null
+      }
+    ]
+  }
+}

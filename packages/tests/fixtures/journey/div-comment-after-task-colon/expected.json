@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: the task `A` with the score part `%% c` here; mermaid.js reads `:%% c` as a comment and rejects the task text without data."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  A:%% c\n---------------^\nExpecting 'taskData', got 'NEWLINE'"
+  }
+}

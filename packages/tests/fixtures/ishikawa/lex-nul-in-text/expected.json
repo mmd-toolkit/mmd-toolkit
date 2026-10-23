@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: NUL remains literal text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R\u0000A",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R\u0000A",
+      "children": []
+    }
+  }
+}

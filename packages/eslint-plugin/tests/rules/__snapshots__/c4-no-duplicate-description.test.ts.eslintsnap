@@ -1,0 +1,178 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: c4-no-duplicate-description >> invalid >>> docs/rules/c4-no-duplicate-description.md incorrect 1
+Filename: c4-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | C4Context
+  2 |   accDescr: Customers
+  3 |   accDescr: Administrators
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> docs/rules/c4-no-duplicate-description.md incorrect 2
+Filename: c4-no-duplicate-description-incorrect-2.mmd
+
+Code:
+  1 | C4Context
+  2 |   accDescription Customers
+  3 |   accDescr { Administrators }
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   accDescr: Customers
+    |   ^~~~~~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+[2] mermaid.js replaces the description set on line 3 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/accdescription-preserves-extra-space
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/accdescription-preserves-extra-space-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescription  Customers
+  3 | accDescr: Customers
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/description-crlf
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/description-crlf-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescr: Customers
+  3 | accDescr: Administrators
+    | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/description-inside-boundary
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/description-inside-boundary-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescr: Customers
+  3 | Boundary(bank, "Bank") {
+  4 | Person(a, "A")
+  5 | accDescr: Administrators
+    | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  6 | }
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/description-next-line-blank
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/description-next-line-blank-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescr: Customers
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 | Administrators
+    | ~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/description-next-line-comment
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/description-next-line-comment-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescr: Customers
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 | Administrators
+    | ~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/description-next-line-directive
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/description-next-line-directive-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescr: Customers
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 | Administrators
+    | ~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/description-next-line
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/description-next-line-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescr: Customers
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | Administrators
+    | ~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/three-description-forms
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/three-description-forms-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescription Customers
+  3 | accDescr { Administrators }
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | accDescr: Customers
+    | ^~~~~~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+[2] mermaid.js replaces the description set on line 3 with this description.
+---
+
+
+Test: c4-no-duplicate-description >> invalid >>> invalid/c4/two-colon-descriptions
+Filename: tests/fixtures/rules/c4-no-duplicate-description/invalid/c4/two-colon-descriptions-input.mmd
+
+Code:
+  1 | C4Context
+  2 | accDescr: Customers
+  3 | accDescr: Administrators
+    | ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with this description.
+---

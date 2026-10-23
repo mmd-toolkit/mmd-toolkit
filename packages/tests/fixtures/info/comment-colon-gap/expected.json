@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native comment cannot join a composite common keyword and colon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 5, skipped 8 characters.\nLexer error on line 3, column 1: unexpected character: ->:<- at offset: 18, skipped 1 characters.\nLexer error on line 3, column 3: unexpected character: ->A<- at offset: 20, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/quadrantChart.md",
+    "line": 130
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "Plan",
+      "Do",
+      "Delegate",
+      "Delete"
+    ],
+    "xAxis": {
+      "left": "Urgent",
+      "right": "Not Urgent"
+    },
+    "yAxis": {
+      "bottom": "Not Important",
+      "top": "Important ❤"
+    },
+    "points": [],
+    "classes": []
+  },
+  "embedded": {
+    "config": {
+      "quadrantChart": {
+        "chartWidth": 400,
+        "chartHeight": 400
+      },
+      "themeVariables": {
+        "quadrant1TextFill": "ff0000"
+      }
+    }
+  }
+}

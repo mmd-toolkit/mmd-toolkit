@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Are ampersand HTML references left as written?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R&amp;&ﬂ°°35¶ß&ﬂ°x41¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R&amp;&ﬂ°°35¶ß&ﬂ°x41¶ß",
+      "children": [
+        {
+          "text": "A&lt;&gt;&quot;",
+          "children": []
+        }
+      ]
+    }
+  }
+}

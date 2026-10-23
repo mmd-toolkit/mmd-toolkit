@@ -1,0 +1,17 @@
+{
+  "message": "click is a reserved word: it may only start a click statement",
+  "range": [
+    31,
+    36
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 12
+    },
+    "end": {
+      "line": 3,
+      "column": 17
+    }
+  }
+}

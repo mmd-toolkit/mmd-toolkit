@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/tokenless-empty-forms.md What it means for an author: the input of flowchart/header-empty-string-no-space without its empty string; the header keyword and the direction are one word, so the text has no header, and both reject it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nflowchartTDA\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

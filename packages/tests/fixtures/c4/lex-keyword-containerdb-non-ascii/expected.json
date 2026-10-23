@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ContainerDb keyword with a glued non-ASCII text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...4ContextContainerDbé(a, \"A\", \"Java\", \"D\n----------------------^"
+  }
+}

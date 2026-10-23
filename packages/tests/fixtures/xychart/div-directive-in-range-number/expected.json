@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Directives inside units: a directive inside a number of a range is joined by mermaid.js and makes the input rejected here."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 10,
+      "max": 20
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

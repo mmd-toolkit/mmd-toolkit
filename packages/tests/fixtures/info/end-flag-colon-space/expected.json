@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Colon-space after the flag is not a common statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 15: unexpected character: ->:<- at offset: 14, skipped 1 characters. "
+  }
+}

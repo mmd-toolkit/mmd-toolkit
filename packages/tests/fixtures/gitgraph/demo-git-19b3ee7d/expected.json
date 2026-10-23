@@ -1,0 +1,69 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/git.html",
+    "line": 107
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "Merge feature to advanced main (left-to-right)",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "newbranch"
+      },
+      {
+        "id": "generated-commit-3",
+        "seq": 2,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-4",
+        "seq": 3,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "generated-commit-3",
+          "generated-commit-2"
+        ],
+        "branch": "main",
+        "customId": false
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "newbranch"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Merge feature to advanced main (left-to-right)"
+  }
+}

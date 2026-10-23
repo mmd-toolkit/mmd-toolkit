@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "icon at EOF tests an unfinished or empty lexical context."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ban S ::icon(star\n--------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got '1'"
+  }
+}

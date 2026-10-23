@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated union members count toward arity and default size and remain in the sorted list."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "A"
+        ],
+        "size": 2.5
+      },
+      {
+        "sets": [
+          "A",
+          "A",
+          "A"
+        ],
+        "size": 1.1111111111111112
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

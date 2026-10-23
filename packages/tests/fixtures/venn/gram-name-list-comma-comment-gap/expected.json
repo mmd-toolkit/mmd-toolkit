@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: A diagram comment after a name-list comma leaves a forbidden newline before the next name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...nn-betatext A, %% cB item\n----------------------^\nExpecting 'IDENTIFIER', 'STRING', got 'NEWLINE'"
+  }
+}

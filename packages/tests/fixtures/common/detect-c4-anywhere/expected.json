@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Entry 7 matches anywhere: C4Container anywhere in the text selects C4, so a sequence diagram with that message text is handed to the C4 parser, which rejects it."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nsequenceDiagramA->>\n^"
+  }
+}

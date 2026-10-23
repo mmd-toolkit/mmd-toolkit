@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md, Units and contexts: The same-line union keyword ends the bare style value a and reads the accepted union of earlier names B and C."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "C"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B",
+          "C"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "x": "a"
+        }
+      }
+    ]
+  }
+}

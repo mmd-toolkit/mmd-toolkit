@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Detection: At the detection point, before passing bare percent-pair lines, detection passes one block satisfying the common [Frontmatter](../common.md#frontmatter) shape and looks for the header after it. Case: yaml-after-directive-glued."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

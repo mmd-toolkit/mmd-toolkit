@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The properties of a participant, written as JSON under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): mermaid.js replaces the characters of the text and reads the JSON, so a key and a value have `&lt;`, `&equals;`, and `<br/>`."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {
+          "a&lt;b&equals;c": "d&lt;e&equals;f",
+          "g": "h<br/>i"
+        },
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

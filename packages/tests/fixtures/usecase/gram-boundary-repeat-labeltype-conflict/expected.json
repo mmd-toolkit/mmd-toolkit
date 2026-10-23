@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a repeated boundary distinguish text versus markdown with equal label text?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Boundary 'S' has conflicting titles at line 4, column 16 [58,59); previous declaration at line 2, column 16 [28,29)"
+  }
+}

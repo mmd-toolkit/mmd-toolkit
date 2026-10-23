@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With trailing spaces, removing the last of two style semicolons still leaves a reference to encode in child text."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "style A fill:ﬂ°abc¶ß",
+          "children": []
+        }
+      ]
+    }
+  }
+}

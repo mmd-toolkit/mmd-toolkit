@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Three style semicolons leave an encoded reference and one literal semicolon in the root and title."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "style R fill:ﬂ°abc¶ß;",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "style R fill:ﬂ°abc¶ß;",
+      "children": []
+    }
+  }
+}

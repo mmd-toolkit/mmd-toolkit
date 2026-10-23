@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Directives inside units: the semicolon that the style line rule selects inside the closer -) is rejected, while mermaid.js removes it."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "style:#x",
+        "label": "b",
+        "isGroup": true
+      }
+    ]
+  }
+}

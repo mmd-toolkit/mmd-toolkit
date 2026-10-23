@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "UpdateLayoutConfig keyword with a glued dash is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tUpdateLayoutConfig-(\"3\", \"1\")\n----------------------^"
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-containment-cycle.spec.ts",
+    "line": 25,
+    "test": "mutual containment between two flow containers > three-container cycle > terminates"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a1",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "b1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "b1",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      },
+      {
+        "id": "c1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "c1",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a1",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a1_B_0"
+      },
+      {
+        "start": "b1",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_b1_C_0"
+      },
+      {
+        "start": "c1",
+        "end": "A",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_c1_A_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "A",
+        "nodes": [
+          "a1",
+          "B"
+        ],
+        "title": "A",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "view": "collapsed"
+        }
+      },
+      {
+        "id": "B",
+        "nodes": [
+          "b1",
+          "C"
+        ],
+        "title": "B",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "C",
+        "nodes": [
+          "c1",
+          "A"
+        ],
+        "title": "C",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "view": "collapsed"
+          }
+        }
+      }
+    ]
+  }
+}

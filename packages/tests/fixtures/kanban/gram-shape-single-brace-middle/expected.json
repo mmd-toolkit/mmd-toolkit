@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md S05 (Shape context): Fallback after a bare description."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S[x}y]\n----------^\nExpecting 'NODE_DEND', got 'NODE_DESCR'"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frontmatter configuration changes the initial branch and its sorted position."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "b"
+      },
+      {
+        "name": "trunk"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "gitGraph": {
+        "mainBranchName": "trunk",
+        "mainBranchOrder": 5
+      }
+    }
+  }
+}

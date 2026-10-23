@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Trivia between units: without the directive, the space after `{` takes the line feed."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...amrequirement r { id: 1}\n---------------------^\nExpecting 'NEWLINE', got 'ID'"
+  }
+}

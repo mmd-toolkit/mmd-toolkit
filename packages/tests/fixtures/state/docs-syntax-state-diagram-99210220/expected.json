@@ -1,0 +1,135 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/stateDiagram.md",
+    "line": 72
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Draft",
+        "shape": "rect",
+        "label": "Draft",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Submitted",
+        "shape": "rect",
+        "label": "Submitted",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Review",
+        "shape": "roundedWithTitle",
+        "label": "Review",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Review_start",
+        "shape": "stateStart",
+        "label": "Review_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Review"
+      },
+      {
+        "id": "Screening",
+        "shape": "rect",
+        "label": "Screening",
+        "classes": [],
+        "styles": [],
+        "parentId": "Review"
+      },
+      {
+        "id": "Decision",
+        "shape": "rect",
+        "label": "Decision",
+        "classes": [],
+        "styles": [],
+        "parentId": "Review"
+      },
+      {
+        "id": "Published",
+        "shape": "rect",
+        "label": "Published",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Draft",
+        "label": ""
+      },
+      {
+        "start": "Draft",
+        "end": "Submitted",
+        "label": "submit"
+      },
+      {
+        "start": "Review_start",
+        "end": "Screening",
+        "label": ""
+      },
+      {
+        "start": "Screening",
+        "end": "Decision",
+        "label": ""
+      },
+      {
+        "start": "Submitted",
+        "end": "Review",
+        "label": ""
+      },
+      {
+        "start": "Review",
+        "end": "Published",
+        "label": "approved"
+      },
+      {
+        "start": "Review",
+        "end": "Draft",
+        "label": "rejected"
+      },
+      {
+        "start": "Published",
+        "end": "root_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md A token that a directive cuts: a directive on a line of its own inside a data block cuts its token; the line feeds around it stay in the value and in the fragments."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "Bob",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "actor"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "description": "Bob",
+          "type": "actor"
+        }
+      }
+    ]
+  }
+}

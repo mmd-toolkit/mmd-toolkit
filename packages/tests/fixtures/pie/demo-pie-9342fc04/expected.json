@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/pie.html",
+    "line": 27
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "Offset labels close to border: Product X",
+    "accTitle": "Key elements in Product X",
+    "accDescr": "This is a pie chart showing the key elements in Product X.",
+    "showData": false,
+    "sections": [
+      {
+        "label": "Calcium",
+        "value": 42.96
+      },
+      {
+        "label": "Potassium",
+        "value": 50.05
+      },
+      {
+        "label": "Magnesium",
+        "value": 10.01
+      },
+      {
+        "label": "Iron",
+        "value": 5
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "pie": {
+        "textPosition": 0.9
+      },
+      "themeVariables": {
+        "pieOuterStrokeWidth": "5px"
+      }
+    }
+  }
+}

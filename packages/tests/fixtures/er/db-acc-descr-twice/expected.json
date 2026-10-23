@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: the last description counts; accepted, b."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "b",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

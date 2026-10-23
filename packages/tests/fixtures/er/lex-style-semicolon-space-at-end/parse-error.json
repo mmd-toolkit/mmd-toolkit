@@ -1,0 +1,17 @@
+{
+  "message": "The classDef or style statement has no line feed before the end of the text",
+  "range": [
+    12,
+    17
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 5
+    }
+  }
+}

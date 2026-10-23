@@ -1,0 +1,69 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.spec.js",
+    "line": 831,
+    "test": "when parsing requirement diagram it... > will accept assigning a class or multiple via the shorthand syntax when defining a requirement or element"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "myReq",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px"
+        ],
+        "classes": [
+          "class1"
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "name": "myElem",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px",
+          "color:blue"
+        ],
+        "classes": [
+          "class1",
+          "class2"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "class1",
+        "styles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px"
+        ]
+      },
+      {
+        "id": "class2",
+        "styles": [
+          "color:blue"
+        ]
+      }
+    ]
+  }
+}

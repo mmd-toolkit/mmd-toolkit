@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The click context: after `click` and a space, `:` is the click id, and `1d` a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nganttclick : 1d\n-------------^\nExpecting 'callbackname', 'href', got 'taskTxt'"
+  }
+}

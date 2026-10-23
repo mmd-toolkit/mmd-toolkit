@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 28: minimal accepted example of `treeView`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": null
+}

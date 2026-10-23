@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: only the last `;` of the line is dropped; the `;` before `style` stays."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a;b",
+      "style:#xy"
+    ],
+    "links": [
+      {
+        "source": "a;b",
+        "target": "style:#xy",
+        "value": 1
+      }
+    ]
+  }
+}

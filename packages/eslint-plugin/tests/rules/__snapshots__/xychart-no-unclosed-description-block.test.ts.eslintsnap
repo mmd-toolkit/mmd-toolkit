@@ -1,0 +1,58 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: xychart-no-unclosed-description-block >> invalid >>> docs/rules/xychart-no-unclosed-description-block.md incorrect 1
+Filename: xychart-no-unclosed-description-block-incorrect-1.mmd
+
+Code:
+  1 | xychart
+  2 |   accDescr { Monthly sales
+    |   ^~~~~~~~~~ [1]
+  3 |   title Sales
+  4 |   line [1, 2]
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: xychart-no-unclosed-description-block >> invalid >>> invalid/xychart/db-acc-descr-unclosed-block-after-value
+Filename: tests/fixtures/rules/xychart-no-unclosed-description-block/invalid/xychart/db-acc-descr-unclosed-block-after-value-input.mmd
+
+Code:
+  1 | xychart-beta
+  2 | accDescr: d
+  3 | accDescr {
+    | ^~~~~~~~~~ [1]
+  4 | e
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: xychart-no-unclosed-description-block >> invalid >>> invalid/xychart/db-acc-descr-unclosed-empty-block-after-line
+Filename: tests/fixtures/rules/xychart-no-unclosed-description-block/invalid/xychart/db-acc-descr-unclosed-empty-block-after-line-input.mmd
+
+Code:
+  1 | xychart
+  2 | accDescr: d
+  3 | accDescr {
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: xychart-no-unclosed-description-block >> invalid >>> invalid/xychart/unclosed-block-takes-statements
+Filename: tests/fixtures/rules/xychart-no-unclosed-description-block/invalid/xychart/unclosed-block-takes-statements-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accDescr { d
+    |   ^~~~~~~~~~ [1]
+  3 |   title T
+  4 |   line [1]
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---

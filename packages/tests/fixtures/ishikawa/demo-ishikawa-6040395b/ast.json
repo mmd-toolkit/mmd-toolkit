@@ -1,0 +1,817 @@
+{
+  "type": "Root",
+  "diagramType": "ishikawa",
+  "body": {
+    "type": "IshikawaDiagram",
+    "root": {
+      "type": "IshikawaNode",
+      "indent": 2,
+      "text": {
+        "type": "IshikawaLiteral",
+        "value": "Low Test Coverage",
+        "range": [
+          51,
+          68
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 19
+          }
+        }
+      },
+      "children": [
+        {
+          "type": "IshikawaNode",
+          "indent": 2,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "People",
+            "range": [
+              71,
+              77
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 2
+              },
+              "end": {
+                "line": 4,
+                "column": 8
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Lack of training",
+                "range": [
+                  82,
+                  98
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 20
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                82,
+                98
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 4
+                },
+                "end": {
+                  "line": 5,
+                  "column": 20
+                }
+              }
+            },
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Insufficient reviewers",
+                "range": [
+                  103,
+                  125
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 26
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                103,
+                125
+              ],
+              "loc": {
+                "start": {
+                  "line": 6,
+                  "column": 4
+                },
+                "end": {
+                  "line": 6,
+                  "column": 26
+                }
+              }
+            }
+          ],
+          "range": [
+            71,
+            125
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 2
+            },
+            "end": {
+              "line": 6,
+              "column": 26
+            }
+          }
+        },
+        {
+          "type": "IshikawaNode",
+          "indent": 2,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "Process",
+            "range": [
+              128,
+              135
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 2
+              },
+              "end": {
+                "line": 7,
+                "column": 9
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "No CI pipeline",
+                "range": [
+                  140,
+                  154
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 18
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                140,
+                154
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 4
+                },
+                "end": {
+                  "line": 8,
+                  "column": 18
+                }
+              }
+            },
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Skipping code review",
+                "range": [
+                  159,
+                  179
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 24
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                159,
+                179
+              ],
+              "loc": {
+                "start": {
+                  "line": 9,
+                  "column": 4
+                },
+                "end": {
+                  "line": 9,
+                  "column": 24
+                }
+              }
+            }
+          ],
+          "range": [
+            128,
+            179
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 2
+            },
+            "end": {
+              "line": 9,
+              "column": 24
+            }
+          }
+        },
+        {
+          "type": "IshikawaNode",
+          "indent": 2,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "Tools",
+            "range": [
+              182,
+              187
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 2
+              },
+              "end": {
+                "line": 10,
+                "column": 7
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Outdated test framework",
+                "range": [
+                  192,
+                  215
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 27
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                192,
+                215
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 4
+                },
+                "end": {
+                  "line": 11,
+                  "column": 27
+                }
+              }
+            },
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Flaky test runner",
+                "range": [
+                  220,
+                  237
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 21
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                220,
+                237
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 4
+                },
+                "end": {
+                  "line": 12,
+                  "column": 21
+                }
+              }
+            }
+          ],
+          "range": [
+            182,
+            237
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 12,
+              "column": 21
+            }
+          }
+        },
+        {
+          "type": "IshikawaNode",
+          "indent": 2,
+          "text": {
+            "type": "IshikawaLiteral",
+            "value": "Environment",
+            "range": [
+              240,
+              251
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 2
+              },
+              "end": {
+                "line": 13,
+                "column": 13
+              }
+            }
+          },
+          "children": [
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Tight deadlines",
+                "range": [
+                  256,
+                  271
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 19
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                256,
+                271
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 4
+                },
+                "end": {
+                  "line": 14,
+                  "column": 19
+                }
+              }
+            },
+            {
+              "type": "IshikawaNode",
+              "indent": 4,
+              "text": {
+                "type": "IshikawaLiteral",
+                "value": "Unclear requirements",
+                "range": [
+                  276,
+                  296
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 24
+                  }
+                }
+              },
+              "children": [],
+              "range": [
+                276,
+                296
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 4
+                },
+                "end": {
+                  "line": 15,
+                  "column": 24
+                }
+              }
+            }
+          ],
+          "range": [
+            240,
+            296
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 2
+            },
+            "end": {
+              "line": 15,
+              "column": 24
+            }
+          }
+        }
+      ],
+      "range": [
+        51,
+        296
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 15,
+          "column": 24
+        }
+      }
+    },
+    "range": [
+      35,
+      296
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 0
+      },
+      "end": {
+        "line": 15,
+        "column": 24
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: { 'theme': 'forest' } ",
+      "closed": true,
+      "range": [
+        0,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 34
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Directive",
+      "value": "%%{init: { 'theme': 'forest' } }%%",
+      "range": [
+        0,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "ishikawa-beta",
+      "range": [
+        35,
+        48
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Low Test Coverage",
+      "range": [
+        51,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "People",
+      "range": [
+        71,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Lack of training",
+      "range": [
+        82,
+        98
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Insufficient reviewers",
+      "range": [
+        103,
+        125
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Process",
+      "range": [
+        128,
+        135
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "No CI pipeline",
+      "range": [
+        140,
+        154
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Skipping code review",
+      "range": [
+        159,
+        179
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Tools",
+      "range": [
+        182,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Outdated test framework",
+      "range": [
+        192,
+        215
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Flaky test runner",
+      "range": [
+        220,
+        237
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 4
+        },
+        "end": {
+          "line": 12,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Environment",
+      "range": [
+        240,
+        251
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Tight deadlines",
+      "range": [
+        256,
+        271
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 4
+        },
+        "end": {
+          "line": 14,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Unclear requirements",
+      "range": [
+        276,
+        296
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 4
+        },
+        "end": {
+          "line": 15,
+          "column": 24
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    296
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 15,
+      "column": 24
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classes: two class markers are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...drantChartA:::c1:::c2: [0.3, 0.6]\n----------------------^\nExpecting 'point_start', got 'class_name'"
+  }
+}

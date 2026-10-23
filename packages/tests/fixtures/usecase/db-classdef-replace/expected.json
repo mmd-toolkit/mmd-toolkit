@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a repeated class definition replace styles without moving its first map position?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "stroke:green"
+        ]
+      },
+      {
+        "id": "cold",
+        "styles": [
+          "fill:blue"
+        ]
+      }
+    ]
+  }
+}

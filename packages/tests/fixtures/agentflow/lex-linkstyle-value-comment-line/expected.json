@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A link style cannot take its index across a comment line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...w-beta TBlinkStyle %% betweendefault \n----------------------^\nExpecting 'DEFAULT', 'NUM', got 'NEWLINE'"
+  }
+}

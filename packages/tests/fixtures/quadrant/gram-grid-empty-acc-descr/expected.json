@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, empty texts: nothing in the accessibility description."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ntChartaccDescr: \n--------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got '1'"
+  }
+}

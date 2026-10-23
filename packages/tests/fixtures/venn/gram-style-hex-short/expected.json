@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The style hex short input is rejected at this statement or argument boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...n-betastyle A fill:#ab\n----------------------^"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an accTitle classDef without hash keep semicolon?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "classDef:red;",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: a direction statement in a nested subgraph; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "I",
+        "nodes": [
+          "A"
+        ],
+        "title": "I",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "LR"
+      },
+      {
+        "id": "O",
+        "nodes": [
+          "I",
+          "B"
+        ],
+        "title": "O",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

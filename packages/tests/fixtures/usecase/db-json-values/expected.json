@@ -1,0 +1,108 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a strict JSON object retain scalar, nested, array and escaped-string values?"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [],
+    "systemBoundaries": [],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [
+      {
+        "id": "J",
+        "value": {
+          "s": "text",
+          "n": 0,
+          "a": 125,
+          "t": true,
+          "f": false,
+          "nil": null,
+          "empty": {},
+          "arr": [],
+          "mixed": [
+            1,
+            {
+              "x": 2
+            },
+            null
+          ],
+          "escaped": "} \" {"
+        },
+        "propertyOrder": {
+          "": [
+            "s",
+            "n",
+            "a",
+            "t",
+            "f",
+            "nil",
+            "empty",
+            "arr",
+            "mixed",
+            "escaped"
+          ],
+          "/empty": [],
+          "/mixed/1": [
+            "x"
+          ]
+        },
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "J",
+        "set": {
+          "value": {
+            "s": "text",
+            "n": 0,
+            "a": 125,
+            "t": true,
+            "f": false,
+            "nil": null,
+            "empty": {},
+            "arr": [],
+            "mixed": [
+              1,
+              {
+                "x": 2
+              },
+              null
+            ],
+            "escaped": "} \" {"
+          },
+          "propertyOrder": {
+            "": [
+              "s",
+              "n",
+              "a",
+              "t",
+              "f",
+              "nil",
+              "empty",
+              "arr",
+              "mixed",
+              "escaped"
+            ],
+            "/empty": [],
+            "/mixed/1": [
+              "x"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

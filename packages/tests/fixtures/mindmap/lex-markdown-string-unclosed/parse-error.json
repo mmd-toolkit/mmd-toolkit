@@ -1,0 +1,17 @@
+{
+  "message": "The markdown string has no closing `\" before the end of the text",
+  "range": [
+    17,
+    18
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 4
+    },
+    "end": {
+      "line": 3,
+      "column": 5
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.spec.js",
+    "line": 109,
+    "test": "when parsing requirement diagram it... > will use a accessibility title and multiline description (accDescr)"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "test title",
+    "accDescr": "my chart description\nline 2",
+    "requirements": [],
+    "elements": [
+      {
+        "name": "test_name",
+        "type": "test_type",
+        "docRef": "test_ref",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

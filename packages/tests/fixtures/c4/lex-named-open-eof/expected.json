@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: An unfinished named argument at end of source is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...extPerson(a,\"A\", $\n---------------------^\nExpecting 'STR_VALUE', got '1'"
+  }
+}

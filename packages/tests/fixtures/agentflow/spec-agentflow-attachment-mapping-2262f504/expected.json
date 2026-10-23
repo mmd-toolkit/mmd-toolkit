@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-attachment-mapping.spec.ts",
+    "line": 18,
+    "test": "issue #75: standalone `id@{ ... }` attachment mappings > a standalone task attachment maps as `attachment`, not a second `vertex`"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "helper",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Helper",
+        "type": "square",
+        "props": {},
+        "metadata": {
+          "instruction": "Answer precisely."
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "demo",
+        "nodes": [
+          "helper"
+        ],
+        "title": "",
+        "classes": [],
+        "labelType": "text",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "helper",
+        "set": {
+          "metadata": {
+            "instruction": "Answer precisely."
+          }
+        }
+      }
+    ]
+  }
+}

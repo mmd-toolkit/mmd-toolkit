@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "pie.md Hidden YAML: apparent empty blocks are not selected first; the first match closes at the third fence, leaving x and an unmatched fourth fence, so the input rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 6, column 1: unexpected character: ->x<- at offset: 22, skipped 1 characters.\nLexer error on line 7, column 1: unexpected character: ->-<- at offset: 24, skipped 3 characters. "
+  }
+}

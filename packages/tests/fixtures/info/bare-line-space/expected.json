@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A space-only line after a bare percent line."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

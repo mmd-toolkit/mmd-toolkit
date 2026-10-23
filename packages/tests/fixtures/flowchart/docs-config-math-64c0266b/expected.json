@@ -1,0 +1,120 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/math.md",
+    "line": 14
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "$$x^2$$",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "$$\\frac{1}{2}$$",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "$$\\pi r^2$$",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "$$x = \\begin{cases} a &\\text{if } b \\\\ c &\\text{if } d \\end{cases}$$",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "$$x(t)=c_1\\begin{bmatrix}-\\cos{t}+\\sin{t}\\\\ 2\\cos{t} \\end{bmatrix}e^{2t}$$",
+        "type": "round",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "$$\\sqrt{x+3}$$",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      },
+      {
+        "start": "A",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "$$\\overbrace{a+b+c}^{\\text{note}}$$",
+        "labelType": "string",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_C_0"
+      },
+      {
+        "start": "B",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B_D_0"
+      },
+      {
+        "start": "C",
+        "end": "E",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_E_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

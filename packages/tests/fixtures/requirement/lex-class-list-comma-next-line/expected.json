@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: the classes after the line feed are names of the statement context, separated by `,`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": [
+          "c",
+          "d"
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "name": "e",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": [
+          "c",
+          "d"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

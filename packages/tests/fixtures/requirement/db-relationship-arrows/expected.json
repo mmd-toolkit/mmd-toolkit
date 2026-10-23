@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, a relationship: `src` is the name at the line, `dst` the name at the arrowhead, whichever side it is written on."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "contains",
+        "src": "a",
+        "dst": "b"
+      },
+      {
+        "type": "copies",
+        "src": "a",
+        "dst": "b"
+      },
+      {
+        "type": "derives",
+        "src": "c",
+        "dst": "d"
+      },
+      {
+        "type": "satisfies",
+        "src": "e",
+        "dst": "f"
+      },
+      {
+        "type": "verifies",
+        "src": "g",
+        "dst": "h"
+      },
+      {
+        "type": "refines",
+        "src": "i",
+        "dst": "j"
+      },
+      {
+        "type": "traces",
+        "src": "k",
+        "dst": "l"
+      }
+    ],
+    "classes": []
+  }
+}

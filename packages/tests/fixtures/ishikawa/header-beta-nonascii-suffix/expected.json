@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[H: detection and ISHIKAWA] Does a beta non-ASCII suffix remain root text?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "界",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "界",
+      "children": [
+        {
+          "text": "R",
+          "children": []
+        }
+      ]
+    }
+  }
+}

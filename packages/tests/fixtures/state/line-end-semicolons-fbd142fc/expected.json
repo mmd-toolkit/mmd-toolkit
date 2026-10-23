@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A state line that starts with U+2028"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "b",
+        "shape": "rect",
+        "label": "b",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "<<fork>>",
+        "shape": "rect",
+        "label": "<<fork>>",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

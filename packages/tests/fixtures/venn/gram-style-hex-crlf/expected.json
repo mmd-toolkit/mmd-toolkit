@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CRLF separates hexadecimal fragments into different lines and rejects the unfinished continuation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...astyle A fill:#12345\n---------------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'UNION', 'TEXT', 'INDENT_TEXT', 'STYLE', got 'NUMERIC'"
+  }
+}

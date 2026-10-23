@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "String whitespace is retained rather than trimmed."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": " ",
+        "seq": 0,
+        "type": 0,
+        "tags": [
+          " "
+        ],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

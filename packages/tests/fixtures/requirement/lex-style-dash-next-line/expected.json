@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: the `-` of the statement context on the next line is no `style-dash` unit, so it is no part of a style."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...}style r fill:red- x - satisfies -> y\n--------------------^\nExpecting 'NEWLINE', 'EOF', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'REQUIREMENT', 'FUNCTIONAL_REQUIREMENT', 'INTERFACE_REQUIREMENT', 'PERFORMANCE_REQUIREMENT', 'PHYSICAL_REQUIREMENT', 'DESIGN_CONSTRAINT', 'ELEMENT', 'CLASSDEF', 'CLASS', 'ALPHA', 'COMMA', 'STYLE', 'NUM', 'COLON', 'UNIT', 'SPACE', 'BRKT', 'PCT', 'MINUS', 'LABEL', 'SEMICOLON', 'unqString', 'qString', got 'LINE'"
+  }
+}

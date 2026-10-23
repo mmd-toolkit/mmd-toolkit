@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: A class definition escaped comma keeps following whitespace."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "hot",
+        "styles": [
+          "x:y,"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

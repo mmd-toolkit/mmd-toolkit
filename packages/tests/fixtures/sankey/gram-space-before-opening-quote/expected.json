@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, quotes: spaces before the opening quote are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey  \"a\"  ,c,1\n--------^\nExpecting 'NEWLINE', 'EOF', 'COMMA', got 'DQUOTE'"
+  }
+}

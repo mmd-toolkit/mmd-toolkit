@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty accessibility-looking description tests a bare node."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "accDescr:",
+        "label": "accDescr:",
+        "isGroup": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Known divergences, ignored-semicolon-as-token-boundary: an ignored `;` inside a word of an attribute block; rejected here, mermaid.js reads the attribute `xy`."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-Astyle-0",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "a",
+            "keys": [],
+            "comment": "c:#"
+          },
+          {
+            "type": "int",
+            "name": "xy",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "Astyle",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

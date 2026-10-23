@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A minus sign inside rgb prevents a color token from being read."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...etastyle A fill:rgb(-1,2,3)\n----------------------^"
+  }
+}

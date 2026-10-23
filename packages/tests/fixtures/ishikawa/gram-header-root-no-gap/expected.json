@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G: start, document, statement and stop] Can punctuation start root text directly after the header?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "(R)",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "(R)",
+      "children": []
+    }
+  }
+}

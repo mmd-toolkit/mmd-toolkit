@@ -1,0 +1,233 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gitgraph.md",
+    "line": 813
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 2,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "hotfix"
+      },
+      {
+        "id": "ash",
+        "seq": 2,
+        "type": 0,
+        "tags": [
+          "abc"
+        ],
+        "parents": [
+          "generated-commit-2"
+        ],
+        "branch": "develop"
+      },
+      {
+        "id": "generated-commit-3",
+        "seq": 3,
+        "type": 2,
+        "tags": [],
+        "parents": [
+          "ash"
+        ],
+        "branch": "featureB"
+      },
+      {
+        "id": "generated-commit-4",
+        "seq": 4,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-2"
+        ],
+        "branch": "hotfix"
+      },
+      {
+        "id": "generated-commit-5",
+        "seq": 5,
+        "type": 1,
+        "tags": [],
+        "parents": [
+          "ash"
+        ],
+        "branch": "develop"
+      },
+      {
+        "id": "generated-commit-6",
+        "seq": 6,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-3"
+        ],
+        "branch": "featureB"
+      },
+      {
+        "id": "generated-commit-7",
+        "seq": 7,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "generated-commit-1",
+          "generated-commit-4"
+        ],
+        "branch": "main",
+        "customId": false
+      },
+      {
+        "id": "generated-commit-8",
+        "seq": 8,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-6"
+        ],
+        "branch": "featureB"
+      },
+      {
+        "id": "generated-commit-9",
+        "seq": 9,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-5"
+        ],
+        "branch": "featureA"
+      },
+      {
+        "id": "generated-commit-10",
+        "seq": 10,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "generated-commit-5",
+          "generated-commit-4"
+        ],
+        "branch": "develop",
+        "customId": false
+      },
+      {
+        "id": "generated-commit-11",
+        "seq": 11,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-9"
+        ],
+        "branch": "featureA"
+      },
+      {
+        "id": "generated-commit-12",
+        "seq": 12,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-8"
+        ],
+        "branch": "featureB"
+      },
+      {
+        "id": "generated-commit-13",
+        "seq": 13,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "generated-commit-10",
+          "generated-commit-11"
+        ],
+        "branch": "develop",
+        "customId": false
+      },
+      {
+        "id": "generated-commit-14",
+        "seq": 14,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-13"
+        ],
+        "branch": "release"
+      },
+      {
+        "id": "generated-commit-15",
+        "seq": 15,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-7"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-16",
+        "seq": 16,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "generated-commit-14",
+          "generated-commit-15"
+        ],
+        "branch": "release",
+        "customId": false
+      },
+      {
+        "id": "generated-commit-17",
+        "seq": 17,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "generated-commit-13",
+          "generated-commit-16"
+        ],
+        "branch": "develop",
+        "customId": false
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "hotfix"
+      },
+      {
+        "name": "develop"
+      },
+      {
+        "name": "featureB"
+      },
+      {
+        "name": "featureA"
+      },
+      {
+        "name": "release"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "logLevel": "debug"
+    }
+  }
+}

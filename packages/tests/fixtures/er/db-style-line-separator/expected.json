@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 is part of a style word: the first style is `fill:red`, U+2028, and the second is `stroke:blue`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [
+          "fill:red ",
+          "stroke:blue"
+        ],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

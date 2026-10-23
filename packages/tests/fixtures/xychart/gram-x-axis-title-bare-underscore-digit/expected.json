@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: an underscore and a digit are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...art-beta x-axis A_1\n----------------------^\nExpecting 'ARROW_DELIMITER', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "crlf at bare-value tests whitespace, token boundaries, and indentation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "a",
+        "label": "a",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "b",
+        "label": "b",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

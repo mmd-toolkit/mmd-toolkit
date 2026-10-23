@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The db form style multiple form stores {\"styles\":[{\"targets\":[\"A\",\"B\"],\"styles\":{\"fill\":\"red\",\"color\":\"blue\"}}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A",
+          "B"
+        ],
+        "styles": {
+          "fill": "red",
+          "color": "blue"
+        }
+      }
+    ]
+  }
+}

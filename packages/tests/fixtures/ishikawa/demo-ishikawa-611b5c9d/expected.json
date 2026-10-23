@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/ishikawa.html",
+    "line": 40
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Problem Only",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Problem Only",
+      "children": []
+    }
+  }
+}

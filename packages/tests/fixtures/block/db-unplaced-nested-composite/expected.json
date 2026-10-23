@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, the blocks that no list holds: a composite inside a composite that the Db drops is listed with its own children, and its children are not listed again."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "C",
+        "label": "",
+        "type": "composite",
+        "widthInColumns": 1,
+        "children": [
+          {
+            "id": "D",
+            "label": "D",
+            "type": "na",
+            "widthInColumns": 1
+          }
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

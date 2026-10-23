@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokenless-empty-forms: the empty description block lies between `direction` and its value, inside a name of two name parts, and this specification rejects the input. mermaid.js reads no token for it, and the block keeps its direction rule from matching, so it reads `direction` and the value as the two name parts of a member statement: with the label, it declares the class `directionLR` with the member `x`, as the reference input `directionLR : x` does."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "directionLR",
+        "type": "",
+        "label": "directionLR",
+        "text": "directionLR",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "x"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

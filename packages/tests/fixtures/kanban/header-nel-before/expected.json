@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "nel before the header tests preprocessing and the lexical boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: kanban\n S\n"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Subgraphs: a name right after `]`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ramsubgraph S [\"T\"]xAend\n----------------------^\nExpecting 'EOF', 'NEWLINE', 'SEMI', got 'UNICODE_TEXT'"
+  }
+}

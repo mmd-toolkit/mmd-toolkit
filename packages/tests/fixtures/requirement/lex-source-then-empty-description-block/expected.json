@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Empty description blocks: an unquoted source takes `accDescr `, so the `{` after it is read by no rule of a relationship."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tDiagrama accDescr {}- satisfies -> b\n----------------------^\nExpecting 'STYLE_SEPARATOR', 'END_ARROW_L', 'LINE', got 'STRUCT_START'"
+  }
+}

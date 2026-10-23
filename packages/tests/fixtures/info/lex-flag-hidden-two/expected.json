@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: flag opportunity survives visible newlines and two hidden forms"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

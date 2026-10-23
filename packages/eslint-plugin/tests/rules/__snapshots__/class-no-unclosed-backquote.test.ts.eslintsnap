@@ -1,0 +1,93 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: class-no-unclosed-backquote >> invalid >>> docs/rules/class-no-unclosed-backquote.md incorrect 1
+Filename: class-no-unclosed-backquote-incorrect-1.mmd
+
+Code:
+  1 | classDiagram
+  2 |   class `x
+    |         ^ [1]
+  3 | class B
+  4 |
+
+[1] mermaid.js reads the rest of the text after this backquote as part of the class name.
+---
+
+
+Test: class-no-unclosed-backquote >> invalid >>> invalid/class/db-backquoted-name-unclosed
+Filename: tests/fixtures/rules/class-no-unclosed-backquote/invalid/class/db-backquoted-name-unclosed-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class `x
+    |       ^ [1]
+  3 |
+
+[1] mermaid.js reads the rest of the text after this backquote as part of the class name.
+---
+
+
+Test: class-no-unclosed-backquote >> invalid >>> invalid/class/lex-backquote-unclosed-after-prefix
+Filename: tests/fixtures/rules/class-no-unclosed-backquote/invalid/class/lex-backquote-unclosed-after-prefix-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A.`b
+    |         ^ [1]
+  3 |
+
+[1] mermaid.js reads the rest of the text after this backquote as part of the class name.
+---
+
+
+Test: class-no-unclosed-backquote >> invalid >>> invalid/class/lex-backquote-unclosed-alone
+Filename: tests/fixtures/rules/class-no-unclosed-backquote/invalid/class/lex-backquote-unclosed-alone-input.mmd
+
+Code:
+  1 | classDiagram
+  2 |   class `
+    |         ^ [1]
+  3 |
+
+[1] mermaid.js reads the rest of the text after this backquote as part of the class name.
+---
+
+
+Test: class-no-unclosed-backquote >> invalid >>> invalid/class/lex-backquote-unclosed
+Filename: tests/fixtures/rules/class-no-unclosed-backquote/invalid/class/lex-backquote-unclosed-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class `x
+    |       ^ [1]
+
+[1] mermaid.js reads the rest of the text after this backquote as part of the class name.
+---
+
+
+Test: class-no-unclosed-backquote >> invalid >>> invalid/class/lex-backquote-unclosed-relation-end
+Filename: tests/fixtures/rules/class-no-unclosed-backquote/invalid/class/lex-backquote-unclosed-relation-end-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> `b
+    |       ^ [1]
+  3 |
+
+[1] mermaid.js reads the rest of the text after this backquote as part of the class name.
+---
+
+
+Test: class-no-unclosed-backquote >> invalid >>> invalid/class/lex-backquote-unclosed-takes-lines
+Filename: tests/fixtures/rules/class-no-unclosed-backquote/invalid/class/lex-backquote-unclosed-takes-lines-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class `x
+    |       ^ [1]
+  3 | class B
+  4 |
+
+[1] mermaid.js reads the rest of the text after this backquote as part of the class name.
+---

@@ -1,0 +1,101 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/usecase.parser.spec.ts",
+    "line": 559,
+    "test": "usecase parser publication and normalized AST > accepts markdown markers, punctuation, and non-ASCII characters in unquoted labels"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "id": "Reviewer",
+        "label": "*Reviewer*",
+        "labelType": "text",
+        "type": "normal",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "useCases": [
+      {
+        "id": "Literal",
+        "label": "**Literal markers**",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Priced",
+        "label": "Costs 19.95 EUR, incl. VAT!",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Progress",
+        "label": "Ärende — 50% klart",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [],
+    "relationships": [
+      {
+        "source": "Reviewer",
+        "target": "Literal",
+        "type": "association",
+        "arrowType": 0,
+        "label": "opens **form**",
+        "labelType": "text",
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Reviewer",
+        "target": "Priced",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      },
+      {
+        "source": "Reviewer",
+        "target": "Progress",
+        "type": "association",
+        "arrowType": 0,
+        "minlen": 1,
+        "classes": [],
+        "styles": [],
+        "animate": false
+      }
+    ],
+    "notes": [
+      {
+        "target": "Literal",
+        "label": "Read the guide; then sign off.",
+        "labelType": "text"
+      }
+    ],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

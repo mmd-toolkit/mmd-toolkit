@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A spare LF restores block EOL after hidden YAML."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

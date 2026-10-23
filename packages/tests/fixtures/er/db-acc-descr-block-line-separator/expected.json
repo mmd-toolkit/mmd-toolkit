@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 inside the block is kept: the description is `a`, U+2028, and `b`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a b",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

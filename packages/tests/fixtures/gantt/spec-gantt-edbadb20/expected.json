@@ -1,0 +1,79 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/gantt/parser/gantt.spec.js",
+    "line": 7,
+    "test": "when parsing a gantt diagram it > should parse callback specifier with no args"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": " YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Clickable"
+    ],
+    "tasks": [
+      {
+        "section": "Clickable",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-07"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "Visit mermaidjs           ",
+        "classes": [
+          "clickable"
+        ],
+        "id": "cl1",
+        "active": true,
+        "order": 0
+      },
+      {
+        "section": "Clickable",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after cl1"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "Calling a callback        ",
+        "classes": [
+          "clickable"
+        ],
+        "id": "cl2",
+        "order": 1
+      }
+    ],
+    "links": [
+      {
+        "id": "cl1",
+        "url": "https://mermaidjs.github.io/"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "cl2",
+        "name": "ganttTestClick",
+        "args": null
+      }
+    ]
+  }
+}

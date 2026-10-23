@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Trailing spaces leave the encoded reference from two root style semicolons unchanged."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "style R fill:ﬂ°abc¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "style R fill:ﬂ°abc¶ß",
+      "children": []
+    }
+  }
+}

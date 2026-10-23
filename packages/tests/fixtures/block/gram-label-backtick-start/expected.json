@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, labels: a string that starts with a backtick is read as a markdown string: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  A[\"`a\"]\n----------------^\nExpecting 'STR', got 'MD_STR'"
+  }
+}

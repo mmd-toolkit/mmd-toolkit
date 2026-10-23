@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Keywords and what follows them: a title text of one space: the title ` `."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": " ",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

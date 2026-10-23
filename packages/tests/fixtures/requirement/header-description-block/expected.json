@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: a description block with text is a statement, which may not follow the header on its line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...tDiagram accDescr { x }requirement r {\n-----------------------^\nExpecting 'NEWLINE', got 'acc_descr_multiline_value'"
+  }
+}

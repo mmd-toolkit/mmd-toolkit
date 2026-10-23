@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Directives: a directive with a free-text argument and no `}%%` extends to the end of the text, so the statements after it are part of the directive, and the diagram has only the statements before it; embedded holds no configuration: the states A and B and the one transition from A to B."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

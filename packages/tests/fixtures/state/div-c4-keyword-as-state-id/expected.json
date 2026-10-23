@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md (c4-keyword-anywhere): `C4Deployment` as a state id makes the C4 detector of mermaid.js claim the text, and the C4 parser rejects it; here the text is a state diagram with the state `C4Deployment`."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nstateDiagram-v2[*] \n^"
+  }
+}

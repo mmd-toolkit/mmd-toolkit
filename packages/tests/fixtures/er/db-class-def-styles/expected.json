@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The styles of a class definition are the items split at commas, in order, `color` ones included (`c1` has `fill:#f00` and `color:#fff`)."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c1",
+        "styles": [
+          "fill:#f00",
+          "color:#fff"
+        ]
+      },
+      {
+        "id": "c2",
+        "styles": [
+          "stroke:blue"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

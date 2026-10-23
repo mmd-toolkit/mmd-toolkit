@@ -1,0 +1,82 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/er.html",
+    "line": 157
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-_customer_order-0",
+        "attributes": [
+          {
+            "type": "bigint",
+            "name": "id",
+            "keys": [
+              "PK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "bigint",
+            "name": "customer_id",
+            "keys": [
+              "FK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "text",
+            "name": "shipping_address",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "text",
+            "name": "delivery_method",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "timestamp_with_time_zone",
+            "name": "ordered_at",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "numeric",
+            "name": "total_tax_amount",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "numeric",
+            "name": "total_price",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "text",
+            "name": "payment_method",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "_customer_order",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

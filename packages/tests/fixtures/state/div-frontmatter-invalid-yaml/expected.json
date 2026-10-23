@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Known divergences, embedded-data-opaque: mermaid.js rejects the frontmatter, which is no valid YAML; this specification accepts the input."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "unexpected end of the stream within a flow collection (2:1)\n\n 1 | title: [x\n 2 | \n-----^"
+  }
+}

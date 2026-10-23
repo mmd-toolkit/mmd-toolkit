@@ -1,0 +1,82 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All four connector productions create vertex records marked isConnector."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "API"
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "D"
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "Other",
+        "metadata": {
+          "endpoint": "x"
+        }
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "F",
+        "metadata": {
+          "protocol": "http"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "E",
+        "set": {
+          "metadata": {
+            "endpoint": "x"
+          }
+        }
+      },
+      {
+        "id": "F",
+        "set": {
+          "metadata": {
+            "protocol": "http"
+          }
+        }
+      }
+    ]
+  }
+}

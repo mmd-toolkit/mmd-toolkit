@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/requirement.md, class statements that name a class the target has keep it again each time."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red",
+          "fill:red",
+          "fill:red"
+        ],
+        "classes": [
+          "a",
+          "a",
+          "a"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

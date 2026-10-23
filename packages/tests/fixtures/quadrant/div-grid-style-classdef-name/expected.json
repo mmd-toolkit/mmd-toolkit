@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: the style line: `style:#x;y`, which the style line rule of mermaid.js changes in the name of a class."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": [
+      {
+        "name": "style:#xy",
+        "color": "#f00"
+      }
+    ]
+  }
+}

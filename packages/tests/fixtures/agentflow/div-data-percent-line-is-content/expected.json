@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: A data comment line is data, not a diagram comment."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "directives end mark is expected (4:1)\n\n 3 | %% c\n 4 | label: x\n-----^\n 5 | "
+  }
+}

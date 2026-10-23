@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Node text after semicolon is not a second statement."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R;ishikawa",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R;ishikawa",
+      "children": []
+    }
+  }
+}

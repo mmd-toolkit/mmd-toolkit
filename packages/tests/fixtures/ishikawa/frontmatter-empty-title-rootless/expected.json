@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty frontmatter title and no root leave the common title empty."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

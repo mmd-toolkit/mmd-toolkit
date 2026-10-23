@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md NumericLiteral: a negative range start too large for a double is minus infinity; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "-Infinity",
+      "max": 1
+    },
+    "plots": []
+  }
+}

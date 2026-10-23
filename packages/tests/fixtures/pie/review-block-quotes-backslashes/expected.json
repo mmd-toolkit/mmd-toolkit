@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the block converter retain ordinary quotes and backslash escape spellings?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "\"A\\nB\" 'C\\tD'",
+    "showData": false,
+    "sections": []
+  }
+}

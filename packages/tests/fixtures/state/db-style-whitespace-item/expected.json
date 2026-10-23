@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/state.md StateStyleStatement: a style of only whitespace between two `,` is the empty text, which mermaid.js trims; it is null in the styles."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [
+          "x",
+          "",
+          "y"
+        ]
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

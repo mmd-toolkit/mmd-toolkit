@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: `C4Context` after the header is text in both."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "C4Context x",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context, rule 3: `\"x~y\" List~int~` is one tilde word; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "a",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "\"x~y\" List~int~",
+            "name": "b",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The note contexts: `right of` is a keyword, not followed by a word character, so `right ofx` is no position and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...teDiagram-v2  note right ofx A\n----------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "agentflow.md: Two spaces after a call before tooltip are not one space."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Aclick A call go()  \"tip\"\n----------------------^\nExpecting 'STR', got 'SPACE'"
+  }
+}

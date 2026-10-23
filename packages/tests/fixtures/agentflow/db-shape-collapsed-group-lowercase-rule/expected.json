@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read shape collapsed group lowercase rule?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: collapsedGroup. Shape names should be lowercase."
+  }
+}

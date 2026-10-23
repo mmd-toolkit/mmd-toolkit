@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A second edge exceeds a site limit of one."
+  },
+  "config": {
+    "maxEdges": 1
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Edge limit exceeded. 1 edges found, but the limit is 1.\n\nInitialize mermaid with maxEdges set to a higher number to allow more edges.\nYou cannot set this config via configuration inside the diagram as it is a secure config.\nYou have to call mermaid.initialize."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an unresolved note target reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Note target 'Missing' is unresolved at line 2, column 10 [22,29)"
+  }
+}

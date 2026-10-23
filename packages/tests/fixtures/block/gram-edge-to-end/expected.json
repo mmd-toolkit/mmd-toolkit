@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: `end` at the end of an edge closes the composite: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...  block:G    A --> end  end\n----------------------^\nExpecting 'NODE_ID', got 'end'"
+  }
+}

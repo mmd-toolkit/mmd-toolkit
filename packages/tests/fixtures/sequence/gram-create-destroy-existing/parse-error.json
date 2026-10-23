@@ -1,0 +1,17 @@
+{
+  "message": "A participant that exists already cannot be created",
+  "range": [
+    45,
+    46
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 15
+    },
+    "end": {
+      "line": 3,
+      "column": 16
+    }
+  }
+}

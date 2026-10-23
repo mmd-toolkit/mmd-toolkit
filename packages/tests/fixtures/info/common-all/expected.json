@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All common AST strings are accepted but never published."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

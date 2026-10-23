@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quoted identifier interiors retain spaces, so a differently padded union member is unknown."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "unknown set identifier:  B ,  A "
+  }
+}

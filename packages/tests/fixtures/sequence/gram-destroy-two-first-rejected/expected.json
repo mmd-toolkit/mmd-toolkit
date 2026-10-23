@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar, the participant awaiting creation and the participant awaiting destruction: after two `destroy`, only E awaits destruction, so a message to D is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The destroyed participant undefined does not have an associated destroying message after its declaration. Please check the sequence diagram."
+  }
+}

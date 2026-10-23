@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/timeline/timeline.spec.js",
+    "line": 157,
+    "test": "when parsing a timeline  > Timeline > should handle a title, section, task, and events with semicolons"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": ";my;title;",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      ";a;bc-123;"
+    ],
+    "tasks": [
+      {
+        "section": ";a;bc-123;",
+        "task": ";ta;sk1;",
+        "events": [
+          ";ev;ent1; ",
+          ";ev;ent2; ",
+          ";ev;ent3;"
+        ]
+      }
+    ]
+  }
+}

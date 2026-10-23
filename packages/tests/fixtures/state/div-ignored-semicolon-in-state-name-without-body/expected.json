@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Known divergences, ignored-semicolon-as-token-boundary: the ignored ';' lies inside the name after state, also without a body, so the input is rejected here; mermaid.js accepts it."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

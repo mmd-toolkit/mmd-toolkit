@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty value in Person argument 3, $descr=\"<value>\" is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...n(a, \"A\", $descr=\"\")\n-----------------------^\nExpecting 'STR_VALUE', got 'NEWLINE'"
+  }
+}

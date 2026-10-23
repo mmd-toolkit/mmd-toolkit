@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P4: frontmatter] Does invalid frontmatter YAML reject the input?"
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "unexpected end of the stream within a flow collection (2:1)\n\n 1 | title: [\n 2 | \n-----^"
+  }
+}

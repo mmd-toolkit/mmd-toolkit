@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Directives (Where a directive is): when the argument starts with a word it is only that word, so `%%{init: dark foo}%%` leaves `foo}%%` as text, which is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nflowchart LRfoo}%%A-->B\n---------------^"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "\"b=\"c\">d\"",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "\"b=\"c\">d\"",
+      "children": []
+    }
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

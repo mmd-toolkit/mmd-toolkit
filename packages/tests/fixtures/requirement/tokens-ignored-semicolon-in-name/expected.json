@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Trivia between units: the ignored `;` inside an unquoted name, a text unit, keeps the reading of mermaid.js: the target `bc`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "style:#x",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "style:#x",
+        "dst": "bc"
+      }
+    ],
+    "classes": []
+  }
+}

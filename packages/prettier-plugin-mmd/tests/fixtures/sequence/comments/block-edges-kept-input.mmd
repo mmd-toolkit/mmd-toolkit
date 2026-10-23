@@ -1,0 +1,17 @@
+sequenceDiagram
+box G
+%% first in box
+participant A
+%% last in box
+end
+loop x
+%% only a comment
+end
+alt a
+A->>B: x
+%% before else
+else b
+%% after else
+A->>B: y
+end
+%% last line

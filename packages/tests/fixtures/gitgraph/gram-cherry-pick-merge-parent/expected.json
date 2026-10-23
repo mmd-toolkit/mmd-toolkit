@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A merge source accepts an immediate parent when picked on another branch."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "B",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "b"
+      },
+      {
+        "id": "M",
+        "seq": 2,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "A",
+          "B"
+        ],
+        "branch": "main",
+        "customId": true
+      },
+      {
+        "id": "generated-commit-1",
+        "seq": 3,
+        "type": 4,
+        "tags": [
+          "cherry-pick:M|parent:A"
+        ],
+        "parents": [
+          "M",
+          "M"
+        ],
+        "branch": "c"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      },
+      {
+        "name": "c"
+      }
+    ]
+  }
+}

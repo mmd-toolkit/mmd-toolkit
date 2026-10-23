@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "After RelIndex's named endpoint assignments, retaining either endpoint from its second or third argument gives no match and accepts __proto__."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "c",
+        "to": "d",
+        "label": {
+          "text": "Indexed"
+        }
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

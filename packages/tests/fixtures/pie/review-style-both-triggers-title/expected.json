@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do both trigger words remove twice from a title?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "style classDef:#x",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

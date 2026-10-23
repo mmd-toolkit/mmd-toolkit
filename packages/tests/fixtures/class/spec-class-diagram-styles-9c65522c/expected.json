@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram-styles.spec.js",
+    "line": 47,
+    "test": "class diagram,  > when parsing data from a classDiagram it > should be possible to apply a cssClass to a class"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Class01",
+        "type": "",
+        "label": "Class01",
+        "text": "Class01",
+        "shape": "classBox",
+        "cssClasses": "default exClass",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/agentflow.md",
+    "line": 171
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "gather",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Gather sources",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "compose",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Compose draft",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "researcher",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "researcher",
+        "props": {}
+      },
+      {
+        "id": "writer",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "writer",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "researcher",
+        "end": "writer",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_researcher_writer_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "researcher",
+        "nodes": [
+          "gather"
+        ],
+        "title": "Researcher",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "writer",
+        "nodes": [
+          "compose"
+        ],
+        "title": "Writer",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "team",
+        "nodes": [
+          "researcher",
+          "writer"
+        ],
+        "title": "Content Team",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "gather",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      },
+      {
+        "id": "compose",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      }
+    ]
+  }
+}

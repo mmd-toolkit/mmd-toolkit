@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, punctuation: commas, brackets, and a colon in a bare top text of the y axis."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ty-axis B --> a, b [c]: d\n----------------------^"
+  }
+}

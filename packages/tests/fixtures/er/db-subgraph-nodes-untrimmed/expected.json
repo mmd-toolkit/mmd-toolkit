@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A node is the name as written: `  A  ` with its spaces; the second `A` equals it after trimming, so it is left out."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-  A  -0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "  A  ",
+        "classes": []
+      },
+      {
+        "id": "entity-A-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "  A  "
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A newline cannot separate a colon and number."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting token of type 'NUMBER_PIE' but found `\n`.\nParse error on line 3, column 1: Expecting token of type 'EOF' but found `1`."
+  }
+}

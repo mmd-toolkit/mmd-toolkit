@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`accDescription` with a semicolon is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...extaccDescription T; UPerson(a, \"A\")\n----------------------^"
+  }
+}

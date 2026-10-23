@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: html-tag-in-frontmatter: mermaid.js reads the quotes of the task text as `'`; here they stay."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A b='c'>d",
+        "people": [],
+        "score": 5
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

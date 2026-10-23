@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A shape declared before the update is a target, so __proto__ in the tenth, legend-sprite argument is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "undefined is not iterable (cannot read property Symbol(Symbol.iterator))"
+  }
+}

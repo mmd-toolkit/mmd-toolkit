@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block diagram doublecircle shape tests kanban delimiter recognition rather than assuming shared shape syntax."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S(((Work)))\n----------^\nExpecting 'NODE_DESCR', got 'NODE_DEND'"
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/classchart.html",
+    "line": 162
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "GenericClass",
+        "type": "T",
+        "label": "GenericClass",
+        "text": "GenericClass&lt;T&gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "addItem",
+            "parameters": "item: T",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "getItem",
+            "parameters": "",
+            "returnType": "T"
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Company.Project.Module"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Company",
+        "label": "Company",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "Company.Project"
+        ],
+        "explicit": false
+      },
+      {
+        "id": "Company.Project",
+        "label": "Project",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "Company.Project.Module"
+        ],
+        "parent": "Company",
+        "explicit": false
+      },
+      {
+        "id": "Company.Project.Module",
+        "label": "Module",
+        "classes": [
+          "GenericClass"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "Company.Project",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

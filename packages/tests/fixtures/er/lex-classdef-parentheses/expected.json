@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The style context, rule 6: `(` in a style; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...classDef a fill:rgb(1,2,3)A\n----------------------^"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The lex label blank line form stores {\"subsets\":[{\"sets\":[\"A\"],\"size\":10,\"label\":\"a\\n\\nb\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10,
+        "label": "a\n\nb"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  }
+}

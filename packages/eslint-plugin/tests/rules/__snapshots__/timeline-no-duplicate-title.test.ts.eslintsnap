@@ -1,0 +1,378 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: timeline-no-duplicate-title >> invalid >>> docs/rules/timeline-no-duplicate-title.md incorrect 1
+Filename: timeline-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | timeline
+  2 |   title first
+  3 |   title second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   2020 : Launch
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> docs/rules/timeline-no-duplicate-title.md incorrect 2
+Filename: timeline-no-duplicate-title-incorrect-2.mmd
+
+Code:
+  1 | timeline
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   2020 : Launch
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/acc-title-back-to-first
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/acc-title-value-after-comment-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/acc-title-value-after-comment-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   %% c
+    | ~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   2020 : a
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/acc-title-value-after-directive-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/acc-title-value-after-directive-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   %%{init: {}}%%
+    | ~~~~~~~~~~~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   2020 : a
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/acc-title-value-after-empty-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/acc-title-value-after-empty-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   2020 : a
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/db-acc-title-twice
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/db-acc-title-twice-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accTitle: T
+  3 |   accTitle: U
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/db-title-twice
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/db-title-twice-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title U
+    |   ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-after-empty-block-same-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-after-empty-block-same-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   accDescr {} title U
+    |               ^~~~~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-back-to-first
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-back-to-first-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title a
+  3 |   title b
+    |   ^~~~~~~ [1]
+  4 |   title a
+    |   ^~~~~~~ [2]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-extra-space
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-extra-space-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title  T
+    |   ^~~~~~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-space-tab-is-title
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-space-tab-is-title-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title 	
+    |   ^~~~~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-takes-next-line-after-title
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-takes-next-line-after-title-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title
+    |   ^~~~~\ [1]
+  4 |   2020 : a
+    | ~~~~~~~~~~ [1]
+  5 |   2021 : b
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-takes-next-line-crlf
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-takes-next-line-crlf-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title
+    |   ^~~~~\ [1]
+  4 |   2020 : a
+    | ~~~~~~~~~~ [1]
+  5 |   2021 : b
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-then-comment-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-then-comment-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title
+    |   ^~~~~\ [1]
+  4 |   %% c
+    | ~~~~~~\ [1]
+  5 |   2020 : a
+    | ~~~~~~~~~~ [1]
+  6 |   2021 : b
+  7 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-then-directive-line-indented
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-then-directive-line-indented-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title
+    |   ^~~~~\ [1]
+  4 |   %%{init: {}}%%
+    | ~~ [1]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-then-directive-then-spaces
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-then-directive-then-spaces-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title
+    |   ^~~~~\ [1]
+  4 | %%{init: {}}%%  
+    | ~~~~~~~~~~~~~~~~ [1]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-then-directive-then-text
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-then-directive-then-text-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title
+    |   ^~~~~\ [1]
+  4 | %%{init: {}}%%x
+    | ~~~~~~~~~~~~~~~ [1]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-then-whitespace-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-then-whitespace-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title
+    |   ^~~~~\ [1]
+  4 |   
+    | ~~ [1]
+  5 |   2020 : a
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-twice-crlf
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-twice-crlf-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title A
+  3 |   title B
+    |   ^~~~~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-two-spaces-is-title
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-two-spaces-is-title-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   title  
+    |   ^~~~~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-upper-case-second
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-upper-case-second-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title T
+  3 |   TITLE U
+    |   ^~~~~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: timeline-no-duplicate-title >> invalid >>> invalid/timeline/title-word-starts-period-line
+Filename: tests/fixtures/rules/timeline-no-duplicate-title/invalid/timeline/title-word-starts-period-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   title My life
+  3 |   2020 : a
+  4 |   Title page : x
+    |   ^~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---

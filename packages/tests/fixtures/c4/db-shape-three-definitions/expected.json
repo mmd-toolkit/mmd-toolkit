@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A repeated shape alias stays at its first position; the third definition replaces label, type and parent while omitted optional fields remain."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [
+      {
+        "alias": "a",
+        "label": {
+          "text": "Third"
+        },
+        "techn": {
+          "text": "Java"
+        },
+        "descr": {
+          "text": "Third D"
+        },
+        "tags": "first",
+        "typeC4Shape": {
+          "text": "system"
+        },
+        "parentBoundary": "c"
+      },
+      {
+        "alias": "b",
+        "label": {
+          "text": "Partner"
+        },
+        "descr": {
+          "text": ""
+        },
+        "typeC4Shape": {
+          "text": "person"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      },
+      {
+        "alias": "c",
+        "label": {
+          "text": "C"
+        },
+        "type": {
+          "text": "system"
+        },
+        "parentBoundary": "global"
+      }
+    ],
+    "rels": [],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

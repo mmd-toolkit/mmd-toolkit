@@ -1,0 +1,17 @@
+{
+  "message": "A participant that is not active cannot be deactivated",
+  "range": [
+    365,
+    371
+  ],
+  "loc": {
+    "start": {
+      "line": 15,
+      "column": 6
+    },
+    "end": {
+      "line": 15,
+      "column": 12
+    }
+  }
+}

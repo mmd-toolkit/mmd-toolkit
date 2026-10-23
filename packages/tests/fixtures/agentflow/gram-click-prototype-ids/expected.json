@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Callback and tooltip maps accept prototype-shaped ids."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "__proto__",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "__proto__",
+        "props": {}
+      },
+      {
+        "id": "constructor",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "constructor",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "__proto__",
+        "text": "tip"
+      },
+      {
+        "id": "constructor",
+        "text": "tip"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "__proto__",
+        "name": "go",
+        "args": "1"
+      },
+      {
+        "id": "constructor",
+        "name": "go",
+        "args": "1"
+      }
+    ]
+  }
+}

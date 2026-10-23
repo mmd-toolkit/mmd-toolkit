@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The input of config-security-level-other-line-breaks under securityLevel loose, one of mermaid.js's values: every label is recorded as written."
+  },
+  "config": {
+    "securityLevel": "loose"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<br>b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<br/>b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<br />b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a</br>b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<BR>b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a#br#b",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

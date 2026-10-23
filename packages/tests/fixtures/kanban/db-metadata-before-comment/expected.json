@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md G03 (Grammar and acceptance): Comment after empty metadata."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {}
+      }
+    ]
+  }
+}

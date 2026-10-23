@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md: Body-only reference for frontmatter open tag."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "b=\"c\">d",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "b=\"c\">d",
+      "children": []
+    }
+  }
+}

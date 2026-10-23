@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Can one dedent pop several stack entries?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R",
+      "children": [
+        {
+          "text": "A",
+          "children": [
+            {
+              "text": "B",
+              "children": [
+                {
+                  "text": "C",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "text": "D",
+          "children": []
+        }
+      ]
+    }
+  }
+}

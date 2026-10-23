@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an array title stringify separately from an array frontmatter root?"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "A,B",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  },
+  "embedded": {
+    "title": "A,B"
+  }
+}

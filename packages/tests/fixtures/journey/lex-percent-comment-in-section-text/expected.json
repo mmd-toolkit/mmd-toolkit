@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: inside a section text, `%%` is a character of the text."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S %% c"
+    ],
+    "tasks": [
+      {
+        "section": "S %% c",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block diagram lean-right shape tests kanban delimiter recognition rather than assuming shared shape syntax."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "/Work/",
+        "isGroup": true
+      }
+    ]
+  }
+}

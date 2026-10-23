@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The axis context: a description block and then a plot after the title of an axis on its line; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "xAxis": {
+      "type": "linear",
+      "title": "A",
+      "min": 1,
+      "max": 1
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

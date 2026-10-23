@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/accessibility.md",
+    "line": 265
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "My State Diagram",
+    "accDescr": "My State Diagram Description",
+    "states": [
+      {
+        "id": "s1",
+        "shape": "rect",
+        "label": "s1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "s2",
+        "shape": "rect",
+        "label": "s2",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "s1",
+        "end": "s2",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

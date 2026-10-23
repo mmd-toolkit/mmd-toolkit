@@ -1,0 +1,17 @@
+{
+  "message": "A reference-only endpoint cannot have a class suffix",
+  "range": [
+    21,
+    28
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 7
+    }
+  }
+}

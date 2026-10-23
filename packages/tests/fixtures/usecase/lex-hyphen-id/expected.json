@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a hyphenated unquoted id reject?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Redundant input, expecting EOF but found: A-B at line 2, column 1 [13,16)"
+  }
+}

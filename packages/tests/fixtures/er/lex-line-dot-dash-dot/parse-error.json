@@ -1,0 +1,17 @@
+{
+  "message": "The attribute block has no } before the end of the text",
+  "range": [
+    18,
+    19
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 8
+    },
+    "end": {
+      "line": 2,
+      "column": 9
+    }
+  }
+}

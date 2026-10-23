@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A case of the rules documents of the diagram type: lex acc title then directive only."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...itle: taccTitle:\n-------------------^\nExpecting 'EOF', got '1'"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Relations are keyed by their ordered endpoint pair; later definitions update in place and retain absent optional values."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel_r",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Third"
+        },
+        "techn": {
+          "text": "RPC"
+        },
+        "descr": {
+          "text": "Description"
+        },
+        "sprite": "sprite",
+        "tags": "tags",
+        "link": "link"
+      },
+      {
+        "type": "rel",
+        "from": "b",
+        "to": "a",
+        "label": {
+          "text": "Partner"
+        },
+        "techn": {
+          "text": ""
+        },
+        "descr": {
+          "text": ""
+        }
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

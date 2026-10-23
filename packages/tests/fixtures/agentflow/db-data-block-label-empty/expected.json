@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A falsey metadata label does not replace the bracket label."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "First",
+        "type": "square",
+        "props": {},
+        "metadata": {
+          "label": ""
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "metadata": {
+            "label": ""
+          }
+        }
+      }
+    ]
+  }
+}

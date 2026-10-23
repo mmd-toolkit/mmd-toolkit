@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ishikawa.md Grammar and Comments: PS ending a diagram comment with only trailing whitespace leaves root null at EOF."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "root": null
+  }
+}

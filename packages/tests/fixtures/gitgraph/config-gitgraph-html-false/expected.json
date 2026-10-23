@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Diagram htmlLabels false disables the extra escaping in commit sanitization."
+  },
+  "config": {
+    "gitGraph": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "<b>A</b>",
+        "seq": 0,
+        "type": 0,
+        "tags": [
+          "<u>T</u>"
+        ],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

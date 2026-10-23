@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: the message after `destroy` neither comes from nor goes to the destroyed participant."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The destroyed participant undefined does not have an associated destroying message after its declaration. Please check the sequence diagram."
+  }
+}

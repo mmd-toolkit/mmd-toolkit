@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, the blocks that no list holds: the `space` blocks of a dropped composite are listed, one for each unit of width, and the entry of the `space` statement is not."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "type": "space",
+        "width": 2
+      },
+      {
+        "type": "space",
+        "width": 2
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

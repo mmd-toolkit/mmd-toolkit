@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ement r {text: \"b=\"c\">d\"}\n----------------------^\nExpecting 'NEWLINE', got 'unqString'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`ComponentQueue_Ext` followed by a blank line before `(` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...tComponentQueue_Ext(a, \"A\", \"Java\", \"\n----------------------^"
+  }
+}

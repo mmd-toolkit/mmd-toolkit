@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/venn.html",
+    "line": 172
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "Hand-drawn Three Sets",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "Frontend"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "Backend"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "DevOps"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "Backend",
+          "Frontend"
+        ],
+        "size": 2.5,
+        "label": "Fullstack"
+      },
+      {
+        "sets": [
+          "Backend",
+          "DevOps"
+        ],
+        "size": 2.5,
+        "label": "Infra"
+      },
+      {
+        "sets": [
+          "DevOps",
+          "Frontend"
+        ],
+        "size": 2.5,
+        "label": "SRE"
+      },
+      {
+        "sets": [
+          "Backend",
+          "DevOps",
+          "Frontend"
+        ],
+        "size": 1.1111111111111112,
+        "label": "All"
+      }
+    ],
+    "texts": [],
+    "styles": []
+  },
+  "embedded": {
+    "config": {
+      "look": "handDrawn",
+      "handDrawnSeed": 1
+    }
+  }
+}

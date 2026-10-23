@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, keywords: the word `block` in the middle of the id of a node: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...k-beta  a block b\n--------------------^\nExpecting 'end', got 'EOF'"
+  }
+}

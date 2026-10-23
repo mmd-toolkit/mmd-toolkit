@@ -1,0 +1,145 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 54
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Customer",
+        "description": "Customer",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "actor",
+        "nextActor": "Web"
+      },
+      {
+        "name": "Web",
+        "description": "Web app",
+        "wrap": false,
+        "prevActor": "Customer",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "API"
+      },
+      {
+        "name": "API",
+        "description": "API gateway",
+        "wrap": false,
+        "prevActor": "Web",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bank"
+      },
+      {
+        "name": "Bank",
+        "description": "Bank",
+        "wrap": false,
+        "prevActor": "API",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": {
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "from": "Customer",
+        "to": "Web",
+        "message": "Place order",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Web",
+        "to": "API",
+        "message": "POST /orders",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "API",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "API",
+        "to": "Bank",
+        "message": "Authorise payment",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bank",
+        "to": "API",
+        "message": "Approved",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "API",
+        "to": "Web",
+        "message": "201 Created",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "API",
+        "message": "",
+        "wrap": false,
+        "type": 18,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Web",
+        "to": "Customer",
+        "message": "Order confirmed",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Customer",
+        "to": "Bank",
+        "message": "One order, one transaction",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      }
+    ]
+  }
+}

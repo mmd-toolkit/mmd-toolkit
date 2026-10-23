@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/mindmap.md, replacement: the text of a shape alone is replaced for both the id and the description."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "<br/>t",
+      "level": 0,
+      "descr": "<br/>t",
+      "type": 2,
+      "children": []
+    }
+  }
+}

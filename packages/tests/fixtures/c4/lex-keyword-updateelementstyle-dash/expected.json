@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "UpdateElementStyle keyword with a glued dash is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...)UpdateElementStyle-(a, \"red\", \"white\",\n----------------------^"
+  }
+}

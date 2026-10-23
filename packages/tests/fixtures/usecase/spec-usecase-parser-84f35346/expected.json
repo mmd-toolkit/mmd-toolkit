@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/usecase/parser/usecase.parser.spec.ts",
+    "line": 6,
+    "test": "usecase canonical line-oriented grammar > accepts explicit boundary ids with labels, inline metadata, and class suffixes"
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "useCases": [
+      {
+        "id": "Authorize",
+        "label": "Authorize payment",
+        "labelType": "text",
+        "shape": "ellipse",
+        "business": false,
+        "parentId": "sb1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Invoice",
+        "label": "Create invoice",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "parentId": "sb2",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Refund",
+        "label": "Issue refund",
+        "labelType": "text",
+        "shape": "rect",
+        "business": false,
+        "parentId": "sb3",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "systemBoundaries": [
+      {
+        "id": "sb1",
+        "label": "Payment service",
+        "labelType": "text",
+        "type": "package",
+        "classes": [
+          "system"
+        ],
+        "styles": []
+      },
+      {
+        "id": "sb2",
+        "label": "Billing",
+        "labelType": "text",
+        "type": "rect",
+        "classes": [
+          "billing"
+        ],
+        "styles": []
+      },
+      {
+        "id": "sb3",
+        "label": "**Support**",
+        "labelType": "markdown",
+        "type": "rect",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "relationships": [],
+    "notes": [],
+    "jsonNodes": [],
+    "classDefs": []
+  }
+}

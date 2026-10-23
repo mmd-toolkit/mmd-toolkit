@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The global style rule removes only the final semicolon; the entity terminator remains."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "style fill:ﬂ°f00¶ß",
+        "value": 1
+      }
+    ]
+  }
+}

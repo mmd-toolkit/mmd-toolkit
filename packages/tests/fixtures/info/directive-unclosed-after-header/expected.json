@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed global free-text directive takes the remaining source."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

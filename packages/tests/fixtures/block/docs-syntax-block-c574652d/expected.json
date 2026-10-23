@@ -1,0 +1,85 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/block.md",
+    "line": 279
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "blockArrowId",
+          "label": "Label",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ]
+        },
+        {
+          "id": "blockArrowId2",
+          "label": "Label",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "left"
+          ]
+        },
+        {
+          "id": "blockArrowId3",
+          "label": "Label",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "up"
+          ]
+        },
+        {
+          "id": "blockArrowId4",
+          "label": "Label",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "down"
+          ]
+        },
+        {
+          "id": "blockArrowId5",
+          "label": "Label",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "x"
+          ]
+        },
+        {
+          "id": "blockArrowId6",
+          "label": "Label",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "y"
+          ]
+        },
+        {
+          "id": "blockArrowId7",
+          "label": "Label",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "x",
+            "down"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

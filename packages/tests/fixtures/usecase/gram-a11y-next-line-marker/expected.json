@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: An accessibility keyword separated from its colon is not an accessibility statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Redundant input, expecting EOF but found: { at line 3, column 1 [22,23)"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): a bare `%%` line is skipped whole, so a keyword on the rest of the line is skipped with it and no header follows; the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: \nA->>B: x\n"
+  }
+}

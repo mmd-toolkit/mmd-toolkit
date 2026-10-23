@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The indent keyword id directive gap boundary is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...enn-betaset A textitem\n---------------------^\nExpecting 'NUMERIC', 'IDENTIFIER', 'STRING', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: c4-keyword-anywhere: `C4Component` in a section."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\njourney  section C4\n^"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Are named hash references encoded before root lexing?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Rﬂ°amp¶ßX",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Rﬂ°amp¶ßX",
+      "children": []
+    }
+  }
+}

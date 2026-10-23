@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A glued hyphen does not supply the SPACE after CLASSDEF."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...low-beta TBclassDef-x\n----------------------^\nExpecting 'SPACE', got 'NODE_STRING'"
+  }
+}

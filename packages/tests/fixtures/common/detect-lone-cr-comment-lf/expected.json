@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Line terminators and Diagram detection: the lone `\\r` and the `\\n` with a comment region between them are two line terminators, also in the detection text, so the text is the error pseudo-diagram, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

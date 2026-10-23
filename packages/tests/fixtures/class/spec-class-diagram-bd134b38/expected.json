@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 576,
+    "test": "given a basic class diagram,  > when parsing class definition > should handle \"note for\""
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Class11",
+        "type": "",
+        "label": "Class11",
+        "text": "Class11",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "Class12",
+        "type": "",
+        "label": "Class12",
+        "text": "Class12",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "Class11",
+        "id2": "Class12",
+        "relation": {
+          "type1": 1,
+          "type2": "none",
+          "lineType": 1
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "Class11",
+        "text": "test"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "c4.md: A semicolon between equals and quote is rejected when it precedes the style marker."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...Person(a,\"A\", $descr=;\"style:#x\")\n-----------------------^"
+  }
+}

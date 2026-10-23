@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md A directive is a token boundary: without the directive the text is `style Afill:red`, and the directive lies inside the id `Afill`, a name; the input is rejected, and mermaid.js, whose grammar rejects that text, rejects it too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...TDAstyle Afill:red\n---------------------^\nExpecting 'SPACE', 'AMP', 'COLON', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'NEWLINE'"
+  }
+}

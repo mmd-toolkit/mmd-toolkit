@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Title text may contain line and paragraph separators."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "A B C",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": []
+  }
+}

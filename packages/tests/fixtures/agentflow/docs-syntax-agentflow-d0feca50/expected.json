@@ -1,0 +1,199 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/agentflow.md",
+    "line": 213
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "receive",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Receive request",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right"
+        }
+      },
+      {
+        "id": "validate",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Validate",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "enrich",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Enrich",
+        "type": "roundedRect",
+        "props": {},
+        "metadata": {
+          "shape": "roundedRect"
+        }
+      },
+      {
+        "id": "processing",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "processing",
+        "props": {}
+      },
+      {
+        "id": "publish",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Publish",
+        "type": "hexagon",
+        "props": {},
+        "metadata": {
+          "shape": "hexagon"
+        }
+      }
+    ],
+    "edges": [
+      {
+        "start": "validate",
+        "end": "enrich",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_validate_enrich_0"
+      },
+      {
+        "start": "receive",
+        "end": "validate",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_receive_validate_0"
+      },
+      {
+        "start": "enrich",
+        "end": "publish",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_enrich_publish_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "intake",
+        "nodes": [
+          "receive"
+        ],
+        "title": "Intake",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      },
+      {
+        "id": "processing",
+        "nodes": [
+          "validate",
+          "enrich"
+        ],
+        "title": "Processing",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow",
+        "metadata": {
+          "view": "collapsed"
+        }
+      },
+      {
+        "id": "output",
+        "nodes": [
+          "publish"
+        ],
+        "title": "Output",
+        "classes": [],
+        "labelType": "string",
+        "type": "flow"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "receive",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right"
+          }
+        }
+      },
+      {
+        "id": "validate",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      },
+      {
+        "id": "enrich",
+        "set": {
+          "type": "roundedRect",
+          "metadata": {
+            "shape": "roundedRect"
+          }
+        }
+      },
+      {
+        "id": "processing",
+        "set": {
+          "metadata": {
+            "view": "collapsed"
+          }
+        }
+      },
+      {
+        "id": "publish",
+        "set": {
+          "type": "hexagon",
+          "metadata": {
+            "shape": "hexagon"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The close-brace text in RelIndex argument 1 (discarded index) is accepted and its index argument is discarded; rels is [{\"type\":\"rel\",\"from\":\"a\",\"to\":\"b\",\"label\":{\"text\":\"Uses\"},\"techn\":{\"text\":\"J\"},\"descr\":{\"text\":\"D\"},\"sprite\":\"S\",\"tags\":\"T\",\"link\":\"L\"}]."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": {
+    "type": "C4Context",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "shapes": [],
+    "boundaries": [
+      {
+        "alias": "global",
+        "label": {
+          "text": "global"
+        },
+        "type": {
+          "text": "global"
+        },
+        "tags": null,
+        "link": null,
+        "parentBoundary": ""
+      }
+    ],
+    "rels": [
+      {
+        "type": "rel",
+        "from": "a",
+        "to": "b",
+        "label": {
+          "text": "Uses"
+        },
+        "techn": {
+          "text": "J"
+        },
+        "descr": {
+          "text": "D"
+        },
+        "sprite": "S",
+        "tags": "T",
+        "link": "L"
+      }
+    ],
+    "c4ShapeInRow": 4,
+    "c4BoundaryInRow": 2
+  }
+}

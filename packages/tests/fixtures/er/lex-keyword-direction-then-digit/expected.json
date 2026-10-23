@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The statement context, Keywords and what follows them: `direction1 LR` is two names; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-direction1-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "direction1",
+        "classes": []
+      },
+      {
+        "id": "entity-LR-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "LR",
+        "classes": []
+      },
+      {
+        "id": "entity-A-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

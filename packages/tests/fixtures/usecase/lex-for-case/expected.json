@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is for case sensitive?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting token of type --> FOR <-- but found --> 'For' <-- at line 3, column 6 [20,23)"
+  }
+}

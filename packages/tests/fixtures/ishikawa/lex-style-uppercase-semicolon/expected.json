@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Does a capitalized style word avoid the semicolon rule?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "Style R fill:ﬂ°abc¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "Style R fill:ﬂ°abc¶ß",
+      "children": []
+    }
+  }
+}

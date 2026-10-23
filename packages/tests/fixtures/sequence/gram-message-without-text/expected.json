@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Messages: a message needs a text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...equenceDiagramA->>B\n----------------------^\nExpecting 'TXT', got 'NEWLINE'"
+  }
+}

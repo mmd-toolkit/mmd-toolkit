@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tests/docs/configuration.md Init directives: the argument has a comma before `}`, which is not valid JSON, so there is no init configuration: the theme is not set, which the Db does not show; embedded holds no configuration, while without the comma it holds the theme (common/directive-init-theme)."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

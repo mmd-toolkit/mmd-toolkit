@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Relationships: `-` and `>` with a space between are no `->`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...agrama - satisfies - > b\n----------------------^\nExpecting 'END_ARROW_R', got 'LINE'"
+  }
+}

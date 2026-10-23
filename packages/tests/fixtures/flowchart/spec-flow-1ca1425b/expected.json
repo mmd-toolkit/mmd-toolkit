@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow.spec.js",
+    "line": 70,
+    "test": "parsing a flow chart > should allow default in the node name/id"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "default",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "default",
+        "props": {}
+      },
+      {
+        "id": "monograph",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "monograph",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "default",
+        "end": "monograph",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_default_monograph_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

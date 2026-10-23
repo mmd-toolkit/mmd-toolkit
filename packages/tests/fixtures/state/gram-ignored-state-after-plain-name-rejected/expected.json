@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context, rule 7: after `state X`, the rule reads `X`, the line break, `state`, and `{` as two words before a `{`, so the input is rejected, as mermaid.js rejects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error: State name must be a single word. Found: \"X\n  state {\""
+  }
+}

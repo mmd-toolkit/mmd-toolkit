@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, sections: an empty line after the keyword makes the keyword a period."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "section",
+        "events": []
+      },
+      {
+        "section": "",
+        "task": "S",
+        "events": []
+      }
+    ]
+  }
+}

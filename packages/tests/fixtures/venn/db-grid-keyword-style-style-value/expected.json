@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The inserted style keyword starts a separate statement and the earlier value ends before it (keyword-style in style-value)."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "custom": "a"
+        }
+      },
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "red b"
+        }
+      }
+    ]
+  }
+}

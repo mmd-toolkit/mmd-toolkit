@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P3: HTML, entities and semicolon preprocessing] Do hash references without semicolons remain literal?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R#35#amp",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R#35#amp",
+      "children": [
+        {
+          "text": "A#35#amp",
+          "children": []
+        }
+      ]
+    }
+  }
+}

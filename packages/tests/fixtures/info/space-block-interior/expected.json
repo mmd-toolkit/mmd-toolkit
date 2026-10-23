@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Block edge and inner whitespace use the common converter only."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[G: start, document, statement and stop] Does one text line form only one node?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "R A B",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "R A B",
+      "children": []
+    }
+  }
+}

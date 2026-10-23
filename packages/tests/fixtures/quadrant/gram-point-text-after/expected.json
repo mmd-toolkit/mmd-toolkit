@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, points: a word after the point is read as styles, and a word that is no style is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named x is not supported."
+  }
+}

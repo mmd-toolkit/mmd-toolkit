@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the first `accDescr` is followed by neither `:` nor `{`, so it is the vertex `accDescr`; the empty description block after it, before the line break, is a description block statement without text, and `:` on the next line is a vertex. Without the block, `accDescr`, a line break, and `:` is an accessibility statement (flowchart/lex-acc-descr-line-feed-before-colon)."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "accDescr",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "accDescr",
+        "props": {}
+      },
+      {
+        "id": ":",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": ":",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

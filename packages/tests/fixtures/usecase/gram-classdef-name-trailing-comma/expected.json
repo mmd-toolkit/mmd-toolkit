@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "usecase.md Lexical structure and Grammar: Class definitions have no empty terminal class name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error parsing usecase diagram: Expecting: one of these possible Token sequences:\n  1. [WORD]\n  2. [CSS_IDENTIFIER]\n  3. [MARKERLESS_SOLID]\nbut found: ':' at line 2, column 19 [31,32)"
+  }
+}

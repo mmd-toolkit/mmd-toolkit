@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `element` is a keyword, so it is no name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ama - satisfies -> element\n----------------------^\nExpecting 'unqString', 'qString', got 'ELEMENT'"
+  }
+}

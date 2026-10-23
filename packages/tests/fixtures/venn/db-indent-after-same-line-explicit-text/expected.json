@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Explicit text after set on the same line leaves implicit text mode enabled."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "explicit"
+      },
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "implicit"
+      }
+    ],
+    "styles": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ACC_TITLE absorbs the YAML opener as value text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: ->x<- at offset: 20, skipped 2 characters.\nLexer error on line 3, column 4: unexpected character: ->y<- at offset: 23, skipped 1 characters.\nLexer error on line 4, column 1: unexpected character: ->-<- at offset: 25, skipped 3 characters. "
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, sections: a section that is one space is a section, and the task takes it."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      " "
+    ],
+    "tasks": [
+      {
+        "section": " ",
+        "task": "a",
+        "events": []
+      }
+    ]
+  }
+}

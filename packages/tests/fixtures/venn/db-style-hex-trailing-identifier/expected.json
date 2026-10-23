@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "This color or value-token spelling is stored as {\"fill\":\"#abcdef ghi\"}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [],
+    "styles": [
+      {
+        "targets": [
+          "A"
+        ],
+        "styles": {
+          "fill": "#abcdef ghi"
+        }
+      }
+    ]
+  }
+}

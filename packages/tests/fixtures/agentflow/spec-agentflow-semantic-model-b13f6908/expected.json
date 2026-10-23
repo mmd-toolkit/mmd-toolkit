@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/agentflow-semantic-model.spec.ts",
+    "line": 25,
+    "test": "agentflow getSemanticModel() > semantic fields preserved > keeps `value` on input vertices"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "file_path",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "file_path",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right",
+          "value": "src/HelloWorld.java"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "file_path",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right",
+            "value": "src/HelloWorld.java"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2006 after a bare line is not hidden lexer whitespace."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: -> <- at offset: 3, skipped 1 characters. "
+  }
+}

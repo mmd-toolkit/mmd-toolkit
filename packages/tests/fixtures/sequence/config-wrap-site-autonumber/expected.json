@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With the site configuration `wrap` true, the entries of `autonumber` have `wrap` false, while the message after them wraps."
+  },
+  "config": {
+    "wrap": true
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": true,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": true,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": {
+          "start": 2,
+          "step": 1,
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "message": {
+          "visible": false
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "x",
+        "wrap": true,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

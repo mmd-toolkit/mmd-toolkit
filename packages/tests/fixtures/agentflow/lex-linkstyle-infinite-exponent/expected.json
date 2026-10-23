@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does Mermaid read linkstyle infinite exponent?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...TBA-->BlinkStyle 1e309 stroke:red\n---------------------^\nExpecting 'SPACE', 'COMMA', got 'NODE_STRING'"
+  }
+}

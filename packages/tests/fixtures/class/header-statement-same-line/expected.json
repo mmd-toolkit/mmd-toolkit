@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Detection: the header must be followed by a line break."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nclassDiagram class A\n-------------^\nExpecting 'NEWLINE', got 'CLASS'"
+  }
+}

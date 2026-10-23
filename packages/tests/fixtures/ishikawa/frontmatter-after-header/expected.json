@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[P4: frontmatter] Do frontmatter-looking lines after the header form nodes?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "---",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "---",
+      "children": [
+        {
+          "text": "title: T",
+          "children": []
+        },
+        {
+          "text": "---",
+          "children": []
+        },
+        {
+          "text": "R",
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-colorIndex.spec.ts",
+    "line": 30,
+    "test": "state diagram colour slots > leaves a composite with its own style statement unstamped"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "First",
+        "shape": "roundedWithTitle",
+        "label": "First",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "First_start",
+        "shape": "stateStart",
+        "label": "First_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "Second",
+        "shape": "roundedWithTitle",
+        "label": "Second",
+        "classes": [],
+        "styles": [
+          "fill:#111827"
+        ],
+        "dir": "TB"
+      },
+      {
+        "id": "Second_start",
+        "shape": "stateStart",
+        "label": "Second_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "First_start",
+        "end": "A",
+        "label": ""
+      },
+      {
+        "start": "Second_start",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/venn/parser/venn.spec.ts",
+    "line": 99,
+    "test": "Venn diagram > with text nodes using bracket labels"
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [
+      {
+        "sets": [
+          "A"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "size": 10
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "size": 2.5
+      }
+    ],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "A1",
+        "label": "foo bar"
+      },
+      {
+        "sets": [
+          "B"
+        ],
+        "id": "B1",
+        "label": "hello, world"
+      },
+      {
+        "sets": [
+          "A",
+          "B"
+        ],
+        "id": "AB1",
+        "label": "shared note"
+      }
+    ],
+    "styles": []
+  }
+}

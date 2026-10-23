@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, subgraphs: mermaid.js accepts `subgraph` without a name in its grammar and rejects it in addSubGraph with a TypeError; the grammar here requires the name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'text')"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The name of a section ends before a #, which starts a comment; the space before it stays."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S "
+    ],
+    "tasks": [
+      {
+        "section": "S ",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

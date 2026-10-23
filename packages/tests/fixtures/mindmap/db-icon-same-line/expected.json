@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, icon: an icon on the line of a node is no icon: the line is a node with a shape."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root ::icon",
+      "level": 0,
+      "descr": "fa fa-book",
+      "type": 1,
+      "children": []
+    }
+  }
+}

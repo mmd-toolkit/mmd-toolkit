@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts: a space and a line feed at the end; the space takes the line feed; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...assDef a fill:red \n---------------------^\nExpecting 'EOF', 'NEWLINE', 'COLON', 'STYLE_TEXT', 'COMMA', 'SEMI', 'NUM', 'BRKT', got '1'"
+  }
+}

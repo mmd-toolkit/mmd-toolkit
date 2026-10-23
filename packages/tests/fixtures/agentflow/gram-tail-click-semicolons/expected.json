@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The SPACE before the second click separator is rejected; independent fixtures cover the adjacent and doubled forms."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...lick A call other() ;click A href \"https\n-----------------------^\nExpecting 'STR', got 'SEMI'"
+  }
+}

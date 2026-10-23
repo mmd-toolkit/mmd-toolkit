@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is a negative fraction with leading zeros lexed and rejected by Db?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "\"A\" has invalid value: -1.2. Negative values are not allowed in pie charts. All slice values must be >= 0."
+  }
+}

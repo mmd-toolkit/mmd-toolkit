@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: after a string that ends a style statement the lexer is still in the style context, where `accDescr` is a style word."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...tyle r fill:red \"a\" accDescr {}\n-----------------------^\nExpecting 'STYLE_SEPARATOR', 'END_ARROW_L', 'LINE', got 'ALPHA'"
+  }
+}

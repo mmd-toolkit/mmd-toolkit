@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, what stands after a statement: hash after a composite line: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ta  block:G A # c\n--------------------^\nExpecting 'end', got 'EOF'"
+  }
+}

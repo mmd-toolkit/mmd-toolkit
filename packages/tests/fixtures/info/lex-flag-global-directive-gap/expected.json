@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md Composite common forms: Visible newlines and a closed global directive may precede the flag."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

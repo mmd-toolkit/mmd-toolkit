@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Trivia between units: without the directive, the space after `high` takes the line feed."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ent r {risk: high }\n---------------------^\nExpecting 'NEWLINE', got 'STRUCT_STOP'"
+  }
+}

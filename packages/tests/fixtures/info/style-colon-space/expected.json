@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Colon-space-hash prevents style semicolon removal."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

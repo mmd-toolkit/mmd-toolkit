@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow-tool-validators.spec.ts",
+    "line": 113,
+    "test": "agentflow shape-based tool model > semantic model surfaces vertexKind > alias-shaped tools also surface vertexKind: \"tool\""
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "type": "subprocess",
+        "props": {},
+        "metadata": {
+          "shape": "subprocess"
+        }
+      },
+      {
+        "id": "b",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "type": "framed-rectangle",
+        "props": {},
+        "metadata": {
+          "shape": "framed-rectangle"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "a",
+        "set": {
+          "type": "subprocess",
+          "metadata": {
+            "shape": "subprocess"
+          }
+        }
+      },
+      {
+        "id": "b",
+        "set": {
+          "type": "framed-rectangle",
+          "metadata": {
+            "shape": "framed-rectangle"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Notes (A non-word character or the end): U+017F after `ishikawa` is not a word character, so the text is detected as ishikawa and accepted. The input contains a real U+017F."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "ſ",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "ſ",
+      "children": [
+        {
+          "text": "P",
+          "children": []
+        }
+      ]
+    }
+  }
+}

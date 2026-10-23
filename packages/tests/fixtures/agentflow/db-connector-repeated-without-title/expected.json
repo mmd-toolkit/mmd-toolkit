@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A repeated connector with no title or a whitespace-only title keeps its earlier text and metadata, with labelType text."
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "isConnector": true,
+        "text": "First",
+        "props": {},
+        "metadata": {
+          "endpoint": "x"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "C",
+        "set": {
+          "metadata": {
+            "endpoint": "x"
+          }
+        }
+      }
+    ]
+  }
+}

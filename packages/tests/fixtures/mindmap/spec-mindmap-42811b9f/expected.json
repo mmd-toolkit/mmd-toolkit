@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/mindmap/mindmap.spec.ts",
+    "line": 97,
+    "test": "when parsing a mindmap  > nodes > MMP-8 should handle an id and type for a node definition"
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "theId",
+          "level": 2,
+          "descr": "child1",
+          "type": 1,
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The comment fragment in size is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...nn-betaset A:1%% c2\n----------------------^\nExpecting 'NUMERIC', got 'NEWLINE'"
+  }
+}

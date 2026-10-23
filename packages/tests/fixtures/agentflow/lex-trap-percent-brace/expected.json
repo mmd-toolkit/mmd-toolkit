@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Trap text handles percent-brace according to its generated TEXT rule."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ow-beta TBA[/first %%{} literal/]\n----------------------^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty URL quote supplies no STR token."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...TBAclick A href \"\"\n---------------------^\nExpecting 'STR', got 'NEWLINE'"
+  }
+}

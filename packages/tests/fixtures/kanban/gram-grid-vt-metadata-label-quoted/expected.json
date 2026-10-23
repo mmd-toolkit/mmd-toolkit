@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Known divergences (embedded-data-opaque): The delimited embedded content is opaque; Mermaid rejects its content."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "expected valid JSON character (2:12)\n\n 1 | {\n 2 | label: \"a\u000bb\"\n----------------^\n 3 | }"
+  }
+}

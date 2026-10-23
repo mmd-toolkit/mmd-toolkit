@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 271,
+    "test": "when parsing a kanban  > descriptions > KNBN-19 should be possible to have a child after a class assignment"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "Root",
+        "isGroup": true
+      },
+      {
+        "id": "Child",
+        "label": "Child",
+        "isGroup": false,
+        "parentId": "root"
+      },
+      {
+        "id": "a",
+        "label": "a",
+        "isGroup": false,
+        "parentId": "root"
+      },
+      {
+        "id": "b",
+        "label": "New Stuff",
+        "isGroup": false,
+        "parentId": "root"
+      }
+    ]
+  }
+}

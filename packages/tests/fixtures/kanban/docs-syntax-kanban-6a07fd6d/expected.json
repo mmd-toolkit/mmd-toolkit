@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/kanban.md",
+    "line": 60
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "todo",
+        "label": "Todo",
+        "isGroup": true
+      },
+      {
+        "id": "id3",
+        "label": "Update Database Function",
+        "isGroup": false,
+        "parentId": "todo",
+        "ticket": "MC-2037",
+        "priority": "High",
+        "assigned": "knsv"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "id3",
+        "set": {
+          "ticket": "MC-2037",
+          "priority": "High",
+          "assigned": "knsv"
+        }
+      }
+    ]
+  }
+}

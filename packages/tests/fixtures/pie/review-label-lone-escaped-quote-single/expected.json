@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does an escaped final single quote leave the label unclosed?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->'<- at offset: 4, skipped 4 characters. Parse error on line 2, column 5: Expecting token of type 'EOF' but found `:`."
+  }
+}

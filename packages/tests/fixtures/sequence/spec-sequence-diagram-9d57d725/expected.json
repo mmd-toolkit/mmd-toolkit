@@ -1,0 +1,96 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 1705,
+    "test": "when parsing a sequenceDiagram > should handle simple actor destruction"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "a",
+        "description": "Alice",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "b"
+      },
+      {
+        "name": "b",
+        "description": "b",
+        "wrap": false,
+        "prevActor": "a",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "c"
+      },
+      {
+        "name": "c",
+        "description": "c",
+        "wrap": false,
+        "prevActor": "b",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [
+      {
+        "id": "a",
+        "messageIndex": 1
+      },
+      {
+        "id": "c",
+        "messageIndex": 3
+      }
+    ],
+    "messages": [
+      {
+        "from": "a",
+        "to": "b",
+        "message": "Hello Bob?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "b",
+        "to": "a",
+        "message": "Hello Alice!",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "b",
+        "to": "c",
+        "message": "Where is Alice?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "b",
+        "to": "c",
+        "message": "Where are you?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

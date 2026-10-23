@@ -1,0 +1,19 @@
+{
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "<a",
+    "accTitle": "b=\"c\">d",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

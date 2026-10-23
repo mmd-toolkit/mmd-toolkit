@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D] Does an accessibility description-looking root remain literal text?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "accDescr: D",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "accDescr: D",
+      "children": [
+        {
+          "text": "A",
+          "children": []
+        }
+      ]
+    }
+  }
+}

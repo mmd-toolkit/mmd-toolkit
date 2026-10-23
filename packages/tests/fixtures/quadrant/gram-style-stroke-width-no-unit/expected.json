@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, styles: a stroke width with no unit is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for stroke-width 3 is invalid, please use a valid number of pixels (eg. 10px)"
+  }
+}

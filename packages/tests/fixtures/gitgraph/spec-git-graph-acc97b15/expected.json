@@ -1,0 +1,112 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/git/gitGraph.spec.ts",
+    "line": 869,
+    "test": "when parsing a gitGraph > when parsing more advanced gitGraphs > should handle merge with custom ids, tags and type"
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "testBranch"
+      },
+      {
+        "id": "2-222",
+        "seq": 2,
+        "type": 3,
+        "tags": [
+          "merge-tag"
+        ],
+        "parents": [
+          "generated-commit-1",
+          "generated-commit-2"
+        ],
+        "branch": "main",
+        "customId": true
+      },
+      {
+        "id": "generated-commit-3",
+        "seq": 3,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "2-222"
+        ],
+        "branch": "testBranch2"
+      },
+      {
+        "id": "4-444",
+        "seq": 4,
+        "type": 3,
+        "tags": [
+          "merge-tag2"
+        ],
+        "parents": [
+          "2-222",
+          "generated-commit-3"
+        ],
+        "branch": "main",
+        "customType": 2,
+        "customId": true
+      },
+      {
+        "id": "generated-commit-4",
+        "seq": 5,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "4-444"
+        ],
+        "branch": "testBranch3"
+      },
+      {
+        "id": "6-666",
+        "seq": 6,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "4-444",
+          "generated-commit-4"
+        ],
+        "branch": "main",
+        "customId": true
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "testBranch"
+      },
+      {
+        "name": "testBranch2"
+      },
+      {
+        "name": "testBranch3"
+      }
+    ]
+  }
+}

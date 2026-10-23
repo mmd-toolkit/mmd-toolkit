@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "venn.md: **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).** With `title: <a` in frontmatter, `set \"b=\"c\">d\"` is rejected here, while mermaid.js converts the inner attribute quotes and accepts it. This input is rejected by mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nvenn-betaset \"b=\"c\">d\"\n-----------------^\nExpecting 'EOF', 'NEWLINE', 'TITLE', 'SET', 'BRACKET_LABEL', 'COLON', 'UNION', 'TEXT', 'INDENT_TEXT', 'STYLE', got 'IDENTIFIER'"
+  }
+}

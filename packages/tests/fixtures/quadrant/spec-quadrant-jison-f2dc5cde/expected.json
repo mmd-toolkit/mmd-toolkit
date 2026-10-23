@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison.spec.ts",
+    "line": 8,
+    "test": "Testing quadrantChart jison file > Unicode support (CJK + Emoji) > should be able to parse a full chart with Chinese"
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "分析象限图",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "需要扩展",
+      "需要推广",
+      "重新评估",
+      "可以改进"
+    ],
+    "xAxis": {
+      "left": "低覆盖率",
+      "right": "高覆盖率"
+    },
+    "yAxis": {
+      "bottom": "低参与度",
+      "top": "高参与度"
+    },
+    "points": [
+      {
+        "text": "产品B",
+        "className": "",
+        "x": "0.45",
+        "y": "0.23"
+      },
+      {
+        "text": "产品A",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

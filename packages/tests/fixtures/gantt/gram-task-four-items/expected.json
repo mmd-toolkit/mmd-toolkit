@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: with four items, mermaid.js reads none of them: no id, no start, no end."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {},
+        "task": "a ",
+        "classes": [],
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

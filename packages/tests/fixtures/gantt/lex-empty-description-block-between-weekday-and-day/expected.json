@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Empty description blocks: between `weekday` and its day, no weekday statement is read in either; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...y accDescr {} monday\n-----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

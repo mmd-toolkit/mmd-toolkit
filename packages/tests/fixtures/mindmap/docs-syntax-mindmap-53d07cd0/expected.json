@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/mindmap.md",
+    "line": 100
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "id",
+      "level": 0,
+      "descr": "I am a hexagon",
+      "type": 6,
+      "children": []
+    }
+  }
+}

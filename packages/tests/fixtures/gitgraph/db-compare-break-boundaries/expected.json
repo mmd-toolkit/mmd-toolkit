@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Semantic acceptance conditions: Non-break tags and differently cased placeholders are not canonical break forms."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "a&lt;br x&gt;b"
+      },
+      {
+        "name": "a&lt;br//&gt;b"
+      },
+      {
+        "name": "a#BR#b"
+      },
+      {
+        "name": "a<br/>b"
+      }
+    ]
+  }
+}

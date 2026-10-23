@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/agentflow/parser/agentflow.spec.ts",
+    "line": 228,
+    "test": "parsing an agentflow diagram > shape aliases (v0.8.1) > accepts `shape: input`"
+  },
+  "accepted": true,
+  "diagramType": "agentflow",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "i",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "lean-right",
+        "props": {},
+        "metadata": {
+          "shape": "lean-right",
+          "value": "literal"
+        }
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "i",
+        "set": {
+          "type": "lean-right",
+          "metadata": {
+            "shape": "lean-right",
+            "value": "literal"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-node-data.spec.js",
+    "line": 404,
+    "test": "when parsing directions > should be possible to use @  syntax to add labels with trail spaces"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "n2",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "label for n2",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "n4",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "label for n4",
+        "props": {}
+      },
+      {
+        "id": "n5",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "label for n5",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "n4",
+        "set": {
+          "labelType": "markdown",
+          "text": "label for n4"
+        }
+      },
+      {
+        "id": "n5",
+        "set": {
+          "labelType": "markdown",
+          "text": "label for n5"
+        }
+      }
+    ]
+  }
+}

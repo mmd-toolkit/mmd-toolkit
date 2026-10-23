@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "htmlLabels false cannot create common info Db fields."
+  },
+  "config": {
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

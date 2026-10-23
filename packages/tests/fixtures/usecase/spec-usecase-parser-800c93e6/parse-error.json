@@ -1,0 +1,17 @@
+{
+  "message": "JSON permits only point or markerless associations",
+  "range": [
+    29,
+    48
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 19
+    }
+  }
+}

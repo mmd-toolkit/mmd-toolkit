@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ideographic at quoted-value tests whitespace, token boundaries, and indentation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "a　b",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

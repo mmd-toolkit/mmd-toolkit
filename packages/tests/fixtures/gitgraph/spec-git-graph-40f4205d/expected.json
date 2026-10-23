@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/git/gitGraph.spec.ts",
+    "line": 1152,
+    "test": "when parsing a gitGraph > when parsing more advanced gitGraphs > should throw error when try to checkout unknown branch: testBranch"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to checkout branch which is not yet created. (Help try using \"branch testBranch\")"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does detection pass BOM after a bare percent line following a retained second-scan directive? Mermaid rejects; the specified reading accepts an empty pie."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: ->﻿<- at offset: 15, skipped 1 characters. "
+  }
+}

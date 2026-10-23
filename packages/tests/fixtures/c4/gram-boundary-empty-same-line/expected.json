@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty boundary with both braces on one line has no required child statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tBoundary(b, \"B\") {}\n----------------------^\nExpecting 'NEWLINE', got 'RBRACE'"
+  }
+}

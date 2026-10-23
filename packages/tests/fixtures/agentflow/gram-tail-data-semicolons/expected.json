@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Padding before a metadata semicolon is not removed by the newline-only wrapper, so the second statement is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...;B@{ shape: input } ;C@{ shape: task };;\n-----------------------^\nExpecting 'AMP', got 'SEMI'"
+  }
+}

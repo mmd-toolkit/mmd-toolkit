@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A globally removed directive line does not bridge a branch keyword to its name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 7: Expecting: one of these possible Token sequences:\n  1. [REFERENCE]\n  2. [STRING]\nbut found: '\n'\nParse error on line 4, column 1: Expecting token of type 'EOF' but found `b`."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Directives inside units: a directive inside the direction makes the input rejected here; mermaid.js accepts it."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "TD",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Retained closer leaves Unicode whitespace unreadable."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 4: unexpected character: ->　<- at offset: 9, skipped 1 characters. "
+  }
+}

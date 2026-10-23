@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The comment fragment in style-key is rejected by the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...astyle A a%% cb:red\n----------------------^\nExpecting 'IDENTIFIER', 'COMMA', got 'NEWLINE'"
+  }
+}

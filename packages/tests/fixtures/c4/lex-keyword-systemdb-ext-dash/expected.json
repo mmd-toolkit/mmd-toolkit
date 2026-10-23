@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "SystemDb_Ext keyword with a glued dash is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ContextSystemDb_Ext-(a, \"A\", \"D\", \"spri\n----------------------^"
+  }
+}

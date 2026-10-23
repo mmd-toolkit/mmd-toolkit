@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: common removal can leave null title"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

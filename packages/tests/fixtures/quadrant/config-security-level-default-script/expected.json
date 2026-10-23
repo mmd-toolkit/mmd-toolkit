@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, settings: with the default settings a script tag in a text is kept as it is."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "\"<script>alert(1)</script>\"",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "<img src=x onerror=alert(1)>",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "<script>alert(1)</script>",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "<a href=x>p</a>",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

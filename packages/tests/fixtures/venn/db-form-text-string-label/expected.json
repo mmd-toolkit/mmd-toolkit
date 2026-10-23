@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The db form text string label form stores {\"texts\":[{\"sets\":[\"A\"],\"id\":\"item words\",\"label\":\"Label\"}]}."
+  },
+  "accepted": true,
+  "diagramType": "venn",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "subsets": [],
+    "texts": [
+      {
+        "sets": [
+          "A"
+        ],
+        "id": "item words",
+        "label": "Label"
+      }
+    ],
+    "styles": []
+  }
+}

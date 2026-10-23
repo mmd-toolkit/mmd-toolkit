@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Click statements: the ids end at whitespace, so `id2 href \"u\"` is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n... id2, 1dclick id1, id2 href \"u\"\n----------------------^\nExpecting 'callbackname', 'href', got 'taskTxt'"
+  }
+}

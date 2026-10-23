@@ -1,0 +1,17 @@
+{
+  "message": "An empty href cannot be written here",
+  "range": [
+    40,
+    61
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 10
+    },
+    "end": {
+      "line": 3,
+      "column": 31
+    }
+  }
+}

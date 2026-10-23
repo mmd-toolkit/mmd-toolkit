@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "[D: addNode and common strings] Does title syntax from another diagram remain a node?"
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": {
+    "title": "title T",
+    "accTitle": "",
+    "accDescr": "",
+    "root": {
+      "text": "title T",
+      "children": [
+        {
+          "text": "title U",
+          "children": []
+        }
+      ]
+    }
+  }
+}

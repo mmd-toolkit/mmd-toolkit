@@ -1,0 +1,16 @@
+{
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "C4Component",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "A",
+        "value": 1
+      }
+    ]
+  }
+}
