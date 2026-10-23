@@ -184,9 +184,43 @@ are these:
   flowchart/gram-data-block-edge-line-break-only] [fixture:
   sequence/gram-data-block-line-break-only]
 
-The difference goes one way only: no input is known that mermaid.js accepts and
-this specification rejects because of what embedded data contains. mermaid.js
-gives no Db for these inputs, so their fixtures record only the rejection.
+The malformed-data examples above go one way: mermaid.js rejects and gives no
+Db, while this specification accepts. Embedded configuration can also change
+acceptance in both directions, as the gitgraph cases below show. [fixture:
+gitgraph/docs-community-contributing-05cdc44b] [fixture:
+gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
+
+### The comparison Db
+
+The reference removes only the embedded data responsible for the divergence:
+
+1. When Mermaid rejects while deriving configuration from a frontmatter or
+   directive block, omit only that rejected block. Keep the other frontmatter
+   and directives. [fixture:
+   sequence/div-invalid-frontmatter-preserves-wrap-directive]
+2. When valid embedded configuration changes a diagram's acceptance conditions,
+   read with only the keys used by those conditions removed from that
+   configuration. Keep its other values. The gitgraph keys are named below.
+   [fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+   gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
+   gitgraph/div-init-html-labels-default-comparison]
+
+Keep the frontmatter title as Mermaid derives it, as in
+[html-tag-in-frontmatter](./html-tag-in-frontmatter.md). Settings that affect
+only the Db also remain: a valid `wrap: true` directive still makes the sequence
+message wrap when an invalid frontmatter is omitted. [fixture:
+gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+sequence/div-invalid-frontmatter-preserves-wrap-directive]
+
+If that reference is accepted, `specified.json` records its Db and embedded
+values for comparison, even though Mermaid's rejection of the written input
+supplies no Db. The comparison Db is `null` only when the reference retains the
+same opaque-data rejection; that specified reading still accepts. [fixture:
+gitgraph/div-frontmatter-invalid-yaml] [fixture:
+gitgraph/div-frontmatter-html-invalid-yaml] [fixture:
+info/div-frontmatter-invalid-yaml] [fixture:
+info/div-frontmatter-html-invalid-yaml] [fixture:
+flowchart/div-data-unknown-shape]
 
 ## What it means for an author
 
@@ -217,10 +251,13 @@ does not need YAML or JSON, and leaving them out keeps implementations free of
 both; a tool that needs the values, such as the title or the configuration,
 parses the text itself.
 
-This is not a rejection of an input that mermaid.js accepts, so it needs none of
-the reasons for one (see [known-divergences.md](../known-divergences.md)): it
-accepts inputs that mermaid.js rejects, and every input that both accept has the
-same Db.
+Accepting malformed embedded contents uses the reverse-direction criterion in
+[known-divergences.md](../known-divergences.md): validating them is unnecessary
+to hold their source text. The gitgraph configuration case below also rejects
+Mermaid-accepted inputs under reason 2: the direct default-configuration rule
+keeps embedded contents opaque. [fixture:
+gitgraph/docs-community-contributing-05cdc44b] [fixture:
+gitgraph/docs-syntax-gitgraph-2ea99686]
 
 ### Agentflow
 
@@ -303,6 +340,77 @@ pie/review-yaml-hidden-invalid] [fixture:
 pie/lex-yaml-after-comment-invalid-body] [fixture:
 pie/review-directive-invalid-init]
 
+### Gitgraph
+
+Frontmatter has a source node whose body remains opaque. Invalid leading YAML
+rejected by Mermaid is accepted here. The rejection of the written input
+supplies no Db, but the accepted reference defined by the comparison rule
+supplies the comparison Db and embedded values recorded in `specified.json`,
+under [The comparison Db](#the-comparison-db). For these two frontmatters, that
+Db is an empty gitgraph history with the initial `main` branch. [fixture:
+gitgraph/div-frontmatter-invalid-yaml] [fixture:
+gitgraph/div-frontmatter-html-invalid-yaml] Invalid nonleading hidden YAML
+already agrees because GitgraphIgnoredText owns it; malformed init arguments
+that Mermaid accepts are not differing inputs. [fixture:
+gitgraph/div-frontmatter-invalid-yaml] [fixture:
+gitgraph/div-frontmatter-html-invalid-yaml] [fixture:
+gitgraph/lex-yaml-invalid-body] [fixture: gitgraph/directive-invalid-init]
+
+Where embedded configuration changes acceptance conditions, this specification
+uses the default configuration for those conditions. In gitgraph that means the
+initial branch `main` and the default escaping defined in
+[Semantic acceptance conditions](../diagrams/gitgraph.md#semantic-acceptance-conditions).
+The keys removed from the comparison configuration are `gitGraph.mainBranchName`
+and `gitGraph.htmlLabels`. Keep other configuration values and Mermaid's derived
+title. [fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
+gitgraph/div-init-html-labels-default-comparison]
+
+Under the default secure-key policy, `securityLevel` is secure at every nesting
+level. Neither root `securityLevel` nor `gitGraph.securityLevel` can be changed
+by frontmatter or init directives; Mermaid already removes those attempted
+settings. Site configuration may still supply the gitgraph setting, as described
+in the acceptance conditions. [fixture:
+gitgraph/frontmatter-security-level-secure] [fixture:
+gitgraph/directive-security-level-secure] [fixture:
+gitgraph/config-gitgraph-loose]
+
+Frontmatter and directive nodes already hold the written configuration;
+interpreting it to choose branches or escaping would read their opaque contents.
+The direct rule uses the defaults instead, under reason 2 for the
+Mermaid-accepted direction. Site configuration outside the text is still applied
+by whoever holds it, as described there. [fixture:
+gitgraph/docs-community-contributing-05cdc44b] [fixture:
+gitgraph/docs-syntax-gitgraph-2ea99686] [fixture: gitgraph/config-main-branch]
+
+The frontmatter settings in the two documentation examples make Mermaid accept
+checkout of `develop` or `MetroLine1`; this specification rejects those unknown
+branches under the default initial name. In the reverse direction, frontmatter
+`mainBranchName: dev` makes Mermaid reject `branch dev` as a duplicate or
+`checkout main` as unknown; this specification accepts both. An init directive
+setting the same name likewise makes `branch dev` reject in Mermaid and accept
+here. All five inputs carry this identifier, and their specified readings record
+the opposite acceptance. [fixture:
+gitgraph/docs-community-contributing-05cdc44b] [fixture:
+gitgraph/docs-syntax-gitgraph-2ea99686] [fixture:
+gitgraph/div-frontmatter-main-branch-duplicate-default-accepted] [fixture:
+gitgraph/div-frontmatter-main-branch-checkout-default-accepted] [fixture:
+gitgraph/div-init-main-branch-duplicate-default-accepted]
+
+### Info
+
+Frontmatter already holds its written body. Malformed content, including YAML
+made invalid by attribute-quote conversion, does not decide that source
+structure and is accepted here although Mermaid rejects it. There is no Db from
+the rejection of the written input, but the accepted reference defined by the
+comparison rule supplies the comparison Db and embedded values recorded in
+`specified.json`, under [The comparison Db](#the-comparison-db). For these two
+frontmatters, that Db is `{}`. This rule rejects no Mermaid-accepted input.
+Invalid hidden YAML and the recorded malformed init argument already accept in
+both and are unmarked. [fixture: info/div-frontmatter-invalid-yaml] [fixture:
+info/div-frontmatter-html-invalid-yaml] [fixture:
+info/hidden-yaml-preheader-invalid] [fixture: info/directive-invalid-init]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -362,3 +470,24 @@ pie/review-directive-invalid-init]
   `pie`, `pie YAML` and `pie frontmatter` found no maintainer decision that
   requires those bodies to be validated. This specification applies the shared
   opaque-data policy to leading frontmatter.
+
+For gitgraph,
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+documents the header and commands. Issue/PR searches on 2026-10-23 used
+`gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
+`gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
+inspected result settles this common boundary behavior.
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) is closed with
+Status: Approved; merged
+[#6707](https://github.com/mermaid-js/mermaid/pull/6707) adds a duplicate-id
+warning. These facts do not justify any additional divergence.
+
+- Info has no dedicated syntax page. The pinned
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  describes diagram declarations and percent comments. Searches of issues and
+  pull requests on 2026-10-23 used `info showInfo`, `info directive`,
+  `info semicolon` and `info accTitle`.
+  [#7601](https://github.com/mermaid-js/mermaid/issues/7601) reports
+  info/showInfo rendering and was open with Type: Bug / Error and Status:
+  Triage. No inspected result establishes an info-specific maintainer decision
+  to reject this syntax; this section follows the existing direct rule.

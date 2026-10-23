@@ -44,7 +44,8 @@ sankey 図（`sankey`）と、XY チャート（`xychart`）と、
 四象限チャート（`quadrantChart`）と、ブロック図（`block`）と、
 kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）と、
 Ishikawa 図（`ishikawa`）と、agentflow（`agentflow`）と、
-usecase 図（`usecase`）と、円グラフ（`pie`）です。
+usecase 図（`usecase`）、円グラフ（`pie`）、gitgraph 図（`gitGraph`）、
+info 図（`info`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -70,7 +71,8 @@ usecase 図（`usecase`）と、円グラフ（`pie`）です。
 [`diagrams/ishikawa.md`](../../spec/docs/diagrams/ishikawa.ja.md)、
 [`diagrams/agentflow.md`](../../spec/docs/diagrams/agentflow.ja.md)、
 [`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.ja.md)、
-[`diagrams/pie.md`](../../spec/docs/diagrams/pie.ja.md)
+[`diagrams/pie.md`](../../spec/docs/diagrams/pie.ja.md) と
+[`diagrams/gitgraph.md`](../../spec/docs/diagrams/gitgraph.md)
 のどれかに従います。
 3 つの部分からなります。
 
@@ -240,3 +242,24 @@ pie/lex-hidden-before-colon-lf]
 [fixture: pie/review-hidden-directive-after-title]
 [fixture: pie/number-negative]
 [fixture: pie/number-negative-zero]
+
+info の字句解析器は、仕様の
+[順序付き規則](../../spec/docs/diagrams/info.md#ordered-rules)に従います。
+再帰下降は共通文と隠し形式を
+[指定の隙間](../../spec/docs/ast/info.md#nodes)に保持します。
+検出は保持したヘッダー前の形式を字句解析器へ渡し、
+パーセントだけの行のトリビアは 1 回だけ通過します。
+[fixture: info/common-all] [fixture: info/lex-flag-hidden-two]
+[fixture: info/div-detect-yaml-bare-directive]
+
+gitgraph の構文解析器は、字句単位から復号した比較値を、
+書かれた葉とは別に保持します。
+共通のトークン検査の後、履歴検査は仕様の既定の比較表記と、
+ソース順の branch・HEAD・同一性・置換・直近の parent の規則を適用します。
+外部設定を持つテストも同じ内部ソース解析を使い、
+公開 API の parse(text) には設定引数を追加しません。
+[fixture: gitgraph/db-compare-escape-once]
+[fixture: gitgraph/db-state-replacement-source-origin]
+[fixture: gitgraph/db-state-empty-ids-are-fresh]
+[fixture: gitgraph/db-cherry-pick-invalid-parent]
+[fixture: gitgraph/docs-community-contributing-05cdc44b]

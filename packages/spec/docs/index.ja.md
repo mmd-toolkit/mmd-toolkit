@@ -26,6 +26,15 @@ pin した版は mermaid 12.0.0 です。
 を指し、この仕様が mermaid.js のソースを参照するときは、
 すべてこのコミットへのリンクにします。
 
+gitgraph の定義は [構文](./diagrams/gitgraph.ja.md) と
+[木](./ast/gitgraph.ja.md) にあります。
+[fixture: gitgraph/header-only]
+[fixture: gitgraph/gram-all-fields]
+
+info の定義は [構文](./diagrams/info.ja.md) と [木](./ast/info.ja.md) にありま
+す。
+[fixture: info/header-lf] [fixture: info/common-all]
+
 ## 元にしたもの
 
 仕様は、mermaid.js のリポジトリにある次の 3 つを元にしています。

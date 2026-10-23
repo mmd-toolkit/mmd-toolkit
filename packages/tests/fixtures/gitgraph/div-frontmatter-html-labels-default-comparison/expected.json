@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gg4-6: gitGraph.htmlLabels is an embedded acceptance-changing key; Mermaid accepts distinct raw and escaped names while default comparison rejects the duplicate."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "<b>x</b>"
+      },
+      {
+        "name": "&lt;b&gt;x&lt;/b&gt;"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "gitGraph": {
+        "htmlLabels": false
+      }
+    }
+  }
+}

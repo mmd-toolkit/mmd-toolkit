@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A dash suffix on the description keyword."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 5, skipped 11 characters.\nLexer error on line 2, column 13: unexpected character: ->A<- at offset: 17, skipped 1 characters. "
+  }
+}

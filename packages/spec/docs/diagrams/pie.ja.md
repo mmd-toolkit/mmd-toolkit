@@ -47,8 +47,10 @@ PieIgnoredText ではなく、pie の字句規則で読み直しません。
 先頭のフロントマターではないため、図の字句解析器はブロックを読みます。
 pie は、その残されたテキストに隠れた YAML の規則を適用します。
 一致すればブロックを PieIgnoredText に保ち、そのタイトルと設定は適用しません。
-ほかの対応するすべての図種は、残されたブロックを拒否します。
+gitgraph も一致する隠れたブロックを保ちます。
+以下で引用するほかの図種の入力は拒否します。
 [fixture: pie/frontmatter-nonleading-comment]
+[fixture: gitgraph/lex-yaml-after-comment]
 [fixture: pie/lex-yaml-leading-config-not-applied]
 [fixture: pie/lex-yaml-after-leading-lf]
 [fixture: pie/lex-yaml-bom-opening-only]
@@ -427,12 +429,15 @@ LS/PS とほかの Unicode 空白は、元の EOF と追加 LF の間を含め�
 
 ### 隠れた YAML
 
-単位の位置では、`---`、0 個以上の ASCII 空白とタブ、改行が
+単位の位置では、`---`、0 個以上の ASCII 空白とタブ、LF が
 隠れた YAML を開きます。
 開きは物理行頭でなくてもかまいません。
-LF、LS、PS を含む任意の文字を、後の字下げされていない行頭の `---` まで読みます。
-直後が改行、共通の空白、テキストの終わりである最初のものを選びます。
-直後の行で閉じる空のブロックも許し、YAML の内容は検査しません。
+まず本文がある形を試し、LF、LS、PS を含むできるだけ少ない任意の文字を、
+後続の LF と、その後の字下げのない `---` まで読みます。
+閉じの直後は LF、共通の空白、またはテキストの終わりでなければいけません。
+本文がある一致がなければ、開始の LF の直後が閉じの、空の本文を試します。
+YAML の内容は検査しません。
+[fixture: pie/lex-yaml-immediate-fence-before-later-closer]
 [fixture: pie/lex-preheader-yaml-opening-nbsp]
 [fixture: pie/lex-preheader-yaml-opening-bom]
 [fixture: pie/lex-preheader-yaml-empty-line-control]
@@ -442,6 +447,19 @@ LF、LS、PS を含む任意の文字を、後の字下げされていない行�
 [fixture: pie/review-yaml-hidden-invalid]
 [fixture: pie/review-yaml-closing-space-boundary]
 [fixture: pie/lex-yaml-body-unicode-separators]
+
+この優先順では、最初の後続の区切りも本文になる場合があります。
+隣接する区切りの 3 行は 1 個のブロックで、中央の区切りが本文に入ります。
+区分の隙間や、ヘッダー前に保持する先頭以外のブロックでも同じ順に選びます。
+[fixture: pie/lex-yaml-three-adjacent-fences]
+[fixture: pie/lex-yaml-three-fences-before-value]
+[fixture: pie/lex-nonleading-yaml-three-adjacent-fences]
+空のブロックが 2 個に見えても、区切りが余る場合があります。
+最初のブロックが区分に見える行を含み、
+後に残る `x` と最後の `---` を読めずに入力を拒否します。
+[fixture: pie/lex-yaml-apparent-empty-pairs-unmatched-fence]
+最初の本文に適格な閉じがあれば、空でない 2 個のブロックは別々です。
+[fixture: pie/lex-yaml-before-colon-two-blocks]
 
 閉じる区切りの直後の LF は消費し、ほかの空白の境界は先読みするだけです。
 [fixture: pie/lex-preheader-yaml-closing-nbsp]
@@ -463,9 +481,9 @@ LF、LS、PS を含む任意の文字を、後の字下げされていない行�
 
 認識したブロックはそれぞれ kind が `yaml-block` の PieIgnoredText に保ちます。
 ヘッダーの前、showData の前後、区分の隙間、値と EOL の間に置けます。
-1 つの隙間の 2 ブロックは別々に保ちます。
 数と数の間では 2 つの数を残し、数字の前では読めないマイナスを修復しません。
 [fixture: pie/frontmatter-nonleading-comment]
+[fixture: gitgraph/lex-yaml-after-comment]
 [fixture: pie/review-yaml-before-showdata]
 [fixture: pie/lex-yaml-after-showdata-before-first-section]
 [fixture: pie/review-yaml-between-label-colon]
@@ -709,21 +727,20 @@ showData は pie の次の可視の単位として、1 回だけ置けます。
 
 ### 規則と節点
 
-| 規則                      | 節点                           |
-| ------------------------- | ------------------------------ |
-| diagram                   | PieDiagram                     |
-| section-statement         | PieSectionStatement            |
-| title-statement           | PieTitleStatement              |
-| acc-title-statement       | PieAccTitleStatement           |
-| acc-descr-statement       | PieAccDescrStatement           |
-| acc-descr-block-statement | PieAccDescrBlockStatement      |
-| string / pie-number       | StringLiteral / NumericLiteral |
-| 書かれた共通の値          | PieLiteral                     |
-| 保持する隠れた形          | PieIgnoredText                 |
-
-[fixture: pie/db-all-fields]
-[fixture: pie/frontmatter-between-section-parts]
-[fixture: pie/review-hidden-directive-before-showdata]
+| 規則                                                   | 節点                           |
+| ------------------------------------------------------ | ------------------------------ |
+| diagram                                                | PieDiagram                     |
+| section-statement                                      | PieSectionStatement            |
+| title-statement                                        | PieTitleStatement              |
+| acc-title-statement                                    | PieAccTitleStatement           |
+| acc-descr-statement                                    | PieAccDescrStatement           |
+| acc-descr-block-statement                              | PieAccDescrBlockStatement      |
+| string / pie-number                                    | StringLiteral / NumericLiteral |
+| 書かれた共通の値                                       | PieLiteral                     |
+| 保持する隠れた形                                       | PieIgnoredText                 |
+| [fixture: pie/db-all-fields]                           |
+| [fixture: pie/frontmatter-between-section-parts]       |
+| [fixture: pie/review-hidden-directive-before-showdata] |
 
 ### 文法の外での拒否
 

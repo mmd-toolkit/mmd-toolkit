@@ -83,6 +83,9 @@ const STUBS_GLOBAL = "__mmdSpecStubs"
  * test file imports and others do not costs nothing.
  */
 const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
+  "diagrams/git/gitGraphParser.js": ["parser"],
+  "diagrams/git/gitGraphAst.js": ["db"],
+  "diagrams/info/infoParser.js": ["parser"],
   "diagrams/pie/pieParser.js": ["parser"],
   "diagrams/pie/pieDb.js": ["db", "DEFAULT_PIE_DB"],
   "diagrams/pie/pieRenderer.js": ["draw"],
@@ -453,6 +456,13 @@ export async function recordSpecFile(
     getData: () => ({ nodes: [], edges: [] }),
   })
   const stubs: Record<string, Record<string, unknown>> = {
+    "diagrams/git/gitGraphParser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/git/gitGraphAst.js": { db: anything },
+    "diagrams/info/infoParser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
     "diagrams/pie/pieParser.js": {
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },

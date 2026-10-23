@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Hidden YAML permits adjacent fences unlike leading frontmatter."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

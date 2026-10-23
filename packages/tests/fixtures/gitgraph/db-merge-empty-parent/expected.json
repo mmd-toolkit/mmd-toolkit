@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Empty parent does not satisfy merge cherry-pick requirement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of cherry-pick: If the source commit is a merge commit, an immediate parent commit must be specified."
+  }
+}

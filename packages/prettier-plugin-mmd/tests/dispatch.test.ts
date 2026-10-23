@@ -34,6 +34,24 @@ beforeEach(() => {
 })
 
 describe("dispatch to diagram printers", () => {
+  it("registers the info body printer", async () => {
+    const actual = await vi.importActual<typeof ParserModule>(
+      "@mmd-toolkit/parser",
+    )
+    parse.mockImplementation(actual.parse)
+    expect(await formatMermaid("info showInfo title Dispatch")).toBe(
+      "info showInfo\n  title Dispatch\n",
+    )
+  })
+  it("registers the gitgraph body printer", async () => {
+    const actual = await vi.importActual<typeof ParserModule>(
+      "@mmd-toolkit/parser",
+    )
+    parse.mockImplementation(actual.parse)
+    expect(await formatMermaid('gitGraph:commit id:"Dispatch"')).toBe(
+      'gitGraph:\n  commit id: "Dispatch"\n',
+    )
+  })
   it("registers the pie body printer", async () => {
     const actual = await vi.importActual<typeof ParserModule>(
       "@mmd-toolkit/parser",

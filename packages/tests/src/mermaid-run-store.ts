@@ -76,6 +76,8 @@ export const RESULT_FILES: readonly string[] = [
   "normalizers/er.ts",
   "normalizers/flowchart.ts",
   "normalizers/gantt.ts",
+  "normalizers/gitgraph.ts",
+  "normalizers/info.ts",
   "normalizers/index.ts",
   "normalizers/ishikawa.ts",
   "normalizers/journey.ts",

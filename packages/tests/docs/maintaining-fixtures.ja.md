@@ -53,9 +53,19 @@ fixture の読み方は [README](../README.ja.md) にあります。
 
 比較する Db の値には、記録された読み（`specified`、なければ `expected`）と、
 `embeddedValuesOf()` を使います。
-`embedded-data-opaque` は指定読みなしで受理し、
-比較する Db がない場合があります。
-mermaid.js の拒否を仕様の拒否と扱わず、この場合を明示します。
+`embedded-data-opaque` は向きが `"both"` で、
+印のある全 fixture に `specified.json` が必要です。
+不正な不透明データから比較 Db を求められないときは、
+受理の読みが `db: null` を持つことがあります。
+埋め込み設定は受理を両方向に変え得ます。
+比較の参照入力では、Mermaid の設定導出で拒否されたブロックだけを除き、
+正しいテキスト内設定から、仕様が名指しする受理条件の鍵だけを除きます。
+ほかの導出値は保ちます。
+Mermaid の frontmatter タイトルや、`wrap` など Db に効く設定も保ちます。
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+[fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
+比較 Db がないことを明示し、Db を作り出したり、
+mermaid.js の拒否を仕様の拒否と扱ったりしません。
 
 ## 名前
 

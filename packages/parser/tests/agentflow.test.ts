@@ -8,14 +8,7 @@ import {
 import type { AgentflowDiagram, Node, Root } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
-import { EMPTY_FORM_KINDS, emptyFormsOf } from "../src/empty-forms.ts"
 import { outcomeOf } from "./helpers/known-divergences.ts"
-import {
-  agentflowLexingOf,
-  frontmatterChangesAttributeQuotes,
-  holdsBarePercentLineBeforeHeader,
-  withoutTokenCuts,
-} from "./helpers/reference-inputs.ts"
 
 /** Losslessness, source spelling, token boundaries, child containment, and source order. */
 function expectCoverage(text: string, root: Root): void {
@@ -376,32 +369,6 @@ describe("agentflow fixtures", async () => {
       expect(outcomeOf(fixture.input, fixture.config).kind === "tree").toBe(
         fixtureAccepts(fixture),
       )
-      if (
-        fixture.knownDivergence === "directive-as-token-boundary" ||
-        fixture.knownDivergence === "ignored-semicolon-as-token-boundary"
-      ) {
-        expect(rejection?.message).toBe(
-          fixture.knownDivergence === "directive-as-token-boundary"
-            ? "Unexpected directive"
-            : "Unexpected ; that the line rule ignores",
-        )
-        expect(parse(withoutTokenCuts(fixture.input)).diagramType).toBe(
-          "agentflow",
-        )
-      }
-      if (fixture.knownDivergence === "tokenless-empty-forms") {
-        const units = agentflowLexingOf(fixture.input)?.units
-        expect(units).not.toBeUndefined()
-        expect(
-          emptyFormsOf(units!, EMPTY_FORM_KINDS.agentflow).map(
-            (form) => form.range,
-          ),
-        ).toContainEqual(rejection?.range)
-      }
-      if (fixture.knownDivergence === "html-tag-in-frontmatter")
-        expect(frontmatterChangesAttributeQuotes(fixture.input)).toBe(true)
-      if (fixture.knownDivergence === "bare-percent-line-before-header")
-        expect(holdsBarePercentLineBeforeHeader(fixture.input)).toBe(true)
       if (root !== null) {
         expect(root.diagramType).toBe("agentflow")
         expectCoverage(fixture.input, root)

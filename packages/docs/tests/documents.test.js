@@ -439,7 +439,7 @@ describe("additional diagram types", () => {
     for (const name of [
       "treeView",
       "architecture",
-      "gitGraph",
+      "gitgraph",
       "quadrantChart",
       "pie",
       "aaa-new",
@@ -456,7 +456,7 @@ describe("additional diagram types", () => {
       "gantt",
       "pie",
       "quadrantChart",
-      "gitGraph",
+      "gitgraph",
       "architecture",
       "treeView",
       "aaa-new",

@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Merge sanitizes its source branch before lookup and message construction."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "B",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "&lt;b&gt;B&lt;/b&gt;"
+      },
+      {
+        "id": "generated-commit-1",
+        "seq": 2,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "A",
+          "B"
+        ],
+        "branch": "main",
+        "customId": false
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "&lt;b&gt;B&lt;/b&gt;"
+      }
+    ]
+  }
+}

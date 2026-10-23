@@ -137,6 +137,13 @@ agentflow/detect-letter-suffix] [fixture: agentflow/detect-digit-suffix]
 agentflow/detect-hyphen-suffix] [fixture: agentflow/detect-non-ascii-suffix]
 [fixture: agentflow/lex-detect-c4-component-id]
 
+Entry 12,
+[infoDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11),
+selects the exact lower-case prefix `info` without a suffix boundary.
+`information` is detected and then rejects lexically; `Info` and `INFO` do not
+select it. [fixture: info/header-lf] [fixture: info/detect-lower-suffix]
+[fixture: info/detect-titlecase] [fixture: info/detect-uppercase]
+
 Entry 13,
 [`pieDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDetector.ts#L9-L11),
 requires only the exact lower-case prefix `pie`. `pieChart` selects pie and then
@@ -147,10 +154,12 @@ pie/header-capitalized] [fixture: pie/header-uppercase]
 The frontmatter-shaped block passed at the detection point is still diagram
 text. A comment line followed by `---`, `title: Hidden`, `---`, and `pie`
 selects pie, whose hidden YAML rule skips the block without applying its title.
-Every other supported diagram type rejects the corresponding input through its
-lexical or grammar rules. An adjacent-fence empty block, an unmatched fence, or
-a bare `%%` line before the block instead leaves the rejecting `---`
-pseudo-diagram selected. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+Gitgraph and info also retain matching hidden blocks; the cited other diagram
+types reject their corresponding inputs. An adjacent-fence empty block, an
+unmatched fence, or a bare `%%` line before the block instead leaves the
+rejecting `---` pseudo-diagram selected. [fixture:
+pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
+[fixture: info/frontmatter-nonleading-comment] [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-nonleading-sequence] [fixture:
 common/frontmatter-nonleading-class] [fixture:
@@ -174,6 +183,16 @@ usecase/header-lf] [fixture: usecase/header-uppercase] [fixture:
 usecase/header-letter-suffix] [fixture: usecase/header-unicode-suffix] [fixture:
 usecase/header-semicolon] [fixture: usecase/header-u2028-eof] [fixture:
 usecase/lex-header-emspace-eof] [fixture: usecase/div-detect-c4-label]
+
+Entry 19,
+[gitGraphDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphDetector.ts),
+selects exact `gitGraph` without a suffix boundary. The
+[gitgraph syntax](./diagrams/gitgraph.md#detection) distinguishes the
+plain/joined/separated-colon header and LR/TB/BT forms. A suffix can pass
+detection and reject syntax. [fixture: gitgraph/header-only] [fixture:
+gitgraph/header-colon] [fixture: gitgraph/header-spaced-colon] [fixture:
+gitgraph/header-lr] [fixture: gitgraph/header-tb] [fixture: gitgraph/header-bt]
+[fixture: gitgraph/detect-letter-suffix]
 
 ## Notes
 

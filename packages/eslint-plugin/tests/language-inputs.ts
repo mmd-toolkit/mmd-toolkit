@@ -74,6 +74,13 @@ export const LANGUAGE_INPUTS: readonly LanguageInput[] = [
       acceptedWith(text, (root) => root.body.type === "StateDiagram"),
   },
   {
+    case: "a git graph",
+    diagram: "common",
+    name: "detect-minimal-git-graph",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "GitgraphDiagram"),
+  },
+  {
     case: "the error pseudo-diagram, accepted, with a comment after it",
     diagram: "common",
     name: "error-trailing-comment-line",
@@ -95,8 +102,8 @@ export const LANGUAGE_INPUTS: readonly LanguageInput[] = [
   {
     case: "a diagram type that the parser does not support",
     diagram: "common",
-    name: "detect-minimal-pie",
-    holds: (text) => treeOf(text) === null && text.startsWith("pie"),
+    name: "detect-minimal-wardley",
+    holds: (text) => treeOf(text) === null && text.startsWith("wardley-beta"),
   },
   {
     case: "no text at all",

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Spaced semicolons after switch are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->;<- at offset: 20, skipped 1 characters.\nLexer error on line 2, column 14: unexpected character: ->;<- at offset: 22, skipped 1 characters. "
+  }
+}

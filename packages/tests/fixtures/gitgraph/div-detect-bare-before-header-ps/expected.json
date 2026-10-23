@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS passed by detection is not a Langium newline."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: -> <- at offset: 3, skipped 1 characters. "
+  }
+}

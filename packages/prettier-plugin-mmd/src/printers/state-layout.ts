@@ -21,7 +21,7 @@ import {
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
   keptAsWritten,
-  layoutCompactEmptyDescriptionBlock,
+  layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
@@ -269,23 +269,33 @@ export function layoutStateStatement(
     return keptAsWritten(start, end)
   }
   if (statement.type === "StateAccDescrBlockStatement") {
-    if (statement.value === null && statement.closed) {
-      const compact = layoutCompactEmptyDescriptionBlock(source, start, end)
-      if (compact !== null) return compact
+    const block = statement
+
+    /** Builds the existing value, trivia and closing-brace layout. */
+    function originalLayout(): AtomLayout {
+      const closing = findAccDescrBlockClosing(source, block)
+      return {
+        atoms: collectAtoms(
+          source,
+          start,
+          end,
+          collectValueNodes(block, stateValueNodeTypes),
+          findAccDescrBlockStretches(source, block),
+        ),
+        rules: new Map(),
+        outdented: closing === null ? new Set() : new Set([closing]),
+        lineBreaks: "kept",
+      }
     }
-    const closing = findAccDescrBlockClosing(source, statement)
-    return {
-      atoms: collectAtoms(
-        source,
-        start,
-        end,
-        collectValueNodes(statement, stateValueNodeTypes),
-        findAccDescrBlockStretches(source, statement),
-      ),
-      rules: new Map(),
-      outdented: closing === null ? new Set() : new Set([closing]),
-      lineBreaks: "kept",
-    }
+
+    return statement.value === null && statement.closed
+      ? layoutCompactEmptyDescriptionBlockWithFallback(
+          source,
+          start,
+          end,
+          originalLayout,
+        )
+      : originalLayout()
   }
   if (
     statement.type === "StateNoteStatement" &&

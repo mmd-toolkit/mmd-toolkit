@@ -1,3 +1,5 @@
+import { checkGitgraphTree } from "./gitgraph.ts"
+import { checkInfoTree } from "./info.ts"
 import { checkPieTree } from "./pie.ts"
 import { checkUsecaseTree, usecaseStringDelimitersOf } from "./usecase.ts"
 import { checkAgentflowTree, agentflowStringDelimitersOf } from "./agentflow.ts"
@@ -77,6 +79,12 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   switch (root.body.type) {
     case "ErrorDiagram":
       checkErrorDiagramTokens(root, problems)
+      break
+    case "GitgraphDiagram":
+      checkGitgraphTree(text, root, problems)
+      break
+    case "InfoDiagram":
+      checkInfoTree(text, root, problems)
       break
     case "PieDiagram":
       checkPieTree(text, root, problems)

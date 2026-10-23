@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Cherry-pick source and tags pass the sanitizer without losing HTML."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "A",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "&lt;b&gt;B&lt;/b&gt;",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "A"
+        ],
+        "branch": "b"
+      },
+      {
+        "id": "generated-commit-1",
+        "seq": 2,
+        "type": 4,
+        "tags": [
+          "&lt;i&gt;T&lt;/i&gt;"
+        ],
+        "parents": [
+          "A",
+          "&lt;b&gt;B&lt;/b&gt;"
+        ],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "b"
+      }
+    ]
+  }
+}

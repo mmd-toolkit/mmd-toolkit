@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty hidden form consumes LF but no flag separator is required."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -15,6 +15,8 @@ const PARSER_DOCS = path.join(HERE, "../../parser/docs")
 
 /** The diagrams that have a tree document. */
 export const TREE_DOCUMENT_DIAGRAMS = [
+  "gitgraph",
+  "info",
   "pie",
   "usecase",
   "agentflow",
@@ -147,9 +149,8 @@ function readColumn(column: number): FieldTables {
 
 /**
  * The child fields that the tree documents state for each node type, in the
- * order of the visit: the fields named in the first sentence of the paragraph
- * that starts with `Child fields:`. A type with no such paragraph is not in
- * the result.
+ * order of the visit: the fields named in the sentence introduced by
+ * `Child fields:`. A type with no such sentence is not in the result.
  */
 export function readChildFields(): Map<string, string[]> {
   const result = new Map<string, string[]>()
@@ -166,15 +167,24 @@ export function readChildFields(): Map<string, string[]> {
     /** Reads the paragraph collected so far, if it states child fields. */
     function flush(): void {
       const prefix = "Child fields:"
-      if (paragraph.startsWith(prefix)) {
+      const at = paragraph.indexOf(prefix)
+      if (at !== -1) {
         // The first sentence ends at a period, or at a colon after the list:
         // `Child fields: `a`, `b`, in source order: …`.
-        const rest = paragraph.slice(prefix.length)
+        const rest = paragraph.slice(at + prefix.length)
         const end = rest.search(/[.:]/u)
         const sentence = end < 0 ? rest : rest.slice(0, end)
-        const fields = [...sentence.matchAll(/`(\w+)`/gu)].map(
+        const quoted = [...sentence.matchAll(/`(\w+)`/gu)].map(
           (match) => match[1] ?? "",
         )
+        // Child-field lists may also use unquoted field names.
+        const fields =
+          quoted.length > 0
+            ? quoted
+            : sentence
+                .split(",")
+                .map((field) => field.trim())
+                .filter((field) => field !== "")
         for (const name of names) result.set(name, fields)
       }
       paragraph = ""
@@ -200,4 +210,18 @@ export function readTreeDocuments(): string[] {
   return TREE_DOCUMENT_DIAGRAMS.map((diagram) =>
     readFileSync(path.join(SPEC_DOCS, "ast", `${diagram}.md`), "utf8"),
   )
+}
+
+/** The table row whose Kind cell is `kind`, whether the kind or components column comes first. */
+export function readTokenKindRow(file: string, kind: string): string {
+  const cell = `\`${kind}\``
+  const row = readFileSync(file, "utf8")
+    .split("\n")
+    .find(
+      (line) =>
+        line.startsWith("|") &&
+        line.split("|").some((part) => part.trim() === cell),
+    )
+  if (row === undefined) throw new Error(`no token kind ${kind} in ${file}`)
+  return row
 }

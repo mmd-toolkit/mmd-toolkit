@@ -42,6 +42,8 @@ const DIAGRAMS: readonly DiagramType[] = [
   "agentflow",
   "usecase",
   "pie",
+  "gitgraph",
+  "info",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -68,6 +70,28 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads info fixtures", () => {
+    const fixtures = fixturesOf("info")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("info")
+        expect(fixture.expected.db).toEqual({})
+      }
+    }
+  })
+
+  it("loads gitgraph fixtures", () => {
+    const fixtures = fixturesOf("gitgraph")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("gitGraph")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
   it("loads pie fixtures", () => {
     const fixtures = fixturesOf("pie")
     expect(fixtures.length).toBeGreaterThan(0)

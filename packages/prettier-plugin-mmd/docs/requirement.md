@@ -831,10 +831,14 @@ empty-description-blocks/in-body-own-lines] [fixture:
 empty-description-blocks/in-body-before-closing-brace] [fixture:
 empty-description-blocks/in-body-alone]
 
-The block follows the rule of whitespace between tokens: a run of whitespace in
-it, line breaks included, becomes one space, and braces that touch keep
-touching. [fixture: empty-description-blocks/inner-whitespace-collapsed]
-[fixture: empty-description-blocks/inner-whitespace-joined] [fixture:
+The whitespace-only interior of a description block, including tabs, line breaks
+and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
+surround. An already empty interior stays empty. A touching keyword stays
+touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+empty-description-blocks/empty-whitespace-interiors] [test: requirement Unicode
+and tab interiors] [test: requirement body Unicode and tab interiors] [fixture:
+empty-description-blocks/inner-whitespace-collapsed] [fixture:
+empty-description-blocks/inner-whitespace-joined] [fixture:
 empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/in-body-over-lines-joined] A block with a directive or
 a comment line is printed as written. [fixture:
@@ -866,7 +870,7 @@ requirementDiagram
     accDescr {}
     text: t
     risk: low
-    accDescr { }
+    accDescr {}
   }
 ```
 
@@ -888,8 +892,8 @@ Output
 
 ```mmd
 requirementDiagram
-  accDescr { }
-  accDescr { }
+  accDescr {}
+  accDescr {}
   accDescr {}
 ```
 
@@ -970,7 +974,7 @@ requirementDiagram
   first
     second
   }
-  accDescr { }
+  accDescr {}
 ```
 
 Input
@@ -1104,7 +1108,7 @@ Output
 
 ```mmd
 requirementDiagram
-  accDescr { }
+  accDescr {}
   requirement r {
     id: 1
   }
@@ -1128,7 +1132,7 @@ Output
 ```mmd
 requirementDiagram
   accDescr{}
-  accDescr{ }
+  accDescr{}
   accDescr {}
 ```
 

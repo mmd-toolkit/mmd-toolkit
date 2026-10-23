@@ -1,0 +1,126 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gitgraph.md",
+    "line": 1010
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-2",
+        "seq": 1,
+        "type": 0,
+        "tags": [
+          "v1.0.0"
+        ],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "develop"
+      },
+      {
+        "id": "generated-commit-3",
+        "seq": 2,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-2"
+        ],
+        "branch": "develop"
+      },
+      {
+        "id": "generated-commit-4",
+        "seq": 3,
+        "type": 2,
+        "tags": [],
+        "parents": [
+          "generated-commit-1"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-5",
+        "seq": 4,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-4"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-6",
+        "seq": 5,
+        "type": 3,
+        "tags": [],
+        "parents": [
+          "generated-commit-5",
+          "generated-commit-3"
+        ],
+        "branch": "main",
+        "customId": false
+      },
+      {
+        "id": "generated-commit-7",
+        "seq": 6,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-6"
+        ],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-8",
+        "seq": 7,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "generated-commit-7"
+        ],
+        "branch": "featureA"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "develop"
+      },
+      {
+        "name": "featureA"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "logLevel": "debug",
+      "themeVariables": {
+        "git0": "#ff0000",
+        "git1": "#00ff00",
+        "git2": "#0000ff",
+        "git3": "#ff00ff",
+        "git4": "#00ffff",
+        "git5": "#ffff00",
+        "git6": "#ff00ff",
+        "git7": "#00ffff"
+      }
+    }
+  }
+}

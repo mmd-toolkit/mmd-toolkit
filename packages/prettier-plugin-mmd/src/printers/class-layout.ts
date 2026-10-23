@@ -22,6 +22,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
@@ -267,19 +268,32 @@ export function layoutClassStatement(
       value: statement.value,
       closed: true,
     }
-    const closing = findAccDescrBlockClosing(source, block)
-    return {
-      atoms: collectAtoms(
-        source,
-        start,
-        end,
-        values,
-        findAccDescrBlockStretches(source, block),
-      ),
-      rules: new Map(),
-      outdented: closing === null ? new Set() : new Set([closing]),
-      lineBreaks: "kept",
+
+    /** Builds the existing value, trivia and closing-brace layout. */
+    function originalLayout(): AtomLayout {
+      const closing = findAccDescrBlockClosing(source, block)
+      return {
+        atoms: collectAtoms(
+          source,
+          start,
+          end,
+          values,
+          findAccDescrBlockStretches(source, block),
+        ),
+        rules: new Map(),
+        outdented: closing === null ? new Set() : new Set([closing]),
+        lineBreaks: "kept",
+      }
     }
+
+    return statement.value === null
+      ? layoutCompactEmptyDescriptionBlockWithFallback(
+          source,
+          start,
+          end,
+          originalLayout,
+        )
+      : originalLayout()
   }
   const kept = [
     ...findGenericStretches(source, statement, end),

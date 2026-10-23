@@ -249,8 +249,10 @@ the diagram sections below: a
 [`VennDiagram`](./ast/venn.md#venndiagram), an
 [`IshikawaDiagram`](./ast/ishikawa.md#ishikawadiagram), an
 [`AgentflowDiagram`](./ast/agentflow.md#agentflowdiagram), a
-[`UsecaseDiagram`](./ast/usecase.md#usecasediagram), or a
-[`PieDiagram`](./ast/pie.md#piediagram).
+[`UsecaseDiagram`](./ast/usecase.md#usecasediagram), a
+[`PieDiagram`](./ast/pie.md#piediagram), a
+[`GitgraphDiagram`](./ast/gitgraph.md#gitgraphdiagram), or an
+[`InfoDiagram`](./ast/info.md#infodiagram).
 
 ## ErrorDiagram
 
@@ -454,3 +456,8 @@ mermaid.js does not read is named `<Diagram>IgnoredText`, or
 `<Diagram>IgnoredStatement` where it stands as a statement, such as
 `FlowchartIgnoredText` and `StateIgnoredStatement`, and no other node type has a
 name that ends so.
+
+- [gitgraph](./ast/gitgraph.md): the diagram type `gitGraph`. [fixture:
+  gitgraph/header-only]
+
+- [Info](./ast/info.md): the diagram type `info`. [fixture: info/header-lf]

@@ -108,12 +108,15 @@ pie/lex-hidden-directive-with-second-hidden-token]
 Child fields: `label`, `textBeforeColon`, `textBeforeValue`, `value`,
 `textAfter`. Range: the opening label quote through the numeric value or the
 last textAfter form, including the colon but excluding the EOL. A hidden form
-after a visible EOL newline belongs to the diagram body instead. Two forms in a
-gap stay separate. [fixture: pie/review-yaml-between-label-colon] [fixture:
+after a visible EOL newline belongs to the diagram body instead. Each separately
+recognized hidden form in a gap is one list item. [fixture:
+pie/review-yaml-between-label-colon] [fixture:
 pie/frontmatter-between-section-parts] [fixture:
 pie/gram-section-eof-hidden-yaml] [fixture: pie/yaml-inline-after-title]
 [fixture: pie/lex-yaml-before-colon-two-blocks] [fixture:
-pie/lex-hidden-before-colon-lf]
+pie/lex-hidden-before-colon-lf] The three adjacent YAML fences between a colon
+and its number are one textBeforeValue item. [fixture:
+pie/lex-yaml-three-fences-before-value]
 
 StringLiteral has the written content between its matching quotes, without
 escape decoding; raw keeps the complete original quoted source, and closed is
@@ -269,6 +272,14 @@ pie/gram-section-eof-hidden-yaml] [fixture: pie/review-directive-hidden-eof]
 [fixture: pie/lex-yaml-body-unicode-separators] [fixture:
 pie/lex-hidden-body-unicode-separators] [fixture:
 pie/lex-hidden-directive-lone-cr]
+
+Choose the YAML closer by the body-present priority in
+[Hidden YAML](../diagrams/pie.md#hidden-yaml): an apparent immediate closer may
+belong to the leaf's value instead. Three adjacent fence lines make one leaf,
+including the middle fence. [fixture: pie/lex-yaml-three-adjacent-fences]
+[fixture: pie/lex-yaml-immediate-fence-before-later-closer] A retained
+pre-header block with three adjacent fences is one textBeforeHeader item.
+[fixture: pie/lex-nonleading-yaml-three-adjacent-fences]
 
 Use kind yaml-block for each hidden YAML occurrence and directive for each
 hidden DIRECTIVE occurrence. Empty bodies remain nonempty ignored leaves because

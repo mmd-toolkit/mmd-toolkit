@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/git/gitGraph.spec.ts",
+    "line": 1131,
+    "test": "when parsing a gitGraph > when parsing more advanced gitGraphs > should throw error when try to branch existing branch: testBranch"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to create an existing branch. (Help: Either use a new name if you want create a new branch or try using \"checkout testBranch\")"
+  }
+}

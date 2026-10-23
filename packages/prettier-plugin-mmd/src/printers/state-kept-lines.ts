@@ -1,10 +1,11 @@
-import type { StateStatement } from "@mmd-toolkit/parser"
+import type { Range, StateStatement } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   lineStartOf,
 } from "./kept-lines.ts"
+import { layoutCompactEmptyDescriptionBlock, walk } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { findStructuralToken, isWhitespace } from "./source.ts"
 
@@ -68,9 +69,35 @@ export function findStateKeptLines(source: Source): KeptLines {
  */
 function findLineSeparatorLines(source: Source): ReadonlySet<number> {
   const lines = new Set<number>()
+  const compactedInteriors: Range[] = []
+  // Empty descriptions have no text whose reading a separator can change.
+  // Keep other separators on the same line protected (docs/state.md,
+  // Line separators and Multi-line values).
+  walk(source.root.body, (node) => {
+    if (
+      node.type !== "StateAccDescrBlockStatement" ||
+      node.value !== null ||
+      !node.closed
+    )
+      return
+    const compact = layoutCompactEmptyDescriptionBlock(
+      source,
+      node.range[0],
+      node.range[1],
+    )
+    const opening = compact?.atoms.at(-2)
+    const closing = compact?.atoms.at(-1)
+    if (opening !== undefined && closing !== undefined)
+      compactedInteriors.push([opening.end, closing.start])
+  })
   for (let offset = 0; offset < source.text.length; offset++) {
     const character = source.text[offset]
-    if (character === "\u2028" || character === "\u2029") {
+    if (
+      (character === "\u2028" || character === "\u2029") &&
+      !compactedInteriors.some(
+        ([start, end]) => start <= offset && offset < end,
+      )
+    ) {
       lines.add(lineStartOf(source, offset))
     }
   }

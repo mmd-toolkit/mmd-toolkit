@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A supplied parent must be an immediate parent of the source."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Invalid operation: The specified parent commit is not an immediate parent of the cherry-picked commit."
+  }
+}

@@ -649,9 +649,13 @@ quadrantChart
 
 ### 空の説明ブロック
 
-何も変えない空のブロックは、それ自身が 1 つの文で、
-トークンの間の空白の規則に従います。
-中の空白は、改行を含めて空白 1 つにし、接した括弧は接したままにします。
+何も変えない空のブロックは、それ自身が 1 つの文です。
+内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+囲む空白を要する本文がないためです。
+すでに空の内側は空のままです。
+接した keyword は接したまま、`accDescr{  }` は `accDescr{}` にします。
+[fixture: empty-description-blocks/empty-whitespace-interiors]
+[test: quadrant Unicode and tab interiors]
 指令かコメント行を持つブロックは、書かれたまま印字します。
 ヘッダーの後でも、ほかの文の後でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文の始まりと、文の最後の単位の後です。
@@ -679,7 +683,7 @@ accDescr{ }
 quadrantChart
   accDescr{}
   accDescr {}
-  accDescr{ }
+  accDescr{}
 ```
 
 ### 複数行の文

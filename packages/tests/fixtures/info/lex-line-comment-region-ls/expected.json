@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: line value spans erased comment region with LS retained"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

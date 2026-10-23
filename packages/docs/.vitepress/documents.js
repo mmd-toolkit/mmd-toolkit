@@ -31,7 +31,7 @@ const diagramOrder = [
   "quadrantChart",
   "requirement",
   "usecase",
-  "gitGraph",
+  "gitgraph",
   "c4",
   "mindmap",
   "timeline",

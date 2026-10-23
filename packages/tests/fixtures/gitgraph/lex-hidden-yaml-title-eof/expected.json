@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A fence in TITLE is value text even when the later closer is at EOF."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: ->-<- at offset: 25, skipped 3 characters. Parse error on line 3, column 1: Expecting token of type 'EOF' but found `x`."
+  }
+}

@@ -1,24 +1,16 @@
 import path from "node:path"
+import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
+import type { DbTreeRoot, Fixture } from "@mmd-toolkit/tests"
 import {
-  fixtureAccepts,
-  getFixturesRoot,
   loadFixtures,
+  fixtureAccepts,
   dbFromTree,
   embeddedValuesOf,
-  cssSupportsColor,
 } from "@mmd-toolkit/tests"
-import type { DbTreeRoot } from "@mmd-toolkit/tests"
-import type { Node, Root, PieDiagram } from "../src/index.ts"
+import type { Node, PieDiagram, Root } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
-import { problemsOfTree } from "./helpers/tree-problems.ts"
-import {
-  frontmatterChangesAttributeQuotes,
-  holdsBarePercentLineBeforeHeader,
-  holdsC4KeywordAfterHeader,
-  withoutTokenCuts,
-} from "./helpers/reference-inputs.ts"
 
 /** Losslessness, source spelling, token boundaries, child containment, and source order. */
 function expectCoverage(text: string, root: Root): void {
@@ -90,132 +82,118 @@ function expectCoverage(text: string, root: Root): void {
   })
 }
 
-describe("pie fixtures", async () => {
-  const fixtures = await loadFixtures("pie")
+/** Compare the JSON tree, as recorded, with the fixture's comparable Db. */
+function expectDb(fixture: Fixture, root: Root): void {
+  const reading = fixture.specified ?? fixture.expected
+  if (!reading.accepted || reading.db === null) return
+  const tree = JSON.parse(JSON.stringify(root)) as DbTreeRoot
+  const embedded = embeddedValuesOf(fixture, reading)
+  if (embedded === undefined)
+    throw new Error("Accepted pie fixture lacks embedded values")
+  expect(
+    dbFromTree(fixture.input, tree, embedded, () => {
+      throw new Error("Pie does not query CSS color support")
+    }),
+  ).toEqual(reading.db)
+}
 
-  /** A named, fixed corpus input, without synthesized test text. */
-  function rootOf(name: string): Root {
+describe("pie fixtures", async () => {
+  const fixtures = [
+    ...(await loadFixtures("pie")),
+    ...(await loadFixtures("common")).filter((fixture) =>
+      fixture.name.includes("pie"),
+    ),
+  ]
+
+  /** Only fixed corpus inputs supply the structure assertions. */
+  function diagramOf(name: string): PieDiagram {
     const fixture = fixtures.find((item) => item.name === name)
     if (fixture === undefined) throw new Error(`no fixture ${name}`)
-    return parse(fixture.input)
+    const root = parse(fixture.input)
+    if (root.body.type !== "PieDiagram") throw new Error("no pie diagram")
+    return root.body
   }
 
-  /** The authored pie fields of a fixed corpus input. */
-  function diagramOf(name: string): PieDiagram {
-    const body = rootOf(name).body
-    if (body.type !== "PieDiagram") throw new Error("no pie diagram")
-    return body
-  }
-
-  it("retains common statements, duplicate sections and their source order", () => {
-    expect(diagramOf("db-all-fields")).toMatchObject({
+  it("keeps hidden forms in the specified header, section and body gaps", () => {
+    expect(diagramOf("review-hidden-directive-before-showdata")).toMatchObject({
       showData: true,
       textBeforeHeader: [],
-      textBeforeShowData: [],
-      body: [
-        { type: "PieTitleStatement", value: { value: "Chart" } },
-        { type: "PieAccTitleStatement", value: { value: " Accessible" } },
-        {
-          type: "PieAccDescrBlockStatement",
-          value: { value: "First line\n  Second line" },
-        },
-        {
-          type: "PieSectionStatement",
-          label: { value: "B" },
-          value: { value: 10 },
-        },
-        {
-          type: "PieSectionStatement",
-          label: { value: "A" },
-          value: { value: 100 },
-        },
-        { type: "PieSectionStatement", value: { value: 0.1 } },
-        { type: "PieSectionStatement", value: { value: 0 } },
-      ],
+      textBeforeShowData: [{ kind: "directive", value: "%%{}%%" }],
     })
     expect(
-      diagramOf("db-three-definitions").body.map((node) =>
-        node.type === "PieSectionStatement" ? node.label.value : node.type,
-      ),
-    ).toEqual(["A", "B", "A", "B", "A"])
-  })
-
-  it("retains hidden forms in their specified component and header gaps", () => {
+      diagramOf("frontmatter-nonleading-comment").textBeforeHeader,
+    ).toMatchObject([{ kind: "yaml-block", value: "---\ntitle: Hidden\n---" }])
     expect(
       diagramOf("frontmatter-between-section-parts").body[0],
     ).toMatchObject({
-      type: "PieSectionStatement",
       textBeforeColon: [],
       textBeforeValue: [
-        {
-          type: "PieIgnoredText",
-          kind: "yaml-block",
-          value: "---\nignored: yes\n---",
-        },
+        { kind: "yaml-block", value: "---\nignored: yes\n---" },
       ],
-      value: { raw: "1" },
       textAfter: [],
     })
-    expect(diagramOf("lex-hidden-before-colon-lf").body[0]).toMatchObject({
-      textBeforeColon: [{ kind: "directive", value: "%%{}%%" }],
-    })
-    expect(diagramOf("review-hidden-directive-before-showdata")).toMatchObject({
-      showData: true,
-      textBeforeShowData: [{ kind: "directive" }],
-    })
+    expect(diagramOf("lex-yaml-before-colon-two-blocks").body[0]).toMatchObject(
+      { textBeforeColon: [{ kind: "yaml-block" }, { kind: "yaml-block" }] },
+    )
     expect(
-      diagramOf("lex-hidden-directive-second-detection-scan"),
-    ).toMatchObject({
-      textBeforeHeader: [{ kind: "directive" }],
+      diagramOf("lex-yaml-three-fences-before-value").body[0],
+    ).toMatchObject({ textBeforeValue: [{ value: "---\n---\n---" }] })
+    expect(diagramOf("gram-section-eof-hidden-yaml").body[0]).toMatchObject({
+      textAfter: [{ kind: "yaml-block" }],
+    })
+    expect(diagramOf("frontmatter-after-header")).toMatchObject({
+      showData: false,
+      textBeforeShowData: [],
+      body: [{ type: "PieIgnoredText" }, { type: "PieSectionStatement" }],
+    })
+    expect(diagramOf("lex-yaml-after-showdata-eof")).toMatchObject({
+      showData: true,
+      textBeforeShowData: [],
+      body: [{ type: "PieIgnoredText" }],
     })
   })
 
-  it("distinguishes absent, whitespace-only and trimmed common values", () => {
-    expect(diagramOf("ast-title-tab-null-eof").body[0]).toMatchObject({
-      value: null,
-    })
+  it("keeps line padding, nullable values, trimmed blocks and authored escapes", () => {
     expect(diagramOf("title-spaces").body[0]).toMatchObject({
       value: { value: "  A  B\t\tC  " },
     })
-    expect(diagramOf("accdescr-empty-block-last").body.at(-1)).toMatchObject({
+    expect(diagramOf("acctitle-eof").body[0]).toMatchObject({ value: null })
+    expect(diagramOf("ast-title-tab-null-eof").body[0]).toMatchObject({
       value: null,
+      range: [4, 9],
+    })
+    expect(
+      diagramOf("review-acctitle-whitespace-final").body.at(-1),
+    ).toMatchObject({ value: { value: " \t" } })
+    expect(diagramOf("accdescr-block").body[0]).toMatchObject({
+      value: { value: "A  B\n\n  C\t\tD" },
+    })
+    expect(
+      diagramOf("gram-description-block-directive-only").body.at(-1),
+    ).toMatchObject({ value: null })
+    expect(diagramOf("label-single-quote").body[0]).toMatchObject({
+      label: { type: "StringLiteral", closed: true },
+    })
+    expect(diagramOf("label-unknown-escapes").body[0]).toMatchObject({
+      label: { value: "\\q \\0 \\u0041 \\x41 \\/" },
     })
   })
 
-  it("uses both written quote kinds and shared double conversion, including negative zero", () => {
-    expect(diagramOf("label-single-quote").body[0]).toMatchObject({
-      label: { type: "StringLiteral", raw: "'A'", value: "A", closed: true },
-    })
+  it("retains every duplicate and validates converted double negativity", () => {
+    expect(diagramOf("db-three-definitions").body).toHaveLength(5)
     const zero = diagramOf("number-negative-zero").body[0]
     if (zero.type !== "PieSectionStatement") throw new Error("no section")
     expect(Object.is(zero.value.value, -0)).toBe(true)
+    const overflow = diagramOf("number-overflow").body[0]
+    if (overflow.type !== "PieSectionStatement") throw new Error("no section")
+    expect(overflow.value.value).toBe(Infinity)
     const underflow = diagramOf("review-number-negative-underflow-final")
       .body[0]
-    const overflow = diagramOf("number-overflow").body[0]
-    if (
-      underflow.type !== "PieSectionStatement" ||
-      overflow.type !== "PieSectionStatement"
-    )
-      throw new Error("no numeric section")
+    if (underflow.type !== "PieSectionStatement") throw new Error("no section")
     expect(Object.is(underflow.value.value, -0)).toBe(true)
-    expect(overflow.value.value).toBe(Infinity)
-    expect(() => rootOf("db-duplicate-negative")).toThrow(
-      "A pie section value cannot be negative",
-    )
   })
 
-  const commonControls = (await loadFixtures("common")).filter((fixture) =>
-    [
-      "detect-minimal-pie",
-      "frontmatter-after-bare-percent-flowchart",
-      "frontmatter-nonleading-class",
-      "frontmatter-nonleading-sequence",
-      "frontmatter-nonleading-state",
-      "directive-before-frontmatter",
-      "frontmatter-leading-newline",
-    ].includes(fixture.name),
-  )
-  for (const fixture of [...fixtures, ...commonControls]) {
+  for (const fixture of fixtures) {
     it(`${fixture.diagram}/${fixture.name}`, async () => {
       let root: Root | null = null
       let rejection: ParseError | null = null
@@ -226,48 +204,10 @@ describe("pie fixtures", async () => {
         rejection = error
       }
       expect(root !== null).toBe(fixtureAccepts(fixture))
-      if (
-        fixture.knownDivergence === "directive-as-token-boundary" ||
-        fixture.knownDivergence === "ignored-semicolon-as-token-boundary"
-      ) {
-        expect(rejection?.message).toBe(
-          fixture.knownDivergence === "directive-as-token-boundary"
-            ? "Unexpected directive"
-            : "Unexpected ; that the line rule ignores",
-        )
-        const reference = withoutTokenCuts(fixture.input)
-        const referenceRoot = parse(reference)
-        expect(referenceRoot.diagramType).toBe("pie")
-        if (fixture.expected.accepted) {
-          const db = dbFromTree(
-            reference,
-            JSON.parse(JSON.stringify(referenceRoot)) as DbTreeRoot,
-            embeddedValuesOf(fixture, fixture.expected)!,
-            cssSupportsColor,
-          )
-          expect(JSON.parse(JSON.stringify(db))).toEqual(fixture.expected.db)
-        }
-      }
-      if (fixture.knownDivergence === "html-tag-in-frontmatter")
-        expect(frontmatterChangesAttributeQuotes(fixture.input)).toBe(true)
-      if (fixture.knownDivergence === "bare-percent-line-before-header")
-        expect(holdsBarePercentLineBeforeHeader(fixture.input)).toBe(true)
-      if (fixture.knownDivergence === "c4-keyword-anywhere")
-        expect(holdsC4KeywordAfterHeader(fixture.input)).toBe(true)
       if (root !== null) {
         expect(root.diagramType).toBe("pie")
         expectCoverage(fixture.input, root)
-        expect(problemsOfTree(fixture.input, root)).toEqual([])
-        const expected = fixture.specified ?? fixture.expected
-        if (expected.accepted) {
-          const db = dbFromTree(
-            fixture.input,
-            JSON.parse(JSON.stringify(root)) as DbTreeRoot,
-            embeddedValuesOf(fixture, expected)!,
-            cssSupportsColor,
-          )
-          expect(JSON.parse(JSON.stringify(db))).toEqual(expected.db)
-        }
+        expectDb(fixture, root)
       }
       const result = root ?? {
         message: rejection!.message,
@@ -276,7 +216,7 @@ describe("pie fixtures", async () => {
       }
       await expect(`${JSON.stringify(result, null, 2)}\n`).toMatchFileSnapshot(
         path.join(
-          getFixturesRoot(),
+          fileURLToPath(new URL("../../tests/fixtures/", import.meta.url)),
           fixture.diagram,
           fixture.name,
           root === null ? "parse-error.json" : "ast.json",

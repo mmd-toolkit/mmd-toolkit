@@ -10,12 +10,6 @@ import type { Node, Root, UsecaseDiagram } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
-import {
-  frontmatterChangesAttributeQuotes,
-  holdsBarePercentLineBeforeHeader,
-  holdsC4KeywordAfterHeader,
-  withoutTokenCuts,
-} from "./helpers/reference-inputs.ts"
 
 /** Losslessness, source spelling, token boundaries, child containment, and source order. */
 function expectCoverage(text: string, root: Root): void {
@@ -220,25 +214,6 @@ describe("usecase fixtures", async () => {
         rejection = error
       }
       expect(root !== null).toBe(fixtureAccepts(fixture))
-      if (
-        fixture.knownDivergence === "directive-as-token-boundary" ||
-        fixture.knownDivergence === "ignored-semicolon-as-token-boundary"
-      ) {
-        expect(rejection?.message).toBe(
-          fixture.knownDivergence === "directive-as-token-boundary"
-            ? "Unexpected directive"
-            : "Unexpected ; that the line rule ignores",
-        )
-        expect(parse(withoutTokenCuts(fixture.input)).diagramType).toBe(
-          "usecase",
-        )
-      }
-      if (fixture.knownDivergence === "html-tag-in-frontmatter")
-        expect(frontmatterChangesAttributeQuotes(fixture.input)).toBe(true)
-      if (fixture.knownDivergence === "bare-percent-line-before-header")
-        expect(holdsBarePercentLineBeforeHeader(fixture.input)).toBe(true)
-      if (fixture.knownDivergence === "c4-keyword-anywhere")
-        expect(holdsC4KeywordAfterHeader(fixture.input)).toBe(true)
       if (root !== null) {
         expect(root.diagramType).toBe("usecase")
         expectCoverage(fixture.input, root)

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The flag does not need EOL before the common fragment."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

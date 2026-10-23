@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A common line terminal takes another keyword on its line as text."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -16,6 +16,10 @@ import {
 import { isWhitespace } from "../../src/character-classes.ts"
 import { findDirectives } from "../../src/directives.ts"
 import { exceedsMaxEdges } from "@mmd-toolkit/tests"
+import { detectDiagram } from "../../src/detection.ts"
+import { diagramInputOf, openSource } from "../../src/parse.ts"
+import { readGitgraphDiagram } from "../../src/diagrams/gitgraph/index.ts"
+import { checkGitgraphHistory } from "../../src/diagrams/gitgraph/history.ts"
 import {
   commentsAfterMatchStarts,
   commentsAfterUnits,
@@ -46,12 +50,14 @@ export type Outcome =
     }
 
 /**
- * What `parse()` does with a text, together with the one rejection of
- * mermaid.js that depends on the site configuration `config` and that
- * `parse()` therefore does not make: more Db edges than `maxEdges`
- * (diagrams/flowchart.md, Rejections outside the grammar).
+ * What parse() does under its defaults, with external maxEdges and gitgraph
+ * acceptance settings applied by their holder. A configured gitgraph can
+ * reject a default tree or accept a history rejected under the default name
+ * and escaping settings; neither direction adds configuration to parse().
  */
 export function outcomeOf(text: string, config?: MermaidConfig): Outcome {
+  const gitgraph = configuredGitgraphOutcome(text, config)
+  if (gitgraph !== null) return gitgraph
   try {
     const root = parse(text)
     return exceedsMaxEdges(root, config)
@@ -61,6 +67,41 @@ export function outcomeOf(text: string, config?: MermaidConfig): Outcome {
     if (error instanceof UnsupportedDiagramError) {
       return { kind: "unsupported", diagramType: error.diagramType }
     }
+    if (error instanceof ParseError) return { kind: "reject", at: error.range }
+    throw error
+  }
+}
+
+/** Semantic acceptance conditions: apply only externally held name/escaping settings to the shared source analysis. */
+function configuredGitgraphOutcome(
+  text: string,
+  config: MermaidConfig | undefined,
+): Outcome | null {
+  const graph = config?.gitGraph as
+    Readonly<Record<string, unknown>> | undefined
+  const mainBranchName =
+    typeof graph?.mainBranchName === "string" ? graph.mainBranchName : "main"
+  const escapeHtml =
+    graph?.htmlLabels !== false && graph?.securityLevel !== "loose"
+  if (mainBranchName === "main" && escapeHtml) return null
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "gitGraph") return null
+  try {
+    const { root, decodedValues } = readGitgraphDiagram(
+      diagramInputOf(opened, detection, "gitGraph"),
+    )
+    try {
+      checkGitgraphHistory(root.body, decodedValues, {
+        mainBranchName,
+        escapeHtml,
+      })
+    } catch (error) {
+      if (error instanceof ParseError) return { kind: "reject", at: null }
+      throw error
+    }
+    return { kind: "tree", text, root }
+  } catch (error) {
     if (error instanceof ParseError) return { kind: "reject", at: error.range }
     throw error
   }

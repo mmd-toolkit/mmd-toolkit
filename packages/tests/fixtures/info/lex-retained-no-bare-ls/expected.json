@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: Without a passed bare line retained-prefix Unicode is native text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: -> <- at offset: 13, skipped 1 characters. "
+  }
+}

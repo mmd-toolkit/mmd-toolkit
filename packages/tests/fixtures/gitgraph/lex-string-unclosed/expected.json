@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed double-quoted string rejects at EOF."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->\"<- at offset: 20, skipped 1 characters. Parse error on line 2, column 13: Expecting token of type 'STRING' but found `open`."
+  }
+}

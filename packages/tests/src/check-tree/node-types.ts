@@ -5,6 +5,10 @@
  * made of other nodes and of keywords and punctuation.
  */
 export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "GitgraphLiteral",
+  "GitgraphIgnoredText",
+  "InfoLiteral",
+  "InfoIgnoredText",
   "PieLiteral",
   "PieIgnoredText",
   "UsecaseLabel",
@@ -69,6 +73,27 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
  * one of the two, so that a new node type is classified when it is added.
  */
 export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "GitgraphDiagram",
+  "GitgraphCommitStatement",
+  "GitgraphBranchStatement",
+  "GitgraphCheckoutStatement",
+  "GitgraphMergeStatement",
+  "GitgraphCherryPickStatement",
+  "GitgraphIdOption",
+  "GitgraphMessageOption",
+  "GitgraphTagOption",
+  "GitgraphTypeOption",
+  "GitgraphParentOption",
+  "GitgraphOrderOption",
+  "GitgraphTitleStatement",
+  "GitgraphAccTitleStatement",
+  "GitgraphAccDescrStatement",
+  "GitgraphAccDescrBlockStatement",
+  "InfoDiagram",
+  "InfoTitleStatement",
+  "InfoAccTitleStatement",
+  "InfoAccDescrStatement",
+  "InfoAccDescrBlockStatement",
   "PieDiagram",
   "PieSectionStatement",
   "PieTitleStatement",

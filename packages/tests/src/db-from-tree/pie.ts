@@ -1,3 +1,4 @@
+import { decodedString, commonValue } from "./statement-values.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import { numberOrText } from "../summary-number.ts"
 import type { DbSummary } from "../types.ts"
@@ -5,40 +6,7 @@ import { ConvertedText, readConvertedCharacters } from "./converted-text.ts"
 import type { PieDiagram } from "./pie-tree.ts"
 import { textReplacementOf } from "./text-replacement.ts"
 import type { TreeRoot } from "./tree.ts"
-import { descriptionOf, trimmed } from "./values.ts"
-
-/** Labels: Langium's STRING escape reading, after common source conversion. */
-function decodedLabel(text: string): string {
-  const escapes: Readonly<Record<string, string>> = {
-    b: "\b",
-    f: "\f",
-    n: "\n",
-    r: "\r",
-    t: "\t",
-    v: "\v",
-    "0": "\0",
-  }
-  let decoded = ""
-  for (let at = 0; at < text.length; at++) {
-    const character = text.charAt(at)
-    if (character !== "\\") decoded += character
-    else {
-      const escaped = text.charAt(++at)
-      decoded += escapes[escaped] ?? escaped
-    }
-  }
-  return decoded
-}
-
-/** Final common assignments: the line and block branches of the common converter. */
-function commonValue(text: string, block: boolean): string {
-  if (!block) return trimmed(text).replace(/[\t ]{2,}/gu, " ")
-  return text
-    .replace(/^\s*/gmu, "")
-    .replace(/\s+$/gmu, "")
-    .replace(/[\t ]{2,}/gu, " ")
-    .replace(/[\n\r]{2,}/gu, "\n")
-}
+import { descriptionOf } from "./values.ts"
 
 /** docs/db-from-tree/pie.md: convert, collect sections, then publish final common assignments. */
 export function pieDbOf(
@@ -56,7 +24,7 @@ export function pieDbOf(
   for (const statement of diagram.body) {
     if (statement.type === "PieIgnoredText") continue
     if (statement.type === "PieSectionStatement") {
-      const label = decodedLabel(
+      const label = decodedString(
         text.of([statement.label.range[0] + 1, statement.label.range[1] - 1]),
       )
       const value = Number(text.of(statement.value.range))

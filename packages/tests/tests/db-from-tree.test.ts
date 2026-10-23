@@ -7,6 +7,7 @@ import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DiagramType, Fixture } from "../src/index.ts"
 import {
   embeddedValuesOf,
+  fixtureAccepts,
   getFixturesRoot,
   loadFixtures,
 } from "../src/index.ts"
@@ -19,6 +20,8 @@ const BUILDS_EVERY_DB = 60_000
 const DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "gitgraph",
+  "info",
   "pie",
   "usecase",
   "agentflow",
@@ -88,10 +91,13 @@ describe("dbFromTree", () => {
             continue
           }
           if (!existsSync(fileOf(fixture, AST_FILE))) {
-            // The parser rejects the input on purpose (a known divergence of
-            // the specification) and records the error; anything else is a
-            // fixture that no parser has recorded.
-            if (!existsSync(fileOf(fixture, PARSE_ERROR_FILE))) {
+            // An error record skips this comparison only when the fixture's
+            // mark explicitly asks the specification to reject the input.
+            if (
+              !existsSync(fileOf(fixture, PARSE_ERROR_FILE)) ||
+              fixture.knownDivergence === undefined ||
+              fixtureAccepts(fixture)
+            ) {
               withoutParse.push(name)
             }
             continue

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The style pass acts on description line values with trailing padding."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

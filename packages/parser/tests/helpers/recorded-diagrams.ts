@@ -24,4 +24,6 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "agentflow",
   "usecase",
   "pie",
+  "gitgraph",
+  "info",
 ]

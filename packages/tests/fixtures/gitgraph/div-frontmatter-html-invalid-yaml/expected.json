@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "HTML quote conversion can invalidate otherwise valid quoted YAML."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "bad indentation of a mapping entry (1:19)\n\n 1 | title: '<b class='x'>Front</b>'\n-----------------------^"
+  }
+}

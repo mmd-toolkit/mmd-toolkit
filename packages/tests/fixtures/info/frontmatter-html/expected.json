@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Shared converted frontmatter title does not create info Db state."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "title": "<b class='x'>Front</b> &amp;"
+  }
+}

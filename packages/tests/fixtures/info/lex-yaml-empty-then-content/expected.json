@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: An apparent empty block's first following fence can be body text."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

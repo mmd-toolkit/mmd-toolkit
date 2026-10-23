@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Comparison values apply common.md Entities first: a numeric entity and its literal placeholder compare equal and reject as a duplicate branch (review gg3s-1)."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to create an existing branch. (Help: Either use a new name if you want create a new branch or try using \"checkout aﬂ°°35¶ß\")"
+  }
+}

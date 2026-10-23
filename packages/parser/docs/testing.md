@@ -16,8 +16,8 @@ the sentence of the specification or of the parser's documents that defines it.
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
 `sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
 `mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, `block/`,
-`kanban/`, `c4/`, `venn/`, `ishikawa/`, `agentflow/`, `usecase/`, and `pie/`,
-and checks:
+`kanban/`, `c4/`, `venn/`, `ishikawa/`, `agentflow/`, `usecase/`, `gitgraph/`,
+and `pie/`, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -71,6 +71,15 @@ that goes both ways, the reading of the specification is recorded in the corpus
 (`specified.json`, where it differs from `expected.json`): the acceptance and
 the diagram type that the parser gives are compared with it, and the corpus
 compares it with the Db built from the recorded tree.
+
+The common fixture loop calls `expectDivergenceForm` in
+`tests/helpers/divergence-form.ts` for every supported diagram. That helper
+checks rejecting forms, token-cut reference readings, frontmatter attribute
+quotes, passed bare percent lines and C4 keywords after the header. The
+agentflow, gitgraph, info, Ishikawa, pie, usecase and venn tests share these
+checks through that loop. [fixture: gitgraph/div-directive-in-commit] [fixture:
+gitgraph/div-frontmatter-cross-string-enable] [fixture:
+usecase/div-comment-preheader-bare] [fixture: venn/div-c4-bare-identifier]
 
 - `directive-as-token-boundary`: the parser reads the input without its
   directives and with each `;` that the line rule ignores moved to the end of
@@ -131,9 +140,11 @@ compares it with the Db built from the recorded tree.
 - `bare-percent-line-before-header`: the parser's detection passes a bare `%%`
   line before the header.
 
-A fixture marked `embedded-data-opaque` has no such check: mermaid.js rejects it
-for the content of its embedded data, which the parser does not read, and the
-parser accepts it.
+A fixture marked `embedded-data-opaque` has no content check: the parser does
+not read its embedded data. In gitgraph, embedded configuration can change
+acceptance in either direction; the specified reading decides it. [fixture:
+gitgraph/docs-community-contributing-05cdc44b] [fixture:
+gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
 
 ### Reference inputs
 
@@ -369,9 +380,54 @@ the separate corpus comparisons.
 Pie fixtures are checked and recorded by `tests/pie.test.ts`: specified.json
 takes precedence, opaque-data divergences accept, and other unqualified
 divergence fixtures reject. Accepted trees check source coverage, token and raw
-spelling, node boundaries, child containment and source order, and call the
-corpus tree checker. The recorded Db is compared directly with `dbFromTree`;
-atomic-boundary references are also compared with the original expected Db.
-Structure checks cover hidden-form ownership, common-value padding/nulls, both
-quote kinds and double conversion. `tests/ast-pie-examples.test.ts` checks all
-eight node comment examples.
+spelling, node boundaries, child containment and source order. The recorded Db
+is compared directly with `dbFromTree`; atomic-boundary references are also
+compared with the original expected Db. Structure checks cover hidden-form
+ownership, common-value padding/nulls, both quote kinds and double conversion.
+`tests/ast-pie-examples.test.ts` checks all eight node comment examples.
+
+Info fixtures and common info detection fixtures are checked and recorded by
+`tests/info.test.ts`, using `fixtureAccepts` and the specified reading when
+present. Accepted trees check source coverage, exact token spelling, node
+boundaries, child containment and source order; comparable Db values are checked
+with `dbFromTree` and `embeddedValuesOf`, with opaque cases explicit. The common
+fixture loop independently locates declared atomic cuts in reference tokens and
+compares reference inputs with the original expected Db. [fixture:
+info/div-directive-flag-middle] Structure checks cover all hidden-form owners,
+visible EOL, padding, nulls, repeats and authored quoted text.
+`tests/ast-info-examples.test.ts` checks all seven node comment examples.
+[fixture: info/lex-flag-hidden-two] [fixture: info/lex-hidden-without-flag]
+[fixture: info/lex-hidden-tail-two] [fixture: info/lex-hidden-after-visible-eol]
+[fixture: info/title-tabs] [fixture: info/lex-title-one-tab] [fixture:
+info/accdescr-line-repeat] [fixture: info/title-open-quote] [fixture:
+info/div-frontmatter-invalid-yaml] [fixture: info/div-selected-showinfo]
+[fixture: common/detect-minimal-info]
+
+Gitgraph fixtures and their common detection fixture are checked and recorded by
+`tests/gitgraph.test.ts`. Acceptance uses fixtureAccepts, with comparison Db
+values supplied by dbFromTree and embeddedValuesOf; accepted opaque readings
+remain explicit. Coverage, token/raw spelling, containment, source order and
+node boundaries are checked on accepted trees. The common fixture loop checks
+atomic divergences independently with reference tokens and readings. [fixture:
+gitgraph/gram-all-fields] [fixture: gitgraph/div-directive-in-commit] [fixture:
+gitgraph/div-frontmatter-invalid-yaml] [fixture:
+common/detect-minimal-git-graph]
+
+Records contain the default parse(text) result. The outcomeOf helper applies
+only site settings from fixture.config to the same source analysis, in either
+acceptance direction. [fixture: gitgraph/config-main-branch] [fixture:
+gitgraph/config-gitgraph-html-false] Frontmatter config and init-directive
+arguments remain opaque: they do not change the default initial branch or
+escaping for acceptance. These two fixtures therefore retain their default
+checkout errors and are checked against their specified rejections. [fixture:
+gitgraph/docs-community-contributing-05cdc44b] [fixture:
+gitgraph/docs-syntax-gitgraph-2ea99686]
+
+Conversely, default-accepted histories retain their trees when opaque embedded
+settings make mermaid.js reject them. Their specified readings supply the Db
+comparison. [fixture:
+gitgraph/div-frontmatter-main-branch-checkout-default-accepted] [fixture:
+gitgraph/div-frontmatter-main-branch-duplicate-default-accepted] [fixture:
+gitgraph/div-init-main-branch-duplicate-default-accepted]
+
+`tests/ast-gitgraph-examples.test.ts` checks all eighteen node comment examples.

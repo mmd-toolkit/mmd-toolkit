@@ -17,6 +17,31 @@
  * recorded tree to have a text here.
  */
 export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  GitgraphDiagram: [
+    "gitgraph",
+    "lr",
+    "tb",
+    "bt",
+    "commit",
+    "branch",
+    "checkout",
+    "switch",
+    "merge",
+    "cherry-pick",
+    "id",
+    "msg",
+    "tag",
+    "type",
+    "parent",
+    "order",
+    "normal",
+    "reverse",
+    "highlight",
+    "title",
+    "acctitle",
+    "accdescr",
+  ],
+  InfoDiagram: ["info", "showinfo", "title", "acctitle", "accdescr"],
   PieDiagram: ["pie", "showdata", "title", "acctitle", "accdescr"],
   UsecaseDiagram: [
     "usecase-beta",

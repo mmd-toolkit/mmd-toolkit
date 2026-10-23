@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: passed unclosed percent-brace line is shared Comment"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

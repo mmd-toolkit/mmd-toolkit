@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/git/gitGraph.spec.ts",
+    "line": 1057,
+    "test": "when parsing a gitGraph > when parsing more advanced gitGraphs > should fail cherry-picking of merge commits if the parent of merge commits is not specified"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of cherry-pick: If the source commit is a merge commit, an immediate parent commit must be specified."
+  }
+}

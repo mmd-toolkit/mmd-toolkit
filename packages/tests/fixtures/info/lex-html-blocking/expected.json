@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: cross-fence quote grouping has no syntactic effect"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {},
+  "embedded": {
+    "title": "<a z='"
+  }
+}

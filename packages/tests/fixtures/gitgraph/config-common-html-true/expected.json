@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Root htmlLabels true escapes common strings at an unsupported security level."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "&lt;b&gt;T&lt;/b&gt;",
+    "accTitle": "&lt;i&gt;A&lt;/i&gt;",
+    "accDescr": "&lt;u&gt;D&lt;/u&gt;",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

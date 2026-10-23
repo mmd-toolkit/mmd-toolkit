@@ -203,6 +203,96 @@ export async function resolveEmbeddedData(
   return (await runMermaidWithEmbeddedData(text, options)).embedded
 }
 
+/** Configuration derived by Mermaid before the diagram's statements are read. */
+export type MermaidConfiguration =
+  | {
+      readonly accepted: true
+      readonly config: MermaidConfig
+      readonly title: string | undefined
+    }
+  | Extract<MermaidOutcome, { readonly accepted: false }>
+
+/** The pinned bundle's registry, shared with the public Mermaid entry point. */
+interface MermaidDiagramRegistry {
+  getDiagram(id: string): { parser: { parse: (...args: unknown[]) => unknown } }
+  getDiagramLoader(
+    id: string,
+  ): (() => Promise<{ id: string; diagram: unknown }>) | undefined
+  registerDiagram(id: string, diagram: unknown): void
+}
+
+/**
+ * Reads configuration with Mermaid's own preprocessing, key filtering, secure
+ * filtering and merging. The diagram parser is temporarily a no-op, so opaque
+ * data in statements cannot prevent configuration from being obtained. The
+ * result is the text configuration returned by `mermaid.parse()`, before it is
+ * merged into the site configuration, and the usual converted frontmatter
+ * title. A configuration-derivation failure stays a rejection.
+ *
+ * The pinned bundle keeps its registry in this chunk. Loading its actual
+ * definitions avoids reproducing the configuration pipeline or needing a
+ * separate sample input for every diagram. The parser is restored while this
+ * call still holds the shared queue, including after a rejection.
+ */
+export function readMermaidConfiguration(
+  text: string,
+  options: { readonly config?: MermaidConfig } = {},
+): Promise<MermaidConfiguration> {
+  return enqueue(async () => {
+    checkRunMermaidOptions(options)
+    initialize(options)
+    const id = detectedId(text)
+    // Public preprocessing can detect text that this preliminary detector does
+    // not (for example the `error` diagram with a final comment at EOF). Let
+    // the public entry point handle that case, including init's second scan.
+    if (id === undefined) return readConfigurationAsIs(text)
+    const registry = (await import(
+      pathToFileURL(
+        path.join(
+          path.dirname(mermaidPackageJsonPath),
+          "dist/chunks/mermaid.core/chunk-O7XYJQB3.mjs",
+        ),
+      ).href
+    )) as MermaidDiagramRegistry
+    let definition: ReturnType<MermaidDiagramRegistry["getDiagram"]>
+    try {
+      definition = registry.getDiagram(id)
+    } catch {
+      const loader = registry.getDiagramLoader(id)
+      if (loader === undefined)
+        throw new MermaidEnvironmentError(`no Mermaid loader for ${id}`)
+      const loaded = await loader()
+      registry.registerDiagram(loaded.id, loaded.diagram)
+      definition = registry.getDiagram(id)
+    }
+    const parse = definition.parser.parse
+    definition.parser.parse = () => Promise.resolve(undefined)
+    try {
+      return await readConfigurationAsIs(text)
+    } finally {
+      definition.parser.parse = parse
+    }
+  })
+}
+
+/** Reads the public configuration result; the caller holds the queue. */
+async function readConfigurationAsIs(
+  text: string,
+): Promise<MermaidConfiguration> {
+  try {
+    const result = await mermaid.parse(text)
+    return {
+      accepted: true,
+      config: toJsonObject(result.config),
+      title: extractFrontmatterTitle(text),
+    }
+  } catch (error) {
+    const outcome = rejected(error)
+    if (outcome.accepted) throw new Error("expected a configuration rejection")
+    return outcome
+  }
+}
+
 /**
  * Returns the diagram id mermaid's detectors give `text` (`detectType()`), or
  * `undefined` when none matches. Only detection runs, not the diagram's

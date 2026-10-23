@@ -1372,7 +1372,7 @@ const xychartWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 inside an empty description block",
     "xychart\naccDescr {\u00a0}\n",
-    "xychart\n  accDescr { }\n",
+    "xychart\n  accDescr {}\n",
   ],
 ]
 
@@ -1525,7 +1525,7 @@ const quadrantWhitespaceExamples: readonly (readonly [
   [
     "U+00A0 inside an empty description block",
     "quadrantChart\naccDescr {\u00a0}\n",
-    "quadrantChart\n  accDescr { }\n",
+    "quadrantChart\n  accDescr {}\n",
   ],
   [
     "U+00A0 around the arrow of an axis",
@@ -1657,7 +1657,7 @@ const blockWhitespaceExamples: readonly (readonly [string, string, string])[] =
     [
       "U+00A0 inside an empty description block",
       "block-beta\naccDescr\u00a0{\u00a0}\u00a0a\n",
-      "block-beta\n  accDescr { }\n  a\n",
+      "block-beta\n  accDescr {}\n  a\n",
     ],
     [
       "U+00A0 in a composite head",

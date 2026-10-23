@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: Body-present priority can leave a later unmatched fence."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 6, column 1: unexpected character: ->x<- at offset: 28, skipped 1 characters.\nLexer error on line 7, column 1: unexpected character: ->-<- at offset: 30, skipped 3 characters. "
+  }
+}

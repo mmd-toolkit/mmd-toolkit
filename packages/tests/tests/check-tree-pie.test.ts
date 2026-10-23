@@ -104,6 +104,18 @@ const VALID = [
         return [first]
       }),
   },
+  {
+    name: "negative value left to parser acceptance",
+    built: () => buildPie('pie\n"A":-1', (kit) => [section(kit, '"A"', "-1")]),
+  },
+  {
+    name: "negative duplicate left to parser acceptance",
+    built: () =>
+      buildPie('pie\n"A":1\n"A":-2\n', (kit) => [
+        section(kit, '"A"', "1"),
+        section(kit, '"A"', "-2"),
+      ]),
+  },
   { name: "all fields", built: allFields },
   { name: "empty diagram", built: () => buildPie("pie", () => []) },
   {
@@ -133,6 +145,55 @@ const VALID = [
           beforeColon: () => [ignored(kit, "%%{!}%%", "directive")],
           beforeValue: () => [ignored(kit, "---\nx: [\n---", "yaml-block")],
         }),
+      ]),
+  },
+  {
+    name: "three adjacent YAML fences in one body form",
+    built: () =>
+      buildPie('pie\n---\n---\n---\n"A":1\n', (kit) => [
+        ignored(kit, "---\n---\n---", "yaml-block"),
+        section(kit, '"A"', "1"),
+      ]),
+  },
+  {
+    name: "adjacent YAML fence retained before a later body closer",
+    built: () =>
+      buildPie('pie\n---\n---\nx\n---\n"A":1\n', (kit) => [
+        ignored(kit, "---\n---\nx\n---", "yaml-block"),
+        section(kit, '"A"', "1"),
+      ]),
+  },
+  {
+    name: "three adjacent YAML fences before a section value",
+    built: () =>
+      buildPie('pie\n"A":---\n---\n---\n1\n', (kit) => [
+        section(kit, '"A"', "1", {
+          beforeValue: () => [ignored(kit, "---\n---\n---", "yaml-block")],
+        }),
+      ]),
+  },
+  {
+    name: "empty YAML fallback before a section",
+    built: () =>
+      buildPie('pie\n---\n---\n"A":1\n', (kit) => [
+        ignored(kit, "---\n---", "yaml-block"),
+        section(kit, '"A"', "1"),
+      ]),
+  },
+  {
+    name: "empty YAML fallback at EOF",
+    built: () =>
+      buildPie("pie\n---\n---", (kit) => [
+        ignored(kit, "---\n---", "yaml-block"),
+      ]),
+  },
+  {
+    name: "earliest body-present YAML closer before another nonempty block",
+    built: () =>
+      buildPie('pie\n---\nx\n---\n---\ny\n---\n"A":1\n', (kit) => [
+        ignored(kit, "---\nx\n---", "yaml-block"),
+        ignored(kit, "---\ny\n---", "yaml-block"),
+        section(kit, '"A"', "1"),
       ]),
   },
   { name: "trailing hidden form with spare LF", built: trailingHidden },
@@ -265,6 +326,44 @@ describe("pie trees made by hand", () => {
     )
     expect(checkTree(source, tree)).toEqual([])
   })
+
+  it("passes three adjacent YAML fences in one retained pre-header form", () => {
+    const { source, tree } = preheader(
+      "%% c\n---\n---\n---\npie\n",
+      [["---\n---\n---", "yaml-block"]],
+      "%% c",
+    )
+    expect(checkTree(source, tree)).toEqual([])
+  })
+
+  for (const row of [
+    {
+      name: "three adjacent fences split into an empty block and a stray fence",
+      built: () =>
+        buildPie('pie\n---\n---\n---\n"A":1\n', (kit) => [
+          ignored(kit, "---\n---", "yaml-block"),
+          ignored(kit, "---", "yaml-block"),
+          section(kit, '"A"', "1"),
+        ]),
+    },
+    {
+      name: "an adjacent fence chosen before a later qualifying body closer",
+      built: () =>
+        buildPie('pie\n---\n---\n"A":1\n---\nx\n---\n', (kit) => [
+          ignored(kit, "---\n---", "yaml-block"),
+          section(kit, '"A"', "1"),
+          ignored(kit, "---\nx\n---", "yaml-block"),
+        ]),
+    },
+  ])
+    it(`rejects ${row.name}`, () => {
+      const { source, tree } = row.built()
+      expect(checkTree(source, tree)).toContainEqual({
+        where: "PieIgnoredText at 4-11",
+        message:
+          "the value is not one complete hidden YAML or DIRECTIVE form without its following LF",
+      })
+    })
 
   for (const row of [
     {
@@ -491,7 +590,6 @@ describe("pie trees made by hand", () => {
   })
 
   for (const row of [
-    { source: 'pie\n"A":-1', raw: "-1", message: "negative section" },
     { source: 'pie\n"A":01', raw: "01", message: "pie-number" },
     { source: 'pie\n"A":+1', raw: "+1", message: "pie-number" },
     { source: 'pie\n"A":1e2', raw: "1e2", message: "pie-number" },

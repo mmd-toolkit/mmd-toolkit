@@ -20,6 +20,7 @@ import {
   expectValue,
   keptAsWritten,
   layoutEmptyDescriptionBlock,
+  layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
@@ -240,7 +241,12 @@ export function layoutBlockStatement(
   const start = statement.range[0]
   const end = statement.range[1]
   if (statement.type === "BlockAccDescrBlockStatement") {
-    return layoutEmptyDescriptionBlock(source, start, end)
+    return layoutCompactEmptyDescriptionBlockWithFallback(
+      source,
+      start,
+      end,
+      () => layoutEmptyDescriptionBlock(source, start, end),
+    )
   }
   if (spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)

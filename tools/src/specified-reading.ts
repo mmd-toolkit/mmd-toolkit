@@ -11,7 +11,9 @@ import type {
   MermaidRun,
 } from "../../packages/tests/src/mermaid.ts"
 import {
+  detectDiagramType,
   extractFrontmatterTitle,
+  readMermaidConfiguration,
   runMermaidWithEmbeddedData,
 } from "../../packages/tests/src/mermaid.ts"
 
@@ -66,6 +68,22 @@ const REMOVALS_OF_MARKS: Readonly<
 /** The mark of the divergence that mermaid.js reads the frontmatter of differently. */
 const HTML_TAG_MARK = "html-tag-in-frontmatter"
 
+/** The mark of the divergence about opaque embedded data. */
+const OPAQUE_MARK = "embedded-data-opaque"
+
+/**
+ * Embedded keys used by semantic acceptance conditions, named by
+ * known-divergences/embedded-data-opaque.md. All other text settings remain.
+ */
+const OPAQUE_ACCEPTANCE_KEYS: Readonly<
+  Record<string, readonly (readonly [section: string, key: string])[]>
+> = {
+  gitGraph: [
+    ["gitGraph", "mainBranchName"],
+    ["gitGraph", "htmlLabels"],
+  ],
+}
+
 /** The mark of the divergence about a bare `%%` line before the header. */
 const BARE_PERCENT_MARK = "bare-percent-line-before-header"
 
@@ -98,6 +116,14 @@ const BLANK_LINES_MARK = "blank-line-after-header-or-comments"
  * the Db and `embedded` is Mermaid's converted value in every diagram type,
  * as returned by {@link extractFrontmatterTitle} after `cleanupText`.
  * The configuration keeps the existing Mermaid/reference-run derivation.
+ *
+ * For `embedded-data-opaque`, omit only blocks that reject during Mermaid's
+ * configuration derivation. Other embedded values remain, including Mermaid's
+ * converted frontmatter title. For a diagram with embedded acceptance settings,
+ * remove only its specification-named keys from Mermaid's text configuration.
+ * A reference Db is kept when available. If the same opaque-data rejection
+ * persists, record acceptance with `db: null` and no invented embedded values.
+ * An accepted written input with a rejected reference records that rejection.
  */
 export async function specifiedRunOf(
   input: string,
@@ -124,6 +150,25 @@ export async function specifiedRunOf(
       withoutBlankLinesAfterHeader(input),
       options,
     )
+  }
+  if (knownDivergence === OPAQUE_MARK) {
+    const text = await opaqueReferenceInput(input, config)
+    const reference = await runMermaidWithEmbeddedData(text, options)
+    if (reference.outcome.accepted) return reference
+    const written = await runMermaidWithEmbeddedData(input, options)
+    if (
+      written.outcome.accepted ||
+      written.outcome.error.name !== reference.outcome.error.name ||
+      written.outcome.error.message !== reference.outcome.error.message
+    )
+      return reference
+    const diagramType = await detectDiagramType(text, options)
+    if (diagramType === undefined)
+      throw new Error("cannot detect the diagram of the opaque-data reference")
+    return {
+      outcome: { accepted: true, diagramType, db: null },
+      embedded: undefined,
+    }
   }
   if (knownDivergence !== HTML_TAG_MARK) return undefined
   const reference = await runMermaidWithEmbeddedData(
@@ -156,6 +201,94 @@ export async function specifiedRunOf(
         ? embedded
         : { ...embedded, title },
   }
+}
+
+/** A frontmatter or source directive block's full removal range. */
+type EmbeddedBlock = readonly [start: number, end: number]
+
+/** Finds configuration blocks without interpreting their contents. */
+function embeddedBlocks(text: string): readonly EmbeddedBlock[] {
+  const frontmatter = frontmatterLength(text)
+  const start = frontmatter === 0 ? 0 : lineEnd(text, frontmatter).next
+  return [
+    ...(start === 0 ? [] : [[0, start] as const]),
+    ...scanSource(text, start).directives.map(
+      (directive) => [directive.range[0], directive.scanEnd] as const,
+    ),
+  ]
+}
+
+/** Leaves everything outside the given embedded blocks as written. */
+function withoutBlocks(text: string, blocks: readonly EmbeddedBlock[]): string {
+  let result = ""
+  let at = 0
+  for (const [start, end] of blocks) {
+    result += text.slice(at, start)
+    at = end
+  }
+  return result + text.slice(at)
+}
+
+/**
+ * The opaque-data comparison input. Mermaid itself derives the configuration;
+ * a diagram parser stub keeps statement-data errors out of that derivation.
+ * If derivation fails, take blocks in source order and omit the block whose
+ * addition fails, keeping the preceding valid blocks and testing later ones.
+ * Otherwise every block stays as written.
+ *
+ * Only where acceptance keys occur, put the derived text configuration with
+ * those keys deleted, and the converted title, in a reference frontmatter.
+ * Source directives have already contributed to that configuration and are
+ * removed from its body so that they cannot apply the deleted keys again.
+ * Hidden YAML and all diagram statements stay in place. The resulting input
+ * goes through the ordinary Mermaid runner, including its site configuration.
+ */
+export async function opaqueReferenceInput(
+  input: string,
+  config: MermaidConfig | undefined,
+): Promise<string> {
+  const options = config === undefined ? {} : { config }
+  const blocks = embeddedBlocks(input)
+  if (blocks.length === 0) return input
+  let text = input
+  let reading = await readMermaidConfiguration(text, options)
+  if (!reading.accepted) {
+    const kept = new Set<EmbeddedBlock>()
+    for (const block of blocks) {
+      kept.add(block)
+      const candidate = withoutBlocks(
+        input,
+        blocks.filter((entry) => !kept.has(entry)),
+      )
+      if (!(await readMermaidConfiguration(candidate, options)).accepted)
+        kept.delete(block)
+    }
+    text = withoutBlocks(
+      input,
+      blocks.filter((entry) => !kept.has(entry)),
+    )
+    reading = await readMermaidConfiguration(text, options)
+    if (!reading.accepted)
+      throw new Error(
+        "opaque reference still rejects while deriving configuration",
+      )
+  }
+  const diagramType = await detectDiagramType(text, options)
+  const keys = OPAQUE_ACCEPTANCE_KEYS[diagramType ?? ""] ?? []
+  const textConfig = structuredClone(reading.config)
+  let changed = false
+  for (const [section, key] of keys) {
+    const value = textConfig[section]
+    if (typeof value !== "object" || value === null || Array.isArray(value))
+      continue
+    if (Object.hasOwn(value, key)) {
+      delete (value as Record<string, unknown>)[key]
+      changed = true
+    }
+  }
+  if (!changed) return text
+  const metadata = { title: reading.title, config: textConfig }
+  return `---\n${JSON.stringify(metadata)}\n---\n${withoutBlocks(text, embeddedBlocks(text))}`
 }
 
 /**

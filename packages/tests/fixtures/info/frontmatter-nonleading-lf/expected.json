@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Leading LF exposes a retained YAML block instead of applying its title."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

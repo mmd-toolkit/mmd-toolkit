@@ -52,13 +52,32 @@ describe("fixtureAccepts", async () => {
     ).toBe(false)
   })
 
-  it("accepts opaque embedded data without a comparison reading", () => {
-    expect(
+  it("requires a specified reading for opaque embedded data", () => {
+    expect(() =>
       fixtureAccepts({
         ...rejected,
         knownDivergence: "embedded-data-opaque",
       }),
+    ).toThrow(
+      `${rejected.diagram}/${rejected.name}: embedded-data-opaque requires specified.json`,
+    )
+  })
+
+  it("uses opaque specified acceptance in both directions, including a reading without a Db", () => {
+    expect(
+      fixtureAccepts({
+        ...rejected,
+        knownDivergence: "embedded-data-opaque",
+        specified: { accepted: true, diagramType: "pie", db: null },
+      }),
     ).toBe(true)
+    expect(
+      fixtureAccepts({
+        ...accepted,
+        knownDivergence: "embedded-data-opaque",
+        specified: rejected.expected,
+      }),
+    ).toBe(false)
   })
 
   for (const mark of [

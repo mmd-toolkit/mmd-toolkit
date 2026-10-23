@@ -6,6 +6,8 @@ import { normalizeClass, patchClassDb } from "./class.ts"
 import { normalizeEr } from "./er.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
 import { normalizeGantt, patchGanttDb } from "./gantt.ts"
+import { normalizeGitgraph, patchGitgraphDb } from "./gitgraph.ts"
+import { normalizeInfo } from "./info.ts"
 import { normalizeIshikawa } from "./ishikawa.ts"
 import { normalizeJourney } from "./journey.ts"
 import { normalizeKanban, patchKanbanDb } from "./kanban.ts"
@@ -63,6 +65,8 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["agentflow", normalizeAgentflow],
   ["usecase", normalizeUsecase],
   ["pie", normalizePie],
+  ["gitGraph", normalizeGitgraph],
+  ["info", normalizeInfo],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])
@@ -82,7 +86,9 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
  * - give a stand-in for a browser function the Db calls while mermaid parses
  *   (see `browser-stand-ins.ts`);
  * - record the effect of each `@{ ... }` data block (see `data-blocks.ts`),
- *   for every diagram type whose syntax has data blocks.
+ *   for every diagram type whose syntax has data blocks;
+ * - observe generated-id provenance without changing publication (gitgraph),
+ *   so the normalizer can distinguish generated ids from authored ones.
  */
 export type DbPatch = (prototype: object) => void
 
@@ -110,6 +116,10 @@ const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
   string,
   DbPatchEntry
 >([
+  [
+    "gitGraph",
+    { sampleText: "gitGraph\n", patch: patchGitgraphDb, appliedTo: "object" },
+  ],
   ["agentflow", { sampleText: "agentflow-beta TB\n", patch: patchAgentflowDb }],
   [
     "usecase",

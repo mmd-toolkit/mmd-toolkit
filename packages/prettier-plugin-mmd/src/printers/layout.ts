@@ -201,9 +201,12 @@ export function layoutEmptyDescriptionBlock(
 
 /**
  * A closed empty block without trivia prints `{}`: no text needs surrounding
- * whitespace. Graph, state and ER follow usecase's Db-equal form. Null leaves
+ * whitespace. Every diagram follows the same Db-equal form. Null leaves
  * each caller's previous trivia or nonjoining layout in charge (their rules
  * documents, Accessibility lines or Multi-line values).
+ * A non-null layout ends with two atoms: the opening `{` and closing `}`,
+ * whose ranges are exactly those of the brace tokens. Their intervening gap
+ * is the compacted interior, also used by state-kept-lines.ts.
  */
 export function layoutCompactEmptyDescriptionBlock(
   source: Source,
@@ -228,13 +231,29 @@ export function layoutCompactEmptyDescriptionBlock(
 }
 
 /**
+ * Tries the compact layout of a closed empty description, otherwise builds
+ * its original layout. Keeping the fallback lazy preserves the caller's
+ * trivia and continuation layout without building it for a compact block.
+ */
+export function layoutCompactEmptyDescriptionBlockWithFallback(
+  source: Source,
+  start: number,
+  end: number,
+  originalLayout: () => AtomLayout,
+): AtomLayout {
+  return (
+    layoutCompactEmptyDescriptionBlock(source, start, end) ?? originalLayout()
+  )
+}
+
+/**
  * The layout of an `accDescr { ... }` statement: the lines of its text are
  * kept as written and its `}` stands at the level of the statement (the
- * rules document of the diagram type, Accessibility statements). A block
- * without text is laid out as `layoutEmptyDescriptionBlock` says. The text is
- * a value of `valueTypes`. The block is closed unless the statement says that
- * it is not, as in an XY chart, where a block that is not closed runs to the
- * end of the text and is printed without a `}`.
+ * rules document of the diagram type, Accessibility statements). A closed block
+ * without text prints `{}` unless trivia requires its existing layout. The
+ * text is a value of `valueTypes`. The block is closed unless the statement
+ * says that it is not, as in an XY chart, where a block that is not closed
+ * runs to the end of the text and is printed without a `}`.
  */
 export function layoutDescriptionBlock(
   source: Source,
@@ -246,23 +265,30 @@ export function layoutDescriptionBlock(
   valueTypes: ReadonlySet<Node["type"]>,
   options: {
     readonly keepsTrailingTrivia?: boolean
-    readonly compactEmpty?: boolean
     /** Formats an empty block's tokens and trivia lines, keeping its breaks. */
     readonly formatsEmptyTrivia?: boolean
   } = {},
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.value === null) {
-    if (options.compactEmpty === true && statement.closed !== false) {
-      const compact = layoutCompactEmptyDescriptionBlock(source, start, end)
-      if (compact !== null) return compact
+    /** Keeps the existing empty-block trivia and continuation layout. */
+    function originalLayout(): AtomLayout {
+      return layoutEmptyDescriptionBlock(
+        source,
+        start,
+        end,
+        options.formatsEmptyTrivia,
+      )
     }
-    return layoutEmptyDescriptionBlock(
-      source,
-      start,
-      end,
-      options.formatsEmptyTrivia,
-    )
+
+    return statement.closed !== false
+      ? layoutCompactEmptyDescriptionBlockWithFallback(
+          source,
+          start,
+          end,
+          originalLayout,
+        )
+      : originalLayout()
   }
   const block = {
     range: statement.range,

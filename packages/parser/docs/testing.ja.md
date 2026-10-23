@@ -18,7 +18,7 @@ fixture としてコーパスに足します。
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
 `class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/`、`mindmap/`、
 `timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/`、`kanban/`、`c4/`、
-`venn/`、`ishikawa/`、`agentflow/`、`usecase/`、`pie/` の、
+`venn/`、`ishikawa/`、`agentflow/`、`usecase/`、`gitgraph/`、`pie/` の、
 すべての fixture を parse し、
 次を確かめます。
 
@@ -80,6 +80,18 @@ tests パッケージの `checkTree` と `dbFromTree` が、
 （`specified.json`。`expected.json` と違うときに置かれます）、
 パーサーの受理・拒否と図種をそれと比べ、
 コーパスが、記録した木から組んだ Db とそれを比べます。
+
+共通の fixture ループは、対応するすべての図種で
+`tests/helpers/divergence-form.ts` の expectDivergenceForm を呼びます。
+この関数が拒否する形、トークンを切る形の参照の読み、
+フロントマターの属性の引用符、読み過ごす % だけの行、
+ヘッダーの後の C4 キーワードを確かめ、
+agentflow、gitgraph、info、Ishikawa、pie、usecase、venn のテストは、
+このループでの検査を共有します。
+[fixture: gitgraph/div-directive-in-commit]
+[fixture: gitgraph/div-frontmatter-cross-string-enable]
+[fixture: usecase/div-comment-preheader-bare]
+[fixture: venn/div-c4-bare-identifier]
 
 - `directive-as-token-boundary`:
   ディレクティブを取り除き、行の規則が無視する各 `;` を
@@ -153,9 +165,12 @@ tests パッケージの `checkTree` と `dbFromTree` が、
 - `bare-percent-line-before-header`: パーサーの検出が、
   ヘッダーの前で `%%` だけの行を読んで通り過ぎること。
 
-`embedded-data-opaque` の印の付いた fixture には、この確かめはありません。
-mermaid.js は、パーサーが読まない埋め込みのデータの中身のためにそれを拒否し、
-パーサーはそれを受理します。
+`embedded-data-opaque` の印の付いた fixture では、中身を確かめません。
+パーサーは埋め込みのデータを読まないためです。
+gitgraph では、埋め込みの設定により受理判定がどちらの方向にも変わるため、
+指定の読みで判定します。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
+[fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
 
 ### 参照入力
 
@@ -427,9 +442,63 @@ pie の fixture は `tests/pie.test.ts` が検査し、記録します。
 specified.json を優先し、不透明データの乖離は受理し、
 ほかの指定読みがない乖離 fixture は拒否します。
 受理した木で、ソースの被覆、トークンと raw の綴り、ノード境界、
-子の包含関係とソース順を検査し、コーパスの木の検査器も呼びます。
+子の包含関係とソース順を検査します。
 記録した Db を `dbFromTree` と直接比較します。
 不可分な境界の参照入力も、元の expected Db と比較します。
 構造の検査は隠し形式の所有先、共通値の余白と null、
 両方の引用符、double 変換を扱います。
 `tests/ast-pie-examples.test.ts` は、8 ノードのコメント例を検査します。
+
+info と common の info 検出の fixture は、`tests/info.test.ts` が検査し、
+記録します。
+`fixtureAccepts` を使い、指定読みがあれば優先します。
+受理した木では、文字の被覆、トークンの原文、節点の境界、親子の包含、
+ソース順を検査します。
+比較可能な Db は `dbFromTree` と `embeddedValuesOf` で照合し、
+不透明な場合も明示します。
+共通の fixture ループが、宣言された不可分な形式の分断を、
+参照のトークン内で独立して検出し、参照入力も元の期待 Db と照合します。
+[fixture: info/div-directive-flag-middle]
+構造の検査は隠し形式の全所有先、見える EOL、空白、null、繰り返し、
+記述された引用符付きテキストを対象にします。
+`tests/ast-info-examples.test.ts` は 7 節点のコメント例を検査します。
+[fixture: info/lex-flag-hidden-two] [fixture: info/lex-hidden-without-flag]
+[fixture: info/lex-hidden-tail-two]
+[fixture: info/lex-hidden-after-visible-eol] [fixture: info/title-tabs]
+[fixture: info/lex-title-one-tab] [fixture: info/accdescr-line-repeat]
+[fixture: info/title-open-quote] [fixture: info/div-frontmatter-invalid-yaml]
+[fixture: info/div-selected-showinfo] [fixture: common/detect-minimal-info]
+
+gitgraph と common の検出 fixture は、
+`tests/gitgraph.test.ts` が検査し、記録します。
+受理は fixtureAccepts で決め、比較 Db は
+dbFromTree と embeddedValuesOf で求め、
+受理された不透明な読みは明示的に扱います。
+受理した木では、網羅・トークンと raw の綴り・包含・ソース順・境界を検査します。
+共通の fixture ループが、不可分な項目の差異を、
+参照のトークンと読みで独立して検査します。
+[fixture: gitgraph/gram-all-fields]
+[fixture: gitgraph/div-directive-in-commit]
+[fixture: gitgraph/div-frontmatter-invalid-yaml]
+[fixture: common/detect-minimal-git-graph]
+
+記録は、既定の parse(text) の結果です。
+outcomeOf は同じソース解析に fixture.config のサイト設定だけを適用し、
+受理判定の両方向を扱います。
+[fixture: gitgraph/config-main-branch]
+[fixture: gitgraph/config-gitgraph-html-false]
+フロントマターの config と init ディレクティブの引数は不透明なままで、
+受理判定の初期ブランチと escaping の既定値を変えません。
+したがって次の 2 fixture は、既定の checkout エラーの記録を保ち、
+指定された拒否の読みと比べます。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
+[fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
+
+逆に、不透明な埋め込みの設定により mermaid.js が拒否する履歴でも、
+既定で受理されるものは木を保ちます。
+指定の読みが Db 比較の値を与えます。
+[fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
+[fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
+[fixture: gitgraph/div-init-main-branch-duplicate-default-accepted]
+
+`tests/ast-gitgraph-examples.test.ts` は、18 ノードのコメント例を検査します。

@@ -779,9 +779,13 @@ timeline
 
 ### 空の説明ブロック
 
-何も変えない空のブロックは 1 つの文で、トークンの間の空白の規則に従います。
-中の空白の並びは、改行も含めて空白 1 つにし、
-接している波括弧は接したままにします。
+何も変えない空のブロックは 1 つの文です。
+内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+囲む空白を要する本文がないためです。
+すでに空の内側は空のままです。
+接した keyword は接したまま、`accDescr{  }` は `accDescr{}` にします。
+[fixture: empty-description-blocks/empty-whitespace-interiors]
+[test: timeline Unicode and tab interiors]
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
@@ -807,7 +811,7 @@ accDescr{ }
 timeline
   accDescr{}
   accDescr {}
-  accDescr{ }
+  accDescr{}
 ```
 
 入力
@@ -826,7 +830,7 @@ accDescr {
 
 ```mmd
 timeline
-  accDescr { }
+  accDescr {}
 ```
 
 ### 複数行の文

@@ -32,6 +32,16 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   既知の危険な自動修正: `regexp/no-missing-g-flag` は、
   `new RegExp(re)` を `new RegExp(re, "g")` に書き換えて、元のフラグを落とす。
   `new RegExp(re.source, re.flags)` と書けば報告されない。
+- このリポジトリでの図種の名前（fixture のディレクトリ
+  `packages/tests/fixtures/<図種>/`、文書 `<図種>.md`、モジュール、
+  リンターの規則名の接頭辞 `<図種>-`、fixture の `diagram`）は、
+  小文字の ASCII の英数字を 1 語に続けたものにする。
+  mermaid.js の `gitGraph` は `gitgraph`、`treeView` は `treeview`、
+  `quadrantChart` は `quadrant`。ノード型名はその先頭を大文字にした形
+  （`GitgraphDiagram`）。mermaid.js 自身の綴りは、mermaid.js の本文や値を持つ
+  場所に残す: Mermaid の本文（入力や例の見出し語 `gitGraph`、トークンの
+  文字列）、木と Db の `diagramType`、設定の鍵、mermaid.js のソースのパスと
+  リンク。
 - 不可視文字（U+2028、U+2029、U+00A0、U+FEFF、制御文字）を、
   ソースや文書に実際の文字として書かない。
   エスケープで書き、書き込み後にバイト列で確かめる。

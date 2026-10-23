@@ -533,7 +533,8 @@ HTML ラベルが有効で、`securityLevel` が
 
 ## 確かめ
 
-記録した木の比較には C4、block、kanban、Venn、Agentflow、Usecase、pie と
+記録した木の比較には C4、block、kanban、Venn、Agentflow、Usecase、pie、
+gitgraph、info と
 common の検出例を含み、
 C4 の五つの kind もすべて含みます。
 
@@ -544,6 +545,9 @@ C4 の五つの kind もすべて含みます。
 キーの順は問いません。
 木もパーサーの誤りも記録しない fixture は報告します。
 黙って比べないものはありません。
+Db の比較対象に parser の誤りだけが記録されるときは、
+差異の印の読みが `fixtureAccepts` で拒否になる場合だけ省略します。
+それ以外は報告します。
 失敗は fixture の名前を添えて報告され、
 木に欄がないときは、読み込みの誤りも添えます。
 失敗したとき、誤りは、木か、ここの作り手か、
@@ -560,6 +564,9 @@ fixture がどれかを教えます。
 3. テストを動かす。木で説明される失敗は、木の文書かパーサーの欠けである。
    入力を付けて報告する。
 
-Pie、Venn、Agentflow、Usecase は手作りの木と記録済みの木の両方で検査します。
+Gitgraph、info、pie、Venn、Agentflow、Usecase は、
+手作りの木と記録済みの木の両方で検査します。
+新しい builder は [gitgraph.md](./db-from-tree/gitgraph.md) と
+[info.md](./db-from-tree/info.md) に説明します。
 文字の置換は frontmatter の初期タイトルも含むタイトルだけに適用します。
 [fixture: venn/config-security-other]

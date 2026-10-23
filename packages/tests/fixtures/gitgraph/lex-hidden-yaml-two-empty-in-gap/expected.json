@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gitgraph.md Separate empty YAML blocks in value gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: ->-<- at offset: 31, skipped 3 characters. Parse error on line 5, column 4: Expecting token of type 'STRING' but found `\n`.\nParse error on line 6, column 1: Expecting token of type 'EOF' but found `\"A\"`."
+  }
+}

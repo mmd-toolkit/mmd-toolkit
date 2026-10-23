@@ -278,9 +278,12 @@ agentflow では、字句解析器がコメント行を自分で読むので、
 検出は、ヘッダーの前の先頭以外のフロントマター形のブロックを、
 1 つ通過させる場合があります。
 ブロックは図のテキストのままです。
-pie は隠れた YAML の規則を適用し、ほかの対応するすべての図種は拒否します。
+pie・gitgraph・info は隠れた YAML の規則を適用します。
+以下で引用する拒否例の範囲は、その fixture の図種です。
 共通のフロントマターやトリビアではありません。
 [fixture: pie/frontmatter-nonleading-comment]
+[fixture: gitgraph/lex-yaml-after-comment]
+[fixture: info/frontmatter-nonleading-comment]
 [fixture: pie/lex-yaml-leading-config-not-applied]
 [fixture: common/directive-before-frontmatter]
 [fixture: common/frontmatter-nonleading-sequence]
@@ -536,14 +539,17 @@ mermaid.js が本文をどう読むかは、
 上のフロントマターの形を持つブロックを 1 つ通過させ、後のヘッダーを探します。
 図の字句解析器が読むテキストからブロックを除くわけではありません。
 ブロックの前にトリビアがあると、
-pie は残されたテキストに隠れた YAML の規則を適用します。
-一致すればブロックを PieIgnoredText に持ち、タイトルも設定も適用しません。
-ほかの対応するすべての図種は拒否します。
+pie・gitgraph・info は残されたテキストに隠れた YAML の規則を適用します。
+一致すれば PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText に持ち、
+YAML のタイトルも設定も適用しません。
+以下の拒否例で、ほかのすべての図種の拒否を主張するものではありません。
 先頭の空白、開始の区切りだけのバイトオーダーマーク、コメント行、
 ディレクティブは、この場合を生じさせます。
 両方の区切りで一致するバイトオーダーマークは、
 代わりに本来のフロントマターの規則を満たす場合があります。
 [fixture: pie/frontmatter-nonleading-comment]
+[fixture: gitgraph/lex-yaml-after-comment]
+[fixture: info/frontmatter-nonleading-comment]
 [fixture: pie/lex-yaml-leading-config-not-applied]
 [fixture: pie/lex-yaml-after-leading-lf]
 [fixture: pie/lex-yaml-bom-opening-only]
@@ -1027,8 +1033,10 @@ mermaid.js は、
 その点のブロックが [フロントマター](#フロントマター) の形を満たせば、
 検出は、`%%` だけの行を探す前に、ブロックを 1 回通過させます。
 ブロックは、選んだ図が読む図のテキストのままです。
-pie と拒否する対照例はフロントマターの節にあります。
+pie・gitgraph・info と拒否する対照例はフロントマターの節にあります。
 [fixture: pie/frontmatter-nonleading-comment]
+[fixture: gitgraph/lex-yaml-after-comment]
+[fixture: info/frontmatter-nonleading-comment]
 [fixture: pie/lex-yaml-leading-config-not-applied]
 [fixture: common/directive-before-frontmatter]
 [fixture: common/frontmatter-nonleading-sequence]
@@ -1040,7 +1048,8 @@ pie と拒否する対照例はフロントマターの節にあります。
 またはディレクティブの始まらない `{`（ソースでも、
 下のもう一度の読みでも始まらない）で始まる行です。
 行の残りに何があっても、ヘッダーがあっても、行全体を飛ばします。
-1 行の `%%{ }%% sequenceDiagram` にはヘッダーが残らず、テキストは拒否されます。
+1 行の `%%{ }%% sequenceDiagram` にはヘッダーが残らず、テキストは拒否されます
+。
 この行はコメント行でもディレクティブでもありません
 （[コメント行](#コメント行) を参照）。
 `%%` だけの行の間の空白、行終端、ディレクティブ、コメント領域はトリビアで、
@@ -1062,17 +1071,18 @@ pie と拒否する対照例はフロントマターの節にあります。
 逆の順番なら 1 行目を `%%` だけの行として飛ばし、
 `wrap}%%` にヘッダーが見つからないことになります。
 `%%{`、コメント行、`sequenceDiagram` はそのようなディレクティブを含み、
-このディレクティブはキーワードを名前として、次の行の `A` を引数として取るので、
+このディレクティブはキーワードを名前として、次の行の `A` を引数として取るので
+、
 ヘッダーが残らず、テキストは mermaid.js と同じく拒否されます。
 mermaid.js の 2 回目のディレクティブの走査が、
 同じディレクティブを見つけるからです。
 
 flowchart、sequence、class、state では、
 このディレクティブは木になく、入力を拒否させます。
-pie 以外のほかの対応する図種もすべて、この形を拒否します。
+以下で引用するほかの図種の入力も、この形を拒否します。
 ディレクティブが閉じていてヘッダーが続くとき
 （`%%{`、行 `%%{wrap}%%`、`x}%%flowchart LR`）、検出はヘッダーに届き、
-入力は pie 以外の対応するすべての図種で拒否されます。
+以下で引用する拒否の対照例は、この入力を拒否します。
 mermaid.js と同じで、その字句解析器はヘッダーの前の `%%{` と `x}%%` を
 テキストとして読みます。
 [fixture: flowchart/detect-directive-across-directive]
@@ -1085,13 +1095,17 @@ mermaid.js と同じで、その字句解析器はヘッダーの前の `%%{` �
 [fixture: usecase/detect-directive-second-scan-preheader]
 [fixture: venn/detect-directive-second-scan-preheader]
 
-pie は、検出の 2 回目の走査でだけ見つかるディレクティブを
-隠れた DIRECTIVE として読み、
-textBeforeHeader の PieIgnoredText に持ちます。
+pie・gitgraph・info は、検出の 2 回目の走査でだけ見つかるディレクティブを
+隠れた DIRECTIVE として読み、textBeforeHeader の
+PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText に持ちます。
 `%%{`、`%% gap`、`wrap}%%`、`pie` の各行は受理します。
 閉じの直後に `pie` を接着すると、隠れた形の閉じの境界を満たさず、拒否します。
 [fixture: pie/lex-hidden-directive-second-detection-scan]
 [fixture: pie/lex-hidden-directive-second-detection-scan-glued]
+[fixture: gitgraph/lex-hidden-directive-second-scan]
+[fixture: gitgraph/lex-hidden-directive-second-scan-glued]
+[fixture: info/detect-second-scan-directive]
+[fixture: info/detect-second-scan-glued]
 
 たどり着いた位置で、[detection.ja.md](./detection.ja.md) の検出器を登録順に、
 図のテキスト（[ソースの読み方](#ソースの読み方)）、
@@ -1099,9 +1113,10 @@ textBeforeHeader の PieIgnoredText に持ちます。
 試します。
 条件が最初に成り立った検出器が図種を選びます。
 図の字句解析器は、残したフロントマター形のブロックがあればそれを読み、
-pie は上記の隠れた DIRECTIVE も読みます。
+pie・gitgraph・info は上記の隠れた DIRECTIVE も読みます。
 たどり着いた位置からのテキストも読みます。
-検出が通過させた `%%` だけの行は、ここでは読み直しません。
+検出が通過させた `%%` だけの行と、一緒に通過した空白・改行は、
+ここでは読み直しません。空白と改行は trivia です。
 `%%` だけの行はそれぞれ、どの図種でも、`%%` から行の終わりまでの、
 印 `%%` の図のコメントです。
 mermaid.js はこの行を検出した図の字句解析器で読み、
@@ -1119,101 +1134,61 @@ class はそのような行の後の空白だけの行を `newline` の単位と
 最初の単位がヘッダーでないテキスト（`#` や `;` の行、
 ヘッダーと同じ行の `%%`。これは `%%` だけの行ではありません）も同じです。
 ディレクティブやコメント行がヘッダーを取るテキストも同じです。
-`%%{`、改行、`sequenceDiagram` ではディレクティブがキーワードを名前として取り、
+`%%{`、改行、`sequenceDiagram` ではディレクティブがキーワードを名前として取り
+、
 `%%`、U+2028、`sequenceDiagram` ではコメント行がキーワードを含みます。
 最初の単位がヘッダーの前の空の説明ブロック `accDescr {}` であるテキストも
 同じです。
 [fixture: common/empty]
 [fixture: common/comment-only]
-[fixture:
-common/bare-percent-line-only]
-[fixture:
-common/bare-percent-line-only-with-line-feed]
-[fixture:
-sequence/header-after-indented-bare-percent-line]
-[fixture:
-sequence/header-after-bare-percent-crlf]
-[fixture:
-sequence/header-after-bare-percent-cr]
-[fixture:
-sequence/header-after-bare-percent-lines-with-blank-and-comment]
-[fixture:
-sequence/header-after-bare-percent-lines-with-directive]
-[fixture:
-sequence/header-after-bare-percent-then-directive]
-[fixture:
-sequence/header-after-bare-percent-then-whitespace-line]
-[fixture:
-class/header-after-bare-percent-then-empty-line]
-[fixture:
-class/header-after-bare-percent-then-whitespace-line]
-[fixture:
-sequence/header-after-empty-braces-no-space]
-[fixture:
-sequence/header-after-empty-braces-then-keyword-same-line]
-[fixture:
-sequence/header-after-non-word-brace-then-keyword-same-line]
-[fixture:
-flowchart/header-after-acc-descr-block]
-[fixture:
-sequence/header-after-triple-percent-line]
-[fixture:
-sequence/header-after-percent-joined-by-directive-line]
-[fixture:
-sequence/header-after-empty-braces-line-text]
-[fixture:
-sequence/header-after-non-word-brace-line]
-[fixture:
-class/header-after-non-word-brace-line]
-[fixture:
-state/header-after-empty-braces-line]
-[fixture:
-flowchart/header-after-empty-braces-line]
-[fixture:
-sequence/header-after-unclosed-brace-line]
-[fixture:
-sequence/header-after-unclosed-brace-and-comment-line]
-[fixture:
-common/detect-directive-across-comment-line]
-[fixture:
-common/detect-directive-second-scan-once]
-[fixture:
-sequence/detect-directive-across-comment-line-closed]
-[fixture:
-flowchart/detect-directive-across-directive]
-[fixture:
-sequence/detect-directive-across-directive]
-[fixture:
-class/detect-directive-across-directive]
-[fixture:
-state/detect-directive-across-directive]
-[fixture:
-sequence/header-after-percent-line-separator]
-[fixture:
-sequence/header-after-bare-percent-line]
-[fixture:
-sequence/header-after-empty-braces-line]
-[fixture:
-sequence/header-after-empty-braces-semicolon]
-[fixture:
-sequence/header-after-two-bare-percent-lines]
-[fixture:
-class/header-after-bare-percent-line]
-[fixture:
-class/header-after-empty-braces-line]
-[fixture:
-state/header-after-bare-percent-line]
-[fixture:
-flowchart/header-after-bare-percent-line]
-[fixture:
-sequence/header-after-hash-line]
-[fixture:
-sequence/header-after-semicolon-line]
-[fixture:
-sequence/header-after-bare-percent-on-same-line]
-[fixture:
-class/header-after-hash-line]
-39 個の検出器すべての順序と条件は [detection.ja.md](./detection.ja.md) にあり、
+[fixture: common/bare-percent-line-only]
+[fixture: gitgraph/div-detect-retained-directive-bare-bom]
+[fixture: gitgraph/div-lex-preheader-bare-between-retained-unicode]
+[fixture: common/bare-percent-line-only-with-line-feed]
+[fixture: sequence/header-after-indented-bare-percent-line]
+[fixture: sequence/header-after-bare-percent-crlf]
+[fixture: sequence/header-after-bare-percent-cr]
+[fixture: sequence/header-after-bare-percent-lines-with-blank-and-comment]
+[fixture: sequence/header-after-bare-percent-lines-with-directive]
+[fixture: sequence/header-after-bare-percent-then-directive]
+[fixture: sequence/header-after-bare-percent-then-whitespace-line]
+[fixture: class/header-after-bare-percent-then-empty-line]
+[fixture: class/header-after-bare-percent-then-whitespace-line]
+[fixture: sequence/header-after-empty-braces-no-space]
+[fixture: sequence/header-after-empty-braces-then-keyword-same-line]
+[fixture: sequence/header-after-non-word-brace-then-keyword-same-line]
+[fixture: flowchart/header-after-acc-descr-block]
+[fixture: sequence/header-after-triple-percent-line]
+[fixture: sequence/header-after-percent-joined-by-directive-line]
+[fixture: sequence/header-after-empty-braces-line-text]
+[fixture: sequence/header-after-non-word-brace-line]
+[fixture: class/header-after-non-word-brace-line]
+[fixture: state/header-after-empty-braces-line]
+[fixture: flowchart/header-after-empty-braces-line]
+[fixture: sequence/header-after-unclosed-brace-line]
+[fixture: sequence/header-after-unclosed-brace-and-comment-line]
+[fixture: common/detect-directive-across-comment-line]
+[fixture: common/detect-directive-second-scan-once]
+[fixture: sequence/detect-directive-across-comment-line-closed]
+[fixture: flowchart/detect-directive-across-directive]
+[fixture: sequence/detect-directive-across-directive]
+[fixture: class/detect-directive-across-directive]
+[fixture: state/detect-directive-across-directive]
+[fixture: sequence/header-after-percent-line-separator]
+[fixture: sequence/header-after-bare-percent-line]
+[fixture: sequence/header-after-empty-braces-line]
+[fixture: sequence/header-after-empty-braces-semicolon]
+[fixture: sequence/header-after-two-bare-percent-lines]
+[fixture: class/header-after-bare-percent-line]
+[fixture: class/header-after-empty-braces-line]
+[fixture: state/header-after-bare-percent-line]
+[fixture: flowchart/header-after-bare-percent-line]
+[fixture: sequence/header-after-hash-line]
+[fixture: sequence/header-after-semicolon-line]
+[fixture: sequence/header-after-bare-percent-on-same-line]
+[fixture: class/header-after-hash-line]
+39 個の検出器すべての順序と条件は [detection.ja.md](./detection.ja.md) にあり
+、
 各図の文書はその検出の節で該当する項目を参照します。
 
 検出器が読むのは、キーワードとその次の文字までです。
@@ -1357,7 +1332,9 @@ mermaid.js は、先に書き換えたテキストの上で図種を決めます
 先頭のフロントマターのブロックをもう一度除き、
 ディレクティブをもう一度走査して除き、
 後ろのどこかに改行がある `%%` をその前の空白と行の残りごと除きます
-（[`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73)）。
+（
+[`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73)
+）。
 その後で検出器が残りを見ます。
 C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこにでも探します。
 検出した図の字句解析器は、この最後の除去をしていないテキストを読みます。
@@ -1365,7 +1342,7 @@ C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこ
 `%%` だけの行は、mermaid.js の字句解析器がコメントとして読むところでは
 どちらでもコメントで、そうでないところでだけ両者が分かれます（上の既知の差異）。
 2 回目の走査でだけ見つかるディレクティブは、どちらでも検出が通り過ぎ、
-pie 以外の対応するすべての図種で、どちらでも拒否されます。
+以下で引用する図種の対照例では、どちらでも拒否されます。
 [fixture: flowchart/detect-directive-across-directive]
 [fixture: sequence/detect-directive-across-directive]
 [fixture: class/detect-directive-across-directive]
@@ -1378,9 +1355,9 @@ pie 以外の対応するすべての図種で、どちらでも拒否されま�
 
 一致する先頭以外の `---` ブロックは、どちらでも検出が通過させ、
 選んだ図が読みます。
-pie は隠れた YAML の規則を適用し、
+pie・gitgraph・info は隠れた YAML の規則を適用し、
 一致したブロックを無視するテキストとして持ちます。
-ほかの対応するすべての図種は拒否します。
+以下で引用するほかの図種の対照例は拒否します。
 [フロントマター](#フロントマター) で述べたとおりです。
 [fixture: common/directive-before-frontmatter]
 [fixture: common/frontmatter-indent-mismatch]

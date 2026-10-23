@@ -4,8 +4,9 @@
 [bare-percent-line-before-header.md](./bare-percent-line-before-header.md)
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
-sankey、block、c4、agentflow、usecase、pie。
-この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです。
+sankey、block、c4、agentflow、usecase、pie、gitgraph・info。
+この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです
+。
 
 ## 対象の構文
 
@@ -143,48 +144,47 @@ mermaid.js が入力を拒否し、この仕様は受理します。
       A
     ```
 
-| 例  | mermaid.js                                              | この仕様                            |
-| --- | ------------------------------------------------------- | ----------------------------------- |
-| 1   | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
-| 2   | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
-| 3   | 拒否。`%%` は無視されるテキストで、`{` は何にも合わない | A への遷移を持つ state 図           |
-| 4   | 拒否。空白の行は `newline` の単位                       | クラス A を持つ class 図            |
-| 5   | 拒否。空白の行は `newline` の単位                       | クラス A を持つ class 図            |
-| 6   | 拒否。字句解析器に `%` の規則がない                     | 関係を持つ ER 図                    |
-| 7   | 拒否。字句解析器に `%` の規則がない                     | 実体 A を持つ ER 図                 |
-| 8   | 拒否。改行は `newline` の単位                           | タイトル T を持つガントチャート     |
-| 9   | 拒否。改行は `newline` の単位                           | タスク A を持つユーザージャーニー図 |
-| 10  | 拒否。改行は `newline` の単位                           | 要求 r を持つ要求図                 |
-| 11  | 拒否。改行は `newline` の単位                           | period a を持つ timeline            |
-| 12  | 拒否。`%%` はヘッダーの前の欄                           | a から b へのリンクを持つ sankey 図 |
-| 13  | 拒否。`%%` はヘッダーの前の id                          | ブロック A を持つ block 図          |
-
-[fixture: flowchart/header-after-bare-percent-line]
-[fixture: flowchart/header-after-empty-braces-line]
-[fixture: state/header-after-empty-braces-line]
-[fixture: class/header-after-bare-percent-then-whitespace-line]
-[fixture: class/header-after-empty-braces-then-whitespace-line]
-[fixture: er/header-after-bare-percent-line]
-[fixture: er/header-after-empty-braces-line]
-[fixture: er/header-after-bare-percent-line-and-whitespace-line]
-[fixture: gantt/header-after-bare-percent-line]
-[fixture: gantt/header-after-empty-braces-line]
-[fixture: gantt/header-after-bare-percent-line-and-whitespace-line]
-[fixture: journey/header-after-bare-percent-line]
-[fixture: journey/header-after-empty-braces-line]
-[fixture: journey/header-after-bare-percent-line-and-whitespace-line]
-[fixture: requirement/header-after-bare-percent-line]
-[fixture: requirement/header-after-empty-braces-line]
-[fixture: requirement/header-after-bare-percent-line-and-whitespace-line]
-[fixture: timeline/header-after-bare-percent-line]
-[fixture: timeline/header-after-empty-braces-line]
-[fixture: timeline/header-after-bare-percent-line-and-whitespace-line]
-[fixture: sankey/header-after-bare-percent-line]
-[fixture: sankey/header-after-empty-braces-line]
-[fixture: sankey/header-after-bare-percent-line-and-whitespace-line]
-[fixture: block/div-after-bare-percent-line]
-[fixture: block/div-after-empty-braces-line]
-[fixture: block/div-after-bare-percent-line-and-whitespace-line]
+| 例                                                                        | mermaid.js                                              | この仕様                            |
+| ------------------------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------- |
+| 1                                                                         | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
+| 2                                                                         | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
+| 3                                                                         | 拒否。`%%` は無視されるテキストで、`{` は何にも合わない | A への遷移を持つ state 図           |
+| 4                                                                         | 拒否。空白の行は `newline` の単位                       | クラス A を持つ class 図            |
+| 5                                                                         | 拒否。空白の行は `newline` の単位                       | クラス A を持つ class 図            |
+| 6                                                                         | 拒否。字句解析器に `%` の規則がない                     | 関係を持つ ER 図                    |
+| 7                                                                         | 拒否。字句解析器に `%` の規則がない                     | 実体 A を持つ ER 図                 |
+| 8                                                                         | 拒否。改行は `newline` の単位                           | タイトル T を持つガントチャート     |
+| 9                                                                         | 拒否。改行は `newline` の単位                           | タスク A を持つユーザージャーニー図 |
+| 10                                                                        | 拒否。改行は `newline` の単位                           | 要求 r を持つ要求図                 |
+| 11                                                                        | 拒否。改行は `newline` の単位                           | period a を持つ timeline            |
+| 12                                                                        | 拒否。`%%` はヘッダーの前の欄                           | a から b へのリンクを持つ sankey 図 |
+| 13                                                                        | 拒否。`%%` はヘッダーの前の id                          | ブロック A を持つ block 図          |
+| [fixture: flowchart/header-after-bare-percent-line]                       |
+| [fixture: flowchart/header-after-empty-braces-line]                       |
+| [fixture: state/header-after-empty-braces-line]                           |
+| [fixture: class/header-after-bare-percent-then-whitespace-line]           |
+| [fixture: class/header-after-empty-braces-then-whitespace-line]           |
+| [fixture: er/header-after-bare-percent-line]                              |
+| [fixture: er/header-after-empty-braces-line]                              |
+| [fixture: er/header-after-bare-percent-line-and-whitespace-line]          |
+| [fixture: gantt/header-after-bare-percent-line]                           |
+| [fixture: gantt/header-after-empty-braces-line]                           |
+| [fixture: gantt/header-after-bare-percent-line-and-whitespace-line]       |
+| [fixture: journey/header-after-bare-percent-line]                         |
+| [fixture: journey/header-after-empty-braces-line]                         |
+| [fixture: journey/header-after-bare-percent-line-and-whitespace-line]     |
+| [fixture: requirement/header-after-bare-percent-line]                     |
+| [fixture: requirement/header-after-empty-braces-line]                     |
+| [fixture: requirement/header-after-bare-percent-line-and-whitespace-line] |
+| [fixture: timeline/header-after-bare-percent-line]                        |
+| [fixture: timeline/header-after-empty-braces-line]                        |
+| [fixture: timeline/header-after-bare-percent-line-and-whitespace-line]    |
+| [fixture: sankey/header-after-bare-percent-line]                          |
+| [fixture: sankey/header-after-empty-braces-line]                          |
+| [fixture: sankey/header-after-bare-percent-line-and-whitespace-line]      |
+| [fixture: block/div-after-bare-percent-line]                              |
+| [fixture: block/div-after-empty-braces-line]                              |
+| [fixture: block/div-after-bare-percent-line-and-whitespace-line]          |
 
 隣の形も同じに読まれます。
 flowchart と state では、ディレクティブの始まらない `%%{-x}%%` や `%%{}` の行は
@@ -379,6 +379,35 @@ Mermaid が受理する入力は拒否しません。
 [fixture: pie/lex-preheader-retained-yaml-bare-ascii-line]
 [fixture: pie/lex-preheader-retained-yaml-bare-then-directive-ascii]
 
+### Gitgraph
+
+通過した裸の各行は共有 Comment、一緒に通過した空白は trivia で、
+残した形の後や間でも同じです。
+理由 2 の逆方向として、固有の読み方がそこで拒否する共通の空白を受理します。
+Mermaid が受理する入力を拒否することはありません。
+裸の行を通過していなければ、同じ Unicode の空白も通常の字句規則で拒否します。
+[fixture: gitgraph/div-detect-bare-before-header-ls]
+[fixture: gitgraph/div-detect-bare-nbsp-line]
+[fixture: gitgraph/div-detect-retained-directive-bare-bom]
+[fixture: gitgraph/div-detect-retained-yaml-bare-ls-line]
+[fixture: gitgraph/div-lex-preheader-bare-between-retained-unicode]
+[fixture: gitgraph/detect-bare-before-header-space]
+[fixture: gitgraph/lex-preheader-hidden-no-bare-unicode]
+
+### Info
+
+共有 Comment は通過した裸の行を持ち、共に通した共通の空白はトリビアです。
+既存の逆方向の処理順の規則は、残された形の後や間も含め、Mermaid が通常の読み直
+しで拒否する空白を受理します。Mermaid が受理する入力を拒否しません。ASCII の対
+照例は一致し、裸の行を通さない Unicode の間隔は通常どおり拒否します。
+[fixture: info/div-bare-before-header-bom] [fixture: info/div-bare-line-ls]
+[fixture: info/div-detect-retained-yaml-bare-ls]
+[fixture: info/div-detect-retained-directive-bare-bom]
+[fixture: info/div-detect-yaml-bare-directive]
+[fixture: info/bare-before-header-space] [fixture: info/bare-line-tab]
+[fixture: info/lex-detect-yaml-bare-directive-ascii]
+[fixture: info/lex-retained-no-bare-ls]
+
 ## mermaid.js の文書と issue
 
 - [構文のリファレンス](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
@@ -395,33 +424,33 @@ Mermaid が受理する入力は拒否しません。
 
 - 固定した版の
 
-  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
-  は例を C4 の見出しから始め、
-  その前の `%%` だけの行を説明していません。
-  `mermaid-js/mermaid` の issue と pull request を、
-  2026-10-21 に `C4 comment header in:title,body`、
-  `C4 comment "header" in:title,body`、
-  `C4 "bare" comment in:title,body`、
-  `stripAnyComments in:title,body` で検索したところ、
-  [issue #8196](https://github.com/mermaid-js/mermaid/issues/8196)
-  が見つかりました。
-  この issue は C4 だけを取り上げるものではなく、
-  検出時と前処理時のコメント除去の不一致を記録しています。
-  C4 の見出しの前で、
-  裸のパーセント行にスペースだけの行が続く形についての報告は、
-  見つかりませんでした。
+[C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L7-L17)
+は例を C4 の見出しから始め、
+その前の `%%` だけの行を説明していません。
+`mermaid-js/mermaid` の issue と pull request を、
+2026-10-21 に `C4 comment header in:title,body`、
+`C4 comment "header" in:title,body`、
+`C4 "bare" comment in:title,body`、
+`stripAnyComments in:title,body` で検索したところ、
+[issue #8196](https://github.com/mermaid-js/mermaid/issues/8196)
+が見つかりました。
+この issue は C4 だけを取り上げるものではなく、
+検出時と前処理時のコメント除去の不一致を記録しています。
+C4 の見出しの前で、
+裸のパーセント行にスペースだけの行が続く形についての報告は、
+見つかりませんでした。
 
 - 固定版の
 
-  [Agentflow の宣言の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L98-L108)
-  は図を agentflow-beta で始め、
-  ヘッダー前のディレクティブでない percent と波括弧の行は説明していません。
-  2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
-  `agentflow comment in:title,body` で検索し、
-  コメントを保持する入力を説明する merged の
-  [PR #8073](https://github.com/mermaid-js/mermaid/pull/8073) が見つかりました。
-  Agentflow のヘッダー前の、
-  ディレクティブでない percent と波括弧の行の報告は見つかりませんでした。
+[Agentflow の宣言の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L98-L108)
+は図を agentflow-beta で始め、
+ヘッダー前のディレクティブでない percent と波括弧の行は説明していません。
+2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
+`agentflow comment in:title,body` で検索し、
+コメントを保持する入力を説明する merged の
+[PR #8073](https://github.com/mermaid-js/mermaid/pull/8073) が見つかりました。
+Agentflow のヘッダー前の、
+ディレクティブでない percent と波括弧の行の報告は見つかりませんでした。
 
 - pin の
   [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
@@ -443,3 +472,25 @@ Mermaid が受理する入力は拒否しません。
   [issue #8196](https://github.com/mermaid-js/mermaid/issues/8196)
   は検出と前処理の異なるコメント除去を報告します。
   この場合を pie 固有の欠陥とする保守者の判断を示すものではありません。
+
+gitgraph の
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+は、
+見出しと各コマンドを説明します。
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、
+`gitGraph YAML`、`gitGraph semicolon`、`gitGraph keyword`、
+`gitGraph duplicate`、`gitGraph cherry-pick` で検索しました。
+確認した結果には、この共通の境界を決定するものはありませんでした。
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで
+Status: Approved が付き、
+merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
+重複 ID の警告を加えます。これらから追加の差異は作りません。
+
+- info には専用の構文ページがなく、pin した
+  [構文の参照](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  は図種の宣言と percent コメントを説明します。2026-10-23 に `info showInfo`・
+  `info directive`・`info semicolon`・`info accTitle` で issue と PR を検索しま
+  した。[#7601](https://github.com/mermaid-js/mermaid/issues/7601) は
+  info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
+  検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
+  この節は既存の直接の規則に従います。

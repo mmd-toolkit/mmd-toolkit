@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Well-delimited invalid YAML is not decoded by the hidden terminal."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

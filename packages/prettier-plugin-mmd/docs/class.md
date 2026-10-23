@@ -949,6 +949,13 @@ classDiagram
 
 ### Empty description blocks
 
+The whitespace-only interior of a description block, including tabs, line breaks
+and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
+surround. An already empty interior stays empty. A touching keyword stays
+touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+empty-description-blocks/empty-whitespace-interiors] [test: class Unicode and
+tab interiors] Blocks with comments or directives retain their existing layout.
+
 An empty description block, `accDescr {}`, is a statement when it shares its
 line with another statement or with the header, before it or after it:
 `accDescr {} class A` declares A, and `classDiagram accDescr {}` and
@@ -1001,15 +1008,17 @@ classDiagram accDescr {}
   note for A "x" accDescr {}
 ```
 
-A block written over several lines keeps the statement that follows it on the
-line where the block ends: `accDescr`, a line break, and `{} class A` declares
-A, while with the `class A` on a line of its own the block would stand alone and
-the input would be rejected. [fixture: empty-description-blocks/over-lines-kept]
-[fixture: empty-description-blocks/over-lines-empty-line-kept] [fixture:
+A block written over several lines keeps the statement that follows it beside
+its closing brace. Whitespace-only blocks join onto one line; blocks with a
+comment retain their line breaks: `accDescr`, a line break, and `{} class A`
+declares A, while with the `class A` on a line of its own the block would stand
+alone and the input would be rejected. [fixture:
+empty-description-blocks/over-lines-joined] [fixture:
+empty-description-blocks/over-lines-empty-line-joined] [fixture:
 empty-description-blocks/over-lines-comment-line-kept]
 
 Input
-([empty-description-blocks/over-lines-kept-input.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-kept-input.mmd)):
+([empty-description-blocks/over-lines-joined-input.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-joined-input.mmd)):
 
 ```mmd
 classDiagram
@@ -1020,14 +1029,12 @@ accDescr {
 ```
 
 Output
-([empty-description-blocks/over-lines-kept-output.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-kept-output.mmd)):
+([empty-description-blocks/over-lines-joined-output.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-joined-output.mmd)):
 
 ```mmd
 classDiagram
-  accDescr
-    {} class A
-  accDescr {
-  } class B
+  accDescr {} class A
+  accDescr {} class B
 ```
 
 ### Unclosed backquoted names

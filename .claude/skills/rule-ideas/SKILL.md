@@ -238,6 +238,21 @@ Dropped:
 | In a usecase diagram, a note, a `style`, or a `class` on an id that nothing declares, `o--` or `x--` at the start of a statement, and two quoted labels that give one id                                       | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | In a usecase diagram, a relationship id written twice, an unknown metadata key, a `direction` with other text after it, and an `accDescr` block that no `}` closes                                             | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | In a usecase diagram, a key written twice in a JSON table (the last value is kept)                                                                                                                             | A rule would read the JSON, which waits until after the release, as for the YAML of kanban                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| In a pie chart, an `accDescr {` block that a `}` written later in a text closes (after `accDescr { first`, the lines `"A":1` and `title T}` give the description `first`, `"A":1`, `title T`, and no title)    | No ordinary writing, as in a Gantt chart above: a pie statement holds a `}` only in a text, and without a later `}` mermaid.js rejects the unclosed block (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a pie chart, a YAML block after a comment or after `pie` (its title and its settings are not applied)                                                                                                       | Comes from not knowing the syntax: the frontmatter stands at the start of the text, as the documentation of mermaid.js writes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| In a pie chart, an empty or a punctuation-only directive, as `%%{}%%`, between the parts of a section or after it                                                                                              | Nothing is lost: the sections and the flag are kept (run); where the directive takes the line break that a section needs, mermaid.js rejects the input                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| In a pie chart, `showData` at the end of a title (`title Revenue showData`)                                                                                                                                    | mermaid.js keeps the word as text of the title by its grammar and loses nothing (run); calling it the flag is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| In a pie chart, a value of zero, a value too small to draw, a value with many decimals, and a label that looks like a number                                                                                   | Zero is an amount, which the legend keeps; leaving out a slice below one percent while its legend entry stays is the drawing of mermaid.js, not a mistake of the author (read); values and labels are kept as written (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| In a pie chart, a section or a title on the line of `pie` (`pie "Revenue" : 8`)                                                                                                                                | mermaid.js reads it as written and loses nothing (run); the formatter moves it to a line of its own                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a pie chart, a negative value, the header `pieChart` or `Pie`, `showData` on a line of its own, and an `accDescr` block that no `}` closes                                                                  | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a git graph, an `accDescr {` block that a `}` written later in a text closes (after `accDescr { First`, the line `title Plan {v2}` takes the lines up to it into the description)                           | No ordinary writing, as in a Gantt chart above: a gitgraph statement holds a `}` only in a text, and without a later `}` mermaid.js rejects the unclosed block (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| In a git graph, a message written twice in one `commit` (`commit "First" msg: "Second"`)                                                                                                                       | The drawing shows no message (read in `gitGraphRenderer.ts`), so nothing drawn is lost                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| In a git graph, a tag written twice in one statement, and one tag on two commits                                                                                                                               | Nothing is lost: every tag is kept (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| In a git graph, `checkout` right after `branch`, two branches of one `order`, and a `parent:` that a `cherry-pick` of an ordinary commit does not need                                                         | Nothing is lost (run); a statement that changes nothing is style                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| In a git graph, an id that looks like one that mermaid.js makes (`0-abc1234`)                                                                                                                                  | It is kept as written (run); that a made id may later equal it is no fact of the output                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| In a git graph, a YAML block after a comment or in the body, and an empty or a punctuation-only directive                                                                                                      | As in a pie chart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| In a git graph, a merge of a branch with the same head, two `order` options, a type in lower case or in quotes, a direction after the colon or in the body, and `branch "main"`                                | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a git graph, a branch written twice, a `merge` with the id of an earlier commit, and an `accDescr` block that no `}` closes                                                                                 | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ### Questions for unclear cases
 
@@ -489,7 +504,7 @@ How to check:
    - `pie`, a line break, `"a" : 1` (pie)
    - `journey`, a line break, `title T`, a line break, `section S`, a line
      break, `Task: 5: Me` (journey)
-   - `gitGraph`, a line break, `commit` (gitGraph)
+   - `gitGraph`, a line break, `commit` (gitgraph)
    - `mindmap`, a line break, `root`, a line break, `  A` (mindmap)
    - `timeline`, a line break, `title T`, a line break, `2020 : a` (timeline)
    - `quadrantChart`, a line break, `x-axis Low --> High` (quadrantChart)
@@ -522,7 +537,7 @@ How to check:
        it with `grep -l` for the diagram type id.
    - The lexer rules of a jison diagram are listed as regular expressions of the
      form `/^(?:...)/`, so extract the relevant rules with `grep -o`.
-   - The chunk of a Langium diagram has no jison lexer rules (pie, gitGraph,
+   - The chunk of a Langium diagram has no jison lexer rules (pie, gitgraph,
      info, and architecture had none of that form; run). Comparing acceptance
      and rejection does not tell whether the Db changes, so treat it as
      unchecked.
@@ -762,6 +777,15 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | usecase-no-duplicate-direction            | yes              |                                                                              |
 | usecase-no-duplicate-metadata             | yes              |                                                                              |
 | usecase-no-redefined-class                | yes              |                                                                              |
+| pie-no-duplicate-label                    | yes              |                                                                              |
+| pie-no-duplicate-title                    | yes              |                                                                              |
+| pie-no-duplicate-description              | yes              |                                                                              |
+| pie-no-empty-description-block            | yes              |                                                                              |
+| gitgraph-no-duplicate-option              | yes              |                                                                              |
+| gitgraph-no-redefined-commit              | yes              |                                                                              |
+| gitgraph-no-duplicate-title               | yes              |                                                                              |
+| gitgraph-no-duplicate-description         | yes              |                                                                              |
+| gitgraph-no-empty-description-block       | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -1390,9 +1414,74 @@ guillemets of include and extend.
   takes the last value of each property in it (read in `getCompiledStyles`;
   run), so a style that the later definition drops or changes is lost, and one
   that it adds loses nothing; in a flowchart, a block diagram, and an agentflow,
-  CSS decides instead (see section 2); (2) none: a definition that adds styles
-  or writes them in another order is not reported; (4) write one `classDef` for
-  each class.
+  CSS decides instead (see section 2); property names are compared as written,
+  since the drawing gives a style to the label or to the shape by its written
+  name (read in `styles2String`), and values as CSS reads them, keeping the text
+  of a quoted string (run; both decided on 2026-10-23); (2) none: a definition
+  that adds styles or writes them in another order is not reported; (4) write
+  one `classDef` for each class.
+
+The pie rules have these notes; the searches were "pie duplicate label", "pie
+same label", "pie" with title in titles, "pie accDescr", and "populateCommonDb",
+and found nothing that changes the readings:
+[#6485](https://github.com/mermaid-js/mermaid/pull/6485) (closed, not merged)
+says of the Langium parsers that only the last value of a title is taken, as
+intended. [#7855](https://github.com/mermaid-js/mermaid/pull/7855) (open) moves
+the parser of pie to Chevrotain with values byte for byte equal to the current
+parser; it does not fix the behavior that the rules rely on, so criterion 3 does
+not hold the rules back, and a change that it brings is met when the pinned
+mermaid.js is updated (decided on 2026-10-23).
+
+- pie-no-duplicate-label: (1) a later section of a label is not added, and the
+  slice keeps the value of the first section (read in `addSection`; run); (2)
+  none: a section that gives the value of the first one, as a number, is not
+  reported; (4) give each label one section.
+- pie-no-duplicate-title, pie-no-duplicate-description,
+  pie-no-empty-description-block: the notes of the title, description, and empty
+  block rules above, with what pie reads differently: the parser keeps the last
+  `title`, `accTitle`, and `accDescr`, and `populateCommonDb` sets one only when
+  it is not empty, so an empty one written last leaves the value empty, or gives
+  the title of the frontmatter (run); a comment line in a block is removed, so a
+  block of only a comment line leaves the description empty (run), which is
+  reported by pie-no-duplicate-description after a description and not reported
+  alone, as for usecase; values are compared as the value converter keeps them
+  (read in `valueConverter.ts`; run); the frontmatter is not read, and the title
+  document states what follows from that.
+
+The gitgraph rules have these notes; the searches were "gitGraph duplicate",
+"gitGraph commit id", "gitGraph id", "gitGraph parent", "gitGraph message",
+"gitGraph tag", and "gitGraph title", and found nothing that changes the
+readings: besides #6707 below, the items concern merges (as
+[#7950](https://github.com/mermaid-js/mermaid/pull/7950), open, which adds
+merges of more parents), the layout, and clicks.
+
+- gitgraph-no-duplicate-option: (1) the grammar assigns `id`, `type`, and
+  `parent` one value each, so the last one written is kept, and the earlier one
+  is lost, also where mermaid.js would have rejected it (read in
+  `gitGraph.langium`; run); (2) none: a value given again, a tag, which is
+  added, and a message, which the drawing does not show, are not reported; (4)
+  give each option one value.
+- gitgraph-no-redefined-commit: (1) a later commit of an id takes the place of
+  the earlier one in the order of the commits, and the earlier commit, its tags,
+  and its type are lost, and the parents of the commits change (run); a `commit`
+  with the id of a `merge` replaces the merge (run); mermaid.js writes
+  `Commit ID A already exists` to its log at the level `warn` (read in
+  `commit()`; [#6707](https://github.com/mermaid-js/mermaid/pull/6707), merged,
+  added it to close [#4838](https://github.com/mermaid-js/mermaid/issues/4838),
+  where a repeated id broke the drawing), which the default `logLevel`, `fatal`,
+  does not show, so the input is accepted silently, as for flowchart-no-undef,
+  whose warning [#7441](https://github.com/mermaid-js/mermaid/pull/7441) added
+  (decided on 2026-10-23); the railroad example of the
+  [documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
+  writes `commit id:"Boston"` twice, and the second replaces the first, the
+  behavior that #4838 reported, so it is no way of writing that the
+  documentation shows on purpose; (2) none: the last `id:` of a statement is its
+  id, and an id that mermaid.js makes is not compared; (4) give each commit its
+  own id.
+- gitgraph-no-duplicate-title, gitgraph-no-duplicate-description,
+  gitgraph-no-empty-description-block: the notes of the pie rules above, since
+  gitgraph reads its titles and descriptions in the same way (read in
+  `gitGraphParser.ts`; run).
 
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
@@ -1480,6 +1569,8 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | venn-* (all 6 rules)                    | None for now (2026-10-21; see the end of this section)         |
 | agentflow-* (all 10 rules)              | None for now (2026-10-22; see the end of this section)         |
 | usecase-* (all 7 rules)                 | None for now (2026-10-23; see the end of this section)         |
+| pie-* (all 4 rules)                     | None for now (2026-10-23; see the end of this section)         |
+| gitgraph-* (all 5 rules)                | None for now (2026-10-23; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1578,9 +1669,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 `journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`,
 `sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
 `block-*`, `kanban-*`, `c4-*`, and `venn-*` (2026-10-21), and `agentflow-*` and
-flowchart-no-duplicate-direction (2026-10-22), and `usecase-*` (2026-10-23): the
-rules are implemented without suggestions for now. No suggestion had been
-decided for them or described in their documents, and the one planned for the
-empty block of a sequence diagram rested on generated inputs. Whether they get
-suggestions is decided later, in the form of the flowchart rules, with a fixture
-for each case.
+flowchart-no-duplicate-direction (2026-10-22), and `usecase-*`, `pie-*`, and
+`gitgraph-*` (2026-10-23): the rules are implemented without suggestions for
+now. No suggestion had been decided for them or described in their documents,
+and the one planned for the empty block of a sequence diagram rested on
+generated inputs. Whether they get suggestions is decided later, in the form of
+the flowchart rules, with a fixture for each case.

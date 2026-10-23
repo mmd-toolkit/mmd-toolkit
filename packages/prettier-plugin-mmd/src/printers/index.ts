@@ -20,7 +20,9 @@ import { printSequence } from "./sequence.ts"
 import { printState } from "./state.ts"
 import { printTimeline } from "./timeline.ts"
 import { printXychart } from "./xychart.ts"
-import { printPie, keepsPiePrefix } from "./pie.ts"
+import { gitgraphPrinter } from "./gitgraph.ts"
+import { piePrinter } from "./pie.ts"
+import { infoPrinter } from "./info.ts"
 import type { Source } from "./source.ts"
 import type { RootTextPlan } from "./root.ts"
 import { agentflowTextPlan } from "./agentflow-size.ts"
@@ -39,7 +41,15 @@ export interface DiagramTextRules {
 export const diagramTextRules: Readonly<
   Partial<Record<string, DiagramTextRules>>
 > = {
-  PieDiagram: { keepsCommentLines: false, keepsPrefix: keepsPiePrefix },
+  GitgraphDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: gitgraphPrinter.keepsPrefix,
+  },
+  PieDiagram: { keepsCommentLines: false, keepsPrefix: piePrinter.keepsPrefix },
+  InfoDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: infoPrinter.keepsPrefix,
+  },
   AgentflowDiagram: {
     // Normal-size comments are real text; the size plan retains larger input
     // whole (diagrams/agentflow.md, Preserved comments and the default size limit).
@@ -93,5 +103,7 @@ export const diagramPrinters: Readonly<
   SankeyDiagram: printSankey,
   TimelineDiagram: printTimeline,
   XychartDiagram: printXychart,
-  PieDiagram: printPie,
+  PieDiagram: piePrinter.print,
+  InfoDiagram: infoPrinter.print,
+  GitgraphDiagram: gitgraphPrinter.print,
 }

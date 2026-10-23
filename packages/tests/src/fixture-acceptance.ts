@@ -26,7 +26,7 @@ export const DIVERGENCE_PROPERTIES: ReadonlyMap<string, DivergenceProperties> =
     ],
     [
       "embedded-data-opaque",
-      { direction: "accept", requiresSpecifiedReading: false },
+      { direction: "both", requiresSpecifiedReading: true },
     ],
     [
       "click-reserved-word",

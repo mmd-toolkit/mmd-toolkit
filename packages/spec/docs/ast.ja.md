@@ -275,7 +275,9 @@ mermaid.js はこれらを
 [`IshikawaDiagram`](./ast/ishikawa.ja.md#ishikawadiagram)、
 [`AgentflowDiagram`](./ast/agentflow.ja.md#agentflowdiagram)、
 [`UsecaseDiagram`](./ast/usecase.ja.md#usecasediagram)、
-[`PieDiagram`](./ast/pie.ja.md#piediagram) のどれかです。
+[`PieDiagram`](./ast/pie.ja.md#piediagram)、
+[`GitgraphDiagram`](./ast/gitgraph.ja.md#gitgraphdiagram)、
+[`InfoDiagram`](./ast/info.ja.md#infodiagram) のどれかです。
 
 ## ErrorDiagram
 
@@ -505,3 +507,8 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 文として立つものは `<図種>IgnoredStatement` と名づけ、
 `FlowchartIgnoredText` や `StateIgnoredStatement` がそうです。
 ほかのノードの型の名前は、そのように終わりません。
+
+- [gitgraph](./ast/gitgraph.ja.md): 図種 `gitGraph`。
+  [fixture: gitgraph/header-only]
+
+- [Info](./ast/info.ja.md): 図種 `info`。 [fixture: info/header-lf]

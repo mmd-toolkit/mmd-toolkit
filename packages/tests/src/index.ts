@@ -72,6 +72,8 @@ export type DiagramType =
   | "agentflow"
   | "usecase"
   | "pie"
+  | "gitgraph"
+  | "info"
 
 /**
  * Where a fixture input came from.
@@ -117,12 +119,10 @@ export interface RecordedEmbedded {
   readonly dataBlockEffects?: readonly DataBlockEffect[]
 }
 
-/**
- * What mermaid.js did with the fixture input.
- */
+/** A recorded reading of the fixture input: mermaid's or the specification's. */
 export type Expectation =
   | {
-      /** mermaid.js accepted the input. */
+      /** This recorded reading accepts the input. */
       readonly accepted: true
       /** Diagram id mermaid.js detected, e.g. `flowchart-v2`. */
       readonly diagramType: string
@@ -130,14 +130,15 @@ export type Expectation =
        * Normalized summary of the diagram Db after parsing, or `null` when the
        * diagram type has no normalizer yet (allowed only where
        * {@link allowsUnsummarizedDb} says so). Adding the normalizer later
-       * turns `null` into a summary on regeneration.
+       * turns `null` into a summary on regeneration. In an opaque specified
+       * reading, `null` also means that no comparison Db can be derived.
        */
       readonly db: DbSummary | null
       /** The values derived from the embedded data; see {@link RecordedEmbedded}. */
       readonly embedded?: RecordedEmbedded
     }
   | {
-      /** mermaid.js rejected the input. */
+      /** This recorded reading rejects the input. */
       readonly accepted: false
       readonly error: MermaidError
     }
@@ -159,7 +160,8 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // Embedded data is opaque to the parser: the frontmatter YAML, the contents
   // of directives, and `@{ ... }` data blocks. It neither parses nor validates
   // them. The spec accepts inputs that mermaid rejects because of that data
-  // (invalid YAML, a non-object init, an unknown shape, ...).
+  // (invalid YAML, a non-object init, an unknown shape, ...). Ignoring embedded
+  // configuration can also reject an input mermaid accepts.
   "embedded-data-opaque",
   // HTML tags are found in the text after the frontmatter, not in the
   // frontmatter. mermaid rewrites `="..."` inside tags to `='...'` over the

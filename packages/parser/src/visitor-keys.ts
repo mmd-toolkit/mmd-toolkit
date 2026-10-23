@@ -1,3 +1,5 @@
+import { infoVisitorKeys } from "./visitor-keys/info.ts"
+import { gitgraphVisitorKeys } from "./visitor-keys/gitgraph.ts"
 import { pieVisitorKeys } from "./visitor-keys/pie.ts"
 import { usecaseVisitorKeys } from "./visitor-keys/usecase.ts"
 import { agentflowVisitorKeys } from "./visitor-keys/agentflow.ts"
@@ -61,4 +63,6 @@ export const visitorKeys: VisitorKeys = {
   ...agentflowVisitorKeys,
   ...usecaseVisitorKeys,
   ...pieVisitorKeys,
+  ...gitgraphVisitorKeys,
+  ...infoVisitorKeys,
 }

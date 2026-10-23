@@ -554,11 +554,14 @@ journey
 
 ### Empty description blocks
 
-An empty block, which changes nothing, is a statement of its own and follows the
-rule of whitespace between tokens: a run of whitespace in it, line breaks
-included, becomes one space, and braces that touch keep touching. [fixture:
-empty-description-blocks/inner-whitespace-collapsed] [fixture:
-empty-description-blocks/touching-kept] [fixture:
+An empty block, which changes nothing, is a statement of its own. The
+whitespace-only interior of a description block, including tabs, line breaks and
+Unicode whitespace, prints `{}`: there is no text for interior whitespace to
+surround. An already empty interior stays empty. A touching keyword stays
+touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+empty-description-blocks/empty-whitespace-interiors] [test: journey Unicode and
+tab interiors] [fixture: empty-description-blocks/inner-whitespace-collapsed]
+[fixture: empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] A block with a directive or a
 comment line is printed as written. [fixture:
 empty-description-blocks/with-directive-or-comment-line-kept] It stands on a
@@ -582,7 +585,7 @@ Output
 journey
   accDescr{}
   accDescr {}
-  accDescr{ }
+  accDescr{}
 ```
 
 Input
@@ -601,7 +604,7 @@ Output
 
 ```mmd
 journey
-  accDescr { }
+  accDescr {}
 ```
 
 ### Multi-line statements

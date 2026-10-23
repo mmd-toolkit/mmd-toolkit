@@ -24,7 +24,9 @@ import { sankeyValueNodeTypes } from "../src/printers/sankey-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
 import { timelineValueNodeTypes } from "../src/printers/timeline-layout.ts"
+import { gitgraphValueNodeTypes } from "../src/printers/gitgraph-layout.ts"
 import { pieValueNodeTypes } from "../src/printers/pie-layout.ts"
+import { infoValueNodeTypes } from "../src/printers/info-layout.ts"
 import { xychartValueNodeTypes } from "../src/printers/xychart-layout.ts"
 
 /** The leaf node types that every diagram type shares (ast.md, Shared leaf nodes). */
@@ -48,6 +50,12 @@ interface DiagramValues {
 }
 
 const diagrams: readonly DiagramValues[] = [
+  {
+    prefix: "Info",
+    values: infoValueNodeTypes,
+    notValues: new Set(["Identifier", "StringLiteral", "NumericLiteral"]),
+  },
+  { prefix: "Gitgraph", values: gitgraphValueNodeTypes, notValues: new Set() },
   {
     prefix: "Pie",
     values: pieValueNodeTypes,

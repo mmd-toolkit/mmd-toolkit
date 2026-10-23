@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "JavaScript whitespace before a block brace includes BOM."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

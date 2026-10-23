@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: An empty content line gives the body-present form a closer."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

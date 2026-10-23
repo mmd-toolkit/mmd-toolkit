@@ -248,6 +248,21 @@ description:
 | usecase で、何も宣言しない id へのノート、`style`、`class`、文の先頭の `o--` や `x--`、1 つの id を与える 2 つの引用符付きのラベル                                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | usecase で、2 度書いた関係の id、知らないメタデータのキー、後にほかの文字のある `direction`、どの `}` も閉じない `accDescr` のブロック                                                    | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | usecase で、JSON のテーブルで 2 度書いたキー（最後の値が保たれる）                                                                                                                        | 規則は JSON を読むことになり、カンバンの YAML と同じくリリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| pie で、後でテキストに書いた `}` が閉じる `accDescr {` のブロック（`accDescr { first` の後の行 `"A":1` と `title T}` で、説明が `first`、`"A":1`、`title T` になり、タイトルはない）      | 上の gantt と同じく、普通の書き方ではない。pie の文が `}` を持つのはテキストの中だけで、後に `}` がなければ mermaid.js は閉じないブロックを受理しない（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| pie で、コメントの後や `pie` の後の YAML のブロック（そのタイトルと設定は当てられない）                                                                                                   | 構文を知らないことから来る。mermaid.js の文書が書くとおり、フロントマターはテキストの先頭に置く                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| pie で、区分の部分の間やその後の、`%%{}%%` のような空か記号だけの指示子                                                                                                                   | 何も失われない。区分とフラグは保たれる（実行）。指示子が区分に要る改行を取ると、mermaid.js はその入力を受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| pie で、タイトルの末尾の `showData`（`title Revenue showData`）                                                                                                                           | mermaid.js は文法によりその語をタイトルの文字として保ち、何も失わない（実行）。それをフラグと呼ぶのは推測である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| pie で、0 の値、描くには小さすぎる値、小数の桁の多い値、数に見えるラベル                                                                                                                  | 0 は量であり、凡例はそれを保つ。凡例の項目を残して 1 % 未満の扇形を描かないのは mermaid.js の描画であり、書き手の間違いではない（読んだ）。値とラベルは書いたとおりに保たれる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| pie で、`pie` の行にある区分やタイトル（`pie "Revenue" : 8`）                                                                                                                             | mermaid.js は書いたとおりに読み、何も失わない（実行）。フォーマッターはそれを自分の行に移す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| pie で、負の値、見出しの `pieChart` や `Pie`、自分の行にある `showData`、どの `}` も閉じない `accDescr` のブロック                                                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| gitgraph で、後でテキストに書いた `}` が閉じる `accDescr {` のブロック（`accDescr { First` の後の行 `title Plan {v2}` が、そこまでの行を説明に取る）                                      | 上の gantt と同じく、普通の書き方ではない。gitgraph の文が `}` を持つのはテキストの中だけで、後に `}` がなければ mermaid.js は閉じないブロックを受理しない（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| gitgraph で、1 つの `commit` に 2 度書いたメッセージ（`commit "First" msg: "Second"`）                                                                                                    | 描画はメッセージを示さない（`gitGraphRenderer.ts` を読んだ）ので、描かれるものは何も失われない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| gitgraph で、1 つの文に 2 度書いたタグと、2 つのコミットの同じタグ                                                                                                                        | 何も失われない。すべてのタグが保たれる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| gitgraph で、`branch` の直後の `checkout`、同じ `order` の 2 つのブランチ、普通のコミットの `cherry-pick` が要らない `parent:`                                                            | 何も失われない（実行）。何も変えない文は書き方の好みである                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| gitgraph で、mermaid.js が作る id に見える id（`0-abc1234`）                                                                                                                              | 書いたとおりに保たれる（実行）。作られる id が後でそれと同じになりうることは、出力の事実ではない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| gitgraph で、コメントの後や本体の中の YAML のブロックと、空か記号だけの指示子                                                                                                             | 上の pie と同じ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| gitgraph で、同じ先頭のブランチのマージ、2 つの `order`、小文字や引用符の中の型、コロンの後や本体の中の方向、`branch "main"`                                                              | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| gitgraph で、2 度書いたブランチ、前のコミットの id を持つ `merge`、どの `}` も閉じない `accDescr` のブロック                                                                              | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ### 迷ったときの問い
 
@@ -499,7 +514,7 @@ for (const input of inputs) {
    - `pie`、改行、`"a" : 1`（pie）
    - `journey`、改行、`title T`、改行、`section S`、改行、
      `Task: 5: Me`（journey）
-   - `gitGraph`、改行、`commit`（gitGraph）
+   - `gitGraph`、改行、`commit`（gitgraph）
    - `mindmap`、改行、`root`、改行、`  A`（mindmap）
    - `timeline`、改行、`title T`、改行、`2020 : a`（timeline）
    - `quadrantChart`、改行、`x-axis Low --> High`（quadrantChart）
@@ -529,7 +544,7 @@ for (const input of inputs) {
    - jison の図の字句規則は `/^(?:...)/` の形の正規表現で並んでいるので、
      `grep -o` で該当する規則を抜き出す。
    - Langium の図の chunk には、jison の字句規則がない。
-     pie、gitGraph、info、architecture で、その形の規則が 0 件だった【実行】。
+     pie、gitgraph、info、architecture で、その形の規則が 0 件だった【実行】。
      受理と拒否の比較だけでは Db の変化が分からないので、未確認として扱う。
 5. 例: `%%` だけの行。
    - flowchart-v2 だけが頂点 `%%` を作る【実行】。
@@ -770,6 +785,15 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | usecase-no-duplicate-direction            | 入れる               |                                                                          |
 | usecase-no-duplicate-metadata             | 入れる               |                                                                          |
 | usecase-no-redefined-class                | 入れる               |                                                                          |
+| pie-no-duplicate-label                    | 入れる               |                                                                          |
+| pie-no-duplicate-title                    | 入れる               |                                                                          |
+| pie-no-duplicate-description              | 入れる               |                                                                          |
+| pie-no-empty-description-block            | 入れる               |                                                                          |
+| gitgraph-no-duplicate-option              | 入れる               |                                                                          |
+| gitgraph-no-redefined-commit              | 入れる               |                                                                          |
+| gitgraph-no-duplicate-title               | 入れる               |                                                                          |
+| gitgraph-no-duplicate-description         | 入れる               |                                                                          |
+| gitgraph-no-empty-description-block       | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1579,8 +1603,84 @@ include と extend のギュメに関するものである。
   そのため、後の定義が落とすか変えるスタイルは失われ、
   足すスタイルは何も失わない。
   flowchart、ブロック図、agentflow では、代わりに CSS が決める（2 節を見る）。
+  プロパティの名前は書いたとおりに比べる。
+  描画は書いた名前でスタイルをラベルか図形に与えるからである
+  （`styles2String` を読んだ）。
+  値は CSS が読むとおりに、引用符で囲んだ文字列の文字を保って比べる
+  （実行。どちらも 2026-10-23 に決めた）。
   (2) なし。スタイルを足すか、別の順に書く定義は報告しない。
   (4) クラスごとに `classDef` を 1 つ書く。
+
+pie の規則の注は次のとおりである。
+検索は「pie duplicate label」「pie same label」、題名の「pie」と title、
+「pie accDescr」「populateCommonDb」で、読み方を変えるものはなかった。
+[#6485](https://github.com/mermaid-js/mermaid/pull/6485)（closed、未マージ）は、
+Langium のパーサーではタイトルの最後の値だけを取るのが意図どおりだとしている。
+[#7855](https://github.com/mermaid-js/mermaid/pull/7855)（open）は、
+pie のパーサーを、今のパーサーとバイト単位で同じ値を与える Chevrotain に移す。
+規則が拠る振る舞いを直すものではないので、基準 3 で規則を止めず、
+それがもたらす変化は、固定した mermaid.js を更新するときに扱う
+（2026-10-23 に決めた）。
+
+- pie-no-duplicate-label:
+  (1) ラベルの後の区分は足されず、扇形は最初の区分の値を保つ
+  （`addSection` を読んだ。実行）。
+  (2) なし。最初の区分と数として同じ値を与える区分は報告しない。
+  (4) ラベルごとに区分を 1 つ書く。
+- pie-no-duplicate-title、pie-no-duplicate-description、
+  pie-no-empty-description-block:
+  上のタイトル、説明、空のブロックの規則の注を持ち、
+  pie の読みの違いは次のとおりである。
+  パーサーは最後の `title`、`accTitle`、`accDescr` を保ち、
+  `populateCommonDb` は空でないときだけそれを設定するので、
+  最後に書いた空のものは値を空にするか、
+  フロントマターのタイトルを与える（実行）。
+  ブロックの中のコメント行は取り除かれるので、
+  コメント行だけのブロックは説明を空にする（実行）。
+  それは、usecase と同じく、説明の後では pie-no-duplicate-description が報告し、
+  単独では報告しない。
+  値は値の変換が保つとおりに比べる（`valueConverter.ts` を読んだ。実行）。
+  フロントマターは読まず、そこから来ることはタイトルの文書が述べる。
+
+gitgraph の規則の注は次のとおりである。
+検索は「gitGraph duplicate」「gitGraph commit id」「gitGraph id」
+「gitGraph parent」「gitGraph message」「gitGraph tag」「gitGraph title」で、
+読み方を変えるものはなかった。
+下の #6707 のほかは、マージ（open の
+[#7950](https://github.com/mermaid-js/mermaid/pull/7950) は
+より多くの親を持つマージを足す）、配置、クリックに関するものである。
+
+- gitgraph-no-duplicate-option:
+  (1) 文法は `id`、`type`、`parent` にそれぞれ 1 つの値を当てるので、
+  最後に書いたものが保たれ、前のものは、mermaid.js が受理しなかったはずの
+  値でも失われる（`gitGraph.langium` を読んだ。実行）。
+  (2) なし。もう一度与えた同じ値、足されるタグ、描画が示さないメッセージは
+  報告しない。
+  (4) オプションごとに値を 1 つ与える。
+- gitgraph-no-redefined-commit:
+  (1) id の後のコミットはコミットの順で前のものの場所を取り、
+  前のコミットとそのタグと型は失われ、コミットの親が変わる（実行）。
+  `merge` の id を持つ `commit` はそのマージを置き換える（実行）。
+  mermaid.js は `Commit ID A already exists` をレベル `warn` でログに書く
+  （`commit()` を読んだ。merged の
+  [#6707](https://github.com/mermaid-js/mermaid/pull/6707) が、
+  繰り返した id が描画を壊した
+  [#4838](https://github.com/mermaid-js/mermaid/issues/4838) を閉じるために
+  足した）。
+  既定の `logLevel` の `fatal` はそれを示さないので、
+  その入力は黙って受理される。
+  [#7441](https://github.com/mermaid-js/mermaid/pull/7441) が警告を足した
+  flowchart-no-undef と同じである（2026-10-23 に決めた）。
+  [文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md#L481-L500)
+  の鉄道の例は `commit id:"Boston"` を 2 度書き、2 つ目が 1 つ目を置き換える。
+  これは #4838 が報告した振る舞いであり、文書が意図して示す書き方ではない。
+  (2) なし。文の最後の `id:` がその id であり、
+  mermaid.js が作る id は比べない。
+  (4) コミットごとに自分の id を与える。
+- gitgraph-no-duplicate-title、gitgraph-no-duplicate-description、
+  gitgraph-no-empty-description-block:
+  gitgraph はタイトルと説明を同じに読むので、上の pie の規則の注を持つ
+  （`gitGraphParser.ts` を読んだ。実行）。
 
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
@@ -1674,6 +1774,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | venn-*（6 件すべて）                    | いまはなし（2026-10-21。この節の終わりを見る）   |
 | agentflow-*（10 件すべて）              | いまはなし（2026-10-22。この節の終わりを見る）   |
 | usecase-*（7 件すべて）                 | いまはなし（2026-10-23。この節の終わりを見る）   |
+| pie-*（4 件すべて）                     | いまはなし（2026-10-23。この節の終わりを見る）   |
+| gitgraph-*（5 件すべて）                | いまはなし（2026-10-23。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1800,7 +1902,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `quadrant-*`（2026-10-16）と
 `block-*`、`kanban-*`、`c4-*`、`venn-*`（2026-10-21）と
 `agentflow-*` と flowchart-no-duplicate-direction（2026-10-22）と
-`usecase-*`（2026-10-23）:
+`usecase-*` と `pie-*` と `gitgraph-*`（2026-10-23）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

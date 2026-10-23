@@ -1,11 +1,13 @@
 /**
  * Runs the formatter over every input of the conformance corpus that it
- * formats, and checks the guarantees that hold for any input: formatting
- * again changes nothing, the embedded data is as written (see
- * `writtenEmbeddedTexts`), and the Db that the tree of the formatted text
- * denotes is the Db that the corpus records for the input, as mermaid.js reads
- * it as the specification does. The formatted texts are not stored; the
- * fixtures under `tests/fixtures/` show the formatting itself.
+ * formats, and checks the guarantees that hold for any input: formatting again
+ * changes nothing, source comparison ignores frontmatter and whitespace and
+ * allows only semicolon removals, and the embedded data is as written (see
+ * `writtenEmbeddedTexts`).
+ * The Db that the tree of the formatted text denotes is the Db that the corpus
+ * records for the input, as mermaid.js reads it as the specification does. The
+ * formatted texts are not stored; the fixtures under `tests/fixtures/` show the
+ * formatting itself.
  */
 import { describe, expect, it } from "vitest"
 import type { Fixture } from "@mmd-toolkit/tests"
@@ -16,6 +18,7 @@ import {
   dbOfText,
   describeFrontmatterChange,
   writtenEmbeddedTexts,
+  writtenTextKeptUpToSemicolons,
 } from "./db-reading.ts"
 
 /**
@@ -82,6 +85,8 @@ const allFixtures = [
   ...(await loadFixtures("ishikawa")),
   ...(await loadFixtures("usecase")),
   ...(await loadFixtures("pie")),
+  ...(await loadFixtures("info")),
+  ...(await loadFixtures("gitgraph")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)
@@ -104,6 +109,7 @@ describe("the conformance corpus", () => {
       writtenEmbeddedTexts(input),
     )
     expect(await describeFrontmatterChange(input, formatted)).toBeNull()
+    expect(writtenTextKeptUpToSemicolons(input, formatted), output).toBe(true)
     const recorded = fixture.specified ?? fixture.expected
     const embedded = embeddedValuesOf(fixture)
     if (!recorded.accepted || recorded.db === null || embedded === undefined)

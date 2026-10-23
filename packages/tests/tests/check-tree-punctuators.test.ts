@@ -12,6 +12,7 @@ import { KANBAN_OPENERS, KANBAN_CLOSERS } from "../src/check-tree/kanban.ts"
 import { PUNCTUATOR_TEXTS } from "../src/check-tree/punctuators.ts"
 import type { TreeProblem } from "../src/check-tree/types.ts"
 import { handMadeRoot } from "./check-tree-trees.ts"
+import { readTokenKindRow } from "./spec-field-tables.ts"
 
 // The table of the texts of the `Punctuator` tokens (`src/check-tree/
 // punctuators.ts`) is a copy of the row `Punctuator` of the table of Tokens of
@@ -34,20 +35,11 @@ function spansOf(line: string): string[] {
   return spans
 }
 
-/** The line of the document `file` that starts with `start`. */
-function lineStartingWith(file: string, start: string): string {
-  const line = readFileSync(file, "utf8")
-    .split("\n")
-    .find((candidate) => candidate.startsWith(start))
-  if (line === undefined) throw new Error(`no line ${start} in ${file}`)
-  return line
-}
-
 /** The texts that a row of the table of Tokens gives, leaving out the names of units, which have letters, and the quotes around a text. */
 function textsOfRow(diagram: string): string[] {
-  const row = lineStartingWith(
+  const row = readTokenKindRow(
     path.join(TOKEN_DOCUMENTS, `${diagram}.md`),
-    "| `Punctuator`",
+    "Punctuator",
   )
   return spansOf(row)
     .map((span) =>
@@ -61,6 +53,8 @@ function textsOfRow(diagram: string): string[] {
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [string, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["gitgraph", "GitgraphDiagram"],
+  ["info", "InfoDiagram"],
   ["pie", "PieDiagram"],
   ["usecase", "UsecaseDiagram"],
   ["agentflow", "AgentflowDiagram"],
@@ -89,6 +83,8 @@ const DIAGRAMS: readonly [string, string][] = [
  */
 function textsBesidesTheRow(diagram: string): string[] {
   switch (diagram) {
+    case "gitgraph":
+    case "info":
     case "pie":
       return [":", "{", "}"]
     // The row names the shapes by their rule, and the `data-start` unit,

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS splits a style segment inside a description block."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

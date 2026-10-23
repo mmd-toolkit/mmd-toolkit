@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Two branches sharing HEAD cannot be merged."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Cannot merge branch 'main' into itself."
+  }
+}

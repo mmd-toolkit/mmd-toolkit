@@ -43,9 +43,9 @@ diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 (`requirement`), the mindmap (`mindmap`), the timeline (`timeline`), the sankey
 diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
 (`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
-C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`), and
-usecase (`usecase`), and pie (`pie`). Every other detected type throws
-`UnsupportedDiagramError`.
+C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`),
+usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), and info (`info`).
+Every other detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -70,7 +70,9 @@ The parser of each diagram follows its document,
 [`diagrams/ishikawa.md`](../../spec/docs/diagrams/ishikawa.md), or
 [`diagrams/agentflow.md`](../../spec/docs/diagrams/agentflow.md), or
 [`diagrams/usecase.md`](../../spec/docs/diagrams/usecase.md), or
-[`diagrams/pie.md`](../../spec/docs/diagrams/pie.md). It has three parts:
+[`diagrams/pie.md`](../../spec/docs/diagrams/pie.md), or
+[`diagrams/gitgraph.md`](../../spec/docs/diagrams/gitgraph.md). It has three
+parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -209,3 +211,23 @@ pie also reads second-scan directives; detection's bare lines remain comments.
 pie/lex-hidden-before-colon-lf] [fixture:
 pie/review-hidden-directive-after-title] [fixture: pie/number-negative]
 [fixture: pie/number-negative-zero]
+
+The info lexer follows the
+[ordered rules](../../spec/docs/diagrams/info.md#ordered-rules), then recursive
+descent retains common statements and hidden forms in the
+[specified gaps](../../spec/docs/ast/info.md#nodes); detection leaves retained
+pre-header forms to that lexer and passes bare-line trivia only once. [fixture:
+info/common-all] [fixture: info/lex-flag-hidden-two] [fixture:
+info/div-detect-yaml-bare-directive]
+
+The gitgraph grammar retains decoded comparison values from its lexical units
+separately from written leaves. After common token checks, history validation
+applies the specification's default comparison spelling and source-ordered
+branch, HEAD, identity, replacement and immediate-parent rules. The internal
+source analysis is also used by tests that hold external configuration; the
+public parse(text) API still has no configuration parameter. [fixture:
+gitgraph/db-compare-escape-once] [fixture:
+gitgraph/db-state-replacement-source-origin] [fixture:
+gitgraph/db-state-empty-ids-are-fresh] [fixture:
+gitgraph/db-cherry-pick-invalid-parent] [fixture:
+gitgraph/docs-community-contributing-05cdc44b]

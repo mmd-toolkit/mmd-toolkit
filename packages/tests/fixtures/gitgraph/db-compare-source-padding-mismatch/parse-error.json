@@ -1,0 +1,17 @@
+{
+  "message": "A cherry-pick source id must name a commit",
+  "range": [
+    77,
+    80
+  ],
+  "loc": {
+    "start": {
+      "line": 6,
+      "column": 15
+    },
+    "end": {
+      "line": 6,
+      "column": 18
+    }
+  }
+}

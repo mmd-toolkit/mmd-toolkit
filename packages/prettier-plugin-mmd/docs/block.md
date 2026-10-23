@@ -757,14 +757,17 @@ block-beta
 
 ### Empty description blocks
 
-An empty block, which changes nothing, is a statement of its own and follows the
-rule of whitespace between tokens: a run of whitespace in it, line breaks
-included, becomes one space, and braces that touch keep touching. A block with a
-directive or a comment line is printed as written. It stands on a line of its
-own, also after the header and between two nodes, where the grammar takes it:
-mermaid.js reads it as nothing wherever it stands, and the grammar takes it
-where a statement starts. [fixture:
-empty-description-blocks/whitespace-becomes-one-space] [fixture:
+An empty block, which changes nothing, is a statement of its own. The
+whitespace-only interior of a description block, including tabs, line breaks and
+Unicode whitespace, prints `{}`: there is no text for interior whitespace to
+surround. An already empty interior stays empty. A touching keyword stays
+touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+empty-description-blocks/empty-whitespace-interiors] [test: block Unicode and
+tab interiors] A block with a directive or a comment line is printed as written.
+It stands on a line of its own, also after the header and between two nodes,
+where the grammar takes it: mermaid.js reads it as nothing wherever it stands,
+and the grammar takes it where a statement starts. [fixture:
+empty-description-blocks/whitespace-removed] [fixture:
 empty-description-blocks/braces-touching-kept] [fixture:
 empty-description-blocks/line-break-inside-joined] [fixture:
 empty-description-blocks/between-two-nodes] [fixture:
@@ -775,7 +778,7 @@ empty-description-blocks/in-a-composite] [fixture:
 empty-description-blocks/empty-line-inside-joined]
 
 Input
-([empty-description-blocks/whitespace-becomes-one-space-input.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-becomes-one-space-input.mmd)):
+([empty-description-blocks/whitespace-removed-input.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-input.mmd)):
 
 ```mmd
 block-beta
@@ -783,11 +786,11 @@ accDescr {   } a
 ```
 
 Output
-([empty-description-blocks/whitespace-becomes-one-space-output.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-becomes-one-space-output.mmd)):
+([empty-description-blocks/whitespace-removed-output.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-output.mmd)):
 
 ```mmd
 block-beta
-  accDescr { }
+  accDescr {}
   a
 ```
 

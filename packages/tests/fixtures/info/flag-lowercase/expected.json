@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The flag with a lowercase second word."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 6: unexpected character: ->s<- at offset: 5, skipped 4 characters. Parse error on line 1, column 10: Expecting end of file but found `info`."
+  }
+}

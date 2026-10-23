@@ -388,17 +388,62 @@ mindmap/db-whitespace-line-after-header] [fixture:
 mindmap/db-directive-between-header-and-first-node] The other marks need no such
 file: the specification rejects what mermaid.js accepts
 (`directive-as-token-boundary`, `ignored-semicolon-as-token-boundary`,
-`click-reserved-word`, `tokenless-empty-forms`, `headerless-empty-ending`), or
-accepts what it rejects (`embedded-data-opaque`). None of them has a removal
-here, so mermaid.js is not run to read the input as the specification does, and
-what the specification gives is stated by the document of the divergence in
-[known-divergences](../../spec/docs/known-divergences.md).
+`click-reserved-word`, `tokenless-empty-forms`, `headerless-empty-ending`). None
+of them has a removal here, so mermaid.js is not run to read the input as the
+specification does, and what the specification gives is stated by the document
+of the divergence in [known-divergences](../../spec/docs/known-divergences.md).
 
-Frontmatter YAML that becomes invalid after HTML attribute-quote conversion has
-the same `embedded-data-opaque` treatment: `specifiedRunOf` returns `undefined`
-without deriving another Db, and the generator writes no `specified.json`.
-[fixture: usecase/div-gram-frontmatter-html-attribute-quotes] [fixture:
-pie/div-review-frontmatter-html-invalid-yaml]
+`embedded-data-opaque` requires `specified.json` in both directions. Its
+reference omits only frontmatter or directive blocks rejected during Mermaid's
+configuration derivation, keeping the other blocks. Derivation uses Mermaid's
+own public parse path with the diagram parser temporarily replaced by an async
+no-op; opaque statement contents cannot prevent configuration from being read.
+On a derivation failure, blocks are taken in source order and a block whose
+addition rejects is omitted. This also handles frontmatter YAML made invalid by
+HTML attribute-quote conversion. Hidden YAML in the diagram body and other
+diagram syntax stay in place. [fixture:
+usecase/div-gram-frontmatter-html-attribute-quotes] [fixture:
+pie/div-review-frontmatter-html-invalid-yaml] [fixture:
+pie/lex-yaml-three-adjacent-fences]
+
+For valid embedded configuration that changes acceptance, remove only the keys
+named by the specification's
+[comparison rule](../../spec/docs/known-divergences/embedded-data-opaque.md#the-comparison-db).
+The explicit table `OPAQUE_ACCEPTANCE_KEYS` in `tools/src/specified-reading.ts`
+holds those paths. Where they occur, the reference frontmatter carries Mermaid's
+derived text configuration with just those keys deleted, and its converted
+title. The source directives have already contributed to that configuration and
+are removed from the reference body so that they cannot reapply the deleted
+keys. Other configuration, including Db-only settings such as `wrap`, remains;
+the external site configuration still applies through the ordinary runner.
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+sequence/div-invalid-frontmatter-preserves-wrap-directive] [fixture:
+gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
+gitgraph/div-init-html-labels-default-comparison]
+
+An accepted reference supplies its Db and embedded values. The frontmatter title
+is Mermaid's converted value, using the same reader as
+`html-tag-in-frontmatter`. [fixture:
+gitgraph/div-frontmatter-main-branch-preserves-title]
+
+If the written input accepts and the reference rejects, record the reference
+rejection. If a marked opaque-data failure persists as the same rejection in
+both runs, there is no comparison Db: record acceptance with `db: null`, use the
+reference's detected diagram type, and invent no embedded values. This includes
+malformed data blocks that the reference leaves in place. The existing
+normalizer checks for `expected.json` are unchanged. An opaque specified reading
+may lack a comparison Db even for a diagram type with a normalizer. [fixture:
+flowchart/div-data-unknown-shape] [fixture: kanban/gram-metadata-bad-yaml]
+[fixture: usecase/div-gram-json-unquoted-key]
+
+Where configuration inside the text changes acceptance, the specified reading
+uses the default acceptance rules without applying those named embedded keys.
+This can reject an input that mermaid.js accepts or accept one that mermaid.js
+rejects. [fixture: gitgraph/docs-community-contributing-05cdc44b] [fixture:
+gitgraph/docs-syntax-gitgraph-2ea99686] [fixture:
+gitgraph/div-frontmatter-main-branch-duplicate-default-accepted] [fixture:
+gitgraph/div-frontmatter-main-branch-checkout-default-accepted] [fixture:
+gitgraph/div-init-main-branch-duplicate-default-accepted]
 
 The rules are listed in `src/divergence-removals.ts` and found in the lexer of
 the pinned mermaid.js by their compiled pattern, not by their position. When one

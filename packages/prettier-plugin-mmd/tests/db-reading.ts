@@ -1,6 +1,7 @@
 /**
  * What formatting must keep, checked without mermaid.js: the Db that the tree
- * of a text denotes, and the texts of the embedded data.
+ * of a text denotes, the texts of the embedded data, and the written source
+ * apart from whitespace, frontmatter, and removed semicolons.
  *
  * The Db is built from the tree by `dbFromTree` of `@mmd-toolkit/tests`, with
  * the values that mermaid.js derives from the embedded data of the input (the
@@ -157,4 +158,35 @@ export async function describeFrontmatterChange(
 /** Checks the public parser tree as the corpus's JSON-shaped tree interface. */
 export function treeProblemsOfText(text: string): TreeProblem[] {
   return checkTree(text, JSON.parse(JSON.stringify(parse(text))) as CheckedRoot)
+}
+
+/**
+ * Every printer keeps written characters, but one-statement-per-line rules and
+ * rules for ignored line-end semicolons may drop `;`. Ignore common.md's
+ * whitespace (including BOM) and frontmatter; describeFrontmatterChange checks
+ * its YAML separately. The output must be the input with zero or more semicolons
+ * removed.
+ */
+export function writtenTextKeptUpToSemicolons(
+  before: string,
+  after: string,
+): boolean {
+  const [input, output] = [before, after].map((text) => {
+    const frontmatter = parse(text).frontmatter
+    const outside =
+      frontmatter === null
+        ? text
+        : text.slice(0, frontmatter.range[0]) + text.slice(frontmatter.range[1])
+    let written = ""
+    for (const character of outside) {
+      if (character.trim() !== "") written += character
+    }
+    return written
+  })
+  let outputIndex = 0
+  for (let inputIndex = 0; inputIndex < input.length; inputIndex++) {
+    if (input[inputIndex] === output[outputIndex]) outputIndex++
+    else if (input[inputIndex] !== ";") return false
+  }
+  return outputIndex === output.length
 }

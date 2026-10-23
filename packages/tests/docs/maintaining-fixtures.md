@@ -48,9 +48,18 @@ without one, the direction decides. Unmarked fixtures use `expected.accepted`.
 The loader reads the files; this function performs the acceptance check.
 
 For comparable Db values, use the recorded reading (`specified`, otherwise
-`expected`) and `embeddedValuesOf()`. `embedded-data-opaque` accepts without a
-specified reading and can have no Db to compare. Keep that case explicit rather
-than treating mermaid.js's rejection as the specification's rejection.
+`expected`) and `embeddedValuesOf()`. `embedded-data-opaque` has direction
+`"both"` and requires `specified.json` for every marked fixture. Malformed
+opaque data can have an accepted reading with `db: null` because no comparison
+Db can be derived. Embedded configuration can change acceptance in either
+direction. Its comparison reference omits only blocks rejected during Mermaid's
+configuration derivation and removes only the specification-named acceptance
+keys from valid text configuration. Keep the other derived values, including
+Mermaid's frontmatter title and Db settings such as `wrap`. [fixture:
+gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
+sequence/div-invalid-frontmatter-preserves-wrap-directive] Keep a missing
+comparison Db explicit rather than inventing one or treating mermaid.js's
+rejection as the specification's rejection.
 
 ## Names
 

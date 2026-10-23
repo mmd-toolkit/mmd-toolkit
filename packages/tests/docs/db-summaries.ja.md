@@ -19665,7 +19665,6 @@ Db パッチは、各 JSON 表を Mermaid が読んだ `value` と
 [fixture: usecase/db-json-source-map-order]
 [fixture: usecase/gram-json-empty]
 
-Chevrotain の
 [`メタデータ規則`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
 は不透明な YAML ではなく、閉じた固有のプロパティ文法を読み、
 data block の effect を作りません。
@@ -20187,7 +20186,7 @@ JSON の閉じ引用符の前のバックスラッシュ二つは、一つのバ
 共通のアクセシビリティ getter は
 [`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
 へ値を渡す。
-Langium の AST を反映する前に、frontmatter がタイトルを設定する。
+解析された文を Db に反映する前に、frontmatter がタイトルを設定する。
 [`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
 は AST の最後の文字列が空でない場合だけ反映する。
 要約は AST やソース位置ではなく、これらの getter を読む。
@@ -20747,3 +20746,1475 @@ U+2028 と U+2029 は style の一致範囲を分け、
 frontmatter のタイトルはこの文字参照の前処理を通らず、
 style に見えるテキストのセミコロンをそのまま保つ。
 [fixture: pie/review-style-frontmatter-title]
+
+## gitgraph
+
+`normalizeGitgraph()`（`src/normalizers/gitgraph.ts`）は共有 Db を要約する。
+検出 id は `gitGraph`。
+[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L28-L68)
+[fixture: gitgraph/header-only]
+
+| フィールド                      | 内容                                                                                                       |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `direction`                     | `LR`、`TB`、`BT`。                                                                                         |
+| `title`、`accTitle`、`accDescr` | 共通の文字列。未指定なら空文字列。                                                                         |
+| `commits`                       | id の初回挿入順。`id`、`seq`、`type`、`tags`、`parents`、`branch`、省略可能な `customType` と `customId`。 |
+| `branches`                      | 描画順の `{ name }`。                                                                                      |
+
+renderer は commit の id、種別、tag、親、連番、
+ブランチ順、方向を読む。commit の message、ブランチの先端、
+HEAD、選択中のブランチは renderer が読まないので省く。
+途中のブランチ選択は後の commit の親と作成元ブランチに表れ、
+最後の checkout は要約の field を増やさない。
+[commit ids, types and tags](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L331-L423)
+[parents and sequence](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L546-L610)
+[branch order and direction](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L1002-L1011)
+[fixture: gitgraph/gram-all-fields]
+[fixture: gitgraph/gram-checkout]
+[fixture: gitgraph/gram-cherry-pick]
+[fixture: gitgraph/gram-switch]
+
+重複する Map/配列、次の連番の内部カウンター、
+順序付きブランチ列で表せる数値 order、描画位置、色、
+寸法は省く。`options` は常に空オブジェクト。到達可能な文法は
+`setOptions()` を呼ばず、renderer もこれを読まない。
+設定は共通の `config` と `embedded.config` に記録し、
+初期ブランチ名と順序への効果は要約に残す。
+描画専用の設定は保存される commit を変えない。
+[fixture: gitgraph/header-only]
+[fixture: gitgraph/config-main-branch]
+[fixture: gitgraph/config-main-order-negative]
+[fixture: gitgraph/frontmatter-config]
+[fixture: gitgraph/config-drawing-only]
+
+### 登録と生成 id
+
+adapter は共通値、方向、文をソース順に登録する。
+通常の commit の種別は NORMAL、REVERSE、HIGHLIGHT に
+対して 0、1、2。tag はソース順に追加し、id と type の
+繰り返しは最後の値を取る。空 id は id を生成し、
+空 tag はそのまま保存する。message option は受理するが要約では省く。
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphParser.ts#L21-L112)
+[fixture: gitgraph/gram-commit-repeated-options]
+[fixture: gitgraph/gram-commit-empty-values]
+[fixture: gitgraph/gram-commit-space-values]
+
+`commit()` は重複 id を拒否せず値を置き換え、
+その id の Map 内の初回位置を保つ。値には後の連番と親が残り、
+自分自身の id を親に含むこともある。3 回の定義で連番に欠番が生じ、
+描画用の連番順が変わることがある。prototype 型の id と
+ブランチ名も Map の通常のキー。
+[`commit()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L147)
+[fixture: gitgraph/db-duplicate-id]
+[fixture: gitgraph/db-three-definitions]
+[fixture: gitgraph/db-prototype-ids]
+[fixture: gitgraph/db-converted-duplicate-id]
+
+commit の位置は `seq` の昇順で計算するが、arrow は
+`getCommits()` の Map のキーを初回挿入順で読む。
+要約はこの Map 順と、各 commit の後の `seq` の両方を残す。
+`getCommitsArray()` の導出済みの並べ替えは別に保存しない。
+[drawArrows()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L851-L865)
+[fixture: gitgraph/db-three-definitions]
+
+共有オブジェクトへの patch は登録時に生成 id を観測するだけで、
+Mermaid への入力、id、検証を変えない。normalizer は生成順に
+`generated-commit-1`、`generated-commit-2`、…と置き換え、
+作者が使った id と同じ名前は飛ばす。commit id と親の参照を
+置き換え、tag は保存されたまま写す。乱数らしい綴りも含め、
+作者の id はそのまま残す。`seq` は Db の clear ごとにゼロから
+始まり、上書きされるものも含め commit 作成ごとに進む。
+これは構文が決める順序で、実行ごとに変わるカウンターではない。
+[fixture: gitgraph/db-generated-ids]
+[fixture: gitgraph/db-generated-name-collision]
+[fixture: gitgraph/db-random-shaped-custom-id]
+[fixture: gitgraph/db-three-definitions]
+
+`branch()` と `checkout()` は後の commit 登録用に、空のブランチも含め
+ブランチを作成・選択する。`switch` は checkout と同じ操作。
+ブランチは数値 order で並び、作者が省略した order はゼロ。
+同値なら作成順を保つ。空文字列と空白だけの引用名もキーとして残す。
+設定による初期ブランチ名は直接保存する。
+[`branch()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L149-L164)
+[`checkout()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L369-L394)
+[fixture: gitgraph/gram-branch-order]
+[fixture: gitgraph/gram-branch-order-tie]
+[fixture: gitgraph/gram-branch-empty]
+[fixture: gitgraph/gram-branch-whitespace]
+[fixture: gitgraph/gram-switch]
+[fixture: gitgraph/config-main-empty-name]
+[fixture: gitgraph/config-main-html]
+
+`merge()` は種別 3 を作り、現在側・元側の順の親、
+省略可能な種別の上書き、custom-id フラグを持つ。
+繰り返す単一値の option は最後を取り、
+空 id は生成 id と `customId: false` になる。
+[`merge()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L166-L258)
+[fixture: gitgraph/gram-merge-options]
+[fixture: gitgraph/gram-merge-repeated-options]
+[fixture: gitgraph/gram-merge-empty-id]
+
+merge は自分自身のブランチ、元側で作られた現在の先端、
+存在しない・空のブランチ、同じ先端、既存の custom id を拒否する。
+branch 作成は既存名を拒否し、checkout/switch は未知の名を拒否する。
+[fixture: gitgraph/db-merge-self-empty]
+[fixture: gitgraph/db-merge-self]
+[fixture: gitgraph/db-merge-current-created-on-source]
+[fixture: gitgraph/db-merge-empty-current]
+[fixture: gitgraph/db-merge-empty-other]
+[fixture: gitgraph/db-merge-unknown]
+[fixture: gitgraph/db-merge-same-head]
+[fixture: gitgraph/db-merge-duplicate-id]
+[fixture: gitgraph/db-duplicate-branch]
+[fixture: gitgraph/db-duplicate-main]
+[fixture: gitgraph/db-duplicate-converted-branch]
+[fixture: gitgraph/db-checkout-unknown]
+[fixture: gitgraph/db-switch-unknown]
+[fixture: gitgraph/db-merge-unknown-generated-prefix]
+
+`cherryPick()` は生成 id と現在側・元側の親を持つ種別 4 を作る。
+作者の tag がなければ tag に元 id を入れ、merge 元なら parent も入れる。
+明示 tag は既定 tag を抑え、空文字列を除く。単一値の option は
+最後の代入を使う。通常の元 commit に対して空 parent は未指定扱い。
+[`cherryPick()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L261-L376)
+[fixture: gitgraph/gram-cherry-pick]
+[fixture: gitgraph/gram-cherry-pick-tags]
+[fixture: gitgraph/gram-cherry-pick-merge-parent]
+[fixture: gitgraph/gram-cherry-pick-repeated-options]
+[fixture: gitgraph/gram-cherry-pick-empty-parent]
+
+cherry-pick は未指定・空・未知の元 id、現在のブランチで
+作られた元 commit、空の移植先、直接の親ではない指定 parent、
+parent のない merge 元を拒否する。これらは文法解析に
+成功した後の Db による拒否。
+[fixture: gitgraph/db-cherry-pick-missing]
+[fixture: gitgraph/db-cherry-pick-empty-id]
+[fixture: gitgraph/db-cherry-pick-unknown]
+[fixture: gitgraph/db-cherry-pick-same-branch]
+[fixture: gitgraph/db-cherry-pick-empty-current]
+[fixture: gitgraph/db-cherry-pick-invalid-parent]
+[fixture: gitgraph/db-cherry-pick-merge-no-parent]
+
+### lexer と共通値
+
+entry と statement の規則は `gitGraph`、`gitGraph:`、
+離したコロン、またはコロン必須の LR/TB/BT を許す。
+文や共通値はヘッダーと同じ行で始められる。通常の本文の文には
+NEWLINE または EOF が必要で、セミコロンでは代用できない。
+単独 CR と CRLF は LF に正規化し、LS と PS は NEWLINE ではない。
+空行と ASCII space/TAB は許す。
+[entry and statement rules](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/gitGraph.langium#L1-L56)
+[fixture: gitgraph/header-only]
+[fixture: gitgraph/header-colon]
+[fixture: gitgraph/header-spaced-colon]
+[fixture: gitgraph/header-lr]
+[fixture: gitgraph/header-tb]
+[fixture: gitgraph/header-bt]
+[fixture: gitgraph/header-direction-no-colon]
+[fixture: gitgraph/header-colon-commit-inline]
+[fixture: gitgraph/header-commit-inline]
+[fixture: gitgraph/header-title-inline]
+[fixture: gitgraph/gram-header-inline-branch]
+[fixture: gitgraph/gram-header-inline-acctitle]
+[fixture: gitgraph/gram-header-inline-accdescr]
+[fixture: gitgraph/gram-one-line-two-commits]
+[fixture: gitgraph/eol-commit-semicolon]
+[fixture: gitgraph/eol-branch-semicolon]
+[fixture: gitgraph/eol-checkout-semicolon]
+[fixture: gitgraph/eol-switch-semicolon]
+[fixture: gitgraph/eol-merge-semicolon]
+[fixture: gitgraph/eol-cherry-pick-semicolon]
+[fixture: gitgraph/lex-cr]
+[fixture: gitgraph/lex-crlf]
+[fixture: gitgraph/lex-ls]
+[fixture: gitgraph/lex-ps]
+[fixture: gitgraph/lex-blank-lines]
+[fixture: gitgraph/eol-accdescr-colon]
+[fixture: gitgraph/eol-accdescr-ls]
+[fixture: gitgraph/eol-accdescr-ps]
+[fixture: gitgraph/eol-accdescr-semicolons]
+[fixture: gitgraph/eol-accdescr-tab]
+[fixture: gitgraph/eol-accdescr-two-semicolons]
+[fixture: gitgraph/eol-acctitle-colon]
+[fixture: gitgraph/eol-acctitle-ls]
+[fixture: gitgraph/eol-acctitle-ps]
+[fixture: gitgraph/eol-acctitle-semicolons]
+[fixture: gitgraph/eol-acctitle-spaced-semicolons]
+[fixture: gitgraph/eol-acctitle-tab]
+[fixture: gitgraph/eol-block-colon]
+[fixture: gitgraph/eol-block-eof]
+[fixture: gitgraph/eol-block-ls]
+[fixture: gitgraph/eol-block-ps]
+[fixture: gitgraph/eol-block-semicolon]
+[fixture: gitgraph/eol-block-spaced-semicolons]
+[fixture: gitgraph/eol-block-tab]
+[fixture: gitgraph/eol-block-two-semicolons]
+[fixture: gitgraph/eol-branch-colon]
+[fixture: gitgraph/eol-branch-eof]
+[fixture: gitgraph/eol-branch-ls]
+[fixture: gitgraph/eol-branch-ps]
+[fixture: gitgraph/eol-branch-spaced-semicolons]
+[fixture: gitgraph/eol-branch-tab]
+[fixture: gitgraph/eol-branch-two-semicolons]
+[fixture: gitgraph/eol-checkout-colon]
+[fixture: gitgraph/eol-checkout-eof]
+[fixture: gitgraph/eol-checkout-ls]
+[fixture: gitgraph/eol-checkout-ps]
+[fixture: gitgraph/eol-checkout-spaced-semicolons]
+[fixture: gitgraph/eol-checkout-tab]
+[fixture: gitgraph/eol-checkout-two-semicolons]
+[fixture: gitgraph/eol-cherry-pick-colon]
+[fixture: gitgraph/eol-cherry-pick-eof]
+[fixture: gitgraph/eol-cherry-pick-ls]
+[fixture: gitgraph/eol-cherry-pick-ps]
+[fixture: gitgraph/eol-cherry-pick-spaced-semicolons]
+[fixture: gitgraph/eol-cherry-pick-tab]
+[fixture: gitgraph/eol-cherry-pick-two-semicolons]
+[fixture: gitgraph/eol-commit-colon]
+[fixture: gitgraph/eol-commit-eof]
+[fixture: gitgraph/eol-commit-ls]
+[fixture: gitgraph/eol-commit-ps]
+[fixture: gitgraph/eol-commit-space-semicolon]
+[fixture: gitgraph/eol-commit-spaced-semicolons]
+[fixture: gitgraph/eol-commit-tab]
+[fixture: gitgraph/eol-commit-two-semicolons]
+[fixture: gitgraph/eol-header-semicolon]
+[fixture: gitgraph/eol-header-two-semicolons]
+[fixture: gitgraph/eol-merge-colon]
+[fixture: gitgraph/eol-merge-eof]
+[fixture: gitgraph/eol-merge-ls]
+[fixture: gitgraph/eol-merge-ps]
+[fixture: gitgraph/eol-merge-spaced-semicolons]
+[fixture: gitgraph/eol-merge-tab]
+[fixture: gitgraph/eol-merge-two-semicolons]
+[fixture: gitgraph/eol-switch-colon]
+[fixture: gitgraph/eol-switch-eof]
+[fixture: gitgraph/eol-switch-ls]
+[fixture: gitgraph/eol-switch-ps]
+[fixture: gitgraph/eol-switch-spaced-semicolons]
+[fixture: gitgraph/eol-switch-tab]
+[fixture: gitgraph/eol-switch-two-semicolons]
+[fixture: gitgraph/eol-title-colon]
+[fixture: gitgraph/eol-title-ls]
+[fixture: gitgraph/eol-title-ps]
+[fixture: gitgraph/eol-title-semicolons]
+[fixture: gitgraph/eol-title-tab]
+[fixture: gitgraph/eol-title-two-semicolons]
+
+キーワードは大文字小文字を区別する。token builder は
+`gitGraph` だけに JavaScript の空白/EOF または percent 対の
+先読み境界を加え、`gitGraph:` には加えない。
+他のキーワードの接頭辞は、より長い REFERENCE の代替に
+なることがあり、一般的な最長一致ではない。検出自体は
+大文字小文字を区別する `gitGraph` の接頭辞だけを見るので、
+接尾辞付きでも検出後に字句・文法解析で失敗することがある。
+[token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/tokenBuilder.ts#L1-L7)
+[fixture: gitgraph/detect-lowercase]
+[fixture: gitgraph/detect-uppercase]
+[fixture: gitgraph/detect-letter-suffix]
+[fixture: gitgraph/detect-digit-suffix]
+[fixture: gitgraph/detect-dash-suffix]
+[fixture: gitgraph/detect-unicode-suffix]
+[fixture: gitgraph/lex-header-bom]
+[fixture: gitgraph/comment-header-glued]
+[fixture: gitgraph/lex-reference-keyword-prefixes]
+[fixture: gitgraph/lex-keyword-commit-case]
+[fixture: gitgraph/lex-keyword-branch-case]
+[fixture: gitgraph/lex-keyword-checkout-case]
+[fixture: gitgraph/lex-keyword-switch-case]
+[fixture: gitgraph/lex-keyword-merge-case]
+[fixture: gitgraph/lex-keyword-cherry-pick-case]
+[fixture: gitgraph/lex-keyword-branch-dash]
+[fixture: gitgraph/lex-keyword-branch-letter]
+[fixture: gitgraph/lex-keyword-branch-suffix]
+[fixture: gitgraph/lex-keyword-branch-unicode]
+[fixture: gitgraph/lex-keyword-checkout-digit]
+[fixture: gitgraph/lex-keyword-checkout-letter]
+[fixture: gitgraph/lex-keyword-checkout-suffix]
+[fixture: gitgraph/lex-keyword-checkout-unicode]
+[fixture: gitgraph/lex-keyword-cherry-pick-dash]
+[fixture: gitgraph/lex-keyword-cherry-pick-digit]
+[fixture: gitgraph/lex-keyword-cherry-pick-suffix]
+[fixture: gitgraph/lex-keyword-cherry-pick-unicode]
+[fixture: gitgraph/lex-keyword-commit-dash]
+[fixture: gitgraph/lex-keyword-commit-digit]
+[fixture: gitgraph/lex-keyword-commit-suffix]
+[fixture: gitgraph/lex-keyword-commit-unicode]
+[fixture: gitgraph/lex-keyword-direction-suffix]
+[fixture: gitgraph/lex-keyword-merge-dash]
+[fixture: gitgraph/lex-keyword-merge-letter]
+[fixture: gitgraph/lex-keyword-merge-suffix]
+[fixture: gitgraph/lex-keyword-merge-unicode]
+[fixture: gitgraph/lex-keyword-msg-colon-space]
+[fixture: gitgraph/lex-keyword-option-case]
+[fixture: gitgraph/lex-keyword-order-colon-space]
+[fixture: gitgraph/lex-keyword-parent-colon-space]
+[fixture: gitgraph/lex-keyword-switch-dash]
+[fixture: gitgraph/lex-keyword-switch-digit]
+[fixture: gitgraph/lex-keyword-switch-letter]
+[fixture: gitgraph/lex-keyword-switch-unicode]
+[fixture: gitgraph/lex-keyword-tag-colon-space]
+[fixture: gitgraph/lex-keyword-type-colon-space]
+[fixture: gitgraph/lex-keyword-type-suffix]
+
+長さ順のキーワードの後で、到達可能な terminal の順序は
+ACC_DESCR、ACC_TITLE、TITLE、INT、STRING、NEWLINE、
+WHITESPACE、YAML、DIRECTIVE、SINGLE_LINE_COMMENT、REFERENCE。
+BOOLEAN、FLOAT、NUMBER、ID には到達しない。
+このため INT は数字で始まる名を分割し、ドットの境界により
+version 型の名は REFERENCE に到達する。TITLE は名の接頭辞を
+取ることがある。reference は ASCII の word 文字で始まり、
+途中に dot/slash/dash を許す。ソースのコメントとは異なり
+末尾の dash を許すが、dot/slash は許さない。引用すれば
+予約語、数字、Unicode、空白も名にできる。
+[fixture: gitgraph/lex-reference-digit]
+[fixture: gitgraph/lex-reference-digit-prefix]
+[fixture: gitgraph/lex-reference-zero-prefix]
+[fixture: gitgraph/lex-reference-digit-dot]
+[fixture: gitgraph/lex-reference-common-prefix]
+[fixture: gitgraph/lex-reference-shape]
+[fixture: gitgraph/lex-reference-trailing-dash]
+[fixture: gitgraph/lex-reference-trailing-dot]
+[fixture: gitgraph/lex-reference-trailing-slash]
+[fixture: gitgraph/lex-reference-leading-dash]
+[fixture: gitgraph/lex-reference-unicode]
+[fixture: gitgraph/lex-reference-reserved]
+[fixture: gitgraph/lex-reference-reserved-quoted]
+[fixture: gitgraph/lex-reference-integer-quoted]
+[fixture: gitgraph/gram-branch-single-quotes]
+[fixture: gitgraph/lex-branch-unicode-quoted]
+
+order の INT は符号なし十進数で、ゼロか非ゼロの先頭桁。
+符号、先頭の余分なゼロ、小数、指数、NaN、Infinity という
+綴りは拒否する。変換は `parseInt` と double の精度を使い、
+十分に長い整数は overflow する。要約するのは結果のブランチ順だけ。
+[fixture: gitgraph/number-zero]
+[fixture: gitgraph/number-negative]
+[fixture: gitgraph/number-negative-zero]
+[fixture: gitgraph/number-plus]
+[fixture: gitgraph/number-leading-zero]
+[fixture: gitgraph/number-decimal]
+[fixture: gitgraph/number-exponent]
+[fixture: gitgraph/number-nan]
+[fixture: gitgraph/number-infinity]
+[fixture: gitgraph/number-precision]
+[fixture: gitgraph/number-overflow]
+[fixture: gitgraph/db-duplicate-order-negative-zero]
+[fixture: gitgraph/db-duplicate-order-negative-zero-first]
+
+登録された common converter は REFERENCE をそのまま返し、
+STRING の escape を復号する。同じ種類の単一・
+二重引用符で閉じ、生の改行は許すが、backslash の escape は
+LF、CR、LS、PS をまたげない。b/f/n/r/t/v/0 は制御文字に
+なり、未知の escape は slash を落とすだけで、
+16 進や Unicode code の復号はしない。すべての文字列 option と
+引用したブランチ参照はこの分岐を通る。
+[common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L81)
+[fixture: gitgraph/gram-commit-single-quotes]
+[fixture: gitgraph/lex-string-escapes]
+[fixture: gitgraph/lex-string-multiline]
+[fixture: gitgraph/lex-string-single-multiline]
+[fixture: gitgraph/lex-string-unclosed]
+[fixture: gitgraph/lex-string-single-unclosed]
+[fixture: gitgraph/lex-string-backslash-lf]
+[fixture: gitgraph/lex-string-ls-ps]
+[fixture: gitgraph/lex-string-escaped-ls]
+[fixture: gitgraph/lex-string-cr]
+[fixture: gitgraph/lex-string-crlf]
+[fixture: gitgraph/lex-string-reference-escape]
+[fixture: gitgraph/lex-merge-string-escape]
+[fixture: gitgraph/lex-cherry-pick-string-escape]
+
+共通の行値は共通空白を両端から除き、2 文字以上続く
+ASCII space/TAB を縮める。block は引用符や escape に
+保護されず最初の右波括弧で閉じる。変換は各行の端を除き、
+ASCII 空白の連続と CR/LF の連続を縮める。空でも最後の
+AST 代入が勝ち、空でない最終変換値だけを共通 Db に渡す。
+空の最終 title は frontmatter を保ち、空の最終 accessibility 値は
+clear 後の既定値を残す。
+[fixture: gitgraph/title-conversion]
+[fixture: gitgraph/common-interior-unicode]
+[fixture: gitgraph/accdescr-block]
+[fixture: gitgraph/accdescr-block-first-brace]
+[fixture: gitgraph/accdescr-block-quoted-brace]
+[fixture: gitgraph/accdescr-block-escaped-brace]
+[fixture: gitgraph/common-third-values]
+[fixture: gitgraph/title-repeat-empty]
+[fixture: gitgraph/acctitle-repeat-empty]
+[fixture: gitgraph/accdescr-repeat-empty]
+[fixture: gitgraph/common-block-only-whitespace]
+[fixture: gitgraph/common-title-only-whitespace]
+[fixture: gitgraph/common-acctitle-only-whitespace]
+[fixture: gitgraph/common-accdescr-only-whitespace]
+
+title は space/TAB 1 文字を区切りに取る。accessibility の
+行値はコロンの後から始まり、その前には space/TAB だけを許す。
+どれも後の行を値として取らない。block opener だけは
+キーワードと波括弧の間に LF や NBSP も含む共通空白を許す。
+行値はセミコロンとコロンを値として残し、閉じた block は拒否する。
+[fixture: gitgraph/title-tab]
+[fixture: gitgraph/title-nbsp]
+[fixture: gitgraph/acctitle-nbsp-colon]
+[fixture: gitgraph/accdescr-nbsp-colon]
+[fixture: gitgraph/title-next-line]
+[fixture: gitgraph/acctitle-next-line]
+[fixture: gitgraph/accdescr-next-line]
+[fixture: gitgraph/accdescr-block-gap]
+[fixture: gitgraph/accdescr-block-nbsp-gap]
+[fixture: gitgraph/eol-title-semicolons]
+[fixture: gitgraph/eol-acctitle-semicolons]
+[fixture: gitgraph/eol-accdescr-semicolons]
+[fixture: gitgraph/eol-title-colon]
+[fixture: gitgraph/eol-acctitle-colon]
+[fixture: gitgraph/eol-accdescr-colon]
+[fixture: gitgraph/eol-block-semicolon]
+[fixture: gitgraph/eol-block-colon]
+
+公開 parse gate は、回復した後や有効な接頭辞の後でも、
+lexer または parser の error があれば拒否する。必須引数の欠落、
+非対応の文・option、分離した option のコロンは
+Db に登録する前に拒否する。
+[public parse gate](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+[fixture: gitgraph/lex-error-before-statement]
+[fixture: gitgraph/lex-error-after-valid-prefix]
+[fixture: gitgraph/gram-error-recovered-statement]
+[fixture: gitgraph/gram-commit-msg-missing]
+[fixture: gitgraph/gram-branch-missing]
+[fixture: gitgraph/gram-checkout-missing]
+[fixture: gitgraph/gram-switch-missing]
+[fixture: gitgraph/gram-merge-missing]
+[fixture: gitgraph/gram-reset-unsupported]
+[fixture: gitgraph/gram-commit-unknown-option]
+[fixture: gitgraph/gram-merge-message]
+[fixture: gitgraph/gram-cherry-pick-unknown-option]
+[fixture: gitgraph/gram-commit-colon-space]
+
+### hidden 形式と前処理
+
+import された hidden terminal は、global directive の除去や
+実際の先頭 frontmatter と別の規則。hidden YAML は本文を解析せず、
+title/configuration も適用しない。検出は先頭以外の
+frontmatter 型 block を 1 個通過でき、gitgraph はこれを隠す。
+隣り合う本文の fence は hidden YAML に一致できるが、
+先頭の隣り合う fence は実際の frontmatter ではない。
+閉じない block や字下げした hidden closer は拒否する。
+hidden opener は LF の前に space/TAB だけを許し、closer は
+LF または共通空白/EOF 境界を必要とする。すでに囲んでいる
+STRING と ACC_DESCR は内部の hidden opener より優先する。
+[hidden terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
+[fixture: gitgraph/lex-yaml-after-comment]
+[fixture: gitgraph/lex-yaml-invalid-body]
+[fixture: gitgraph/lex-yaml-empty-body]
+[fixture: gitgraph/frontmatter-empty-adjacent]
+[fixture: gitgraph/frontmatter-empty-blank-line]
+[fixture: gitgraph/lex-yaml-unclosed]
+[fixture: gitgraph/lex-yaml-indented-closer]
+[fixture: gitgraph/lex-hidden-yaml-opener-tab]
+[fixture: gitgraph/lex-hidden-yaml-opener-nbsp]
+[fixture: gitgraph/lex-hidden-yaml-closer-word]
+[fixture: gitgraph/lex-yaml-string]
+[fixture: gitgraph/lex-yaml-block]
+[fixture: gitgraph/lex-hidden-directive-string]
+[fixture: gitgraph/lex-hidden-directive-block]
+
+保持する block 1 個の通過は bare percent 行と second-scan
+directive より前に行う。2 個目の block、bare brace 行の後、
+second-scan directive の後、両 fence を同じだけ字下げした block は
+この通過ができない。実際の frontmatter の後や second-scan
+directive の前の block は通過できる。
+[fixture: gitgraph/detect-two-nonleading-blocks]
+[fixture: gitgraph/detect-block-after-bare-brace-line]
+[fixture: gitgraph/detect-second-scan-directive-before-block]
+[fixture: gitgraph/detect-block-equally-indented-fences]
+[fixture: gitgraph/detect-block-after-real-frontmatter]
+[fixture: gitgraph/detect-block-before-second-scan-directive]
+
+global 除去を残った `%%{}%%` などの hidden DIRECTIVE は
+直後の LF を消費し、それ以外は closer の共通空白/EOF を
+先読みするだけ。閉じる境界がなければ native percent comment に
+フォールバックする。second-scan のヘッダー前 directive も隠すが、
+closer に直結したヘッダーは拒否する。hidden 形式は LF を消費し、
+キーワード/option と値をつなげられる。closer の条件を満たす
+LS/NBSP も、通常の gap に残れば字句解析で拒否する。
+[fixture: gitgraph/lex-hidden-directive-between-option-value]
+[fixture: gitgraph/lex-hidden-directive-boundary-word]
+[fixture: gitgraph/lex-hidden-directive-boundary-space]
+[fixture: gitgraph/lex-hidden-directive-boundary-ls]
+[fixture: gitgraph/lex-hidden-directive-second-scan]
+[fixture: gitgraph/lex-hidden-directive-second-scan-glued]
+[fixture: gitgraph/lex-hidden-directive-before-branch-name]
+[fixture: gitgraph/lex-hidden-directive-before-checkout-name]
+[fixture: gitgraph/lex-hidden-directive-before-switch-name]
+[fixture: gitgraph/lex-hidden-directive-before-merge-name]
+[fixture: gitgraph/lex-hidden-directive-before-type]
+[fixture: gitgraph/lex-hidden-directive-before-order]
+[fixture: gitgraph/lex-hidden-yaml-before-option-value]
+[fixture: gitgraph/lex-hidden-yaml-before-branch-name]
+[fixture: gitgraph/lex-hidden-yaml-before-type]
+[fixture: gitgraph/lex-hidden-yaml-before-order]
+[fixture: gitgraph/lex-hidden-yaml-closer-nbsp]
+
+すべての文と共通値の後で、hidden DIRECTIVE は唯一の EOL の
+LF を消費し、後続文を拒否させる。余分な LF や closer 後の
+space があれば EOL を保つ。EOF では追加された LF を消費しても、
+EOF 自体が EOL を満たす。hidden YAML も commit、branch、
+checkout、switch、merge、cherry-pick、description block の後で
+同じ効果を持つ。共通の 1 行値の後では opener の `---` が
+値の text になる。bare reference は opener の dash を
+吸収することがある。ヘッダー自体に EOL は不要なので、
+その LF を隠しても最初の文を妨げない。
+[fixture: gitgraph/lex-hidden-directive-after-commit]
+[fixture: gitgraph/lex-hidden-directive-after-branch]
+[fixture: gitgraph/lex-hidden-directive-after-checkout]
+[fixture: gitgraph/lex-hidden-directive-after-switch]
+[fixture: gitgraph/lex-hidden-directive-after-merge]
+[fixture: gitgraph/lex-hidden-directive-after-cherry-pick]
+[fixture: gitgraph/lex-hidden-directive-after-title]
+[fixture: gitgraph/lex-hidden-directive-after-acctitle]
+[fixture: gitgraph/lex-hidden-directive-after-accdescr]
+[fixture: gitgraph/lex-hidden-directive-after-block]
+[fixture: gitgraph/lex-hidden-directive-commit-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-commit-closing-space]
+[fixture: gitgraph/lex-hidden-directive-commit-eof]
+[fixture: gitgraph/lex-hidden-yaml-after-commit]
+[fixture: gitgraph/lex-hidden-yaml-after-branch]
+[fixture: gitgraph/lex-hidden-yaml-after-checkout]
+[fixture: gitgraph/lex-hidden-yaml-after-switch]
+[fixture: gitgraph/lex-hidden-yaml-after-merge]
+[fixture: gitgraph/lex-hidden-yaml-after-cherry-pick]
+[fixture: gitgraph/lex-hidden-yaml-after-block]
+[fixture: gitgraph/lex-hidden-yaml-commit-spare-lf]
+[fixture: gitgraph/lex-hidden-yaml-commit-closing-space]
+[fixture: gitgraph/lex-hidden-yaml-commit-eof]
+[fixture: gitgraph/lex-hidden-yaml-after-title]
+[fixture: gitgraph/lex-hidden-yaml-after-acctitle]
+[fixture: gitgraph/lex-hidden-yaml-after-accdescr]
+[fixture: gitgraph/lex-hidden-yaml-reference-absorbs-dashes]
+[fixture: gitgraph/lex-hidden-directive-header]
+[fixture: gitgraph/lex-hidden-directive-accdescr-closing-space]
+[fixture: gitgraph/lex-hidden-directive-accdescr-eof]
+[fixture: gitgraph/lex-hidden-directive-accdescr-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-acctitle-closing-space]
+[fixture: gitgraph/lex-hidden-directive-acctitle-eof]
+[fixture: gitgraph/lex-hidden-directive-acctitle-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-block-closing-space]
+[fixture: gitgraph/lex-hidden-directive-block-eof]
+[fixture: gitgraph/lex-hidden-directive-block-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-branch-closing-space]
+[fixture: gitgraph/lex-hidden-directive-branch-eof]
+[fixture: gitgraph/lex-hidden-directive-branch-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-checkout-closing-space]
+[fixture: gitgraph/lex-hidden-directive-checkout-eof]
+[fixture: gitgraph/lex-hidden-directive-checkout-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-cherry-pick-closing-space]
+[fixture: gitgraph/lex-hidden-directive-cherry-pick-eof]
+[fixture: gitgraph/lex-hidden-directive-cherry-pick-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-merge-closing-space]
+[fixture: gitgraph/lex-hidden-directive-merge-eof]
+[fixture: gitgraph/lex-hidden-directive-merge-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-switch-closing-space]
+[fixture: gitgraph/lex-hidden-directive-switch-eof]
+[fixture: gitgraph/lex-hidden-directive-switch-spare-lf]
+[fixture: gitgraph/lex-hidden-directive-title-closing-space]
+[fixture: gitgraph/lex-hidden-directive-title-eof]
+[fixture: gitgraph/lex-hidden-directive-title-spare-lf]
+[fixture: gitgraph/lex-hidden-yaml-accdescr-eof]
+[fixture: gitgraph/lex-hidden-yaml-acctitle-eof]
+[fixture: gitgraph/lex-hidden-yaml-block-closing-space]
+[fixture: gitgraph/lex-hidden-yaml-block-eof]
+[fixture: gitgraph/lex-hidden-yaml-block-spare-lf]
+[fixture: gitgraph/lex-hidden-yaml-branch-closing-space]
+[fixture: gitgraph/lex-hidden-yaml-branch-eof]
+[fixture: gitgraph/lex-hidden-yaml-branch-spare-lf]
+[fixture: gitgraph/lex-hidden-yaml-checkout-closing-space]
+[fixture: gitgraph/lex-hidden-yaml-checkout-eof]
+[fixture: gitgraph/lex-hidden-yaml-checkout-spare-lf]
+[fixture: gitgraph/lex-hidden-yaml-cherry-pick-closing-space]
+[fixture: gitgraph/lex-hidden-yaml-cherry-pick-eof]
+[fixture: gitgraph/lex-hidden-yaml-cherry-pick-spare-lf]
+[fixture: gitgraph/lex-hidden-yaml-merge-closing-space]
+[fixture: gitgraph/lex-hidden-yaml-merge-eof]
+[fixture: gitgraph/lex-hidden-yaml-merge-spare-lf]
+[fixture: gitgraph/lex-hidden-yaml-switch-closing-space]
+[fixture: gitgraph/lex-hidden-yaml-switch-eof]
+[fixture: gitgraph/lex-hidden-yaml-switch-spare-lf]
+[fixture: gitgraph/lex-hidden-yaml-title-eof]
+
+global 除去はキーワード、reference 名、整数の桁、コロン、
+引用・共通値を再結合できる。ヘッダーや文のキーワード直後に
+直結した除去は、必要な境界を失わせることがある。
+directive だけの行は先行する LF を消さない。閉じない形式は
+後の word や、閉じる引用符・波括弧を含むソースの残りを
+取ることがある。不正な init JSON や未知の directive 種別も
+設定を変えずに除去されることがある。
+[fixture: gitgraph/div-directive-in-header]
+[fixture: gitgraph/div-directive-in-commit]
+[fixture: gitgraph/div-directive-in-branch]
+[fixture: gitgraph/div-directive-in-checkout]
+[fixture: gitgraph/div-directive-in-switch]
+[fixture: gitgraph/div-directive-in-merge]
+[fixture: gitgraph/div-directive-in-cherry-pick]
+[fixture: gitgraph/div-directive-in-option-keyword]
+[fixture: gitgraph/div-directive-in-type]
+[fixture: gitgraph/div-directive-in-reference]
+[fixture: gitgraph/div-directive-in-number]
+[fixture: gitgraph/directive-in-string]
+[fixture: gitgraph/directive-common-colons]
+[fixture: gitgraph/directive-after-header-glued]
+[fixture: gitgraph/directive-glued-branch-value]
+[fixture: gitgraph/directive-glued-commit-option]
+[fixture: gitgraph/directive-before-option-value-line]
+[fixture: gitgraph/directive-open-word]
+[fixture: gitgraph/directive-open-in-string]
+[fixture: gitgraph/directive-open-in-block]
+[fixture: gitgraph/directive-open-after-header]
+[fixture: gitgraph/directive-invalid-init]
+[fixture: gitgraph/directive-unknown-type]
+
+global comment region は文字列・block 内でも除去し、
+その中の bare percent 行は text に残る。単位の位置にある
+native comment は LF を残すが、先行する hidden directive は
+消費できる。先頭の Unicode 空白は除去する。一方、保持された
+bare percent 行の後では、検出が通過した空白も Mermaid の
+lexer に届く。ASCII space/TAB は成功するが、VT、FF、NBSP、
+BOM、U+1680、U+2000–U+200A、U+202F、U+205F、U+3000、LS、PS は、
+ヘッダー直前でも空白だけの行でも拒否する。保持された YAML や
+second-scan directive の後でも同じ。
+[fixture: gitgraph/comment-string]
+[fixture: gitgraph/comment-block]
+[fixture: gitgraph/comment-bare-string]
+[fixture: gitgraph/comment-block-bare-percent]
+[fixture: gitgraph/comment-commit-glued]
+[fixture: gitgraph/comment-between-option-value]
+[fixture: gitgraph/lex-leading-bom]
+[fixture: gitgraph/lex-leading-ls-ps]
+[fixture: gitgraph/detect-bare-before-header-space]
+[fixture: gitgraph/detect-bare-before-header-tab]
+[fixture: gitgraph/div-detect-bare-before-header-vt]
+[fixture: gitgraph/div-detect-bare-vt-line]
+[fixture: gitgraph/div-detect-bare-before-header-ff]
+[fixture: gitgraph/div-detect-bare-ff-line]
+[fixture: gitgraph/div-detect-bare-before-header-nbsp]
+[fixture: gitgraph/div-detect-bare-nbsp-line]
+[fixture: gitgraph/div-detect-bare-before-header-bom]
+[fixture: gitgraph/div-detect-bare-bom-line]
+[fixture: gitgraph/div-detect-bare-before-header-u1680]
+[fixture: gitgraph/div-detect-bare-u1680-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2000]
+[fixture: gitgraph/div-detect-bare-u2000-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2001]
+[fixture: gitgraph/div-detect-bare-u2001-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2002]
+[fixture: gitgraph/div-detect-bare-u2002-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2003]
+[fixture: gitgraph/div-detect-bare-u2003-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2004]
+[fixture: gitgraph/div-detect-bare-u2004-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2005]
+[fixture: gitgraph/div-detect-bare-u2005-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2006]
+[fixture: gitgraph/div-detect-bare-u2006-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2007]
+[fixture: gitgraph/div-detect-bare-u2007-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2008]
+[fixture: gitgraph/div-detect-bare-u2008-line]
+[fixture: gitgraph/div-detect-bare-before-header-u2009]
+[fixture: gitgraph/div-detect-bare-u2009-line]
+[fixture: gitgraph/div-detect-bare-before-header-u200a]
+[fixture: gitgraph/div-detect-bare-u200a-line]
+[fixture: gitgraph/div-detect-bare-before-header-u202f]
+[fixture: gitgraph/div-detect-bare-u202f-line]
+[fixture: gitgraph/div-detect-bare-before-header-u205f]
+[fixture: gitgraph/div-detect-bare-u205f-line]
+[fixture: gitgraph/div-detect-bare-before-header-u3000]
+[fixture: gitgraph/div-detect-bare-u3000-line]
+[fixture: gitgraph/div-detect-bare-before-header-ls]
+[fixture: gitgraph/div-detect-bare-ls-line]
+[fixture: gitgraph/div-detect-bare-before-header-ps]
+[fixture: gitgraph/div-detect-bare-ps-line]
+[fixture: gitgraph/div-detect-retained-yaml-bare-ls]
+[fixture: gitgraph/div-detect-retained-directive-bare-ls]
+[fixture: gitgraph/detect-retained-yaml-bare-ascii]
+[fixture: gitgraph/detect-retained-directive-bare-ascii]
+[fixture: gitgraph/div-detect-retained-directive-bare-bom]
+[fixture: gitgraph/div-detect-retained-directive-bare-ls-line]
+[fixture: gitgraph/div-detect-retained-yaml-bare-bom]
+[fixture: gitgraph/div-detect-retained-yaml-bare-ls-line]
+[fixture: gitgraph/div-detect-retained-yaml-bare-then-directive]
+[fixture: gitgraph/detect-retained-yaml-bare-then-directive-ascii]
+[fixture: gitgraph/lex-body-bom]
+[fixture: gitgraph/lex-body-ff]
+[fixture: gitgraph/lex-body-ideographic-space]
+[fixture: gitgraph/lex-body-nbsp]
+[fixture: gitgraph/lex-body-u1680]
+[fixture: gitgraph/lex-body-u2000]
+[fixture: gitgraph/lex-body-u2001]
+[fixture: gitgraph/lex-body-u2002]
+[fixture: gitgraph/lex-body-u2003]
+[fixture: gitgraph/lex-body-u2004]
+[fixture: gitgraph/lex-body-u2005]
+[fixture: gitgraph/lex-body-u2006]
+[fixture: gitgraph/lex-body-u2007]
+[fixture: gitgraph/lex-body-u2008]
+[fixture: gitgraph/lex-body-u2009]
+[fixture: gitgraph/lex-body-u200a]
+[fixture: gitgraph/lex-body-u202f]
+[fixture: gitgraph/lex-body-u205f]
+[fixture: gitgraph/lex-body-vt]
+
+先頭 frontmatter は共通 YAML の読みを使い、抽出前に
+HTML 属性の引用符を変換する。不正な YAML は拒否され、
+変換前には有効な YAML でも拒否されることがある。
+truthy な非文字列 title は文字列化し、false は title を与えない。
+本文の hidden YAML ではこの解析を行わない。
+[fixture: gitgraph/frontmatter-title]
+[fixture: gitgraph/frontmatter-override]
+[fixture: gitgraph/div-frontmatter-invalid-yaml]
+[fixture: gitgraph/frontmatter-html]
+[fixture: gitgraph/div-frontmatter-html-invalid-yaml]
+[fixture: gitgraph/frontmatter-title-number]
+[fixture: gitgraph/frontmatter-title-list]
+[fixture: gitgraph/frontmatter-title-false]
+[fixture: gitgraph/lex-yaml-invalid-body]
+
+Mermaid の 4 個の C4-anywhere 語は diagram text 内の
+各 text field から検出先を変えられ、ヘッダーや文の EOF comment も含む。
+最後に書いた LF があれば native comment をこの scan から守る。
+C4Context は内部の値から検出先を変えない。
+[fixture: gitgraph/div-detect-c4container-id]
+[fixture: gitgraph/div-detect-c4component-message]
+[fixture: gitgraph/div-detect-c4dynamic-tag]
+[fixture: gitgraph/div-detect-c4deployment-branch]
+[fixture: gitgraph/div-detect-c4container-title]
+[fixture: gitgraph/div-detect-c4component-acctitle]
+[fixture: gitgraph/div-detect-c4dynamic-accdescr]
+[fixture: gitgraph/div-detect-c4deployment-block]
+[fixture: gitgraph/div-detect-c4container-header-comment-eof]
+[fixture: gitgraph/div-detect-c4component-comment-eof]
+[fixture: gitgraph/detect-c4dynamic-comment-lf]
+[fixture: gitgraph/detect-c4deployment-comment-lf]
+[fixture: gitgraph/detect-c4context-id]
+[fixture: gitgraph/div-detect-c4component-accdescr]
+[fixture: gitgraph/div-detect-c4component-block]
+[fixture: gitgraph/div-detect-c4component-branch]
+[fixture: gitgraph/detect-c4component-comment-lf]
+[fixture: gitgraph/div-detect-c4component-header-comment-eof]
+[fixture: gitgraph/detect-c4component-header-comment-lf]
+[fixture: gitgraph/div-detect-c4component-id]
+[fixture: gitgraph/div-detect-c4component-tag]
+[fixture: gitgraph/div-detect-c4component-title]
+[fixture: gitgraph/div-detect-c4container-accdescr]
+[fixture: gitgraph/div-detect-c4container-acctitle]
+[fixture: gitgraph/div-detect-c4container-block]
+[fixture: gitgraph/div-detect-c4container-branch]
+[fixture: gitgraph/div-detect-c4container-comment-eof]
+[fixture: gitgraph/detect-c4container-comment-lf]
+[fixture: gitgraph/detect-c4container-header-comment-lf]
+[fixture: gitgraph/div-detect-c4container-message]
+[fixture: gitgraph/div-detect-c4container-tag]
+[fixture: gitgraph/div-detect-c4deployment-accdescr]
+[fixture: gitgraph/div-detect-c4deployment-acctitle]
+[fixture: gitgraph/div-detect-c4deployment-comment-eof]
+[fixture: gitgraph/div-detect-c4deployment-header-comment-eof]
+[fixture: gitgraph/detect-c4deployment-header-comment-lf]
+[fixture: gitgraph/div-detect-c4deployment-id]
+[fixture: gitgraph/div-detect-c4deployment-message]
+[fixture: gitgraph/div-detect-c4deployment-tag]
+[fixture: gitgraph/div-detect-c4deployment-title]
+[fixture: gitgraph/div-detect-c4dynamic-acctitle]
+[fixture: gitgraph/div-detect-c4dynamic-block]
+[fixture: gitgraph/div-detect-c4dynamic-branch]
+[fixture: gitgraph/div-detect-c4dynamic-comment-eof]
+[fixture: gitgraph/div-detect-c4dynamic-header-comment-eof]
+[fixture: gitgraph/detect-c4dynamic-header-comment-lf]
+[fixture: gitgraph/div-detect-c4dynamic-id]
+[fixture: gitgraph/div-detect-c4dynamic-message]
+[fixture: gitgraph/div-detect-c4dynamic-title]
+
+### HTML、entity、設定
+
+共通文字列は root 設定を使うが、commit の id/tag、ブランチ名、
+検索名は gitgraph の部分設定を `sanitizeText()` に渡す。
+通常はその object に `securityLevel` がないため、
+DOMPurify を無効にしても HTML を escape する。root の
+securityLevel だけを変えても要約は同じ。root の htmlLabels false は
+この分岐を無効にせず、gitGraph.htmlLabels false または
+gitGraph.securityLevel loose は無効にする。merge の tag は
+この sanitizer を通らず、cherry-pick の tag は通る。
+設定による初期ブランチ名はブランチ名の sanitize を通らない。
+[fixture: gitgraph/html-all-texts]
+[fixture: gitgraph/config-security-strict]
+[fixture: gitgraph/config-security-loose]
+[fixture: gitgraph/config-security-antiscript]
+[fixture: gitgraph/config-security-sandbox]
+[fixture: gitgraph/config-security-other]
+[fixture: gitgraph/config-html-false]
+[fixture: gitgraph/config-gitgraph-html-false]
+[fixture: gitgraph/config-gitgraph-loose]
+[fixture: gitgraph/config-common-html-false]
+[fixture: gitgraph/config-common-html-true]
+[fixture: gitgraph/config-merge-tag-escape-difference]
+[fixture: gitgraph/html-cherry-pick-tags]
+[fixture: gitgraph/config-main-html]
+
+HTML 属性の引用符は STRING の字句解析前に変換され、
+comment 行で始まった tag が後の message に届く場合も同じ。
+HTML の ampersand entity はそのままで、Mermaid の hash entity は
+要約したすべての text で符号化した marker のまま残る。
+message text は受理するが要約では省く。
+[fixture: gitgraph/lex-html-attribute-quotes]
+[fixture: gitgraph/lex-html-comment-reaches-message]
+[fixture: gitgraph/entity-all-fields]
+[fixture: gitgraph/entity-ampersand-html]
+
+共通の style/classDef 行前処理は、引用 id、message、tag、
+ブランチ名、すべての共通形式を含む任意の text から
+最後のセミコロンを除去できる。trigger ごとに最後の 1 個だけを
+除去し、2 個の trigger は 2 個除去できる。大文字小文字の変更、
+hash の欠落、コロン後の空白、LF/LS/PS による別 segment は
+trigger を妨げ、directive 除去は再構成することがある。
+frontmatter の title はこの段階を通らない。
+[fixture: gitgraph/style-id-two-semicolons]
+[fixture: gitgraph/style-label-one-semicolon]
+[fixture: gitgraph/style-tag-three-semicolons]
+[fixture: gitgraph/style-branch]
+[fixture: gitgraph/style-title]
+[fixture: gitgraph/style-acctitle]
+[fixture: gitgraph/style-accdescr]
+[fixture: gitgraph/style-block]
+[fixture: gitgraph/style-both-words]
+[fixture: gitgraph/style-uppercase]
+[fixture: gitgraph/style-no-hash]
+[fixture: gitgraph/style-colon-space]
+[fixture: gitgraph/style-message-separate-hash]
+[fixture: gitgraph/style-ls-segment]
+[fixture: gitgraph/style-ps-segment]
+[fixture: gitgraph/style-directive-rejoins]
+[fixture: gitgraph/style-frontmatter-title]
+[fixture: gitgraph/style-merge-tag]
+[fixture: gitgraph/style-cherry-pick-tag]
+
+同じ前処理が order の桁の間やキーワード内部のセミコロンを
+除去し、整数やキーワードを再結合することもある。
+[fixture: gitgraph/div-style-semicolon-in-order-number]
+[fixture: gitgraph/div-style-semicolon-in-order-keyword]
+
+TITLE、ACC_TITLE、行・block の ACC_DESCR は STRING ではない。
+値内の引用符と backslash escape はそのまま残し、
+title の値内の引用符は EOL までに閉じる必要もない。
+[fixture: gitgraph/common-title-quoted-escape]
+[fixture: gitgraph/common-acctitle-quoted-escape]
+[fixture: gitgraph/common-accdescr-quoted-escape]
+[fixture: gitgraph/common-block-quoted-escape]
+[fixture: gitgraph/common-title-open-quote]
+
+native comment と global に除去する閉じた directive は、
+各文・共通形式の後で EOL の LF を残す。閉じない free-text directive は
+後続の文を除去し、完成した接頭辞の文は EOF で終えられる。
+境界を満たすヘッダーの後でも `; ;` は文として読まない。
+[fixture: gitgraph/directive-eol-commit-closed]
+[fixture: gitgraph/directive-eol-branch-closed]
+[fixture: gitgraph/directive-eol-checkout-closed]
+[fixture: gitgraph/directive-eol-switch-closed]
+[fixture: gitgraph/directive-eol-merge-closed]
+[fixture: gitgraph/directive-eol-cherry-pick-closed]
+[fixture: gitgraph/directive-eol-title-closed]
+[fixture: gitgraph/directive-eol-acctitle-closed]
+[fixture: gitgraph/directive-eol-accdescr-closed]
+[fixture: gitgraph/directive-eol-block-closed]
+[fixture: gitgraph/directive-eol-commit-open]
+[fixture: gitgraph/directive-eol-branch-open]
+[fixture: gitgraph/directive-eol-checkout-open]
+[fixture: gitgraph/directive-eol-switch-open]
+[fixture: gitgraph/directive-eol-merge-open]
+[fixture: gitgraph/directive-eol-cherry-pick-open]
+[fixture: gitgraph/directive-eol-title-open]
+[fixture: gitgraph/directive-eol-acctitle-open]
+[fixture: gitgraph/directive-eol-accdescr-open]
+[fixture: gitgraph/directive-eol-block-open]
+[fixture: gitgraph/comment-eol-branch]
+[fixture: gitgraph/comment-eol-checkout]
+[fixture: gitgraph/comment-eol-switch]
+[fixture: gitgraph/comment-eol-merge]
+[fixture: gitgraph/comment-eol-cherry-pick]
+[fixture: gitgraph/comment-eol-block]
+[fixture: gitgraph/eol-header-spaced-semicolons]
+
+数字を含む bare reference にドットがあっても REFERENCE になるとは
+限らない。ゼロの INT 分岐は直ちに `0` を取り、非ゼロの複数桁では
+INT がドットの前で短い接頭辞へ backtrack できる。このため
+`1.2.3` とは異なり、bare 名 `0.1` と `12.3` は拒否する。
+[fixture: gitgraph/lex-reference-zero-before-dot]
+[fixture: gitgraph/lex-reference-multiple-digits-before-dot]
+[fixture: gitgraph/lex-reference-digit-dot]
+
+FLOAT/NUMBER が lexer に到達しないため、bare 名 `1.5` は
+REFERENCE で読める。未使用の BOOLEAN も `true` と `false` を
+取らず、どちらも文字列の reference 名として残る。
+[fixture: gitgraph/lex-reference-float-spelling]
+[fixture: gitgraph/lex-reference-boolean-spellings]
+
+## info
+
+受理した info 入力の要約はすべて `{}`。
+任意の `showInfo` キーワードは AST の field を作らない。
+infoParser.parse() は AST をログに出すだけで、
+共通の title や accessibility 値を Db に登録しない。
+根拠:
+[infoParser.parse()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
+[fixture: info/header-lf]
+[fixture: info/header-inline-flag]
+[fixture: info/common-all]
+[fixture: info/common-flag-all]
+
+upstream の最小 header と flag 付き header も空要約になる。
+[fixture: info/spec-info-06271baf]
+[fixture: info/spec-info-df27ef00]
+
+getVersion() の version は build 定数で、tiny build の接尾辞も含む。
+renderer は引数の version を表示し、Db の field を読まない。
+version、固定寸法、font 設定、SVG の位置は入力から決まらないので省く。
+frontmatter の title/config は共有の embedded reading に残り、
+info の Db には title setter がない。
+根拠:
+[getVersion()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDb.ts#L3-L11)
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoRenderer.ts#L13-L28)
+[fixture: info/frontmatter-title]
+[fixture: info/frontmatter-config]
+[fixture: info/frontmatter-html]
+
+先頭の init directive は共有の embedded config を変更できるが、
+Db の field は加えない。
+[fixture: info/directive-config]
+
+### entry とキーワード境界
+
+entry は `info`、任意の `showInfo`、任意の共通 fragment の順。
+header の前や flag の前後には改行を置ける。
+最初の共通形式は header や flag と同じ行にも書ける。
+header や flag の繰り返し、header より前の flag、
+共通形式の後の flag は拒否する。
+根拠:
+[entry rule](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/info.langium#L1-L9)
+[fixture: info/header-blank-lines]
+[fixture: info/header-flag-next-line]
+[fixture: info/header-common-inline]
+[fixture: info/header-flag-common-inline]
+[fixture: info/header-repeated]
+[fixture: info/header-repeated-flag]
+[fixture: info/header-flag-before]
+[fixture: info/header-common-then-flag]
+
+detector は小文字の prefix `info` に一致する。
+token builder は両キーワードの後に JavaScript の空白、EOF、
+または `%%` を要求する。
+letter、digit、underscore、hyphen、Unicode letter、colon の suffix、
+header の大文字小文字違い、分割した header は拒否する。
+根拠:
+[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
+[token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/tokenBuilder.ts#L1-L7)
+[fixture: info/detect-lower-suffix]
+[fixture: info/detect-digit-suffix]
+[fixture: info/detect-underscore-suffix]
+[fixture: info/detect-dash-suffix]
+[fixture: info/detect-unicode-suffix]
+[fixture: info/detect-colon]
+[fixture: info/detect-uppercase]
+[fixture: info/detect-titlecase]
+[fixture: info/detect-header-split]
+[fixture: info/flag-letter-suffix]
+[fixture: info/flag-digit-suffix]
+[fixture: info/flag-underscore-suffix]
+[fixture: info/flag-dash-suffix]
+[fixture: info/flag-unicode-suffix]
+[fixture: info/flag-colon-suffix]
+[fixture: info/flag-uppercase]
+[fixture: info/flag-lowercase]
+[fixture: info/flag-glued-header]
+
+到達する terminal は ACC_DESCR、ACC_TITLE、TITLE、NEWLINE と
+共通の hidden terminal 4 個だけ。
+import した STRING、BOOLEAN、ID、数値 terminal は単位にならず、
+単独の引用文字列、boolean word、数値、名前は拒否する。
+公開 parse gate は lexer/parser error をすべて拒否する。
+正しい prefix の後や、回復できる共通形式の前の error も同じ。
+[fixture: info/terminal-string-double]
+[fixture: info/terminal-string-single]
+[fixture: info/terminal-boolean]
+[fixture: info/terminal-number]
+[fixture: info/terminal-id]
+[fixture: info/error-before-header]
+[fixture: info/error-after-prefix]
+[fixture: info/error-after-common]
+[fixture: info/spec-info-1b111b64]
+
+### 共通形式と文末
+
+共通 terminal と CommonValueConverter は、ASCII space/tab 1 個後の
+title text、ASCII space/tab の colon gap を持つ accessibility 行値、
+JavaScript の空白の後の description block を受理する。
+空値、3 回目の代入、空白だけの最終値、両方の引用符も受理するが、
+Db の値は登録しない。
+引用符と backslash は共通 text なので、行値の開き引用符は閉じなくてよい。
+根拠:
+[common terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34)
+[CommonValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L45-L81)
+[fixture: info/title-empty]
+[fixture: info/title-repeat-empty]
+[fixture: info/title-tabs]
+[fixture: info/title-double-quotes]
+[fixture: info/title-single-quotes]
+[fixture: info/title-open-quote]
+[fixture: info/acctitle-empty]
+[fixture: info/acctitle-repeat-empty]
+[fixture: info/acctitle-quoted]
+[fixture: info/acctitle-gap]
+[fixture: info/accdescr-line-empty]
+[fixture: info/accdescr-line-repeat]
+[fixture: info/accdescr-line-quoted]
+[fixture: info/accdescr-block-empty]
+[fixture: info/accdescr-block-repeat]
+[fixture: info/accdescr-block-quoted]
+[fixture: info/common-title-nbsp-only]
+[fixture: info/space-common-interior]
+[fixture: info/space-block-interior]
+
+複数行の description block は字下げと空行を受理し、Db の field は加えない。
+[fixture: info/accdescr-block-lines]
+
+colon のない accessibility title、`title:`、共通キーワードの
+不正な suffix や大文字小文字違いは拒否する。
+NBSP は title separator や accessibility colon gap に使えず、
+LS は行 description の colon gap に使えない。
+block brace の前には LF、空行、LS、BOM を置ける。
+[fixture: info/acctitle-no-colon]
+[fixture: info/title-colon]
+[fixture: info/title-digit-suffix]
+[fixture: info/title-letter-suffix]
+[fixture: info/title-dash-suffix]
+[fixture: info/title-unicode-suffix]
+[fixture: info/title-uppercase]
+[fixture: info/acctitle-digit-suffix]
+[fixture: info/acctitle-letter-suffix]
+[fixture: info/acctitle-dash-suffix]
+[fixture: info/acctitle-unicode-suffix]
+[fixture: info/acctitle-uppercase]
+[fixture: info/accdescr-digit-suffix]
+[fixture: info/accdescr-letter-suffix]
+[fixture: info/accdescr-dash-suffix]
+[fixture: info/accdescr-unicode-suffix]
+[fixture: info/accdescr-uppercase]
+[fixture: info/space-title-separator-nbsp]
+[fixture: info/space-acctitle-colon-nbsp]
+[fixture: info/accdescr-colon-gap-ls]
+[fixture: info/accdescr-block-gap-lf]
+[fixture: info/common-block-blank-gap]
+[fixture: info/accdescr-block-gap-ls]
+[fixture: info/accdescr-block-gap-bom]
+
+block は最初の `}` で終わり、brace の入れ子、引用符、backslash は
+closer を保護しない。閉じない block は拒否する。
+次の共通形式の前に block は可視 EOL または EOF を要求するが、
+行値は同じ行の後のキーワードも text として取る。
+空の行値は後の行を値として取らない。
+[fixture: info/accdescr-block-first-close]
+[fixture: info/accdescr-block-nested]
+[fixture: info/common-block-closer-quoted]
+[fixture: info/accdescr-block-escaped-brace]
+[fixture: info/accdescr-block-open]
+[fixture: info/common-same-line]
+[fixture: info/title-consumes-next-keyword]
+[fixture: info/acctitle-next-line]
+[fixture: info/common-title-comment-gap]
+[fixture: info/common-acctitle-comment-gap]
+
+共通形式の間の空行と、EOF にある最後の block/行値は受理する。
+header、flag、block 後の semicolon と colon-space は拒否するが、
+共通行値の中の semicolon text は受理する。
+block 後の tab は hidden whitespace、LS と PS は拒否する。
+[fixture: info/common-blank-lines]
+[fixture: info/end-block-eof]
+[fixture: info/end-common-eof]
+[fixture: info/end-header-semicolon]
+[fixture: info/end-header-spaced-semicolon]
+[fixture: info/end-header-double-semicolon]
+[fixture: info/end-header-colon-space]
+[fixture: info/end-flag-semicolon]
+[fixture: info/end-flag-spaced-semicolon]
+[fixture: info/end-flag-double-semicolon]
+[fixture: info/end-flag-colon-space]
+[fixture: info/end-block-semicolon]
+[fixture: info/end-block-double-semicolon]
+[fixture: info/end-block-spaced-semicolons]
+[fixture: info/end-block-colon-space]
+[fixture: info/end-title-semicolons]
+[fixture: info/end-acctitle-semicolons]
+[fixture: info/end-accdescr-semicolons]
+[fixture: info/end-block-tab]
+[fixture: info/end-block-ls]
+[fixture: info/end-block-ps]
+
+CR と CRLF は LF に正規化する。
+LS/PS は native newline や body gap ではないが、
+共通の行値や block 値の内部には含められる。
+[fixture: info/line-cr]
+[fixture: info/line-crlf]
+[fixture: info/line-ls-between]
+[fixture: info/line-ps-between]
+[fixture: info/line-ls-in-value]
+[fixture: info/line-ps-in-value]
+[fixture: info/line-ls-block]
+[fixture: info/line-ls-eof]
+[fixture: info/line-ps-eof]
+
+### 除去、hidden form、検出
+
+global directive 除去は、キーワード、keyword/colon の境界、
+block brace、text 値を再結合できる。
+キーワード間の境界を壊すこともあり、残る space が control になる。
+閉じない directive は残りの source 全体や、後の word と LF を取れる。
+記録した未知の directive type と不正 init 内容は受理する。
+[fixture: info/div-directive-header-middle]
+[fixture: info/directive-header-glued]
+[fixture: info/directive-header-space-control]
+[fixture: info/div-directive-flag-middle]
+[fixture: info/directive-flag-glued]
+[fixture: info/div-directive-title-middle]
+[fixture: info/div-directive-acctitle-middle]
+[fixture: info/div-directive-accdescr-middle]
+[fixture: info/directive-acctitle-colon]
+[fixture: info/directive-block-brace]
+[fixture: info/directive-title-value]
+[fixture: info/directive-acctitle-value]
+[fixture: info/directive-accdescr-value]
+[fixture: info/directive-block-value]
+[fixture: info/directive-unclosed-after-header]
+[fixture: info/directive-unclosed-inside-header]
+[fixture: info/directive-unclosed-word-lines]
+[fixture: info/directive-unknown]
+[fixture: info/directive-invalid-init]
+[fixture: info/directive-uppercase]
+[fixture: info/directive-ls-close]
+[fixture: info/common-accdescr-directive-gap]
+
+hidden YAML/DIRECTIVE は global 除去や実際の frontmatter と別。
+条件を満たす closer の直後の LF は消費し、他の空白境界は先読みだけ。
+header/flag 後には可視 EOL を残す必要がない。
+各共通行値や description block 後で唯一の LF を消費すると次の文を拒否し、
+余分な LF、closer 後の space、EOF は受理する。
+[fixture: info/hidden-directive-body]
+[fixture: info/hidden-directive-glued-header]
+[fixture: info/hidden-directive-flag-next-common]
+[fixture: info/hidden-directive-header-eof]
+[fixture: info/hidden-directive-flag-eof]
+[fixture: info/hidden-directive-after-title]
+[fixture: info/hidden-directive-title-spare-lf]
+[fixture: info/hidden-directive-title-space]
+[fixture: info/hidden-directive-title-eof]
+[fixture: info/hidden-directive-after-acctitle]
+[fixture: info/hidden-directive-acctitle-spare-lf]
+[fixture: info/hidden-directive-acctitle-space]
+[fixture: info/hidden-directive-acctitle-eof]
+[fixture: info/hidden-directive-after-accdescr]
+[fixture: info/hidden-directive-accdescr-spare-lf]
+[fixture: info/hidden-directive-accdescr-space]
+[fixture: info/hidden-directive-accdescr-eof]
+[fixture: info/hidden-directive-after-block]
+[fixture: info/hidden-directive-block-spare-lf]
+[fixture: info/hidden-directive-block-space]
+[fixture: info/hidden-directive-block-eof]
+[fixture: info/hidden-yaml-body]
+[fixture: info/hidden-yaml-after-flag]
+[fixture: info/hidden-yaml-header-eof]
+[fixture: info/hidden-yaml-flag-eof]
+[fixture: info/hidden-yaml-after-block]
+[fixture: info/hidden-yaml-block-spare-lf]
+[fixture: info/hidden-yaml-block-space]
+[fixture: info/hidden-yaml-block-eof]
+
+header/flag に直結した YAML の dash はキーワード境界を満たさない。
+共通行値は YAML opener を text として取り、次の内容行を拒否する。
+hidden form の前に既に見える EOL があれば文を区切れる。
+hidden YAML は body を decode せず、隣接 fence と ASCII opener padding を
+受理する。閉じない block、字下げした closer、Unicode opener padding、
+dash 4 個、後に有効 closer のない closer suffix は拒否する。
+条件を満たさない早い closer は通過できる。
+[fixture: info/hidden-yaml-after-header]
+[fixture: info/hidden-yaml-flag-glued]
+[fixture: info/hidden-yaml-after-title]
+[fixture: info/hidden-yaml-after-acctitle]
+[fixture: info/hidden-yaml-after-accdescr]
+[fixture: info/hidden-directive-between-common]
+[fixture: info/hidden-yaml-between-common]
+[fixture: info/hidden-yaml-invalid]
+[fixture: info/hidden-yaml-empty]
+[fixture: info/hidden-yaml-open-padding]
+[fixture: info/hidden-yaml-unclosed]
+[fixture: info/hidden-yaml-indent]
+[fixture: info/hidden-yaml-open-nbsp]
+[fixture: info/hidden-yaml-four-dashes]
+[fixture: info/hidden-yaml-close-suffix]
+[fixture: info/hidden-yaml-nonqualifying-closer]
+
+hidden DIRECTIVE は native comment より優先し、nonword 内容や
+ASCII の leading padding も一致する。
+閉じない場合や closer が直結した場合は native comment になり、
+LF を残して同じ行の text を飲み込む。
+早い closer が条件を満たさなければ、後の有効 closer まで進める。
+block 内の YAML らしい text は block に属するが、directive らしい形式の
+`}` は description を先に閉じ、残る `%%` は native comment になる。
+CR/CRLF の正規化後も hidden form による LF の結果は同じ。
+[fixture: info/hidden-directive-padding]
+[fixture: info/hidden-directive-unclosed]
+[fixture: info/hidden-directive-close-glued]
+[fixture: info/hidden-directive-close-tab]
+[fixture: info/hidden-directive-first-close]
+[fixture: info/hidden-directive-nonqualifying-closer]
+[fixture: info/hidden-yaml-inside-block]
+[fixture: info/hidden-directive-inside-block]
+[fixture: info/hidden-directive-block-first-brace]
+[fixture: info/hidden-directive-cr]
+[fixture: info/hidden-directive-crlf]
+[fixture: info/hidden-yaml-cr]
+[fixture: info/hidden-yaml-crlf]
+
+global comment line は消え、末尾や bare の native `%%` comment は
+LF を残す。共通行値は percent 対の前で止まり、空値でも同じ。
+block 内の comment region は消えるが、bare percent line は block text。
+native comment は、可視 LF を挟む keyword/colon や block opener の
+構成要素を結合できない。
+[fixture: info/comment-leading]
+[fixture: info/comment-header]
+[fixture: info/comment-flag]
+[fixture: info/comment-between-header-flag]
+[fixture: info/comment-bare-body]
+[fixture: info/comment-triple]
+[fixture: info/comment-title]
+[fixture: info/comment-acctitle]
+[fixture: info/comment-accdescr]
+[fixture: info/common-line-leading-percent]
+[fixture: info/comment-block]
+[fixture: info/comment-bare-block]
+[fixture: info/comment-after-block]
+[fixture: info/comment-eof]
+[fixture: info/comment-header-split]
+[fixture: info/comment-colon-gap]
+[fixture: info/common-block-native-comment-gap]
+
+先頭 frontmatter は共有の title/config 読みを適用する。
+隣接 fence、閉じない block、LS/PS delimiter、closer だけの字下げは拒否する。
+空の body 行、CR/CRLF、同じ字下げは受理する。
+attribute quote cleanup で不正になった YAML も含め、不正 YAML は拒否する。
+不正 YAML 2 件の mark は `embedded-data-opaque` で、比較 Db はない。
+[fixture: info/frontmatter-empty]
+[fixture: info/frontmatter-unclosed]
+[fixture: info/frontmatter-ls-fences]
+[fixture: info/frontmatter-ps-fences]
+[fixture: info/frontmatter-indent-close]
+[fixture: info/frontmatter-empty-line]
+[fixture: info/frontmatter-cr]
+[fixture: info/frontmatter-crlf]
+[fixture: info/frontmatter-indent-both]
+[fixture: info/div-frontmatter-invalid-yaml]
+[fixture: info/div-frontmatter-html-invalid-yaml]
+
+数値、false、null、array、空文字の frontmatter title は
+共有 reading だけに影響し、info Db の値にはならない。
+opener だけの BOM は retained YAML を露出し、
+両 fence の一致する BOM は実際の frontmatter を作れる。
+[fixture: info/frontmatter-title-zero]
+[fixture: info/frontmatter-title-number]
+[fixture: info/frontmatter-title-false]
+[fixture: info/frontmatter-title-null]
+[fixture: info/frontmatter-title-array]
+[fixture: info/frontmatter-title-empty-string]
+[fixture: info/frontmatter-bom-opening]
+[fixture: info/frontmatter-bom-both]
+
+検出は非先頭の frontmatter 形 block 1 個を skip し、info の hidden YAML が
+title/config を適用せず、YAML も decode せずに読む。
+実際の frontmatter を前に、second-scan directive を後に置ける。
+2 個目の block、bare percent-brace 行や second-scan directive の後の block、
+同じ字下げの非先頭 fence は拒否する。
+再構成された second-scan directive 自体は有効な hidden closer があれば受理する。
+[fixture: info/frontmatter-nonleading-comment]
+[fixture: info/frontmatter-nonleading-lf]
+[fixture: info/hidden-yaml-config-ignored]
+[fixture: info/hidden-yaml-preheader-invalid]
+[fixture: info/detect-block-after-real-frontmatter]
+[fixture: info/detect-block-before-second-scan]
+[fixture: info/detect-two-blocks]
+[fixture: info/detect-block-after-bare-brace]
+[fixture: info/detect-second-scan-before-block]
+[fixture: info/detect-block-equally-indented]
+[fixture: info/detect-second-scan-directive]
+[fixture: info/detect-second-scan-glued]
+
+### 空白と共有 text 前処理
+
+native hidden gap は ASCII space/tab だけ。
+最初の diagram unit より前の JavaScript whitespace は global に trim するが、
+header 後、EOF、hidden closer 後の同じ非 ASCII 空白は拒否する。
+[fixture: info/space-header-tab]
+[fixture: info/space-header-vt]
+[fixture: info/space-header-ff]
+[fixture: info/space-header-nbsp]
+[fixture: info/space-header-bom]
+[fixture: info/space-header-1680]
+[fixture: info/space-header-2000]
+[fixture: info/space-header-2001]
+[fixture: info/space-header-2002]
+[fixture: info/space-header-2003]
+[fixture: info/space-header-2004]
+[fixture: info/space-header-2005]
+[fixture: info/space-header-2006]
+[fixture: info/space-header-2007]
+[fixture: info/space-header-2008]
+[fixture: info/space-header-2009]
+[fixture: info/space-header-200a]
+[fixture: info/space-header-202f]
+[fixture: info/space-header-205f]
+[fixture: info/space-header-3000]
+[fixture: info/space-leading-unicode]
+[fixture: info/space-trailing-unicode]
+[fixture: info/hidden-directive-close-ls]
+[fixture: info/hidden-yaml-close-ls]
+
+検出が通過した bare `%%` 行の後も ASCII space/tab は使える。
+VT、FF、NBSP、BOM、U+1680、U+2000–U+200A、U+202F、U+205F、
+U+3000、LS、PS は、header 直前でも空白だけの行でも拒否する。
+retained YAML/directive の後も LS/BOM や LS だけの行は拒否し、
+ASCII control は受理する。
+bare 行だけでは header がなく、bare percent-brace 行は同じ行の header を
+検出から隠すことがある。
+[fixture: info/bare-before-header-space]
+[fixture: info/bare-before-header-tab]
+[fixture: info/div-bare-before-header-vt]
+[fixture: info/div-bare-before-header-ff]
+[fixture: info/div-bare-before-header-nbsp]
+[fixture: info/div-bare-before-header-bom]
+[fixture: info/div-bare-before-header-1680]
+[fixture: info/div-bare-before-header-2000]
+[fixture: info/div-bare-before-header-2001]
+[fixture: info/div-bare-before-header-2002]
+[fixture: info/div-bare-before-header-2003]
+[fixture: info/div-bare-before-header-2004]
+[fixture: info/div-bare-before-header-2005]
+[fixture: info/div-bare-before-header-2006]
+[fixture: info/div-bare-before-header-2007]
+[fixture: info/div-bare-before-header-2008]
+[fixture: info/div-bare-before-header-2009]
+[fixture: info/div-bare-before-header-200a]
+[fixture: info/div-bare-before-header-202f]
+[fixture: info/div-bare-before-header-205f]
+[fixture: info/div-bare-before-header-3000]
+[fixture: info/div-bare-before-header-ls]
+[fixture: info/div-bare-before-header-ps]
+[fixture: info/bare-line-space]
+[fixture: info/bare-line-tab]
+[fixture: info/div-bare-line-vt]
+[fixture: info/div-bare-line-ff]
+[fixture: info/div-bare-line-nbsp]
+[fixture: info/div-bare-line-bom]
+[fixture: info/div-bare-line-1680]
+[fixture: info/div-bare-line-2000]
+[fixture: info/div-bare-line-2001]
+[fixture: info/div-bare-line-2002]
+[fixture: info/div-bare-line-2003]
+[fixture: info/div-bare-line-2004]
+[fixture: info/div-bare-line-2005]
+[fixture: info/div-bare-line-2006]
+[fixture: info/div-bare-line-2007]
+[fixture: info/div-bare-line-2008]
+[fixture: info/div-bare-line-2009]
+[fixture: info/div-bare-line-200a]
+[fixture: info/div-bare-line-202f]
+[fixture: info/div-bare-line-205f]
+[fixture: info/div-bare-line-3000]
+[fixture: info/div-bare-line-ls]
+[fixture: info/div-bare-line-ps]
+[fixture: info/div-detect-retained-yaml-bare-ls]
+[fixture: info/div-detect-retained-directive-bare-ls]
+[fixture: info/div-detect-retained-yaml-bare-bom]
+[fixture: info/div-detect-retained-directive-bare-bom]
+[fixture: info/div-detect-retained-yaml-bare-ls-line]
+[fixture: info/div-detect-retained-directive-bare-ls-line]
+[fixture: info/detect-retained-yaml-ascii]
+[fixture: info/detect-retained-directive-ascii]
+[fixture: info/detect-bare-only]
+[fixture: info/detect-percent-brace-inline-header]
+
+HTML、quote cleanup、名前/数値 entity、style/classDef pass は
+共通 text に到達するが、htmlLabels false、loose、sandbox の設定でも
+共通 field は登録しない。
+entity は header や単独の文を作れない。
+[fixture: info/html-all-common]
+[fixture: info/html-false]
+[fixture: info/html-loose]
+[fixture: info/html-sandbox]
+[fixture: info/entity-keyword]
+[fixture: info/entity-standalone]
+[fixture: info/style-title]
+[fixture: info/style-acctitle]
+[fixture: info/style-accdescr]
+[fixture: info/style-block]
+[fixture: info/style-block-two]
+[fixture: info/style-block-three]
+[fixture: info/style-uppercase]
+[fixture: info/style-nohash]
+[fixture: info/style-colon-space]
+[fixture: info/style-hash-other-line]
+[fixture: info/style-both]
+[fixture: info/style-directive-rejoin]
+[fixture: info/style-ls]
+[fixture: info/style-ps]
+[fixture: info/style-frontmatter]
+
+style 前処理は、block 後の拒否を起こす semicolon を除去できる。
+semicolon 2 個なら拒否する suffix が 1 個残る。
+大文字、hash なし、colon-space-hash、LS、PS の control は suffix を残す。
+global directive 除去は trigger を再構成できる。
+[fixture: info/style-block-end-semicolon]
+[fixture: info/style-block-end-double]
+[fixture: info/style-block-end-upper]
+[fixture: info/style-block-end-nohash]
+[fixture: info/style-block-end-colon-space]
+[fixture: info/style-block-end-ls]
+[fixture: info/style-block-end-ps]
+[fixture: info/style-block-end-directive]
+
+共通の全 text field や、EOF にある header/flag の native comment 内の
+C4 検出 word 4 個は、拒否する C4 経路を選ぶ。
+LF で終わる comment の control は info として受理する。
+[fixture: info/div-c4container-title]
+[fixture: info/div-c4component-title]
+[fixture: info/div-c4dynamic-title]
+[fixture: info/div-c4deployment-title]
+[fixture: info/div-c4container-acctitle]
+[fixture: info/div-c4component-acctitle]
+[fixture: info/div-c4dynamic-acctitle]
+[fixture: info/div-c4deployment-acctitle]
+[fixture: info/div-c4container-line]
+[fixture: info/div-c4component-line]
+[fixture: info/div-c4dynamic-line]
+[fixture: info/div-c4deployment-line]
+[fixture: info/div-c4container-block]
+[fixture: info/div-c4component-block]
+[fixture: info/div-c4dynamic-block]
+[fixture: info/div-c4deployment-block]
+[fixture: info/div-c4container-header-comment-eof]
+[fixture: info/div-c4component-header-comment-eof]
+[fixture: info/div-c4dynamic-header-comment-eof]
+[fixture: info/div-c4deployment-header-comment-eof]
+[fixture: info/c4container-header-comment-lf]
+[fixture: info/c4component-header-comment-lf]
+[fixture: info/c4dynamic-header-comment-lf]
+[fixture: info/c4deployment-header-comment-lf]
+[fixture: info/div-c4container-flag-comment-eof]
+[fixture: info/div-c4component-flag-comment-eof]
+[fixture: info/div-c4dynamic-flag-comment-eof]
+[fixture: info/div-c4deployment-flag-comment-eof]
+[fixture: info/c4container-flag-comment-lf]
+[fixture: info/c4component-flag-comment-lf]
+[fixture: info/c4dynamic-flag-comment-lf]
+[fixture: info/c4deployment-flag-comment-lf]

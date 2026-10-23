@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A final common line value at EOF."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

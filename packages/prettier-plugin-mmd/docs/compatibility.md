@@ -122,7 +122,14 @@ another statement on its line (`A accDescr {}` is the vertex A and an empty
 description block), it is a description block statement. An ordinary closed
 block without text or trivia prints an empty interior `{}`, including when it
 contained a line break. A touching keyword stays touching, as `accDescr{}`.
-[fixture: flowchart/accessibility-lines/empty-block-touching-keyword] Under
+Every diagram with description-block syntax uses this form for whitespace-only
+interiors, including tabs and Unicode whitespace: there is no text for interior
+whitespace to surround. Blocks containing comments or directives retain their
+existing layout; diagram rules that preserve a surrounding line still apply.
+[test: sequence Unicode and tab interiors] [test: class Unicode and tab
+interiors] [test: state Unicode and tab interiors] [test: block Unicode and tab
+interiors] [test: c4 Unicode and tab interiors] [fixture:
+flowchart/accessibility-lines/empty-block-touching-keyword] Under
 [Accessibility lines](./flowchart.md#accessibility-lines), there is no text for
 an interior space to surround, so follow the sibling usecase form among Db-equal
 forms. [fixture:
@@ -1503,3 +1510,112 @@ separately. Rejected payloads follow the shared failure path. See
 pie/div-detect-c4-label] [corpus fixture: pie/div-review-yaml-leading-invalid]
 [corpus fixture: pie/div-preheader-retained-yaml-bare-ls] [test: pie Markdown:
 rejected]
+
+## Gitgraph hidden boundaries and authored history
+
+The [gitgraph rules](./gitgraph.md) keep header direction/colon presence,
+checkout aliases, bare/explicit messages, quotes, reference forms, order digits
+and every source-ordered option/statement occurrence. String/reference padding,
+escapes, HTML, entities and tag order can change the Db, and empty cherry-pick
+tags can suppress a default tag. The summary's omission of messages does not
+permit deleting them. [fixture: gitgraph/header/header-tb] [fixture:
+gitgraph/checkout-aliases/alias-kept] [fixture: gitgraph/messages/message-forms]
+[fixture: gitgraph/quotes/quotes-kept] [fixture:
+gitgraph/references/reference-empty] [corpus fixture: gitgraph/number-precision]
+[fixture: gitgraph/authored-values/inner-padding-change] [corpus fixture:
+gitgraph/db-cherry-pick-only-empty-tags] [fixture:
+gitgraph/order-and-repetitions/order-reverse-id]
+
+GitgraphIgnoredText holds native hidden YAML/DIRECTIVE, separately from real
+frontmatter and global directives. Keep its complete source at its owner,
+consumed/spare LF and closing padding, including at EOF. Hidden YAML closers
+keep their source columns. Preserve the entire retained preheader prefix so
+ignored YAML cannot become effective frontmatter. Safe real YAML uses the shared
+formatter and positive indentation minimum at tabWidth zero. Global trivia,
+comments and semicolon-protected groups use the shared preservation rules; a
+protected header/first statement stays together. [corpus fixture:
+gitgraph/lex-hidden-yaml-before-option-value] [corpus fixture:
+gitgraph/lex-hidden-yaml-commit-closing-space] [corpus fixture:
+gitgraph/lex-hidden-directive-commit-spare-lf] [fixture:
+gitgraph/trailing-whitespace/hidden-eof-padding] [fixture:
+gitgraph/frontmatter-yaml/prefix-retained] [fixture:
+gitgraph/frontmatter-yaml/frontmatter-zero-minimum] [fixture:
+gitgraph/global-directives/directive-sides] [fixture:
+gitgraph/semicolons/semicolon-cross-trigger]
+
+Common title/accessibility line edges compact, but never take a value from the
+next physical line. Shared description-block layout keeps touching braces, empty
+blocks, value continuation columns and trivia. Physical EOL, BOM and final
+newline use the shared host path. Markdown trims final payload padding; interior
+hidden padding stays necessary. [corpus fixture: gitgraph/title-next-line]
+[fixture: gitgraph/title-and-common-values/a11y-no-next-line] [fixture:
+gitgraph/title-and-common-values/a11y-fixed] [corpus fixture:
+gitgraph/lex-description-block-only-comment] [test:
+gitgraph/line-terminators-and-unicode/eol-string-crlf] [test: gitgraph Markdown:
+hidden-boundary] [test: gitgraph Markdown: final-hidden-padding]
+
+Marked divergences follow the specification: atomic directive/semicolon cuts,
+body-only frontmatter HTML, opaque embedded data, C4 detection and bare-percent
+preheader trivia. Raw rejection supplies no raw Db, including malformed YAML;
+check available specified readings separately. Empty quoted options and empty
+description blocks remain accepted. Parser failures report standalone syntax
+errors and decline Markdown embedding without repairing the payload. See
+[Specified readings](./gitgraph.md#specified-readings). [corpus fixture:
+gitgraph/div-directive-in-commit] [corpus fixture:
+gitgraph/div-style-semicolon-in-order-number] [corpus fixture:
+gitgraph/div-frontmatter-cross-title-value] [corpus fixture:
+gitgraph/div-frontmatter-invalid-yaml] [corpus fixture:
+gitgraph/div-detect-c4container-comment-eof] [corpus fixture:
+gitgraph/div-detect-bare-before-header-ls] [test: gitgraph Markdown: rejected]
+
+## Info hidden boundaries and authored statements
+
+The [info rules](./info.md) retain the written showInfo choice, common statement
+order and repetitions, empty forms, quotes, escapes, internal whitespace and
+multiline columns. Info's public Db summary is empty even for common title and
+accessibility assignments; equal empty Dbs do not authorize deleting source.
+Common line edges compact, while next-line values stay separate. [fixture:
+info/statements-one-per-line/order-and-empty] [fixture:
+info/authored-values/literal-quotes-escapes] [fixture:
+info/title/title-next-comment-directive] [fixture:
+info/accessibility-lines/a11y-line-braces]
+
+InfoIgnoredText holds hidden YAML/DIRECTIVE at its original owner, separately
+from real frontmatter and Root directives. Keep complete source, consumed LF
+outside the range, spare LF and closing padding, including at EOF: these
+boundaries can decide acceptance. Hidden YAML closers retain their columns. Keep
+the complete retained prefix, including leading LF and comment columns, to
+prevent ignored YAML from becoming effective frontmatter and changing
+configuration or acceptance. Only safe real YAML uses the shared formatter and
+positive indentation minimum. [fixture: info/hidden-yaml/yaml-block-space]
+[fixture: info/hidden-yaml/yaml-block-spare] [fixture:
+info/hidden-directives/hidden-title-space] [fixture:
+info/trailing-whitespace/trailing-hidden-eof-kept] [fixture:
+info/retained-prefix/prefix-leading-lf-kept] [fixture:
+info/frontmatter-yaml/frontmatter-zero-minimum]
+
+All semicolons remain, and shared source-segment protection keeps crossing
+values/trivia and protected header/body groups whole; changing a trigger's
+segment can change acceptance. Global directive source and each side's contact
+remain, since removing init can change configuration despite the empty Db.
+Physical EOL and EOF-reaching global endings use the shared path. Prettier
+removes/restores a leading BOM; inside the plugin, an opening-fence BOM can
+therefore make hidden YAML read as real frontmatter. A BOM repeated before the
+closer instead causes the shared standalone syntax-error limitation. Markdown
+trims final payload padding; interior hidden boundaries remain. [fixture:
+info/semicolons/semicolon-style-classdef] [fixture:
+info/global-directives/global-config-align] [fixture:
+info/final-newline/final-open-global] [test:
+info/line-terminators-and-unicode/bom-frontmatter-opening] [corpus fixture:
+info/frontmatter-bom-both] [test: info Markdown: hidden-boundary] [test: info
+Markdown: final-hidden-padding]
+
+Marked readings follow the specification: atomic keyword cuts remain rejected,
+while opaque embedded data, C4 detection and bare-percent preheader Unicode use
+their specified acceptance. Raw rejection supplies no raw Db or invented
+embedded effects. Parser failures report standalone syntax errors and decline
+Markdown embedding without repairing the payload. [corpus fixture:
+info/div-directive-flag-middle] [corpus fixture: info/div-selected-showinfo]
+[corpus fixture: info/div-frontmatter-invalid-yaml] [corpus fixture:
+info/div-c4container-title] [corpus fixture: info/div-bare-before-header-ls]
+[test: info Markdown: rejected]

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A colon does not satisfy the header's boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 1: unexpected character: ->i<- at offset: 0, skipped 5 characters. Parse error on line ?, column ?: Expecting token of type 'info' but found ``."
+  }
+}

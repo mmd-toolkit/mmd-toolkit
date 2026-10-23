@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Maps treat prototype-shaped ids and branches as ordinary keys."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "__proto__",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "constructor",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "__proto__"
+        ],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "__proto__"
+      },
+      {
+        "name": "constructor"
+      }
+    ]
+  }
+}

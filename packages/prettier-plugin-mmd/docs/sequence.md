@@ -868,11 +868,19 @@ in the [folder](../tests/fixtures/sequence/multi-line-statements)).
 
 ### Multi-line values
 
-As in a flowchart: the lines of an `accDescr { ... }` block and of a data block
-written over several lines are kept as written, and the `}` of an `accDescr`
-block stands at the level of its statement. Outside a subgraph the columns of
-those lines are not in the Db, so keeping them is a choice, whose reason is in a
-flowchart (see [Multi-line values](./flowchart.md#multi-line-values)). [fixture:
+The whitespace-only interior of a description block, including tabs, line breaks
+and Unicode whitespace, prints `{}`: there is no text for interior whitespace to
+surround. An already empty interior stays empty. A touching keyword stays
+touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+multi-line-values/empty-whitespace-interiors] [test: sequence Unicode and tab
+interiors] Blocks with comments or directives retain their existing layout.
+
+For blocks with text, as in a flowchart: the lines of an `accDescr { ... }`
+block and of a data block written over several lines are kept as written, and
+the `}` of an `accDescr` block stands at the level of its statement. Outside a
+subgraph the columns of those lines are not in the Db, so keeping them is a
+choice, whose reason is in a flowchart (see
+[Multi-line values](./flowchart.md#multi-line-values)). [fixture:
 multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-closing-brace-after-text-kept] [fixture:
 multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:

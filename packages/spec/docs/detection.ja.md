@@ -166,6 +166,13 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 [fixture: agentflow/detect-non-ascii-suffix]
 [fixture: agentflow/lex-detect-c4-component-id]
 
+項目 12 の
+[infoDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
+は、接尾の境界なしで正確な小文字の接頭辞 `info` を選びます。`information` は
+検出後に字句で拒否し、`Info` と `INFO` は選びません。
+[fixture: info/header-lf] [fixture: info/detect-lower-suffix]
+[fixture: info/detect-titlecase] [fixture: info/detect-uppercase]
+
 項目 13 の
 [`pieDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDetector.ts#L9-L11)
 は、正確な小文字の接頭部 `pie` だけを要求します。
@@ -177,12 +184,16 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 [fixture: pie/header-uppercase]
 
 検出点で通過させたフロントマター形のブロックは、図のテキストのままです。
-コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び、
+コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び
+、
 隠れた YAML の規則がタイトルを適用せずにブロックを読み飛ばします。
-対応する入力は、pie 以外の対応するすべての図種で、字句規則か文法が拒否します。
+gitgraph と info も一致する隠れたブロックを保ちます。
+以下で引用するほかの図種の入力は、字句規則か文法で拒否します。
 隣り合う区切りの空ブロック、閉じない区切り、ブロックの前の裸の `%%` の行では、
 代わりに拒否する `---` 疑似図種が選ばれます。
 [fixture: pie/frontmatter-nonleading-comment]
+[fixture: gitgraph/lex-yaml-after-comment]
+[fixture: info/frontmatter-nonleading-comment]
 [fixture: common/directive-before-frontmatter]
 [fixture: common/frontmatter-nonleading-sequence]
 [fixture: common/frontmatter-nonleading-class]
@@ -214,6 +225,21 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 [fixture: usecase/lex-header-emspace-eof]
 [fixture: usecase/div-detect-c4-label]
 
+項目 19 の
+[gitGraphDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphDetector.ts)
+は、
+末尾の境界なしで正確な `gitGraph` を選びます。
+[gitgraph の構文](./diagrams/gitgraph.ja.md#検出) は、
+通常の見出し、接着・分離したコロン、LR・TB・BT の形を区別します。
+接尾辞は検出を通っても構文で拒否される場合があります。
+[fixture: gitgraph/header-only]
+[fixture: gitgraph/header-colon]
+[fixture: gitgraph/header-spaced-colon]
+[fixture: gitgraph/header-lr]
+[fixture: gitgraph/header-tb]
+[fixture: gitgraph/header-bt]
+[fixture: gitgraph/detect-letter-suffix]
+
 ## 注記
 
 - **疑似図種**: 項目 1 と 2 は、
@@ -235,12 +261,12 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 - **大きな機能のときだけ登録される項目**: 項目 3〜5 は、
   mermaid.js が
 
-  [`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
-  を付けてビルドされたときだけ登録されます。
-  npm パッケージの既定の入口はそのようにビルドされているので、
-  この仕様はこれらを含め、この位置に置きます。
-  疑似図種の後で、他のすべての検出器より前です。
-  項目 3 はレイアウトの設定も `elk` にしますが、これは描画にだけ影響します。
+[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
+を付けてビルドされたときだけ登録されます。
+npm パッケージの既定の入口はそのようにビルドされているので、
+この仕様はこれらを含め、この位置に置きます。
+疑似図種の後で、他のすべての検出器より前です。
+項目 3 はレイアウトの設定も `elk` にしますが、これは描画にだけ影響します。
 
 - **順序が効く**: 項目 3 は項目 17 より前にあるので、
   `flowchart-elk` は `flowchart` でも始まりますが、`flowchart-elk` を選びます。

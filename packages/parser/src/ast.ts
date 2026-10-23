@@ -1,3 +1,5 @@
+import type { InfoDiagram, InfoNode } from "./ast/info.ts"
+import type { GitgraphDiagram, GitgraphNode } from "./ast/gitgraph.ts"
 import type { PieDiagram, PieNode } from "./ast/pie.ts"
 import type { UsecaseDiagram, UsecaseNode } from "./ast/usecase.ts"
 import type { AgentflowDiagram, AgentflowNode } from "./ast/agentflow.ts"
@@ -293,6 +295,8 @@ export type DiagramBody =
   | AgentflowDiagram
   | UsecaseDiagram
   | PieDiagram
+  | GitgraphDiagram
+  | InfoDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -391,3 +395,5 @@ export type Node =
   | AgentflowNode
   | UsecaseNode
   | PieNode
+  | GitgraphNode
+  | InfoNode

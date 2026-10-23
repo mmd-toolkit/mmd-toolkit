@@ -1,0 +1,17 @@
+{
+  "message": "Checkout or switch must name an existing branch",
+  "range": [
+    41,
+    51
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 17
+    },
+    "end": {
+      "line": 3,
+      "column": 27
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
-import { isEmptyUsecaseDescriptionBlock } from "../utils/usecase-description.ts"
+import { isEmptyDescriptionBlock } from "../utils/description-block.ts"
 
 /** Empty blocks set the empty description; comment-only blocks are placeholders. */
 export const usecaseNoEmptyDescriptionBlock: MermaidRuleDefinition<{
@@ -23,7 +23,7 @@ export const usecaseNoEmptyDescriptionBlock: MermaidRuleDefinition<{
   create(context) {
     return {
       UsecaseAccDescrBlockStatement(node) {
-        if (isEmptyUsecaseDescriptionBlock(context.sourceCode, node)) {
+        if (isEmptyDescriptionBlock(context.sourceCode, node)) {
           context.report({ node, messageId: "empty" })
         }
       },

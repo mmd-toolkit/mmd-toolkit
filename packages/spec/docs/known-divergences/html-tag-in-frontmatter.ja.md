@@ -107,19 +107,18 @@ frontmatter のタグがなければ、両者とも `b="c">d` を変えずに受
      A ->> B: b="c">d
    ```
 
-| 例  | mermaid.js                           | この仕様                             |
-| --- | ------------------------------------ | ------------------------------------ |
-| 1   | ラベル `b='c'>d` を持つ頂点 A        | 拒否                                 |
-| 2   | 拒否                                 | ラベル `<b x='y'>t` を持つ頂点 A     |
-| 3   | アクセシビリティのタイトル `b='c'>d` | アクセシビリティのタイトル `b="c">d` |
-| 4   | メッセージ `b='c'>d`                 | メッセージ `b="c">d`                 |
-| 5   | メッセージ `b="c">d`                 | 同じ                                 |
-
-[fixture: flowchart/html-tag-starts-in-frontmatter]
-[fixture: flowchart/html-tag-starts-in-frontmatter-value]
-[fixture: flowchart/html-tag-starts-in-frontmatter-acc-title]
-[fixture: sequence/div-html-tag-starts-in-frontmatter-message]
-[fixture: sequence/lex-html-tag-frontmatter-arrow-ends-tag]
+| 例                                                             | mermaid.js                           | この仕様                             |
+| -------------------------------------------------------------- | ------------------------------------ | ------------------------------------ |
+| 1                                                              | ラベル `b='c'>d` を持つ頂点 A        | 拒否                                 |
+| 2                                                              | 拒否                                 | ラベル `<b x='y'>t` を持つ頂点 A     |
+| 3                                                              | アクセシビリティのタイトル `b='c'>d` | アクセシビリティのタイトル `b="c">d` |
+| 4                                                              | メッセージ `b='c'>d`                 | メッセージ `b="c">d`                 |
+| 5                                                              | メッセージ `b="c">d`                 | 同じ                                 |
+| [fixture: flowchart/html-tag-starts-in-frontmatter]            |
+| [fixture: flowchart/html-tag-starts-in-frontmatter-value]      |
+| [fixture: flowchart/html-tag-starts-in-frontmatter-acc-title]  |
+| [fixture: sequence/div-html-tag-starts-in-frontmatter-message] |
+| [fixture: sequence/lex-html-tag-frontmatter-arrow-ends-tag]    |
 
 つまり mermaid.js では、フロントマターで始まるタグは、
 その後の最初の `>` まで続き、その `>` はテキストの中にあり得ます。
@@ -264,6 +263,20 @@ Mermaid が受理するラベルをここでは拒否します。
 [fixture: usecase/div-gram-frontmatter-html-attribute-quotes]
 [fixture: pie/html-all-texts]
 
+### Gitgraph
+
+木はフロントマターと本文の文字列を独立して持てます。
+囲みをまたぐ HTML の一致は、その境界を越えずに片方のノードに持てません。
+理由 2 の本文だけの直接の HTML 規則により、両方で受理して値が異なる場合、
+Mermaid だけが受理する場合、ここだけが受理する場合があります。
+フロントマターのタイトルは Mermaid が得る値を保ち、
+結果の同じ通常の本文のタグやフロントマターのタグには印を付けません。
+[fixture: gitgraph/div-frontmatter-cross-title-value]
+[fixture: gitgraph/div-frontmatter-cross-string-enable]
+[fixture: gitgraph/div-frontmatter-cross-string-block]
+[fixture: gitgraph/frontmatter-body-tag-control]
+[fixture: gitgraph/frontmatter-html]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -330,3 +343,16 @@ Mermaid が受理するラベルをここでは拒否します。
   2026-10-23 に `pie`、`pie frontmatter`、`pie HTML` で検索しましたが、
   この区切りをまたぐ書き換えへの保守者の判断は見つかりませんでした。
   共通の不透明なフロントマターの除外が差異を決めます。
+
+gitgraph の
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+は、
+見出しと各コマンドを説明します。
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、
+`gitGraph YAML`、`gitGraph semicolon`、`gitGraph keyword`、
+`gitGraph duplicate`、`gitGraph cherry-pick` で検索しました。
+確認した結果には、この共通の境界を決定するものはありませんでした。
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで
+Status: Approved が付き、
+merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
+重複 ID の警告を加えます。これらから追加の差異は作りません。

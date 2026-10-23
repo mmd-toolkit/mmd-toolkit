@@ -9,6 +9,7 @@ import type { CheckedRoot } from "../src/check-tree/types.ts"
 import type { DiagramType } from "../src/index.ts"
 import { getFixturesRoot, loadFixtures } from "../src/index.ts"
 import { directiveOf, handMadeRoot } from "./check-tree-trees.ts"
+import { readTokenKindRow } from "./spec-field-tables.ts"
 
 // parser/docs/tokens.md, A token that a directive cuts: a directive between
 // two `Keyword` tokens cuts a keyword only when the two texts joined are a
@@ -18,6 +19,8 @@ import { directiveOf, handMadeRoot } from "./check-tree-trees.ts"
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [DiagramType, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["gitgraph", "GitgraphDiagram"],
+  ["info", "InfoDiagram"],
   ["pie", "PieDiagram"],
   ["usecase", "UsecaseDiagram"],
   ["agentflow", "AgentflowDiagram"],
@@ -332,6 +335,33 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
     case "quadrant":
       return ["quadrantchart", "quadrant-2", "quadrant-3"]
     // The header, and the two values of the `direction` unit.
+    case "gitgraph":
+      return [
+        "gitgraph",
+        "lr",
+        "tb",
+        "bt",
+        "commit",
+        "branch",
+        "checkout",
+        "switch",
+        "merge",
+        "cherry-pick",
+        "id",
+        "msg",
+        "tag",
+        "type",
+        "parent",
+        "order",
+        "normal",
+        "reverse",
+        "highlight",
+        "title",
+        "acctitle",
+        "accdescr",
+      ]
+    case "info":
+      return ["info", "showinfo", "title", "acctitle", "accdescr"]
     case "pie":
       return ["pie", "showdata", "title", "acctitle", "accdescr"]
     case "timeline":
@@ -406,14 +436,11 @@ describe("the table of the texts of Keyword tokens", () => {
 
   for (const [diagram, body] of DIAGRAMS) {
     it(`is the words of the Keyword row of the ${diagram} tokens, in lower case, and the texts that the row names as units without their text, and no others`, () => {
-      const row = readFileSync(
+      const row = readTokenKindRow(
         path.join(TOKEN_DOCUMENTS, `${diagram}.md`),
-        "utf8",
+        "Keyword",
       )
-        .split("\n")
-        .find((line) => line.startsWith("| `Keyword`"))
-      expect(row, diagram).toBeDefined()
-      const words = [...(row ?? "").matchAll(/`([^`]+)`/gu)]
+      const words = [...row.matchAll(/`([^`]+)`/gu)]
         .map((match) => match[1] ?? "")
         .filter(
           (span) =>

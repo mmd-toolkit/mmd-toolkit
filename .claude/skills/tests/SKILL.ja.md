@@ -294,6 +294,9 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
   `classDiagram` と `classDiagram-v2` は、
   どちらも `classDiagram` として検出される。
   図種の fixture は、図種 ID がいくつあっても 1 つのディレクトリに置く。
+  ディレクトリ名はこのリポジトリでの図種名（小文字の英数字 1 語。
+  `gitgraph`、`treeview`。規則はスキル `conventions` にある）で、
+  以後すべてのパッケージがこの名前を使う。
 - pin した版のタグの mermaid.js の clone。
   `.gitignore` に入っている `.work/mermaid` に置く。
   作り方は `tools/README.md` にある。

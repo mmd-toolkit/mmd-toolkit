@@ -1,0 +1,17 @@
+{
+  "message": "A merge requires different tip definitions",
+  "range": [
+    86,
+    96
+  ],
+  "loc": {
+    "start": {
+      "line": 5,
+      "column": 14
+    },
+    "end": {
+      "line": 5,
+      "column": 24
+    }
+  }
+}

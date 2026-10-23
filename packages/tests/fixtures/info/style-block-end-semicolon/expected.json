@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The style pass removes a rejecting semicolon after the closed block."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

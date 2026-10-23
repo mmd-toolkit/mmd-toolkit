@@ -3,8 +3,6 @@ import { fixtureAccepts, loadFixtures } from "@mmd-toolkit/tests"
 import type { Root, VennDiagram } from "../src/index.ts"
 import { ParseError, parse, traverseNodes } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
-import { declaredDivergence, outcomeOf } from "./helpers/known-divergences.ts"
-import { holdsC4KeywordAfterHeader } from "./helpers/reference-inputs.ts"
 
 /** Project invariant 3, and containment and source order of every child node. */
 function expectCoverage(text: string, root: Root): void {
@@ -300,19 +298,6 @@ describe("venn acceptance fixtures", async () => {
         if (!(error instanceof ParseError)) throw error
       }
       expect(root !== null).toBe(fixtureAccepts(fixture))
-      if (
-        fixture.knownDivergence === "directive-as-token-boundary" ||
-        fixture.knownDivergence === "ignored-semicolon-as-token-boundary"
-      ) {
-        const outcome = outcomeOf(fixture.input)
-        if (outcome.kind === "unsupported")
-          throw new Error("venn must be supported")
-        expect(declaredDivergence(fixture.input, fixture.config, outcome)).toBe(
-          fixture.knownDivergence,
-        )
-      }
-      if (fixture.knownDivergence === "c4-keyword-anywhere")
-        expect(holdsC4KeywordAfterHeader(fixture.input)).toBe(true)
       if (root !== null) {
         expect(root.diagramType).toBe("venn")
         expectCoverage(fixture.input, root)

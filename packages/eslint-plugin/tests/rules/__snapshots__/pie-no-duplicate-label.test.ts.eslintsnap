@@ -1,0 +1,171 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: pie-no-duplicate-label >> invalid >>> docs/rules/pie-no-duplicate-label.md incorrect 1
+Filename: pie-no-duplicate-label-incorrect-1.mmd
+
+Code:
+  1 | pie
+  2 |   "Revenue" : 8
+  3 |   "Revenue" : 3
+    |   ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-complex-history-barrier
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-complex-history-barrier-input.mmd
+
+Code:
+  1 | pie
+  2 | "\A":1
+  3 | "A":2
+  4 | "A":1
+    | ^~~~~ [1]
+
+[1] mermaid.js keeps the value of the first section with this label, on line 3, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-converted-style-collision
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-converted-style-collision-input.mmd
+
+Code:
+  1 | pie
+  2 | "style:#x;":1
+  3 | "style:#x":2
+    | ^~~~~~~~~~~~ [1]
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-crlf-lf-equal
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-crlf-lf-equal-input.mmd
+
+Code:
+  1 | pie
+  2 | "A
+  3 | B":1
+  4 | "A
+    | ^~\ [1]
+  5 | B":2
+    | ~~~~ [1]
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-empty-conflict
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-empty-conflict-input.mmd
+
+Code:
+  1 | pie
+  2 | "":1
+  3 | '':2
+    | ^~~~ [1]
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-negative-zero-first
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-negative-zero-first-input.mmd
+
+Code:
+  1 | pie
+  2 | "A":-0
+  3 | "A":1
+    | ^~~~~ [1]
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-negative-zero-later
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-negative-zero-later-input.mmd
+
+Code:
+  1 | pie
+  2 | "A":1
+  3 | "A":-0
+    | ^~~~~~ [1]
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-quote-pair
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-quote-pair-input.mmd
+
+Code:
+  1 | pie
+  2 |   'Revenue' : 8
+  3 |   "Revenue" : 3
+    |   ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-three-first-partner
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-three-first-partner-input.mmd
+
+Code:
+  1 | pie
+  2 | "A":1
+  3 | "A":2
+    | ^~~~~ [1]
+  4 | "A":2
+    | ^~~~~ [2]
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+[2] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-three-first-restored
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-three-first-restored-input.mmd
+
+Code:
+  1 | pie
+  2 | "A":1
+  3 | "A":2
+    | ^~~~~ [1]
+  4 | "A":1
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-trivia-between
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-trivia-between-input.mmd
+
+Code:
+  1 | pie
+  2 | "A":1
+  3 |
+  4 | %% comment
+  5 | %%{init: {}}%%
+  6 | "A":2
+    | ^~~~~ [1]
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---
+
+
+Test: pie-no-duplicate-label >> invalid >>> invalid/pie/label-unrelated-complex-guard
+Filename: tests/fixtures/rules/pie-no-duplicate-label/invalid/pie/label-unrelated-complex-guard-input.mmd
+
+Code:
+  1 | pie
+  2 | "A":1
+  3 | "A":2
+    | ^~~~~ [1]
+  4 | "\B":3
+
+[1] mermaid.js keeps the value of the first section with this label, on line 2, and ignores this value.
+---

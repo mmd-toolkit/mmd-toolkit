@@ -1,3 +1,5 @@
+import { parseInfoDiagram } from "./diagrams/info/index.ts"
+import { parseGitgraphDiagram } from "./diagrams/gitgraph/index.ts"
 import { parsePieDiagram } from "./diagrams/pie/index.ts"
 import { parseUsecaseDiagram } from "./diagrams/usecase/index.ts"
 import { parseAgentflowDiagram } from "./diagrams/agentflow/index.ts"
@@ -86,7 +88,9 @@ export function diagramInputOf(
     diagramType,
     textStart:
       detection.retainedFrontmatterStart ??
-      (diagramType === "pie"
+      (diagramType === "pie" ||
+      diagramType === "gitGraph" ||
+      diagramType === "info"
         ? detection.passed.find(
             (part) => part.kind === "directive-found-once-more",
           )?.opening[0]
@@ -116,7 +120,10 @@ export function parse(text: string): Root {
   }
   if (
     detected === "---" ||
-    (detected !== "pie" && detection.retainedFrontmatterStart !== null)
+    (detected !== "pie" &&
+      detected !== "gitGraph" &&
+      detected !== "info" &&
+      detection.retainedFrontmatterStart !== null)
   ) {
     const start = detection.retainedFrontmatterStart ?? positionReached
     const range: Range = [start, start + 3]
@@ -150,6 +157,10 @@ export function parse(text: string): Root {
       return parseRequirementDiagram(input)
     case "mindmap":
       return parseMindmapDiagram(input)
+    case "gitGraph":
+      return parseGitgraphDiagram(input)
+    case "info":
+      return parseInfoDiagram(input)
     case "pie":
       return parsePieDiagram(input)
     case "timeline":

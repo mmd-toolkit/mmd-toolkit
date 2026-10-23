@@ -36,6 +36,8 @@ export const diagramIds: Readonly<
   agentflow: ["agentflow"],
   usecase: ["usecase"],
   pie: ["pie"],
+  gitgraph: ["gitGraph"],
+  info: ["info"],
 }
 
 /**

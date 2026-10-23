@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Init configuration changes initial branch publication."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "b"
+      },
+      {
+        "name": "trunk"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "gitGraph": {
+        "mainBranchName": "trunk",
+        "mainBranchOrder": 3
+      }
+    }
+  }
+}

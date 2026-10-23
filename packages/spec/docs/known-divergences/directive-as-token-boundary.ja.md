@@ -232,23 +232,22 @@ directive を含められ、値からは除きます。
      A[x%%{init: {}}%%y]
    ```
 
-| 例  | mermaid.js                              | この仕様 |
-| --- | --------------------------------------- | -------- |
-| 1   | 参加者 A                                | 拒否     |
-| 2   | クラス c を持つ頂点 A                   | 拒否     |
-| 3   | 頂点 `AB` から C への辺                 | 拒否     |
-| 4   | `A--->B` と同じ、A から B への辺        | 拒否     |
-| 5   | 10 から始まるメッセージの番号           | 拒否     |
-| 6   | ラベル `a`、空白 2 つ、`b` を持つ頂点 A | 同じ     |
-| 7   | ラベル `xy` を持つ頂点 A                | 同じ     |
-
-[fixture: sequence/div-directive-in-keyword]
-[fixture: flowchart/div-directive-in-style-separator]
-[fixture: flowchart/div-directive-in-id]
-[fixture: flowchart/div-directive-in-arrow-length]
-[fixture: sequence/div-directive-in-number]
-[fixture: common/directive-in-string]
-[fixture: common/directive-in-label-text]
+| 例                                                    | mermaid.js                              | この仕様 |
+| ----------------------------------------------------- | --------------------------------------- | -------- |
+| 1                                                     | 参加者 A                                | 拒否     |
+| 2                                                     | クラス c を持つ頂点 A                   | 拒否     |
+| 3                                                     | 頂点 `AB` から C への辺                 | 拒否     |
+| 4                                                     | `A--->B` と同じ、A から B への辺        | 拒否     |
+| 5                                                     | 10 から始まるメッセージの番号           | 拒否     |
+| 6                                                     | ラベル `a`、空白 2 つ、`b` を持つ頂点 A | 同じ     |
+| 7                                                     | ラベル `xy` を持つ頂点 A                | 同じ     |
+| [fixture: sequence/div-directive-in-keyword]          |
+| [fixture: flowchart/div-directive-in-style-separator] |
+| [fixture: flowchart/div-directive-in-id]              |
+| [fixture: flowchart/div-directive-in-arrow-length]    |
+| [fixture: sequence/div-directive-in-number]           |
+| [fixture: common/directive-in-string]                 |
+| [fixture: common/directive-in-label-text]             |
 
 つまり mermaid.js は、どの入力も、ディレクティブを除いたテキストとして読みます。
 この仕様もそうしますが、
@@ -426,6 +425,43 @@ mermaid.js がディレクティブを除いて断片をつなぐ場合に、
 [fixture: pie/review-directive-open-inside-header]
 [fixture: pie/div-directive-in-accdescr-block-keyword]
 
+### Gitgraph
+
+隠れた完全な形には GitgraphIgnoredText の所有者があり、
+共通の trivia は文字列や共通のリテラルを分割できます。
+キーワードの語、方向・type の語、整数、裸の参照の内部のディレクティブは、
+綴りをつなぎ直さずに別の完全な構成要素として持てません。
+直接の単位の規則により、Mermaid が受理する入力を理由 2 の差異として拒否します。
+この仕様だけが受理する逆方向の入力はありません。
+option の語とコロンの間や引用文字列の中は許し、
+両方が拒否する接着した境界の例には印を付けません。
+[fixture: gitgraph/div-directive-in-header]
+[fixture: gitgraph/div-directive-in-commit]
+[fixture: gitgraph/div-directive-in-option-keyword]
+[fixture: gitgraph/div-directive-in-type]
+[fixture: gitgraph/div-directive-in-number]
+[fixture: gitgraph/div-directive-in-reference]
+[fixture: gitgraph/lex-option-global-before-colon]
+[fixture: gitgraph/directive-in-string]
+[fixture: gitgraph/directive-after-header-glued]
+
+### Info
+
+共通の Directive レコードは大域的なディレクティブを、InfoIgnoredText は完
+全な隠れた形を持ちます。どちらも固定キーワードの内部の独立した構成要素にはなり
+ません。直接の原子的な規則は info・showInfo・title・accTitle・accDescr 内のデ
+ィレクティブを拒否しますが、Mermaid は断片を結合します。これは理由 2 で、逆方
+向の受理は加えません。完全な構成要素の境界や値・隠れたテキストでは許し、結合後
+も不正な入力は両方が拒否します。 [fixture: info/div-directive-header-middle]
+[fixture: info/div-directive-flag-middle]
+[fixture: info/div-directive-title-middle]
+[fixture: info/div-directive-acctitle-middle]
+[fixture: info/div-directive-accdescr-middle]
+[fixture: info/div-directive-accdescr-line-keyword]
+[fixture: info/directive-acctitle-colon] [fixture: info/directive-block-brace]
+[fixture: info/lex-yaml-opener-global]
+[fixture: info/lex-directive-rejected-tail]
+
 ## mermaid.js の文書と issue
 
 - [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
@@ -437,65 +473,65 @@ mermaid.js がディレクティブを除いて断片をつなぐ場合に、
   どれも、字下げの後の、入力のその行の最初のものです。
   残りの 3 つは
 
-  [`agentflow-comments.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow-comments.spec.ts)
-  のコードのコメントにあります。
-  テストの入力は、
+[`agentflow-comments.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow-comments.spec.ts)
+のコードのコメントにあります。
+テストの入力は、
 
-  [`utils.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.spec.ts)、
+[`utils.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.spec.ts)、
 
-  [`mermaidAPI.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.spec.ts)、
+[`mermaidAPI.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.spec.ts)、
 
-  [`comments.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.spec.ts)、
+[`comments.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.spec.ts)、
 
-  [`config.appearance.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.appearance.spec.ts)、
+[`config.appearance.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/config.appearance.spec.ts)、
 
-  [`dagre/index.spec.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.spec.js)、
+[`dagre/index.spec.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/layout-algorithms/dagre/index.spec.js)、
 
-  [`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)、
+[`sequenceDiagram.spec.js`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js)、
 
-  [`radar.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/radar.spec.ts)、
+[`radar.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/radar.spec.ts)、
 
-  [`exampleConfig.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/theme/exampleConfig.spec.ts)
-  にあります。
-  mermaid.js の flowchart のパーサーのテストには、
-  ディレクティブが 1 つもありません。
+[`exampleConfig.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/theme/exampleConfig.spec.ts)
+にあります。
+mermaid.js の flowchart のパーサーのテストには、
+ディレクティブが 1 つもありません。
 
 - 固定した版の
 
-  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L148-L157)
-  は呼び出しと名前付き引数の例を示し、
-  見出しや呼び出し語の内部のディレクティブを説明していません。
-  `mermaid-js/mermaid` の issue と pull request を、
-  2026-10-21 に `C4 directive`、
-  `C4 directive in:title,body`、
-  `C4 directive keyword in:title,body`、
-  `"Add directive support" in:title` で検索し、
-  この形式についての報告は見つかりませんでした。
-  [PR #4759](https://github.com/mermaid-js/mermaid/pull/4759)
-  は全図種の解析前にディレクティブ、
-  フロントマター、
-  コメントを除く前処理を導入しています。
+[C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L148-L157)
+は呼び出しと名前付き引数の例を示し、
+見出しや呼び出し語の内部のディレクティブを説明していません。
+`mermaid-js/mermaid` の issue と pull request を、
+2026-10-21 に `C4 directive`、
+`C4 directive in:title,body`、
+`C4 directive keyword in:title,body`、
+`"Add directive support" in:title` で検索し、
+この形式についての報告は見つかりませんでした。
+[PR #4759](https://github.com/mermaid-js/mermaid/pull/4759)
+は全図種の解析前にディレクティブ、
+フロントマター、
+コメントを除く前処理を導入しています。
 
 - ピン留めした
 
-  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
-  は完全なキーワードと名前を示し、
-  その内部のディレクティブは示していません。
-  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
-  `venn directive in:title,body` で検索しましたが、
-  venn のキーワード、名前、数の内部のディレクティブに関する報告は
-  見つかりませんでした。
+[venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+は完全なキーワードと名前を示し、
+その内部のディレクティブは示していません。
+2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+`venn directive in:title,body` で検索しましたが、
+venn のキーワード、名前、数の内部のディレクティブに関する報告は
+見つかりませんでした。
 
 - ピン留めした
 
-  [Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
-  は完全な `ishikawa-beta` の見出しと字下げした節点のテキストを示しますが、
-  見出しの内部の directive は示していません。
-  [issue #4784](https://github.com/mermaid-js/mermaid/issues/4784)
-  は mindmap と同様の構文を提案しています。
-  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
-  `ishikawa` と `ishikawa directive in:title,body` で検索し、
-  Ishikawa の見出しを分割する directive の報告は見つかりませんでした。
+[Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+は完全な `ishikawa-beta` の見出しと字下げした節点のテキストを示しますが、
+見出しの内部の directive は示していません。
+[issue #4784](https://github.com/mermaid-js/mermaid/issues/4784)
+は mindmap と同様の構文を提案しています。
+2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+`ishikawa` と `ishikawa directive in:title,body` で検索し、
+Ishikawa の見出しを分割する directive の報告は見つかりませんでした。
 
 - pin の
   [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
@@ -520,3 +556,25 @@ mermaid.js がディレクティブを除いて断片をつなぐ場合に、
   `pie`、`pie directive`、`pie Langium` で検索しましたが、
   この原子の中のディレクティブを欠陥とする保守者の判断は見つかりませんでした。
   境界規則は直接の構文上の選択で、そのような判断ではありません。
+
+gitgraph の
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+は、
+見出しと各コマンドを説明します。
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、
+`gitGraph YAML`、`gitGraph semicolon`、`gitGraph keyword`、
+`gitGraph duplicate`、`gitGraph cherry-pick` で検索しました。
+確認した結果には、この共通の境界を決定するものはありませんでした。
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで
+Status: Approved が付き、
+merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
+重複 ID の警告を加えます。これらから追加の差異は作りません。
+
+- info には専用の構文ページがなく、pin した
+  [構文の参照](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  は図種の宣言と percent コメントを説明します。2026-10-23 に `info showInfo`・
+  `info directive`・`info semicolon`・`info accTitle` で issue と PR を検索しま
+  した。[#7601](https://github.com/mermaid-js/mermaid/issues/7601) は
+  info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
+  検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
+  この節は既存の直接の規則に従います。

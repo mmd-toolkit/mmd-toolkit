@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "JavaScript whitespace before a block brace includes LS."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

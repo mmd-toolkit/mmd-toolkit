@@ -1,0 +1,9 @@
+gitGraph TB:
+title T
+accTitle: A
+accDescr { D }
+commit id:"A" msg:"first" tag:"v1" tag:"v2" type:REVERSE
+branch b order:2
+commit id:"B" type:HIGHLIGHT
+checkout main
+merge b id:"M" tag:"v3" type:NORMAL

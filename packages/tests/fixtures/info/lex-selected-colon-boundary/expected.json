@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: A selected semicolon at the complete accessibility keyword/colon boundary is trivia."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

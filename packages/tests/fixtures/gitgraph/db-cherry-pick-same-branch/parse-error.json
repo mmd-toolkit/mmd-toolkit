@@ -1,0 +1,17 @@
+{
+  "message": "A cherry-pick source must be created on another branch",
+  "range": [
+    38,
+    41
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 15
+    },
+    "end": {
+      "line": 3,
+      "column": 18
+    }
+  }
+}

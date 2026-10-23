@@ -1,3 +1,5 @@
+import type { InfoNode } from "../../src/ast/info.ts"
+import type { GitgraphNode } from "../../src/ast/gitgraph.ts"
 import type { PieNode } from "../../src/ast/pie.ts"
 import type { UsecaseNode } from "../../src/ast/usecase.ts"
 import type {
@@ -522,6 +524,41 @@ export const allPieNodeTypes: Readonly<Record<PieNode["type"], true>> = {
   PieIgnoredText: true,
 }
 
+/** Every node type of ast/gitgraph.md, in document order. */
+export const allGitgraphNodeTypes: Readonly<
+  Record<GitgraphNode["type"], true>
+> = {
+  GitgraphDiagram: true,
+  GitgraphCommitStatement: true,
+  GitgraphBranchStatement: true,
+  GitgraphCheckoutStatement: true,
+  GitgraphMergeStatement: true,
+  GitgraphCherryPickStatement: true,
+  GitgraphIdOption: true,
+  GitgraphMessageOption: true,
+  GitgraphTagOption: true,
+  GitgraphTypeOption: true,
+  GitgraphParentOption: true,
+  GitgraphOrderOption: true,
+  GitgraphTitleStatement: true,
+  GitgraphAccTitleStatement: true,
+  GitgraphAccDescrStatement: true,
+  GitgraphAccDescrBlockStatement: true,
+  GitgraphLiteral: true,
+  GitgraphIgnoredText: true,
+}
+
+/** Every node type of ast/info.md, in document order. */
+export const allInfoNodeTypes: Readonly<Record<InfoNode["type"], true>> = {
+  InfoDiagram: true,
+  InfoTitleStatement: true,
+  InfoAccTitleStatement: true,
+  InfoAccDescrStatement: true,
+  InfoAccDescrBlockStatement: true,
+  InfoLiteral: true,
+  InfoIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -546,6 +583,8 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allAgentflowNodeTypes),
   ...Object.keys(allUsecaseNodeTypes),
   ...Object.keys(allPieNodeTypes),
+  ...Object.keys(allGitgraphNodeTypes),
+  ...Object.keys(allInfoNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

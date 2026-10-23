@@ -876,7 +876,8 @@ flowchart と同じです。
 [fixture: multi-line-values/accdescr-block-empty-and-comment-lines-kept]
 閉じたブロックに本文がなければ、内側を `{}` と印字します。
 `accDescr { }` は `accDescr {}` になり、
-空白の連続、改行、NBSP だけの内側も同じです。
+空白の連続、改行、Unicode の空白だけの内側も同じです。
+波括弧の内側の U+2028 と U+2029 も含みます。
 すでに空の内側は空のまま、`accDescr{}` は接したままです。
 空白で囲む本文がないので、Db が同じ形の選択は、
 [flowchart のアクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)、
@@ -1054,6 +1055,12 @@ stateDiagram-v2
 ### 行区切り文字
 
 U+2028 か U+2029 を含む行は、書かれたまま残します。
+ただし、空白だけの説明ブロックの内側は保護する本文がないので縮めます。
+その内側以外に区切り文字があれば、行は書かれたまま残します。
+[test: state Unicode and tab interiors]
+[test: state multiline Unicode interior]
+[test: state exterior separator keeps the line]
+[test: state separator with comment stays written]
 それを開く行に持つ composite の文は、その文字を残し、
 本体はほかの本体と同じように印字します。
 `state a b`、U+2028、`{` は、文字を残して本体の文を字下げします。

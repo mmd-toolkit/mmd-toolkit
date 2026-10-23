@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Detection matches the prefix but the header token rejects a letter suffix."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting: one of these possible Token sequences:\n  1. [gitGraph]\n  2. [gitGraph, :]\n  3. [gitGraph:]\n  4. [gitGraph, LR]\n  5. [gitGraph, TB]\n  6. [gitGraph, BT]\nbut found: 'gitGraphX'"
+  }
+}

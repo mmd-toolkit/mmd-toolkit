@@ -56,6 +56,8 @@ function saidInSpecification(
   if (
     [
       "Written text of the common value.",
+      "Written common-value text.",
+      "Nonempty written form, including fences.",
       "Nonempty written ignored form, including fences.",
       "The written text of this value.",
       "Written text of this grammar position.",
@@ -174,6 +176,11 @@ interface BrokenValueRow {
  * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  { type: "GitgraphLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "GitgraphIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "GitgraphTypeOption", message: "the field value is " },
+  { type: "InfoLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "InfoIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "PieLiteral", message: NOT_WRITTEN_TEXT },
   { type: "PieIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "UsecaseLabel", message: NOT_WRITTEN_TEXT },
@@ -401,6 +408,86 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "GitgraphLiteral",
+    name: "gitgraph line values keep the space after their colon",
+    diagram: "gitgraph",
+    fixture: "common-third-values",
+    token: { type: "RawText", value: " One" },
+    side: "start",
+    problems: [
+      {
+        where: "GitgraphLiteral at 55-59",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "GitgraphLiteral at 55-59",
+        message:
+          'the texts of its tokens joined are not its written text: "One", not " One"',
+      },
+      {
+        where: "GitgraphLiteral at 55-59",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [55,59], not [56,59]",
+      },
+    ],
+  },
+  {
+    type: "GitgraphIgnoredText",
+    name: "gitgraph hidden text keeps LF next to a common comment cut",
+    diagram: "gitgraph",
+    fixture: "lex-hidden-directive-global-comment-body",
+    token: { type: "RawText", value: "%%{!\n" },
+    side: "end",
+    problems: [
+      {
+        where: "GitgraphIgnoredText at 19-38",
+        message:
+          'the texts of its tokens joined are not its written text: "%%{!}%%", not "%%{!\\n}%%"',
+      },
+    ],
+  },
+
+  {
+    type: "InfoLiteral",
+    name: "info line values keep their written leading space",
+    diagram: "info",
+    fixture: "common-all",
+    token: { type: "RawText", value: " A" },
+    side: "start",
+    problems: [
+      {
+        where: "InfoLiteral at 22-24",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "InfoLiteral at 22-24",
+        message:
+          'the texts of its tokens joined are not its written text: "A", not " A"',
+      },
+      {
+        where: "InfoLiteral at 22-24",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [22,24], not [23,24]",
+      },
+    ],
+  },
+  {
+    type: "InfoIgnoredText",
+    name: "info hidden text keeps LF next to a common comment cut",
+    diagram: "info",
+    fixture: "lex-hidden-common-comment",
+    token: { type: "RawText", value: "%%{!\n" },
+    side: "end",
+    problems: [
+      {
+        where: "InfoIgnoredText at 5-19",
+        message:
+          'the texts of its tokens joined are not its written text: "%%{!!}%%", not "%%{!\\n!}%%"',
+      },
+    ],
+  },
+
   {
     type: "PieLiteral",
     name: "a pie line value retains trailing written whitespace",
@@ -1211,6 +1298,12 @@ interface TypeWithoutTokenWhitespace {
 const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
   Record<string, TypeWithoutTokenWhitespace>
 > = {
+  GitgraphTypeOption: {
+    diagram: "gitgraph",
+    fixture: "gram-all-fields",
+    reason:
+      "its scalar value is one Keyword; the named fixture has no retained forms in that option",
+  },
   UsecaseArrow: {
     diagram: "usecase",
     fixture: "db-arrows",

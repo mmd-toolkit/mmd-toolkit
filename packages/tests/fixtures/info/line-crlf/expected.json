@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CRLF is normalized for both grammar and block content."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

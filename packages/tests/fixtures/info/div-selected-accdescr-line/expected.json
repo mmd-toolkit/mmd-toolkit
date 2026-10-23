@@ -1,0 +1,10 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: selected semicolon inside line accDescr keyword"
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

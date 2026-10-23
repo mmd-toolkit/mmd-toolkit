@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: hidden YAML value excludes common comment region"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

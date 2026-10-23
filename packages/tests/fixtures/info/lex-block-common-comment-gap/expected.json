@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: common comment region allowed before brace"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

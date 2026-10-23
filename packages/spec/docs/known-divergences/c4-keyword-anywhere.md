@@ -268,6 +268,42 @@ reverse criterion. `C4Context` alone inside a label does not select C4.
 [fixture: pie/lex-c4-inline-percent-with-lf] [fixture:
 pie/div-c4-inline-percent-eof] [fixture: pie/lex-c4context-label]
 
+### Gitgraph
+
+References, strings, common literals, ignored text and Comments can hold the C4
+words as written. Apply detection only at the header under reverse reason 2:
+`C4Container`, `C4Component`, `C4Dynamic` or `C4Deployment` in later text can
+reject in Mermaid but accept here. This rule rejects no Mermaid-accepted input.
+`C4Context` later in text and LF-terminated comment controls do not differ.
+[fixture: gitgraph/div-detect-c4container-id] [fixture:
+gitgraph/div-detect-c4component-branch] [fixture:
+gitgraph/div-detect-c4dynamic-message] [fixture:
+gitgraph/div-detect-c4deployment-tag] [fixture:
+gitgraph/div-detect-c4container-title] [fixture:
+gitgraph/div-detect-c4component-acctitle] [fixture:
+gitgraph/div-detect-c4dynamic-accdescr] [fixture:
+gitgraph/div-detect-c4deployment-block] [fixture:
+gitgraph/div-detect-c4container-comment-eof] [fixture:
+gitgraph/div-detect-c4component-header-comment-eof] [fixture:
+gitgraph/detect-c4context-id] [fixture: gitgraph/detect-c4container-comment-lf]
+
+### Info
+
+InfoLiteral, InfoIgnoredText and shared Comments hold the C4 words as written.
+The existing reverse pipeline-order rule selects the header grammar: four
+unanchored C4 words later in detection text can reject in Mermaid but accept
+here as info. This rejects no Mermaid-accepted input. C4Context, removed
+frontmatter/directives and LF-terminated comment controls agree; an otherwise
+invalid info body still rejects. [fixture: info/div-c4container-title] [fixture:
+info/div-c4component-acctitle] [fixture: info/div-c4dynamic-line] [fixture:
+info/div-c4deployment-block] [fixture: info/div-c4container-header-comment-eof]
+[fixture: info/div-c4component-flag-comment-eof] [fixture:
+info/c4container-header-comment-lf] [fixture: info/c4component-flag-comment-lf]
+[fixture: info/div-c4-hidden-yaml] [fixture: info/div-c4-hidden-directive]
+[fixture: info/div-c4-retained-yaml] [fixture: info/div-c4-retained-directive]
+[fixture: info/lex-c4context-common] [fixture: info/lex-c4-removed-directive]
+[fixture: info/lex-c4-frontmatter] [fixture: info/lex-c4-invalid-info]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -327,3 +363,24 @@ pie/div-c4-inline-percent-eof] [fixture: pie/lex-c4context-label]
   [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504) propose anchoring
   every C4 alternative; this fact supports the shared detection rule, while the
   pinned version still has the unanchored alternatives.
+
+For gitgraph,
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+documents the header and commands. Issue/PR searches on 2026-10-23 used
+`gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
+`gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
+inspected result settles this common boundary behavior.
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) is closed with
+Status: Approved; merged
+[#6707](https://github.com/mermaid-js/mermaid/pull/6707) adds a duplicate-id
+warning. These facts do not justify any additional divergence.
+
+- Info has no dedicated syntax page. The pinned
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  describes diagram declarations and percent comments. Searches of issues and
+  pull requests on 2026-10-23 used `info showInfo`, `info directive`,
+  `info semicolon` and `info accTitle`.
+  [#7601](https://github.com/mermaid-js/mermaid/issues/7601) reports
+  info/showInfo rendering and was open with Type: Bug / Error and Status:
+  Triage. No inspected result establishes an info-specific maintainer decision
+  to reject this syntax; this section follows the existing direct rule.

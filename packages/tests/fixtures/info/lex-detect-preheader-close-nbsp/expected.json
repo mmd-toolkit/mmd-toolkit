@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: detection passes but native YAML closer leaves NBSP"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 4: unexpected character: -> <- at offset: 12, skipped 1 characters. "
+  }
+}

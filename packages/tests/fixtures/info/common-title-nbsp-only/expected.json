@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A whitespace-only title value is accepted but not published."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

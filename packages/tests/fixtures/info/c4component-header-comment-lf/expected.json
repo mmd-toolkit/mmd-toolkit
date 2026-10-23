@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LF control for C4Component in a native header comment."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -49,6 +49,8 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 | ishikawa  | [`docs/diagrams/ishikawa.ja.md`](./docs/diagrams/ishikawa.ja.md)   | [`docs/ast/ishikawa.ja.md`](./docs/ast/ishikawa.ja.md)   |
 | agentflow | [`docs/diagrams/agentflow.ja.md`](./docs/diagrams/agentflow.ja.md) | [`docs/ast/agentflow.ja.md`](./docs/ast/agentflow.ja.md) |
 | pie       | [`docs/diagrams/pie.ja.md`](./docs/diagrams/pie.ja.md)             | [`docs/ast/pie.ja.md`](./docs/ast/pie.ja.md)             |
+| gitgraph  | [`docs/diagrams/gitgraph.ja.md`](./docs/diagrams/gitgraph.ja.md)   | [`docs/ast/gitgraph.ja.md`](./docs/ast/gitgraph.ja.md)   |
+| info      | [`docs/diagrams/info.ja.md`](./docs/diagrams/info.ja.md)           | [`docs/ast/info.ja.md`](./docs/ast/info.ja.md)           |
 
 mermaid.js のほかの図種は、まだ定めていません。
 

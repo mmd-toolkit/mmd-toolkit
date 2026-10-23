@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hidden directive after the header consumes the appended LF at EOF."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

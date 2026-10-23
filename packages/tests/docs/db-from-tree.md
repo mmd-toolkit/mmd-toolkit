@@ -488,21 +488,25 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
-Pie, Venn, Agentflow and Usecase are checked with both hand-made and recorded
-trees.
+Gitgraph, info, pie, Venn, Agentflow and Usecase are checked with both hand-made
+and recorded trees. The new builders are described in
+[gitgraph.md](./db-from-tree/gitgraph.md) and [info.md](./db-from-tree/info.md).
 
 The recorded-tree comparisons include C4, block, kanban, Venn, Agentflow,
-Usecase, pie, and their common detection fixtures, including all five C4 diagram
-kinds.
+Usecase, pie, gitgraph, info, and their common detection fixtures, including all
+five C4 diagram kinds.
 
 `tests/db-from-tree.test.ts` builds the Db of every fixture that records a tree
 and an accepted result with a Db, and requires it to be the recorded Db
 (`specified.json` where there is one, else `expected.json`), key order aside. A
 fixture that records neither a tree nor an error of the parser is reported: no
-comparison is skipped without a word. The test fails with the name of the
-fixture, and with the error of the reading when the tree lacks a field. When it
-fails, the tree is wrong, the builder here is wrong, or the record (`embedded`,
-`specified`) is wrong; the fixture tells which.
+comparison is skipped without a word. If a candidate for Db comparison records
+only a parser error, it is skipped only when a divergence mark asks the
+specification to reject it according to `fixtureAccepts`; otherwise it is
+reported. The test fails with the name of the fixture, and with the error of the
+reading when the tree lacks a field. When it fails, the tree is wrong, the
+builder here is wrong, or the record (`embedded`, `specified`) is wrong; the
+fixture tells which.
 
 ## Adding a diagram type
 

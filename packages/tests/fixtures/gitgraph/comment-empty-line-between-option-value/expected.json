@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Blank lines cannot separate a commit option from its value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 11: Expecting token of type 'STRING' but found `\n`.\nParse error on line 4, column 1: Expecting token of type 'EOF' but found `\"A\"`."
+  }
+}

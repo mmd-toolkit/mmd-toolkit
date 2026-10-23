@@ -1,0 +1,116 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> docs/rules/gitgraph-no-empty-description-block.md incorrect 1
+Filename: gitgraph-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | gitGraph
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   commit
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> invalid/gitgraph/descriptions-empty-block
+Filename: tests/fixtures/rules/gitgraph-no-empty-description-block/invalid/gitgraph/descriptions-empty-block-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> invalid/gitgraph/docs-incorrect-1
+Filename: tests/fixtures/rules/gitgraph-no-empty-description-block/invalid/gitgraph/docs-incorrect-1-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   commit
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> invalid/gitgraph/empty-block-comment-before-brace
+Filename: tests/fixtures/rules/gitgraph-no-empty-description-block/invalid/gitgraph/empty-block-comment-before-brace-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | %% before
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | commit
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> invalid/gitgraph/empty-block-comment-outside
+Filename: tests/fixtures/rules/gitgraph-no-empty-description-block/invalid/gitgraph/empty-block-comment-outside-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr {} %% TODO
+    | ^~~~~~~~~~~ [1]
+  3 | commit
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> invalid/gitgraph/empty-block-directive
+Filename: tests/fixtures/rules/gitgraph-no-empty-description-block/invalid/gitgraph/empty-block-directive-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr { %%{init: {"gitGraph":{"mainBranchName":"trunk"}}}%% }
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | commit
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> invalid/gitgraph/empty-block
+Filename: tests/fixtures/rules/gitgraph-no-empty-description-block/invalid/gitgraph/empty-block-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   commit
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: gitgraph-no-empty-description-block >> invalid >>> invalid/gitgraph/empty-block-whitespace
+Filename: tests/fixtures/rules/gitgraph-no-empty-description-block/invalid/gitgraph/empty-block-whitespace-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr { 
+    | ^~~~~~~~~~~\ [1]
+  3 | 	 }
+    | ~~~ [1]
+  4 | commit
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---

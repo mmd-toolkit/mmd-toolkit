@@ -242,10 +242,12 @@ Leading whitespace, line terminators, directives and comment regions are trivia
 ([Leading whitespace](#leading-whitespace)). Detection selects the diagram type
 and its lexer ([Diagram detection](#diagram-detection)); this can reject the
 input. Detection can pass one nonleading frontmatter-shaped block before the
-header. The block remains diagram text: pie applies its hidden YAML rule, while
-every other supported diagram type rejects it. It is not common frontmatter or
-trivia. [fixture: pie/frontmatter-nonleading-comment] [fixture:
-pie/lex-yaml-leading-config-not-applied] [fixture:
+header. The block remains diagram text: pie, gitgraph and info apply their
+hidden YAML rules. The cited flowchart, sequence, class, state, agentflow,
+block, ishikawa, usecase and venn cases reject it. It is not common frontmatter
+or trivia. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
+[fixture: pie/lex-yaml-leading-config-not-applied] [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-nonleading-sequence] [fixture:
 common/frontmatter-nonleading-class] [fixture:
@@ -454,12 +456,15 @@ When these conditions do not hold, there is no frontmatter: the block is diagram
 text. At the detection point, before passing bare `%%` lines, detection passes
 one block having the frontmatter shape above and looks for a header after it.
 This does not remove the block from the text the diagram lexer reads. With
-trivia before a block, pie applies its hidden YAML rule to the retained text. If
-it matches, PieIgnoredText holds the block and its title and configuration do
-not apply. Every other supported diagram type rejects it. Leading whitespace, a
-byte order mark on the opening fence only, a comment line or a directive can
-expose this case. Matching byte order marks on both fences can instead satisfy
-the real frontmatter rule. [fixture: pie/frontmatter-nonleading-comment]
+trivia before a block, pie, gitgraph and info apply their hidden YAML rules to
+the retained text. If it matches, PieIgnoredText, GitgraphIgnoredText or
+InfoIgnoredText holds the block and its YAML title and configuration do not
+apply. The rejecting controls below establish the scope of rejection, not a
+claim about all other diagram types. Leading whitespace, a byte order mark on
+the opening fence only, a comment line or a directive can expose this case.
+Matching byte order marks on both fences can instead satisfy the real
+frontmatter rule. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
 [fixture: pie/lex-yaml-leading-config-not-applied] [fixture:
 pie/lex-yaml-after-leading-lf] [fixture: pie/lex-yaml-bom-opening-only]
 [fixture: pie/lex-yaml-bom-both-fences] [fixture:
@@ -837,9 +842,10 @@ whitespace, not a line terminator, not inside a directive, and not inside a
 comment region ([Leading whitespace](#leading-whitespace)). If one block at that
 point satisfies the [Frontmatter](#frontmatter) shape, detection passes it once
 before looking for bare `%%` lines. The block remains diagram text for the
-selected diagram to read; see Frontmatter for pie and rejecting controls.
-[fixture: pie/frontmatter-nonleading-comment] [fixture:
-pie/lex-yaml-leading-config-not-applied] [fixture:
+selected diagram to read; see Frontmatter for pie, gitgraph, info and rejecting
+controls. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
+[fixture: pie/lex-yaml-leading-config-not-applied] [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-nonleading-sequence] [fixture:
 common/frontmatter-nonleading-class] [fixture:
@@ -869,14 +875,13 @@ it takes the keyword as its name, and `A` on the next line as its argument, so
 no header follows, and the text is rejected, as in mermaid.js, whose second scan
 for directives finds the same directive.
 
-For flowchart, sequence, class and state, such a directive is not in the tree
-and makes the input rejected; every other supported diagram type except pie also
-rejects this form: where it is closed and a header follows, as in `%%{`, a line
-`%%{wrap}%%`, and `x}%%flowchart LR`, detection reaches the header, and the
-input is rejected in every supported diagram type except pie, as in mermaid.js,
-whose lexer reads `%%{` and `x}%%` as text before the header. [fixture:
-flowchart/detect-directive-across-directive] [fixture:
-sequence/detect-directive-across-directive] [fixture:
+For the cited flowchart, sequence, class, state, agentflow, block, ishikawa,
+usecase and venn inputs, such a directive makes the input rejected: where it is
+closed and a header follows, as in `%%{`, a line `%%{wrap}%%`, and
+`x}%%flowchart LR`, detection reaches the header, and the cited rejecting
+controls agree with mermaid.js, whose lexer reads `%%{` and `x}%%` as text
+before the header. [fixture: flowchart/detect-directive-across-directive]
+[fixture: sequence/detect-directive-across-directive] [fixture:
 class/detect-directive-across-directive] [fixture:
 state/detect-directive-across-directive] [fixture:
 agentflow/detect-directive-second-scan-preheader] [fixture:
@@ -885,27 +890,33 @@ ishikawa/detect-directive-second-scan-preheader] [fixture:
 usecase/detect-directive-second-scan-preheader] [fixture:
 venn/detect-directive-second-scan-preheader]
 
-Pie instead reads a directive found only by detection's second scan as a hidden
-DIRECTIVE and holds it as PieIgnoredText in textBeforeHeader. The lines `%%{`,
-`%% gap`, `wrap}%%`, and `pie` are accepted; gluing `pie` immediately to the
-closer rejects, because the hidden form's closing boundary is not satisfied.
-[fixture: pie/lex-hidden-directive-second-detection-scan] [fixture:
-pie/lex-hidden-directive-second-detection-scan-glued]
+Pie, gitgraph and info instead read a directive found only by detection's second
+scan as hidden DIRECTIVE and hold it as PieIgnoredText, GitgraphIgnoredText or
+InfoIgnoredText in textBeforeHeader. The lines `%%{`, `%% gap`, `wrap}%%`, and
+`pie` are accepted; gluing `pie` immediately to the closer rejects, because the
+hidden form's closing boundary is not satisfied. [fixture:
+pie/lex-hidden-directive-second-detection-scan] [fixture:
+pie/lex-hidden-directive-second-detection-scan-glued] [fixture:
+gitgraph/lex-hidden-directive-second-scan] [fixture:
+gitgraph/lex-hidden-directive-second-scan-glued] [fixture:
+info/detect-second-scan-directive] [fixture: info/detect-second-scan-glued]
 
 At the position reached, the detectors of [detection.md](./detection.md) are
 tried in registration order against the diagram text
 ([Reading a source](#reading-a-source)), that is, the characters from there on,
 directives and comment regions left out. The first detector whose condition
 holds selects the diagram type. The diagram's lexer reads the retained
-frontmatter-shaped block, if any, and pie also reads the hidden DIRECTIVE forms
-above, as well as the text from the position reached. Bare `%%` lines passed by
-detection are not read again here: each is a comment of the diagram, with the
-mark `%%`, from its `%%` to the end of its line, in every diagram type.
-mermaid.js reads such a line with the lexer of the detected diagram, and some of
-its lexers reject it: flowchart reads `%%` as an id before the header, state
-does not take the `{` of a line that begins with `%%{`, and class reads a line
-of whitespace only after such a line as a `newline` unit that its grammar does
-not take before the header. These inputs are the known divergence
+frontmatter-shaped block, if any, and pie, gitgraph and info also read the
+hidden DIRECTIVE forms above, as well as the text from the position reached.
+Bare `%%` lines and their accompanying whitespace and line breaks passed by
+detection are not read again here; that whitespace and those line breaks are
+trivia. Each bare line is a comment of the diagram, with the mark `%%`, from its
+`%%` to the end of its line, in every diagram type. mermaid.js reads such a line
+with the lexer of the detected diagram, and some of its lexers reject it:
+flowchart reads `%%` as an id before the header, state does not take the `{` of
+a line that begins with `%%{`, and class reads a line of whitespace only after
+such a line as a `newline` unit that its grammar does not take before the
+header. These inputs are the known divergence
 [`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.md).
 No detector matching means the text is rejected with `UnknownDiagramError`; so
 is a text with no diagram text at all, such as an empty text or a text of
@@ -917,7 +928,9 @@ keyword as its name, and `%%`, U+2028, and `sequenceDiagram`, where the comment
 line holds the keyword; and so is a text whose first unit is an empty
 description block, `accDescr {}`, before the header. [fixture: common/empty]
 [fixture: common/comment-only] [fixture: common/bare-percent-line-only]
-[fixture: common/bare-percent-line-only-with-line-feed] [fixture:
+[fixture: gitgraph/div-detect-retained-directive-bare-bom] [fixture:
+gitgraph/div-lex-preheader-bare-between-retained-unicode] [fixture:
+common/bare-percent-line-only-with-line-feed] [fixture:
 sequence/header-after-indented-bare-percent-line] [fixture:
 sequence/header-after-bare-percent-crlf] [fixture:
 sequence/header-after-bare-percent-cr] [fixture:
@@ -1069,9 +1082,10 @@ the text without these last removals. For a diagram with a grammar, the rules
 above give the same result: a bare `%%` line is a comment in both where the
 lexer of mermaid.js reads it as one, and only where it does not do the two
 differ (the known divergence above); a directive that only the second scan finds
-is passed by detection in both and rejected by both in every supported diagram
-type except pie. [fixture: flowchart/detect-directive-across-directive]
-[fixture: sequence/detect-directive-across-directive] [fixture:
+is passed by detection in both and rejected by both in the diagram types shown
+by the rejecting controls below. [fixture:
+flowchart/detect-directive-across-directive] [fixture:
+sequence/detect-directive-across-directive] [fixture:
 class/detect-directive-across-directive] [fixture:
 state/detect-directive-across-directive] [fixture:
 agentflow/detect-directive-second-scan-preheader] [fixture:
@@ -1081,9 +1095,9 @@ usecase/detect-directive-second-scan-preheader] [fixture:
 venn/detect-directive-second-scan-preheader]
 
 A matching nonleading `---` block is passed by detection in both and read by the
-selected diagram: pie applies its hidden YAML rule and retains a matching block
-as ignored text, while every other supported diagram type rejects it, as stated
-under [Frontmatter](#frontmatter). [fixture:
+selected diagram: pie, gitgraph and info apply their hidden YAML rules and
+retain a matching block as ignored text. The cited rejecting controls have the
+scope stated under [Frontmatter](#frontmatter). [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
 agentflow/db-frontmatter-after-comment] [fixture:

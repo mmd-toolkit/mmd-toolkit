@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "JS whitespace satisfies the header lookahead but LS is not a lexer gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 9: unexpected character: -> <- at offset: 8, skipped 1 characters. "
+  }
+}

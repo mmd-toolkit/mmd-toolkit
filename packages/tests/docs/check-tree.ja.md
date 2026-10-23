@@ -6,6 +6,12 @@ English version: [check-tree.md](./check-tree.md)
 記録した木（`ast.json`）が、仕様が木について述べる条件を満たすことを、
 パーサーを動かさずに、木と入力だけから検査します。
 
+`checkTree()` は木の条件である欄、範囲、トークンとその字句の不変条件を検査し、
+入力の受理は決めません。
+意味による拒否を含む受理条件は parser の担当です。
+記録の種類（`ast.json` または `parse-error.json`）と、
+fixture の仕様の読み（`fixtureAccepts`）を比べて確かめます。
+
 ## なぜ必要か
 
 [db-from-tree.ja.md](./db-from-tree.ja.md) の比べは、
@@ -603,6 +609,133 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `StringFragment` トークンで、
     その後ろの語は `RawText` トークンです。
 
+  - gitgraph: 18 ノードの型、子の欄、ソース順は
+    [ast/gitgraph.md](../../spec/docs/ast/gitgraph.md) に従う。
+    ヘッダーは書かれた LR・TB・BT または null だけを持つ。
+    接続・分離した colon の境界を区別し、
+    ヘッダーの部品の間に可視 LF を許さない。
+    [fixture: gitgraph/gram-all-fields] [fixture: gitgraph/header-only]
+    [fixture: gitgraph/header-colon-commit-inline] [fixture:
+    gitgraph/header-hidden-before-direction-colon] [fixture:
+    gitgraph/header-visible-lf-before-colon]
+    各文・option は書かれた語、句読点、子の型、nullable な欄を検査する。
+    checkout は checkout・switch、message は msg・裸文字列の null を保つ。
+    type は NORMAL・REVERSE・HIGHLIGHT を保つ。
+    繰り返す option はソース順である。
+    option の語と colon は共通の除去後に接し、
+    native 空白・hidden form を挟めない。
+    [fixture: gitgraph/gram-commit-repeated-options] [fixture:
+    gitgraph/gram-merge-repeated-options] [fixture:
+    gitgraph/gram-cherry-pick-repeated-options] [fixture: gitgraph/gram-switch]
+    [fixture: gitgraph/lex-option-global-before-colon] [fixture:
+    gitgraph/lex-option-hidden-before-colon] [fixture:
+    gitgraph/gram-commit-colon-space]
+
+    共有の葉は、その位置の完全な字句単位である。
+    文字列は閉じ、backslash の対は物理 LF・LS・PS を越せない。
+    escape しない改行は内容のままである。
+    order はゼロ・dot 境界の優先を満たす完全な符号なし整数である。
+    裸の参照は先頭・内部・末尾の文字に従い、
+    先行する整数、同長のキーワード、共通の複合形式に負ける。
+    ほかのキーワードは長い裸の参照に譲る。
+    [fixture: gitgraph/lex-string-escapes] [fixture:
+    gitgraph/lex-string-backslash-lf] [fixture: gitgraph/lex-string-multiline]
+    [fixture: gitgraph/number-leading-zero] [fixture:
+    gitgraph/lex-reference-zero-before-dot] [fixture:
+    gitgraph/lex-reference-multiple-digits-before-dot] [fixture:
+    gitgraph/lex-reference-digit-dot] [fixture: gitgraph/lex-reference-shape]
+    [fixture: gitgraph/lex-reference-reserved] [fixture:
+    gitgraph/lex-reference-common-prefix] [fixture:
+    gitgraph/lex-reference-keyword-prefixes]
+
+    hidden form は所有者を 1 つだけ持つ。
+    ヘッダーの指定 gap、文の参照前、option の textBefore・textBeforeValue、
+    可視 EOL 前の textAfter、または EOL 後の body である。
+    文字の明示的な走査で、YAML は本文を含む最初の有効な閉じを先に探す。
+    それがない場合だけ直後の fence で空の本文を閉じる。
+    DIRECTIVE は境界を満たす最初の閉じを使う。
+    消費した直後の LF は範囲の外に置く。
+    次の文には残る可視 LF が要り、余分な LF、閉じの空白、EOF を区別する。
+    通常の gap は ASCII space・tab と、許す位置の可視 LF だけである。
+    [fixture: gitgraph/header-hidden-before-colon] [fixture:
+    gitgraph/lex-hidden-directive-before-branch-name] [fixture:
+    gitgraph/lex-option-between-options-hidden] [fixture:
+    gitgraph/lex-hidden-directive-between-option-value] [fixture:
+    gitgraph/lex-yaml-three-adjacent-fences] [fixture:
+    gitgraph/lex-yaml-empty-followed-later-block] [fixture:
+    gitgraph/lex-hidden-directive-after-commit] [fixture:
+    gitgraph/lex-hidden-directive-commit-spare-lf] [fixture:
+    gitgraph/lex-hidden-directive-commit-closing-space] [fixture:
+    gitgraph/lex-hidden-directive-commit-eof] [fixture: gitgraph/lex-body-bom]
+
+    共通の行の値は title の区切り 1 つの後、
+    または accessibility の colon の後を保つ。
+    ブロックは外側の空白だけを trim し、最初の閉じ括弧で閉じる。
+    空の値は null である。
+    先行する文字列・複合ブロックは hidden らしい内容を所有する。
+    ヘッダー後の native Comment はその中で始まれず、
+    先行する DIRECTIVE を隠せない。
+    ヘッダー前では、
+    検出が保持する YAML は二度目の directive の前の 1 つだけである。
+    通された裸の Comment と共通の空白は、
+    保持した形式の間でも trivia のままである。
+    本文の gap と hidden の境界は広げない。
+    共有の coverage、raw・written 値、token kind、範囲の hull も検査する。
+    履歴の受理条件は、parser と上記の fixture の受理の比較で確かめる。
+    [fixture: gitgraph/title-tab] [fixture:
+    gitgraph/lex-description-line-null] [fixture:
+    gitgraph/lex-description-block-only-directive] [fixture:
+    gitgraph/lex-hidden-directive-string] [fixture:
+    gitgraph/lex-hidden-directive-block] [fixture:
+    gitgraph/lex-hidden-directive-fallback-complete-statement] [fixture:
+    gitgraph/detect-two-nonleading-blocks] [fixture:
+    gitgraph/div-detect-retained-yaml-bare-ls-line] [fixture:
+    gitgraph/div-detect-retained-directive-bare-bom] [fixture:
+    gitgraph/div-lex-preheader-bare-between-retained-unicode] [fixture:
+    gitgraph/lex-preheader-hidden-no-bare-unicode]
+
+  - info: 7 ノードの型と欄は [ast/info.md](../../spec/docs/ast/info.md) に従う。
+    showInfo は書かれた語と一致する。
+    textBeforeShowInfo は flag がなければ空、あれば可視 LF を許す。
+    キーワードの境界は共通の空白、EOF、percent ペアである。
+    本文の gap は ASCII space・tab・LF だけである。
+    共通文は繰り返し・空も保ち、複合形式の値が空の場合だけ null とする。
+    title の区切り、colon の gap、block の trim と最初の閉じを、
+    Db に寄与しないことと独立に検査する。
+    [fixture: info/header-inline-flag] [fixture: info/header-flag-next-line]
+    [fixture: info/lex-hidden-without-flag] [fixture: info/flag-letter-suffix]
+    [fixture: info/space-header-nbsp] [fixture: info/title-repeat-empty]
+    [fixture: info/lex-title-two-spaces] [fixture: info/acctitle-gap] [fixture:
+    info/space-block-interior] [fixture: info/accdescr-block-first-close]
+
+    各 InfoIgnoredText は、指定の header・flag gap、body、
+    または可視 EOL 前の textAfter にある完全な YAML・DIRECTIVE の一致である。
+    YAML は本文ありの閉じを空本文より先に選ぶ。
+    DIRECTIVE は境界を満たす最初の閉じを使う。
+    消費した直後の LF は範囲の外で、次の文には残る EOL が要る。
+    余分な LF、閉じの空白、EOF を別々に確かめる。
+    複合値が包む hidden らしいテキストは内容になる。
+    ヘッダー後の native Comment は、先行する DIRECTIVE を隠したり、
+    複合値の内部で始まったりできない。
+    ヘッダー前の保持した形式は、自分の境界と 1 ブロックの検出順に従う。
+    通された裸の Comment とそれに伴う共通の空白は、
+    保持した形式の間でも trivia である。
+    本文の通常の gap は広げない。RawText は共通の切断だけで分割できる。
+    共有の coverage、欄、written 値、範囲、token の検査も行う。
+    [fixture: info/lex-flag-hidden-two] [fixture:
+    info/lex-hidden-after-visible-eol] [fixture: info/lex-yaml-three-fences]
+    [fixture: info/lex-yaml-two-empty] [fixture:
+    info/hidden-directive-after-title] [fixture:
+    info/hidden-directive-title-spare-lf] [fixture:
+    info/hidden-directive-title-space] [fixture:
+    info/hidden-directive-title-eof] [fixture: info/hidden-yaml-inside-block]
+    [fixture: info/hidden-directive-close-glued] [fixture:
+    info/lex-detect-preheader-empty-braces] [fixture: info/detect-two-blocks]
+    [fixture: info/div-detect-retained-yaml-bare-ls] [fixture:
+    info/div-detect-retained-directive-bare-bom] [fixture:
+    info/div-detect-yaml-bare-directive] [fixture:
+    info/lex-retained-no-bare-ls] [fixture: info/lex-hidden-common-comment]
+
   - pie: 8 種のノードと子の順序は
     [ast/pie.md](../../spec/docs/ast/pie.md) に従う。
     showData は書かれたフラグだけを表す。
@@ -649,8 +782,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     StringLiteral は閉じた単引用符・二重引用符の単位である。
     escape は物理 LF・LS・PS を越せないが、escape していない改行は内容になる。
     NumericLiteral は完全な、任意の minus と整数・小数の単位である。
-    先頭のゼロは小数だけで許し、共有の double が負なら重複でも拒否する。
-    負のゼロ・負の underflow は受理する。[fixture: pie/header-letter-suffix]
+    先頭のゼロは小数だけで許す。
+    共有の double が負かどうかは、重複の場合も含め、
+    木の検査ではなく parser の受理条件に属する。
+    負のゼロ・負の underflow も、書かれた数値との一致を検査する。
+    [fixture: pie/header-letter-suffix]
     [fixture: pie/showdata-quote-glued] [fixture: pie/lex-header-nbsp]
     [fixture: pie/label-single-quote] [fixture: pie/label-escaped-quotes]
     [fixture: pie/label-multiline] [fixture: pie/label-backslash-ls]
@@ -672,8 +808,21 @@ const problems: TreeProblem[] = checkTree(text, tree)
     pie/title-comment] [fixture: pie/accdescr-block-gap] [fixture:
     pie/accdescr-block-nested] [fixture: pie/review-accdescr-empty-block-first]
     PieIgnoredText は完全な hidden YAML・DIRECTIVE の形を 1 つ持つ。
-    文字を明示的に走査し、境界を満たす最初の閉じを検査する。消費した直後の LF は
-    ノードに含めない。
+    文字を明示的に走査し、YAML は本文を 1 行以上含んで、
+    境界を満たす最初の閉じを検査する。
+    その閉じがない場合だけ、開きの直後の fence で空の本文を閉じる。
+    [fixture: pie/lex-yaml-three-adjacent-fences] [fixture:
+    pie/lex-yaml-immediate-fence-before-later-closer] [fixture:
+    pie/lex-yaml-three-fences-before-value] [fixture:
+    pie/lex-nonleading-yaml-three-adjacent-fences] [fixture:
+    pie/lex-yaml-apparent-empty-pairs-unmatched-fence] [fixture:
+    pie/review-yaml-hidden-empty] [fixture:
+    pie/lex-yaml-before-colon-two-blocks]
+    DIRECTIVE は境界を満たす最初の閉じを使う。
+    消費した直後の LF はノードに含めない。
+    [fixture:
+    pie/lex-yaml-closer-suffix-skip-later] [fixture:
+    pie/lex-hidden-multiple-closers]
     指定の区分の隙間、共通の textAfter、図の位置だけが所有できる。
     文字列・description ブロックの中の hidden らしい形は内容になる。
     区分の部品の間・showData の前には可視の LF を許さない。

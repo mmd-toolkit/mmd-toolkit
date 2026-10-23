@@ -919,7 +919,15 @@ mermaid.js がその行を 1 つの文として読むのは、行末の空白が
 
 ### 複数行の値
 
-flowchart と同じです。
+内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+囲む空白を要する本文がないためです。
+すでに空の内側は空のままです。
+接した keyword は接したまま、`accDescr{  }` は `accDescr{}` にします。
+[fixture: multi-line-values/empty-whitespace-interiors]
+[test: sequence Unicode and tab interiors]
+コメントや directive があるブロックの配置は従来どおり保ちます。
+
+本文があるブロックは flowchart と同じです。
 `accDescr { ... }` のブロックの行と、
 複数行に書かれたデータブロックの行は書かれたまま残し、
 `accDescr` のブロックの `}` は、その文と同じ段に置きます。

@@ -88,6 +88,19 @@ const REQUIREMENT_PARTS =
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
+  "GitgraphDiagram.direction": { message: "the written direction is " },
+  "GitgraphCheckoutStatement.keyword": { message: "the field keyword is " },
+  "GitgraphMessageOption.keyword": {
+    message: "the message keyword must be msg or null for a bare string",
+  },
+  "GitgraphTypeOption.value": { message: "the field value is " },
+  "GitgraphLiteral.value": { message: "value is not its written text" },
+  "GitgraphIgnoredText.kind": { message: "the field kind is " },
+  "GitgraphIgnoredText.value": { message: "value is not its written text" },
+  "InfoDiagram.showInfo": { message: "the header and showInfo flag: " },
+  "InfoLiteral.value": { message: "value is not its written text" },
+  "InfoIgnoredText.kind": { message: "the field kind is " },
+  "InfoIgnoredText.value": { message: "value is not its written text" },
   "PieDiagram.showData": { message: "the header and showData flag: " },
   "PieLiteral.value": { message: "value is not its written text" },
   "PieIgnoredText.kind": { message: "the field kind is " },
@@ -780,6 +793,40 @@ function problemsOf(testCase: FieldCase): {
  * field.
  */
 const STRING_FIELD_CASES: readonly FieldCase[] = [
+  {
+    diagram: "gitgraph",
+    fixture: "header-tb",
+    type: "GitgraphDiagram",
+    field: "direction",
+    set: null,
+    message:
+      'the header, direction and colon: ["gitGraph","TB",":"], not ["gitGraph",":"]',
+  },
+  {
+    diagram: "gitgraph",
+    fixture: "header-only",
+    type: "GitgraphDiagram",
+    field: "direction",
+    set: "Z",
+    message: "the written direction is LR, TB, BT or null",
+  },
+  {
+    diagram: "gitgraph",
+    fixture: "gram-commit-repeated-options",
+    type: "GitgraphMessageOption",
+    field: "keyword",
+    set: null,
+    message: 'the option\'s authored components: ["msg",":"], not []',
+  },
+  {
+    diagram: "gitgraph",
+    fixture: "gram-commit-repeated-options",
+    type: "GitgraphMessageOption",
+    field: "keyword",
+    set: "Z",
+    message: "the message keyword must be msg or null for a bare string",
+  },
+
   {
     diagram: "usecase",
     fixture: "gram-label-quoted-padding",

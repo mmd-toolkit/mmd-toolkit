@@ -452,20 +452,68 @@ kanban にも同じ差異があり、mindmap と同じ規則です。
 仕様が mermaid.js の受理するものを拒否する
 （`directive-as-token-boundary`、
 `ignored-semicolon-as-token-boundary`、`click-reserved-word`、
-`tokenless-empty-forms`、`headerless-empty-ending`）か、
-拒否するものを受理する（`embedded-data-opaque`）からです。
+`tokenless-empty-forms`、`headerless-empty-ending`）からです。
 これらのどれにも、ここには差異を除く手段がありません。
 入力を仕様と同じに読ませるために mermaid.js を動かすことはせず、
 仕様が何を出すかは、
 [既知の差異](../../spec/docs/known-divergences.ja.md)の、
 その差異の文書が述べています。
 
-HTML 属性の引用符の変換で不正になるフロントマターの YAML も、
-同じ `embedded-data-opaque` の扱いです。
-`specifiedRunOf` は別の Db を求めず `undefined` を返し、
-生成器は `specified.json` を作りません。
+`embedded-data-opaque` は両方向で `specified.json` が必要です。
+参照入力では、Mermaid の設定導出で拒否された frontmatter や directive の
+ブロックだけを除き、ほかのブロックは保ちます。
+導出には Mermaid の公開 parse 経路を使い、図の parser だけを、
+何もしない非同期関数に一時的に置き換えます。
+文の不透明な内容に妨げられず、設定を読めます。
+導出が失敗するときはブロックをソース順に取り、
+追加すると拒否されるブロックを除きます。
+HTML 属性の引用符の変換で不正になる frontmatter の YAML も同じ扱いです。
+本文の hidden YAML と、ほかの図の構文は保ちます。
 [fixture: usecase/div-gram-frontmatter-html-attribute-quotes]
 [fixture: pie/div-review-frontmatter-html-invalid-yaml]
+[fixture: pie/lex-yaml-three-adjacent-fences]
+
+正しい埋め込み設定が受理を変えるときは、仕様の
+[比較規則](../../spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)が
+名指しする鍵だけを除きます。
+`tools/src/specified-reading.ts` の明示的な表 `OPAQUE_ACCEPTANCE_KEYS` が、
+そのパスを持ちます。
+その鍵があれば、参照の frontmatter に、Mermaid が導いたテキスト内設定から
+その鍵だけを除いた値と、変換済みタイトルを持たせます。
+ソースの directive はその設定へ反映済みなので、
+除いた鍵を再適用しないよう、参照の本文から除きます。
+`wrap` など Db だけに効く設定を含め、ほかの設定は保ちます。
+外部のサイト設定も、通常の runner を通じて適用されます。
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+[fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
+[fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
+[fixture: gitgraph/div-init-html-labels-default-comparison]
+
+参照入力が受理されれば、その Db と埋め込みの値を使います。
+frontmatter のタイトルは、`html-tag-in-frontmatter` と同じ reader を使い、
+Mermaid が変換した値です。
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+
+元の入力が受理されて参照入力が拒否されるときは、参照入力の拒否を記録します。
+印を付けた不透明データの失敗が両方で同じ拒否のままなら、比較 Db はありません。
+受理と `db: null`、参照入力の検出した図種を記録し、
+埋め込みの値は作り出しません。
+参照入力に残る不正なデータブロックもこれに含みます。
+`expected.json` の normalizer の検査は変わりません。
+不透明な指定読みは、normalizer がある図種でも、比較 Db がない場合があります。
+[fixture: flowchart/div-data-unknown-shape]
+[fixture: kanban/gram-metadata-bad-yaml]
+[fixture: usecase/div-gram-json-unquoted-key]
+
+テキスト内の設定が受理を変えるとき、
+指定読みは名指しされた埋め込みの鍵を適用せず、既定の受理規則を使います。
+mermaid.js が受理する入力を拒否することも、
+拒否する入力を受理することもあります。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
+[fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
+[fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
+[fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
+[fixture: gitgraph/div-init-main-branch-duplicate-default-accepted]
 
 規則は `src/divergence-removals.ts` に挙げてあり、
 pin した mermaid.js の字句解析器の中で、

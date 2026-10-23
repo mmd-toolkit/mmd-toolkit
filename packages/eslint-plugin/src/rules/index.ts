@@ -60,6 +60,11 @@ import { ganttNoEmptyDescriptionBlock } from "./gantt-no-empty-description-block
 import { ganttNoInvalidTag } from "./gantt-no-invalid-tag.ts"
 import { ganttNoUndef } from "./gantt-no-undef.ts"
 import { ganttNoUnknownExclude } from "./gantt-no-unknown-exclude.ts"
+import { gitgraphNoDuplicateDescription } from "./gitgraph-no-duplicate-description.ts"
+import { gitgraphNoDuplicateOption } from "./gitgraph-no-duplicate-option.ts"
+import { gitgraphNoDuplicateTitle } from "./gitgraph-no-duplicate-title.ts"
+import { gitgraphNoEmptyDescriptionBlock } from "./gitgraph-no-empty-description-block.ts"
+import { gitgraphNoRedefinedCommit } from "./gitgraph-no-redefined-commit.ts"
 import { journeyNoDuplicateDescription } from "./journey-no-duplicate-description.ts"
 import { journeyNoDuplicateTitle } from "./journey-no-duplicate-title.ts"
 import { journeyNoEmptyDescriptionBlock } from "./journey-no-empty-description-block.ts"
@@ -71,6 +76,10 @@ import { mindmapNoDuplicateDecoration } from "./mindmap-no-duplicate-decoration.
 import { mindmapNoMismatchedShape } from "./mindmap-no-mismatched-shape.ts"
 import { noInvalidInitDirective } from "./no-invalid-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
+import { pieNoDuplicateDescription } from "./pie-no-duplicate-description.ts"
+import { pieNoDuplicateLabel } from "./pie-no-duplicate-label.ts"
+import { pieNoDuplicateTitle } from "./pie-no-duplicate-title.ts"
+import { pieNoEmptyDescriptionBlock } from "./pie-no-empty-description-block.ts"
 import { quadrantNoDuplicateDescription } from "./quadrant-no-duplicate-description.ts"
 import { quadrantNoDuplicateStyle } from "./quadrant-no-duplicate-style.ts"
 import { quadrantNoDuplicateTitle } from "./quadrant-no-duplicate-title.ts"
@@ -196,6 +205,11 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "gantt-no-invalid-tag": ganttNoInvalidTag,
   "gantt-no-undef": ganttNoUndef,
   "gantt-no-unknown-exclude": ganttNoUnknownExclude,
+  "gitgraph-no-duplicate-description": gitgraphNoDuplicateDescription,
+  "gitgraph-no-duplicate-option": gitgraphNoDuplicateOption,
+  "gitgraph-no-duplicate-title": gitgraphNoDuplicateTitle,
+  "gitgraph-no-empty-description-block": gitgraphNoEmptyDescriptionBlock,
+  "gitgraph-no-redefined-commit": gitgraphNoRedefinedCommit,
   "journey-no-duplicate-description": journeyNoDuplicateDescription,
   "journey-no-duplicate-title": journeyNoDuplicateTitle,
   "journey-no-empty-description-block": journeyNoEmptyDescriptionBlock,
@@ -207,6 +221,10 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "mindmap-no-mismatched-shape": mindmapNoMismatchedShape,
   "no-invalid-init-directive": noInvalidInitDirective,
   "no-unclosed-directive": noUnclosedDirective,
+  "pie-no-duplicate-description": pieNoDuplicateDescription,
+  "pie-no-duplicate-label": pieNoDuplicateLabel,
+  "pie-no-duplicate-title": pieNoDuplicateTitle,
+  "pie-no-empty-description-block": pieNoEmptyDescriptionBlock,
   "quadrant-no-duplicate-description": quadrantNoDuplicateDescription,
   "quadrant-no-duplicate-style": quadrantNoDuplicateStyle,
   "quadrant-no-duplicate-title": quadrantNoDuplicateTitle,

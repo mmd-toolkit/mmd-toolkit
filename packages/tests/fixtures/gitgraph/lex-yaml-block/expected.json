@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "YAML-looking text inside ACC_DESCR remains block text."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "---\nx: y\n---",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

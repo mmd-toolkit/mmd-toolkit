@@ -15,9 +15,9 @@
 /**
  * Names of the errors mermaid throws on purpose when it rejects an input:
  *
- * - `Error`: Jison parse errors, and errors Db classes throw (an unknown
+ * - `Error`: syntax errors and errors Db classes throw (an unknown
  *   shape, too many edges, ...);
- * - `MermaidParseError`: Langium parse errors;
+ * - `MermaidParseError`: lexer or parser errors reported by the public parse gate;
  * - `UnknownDiagramError`: no detector matched;
  * - `YAMLException`: invalid YAML in frontmatter or `@{ ... }` data.
  */

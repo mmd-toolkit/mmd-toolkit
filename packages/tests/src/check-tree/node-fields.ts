@@ -18,6 +18,118 @@ import type { FieldSpec } from "./field-spec.ts"
 export const NODE_FIELDS: Readonly<
   Record<string, Readonly<Record<string, FieldSpec>>>
 > = {
+  GitgraphDiagram: {
+    direction: { shape: "value", valueType: "stringOrNull" },
+    textBeforeHeader: { shape: "nodeList" },
+    textBeforeDirection: { shape: "nodeList" },
+    textBeforeColon: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  GitgraphCommitStatement: {
+    options: { shape: "nodeList" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphBranchStatement: {
+    textBeforeName: { shape: "nodeList" },
+    name: { shape: "node" },
+    order: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphCheckoutStatement: {
+    keyword: { shape: "value", valueType: "string" },
+    textBeforeBranch: { shape: "nodeList" },
+    branch: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphMergeStatement: {
+    textBeforeBranch: { shape: "nodeList" },
+    branch: { shape: "node" },
+    options: { shape: "nodeList" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphCherryPickStatement: {
+    options: { shape: "nodeList" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphIdOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+  },
+  GitgraphMessageOption: {
+    textBefore: { shape: "nodeList" },
+    keyword: { shape: "value", valueType: "stringOrNull" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+  },
+  GitgraphTagOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+  },
+  GitgraphTypeOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "value", valueType: "string" },
+  },
+  GitgraphParentOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+  },
+  GitgraphOrderOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+  },
+  GitgraphTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  GitgraphLiteral: { value: { shape: "value", valueType: "string" } },
+  GitgraphIgnoredText: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
+  InfoDiagram: {
+    showInfo: { shape: "value", valueType: "boolean" },
+    textBeforeHeader: { shape: "nodeList" },
+    textBeforeShowInfo: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  InfoTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  InfoAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  InfoAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  InfoAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  InfoLiteral: { value: { shape: "value", valueType: "string" } },
+  InfoIgnoredText: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
   PieDiagram: {
     showData: { shape: "value", valueType: "boolean" },
     textBeforeHeader: { shape: "nodeList" },

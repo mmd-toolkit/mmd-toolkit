@@ -162,6 +162,10 @@ const SPEC_FILES: Readonly<
   venn: () => ["diagrams/venn/parser/venn.spec.ts"],
   // The directory has only this spec file; all three tests pass parser text.
   ishikawa: () => ["diagrams/ishikawa/ishikawa.spec.ts"],
+  // gitGraphParser.ts has inline tests on AST objects, not diagram texts.
+  gitgraph: () => ["diagrams/git/gitGraph.spec.ts"],
+  // This directory has only this spec; the adapter contains no inline tests.
+  info: () => ["diagrams/info/info.spec.ts"],
   // Both files parse diagram text. The renderer spec only reads the resulting
   // DOM in assertions; the recorder can leave drawing and those reads empty.
   pie: () => ["diagrams/pie/pie.spec.ts", "diagrams/pie/pieRenderer.spec.ts"],
@@ -209,6 +213,14 @@ const ERRORS_AFTER_THEIR_INPUT: Readonly<
     }[]
   >
 > = {
+  "diagrams/git/gitGraph.spec.ts": [
+    {
+      test: "when parsing a gitGraph > when parsing more advanced gitGraphs > should handle merge with custom ids, tags and type",
+      error: "Cannot read properties of undefined (reading 'branch')",
+      reason:
+        "the only parse call precedes destructuring seven stubbed commits and reading their fields",
+    },
+  ],
   "diagrams/usecase/usecase.parser.spec.ts": [
     {
       test: "usecase parser publication and normalized AST > accepts markdown markers, punctuation, and non-ASCII characters in unquoted labels",

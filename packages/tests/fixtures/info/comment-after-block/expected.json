@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native comment after a block leaves its LF visible."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

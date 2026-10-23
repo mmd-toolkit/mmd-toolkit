@@ -155,19 +155,18 @@ Ishikawa の `@{...}` にデータブロックの構文はなく、通常の節�
      A@{ label: 12 }
    ```
 
-| 例  | mermaid.js              | この仕様 |
-| --- | ----------------------- | -------- |
-| 1   | 拒否、`YAMLException`   | 受理     |
-| 2   | 拒否、`YAMLException`   | 受理     |
-| 3   | 拒否、`TypeError`       | 受理     |
-| 4   | 拒否、「No such shape」 | 受理     |
-| 5   | ラベル 12 を持つ頂点 A  | 同じ     |
-
-[fixture: flowchart/frontmatter-invalid-yaml]
-[fixture: common/frontmatter-duplicate-key]
-[fixture: common/config-css-key-not-string]
-[fixture: flowchart/div-data-unknown-shape]
-[fixture: flowchart/db-data-label-number]
+| 例                                            | mermaid.js              | この仕様 |
+| --------------------------------------------- | ----------------------- | -------- |
+| 1                                             | 拒否、`YAMLException`   | 受理     |
+| 2                                             | 拒否、`YAMLException`   | 受理     |
+| 3                                             | 拒否、`TypeError`       | 受理     |
+| 4                                             | 拒否、「No such shape」 | 受理     |
+| 5                                             | ラベル 12 を持つ頂点 A  | 同じ     |
+| [fixture: flowchart/frontmatter-invalid-yaml] |
+| [fixture: common/frontmatter-duplicate-key]   |
+| [fixture: common/config-css-key-not-string]   |
+| [fixture: flowchart/div-data-unknown-shape]   |
+| [fixture: flowchart/db-data-label-number]     |
 
 つまり mermaid.js は、埋め込まれたデータを解析できないときや、
 その結果が知らない形のときに、入力を拒否します。
@@ -211,30 +210,66 @@ Ishikawa の `@{...}` にデータブロックの構文はなく、通常の節�
   改行を持たない中身を波括弧の間のマッピングとして読み
   （
 
-  [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L143-L151)）、
-  その後で値の形を読むので、値がないと `TypeError` で失敗します
-  （
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L143-L151)）、
+その後で値の形を読むので、値がないと `TypeError` で失敗します
+（
 
-  [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L235-L236)）。
-  `A@{`、改行、`}` はそこで拒否されますが、
-  1 行の `A@{ }` と `A@{ # c }` は両方が受理し、
-  mermaid.js が形を読まない辺の id の同じブロックも同じです。
-  sequence では、mermaid.js は改行があっても、
-  データブロックの中身をマッピングとして読み、
-  そのようなブロックを受理します。
-  [fixture: flowchart/div-data-block-line-break-only]
-  [fixture: flowchart/div-data-block-comment-then-line-break]
-  [fixture: flowchart/div-data-block-null-on-own-line]
-  [fixture: flowchart/gram-data-block-comment-one-line]
-  [fixture: flowchart/gram-data-block-space-only]
-  [fixture: flowchart/gram-data-block-edge-line-break-only]
-  [fixture: sequence/gram-data-block-line-break-only]
+[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L235-L236)）。
+`A@{`、改行、`}` はそこで拒否されますが、
+1 行の `A@{ }` と `A@{ # c }` は両方が受理し、
+mermaid.js が形を読まない辺の id の同じブロックも同じです。
+sequence では、mermaid.js は改行があっても、
+データブロックの中身をマッピングとして読み、
+そのようなブロックを受理します。
+[fixture: flowchart/div-data-block-line-break-only]
+[fixture: flowchart/div-data-block-comment-then-line-break]
+[fixture: flowchart/div-data-block-null-on-own-line]
+[fixture: flowchart/gram-data-block-comment-one-line]
+[fixture: flowchart/gram-data-block-space-only]
+[fixture: flowchart/gram-data-block-edge-line-break-only]
+[fixture: sequence/gram-data-block-line-break-only]
 
-差異は一方向だけです。
-埋め込まれたデータが持つもののために、
-mermaid.js が受理しこの仕様が拒否する入力は、知られていません。
-mermaid.js はこれらの入力に Db を与えないので、
-その fixture は拒否だけを記録します。
+上記の不正なデータの例は一方向です。
+mermaid.js は拒否して Db を与えず、この仕様は受理します。
+下記の gitgraph の例のように、埋め込み設定は受理を両方向に変える場合もあります。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
+[fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
+
+### 比較する Db
+
+参照入力では、差異の原因となる埋め込みデータだけを除きます。
+
+1. フロントマターやディレクティブからの設定の導出で Mermaid が拒否する場合、
+   拒否されたブロックだけを除きます。
+   ほかのフロントマターやディレクティブは残します。
+   [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
+2. 正しい埋め込み設定が図の受理条件を変える場合、
+   その条件が使う鍵だけを除いた設定で読み、ほかの値は残します。
+   gitgraph の鍵は下記で名指しします。
+   [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+   [fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
+   [fixture: gitgraph/div-init-html-labels-default-comparison]
+
+フロントマターのタイトルは、
+[html-tag-in-frontmatter](./html-tag-in-frontmatter.ja.md)と同じく、
+Mermaid が導く値を保ちます。
+Db にだけ効く設定も残します。
+不正なフロントマターを除いても、正しい `wrap: true` のディレクティブは、
+sequence のメッセージを wrap させます。
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+[fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
+
+その参照入力が受理されると、
+元の入力への Mermaid の拒否からは Db を得られなくても、
+`specified.json` は参照入力の Db と埋め込み値を比較のために記録します。
+比較する Db が `null` になるのは、
+参照入力にも同じ不透明なデータによる拒否が残るときだけです。
+その場合も、指定の読みは受理です。
+[fixture: gitgraph/div-frontmatter-invalid-yaml]
+[fixture: gitgraph/div-frontmatter-html-invalid-yaml]
+[fixture: info/div-frontmatter-invalid-yaml]
+[fixture: info/div-frontmatter-html-invalid-yaml]
+[fixture: flowchart/div-data-unknown-shape]
 
 ## 書き手にとっての結果
 
@@ -266,11 +301,13 @@ usecase の表の本文を JSON、いくつかの directive の引数を JSON �
 それを除けば、実装はその両方を持たずに済みます。
 タイトルや設定のような値が要るツールは、そのテキストを自分で解析します。
 
-これは mermaid.js が受理する入力の拒否ではないので、
-そのための理由はどれも要りません
-（[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
-mermaid.js が拒否する入力を受理するもので、
-どちらも受理する入力は、すべて同じ Db を持ちます。
+不正な埋め込み内容の受理には、
+[known-divergences.ja.md](../known-divergences.ja.md) の逆方向の基準を使います。
+ソースのテキストを持つために内容の検証は不要だからです。
+下記の gitgraph の設定の例は、理由 2 により Mermaid が受理する入力も拒否します。
+既定の設定を使う直接の規則により、埋め込み内容を不透明に保ちます。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
+[fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
 
 ### Agentflow
 
@@ -368,60 +405,138 @@ mermaid.js が受理する入力をこの規則が拒否することはありま
 [fixture: pie/lex-yaml-after-comment-invalid-body]
 [fixture: pie/review-directive-invalid-init]
 
+### Gitgraph
+
+フロントマターは内容を解釈しないソースのノードを持ちます。
+Mermaid が拒否する先頭の不正な YAML は、ここでは受理します。
+元の入力への拒否からは Db を得られませんが、
+差異の原因となるブロックや鍵だけを除いた参照入力が受理されると、
+[比較する Db](#比較する-db)の規則により、
+`specified.json` はその Db と埋め込み値を比較のために記録します。
+この 2 つのフロントマターでは、その Db は初期分岐 `main` だけの空の履歴です。
+[fixture: gitgraph/div-frontmatter-invalid-yaml]
+[fixture: gitgraph/div-frontmatter-html-invalid-yaml]
+先頭以外の不正な隠れた YAML は GitgraphIgnoredText に持て、既に一致します。
+Mermaid が受理する不正な init 引数も差異ではありません。
+[fixture: gitgraph/div-frontmatter-invalid-yaml]
+[fixture: gitgraph/div-frontmatter-html-invalid-yaml]
+[fixture: gitgraph/lex-yaml-invalid-body]
+[fixture: gitgraph/directive-invalid-init]
+
+埋め込み設定が受理条件を変える場合、この仕様はその条件に既定の設定を使います。
+gitgraph では、初期分岐 `main` と、
+[意味上の受理条件](../diagrams/gitgraph.ja.md#意味上の受理条件)で定めた
+既定のエスケープです。
+比較に使う設定から除く鍵は、
+`gitGraph.mainBranchName` と `gitGraph.htmlLabels` です。
+ほかの設定の値と、Mermaid が導くタイトルは残します。
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+[fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
+[fixture: gitgraph/div-init-html-labels-default-comparison]
+
+既定の secure key の規則では、`securityLevel` は入れ子の中も含めて secure です。
+root の `securityLevel` と `gitGraph.securityLevel` は、
+フロントマターでも init ディレクティブでも変更できません。
+これらの設定の試みは、Mermaid が既に除きます。
+サイトの設定では、上記の受理条件のとおり gitgraph の値を与えられます。
+[fixture: gitgraph/frontmatter-security-level-secure]
+[fixture: gitgraph/directive-security-level-secure]
+[fixture: gitgraph/config-gitgraph-loose]
+
+フロントマターとディレクティブのノードは、既に書かれた設定を持ちます。
+そこから分岐やエスケープを選ぶには、不透明な内容を読む必要があります。
+直接の規則では代わりに既定値を使い、
+Mermaid が受理する向きには理由 2 を使います。
+テキストの外のサイト設定は、上記のとおり設定を持つ側が適用します。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
+[fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
+[fixture: gitgraph/config-main-branch]
+
+文書由来の 2 例のフロントマターの設定により、
+Mermaid は `develop` または `MetroLine1` の checkout を受理します。
+この仕様では既定の初期名を使い、これらを未知の分岐として拒否します。
+逆方向では、フロントマターの `mainBranchName: dev` により、
+Mermaid は `branch dev` を重複、`checkout main` を未知として拒否します。
+この仕様はどちらも受理します。
+init ディレクティブで同じ名前を設定した `branch dev` も、
+Mermaid では拒否し、ここでは受理します。
+5 入力すべてにこの識別子の印を付け、指定の読みには逆の受理を記録します。
+[fixture: gitgraph/docs-community-contributing-05cdc44b]
+[fixture: gitgraph/docs-syntax-gitgraph-2ea99686]
+[fixture: gitgraph/div-frontmatter-main-branch-duplicate-default-accepted]
+[fixture: gitgraph/div-frontmatter-main-branch-checkout-default-accepted]
+[fixture: gitgraph/div-init-main-branch-duplicate-default-accepted]
+
+### Info
+
+Frontmatter は書かれた本文を既に持ちます。属性の引用符の変換で不正になった
+YAML も含め、不正な内容はソースの構造を決めず、Mermaid が拒否してもここでは受
+理します。元の入力への拒否からは Db を得られませんが、
+差異の原因となるブロックや鍵だけを除いた参照入力が受理されると、
+[比較する Db](#比較する-db)の規則により、
+`specified.json` はその Db と埋め込み値を比較のために記録します。
+この 2 つのフロントマターでは、その Db は `{}` です。
+この規則で Mermaid が受理する入力を拒否することはありません。
+不正な隠れた YAML と記録済みの不正な init 引数は両方
+が受理し、印を付けません。 [fixture: info/div-frontmatter-invalid-yaml]
+[fixture: info/div-frontmatter-html-invalid-yaml]
+[fixture: info/hidden-yaml-preheader-invalid]
+[fixture: info/directive-invalid-init]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
 
-  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)
-  は `c4.wrap` を設定する正しい YAML のフロントマターを示し、
-  不正な埋め込み YAML の扱いは述べていません。
-  `mermaid-js/mermaid` の issue と pull request を、
-  2026-10-21 に `C4 YAML in:title,body`、
-  `C4 "invalid YAML" in:title,body`、
-  `C4 frontmatter in:title,body` で検索したところ、
-  [issue #7949](https://github.com/mermaid-js/mermaid/issues/7949)
-  が見つかりました。
-  この issue は不正な YAML ではなく、
-  折り返しの設定についての問題を報告しています。
-  C4 のフロントマターの不正な YAML の受理を扱う、
-  issue や pull request は見つかりませんでした。
+[C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L159-L171)
+は `c4.wrap` を設定する正しい YAML のフロントマターを示し、
+不正な埋め込み YAML の扱いは述べていません。
+`mermaid-js/mermaid` の issue と pull request を、
+2026-10-21 に `C4 YAML in:title,body`、
+`C4 "invalid YAML" in:title,body`、
+`C4 frontmatter in:title,body` で検索したところ、
+[issue #7949](https://github.com/mermaid-js/mermaid/issues/7949)
+が見つかりました。
+この issue は不正な YAML ではなく、
+折り返しの設定についての問題を報告しています。
+C4 のフロントマターの不正な YAML の受理を扱う、
+issue や pull request は見つかりませんでした。
 
 - ピン留めした
 
-  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
-  は正しい YAML frontmatter を示しますが、
-  不正な YAML の受理条件は述べていません。
-  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
-  `venn YAML in:title,body`、`venn "invalid YAML" in:title,body`、
-  `venn frontmatter in:title,body` で検索し、
-  venn の frontmatter 内の不正な YAML の受理に関する報告は
-  見つかりませんでした。
+[venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+は正しい YAML frontmatter を示しますが、
+不正な YAML の受理条件は述べていません。
+2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+`venn YAML in:title,body`、`venn "invalid YAML" in:title,body`、
+`venn frontmatter in:title,body` で検索し、
+venn の frontmatter 内の不正な YAML の受理に関する報告は
+見つかりませんでした。
 
 - ピン留めした
 
-  [Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
-  は節点のテキストと字下げを説明しますが、
-  不正な埋め込み YAML の受理条件は述べていません。
-  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
-  `ishikawa`、`ishikawa frontmatter in:title,body`、
-  `ishikawa "invalid YAML" in:title,body` で検索し、
-  Ishikawa の frontmatter 内の不正な YAML の受理に関する報告は
-  見つかりませんでした。
+[Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+は節点のテキストと字下げを説明しますが、
+不正な埋め込み YAML の受理条件は述べていません。
+2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+`ishikawa`、`ishikawa frontmatter in:title,body`、
+`ishikawa "invalid YAML" in:title,body` で検索し、
+Ishikawa の frontmatter 内の不正な YAML の受理に関する報告は
+見つかりませんでした。
 
 - 固定版の
 
-  [Agentflow の metadata の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L233-L268)
-  はノード、辺、コンテナーの YAML ブロックと、
-  未知のキーの保持や prototype の形のキーの除去を説明します。
-  不正な YAML の受理方針は述べていません。
-  2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
-  `agentflow YAML in:title,body` で検索し、
-  図種を導入する
-  [PR #8072](https://github.com/mermaid-js/mermaid/pull/8072) と、
-  ELK の配置設定を提案する
-  [issue #7827](https://github.com/mermaid-js/mermaid/issues/7827)
-  が見つかりました。
-  どちらも Agentflow の不正な YAML の受理を報告するものではありません。
+[Agentflow の metadata の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L233-L268)
+はノード、辺、コンテナーの YAML ブロックと、
+未知のキーの保持や prototype の形のキーの除去を説明します。
+不正な YAML の受理方針は述べていません。
+2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
+`agentflow YAML in:title,body` で検索し、
+図種を導入する
+[PR #8072](https://github.com/mermaid-js/mermaid/pull/8072) と、
+ELK の配置設定を提案する
+[issue #7827](https://github.com/mermaid-js/mermaid/issues/7827)
+が見つかりました。
+どちらも Agentflow の不正な YAML の受理を報告するものではありません。
 
 - pin の
   [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
@@ -445,3 +560,25 @@ mermaid.js が受理する入力をこの規則が拒否することはありま
   2026-10-23 に `pie`、`pie YAML`、`pie frontmatter` で検索しましたが、
   その本文の検証を必要とする保守者の判断は見つかりませんでした。
   この仕様は、共通の不透明なデータの方針を先頭のフロントマターに適用します。
+
+gitgraph の
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+は、
+見出しと各コマンドを説明します。
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、
+`gitGraph YAML`、`gitGraph semicolon`、`gitGraph keyword`、
+`gitGraph duplicate`、`gitGraph cherry-pick` で検索しました。
+確認した結果には、この共通の境界を決定するものはありませんでした。
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで
+Status: Approved が付き、
+merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
+重複 ID の警告を加えます。これらから追加の差異は作りません。
+
+- info には専用の構文ページがなく、pin した
+  [構文の参照](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  は図種の宣言と percent コメントを説明します。2026-10-23 に `info showInfo`・
+  `info directive`・`info semicolon`・`info accTitle` で issue と PR を検索しま
+  した。[#7601](https://github.com/mermaid-js/mermaid/issues/7601) は
+  info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
+  検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
+  この節は既存の直接の規則に従います。

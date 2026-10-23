@@ -608,13 +608,17 @@ quadrantChart
 
 ### Empty description blocks
 
-An empty block, which changes nothing, is a statement of its own and follows the
-rule of whitespace between tokens: a run of whitespace in it, line breaks
-included, becomes one space, and braces that touch keep touching. A block with a
-directive or a comment line is printed as written. It stands on a line of its
-own, also after the header and after another statement, where the grammar takes
-it: mermaid.js reads it as nothing wherever it stands, and the grammar takes it
-where a statement starts and after the last unit of a statement. [fixture:
+An empty block, which changes nothing, is a statement of its own. The
+whitespace-only interior of a description block, including tabs, line breaks and
+Unicode whitespace, prints `{}`: there is no text for interior whitespace to
+surround. An already empty interior stays empty. A touching keyword stays
+touching: `accDescr{  }` becomes `accDescr{}`. [fixture:
+empty-description-blocks/empty-whitespace-interiors] [test: quadrant Unicode and
+tab interiors] A block with a directive or a comment line is printed as written.
+It stands on a line of its own, also after the header and after another
+statement, where the grammar takes it: mermaid.js reads it as nothing wherever
+it stands, and the grammar takes it where a statement starts and after the last
+unit of a statement. [fixture:
 empty-description-blocks/inner-whitespace-collapsed] [fixture:
 empty-description-blocks/touching-kept] [fixture:
 empty-description-blocks/blank-lines-inside] [fixture:
@@ -638,7 +642,7 @@ Output
 quadrantChart
   accDescr{}
   accDescr {}
-  accDescr{ }
+  accDescr{}
 ```
 
 ### Multi-line statements

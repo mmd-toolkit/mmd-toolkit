@@ -429,6 +429,8 @@ export type PassedPart =
       readonly valueStart: number
       /** Where the line ends: where the line terminator that ends it starts, or the end of the text. */
       readonly end: number
+      /** End of the line and its accompanying trivia, which the diagram does not read again. */
+      readonly next: number
     }
   | {
       readonly kind: "directive-found-once-more"
@@ -473,13 +475,15 @@ function positionReached(
         retainedFrontmatterStart: block === null ? null : detectionPoint,
       }
     const line = lineEndFrom(lexer, valueStart)
+    const next = lexer.skipTrivia(line.next)
     passed.push({
       kind: "bare-percent-line",
       start: position,
       valueStart,
       end: line.end,
+      next,
     })
-    position = lexer.skipTrivia(line.next)
+    position = next
   }
 }
 
@@ -491,7 +495,7 @@ export interface Detection {
   readonly detectionPoint: number
   /** The position that detection reaches from the detection point ({@link positionReached}), where every detector but that of the `error` pseudo-diagram looks, and where the diagram's lexer starts. */
   readonly positionReached: number
-  /** A block passed once at the detection point, retained for pie; null when absent. */
+  /** A block passed once at the detection point, retained for pie, gitgraph and info; null when absent. */
   readonly retainedFrontmatterStart: number | null
   /** What detection passed before {@link Detection.positionReached}, in source order; none for the `error` pseudo-diagram. */
   readonly passed: readonly PassedPart[]

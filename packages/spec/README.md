@@ -46,6 +46,8 @@ specification has a bug, except for the deliberate differences listed under
 | ishikawa     | [`docs/diagrams/ishikawa.md`](./docs/diagrams/ishikawa.md)   | [`docs/ast/ishikawa.md`](./docs/ast/ishikawa.md)   |
 | agentflow    | [`docs/diagrams/agentflow.md`](./docs/diagrams/agentflow.md) | [`docs/ast/agentflow.md`](./docs/ast/agentflow.md) |
 | pie          | [`docs/diagrams/pie.md`](./docs/diagrams/pie.md)             | [`docs/ast/pie.md`](./docs/ast/pie.md)             |
+| gitgraph     | [`docs/diagrams/gitgraph.md`](./docs/diagrams/gitgraph.md)   | [`docs/ast/gitgraph.md`](./docs/ast/gitgraph.md)   |
+| info         | [`docs/diagrams/info.md`](./docs/diagrams/info.md)           | [`docs/ast/info.md`](./docs/ast/info.md)           |
 
 The other diagram types of mermaid.js are not specified yet.
 

@@ -1001,6 +1001,14 @@ classDiagram
 
 ### 空の説明ブロック
 
+内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+囲む空白を要する本文がないためです。
+すでに空の内側は空のままです。
+接した keyword は接したまま、`accDescr{  }` は `accDescr{}` にします。
+[fixture: empty-description-blocks/empty-whitespace-interiors]
+[test: class Unicode and tab interiors]
+コメントや directive があるブロックの配置は従来どおり保ちます。
+
 空の説明ブロック `accDescr {}` は、同じ行の別の文やヘッダーと並ぶとき、
 その前でも後でも、文になります。
 `accDescr {} class A` は A を宣言し、
@@ -1054,15 +1062,16 @@ classDiagram accDescr {}
   note for A "x" accDescr {}
 ```
 
-複数行に書かれたブロックは、その後に続く文を、ブロックが終わる行に残します。
+複数行に書かれたブロックは、その後に続く文を、閉じ波括弧の隣に残します。
+空白だけのブロックは 1 行に結合し、コメントを含むブロックは改行を保ちます。
 `accDescr`、改行、`{} class A` はクラス A を宣言しますが、
 `class A` を独立した行に置くと、ブロックが単独になり、入力が拒否されるからです。
-[fixture: empty-description-blocks/over-lines-kept]
-[fixture: empty-description-blocks/over-lines-empty-line-kept]
+[fixture: empty-description-blocks/over-lines-joined]
+[fixture: empty-description-blocks/over-lines-empty-line-joined]
 [fixture: empty-description-blocks/over-lines-comment-line-kept]
 
 入力
-([empty-description-blocks/over-lines-kept-input.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-kept-input.mmd)):
+([empty-description-blocks/over-lines-joined-input.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-joined-input.mmd)):
 
 ```mmd
 classDiagram
@@ -1073,14 +1082,12 @@ accDescr {
 ```
 
 出力
-([empty-description-blocks/over-lines-kept-output.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-kept-output.mmd)):
+([empty-description-blocks/over-lines-joined-output.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-joined-output.mmd)):
 
 ```mmd
 classDiagram
-  accDescr
-    {} class A
-  accDescr {
-  } class B
+  accDescr {} class A
+  accDescr {} class B
 ```
 
 ### 閉じていないバッククォートの名前

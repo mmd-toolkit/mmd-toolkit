@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A spare LF restores description line EOL."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

@@ -587,9 +587,13 @@ journey
 
 ### 空の説明ブロック
 
-何も変えない空のブロックは、文の 1 つで、トークンの間の空白の規則に従います。
-中の空白の連続は、改行も含めて空白 1 つにし、
-接している括弧は接したままにします。
+何も変えない空のブロックは、文の 1 つです。
+内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+囲む空白を要する本文がないためです。
+すでに空の内側は空のままです。
+接した keyword は接したまま、`accDescr{  }` は `accDescr{}` にします。
+[fixture: empty-description-blocks/empty-whitespace-interiors]
+[test: journey Unicode and tab interiors]
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/touching-kept]
 [fixture: empty-description-blocks/blank-lines-inside]
@@ -615,7 +619,7 @@ accDescr{ }
 journey
   accDescr{}
   accDescr {}
-  accDescr{ }
+  accDescr{}
 ```
 
 入力
@@ -634,7 +638,7 @@ accDescr {
 
 ```mmd
 journey
-  accDescr { }
+  accDescr {}
 ```
 
 ### 複数行の文

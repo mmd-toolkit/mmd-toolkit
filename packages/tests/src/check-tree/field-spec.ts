@@ -106,6 +106,17 @@ export function fieldSpecOf(typeCell: string): FieldSpec {
   if (cell === "offset pair") return { shape: "value", valueType: "range" }
   // ast.md, Root: the id of the diagram type, one of a list of strings.
   if (cell === "DiagramType") return { shape: "value", valueType: "string" }
+  // ast/gitgraph.md uses explicit fixed-word alternatives in these scalar cells.
+  if (["LR, TB, BT or null", "msg or null"].includes(cell))
+    return { shape: "value", valueType: "stringOrNull" }
+  if (
+    [
+      "checkout or switch",
+      "NORMAL, REVERSE or HIGHLIGHT",
+      "yaml-block or directive",
+    ].includes(cell)
+  )
+    return { shape: "value", valueType: "string" }
   if (cell === "string or null") {
     return { shape: "value", valueType: "stringOrNull" }
   }

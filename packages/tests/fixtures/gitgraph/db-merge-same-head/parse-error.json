@@ -1,0 +1,17 @@
+{
+  "message": "A merge source cannot be the branch that created the current tip",
+  "range": [
+    38,
+    42
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 6
+    },
+    "end": {
+      "line": 4,
+      "column": 10
+    }
+  }
+}

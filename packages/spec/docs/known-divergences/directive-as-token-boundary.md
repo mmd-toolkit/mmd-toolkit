@@ -356,6 +356,39 @@ pie/directive-label-middle] [fixture: pie/directive-title-middle] [fixture:
 pie/lex-hidden-eof-extra-lf] [fixture: pie/review-directive-open-inside-header]
 [fixture: pie/div-directive-in-accdescr-block-keyword]
 
+### Gitgraph
+
+Whole hidden forms have GitgraphIgnoredText owners and common trivia can cut
+strings/common literals. A directive strictly inside a keyword word,
+direction/type word, integer or bare reference cannot be held as a separate
+complete component without joining its spelling. The direct atomic rule
+therefore rejects these Mermaid-accepted inputs under reason 2. It introduces no
+input accepted only here. A directive between an option word and colon, or
+inside quoted text, is allowed; both-rejected glued boundary cases carry no
+mark. [fixture: gitgraph/div-directive-in-header] [fixture:
+gitgraph/div-directive-in-commit] [fixture:
+gitgraph/div-directive-in-option-keyword] [fixture:
+gitgraph/div-directive-in-type] [fixture: gitgraph/div-directive-in-number]
+[fixture: gitgraph/div-directive-in-reference] [fixture:
+gitgraph/lex-option-global-before-colon] [fixture: gitgraph/directive-in-string]
+[fixture: gitgraph/directive-after-header-glued]
+
+### Info
+
+Common Directive records hold global directives and InfoIgnoredText holds
+complete hidden forms. Neither supplies a separate component strictly inside a
+fixed keyword. The direct atomic rule rejects a directive inside info, showInfo,
+title, accTitle or accDescr although Mermaid joins its parts; this is reason 2.
+It adds no reverse acceptance. Complete component boundaries and value/hidden
+text are allowed; independently invalid joined inputs remain rejected by both.
+[fixture: info/div-directive-header-middle] [fixture:
+info/div-directive-flag-middle] [fixture: info/div-directive-title-middle]
+[fixture: info/div-directive-acctitle-middle] [fixture:
+info/div-directive-accdescr-middle] [fixture:
+info/div-directive-accdescr-line-keyword] [fixture:
+info/directive-acctitle-colon] [fixture: info/directive-block-brace] [fixture:
+info/lex-yaml-opener-global] [fixture: info/lex-directive-rejected-tail]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -427,3 +460,24 @@ pie/lex-hidden-eof-extra-lf] [fixture: pie/review-directive-open-inside-header]
   2026-10-23 for `pie`, `pie directive` and `pie Langium` found no maintainer
   decision that directives inside these atoms are a defect. The boundary rule is
   a direct syntax choice, not such a decision.
+
+For gitgraph,
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+documents the header and commands. Issue/PR searches on 2026-10-23 used
+`gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
+`gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
+inspected result settles this common boundary behavior.
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) is closed with
+Status: Approved; merged
+[#6707](https://github.com/mermaid-js/mermaid/pull/6707) adds a duplicate-id
+warning. These facts do not justify any additional divergence.
+
+- Info has no dedicated syntax page. The pinned
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  describes diagram declarations and percent comments. Searches of issues and
+  pull requests on 2026-10-23 used `info showInfo`, `info directive`,
+  `info semicolon` and `info accTitle`.
+  [#7601](https://github.com/mermaid-js/mermaid/issues/7601) reports
+  info/showInfo rendering and was open with Type: Bug / Error and Status:
+  Triage. No inspected result establishes an info-specific maintainer decision
+  to reject this syntax; this section follows the existing direct rule.

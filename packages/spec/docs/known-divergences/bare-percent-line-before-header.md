@@ -4,9 +4,9 @@ Japanese version:
 [bare-percent-line-before-header.ja.md](./bare-percent-line-before-header.ja.md)
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
-timeline, sankey, block, c4, agentflow, usecase, and pie. This is one of the
-[known divergences](../known-divergences.md) of this specification from
-mermaid.js.
+timeline, sankey, block, c4, agentflow, usecase, pie, gitgraph, and info. This
+is one of the [known divergences](../known-divergences.md) of this specification
+from mermaid.js.
 
 ## The syntax
 
@@ -349,6 +349,36 @@ pie/lex-preheader-retained-yaml-bare-ascii] [fixture:
 pie/lex-preheader-retained-yaml-bare-ascii-line] [fixture:
 pie/lex-preheader-retained-yaml-bare-then-directive-ascii]
 
+### Gitgraph
+
+A shared Comment holds each passed bare line and its accompanying whitespace is
+trivia, also after or between retained forms. Under reverse reason 2 this
+specification accepts common whitespace that the native reading rejects there.
+It rejects no Mermaid-accepted input. The same Unicode whitespace without a
+passed bare line remains subject to ordinary lexical rejection. [fixture:
+gitgraph/div-detect-bare-before-header-ls] [fixture:
+gitgraph/div-detect-bare-nbsp-line] [fixture:
+gitgraph/div-detect-retained-directive-bare-bom] [fixture:
+gitgraph/div-detect-retained-yaml-bare-ls-line] [fixture:
+gitgraph/div-lex-preheader-bare-between-retained-unicode] [fixture:
+gitgraph/detect-bare-before-header-space] [fixture:
+gitgraph/lex-preheader-hidden-no-bare-unicode]
+
+### Info
+
+Shared Comments hold the passed bare lines, and the accompanying common
+whitespace is trivia. The existing reverse pipeline-order rule accepts
+whitespace that Mermaid rejects on native re-reading, including after or between
+retained forms. It rejects no Mermaid-accepted input. ASCII controls agree,
+while Unicode gaps without a passed bare line remain native rejections.
+[fixture: info/div-bare-before-header-bom] [fixture: info/div-bare-line-ls]
+[fixture: info/div-detect-retained-yaml-bare-ls] [fixture:
+info/div-detect-retained-directive-bare-bom] [fixture:
+info/div-detect-yaml-bare-directive] [fixture: info/bare-before-header-space]
+[fixture: info/bare-line-tab] [fixture:
+info/lex-detect-yaml-bare-directive-ascii] [fixture:
+info/lex-retained-no-bare-ls]
+
 ## The documentation of mermaid.js and its issues
 
 - The
@@ -400,3 +430,24 @@ pie/lex-preheader-retained-yaml-bare-then-directive-ascii]
   [Issue #8196](https://github.com/mermaid-js/mermaid/issues/8196) reports
   different comment removal in detection and preprocessing; it does not
   establish a pie-specific maintainer defect judgment for this case.
+
+For gitgraph,
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+documents the header and commands. Issue/PR searches on 2026-10-23 used
+`gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
+`gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
+inspected result settles this common boundary behavior.
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) is closed with
+Status: Approved; merged
+[#6707](https://github.com/mermaid-js/mermaid/pull/6707) adds a duplicate-id
+warning. These facts do not justify any additional divergence.
+
+- Info has no dedicated syntax page. The pinned
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  describes diagram declarations and percent comments. Searches of issues and
+  pull requests on 2026-10-23 used `info showInfo`, `info directive`,
+  `info semicolon` and `info accTitle`.
+  [#7601](https://github.com/mermaid-js/mermaid/issues/7601) reports
+  info/showInfo rendering and was open with Type: Bug / Error and Status:
+  Triage. No inspected result establishes an info-specific maintainer decision
+  to reject this syntax; this section follows the existing direct rule.

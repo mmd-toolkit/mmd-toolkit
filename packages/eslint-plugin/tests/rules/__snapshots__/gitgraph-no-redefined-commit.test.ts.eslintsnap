@@ -1,0 +1,168 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> docs/rules/gitgraph-no-redefined-commit.md incorrect 1
+Filename: gitgraph-no-redefined-commit-incorrect-1.mmd
+
+Code:
+  1 | gitGraph
+  2 |   commit id: "A" tag: "first"
+  3 |   commit id: "A" tag: "second"
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/commit-after-merge
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/commit-after-merge-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | branch b
+  4 | commit id:"B"
+  5 | checkout main
+  6 | merge b id:"M"
+  7 | commit id:"M"
+    | ^~~~~~~~~~~~~ [1]
+  8 |
+
+[1] mermaid.js replaces the commit with this id, written on line 6, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/crlf
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/crlf-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | %% c
+  4 | commit id:"A"
+    | ^~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/docs-incorrect-1
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/docs-incorrect-1-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   commit id: "A" tag: "first"
+  3 |   commit id: "A" tag: "second"
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/duplicate-id-branch-reference
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/duplicate-id-branch-reference-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | branch b
+  4 | commit id:"B"
+  5 | checkout main
+  6 | commit id:"B" tag:"replacement"
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  7 | checkout b
+  8 | commit id:"C"
+  9 |
+
+[1] mermaid.js replaces the commit with this id, written on line 4, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/duplicate-id-equal
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/duplicate-id-equal-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | commit id:"A"
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/duplicate-id
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/duplicate-id-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   commit id:"A" tag:"first"
+  3 |   commit id:"A" tag:"second"
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/duplicate-id-map-order
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/duplicate-id-map-order-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | commit id:"B"
+  4 | commit id:"A" tag:"later"
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 | commit id:"C"
+  6 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/empty-id-does-not-clear-history
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/empty-id-does-not-clear-history-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A"
+  3 | commit id:""
+  4 | commit id:"A"
+    | ^~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/final-id-repeated
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/final-id-repeated-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:"A" id:"B"
+  3 | commit id:"B"
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---
+
+
+Test: gitgraph-no-redefined-commit >> invalid >>> invalid/gitgraph/quote-styles
+Filename: tests/fixtures/rules/gitgraph-no-redefined-commit/invalid/gitgraph/quote-styles-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | commit id:'A'
+  3 | commit id:"A"
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the commit with this id, written on line 2, with this commit.
+---

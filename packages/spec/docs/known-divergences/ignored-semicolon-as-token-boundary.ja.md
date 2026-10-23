@@ -5,7 +5,7 @@
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
 mindmap、timeline、xychart、quadrant、block、kanban、c4、venn、agentflow、
-usecase、pie。
+usecase、pie、gitgraph・info。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -94,21 +94,20 @@ sequence 図の参加者の id、クラスの名前、
      A[style:#x ; y]
    ```
 
-| 例  | mermaid.js                                     | この仕様 |
-| --- | ---------------------------------------------- | -------- |
-| 1   | A から頂点 `Bb` への辺                         | 拒否     |
-| 2   | 10 から始まるメッセージの番号                  | 拒否     |
-| 3   | subgraph S                                     | 拒否     |
-| 4   | `A --> B` と同じ、A から B への辺              | 拒否     |
-| 5   | クラス c を持つ頂点 A                          | 拒否     |
-| 6   | ラベル `style:#x`、空白 2 つ、`y` を持つ頂点 A | 同じ     |
-
-[fixture: flowchart/div-ignored-semicolon-in-id]
-[fixture: sequence/div-ignored-semicolon-in-autonumber-start]
-[fixture: flowchart/div-ignored-semicolon-in-keyword]
-[fixture: flowchart/div-ignored-semicolon-in-arrow]
-[fixture: flowchart/div-ignored-semicolon-in-triple-colon]
-[fixture: flowchart/tokens-ignored-semicolon-label-spaces]
+| 例                                                            | mermaid.js                                     | この仕様 |
+| ------------------------------------------------------------- | ---------------------------------------------- | -------- |
+| 1                                                             | A から頂点 `Bb` への辺                         | 拒否     |
+| 2                                                             | 10 から始まるメッセージの番号                  | 拒否     |
+| 3                                                             | subgraph S                                     | 拒否     |
+| 4                                                             | `A --> B` と同じ、A から B への辺              | 拒否     |
+| 5                                                             | クラス c を持つ頂点 A                          | 拒否     |
+| 6                                                             | ラベル `style:#x`、空白 2 つ、`y` を持つ頂点 A | 同じ     |
+| [fixture: flowchart/div-ignored-semicolon-in-id]              |
+| [fixture: sequence/div-ignored-semicolon-in-autonumber-start] |
+| [fixture: flowchart/div-ignored-semicolon-in-keyword]         |
+| [fixture: flowchart/div-ignored-semicolon-in-arrow]           |
+| [fixture: flowchart/div-ignored-semicolon-in-triple-colon]    |
+| [fixture: flowchart/tokens-ignored-semicolon-label-spaces]    |
 
 つまり mermaid.js は、そのような入力を、どれも `;` のない行として読みます。
 この仕様もそうしますが、
@@ -410,6 +409,39 @@ mermaid.js はつないだ原子を受理し、この仕様は拒否します。
 [fixture: pie/style-title-trigger]
 [fixture: pie/lex-yaml-opener-selected-semicolon]
 
+### Gitgraph
+
+読み飛ばす完全な形はノードになりますが、
+語・参照・整数の中の任意のセミコロンは、別の単位として持てません。
+これらの内部で選択されたセミコロンは、Mermaid では綴りをつなぎますが、
+理由 2 によりこの仕様では拒否し、逆方向の受理はありません。
+option の語とコロンの境界や完全な数の後なら trivia です。
+選択されないセミコロンは両方で拒否します。
+[fixture: gitgraph/div-style-semicolon-in-order-keyword]
+[fixture: gitgraph/div-style-semicolon-in-order-number]
+[fixture: gitgraph/div-lex-selected-semicolon-type-word]
+[fixture: gitgraph/div-lex-selected-semicolon-bare-reference-valid]
+[fixture: gitgraph/lex-selected-semicolon-option-word-colon]
+[fixture: gitgraph/lex-selected-semicolon-number-control]
+[fixture: gitgraph/lex-selected-semicolon-reference]
+
+### Info
+
+選ばれたセミコロンの 1 文字の範囲は共通のトリビアにできますが、文や無視テ
+キストの兄弟を固定キーワードの内部には置けません。理由 2 により showInfo・
+title・accTitle・両方の accDescr の内部の選ばれたセミコロンを拒否しますが、
+Mermaid は結合します。逆方向の受理はありません。完全な構成要素の境界や隠れたテ
+キスト・値では一致します。選ばれないセミコロン、選択前に拒否される分割した見出
+し、別の不正な接尾には印を付けません。 [fixture: info/div-selected-showinfo]
+[fixture: info/div-selected-title] [fixture: info/div-selected-acctitle]
+[fixture: info/div-selected-accdescr-line]
+[fixture: info/div-selected-accdescr-block]
+[fixture: info/lex-selected-colon-boundary]
+[fixture: info/lex-selected-brace-boundary]
+[fixture: info/lex-hidden-opener-selected] [fixture: info/lex-selected-header]
+[fixture: info/lex-selected-keyword-rejected-tail]
+[fixture: info/end-header-semicolon]
+
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
@@ -436,34 +468,34 @@ mermaid.js はつないだ原子を受理し、この仕様は拒否します。
 
 - 固定した版の
 
-  [C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L43-L49)
-  は `UpdateElementStyle` と `UpdateRelStyle` を `;` なしで示し、
-  呼び出し語の内部から除かれる `;` を説明していません。
-  `mermaid-js/mermaid` の issue と pull request を、
-  2026-10-21 に `C4 semicolon in:title,body`、
-  `C4 encodeEntities in:title,body` で検索したところ、
-  [PR #8039](https://github.com/mermaid-js/mermaid/pull/8039)
-  が見つかりました。
-  この PR はタイトルと説明の `#` の扱いを変え、
-  それらの値を `;` が終える規則は維持すると明記しています。
-  C4 のキーワード内の選択された `;` を扱う issue や pull request は、
-  見つかりませんでした。
+[C4 の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md#L43-L49)
+は `UpdateElementStyle` と `UpdateRelStyle` を `;` なしで示し、
+呼び出し語の内部から除かれる `;` を説明していません。
+`mermaid-js/mermaid` の issue と pull request を、
+2026-10-21 に `C4 semicolon in:title,body`、
+`C4 encodeEntities in:title,body` で検索したところ、
+[PR #8039](https://github.com/mermaid-js/mermaid/pull/8039)
+が見つかりました。
+この PR はタイトルと説明の `#` の扱いを変え、
+それらの値を `;` が終える規則は維持すると明記しています。
+C4 のキーワード内の選択された `;` を扱う issue や pull request は、
+見つかりませんでした。
 
 - ピン留めした
 
-  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
-  はプロパティをカンマで区切り、
-  キーワード、名前、数の内部のセミコロンは示していません。
-  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
-  `venn semicolon in:title,body` で検索し、結果は 0 件でした。
+[venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+はプロパティをカンマで区切り、
+キーワード、名前、数の内部のセミコロンは示していません。
+2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+`venn semicolon in:title,body` で検索し、結果は 0 件でした。
 
 - 固定版の
 
-  [Agentflow の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
-  はノードの宣言を flowchart の構文とし、括弧のラベルを示します。
-  キーワード、id、矢印の内部の選ばれたセミコロンの除去は説明していません。
-  2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
-  `agentflow semicolon in:title,body` で検索した結果は 0 件でした。
+[Agentflow の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/agentflow.md#L108-L118)
+はノードの宣言を flowchart の構文とし、括弧のラベルを示します。
+キーワード、id、矢印の内部の選ばれたセミコロンの除去は説明していません。
+2026-10-22 に `mermaid-js/mermaid` の issue と pull request を
+`agentflow semicolon in:title,body` で検索した結果は 0 件でした。
 
 - pin の
   [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
@@ -485,3 +517,25 @@ mermaid.js はつないだ原子を受理し、この仕様は拒否します。
   選ばれたセミコロンが pie の原子の断片をつなぐことへの保守者の判断は
   見つかりませんでした。
   これは共通の境界規則に従い、欠陥という分類を主張しません。
+
+gitgraph の
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+は、
+見出しと各コマンドを説明します。
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、
+`gitGraph YAML`、`gitGraph semicolon`、`gitGraph keyword`、
+`gitGraph duplicate`、`gitGraph cherry-pick` で検索しました。
+確認した結果には、この共通の境界を決定するものはありませんでした。
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで
+Status: Approved が付き、
+merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
+重複 ID の警告を加えます。これらから追加の差異は作りません。
+
+- info には専用の構文ページがなく、pin した
+  [構文の参照](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  は図種の宣言と percent コメントを説明します。2026-10-23 に `info showInfo`・
+  `info directive`・`info semicolon`・`info accTitle` で issue と PR を検索しま
+  した。[#7601](https://github.com/mermaid-js/mermaid/issues/7601) は
+  info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
+  検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
+  この節は既存の直接の規則に従います。

@@ -120,6 +120,43 @@ function textsOf(recording: SpecFileRecording): string[] {
 const FLOW_PARSER_IMPORT = `import flowParser from "./flowParser.ts"\n`
 
 describe("recordSpecFile: what is recorded", () => {
+  it("records awaited info parser calls without executing Langium", async () => {
+    const recording = await recordSource(
+      [
+        'import { parser } from "./infoParser.js"',
+        'it("two", async () => {',
+        '  await parser.parse("info")',
+        '  await parser.parse("info showInfo")',
+        "})",
+      ].join("\n"),
+      "diagrams/info/info.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(textsOf(recording)).toEqual(["info", "info showInfo"])
+    expect(recording.inputs.map(({ line }) => line)).toEqual([3, 4])
+  })
+
+  it("records awaited gitgraph parser calls without executing Langium", async () => {
+    const recording = await recordSource(
+      [
+        'import { parser } from "./gitGraphParser.js"',
+        'import { db } from "./gitGraphAst.js"',
+        "beforeEach(() => db.clear())",
+        'it("two", async () => {',
+        '  await parser.parse("gitGraph\\ncommit\\n")',
+        '  await parser.parse("gitGraph\\nbranch b\\n")',
+        "})",
+      ].join("\n"),
+      "diagrams/git/gitGraph.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(textsOf(recording)).toEqual([
+      "gitGraph\ncommit\n",
+      "gitGraph\nbranch b\n",
+    ])
+    expect(recording.inputs.map(({ line }) => line)).toEqual([5, 6])
+  })
+
   it("records pie parser calls before drawing assertions and restores the drawing global", async () => {
     const checkout = makeCheckout()
     const file = writeTestFile(

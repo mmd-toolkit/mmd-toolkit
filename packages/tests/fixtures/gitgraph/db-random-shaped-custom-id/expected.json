@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A random-shaped authored id and literal text stay unchanged."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "0-abcdefg",
+        "seq": 0,
+        "type": 0,
+        "tags": [
+          "0-abcdefg"
+        ],
+        "parents": [],
+        "branch": "main"
+      },
+      {
+        "id": "generated-commit-1",
+        "seq": 1,
+        "type": 0,
+        "tags": [],
+        "parents": [
+          "0-abcdefg"
+        ],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

@@ -129,12 +129,14 @@ export function baselineConfigOf(
  *
  * Throws when an accepted input is detected as a diagram type that does not
  * belong in `diagram`, or when that type has no normalizer and `diagram` is
- * not one where `db: null` is allowed (see `allowsUnsummarizedDb`).
+ * not one where `db: null` is allowed (see `allowsUnsummarizedDb`), unless
+ * this is an opaque reading without a comparison Db.
  */
 async function expectationOf(
   diagram: DiagramType,
   run: MermaidRun,
   config: MermaidConfig | undefined,
+  opaque = false,
 ): Promise<Expectation> {
   const { outcome } = run
   if (!outcome.accepted) return { accepted: false, error: outcome.error }
@@ -143,7 +145,7 @@ async function expectationOf(
       `mermaid detects this input as ${outcome.diagramType}, which does not belong in ${diagram}/`,
     )
   }
-  if (!outcome.db && !allowsUnsummarizedDb(diagram)) {
+  if (!outcome.db && !allowsUnsummarizedDb(diagram) && !opaque) {
     throw new Error(`no Db normalizer is registered for ${outcome.diagramType}`)
   }
   const embedded =
@@ -185,7 +187,12 @@ export async function generateSpecified(
 ): Promise<Expectation | undefined> {
   const run = await specifiedRunOf(input, head.knownDivergence, head.config)
   if (run === undefined) return undefined
-  const specified = await expectationOf(diagram, run, head.config)
+  const specified = await expectationOf(
+    diagram,
+    run,
+    head.config,
+    head.knownDivergence === "embedded-data-opaque",
+  )
   return isDeepStrictEqual(resultOf(specified), resultOf(expected))
     ? undefined
     : specified

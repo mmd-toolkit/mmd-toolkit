@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "REFERENCE accepts underscores, interior dashes, slashes and dots."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "a_b-c/d.e"
+      }
+    ]
+  }
+}

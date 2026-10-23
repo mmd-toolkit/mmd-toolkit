@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: Detection does not waive native Unicode closing-gap rejection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 4: unexpected character: ->　<- at offset: 12, skipped 1 characters. "
+  }
+}

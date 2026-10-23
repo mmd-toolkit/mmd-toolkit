@@ -870,9 +870,13 @@ ER 図が mermaid.js の読まないテキストをブロックの中の自分�
 [fixture: empty-description-blocks/in-body-before-closing-brace]
 [fixture: empty-description-blocks/in-body-alone]
 
-ブロックは、トークンの間の空白の規則に従います。
-中の空白は、改行も含め、連続していれば 1 つの空白にし、
-接している波括弧は接したままにします。
+内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+囲む空白を要する本文がないためです。
+すでに空の内側は空のままです。
+接した keyword は接したまま、`accDescr{  }` は `accDescr{}` にします。
+[fixture: empty-description-blocks/empty-whitespace-interiors]
+[test: requirement Unicode and tab interiors]
+[test: requirement body Unicode and tab interiors]
 [fixture: empty-description-blocks/inner-whitespace-collapsed]
 [fixture: empty-description-blocks/inner-whitespace-joined]
 [fixture: empty-description-blocks/touching-kept]
@@ -906,7 +910,7 @@ requirementDiagram
     accDescr {}
     text: t
     risk: low
-    accDescr { }
+    accDescr {}
   }
 ```
 
@@ -928,8 +932,8 @@ accDescr   {}
 
 ```mmd
 requirementDiagram
-  accDescr { }
-  accDescr { }
+  accDescr {}
+  accDescr {}
   accDescr {}
 ```
 
@@ -1014,7 +1018,7 @@ requirementDiagram
   first
     second
   }
-  accDescr { }
+  accDescr {}
 ```
 
 入力
@@ -1154,7 +1158,7 @@ class   r   c
 
 ```mmd
 requirementDiagram
-  accDescr { }
+  accDescr {}
   requirement r {
     id: 1
   }
@@ -1178,7 +1182,7 @@ accDescr {}
 ```mmd
 requirementDiagram
   accDescr{}
-  accDescr{ }
+  accDescr{}
   accDescr {}
 ```
 

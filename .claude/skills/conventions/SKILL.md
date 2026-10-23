@@ -30,6 +30,16 @@ The procedures of a package are in the skill of that package.
   `eslint --fix`. Known dangerous autofix: `regexp/no-missing-g-flag` rewrites
   `new RegExp(re)` to `new RegExp(re, "g")` and drops the original flags
   (`new RegExp(re.source, re.flags)` is not reported).
+- The name of a diagram type in this repository (the fixture directory
+  `packages/tests/fixtures/<diagram>/`, the documents `<diagram>.md`, the
+  modules, the prefix `<diagram>-` of the linter's rule names, the `diagram` of
+  a fixture) is lowercase ASCII letters and digits written as one word:
+  `gitgraph` for mermaid.js's `gitGraph`, `treeview` for `treeView`, `quadrant`
+  for `quadrantChart`. Node type names use its capitalized form
+  (`GitgraphDiagram`). mermaid.js's own spelling stays where mermaid.js's own
+  text or value is held: Mermaid text (the header `gitGraph` of an input or an
+  example, and the text of a token), the `diagramType` of the tree and of the
+  Db, the keys of its configuration, and the paths of and links into its source.
 - Never put invisible characters (U+2028, U+2029, U+00A0, U+FEFF, control
   characters) literally into source or documents; write escapes, and check the
   bytes after writing. The fixtures of the conformance corpus

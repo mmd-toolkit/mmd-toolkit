@@ -36,11 +36,12 @@ one block satisfying the common [Frontmatter](../common.md#frontmatter) shape
 and looks for the header after it. The block is not leading frontmatter: the
 diagram lexer still reads it. Pie applies its hidden YAML rule to that retained
 text; when it matches, PieIgnoredText holds the block and its title and
-configuration do not apply. Every other supported diagram type rejects the
-retained block. [fixture: pie/frontmatter-nonleading-comment] [fixture:
-pie/lex-yaml-after-leading-lf] [fixture: pie/lex-yaml-bom-opening-only]
-[fixture: pie/lex-yaml-after-directive-line] [fixture:
-pie/lex-yaml-after-directive-glued] [fixture:
+configuration do not apply. Gitgraph also retains a matching hidden block; the
+cited other diagram types reject the retained block. [fixture:
+pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
+[fixture: pie/lex-yaml-after-leading-lf] [fixture:
+pie/lex-yaml-bom-opening-only] [fixture: pie/lex-yaml-after-directive-line]
+[fixture: pie/lex-yaml-after-directive-glued] [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-leading-newline] [fixture:
 common/frontmatter-nonleading-sequence] [fixture:
@@ -333,12 +334,14 @@ pie/title-line-separators] [fixture: pie/accdescr-block-line-separators]
 
 ### Hidden YAML
 
-At a unit position, `---`, zero or more ASCII spaces/tabs and a line break open
-hidden YAML; the opener need not start a physical line. Read arbitrary text,
-including LF, LS and PS, up to the earliest subsequent unindented line-start
-`---` whose next character is a line break, common whitespace or end of text.
-The immediately following line may close an empty block. No YAML content
-validation occurs. [fixture: pie/lex-preheader-yaml-opening-nbsp] [fixture:
+At a unit position, `---`, zero or more ASCII spaces/tabs and LF open hidden
+YAML; the opener need not start a physical line. Try the body-present form
+first: read as few arbitrary characters as possible, including LF, LS and PS,
+through a subsequent LF followed by an unindented `---` whose next character is
+LF, common whitespace or end of text. Only when no body-present match works, try
+an empty body whose closer immediately follows the opening LF. No YAML content
+validation occurs. [fixture: pie/lex-yaml-immediate-fence-before-later-closer]
+[fixture: pie/lex-preheader-yaml-opening-nbsp] [fixture:
 pie/lex-preheader-yaml-opening-bom] [fixture:
 pie/lex-preheader-yaml-empty-line-control] [fixture:
 pie/frontmatter-between-section-parts] [fixture: pie/review-yaml-opening-tabs]
@@ -346,6 +349,18 @@ pie/frontmatter-between-section-parts] [fixture: pie/review-yaml-opening-tabs]
 pie/review-yaml-hidden-invalid] [fixture:
 pie/review-yaml-closing-space-boundary] [fixture:
 pie/lex-yaml-body-unicode-separators]
+
+This priority can make the first following fence part of the body: three
+adjacent fence lines form one block, with the middle fence in its body. The same
+choice applies in a section gap and in the retained nonleading block before the
+header. [fixture: pie/lex-yaml-three-adjacent-fences] [fixture:
+pie/lex-yaml-three-fences-before-value] [fixture:
+pie/lex-nonleading-yaml-three-adjacent-fences] What looks like two empty blocks
+can leave an unmatched fence: the first block can contain an apparent section,
+leaving `x` and the final `---` unreadable, so the input rejects. [fixture:
+pie/lex-yaml-apparent-empty-pairs-unmatched-fence] Two nonempty blocks remain
+distinct when the first body has a qualifying closer. [fixture:
+pie/lex-yaml-before-colon-two-blocks]
 
 Consume an LF immediately after the closing fence; another whitespace boundary
 is only looked at. [fixture: pie/lex-preheader-yaml-closing-nbsp] [fixture:
@@ -364,9 +379,9 @@ pie/review-block-hidden-yaml-text] [fixture: pie/lex-yaml-in-title-line]
 
 Retain each recognized block as PieIgnoredText with kind `yaml-block`. It may
 precede the header, lie before/after showData, occupy a section gap, or follow a
-value before EOL. Two blocks in one gap stay separate. Between two numbers it
-leaves two numbers; before a digit it cannot repair an unreadable minus.
-[fixture: pie/frontmatter-nonleading-comment] [fixture:
+value before EOL. Between two numbers it leaves two numbers; before a digit it
+cannot repair an unreadable minus. [fixture: pie/frontmatter-nonleading-comment]
+[fixture: gitgraph/lex-yaml-after-comment] [fixture:
 pie/lex-yaml-leading-config-not-applied] [fixture:
 pie/review-yaml-before-showdata] [fixture:
 pie/lex-yaml-after-showdata-before-first-section] [fixture:

@@ -16616,7 +16616,7 @@ relationship referenced a table before its declaration. The tree holds the JSON
 interior opaquely, so `dbFromTree` consumes these effects without a JSON reader.
 [fixture: usecase/db-json-source-map-order] [fixture: usecase/gram-json-empty]
 
-The Chevrotain
+The
 [`metadata rules`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.parser.ts#L418-L460)
 parse a closed native property grammar, not opaque YAML, and produce no data
 block effects. Parsing requires no browser stand-in, URL sanitizer patch, time
@@ -17081,7 +17081,7 @@ The renderer reads `title` for its
 [`title text`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieRenderer.ts#L142-L147).
 The common accessibility getters supply
 [`mermaidAPI`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628).
-Frontmatter supplies a title before the Langium AST is published;
+Frontmatter supplies a title before the parsed statements populate the Db;
 [`populateCommonDb()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
 applies only nonempty final AST strings. The summary takes these getters rather
 than the AST or source positions. [fixture: pie/db-all-fields] [fixture:
@@ -17564,3 +17564,1126 @@ pie/review-style-block-separator-boundaries]
 A frontmatter title bypasses this entity-preprocessing stage and retains its
 style-looking semicolons as written. [fixture:
 pie/review-style-frontmatter-title]
+
+## gitgraph
+
+`normalizeGitgraph()` (`src/normalizers/gitgraph.ts`) summarizes the shared
+[`db`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L28-L68).
+The detector id is `gitGraph`. [fixture: gitgraph/header-only]
+
+| Field                           | Content                                                                                                                             |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `direction`                     | `LR`, `TB` or `BT`.                                                                                                                 |
+| `title`, `accTitle`, `accDescr` | Common strings, or empty text.                                                                                                      |
+| `commits`                       | Stored commits in first-id insertion order: `id`, `seq`, `type`, `tags`, `parents`, `branch`, optional `customType` and `customId`. |
+| `branches`                      | `{ name }` in renderer order.                                                                                                       |
+
+The renderer reads
+[commit ids, types and tags](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L331-L423),
+[parents and sequence](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L546-L610),
+and
+[branch order and direction](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L1002-L1011).
+Commit messages, branch tips, HEAD and the selected branch are omitted because
+the renderer reads none of them. Earlier branch selection is reflected in later
+commits' parents and creating branch; a final checkout adds no summary field.
+[fixture: gitgraph/gram-all-fields] [fixture: gitgraph/gram-checkout] [fixture:
+gitgraph/gram-cherry-pick] [fixture: gitgraph/gram-switch]
+
+The summary omits the duplicate Map/array containers, the private next-sequence
+counter, numeric branch-order settings already represented by the ordered branch
+list, and drawing positions, colors and dimensions. `options` is always an empty
+object: the reachable grammar never calls `setOptions()`, and the renderer does
+not read it. Configuration is recorded by the shared `config` and
+`embedded.config` interface; its effects on the initial branch name and order
+remain in the summary. Drawing-only options do not change stored commits.
+[fixture: gitgraph/header-only] [fixture: gitgraph/config-main-branch] [fixture:
+gitgraph/config-main-order-negative] [fixture: gitgraph/frontmatter-config]
+[fixture: gitgraph/config-drawing-only]
+
+### Publication and generated ids
+
+The
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphParser.ts#L21-L112)
+publishes common values, direction, then statements in source order. A normal
+commit gets type 0, 1 or 2 for NORMAL, REVERSE or HIGHLIGHT; tags append in
+source order, while repeated id and type options take the final value. An empty
+id generates an id; empty tags remain stored. Message options are accepted but
+omitted from the summary. [fixture: gitgraph/gram-commit-repeated-options]
+[fixture: gitgraph/gram-commit-empty-values] [fixture:
+gitgraph/gram-commit-space-values]
+
+`commit()` replaces a duplicate id rather than rejecting it, preserving that
+id's first Map position. The value carries its later sequence and parents, which
+can include its own id. Three definitions can leave sequence gaps and change the
+sequence order used for commit positioning. Maps keep prototype-shaped ids and
+branch names normally.
+[`commit()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L147)
+[fixture: gitgraph/db-duplicate-id] [fixture: gitgraph/db-three-definitions]
+[fixture: gitgraph/db-prototype-ids] [fixture:
+gitgraph/db-converted-duplicate-id]
+
+Commit positioning sorts by `seq`, but arrow drawing reads the `getCommits()`
+Map keys in first-id insertion order. The summary keeps that Map order together
+with each commit's latest `seq`; the derived sorting of `getCommitsArray()` is
+not recorded separately.
+[drawArrows()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphRenderer.ts#L851-L865)
+[fixture: gitgraph/db-three-definitions]
+
+A publication-only object patch observes which ids Mermaid generates, without
+changing its inputs, ids or validation. The normalizer replaces those ids with
+`generated-commit-1`, `generated-commit-2`, and so on in generation order,
+skipping names used by authored ids. It renames commit ids and parent
+references; tags are copied as stored. Authored ids, including random-looking
+ids, remain unchanged. `seq` starts at zero on every Db clear and advances for
+every created commit, including overwritten commits; it is syntax-dependent
+ordering, not a run-dependent counter. [fixture: gitgraph/db-generated-ids]
+[fixture: gitgraph/db-generated-name-collision] [fixture:
+gitgraph/db-random-shaped-custom-id] [fixture: gitgraph/db-three-definitions]
+
+[`branch()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L149-L164)
+and
+[`checkout()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L369-L394)
+create/select branches for later commit publication, including empty branches;
+`switch` is the same operation as checkout. Branches sort by numeric order,
+defaulting to zero for authored branches, with creation order breaking ties.
+Empty and whitespace-only quoted names remain keys. The configured initial
+branch name is stored directly. [fixture: gitgraph/gram-branch-order] [fixture:
+gitgraph/gram-branch-order-tie] [fixture: gitgraph/gram-branch-empty] [fixture:
+gitgraph/gram-branch-whitespace] [fixture: gitgraph/gram-switch] [fixture:
+gitgraph/config-main-empty-name] [fixture: gitgraph/config-main-html]
+
+[`merge()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L166-L258)
+creates type 3 with ordered current/source parents, optional custom type and a
+custom-id flag. Repeated scalar options take the last value; an empty id
+generates an id with `customId: false`. [fixture: gitgraph/gram-merge-options]
+[fixture: gitgraph/gram-merge-repeated-options] [fixture:
+gitgraph/gram-merge-empty-id]
+
+Merge rejects the current branch itself, a current tip created on the source
+branch, missing or empty branches, a shared head, and an existing custom id.
+Branch creation rejects an existing name, and checkout/switch reject an unknown
+name. [fixture: gitgraph/db-merge-self-empty] [fixture: gitgraph/db-merge-self]
+[fixture: gitgraph/db-merge-current-created-on-source] [fixture:
+gitgraph/db-merge-empty-current] [fixture: gitgraph/db-merge-empty-other]
+[fixture: gitgraph/db-merge-unknown] [fixture: gitgraph/db-merge-same-head]
+[fixture: gitgraph/db-merge-duplicate-id] [fixture:
+gitgraph/db-duplicate-branch] [fixture: gitgraph/db-duplicate-main] [fixture:
+gitgraph/db-duplicate-converted-branch] [fixture: gitgraph/db-checkout-unknown]
+[fixture: gitgraph/db-switch-unknown] [fixture:
+gitgraph/db-merge-unknown-generated-prefix]
+
+[`cherryPick()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L261-L376)
+creates type 4 with a generated id and current/source parents. Without authored
+tags its tag names the source, and for a merge source its parent; explicit tags
+suppress this default and filter empty strings. Scalar options use their last
+assignment. An empty parent is absent for an ordinary source. [fixture:
+gitgraph/gram-cherry-pick] [fixture: gitgraph/gram-cherry-pick-tags] [fixture:
+gitgraph/gram-cherry-pick-merge-parent] [fixture:
+gitgraph/gram-cherry-pick-repeated-options] [fixture:
+gitgraph/gram-cherry-pick-empty-parent]
+
+Cherry-pick rejects an absent, empty or unknown source id, a source created on
+the current branch, an empty destination, a supplied non-immediate parent, or a
+merge source without a parent. These are Db rejections after successful grammar
+parsing. [fixture: gitgraph/db-cherry-pick-missing] [fixture:
+gitgraph/db-cherry-pick-empty-id] [fixture: gitgraph/db-cherry-pick-unknown]
+[fixture: gitgraph/db-cherry-pick-same-branch] [fixture:
+gitgraph/db-cherry-pick-empty-current] [fixture:
+gitgraph/db-cherry-pick-invalid-parent] [fixture:
+gitgraph/db-cherry-pick-merge-no-parent]
+
+### Lexer and common values
+
+The
+[entry and statement rules](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/gitGraph.langium#L1-L56)
+allow `gitGraph`, `gitGraph:`, a separated colon, or LR/TB/BT with a required
+colon. A statement or common value may start on the header line; ordinary body
+statements require NEWLINE or EOF, not semicolons. A lone CR and CRLF are
+normalized to LF; LS and PS are not NEWLINE. Blank lines and ASCII space/TAB are
+allowed. [fixture: gitgraph/header-only] [fixture: gitgraph/header-colon]
+[fixture: gitgraph/header-spaced-colon] [fixture: gitgraph/header-lr] [fixture:
+gitgraph/header-tb] [fixture: gitgraph/header-bt] [fixture:
+gitgraph/header-direction-no-colon] [fixture:
+gitgraph/header-colon-commit-inline] [fixture: gitgraph/header-commit-inline]
+[fixture: gitgraph/header-title-inline] [fixture:
+gitgraph/gram-header-inline-branch] [fixture:
+gitgraph/gram-header-inline-acctitle] [fixture:
+gitgraph/gram-header-inline-accdescr] [fixture:
+gitgraph/gram-one-line-two-commits] [fixture: gitgraph/eol-commit-semicolon]
+[fixture: gitgraph/eol-branch-semicolon] [fixture:
+gitgraph/eol-checkout-semicolon] [fixture: gitgraph/eol-switch-semicolon]
+[fixture: gitgraph/eol-merge-semicolon] [fixture:
+gitgraph/eol-cherry-pick-semicolon] [fixture: gitgraph/lex-cr] [fixture:
+gitgraph/lex-crlf] [fixture: gitgraph/lex-ls] [fixture: gitgraph/lex-ps]
+[fixture: gitgraph/lex-blank-lines] [fixture: gitgraph/eol-accdescr-colon]
+[fixture: gitgraph/eol-accdescr-ls] [fixture: gitgraph/eol-accdescr-ps]
+[fixture: gitgraph/eol-accdescr-semicolons] [fixture: gitgraph/eol-accdescr-tab]
+[fixture: gitgraph/eol-accdescr-two-semicolons] [fixture:
+gitgraph/eol-acctitle-colon] [fixture: gitgraph/eol-acctitle-ls] [fixture:
+gitgraph/eol-acctitle-ps] [fixture: gitgraph/eol-acctitle-semicolons] [fixture:
+gitgraph/eol-acctitle-spaced-semicolons] [fixture: gitgraph/eol-acctitle-tab]
+[fixture: gitgraph/eol-block-colon] [fixture: gitgraph/eol-block-eof] [fixture:
+gitgraph/eol-block-ls] [fixture: gitgraph/eol-block-ps] [fixture:
+gitgraph/eol-block-semicolon] [fixture: gitgraph/eol-block-spaced-semicolons]
+[fixture: gitgraph/eol-block-tab] [fixture: gitgraph/eol-block-two-semicolons]
+[fixture: gitgraph/eol-branch-colon] [fixture: gitgraph/eol-branch-eof]
+[fixture: gitgraph/eol-branch-ls] [fixture: gitgraph/eol-branch-ps] [fixture:
+gitgraph/eol-branch-spaced-semicolons] [fixture: gitgraph/eol-branch-tab]
+[fixture: gitgraph/eol-branch-two-semicolons] [fixture:
+gitgraph/eol-checkout-colon] [fixture: gitgraph/eol-checkout-eof] [fixture:
+gitgraph/eol-checkout-ls] [fixture: gitgraph/eol-checkout-ps] [fixture:
+gitgraph/eol-checkout-spaced-semicolons] [fixture: gitgraph/eol-checkout-tab]
+[fixture: gitgraph/eol-checkout-two-semicolons] [fixture:
+gitgraph/eol-cherry-pick-colon] [fixture: gitgraph/eol-cherry-pick-eof]
+[fixture: gitgraph/eol-cherry-pick-ls] [fixture: gitgraph/eol-cherry-pick-ps]
+[fixture: gitgraph/eol-cherry-pick-spaced-semicolons] [fixture:
+gitgraph/eol-cherry-pick-tab] [fixture: gitgraph/eol-cherry-pick-two-semicolons]
+[fixture: gitgraph/eol-commit-colon] [fixture: gitgraph/eol-commit-eof]
+[fixture: gitgraph/eol-commit-ls] [fixture: gitgraph/eol-commit-ps] [fixture:
+gitgraph/eol-commit-space-semicolon] [fixture:
+gitgraph/eol-commit-spaced-semicolons] [fixture: gitgraph/eol-commit-tab]
+[fixture: gitgraph/eol-commit-two-semicolons] [fixture:
+gitgraph/eol-header-semicolon] [fixture: gitgraph/eol-header-two-semicolons]
+[fixture: gitgraph/eol-merge-colon] [fixture: gitgraph/eol-merge-eof] [fixture:
+gitgraph/eol-merge-ls] [fixture: gitgraph/eol-merge-ps] [fixture:
+gitgraph/eol-merge-spaced-semicolons] [fixture: gitgraph/eol-merge-tab]
+[fixture: gitgraph/eol-merge-two-semicolons] [fixture:
+gitgraph/eol-switch-colon] [fixture: gitgraph/eol-switch-eof] [fixture:
+gitgraph/eol-switch-ls] [fixture: gitgraph/eol-switch-ps] [fixture:
+gitgraph/eol-switch-spaced-semicolons] [fixture: gitgraph/eol-switch-tab]
+[fixture: gitgraph/eol-switch-two-semicolons] [fixture:
+gitgraph/eol-title-colon] [fixture: gitgraph/eol-title-ls] [fixture:
+gitgraph/eol-title-ps] [fixture: gitgraph/eol-title-semicolons] [fixture:
+gitgraph/eol-title-tab] [fixture: gitgraph/eol-title-two-semicolons]
+
+Keywords are case sensitive. The
+[token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/gitGraph/tokenBuilder.ts#L1-L7)
+adds JavaScript-whitespace/EOF-or-percent-pair lookahead only to `gitGraph`, not
+to `gitGraph:`. Other keyword prefixes can yield a longer REFERENCE alternative;
+there is no general longest-match rule. Detection itself tests only the exact
+case-sensitive `gitGraph` prefix, so a suffix can detect and then fail lexing or
+parsing. [fixture: gitgraph/detect-lowercase] [fixture:
+gitgraph/detect-uppercase] [fixture: gitgraph/detect-letter-suffix] [fixture:
+gitgraph/detect-digit-suffix] [fixture: gitgraph/detect-dash-suffix] [fixture:
+gitgraph/detect-unicode-suffix] [fixture: gitgraph/lex-header-bom] [fixture:
+gitgraph/comment-header-glued] [fixture:
+gitgraph/lex-reference-keyword-prefixes] [fixture:
+gitgraph/lex-keyword-commit-case] [fixture: gitgraph/lex-keyword-branch-case]
+[fixture: gitgraph/lex-keyword-checkout-case] [fixture:
+gitgraph/lex-keyword-switch-case] [fixture: gitgraph/lex-keyword-merge-case]
+[fixture: gitgraph/lex-keyword-cherry-pick-case] [fixture:
+gitgraph/lex-keyword-branch-dash] [fixture: gitgraph/lex-keyword-branch-letter]
+[fixture: gitgraph/lex-keyword-branch-suffix] [fixture:
+gitgraph/lex-keyword-branch-unicode] [fixture:
+gitgraph/lex-keyword-checkout-digit] [fixture:
+gitgraph/lex-keyword-checkout-letter] [fixture:
+gitgraph/lex-keyword-checkout-suffix] [fixture:
+gitgraph/lex-keyword-checkout-unicode] [fixture:
+gitgraph/lex-keyword-cherry-pick-dash] [fixture:
+gitgraph/lex-keyword-cherry-pick-digit] [fixture:
+gitgraph/lex-keyword-cherry-pick-suffix] [fixture:
+gitgraph/lex-keyword-cherry-pick-unicode] [fixture:
+gitgraph/lex-keyword-commit-dash] [fixture: gitgraph/lex-keyword-commit-digit]
+[fixture: gitgraph/lex-keyword-commit-suffix] [fixture:
+gitgraph/lex-keyword-commit-unicode] [fixture:
+gitgraph/lex-keyword-direction-suffix] [fixture:
+gitgraph/lex-keyword-merge-dash] [fixture: gitgraph/lex-keyword-merge-letter]
+[fixture: gitgraph/lex-keyword-merge-suffix] [fixture:
+gitgraph/lex-keyword-merge-unicode] [fixture:
+gitgraph/lex-keyword-msg-colon-space] [fixture:
+gitgraph/lex-keyword-option-case] [fixture:
+gitgraph/lex-keyword-order-colon-space] [fixture:
+gitgraph/lex-keyword-parent-colon-space] [fixture:
+gitgraph/lex-keyword-switch-dash] [fixture: gitgraph/lex-keyword-switch-digit]
+[fixture: gitgraph/lex-keyword-switch-letter] [fixture:
+gitgraph/lex-keyword-switch-unicode] [fixture:
+gitgraph/lex-keyword-tag-colon-space] [fixture:
+gitgraph/lex-keyword-type-colon-space] [fixture:
+gitgraph/lex-keyword-type-suffix]
+
+After the length-ordered keywords, reachable terminal order is ACC_DESCR,
+ACC_TITLE, TITLE, INT, STRING, NEWLINE, WHITESPACE, YAML, DIRECTIVE,
+SINGLE_LINE_COMMENT, REFERENCE. BOOLEAN, FLOAT, NUMBER and ID are unreachable.
+Thus INT can split a digit-prefixed name, while its dot boundary lets a
+version-like name reach REFERENCE; TITLE can take a name's prefix. A reference
+starts with an ASCII word character, permits interior dot/slash/dash, and can
+end with a dash despite the source comment, but not dot/slash. Quotes allow
+reserved words, numbers, Unicode and whitespace as names. [fixture:
+gitgraph/lex-reference-digit] [fixture: gitgraph/lex-reference-digit-prefix]
+[fixture: gitgraph/lex-reference-zero-prefix] [fixture:
+gitgraph/lex-reference-digit-dot] [fixture:
+gitgraph/lex-reference-common-prefix] [fixture: gitgraph/lex-reference-shape]
+[fixture: gitgraph/lex-reference-trailing-dash] [fixture:
+gitgraph/lex-reference-trailing-dot] [fixture:
+gitgraph/lex-reference-trailing-slash] [fixture:
+gitgraph/lex-reference-leading-dash] [fixture: gitgraph/lex-reference-unicode]
+[fixture: gitgraph/lex-reference-reserved] [fixture:
+gitgraph/lex-reference-reserved-quoted] [fixture:
+gitgraph/lex-reference-integer-quoted] [fixture:
+gitgraph/gram-branch-single-quotes] [fixture:
+gitgraph/lex-branch-unicode-quoted]
+
+INT order is unsigned decimal, zero or a nonzero first digit. Signs, leading
+zeros, fractions, exponents, NaN and Infinity spellings reject; conversion uses
+`parseInt` and double precision, including overflow for a sufficiently long
+integer. Only the resulting branch order is summarized. [fixture:
+gitgraph/number-zero] [fixture: gitgraph/number-negative] [fixture:
+gitgraph/number-negative-zero] [fixture: gitgraph/number-plus] [fixture:
+gitgraph/number-leading-zero] [fixture: gitgraph/number-decimal] [fixture:
+gitgraph/number-exponent] [fixture: gitgraph/number-nan] [fixture:
+gitgraph/number-infinity] [fixture: gitgraph/number-precision] [fixture:
+gitgraph/number-overflow] [fixture: gitgraph/db-duplicate-order-negative-zero]
+[fixture: gitgraph/db-duplicate-order-negative-zero-first]
+
+The installed
+[common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L81)
+leaves REFERENCE unchanged and decodes STRING escapes: matching single or double
+quotes close the string; raw line breaks are allowed, but a backslash escape
+cannot cross LF, CR, LS or PS. The escapes b/f/n/r/t/v/0 become control
+characters; an unknown escape loses its slash, without hex or Unicode-code
+decoding. The same branch reads every string option and quoted branch reference.
+[fixture: gitgraph/gram-commit-single-quotes] [fixture:
+gitgraph/lex-string-escapes] [fixture: gitgraph/lex-string-multiline] [fixture:
+gitgraph/lex-string-single-multiline] [fixture: gitgraph/lex-string-unclosed]
+[fixture: gitgraph/lex-string-single-unclosed] [fixture:
+gitgraph/lex-string-backslash-lf] [fixture: gitgraph/lex-string-ls-ps] [fixture:
+gitgraph/lex-string-escaped-ls] [fixture: gitgraph/lex-string-cr] [fixture:
+gitgraph/lex-string-crlf] [fixture: gitgraph/lex-string-reference-escape]
+[fixture: gitgraph/lex-merge-string-escape] [fixture:
+gitgraph/lex-cherry-pick-string-escape]
+
+Common line values trim common whitespace and collapse runs of at least two
+ASCII spaces/TABs. Blocks end at their first right brace without quote or escape
+protection; conversion trims each line's edges, collapses ASCII runs and
+repeated CR/LF. The final AST assignment wins, even when empty; only a nonempty
+final converted string reaches the common Db, so an empty final title preserves
+frontmatter and an empty final accessibility value leaves the cleared default.
+[fixture: gitgraph/title-conversion] [fixture: gitgraph/common-interior-unicode]
+[fixture: gitgraph/accdescr-block] [fixture:
+gitgraph/accdescr-block-first-brace] [fixture:
+gitgraph/accdescr-block-quoted-brace] [fixture:
+gitgraph/accdescr-block-escaped-brace] [fixture: gitgraph/common-third-values]
+[fixture: gitgraph/title-repeat-empty] [fixture: gitgraph/acctitle-repeat-empty]
+[fixture: gitgraph/accdescr-repeat-empty] [fixture:
+gitgraph/common-block-only-whitespace] [fixture:
+gitgraph/common-title-only-whitespace] [fixture:
+gitgraph/common-acctitle-only-whitespace] [fixture:
+gitgraph/common-accdescr-only-whitespace]
+
+Title takes one space/TAB separator; accessibility line values start after a
+colon with only space/TAB before it. They do not take a later line as value.
+Only the block opener permits common whitespace, including LF and NBSP, between
+keyword and brace. Line values keep semicolons and colons as text; a completed
+block rejects them. [fixture: gitgraph/title-tab] [fixture: gitgraph/title-nbsp]
+[fixture: gitgraph/acctitle-nbsp-colon] [fixture: gitgraph/accdescr-nbsp-colon]
+[fixture: gitgraph/title-next-line] [fixture: gitgraph/acctitle-next-line]
+[fixture: gitgraph/accdescr-next-line] [fixture: gitgraph/accdescr-block-gap]
+[fixture: gitgraph/accdescr-block-nbsp-gap] [fixture:
+gitgraph/eol-title-semicolons] [fixture: gitgraph/eol-acctitle-semicolons]
+[fixture: gitgraph/eol-accdescr-semicolons] [fixture: gitgraph/eol-title-colon]
+[fixture: gitgraph/eol-acctitle-colon] [fixture: gitgraph/eol-accdescr-colon]
+[fixture: gitgraph/eol-block-semicolon] [fixture: gitgraph/eol-block-colon]
+
+The
+[public parse gate](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+rejects any lexer or parser error, even after recovery or a valid prefix.
+Missing required arguments, unsupported statements/options and separated option
+colons are rejected before Db publication. [fixture:
+gitgraph/lex-error-before-statement] [fixture:
+gitgraph/lex-error-after-valid-prefix] [fixture:
+gitgraph/gram-error-recovered-statement] [fixture:
+gitgraph/gram-commit-msg-missing] [fixture: gitgraph/gram-branch-missing]
+[fixture: gitgraph/gram-checkout-missing] [fixture:
+gitgraph/gram-switch-missing] [fixture: gitgraph/gram-merge-missing] [fixture:
+gitgraph/gram-reset-unsupported] [fixture: gitgraph/gram-commit-unknown-option]
+[fixture: gitgraph/gram-merge-message] [fixture:
+gitgraph/gram-cherry-pick-unknown-option] [fixture:
+gitgraph/gram-commit-colon-space]
+
+### Hidden forms and preprocessing
+
+The imported
+[hidden terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
+are separate from global directive removal and real leading frontmatter. Hidden
+YAML does not parse its contents or apply title/configuration; detection can
+skip one retained nonleading frontmatter-shaped block, which gitgraph then
+hides. Adjacent body fences can match hidden YAML although adjacent leading
+fences are not real frontmatter; unclosed blocks and indented hidden closers
+reject. An opening hidden fence permits only space/TAB before LF, and its closer
+needs LF or a common-whitespace/EOF boundary. STRING and ACC_DESCR already
+enclosing a form take priority over a hidden opener in their interior. [fixture:
+gitgraph/lex-yaml-after-comment] [fixture: gitgraph/lex-yaml-invalid-body]
+[fixture: gitgraph/lex-yaml-empty-body] [fixture:
+gitgraph/frontmatter-empty-adjacent] [fixture:
+gitgraph/frontmatter-empty-blank-line] [fixture: gitgraph/lex-yaml-unclosed]
+[fixture: gitgraph/lex-yaml-indented-closer] [fixture:
+gitgraph/lex-hidden-yaml-opener-tab] [fixture:
+gitgraph/lex-hidden-yaml-opener-nbsp] [fixture:
+gitgraph/lex-hidden-yaml-closer-word] [fixture: gitgraph/lex-yaml-string]
+[fixture: gitgraph/lex-yaml-block] [fixture:
+gitgraph/lex-hidden-directive-string] [fixture:
+gitgraph/lex-hidden-directive-block]
+
+The one retained-block skip occurs before bare percent lines and second-scan
+directives. A second block, a block after a bare brace line or after a
+second-scan directive, and equal indentation on both retained fences prevent
+this skip; a block after real frontmatter or before a second-scan directive can
+be passed. [fixture: gitgraph/detect-two-nonleading-blocks] [fixture:
+gitgraph/detect-block-after-bare-brace-line] [fixture:
+gitgraph/detect-second-scan-directive-before-block] [fixture:
+gitgraph/detect-block-equally-indented-fences] [fixture:
+gitgraph/detect-block-after-real-frontmatter] [fixture:
+gitgraph/detect-block-before-second-scan-directive]
+
+A hidden DIRECTIVE that survives global removal, including `%%{}%%`, consumes an
+immediate following LF; otherwise its closer only looks ahead at common
+whitespace/EOF. A missing closing boundary falls back to the native percent
+comment. A second-scan preheader directive is hidden too, but a header glued to
+its closer rejects. Hidden forms can bridge a keyword/option to a value by
+consuming LF; LS/NBSP satisfying a closer remain unlexable ordinary gaps.
+[fixture: gitgraph/lex-hidden-directive-between-option-value] [fixture:
+gitgraph/lex-hidden-directive-boundary-word] [fixture:
+gitgraph/lex-hidden-directive-boundary-space] [fixture:
+gitgraph/lex-hidden-directive-boundary-ls] [fixture:
+gitgraph/lex-hidden-directive-second-scan] [fixture:
+gitgraph/lex-hidden-directive-second-scan-glued] [fixture:
+gitgraph/lex-hidden-directive-before-branch-name] [fixture:
+gitgraph/lex-hidden-directive-before-checkout-name] [fixture:
+gitgraph/lex-hidden-directive-before-switch-name] [fixture:
+gitgraph/lex-hidden-directive-before-merge-name] [fixture:
+gitgraph/lex-hidden-directive-before-type] [fixture:
+gitgraph/lex-hidden-directive-before-order] [fixture:
+gitgraph/lex-hidden-yaml-before-option-value] [fixture:
+gitgraph/lex-hidden-yaml-before-branch-name] [fixture:
+gitgraph/lex-hidden-yaml-before-type] [fixture:
+gitgraph/lex-hidden-yaml-before-order] [fixture:
+gitgraph/lex-hidden-yaml-closer-nbsp]
+
+After every statement and common-value form, a hidden DIRECTIVE can consume the
+only EOL LF and reject a following statement. A spare LF or space after the
+closer preserves EOL; at EOF the appended LF can be consumed and EOF satisfies
+EOL instead. Hidden YAML has the same effect after commit, branch, checkout,
+switch, merge, cherry-pick and description block; after a one-line common value
+its `---` opener is value text instead. Bare references can absorb opener
+dashes. The header itself requires no EOL, so hiding its LF does not block the
+first statement. [fixture: gitgraph/lex-hidden-directive-after-commit] [fixture:
+gitgraph/lex-hidden-directive-after-branch] [fixture:
+gitgraph/lex-hidden-directive-after-checkout] [fixture:
+gitgraph/lex-hidden-directive-after-switch] [fixture:
+gitgraph/lex-hidden-directive-after-merge] [fixture:
+gitgraph/lex-hidden-directive-after-cherry-pick] [fixture:
+gitgraph/lex-hidden-directive-after-title] [fixture:
+gitgraph/lex-hidden-directive-after-acctitle] [fixture:
+gitgraph/lex-hidden-directive-after-accdescr] [fixture:
+gitgraph/lex-hidden-directive-after-block] [fixture:
+gitgraph/lex-hidden-directive-commit-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-commit-closing-space] [fixture:
+gitgraph/lex-hidden-directive-commit-eof] [fixture:
+gitgraph/lex-hidden-yaml-after-commit] [fixture:
+gitgraph/lex-hidden-yaml-after-branch] [fixture:
+gitgraph/lex-hidden-yaml-after-checkout] [fixture:
+gitgraph/lex-hidden-yaml-after-switch] [fixture:
+gitgraph/lex-hidden-yaml-after-merge] [fixture:
+gitgraph/lex-hidden-yaml-after-cherry-pick] [fixture:
+gitgraph/lex-hidden-yaml-after-block] [fixture:
+gitgraph/lex-hidden-yaml-commit-spare-lf] [fixture:
+gitgraph/lex-hidden-yaml-commit-closing-space] [fixture:
+gitgraph/lex-hidden-yaml-commit-eof] [fixture:
+gitgraph/lex-hidden-yaml-after-title] [fixture:
+gitgraph/lex-hidden-yaml-after-acctitle] [fixture:
+gitgraph/lex-hidden-yaml-after-accdescr] [fixture:
+gitgraph/lex-hidden-yaml-reference-absorbs-dashes] [fixture:
+gitgraph/lex-hidden-directive-header] [fixture:
+gitgraph/lex-hidden-directive-accdescr-closing-space] [fixture:
+gitgraph/lex-hidden-directive-accdescr-eof] [fixture:
+gitgraph/lex-hidden-directive-accdescr-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-acctitle-closing-space] [fixture:
+gitgraph/lex-hidden-directive-acctitle-eof] [fixture:
+gitgraph/lex-hidden-directive-acctitle-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-block-closing-space] [fixture:
+gitgraph/lex-hidden-directive-block-eof] [fixture:
+gitgraph/lex-hidden-directive-block-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-branch-closing-space] [fixture:
+gitgraph/lex-hidden-directive-branch-eof] [fixture:
+gitgraph/lex-hidden-directive-branch-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-checkout-closing-space] [fixture:
+gitgraph/lex-hidden-directive-checkout-eof] [fixture:
+gitgraph/lex-hidden-directive-checkout-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-cherry-pick-closing-space] [fixture:
+gitgraph/lex-hidden-directive-cherry-pick-eof] [fixture:
+gitgraph/lex-hidden-directive-cherry-pick-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-merge-closing-space] [fixture:
+gitgraph/lex-hidden-directive-merge-eof] [fixture:
+gitgraph/lex-hidden-directive-merge-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-switch-closing-space] [fixture:
+gitgraph/lex-hidden-directive-switch-eof] [fixture:
+gitgraph/lex-hidden-directive-switch-spare-lf] [fixture:
+gitgraph/lex-hidden-directive-title-closing-space] [fixture:
+gitgraph/lex-hidden-directive-title-eof] [fixture:
+gitgraph/lex-hidden-directive-title-spare-lf] [fixture:
+gitgraph/lex-hidden-yaml-accdescr-eof] [fixture:
+gitgraph/lex-hidden-yaml-acctitle-eof] [fixture:
+gitgraph/lex-hidden-yaml-block-closing-space] [fixture:
+gitgraph/lex-hidden-yaml-block-eof] [fixture:
+gitgraph/lex-hidden-yaml-block-spare-lf] [fixture:
+gitgraph/lex-hidden-yaml-branch-closing-space] [fixture:
+gitgraph/lex-hidden-yaml-branch-eof] [fixture:
+gitgraph/lex-hidden-yaml-branch-spare-lf] [fixture:
+gitgraph/lex-hidden-yaml-checkout-closing-space] [fixture:
+gitgraph/lex-hidden-yaml-checkout-eof] [fixture:
+gitgraph/lex-hidden-yaml-checkout-spare-lf] [fixture:
+gitgraph/lex-hidden-yaml-cherry-pick-closing-space] [fixture:
+gitgraph/lex-hidden-yaml-cherry-pick-eof] [fixture:
+gitgraph/lex-hidden-yaml-cherry-pick-spare-lf] [fixture:
+gitgraph/lex-hidden-yaml-merge-closing-space] [fixture:
+gitgraph/lex-hidden-yaml-merge-eof] [fixture:
+gitgraph/lex-hidden-yaml-merge-spare-lf] [fixture:
+gitgraph/lex-hidden-yaml-switch-closing-space] [fixture:
+gitgraph/lex-hidden-yaml-switch-eof] [fixture:
+gitgraph/lex-hidden-yaml-switch-spare-lf] [fixture:
+gitgraph/lex-hidden-yaml-title-eof]
+
+Global removal can instead rejoin keywords, reference names, integer digits,
+colons and quoted/common values. Glued removal after the header or a statement
+keyword can eliminate its required boundary; a directive-only line does not
+erase an earlier LF. Unclosed forms can take a following word or the rest of the
+source, including a closing quote or brace. Invalid init JSON and unknown
+directive types can be removed without configuration. [fixture:
+gitgraph/div-directive-in-header] [fixture: gitgraph/div-directive-in-commit]
+[fixture: gitgraph/div-directive-in-branch] [fixture:
+gitgraph/div-directive-in-checkout] [fixture: gitgraph/div-directive-in-switch]
+[fixture: gitgraph/div-directive-in-merge] [fixture:
+gitgraph/div-directive-in-cherry-pick] [fixture:
+gitgraph/div-directive-in-option-keyword] [fixture:
+gitgraph/div-directive-in-type] [fixture: gitgraph/div-directive-in-reference]
+[fixture: gitgraph/div-directive-in-number] [fixture:
+gitgraph/directive-in-string] [fixture: gitgraph/directive-common-colons]
+[fixture: gitgraph/directive-after-header-glued] [fixture:
+gitgraph/directive-glued-branch-value] [fixture:
+gitgraph/directive-glued-commit-option] [fixture:
+gitgraph/directive-before-option-value-line] [fixture:
+gitgraph/directive-open-word] [fixture: gitgraph/directive-open-in-string]
+[fixture: gitgraph/directive-open-in-block] [fixture:
+gitgraph/directive-open-after-header] [fixture: gitgraph/directive-invalid-init]
+[fixture: gitgraph/directive-unknown-type]
+
+Global comment regions are removed even inside strings and blocks; bare percent
+lines there remain text. Native comments at unit positions preserve LF, while an
+earlier hidden directive can take it. Leading Unicode whitespace is removed, but
+after a retained bare percent line detection's passed whitespace still reaches
+Mermaid's lexer: ASCII space/TAB succeeds; VT, FF, NBSP, BOM, U+1680,
+U+2000–U+200A, U+202F, U+205F, U+3000, LS and PS reject both immediately before
+the header and on their own line. This also applies after retained YAML or a
+second-scan directive. [fixture: gitgraph/comment-string] [fixture:
+gitgraph/comment-block] [fixture: gitgraph/comment-bare-string] [fixture:
+gitgraph/comment-block-bare-percent] [fixture: gitgraph/comment-commit-glued]
+[fixture: gitgraph/comment-between-option-value] [fixture:
+gitgraph/lex-leading-bom] [fixture: gitgraph/lex-leading-ls-ps] [fixture:
+gitgraph/detect-bare-before-header-space] [fixture:
+gitgraph/detect-bare-before-header-tab] [fixture:
+gitgraph/div-detect-bare-before-header-vt] [fixture:
+gitgraph/div-detect-bare-vt-line] [fixture:
+gitgraph/div-detect-bare-before-header-ff] [fixture:
+gitgraph/div-detect-bare-ff-line] [fixture:
+gitgraph/div-detect-bare-before-header-nbsp] [fixture:
+gitgraph/div-detect-bare-nbsp-line] [fixture:
+gitgraph/div-detect-bare-before-header-bom] [fixture:
+gitgraph/div-detect-bare-bom-line] [fixture:
+gitgraph/div-detect-bare-before-header-u1680] [fixture:
+gitgraph/div-detect-bare-u1680-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2000] [fixture:
+gitgraph/div-detect-bare-u2000-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2001] [fixture:
+gitgraph/div-detect-bare-u2001-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2002] [fixture:
+gitgraph/div-detect-bare-u2002-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2003] [fixture:
+gitgraph/div-detect-bare-u2003-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2004] [fixture:
+gitgraph/div-detect-bare-u2004-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2005] [fixture:
+gitgraph/div-detect-bare-u2005-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2006] [fixture:
+gitgraph/div-detect-bare-u2006-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2007] [fixture:
+gitgraph/div-detect-bare-u2007-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2008] [fixture:
+gitgraph/div-detect-bare-u2008-line] [fixture:
+gitgraph/div-detect-bare-before-header-u2009] [fixture:
+gitgraph/div-detect-bare-u2009-line] [fixture:
+gitgraph/div-detect-bare-before-header-u200a] [fixture:
+gitgraph/div-detect-bare-u200a-line] [fixture:
+gitgraph/div-detect-bare-before-header-u202f] [fixture:
+gitgraph/div-detect-bare-u202f-line] [fixture:
+gitgraph/div-detect-bare-before-header-u205f] [fixture:
+gitgraph/div-detect-bare-u205f-line] [fixture:
+gitgraph/div-detect-bare-before-header-u3000] [fixture:
+gitgraph/div-detect-bare-u3000-line] [fixture:
+gitgraph/div-detect-bare-before-header-ls] [fixture:
+gitgraph/div-detect-bare-ls-line] [fixture:
+gitgraph/div-detect-bare-before-header-ps] [fixture:
+gitgraph/div-detect-bare-ps-line] [fixture:
+gitgraph/div-detect-retained-yaml-bare-ls] [fixture:
+gitgraph/div-detect-retained-directive-bare-ls] [fixture:
+gitgraph/detect-retained-yaml-bare-ascii] [fixture:
+gitgraph/detect-retained-directive-bare-ascii] [fixture:
+gitgraph/div-detect-retained-directive-bare-bom] [fixture:
+gitgraph/div-detect-retained-directive-bare-ls-line] [fixture:
+gitgraph/div-detect-retained-yaml-bare-bom] [fixture:
+gitgraph/div-detect-retained-yaml-bare-ls-line] [fixture:
+gitgraph/div-detect-retained-yaml-bare-then-directive] [fixture:
+gitgraph/detect-retained-yaml-bare-then-directive-ascii] [fixture:
+gitgraph/lex-body-bom] [fixture: gitgraph/lex-body-ff] [fixture:
+gitgraph/lex-body-ideographic-space] [fixture: gitgraph/lex-body-nbsp] [fixture:
+gitgraph/lex-body-u1680] [fixture: gitgraph/lex-body-u2000] [fixture:
+gitgraph/lex-body-u2001] [fixture: gitgraph/lex-body-u2002] [fixture:
+gitgraph/lex-body-u2003] [fixture: gitgraph/lex-body-u2004] [fixture:
+gitgraph/lex-body-u2005] [fixture: gitgraph/lex-body-u2006] [fixture:
+gitgraph/lex-body-u2007] [fixture: gitgraph/lex-body-u2008] [fixture:
+gitgraph/lex-body-u2009] [fixture: gitgraph/lex-body-u200a] [fixture:
+gitgraph/lex-body-u202f] [fixture: gitgraph/lex-body-u205f] [fixture:
+gitgraph/lex-body-vt]
+
+Leading frontmatter uses the shared YAML reading, including HTML attribute-quote
+cleanup before extraction; malformed YAML can reject even when valid as written
+before that cleanup. Truthy non-string titles are stringified, false supplies no
+title. Body hidden YAML has no such parsing. [fixture:
+gitgraph/frontmatter-title] [fixture: gitgraph/frontmatter-override] [fixture:
+gitgraph/div-frontmatter-invalid-yaml] [fixture: gitgraph/frontmatter-html]
+[fixture: gitgraph/div-frontmatter-html-invalid-yaml] [fixture:
+gitgraph/frontmatter-title-number] [fixture: gitgraph/frontmatter-title-list]
+[fixture: gitgraph/frontmatter-title-false] [fixture:
+gitgraph/lex-yaml-invalid-body]
+
+Mermaid's four C4-anywhere words can redirect detection from any diagram text
+field, including a header or statement EOF comment; a written final LF protects
+such a native comment from that scan. C4Context does not redirect an interior
+value. [fixture: gitgraph/div-detect-c4container-id] [fixture:
+gitgraph/div-detect-c4component-message] [fixture:
+gitgraph/div-detect-c4dynamic-tag] [fixture:
+gitgraph/div-detect-c4deployment-branch] [fixture:
+gitgraph/div-detect-c4container-title] [fixture:
+gitgraph/div-detect-c4component-acctitle] [fixture:
+gitgraph/div-detect-c4dynamic-accdescr] [fixture:
+gitgraph/div-detect-c4deployment-block] [fixture:
+gitgraph/div-detect-c4container-header-comment-eof] [fixture:
+gitgraph/div-detect-c4component-comment-eof] [fixture:
+gitgraph/detect-c4dynamic-comment-lf] [fixture:
+gitgraph/detect-c4deployment-comment-lf] [fixture: gitgraph/detect-c4context-id]
+[fixture: gitgraph/div-detect-c4component-accdescr] [fixture:
+gitgraph/div-detect-c4component-block] [fixture:
+gitgraph/div-detect-c4component-branch] [fixture:
+gitgraph/detect-c4component-comment-lf] [fixture:
+gitgraph/div-detect-c4component-header-comment-eof] [fixture:
+gitgraph/detect-c4component-header-comment-lf] [fixture:
+gitgraph/div-detect-c4component-id] [fixture:
+gitgraph/div-detect-c4component-tag] [fixture:
+gitgraph/div-detect-c4component-title] [fixture:
+gitgraph/div-detect-c4container-accdescr] [fixture:
+gitgraph/div-detect-c4container-acctitle] [fixture:
+gitgraph/div-detect-c4container-block] [fixture:
+gitgraph/div-detect-c4container-branch] [fixture:
+gitgraph/div-detect-c4container-comment-eof] [fixture:
+gitgraph/detect-c4container-comment-lf] [fixture:
+gitgraph/detect-c4container-header-comment-lf] [fixture:
+gitgraph/div-detect-c4container-message] [fixture:
+gitgraph/div-detect-c4container-tag] [fixture:
+gitgraph/div-detect-c4deployment-accdescr] [fixture:
+gitgraph/div-detect-c4deployment-acctitle] [fixture:
+gitgraph/div-detect-c4deployment-comment-eof] [fixture:
+gitgraph/div-detect-c4deployment-header-comment-eof] [fixture:
+gitgraph/detect-c4deployment-header-comment-lf] [fixture:
+gitgraph/div-detect-c4deployment-id] [fixture:
+gitgraph/div-detect-c4deployment-message] [fixture:
+gitgraph/div-detect-c4deployment-tag] [fixture:
+gitgraph/div-detect-c4deployment-title] [fixture:
+gitgraph/div-detect-c4dynamic-acctitle] [fixture:
+gitgraph/div-detect-c4dynamic-block] [fixture:
+gitgraph/div-detect-c4dynamic-branch] [fixture:
+gitgraph/div-detect-c4dynamic-comment-eof] [fixture:
+gitgraph/div-detect-c4dynamic-header-comment-eof] [fixture:
+gitgraph/detect-c4dynamic-header-comment-lf] [fixture:
+gitgraph/div-detect-c4dynamic-id] [fixture:
+gitgraph/div-detect-c4dynamic-message] [fixture:
+gitgraph/div-detect-c4dynamic-title]
+
+### HTML, entities and configuration
+
+Common strings use the root configuration, but commit ids/tags, branch names and
+lookup names use the gitgraph subconfiguration for `sanitizeText()`. That object
+normally lacks `securityLevel`, so HTML is escaped even with DOMPurify disabled;
+root securityLevel changes alone give identical summaries. Root htmlLabels false
+does not disable that branch, while gitGraph.htmlLabels false or
+gitGraph.securityLevel loose does. Merge tags bypass that sanitizer; cherry-pick
+tags pass through it. The configured initial branch name bypasses branch-name
+sanitization. [fixture: gitgraph/html-all-texts] [fixture:
+gitgraph/config-security-strict] [fixture: gitgraph/config-security-loose]
+[fixture: gitgraph/config-security-antiscript] [fixture:
+gitgraph/config-security-sandbox] [fixture: gitgraph/config-security-other]
+[fixture: gitgraph/config-html-false] [fixture:
+gitgraph/config-gitgraph-html-false] [fixture: gitgraph/config-gitgraph-loose]
+[fixture: gitgraph/config-common-html-false] [fixture:
+gitgraph/config-common-html-true] [fixture:
+gitgraph/config-merge-tag-escape-difference] [fixture:
+gitgraph/html-cherry-pick-tags] [fixture: gitgraph/config-main-html]
+
+HTML attribute quotes are cleaned before string tokenization, even when a tag
+begins on a comment line and reaches a later message. HTML ampersand entities
+stay literal; Mermaid's hash entities stay as encoded markers in every
+summarized text; message text is accepted but omitted. [fixture:
+gitgraph/lex-html-attribute-quotes] [fixture:
+gitgraph/lex-html-comment-reaches-message] [fixture: gitgraph/entity-all-fields]
+[fixture: gitgraph/entity-ampersand-html]
+
+The shared style/classDef line preprocessing can remove a final semicolon from
+any text consumer, including quoted ids, messages, tags, branch names and all
+common forms. It removes only the final semicolon per trigger; two triggers can
+remove two. Case changes, missing hash, whitespace after the colon, or a
+separate LF/LS/PS segment prevent a trigger; directive removal can recreate one.
+Frontmatter titles do not pass through this stage. [fixture:
+gitgraph/style-id-two-semicolons] [fixture: gitgraph/style-label-one-semicolon]
+[fixture: gitgraph/style-tag-three-semicolons] [fixture: gitgraph/style-branch]
+[fixture: gitgraph/style-title] [fixture: gitgraph/style-acctitle] [fixture:
+gitgraph/style-accdescr] [fixture: gitgraph/style-block] [fixture:
+gitgraph/style-both-words] [fixture: gitgraph/style-uppercase] [fixture:
+gitgraph/style-no-hash] [fixture: gitgraph/style-colon-space] [fixture:
+gitgraph/style-message-separate-hash] [fixture: gitgraph/style-ls-segment]
+[fixture: gitgraph/style-ps-segment] [fixture: gitgraph/style-directive-rejoins]
+[fixture: gitgraph/style-frontmatter-title] [fixture: gitgraph/style-merge-tag]
+[fixture: gitgraph/style-cherry-pick-tag]
+
+The same preprocessing can remove a semicolon between order digits or inside the
+order keyword, rejoining the integer or keyword before lexing. [fixture:
+gitgraph/div-style-semicolon-in-order-number] [fixture:
+gitgraph/div-style-semicolon-in-order-keyword]
+
+TITLE, ACC_TITLE and line/block ACC_DESCR are not STRING calls: quotes and
+written backslash escapes in their values remain literal, and a quote within a
+title value need not close before EOL. [fixture:
+gitgraph/common-title-quoted-escape] [fixture:
+gitgraph/common-acctitle-quoted-escape] [fixture:
+gitgraph/common-accdescr-quoted-escape] [fixture:
+gitgraph/common-block-quoted-escape] [fixture: gitgraph/common-title-open-quote]
+
+Native comments and globally removed closed directives preserve the EOL LF after
+each statement/common form. An unclosed free-text directive removes following
+statements while the completed prefix can end at EOF. Even after a bounded
+header, `; ;` is not a statement. [fixture:
+gitgraph/directive-eol-commit-closed] [fixture:
+gitgraph/directive-eol-branch-closed] [fixture:
+gitgraph/directive-eol-checkout-closed] [fixture:
+gitgraph/directive-eol-switch-closed] [fixture:
+gitgraph/directive-eol-merge-closed] [fixture:
+gitgraph/directive-eol-cherry-pick-closed] [fixture:
+gitgraph/directive-eol-title-closed] [fixture:
+gitgraph/directive-eol-acctitle-closed] [fixture:
+gitgraph/directive-eol-accdescr-closed] [fixture:
+gitgraph/directive-eol-block-closed] [fixture:
+gitgraph/directive-eol-commit-open] [fixture:
+gitgraph/directive-eol-branch-open] [fixture:
+gitgraph/directive-eol-checkout-open] [fixture:
+gitgraph/directive-eol-switch-open] [fixture: gitgraph/directive-eol-merge-open]
+[fixture: gitgraph/directive-eol-cherry-pick-open] [fixture:
+gitgraph/directive-eol-title-open] [fixture:
+gitgraph/directive-eol-acctitle-open] [fixture:
+gitgraph/directive-eol-accdescr-open] [fixture:
+gitgraph/directive-eol-block-open] [fixture: gitgraph/comment-eol-branch]
+[fixture: gitgraph/comment-eol-checkout] [fixture: gitgraph/comment-eol-switch]
+[fixture: gitgraph/comment-eol-merge] [fixture:
+gitgraph/comment-eol-cherry-pick] [fixture: gitgraph/comment-eol-block]
+[fixture: gitgraph/eol-header-spaced-semicolons]
+
+A dot in a numeric bare name does not guarantee REFERENCE: the zero INT
+alternative takes `0` immediately, and a multi-digit nonzero INT can backtrack
+to a shorter prefix before a dot. Thus bare `0.1` and `12.3` reject, unlike
+`1.2.3`. [fixture: gitgraph/lex-reference-zero-before-dot] [fixture:
+gitgraph/lex-reference-multiple-digits-before-dot] [fixture:
+gitgraph/lex-reference-digit-dot]
+
+Because FLOAT/NUMBER are not reachable lexer terminals, bare `1.5` reaches
+REFERENCE. The unused BOOLEAN terminal likewise does not capture `true` or
+`false`; both remain string reference names. [fixture:
+gitgraph/lex-reference-float-spelling] [fixture:
+gitgraph/lex-reference-boolean-spellings]
+
+## info
+
+The summary is `{}` for every accepted info input. The optional `showInfo`
+keyword does not create an AST field, and
+[infoParser.parse()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoParser.ts#L6-L11)
+only logs the parsed AST; it publishes no common title or accessibility values.
+[fixture: info/header-lf] [fixture: info/header-inline-flag] [fixture:
+info/common-all] [fixture: info/common-flag-all]
+
+The upstream minimal header and header-with-flag examples also produce the empty
+summary. [fixture: info/spec-info-06271baf] [fixture: info/spec-info-df27ef00]
+
+The version returned by
+[getVersion()](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDb.ts#L3-L11)
+is a build constant, including the optional tiny-build suffix. The
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoRenderer.ts#L13-L28)
+displays its version argument and reads no Db field. Version, fixed dimensions,
+font settings and SVG positions are omitted because the input determines none of
+them. Frontmatter title/configuration stays in the shared embedded reading; info
+has no title setter. [fixture: info/frontmatter-title] [fixture:
+info/frontmatter-config] [fixture: info/frontmatter-html]
+
+A leading init directive can change the shared embedded configuration without
+adding Db fields. [fixture: info/directive-config]
+
+### Entry and keyword boundaries
+
+The
+[entry rule](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/info.langium#L1-L9)
+takes `info`, an optional `showInfo`, and an optional common fragment, in that
+order. Newlines may precede the header and surround the flag; the first common
+form may share the header or flag line. A repeated header, repeated flag, flag
+before the header or flag after a common form rejects. [fixture:
+info/header-blank-lines] [fixture: info/header-flag-next-line] [fixture:
+info/header-common-inline] [fixture: info/header-flag-common-inline] [fixture:
+info/header-repeated] [fixture: info/header-repeated-flag] [fixture:
+info/header-flag-before] [fixture: info/header-common-then-flag]
+
+The
+[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
+matches the lowercase prefix `info`, but the
+[token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/info/tokenBuilder.ts#L1-L7)
+requires JavaScript whitespace, EOF or `%%` after both keywords. A letter,
+digit, underscore, hyphen, Unicode letter or colon suffix rejects; header case
+variants and a split header reject too. [fixture: info/detect-lower-suffix]
+[fixture: info/detect-digit-suffix] [fixture: info/detect-underscore-suffix]
+[fixture: info/detect-dash-suffix] [fixture: info/detect-unicode-suffix]
+[fixture: info/detect-colon] [fixture: info/detect-uppercase] [fixture:
+info/detect-titlecase] [fixture: info/detect-header-split] [fixture:
+info/flag-letter-suffix] [fixture: info/flag-digit-suffix] [fixture:
+info/flag-underscore-suffix] [fixture: info/flag-dash-suffix] [fixture:
+info/flag-unicode-suffix] [fixture: info/flag-colon-suffix] [fixture:
+info/flag-uppercase] [fixture: info/flag-lowercase] [fixture:
+info/flag-glued-header]
+
+Only ACC_DESCR, ACC_TITLE, TITLE, NEWLINE and the four hidden common terminals
+are reachable; imported STRING, BOOLEAN, ID and number terminals are not units
+of this grammar. Standalone quoted strings, boolean words, numbers and names
+reject. The public parse gate rejects any lexer or parser error, including one
+after a valid prefix or before a recovered common form. [fixture:
+info/terminal-string-double] [fixture: info/terminal-string-single] [fixture:
+info/terminal-boolean] [fixture: info/terminal-number] [fixture:
+info/terminal-id] [fixture: info/error-before-header] [fixture:
+info/error-after-prefix] [fixture: info/error-after-common] [fixture:
+info/spec-info-1b111b64]
+
+### Common forms and endings
+
+The imported
+[common terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L6-L34)
+and
+[CommonValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L45-L81)
+accept title text after one ASCII space/tab, accessibility line values after an
+ASCII-space/tab colon gap, and description blocks after JavaScript whitespace.
+Empty values, third assignments, whitespace-only final values and either quote
+kind remain accepted, with no published Db value. Quotes and backslashes are
+common text, so an open quote in a line value does not require closing.
+[fixture: info/title-empty] [fixture: info/title-repeat-empty] [fixture:
+info/title-tabs] [fixture: info/title-double-quotes] [fixture:
+info/title-single-quotes] [fixture: info/title-open-quote] [fixture:
+info/acctitle-empty] [fixture: info/acctitle-repeat-empty] [fixture:
+info/acctitle-quoted] [fixture: info/acctitle-gap] [fixture:
+info/accdescr-line-empty] [fixture: info/accdescr-line-repeat] [fixture:
+info/accdescr-line-quoted] [fixture: info/accdescr-block-empty] [fixture:
+info/accdescr-block-repeat] [fixture: info/accdescr-block-quoted] [fixture:
+info/common-title-nbsp-only] [fixture: info/space-common-interior] [fixture:
+info/space-block-interior]
+
+Multiline description blocks accept indentation and blank lines without adding
+Db fields. [fixture: info/accdescr-block-lines]
+
+Colonless accessibility titles, `title:` and incorrect common keyword suffixes
+or case reject. NBSP cannot replace the title separator or the accessibility
+colon gap, and LS cannot appear in a line description's colon gap. LF, blank
+lines, LS and BOM may instead stand before a block brace. [fixture:
+info/acctitle-no-colon] [fixture: info/title-colon] [fixture:
+info/title-digit-suffix] [fixture: info/title-letter-suffix] [fixture:
+info/title-dash-suffix] [fixture: info/title-unicode-suffix] [fixture:
+info/title-uppercase] [fixture: info/acctitle-digit-suffix] [fixture:
+info/acctitle-letter-suffix] [fixture: info/acctitle-dash-suffix] [fixture:
+info/acctitle-unicode-suffix] [fixture: info/acctitle-uppercase] [fixture:
+info/accdescr-digit-suffix] [fixture: info/accdescr-letter-suffix] [fixture:
+info/accdescr-dash-suffix] [fixture: info/accdescr-unicode-suffix] [fixture:
+info/accdescr-uppercase] [fixture: info/space-title-separator-nbsp] [fixture:
+info/space-acctitle-colon-nbsp] [fixture: info/accdescr-colon-gap-ls] [fixture:
+info/accdescr-block-gap-lf] [fixture: info/common-block-blank-gap] [fixture:
+info/accdescr-block-gap-ls] [fixture: info/accdescr-block-gap-bom]
+
+A block ends at the first `}`; nested braces, quotes and backslashes do not
+protect a closer. An unclosed block rejects. A block requires a visible EOL or
+EOF before another common form, while a line value takes later same-line
+keywords as text. Empty line values never take a later line as their value.
+[fixture: info/accdescr-block-first-close] [fixture: info/accdescr-block-nested]
+[fixture: info/common-block-closer-quoted] [fixture:
+info/accdescr-block-escaped-brace] [fixture: info/accdescr-block-open] [fixture:
+info/common-same-line] [fixture: info/title-consumes-next-keyword] [fixture:
+info/acctitle-next-line] [fixture: info/common-title-comment-gap] [fixture:
+info/common-acctitle-comment-gap]
+
+Blank lines between common forms and a final block or line value at EOF are
+accepted. Semicolons and colon-space after header, flag or block reject;
+semicolon text inside common line values is accepted. A tab after a block is
+hidden whitespace, whereas LS and PS there reject. [fixture:
+info/common-blank-lines] [fixture: info/end-block-eof] [fixture:
+info/end-common-eof] [fixture: info/end-header-semicolon] [fixture:
+info/end-header-spaced-semicolon] [fixture: info/end-header-double-semicolon]
+[fixture: info/end-header-colon-space] [fixture: info/end-flag-semicolon]
+[fixture: info/end-flag-spaced-semicolon] [fixture:
+info/end-flag-double-semicolon] [fixture: info/end-flag-colon-space] [fixture:
+info/end-block-semicolon] [fixture: info/end-block-double-semicolon] [fixture:
+info/end-block-spaced-semicolons] [fixture: info/end-block-colon-space]
+[fixture: info/end-title-semicolons] [fixture: info/end-acctitle-semicolons]
+[fixture: info/end-accdescr-semicolons] [fixture: info/end-block-tab] [fixture:
+info/end-block-ls] [fixture: info/end-block-ps]
+
+CR and CRLF normalize to LF. LS/PS are not native newlines or body gaps, though
+common line/block values can contain them. [fixture: info/line-cr] [fixture:
+info/line-crlf] [fixture: info/line-ls-between] [fixture: info/line-ps-between]
+[fixture: info/line-ls-in-value] [fixture: info/line-ps-in-value] [fixture:
+info/line-ls-block] [fixture: info/line-ls-eof] [fixture: info/line-ps-eof]
+
+### Removals, hidden forms and detection
+
+Global directive removal can rejoin a keyword, keyword/colon boundary, block
+brace or text value. It can also destroy the boundary between two keywords; a
+surviving space controls that case. An unclosed directive can remove the rest of
+the source or take a later word and its LF. Unknown directive types and invalid
+init content are accepted in the recorded cases. [fixture:
+info/div-directive-header-middle] [fixture: info/directive-header-glued]
+[fixture: info/directive-header-space-control] [fixture:
+info/div-directive-flag-middle] [fixture: info/directive-flag-glued] [fixture:
+info/div-directive-title-middle] [fixture: info/div-directive-acctitle-middle]
+[fixture: info/div-directive-accdescr-middle] [fixture:
+info/directive-acctitle-colon] [fixture: info/directive-block-brace] [fixture:
+info/directive-title-value] [fixture: info/directive-acctitle-value] [fixture:
+info/directive-accdescr-value] [fixture: info/directive-block-value] [fixture:
+info/directive-unclosed-after-header] [fixture:
+info/directive-unclosed-inside-header] [fixture:
+info/directive-unclosed-word-lines] [fixture: info/directive-unknown] [fixture:
+info/directive-invalid-init] [fixture: info/directive-uppercase] [fixture:
+info/directive-ls-close] [fixture: info/common-accdescr-directive-gap]
+
+The hidden YAML/DIRECTIVE terminals are separate from global removal and real
+frontmatter. Each consumes LF immediately after its qualifying closer; another
+whitespace boundary is only looked at. After header/flag this needs no surviving
+EOL. After every common line value or a description block a consumed sole LF
+prevents the next statement, while a spare LF, closing space or EOF is accepted.
+[fixture: info/hidden-directive-body] [fixture:
+info/hidden-directive-glued-header] [fixture:
+info/hidden-directive-flag-next-common] [fixture:
+info/hidden-directive-header-eof] [fixture: info/hidden-directive-flag-eof]
+[fixture: info/hidden-directive-after-title] [fixture:
+info/hidden-directive-title-spare-lf] [fixture:
+info/hidden-directive-title-space] [fixture: info/hidden-directive-title-eof]
+[fixture: info/hidden-directive-after-acctitle] [fixture:
+info/hidden-directive-acctitle-spare-lf] [fixture:
+info/hidden-directive-acctitle-space] [fixture:
+info/hidden-directive-acctitle-eof] [fixture:
+info/hidden-directive-after-accdescr] [fixture:
+info/hidden-directive-accdescr-spare-lf] [fixture:
+info/hidden-directive-accdescr-space] [fixture:
+info/hidden-directive-accdescr-eof] [fixture: info/hidden-directive-after-block]
+[fixture: info/hidden-directive-block-spare-lf] [fixture:
+info/hidden-directive-block-space] [fixture: info/hidden-directive-block-eof]
+[fixture: info/hidden-yaml-body] [fixture: info/hidden-yaml-after-flag]
+[fixture: info/hidden-yaml-header-eof] [fixture: info/hidden-yaml-flag-eof]
+[fixture: info/hidden-yaml-after-block] [fixture:
+info/hidden-yaml-block-spare-lf] [fixture: info/hidden-yaml-block-space]
+[fixture: info/hidden-yaml-block-eof]
+
+YAML dashes glued to header/flag fail their keyword boundaries; common line
+values instead absorb the YAML opener as text and reject the following content
+line. An already visible EOL before a hidden form still separates statements.
+Hidden YAML does not decode its body, accepts adjacent fences and ASCII opener
+padding, and rejects an unclosed block, indented closer, Unicode opener padding,
+four dashes or a closer suffix with no later qualifying closer. An earlier
+nonqualifying closer may be passed. [fixture: info/hidden-yaml-after-header]
+[fixture: info/hidden-yaml-flag-glued] [fixture: info/hidden-yaml-after-title]
+[fixture: info/hidden-yaml-after-acctitle] [fixture:
+info/hidden-yaml-after-accdescr] [fixture: info/hidden-directive-between-common]
+[fixture: info/hidden-yaml-between-common] [fixture: info/hidden-yaml-invalid]
+[fixture: info/hidden-yaml-empty] [fixture: info/hidden-yaml-open-padding]
+[fixture: info/hidden-yaml-unclosed] [fixture: info/hidden-yaml-indent]
+[fixture: info/hidden-yaml-open-nbsp] [fixture: info/hidden-yaml-four-dashes]
+[fixture: info/hidden-yaml-close-suffix] [fixture:
+info/hidden-yaml-nonqualifying-closer]
+
+Hidden DIRECTIVE precedes native comments: nonword content and ASCII leading
+padding can match it. If unclosed or glued at its closer it instead becomes a
+native comment, keeping LF and swallowing same-line text. A later qualifying
+closer can follow a failed earlier one. YAML-looking text inside a block stays
+block text, but the `}` of a directive-looking form closes the description
+first; the remaining `%%` is a native comment. CR/CRLF normalization preserves
+the hidden LF consequences. [fixture: info/hidden-directive-padding] [fixture:
+info/hidden-directive-unclosed] [fixture: info/hidden-directive-close-glued]
+[fixture: info/hidden-directive-close-tab] [fixture:
+info/hidden-directive-first-close] [fixture:
+info/hidden-directive-nonqualifying-closer] [fixture:
+info/hidden-yaml-inside-block] [fixture: info/hidden-directive-inside-block]
+[fixture: info/hidden-directive-block-first-brace] [fixture:
+info/hidden-directive-cr] [fixture: info/hidden-directive-crlf] [fixture:
+info/hidden-yaml-cr] [fixture: info/hidden-yaml-crlf]
+
+Global comment lines disappear; trailing or bare native `%%` comments keep LF.
+Common line values stop before the percent pair, including at an empty value.
+Comment regions can disappear inside blocks, but a bare percent line inside an
+enclosing block is its text. A native comment cannot join the authored
+keyword/colon or block-opening components across a visible LF. [fixture:
+info/comment-leading] [fixture: info/comment-header] [fixture:
+info/comment-flag] [fixture: info/comment-between-header-flag] [fixture:
+info/comment-bare-body] [fixture: info/comment-triple] [fixture:
+info/comment-title] [fixture: info/comment-acctitle] [fixture:
+info/comment-accdescr] [fixture: info/common-line-leading-percent] [fixture:
+info/comment-block] [fixture: info/comment-bare-block] [fixture:
+info/comment-after-block] [fixture: info/comment-eof] [fixture:
+info/comment-header-split] [fixture: info/comment-colon-gap] [fixture:
+info/common-block-native-comment-gap]
+
+Leading frontmatter applies the shared title/config reading; adjacent fences,
+unclosed blocks, LS/PS delimiters or closing-only indentation reject. An empty
+body line, CR/CRLF and equal indentation are accepted. Malformed YAML, including
+YAML invalidated by attribute-quote cleanup, rejects. The two malformed-YAML
+fixtures carry `embedded-data-opaque` and have no comparison Db. [fixture:
+info/frontmatter-empty] [fixture: info/frontmatter-unclosed] [fixture:
+info/frontmatter-ls-fences] [fixture: info/frontmatter-ps-fences] [fixture:
+info/frontmatter-indent-close] [fixture: info/frontmatter-empty-line] [fixture:
+info/frontmatter-cr] [fixture: info/frontmatter-crlf] [fixture:
+info/frontmatter-indent-both] [fixture: info/div-frontmatter-invalid-yaml]
+[fixture: info/div-frontmatter-html-invalid-yaml]
+
+Numeric, false, null, array and empty-string frontmatter titles affect only the
+shared reading, with no info Db value. BOM on only the opener exposes retained
+YAML, while matching BOMs can provide real frontmatter. [fixture:
+info/frontmatter-title-zero] [fixture: info/frontmatter-title-number] [fixture:
+info/frontmatter-title-false] [fixture: info/frontmatter-title-null] [fixture:
+info/frontmatter-title-array] [fixture: info/frontmatter-title-empty-string]
+[fixture: info/frontmatter-bom-opening] [fixture: info/frontmatter-bom-both]
+
+Detection skips one nonleading frontmatter-shaped block, then info's hidden YAML
+reads it without applying title/config or decoding YAML. Real frontmatter can
+precede it, and a second-scan directive can follow it. A second block, a block
+after a bare percent-brace line or second-scan directive, and equally indented
+nonleading fences reject. A recreated second-scan directive itself is accepted
+only with a qualifying hidden closer. [fixture:
+info/frontmatter-nonleading-comment] [fixture: info/frontmatter-nonleading-lf]
+[fixture: info/hidden-yaml-config-ignored] [fixture:
+info/hidden-yaml-preheader-invalid] [fixture:
+info/detect-block-after-real-frontmatter] [fixture:
+info/detect-block-before-second-scan] [fixture: info/detect-two-blocks]
+[fixture: info/detect-block-after-bare-brace] [fixture:
+info/detect-second-scan-before-block] [fixture:
+info/detect-block-equally-indented] [fixture: info/detect-second-scan-directive]
+[fixture: info/detect-second-scan-glued]
+
+### Whitespace and shared text preprocessing
+
+Only ASCII space/tab are native hidden gaps. JavaScript whitespace before the
+first diagram unit is globally trimmed, but the same non-ASCII blanks after the
+header, at EOF or after a hidden closer reject. [fixture: info/space-header-tab]
+[fixture: info/space-header-vt] [fixture: info/space-header-ff] [fixture:
+info/space-header-nbsp] [fixture: info/space-header-bom] [fixture:
+info/space-header-1680] [fixture: info/space-header-2000] [fixture:
+info/space-header-2001] [fixture: info/space-header-2002] [fixture:
+info/space-header-2003] [fixture: info/space-header-2004] [fixture:
+info/space-header-2005] [fixture: info/space-header-2006] [fixture:
+info/space-header-2007] [fixture: info/space-header-2008] [fixture:
+info/space-header-2009] [fixture: info/space-header-200a] [fixture:
+info/space-header-202f] [fixture: info/space-header-205f] [fixture:
+info/space-header-3000] [fixture: info/space-leading-unicode] [fixture:
+info/space-trailing-unicode] [fixture: info/hidden-directive-close-ls] [fixture:
+info/hidden-yaml-close-ls]
+
+After a detection-passed bare `%%` line, ASCII space/tab still work, but VT, FF,
+NBSP, BOM, U+1680, U+2000–U+200A, U+202F, U+205F, U+3000, LS and PS reject, both
+immediately before the header and on a whitespace-only line. Retained
+YAML/directive prefixes have the same LS/BOM and LS-only-line rejections, with
+accepted ASCII controls. A bare line alone has no header, and a bare
+percent-brace line can hide a same-line header from detection. [fixture:
+info/bare-before-header-space] [fixture: info/bare-before-header-tab] [fixture:
+info/div-bare-before-header-vt] [fixture: info/div-bare-before-header-ff]
+[fixture: info/div-bare-before-header-nbsp] [fixture:
+info/div-bare-before-header-bom] [fixture: info/div-bare-before-header-1680]
+[fixture: info/div-bare-before-header-2000] [fixture:
+info/div-bare-before-header-2001] [fixture: info/div-bare-before-header-2002]
+[fixture: info/div-bare-before-header-2003] [fixture:
+info/div-bare-before-header-2004] [fixture: info/div-bare-before-header-2005]
+[fixture: info/div-bare-before-header-2006] [fixture:
+info/div-bare-before-header-2007] [fixture: info/div-bare-before-header-2008]
+[fixture: info/div-bare-before-header-2009] [fixture:
+info/div-bare-before-header-200a] [fixture: info/div-bare-before-header-202f]
+[fixture: info/div-bare-before-header-205f] [fixture:
+info/div-bare-before-header-3000] [fixture: info/div-bare-before-header-ls]
+[fixture: info/div-bare-before-header-ps] [fixture: info/bare-line-space]
+[fixture: info/bare-line-tab] [fixture: info/div-bare-line-vt] [fixture:
+info/div-bare-line-ff] [fixture: info/div-bare-line-nbsp] [fixture:
+info/div-bare-line-bom] [fixture: info/div-bare-line-1680] [fixture:
+info/div-bare-line-2000] [fixture: info/div-bare-line-2001] [fixture:
+info/div-bare-line-2002] [fixture: info/div-bare-line-2003] [fixture:
+info/div-bare-line-2004] [fixture: info/div-bare-line-2005] [fixture:
+info/div-bare-line-2006] [fixture: info/div-bare-line-2007] [fixture:
+info/div-bare-line-2008] [fixture: info/div-bare-line-2009] [fixture:
+info/div-bare-line-200a] [fixture: info/div-bare-line-202f] [fixture:
+info/div-bare-line-205f] [fixture: info/div-bare-line-3000] [fixture:
+info/div-bare-line-ls] [fixture: info/div-bare-line-ps] [fixture:
+info/div-detect-retained-yaml-bare-ls] [fixture:
+info/div-detect-retained-directive-bare-ls] [fixture:
+info/div-detect-retained-yaml-bare-bom] [fixture:
+info/div-detect-retained-directive-bare-bom] [fixture:
+info/div-detect-retained-yaml-bare-ls-line] [fixture:
+info/div-detect-retained-directive-bare-ls-line] [fixture:
+info/detect-retained-yaml-ascii] [fixture: info/detect-retained-directive-ascii]
+[fixture: info/detect-bare-only] [fixture:
+info/detect-percent-brace-inline-header]
+
+HTML, quote cleanup, named/numeric entities and the style/classDef passes can
+reach common text, but no common field is published under htmlLabels false,
+loose or sandbox settings either. An entity cannot supply a header or a
+standalone statement. [fixture: info/html-all-common] [fixture: info/html-false]
+[fixture: info/html-loose] [fixture: info/html-sandbox] [fixture:
+info/entity-keyword] [fixture: info/entity-standalone] [fixture:
+info/style-title] [fixture: info/style-acctitle] [fixture: info/style-accdescr]
+[fixture: info/style-block] [fixture: info/style-block-two] [fixture:
+info/style-block-three] [fixture: info/style-uppercase] [fixture:
+info/style-nohash] [fixture: info/style-colon-space] [fixture:
+info/style-hash-other-line] [fixture: info/style-both] [fixture:
+info/style-directive-rejoin] [fixture: info/style-ls] [fixture: info/style-ps]
+[fixture: info/style-frontmatter]
+
+Style preprocessing can remove a rejecting semicolon after a block. Two
+semicolons leave one rejecting suffix; uppercase, no-hash, colon-space-hash, LS
+and PS controls keep the suffix. Global directive removal can recreate the
+trigger. [fixture: info/style-block-end-semicolon] [fixture:
+info/style-block-end-double] [fixture: info/style-block-end-upper] [fixture:
+info/style-block-end-nohash] [fixture: info/style-block-end-colon-space]
+[fixture: info/style-block-end-ls] [fixture: info/style-block-end-ps] [fixture:
+info/style-block-end-directive]
+
+The four C4 detection words in any common text field, or in native header/flag
+comments at EOF, select the rejecting C4 path; LF-terminated comment controls
+are accepted as info. [fixture: info/div-c4container-title] [fixture:
+info/div-c4component-title] [fixture: info/div-c4dynamic-title] [fixture:
+info/div-c4deployment-title] [fixture: info/div-c4container-acctitle] [fixture:
+info/div-c4component-acctitle] [fixture: info/div-c4dynamic-acctitle] [fixture:
+info/div-c4deployment-acctitle] [fixture: info/div-c4container-line] [fixture:
+info/div-c4component-line] [fixture: info/div-c4dynamic-line] [fixture:
+info/div-c4deployment-line] [fixture: info/div-c4container-block] [fixture:
+info/div-c4component-block] [fixture: info/div-c4dynamic-block] [fixture:
+info/div-c4deployment-block] [fixture: info/div-c4container-header-comment-eof]
+[fixture: info/div-c4component-header-comment-eof] [fixture:
+info/div-c4dynamic-header-comment-eof] [fixture:
+info/div-c4deployment-header-comment-eof] [fixture:
+info/c4container-header-comment-lf] [fixture:
+info/c4component-header-comment-lf] [fixture: info/c4dynamic-header-comment-lf]
+[fixture: info/c4deployment-header-comment-lf] [fixture:
+info/div-c4container-flag-comment-eof] [fixture:
+info/div-c4component-flag-comment-eof] [fixture:
+info/div-c4dynamic-flag-comment-eof] [fixture:
+info/div-c4deployment-flag-comment-eof] [fixture:
+info/c4container-flag-comment-lf] [fixture: info/c4component-flag-comment-lf]
+[fixture: info/c4dynamic-flag-comment-lf] [fixture:
+info/c4deployment-flag-comment-lf]

@@ -109,6 +109,8 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   agentflow: true,
   usecase: true,
   pie: true,
+  gitgraph: true,
+  info: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

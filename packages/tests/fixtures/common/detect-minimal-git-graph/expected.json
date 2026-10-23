@@ -5,5 +5,16 @@
   },
   "accepted": true,
   "diagramType": "gitGraph",
-  "db": null
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
 }

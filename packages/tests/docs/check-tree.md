@@ -6,6 +6,12 @@ This document explains `checkTree()` of `@mmd-toolkit/tests`: it checks a
 recorded tree (`ast.json`) against the conditions that the specification states
 for a tree, from the tree and the input alone, without running a parser.
 
+`checkTree()` checks tree conditions: fields, ranges, tokens and their lexical
+invariants. It does not decide input acceptance. Acceptance conditions,
+including semantic rejections, belong to the parser and are checked by comparing
+the recorded result kind (`ast.json` or `parse-error.json`) with the fixture's
+specification reading (`fixtureAccepts`).
+
 ## Why
 
 The comparison of [db-from-tree.md](./db-from-tree.md) shows that the ranges and
@@ -499,6 +505,123 @@ const problems: TreeProblem[] = checkTree(text, tree)
     The tokens of a string label are one `String` token, or `StringFragment`
     tokens where a directive, a comment region, or an ignored `;` cuts the
     string, and the `RawText` tokens of the words after it.
+  - gitgraph: all 18 node types, child fields and source order follow
+    [ast/gitgraph.md](../../spec/docs/ast/gitgraph.md). The header keeps only a
+    written LR/TB/BT direction or null; joined and separated colons have their
+    distinct boundaries, and no visible LF separates header components.
+    [fixture: gitgraph/gram-all-fields] [fixture: gitgraph/header-only]
+    [fixture: gitgraph/header-colon-commit-inline] [fixture:
+    gitgraph/header-hidden-before-direction-colon] [fixture:
+    gitgraph/header-visible-lf-before-colon] Each statement and option checks
+    its authored keyword, punctuation, allowed children and nullable fields.
+    Checkout preserves checkout/switch; a message preserves msg or null for a
+    bare string; type preserves NORMAL/REVERSE/HIGHLIGHT. Repeated options stay
+    in source order. Option words and colons are contiguous after common
+    removal; native whitespace and hidden forms cannot separate them. [fixture:
+    gitgraph/gram-commit-repeated-options] [fixture:
+    gitgraph/gram-merge-repeated-options] [fixture:
+    gitgraph/gram-cherry-pick-repeated-options] [fixture: gitgraph/gram-switch]
+    [fixture: gitgraph/lex-option-global-before-colon] [fixture:
+    gitgraph/lex-option-hidden-before-colon] [fixture:
+    gitgraph/gram-commit-colon-space]
+
+    Each shared leaf is a complete lexical unit at its position. Strings must
+    close and backslash pairs cannot cross physical LF or LS/PS; unescaped line
+    breaks remain content. Orders are complete unsigned integers with the zero
+    and dot-boundary priority. Bare references obey their word, interior and
+    ending characters and lose to earlier integers, equal-length keywords and
+    composite common forms; other keywords yield to longer bare references.
+    [fixture: gitgraph/lex-string-escapes] [fixture:
+    gitgraph/lex-string-backslash-lf] [fixture: gitgraph/lex-string-multiline]
+    [fixture: gitgraph/number-leading-zero] [fixture:
+    gitgraph/lex-reference-zero-before-dot] [fixture:
+    gitgraph/lex-reference-multiple-digits-before-dot] [fixture:
+    gitgraph/lex-reference-digit-dot] [fixture: gitgraph/lex-reference-shape]
+    [fixture: gitgraph/lex-reference-reserved] [fixture:
+    gitgraph/lex-reference-common-prefix] [fixture:
+    gitgraph/lex-reference-keyword-prefixes]
+
+    Each hidden form has exactly one owner: the header's named gaps, the
+    statement's named reference gaps, an option's textBefore/textBeforeValue,
+    textAfter before visible EOL, or body after it. Explicit character scanning
+    prefers YAML's earliest qualifying closer after a body line, falling back to
+    the immediately adjacent fence only when none exists; DIRECTIVE takes its
+    earliest bounded closer. Consumed following LF stays outside the range. A
+    following statement requires a surviving visible LF; spare LF, a closing
+    space and EOF are distinguished. Ordinary gaps allow only ASCII space/tab
+    and permitted visible LF. [fixture: gitgraph/header-hidden-before-colon]
+    [fixture: gitgraph/lex-hidden-directive-before-branch-name] [fixture:
+    gitgraph/lex-option-between-options-hidden] [fixture:
+    gitgraph/lex-hidden-directive-between-option-value] [fixture:
+    gitgraph/lex-yaml-three-adjacent-fences] [fixture:
+    gitgraph/lex-yaml-empty-followed-later-block] [fixture:
+    gitgraph/lex-hidden-directive-after-commit] [fixture:
+    gitgraph/lex-hidden-directive-commit-spare-lf] [fixture:
+    gitgraph/lex-hidden-directive-commit-closing-space] [fixture:
+    gitgraph/lex-hidden-directive-commit-eof] [fixture: gitgraph/lex-body-bom]
+
+    Common line values retain the text after one title separator or after an
+    accessibility colon; block values trim only their outer whitespace and close
+    at the first brace. Empty values are null. Earlier strings and composite
+    blocks own hidden-looking text, so a native Comment after the header must
+    neither start inside one nor disguise an earlier hidden DIRECTIVE. Before
+    the header, detection passes at most one retained YAML block before
+    second-scan directives; passed bare Comments and their common whitespace are
+    trivia even between retained forms, without widening body gaps or hidden
+    boundaries. Shared coverage, raw/written values, token kinds and hulls
+    apply. History's acceptance conditions are checked by the parser and the
+    fixture acceptance comparison described above. [fixture: gitgraph/title-tab]
+    [fixture: gitgraph/lex-description-line-null] [fixture:
+    gitgraph/lex-description-block-only-directive] [fixture:
+    gitgraph/lex-hidden-directive-string] [fixture:
+    gitgraph/lex-hidden-directive-block] [fixture:
+    gitgraph/lex-hidden-directive-fallback-complete-statement] [fixture:
+    gitgraph/detect-two-nonleading-blocks] [fixture:
+    gitgraph/div-detect-retained-yaml-bare-ls-line] [fixture:
+    gitgraph/div-detect-retained-directive-bare-bom] [fixture:
+    gitgraph/div-lex-preheader-bare-between-retained-unicode] [fixture:
+    gitgraph/lex-preheader-hidden-no-bare-unicode]
+
+  - info: all seven node types and their fields follow
+    [ast/info.md](../../spec/docs/ast/info.md). showInfo agrees with its written
+    keyword; textBeforeShowInfo is empty without it and may contain visible LF
+    when it is written. Keywords require common whitespace, EOF or a percent
+    pair; body gaps remain ASCII space/tab and LF only. Common statements retain
+    repeated and empty occurrences, with null only where their composite value
+    is empty. Their title separator, colon gap, block trim and first brace are
+    checked independently of their lack of Db effect. [fixture:
+    info/header-inline-flag] [fixture: info/header-flag-next-line] [fixture:
+    info/lex-hidden-without-flag] [fixture: info/flag-letter-suffix] [fixture:
+    info/space-header-nbsp] [fixture: info/title-repeat-empty] [fixture:
+    info/lex-title-two-spaces] [fixture: info/acctitle-gap] [fixture:
+    info/space-block-interior] [fixture: info/accdescr-block-first-close]
+
+    Each InfoIgnoredText is one whole hidden YAML or DIRECTIVE match in its
+    named header/flag gap, body or textAfter before visible EOL. YAML uses the
+    body-present closer before the empty-body fallback; DIRECTIVE uses the
+    earliest bounded closer. The consumed following LF is outside the range, and
+    a later statement needs surviving EOL; spare LF, closing space and EOF are
+    distinct controls. Hidden-looking text enclosed by a composite value remains
+    content. A native Comment after the header cannot hide an earlier DIRECTIVE
+    or start inside such a value. Before the header, retained forms obey their
+    boundaries and one-block detection order, while passed bare Comments and
+    their accompanying common whitespace are trivia even between retained forms.
+    Ordinary body gaps stay strict. RawText fragmentation is allowed only at
+    common source cuts. Shared coverage, field, written-value, range and token
+    checks apply. [fixture: info/lex-flag-hidden-two] [fixture:
+    info/lex-hidden-after-visible-eol] [fixture: info/lex-yaml-three-fences]
+    [fixture: info/lex-yaml-two-empty] [fixture:
+    info/hidden-directive-after-title] [fixture:
+    info/hidden-directive-title-spare-lf] [fixture:
+    info/hidden-directive-title-space] [fixture:
+    info/hidden-directive-title-eof] [fixture: info/hidden-yaml-inside-block]
+    [fixture: info/hidden-directive-close-glued] [fixture:
+    info/lex-detect-preheader-empty-braces] [fixture: info/detect-two-blocks]
+    [fixture: info/div-detect-retained-yaml-bare-ls] [fixture:
+    info/div-detect-retained-directive-bare-bom] [fixture:
+    info/div-detect-yaml-bare-directive] [fixture: info/lex-retained-no-bare-ls]
+    [fixture: info/lex-hidden-common-comment]
+
   - pie: all eight pie node types and their child order follow
     [ast/pie.md](../../spec/docs/ast/pie.md). The diagram keeps showData only
     for its written flag; textBeforeHeader holds only retained hidden forms,
@@ -542,10 +665,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     double-quoted unit: backslash escapes cannot cross a physical LF or LS/PS,
     while unescaped line breaks are content. NumericLiteral is a complete
     optional-minus integer or fraction, with leading zeroes allowed only in a
-    fraction, and its shared double must not be negative, even on duplicates.
-    Negative zero and negative underflow are accepted. [fixture:
-    pie/header-letter-suffix] [fixture: pie/showdata-quote-glued] [fixture:
-    pie/lex-header-nbsp] [fixture: pie/label-single-quote] [fixture:
+    fraction. Whether its shared double is negative, including on duplicates,
+    belongs to parser acceptance rather than tree checking. Negative zero and
+    negative underflow still have their written numeric values checked.
+    [fixture: pie/header-letter-suffix] [fixture: pie/showdata-quote-glued]
+    [fixture: pie/lex-header-nbsp] [fixture: pie/label-single-quote] [fixture:
     pie/label-escaped-quotes] [fixture: pie/label-multiline] [fixture:
     pie/label-backslash-ls] [fixture: pie/number-leading-zero] [fixture:
     pie/number-decimal-leading-zero] [fixture: pie/db-duplicate-negative]
@@ -562,16 +686,26 @@ const problems: TreeProblem[] = checkTree(text, tree)
     pie/ast-title-tab-null-eof] [fixture: pie/title-comment] [fixture:
     pie/accdescr-block-gap] [fixture: pie/accdescr-block-nested] [fixture:
     pie/review-accdescr-empty-block-first] Each PieIgnoredText is one complete
-    hidden YAML or DIRECTIVE form. Explicit character scanning checks the
-    earliest bounded closer and excludes its consumed following LF from the
-    node. Only the specified section gaps, common textAfter lists and diagram
-    positions can own it; strings and description blocks absorb hidden-looking
-    text as content. A visible LF cannot stand between section components or
-    before showData. After a completed statement, a following item needs an LF
-    that remains after hidden consumption; EOF needs none. A hidden form after a
-    visible EOL belongs to body, rather than the preceding statement. [fixture:
-    pie/review-yaml-between-label-colon] [fixture:
-    pie/frontmatter-between-section-parts] [fixture:
+    hidden YAML or DIRECTIVE form. Explicit character scanning checks YAML's
+    earliest bounded closer after at least one body line; only when none exists
+    may the immediately following fence close an empty body. [fixture:
+    pie/lex-yaml-three-adjacent-fences] [fixture:
+    pie/lex-yaml-immediate-fence-before-later-closer] [fixture:
+    pie/lex-yaml-three-fences-before-value] [fixture:
+    pie/lex-nonleading-yaml-three-adjacent-fences] [fixture:
+    pie/lex-yaml-apparent-empty-pairs-unmatched-fence] [fixture:
+    pie/review-yaml-hidden-empty] [fixture:
+    pie/lex-yaml-before-colon-two-blocks] DIRECTIVE uses its earliest bounded
+    closer. The consumed following LF stays outside the node. [fixture:
+    pie/lex-yaml-closer-suffix-skip-later] [fixture:
+    pie/lex-hidden-multiple-closers] Only the specified section gaps, common
+    textAfter lists and diagram positions can own it; strings and description
+    blocks absorb hidden-looking text as content. A visible LF cannot stand
+    between section components or before showData. After a completed statement,
+    a following item needs an LF that remains after hidden consumption; EOF
+    needs none. A hidden form after a visible EOL belongs to body, rather than
+    the preceding statement. [fixture: pie/review-yaml-between-label-colon]
+    [fixture: pie/frontmatter-between-section-parts] [fixture:
     pie/lex-yaml-closer-suffix-skip-later] [fixture:
     pie/lex-hidden-multiple-closers] [fixture: pie/gram-newline-before-colon]
     [fixture: pie/showdata-next-line] [fixture: pie/review-yaml-after-section]

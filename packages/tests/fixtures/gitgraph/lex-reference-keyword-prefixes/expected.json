@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Longer REFERENCE alternatives prevent statement keyword prefixes from splitting names."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "commitA"
+      },
+      {
+        "name": "branch2"
+      },
+      {
+        "name": "checkout-x"
+      },
+      {
+        "name": "switch/x"
+      },
+      {
+        "name": "merge.x"
+      },
+      {
+        "name": "cherry-pick-x"
+      }
+    ]
+  }
+}

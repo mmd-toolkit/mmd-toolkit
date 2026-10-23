@@ -811,14 +811,18 @@ block-beta
 
 ### 空の説明ブロック
 
-何も変えない空のブロックは、それ自身が 1 つの文で、
-トークンの間の空白の規則に従います。
-中の空白は、改行を含めて空白 1 つにし、接した括弧は接したままにします。
+何も変えない空のブロックは、それ自身が 1 つの文です。
+内側が空白だけなら、タブ、改行、Unicode の空白を含めて `{}` と印字します。
+囲む空白を要する本文がないためです。
+すでに空の内側は空のままです。
+接した keyword は接したまま、`accDescr{  }` は `accDescr{}` にします。
+[fixture: empty-description-blocks/empty-whitespace-interiors]
+[test: block Unicode and tab interiors]
 指令かコメント行を持つブロックは、書かれたまま印字します。
 ヘッダーの後でも、2 つの node の間でも、自分の行に置きます。
 文法がブロックを受け入れるのは、文が始まる場所です。
 mermaid.js は、どこにあってもトークンのないものとして読みます。
-[fixture: empty-description-blocks/whitespace-becomes-one-space]
+[fixture: empty-description-blocks/whitespace-removed]
 [fixture: empty-description-blocks/braces-touching-kept]
 [fixture: empty-description-blocks/line-break-inside-joined]
 [fixture: empty-description-blocks/between-two-nodes]
@@ -829,7 +833,7 @@ mermaid.js は、どこにあってもトークンのないものとして読み
 [fixture: empty-description-blocks/empty-line-inside-joined]
 
 入力
-([empty-description-blocks/whitespace-becomes-one-space-input.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-becomes-one-space-input.mmd)):
+([empty-description-blocks/whitespace-removed-input.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-input.mmd)):
 
 ```mmd
 block-beta
@@ -837,11 +841,11 @@ accDescr {   } a
 ```
 
 出力
-([empty-description-blocks/whitespace-becomes-one-space-output.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-becomes-one-space-output.mmd)):
+([empty-description-blocks/whitespace-removed-output.mmd](../tests/fixtures/block/empty-description-blocks/whitespace-removed-output.mmd)):
 
 ```mmd
 block-beta
-  accDescr { }
+  accDescr {}
   a
 ```
 

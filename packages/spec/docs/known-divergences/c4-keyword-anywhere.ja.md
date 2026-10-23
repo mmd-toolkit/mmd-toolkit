@@ -184,21 +184,20 @@ mermaid.js は C4 を選んで拒否しますが、
      A --> B
    ```
 
-| 例  | mermaid.js                        | この仕様                                       |
-| --- | --------------------------------- | ---------------------------------------------- |
-| 1   | C4 のパーサーに渡され、拒否       | メッセージ `C4Container` を持つ sequence 図    |
-| 2   | C4 のパーサーに渡され、拒否       | ラベル `C4Component` の頂点 A を持つ flowchart |
-| 3   | C4 のパーサーに渡され、拒否       | クラス `C4Dynamic` を持つ class 図             |
-| 4   | C4 のパーサーに渡され、拒否       | 状態 `C4Deployment` を持つ state 図            |
-| 5   | 頂点 `C4Context` を持つ flowchart | 同じ                                           |
-| 6   | 頂点 A と B を持つ flowchart      | 同じ                                           |
-
-[fixture: common/detect-c4-anywhere]
-[fixture: flowchart/div-c4-keyword-in-label]
-[fixture: class/div-c4-keyword-as-class-name]
-[fixture: state/div-c4-keyword-as-state-id]
-[fixture: common/detect-c4context-only-at-start]
-[fixture: flowchart/detect-c4-keyword-on-comment-line]
+| 例                                                     | mermaid.js                        | この仕様                                       |
+| ------------------------------------------------------ | --------------------------------- | ---------------------------------------------- |
+| 1                                                      | C4 のパーサーに渡され、拒否       | メッセージ `C4Container` を持つ sequence 図    |
+| 2                                                      | C4 のパーサーに渡され、拒否       | ラベル `C4Component` の頂点 A を持つ flowchart |
+| 3                                                      | C4 のパーサーに渡され、拒否       | クラス `C4Dynamic` を持つ class 図             |
+| 4                                                      | C4 のパーサーに渡され、拒否       | 状態 `C4Deployment` を持つ state 図            |
+| 5                                                      | 頂点 `C4Context` を持つ flowchart | 同じ                                           |
+| 6                                                      | 頂点 A と B を持つ flowchart      | 同じ                                           |
+| [fixture: common/detect-c4-anywhere]                   |
+| [fixture: flowchart/div-c4-keyword-in-label]           |
+| [fixture: class/div-c4-keyword-as-class-name]          |
+| [fixture: state/div-c4-keyword-as-state-id]            |
+| [fixture: common/detect-c4context-only-at-start]       |
+| [fixture: flowchart/detect-c4-keyword-on-comment-line] |
 
 差異は一方向です。
 この仕様は、mermaid.js が拒否するテキストをヘッダーの図として受理します。
@@ -316,6 +315,47 @@ EOF ではその接尾部が検出のテキストに残るため、Mermaid は C
 [fixture: pie/div-c4-inline-percent-eof]
 [fixture: pie/lex-c4context-label]
 
+### Gitgraph
+
+参照・文字列・共通のリテラル・無視するテキスト・Comment は、
+C4 の語を書かれたまま持てます。
+理由 2 の逆方向として見出しだけで検出し、後のテキストの
+`C4Container`・`C4Component`・`C4Dynamic`・`C4Deployment` により
+Mermaid が拒否する入力も、ここでは受理します。
+Mermaid が受理する入力をこの規則で拒否することはありません。
+後の `C4Context` や、LF で終わるコメントの対照例は一致します。
+[fixture: gitgraph/div-detect-c4container-id]
+[fixture: gitgraph/div-detect-c4component-branch]
+[fixture: gitgraph/div-detect-c4dynamic-message]
+[fixture: gitgraph/div-detect-c4deployment-tag]
+[fixture: gitgraph/div-detect-c4container-title]
+[fixture: gitgraph/div-detect-c4component-acctitle]
+[fixture: gitgraph/div-detect-c4dynamic-accdescr]
+[fixture: gitgraph/div-detect-c4deployment-block]
+[fixture: gitgraph/div-detect-c4container-comment-eof]
+[fixture: gitgraph/div-detect-c4component-header-comment-eof]
+[fixture: gitgraph/detect-c4context-id]
+[fixture: gitgraph/detect-c4container-comment-lf]
+
+### Info
+
+InfoLiteral・InfoIgnoredText・共有 Comment は C4 の語を書かれたまま持ちます。
+既存の逆方向の処理順の規則は見出しの文法を選びます。検出テキストの後の位置にあ
+る 4 個のアンカーのない C4 の語は、Mermaid が拒否してもここでは info として受
+理できます。Mermaid が受理する入力を拒否しません。C4Context、除いたフロントマ
+ター・ディレクティブ、LF で終わるコメントの対照例は一致し、別の理由で不正な
+info の本文は引き続き拒否します。 [fixture: info/div-c4container-title]
+[fixture: info/div-c4component-acctitle] [fixture: info/div-c4dynamic-line]
+[fixture: info/div-c4deployment-block]
+[fixture: info/div-c4container-header-comment-eof]
+[fixture: info/div-c4component-flag-comment-eof]
+[fixture: info/c4container-header-comment-lf]
+[fixture: info/c4component-flag-comment-lf] [fixture: info/div-c4-hidden-yaml]
+[fixture: info/div-c4-hidden-directive] [fixture: info/div-c4-retained-yaml]
+[fixture: info/div-c4-retained-directive] [fixture: info/lex-c4context-common]
+[fixture: info/lex-c4-removed-directive] [fixture: info/lex-c4-frontmatter]
+[fixture: info/lex-c4-invalid-info]
+
 ## mermaid.js の文書と issue
 
 - [C4 図の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md)
@@ -336,30 +376,30 @@ EOF ではその接尾部が検出のテキストに残るため、Mermaid は C
 
 - ピン留めした
 
-  [venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
-  は図を `venn-beta` で始めます。
-  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
-  `C4Container detection in:title,body` と
-  `C4 detection in:title,body` で検索し、
-  すべての C4 語を先頭に限定する提案の
-  [PR #8501](https://github.com/mermaid-js/mermaid/pull/8501) と
-  [PR #8504](https://github.com/mermaid-js/mermaid/pull/8504) が見つかりました。
-  ピン留めした検出器は四つの語を任意の位置で照合します。
-  [fixture: venn/lex-c4-c4container-identifier]
-  [fixture: venn/lex-c4-c4component-label]
-  [fixture: venn/lex-c4-c4dynamic-style]
-  [fixture: venn/lex-c4-c4deployment-title]
+[venn の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/venn.md)
+は図を `venn-beta` で始めます。
+2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+`C4Container detection in:title,body` と
+`C4 detection in:title,body` で検索し、
+すべての C4 語を先頭に限定する提案の
+[PR #8501](https://github.com/mermaid-js/mermaid/pull/8501) と
+[PR #8504](https://github.com/mermaid-js/mermaid/pull/8504) が見つかりました。
+ピン留めした検出器は四つの語を任意の位置で照合します。
+[fixture: venn/lex-c4-c4container-identifier]
+[fixture: venn/lex-c4-c4component-label]
+[fixture: venn/lex-c4-c4dynamic-style]
+[fixture: venn/lex-c4-c4deployment-title]
 
 - ピン留めした
 
-  [Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
-  は例を `ishikawa-beta` で始めます。
-  [issue #4784](https://github.com/mermaid-js/mermaid/issues/4784)
-  は mindmap と同様の構文を提案し、
-  節点のテキスト内で C4 を検出する規則は述べていません。
-  2026-10-21 に `mermaid-js/mermaid` の issue と PR を
-  `ishikawa` と `ishikawa C4 in:title,body` で検索し、
-  C4 語が Ishikawa の見出しを上書きする報告は見つかりませんでした。
+[Ishikawa の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L11-L38)
+は例を `ishikawa-beta` で始めます。
+[issue #4784](https://github.com/mermaid-js/mermaid/issues/4784)
+は mindmap と同様の構文を提案し、
+節点のテキスト内で C4 を検出する規則は述べていません。
+2026-10-21 に `mermaid-js/mermaid` の issue と PR を
+`ishikawa` と `ishikawa C4 in:title,body` で検索し、
+C4 語が Ishikawa の見出しを上書きする報告は見つかりませんでした。
 
 - pin の
   [usecase 文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/usecase.md#L1-L589)
@@ -384,3 +424,25 @@ EOF ではその接尾部が検出のテキストに残るため、Mermaid は C
   C4 のすべての選択肢を先頭に限定する提案です。
   この事実は共通の検出規則を支えますが、pin した版には先頭に限定しない選択肢が
   残っています。
+
+gitgraph の
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+は、
+見出しと各コマンドを説明します。
+2026-10-23 に issue・PR を `gitGraph`、`gitGraph directive`、
+`gitGraph YAML`、`gitGraph semicolon`、`gitGraph keyword`、
+`gitGraph duplicate`、`gitGraph cherry-pick` で検索しました。
+確認した結果には、この共通の境界を決定するものはありませんでした。
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) は終了済みで
+Status: Approved が付き、
+merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
+重複 ID の警告を加えます。これらから追加の差異は作りません。
+
+- info には専用の構文ページがなく、pin した
+  [構文の参照](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  は図種の宣言と percent コメントを説明します。2026-10-23 に `info showInfo`・
+  `info directive`・`info semicolon`・`info accTitle` で issue と PR を検索しま
+  した。[#7601](https://github.com/mermaid-js/mermaid/issues/7601) は
+  info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
+  検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
+  この節は既存の直接の規則に従います。

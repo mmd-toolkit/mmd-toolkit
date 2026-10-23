@@ -121,6 +121,15 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [gantt-no-undef](./gantt-no-undef.ja.md)                                     | どのタスクの id でもない id を指す `click`、`after`、`until` を禁止する。 | ✅  |     |     |
 | [gantt-no-unknown-exclude](./gantt-no-unknown-exclude.ja.md)                 | `weekends` でも曜日の名前でもない `excludes` の語を禁止する。             | ✅  |     |     |
 
+## pie
+
+| 規則                                                                     | 説明                                                                | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------- | --- | --- | --- |
+| [pie-no-duplicate-description](./pie-no-duplicate-description.ja.md)     | 前に設定した説明を置き換える `accDescr` を禁止する。                | ✅  |     |     |
+| [pie-no-duplicate-label](./pie-no-duplicate-label.ja.md)                 | 前の区分が持つラベルに、別の値を与える区分を禁止する。              | ✅  |     |     |
+| [pie-no-duplicate-title](./pie-no-duplicate-title.ja.md)                 | 前に設定したタイトルを置き換える `title` や `accTitle` を禁止する。 | ✅  |     |     |
+| [pie-no-empty-description-block](./pie-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                    | ✅  |     |     |
+
 ## quadrant
 
 | 規則                                                                               | 説明                                                              | ✅  | 💡  | 🚧  |
@@ -159,6 +168,16 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [usecase-no-empty-description-block](./usecase-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                      | ✅  |     |     |
 | [usecase-no-redefined-class](./usecase-no-redefined-class.ja.md)                       | 前に定義したクラスのスタイルを落とすか変える `classDef` を禁止する。  | ✅  |     |     |
 | [usecase-no-unclosed-description-block](./usecase-no-unclosed-description-block.ja.md) | 後の文のために書いた `}` が閉じる `accDescr {` のブロックを禁止する。 |     |     |     |
+
+## gitgraph
+
+| 規則                                                                               | 説明                                                                     | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | --- | --- | --- |
+| [gitgraph-no-duplicate-description](./gitgraph-no-duplicate-description.ja.md)     | 前に設定した説明を置き換える `accDescr` を禁止する。                     | ✅  |     |     |
+| [gitgraph-no-duplicate-option](./gitgraph-no-duplicate-option.ja.md)               | 1 つの文の中で、前の同じオプションの値を置き換えるオプションを禁止する。 | ✅  |     |     |
+| [gitgraph-no-duplicate-title](./gitgraph-no-duplicate-title.ja.md)                 | 前に設定したタイトルを置き換える `title` や `accTitle` を禁止する。      | ✅  |     |     |
+| [gitgraph-no-empty-description-block](./gitgraph-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                         | ✅  |     |     |
+| [gitgraph-no-redefined-commit](./gitgraph-no-redefined-commit.ja.md)               | 前に書いたコミットやマージの id を持つ `commit` を禁止する。             | ✅  |     |     |
 
 ## c4
 

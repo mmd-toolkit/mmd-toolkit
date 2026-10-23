@@ -116,6 +116,10 @@ flowchart LR
   rules are in [docs/usecase.md](./docs/usecase.md).
 - Pie charts: diagrams that start with `pie`, including `showData`. The
   formatting rules are in [docs/pie.md](./docs/pie.md).
+- Info diagrams: diagrams that start with `info`, including `showInfo`. The
+  formatting rules are in [docs/info.md](./docs/info.md).
+- Git graphs: diagrams that start with `gitGraph`. The formatting rules are in
+  [docs/gitgraph.md](./docs/gitgraph.md).
 - Block diagrams: diagrams that start with `block-beta` or `block`. The
   formatting rules, with examples, are in [docs/block.md](./docs/block.md).
 - The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
@@ -141,9 +145,9 @@ Other diagram types are not formatted yet (see below).
   list is in [docs/compatibility.md](./docs/compatibility.md).
 - A diagram type other than flowchart, agentflow, sequence, class, state, ER,
   Gantt, user journey, requirement, mindmap, timeline, sankey, XY chart,
-  quadrant chart, kanban, C4, Venn, Ishikawa, usecase, pie, and block diagram is
-  not changed, except that line endings follow `endOfLine`. In Markdown, it is
-  left to Prettier.
+  quadrant chart, kanban, C4, Venn, Ishikawa, usecase, pie, gitgraph, info, and
+  block diagram is not changed, except that line endings follow `endOfLine`. In
+  Markdown, it is left to Prettier.
 
 ## Guarantees and limitations
 
@@ -196,6 +200,8 @@ The reasons and the details are in
   diagrams.
 - [docs/usecase.md](./docs/usecase.md): the formatting rules for usecase
   diagrams.
+- [docs/info.md](./docs/info.md): the formatting rules for info diagrams.
+- [docs/gitgraph.md](./docs/gitgraph.md): the formatting rules for git graphs.
 - [docs/pie.md](./docs/pie.md): the formatting rules for pie charts.
 - [docs/block.md](./docs/block.md): the formatting rules for block diagrams.
 - [docs/compatibility.md](./docs/compatibility.md): where the plugin differs

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md: absent flag owns hidden form in body"
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

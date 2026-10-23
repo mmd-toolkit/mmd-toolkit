@@ -2,6 +2,20 @@ import { describe, expect, it } from "vitest"
 import { belongsIn, isDiagramType } from "../../../tools/src/diagrams.ts"
 
 describe("belongsIn", () => {
+  it("takes only the info detector id", () => {
+    expect(isDiagramType("info")).toBe(true)
+    expect(belongsIn("info", "info")).toBe(true)
+    expect(belongsIn("info", "Info")).toBe(false)
+    expect(belongsIn("info", "pie")).toBe(false)
+  })
+
+  it("takes only the gitGraph detector id", () => {
+    expect(isDiagramType("gitgraph")).toBe(true)
+    expect(belongsIn("gitgraph", "gitGraph")).toBe(true)
+    expect(belongsIn("gitgraph", "gitgraph")).toBe(false)
+    expect(belongsIn("gitgraph", "pie")).toBe(false)
+  })
+
   it("takes only the usecase detector id for the beta header", () => {
     expect(isDiagramType("usecase")).toBe(true)
     expect(belongsIn("usecase", "usecase")).toBe(true)

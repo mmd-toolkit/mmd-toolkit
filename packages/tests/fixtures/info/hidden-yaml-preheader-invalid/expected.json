@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Invalid YAML in a retained detection-skipped block is not decoded."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

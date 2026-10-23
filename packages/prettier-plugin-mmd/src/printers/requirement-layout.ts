@@ -23,6 +23,7 @@ import {
   keptAsWritten,
   layoutDescriptionBlock,
   layoutEmptyDescriptionBlock,
+  layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
@@ -188,7 +189,7 @@ export function layoutBlockOpening(
  * written over lines, where the lexer reads the line break as whitespace,
  * stands on one line too, and one with a comment or a directive in it is kept
  * as written. An empty description block, which mermaid.js does not read, is
- * laid out as in `layoutEmptyDescriptionBlock` (docs/requirement.md, Fields
+ * compacted with the shared empty-block layout (docs/requirement.md, Fields
  * and Empty description blocks).
  */
 export function layoutBodyItem(
@@ -197,7 +198,12 @@ export function layoutBodyItem(
 ): AtomLayout {
   const [start, end] = item.range
   if (item.type === "RequirementIgnoredText") {
-    return layoutEmptyDescriptionBlock(source, start, end)
+    return layoutCompactEmptyDescriptionBlockWithFallback(
+      source,
+      start,
+      end,
+      () => layoutEmptyDescriptionBlock(source, start, end),
+    )
   }
   if (spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)

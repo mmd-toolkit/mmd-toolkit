@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Global leading cleanup removes all JavaScript whitespace before the first unit."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

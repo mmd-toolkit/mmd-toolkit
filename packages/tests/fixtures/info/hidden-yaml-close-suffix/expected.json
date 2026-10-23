@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Non-whitespace after a hidden closer prevents the match."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->-<- at offset: 5, skipped 3 characters.\nLexer error on line 3, column 1: unexpected character: ->x<- at offset: 9, skipped 2 characters.\nLexer error on line 3, column 4: unexpected character: ->y<- at offset: 12, skipped 1 characters.\nLexer error on line 4, column 1: unexpected character: ->-<- at offset: 14, skipped 4 characters. "
+  }
+}

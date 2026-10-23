@@ -5,7 +5,7 @@ Japanese version:
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
 requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, venn,
-agentflow, usecase, and pie. This is one of the
+agentflow, usecase, pie, gitgraph, and info. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -350,6 +350,38 @@ pie/div-selected-semicolon-block-keyword] [fixture: pie/style-label-trigger]
 [fixture: pie/style-title-trigger] [fixture:
 pie/lex-yaml-opener-selected-semicolon]
 
+### Gitgraph
+
+A whole skipped form has a node; an arbitrary semicolon inside an atomic word,
+reference or integer does not. Selected semicolons strictly inside those atoms
+reject here although Mermaid joins them. This uses reason 2 and has no
+acceptance in the reverse direction. A selected semicolon at the option
+word/colon boundary or after a complete number is trivia; an unselected
+semicolon rejects in both readings. [fixture:
+gitgraph/div-style-semicolon-in-order-keyword] [fixture:
+gitgraph/div-style-semicolon-in-order-number] [fixture:
+gitgraph/div-lex-selected-semicolon-type-word] [fixture:
+gitgraph/div-lex-selected-semicolon-bare-reference-valid] [fixture:
+gitgraph/lex-selected-semicolon-option-word-colon] [fixture:
+gitgraph/lex-selected-semicolon-number-control] [fixture:
+gitgraph/lex-selected-semicolon-reference]
+
+### Info
+
+The one-character selected-semicolon range can be common trivia, but no
+statement or ignored-text sibling can stand inside a fixed keyword. Reason 2
+rejects selected semicolons inside showInfo, title, accTitle and both accDescr
+forms although Mermaid joins them. There is no reverse acceptance. Complete
+component boundaries and hidden/value text agree; an unselected semicolon, a
+split header rejected before selection, or another invalid tail remains
+unmarked. [fixture: info/div-selected-showinfo] [fixture:
+info/div-selected-title] [fixture: info/div-selected-acctitle] [fixture:
+info/div-selected-accdescr-line] [fixture: info/div-selected-accdescr-block]
+[fixture: info/lex-selected-colon-boundary] [fixture:
+info/lex-selected-brace-boundary] [fixture: info/lex-hidden-opener-selected]
+[fixture: info/lex-selected-header] [fixture:
+info/lex-selected-keyword-rejected-tail] [fixture: info/end-header-semicolon]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -411,3 +443,24 @@ pie/lex-yaml-opener-selected-semicolon]
   `pie semicolon` and `pie classDef` found no maintainer decision about a
   selected semicolon joining parts of a pie atom. This follows the shared
   boundary rule, not an asserted defect classification.
+
+For gitgraph,
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+documents the header and commands. Issue/PR searches on 2026-10-23 used
+`gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
+`gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
+inspected result settles this common boundary behavior.
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) is closed with
+Status: Approved; merged
+[#6707](https://github.com/mermaid-js/mermaid/pull/6707) adds a duplicate-id
+warning. These facts do not justify any additional divergence.
+
+- Info has no dedicated syntax page. The pinned
+  [syntax reference](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
+  describes diagram declarations and percent comments. Searches of issues and
+  pull requests on 2026-10-23 used `info showInfo`, `info directive`,
+  `info semicolon` and `info accTitle`.
+  [#7601](https://github.com/mermaid-js/mermaid/issues/7601) reports
+  info/showInfo rendering and was open with Type: Bug / Error and Status:
+  Triage. No inspected result establishes an info-specific maintainer decision
+  to reject this syntax; this section follows the existing direct rule.

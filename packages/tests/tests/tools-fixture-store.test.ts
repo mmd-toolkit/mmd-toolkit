@@ -433,10 +433,10 @@ describe("generateExpected", () => {
   })
 
   it("records db null in common/ for a diagram type that has no normalizer", async () => {
-    const file = await generateExpected("common", "info\n", AUTHORED)
+    const file = await generateExpected("common", "packet\n", AUTHORED)
     expect(acceptedOf(file)).toMatchObject({
       accepted: true,
-      diagramType: "info",
+      diagramType: "packet",
       db: null,
     })
   })
@@ -476,7 +476,7 @@ describe("generateExpected", () => {
 })
 
 describe("generateSpecified", () => {
-  it("leaves converted invalid frontmatter YAML opaque, with no specified Db for usecase or pie", async () => {
+  it("records the reference Db after leaving out converted invalid frontmatter YAML", async () => {
     const cases: readonly { diagram: DiagramType; name: string }[] = [
       {
         diagram: "usecase",
@@ -493,11 +493,38 @@ describe("generateSpecified", () => {
         accepted: false,
         error: { name: "YAMLException" },
       })
-      await expect(
-        generateSpecified(diagram, fixture.input, head, fixture.file),
-      ).resolves.toBeUndefined()
-      expect(fixture.specified).toBeUndefined()
+      const specified = await generateSpecified(
+        diagram,
+        fixture.input,
+        head,
+        fixture.file,
+      )
+      expect(specified).toMatchObject({
+        accepted: true,
+        diagramType: diagram,
+        db: { title: "", accTitle: "", accDescr: "" },
+      })
+      expect(specified).not.toHaveProperty("embedded")
     }
+  })
+
+  it("records an opaque specified reading without requiring a comparison Db normalizer result", async () => {
+    const fixture = readFixtures("flowchart").find(
+      (entry) => entry.name === "div-data-unknown-shape",
+    )
+    if (fixture === undefined) throw new Error("missing opaque shape fixture")
+    expect(
+      await generateSpecified(
+        "flowchart",
+        fixture.input,
+        headOf(fixture.file),
+        fixture.file,
+      ),
+    ).toEqual({
+      accepted: true,
+      diagramType: "flowchart-v2",
+      db: null,
+    })
   })
 
   /** `comment-takes-character` reads `p%%` as a keyword's first letter: accepted by mermaid.js, rejected by the specification. */

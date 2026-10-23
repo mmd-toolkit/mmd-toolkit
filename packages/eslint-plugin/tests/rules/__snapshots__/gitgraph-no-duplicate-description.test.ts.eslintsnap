@@ -1,0 +1,223 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> docs/rules/gitgraph-no-duplicate-description.md incorrect 1
+Filename: gitgraph-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | gitGraph
+  2 |   accDescr: First
+  3 |   accDescr: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   commit
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/description-conversion-barrier
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/description-conversion-barrier-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr:First
+  3 | accDescr:  Second
+    | ^~~~~~~~~~~~~~~~~ [1]
+  4 | accDescr:First
+    | ^~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/description-same-block-form
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/description-same-block-form-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr { First }
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/description-same-line-form
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/description-same-line-form-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: First
+  3 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/description-unpadded-mixed-different
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/description-unpadded-mixed-different-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   accDescr:First
+  3 |   accDescr { Second }
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |   commit
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-comment-block
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-comment-block-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %% TODO
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-comment-history
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-comment-history-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %% TODO
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 | accDescr: Second
+  7 | commit
+  8 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-crlf
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-crlf-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr {First
+  3 | line}
+  4 | accDescr {Second
+    | ^~~~~~~~~~~~~~~~\ [1]
+  5 | line}
+    | ~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-different
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-different-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   accDescr: First
+  3 |   accDescr { Second }
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |   commit
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-empty-line
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-empty-line-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | commit
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-entity-spelling-written
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-entity-spelling-written-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: #35;
+  3 | accDescr: #
+    | ^~~~~~~~~~~ [1]
+  4 | commit
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-html-quotes-written
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-html-quotes-written-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: <b x="a">Text</b>
+  3 | accDescr: <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | commit
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/descriptions-third-mixed
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/descriptions-third-mixed-input.mmd
+
+Code:
+  1 | gitGraph
+  2 | accDescr: A
+  3 | accDescr { B }
+    | ^~~~~~~~~~~~~~ [1]
+  4 | accDescr: A
+    | ^~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: gitgraph-no-duplicate-description >> invalid >>> invalid/gitgraph/docs-incorrect-1
+Filename: tests/fixtures/rules/gitgraph-no-duplicate-description/invalid/gitgraph/docs-incorrect-1-input.mmd
+
+Code:
+  1 | gitGraph
+  2 |   accDescr: First
+  3 |   accDescr: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   commit
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---

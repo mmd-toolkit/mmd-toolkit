@@ -4,11 +4,13 @@ import {
   withoutBarePercentLinesBeforeHeader,
   withoutBlankLinesAfterHeader,
   withoutFrontmatterTagStarts,
+  opaqueReferenceInput,
 } from "../../../tools/src/specified-reading.ts"
 import { KNOWN_DIVERGENCES, loadFixtures } from "../src/index.ts"
 import type { MermaidRun } from "../src/mermaid.ts"
 import {
   extractFrontmatterTitle,
+  readMermaidConfiguration,
   runMermaidWithEmbeddedData,
 } from "../src/mermaid.ts"
 
@@ -34,10 +36,13 @@ const BLANK_LINES_MARK = "blank-line-after-header-or-comments"
 /** The mark of the divergence about the HTML tag that starts in the frontmatter. */
 const HTML_TAG_MARK = "html-tag-in-frontmatter"
 
+/** The mark of the divergence about opaque embedded data. */
+const OPAQUE_MARK = "embedded-data-opaque"
+
 /**
  * The marks of the divergences where the specification rejects what
- * mermaid.js accepts, or accepts what it rejects, with no other reading of
- * mermaid.js to take: their fixtures have no `specified.json`
+ * mermaid.js accepts, with no other reading of mermaid.js to take: their
+ * fixtures have no `specified.json`
  * (`docs/expected-results.md`).
  */
 const MARKS_WITHOUT_READING = [
@@ -46,7 +51,6 @@ const MARKS_WITHOUT_READING = [
   "click-reserved-word",
   "tokenless-empty-forms",
   "headerless-empty-ending",
-  "embedded-data-opaque",
 ]
 
 /** The first line of the message of the error of a rejected run. */
@@ -71,11 +75,12 @@ function classIds(run: MermaidRun | undefined): string[] {
 }
 
 describe("the marks", () => {
-  it("are those of the removals, of the frontmatter, of the bare `%%` lines and of the blank lines, and the marks without a reading, and no other", () => {
+  it("are those of the removals, of the frontmatter, of the bare `%%` lines and of the blank lines, of opaque data, and the marks without a reading, and no other", () => {
     expect(KNOWN_DIVERGENCES.toSorted()).toEqual(
       [
         ...REMOVAL_MARKS,
         HTML_TAG_MARK,
+        OPAQUE_MARK,
         BARE_PERCENT_MARK,
         BLANK_LINES_MARK,
         ...MARKS_WITHOUT_READING,
@@ -287,6 +292,220 @@ describe("specifiedRunOf: marks that have no other reading", () => {
       await specifiedRunOf("sequenceDiagram\nA->>B: x\n", "other", undefined),
     ).toBeUndefined()
   })
+})
+
+describe("specifiedRunOf: embedded-data-opaque", () => {
+  it("removes only acceptance keys from derived configuration, retaining a body YAML form", async () => {
+    const cases = [
+      {
+        diagram: "gitgraph",
+        name: "div-frontmatter-main-branch-duplicate-default-accepted",
+        reference:
+          '---\n{"config":{"gitGraph":{}}}\n---\ngitGraph\ncommit\nbranch dev\n',
+      },
+      {
+        diagram: "gitgraph",
+        name: "div-init-main-branch-duplicate-default-accepted",
+        reference:
+          '---\n{"config":{"gitGraph":{}}}\n---\n\ngitGraph\ncommit\nbranch dev\n',
+      },
+      {
+        diagram: "pie",
+        name: "lex-yaml-three-adjacent-fences",
+      },
+    ] as const
+    for (const row of cases) {
+      const fixture = (await loadFixtures(row.diagram)).find(
+        (entry) => entry.name === row.name,
+      )
+      if (fixture === undefined) throw new Error(`missing fixture: ${row.name}`)
+      expect(await opaqueReferenceInput(fixture.input, fixture.config)).toBe(
+        "reference" in row ? row.reference : fixture.input,
+      )
+    }
+  }, 10_000)
+
+  it("keeps Mermaid's title when removing an acceptance key", async () => {
+    const fixture = (await loadFixtures("gitgraph")).find(
+      (entry) => entry.name === "div-frontmatter-main-branch-preserves-title",
+    )
+    if (fixture === undefined) throw new Error("missing title fixture")
+    const run = await specifiedRunOf(fixture.input, OPAQUE_MARK, fixture.config)
+    expect(dbOf(run)).toMatchObject({
+      title: "T",
+      branches: [{ name: "main" }, { name: "dev" }],
+    })
+    expect(run?.embedded?.title).toBe("T")
+    expect(run?.embedded?.config.gitGraph).toMatchObject({
+      mainBranchName: "main",
+    })
+  })
+
+  it("keeps a valid wrap directive when omitting invalid frontmatter", async () => {
+    const fixture = (await loadFixtures("sequence")).find(
+      (entry) =>
+        entry.name === "div-invalid-frontmatter-preserves-wrap-directive",
+    )
+    if (fixture === undefined) throw new Error("missing wrap fixture")
+    expect(await opaqueReferenceInput(fixture.input, fixture.config)).toBe(
+      '%%{init: {"wrap": true}}%%\nsequenceDiagram\nA->>B: x\n',
+    )
+    const run = await specifiedRunOf(fixture.input, OPAQUE_MARK, fixture.config)
+    expect(dbOf(run).messages).toEqual([
+      expect.objectContaining({ message: "x", wrap: true }),
+    ])
+    expect(run?.embedded?.config.wrap).toBe(true)
+  })
+
+  for (const name of [
+    "div-frontmatter-html-labels-default-comparison",
+    "div-init-html-labels-default-comparison",
+  ])
+    it(`uses default escaping for ${name}`, async () => {
+      const fixture = (await loadFixtures("gitgraph")).find(
+        (entry) => entry.name === name,
+      )
+      if (fixture === undefined) throw new Error(`missing fixture: ${name}`)
+      const run = await specifiedRunOf(
+        fixture.input,
+        OPAQUE_MARK,
+        fixture.config,
+      )
+      expect(firstLine(run)).toContain("Trying to create an existing branch")
+    })
+
+  it("leaves valid frontmatter, unrelated configuration and directives as written", async () => {
+    for (const [diagram, name] of [
+      ["pie", "frontmatter-html"],
+      ["common", "config-two-inits-merged"],
+    ] as const) {
+      const fixture = (await loadFixtures(diagram)).find(
+        (entry) => entry.name === name,
+      )
+      if (fixture === undefined) throw new Error(`missing fixture: ${name}`)
+      expect(await opaqueReferenceInput(fixture.input, fixture.config)).toBe(
+        fixture.input,
+      )
+    }
+  })
+
+  it("preserves other settings in the same configuration as an acceptance key", async () => {
+    const fixture = (await loadFixtures("gitgraph")).find(
+      (entry) => entry.name === "docs-syntax-gitgraph-2ea99686",
+    )
+    if (fixture === undefined) throw new Error("missing gitgraph docs fixture")
+    const text = await opaqueReferenceInput(fixture.input, fixture.config)
+    const reading = await readMermaidConfiguration(text)
+    expect(reading).toMatchObject({
+      accepted: true,
+      config: {
+        logLevel: "debug",
+        theme: "base",
+        gitGraph: { showBranches: true, showCommitLabel: true },
+      },
+    })
+    if (!reading.accepted) throw new Error("expected valid configuration")
+    expect(reading.config.gitGraph).not.toHaveProperty("mainBranchName")
+  })
+
+  it("omits an init block rejected by configuration's second detection scan", async () => {
+    const fixture = (await loadFixtures("common")).find(
+      (entry) => entry.name === "config-init-detection-rejects",
+    )
+    if (fixture === undefined) throw new Error("missing detection fixture")
+    expect(await opaqueReferenceInput(fixture.input, fixture.config)).toBe(
+      "\nerror\n%% x",
+    )
+    expect(
+      await specifiedRunOf(fixture.input, OPAQUE_MARK, fixture.config),
+    ).toMatchObject({
+      outcome: { accepted: true, diagramType: "error", db: {} },
+    })
+  })
+
+  it("derives configuration without reading opaque statements and restores the parser", async () => {
+    const fixture = (await loadFixtures("flowchart")).find(
+      (entry) => entry.name === "div-data-unknown-shape",
+    )
+    if (fixture === undefined) throw new Error("missing shape fixture")
+    expect(await readMermaidConfiguration(fixture.input)).toMatchObject({
+      accepted: true,
+      config: {},
+    })
+    expect(
+      (await runMermaidWithEmbeddedData(fixture.input)).outcome.accepted,
+    ).toBe(false)
+  })
+
+  for (const row of [
+    { name: "docs-community-contributing-05cdc44b", accepted: false },
+    { name: "docs-syntax-gitgraph-2ea99686", accepted: false },
+    {
+      name: "div-frontmatter-main-branch-checkout-default-accepted",
+      accepted: true,
+    },
+    {
+      name: "div-frontmatter-main-branch-duplicate-default-accepted",
+      accepted: true,
+    },
+    { name: "div-init-main-branch-duplicate-default-accepted", accepted: true },
+  ])
+    it(`uses default acceptance for ${row.name}`, async () => {
+      const fixture = (await loadFixtures("gitgraph")).find(
+        (entry) => entry.name === row.name,
+      )
+      if (fixture === undefined) throw new Error(`missing fixture: ${row.name}`)
+      const run = await specifiedRunOf(
+        fixture.input,
+        OPAQUE_MARK,
+        fixture.config,
+      )
+      expect(run?.outcome.accepted).toBe(row.accepted)
+      if (row.accepted) {
+        expect(dbOf(run).commits).toEqual([
+          {
+            id: "generated-commit-1",
+            seq: 0,
+            type: 0,
+            tags: [],
+            parents: [],
+            branch: "main",
+          },
+        ])
+      } else {
+        expect(firstLine(run)).toContain("Trying to checkout branch")
+      }
+    })
+
+  for (const row of [
+    {
+      diagram: "flowchart",
+      name: "div-data-unknown-shape",
+      diagramType: "flowchart-v2",
+    },
+    {
+      diagram: "kanban",
+      name: "gram-metadata-bad-yaml",
+      diagramType: "kanban",
+    },
+    {
+      diagram: "usecase",
+      name: "div-gram-json-unquoted-key",
+      diagramType: "usecase",
+    },
+  ] as const)
+    it(`records acceptance without a comparison Db for ${row.diagram}/${row.name}`, async () => {
+      const fixture = (await loadFixtures(row.diagram)).find(
+        (entry) => entry.name === row.name,
+      )
+      if (fixture === undefined) throw new Error(`missing fixture: ${row.name}`)
+      expect(
+        await specifiedRunOf(fixture.input, OPAQUE_MARK, fixture.config),
+      ).toEqual({
+        outcome: { accepted: true, diagramType: row.diagramType, db: null },
+        embedded: undefined,
+      })
+    })
 })
 
 describe("specifiedRunOf: c4-keyword-anywhere", () => {
@@ -608,11 +827,11 @@ describe("specifiedRunOf: html-tag-in-frontmatter", () => {
   })
 
   it("gives the title to embedded where the diagram type has no Db to summarize", async () => {
-    const input = "---\ntitle: <a\n---\ninfo\n"
+    const input = "---\ntitle: <a\n---\npacket\n"
     const run = await specifiedRunOf(input, HTML_TAG_MARK, undefined)
     expect(run?.outcome).toEqual({
       accepted: true,
-      diagramType: "info",
+      diagramType: "packet",
       db: null,
     })
     expect(run?.embedded?.title).toBe("<a")

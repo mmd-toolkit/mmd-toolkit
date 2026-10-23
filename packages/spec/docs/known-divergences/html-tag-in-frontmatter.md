@@ -235,6 +235,19 @@ pie/div-review-frontmatter-html-invalid-yaml] [fixture:
 usecase/div-gram-frontmatter-html-attribute-quotes] [fixture:
 pie/html-all-texts]
 
+### Gitgraph
+
+The tree can hold frontmatter and body strings independently. A cross-fence HTML
+match cannot belong to one of those nodes without crossing their boundary. The
+direct body-only HTML rule uses reason 2: both-accepted values can differ,
+Mermaid-only acceptance can reject here, and Mermaid rejection can accept here.
+Keep the frontmatter title as Mermaid derives it; ordinary body tags and
+frontmatter tags with no differing result are unmarked. [fixture:
+gitgraph/div-frontmatter-cross-title-value] [fixture:
+gitgraph/div-frontmatter-cross-string-enable] [fixture:
+gitgraph/div-frontmatter-cross-string-block] [fixture:
+gitgraph/frontmatter-body-tag-control] [fixture: gitgraph/frontmatter-html]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -287,3 +300,14 @@ pie/html-all-texts]
   2026-10-23 for `pie`, `pie frontmatter` and `pie HTML` found no maintainer
   decision on this cross-fence rewriting. The shared exclusion of opaque
   frontmatter determines the difference.
+
+For gitgraph,
+[gitgraph.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gitgraph.md)
+documents the header and commands. Issue/PR searches on 2026-10-23 used
+`gitGraph`, `gitGraph directive`, `gitGraph YAML`, `gitGraph semicolon`,
+`gitGraph keyword`, `gitGraph duplicate` and `gitGraph cherry-pick`. No
+inspected result settles this common boundary behavior.
+[#4838](https://github.com/mermaid-js/mermaid/issues/4838) is closed with
+Status: Approved; merged
+[#6707](https://github.com/mermaid-js/mermaid/pull/6707) adds a duplicate-id
+warning. These facts do not justify any additional divergence.

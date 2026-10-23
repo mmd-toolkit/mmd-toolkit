@@ -288,9 +288,7 @@ export function layoutErStatement(
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.type === "ErAccDescrBlockStatement") {
-    return layoutDescriptionBlock(source, statement, end, erValueNodeTypes, {
-      compactEmpty: true,
-    })
+    return layoutDescriptionBlock(source, statement, end, erValueNodeTypes)
   }
   if (spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)

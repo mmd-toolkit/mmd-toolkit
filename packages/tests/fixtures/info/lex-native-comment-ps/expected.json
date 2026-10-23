@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "info.md Composite common forms: PS stays inside a native header comment, swallowing the flag."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

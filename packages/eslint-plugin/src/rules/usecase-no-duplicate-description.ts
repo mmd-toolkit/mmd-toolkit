@@ -5,7 +5,7 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { accDescrText } from "../utils/acc-text.ts"
-import { isEmptyUsecaseDescriptionBlock } from "../utils/usecase-description.ts"
+import { isEmptyDescriptionBlock } from "../utils/description-block.ts"
 
 /** Both statement forms set a description, including an empty one. */
 type DescriptionStatement =
@@ -38,7 +38,7 @@ export const usecaseNoDuplicateDescription: MermaidRuleDefinition<{
       const value = accDescrText(node).trim()
       const emptyBlock =
         node.type === "UsecaseAccDescrBlockStatement" &&
-        isEmptyUsecaseDescriptionBlock(context.sourceCode, node)
+        isEmptyDescriptionBlock(context.sourceCode, node)
       if (
         !emptyBlock &&
         previous !== null &&

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty body line provides valid empty frontmatter."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

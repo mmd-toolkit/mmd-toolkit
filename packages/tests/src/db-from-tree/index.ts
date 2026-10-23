@@ -1,3 +1,7 @@
+import { gitgraphDbOf } from "./gitgraph.ts"
+import { infoDbOf } from "./info.ts"
+import type { GitgraphDiagram } from "./gitgraph-tree.ts"
+import type { InfoDiagram } from "./info-tree.ts"
 import { pieDbOf } from "./pie.ts"
 import type { PieDiagram } from "./pie-tree.ts"
 import { agentflowDbOf } from "./agentflow.ts"
@@ -54,6 +58,8 @@ export interface ErrorDiagram extends TreeNode {
 
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
+  | GitgraphDiagram
+  | InfoDiagram
   | PieDiagram
   | AgentflowDiagram
   | BlockDiagram
@@ -102,6 +108,10 @@ export function dbFromTree(
     // The error pseudo-diagram has no Db.
     case "ErrorDiagram":
       return {}
+    case "GitgraphDiagram":
+      return gitgraphDbOf(text, root, root.body, embedded)
+    case "InfoDiagram":
+      return infoDbOf()
     case "PieDiagram":
       return pieDbOf(text, root, root.body, embedded)
     case "AgentflowDiagram":

@@ -142,6 +142,16 @@ mermaid.js は、そうした位置の多くでそれらを受理し、ないも
 descriptionブロックの文です。
 文字とtriviaのない通常の閉じたブロックの内側は、改行があっても`{}`です。
 接する語は`accDescr{}`と接したままにします。
+説明ブロックの文法がある全図種で、空白だけの内側をこの形に揃えます。
+タブと Unicode の空白も含めます。
+囲む空白を要する本文がないためです。
+コメントや directive があるブロックの配置と、
+周囲の行を保つ図種の規則は保ちます。
+[test: sequence Unicode and tab interiors]
+[test: class Unicode and tab interiors]
+[test: state Unicode and tab interiors]
+[test: block Unicode and tab interiors]
+[test: c4 Unicode and tab interiors]
 [fixture: flowchart/accessibility-lines/empty-block-touching-keyword]
 [アクセシビリティの行](./flowchart.ja.md#アクセシビリティの行)に従い、
 囲む文字がないので内側の空白も不要で、Dbが同じ兄弟のusecaseの形に揃えます。
@@ -1655,3 +1665,129 @@ raw が拒否する C4 判定、前置きの Unicode、opaque YAML には raw Db
 [corpus fixture: pie/div-review-yaml-leading-invalid]
 [corpus fixture: pie/div-preheader-retained-yaml-bare-ls]
 [test: pie Markdown: rejected]
+
+## Gitgraph の hidden 境界と書かれた履歴
+
+[gitgraph の規則](./gitgraph.ja.md)は、見出しの方向と colon の有無、
+checkout の別名、bare と明示的な message、引用符、参照の形、order の桁、
+option と文の全出現の原順序を保持します。
+文字列と参照の padding、escape、HTML、entity、tag の順序は Db を変え、
+cherry-pick の空 tag は既定 tag を抑止します。
+summary に message がなくても削除はしません。
+[fixture: gitgraph/header/header-tb]
+[fixture: gitgraph/checkout-aliases/alias-kept]
+[fixture: gitgraph/messages/message-forms]
+[fixture: gitgraph/quotes/quotes-kept]
+[fixture: gitgraph/references/reference-empty]
+[corpus fixture: gitgraph/number-precision]
+[fixture: gitgraph/authored-values/inner-padding-change]
+[corpus fixture: gitgraph/db-cherry-pick-only-empty-tags]
+[fixture: gitgraph/order-and-repetitions/order-reverse-id]
+
+GitgraphIgnoredText は native hidden YAML/DIRECTIVE を保持し、
+実 frontmatter と global directive とは別です。
+完全な source を所有位置に残し、消費 LF・spare LF・閉じの padding は
+EOF でも保持します。hidden YAML の閉じの列も残します。
+見出し前に保持する prefix 全体を残し、hidden YAML の有効化を防ぎます。
+安全な実 YAML は共通の formatter を使い、tabWidth 0 でも正の最小字下げです。
+global trivia、コメント、semicolon の保護は共通の規則に従い、
+保護された見出しと最初の文は分けません。
+[corpus fixture: gitgraph/lex-hidden-yaml-before-option-value]
+[corpus fixture: gitgraph/lex-hidden-yaml-commit-closing-space]
+[corpus fixture: gitgraph/lex-hidden-directive-commit-spare-lf]
+[fixture: gitgraph/trailing-whitespace/hidden-eof-padding]
+[fixture: gitgraph/frontmatter-yaml/prefix-retained]
+[fixture: gitgraph/frontmatter-yaml/frontmatter-zero-minimum]
+[fixture: gitgraph/global-directives/directive-sides]
+[fixture: gitgraph/semicolons/semicolon-cross-trigger]
+
+共通の title と accessibility の行の外端は詰めますが、
+次の物理行から値を取り込みません。
+共通の description block 配置は、波括弧の接触、空 block、
+値の続きの列と trivia を保持します。
+物理改行・BOM・終端改行は共通の host の経路です。
+Markdown は最終 payload 行の padding を消しますが、
+本文途中の hidden の padding は必要なままです。
+[corpus fixture: gitgraph/title-next-line]
+[fixture: gitgraph/title-and-common-values/a11y-no-next-line]
+[fixture: gitgraph/title-and-common-values/a11y-fixed]
+[corpus fixture: gitgraph/lex-description-block-only-comment]
+[test: gitgraph/line-terminators-and-unicode/eol-string-crlf]
+[test: gitgraph Markdown: hidden-boundary]
+[test: gitgraph Markdown: final-hidden-padding]
+
+既知の差異は仕様に従います。atomic な directive と semicolon の分断、
+本文だけの frontmatter HTML、opaque な埋め込みデータ、C4 検出、
+bare percent の見出し前 trivia が対象です。
+不正 YAML を含め raw の拒否に raw Db はなく、
+利用できる仕様の読みを別に検査します。
+空の quoted option と空の description block は受理したままです。
+解析失敗は standalone の構文エラーを報告し、
+Markdown の埋め込みを辞退して payload を修復しません。
+[Specified readings](./gitgraph.ja.md#specified-readings) を参照してください。
+[corpus fixture: gitgraph/div-directive-in-commit]
+[corpus fixture: gitgraph/div-style-semicolon-in-order-number]
+[corpus fixture: gitgraph/div-frontmatter-cross-title-value]
+[corpus fixture: gitgraph/div-frontmatter-invalid-yaml]
+[corpus fixture: gitgraph/div-detect-c4container-comment-eof]
+[corpus fixture: gitgraph/div-detect-bare-before-header-ls]
+[test: gitgraph Markdown: rejected]
+
+## info の hidden 境界と原文の文
+
+[info の規則](./info.ja.md)は、書かれた showInfo の選択、共通文の順序と反復、
+空の構文、引用符、escape、内部空白、複数行の列を保ちます。
+info の公開 Db summary は、title と accessibility の代入があっても空です。
+空 Db の一致は原文を削除する根拠にはなりません。
+共通行の外端は詰め、次の物理行の値は別のままです。
+[fixture: info/statements-one-per-line/order-and-empty]
+[fixture: info/authored-values/literal-quotes-escapes]
+[fixture: info/title/title-next-comment-directive]
+[fixture: info/accessibility-lines/a11y-line-braces]
+
+InfoIgnoredText は実 frontmatter や Root directive と別に、
+hidden YAML/DIRECTIVE を元の所有位置に保ちます。
+原文全体、range 外で消費した LF、spare LF、閉じの padding を EOF でも保ちます。
+これらの境界は受理を左右するためです。
+hidden YAML の閉じは列を保ちます。
+無視された YAML の実 frontmatter への昇格が設定や受理を変えないよう、
+先頭 LF とコメント列を含む保持 prefix 全体を残します。
+共有 formatter と正の最小字下げを使うのは安全な実 YAML だけです。
+[fixture: info/hidden-yaml/yaml-block-space]
+[fixture: info/hidden-yaml/yaml-block-spare]
+[fixture: info/hidden-directives/hidden-title-space]
+[fixture: info/trailing-whitespace/trailing-hidden-eof-kept]
+[fixture: info/retained-prefix/prefix-leading-lf-kept]
+[fixture: info/frontmatter-yaml/frontmatter-zero-minimum]
+
+すべての semicolon を残し、共有の source segment 保護で、
+交差する値・trivia と保護された見出し・本文 group を完全な形に保ちます。
+trigger の segment 変更は受理を変えうるためです。
+global directive の原文と左右の接触も保ちます。
+info の Db が空でも init の削除は設定を変えうるためです。
+物理 EOL と EOF に達する global の終端は共有経路を使います。
+Prettier は先頭 BOM を除去・復元します。
+opening fence の BOM により、plugin 内部では hidden YAML が
+実 frontmatter として読まれることがあります。
+閉じの前にも BOM があると、共有の単体構文エラーの制約に当たります。
+Markdown は最終行の padding を削除し、途中の hidden 境界は残します。
+[fixture: info/semicolons/semicolon-style-classdef]
+[fixture: info/global-directives/global-config-align]
+[fixture: info/final-newline/final-open-global]
+[test: info/line-terminators-and-unicode/bom-frontmatter-opening]
+[corpus fixture: info/frontmatter-bom-both]
+[test: info Markdown: hidden-boundary]
+[test: info Markdown: final-hidden-padding]
+
+識別子の付いた読みは仕様に従います。
+keyword の atomic cut は拒否のままとし、opaque embedded data、C4 の検出、
+裸 percent 後の Unicode は指定された受理に従います。
+raw 拒否には raw Db や架空の embedded 効果を補いません。
+解析失敗は単体では構文エラーを報告し、Markdown では embedding を辞退します。
+payload を修復しません。
+[corpus fixture: info/div-directive-flag-middle]
+[corpus fixture: info/div-selected-showinfo]
+[corpus fixture: info/div-frontmatter-invalid-yaml]
+[corpus fixture: info/div-c4container-title]
+[corpus fixture: info/div-bare-before-header-ls]
+[test: info Markdown: rejected]

@@ -168,7 +168,7 @@ flowchart; the steps do not depend on the diagram type.
   (`tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`). The
   whole suite is run as 4.8 says.
 
-## 4. Adding a diagram type (Jison)
+## 4. Adding a diagram type
 
 ### 4.1 Input
 
@@ -255,8 +255,8 @@ Add them in this order; the flowchart files are the model.
    when the second needs it, and do not write it again.
 4. For each context of the Lexical structure, write one method per rule, in the
    order of the specification (in the flowchart, `readInClickContext` and
-   `readArrow`). The JSDoc names the section and the rule. A start condition of
-   Jison is a context on a stack. The lexer extends `UnitLexer`
+   `readArrow`). The JSDoc names the section and the rule. Represent the
+   specification's lexical contexts with a stack. The lexer extends `UnitLexer`
    (`src/unit-lexer.ts`), which keeps the stack, applies the rules of the
    current context to the end of the text, and throws when the text ends in a
    context that may not end there. Each diagram gives its
@@ -373,10 +373,10 @@ diagram to:
 | `tests/helpers/reference-inputs.ts`    | the diagram's units for the references |
 | `tests/<diagram>.test.ts`              | unit tests of the tree and tokens      |
 
-Use these test steps for Jison, Chevrotain and Langium diagrams. Pre-record
-probes (4.7), diagram tests and `tests/fixtures.test.ts` use `fixtureAccepts`
-from `@mmd-toolkit/tests` for acceptance. Its shared `DIVERGENCE_PROPERTIES`
-table defines each identifier's acceptance direction and specified-reading
+Use these test steps for every diagram type. Pre-record probes (4.7), diagram
+tests and `tests/fixtures.test.ts` use `fixtureAccepts` from
+`@mmd-toolkit/tests` for acceptance. Its shared `DIVERGENCE_PROPERTIES` table
+defines each identifier's acceptance direction and specified-reading
 requirement. A missing required `specified.json` is an error that fails the
 probe or test. Specified readings decide acceptance when present; unmarked
 fixtures use `expected.json`.
@@ -539,14 +539,16 @@ tests and their results; the number of recorded results (new, and changed, by
 kind); the exported types; the changed documents. For each claim, show whether
 it was run, read, or not checked.
 
-## 5. Langium diagrams
+## 5. First-match lexical rules, hidden forms and semantic acceptance
 
-For Langium-based diagrams, use section 4 for the inputs, wiring, records and
-checks, but implement the specification's lexical rules in their stated
-first-match priority order; do not assume Jison contexts, longest-match behavior
-or recovery. Split composite matches at authored component boundaries, retain
-hidden forms in their specified AST gaps, and keep any consumed following LF
-outside their ranges while allowing EOF to satisfy EOL. Preserve what detection
+Use this section for diagram types whose specification states the lexical rules
+as a first-match priority list with hidden forms and defines semantic acceptance
+conditions after conversion. Use section 4 for the inputs, wiring, records and
+checks. Implement the lexical rules in their stated first-match priority order;
+do not assume context stacks, longest-match behavior or recovery. Split
+composite matches at authored component boundaries, retain hidden forms as
+ignored text in the named AST gaps, and keep any consumed following LF outside
+their node ranges while allowing EOF to satisfy EOL. Preserve what detection
 leaves for the diagram to read, and do not read passed bare lines or their
 accompanying trivia again. Apply semantic rejections after shared conversion,
 including double underflow and negative zero where numeric leaves use doubles.

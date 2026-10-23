@@ -65,7 +65,8 @@ fixture は 1 件ごとに、
 `<diagram>` は、
 図種（`flowchart`、`sequence`、`class`、`state`、`er`、`gantt`、`journey`、
 `requirement`、`mindmap`、`timeline`、`sankey`、`xychart`、`quadrant`、
-`block`、`kanban`、`c4`、`venn`、`ishikawa`、`agentflow`、`usecase`、`pie`）か、
+`block`、`kanban`、`c4`、`venn`、`ishikawa`、`agentflow`、`usecase`、`pie`、
+`gitgraph`、`info`）か、
 `common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
@@ -146,7 +147,7 @@ mermaid.js は読み込みません。
   `"er"`、`"gantt"`、`"journey"`、`"requirement"`、`"mindmap"`、
   `"timeline"`、`"sankey"`、`"xychart"`、`"quadrant"`、`"block"`、
   `"kanban"`、`"c4"`、`"venn"`、`"ishikawa"`、`"agentflow"`、`"usecase"`、
-  `"pie"` の
+  `"pie"`、`"gitGraph"`、`"info"` の
   どれかの fixture を、名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
   `config` と `knownDivergence`（あるとき）、
@@ -215,7 +216,10 @@ mermaid.js は読み込みません。
   識別子と `<diagram>/<name>` を含めて投げる。
   次に、`specified` があればその `accepted`、なければ印の向きを使う。
   無印の fixture は `expected.accepted` を使う。
-  `embedded-data-opaque` は指定読みなしで受理し、比較する Db がない場合がある。
+  `embedded-data-opaque` は `direction: "both"` で、指定読みが必要。
+  不透明なデータから比較 Db を求められないときは、
+  読みは `db: null` で受理することがある。
+  埋め込み設定を読まないことで受理が変わるときは、拒否することもある。
   未知の識別子でも、fixture 名と識別子を含めて投げる。
 - `getDefaultConfig()`: `embedded.config` がそれとの差になる設定
   （`fixtures/default-config.json`）。

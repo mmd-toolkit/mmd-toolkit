@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "STRING decodes control escapes and drops the slash of unknown escapes without hexadecimal decoding."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "aq",
+        "seq": 0,
+        "type": 0,
+        "tags": [
+          "a'b"
+        ],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      }
+    ]
+  }
+}

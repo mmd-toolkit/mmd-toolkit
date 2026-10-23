@@ -117,6 +117,15 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [gantt-no-undef](./gantt-no-undef.md)                                     | Disallow a task id in `click`, `after`, or `until` that is the id of no task.   | ✅  |     |     |
 | [gantt-no-unknown-exclude](./gantt-no-unknown-exclude.md)                 | Disallow a word in `excludes` that is neither `weekends` nor the name of a day. | ✅  |     |     |
 
+## pie
+
+| Rule                                                                  | Description                                                                | ✅  | 💡  | 🚧  |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------------- | --- | --- | --- |
+| [pie-no-duplicate-description](./pie-no-duplicate-description.md)     | Disallow an `accDescr` that replaces the description set before it.        | ✅  |     |     |
+| [pie-no-duplicate-label](./pie-no-duplicate-label.md)                 | Disallow a section whose label an earlier section has, with another value. | ✅  |     |     |
+| [pie-no-duplicate-title](./pie-no-duplicate-title.md)                 | Disallow a `title` or an `accTitle` that replaces the title set before it. | ✅  |     |     |
+| [pie-no-empty-description-block](./pie-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.                    | ✅  |     |     |
+
 ## quadrant
 
 | Rule                                                                            | Description                                                            | ✅  | 💡  | 🚧  |
@@ -155,6 +164,16 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [usecase-no-empty-description-block](./usecase-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                                | ✅  |     |     |
 | [usecase-no-redefined-class](./usecase-no-redefined-class.md)                       | Disallow a `classDef` that drops or changes the styles of the class defined before it. | ✅  |     |     |
 | [usecase-no-unclosed-description-block](./usecase-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for a later statement closes.        |     |     |     |
+
+## gitgraph
+
+| Rule                                                                            | Description                                                                               | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --- | --- | --- |
+| [gitgraph-no-duplicate-description](./gitgraph-no-duplicate-description.md)     | Disallow an `accDescr` that replaces the description set before it.                       | ✅  |     |     |
+| [gitgraph-no-duplicate-option](./gitgraph-no-duplicate-option.md)               | Disallow an option that replaces the value of the same option before it in one statement. | ✅  |     |     |
+| [gitgraph-no-duplicate-title](./gitgraph-no-duplicate-title.md)                 | Disallow a `title` or an `accTitle` that replaces the title set before it.                | ✅  |     |     |
+| [gitgraph-no-empty-description-block](./gitgraph-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.                                   | ✅  |     |     |
+| [gitgraph-no-redefined-commit](./gitgraph-no-redefined-commit.md)               | Disallow a `commit` with the id of a commit or a merge written before it.                 | ✅  |     |     |
 
 ## c4
 

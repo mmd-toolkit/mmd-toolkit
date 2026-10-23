@@ -1,3 +1,5 @@
+import type { InfoDiagram, InfoNode } from "../src/ast/info.ts"
+import type { GitgraphDiagram, GitgraphNode } from "../src/ast/gitgraph.ts"
 import type { PieDiagram, PieNode } from "../src/ast/pie.ts"
 import type { UsecaseDiagram, UsecaseNode } from "../src/ast/usecase.ts"
 import type { AgentflowDiagram, AgentflowNode } from "../src/ast/agentflow.ts"
@@ -72,6 +74,8 @@ describe("the types of ast.md", () => {
       | AgentflowNode["type"]
       | UsecaseNode["type"]
       | PieNode["type"]
+      | GitgraphNode["type"]
+      | InfoNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -96,6 +100,8 @@ describe("the types of ast.md", () => {
       | AgentflowDiagram
       | UsecaseDiagram
       | PieDiagram
+      | GitgraphDiagram
+      | InfoDiagram
     >()
   })
 

@@ -23,6 +23,14 @@ The pinned version is mermaid 12.0.0. Its tag points to the commit
 and every reference to the source of mermaid.js in this specification is a link
 into that commit.
 
+The gitgraph definition is in its [syntax](./diagrams/gitgraph.md) and
+[tree](./ast/gitgraph.md) documents. [fixture: gitgraph/header-only] [fixture:
+gitgraph/gram-all-fields]
+
+The info definition is in its [syntax](./diagrams/info.md) and
+[tree](./ast/info.md) documents. [fixture: info/header-lf] [fixture:
+info/common-all]
+
 ## Sources
 
 The specification is derived from three sources in the mermaid.js repository:

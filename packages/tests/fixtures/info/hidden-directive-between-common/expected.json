@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An already visible common EOL survives a later hidden-form line."
+  },
+  "accepted": true,
+  "diagramType": "info",
+  "db": {}
+}

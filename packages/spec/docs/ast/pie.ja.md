@@ -123,13 +123,15 @@ PieAccDescrStatement、PieAccDescrBlockStatement、PieIgnoredText のいずれ�
 範囲はラベルの開き引用符から数の値か最後の textAfter までです。
 コロンは含み、EOL は除きます。
 可視の EOL の改行の後にある隠れた形は、代わりに図の body に入ります。
-隙間の 2 つの形は別々に保ちます。
+隙間で別々に認識した隠れた形は、それぞれリストの 1 項目です。
 [fixture: pie/review-yaml-between-label-colon]
 [fixture: pie/frontmatter-between-section-parts]
 [fixture: pie/gram-section-eof-hidden-yaml]
 [fixture: pie/yaml-inline-after-title]
 [fixture: pie/lex-yaml-before-colon-two-blocks]
 [fixture: pie/lex-hidden-before-colon-lf]
+コロンとその数の間の隣接する YAML の区切り 3 行は、1 個の textBeforeValue です。
+[fixture: pie/lex-yaml-three-fences-before-value]
 
 StringLiteral は、対応する引用符の間の書かれた内容を、復号せずに持ちます。
 raw は元の引用符つきのソース全体を保ち、closed は true です。
@@ -326,6 +328,16 @@ value からは共通のディレクティブ、コメント領域、選ばれ�
 [fixture: pie/lex-yaml-body-unicode-separators]
 [fixture: pie/lex-hidden-body-unicode-separators]
 [fixture: pie/lex-hidden-directive-lone-cr]
+
+YAML の閉じは、[隠れた YAML](../diagrams/pie.ja.md#隠れた-yaml) の
+本文がある一致を優先する順で選びます。
+直後の閉じに見える区切りは、代わりに葉の value に入る場合があります。
+隣接する区切り 3 行は、中央の区切りを含む 1 個の葉です。
+[fixture: pie/lex-yaml-three-adjacent-fences]
+[fixture: pie/lex-yaml-immediate-fence-before-later-closer]
+ヘッダー前に保持する隣接した区切り 3 行のブロックは、
+1 個の textBeforeHeader です。
+[fixture: pie/lex-nonleading-yaml-three-adjacent-fences]
 
 隠れた YAML の各箇所は kind が yaml-block、
 隠れた DIRECTIVE の各箇所は directive です。

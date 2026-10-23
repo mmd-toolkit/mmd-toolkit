@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A bare native comment cannot be part of the block-opening whitespace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 5, skipped 8 characters.\nLexer error on line 4, column 1: unexpected character: ->{<- at offset: 17, skipped 1 characters.\nLexer error on line 4, column 3: unexpected character: ->A<- at offset: 19, skipped 1 characters.\nLexer error on line 4, column 5: unexpected character: ->}<- at offset: 21, skipped 1 characters. "
+  }
+}

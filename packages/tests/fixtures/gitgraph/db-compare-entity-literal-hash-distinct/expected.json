@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Comparison values apply common.md Entities first: a numeric entity becomes its placeholder rather than the represented hash character, so the branch names remain distinct (gg3s-1 accepting control)."
+  },
+  "accepted": true,
+  "diagramType": "gitGraph",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "commits": [
+      {
+        "id": "generated-commit-1",
+        "seq": 0,
+        "type": 0,
+        "tags": [],
+        "parents": [],
+        "branch": "main"
+      }
+    ],
+    "branches": [
+      {
+        "name": "main"
+      },
+      {
+        "name": "a#"
+      },
+      {
+        "name": "aﬂ°°35¶ß"
+      }
+    ]
+  }
+}

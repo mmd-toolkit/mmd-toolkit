@@ -486,3 +486,38 @@ export type {
   PieIgnoredText,
   PieNode,
 } from "./ast/pie.ts"
+
+export type {
+  GitgraphDiagram,
+  GitgraphCommitStatement,
+  GitgraphBranchStatement,
+  GitgraphCheckoutStatement,
+  GitgraphMergeStatement,
+  GitgraphCherryPickStatement,
+  GitgraphIdOption,
+  GitgraphMessageOption,
+  GitgraphTagOption,
+  GitgraphTypeOption,
+  GitgraphParentOption,
+  GitgraphOrderOption,
+  GitgraphTitleStatement,
+  GitgraphAccTitleStatement,
+  GitgraphAccDescrStatement,
+  GitgraphAccDescrBlockStatement,
+  GitgraphLiteral,
+  GitgraphIgnoredText,
+  GitgraphBodyItem,
+  GitgraphNode,
+} from "./ast/gitgraph.ts"
+
+export type {
+  InfoDiagram,
+  InfoBodyItem,
+  InfoTitleStatement,
+  InfoAccTitleStatement,
+  InfoAccDescrStatement,
+  InfoAccDescrBlockStatement,
+  InfoLiteral,
+  InfoIgnoredText,
+  InfoNode,
+} from "./ast/info.ts"

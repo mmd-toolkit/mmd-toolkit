@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Commit type keywords are case sensitive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 13: Expecting: one of these possible Token sequences:\n  1. [NORMAL]\n  2. [REVERSE]\n  3. [HIGHLIGHT]\nbut found: 'normal'"
+  }
+}

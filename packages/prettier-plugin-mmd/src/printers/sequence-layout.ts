@@ -14,6 +14,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  layoutCompactEmptyDescriptionBlockWithFallback,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
@@ -251,19 +252,33 @@ export function layoutSequenceStatement(
   const tail =
     end > statement.range[1] ? [{ start: statement.range[1], end }] : []
   if (statement.type === "SequenceAccDescrBlockStatement") {
-    const closing = findAccDescrBlockClosing(source, statement)
-    return {
-      atoms: collectAtoms(
-        source,
-        start,
-        end,
-        values,
-        findAccDescrBlockStretches(source, statement),
-      ),
-      rules: new Map(),
-      outdented: closing === null ? new Set() : new Set([closing]),
-      lineBreaks: "kept",
+    const block = statement
+
+    /** Builds the existing value, trivia and closing-brace layout. */
+    function originalLayout(): AtomLayout {
+      const closing = findAccDescrBlockClosing(source, block)
+      return {
+        atoms: collectAtoms(
+          source,
+          start,
+          end,
+          values,
+          findAccDescrBlockStretches(source, block),
+        ),
+        rules: new Map(),
+        outdented: closing === null ? new Set() : new Set([closing]),
+        lineBreaks: "kept",
+      }
     }
+
+    return statement.value === null && statement.closed
+      ? layoutCompactEmptyDescriptionBlockWithFallback(
+          source,
+          start,
+          end,
+          originalLayout,
+        )
+      : originalLayout()
   }
   return {
     atoms: collectAtoms(source, start, end, values, tail),

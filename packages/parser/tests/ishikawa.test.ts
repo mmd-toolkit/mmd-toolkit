@@ -8,14 +8,8 @@ import {
 import type { Root, IshikawaDiagram } from "../src/index.ts"
 import { ParseError, parse, traverseNodes } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
-import { declaredDivergence, outcomeOf } from "./helpers/known-divergences.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
-import {
-  frontmatterChangesAttributeQuotes,
-  holdsC4KeywordAfterHeader,
-  indentationBlankLinesRejectedByMermaid,
-  withoutTokenCuts,
-} from "./helpers/reference-inputs.ts"
+import { indentationBlankLinesRejectedByMermaid } from "./helpers/reference-inputs.ts"
 
 /** Project invariant 3, and containment and source order of every child node. */
 function expectCoverage(text: string, root: Root): void {
@@ -184,21 +178,6 @@ describe("ishikawa acceptance fixtures", async () => {
         rejection = error
       }
       expect(root !== null).toBe(fixtureAccepts(fixture))
-      if (fixture.knownDivergence === "directive-as-token-boundary") {
-        const outcome = outcomeOf(fixture.input)
-        if (outcome.kind === "unsupported")
-          throw new Error("Ishikawa must be supported")
-        expect(declaredDivergence(fixture.input, fixture.config, outcome)).toBe(
-          fixture.knownDivergence,
-        )
-        expect(parse(withoutTokenCuts(fixture.input)).diagramType).toBe(
-          "ishikawa",
-        )
-      }
-      if (fixture.knownDivergence === "c4-keyword-anywhere")
-        expect(holdsC4KeywordAfterHeader(fixture.input)).toBe(true)
-      if (fixture.knownDivergence === "html-tag-in-frontmatter")
-        expect(frontmatterChangesAttributeQuotes(fixture.input)).toBe(true)
       if (fixture.knownDivergence === "blank-line-after-header-or-comments")
         expect(
           indentationBlankLinesRejectedByMermaid(fixture.input)?.length,

@@ -111,6 +111,31 @@ const IGNORED_TEXT =
  * Meaning column of those tables on which of them are the written text.
  */
 export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
+  GitgraphLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Written common-value text. (ast/gitgraph.md).",
+  },
+  GitgraphIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty written form, including fences. (ast/gitgraph.md).",
+  },
+  InfoLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Written common-value text. (ast/info.md).",
+  },
+  InfoIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty written form, including fences. (ast/info.md).",
+  },
+  GitgraphTypeOption: {
+    field: "value",
+    kind: "derived",
+    spec: "The written fixed keyword, checked against authored option components (ast/gitgraph.md).",
+  },
   PieLiteral: {
     field: "value",
     kind: "written-text",
