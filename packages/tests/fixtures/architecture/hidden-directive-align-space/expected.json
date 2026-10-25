@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Closing whitespace leaves alignment EOL visible after a retained DIRECTIVE."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      },
+      {
+        "id": "other",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "api",
+          "db"
+        ]
+      }
+    ]
+  }
+}

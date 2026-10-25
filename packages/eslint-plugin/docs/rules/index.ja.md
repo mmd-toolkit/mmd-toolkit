@@ -241,6 +241,14 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [block-no-undef](./block-no-undef.ja.md)                                   | どのブロックも持たない id への `class` の文を禁止する。        | ✅  |     |     |
 | [block-no-useless-width](./block-no-useless-width.ja.md)                   | 辺の最初のブロックの幅を禁止する。                             | ✅  |     |     |
 
+## packet
+
+| 規則                                                                           | 説明                                                                | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------- | --- | --- | --- |
+| [packet-no-duplicate-description](./packet-no-duplicate-description.ja.md)     | 前に設定した説明を置き換える `accDescr` を禁止する。                | ✅  |     |     |
+| [packet-no-duplicate-title](./packet-no-duplicate-title.ja.md)                 | 前に設定したタイトルを置き換える `title` や `accTitle` を禁止する。 | ✅  |     |     |
+| [packet-no-empty-description-block](./packet-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                    | ✅  |     |     |
+
 ## kanban
 
 | 規則                                                               | 説明                                               | ✅  | 💡  | 🚧  |

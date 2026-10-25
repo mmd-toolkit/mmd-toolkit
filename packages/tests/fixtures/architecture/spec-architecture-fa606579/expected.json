@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 226,
+    "test": "architecture diagrams > should block proto pollution via service id"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "in": "__proto__",
+        "icon": "server",
+        "title": "A"
+      },
+      {
+        "id": "b",
+        "type": "service",
+        "in": "myPrototypePollutionKey",
+        "icon": "server",
+        "title": "B"
+      }
+    ],
+    "groups": [
+      {
+        "id": "__proto__",
+        "icon": "cloud",
+        "title": "P"
+      },
+      {
+        "id": "myPrototypePollutionKey",
+        "icon": "cloud",
+        "title": "Real"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "b",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

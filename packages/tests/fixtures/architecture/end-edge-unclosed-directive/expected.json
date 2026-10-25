@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed global directive after an edge is checked against the remaining source."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The right-hand id [dbother] does not yet exist. Please create the service/group before declaring an edge to it."
+  }
+}

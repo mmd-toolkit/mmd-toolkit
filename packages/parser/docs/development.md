@@ -44,8 +44,9 @@ diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
 (`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
 C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`),
-usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), info (`info`), and
-packet (`packet`). Every other detected type throws `UnsupportedDiagramError`.
+usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), info (`info`), packet
+(`packet`), and architecture (`architecture`). Every other detected type throws
+`UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -146,6 +147,12 @@ the tree keeps written values.
 The Ishikawa grammar retains written indentation and selects parents using the
 first cause's indentation, independently of the root's indentation. [fixture:
 ishikawa/db-indent-clamped] [fixture: ishikawa/db-indent-root-deeper]
+
+Architecture implements the
+[ordered lexical rules, grammar and registration conditions](../../spec/docs/diagrams/architecture.md).
+The common lexer reads composite values and hidden forms; the tree keeps
+authored order and gap ownership. [fixture: architecture/db-mixed] [fixture:
+architecture/hidden-directive-unit-gaps]
 
 ## Tools
 

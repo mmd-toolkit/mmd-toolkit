@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A left group-boundary modifier rejects endpoints in the same nonempty parent."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The left-hand id [api] is modified to traverse the group boundary, but the edge does not pass through two groups."
+  }
+}

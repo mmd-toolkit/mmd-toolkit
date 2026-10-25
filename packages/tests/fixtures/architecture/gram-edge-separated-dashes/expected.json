@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Edges: an unlabelled line is one contiguous double dash, not two separated single dashes. Case: edge-gap-dashes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 7: Expecting token of type 'ARCH_TITLE' but found `-`."
+  }
+}

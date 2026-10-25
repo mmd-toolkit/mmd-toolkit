@@ -5,5 +5,12 @@
   },
   "accepted": true,
   "diagramType": "architecture",
-  "db": null
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
 }

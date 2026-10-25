@@ -40,6 +40,10 @@ packet の定義は [構文](./diagrams/packet.ja.md) と
 [fixture: packet/gram-mixed]
 [fixture: packet/spec-packet-c4580507]
 
+architecture の定義は [構文](./diagrams/architecture.ja.md) と
+[木](./ast/architecture.ja.md) にあります。 [fixture: architecture/header-beta]
+[fixture: architecture/db-mixed]
+
 ## 元にしたもの
 
 仕様は、mermaid.js のリポジトリにある次の 3 つを元にしています。

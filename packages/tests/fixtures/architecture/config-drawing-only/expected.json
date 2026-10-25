@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site drawing dimensions and seeded layout do not alter Db publication."
+  },
+  "config": {
+    "architecture": {
+      "iconSize": 24,
+      "padding": 0,
+      "seed": 42,
+      "randomize": false,
+      "fontSize": 9
+    }
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "icon": "server",
+        "title": "API"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

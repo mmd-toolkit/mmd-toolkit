@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Known divergences: an HTML tag starting in frontmatter can change acceptance in either direction or change an accepted label. Case: frontmatter-open-attribute-icon."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 19: unexpected character: ->'<- at offset: 36, skipped 1 characters.\nLexer error on line 2, column 22: unexpected character: ->\"<- at offset: 39, skipped 1 characters. Parse error on line 2, column 18: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'y'\nParse error on line 2, column 20: Expecting token of type ':' but found `>`.\nParse error on line 2, column 21: Expecting: one of these possible Token sequences:\n  1. [--]\n  2. [-]\nbut found: 't'"
+  }
+}

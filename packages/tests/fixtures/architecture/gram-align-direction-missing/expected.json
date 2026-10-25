@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Grammar: align requires row or column before its member list."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 7: Expecting: one of these possible Token sequences:\n  1. [row]\n  2. [column]\nbut found: 'a'\nParse error on line 4, column 9: Expecting token of type ':' but found `b`."
+  }
+}

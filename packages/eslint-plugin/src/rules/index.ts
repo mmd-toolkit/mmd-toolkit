@@ -76,6 +76,9 @@ import { mindmapNoDuplicateDecoration } from "./mindmap-no-duplicate-decoration.
 import { mindmapNoMismatchedShape } from "./mindmap-no-mismatched-shape.ts"
 import { noInvalidInitDirective } from "./no-invalid-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
+import { packetNoDuplicateDescription } from "./packet-no-duplicate-description.ts"
+import { packetNoDuplicateTitle } from "./packet-no-duplicate-title.ts"
+import { packetNoEmptyDescriptionBlock } from "./packet-no-empty-description-block.ts"
 import { pieNoDuplicateDescription } from "./pie-no-duplicate-description.ts"
 import { pieNoDuplicateLabel } from "./pie-no-duplicate-label.ts"
 import { pieNoDuplicateTitle } from "./pie-no-duplicate-title.ts"
@@ -221,6 +224,9 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "mindmap-no-mismatched-shape": mindmapNoMismatchedShape,
   "no-invalid-init-directive": noInvalidInitDirective,
   "no-unclosed-directive": noUnclosedDirective,
+  "packet-no-duplicate-description": packetNoDuplicateDescription,
+  "packet-no-duplicate-title": packetNoDuplicateTitle,
+  "packet-no-empty-description-block": packetNoEmptyDescriptionBlock,
   "pie-no-duplicate-description": pieNoDuplicateDescription,
   "pie-no-duplicate-label": pieNoDuplicateLabel,
   "pie-no-duplicate-title": pieNoDuplicateTitle,

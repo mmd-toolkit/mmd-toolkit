@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Hidden YAML: two nonempty blocks remain separate matches. Case: hidden-yaml-two-nonempty."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

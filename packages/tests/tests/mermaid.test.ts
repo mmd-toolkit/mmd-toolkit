@@ -255,9 +255,12 @@ describe("runMermaid", () => {
   })
 
   it("returns db null for a diagram type without a normalizer", async () => {
-    expect(await runMermaid("architecture-beta\n")).toEqual({
+    const fixture = (await loadFixtures("common")).find(
+      (item) => item.name === "detect-minimal-treemap",
+    )!
+    expect(await runMermaid(fixture.input)).toEqual({
       accepted: true,
-      diagramType: "architecture",
+      diagramType: "treemap",
       db: null,
     })
   })

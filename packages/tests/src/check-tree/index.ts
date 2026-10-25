@@ -1,3 +1,4 @@
+import { checkArchitectureTree } from "./architecture.ts"
 import { checkGitgraphTree } from "./gitgraph.ts"
 import { checkInfoTree } from "./info.ts"
 import { checkPacketTree } from "./packet.ts"
@@ -80,6 +81,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   switch (root.body.type) {
     case "ErrorDiagram":
       checkErrorDiagramTokens(root, problems)
+      break
+    case "ArchitectureDiagram":
+      checkArchitectureTree(text, root, problems)
       break
     case "GitgraphDiagram":
       checkGitgraphTree(text, root, problems)

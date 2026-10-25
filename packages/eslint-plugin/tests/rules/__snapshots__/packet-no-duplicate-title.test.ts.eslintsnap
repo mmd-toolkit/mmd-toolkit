@@ -1,0 +1,387 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: packet-no-duplicate-title >> invalid >>> docs/rules/packet-no-duplicate-title.md incorrect 1
+Filename: packet-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | packet
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   0-15: "Source Port"
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/acctitle-empty-no-next
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/acctitle-empty-no-next-input.mmd
+
+Code:
+  1 | packet
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% next
+  5 | 0: "Flag"
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/acctitle-first-empty-first
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/acctitle-first-empty-first-input.mmd
+
+Code:
+  1 | packet
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | accTitle: First
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/acctitle-first-second
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/acctitle-first-second-input.mmd
+
+Code:
+  1 | packet
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | 0: "Flag"
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/acctitle-repeat-empty
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/acctitle-repeat-empty-input.mmd
+
+Code:
+  1 | packet
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: 	
+    | ^~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/acctitle-repeat
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/acctitle-repeat-input.mmd
+
+Code:
+  1 | packet
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: Third
+    | ^~~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/beta-title-duplicate
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/beta-title-duplicate-input.mmd
+
+Code:
+  1 | packet-beta
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | 0: "Flag"
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/docs-incorrect-1
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/docs-incorrect-1-input.mmd
+
+Code:
+  1 | packet
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   0-15: "Source Port"
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-crlf
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-crlf-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | %% comment
+  4 | title Second
+    | ^~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-directive-between
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-directive-between-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | %%{init: {"packet": {"showBits": false}}}%%
+  4 | title Second
+    | ^~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-empty-no-next
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-empty-no-next-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | %% next
+  5 | 0: "Flag"
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-entity-equal
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-entity-equal-input.mmd
+
+Code:
+  1 | packet
+  2 | title #35;
+  3 | title #
+    | ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-first-empty-first
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-first-empty-first-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | title First
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-first-second-first
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-first-second-first-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | title First
+    | ^~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-first-second
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-first-second-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | 0: "Flag"
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-first-whitespace-first
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-first-whitespace-first-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | title  	
+    | ^~~~~~~~ [1]
+  4 | title First
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-frontmatter-empty
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-frontmatter-empty-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Front
+  3 | ---
+  4 | packet
+  5 | title Body
+  6 | title
+    | ^~~~~ [1]
+  7 | 0: "Flag"
+  8 |
+
+[1] mermaid.js replaces the title set on line 5 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-frontmatter-restored
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-frontmatter-restored-input.mmd
+
+Code:
+  1 | ---
+  2 | title: First
+  3 | ---
+  4 | packet
+  5 | title First
+  6 | title
+    | ^~~~~ [1]
+  7 | 0: "Flag"
+  8 |
+
+[1] mermaid.js replaces the title set on line 5 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-hidden-between
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-hidden-between-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | ---
+  4 | title Hidden
+  5 | ---
+  6 | title Second
+    | ^~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-quote-conversion-equal
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-quote-conversion-equal-input.mmd
+
+Code:
+  1 | packet
+  2 | title <span class="x">T</span>
+  3 | title <span class='x'>T</span>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-repeat-empty
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-repeat-empty-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | title
+    | ^~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/title-repeat
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/title-repeat-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | title Third
+    | ^~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/titles-empty-then-different
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/titles-empty-then-different-input.mmd
+
+Code:
+  1 | packet
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | title Second
+  5 | accTitle: First
+  6 | accTitle:
+    | ^~~~~~~~~ [2]
+  7 | accTitle: Second
+  8 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the accessible title set on line 5 with the one of this `accTitle`.
+---
+
+
+Test: packet-no-duplicate-title >> invalid >>> invalid/packet/titles-single-tab-distinct
+Filename: tests/fixtures/rules/packet-no-duplicate-title/invalid/packet/titles-single-tab-distinct-input.mmd
+
+Code:
+  1 | packet
+  2 | title A	B
+  3 | title A B
+    | ^~~~~~~~~ [1]
+  4 | accTitle: C	D
+  5 | accTitle: C D
+    | ^~~~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the accessible title set on line 4 with the one of this `accTitle`.
+---

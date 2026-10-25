@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "At written EOF the hidden closer can consume the appended LF and leave EOF satisfying EOL."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

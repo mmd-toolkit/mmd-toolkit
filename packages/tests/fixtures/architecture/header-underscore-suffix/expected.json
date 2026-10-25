@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An underscore suffix makes the header an ID."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting token of type 'architecture-beta' but found `architecture-beta_`.\nParse error on line 1, column 19: Expecting token of type ':' but found `\n`."
+  }
+}

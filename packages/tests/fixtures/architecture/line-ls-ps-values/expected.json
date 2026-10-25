@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LS and PS are checked inside every architecture text field and common line value."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "A B C",
+    "accDescr": "D E F",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "G H I",
+        "title": "J K L"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "M N O"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "P Q S"
+      }
+    ],
+    "layoutHints": []
+  }
+}

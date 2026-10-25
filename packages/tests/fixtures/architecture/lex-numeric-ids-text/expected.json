@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Numeric-looking IDs and title text stay strings without precision loss, overflow or underflow conversion."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "9007199254740993",
+        "type": "service"
+      },
+      {
+        "id": "999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+        "type": "service"
+      },
+      {
+        "id": "0_1",
+        "type": "service"
+      },
+      {
+        "id": "n0",
+        "type": "service",
+        "title": "+1 -0 NaN Infinity 1e400 1e-4000"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

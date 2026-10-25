@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Valid directive configuration does not turn a duplicate-ID rejection into acceptance."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service id [api] is already in use by another node"
+  }
+}

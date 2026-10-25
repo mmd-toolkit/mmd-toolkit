@@ -353,3 +353,11 @@ ASCII
   [fixture: common/detect-case-kelvin-sign]
   [fixture: common/detect-case-long-s]
   [fixture: common/detect-case-sensitive-sequence]
+
+architecture の検出は C4 より前で、接頭辞 `architecture` を選びます。
+受理する見出しは `architecture-beta` だけです。
+構文は [architecture](./diagrams/architecture.ja.md) で定めます。
+[fixture: architecture/header-beta]
+[fixture: architecture/header-bare-rejected]
+[fixture: architecture/header-letter-suffix]
+[fixture: architecture/c4-component-service]

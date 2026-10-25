@@ -19,7 +19,11 @@ import type {
   ExpectedFile,
   FixtureHead,
 } from "../src/index.ts"
-import { getDefaultConfig, getFixturesRoot } from "../src/index.ts"
+import {
+  getDefaultConfig,
+  getFixturesRoot,
+  loadFixtures,
+} from "../src/index.ts"
 import { runMermaid } from "../src/mermaid.ts"
 
 const AUTHORED: FixtureHead = { source: { kind: "authored", note: "a note" } }
@@ -435,12 +439,14 @@ describe("generateExpected", () => {
   it("records db null in common/ for a diagram type that has no normalizer", async () => {
     const file = await generateExpected(
       "common",
-      "architecture-beta\n",
+      (await loadFixtures("common")).find(
+        (fixture) => fixture.name === "detect-minimal-treemap",
+      )!.input,
       AUTHORED,
     )
     expect(acceptedOf(file)).toMatchObject({
       accepted: true,
-      diagramType: "architecture",
+      diagramType: "treemap",
       db: null,
     })
   })

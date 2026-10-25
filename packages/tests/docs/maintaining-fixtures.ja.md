@@ -244,22 +244,10 @@ pin した mermaid.js のタグにある mermaid.js のチェックアウトを�
 各 fixture は、入力の出どころを kind が `mermaid` の `source` として記録します。
 タグ、リポジトリ内のパス、行、テストファイルならテストの題名の並びです。
 
-- テストファイル: その図種のテストファイルのうち、
-  図のテキストを mermaid.js に渡すもの。
-  `tools/collect.ts` の `SPEC_FILES` に挙げてある。
-  flowchart では、`diagrams/flowchart/parser/*.spec.js` と
-  `diagrams/swimlanes/swimlanesDiagram.spec.ts` で、`flow-huge.spec.js` は除く。
-  その 1 件のスキップされたテストは約 20 万文字の入力を作り、
-  mermaid.js は `maxEdges` を超えるとして拒否するが、
-  それは他の fixture で扱っている。
-  sequence では、`diagrams/sequence/sequenceDiagram.spec.js`。
-  class では、`diagrams/class/classDiagram.spec.ts`、
-  `diagrams/class/classDiagram-styles.spec.js`、
-  `diagrams/class/parser/class.spec.js`。
-  state では、`diagrams/state/` と `diagrams/state/parser/` のうち、
-  構文解析器を呼ぶテストファイルで、`stateRenderer.spec.js` は除く。
-  そのファイルは、図の代役とともに、描画の `draw()` にだけテキストを渡すので、
-  mermaid.js はそれを構文解析しない。
+- テストファイル: その図種の構文に図のテキストを渡す mermaid のテスト。
+  Langium の図種では、mermaid の parser パッケージのその図種のテストも含む。
+  図種ごとに集めるテストファイルの一覧と除外の理由は、
+  `tools/collect.ts` の `SPEC_FILES` だけが持つ。
   テストは入力の多くをループとテンプレートリテラルで作るので、
   各ファイルをスタブに対して実行し、mermaid.js に渡したテキストを、
   拒否されるものも含めてすべて取る。

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/pie.test.ts",
+    "line": 29,
+    "test": "pie > should handle pie definition with or without showData > should handle regular showData"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": true,
+    "sections": []
+  }
+}

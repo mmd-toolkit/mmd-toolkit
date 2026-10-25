@@ -5,8 +5,8 @@ Japanese version:
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
 requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, venn,
-agentflow, usecase, pie, gitgraph, info, and packet. This is one of the
-[known divergences](../known-divergences.md) of this specification from
+agentflow, usecase, pie, gitgraph, info, packet, and architecture. This is one
+of the [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
 ## The syntax
@@ -396,6 +396,19 @@ packet/lex-selected-colon-boundary] [fixture:
 packet/lex-selected-brace-boundary] [fixture: packet/lex-yaml-fence-selected]
 [fixture: packet/detect-selected-split-header]
 
+### Architecture
+
+In architecture, a service label containing style and a colour can make the
+common line rule select a later semicolon inside a parent ID or the in keyword.
+Mermaid joins the ID or keyword; this specification rejects the split atom. An
+ArchitectureIgnoredText cannot stand inside that name or keyword. A selected
+semicolon within a text value instead follows the common reading; its authored
+range still covers the original characters. [fixture:
+architecture/div-semicolon-parent-id] [fixture:
+architecture/div-semicolon-in-keyword] [fixture:
+architecture/gram-semicolon-parent-reference] [fixture:
+architecture/style-fields]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -486,3 +499,13 @@ warning. These facts do not justify any additional divergence.
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
   `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
   this divergence.
+
+- The pinned
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  documents the header, declarations and edges, without defining this common
+  preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
+  architecture group undefined, architecture quotes title, architecture reverse,
+  architecture unclosed and architecture align.
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
+  Status: Approved and concerns edges from outer parent groups, not a maintainer
+  ruling on this common boundary.

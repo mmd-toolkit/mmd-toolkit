@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accessibility title followed by a retained directive can finish at EOF."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "A",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

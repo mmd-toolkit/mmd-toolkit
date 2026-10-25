@@ -173,9 +173,9 @@ class 図でも同じです。
 `"" A --> B`、`class A``B`、`class A~~B` は構文エラーとして報告します。
 [corpus fixture: class/div-empty-string-statement-start]
 [corpus fixture: class/div-empty-backquoted-in-name]
+[corpus fixture: class/div-empty-generic-in-name]
 [corpus fixture: class/div-empty-call]
 [corpus fixture: class/div-empty-description-block-after-annotation]
-[corpus fixture: class/div-empty-generic-in-name]
 同じ行の別の文やヘッダーと並ぶ空の説明ブロックは、mermaid.js と同じく文です
 （[空の説明ブロック](./class.ja.md#空の説明ブロック)を参照）。
 [fixture: class/empty-description-blocks/kept-with-statement]
@@ -1869,3 +1869,63 @@ Markdown では埋め込みを辞退して payload を修復しません。
 [corpus fixture: packet/config-frontmatter-overrides-site]
 [corpus fixture: packet/c4container-label]
 [test: packet Markdown: rejected]
+
+## architecture の値と hidden 境界
+
+[architecture の規則](./architecture.ja.md)は、
+角括弧ラベルの全 source 範囲を保ちます。
+bare・quoted の kind、引用符の綴り、端の空白、quoted の空値、
+escape、HTML、entity も含みます。
+内側の空白や escape の変換は Db を変え得ます。
+文字 icon は StringLiteral の source 全体、名前付き icon は名前を保ちます。
+trim、decode、置き換えは mermaid.js の読みを変え得るためです。
+`singleQuote` は icon とラベルを書き換えません。
+矢印の marker は有無の flag から組み立てず、
+逆向きの `>--<` も実際の文字を保ちます。
+[fixture: architecture/label-forms/padded-quotes]
+[fixture: architecture/label-content/bare-padding]
+[fixture: architecture/label-content/html-entities]
+[fixture: architecture/text-icons/double-quote]
+[fixture: architecture/text-icons/padding]
+[fixture: architecture/named-icons/unknown-name]
+[fixture: architecture/arrow-lines/arrow-reversed-markers]
+
+native hidden YAML・DIRECTIVE の source 全体を AST の owner に保ち、
+範囲外で消費される LF と閉じの padding も保持します。
+これらの境界が受理を決め得ます。
+見出し自身の hidden form の直後だけ予備の LF は不要で、
+見出し行の文は文としての境界を必要とします。
+無視された YAML が有効な frontmatter に変わらないよう、
+保持する prefix 全体を保ちます。
+安全な実際の frontmatter だけを guarded YAML formatter に渡し、
+共有の正の最小字下げ幅を使います。
+作者のセミコロンはすべて共有の区間保護で保ちます。
+選択された1個の削除が別の選択を生み、ラベルを変え得るためです。
+source 順、繰り返す制約、空の共通代入も保ちます。
+[fixture: architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps]
+[fixture: architecture/hidden-boundaries/header-and-statement]
+[fixture: architecture/hidden-boundaries/suffix-space]
+[fixture: architecture/frontmatter-yaml/prefix-leading-lf-keep]
+[fixture: architecture/frontmatter-yaml/frontmatter-zero-minimum-block-scalar]
+[fixture: architecture/semicolons/selection]
+[fixture: architecture/source-order/authored-order]
+
+既存の5個の[仕様の読み](./architecture.ja.md#specified-readings)を使います。
+directive・選択されたセミコロンによる不可分 token の切断、frontmatter の HTML、
+不透明な embedded data、通過した bare-percent trivia が対象です。
+architecture に受理を決める設定キーはなく、C4 より前に検出するため、
+C4 検出の例外は追加しません。
+生の拒否から生の Db や架空の効果を作りません。
+parser の失敗は単独では修復出力のない構文エラーとなり、
+Markdown は埋め込みを辞退します。
+Markdown host は payload 最終行の padding を除きますが、
+内部の hidden padding は必要です。
+[corpus fixture: architecture/div-directive-name]
+[corpus fixture: architecture/div-semicolon-parent-id]
+[corpus fixture: architecture/div-frontmatter-open-tag-icon]
+[corpus fixture: architecture/div-frontmatter-invalid-yaml]
+[corpus fixture: architecture/div-retained-bare-second-scan-ls]
+[fixture: architecture/label-content/hidden-looking]
+[test: architecture Markdown: hidden-boundary]
+[test: architecture Markdown: final-hidden-padding]
+[test: architecture Markdown: rejected]

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Architecture labels enclose hidden-looking text while ACC_DESCR stops at its first closing brace."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "%%{",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "%%{}%%",
+        "title": "%%{}%%"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "%%{}%%"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "%%{}%%"
+      }
+    ],
+    "layoutHints": []
+  }
+}

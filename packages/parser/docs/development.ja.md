@@ -45,7 +45,8 @@ sankey 図（`sankey`）と、XY チャート（`xychart`）と、
 kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）と、
 Ishikawa 図（`ishikawa`）と、agentflow（`agentflow`）と、
 usecase 図（`usecase`）、円グラフ（`pie`）、gitgraph 図（`gitGraph`）、
-info 図（`info`）、packet 図（`packet`）です。
+info 図（`info`）、packet 図（`packet`）、
+architecture 図（`architecture`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -161,6 +162,13 @@ venn の字句解析器は、行の始まりをまたいで暗黙の text モー
 Ishikawa の文法は書かれた字下げを保ち、根の字下げにはよらず、
 最初の原因の字下げを使って親を選びます。
 [fixture: ishikawa/db-indent-clamped] [fixture: ishikawa/db-indent-root-deeper]
+
+architecture は
+[仕様](../../spec/docs/diagrams/architecture.md)の順序付き字句規則、
+文法、登録条件を実装します。
+共通 lexer が複合値と隠れた形式を読み、木は記述順と gap の所有を保持します。
+[fixture: architecture/db-mixed]
+[fixture: architecture/hidden-directive-unit-gaps]
 
 ## 道具
 

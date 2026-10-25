@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Directive boundaries: a directive may separate icon delimiters from its name but may not split a name. Case: icon-directive-name-middle."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "icon": "cloud"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

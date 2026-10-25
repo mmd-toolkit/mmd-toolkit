@@ -1,6 +1,7 @@
 import type {
   GitgraphAccDescrBlockStatement,
   Node,
+  PacketAccDescrBlockStatement,
   PieAccDescrBlockStatement,
   Token,
   UsecaseAccDescrBlockStatement,
@@ -155,7 +156,8 @@ export function isEmptyDescriptionBlock(
   node:
     | PieAccDescrBlockStatement
     | UsecaseAccDescrBlockStatement
-    | GitgraphAccDescrBlockStatement,
+    | GitgraphAccDescrBlockStatement
+    | PacketAccDescrBlockStatement,
 ): boolean {
   return (
     (node.value?.value ?? "").trim() === "" &&

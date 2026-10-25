@@ -31,6 +31,19 @@ const ruleDocuments: readonly {
   readonly rulesInTestCode: readonly string[]
 }[] = [
   {
+    diagram: "architecture",
+    rulesWithoutExamples: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+    rulesInTestCode: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+  },
+  {
     diagram: "packet",
     rulesWithoutExamples: [
       "line-terminators-and-unicode",
@@ -465,6 +478,7 @@ describe("the citations in the documents", async () => {
   const titles = await readCitedTestTitles()
   const citations: string[] = []
   for (const document of [
+    "docs/architecture.md",
     "docs/packet.md",
     "docs/info.md",
     "docs/gitgraph.md",

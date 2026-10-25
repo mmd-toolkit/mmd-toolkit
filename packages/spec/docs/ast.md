@@ -252,8 +252,11 @@ the diagram sections below: a
 [`UsecaseDiagram`](./ast/usecase.md#usecasediagram), a
 [`PieDiagram`](./ast/pie.md#piediagram), a
 [`GitgraphDiagram`](./ast/gitgraph.md#gitgraphdiagram), an
-[`InfoDiagram`](./ast/info.md#infodiagram), or a
-[`PacketDiagram`](./ast/packet.md#packetdiagram). [fixture: packet/gram-mixed]
+[`InfoDiagram`](./ast/info.md#infodiagram), a
+[`PacketDiagram`](./ast/packet.md#packetdiagram), or an
+[`ArchitectureDiagram`](./ast/architecture.md#architecturediagram). [fixture:
+packet/gram-mixed] [fixture: architecture/header-beta] [fixture:
+architecture/db-mixed]
 
 ## ErrorDiagram
 
@@ -465,3 +468,6 @@ name that ends so.
 
 - [Packet](./ast/packet.md): the diagram type `packet`. [fixture:
   packet/gram-mixed]
+
+- [Architecture](./ast/architecture.md): the diagram type `architecture`.
+  [fixture: architecture/header-beta] [fixture: architecture/db-mixed]

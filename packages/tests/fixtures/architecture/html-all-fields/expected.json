@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "HTML-looking text exercises common preprocessing and disabled sanitizers in every architecture text field."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "<b>Access</b>",
+    "accDescr": "<b>Description</b>",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "<b>Icon</b>",
+        "title": "<b>Service</b>"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "<b>Group</b>"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "<b>Edge</b>"
+      }
+    ],
+    "layoutHints": []
+  }
+}

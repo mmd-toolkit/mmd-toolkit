@@ -19,6 +19,7 @@ import { readTokenKindRow } from "./spec-field-tables.ts"
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [DiagramType, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["architecture", "ArchitectureDiagram"],
   ["gitgraph", "GitgraphDiagram"],
   ["info", "InfoDiagram"],
   ["packet", "PacketDiagram"],
@@ -357,6 +358,24 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
         "normal",
         "reverse",
         "highlight",
+        "title",
+        "acctitle",
+        "accdescr",
+      ]
+    case "architecture":
+      return [
+        "architecture-beta",
+        "group",
+        "service",
+        "junction",
+        "in",
+        "align",
+        "row",
+        "column",
+        "l",
+        "r",
+        "t",
+        "b",
         "title",
         "acctitle",
         "accdescr",

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Statement boundaries: an empty description block is neither a component gap nor a statement terminator. Case: empty-block-unit-gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 8: Expecting token of type 'ID' but found ` accDescr {}`."
+  }
+}

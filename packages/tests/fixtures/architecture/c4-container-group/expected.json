@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Container in group title is checked against global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [
+      {
+        "id": "g",
+        "title": "C4Container"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

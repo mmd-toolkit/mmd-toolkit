@@ -5,8 +5,9 @@ Japanese version:
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
 timeline, sankey, block, c4, agentflow, usecase, pie, gitgraph, info, and
-packet. This is one of the [known divergences](../known-divergences.md) of this
-specification from mermaid.js.
+packet, and architecture. This is one of the
+[known divergences](../known-divergences.md) of this specification from
+mermaid.js.
 
 ## The syntax
 
@@ -390,6 +391,24 @@ packet/div-detect-yaml-bare-directive-ls] [fixture:
 packet/detect-yaml-bare-directive-ascii] [fixture:
 packet/lex-retained-no-bare-ls]
 
+### Architecture
+
+Architecture passes bare percent lines and their accompanying common whitespace
+as shared Comments and trivia. This holds immediately before the header, on
+whitespace-only lines and between retained YAML/second-scan forms. Mermaid's
+native lexer accepts ASCII padding but rejects the recorded Unicode gaps, so the
+specification accepts those inputs under this divergence. Without a passed line
+the same gap is native diagram text and remains rejected. Retained forms are
+still read, with their own closing boundaries; they are not erased together with
+the passed lines. [fixture: architecture/detection-bare-space] [fixture:
+architecture/detection-bare-tab] [fixture:
+architecture/detection-bare-before-header-ls] [fixture:
+architecture/detection-bare-ls] [fixture: architecture/div-retained-bare-ls]
+[fixture: architecture/div-retained-bare-second-scan-ls] [fixture:
+architecture/retained-yaml-no-bare] [fixture:
+architecture/retained-directive-no-bare] [fixture:
+architecture/detect-second-scan-glued]
+
 ## The documentation of mermaid.js and its issues
 
 - The
@@ -470,3 +489,13 @@ warning. These facts do not justify any additional divergence.
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
   `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
   this divergence.
+
+- The pinned
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  documents the header, declarations and edges, without defining this common
+  preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
+  architecture group undefined, architecture quotes title, architecture reverse,
+  architecture unclosed and architecture align.
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
+  Status: Approved and concerns edges from outer parent groups, not a maintainer
+  ruling on this common boundary.

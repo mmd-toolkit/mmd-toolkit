@@ -71,6 +71,13 @@ Ishikawa の fixture は `tests/ishikawa.test.ts` が検査し、記録します
 tests パッケージの `checkTree` と `dbFromTree` が、
 記録された木とその Db の内容を検査します。
 
+`tests/architecture.test.ts` はコーパスを使い、木の構造、token の綴り・範囲、
+gap の所有、比較可能な Db を検査します。
+受理と記録は `tests/fixtures.test.ts` が
+関連 common fixture も含めて検査します。
+`tests/ast-architecture-examples.test.ts` は
+ノード型コメントの例の範囲を検査します。
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)が付いた fixture は、

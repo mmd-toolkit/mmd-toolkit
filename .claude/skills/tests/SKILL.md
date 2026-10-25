@@ -418,10 +418,13 @@ diagram; an imported common rule does not establish how the diagram uses it.
 
 ### 5.3 The fixtures
 
-1. Inputs come from three places: the spec files of the diagram type, the
-   mermaid blocks of the documentation, and the demos. Do not collect outside
-   them (spec files in other directories, the end-to-end tests). The scope is
-   written in `tools/README.md`.
+1. Collect inputs from mermaid's tests that pass diagram text to that diagram
+   type's syntax, the mermaid blocks of the documentation, and the demos. For
+   Langium diagrams, those tests include the diagram type's tests in mermaid's
+   parser package. `SPEC_FILES` in `tools/collect.ts` alone lists which test
+   files each diagram type collects, with reasons for exclusions. Do not collect
+   unrelated tests or end-to-end tests. The scope is described in
+   `tools/README.md`.
 2. The collection tools (`tools/collect.ts`, `tools/src/spec-recorder.ts`) take
    the diagram type. What differs between diagram types is only which spec files
    are read and which functions receive the text. Add to `SPEC_FILES` in
@@ -538,7 +541,6 @@ diagram; an imported common rule does not establish how the diagram uses it.
      writes 0), `NaN`, `Infinity`, a number too large for a double, and text
      after the number (journey and sankey, review 441);
    - values of embedded settings read by the Db (packet review pk12-1);
-   - input kinds in mermaid's parser package tests (packet review pk12-2);
    - a hidden form immediately after a statement (a body `---` block or
      `%%{...}%%`): a following statement after its consumed LF, a blank line
      supplying a spare LF, a space after its closer leaving the LF visible, and

@@ -25,9 +25,12 @@ mermaid のチェックアウトのテストファイル、文書、デモのペ
 新しい版が持ち込む入力を足すために行います。
 
 テストファイルのうち読むのは、
-その図種自身のファイルのうち、図のテキストを mermaid に渡すものだけです。
-`collect.ts` の `SPEC_FILES` に、除いたファイルの理由とともに挙げてあります。
-mermaid のほかのテストファイル、例えば `mermaid.spec.ts`、`mermaidAPI.spec.ts`、
+その図種の構文に図のテキストを渡す mermaid のテストです。
+Langium の図種では、mermaid の parser パッケージのその図種のテストも含みます。
+図種ごとに集めるテストファイルの一覧と除外の理由は、
+`collect.ts` の `SPEC_FILES` だけが持ちます。
+mermaid の無関係なテストファイル、
+例えば `mermaid.spec.ts`、`mermaidAPI.spec.ts`、
 `diagram.spec.ts`、`rendering-util` の下のテスト、
 端から端までのテストにあるテキストは集めません。
 入力は、その図種自身のテストファイル、文書、デモから取ります。

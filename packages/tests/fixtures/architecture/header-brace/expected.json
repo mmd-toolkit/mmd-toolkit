@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Punctuation after the header is not a statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 18: unexpected character: ->{<- at offset: 17, skipped 2 characters. "
+  }
+}

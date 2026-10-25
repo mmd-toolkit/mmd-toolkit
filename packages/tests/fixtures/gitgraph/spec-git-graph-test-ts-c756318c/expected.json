@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/gitGraph.test.ts",
+    "line": 116,
+    "test": "Parsing Merge Statements > should parse merge without any properties"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"merge\". Current branch (main)has no commits"
+  }
+}

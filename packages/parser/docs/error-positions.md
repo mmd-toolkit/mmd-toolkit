@@ -14,18 +14,19 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   [fixture: common/empty] [fixture: common/comment-only] [fixture:
   common/whitespace-only]
 - The `---` pseudo-diagram, or a retained nonleading block before a supported
-  diagram other than pie, gitgraph, info or packet: `range` covers the three `-`
-  characters that start the block. [fixture:
+  diagram other than pie, gitgraph, info, packet or architecture: `range` covers
+  the three `-` characters that start the block. [fixture:
   common/frontmatter-adjacent-delimiters] [fixture:
   common/frontmatter-nonleading-class] [fixture:
   common/frontmatter-nonleading-sequence] [fixture:
   common/frontmatter-nonleading-state] [fixture:
   common/frontmatter-after-bare-percent-flowchart]
-- A directive found once more before the header, except in pie, gitgraph, info
-  or packet, ([Diagram detection](../../spec/docs/common.md#diagram-detection)):
-  `range` covers its opening `%%{`, from its first `%` to its `{`, with the
-  directives and comment regions of the source between them; of several, the
-  first. [fixture: flowchart/detect-directive-across-directive] [fixture:
+- A directive found once more before the header, except in pie, gitgraph, info,
+  packet or architecture,
+  ([Diagram detection](../../spec/docs/common.md#diagram-detection)): `range`
+  covers its opening `%%{`, from its first `%` to its `{`, with the directives
+  and comment regions of the source between them; of several, the first.
+  [fixture: flowchart/detect-directive-across-directive] [fixture:
   sequence/detect-directive-across-directive] [fixture:
   sequence/detect-directive-across-comment-line-closed] [fixture:
   class/detect-directive-across-directive] [fixture:
@@ -1086,15 +1087,15 @@ whole source before grammar and semantic acceptance. Later lexical errors
 therefore reject valid prefixes too. [fixture: packet/error-after-prefix]
 [fixture: packet/error-recovered-block]
 
-| Rejection                                       | Range and message                                                                                                 | Fixtures                                                                                                                                                                                                     |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| No lexical rule matches                         | The source character, with `Unexpected character`.                                                                | [fixture: packet/error-start] [fixture: packet/space-header-nbsp] [fixture: packet/lex-integer-shorter-before-dot]                                                                                           |
-| No complete string or description block matches | The opening quote or first keyword character, with `Unexpected character`.                                        | [fixture: packet/lex-label-open] [fixture: packet/lex-label-open-single] [fixture: packet/lex-label-escaped-lf] [fixture: packet/accdescr-block-open]                                                        |
-| The grammar cannot read a unit                  | Its significant range, with `Unexpected token`; at EOF, the empty source-end range with `Unexpected end of text`. | [fixture: packet/gram-second-header] [fixture: packet/gram-same-line-blocks] [fixture: packet/comment-inside-range]                                                                                          |
-| A hidden form consumes the only separating LF   | The next visible unit, with `Unexpected token`; EOF instead satisfies EOL.                                        | [fixture: packet/hidden-directive-block] [fixture: packet/hidden-directive-title] [fixture: packet/hidden-yaml-block] [fixture: packet/hidden-yaml-description] [fixture: packet/hidden-directive-block-eof] |
-| A range descends                                | The whole authored block, with `Packet range end is less than its start`.                                         | [fixture: packet/error-descending-before-gap] [fixture: packet/error-cap-following-descending]                                                                                                               |
-| A block is not contiguous                       | The whole authored block, with `Packet block start must follow the previous logical endpoint`.                    | [fixture: packet/error-first-nonzero] [fixture: packet/error-overlap] [fixture: packet/error-repeat-third] [fixture: packet/error-cap-following-noncontiguous]                                               |
-| A relative count is zero                        | The whole authored block, with `Packet relative count must be greater than zero`.                                 | [fixture: packet/error-zero-after-valid] [fixture: packet/error-cap-following-zero]                                                                                                                          |
+| Rejection                                       | Range and message                                                                                                                                          | Fixtures                                                                                                                                                                                                     |
+| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No lexical rule matches                         | The source character, with `Unexpected character`.                                                                                                         | [fixture: packet/error-start] [fixture: packet/space-header-nbsp] [fixture: packet/lex-integer-shorter-before-dot]                                                                                           |
+| No complete string or description block matches | The opening quote or first keyword character, with `Unexpected character`.                                                                                 | [fixture: packet/lex-label-open] [fixture: packet/lex-label-open-single] [fixture: packet/lex-label-escaped-lf] [fixture: packet/accdescr-block-open]                                                        |
+| The grammar cannot read a unit                  | Its significant range, or its empty start when it has no token, with `Unexpected token`; at EOF, the empty source-end range with `Unexpected end of text`. | [fixture: packet/gram-second-header] [fixture: packet/gram-same-line-blocks] [fixture: packet/comment-inside-range]                                                                                          |
+| A hidden form consumes the only separating LF   | The next visible unit, with `Unexpected token`; EOF instead satisfies EOL.                                                                                 | [fixture: packet/hidden-directive-block] [fixture: packet/hidden-directive-title] [fixture: packet/hidden-yaml-block] [fixture: packet/hidden-yaml-description] [fixture: packet/hidden-directive-block-eof] |
+| A range descends                                | The whole authored block, with `Packet range end is less than its start`.                                                                                  | [fixture: packet/error-descending-before-gap] [fixture: packet/error-cap-following-descending]                                                                                                               |
+| A block is not contiguous                       | The whole authored block, with `Packet block start must follow the previous logical endpoint`.                                                             | [fixture: packet/error-first-nonzero] [fixture: packet/error-overlap] [fixture: packet/error-repeat-third] [fixture: packet/error-cap-following-noncontiguous]                                               |
+| A relative count is zero                        | The whole authored block, with `Packet relative count must be greater than zero`.                                                                          | [fixture: packet/error-zero-after-valid] [fixture: packet/error-cap-following-zero]                                                                                                                          |
 
 Whole-block ranges include their hidden suffixes, as defined by the
 [block positions](./positions/packet.md#ranges). Site row-width checks can also
@@ -1111,3 +1112,35 @@ before another lexical or grammatical error. [fixture:
 packet/directive-number-middle] [fixture: packet/div-selected-integer-interior]
 [fixture: packet/hidden-directive-close-glued] [fixture:
 packet/hidden-yaml-unclosed] [fixture: packet/lex-yaml-two-empty]
+
+## In an architecture diagram
+
+The [ordered rules](../../spec/docs/diagrams/architecture.md#ordered-rules) scan
+the whole text before grammar and semantic registration. No recovery accepts a
+valid prefix with invalid trailing text. [fixture:
+architecture/error-after-prefix] [fixture:
+architecture/error-recovered-statement]
+
+| Cause                                                            | Range and message                                                                                                                                          | Fixtures                                                                                                                                                                                                                                                                                                           |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No complete lexical rule matches                                 | The source character, with `Unexpected character`.                                                                                                         | [fixture: architecture/space-body-nbsp] [fixture: architecture/lex-string-unclosed] [fixture: architecture/lex-title-unclosed] [fixture: architecture/lex-icon-spaces]                                                                                                                                             |
+| The grammar cannot read a component                              | Its significant range, or its empty start when it has no token, with `Unexpected token`; at EOF, the empty source-end range with `Unexpected end of text`. | [fixture: architecture/header-repeated] [fixture: architecture/gram-same-line-statements] [fixture: architecture/gram-group-id-missing] [fixture: architecture/gram-edge-rhs-missing]                                                                                                                              |
+| A hidden form consumes the only separating LF                    | The next visible component, with `Unexpected token`; EOF still satisfies EOL.                                                                              | [fixture: architecture/hidden-yaml-service-after] [fixture: architecture/hidden-directive-after-service] [fixture: architecture/hidden-yaml-service-eof] [fixture: architecture/hidden-directive-eof]                                                                                                              |
+| A declaration ID is already registered                           | The duplicate declaration ID, with `Architecture ID is already registered`.                                                                                | [fixture: architecture/error-group-duplicate] [fixture: architecture/error-service-duplicate] [fixture: architecture/error-service-junction-collision] [fixture: architecture/error-group-junction-collision]                                                                                                      |
+| A declaration names itself as parent                             | The parent reference, with `Architecture declaration cannot be its own parent`.                                                                            | [fixture: architecture/error-group-self-parent] [fixture: architecture/error-service-self-parent] [fixture: architecture/error-junction-self-parent]                                                                                                                                                               |
+| A parent is not a group available at that registration step      | The parent reference, with `Architecture parent must be a registered group`.                                                                               | [fixture: architecture/error-group-forward-parent] [fixture: architecture/error-group-parent-node] [fixture: architecture/error-service-parent-missing] [fixture: architecture/error-service-parent-node] [fixture: architecture/error-junction-parent-missing] [fixture: architecture/error-junction-parent-node] |
+| An edge endpoint or alignment member is absent or is a group     | That ID, with `Architecture reference must name a service or junction`.                                                                                    | [fixture: architecture/error-edge-lhs-missing] [fixture: architecture/error-edge-rhs-missing] [fixture: architecture/error-edge-group-lhs] [fixture: architecture/error-edge-group-rhs] [fixture: architecture/error-align-missing] [fixture: architecture/error-align-group]                                      |
+| An edge modifier joins nodes with the same nonempty parent group | The whole edge including hidden suffixes, with `Architecture group modifier cannot join nodes in the same parent group`.                                   | [fixture: architecture/error-edge-same-group-lhs] [fixture: architecture/error-edge-same-group-rhs]                                                                                                                                                                                                                |
+| An alignment repeats a member                                    | The repeated member ID, with `Architecture alignment members must be distinct`.                                                                            | [fixture: architecture/error-align-duplicate]                                                                                                                                                                                                                                                                      |
+
+Semantic checks use groups, services, junctions, edges, alignments order, with
+source order within each category. The shared token-boundary checks run before
+registration and report an indivisible cut at its directive or selected
+semicolon. Failed native directive matches can instead become comments.
+[fixture: architecture/db-junction-order] [fixture:
+architecture/db-service-forward-parent] [fixture:
+architecture/error-service-parent-forward-junction] [fixture:
+architecture/div-directive-name] [fixture: architecture/div-directive-line]
+[fixture: architecture/div-semicolon-parent-id] [fixture:
+architecture/hidden-directive-unclosed] [fixture:
+architecture/hidden-directive-close-glued]

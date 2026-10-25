@@ -182,14 +182,20 @@ export abstract class CommonFormUnitLexer<
    * LF/CR/LS/PS. common.md, Line terminators converts CR and CRLF to LF first.
    */
   protected readString(at: DiagramCharacter, name: Name): boolean {
+    const match = this.matchString(at)
+    if (match === null) return false
+    this.read(name, at, match.end)
+    return true
+  }
+
+  /** The complete quoted alternative, also used before a label's closing bracket. */
+  protected matchString(at: DiagramCharacter): Match | null {
     if (at.codePoint !== QUOTATION_MARK && at.codePoint !== APOSTROPHE)
-      return false
+      return null
     let cursor = this.reader.after(at)
     while (cursor !== null) {
-      if (cursor.codePoint === at.codePoint) {
-        this.read(name, at, this.reader.after(cursor))
-        return true
-      }
+      if (cursor.codePoint === at.codePoint)
+        return { end: this.reader.after(cursor) }
       if (cursor.codePoint === REVERSE_SOLIDUS) {
         cursor = this.reader.after(cursor)
         if (
@@ -198,11 +204,11 @@ export abstract class CommonFormUnitLexer<
           cursor.codePoint === LINE_SEPARATOR ||
           cursor.codePoint === PARAGRAPH_SEPARATOR
         )
-          return false
+          return null
       }
       cursor = this.reader.after(cursor)
     }
-    return false
+    return null
   }
 
   /** Composite common forms: ASCII colon gap first, otherwise a common-whitespace brace gap. */

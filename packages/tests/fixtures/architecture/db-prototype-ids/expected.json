@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Map-backed group, service, junction and reference identities accept Object.prototype names."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "toString",
+        "type": "service",
+        "in": "constructor"
+      },
+      {
+        "id": "hasOwnProperty",
+        "type": "junction",
+        "in": "__proto__"
+      }
+    ],
+    "groups": [
+      {
+        "id": "__proto__"
+      },
+      {
+        "id": "constructor",
+        "in": "__proto__"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "toString",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "hasOwnProperty",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "toString",
+          "hasOwnProperty"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/architecture.html",
+    "line": 164
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "servC",
+        "type": "service",
+        "icon": "server",
+        "title": "Server 1"
+      },
+      {
+        "id": "servL",
+        "type": "service",
+        "icon": "server",
+        "title": "Server 2"
+      },
+      {
+        "id": "servR",
+        "type": "service",
+        "icon": "server",
+        "title": "Server 3"
+      },
+      {
+        "id": "servT",
+        "type": "service",
+        "icon": "server",
+        "title": "Server 4"
+      },
+      {
+        "id": "servB",
+        "type": "service",
+        "icon": "server",
+        "title": "Server 5"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "servC",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "servL",
+        "rhsDir": "R",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Label that is Long"
+      },
+      {
+        "lhsId": "servC",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "servR",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Label that is Long"
+      },
+      {
+        "lhsId": "servC",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "servT",
+        "rhsDir": "B",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Label that is Long"
+      },
+      {
+        "lhsId": "servC",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "servB",
+        "rhsDir": "T",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Label that is Long"
+      },
+      {
+        "lhsId": "servL",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "servT",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Label that is Long"
+      },
+      {
+        "lhsId": "servL",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "servB",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Label that is Long"
+      },
+      {
+        "lhsId": "servR",
+        "lhsDir": "T",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "servT",
+        "rhsDir": "R",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Label that is Long"
+      },
+      {
+        "lhsId": "servR",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "servB",
+        "rhsDir": "R",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "Label that is Long"
+      }
+    ],
+    "layoutHints": []
+  }
+}

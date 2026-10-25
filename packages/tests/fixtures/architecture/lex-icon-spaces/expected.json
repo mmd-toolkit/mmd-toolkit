@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An icon name cannot contain whitespace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->(<- at offset: 29, skipped 1 characters.\nLexer error on line 2, column 20: unexpected character: ->)<- at offset: 37, skipped 1 characters. Parse error on line 2, column 13: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'my'\nParse error on line 2, column 16: Expecting token of type ':' but found `icon`."
+  }
+}

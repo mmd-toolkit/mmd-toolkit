@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Valid embedded drawing settings do not rescue a duplicate-ID rejection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service id [api] is already in use by another node"
+  }
+}

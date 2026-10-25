@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Icons, strings and bracketed labels: global directives between complete edge components preserve ports, markers, line units, labels and group modifiers."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "in": "g"
+      },
+      {
+        "id": "db",
+        "type": "service",
+        "in": "h"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g"
+      },
+      {
+        "id": "h"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": true,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "x"
+      },
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": true,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": true
+      }
+    ],
+    "layoutHints": []
+  }
+}

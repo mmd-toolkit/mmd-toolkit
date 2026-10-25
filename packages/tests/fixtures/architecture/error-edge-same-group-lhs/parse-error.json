@@ -1,0 +1,17 @@
+{
+  "message": "Architecture group modifier cannot join nodes in the same parent group",
+  "range": [
+    59,
+    79
+  ],
+  "loc": {
+    "start": {
+      "line": 5,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 20
+    }
+  }
+}

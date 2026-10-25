@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed global directive after a junction is checked against the remaining source."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "japi",
+        "type": "junction"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

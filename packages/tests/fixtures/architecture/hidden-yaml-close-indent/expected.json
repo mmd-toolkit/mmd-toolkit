@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A hidden YAML closer requires a fence immediately after its preceding line break."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting token of type 'EOF' but found `--`.\nParse error on line 3, column 8: Expecting token of type ':' but found `\n`.\nParse error on line 4, column 3: Expecting token of type 'EOF' but found `--`."
+  }
+}

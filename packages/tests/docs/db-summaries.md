@@ -18793,3 +18793,86 @@ packet/config-directive-fraction] [fixture:
 packet/config-frontmatter-overrides-site] [fixture:
 packet/config-directive-overrides-site] [fixture:
 packet/frontmatter-invalid-keeps-config]
+
+## architecture
+
+`normalizeArchitecture()` summarizes the `architecture` detector id. The
+[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDetector.ts#L7-L11)
+recognizes the `architecture` prefix, while the
+[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/architecture/architecture.langium#L5-L13)
+requires `architecture-beta`. [fixture: architecture/header-beta] [fixture:
+architecture/header-bare-rejected]
+
+| Field         | Content                                                                                                                    |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `accTitle`    | Accessibility title, or the empty text.                                                                                    |
+| `accDescr`    | Accessibility description, or the empty text.                                                                              |
+| `nodes`       | Published services followed by junctions: `id`, `type`, `in`, and service `icon`, `iconText`, `title` when set.            |
+| `groups`      | Published groups: `id`, `icon`, `title`, `in` when set.                                                                    |
+| `edges`       | Published edges: `lhsId`, `lhsDir`, `lhsInto`, `lhsGroup`, `rhsId`, `rhsDir`, `rhsInto`, `rhsGroup`, and `title` when set. |
+| `layoutHints` | Published alignment constraints: `direction` and the ordered `members` array.                                              |
+
+The
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureParser.ts#L9-L19)
+publishes groups, services, junctions, edges and alignments in that order,
+preserving source order within each kind. The normalizer reads
+[`getNodes()`, `getGroups()` and `getEdges()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L148-L261),
+and
+[`getLayoutHints()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L263-L288),
+without sorting. Optional absent values are omitted; published false flags and
+empty strings remain. Repeated edges and alignment declarations remain. The `in`
+references express the hierarchy without a second list of children. An empty
+diagram has four empty arrays. [fixture: architecture/db-mixed] [fixture:
+architecture/db-empty-values] [fixture: architecture/db-duplicate-edges]
+[fixture: architecture/db-align-forward-repeat] [fixture:
+architecture/db-junction-order] [fixture: architecture/header-beta]
+
+The
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L40-L152)
+uses node and group identities, parents, labels and icons, and edge endpoints,
+ports, arrow flags, group-boundary flags and labels. Service `iconText` is read
+by
+[`drawServices()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L277-L359).
+Icon names remain names: iconify lookup and sanitization happen during drawing.
+Alignment direction and member order feed the renderer's
+[alignment and relative-placement constraints](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L261-L320).
+Accessibility fields feed the
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[fixture: architecture/db-mixed] [fixture: architecture/db-unknown-icon]
+[fixture: architecture/lex-string-conversion]
+
+The summary drops the following:
+
+- The diagram title. The common adapter publishes it, but architecture's
+  [`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L610-L642)
+  explicitly leaves title drawing unimplemented and never reads it. Frontmatter
+  title remains available in `embedded.title`. [fixture:
+  architecture/frontmatter-title] [fixture:
+  architecture/frontmatter-title-empty-body]
+- Per-node `edges`, which duplicate the global edge references, and the
+  `getServices()` and `getJunctions()` views, which filter `nodes` by type.
+- `registeredIds`, used only for validation. Identities are authored, stored in
+  maps, and need no generated-id replacement. Prototype-shaped IDs remain
+  ordinary IDs. [fixture: architecture/db-prototype-ids] [fixture:
+  architecture/db-prototype-services]
+- `dataStructures`: adjacency lists, spatial maps and group alignments
+  [derived from nodes and edges](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L290-L384)
+  when drawing starts. The normalizer never calls `getDataStructures()`.
+- `elements`, `diagramId`, DOM ids, coordinates, widths, heights and resolved
+  icon SVGs. They are drawing state, depend on configuration or measurement, or
+  are derived from the retained fields.
+- The Db's
+  [configuration getters](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L395-L405).
+  Configuration stays in site and embedded configuration, outside the summary.
+  No architecture setting is read during publication, and no Db patch or data
+  block recorder is needed. [fixture: architecture/config-drawing-only]
+  [fixture: architecture/frontmatter-config] [fixture:
+  architecture/config-invalid-cannot-rescue]
+
+The common adapter publishes only truthy final accessibility values; an empty
+final assignment suppresses earlier body assignments. Architecture titles trim
+outer whitespace and unescape quotes, while text icons use the reachable
+`STRING` rule's default conversion; the converter's `ARCH_TEXT_ICON` branch is
+unreachable. [fixture: architecture/common-repeat-empty] [fixture:
+architecture/common-empty-block-after-value] [fixture:
+architecture/lex-title-conversion] [fixture: architecture/lex-string-conversion]

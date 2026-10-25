@@ -235,3 +235,6 @@ ESTree の木をたどる道具はこれを前提にします。
 この条件の対象ではありません。
 
 packet の範囲は [packet](./positions/packet.ja.md#範囲) で定めます。
+
+architecture の範囲は
+[architecture](./positions/architecture.ja.md#範囲) で定めます。

@@ -27,6 +27,7 @@ import { timelineValueNodeTypes } from "../src/printers/timeline-layout.ts"
 import { gitgraphValueNodeTypes } from "../src/printers/gitgraph-layout.ts"
 import { pieValueNodeTypes } from "../src/printers/pie-layout.ts"
 import { infoValueNodeTypes } from "../src/printers/info-layout.ts"
+import { architectureValueNodeTypes } from "../src/printers/architecture-layout.ts"
 import { packetValueNodeTypes } from "../src/printers/packet-layout.ts"
 import { xychartValueNodeTypes } from "../src/printers/xychart-layout.ts"
 
@@ -51,6 +52,11 @@ interface DiagramValues {
 }
 
 const diagrams: readonly DiagramValues[] = [
+  {
+    prefix: "Architecture",
+    values: architectureValueNodeTypes,
+    notValues: new Set(["NumericLiteral"]),
+  },
   {
     prefix: "Packet",
     values: packetValueNodeTypes,

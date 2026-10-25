@@ -1,5 +1,9 @@
 import type {
   Node,
+  ArchitectureTitleStatement,
+  ArchitectureAccTitleStatement,
+  ArchitectureAccDescrStatement,
+  ArchitectureAccDescrBlockStatement,
   InfoTitleStatement,
   InfoAccTitleStatement,
   InfoAccDescrStatement,
@@ -29,6 +33,10 @@ import {
 } from "./source.ts"
 
 type CommonStatement =
+  | ArchitectureTitleStatement
+  | ArchitectureAccTitleStatement
+  | ArchitectureAccDescrStatement
+  | ArchitectureAccDescrBlockStatement
   | InfoTitleStatement
   | InfoAccTitleStatement
   | InfoAccDescrStatement

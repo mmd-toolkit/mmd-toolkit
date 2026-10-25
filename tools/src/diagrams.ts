@@ -39,6 +39,7 @@ export const diagramIds: Readonly<
   gitgraph: ["gitGraph"],
   info: ["info"],
   packet: ["packet"],
+  architecture: ["architecture"],
 }
 
 /**

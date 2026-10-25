@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 282,
+    "test": "architecture diagrams > align directive > should reject an align directive that lists the same member twice"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "align row lists [a] more than once"
+  }
+}

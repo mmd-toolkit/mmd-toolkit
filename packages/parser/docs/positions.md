@@ -194,3 +194,6 @@ values of nodes, which leave out comment regions, directives, and the `;` that
 the line rule ignores, are not part of it.
 
 Packet ranges are defined in [packet](./positions/packet.md#ranges).
+
+Architecture ranges are defined in
+[architecture](./positions/architecture.md#ranges).

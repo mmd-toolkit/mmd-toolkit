@@ -46,6 +46,7 @@ export interface CorpusTree {
 const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "architecture",
   "gitgraph",
   "info",
   "packet",

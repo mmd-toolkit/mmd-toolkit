@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Component in line description is checked against global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "C4Component",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

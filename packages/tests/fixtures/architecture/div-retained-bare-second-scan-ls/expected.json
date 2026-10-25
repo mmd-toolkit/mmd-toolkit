@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Detection: bare lines and their whitespace are passed between retained forms; unreadable native whitespace is a known divergence. Case: retained-yaml-bare-second-scan-ls."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: -> <- at offset: 13, skipped 1 characters. "
+  }
+}

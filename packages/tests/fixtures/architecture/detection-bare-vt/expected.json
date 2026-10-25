@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "VT after a passed bare percent line tests detection-passed trivia."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->\u000b<- at offset: 3, skipped 1 characters.\nLexer error on line 3, column 1: unexpected character: ->\u000b<- at offset: 5, skipped 1 characters. "
+  }
+}

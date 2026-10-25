@@ -827,11 +827,11 @@ describe("specifiedRunOf: html-tag-in-frontmatter", () => {
   })
 
   it("gives the title to embedded where the diagram type has no Db to summarize", async () => {
-    const input = "---\ntitle: <a\n---\narchitecture-beta\n"
+    const input = "---\ntitle: <a\n---\ntreemap\n"
     const run = await specifiedRunOf(input, HTML_TAG_MARK, undefined)
     expect(run?.outcome).toEqual({
       accepted: true,
-      diagramType: "architecture",
+      diagramType: "treemap",
       db: null,
     })
     expect(run?.embedded?.title).toBe("<a")

@@ -273,3 +273,9 @@ packet/spec-packet-c4580507] [fixture: packet/header-letter-suffix]
   common/detect-case-mixed-ishikawa] [fixture: common/detect-case-kelvin-sign]
   [fixture: common/detect-case-long-s] [fixture:
   common/detect-case-sensitive-sequence]
+
+Architecture detection precedes C4 and selects the `architecture` prefix. Only
+`architecture-beta` is an accepted header; see
+[architecture](./diagrams/architecture.md). [fixture: architecture/header-beta]
+[fixture: architecture/header-bare-rejected] [fixture:
+architecture/header-letter-suffix] [fixture: architecture/c4-component-service]

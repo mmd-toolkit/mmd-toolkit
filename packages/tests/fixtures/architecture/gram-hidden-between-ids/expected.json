@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Hidden forms: native hidden text cannot join two IDs or split an icon atom. Case: native-hidden-in-id."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 17: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'b'\nParse error on line 2, column 18: Expecting token of type ':' but found `\n`."
+  }
+}

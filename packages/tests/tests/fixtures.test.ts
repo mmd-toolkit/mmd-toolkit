@@ -45,6 +45,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "gitgraph",
   "info",
   "packet",
+  "architecture",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -71,6 +72,17 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads architecture fixtures", () => {
+    const fixtures = fixturesOf("architecture")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("architecture")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
   it("loads packet fixtures", () => {
     const fixtures = fixturesOf("packet")
     expect(fixtures.length).toBeGreaterThan(0)

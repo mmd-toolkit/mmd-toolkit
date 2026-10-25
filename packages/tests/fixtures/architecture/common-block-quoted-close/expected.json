@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quotes do not protect a closing brace inside ACC_DESCR."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 15: unexpected character: ->\"<- at offset: 32, skipped 1 characters.\nLexer error on line 2, column 18: unexpected character: ->}<- at offset: 35, skipped 1 characters. Parse error on line 2, column 17: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'B'"
+  }
+}

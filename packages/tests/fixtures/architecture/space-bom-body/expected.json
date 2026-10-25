@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "BOM is not hidden architecture body whitespace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->﻿<- at offset: 18, skipped 1 characters. "
+  }
+}

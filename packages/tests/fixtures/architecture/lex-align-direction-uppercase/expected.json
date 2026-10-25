@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Alignment direction keywords are case sensitive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 7: Expecting: one of these possible Token sequences:\n  1. [row]\n  2. [column]\nbut found: 'R'\nParse error on line 4, column 11: Expecting token of type ':' but found `api`.\nParse error on line 4, column 15: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'db'\nParse error on line 4, column 17: Expecting token of type ':' but found `\n`."
+  }
+}

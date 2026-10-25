@@ -1,6 +1,6 @@
 ---
 name: conventions
-description:
+description: >-
   The conventions of this repository for writing code and Markdown documents in
   any package: regular expressions, comments and autofix output, invisible
   characters, links to mermaid.js source, the English and Japanese document

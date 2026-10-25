@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Groups publish before services even when written later, and IDs are shared."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service id [same] is already in use by another group"
+  }
+}

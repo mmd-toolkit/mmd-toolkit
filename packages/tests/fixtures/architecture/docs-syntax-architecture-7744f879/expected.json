@@ -1,0 +1,93 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/architecture.md",
+    "line": 147
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "db1",
+        "type": "service",
+        "in": "api",
+        "icon": "database",
+        "title": "DB1"
+      },
+      {
+        "id": "db2",
+        "type": "service",
+        "in": "api",
+        "icon": "database",
+        "title": "DB2"
+      },
+      {
+        "id": "db3",
+        "type": "service",
+        "in": "api",
+        "icon": "database",
+        "title": "DB3"
+      },
+      {
+        "id": "mcp",
+        "type": "service",
+        "in": "api",
+        "icon": "server",
+        "title": "MCP"
+      }
+    ],
+    "groups": [
+      {
+        "id": "api",
+        "icon": "cloud",
+        "title": "API"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "db1",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "mcp",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "db2",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "mcp",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "db3",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "mcp",
+        "rhsDir": "L",
+        "rhsInto": true,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": [
+      {
+        "direction": "column",
+        "members": [
+          "db1",
+          "db2",
+          "db3"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Known divergences: the common style line rule can select a semicolon inside a parent ID or the in keyword. Case: semicolon-in-parent-id-reference."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "in": "gg",
+        "title": "style fill:#red"
+      }
+    ],
+    "groups": [
+      {
+        "id": "gg"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

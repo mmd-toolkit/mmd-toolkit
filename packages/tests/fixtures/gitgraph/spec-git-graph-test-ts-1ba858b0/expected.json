@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/gitGraph.test.ts",
+    "line": 159,
+    "test": "Parsing CherryPicking Statements > should parse cherry-picking with multiple properties"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Incorrect usage of \"cherryPick\". Source commit id should exist and provided"
+  }
+}

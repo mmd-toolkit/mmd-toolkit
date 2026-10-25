@@ -1,3 +1,7 @@
+import type {
+  ArchitectureDiagram,
+  ArchitectureNode,
+} from "./ast/architecture.ts"
 import type { PacketDiagram, PacketNode } from "./ast/packet.ts"
 import type { InfoDiagram, InfoNode } from "./ast/info.ts"
 import type { GitgraphDiagram, GitgraphNode } from "./ast/gitgraph.ts"
@@ -299,6 +303,7 @@ export type DiagramBody =
   | GitgraphDiagram
   | InfoDiagram
   | PacketDiagram
+  | ArchitectureDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -400,3 +405,4 @@ export type Node =
   | GitgraphNode
   | InfoNode
   | PacketNode
+  | ArchitectureNode

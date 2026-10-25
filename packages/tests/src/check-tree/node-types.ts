@@ -5,6 +5,9 @@
  * made of other nodes and of keywords and punctuation.
  */
 export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "ArchitectureLabel",
+  "ArchitectureLiteral",
+  "ArchitectureIgnoredText",
   "GitgraphLiteral",
   "GitgraphIgnoredText",
   "InfoLiteral",
@@ -75,6 +78,18 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
  * one of the two, so that a new node type is classified when it is added.
  */
 export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "ArchitectureDiagram",
+  "ArchitectureGroupStatement",
+  "ArchitectureServiceStatement",
+  "ArchitectureJunctionStatement",
+  "ArchitectureEdgeStatement",
+  "ArchitectureArrow",
+  "ArchitectureAlignmentStatement",
+  "ArchitectureAlignmentMember",
+  "ArchitectureTitleStatement",
+  "ArchitectureAccTitleStatement",
+  "ArchitectureAccDescrStatement",
+  "ArchitectureAccDescrBlockStatement",
   "GitgraphDiagram",
   "GitgraphCommitStatement",
   "GitgraphBranchStatement",
@@ -409,6 +424,7 @@ export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
  * checks those exact atom kinds.
  */
 export const NODE_TYPES_WITH_TOKENS_OF_ANY_KIND: ReadonlySet<string> = new Set([
+  "ArchitectureLabel",
   "UsecaseIdentifier",
   "VennLabel",
   "StateIgnoredText",

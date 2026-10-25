@@ -1,3 +1,5 @@
+import { architectureDbOf } from "./architecture.ts"
+import type { ArchitectureDiagram } from "./architecture-tree.ts"
 import { gitgraphDbOf } from "./gitgraph.ts"
 import { infoDbOf } from "./info.ts"
 import { packetDbOf } from "./packet.ts"
@@ -60,6 +62,7 @@ export interface ErrorDiagram extends TreeNode {
 
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
+  | ArchitectureDiagram
   | GitgraphDiagram
   | InfoDiagram
   | PacketDiagram
@@ -111,6 +114,8 @@ export function dbFromTree(
     // The error pseudo-diagram has no Db.
     case "ErrorDiagram":
       return {}
+    case "ArchitectureDiagram":
+      return architectureDbOf(text, root, root.body, embedded)
     case "GitgraphDiagram":
       return gitgraphDbOf(text, root, root.body, embedded)
     case "InfoDiagram":

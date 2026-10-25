@@ -1,0 +1,6 @@
+architecture-beta
+  group g(cloud)[Group]
+  service a "A" [Service] in g
+  junction j in g
+  a:R <-[link]-> L:j
+  align row a j

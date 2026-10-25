@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 214,
+    "test": "architecture diagrams > should allow __proto__ as a group name"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "in": "__proto__",
+        "icon": "server",
+        "title": "A"
+      },
+      {
+        "id": "b",
+        "type": "service",
+        "in": "__proto__",
+        "icon": "server",
+        "title": "B"
+      }
+    ],
+    "groups": [
+      {
+        "id": "__proto__",
+        "icon": "cloud",
+        "title": "Marker"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "b",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

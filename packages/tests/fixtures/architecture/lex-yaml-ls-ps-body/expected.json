@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Hidden YAML: common directives and comment regions are removed; interior line and paragraph separators remain authored content. Case: hidden-yaml-ls-body."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

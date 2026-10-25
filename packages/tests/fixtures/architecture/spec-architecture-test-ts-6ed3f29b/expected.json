@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/architecture.test.ts",
+    "line": 133,
+    "test": "architecture > should handle service titles with quotes > should handle group with quoted title"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [
+      {
+        "id": "api",
+        "icon": "cloud",
+        "title": "API"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

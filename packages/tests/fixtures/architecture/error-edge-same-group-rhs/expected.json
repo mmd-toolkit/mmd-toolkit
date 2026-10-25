@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A right group-boundary modifier rejects endpoints in the same parent."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The right-hand id [db] is modified to traverse the group boundary, but the edge does not pass through two groups."
+  }
+}

@@ -120,6 +120,96 @@ function textsOf(recording: SpecFileRecording): string[] {
 const FLOW_PARSER_IMPORT = `import flowParser from "./flowParser.ts"\n`
 
 describe("recordSpecFile: what is recorded", () => {
+  it("records architecture adapters and parser-package specs with suite options", async () => {
+    const root = makeRoot()
+    const checkout = {
+      mermaidSource: path.join(root, "packages/mermaid/src"),
+      workDir: path.join(root, "work"),
+    }
+    mkdirSync(checkout.mermaidSource, { recursive: true })
+    mkdirSync(checkout.workDir)
+    const adapter = writeTestFile(
+      checkout,
+      "diagrams/architecture/architecture.spec.ts",
+      [
+        'import { describe, it, assert } from "vitest";',
+        'import { parser } from "./architectureParser.js";',
+        'describe("architecture", { timeout: 15000 }, () => {',
+        'it("two", async () => {',
+        "assert(parser.parser); parser.parser.yy = {};",
+        'await parser.parse("architecture-beta");',
+        'await parser.parse("architecture");',
+        "});",
+        "});",
+      ].join("\n"),
+    )
+    const recorded = await recordFile(checkout, adapter)
+    expect(recorded.failures).toEqual([])
+    expect(recorded.inputs.map(({ text, line }) => ({ text, line }))).toEqual([
+      { text: "architecture-beta", line: 6 },
+      { text: "architecture", line: 7 },
+    ])
+    const grammar = writeTestFile(
+      checkout,
+      "../../parser/tests/architecture.test.ts",
+      [
+        'import { it } from "vitest";',
+        'import { Architecture } from "../src/language/index.js";',
+        'import { architectureParse as parse, expectNoErrorsOrAlternatives } from "./test-util.js";',
+        'it("grammar", () => {',
+        'const result = parse("architecture-beta service api");',
+        "expectNoErrorsOrAlternatives(result);",
+        "void Architecture.$type;",
+        "});",
+      ].join("\n"),
+    )
+    const parsed = await recordFile(checkout, grammar)
+    expect(parsed.failures).toEqual([])
+    expect(parsed.inputs).toEqual([
+      { text: "architecture-beta service api", line: 5, test: "grammar" },
+    ])
+    expect(readdirSync(checkout.workDir)).toContain(
+      encodeURIComponent("../../parser/tests/architecture.test.ts"),
+    )
+  })
+
+  it("records all Langium parser-package helpers before AST assertions", async () => {
+    const root = makeRoot()
+    const checkout = {
+      mermaidSource: path.join(root, "packages/mermaid/src"),
+      workDir: path.join(root, "work"),
+    }
+    mkdirSync(checkout.mermaidSource, { recursive: true })
+    mkdirSync(checkout.workDir)
+    const file = writeTestFile(
+      checkout,
+      "../../parser/tests/example.test.ts",
+      [
+        'import { it, expect } from "vitest";',
+        'import { Pie, Info, Packet } from "../src/language/index.js";',
+        'import { pieParse, gitGraphParse, infoParse, packetParse, expectNoErrorsOrAlternatives } from "./test-util.js";',
+        'it("grammar", () => {',
+        'const pie = pieParse("pie showData");',
+        "expectNoErrorsOrAlternatives(pie); expect(pie.value.$type).toBe(Pie.$type);",
+        "const git = gitGraphParse('gitGraph\\ncommit id:\"1\"');",
+        "expect(git.value.statements[0].id).toBe('1');",
+        'const info = infoParse("info showInfo");',
+        "expect(info.value.$type).toBe(Info.$type);",
+        'const packet = packetParse("packet-beta");',
+        "expect(packet.value.$type).toBe(Packet.$type);",
+        "});",
+      ].join("\n"),
+    )
+    const recorded = await recordFile(checkout, file)
+    expect(recorded.failures).toEqual([])
+    expect(recorded.inputs).toEqual([
+      { text: "pie showData", line: 5, test: "grammar" },
+      { text: 'gitGraph\ncommit id:"1"', line: 7, test: "grammar" },
+      { text: "info showInfo", line: 9, test: "grammar" },
+      { text: "packet-beta", line: 11, test: "grammar" },
+    ])
+  })
+
   it("records awaited packet parser calls without executing Langium", async () => {
     const recording = await recordSource(
       [
@@ -1193,11 +1283,10 @@ describe("recordSpecFile: how the file is read", () => {
     const recordedSecond = await recordFile(checkout, second)
     expect(textsOf(recordedFirst)).toEqual(["from first"])
     expect(textsOf(recordedSecond)).toEqual(["from second"])
-    expect(
-      readdirSync(
-        path.join(checkout.workDir, "diagrams/flowchart/parser"),
-      ).sort(),
-    ).toEqual(["first.spec.js", "second.spec.js"])
+    expect(readdirSync(checkout.workDir).sort()).toEqual([
+      encodeURIComponent("diagrams/flowchart/parser/first.spec.js"),
+      encodeURIComponent("diagrams/flowchart/parser/second.spec.js"),
+    ])
   })
 
   it("does not change the test file of the checkout, and writes the copy and the stubs into the work directory", async () => {
@@ -1213,7 +1302,7 @@ describe("recordSpecFile: how the file is read", () => {
       readdirSync(
         path.join(
           checkout.workDir,
-          "diagrams/flowchart/parser/example.spec.js",
+          encodeURIComponent("diagrams/flowchart/parser/example.spec.js"),
         ),
         {
           recursive: true,

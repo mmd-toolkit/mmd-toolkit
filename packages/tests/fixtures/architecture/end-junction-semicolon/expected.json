@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An attached semicolon after a junction rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 11: unexpected character: ->;<- at offset: 28, skipped 1 characters. "
+  }
+}

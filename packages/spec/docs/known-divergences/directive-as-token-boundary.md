@@ -401,6 +401,23 @@ packet/directive-accdescr-middle] [fixture: packet/directive-number-middle]
 [fixture: packet/directive-acctitle-colon] [fixture:
 packet/directive-accdescr-brace] [fixture: packet/directive-label-middle]
 
+### Architecture
+
+Architecture allows common directives between the parentheses and a complete
+icon name, and between the braces and the complete group word of a modifier.
+Inside an ID, icon name, keyword or double-dash line, a directive would cut an
+indivisible component and has no ignored-text position. Mermaid joins those
+pieces; this specification rejects them. A text/string value can retain the
+written content with its directive omitted, so it is accepted instead. An
+unclosed directive that joins a declaration ID to later text follows the same
+name boundary rule. [fixture: architecture/directive-icon-delimiters] [fixture:
+architecture/directive-group-delimiters] [fixture:
+architecture/div-directive-name] [fixture: architecture/div-directive-icon-name]
+[fixture: architecture/div-directive-group-word] [fixture:
+architecture/div-directive-line] [fixture: architecture/directive-fields]
+[fixture: architecture/end-group-unclosed-directive] [fixture:
+architecture/end-junction-unclosed-directive]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -501,3 +518,13 @@ warning. These facts do not justify any additional divergence.
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
   `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
   this divergence.
+
+- The pinned
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  documents the header, declarations and edges, without defining this common
+  preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
+  architecture group undefined, architecture quotes title, architecture reverse,
+  architecture unclosed and architecture align.
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
+  Status: Approved and concerns edges from outer parent groups, not a maintainer
+  ruling on this common boundary.

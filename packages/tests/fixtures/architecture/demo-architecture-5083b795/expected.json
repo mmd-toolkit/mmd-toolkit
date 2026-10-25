@@ -1,0 +1,93 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/architecture.html",
+    "line": 37
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "serv1",
+        "type": "service",
+        "in": "public",
+        "icon": "server",
+        "title": "Server"
+      },
+      {
+        "id": "serv2",
+        "type": "service",
+        "in": "private",
+        "icon": "server",
+        "title": "Server"
+      },
+      {
+        "id": "db",
+        "type": "service",
+        "in": "private",
+        "icon": "database",
+        "title": "Database"
+      },
+      {
+        "id": "gateway",
+        "type": "service",
+        "in": "api",
+        "icon": "internet",
+        "title": "Gateway"
+      }
+    ],
+    "groups": [
+      {
+        "id": "api",
+        "title": "API"
+      },
+      {
+        "id": "public",
+        "title": "Public API",
+        "in": "api"
+      },
+      {
+        "id": "private",
+        "title": "Private API",
+        "in": "api"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "serv1",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "serv2",
+        "rhsDir": "T",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "serv2",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "R",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "serv1",
+        "lhsDir": "L",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "gateway",
+        "rhsDir": "R",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

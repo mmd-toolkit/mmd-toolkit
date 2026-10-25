@@ -1,0 +1,17 @@
+{
+  "message": "Architecture reference must name a service or junction",
+  "range": [
+    29,
+    36
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 7
+    }
+  }
+}

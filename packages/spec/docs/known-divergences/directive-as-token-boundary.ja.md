@@ -479,6 +479,25 @@ option の語とコロンの間や引用文字列の中は許し、
 [fixture: packet/directive-accdescr-brace]
 [fixture: packet/directive-label-middle]
 
+### Architecture
+
+architecture は、括弧と完全な icon 名の間、
+modifier の brace と完全な group の語の間に共通 directive を許す。
+id、icon 名、keyword、double-dash の線の内部では不可分な構成要素を切り、
+ignored-text の位置を持てない。
+mermaid は断片をつなぐが、本仕様は拒否する。
+text/string の値は directive を除いた原文を持てるため受理する。
+宣言 id と後続 text をつなぐ未閉鎖 directive も同じ名前の境界規則に従う。
+[fixture: architecture/directive-icon-delimiters]
+[fixture: architecture/directive-group-delimiters]
+[fixture: architecture/div-directive-name]
+[fixture: architecture/div-directive-icon-name]
+[fixture: architecture/div-directive-group-word]
+[fixture: architecture/div-directive-line]
+[fixture: architecture/directive-fields]
+[fixture: architecture/end-group-unclosed-directive]
+[fixture: architecture/end-junction-unclosed-directive]
+
 ## mermaid.js の文書と issue
 
 - [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
@@ -603,3 +622,13 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   2026-10-25 に `packet bitsPerRow`、`packet fractional`、
   `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
   ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。
+
+- pinned の
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175) は見出し・宣言・辺を説明するが、
+  この共通の前処理の境界を定義しない。
+  2026-10-25 に公式の issue/PR を architecture group undefined、
+  architecture quotes title、architecture reverse、architecture unclosed、
+  architecture align で検索した。
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
+  Open、Status: Approved で、外側の親 group の辺を扱う報告である。
+  今回の共通境界に対する maintainer の判断とはしない。

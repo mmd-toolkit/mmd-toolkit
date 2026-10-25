@@ -622,6 +622,78 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-yaml-bare-directive] [fixture: info/lex-retained-no-bare-ls]
     [fixture: info/lex-hidden-common-comment]
 
+  - architecture: the fifteen node types, child fields and visitor order follow
+    [ast/architecture.md](../../spec/docs/ast/architecture.md). Check complete
+    IDs against keyword/common-form/direction priority and the maximal ID
+    alternative; icon names instead allow their full colon/dash spelling.
+    Strings must be closed and obey their escape boundaries. Bracket labels
+    choose the first complete quoted or bare alternative on converted text,
+    while kind and value keep their authored contract. String versus RawText
+    content tokens follow that choice; brackets are separate punctuation.
+    [fixture: architecture/lex-keyword-prefix-ids] [fixture:
+    architecture/lex-keyword-terminal-priority] [fixture:
+    architecture/lex-direction-id-prefix] [fixture:
+    architecture/lex-icon-leading-symbols] [fixture:
+    architecture/lex-string-escaped-ls] [fixture:
+    architecture/lex-title-unquoted-fallback] [fixture:
+    architecture/lex-title-padded-quotes] [fixture:
+    architecture/html-label-authored-quotes] [fixture:
+    architecture/lex-label-selected-semicolon-after-quote]
+
+    Check declaration words and ordered optional icon/title/parent components,
+    modifier braces and group word, both port colons, directions, independent
+    marker characters and solid line. Icon/modifier interiors admit common
+    trivia between complete components, with no padding or native hidden form;
+    double dash is indivisible and yields to a whole hidden YAML match.
+    ArchitectureArrow.value is the written text of its whole range minus common
+    trivia, including authored internal padding and hidden forms. Alignment
+    direction and at least two members retain source order; each member owns its
+    preceding hidden gap, including the first member. Semantic acceptance
+    remains the parser's responsibility. [fixture: architecture/db-mixed]
+    [fixture: architecture/directive-icon-delimiters] [fixture:
+    architecture/directive-group-delimiters] [fixture:
+    architecture/gram-hidden-inside-icon] [fixture:
+    architecture/gram-hidden-inside-modifier] [fixture:
+    architecture/gram-edge-reversed-labeled-markers] [fixture:
+    architecture/hidden-yaml-edge-gaps] [fixture:
+    architecture/hidden-yaml-align-gap] [fixture:
+    architecture/hidden-directive-unit-gaps] [fixture:
+    architecture/directive-fields]
+
+    Every native hidden match has exactly one owner in its named gap, textAfter
+    before visible EOL, body after visible EOL, or textBeforeHeader. Absent
+    components have empty gaps. Check the earliest qualifying closer in the
+    selected alternative: YAML tries body-present before adjacent-empty;
+    DIRECTIVE skips nonqualifying closers. Exclude the consumed following LF and
+    require surviving visible EOL before a next statement; spare LF, lookahead
+    space and EOF have separate controls. [fixture:
+    architecture/lex-hidden-two-suffixes] [fixture:
+    architecture/lex-hidden-after-visible-eol] [fixture:
+    architecture/hidden-yaml-three-fences] [fixture:
+    architecture/hidden-yaml-adjacent-later-closer] [fixture:
+    architecture/hidden-directive-nonqualifying-close] [fixture:
+    architecture/hidden-directive-spare-lf] [fixture:
+    architecture/hidden-directive-closing-space] [fixture:
+    architecture/hidden-directive-eof] [fixture: architecture/hidden-yaml-crlf]
+
+    Shared common-statement checks enforce the full lexical value or null,
+    authored separator/colon/brace, block trimming and first closing brace. A
+    native Comment cannot hide an earlier DIRECTIVE or begin inside a string,
+    label or composite description. Before the header, retained YAML and
+    second-scan directives keep their own closing rules; detection-passed bare
+    lines and accompanying Unicode trivia are not read again, including between
+    retained forms. Without a passed line the native gap stays strict. Ordinary
+    body gaps accept only ASCII space/tab and visible LF as specified. [fixture:
+    architecture/common-all] [fixture: architecture/common-repeat-empty]
+    [fixture: architecture/common-block-first-close] [fixture:
+    architecture/hidden-directive-inside-values] [fixture:
+    architecture/hidden-yaml-inside-values] [fixture:
+    architecture/detect-empty-braces-bare] [fixture:
+    architecture/div-retained-bare-second-scan-ls] [fixture:
+    architecture/retained-yaml-no-bare] [fixture:
+    architecture/retained-directive-no-bare] [fixture:
+    architecture/space-body-nbsp]
+
   - packet: all ten node types, fields and visitor order follow
     [ast/packet.md](../../spec/docs/ast/packet.md). Range, single and relative
     blocks retain their authored endpoints or count and their own named hidden

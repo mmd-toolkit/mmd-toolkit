@@ -4,7 +4,7 @@
 [bare-percent-line-before-header.md](./bare-percent-line-before-header.md)
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
-sankey、block、c4、agentflow、usecase、pie、gitgraph・info・packet。
+sankey、block、c4、agentflow、usecase、pie、gitgraph・info・packet・architecture。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです
 。
 
@@ -422,6 +422,26 @@ Mermaid が受理する入力は拒否しない。
 [fixture: packet/detect-yaml-bare-directive-ascii]
 [fixture: packet/lex-retained-no-bare-ls]
 
+### Architecture
+
+architecture は裸の percent 行と付随する共通の空白を、
+共有 Comment と trivia にする。
+見出し直前、空白だけの行、残存 YAML/2 回目の scan の形の間でも同じである。
+mermaid の native lexer は ASCII padding を受理するが、
+記録した Unicode の隙間は拒否する。
+本仕様はこの差異としてその入力を受理する。
+通した行がなければ同じ隙間は native な図のテキストであり、拒否のままとする。
+残存形は固有の閉じの境界で引き続き読み、通した行と一緒には消さない。
+[fixture: architecture/detection-bare-space]
+[fixture: architecture/detection-bare-tab]
+[fixture: architecture/detection-bare-before-header-ls]
+[fixture: architecture/detection-bare-ls]
+[fixture: architecture/div-retained-bare-ls]
+[fixture: architecture/div-retained-bare-second-scan-ls]
+[fixture: architecture/retained-yaml-no-bare]
+[fixture: architecture/retained-directive-no-bare]
+[fixture: architecture/detect-second-scan-glued]
+
 ## mermaid.js の文書と issue
 
 - [構文のリファレンス](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
@@ -516,3 +536,13 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   2026-10-25 に `packet bitsPerRow`、`packet fractional`、
   `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
   ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。
+
+- pinned の
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175) は見出し・宣言・辺を説明するが、
+  この共通の前処理の境界を定義しない。
+  2026-10-25 に公式の issue/PR を architecture group undefined、
+  architecture quotes title、architecture reverse、architecture unclosed、
+  architecture align で検索した。
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
+  Open、Status: Approved で、外側の親 group の辺を扱う報告である。
+  今回の共通境界に対する maintainer の判断とはしない。

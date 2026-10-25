@@ -88,6 +88,25 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/info/infoParser.js": ["parser"],
   "diagrams/packet/parser.js": ["parser"],
   "diagrams/packet/db.js": ["PacketDB"],
+  "diagrams/architecture/architectureParser.js": ["parser"],
+  "diagrams/architecture/architectureDb.js": ["ArchitectureDB"],
+  "diagrams/architecture/architectureRenderer.js": ["draw"],
+  "diagrams/architecture/architectureDetector.js": ["default"],
+  cytoscape: ["default"],
+  "../../parser/src/language/index.js": [
+    "Architecture",
+    "Pie",
+    "Info",
+    "Packet",
+  ],
+  "../../parser/tests/test-util.js": [
+    "expectNoErrorsOrAlternatives",
+    "architectureParse",
+    "pieParse",
+    "gitGraphParse",
+    "infoParse",
+    "packetParse",
+  ],
   "diagrams/pie/pieParser.js": ["parser"],
   "diagrams/pie/pieDb.js": ["db", "DEFAULT_PIE_DB"],
   "diagrams/pie/pieRenderer.js": ["draw"],
@@ -111,6 +130,7 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/agentflow/colorSlots.js": ["KIND_COUNT"],
   "diagrams/agentflow/conformance/runner.js": ["matchExpected", "runFixture"],
   vitest: [
+    "assert",
     "describe",
     "it",
     "test",
@@ -179,8 +199,8 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "setDiagramConfigScope",
   ],
   "diagram-api/comments.js": ["cleanupComments"],
-  "tests/util.js": ["jsdomIt"],
-  "diagram-api/detectType.js": ["detectors"],
+  "tests/util.js": ["jsdomIt", "ensureNodeFromSelector"],
+  "diagram-api/detectType.js": ["detectors", "addDetector"],
   "logger.js": ["log", "setLogLevel"],
   "mermaidAPI.js": ["mermaidAPI", "default"],
   "mermaid.js": ["default"],
@@ -302,7 +322,7 @@ export async function recordSpecFile(
   // path of the copy.
   const fileDir = path.join(
     realpathSync(workDir),
-    path.relative(mermaidSource, file),
+    encodeURIComponent(path.relative(mermaidSource, file)),
   )
   mkdirSync(fileDir, { recursive: true })
   const copy = writeCopyWithStubs(file, mermaidSource, fileDir)
@@ -350,9 +370,16 @@ export async function recordSpecFile(
   }
 
   /**
-   * `describe(title, body)`: registers the tests `body` declares.
+   * Registers a suite, with or without Vitest's options argument.
    */
-  function describe(title: string, body: () => unknown): void {
+  function describe(
+    title: string,
+    bodyOrOptions: (() => unknown) | object,
+    bodyWithOptions?: () => unknown,
+  ): void {
+    const body =
+      typeof bodyOrOptions === "function" ? bodyOrOptions : bodyWithOptions
+    if (body === undefined) throw new Error("describe has no body")
     suites.push({ title, beforeEach: [], afterEach: [] })
     body()
     suites.pop()
@@ -429,6 +456,7 @@ export async function recordSpecFile(
     // Tests also use helpers such as `expect.stringContaining()`.
     expect: new Proxy(expect, { get: () => anything }),
     vi: anything,
+    assert: anything,
   }
   const mermaidAPI = withRecorders({
     parse: (text: unknown) => Promise.resolve(record(text)),
@@ -466,6 +494,30 @@ export async function recordSpecFile(
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },
     "diagrams/packet/db.js": { PacketDB: anything },
+    "diagrams/architecture/architectureParser.js": {
+      parser: {
+        parser: { yy: anything },
+        parse: (text: unknown) => Promise.resolve(record(text)),
+      },
+    },
+    "diagrams/architecture/architectureDb.js": { ArchitectureDB: anything },
+    "diagrams/architecture/architectureRenderer.js": { draw: anything },
+    "diagrams/architecture/architectureDetector.js": { default: anything },
+    cytoscape: { default: anything },
+    "../../parser/src/language/index.js": {
+      Architecture: anything,
+      Pie: anything,
+      Info: anything,
+      Packet: anything,
+    },
+    "../../parser/tests/test-util.js": {
+      expectNoErrorsOrAlternatives: anything,
+      architectureParse: record,
+      pieParse: record,
+      gitGraphParse: record,
+      infoParse: record,
+      packetParse: record,
+    },
     "diagrams/info/infoParser.js": {
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },
@@ -625,8 +677,8 @@ export async function recordSpecFile(
       (STUBBED_MODULES["config.js"] ?? []).map((name) => [name, anything]),
     ),
     "diagram-api/comments.js": { cleanupComments: (text: unknown) => text },
-    "tests/util.js": { jsdomIt: it },
-    "diagram-api/detectType.js": { detectors: {} },
+    "tests/util.js": { jsdomIt: it, ensureNodeFromSelector: anything },
+    "diagram-api/detectType.js": { detectors: {}, addDetector: anything },
     "logger.js": { log: anything, setLogLevel: anything },
     "mermaidAPI.js": { mermaidAPI, default: mermaidAPI },
     "mermaid.js": {

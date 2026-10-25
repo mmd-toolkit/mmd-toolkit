@@ -111,6 +111,27 @@ const IGNORED_TEXT =
  * Meaning column of those tables on which of them are the written text.
  */
 export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
+  ArchitectureLabel: {
+    field: "value",
+    kind: "derived",
+    spec: "Authored label content under its first complete alternative (ast/architecture.md).",
+  },
+  ArchitectureArrow: {
+    field: "value",
+    kind: "written-text",
+    gaps: true,
+    spec: "Complete written arrow text, including authored padding and native hidden forms (ast/architecture.md).",
+  },
+  ArchitectureLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Written common-value text (ast/architecture.md).",
+  },
+  ArchitectureIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty authored form with fences (ast/architecture.md).",
+  },
   GitgraphLiteral: {
     field: "value",
     kind: "written-text",

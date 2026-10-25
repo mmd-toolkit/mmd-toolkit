@@ -1,0 +1,83 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/architecture.md",
+    "line": 162
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "src1",
+        "type": "service",
+        "icon": "server",
+        "title": "Source 1"
+      },
+      {
+        "id": "src2",
+        "type": "service",
+        "icon": "server",
+        "title": "Source 2"
+      },
+      {
+        "id": "src3",
+        "type": "service",
+        "icon": "server",
+        "title": "Source 3"
+      },
+      {
+        "id": "proc",
+        "type": "service",
+        "icon": "server",
+        "title": "Processor"
+      }
+    ],
+    "groups": [],
+    "edges": [
+      {
+        "lhsId": "src1",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "proc",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "src2",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "proc",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "src3",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "proc",
+        "rhsDir": "T",
+        "rhsInto": true,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "src1",
+          "src2",
+          "src3"
+        ]
+      }
+    ]
+  }
+}

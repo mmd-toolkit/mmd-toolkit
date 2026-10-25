@@ -17,6 +17,23 @@
  * recorded tree to have a text here.
  */
 export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  ArchitectureDiagram: [
+    "architecture-beta",
+    "group",
+    "service",
+    "junction",
+    "in",
+    "align",
+    "row",
+    "column",
+    "l",
+    "r",
+    "t",
+    "b",
+    "title",
+    "acctitle",
+    "accdescr",
+  ],
   GitgraphDiagram: [
     "gitgraph",
     "lr",

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "C4Container in block description is checked against global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "C4Container",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

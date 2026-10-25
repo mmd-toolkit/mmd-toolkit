@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/pie.test.ts",
+    "line": 130,
+    "test": "pie > should handle sections > should handle regular sections"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "GitHub",
+        "value": 100
+      },
+      {
+        "label": "GitLab",
+        "value": 50
+      }
+    ]
+  }
+}

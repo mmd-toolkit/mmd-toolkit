@@ -736,6 +736,88 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-yaml-bare-directive] [fixture:
     info/lex-retained-no-bare-ls] [fixture: info/lex-hidden-common-comment]
 
+  - architecture: 15 のノード型、子の欄と訪問順は
+    [ast/architecture.ja.md](../../spec/docs/ast/architecture.ja.md) に従う。
+    ID は keyword・共通の形・方向の優先順位と最長の ID の選択肢を調べる。
+    icon 名は colon と dash を含む綴りを認める。
+    string は閉じと escape の境界を確かめる。
+    角括弧の label は、
+    変換後のテキストで最初に完結する引用・bare の選択肢を選び、
+    kind と value は原文の契約を保つ。
+    中身の String と RawText のトークンはその選択に従い、
+    角括弧は別の句読点とする。
+    [fixture: architecture/lex-keyword-prefix-ids]
+    [fixture: architecture/lex-keyword-terminal-priority]
+    [fixture: architecture/lex-direction-id-prefix]
+    [fixture: architecture/lex-icon-leading-symbols]
+    [fixture: architecture/lex-string-escaped-ls]
+    [fixture: architecture/lex-title-unquoted-fallback]
+    [fixture: architecture/lex-title-padded-quotes]
+    [fixture: architecture/html-label-authored-quotes]
+    [fixture: architecture/lex-label-selected-semicolon-after-quote]
+
+    宣言の語と icon・title・parent の順序、modifier の括弧と group の語、
+    両 port の colon・方向、独立した marker の文字と実線を調べる。
+    icon と modifier の完全な構成要素の間には共通 trivia を認めるが、
+    padding と native hidden の形は認めない。
+    double dash は分割せず、完全な hidden YAML に優先権を譲る。
+    ArchitectureArrow.value は range 全体から共通 trivia を除いた原文で、
+    内側の padding と hidden の形も保持する。
+    alignment の方向と 2 個以上の member は原文順を保つ。
+    最初も含め、各 member が直前の hidden gap を持つ。
+    意味上の受理は parser の担当とする。
+    [fixture: architecture/db-mixed]
+    [fixture: architecture/directive-icon-delimiters]
+    [fixture: architecture/directive-group-delimiters]
+    [fixture: architecture/gram-hidden-inside-icon]
+    [fixture: architecture/gram-hidden-inside-modifier]
+    [fixture: architecture/gram-edge-reversed-labeled-markers]
+    [fixture: architecture/hidden-yaml-edge-gaps]
+    [fixture: architecture/hidden-yaml-align-gap]
+    [fixture: architecture/hidden-directive-unit-gaps]
+    [fixture: architecture/directive-fields]
+
+    各 native hidden match は 1 回だけ持つ。
+    所有者は名前つき gap、可視 EOL 前の textAfter、
+    可視 EOL 後の body、textBeforeHeader のいずれかとする。
+    省略した構成要素の gap は空にする。
+    選んだ選択肢の最初の適合する閉じを確かめる。
+    YAML は本文ありを隣接する空より先に試し、
+    DIRECTIVE は境界に適合しない閉じを飛ばす。
+    消費した直後の LF は range の外に置く。
+    次の文の前には可視 EOL が残ることを求め、
+    余分の LF、先読みだけの空白、EOF は別々に確かめる。
+    [fixture: architecture/lex-hidden-two-suffixes]
+    [fixture: architecture/lex-hidden-after-visible-eol]
+    [fixture: architecture/hidden-yaml-three-fences]
+    [fixture: architecture/hidden-yaml-adjacent-later-closer]
+    [fixture: architecture/hidden-directive-nonqualifying-close]
+    [fixture: architecture/hidden-directive-spare-lf]
+    [fixture: architecture/hidden-directive-closing-space]
+    [fixture: architecture/hidden-directive-eof]
+    [fixture: architecture/hidden-yaml-crlf]
+
+    共通文の共有の検査で、完全な字句の値か null、書かれた区切り・colon・括弧、
+    block の trim と最初の閉じ括弧を確かめる。
+    native Comment は先行する DIRECTIVE を隠したり、
+    string・label・複合 description の内側に始まったりできない。
+    見出し前では、
+    保持した YAML と第 2 scan の directive は自分の閉じの規則を保つ。
+    検出が渡した裸の行と付随する Unicode trivia は、
+    保持した形の間も含めて読み直さない。
+    渡した行がなければ native gap の厳密さを保つ。
+    通常の body gap は、仕様の位置で ASCII 空白・タブと可視 LF だけを認める。
+    [fixture: architecture/common-all]
+    [fixture: architecture/common-repeat-empty]
+    [fixture: architecture/common-block-first-close]
+    [fixture: architecture/hidden-directive-inside-values]
+    [fixture: architecture/hidden-yaml-inside-values]
+    [fixture: architecture/detect-empty-braces-bare]
+    [fixture: architecture/div-retained-bare-second-scan-ls]
+    [fixture: architecture/retained-yaml-no-bare]
+    [fixture: architecture/retained-directive-no-bare]
+    [fixture: architecture/space-body-nbsp]
+
   - packet: 10 ノードの型、欄、訪問順は
     [ast/packet.md](../../spec/docs/ast/packet.ja.md) に従う。
     range・single・relative は書いた端点または count と

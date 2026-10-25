@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An LF-terminated header comment is removed before global C4 detection."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

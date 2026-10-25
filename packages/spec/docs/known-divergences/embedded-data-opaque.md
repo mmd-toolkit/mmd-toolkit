@@ -445,6 +445,26 @@ packet/frontmatter-invalid-keeps-config] [fixture: packet/hidden-yaml-body]
 [fixture: packet/config-frontmatter-row-fraction-accepted] [fixture:
 packet/config-init-row-integer]
 
+### Architecture
+
+Architecture retains frontmatter and common directive contents without
+validating their embedded data. Malformed YAML, duplicate keys and invalid
+common configuration types can therefore be accepted here when Mermaid rejects
+them. The comparison removes only the rejected data, retaining independent
+configuration. Native hidden YAML/DIRECTIVE bodies are ignored forms, not new
+configuration blocks. No architecture acceptance key is removed from valid
+embedded configuration: drawing settings, maxEdges and maxTextSize do not change
+this diagram's public parse acceptance. [fixture:
+architecture/div-frontmatter-invalid-yaml] [fixture:
+architecture/div-frontmatter-duplicate-key] [fixture:
+architecture/div-init-fontfamily-number] [fixture:
+architecture/div-init-primitive-wrap] [fixture:
+architecture/div-invalid-keeps-config] [fixture:
+architecture/hidden-yaml-before-header] [fixture:
+architecture/lex-yaml-global-directive] [fixture:
+architecture/config-drawing-only] [fixture: architecture/config-site-maxedges]
+[fixture: architecture/config-limit-small]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -533,3 +553,13 @@ warning. These facts do not justify any additional divergence.
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
   `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
   this divergence.
+
+- The pinned
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  documents the header, declarations and edges, without defining this common
+  preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
+  architecture group undefined, architecture quotes title, architecture reverse,
+  architecture unclosed and architecture align.
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
+  Status: Approved and concerns edges from outer parent groups, not a maintainer
+  ruling on this common boundary.

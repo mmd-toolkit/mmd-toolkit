@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Icon names are retained without iconify lookup during parsing."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "in": "g",
+        "icon": "missing:icon",
+        "title": "Service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "icon": "unknown:custom-icon",
+        "title": "Group"
+      }
+    ],
+    "edges": [],
+    "layoutHints": []
+  }
+}

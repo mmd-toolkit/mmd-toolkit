@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Without a passed bare line the retained-prefix control keeps ordinary body whitespace strict."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: -> <- at offset: 16, skipped 1 characters. "
+  }
+}

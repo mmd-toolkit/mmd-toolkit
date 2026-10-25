@@ -223,23 +223,14 @@ pinned mermaid.js, and writes the inputs of one diagram type it finds as an
 kind `mermaid`: the tag, the path in the repository, the line, and for test
 files the test's title path.
 
-- Test files: the diagram type's test files that pass diagram texts to
-  mermaid.js, listed in `SPEC_FILES` in `tools/collect.ts`. For flowchart,
-  `diagrams/flowchart/parser/*.spec.js` and
-  `diagrams/swimlanes/swimlanesDiagram.spec.ts`, without `flow-huge.spec.js`:
-  its one skipped test builds about 200,000 characters that mermaid.js rejects
-  for exceeding `maxEdges`, which other fixtures cover. For sequence,
-  `diagrams/sequence/sequenceDiagram.spec.js`. For class,
-  `diagrams/class/classDiagram.spec.ts`,
-  `diagrams/class/classDiagram-styles.spec.js` and
-  `diagrams/class/parser/class.spec.js`. For state, the test files of
-  `diagrams/state/` and `diagrams/state/parser/` that call the parser, without
-  `stateRenderer.spec.js`: it passes a text only to the renderer's `draw()`,
-  with a stand-in for the diagram, so mermaid.js never parses it. The tests
-  build most inputs in loops and template literals, so each file is run against
-  stubs and every text it passes to mermaid.js is kept, rejected or not; the
-  line is that of the call (`tools/src/spec-recorder.ts`). A text the detectors
-  give another diagram type is left out.
+- Test files: mermaid's tests that pass diagram text to that diagram type's
+  syntax, including the diagram type's tests in mermaid's parser package for
+  Langium diagrams. `SPEC_FILES` in `tools/collect.ts` alone lists which test
+  files each diagram type collects, with reasons for exclusions. The tests build
+  most inputs in loops and template literals, so each file is run against stubs
+  and every text it passes to mermaid.js is kept, rejected or not; the line is
+  that of the call (`tools/src/spec-recorder.ts`). A text the detectors give
+  another diagram type is left out.
 - Documentation: the `mermaid`, `mermaid-example` and `mermaid-nocode` blocks of
   `packages/mermaid/src/docs` that mermaid.js's detectors give one of the
   diagram type's ids.

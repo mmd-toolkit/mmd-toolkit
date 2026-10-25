@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/gitGraph.test.ts",
+    "line": 139,
+    "test": "Parsing Checkout Statements > should parse checkout to branches with complex names"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to checkout branch which is not yet created. (Help try using \"branch hotfix-123\")"
+  }
+}

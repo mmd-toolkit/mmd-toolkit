@@ -1,0 +1,17 @@
+{
+  "message": "Architecture ID is already registered",
+  "range": [
+    26,
+    30
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 8
+    },
+    "end": {
+      "line": 2,
+      "column": 12
+    }
+  }
+}

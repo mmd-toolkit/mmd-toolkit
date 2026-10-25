@@ -287,6 +287,21 @@ Frontmatter と値は原文を保持するが、
 [fixture: packet/div-html-frontmatter-reject]
 [fixture: packet/gram-html-body-only-reference]
 
+### Architecture
+
+architecture では、frontmatter 内で始まった tag が文字 icon の属性 quote を
+single quote に変え、本来無効な string を受理させ得る。
+frontmatter 内で開始した属性が、本仕様の受理する文字 icon を壊す場合もある。
+両方向と、双方が受理するが読みが異なる角括弧 label を記録する。
+木は quote の原綴を持てるが、mermaid と同じ本文の変換には、
+前処理の順序に沿って frontmatter の HTML 文脈を引き継ぐ必要がある。
+共有の直接の規則では、frontmatter の後から本文の HTML を読む。
+[fixture: architecture/div-frontmatter-open-tag-icon]
+[fixture: architecture/gram-frontmatter-open-tag-reference]
+[fixture: architecture/div-frontmatter-open-attribute-icon]
+[fixture: architecture/gram-frontmatter-open-attribute-reference]
+[fixture: architecture/div-frontmatter-open-tag-label]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -374,3 +389,13 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   2026-10-25 に `packet bitsPerRow`、`packet fractional`、
   `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
   ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。
+
+- pinned の
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175) は見出し・宣言・辺を説明するが、
+  この共通の前処理の境界を定義しない。
+  2026-10-25 に公式の issue/PR を architecture group undefined、
+  architecture quotes title、architecture reverse、architecture unclosed、
+  architecture align で検索した。
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
+  Open、Status: Approved で、外側の親 group の辺を扱う報告である。
+  今回の共通境界に対する maintainer の判断とはしない。

@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native end-of-line comment works after every architecture statement form."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "in": "g"
+      },
+      {
+        "id": "j",
+        "type": "junction",
+        "in": "g"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "j",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "api",
+          "j"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/pie.test.ts",
+    "line": 164,
+    "test": "pie > should handle sections > should handle sections with title"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "sample wow",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "GitHub",
+        "value": 100
+      },
+      {
+        "label": "GitLab",
+        "value": 50
+      }
+    ]
+  }
+}

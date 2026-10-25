@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Duplicate service IDs reject before any third definition can replace them."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service id [api] is already in use by another node"
+  }
+}

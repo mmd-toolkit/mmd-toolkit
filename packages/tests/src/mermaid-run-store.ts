@@ -68,6 +68,7 @@ export const RESULT_FILES: readonly string[] = [
   "mermaid-run-store.ts",
   "mermaid.ts",
   "normalizers/agentflow.ts",
+  "normalizers/architecture.ts",
   "normalizers/block.ts",
   "normalizers/browser-stand-ins.ts",
   "normalizers/c4.ts",

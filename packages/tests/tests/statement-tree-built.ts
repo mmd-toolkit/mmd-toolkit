@@ -8,7 +8,7 @@ import { commentOf, locationOf, tokenOf } from "./check-tree-trees.ts"
 /** Retained prefixes supplied as complete occurrences, with explicit cuts and Comments. */
 export function withPreheader(
   built: Built,
-  prefix: "Gitgraph" | "Info" | "Packet",
+  prefix: "Architecture" | "Gitgraph" | "Info" | "Packet",
   parts: readonly (readonly [
     string,
     "yaml-block" | "directive",
@@ -72,7 +72,7 @@ export function hull(
 /** One explicitly delimited hidden match; its following LF is not part of it. */
 export function ignored(
   kit: Kit,
-  prefix: "Gitgraph" | "Info" | "Packet",
+  prefix: "Architecture" | "Gitgraph" | "Info" | "Packet",
   raw: string,
   kind: "yaml-block" | "directive",
 ): CheckedNode {
@@ -85,7 +85,7 @@ export function ignored(
 /** A common form with the literal boundaries supplied by the test. */
 export function common(
   kit: Kit,
-  prefix: "Gitgraph" | "Info" | "Packet",
+  prefix: "Architecture" | "Gitgraph" | "Info" | "Packet",
   kind: "Title" | "AccTitle" | "AccDescr" | "AccDescrBlock",
   value: string | null,
   after: () => CheckedNode[] = () => [],

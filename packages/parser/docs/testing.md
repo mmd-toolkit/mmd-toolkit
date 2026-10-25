@@ -61,6 +61,12 @@ records, including the common Ishikawa detection fixture.
 The tests package's `checkTree` and `dbFromTree` validate the recorded trees and
 their Db content.
 
+`tests/architecture.test.ts` checks corpus-backed structure, token spelling and
+ranges, gap ownership and comparable Db values. Acceptance and records,
+including applicable common fixtures, are checked by `tests/fixtures.test.ts`.
+`tests/ast-architecture-examples.test.ts` checks the ranges of node type comment
+examples.
+
 ## Known divergences
 
 Every fixture marked with a

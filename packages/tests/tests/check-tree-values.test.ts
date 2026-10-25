@@ -57,6 +57,8 @@ function saidInSpecification(
     [
       "Written text of the common value.",
       "Written common-value text.",
+      "Complete written arrow text.",
+      "Nonempty authored form with fences.",
       "Authored common-value text.",
       "Nonempty authored fenced form.",
       "Nonempty written form, including fences.",
@@ -178,6 +180,13 @@ interface BrokenValueRow {
  * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  {
+    type: "ArchitectureLabel",
+    message: "value is not its written label content",
+  },
+  { type: "ArchitectureArrow", message: NOT_WRITTEN_TEXT },
+  { type: "ArchitectureLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "ArchitectureIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "GitgraphLiteral", message: NOT_WRITTEN_TEXT },
   { type: "GitgraphIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "GitgraphTypeOption", message: "the field value is " },
@@ -412,6 +421,75 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "ArchitectureLabel",
+    name: "architecture bare labels retain their padding in RawText",
+    diagram: "architecture",
+    fixture: "lex-title-padded-quotes",
+    token: { type: "RawText", value: '  "A\\nB"  ' },
+    side: "end",
+    problems: [
+      {
+        where: "ArchitectureLabel at 27-39",
+        message:
+          "the label's bracket and content tokens do not match its lexical alternative",
+      },
+    ],
+  },
+  {
+    type: "ArchitectureArrow",
+    name: "architecture arrows retain child-label padding through the label's token check",
+    diagram: "architecture",
+    fixture: "lex-title-conversion",
+    token: { type: "RawText", value: "  link  " },
+    side: "end",
+    problems: [
+      {
+        where: "ArchitectureLabel at 100-110",
+        message:
+          "the label's bracket and content tokens do not match its lexical alternative",
+      },
+    ],
+  },
+  {
+    type: "ArchitectureLiteral",
+    name: "architecture common line values retain padding after the colon",
+    diagram: "architecture",
+    fixture: "common-all",
+    token: { type: "RawText", value: " Access" },
+    side: "start",
+    problems: [
+      {
+        where: "ArchitectureLiteral at 41-48",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "ArchitectureLiteral at 41-48",
+        message:
+          'the texts of its tokens joined are not its written text: "Access", not " Access"',
+      },
+      {
+        where: "ArchitectureLiteral at 41-48",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [41,48], not [42,48]",
+      },
+    ],
+  },
+  {
+    type: "ArchitectureIgnoredText",
+    name: "architecture hidden text retains LF beside a common comment cut",
+    diagram: "architecture",
+    fixture: "lex-yaml-common-comment",
+    token: { type: "RawText", value: "---\n" },
+    side: "end",
+    problems: [
+      {
+        where: "ArchitectureIgnoredText at 18-32",
+        message:
+          'the texts of its tokens joined are not its written text: "---x\\n---", not "---\\nx\\n---"',
+      },
+    ],
+  },
   {
     type: "PacketLiteral",
     name: "packet line values keep their written leading space",

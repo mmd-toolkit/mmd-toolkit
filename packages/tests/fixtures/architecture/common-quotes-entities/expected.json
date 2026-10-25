@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Entity spellings and quote characters are checked in every common and architecture text field."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "'B &amp; &ﬂ°°35¶ß'",
+    "accDescr": "\"C &amp; &ﬂ°°35¶ß\"",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "&amp; &ﬂ°°35¶ß",
+        "title": "&ﬂ°°35¶ß &amp;"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "&amp; &ﬂ°°35¶ß"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "&amp; &ﬂ°°35¶ß"
+      }
+    ],
+    "layoutHints": []
+  }
+}

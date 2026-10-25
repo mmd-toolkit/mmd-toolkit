@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Empty values: removing a global directive can leave a valid empty text icon or an invalid empty bare label. Case: label-global-only-empty."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 10: unexpected character: ->[<- at offset: 27, skipped 2 characters. "
+  }
+}

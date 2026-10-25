@@ -522,6 +522,27 @@ Mermaid が拒否して本仕様が受理する場合があり、
 [fixture: packet/config-frontmatter-row-fraction-accepted]
 [fixture: packet/config-init-row-integer]
 
+### Architecture
+
+architecture は frontmatter と共通 directive の内容を、
+埋め込み data の検証なしで保持する。
+不正な YAML、重複 key、共通設定の不正な型により mermaid が拒否しても、
+ここでは受理する場合がある。
+比較では拒否された data だけを除き、独立した設定は残す。
+native hidden YAML/DIRECTIVE の本文は ignored form であり、設定 block ではない。
+正しい埋め込み設定から除く architecture の acceptance key はない。
+描画設定、maxEdges、maxTextSize はこの図の public parse の受理を変えない。
+[fixture: architecture/div-frontmatter-invalid-yaml]
+[fixture: architecture/div-frontmatter-duplicate-key]
+[fixture: architecture/div-init-fontfamily-number]
+[fixture: architecture/div-init-primitive-wrap]
+[fixture: architecture/div-invalid-keeps-config]
+[fixture: architecture/hidden-yaml-before-header]
+[fixture: architecture/lex-yaml-global-directive]
+[fixture: architecture/config-drawing-only]
+[fixture: architecture/config-site-maxedges]
+[fixture: architecture/config-limit-small]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -629,3 +650,13 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   2026-10-25 に `packet bitsPerRow`、`packet fractional`、
   `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
   ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。
+
+- pinned の
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175) は見出し・宣言・辺を説明するが、
+  この共通の前処理の境界を定義しない。
+  2026-10-25 に公式の issue/PR を architecture group undefined、
+  architecture quotes title、architecture reverse、architecture unclosed、
+  architecture align で検索した。
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
+  Open、Status: Approved で、外側の親 group の辺を扱う報告である。
+  今回の共通境界に対する maintainer の判断とはしない。

@@ -488,6 +488,10 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
+Architecture is built as described in
+[architecture.md](./db-from-tree/architecture.md). [fixture:
+architecture/db-mixed]
+
 Packet, gitgraph, info, pie, Venn, Agentflow and Usecase are checked with both
 hand-made and recorded trees. The new builders are described in
 [packet.md](./db-from-tree/packet.md), [gitgraph.md](./db-from-tree/gitgraph.md)

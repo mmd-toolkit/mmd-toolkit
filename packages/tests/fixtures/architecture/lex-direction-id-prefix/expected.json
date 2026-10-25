@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ARROW_DIRECTION precedes ID and consumes the L prefix without a longer alternative."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 9: Expecting token of type 'ID' but found `L`."
+  }
+}

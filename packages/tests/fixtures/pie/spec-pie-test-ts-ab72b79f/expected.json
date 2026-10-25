@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/pie.test.ts",
+    "line": 182,
+    "test": "pie > should handle sections > should handle value with positive decimal"
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "showData": false,
+    "sections": [
+      {
+        "label": "ash",
+        "value": 60.67
+      },
+      {
+        "label": "bat",
+        "value": 40
+      }
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 import type { DbSummary } from "../types.ts"
 import { normalizeAgentflow, patchAgentflowDb } from "./agentflow.ts"
+import { normalizeArchitecture } from "./architecture.ts"
 import { normalizeBlock, patchBlockDb } from "./block.ts"
 import { normalizeC4, patchC4Db } from "./c4.ts"
 import { normalizeClass, patchClassDb } from "./class.ts"
@@ -69,6 +70,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["gitGraph", normalizeGitgraph],
   ["info", normalizeInfo],
   ["packet", normalizePacket],
+  ["architecture", normalizeArchitecture],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

@@ -76,6 +76,7 @@ export type DiagramType =
   | "gitgraph"
   | "info"
   | "packet"
+  | "architecture"
 
 /**
  * Where a fixture input came from.

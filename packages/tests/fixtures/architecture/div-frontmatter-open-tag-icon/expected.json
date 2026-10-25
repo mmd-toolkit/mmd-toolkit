@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Known divergences: an HTML tag starting in frontmatter can change acceptance in either direction or change an accepted label. Case: frontmatter-open-tag-icon."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "iconText": "b='c'>d"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

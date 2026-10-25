@@ -22344,3 +22344,99 @@ schema で有効な小数の `bitsPerRow` も、分割時の拒否を起こし�
 [fixture: packet/config-frontmatter-overrides-site]
 [fixture: packet/config-directive-overrides-site]
 [fixture: packet/frontmatter-invalid-keeps-config]
+
+## architecture
+
+`normalizeArchitecture()` は検出 id `architecture` の Db を要約します。
+[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDetector.ts#L7-L11)
+は `architecture` で始まる入力を認識しますが、
+[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/architecture/architecture.langium#L5-L13)
+は `architecture-beta` を要求します。
+[fixture: architecture/header-beta]
+[fixture: architecture/header-bare-rejected]
+
+| 項目          | 内容                                                                                                                      |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `accTitle`    | アクセシビリティ用タイトル。未設定なら空文字。                                                                            |
+| `accDescr`    | アクセシビリティ用説明。未設定なら空文字。                                                                                |
+| `nodes`       | サービス、続いて junction。`id`、`type`、`in` と、サービスの `icon`、`iconText`、`title`。optional は設定時のみ。         |
+| `groups`      | 公開されたグループ。`id` と、設定された `icon`、`title`、`in`。                                                           |
+| `edges`       | 公開された辺。`lhsId`、`lhsDir`、`lhsInto`、`lhsGroup`、`rhsId`、`rhsDir`、`rhsInto`、`rhsGroup` と、設定された `title`。 |
+| `layoutHints` | 公開された整列制約。`direction` と、順序を持つ `members` 配列。                                                           |
+
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureParser.ts#L9-L19)
+はグループ、サービス、junction、辺、整列制約の順に公開し、
+各種類の内部では記述順を保ちます。
+正規化関数は
+[`getNodes()`、`getGroups()`、`getEdges()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L148-L261)
+と
+[`getLayoutHints()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L263-L288)
+を読み、並べ替えません。
+未設定の optional 値は省略し、公開された false と空文字は保持します。
+同じ辺と整列制約の繰り返しも残します。
+親子関係は `in` で表し、子の一覧を重ねて作りません。
+空の図では四つの配列がすべて空です。
+[fixture: architecture/db-mixed]
+[fixture: architecture/db-empty-values]
+[fixture: architecture/db-duplicate-edges]
+[fixture: architecture/db-align-forward-repeat]
+[fixture: architecture/db-junction-order]
+[fixture: architecture/header-beta]
+
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L40-L152)
+はノードとグループの ID、親、ラベル、アイコンと、
+辺の端点、ポート、矢印、グループ境界の印、ラベルを使います。
+サービスの `iconText` は
+[`drawServices()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L277-L359)
+が読みます。
+iconify での検索とサニタイズは描画時なので、アイコンは名前のまま残します。
+整列の向きとメンバーの順序は renderer の
+[整列と相対配置の制約](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L261-L320)
+が使います。
+アクセシビリティ情報は
+[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+が使います。
+[fixture: architecture/db-mixed]
+[fixture: architecture/db-unknown-icon]
+[fixture: architecture/lex-string-conversion]
+
+要約には次を含めません。
+
+- 図全体のタイトル。共通 adapter は公開しますが、architecture の
+  [`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureRenderer.ts#L610-L642)
+  はタイトル描画を未実装と明記し、値を読みません。
+  フロントマターのタイトルは `embedded.title` から参照できます。
+  [fixture: architecture/frontmatter-title]
+  [fixture: architecture/frontmatter-title-empty-body]
+- 各ノードの `edges`。全体の辺の参照と重複します。
+  `getServices()` と `getJunctions()` も、`nodes` を種類で絞るビューです。
+- 検証専用の `registeredIds`。
+  ID は作者が書いた値であり、Map に格納され、生成 ID の置換は不要です。
+  プロトタイプの名前も普通の ID として残ります。
+  [fixture: architecture/db-prototype-ids]
+  [fixture: architecture/db-prototype-services]
+- `dataStructures`。隣接リスト、空間マップ、グループの整列は、
+  描画開始時に
+  [ノードと辺から導出](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L290-L384)
+  します。
+  正規化関数は `getDataStructures()` を呼びません。
+- `elements`、`diagramId`、DOM id、座標、幅、高さ、解決済みの SVG。
+  描画状態、設定・計測に依存する値、または保持した項目からの派生値です。
+- Db の
+  [設定 getter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L395-L405)。
+  設定は要約の外の site config と embedded config に残します。
+  公開処理は architecture の設定を読まず、Db パッチも、
+  data block の記録も不要です。
+  [fixture: architecture/config-drawing-only]
+  [fixture: architecture/frontmatter-config]
+  [fixture: architecture/config-invalid-cannot-rescue]
+
+共通 adapter は最後のアクセシビリティ値が truthy のときだけ公開します。
+最後の空の代入は、それ以前の本文の代入を抑制します。
+architecture のタイトルは外側の空白を除き、引用符のエスケープを解きます。
+文字アイコンは到達可能な `STRING` の既定の変換を使い、
+converter の `ARCH_TEXT_ICON` 分岐には到達しません。
+[fixture: architecture/common-repeat-empty]
+[fixture: architecture/common-empty-block-after-value]
+[fixture: architecture/lex-title-conversion]
+[fixture: architecture/lex-string-conversion]

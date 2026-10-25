@@ -1,0 +1,83 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 367,
+    "test": "architecture diagrams > addJunction validation > should not crash with group name prefix matching a service name (issue #7408)"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "app",
+        "type": "service",
+        "in": "app_env",
+        "icon": "server",
+        "title": "Web App"
+      },
+      {
+        "id": "db",
+        "type": "service",
+        "in": "app_env",
+        "icon": "database",
+        "title": "DB"
+      },
+      {
+        "id": "api",
+        "type": "service",
+        "in": "app_env",
+        "icon": "server",
+        "title": "API"
+      },
+      {
+        "id": "mid",
+        "type": "junction",
+        "in": "app_env"
+      }
+    ],
+    "groups": [
+      {
+        "id": "app_env",
+        "icon": "cloud",
+        "title": "App Env"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "app",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "mid",
+        "rhsDir": "T",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "mid",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false
+      },
+      {
+        "lhsId": "mid",
+        "lhsDir": "B",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "api",
+        "rhsDir": "T",
+        "rhsInto": false,
+        "rhsGroup": false
+      }
+    ],
+    "layoutHints": []
+  }
+}

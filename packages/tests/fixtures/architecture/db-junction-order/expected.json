@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The nodes getter publishes all services before all junctions, preserving each kind's order."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      },
+      {
+        "id": "j",
+        "type": "junction"
+      },
+      {
+        "id": "k",
+        "type": "junction"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

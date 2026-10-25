@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are group modifiers accepted when only one endpoint belongs to a group?"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service",
+        "in": "g",
+        "icon": "x"
+      },
+      {
+        "id": "b",
+        "type": "service",
+        "icon": "x"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "icon": "x"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "a",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": true,
+        "rhsId": "b",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": true
+      }
+    ],
+    "layoutHints": []
+  }
+}

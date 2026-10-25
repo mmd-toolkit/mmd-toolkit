@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Duplicate YAML keys reject solely because the leading embedded document is invalid."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "duplicated mapping key (2:1)\n\n 1 | title: First\n 2 | title: Second\n-----^"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An alignment member must be a service or junction."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "align row references [missing], which is not a service or junction"
+  }
+}

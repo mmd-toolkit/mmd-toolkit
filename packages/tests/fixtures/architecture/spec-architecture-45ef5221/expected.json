@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 48,
+    "test": "architecture diagrams > should handle TitleAndAccessibilities > should handle accessibility title and description"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "Accessibility Title",
+    "accDescr": "Accessibility Description",
+    "nodes": [],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

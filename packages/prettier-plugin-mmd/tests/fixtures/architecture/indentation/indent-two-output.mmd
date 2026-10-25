@@ -1,0 +1,7 @@
+architecture-beta
+  group outer
+  group inner in outer
+  service a in inner
+  junction j in outer
+  a:R -- L:j
+  align row a j

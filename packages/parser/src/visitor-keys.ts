@@ -1,3 +1,4 @@
+import { architectureVisitorKeys } from "./visitor-keys/architecture.ts"
 import { packetVisitorKeys } from "./visitor-keys/packet.ts"
 import { infoVisitorKeys } from "./visitor-keys/info.ts"
 import { gitgraphVisitorKeys } from "./visitor-keys/gitgraph.ts"
@@ -67,4 +68,5 @@ export const visitorKeys: VisitorKeys = {
   ...gitgraphVisitorKeys,
   ...infoVisitorKeys,
   ...packetVisitorKeys,
+  ...architectureVisitorKeys,
 }

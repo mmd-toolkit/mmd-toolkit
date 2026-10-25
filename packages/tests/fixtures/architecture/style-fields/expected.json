@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared style-line preprocessing is checked in every line text field."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "style B fill:#red",
+    "accDescr": "classDef C fill:#red",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "classDef E fill:#red",
+        "title": "style F fill:#red"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "style D fill:#red"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "style G fill:#red"
+      }
+    ],
+    "layoutHints": []
+  }
+}

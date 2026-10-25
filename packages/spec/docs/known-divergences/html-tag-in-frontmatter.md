@@ -257,6 +257,22 @@ packet/div-html-frontmatter-value] [fixture: packet/div-html-frontmatter-accept]
 [fixture: packet/div-html-frontmatter-reject] [fixture:
 packet/gram-html-body-only-reference]
 
+### Architecture
+
+In architecture, a tag starting in frontmatter can turn internal attribute
+quotes of a text icon into single quotes and make an otherwise invalid string
+accepted. An attribute opened in frontmatter can also damage a text icon that
+this specification accepts. Both directions are recorded, together with a
+bracketed label accepted by both but read differently. The tree can retain the
+authored quotes; matching Mermaid's body conversion would additionally require
+carrying frontmatter HTML context through the preprocessing order. The shared
+direct rule starts body HTML reading after frontmatter instead. [fixture:
+architecture/div-frontmatter-open-tag-icon] [fixture:
+architecture/gram-frontmatter-open-tag-reference] [fixture:
+architecture/div-frontmatter-open-attribute-icon] [fixture:
+architecture/gram-frontmatter-open-attribute-reference] [fixture:
+architecture/div-frontmatter-open-tag-label]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -328,3 +344,13 @@ warning. These facts do not justify any additional divergence.
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
   `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
   this divergence.
+
+- The pinned
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175)
+  documents the header, declarations and edges, without defining this common
+  preprocessing boundary. Searches of the official issues/PRs on 2026-10-25 used
+  architecture group undefined, architecture quotes title, architecture reverse,
+  architecture unclosed and architecture align.
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
+  Status: Approved and concerns edges from outer parent groups, not a maintainer
+  ruling on this common boundary.

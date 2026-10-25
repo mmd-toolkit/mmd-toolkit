@@ -533,6 +533,10 @@ HTML ラベルが有効で、`securityLevel` が
 
 ## 確かめ
 
+Architecture の組み立ては
+[architecture.ja.md](./db-from-tree/architecture.ja.md) に定めます。
+[fixture: architecture/db-mixed]
+
 記録した木の比較には C4、block、kanban、Venn、Agentflow、Usecase、pie、
 gitgraph、info、packet と
 common の検出例を含み、

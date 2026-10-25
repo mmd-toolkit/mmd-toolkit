@@ -1,3 +1,4 @@
+import { parseArchitectureDiagram } from "./diagrams/architecture/index.ts"
 import { parsePacketDiagram } from "./diagrams/packet/index.ts"
 import { parseInfoDiagram } from "./diagrams/info/index.ts"
 import { parseGitgraphDiagram } from "./diagrams/gitgraph/index.ts"
@@ -92,7 +93,8 @@ export function diagramInputOf(
       (diagramType === "pie" ||
       diagramType === "gitGraph" ||
       diagramType === "info" ||
-      diagramType === "packet"
+      diagramType === "packet" ||
+      diagramType === "architecture"
         ? detection.passed.find(
             (part) => part.kind === "directive-found-once-more",
           )?.opening[0]
@@ -126,6 +128,7 @@ export function parse(text: string): Root {
       detected !== "gitGraph" &&
       detected !== "info" &&
       detected !== "packet" &&
+      detected !== "architecture" &&
       detection.retainedFrontmatterStart !== null)
   ) {
     const start = detection.retainedFrontmatterStart ?? positionReached
@@ -162,6 +165,8 @@ export function parse(text: string): Root {
       return parseMindmapDiagram(input)
     case "gitGraph":
       return parseGitgraphDiagram(input)
+    case "architecture":
+      return parseArchitectureDiagram(input)
     case "packet":
       return parsePacketDiagram(input)
     case "info":

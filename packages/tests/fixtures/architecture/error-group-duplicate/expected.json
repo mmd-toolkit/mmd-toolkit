@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A second group definition rejects rather than replacing its first value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The group id [g] is already in use by another group"
+  }
+}

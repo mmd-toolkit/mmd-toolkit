@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/architecture/architecture.spec.ts",
+    "line": 302,
+    "test": "architecture diagrams > align directive > should not collide with services whose id starts with row or column"
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "rowspan",
+        "type": "service",
+        "icon": "server",
+        "title": "Rowspan"
+      },
+      {
+        "id": "columnar",
+        "type": "service",
+        "icon": "server",
+        "title": "Columnar"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "rowspan",
+          "columnar"
+        ]
+      }
+    ]
+  }
+}

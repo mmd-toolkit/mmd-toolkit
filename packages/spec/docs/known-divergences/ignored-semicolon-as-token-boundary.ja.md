@@ -5,7 +5,7 @@
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
 mindmap、timeline、xychart、quadrant、block、kanban、c4、venn、agentflow、
-usecase、pie、gitgraph・info・packet。
+usecase、pie、gitgraph・info・packet・architecture。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -457,6 +457,19 @@ Mermaid は結合します。逆方向の受理はありません。完全な構
 [fixture: packet/lex-yaml-fence-selected]
 [fixture: packet/detect-selected-split-header]
 
+### Architecture
+
+architecture では、style と色を含む service の label により、
+共通の行規則が後方の親 id または in の keyword 内の semicolon を選び得る。
+mermaid は id/keyword をつなぐが、本仕様は切れた atom を拒否する。
+名前や keyword の内部には ArchitectureIgnoredText を置けない。
+text の値の内部で選ばれた semicolon は共通の読みに従い、
+原文の範囲は元の文字を覆う。
+[fixture: architecture/div-semicolon-parent-id]
+[fixture: architecture/div-semicolon-in-keyword]
+[fixture: architecture/gram-semicolon-parent-reference]
+[fixture: architecture/style-fields]
+
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
@@ -562,3 +575,13 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   2026-10-25 に `packet bitsPerRow`、`packet fractional`、
   `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
   ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。
+
+- pinned の
+  [architecture.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L21-L175) は見出し・宣言・辺を説明するが、
+  この共通の前処理の境界を定義しない。
+  2026-10-25 に公式の issue/PR を architecture group undefined、
+  architecture quotes title、architecture reverse、architecture unclosed、
+  architecture align で検索した。
+  [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
+  Open、Status: Approved で、外側の親 group の辺を扱う報告である。
+  今回の共通境界に対する maintainer の判断とはしない。

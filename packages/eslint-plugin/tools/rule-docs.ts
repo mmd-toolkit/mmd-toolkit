@@ -251,6 +251,7 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "sankey",
   "xychart",
   "block",
+  "packet",
   "kanban",
   "venn",
   "agentflow",

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A spaced semicolon after an edge rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 15: unexpected character: ->;<- at offset: 55, skipped 1 characters. "
+  }
+}

@@ -163,14 +163,33 @@ const SPEC_FILES: Readonly<
   // The directory has only this spec file; all three tests pass parser text.
   ishikawa: () => ["diagrams/ishikawa/ishikawa.spec.ts"],
   // gitGraphParser.ts has inline tests on AST objects, not diagram texts.
-  gitgraph: () => ["diagrams/git/gitGraph.spec.ts"],
+  gitgraph: () => [
+    "diagrams/git/gitGraph.spec.ts",
+    "../../parser/tests/gitGraph.test.ts",
+  ],
   // This directory has only this spec; the adapter contains no inline tests.
-  info: () => ["diagrams/info/info.spec.ts"],
+  info: () => ["diagrams/info/info.spec.ts", "../../parser/tests/info.test.ts"],
   // The other files in this directory contain no inline tests.
-  packet: () => ["diagrams/packet/packet.spec.ts"],
+  packet: () => [
+    "diagrams/packet/packet.spec.ts",
+    "../../parser/tests/packet.test.ts",
+  ],
+  // architectureSeed.spec.ts tests randomness with no diagram text.
+  // svgDraw.spec.ts passes text to Diagram.fromText before rendering; its
+  // assertions can use the shared drawing stubs. The parser package tests
+  // supply grammar inputs that still need the public Db acceptance check.
+  architecture: () => [
+    "diagrams/architecture/architecture.spec.ts",
+    "diagrams/architecture/svgDraw.spec.ts",
+    "../../parser/tests/architecture.test.ts",
+  ],
   // Both files parse diagram text. The renderer spec only reads the resulting
   // DOM in assertions; the recorder can leave drawing and those reads empty.
-  pie: () => ["diagrams/pie/pie.spec.ts", "diagrams/pie/pieRenderer.spec.ts"],
+  pie: () => [
+    "diagrams/pie/pie.spec.ts",
+    "diagrams/pie/pieRenderer.spec.ts",
+    "../../parser/tests/pie.test.ts",
+  ],
   // The lexer and JSON helper specs pass fragments, not complete diagrams.
   // usecaseDb, usecaseRenderer and usecaseRoleColors build model/layout values.
   // usecase.docs reads the canonical page and renders every example.

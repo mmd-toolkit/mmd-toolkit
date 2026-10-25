@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Statement boundaries: the first statement may share the header line, but each completed statement requires EOL. Case: header-inline-align."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      },
+      {
+        "id": "b",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": [
+      {
+        "direction": "row",
+        "members": [
+          "a",
+          "b"
+        ]
+      }
+    ]
+  }
+}

@@ -160,6 +160,7 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
+  ArchitectureDiagram: ["%%"],
   GitgraphDiagram: ["%%"],
   InfoDiagram: ["%%"],
   PacketDiagram: ["%%"],
@@ -538,7 +539,7 @@ function checkFrontmatter(
   )
 }
 
-/** Where the value starts, inside the opening delimiter of a data block or Venn label. */
+/** Where the value starts, inside the opening delimiter of a data block or bracketed label. */
 function valueStartOf(node: CheckedNode, root: CheckedRoot): number {
   if (node.type === "UsecaseJsonDataBlock")
     return (
@@ -546,15 +547,18 @@ function valueStartOf(node: CheckedNode, root: CheckedRoot): number {
         (token) => token.value === "{" && contains(node.range, token.range),
       )?.range[1] ?? node.range[0]
     )
-  if (node.type === "VennLabel") return node.range[0] + 1
+  if (node.type === "VennLabel" || node.type === "ArchitectureLabel")
+    return node.range[0] + 1
   return DATA_BLOCK_NODE_TYPES.has(node.type)
     ? node.range[0] + 2
     : node.range[0]
 }
 
-/** Where the value ends, inside the closing delimiter of a data block or Venn label. */
+/** Where the value ends, inside the closing delimiter of a data block or bracketed label. */
 function valueEndOf(node: CheckedNode): number {
-  return DATA_BLOCK_NODE_TYPES.has(node.type) || node.type === "VennLabel"
+  return DATA_BLOCK_NODE_TYPES.has(node.type) ||
+    node.type === "VennLabel" ||
+    node.type === "ArchitectureLabel"
     ? node.range[1] - 1
     : node.range[1]
 }

@@ -38,20 +38,21 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 
 ## 図種
 
-| 図種      | テキストの読み方                                                   | 木のノード                                               |
-| --------- | ------------------------------------------------------------------ | -------------------------------------------------------- |
-| flowchart | [`docs/diagrams/flowchart.ja.md`](./docs/diagrams/flowchart.ja.md) | [`docs/ast/flowchart.ja.md`](./docs/ast/flowchart.ja.md) |
-| sequence  | [`docs/diagrams/sequence.ja.md`](./docs/diagrams/sequence.ja.md)   | [`docs/ast/sequence.ja.md`](./docs/ast/sequence.ja.md)   |
-| class     | [`docs/diagrams/class.ja.md`](./docs/diagrams/class.ja.md)         | [`docs/ast/class.ja.md`](./docs/ast/class.ja.md)         |
-| state     | [`docs/diagrams/state.ja.md`](./docs/diagrams/state.ja.md)         | [`docs/ast/state.ja.md`](./docs/ast/state.ja.md)         |
-| er        | [`docs/diagrams/er.ja.md`](./docs/diagrams/er.ja.md)               | [`docs/ast/er.ja.md`](./docs/ast/er.ja.md)               |
-| venn      | [`docs/diagrams/venn.ja.md`](./docs/diagrams/venn.ja.md)           | [`docs/ast/venn.ja.md`](./docs/ast/venn.ja.md)           |
-| ishikawa  | [`docs/diagrams/ishikawa.ja.md`](./docs/diagrams/ishikawa.ja.md)   | [`docs/ast/ishikawa.ja.md`](./docs/ast/ishikawa.ja.md)   |
-| agentflow | [`docs/diagrams/agentflow.ja.md`](./docs/diagrams/agentflow.ja.md) | [`docs/ast/agentflow.ja.md`](./docs/ast/agentflow.ja.md) |
-| pie       | [`docs/diagrams/pie.ja.md`](./docs/diagrams/pie.ja.md)             | [`docs/ast/pie.ja.md`](./docs/ast/pie.ja.md)             |
-| gitgraph  | [`docs/diagrams/gitgraph.ja.md`](./docs/diagrams/gitgraph.ja.md)   | [`docs/ast/gitgraph.ja.md`](./docs/ast/gitgraph.ja.md)   |
-| info      | [`docs/diagrams/info.ja.md`](./docs/diagrams/info.ja.md)           | [`docs/ast/info.ja.md`](./docs/ast/info.ja.md)           |
-| packet    | [`docs/diagrams/packet.ja.md`](./docs/diagrams/packet.ja.md)       | [`docs/ast/packet.ja.md`](./docs/ast/packet.ja.md)       |
+| 図種         | テキストの読み方                                                         | 木のノード                                                     |
+| ------------ | ------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| flowchart    | [`docs/diagrams/flowchart.ja.md`](./docs/diagrams/flowchart.ja.md)       | [`docs/ast/flowchart.ja.md`](./docs/ast/flowchart.ja.md)       |
+| sequence     | [`docs/diagrams/sequence.ja.md`](./docs/diagrams/sequence.ja.md)         | [`docs/ast/sequence.ja.md`](./docs/ast/sequence.ja.md)         |
+| class        | [`docs/diagrams/class.ja.md`](./docs/diagrams/class.ja.md)               | [`docs/ast/class.ja.md`](./docs/ast/class.ja.md)               |
+| state        | [`docs/diagrams/state.ja.md`](./docs/diagrams/state.ja.md)               | [`docs/ast/state.ja.md`](./docs/ast/state.ja.md)               |
+| er           | [`docs/diagrams/er.ja.md`](./docs/diagrams/er.ja.md)                     | [`docs/ast/er.ja.md`](./docs/ast/er.ja.md)                     |
+| venn         | [`docs/diagrams/venn.ja.md`](./docs/diagrams/venn.ja.md)                 | [`docs/ast/venn.ja.md`](./docs/ast/venn.ja.md)                 |
+| ishikawa     | [`docs/diagrams/ishikawa.ja.md`](./docs/diagrams/ishikawa.ja.md)         | [`docs/ast/ishikawa.ja.md`](./docs/ast/ishikawa.ja.md)         |
+| agentflow    | [`docs/diagrams/agentflow.ja.md`](./docs/diagrams/agentflow.ja.md)       | [`docs/ast/agentflow.ja.md`](./docs/ast/agentflow.ja.md)       |
+| pie          | [`docs/diagrams/pie.ja.md`](./docs/diagrams/pie.ja.md)                   | [`docs/ast/pie.ja.md`](./docs/ast/pie.ja.md)                   |
+| gitgraph     | [`docs/diagrams/gitgraph.ja.md`](./docs/diagrams/gitgraph.ja.md)         | [`docs/ast/gitgraph.ja.md`](./docs/ast/gitgraph.ja.md)         |
+| info         | [`docs/diagrams/info.ja.md`](./docs/diagrams/info.ja.md)                 | [`docs/ast/info.ja.md`](./docs/ast/info.ja.md)                 |
+| packet       | [`docs/diagrams/packet.ja.md`](./docs/diagrams/packet.ja.md)             | [`docs/ast/packet.ja.md`](./docs/ast/packet.ja.md)             |
+| architecture | [`docs/diagrams/architecture.ja.md`](./docs/diagrams/architecture.ja.md) | [`docs/ast/architecture.ja.md`](./docs/ast/architecture.ja.md) |
 
 mermaid.js のほかの図種は、まだ定めていません。
 

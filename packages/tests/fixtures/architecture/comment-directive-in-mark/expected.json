@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Comments: a global directive between the two percent characters leaves one native comment mark."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "a",
+        "type": "service"
+      }
+    ],
+    "groups": [],
+    "edges": [],
+    "layoutHints": []
+  }
+}

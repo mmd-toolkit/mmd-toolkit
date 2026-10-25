@@ -18,14 +18,15 @@
   [fixture: common/comment-only]
   [fixture: common/whitespace-only]
 - `---` 疑似図種、
-  または pie・gitgraph・info・packet 以外の対応図種の前で保持した非先頭ブロック:
+  または pie・gitgraph・info・packet・architecture 以外の対応図種の前で
+  保持した非先頭ブロック:
   `range` は、ブロックの先頭の `-` 3 文字。
   [fixture: common/frontmatter-adjacent-delimiters]
   [fixture: common/frontmatter-nonleading-class]
   [fixture: common/frontmatter-nonleading-sequence]
   [fixture: common/frontmatter-nonleading-state]
   [fixture: common/frontmatter-after-bare-percent-flowchart]
-- pie・gitgraph・info・packet 以外で、
+- pie・gitgraph・info・packet・architecture 以外で、
   ヘッダーの前のもう一度の読みで見つかるディレクティブ
   （[図種の検出](../../spec/docs/common.ja.md#図種の検出)）:
   `range` は、その開きの `%%{`。
@@ -1256,15 +1257,15 @@ CSS のその間の U+2028 は、label-symbol 単位全体を報告します。
 後方の字句エラーも、正しい接頭部分を持つ入力全体を拒否します。
 [fixture: packet/error-after-prefix] [fixture: packet/error-recovered-block]
 
-| 拒否                                   | 範囲とメッセージ                                                                            | fixture                                                                                                                                                                                                      |
-| -------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 字句規則が一致しない                   | そのソース文字。`Unexpected character`。                                                    | [fixture: packet/error-start] [fixture: packet/space-header-nbsp] [fixture: packet/lex-integer-shorter-before-dot]                                                                                           |
-| 完全な文字列・説明ブロックが一致しない | 開き引用符またはキーワードの最初の文字。`Unexpected character`。                            | [fixture: packet/lex-label-open] [fixture: packet/lex-label-open-single] [fixture: packet/lex-label-escaped-lf] [fixture: packet/accdescr-block-open]                                                        |
-| 文法が単位を読めない                   | 単位の有意範囲。`Unexpected token`。EOF ではソース末尾の空範囲で `Unexpected end of text`。 | [fixture: packet/gram-second-header] [fixture: packet/gram-same-line-blocks] [fixture: packet/comment-inside-range]                                                                                          |
-| 隠れた形式が唯一の区切り LF を消費する | 次の可視単位。`Unexpected token`。EOF なら EOL を満たす。                                   | [fixture: packet/hidden-directive-block] [fixture: packet/hidden-directive-title] [fixture: packet/hidden-yaml-block] [fixture: packet/hidden-yaml-description] [fixture: packet/hidden-directive-block-eof] |
-| 範囲が降順                             | 記述されたブロック全体。`Packet range end is less than its start`。                         | [fixture: packet/error-descending-before-gap] [fixture: packet/error-cap-following-descending]                                                                                                               |
-| ブロックが連続しない                   | 記述されたブロック全体。`Packet block start must follow the previous logical endpoint`。    | [fixture: packet/error-first-nonzero] [fixture: packet/error-overlap] [fixture: packet/error-repeat-third] [fixture: packet/error-cap-following-noncontiguous]                                               |
-| 相対指定の数がゼロ                     | 記述されたブロック全体。`Packet relative count must be greater than zero`。                 | [fixture: packet/error-zero-after-valid] [fixture: packet/error-cap-following-zero]                                                                                                                          |
+| 拒否                                   | 範囲とメッセージ                                                                                                            | fixture                                                                                                                                                                                                      |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 字句規則が一致しない                   | そのソース文字。`Unexpected character`。                                                                                    | [fixture: packet/error-start] [fixture: packet/space-header-nbsp] [fixture: packet/lex-integer-shorter-before-dot]                                                                                           |
+| 完全な文字列・説明ブロックが一致しない | 開き引用符またはキーワードの最初の文字。`Unexpected character`。                                                            | [fixture: packet/lex-label-open] [fixture: packet/lex-label-open-single] [fixture: packet/lex-label-escaped-lf] [fixture: packet/accdescr-block-open]                                                        |
+| 文法が単位を読めない                   | 単位の有意範囲、トークンがなければ開始の空範囲。`Unexpected token`。EOF ではソース末尾の空範囲で `Unexpected end of text`。 | [fixture: packet/gram-second-header] [fixture: packet/gram-same-line-blocks] [fixture: packet/comment-inside-range]                                                                                          |
+| 隠れた形式が唯一の区切り LF を消費する | 次の可視単位。`Unexpected token`。EOF なら EOL を満たす。                                                                   | [fixture: packet/hidden-directive-block] [fixture: packet/hidden-directive-title] [fixture: packet/hidden-yaml-block] [fixture: packet/hidden-yaml-description] [fixture: packet/hidden-directive-block-eof] |
+| 範囲が降順                             | 記述されたブロック全体。`Packet range end is less than its start`。                                                         | [fixture: packet/error-descending-before-gap] [fixture: packet/error-cap-following-descending]                                                                                                               |
+| ブロックが連続しない                   | 記述されたブロック全体。`Packet block start must follow the previous logical endpoint`。                                    | [fixture: packet/error-first-nonzero] [fixture: packet/error-overlap] [fixture: packet/error-repeat-third] [fixture: packet/error-cap-following-noncontiguous]                                               |
+| 相対指定の数がゼロ                     | 記述されたブロック全体。`Packet relative count must be greater than zero`。                                                 | [fixture: packet/error-zero-after-valid] [fixture: packet/error-cap-following-zero]                                                                                                                          |
 
 ブロック全体の範囲は、[ブロックの位置](./positions/packet.ja.md#範囲)に従い、
 隠れた接尾形式を含みます。
@@ -1284,3 +1285,37 @@ YAML は範囲のダッシュへ戻り、後の字句・文法エラーになり
 [fixture: packet/div-selected-integer-interior]
 [fixture: packet/hidden-directive-close-glued]
 [fixture: packet/hidden-yaml-unclosed] [fixture: packet/lex-yaml-two-empty]
+
+## architecture の中
+
+[規則の順序](../../spec/docs/diagrams/architecture.md#ordered-rules)に従い、
+文法と意味上の登録より先にテキスト全体を読みます。
+不正な末尾を回復して、正しい接頭部分だけを受理することはありません。
+[fixture: architecture/error-after-prefix]
+[fixture: architecture/error-recovered-statement]
+
+| 原因                                             | 範囲とメッセージ                                                                                                      | fixture                                                                                                                                                                                                                                                                                                            |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 完全な字句規則が一致しない                       | そのソース文字。`Unexpected character`。                                                                              | [fixture: architecture/space-body-nbsp] [fixture: architecture/lex-string-unclosed] [fixture: architecture/lex-title-unclosed] [fixture: architecture/lex-icon-spaces]                                                                                                                                             |
+| 文法が構成要素を読めない                         | 有意範囲、トークンがなければ開始の空範囲。`Unexpected token`。EOF ではソース末尾の空範囲で `Unexpected end of text`。 | [fixture: architecture/header-repeated] [fixture: architecture/gram-same-line-statements] [fixture: architecture/gram-group-id-missing] [fixture: architecture/gram-edge-rhs-missing]                                                                                                                              |
+| 隠れた形式が唯一の区切り LF を消費する           | 次の可視構成要素。`Unexpected token`。EOF は EOL を満たす。                                                           | [fixture: architecture/hidden-yaml-service-after] [fixture: architecture/hidden-directive-after-service] [fixture: architecture/hidden-yaml-service-eof] [fixture: architecture/hidden-directive-eof]                                                                                                              |
+| 宣言 ID が登録済み                               | 重複する宣言 ID。`Architecture ID is already registered`。                                                            | [fixture: architecture/error-group-duplicate] [fixture: architecture/error-service-duplicate] [fixture: architecture/error-service-junction-collision] [fixture: architecture/error-group-junction-collision]                                                                                                      |
+| 宣言が自身を親にする                             | 親参照。`Architecture declaration cannot be its own parent`。                                                         | [fixture: architecture/error-group-self-parent] [fixture: architecture/error-service-self-parent] [fixture: architecture/error-junction-self-parent]                                                                                                                                                               |
+| その登録段階で親が利用可能なグループでない       | 親参照。`Architecture parent must be a registered group`。                                                            | [fixture: architecture/error-group-forward-parent] [fixture: architecture/error-group-parent-node] [fixture: architecture/error-service-parent-missing] [fixture: architecture/error-service-parent-node] [fixture: architecture/error-junction-parent-missing] [fixture: architecture/error-junction-parent-node] |
+| 辺の端点か整列メンバーが存在しないかグループ     | その ID。`Architecture reference must name a service or junction`。                                                   | [fixture: architecture/error-edge-lhs-missing] [fixture: architecture/error-edge-rhs-missing] [fixture: architecture/error-edge-group-lhs] [fixture: architecture/error-edge-group-rhs] [fixture: architecture/error-align-missing] [fixture: architecture/error-align-group]                                      |
+| 辺の修飾子が同じ空でない親グループのノードを結ぶ | 隠れた接尾形式も含む辺全体。`Architecture group modifier cannot join nodes in the same parent group`。                | [fixture: architecture/error-edge-same-group-lhs] [fixture: architecture/error-edge-same-group-rhs]                                                                                                                                                                                                                |
+| 整列がメンバーを繰り返す                         | 繰り返すメンバーの ID。`Architecture alignment members must be distinct`。                                            | [fixture: architecture/error-align-duplicate]                                                                                                                                                                                                                                                                      |
+
+意味検査はグループ、サービス、ジャンクション、辺、整列の順です。
+各種類の中ではソース順です。
+共通のトークン境界検査は登録より前に実行し、
+分割できない項目を切るディレクティブか選択されたセミコロンを報告します。
+ネイティブのディレクティブが一致しなければコメントになることがあります。
+[fixture: architecture/db-junction-order]
+[fixture: architecture/db-service-forward-parent]
+[fixture: architecture/error-service-parent-forward-junction]
+[fixture: architecture/div-directive-name]
+[fixture: architecture/div-directive-line]
+[fixture: architecture/div-semicolon-parent-id]
+[fixture: architecture/hidden-directive-unclosed]
+[fixture: architecture/hidden-directive-close-glued]

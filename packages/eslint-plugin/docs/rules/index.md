@@ -237,6 +237,14 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [block-no-undef](./block-no-undef.md)                                   | Disallow a `class` statement for an id that no block has.                     | ✅  |     |     |
 | [block-no-useless-width](./block-no-useless-width.md)                   | Disallow a width on the first block of an edge.                               | ✅  |     |     |
 
+## packet
+
+| Rule                                                                        | Description                                                                | ✅  | 💡  | 🚧  |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------- | --- | --- | --- |
+| [packet-no-duplicate-description](./packet-no-duplicate-description.md)     | Disallow an `accDescr` that replaces the description set before it.        | ✅  |     |     |
+| [packet-no-duplicate-title](./packet-no-duplicate-title.md)                 | Disallow a `title` or an `accTitle` that replaces the title set before it. | ✅  |     |     |
+| [packet-no-empty-description-block](./packet-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.                    | ✅  |     |     |
+
 ## kanban
 
 | Rule                                                            | Description                                                         | ✅  | 💡  | 🚧  |

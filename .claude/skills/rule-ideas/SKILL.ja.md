@@ -268,6 +268,11 @@ description:
 | info で、空の行、コメント、`info` の後の YAML のブロックと、空か記号だけの指示子                                                                                                          | 上の pie と同じ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | info で、1 行の `title A accTitle: B` と、タイトルの中の閉じない引用符                                                                                                                    | mermaid.js は文法により 1 つのタイトルを読み、タイトルは描かれない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | info で、どの `}` も閉じない `accDescr` のブロック                                                                                                                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| packet で、欠けた番号、重なり、逆順か 0 から始まらない範囲、2 度定義した bit、`+0`                                                                                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| packet で、行の終わりを越える範囲、いくつかの区画の同じラベル、空のラベル                                                                                                                 | 何も失われない。行を越える範囲は各行にラベルとともに描かれ、どの区画も描かれ、空のラベルも区画と bit 番号を保つ（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| packet で、mermaid.js が描く 10,000 行を越える区画、double が持てない数、描画を壊す `bitsPerRow`                                                                                          | mermaid.js の限界であり、書き手の間違いではない。設定は YAML や JSON を読むことにもなり、リリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| packet で、見出しの `packet-beta`                                                                                                                                                         | `packet` として、何も失わず警告もなく読まれる（実行）。規則は書き方の好みになる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| packet で、コメントの後や本体の中の YAML のブロック、空か記号だけの指示子、どの `}` も閉じない `accDescr` のブロック                                                                      | 上の pie と同じ。最後のものは mermaid.js が受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ### 迷ったときの問い
 
@@ -799,6 +804,9 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | gitgraph-no-duplicate-title               | 入れる               |                                                                          |
 | gitgraph-no-duplicate-description         | 入れる               |                                                                          |
 | gitgraph-no-empty-description-block       | 入れる               |                                                                          |
+| packet-no-duplicate-title                 | 入れる               |                                                                          |
+| packet-no-duplicate-description           | 入れる               |                                                                          |
+| packet-no-empty-description-block         | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1687,6 +1695,12 @@ gitgraph の規則の注は次のとおりである。
   gitgraph はタイトルと説明を同じに読むので、上の pie の規則の注を持つ
   （`gitGraphParser.ts` を読んだ。実行）。
 
+packet の規則は、packet がタイトルと説明を同じに読み、タイトルを描くので、
+上の pie の規則の注を持つ（packet の `parser.ts` と `db.ts` を読んだ。実行）。
+検索は「packet title」「packet accDescr」「packet accTitle」
+「packet duplicate label」「packet contiguous」「packet」と題名の「packet」で、
+タイトルや説明に関するものはなかった。
+
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
 mermaid.js は次の行を書き手のつもりどおりに別に読むが、
@@ -1781,6 +1795,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | usecase-*（7 件すべて）                 | いまはなし（2026-10-23。この節の終わりを見る）   |
 | pie-*（4 件すべて）                     | いまはなし（2026-10-23。この節の終わりを見る）   |
 | gitgraph-*（5 件すべて）                | いまはなし（2026-10-23。この節の終わりを見る）   |
+| packet-*（3 件すべて）                  | いまはなし（2026-10-25。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1907,7 +1922,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `quadrant-*`（2026-10-16）と
 `block-*`、`kanban-*`、`c4-*`、`venn-*`（2026-10-21）と
 `agentflow-*` と flowchart-no-duplicate-direction（2026-10-22）と
-`usecase-*` と `pie-*` と `gitgraph-*`（2026-10-23）:
+`usecase-*` と `pie-*` と `gitgraph-*`（2026-10-23）と
+`packet-*`（2026-10-25）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

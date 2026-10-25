@@ -15,6 +15,7 @@ const PARSER_DOCS = path.join(HERE, "../../parser/docs")
 
 /** The diagrams that have a tree document. */
 export const TREE_DOCUMENT_DIAGRAMS = [
+  "architecture",
   "gitgraph",
   "info",
   "packet",

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Composite boundaries: native hidden text cannot split the group modifier."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 2: unexpected character: ->{<- at offset: 39, skipped 1 characters. Parse error on line 4, column 24: Expecting token of type ':' but found `\n`."
+  }
+}

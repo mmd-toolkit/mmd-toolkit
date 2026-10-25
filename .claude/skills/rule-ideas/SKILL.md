@@ -258,6 +258,11 @@ Dropped:
 | In an info diagram, a YAML block after an empty line, a comment, or `info`, and an empty or a punctuation-only directive                                                                                       | As in a pie chart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | In an info diagram, `title A accTitle: B` on one line, and a quote left open in a title                                                                                                                        | mermaid.js reads one title by its grammar, and the title is not drawn                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | In an info diagram, an `accDescr` block that no `}` closes                                                                                                                                                     | Not silent: mermaid.js rejects it                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In a packet diagram, a gap, an overlap, a range that runs backwards or does not start at 0, a bit defined twice, and `+0`                                                                                      | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a packet diagram, a range that runs over the end of a row, one label on several blocks, and an empty label                                                                                                  | Nothing is lost: a range over a row is drawn on each row with its label, every block is drawn, and an empty label keeps its block and its bit numbers (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| In a packet diagram, blocks past the 10,000 rows that mermaid.js draws, numbers past what a double holds, and a `bitsPerRow` that breaks the drawing                                                           | Limits of mermaid.js, not mistakes of the author; the setting would also need the YAML or the JSON read, which waits until after the release                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| In a packet diagram, the header `packet-beta`                                                                                                                                                                  | Read as `packet`, with no loss and no warning (run); a rule would be about style                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| In a packet diagram, a YAML block after a comment or in the body, an empty or a punctuation-only directive, and an `accDescr` block that no `}` closes                                                         | As in a pie chart above; mermaid.js rejects the last                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### Questions for unclear cases
 
@@ -791,6 +796,9 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | gitgraph-no-duplicate-title               | yes              |                                                                              |
 | gitgraph-no-duplicate-description         | yes              |                                                                              |
 | gitgraph-no-empty-description-block       | yes              |                                                                              |
+| packet-no-duplicate-title                 | yes              |                                                                              |
+| packet-no-duplicate-description           | yes              |                                                                              |
+| packet-no-empty-description-block         | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -1488,6 +1496,13 @@ merges of more parents), the layout, and clicks.
   gitgraph reads its titles and descriptions in the same way (read in
   `gitGraphParser.ts`; run).
 
+The packet rules have the notes of the pie rules above, since packet reads its
+titles and descriptions in the same way and draws the title (read in `parser.ts`
+and `db.ts` of packet; run). The searches were "packet title", "packet
+accDescr", "packet accTitle", "packet duplicate label", "packet contiguous",
+"packet", and "packet" in titles, and found nothing about titles or
+descriptions.
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -1576,6 +1591,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | usecase-* (all 7 rules)                 | None for now (2026-10-23; see the end of this section)         |
 | pie-* (all 4 rules)                     | None for now (2026-10-23; see the end of this section)         |
 | gitgraph-* (all 5 rules)                | None for now (2026-10-23; see the end of this section)         |
+| packet-* (all 3 rules)                  | None for now (2026-10-25; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1675,8 +1691,8 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 `sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
 `block-*`, `kanban-*`, `c4-*`, and `venn-*` (2026-10-21), and `agentflow-*` and
 flowchart-no-duplicate-direction (2026-10-22), and `usecase-*`, `pie-*`, and
-`gitgraph-*` (2026-10-23): the rules are implemented without suggestions for
-now. No suggestion had been decided for them or described in their documents,
-and the one planned for the empty block of a sequence diagram rested on
-generated inputs. Whether they get suggestions is decided later, in the form of
-the flowchart rules, with a fixture for each case.
+`gitgraph-*` (2026-10-23), and `packet-*` (2026-10-25): the rules are
+implemented without suggestions for now. No suggestion had been decided for them
+or described in their documents, and the one planned for the empty block of a
+sequence diagram rested on generated inputs. Whether they get suggestions is
+decided later, in the form of the flowchart rules, with a fixture for each case.

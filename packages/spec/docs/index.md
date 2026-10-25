@@ -35,6 +35,10 @@ The packet definition is in its [syntax](./diagrams/packet.md) and
 [tree](./ast/packet.md) documents. [fixture: packet/gram-mixed] [fixture:
 packet/spec-packet-c4580507]
 
+The architecture definition is in its [syntax](./diagrams/architecture.md) and
+[tree](./ast/architecture.md) documents. [fixture: architecture/header-beta]
+[fixture: architecture/db-mixed]
+
 ## Sources
 
 The specification is derived from three sources in the mermaid.js repository:

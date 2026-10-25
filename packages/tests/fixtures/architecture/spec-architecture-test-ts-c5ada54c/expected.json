@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/architecture.test.ts",
+    "line": 182,
+    "test": "architecture > should handle non-ASCII and punctuation in unquoted titles > should handle a service title containing \"采集器\""
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The service [a]'s parent does not exist. Please make sure the parent is created before this service"
+  }
+}

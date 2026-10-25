@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Architecture has no data-block syntax or data-block effect recorder."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->@<- at offset: 29, skipped 2 characters.\nLexer error on line 2, column 24: unexpected character: ->}<- at offset: 41, skipped 1 characters. Parse error on line 2, column 15: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'label'\nParse error on line 2, column 22: Expecting token of type 'ARROW_DIRECTION' but found `A`."
+  }
+}

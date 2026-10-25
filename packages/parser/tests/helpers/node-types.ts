@@ -1,3 +1,4 @@
+import type { ArchitectureNode } from "../../src/ast/architecture.ts"
 import type { PacketNode } from "../../src/ast/packet.ts"
 import type { InfoNode } from "../../src/ast/info.ts"
 import type { GitgraphNode } from "../../src/ast/gitgraph.ts"
@@ -560,6 +561,27 @@ export const allInfoNodeTypes: Readonly<Record<InfoNode["type"], true>> = {
   InfoIgnoredText: true,
 }
 
+/** Every node type of ast/architecture.md, in document order. */
+export const allArchitectureNodeTypes: Readonly<
+  Record<ArchitectureNode["type"], true>
+> = {
+  ArchitectureDiagram: true,
+  ArchitectureGroupStatement: true,
+  ArchitectureServiceStatement: true,
+  ArchitectureJunctionStatement: true,
+  ArchitectureEdgeStatement: true,
+  ArchitectureArrow: true,
+  ArchitectureAlignmentStatement: true,
+  ArchitectureAlignmentMember: true,
+  ArchitectureTitleStatement: true,
+  ArchitectureAccTitleStatement: true,
+  ArchitectureAccDescrStatement: true,
+  ArchitectureAccDescrBlockStatement: true,
+  ArchitectureLabel: true,
+  ArchitectureLiteral: true,
+  ArchitectureIgnoredText: true,
+}
+
 /** Every node type of ast/packet.md, in document order. */
 export const allPacketNodeTypes: Readonly<Record<PacketNode["type"], true>> = {
   PacketDiagram: true,
@@ -601,6 +623,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allGitgraphNodeTypes),
   ...Object.keys(allInfoNodeTypes),
   ...Object.keys(allPacketNodeTypes),
+  ...Object.keys(allArchitectureNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

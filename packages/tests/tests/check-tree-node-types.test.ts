@@ -17,6 +17,7 @@ const SPEC_DOCS = path.join(
 )
 
 const DIAGRAMS = [
+  "architecture",
   "gitgraph",
   "info",
   "packet",
@@ -81,7 +82,11 @@ function documentedTypes(): Set<string> {
     )
     for (const line of text.split("\n")) {
       // ast/gitgraph.md has a prose subsection between its node definitions.
-      if (line === "### Statement gap ownership") continue
+      if (
+        line === "### Statement gap ownership" ||
+        line === "### Gap ownership"
+      )
+        continue
       if (line.startsWith("### ")) {
         for (const name of nodeTypeNamesIn(line.slice(4))) defined.add(name)
       }

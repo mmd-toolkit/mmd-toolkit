@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Names: common-form priority rejects a title prefix, while bare accTitle, accDescr and boolean-looking words can be IDs. Case: id-common-names."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 6, column 8: Expecting token of type 'ID' but found ` title`."
+  }
+}

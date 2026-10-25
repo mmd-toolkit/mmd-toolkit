@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "BOM, NBSP and ideographic spaces distinguish trim-based titles and unchanged STRING values in every field."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "A",
+    "accDescr": "B",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "iconText": "﻿I 　",
+        "title": "S"
+      },
+      {
+        "id": "db",
+        "type": "service"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "G"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "E"
+      }
+    ],
+    "layoutHints": []
+  }
+}

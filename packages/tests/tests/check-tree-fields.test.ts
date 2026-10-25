@@ -88,6 +88,32 @@ const REQUIREMENT_PARTS =
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
+  "ArchitectureLabel.kind": {
+    message: "the label kind from its first complete alternative",
+  },
+  "ArchitectureLabel.value": {
+    message: "value is not its written label content",
+  },
+  "ArchitectureLiteral.value": { message: "value is not its written text" },
+  "ArchitectureIgnoredText.kind": { message: "the field kind is " },
+  "ArchitectureIgnoredText.value": { message: "value is not its written text" },
+  "ArchitectureArrow.value": { message: "value is not its written text" },
+  "ArchitectureArrow.startDirection": {
+    message: "the written start direction",
+  },
+  "ArchitectureArrow.endDirection": { message: "the written end direction" },
+  "ArchitectureArrow.startMarker": { message: "the field startMarker is " },
+  "ArchitectureArrow.endMarker": { message: "the field endMarker is " },
+  "ArchitectureArrow.line": { message: "the field line is " },
+  "ArchitectureAlignmentStatement.direction": {
+    message: "the written alignment direction",
+  },
+  "ArchitectureEdgeStatement.lhsGroup": {
+    message: "the written lhsGroup modifier",
+  },
+  "ArchitectureEdgeStatement.rhsGroup": {
+    message: "the written rhsGroup modifier",
+  },
   "GitgraphDiagram.direction": { message: "the written direction is " },
   "GitgraphCheckoutStatement.keyword": { message: "the field keyword is " },
   "GitgraphMessageOption.keyword": {

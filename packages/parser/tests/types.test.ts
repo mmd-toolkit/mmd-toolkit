@@ -1,3 +1,7 @@
+import type {
+  ArchitectureDiagram,
+  ArchitectureNode,
+} from "../src/ast/architecture.ts"
 import type { PacketDiagram, PacketNode } from "../src/ast/packet.ts"
 import type { InfoDiagram, InfoNode } from "../src/ast/info.ts"
 import type { GitgraphDiagram, GitgraphNode } from "../src/ast/gitgraph.ts"
@@ -78,6 +82,7 @@ describe("the types of ast.md", () => {
       | GitgraphNode["type"]
       | InfoNode["type"]
       | PacketNode["type"]
+      | ArchitectureNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -105,6 +110,7 @@ describe("the types of ast.md", () => {
       | GitgraphDiagram
       | InfoDiagram
       | PacketDiagram
+      | ArchitectureDiagram
     >()
   })
 

@@ -536,3 +536,23 @@ export type {
   PacketIgnoredText,
   PacketNode,
 } from "./ast/packet.ts"
+
+export type {
+  ArchitectureDiagram,
+  ArchitectureGroupStatement,
+  ArchitectureServiceStatement,
+  ArchitectureJunctionStatement,
+  ArchitectureEdgeStatement,
+  ArchitectureArrow,
+  ArchitectureAlignmentStatement,
+  ArchitectureAlignmentMember,
+  ArchitectureTitleStatement,
+  ArchitectureAccTitleStatement,
+  ArchitectureAccDescrStatement,
+  ArchitectureAccDescrBlockStatement,
+  ArchitectureLabel,
+  ArchitectureLiteral,
+  ArchitectureIgnoredText,
+  ArchitectureBodyItem,
+  ArchitectureNode,
+} from "./ast/architecture.ts"

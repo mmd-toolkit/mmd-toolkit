@@ -278,8 +278,12 @@ mermaid.js はこれらを
 [`PieDiagram`](./ast/pie.ja.md#piediagram)、
 [`GitgraphDiagram`](./ast/gitgraph.ja.md#gitgraphdiagram)、
 [`InfoDiagram`](./ast/info.ja.md#infodiagram)、
-[`PacketDiagram`](./ast/packet.ja.md#packetdiagram) のどれかです。
+[`PacketDiagram`](./ast/packet.ja.md#packetdiagram)、
+[`ArchitectureDiagram`](./ast/architecture.ja.md#architecturediagram) のどれかで
+す。
 [fixture: packet/gram-mixed]
+[fixture: architecture/header-beta]
+[fixture: architecture/db-mixed]
 
 ## ErrorDiagram
 
@@ -518,3 +522,7 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 - [Packet](./ast/packet.ja.md): 図種 `packet`。
 
 [fixture: packet/gram-mixed]
+
+- [Architecture](./ast/architecture.ja.md): 図種 `architecture`。
+  [fixture: architecture/header-beta]
+  [fixture: architecture/db-mixed]

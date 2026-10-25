@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "architecture.md Known divergences: an HTML tag starting in frontmatter can change acceptance in either direction or change an accepted label. Case: frontmatter-open-tag-reference."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 15: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'c'\nParse error on line 2, column 16: Expecting token of type ':' but found `\">d\"`."
+  }
+}

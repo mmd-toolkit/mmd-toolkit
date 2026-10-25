@@ -454,10 +454,14 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 
 ### 5.3 fixture
 
-1. 入力を集める場所は 3 つ: その図種の spec ファイル、
-   docs の mermaid のブロック、demos。
-   範囲の外（ほかのディレクトリの spec、e2e）は集めない。
-   範囲は `tools/README.md` に書く。
+1. 入力は、その図種の構文に図のテキストを渡す mermaid のテストと、
+   docs の mermaid のブロック、demos から集める。
+   Langium の図種では、そのテストに mermaid の parser パッケージの
+   その図種のテストも含める。
+   図種ごとに集めるテストファイルの一覧と除外の理由は、
+   `tools/collect.ts` の `SPEC_FILES` だけが持つ。
+   無関係なテストや e2e は集めない。
+   範囲は `tools/README.md` で説明する。
 2. 収集の道具（`tools/collect.ts`、`tools/src/spec-recorder.ts`）は、
    図種を引数に取る。
    図種ごとに違うのは、読む spec ファイルと、テキストを受け取る関数だけ。
@@ -583,7 +587,6 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      `NaN`、`Infinity`、倍精度に収まらない大きな数、数の後ろのテキスト
      （journey と sankey の review 441）。
    - Db が読む埋め込み設定の値（packet の review pk12-1）。
-   - mermaid の parser パッケージのテストの入力（packet の review pk12-2）。
    - 文の直後の hidden の形（本文の `---` ブロック、`%%{...}%%`）。
      消費した LF の後に文が続く場合、空行が余分の LF を与える場合、
      閉じの後の空白が LF を残す場合、EOF を確かめる。

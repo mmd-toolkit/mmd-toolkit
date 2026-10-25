@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ARCH_TITLE trims twice and unescapes quotes only, retaining other backslash escapes."
+  },
+  "accepted": true,
+  "diagramType": "architecture",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "api",
+        "type": "service",
+        "in": "g",
+        "title": "A\"B\\q\\n"
+      },
+      {
+        "id": "db",
+        "type": "service",
+        "title": "C'D"
+      }
+    ],
+    "groups": [
+      {
+        "id": "g",
+        "title": "Group"
+      }
+    ],
+    "edges": [
+      {
+        "lhsId": "api",
+        "lhsDir": "R",
+        "lhsInto": false,
+        "lhsGroup": false,
+        "rhsId": "db",
+        "rhsDir": "L",
+        "rhsInto": false,
+        "rhsGroup": false,
+        "title": "link"
+      }
+    ],
+    "layoutHints": []
+  }
+}

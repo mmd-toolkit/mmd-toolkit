@@ -22,12 +22,14 @@ taken from mermaid" in
 this when a diagram type is added, and after mermaid is upgraded, to add the
 inputs the new version brings.
 
-Of the test files, it reads only the diagram type's own files that pass diagram
-texts to mermaid, listed in `SPEC_FILES` in `collect.ts` with the reason for
-each file left out. Texts in other test files of mermaid, such as
-`mermaid.spec.ts`, `mermaidAPI.spec.ts`, `diagram.spec.ts`, the tests under
-`rendering-util` and the end-to-end tests, are not collected: the inputs come
-from the diagram's own test files, its documentation and the demos.
+Of the test files, it reads mermaid's tests that pass diagram text to that
+diagram type's syntax, including the diagram type's tests in mermaid's parser
+package for Langium diagrams. `SPEC_FILES` in `collect.ts` alone lists which
+test files each diagram type collects, with reasons for exclusions. Texts in
+unrelated test files of mermaid, such as `mermaid.spec.ts`,
+`mermaidAPI.spec.ts`, `diagram.spec.ts`, the tests under `rendering-util` and
+the end-to-end tests, are not collected: the inputs come from the diagram's own
+test files, its documentation and the demos.
 
 1. Clone mermaid into `.work/mermaid`, which `.gitignore` lists, at the tag of
    the pinned version (`mermaid@` followed by the version of the `mermaid`

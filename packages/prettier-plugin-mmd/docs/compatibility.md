@@ -1687,3 +1687,54 @@ packet/div-selected-title-interior] [corpus fixture:
 packet/config-frontmatter-fraction] [corpus fixture:
 packet/config-frontmatter-overrides-site] [corpus fixture:
 packet/c4container-label] [test: packet Markdown: rejected]
+
+## Architecture values and hidden boundaries
+
+The [architecture rules](./architecture.md) keep bracketed labels as complete
+source ranges, including bare/quoted kind, quote spelling, edge padding, empty
+quoted text, escapes, HTML and entities. Interior whitespace and escape
+conversion can change the Db. Text icons retain their complete StringLiteral
+source, and named icons retain their names: trimming, decoding or replacing
+these values can change what mermaid.js reads. `singleQuote` does not rewrite
+icons or labels. Keep the actual arrow marker characters, including reversed
+`>--<`, rather than reconstructing them from presence flags. [fixture:
+architecture/label-forms/padded-quotes] [fixture:
+architecture/label-content/bare-padding] [fixture:
+architecture/label-content/html-entities] [fixture:
+architecture/text-icons/double-quote] [fixture: architecture/text-icons/padding]
+[fixture: architecture/named-icons/unknown-name] [fixture:
+architecture/arrow-lines/arrow-reversed-markers]
+
+Keep every native hidden YAML/DIRECTIVE source span in its AST owner and retain
+consumed LF and closing padding outside it. These boundaries can decide
+acceptance. Only the header's own hidden forms need no spare LF; a statement on
+the header line still needs its statement boundary. Keep the complete retained
+prefix so ignored YAML cannot become effective frontmatter. Only safe real
+frontmatter uses guarded YAML formatting, with the shared positive minimum
+indentation. All authored semicolons remain under shared segment protection;
+removing a selected one can select another and change a label. Source order,
+repeated constraints and empty common assignments remain written. [fixture:
+architecture/hidden-forms/yaml-named-icon-title-and-parent-gaps] [fixture:
+architecture/hidden-boundaries/header-and-statement] [fixture:
+architecture/hidden-boundaries/suffix-space] [fixture:
+architecture/frontmatter-yaml/prefix-leading-lf-keep] [fixture:
+architecture/frontmatter-yaml/frontmatter-zero-minimum-block-scalar] [fixture:
+architecture/semicolons/selection] [fixture:
+architecture/source-order/authored-order]
+
+The five existing [specified readings](./architecture.md#specified-readings)
+cover atomic directive/selected-semicolon cuts, frontmatter HTML, opaque
+embedded data and passed bare-percent trivia. Architecture has no
+acceptance-setting configuration key and is detected before C4; no C4 detection
+exception is added. Raw rejection supplies no raw Db or invented effects. Parser
+failures report standalone syntax errors without repaired output and decline
+Markdown embedding. Markdown's host trims the final payload line's padding;
+interior hidden padding remains necessary. [corpus fixture:
+architecture/div-directive-name] [corpus fixture:
+architecture/div-semicolon-parent-id] [corpus fixture:
+architecture/div-frontmatter-open-tag-icon] [corpus fixture:
+architecture/div-frontmatter-invalid-yaml] [corpus fixture:
+architecture/div-retained-bare-second-scan-ls] [fixture:
+architecture/label-content/hidden-looking] [test: architecture Markdown:
+hidden-boundary] [test: architecture Markdown: final-hidden-padding] [test:
+architecture Markdown: rejected]

@@ -1,13 +1,13 @@
 ---
 name: conventions
-description:
+description: >-
   The conventions of this repository for writing code and Markdown documents in
   any package: regular expressions, comments and autofix output, invisible
   characters, links to mermaid.js source, the English and Japanese document
   pairs, prose wrapping, Mermaid code blocks, and which tests to run after a
   change. Use before writing or reviewing source code, tests, or a Markdown
-  document here, before running the tests, and when a check of
-  `pnpm run lint` or `pnpm run format:check` fails on one of these.
+  document here, before running the tests, and when a check of `pnpm run lint`
+  or `pnpm run format:check` fails on one of these.
 ---
 
 # Conventions for code and documents
