@@ -1,0 +1,17 @@
+{
+  "message": "Diagrams beginning with --- are not valid: the block is not frontmatter",
+  "range": [
+    34,
+    37
+  ],
+  "loc": {
+    "start": {
+      "line": 7,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 3
+    }
+  }
+}

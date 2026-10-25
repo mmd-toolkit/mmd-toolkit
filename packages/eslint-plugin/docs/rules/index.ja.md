@@ -255,6 +255,16 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | ------------------------------------------------------------------ | -------------------------------------------------- | --- | --- | --- |
 | [kanban-no-duplicate-section](./kanban-no-duplicate-section.ja.md) | 項目を重ねて列挙する、重複した列の id を禁止する。 | ✅  |     |     |
 
+## architecture
+
+| 規則                                                                                       | 説明                                                     | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------- | --- | --- | --- |
+| [architecture-no-duplicate-description](./architecture-no-duplicate-description.ja.md)     | 前に設定した説明を置き換える `accDescr` を禁止する。     | ✅  |     |     |
+| [architecture-no-duplicate-title](./architecture-no-duplicate-title.ja.md)                 | 前に設定したタイトルを置き換える `accTitle` を禁止する。 | ✅  |     |     |
+| [architecture-no-empty-description-block](./architecture-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。         | ✅  |     |     |
+| [architecture-no-reversed-marker](./architecture-no-reversed-marker.ja.md)                 | 逆の向きに書いた辺の矢じりを禁止する。                   | ✅  |     |     |
+| [architecture-no-ungrouped-modifier](./architecture-no-ungrouped-modifier.ja.md)           | group に属さない辺の端の `{group}` 修飾子を禁止する。    | ✅  |     |     |
+
 ## venn
 
 | 規則                                                           | 説明                                                               | ✅  | 💡  | 🚧  |

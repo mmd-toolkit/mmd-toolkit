@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared frontmatter and radar header both support normalized CRLF."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

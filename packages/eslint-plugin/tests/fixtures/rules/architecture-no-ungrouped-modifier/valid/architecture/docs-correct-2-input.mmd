@@ -1,0 +1,5 @@
+architecture-beta
+  group backend(cloud)[Backend]
+  service api(server)[API] in backend
+  service db(database)[Database]
+  api{group}:R --> L:db

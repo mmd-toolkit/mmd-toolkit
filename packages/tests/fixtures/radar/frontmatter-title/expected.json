@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frontmatter title reaches the common Db."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

@@ -418,6 +418,43 @@ architecture/div-directive-line] [fixture: architecture/directive-fields]
 [fixture: architecture/end-group-unclosed-directive] [fixture:
 architecture/end-junction-unclosed-directive]
 
+### Radar
+
+Radar rejects a global directive strictly inside an id, number or fixed word,
+including true/false, circle/polygon and a common keyword. First ask whether a
+node can preserve that reading: RadarIgnoredText can hold a whole native hidden
+form, but has no slot inside an indivisible atom. The remaining difference
+therefore follows the direct boundary rule rather than concatenating atom
+fragments in preprocessing. [fixture: radar/directive-header-middle] [fixture:
+radar/directive-axis-name] [fixture: radar/directive-curve-name] [fixture:
+radar/directive-number] [fixture: radar/directive-reference] [fixture:
+radar/div-directive-boolean-atom] [fixture: radar/div-directive-graticule-atom]
+[fixture: radar/div-directive-common-keyword]
+
+Between complete authored components a global directive is allowed: header word
+and colon; common keyword and colon or brace; a label bracket and its string;
+entry name, optional colon and number; and members and their commas. Its removal
+must still leave a valid lexical boundary. A native form stays in its named gap
+or body slot, whereas a global directive uses the shared root list. Strings,
+common values and native-form contents can contain global directives without
+splitting an atom. [fixture: radar/gram-directive-composite-header] [fixture:
+radar/directive-common-colon] [fixture: radar/common-block-directive-gap]
+[fixture: radar/directive-common] [fixture: radar/directive-label-before-open]
+[fixture: radar/directive-label-after-open] [fixture:
+radar/directive-label-before-close] [fixture:
+radar/directive-entry-before-colon] [fixture:
+radar/directive-entry-before-value] [fixture: radar/directive-list-comma]
+[fixture: radar/directive-curve-brace] [fixture:
+radar/directive-entry-no-colon-joins] [fixture: radar/directive-header-glued]
+[fixture: radar/directive-header-space] [fixture:
+radar/directive-option-space-control] [fixture:
+radar/directive-title-space-control] [fixture:
+radar/lex-hidden-yaml-global-inside] [fixture:
+radar/lex-hidden-yaml-opener-global] [fixture:
+radar/lex-hidden-yaml-closer-global] [fixture:
+radar/lex-hidden-native-opener-global] [fixture:
+radar/lex-hidden-native-closer-global]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -528,3 +565,13 @@ warning. These facts do not justify any additional divergence.
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
   Status: Approved and concerns edges from outer parent groups, not a maintainer
   ruling on this common boundary.
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  documents axes, curves and options. The official issues/PRs were searched on
+  2026-10-25 for radar directive, radar semicolon and radar entries; no
+  inspected result declares the boundaries above a defect.
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) is a closed
+  documentation report marked Status: Approved.
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
+  documentation examples; it does not add grammar support for a trailing comma.

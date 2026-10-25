@@ -45,8 +45,8 @@ diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
 (`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
 C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`),
 usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), info (`info`), packet
-(`packet`), and architecture (`architecture`). Every other detected type throws
-`UnsupportedDiagramError`.
+(`packet`), architecture (`architecture`), and radar (`radar`). Every other
+detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -248,3 +248,13 @@ the row iteration with the default width of 32. Tests apply external site width
 to the same analysis; parse(text) keeps its fixed API. [fixture:
 packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced] [fixture:
 packet/db-explicit-start-rounded] [fixture: packet/config-fraction-reject]
+
+The radar lexer follows its
+[first-match rules](../../spec/docs/diagrams/radar.md#ordered-rules). Recursive
+descent preserves authored comma groups, optional entry colons and hidden-form
+gaps. After shared token checks, every named curve must contain each declared
+axis name; forward axes are considered and radar configuration does not change
+acceptance. [fixture: radar/gram-written-tree] [fixture:
+radar/lex-hidden-entry-comma] [fixture: radar/db-forward-axis] [fixture:
+radar/error-reference-missing] [fixture:
+radar/config-site-invalid-cannot-rescue]

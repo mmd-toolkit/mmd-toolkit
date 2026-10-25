@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is NBSP before the header accepted when a native directive stands between two bare %% lines?"
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: -> <- at offset: 14, skipped 1 characters. "
+  }
+}

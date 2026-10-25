@@ -46,7 +46,7 @@ kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）と、
 Ishikawa 図（`ishikawa`）と、agentflow（`agentflow`）と、
 usecase 図（`usecase`）、円グラフ（`pie`）、gitgraph 図（`gitGraph`）、
 info 図（`info`）、packet 図（`packet`）、
-architecture 図（`architecture`）です。
+architecture 図（`architecture`）、radar 図（`radar`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -282,3 +282,13 @@ src/common-form-unit-lexer.ts で info と共通の形式を共有します。
 [fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
 [fixture: packet/db-explicit-start-rounded]
 [fixture: packet/config-fraction-reject]
+
+radar の lexer は
+[最初に一致する字句規則](../../spec/docs/diagrams/radar.ja.md) に従います。
+再帰下降で記述されたコンマグループ、省略可能な entry のコロン、
+hidden form の gap を保持します。
+共通のトークン検査後、各名前付き曲線に宣言された全軸名があることを確かめます。
+後から宣言した軸も対象で、radar 設定は受理を変えません。
+[fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-entry-comma]
+[fixture: radar/db-forward-axis] [fixture: radar/error-reference-missing]
+[fixture: radar/config-site-invalid-cannot-rescue]

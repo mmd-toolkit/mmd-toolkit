@@ -253,6 +253,7 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "block",
   "packet",
   "kanban",
+  "architecture",
   "venn",
   "agentflow",
 ]

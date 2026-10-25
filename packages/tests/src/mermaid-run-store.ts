@@ -89,6 +89,7 @@ export const RESULT_FILES: readonly string[] = [
   "normalizers/mindmap.ts",
   "normalizers/pie.ts",
   "normalizers/quadrant.ts",
+  "normalizers/radar.ts",
   "normalizers/requirement.ts",
   "normalizers/sankey.ts",
   "normalizers/sequence.ts",

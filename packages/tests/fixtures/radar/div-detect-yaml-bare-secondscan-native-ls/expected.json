@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does Mermaid reject U+2028 passed between retained YAML and a second-scan directive?"
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: -> <- at offset: 13, skipped 1 characters. "
+  }
+}

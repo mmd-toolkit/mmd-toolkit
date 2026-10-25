@@ -1,3 +1,4 @@
+import type { RadarDiagram, RadarNode } from "./ast/radar.ts"
 import type {
   ArchitectureDiagram,
   ArchitectureNode,
@@ -304,6 +305,7 @@ export type DiagramBody =
   | InfoDiagram
   | PacketDiagram
   | ArchitectureDiagram
+  | RadarDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -406,3 +408,4 @@ export type Node =
   | InfoNode
   | PacketNode
   | ArchitectureNode
+  | RadarNode

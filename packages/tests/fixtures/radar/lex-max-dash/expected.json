@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is a trailing dash after max rejected rather than included in a valid option keyword?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 4: unexpected character: ->-<- at offset: 14, skipped 1 characters. "
+  }
+}

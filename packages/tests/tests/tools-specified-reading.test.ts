@@ -890,6 +890,28 @@ describe("specifiedRunOf: html-tag-in-frontmatter", () => {
 })
 
 describe("withoutBarePercentLinesBeforeHeader", () => {
+  it("does not move a block after a bare line to the detection point or the source start", () => {
+    for (const text of [
+      "%%\n---\na: b\n---\nerror\n",
+      "%%{!}%%\n---\nignored\n---\nradar-beta\naxis A",
+      "---\ntitle: Front\n---\n%%\n---\nignored\n---\nradar-beta\naxis A",
+      "---\ntitle: Front\n---\n%%{!}%%\n%%\n\u00a0\n---\nignored\n---\nradar-beta\naxis A",
+      "---\ntitle: Front\n---\n%%\n%%{init: {}}%%---\nignored\n---\nradar-beta\naxis A",
+    ]) {
+      expect(withoutBarePercentLinesBeforeHeader(text)).toBe(text)
+    }
+  })
+
+  it("still passes a block at the detection point after a source directive", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "---\ntitle: Front\n---\n%%{init: {}}%%\n---\nignored\n---\n%%\n\u00a0radar-beta\naxis A",
+      ),
+    ).toBe(
+      "---\ntitle: Front\n---\n%%{init: {}}%%\n---\nignored\n---\nradar-beta\naxis A",
+    )
+  })
+
   it("keeps nonleading YAML before removing a bare line and its Unicode trivia", () => {
     expect(
       withoutBarePercentLinesBeforeHeader(
@@ -1003,6 +1025,27 @@ describe("withoutBarePercentLinesBeforeHeader", () => {
 })
 
 describe("specifiedRunOf: bare-percent-line-before-header", () => {
+  it("preserves rejection when bare lines precede a retained block", async () => {
+    const fixtures = await loadFixtures("radar")
+    for (const name of [
+      "retained-between-trivia",
+      "retained-after-bare-with-directive",
+    ]) {
+      const fixture = fixtures.find((entry) => entry.name === name)
+      if (fixture === undefined) throw new Error(`missing radar/${name}`)
+      const written = await runMermaidWithEmbeddedData(fixture.input)
+      const reference = await specifiedRunOf(
+        fixture.input,
+        BARE_PERCENT_MARK,
+        fixture.config,
+      )
+      expect(firstLine(written)).toContain(
+        "Diagrams beginning with --- are not valid",
+      )
+      expect(reference, name).toEqual(written)
+    }
+  })
+
   it("reads the five inputs of the divergence as accepted, with the diagram of their header, where mermaid.js rejects them", async () => {
     const [flowchart, braces, state, classPercent, classBraces] =
       await Promise.all(

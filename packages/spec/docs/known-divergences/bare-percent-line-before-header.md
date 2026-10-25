@@ -4,8 +4,8 @@ Japanese version:
 [bare-percent-line-before-header.ja.md](./bare-percent-line-before-header.ja.md)
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
-timeline, sankey, block, c4, agentflow, usecase, pie, gitgraph, info, and
-packet, and architecture. This is one of the
+timeline, sankey, block, c4, agentflow, usecase, pie, gitgraph, info, packet,
+architecture, and radar. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -409,6 +409,31 @@ architecture/retained-yaml-no-bare] [fixture:
 architecture/retained-directive-no-bare] [fixture:
 architecture/detect-second-scan-glued]
 
+### Radar
+
+Radar treats detection-passed bare percent lines as shared Comments and their
+accompanying whitespace and line breaks as trivia, including between retained
+YAML and second-scan directives. The tree can preserve each comment and each
+retained native form separately; it does not need a catch-all node or a
+rejection for the passed Unicode whitespace. The remaining difference is a
+direct rule that the passed interval is not read a second time by the diagram
+lexer. [fixture: radar/bare-before-header-space] [fixture:
+radar/bare-before-header-tab] [fixture: radar/bare-before-header-nbsp] [fixture:
+radar/bare-before-header-ls] [fixture: radar/bare-before-header-ps] [fixture:
+radar/bare-line-ls] [fixture: radar/bare-line-ps] [fixture:
+radar/detect-retained-no-bare-control] [fixture:
+radar/div-detect-yaml-bare-secondscan-native-ls] [fixture:
+radar/detect-yaml-bare-secondscan-native-ascii]
+
+Whitespace without a passed line is still diagram text and must satisfy radar's
+native rules. A retained form still needs its own closing boundary: passing a
+bare line never excuses a glued or otherwise nonqualifying closer. These
+controls are unmarked rejections, while passed Unicode-trivia differences use
+this identifier. [fixture: radar/detect-yaml-bare-secondscan-native-ascii]
+[fixture: radar/detect-secondscan-native-nbsp] [fixture:
+radar/detect-retained-no-bare-control] [fixture:
+radar/detect-secondscan-native-glued]
+
 ## The documentation of mermaid.js and its issues
 
 - The
@@ -499,3 +524,13 @@ warning. These facts do not justify any additional divergence.
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
   Status: Approved and concerns edges from outer parent groups, not a maintainer
   ruling on this common boundary.
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  documents axes, curves and options. The official issues/PRs were searched on
+  2026-10-25 for radar directive, radar semicolon and radar entries; no
+  inspected result declares the boundaries above a defect.
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) is a closed
+  documentation report marked Status: Approved.
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
+  documentation examples; it does not add grammar support for a trailing comma.

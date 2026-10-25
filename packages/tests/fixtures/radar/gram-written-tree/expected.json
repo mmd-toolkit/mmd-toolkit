@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md Grammar: How do declaration groups, both entry forms and all options form a source tree without discarding extra entries?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Radar",
+    "accTitle": "Axis comparison",
+    "accDescr": "Long",
+    "axes": [
+      {
+        "label": "Axis A"
+      },
+      {
+        "label": "B"
+      }
+    ],
+    "curves": [
+      {
+        "label": "Curve",
+        "entries": [
+          1,
+          2
+        ]
+      },
+      {
+        "label": "d",
+        "entries": [
+          3,
+          4
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": false,
+      "ticks": 32,
+      "max": 10,
+      "min": 0,
+      "graticule": "polygon"
+    }
+  }
+}

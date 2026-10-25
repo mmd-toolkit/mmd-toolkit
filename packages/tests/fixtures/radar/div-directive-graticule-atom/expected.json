@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does Mermaid join a global directive inside the graticule word polygon?"
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "polygon"
+    }
+  }
+}

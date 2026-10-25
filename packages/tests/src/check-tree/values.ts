@@ -111,6 +111,26 @@ const IGNORED_TEXT =
  * Meaning column of those tables on which of them are the written text.
  */
 export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
+  RadarLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Written common-value text (ast/radar.md).",
+  },
+  RadarIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty authored fenced form (ast/radar.md).",
+  },
+  RadarShowLegendOption: {
+    field: "value",
+    kind: "derived",
+    spec: "Written true or false, checked against option components (ast/radar.md).",
+  },
+  RadarGraticuleOption: {
+    field: "value",
+    kind: "derived",
+    spec: "Written circle or polygon, checked against option components (ast/radar.md).",
+  },
   ArchitectureLabel: {
     field: "value",
     kind: "derived",

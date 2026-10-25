@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/radar/radar.spec.ts",
+    "line": 265,
+    "test": "radar diagrams > renderer > draw > should draw a complex radar diagram"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Radar diagram",
+    "accTitle": "Radar accTitle",
+    "accDescr": "Radar accDescription",
+    "axes": [
+      {
+        "label": "Axis A"
+      },
+      {
+        "label": "Axis B"
+      },
+      {
+        "label": "Axis C"
+      }
+    ],
+    "curves": [
+      {
+        "label": "My Curve",
+        "entries": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "label": "My Curve 2",
+        "entries": [
+          2,
+          3,
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "polygon"
+    }
+  }
+}

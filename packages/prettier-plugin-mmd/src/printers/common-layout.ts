@@ -1,5 +1,9 @@
 import type {
   Node,
+  RadarTitleStatement,
+  RadarAccTitleStatement,
+  RadarAccDescrStatement,
+  RadarAccDescrBlockStatement,
   ArchitectureTitleStatement,
   ArchitectureAccTitleStatement,
   ArchitectureAccDescrStatement,
@@ -33,6 +37,10 @@ import {
 } from "./source.ts"
 
 type CommonStatement =
+  | RadarTitleStatement
+  | RadarAccTitleStatement
+  | RadarAccDescrStatement
+  | RadarAccDescrBlockStatement
   | ArchitectureTitleStatement
   | ArchitectureAccTitleStatement
   | ArchitectureAccDescrStatement

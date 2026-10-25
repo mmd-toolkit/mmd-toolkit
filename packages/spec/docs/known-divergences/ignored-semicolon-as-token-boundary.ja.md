@@ -5,7 +5,7 @@
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
 mindmap、timeline、xychart、quadrant、block、kanban、c4、venn、agentflow、
-usecase、pie、gitgraph・info・packet・architecture。
+usecase、pie、gitgraph・info・packet・architecture・radar。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -470,6 +470,33 @@ text の値の内部で選ばれた semicolon は共通の読みに従い、
 [fixture: architecture/gram-semicolon-parent-reference]
 [fixture: architecture/style-fields]
 
+### Radar
+
+共通の style/classDef 行の規則は、radar の id・数・固定 keyword の内部の
+semicolon を選ぶ場合があります。
+boolean・graticule の語の内部も該当します。
+まず木に持てるかを考えると、atom の内部には無視するテキストの node
+を置けません。
+仕様は前処理順による連結を再現せず、その atom の分割を拒否します。
+既存の境界の差異であり、新規の識別子ではありません。
+[fixture: radar/div-semicolon-id]
+[fixture: radar/div-semicolon-number]
+[fixture: radar/div-semicolon-keyword]
+[fixture: radar/div-semicolon-boolean-atom]
+[fixture: radar/div-semicolon-graticule-atom]
+
+完全な作者の部品の間、string・common 値・native hidden の内部では、
+選択した semicolon は共通 trivia として保ちます。
+native な形全体には RadarIgnoredText の所有先があり、受理します。
+残る通常の semicolon は radar の文の区切りにはなりません。
+hidden テキストの置き場所があっても、atom の分割を受理する理由にはなりません。
+[fixture: radar/gram-semicolon-between-units]
+[fixture: radar/lex-hidden-yaml-opener-selected-control]
+[fixture: radar/lex-hidden-native-opener-selected]
+[fixture: radar/style-fields]
+[fixture: radar/style-controls]
+[fixture: radar/tail-option-semicolon]
+
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
@@ -585,3 +612,14 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
   Open、Status: Approved で、外側の親 group の辺を扱う報告である。
   今回の共通境界に対する maintainer の判断とはしない。
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166) は軸・曲線・option を説明します。
+  2026-10-25 に公式の issue/PR を radar directive、radar semicolon、
+  radar entries で調べましたが、
+  上記の境界を不具合とする判断は見つかりませんでした。
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) は閉じられた
+  Status: Approved の文書報告です。
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
+  文書例の comma の修正で、
+  末尾 comma の文法上の対応を追加したものではありません。

@@ -279,8 +279,9 @@ mermaid.js はこれらを
 [`GitgraphDiagram`](./ast/gitgraph.ja.md#gitgraphdiagram)、
 [`InfoDiagram`](./ast/info.ja.md#infodiagram)、
 [`PacketDiagram`](./ast/packet.ja.md#packetdiagram)、
-[`ArchitectureDiagram`](./ast/architecture.ja.md#architecturediagram) のどれかで
-す。
+[`ArchitectureDiagram`](./ast/architecture.ja.md#architecturediagram)、
+[`RadarDiagram`](./ast/radar.ja.md#radardiagram) のどれかです。
+[fixture: radar/gram-written-tree]
 [fixture: packet/gram-mixed]
 [fixture: architecture/header-beta]
 [fixture: architecture/db-mixed]
@@ -526,3 +527,6 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 - [Architecture](./ast/architecture.ja.md): 図種 `architecture`。
   [fixture: architecture/header-beta]
   [fixture: architecture/db-mixed]
+
+- [Radar](./ast/radar.ja.md): 図種 `radar`。
+  [fixture: radar/gram-written-tree]

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is an attached semicolon rejected after a curve closing brace?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 11: unexpected character: ->;<- at offset: 21, skipped 1 characters. "
+  }
+}

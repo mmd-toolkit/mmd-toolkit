@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Axis reference matching is case-sensitive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Missing entry for axis A"
+  }
+}

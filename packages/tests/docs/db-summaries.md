@@ -18876,3 +18876,108 @@ outer whitespace and unescape quotes, while text icons use the reachable
 unreachable. [fixture: architecture/common-repeat-empty] [fixture:
 architecture/common-empty-block-after-value] [fixture:
 architecture/lex-title-conversion] [fixture: architecture/lex-string-conversion]
+
+## radar
+
+`normalizeRadar()` summarizes the `radar` detector id, whose
+[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/detector.ts#L7-L11)
+recognizes `radar-beta`. The
+[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/radar/radar.langium#L4-L17)
+also permits `radar-beta:` and `radar-beta :`. [fixture:
+radar/spec-radar-test-ts-f0c0291e] [fixture: radar/header-colon-inline]
+[fixture: radar/header-separated-colon]
+
+| Field      | Content                                                                       |
+| ---------- | ----------------------------------------------------------------------------- |
+| `title`    | Diagram title, or the empty text.                                             |
+| `accTitle` | Accessibility title, or the empty text.                                       |
+| `accDescr` | Accessibility description, or the empty text.                                 |
+| `axes`     | Published axes in order, each with `label`.                                   |
+| `curves`   | Published curves in order, each with `label` and the numeric array `entries`. |
+| `options`  | Published `showLegend`, `ticks`, `max`, `min` and `graticule`.                |
+
+The
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L8-L45)
+reads the title and all three collections. Axis labels feed
+[`drawAxes()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L95-L132),
+curve entries feed
+[`drawCurves()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173),
+and curve labels feed
+[`drawLegend()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L209-L243).
+Accessibility values feed the
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[fixture: radar/db-all-fields]
+
+The
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/parser.ts#L8-L21)
+publishes all axes before all curves, regardless of their statement order. The
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L56-L91)
+uses the name as a label only when the label is absent; an empty label remains
+empty. Repeated axes and curves remain in order. Positional entries retain
+written order and need not match the axis count: the renderer can skip such a
+curve, but its published values remain in the summary. Named entries become a
+numeric array in axis order, using the first matching entry for each axis;
+entries for other names are not published. A missing axis entry, or named
+entries with no axes, rejects. [fixture: radar/db-forward-axis] [fixture:
+radar/db-empty-labels] [fixture: radar/db-duplicate-axes] [fixture:
+radar/db-duplicate-curves] [fixture: radar/db-positional-no-axis] [fixture:
+radar/db-positional-short] [fixture: radar/db-positional-long] [fixture:
+radar/db-extra-detailed-entry] [fixture: radar/error-reference-missing]
+[fixture: radar/error-reference-no-axes]
+
+The last occurrence of each option wins. The
+[defaults](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L23-L40)
+are `showLegend: true`, `ticks: 5`, `max: null`, `min: 0` and
+`graticule: "circle"`.
+[`setOptions()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
+caps the final tick value at 32; zero and fractional values remain. The summary
+keeps a null maximum rather than calculating the renderer's automatic maximum,
+and does not clip entries to the bounds. [fixture: radar/db-options-repeat]
+[fixture: radar/db-ticks-cap-last] [fixture: radar/db-ticks-cap-before-final]
+[fixture: radar/db-all-fields] [fixture: radar/db-min-above-max] [fixture:
+radar/spec-radar-test-ts-f0c0291e]
+
+Finite numbers remain JSON numbers. Non-finite numbers use the shared summary
+convention: recorded as the text `"Infinity"`, `"-Infinity"` or `"NaN"` by
+`numberOrText()`; negative zero becomes zero. The reachable unsigned decimal
+`NUMBER` can overflow to positive infinity or underflow to zero; signs, `NaN`,
+`Infinity` and exponent notation are not written numbers in this grammar.
+[fixture: radar/db-number-overflow] [fixture: radar/db-option-overflow]
+[fixture: radar/db-number-underflow] [fixture: radar/number-plus] [fixture:
+radar/number-negative] [fixture: radar/number-negative-zero] [fixture:
+radar/number-nan] [fixture: radar/number-infinity] [fixture:
+radar/number-exponent]
+
+The common
+[publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+sets only truthy final AST values. An empty final common assignment suppresses
+earlier body values, and an empty final title leaves a frontmatter title in
+place. [fixture: radar/common-repeat] [fixture: radar/common-repeat-empty]
+[fixture: radar/frontmatter-empty-body-title]
+
+The summary drops the following:
+
+- Axis and curve `name`. The renderer never reads these reference names. Their
+  effects remain in fallback labels and reordered entries; keeping them would
+  duplicate reference-resolution state. [fixture: radar/db-all-fields] [fixture:
+  radar/db-prototype-names]
+- The original detailed entries and references, which the Db replaces with the
+  published numeric array. [fixture: radar/db-extra-detailed-entry]
+- The configuration returned by
+  [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L42-L54).
+  Publication never reads it. `radar.width`, `height`, margins,
+  `axisScaleFactor`, `axisLabelFactor`, `curveTension` and `useMaxWidth` affect
+  drawing only. Even configuration keys named `showLegend`, `ticks`, `max`,
+  `min` or `graticule` do not feed Db options. Configuration stays in the site
+  and embedded fields. No radar acceptance key needs removal in the opaque-data
+  comparison. [fixture: radar/config-drawing-only] [fixture:
+  radar/config-options-site] [fixture: radar/config-frontmatter-options]
+  [fixture: radar/config-init-options] [fixture:
+  radar/config-frontmatter-drawing] [fixture: radar/config-init-drawing]
+  [fixture: radar/config-invalid-cannot-rescue]
+- The automatic maximum, radius, coordinates, paths, viewBox and CSS classes
+  [derived while drawing](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L21-L173),
+  and colors
+  [derived from theme variables](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46).
+  There are no generated identities, browser-dependent publication calls or Db
+  patches. [fixture: radar/config-drawing-only]

@@ -46,6 +46,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "info",
   "packet",
   "architecture",
+  "radar",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -72,6 +73,17 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads radar fixtures", () => {
+    const fixtures = fixturesOf("radar")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("radar")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
   it("loads architecture fixtures", () => {
     const fixtures = fixturesOf("architecture")
     expect(fixtures.length).toBeGreaterThan(0)

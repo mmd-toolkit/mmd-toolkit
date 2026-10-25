@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are two attached semicolons rejected after a ticks value?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 8: unexpected character: ->;<- at offset: 18, skipped 2 characters. "
+  }
+}

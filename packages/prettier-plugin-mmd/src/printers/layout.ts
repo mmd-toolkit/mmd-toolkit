@@ -424,7 +424,11 @@ export function toAsciiLowerCase(text: string): string {
     .join("")
 }
 
-/** Whole crossing values and CSS declarations stay inside a textual prefix. */
+/**
+ * Whole crossing values and CSS declarations stay inside a textual prefix.
+ * Its range includes source indentation; later lines add none before it
+ * (docs/radar.md, Multi-line statements and Semicolons).
+ */
 export function protectSemicolonPrefixes(
   source: Source,
   start: number,
@@ -451,8 +455,12 @@ export function protectSemicolonPrefixes(
       through = Math.min(end, Math.max(through, item.range[1]))
     const previous = kept.at(-1)
     if (previous !== undefined && from <= previous.end)
-      kept[kept.length - 1] = { start: previous.start, end: through }
-    else kept.push({ start: from, end: through })
+      kept[kept.length - 1] = {
+        start: previous.start,
+        end: through,
+        writtenIndentation: "",
+      }
+    else kept.push({ start: from, end: through, writtenIndentation: "" })
     position = through
   }
   return [

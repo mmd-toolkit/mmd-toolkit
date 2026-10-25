@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Both quote styles preserve empty labels."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": ""
+      },
+      {
+        "label": ""
+      }
+    ],
+    "curves": [
+      {
+        "label": "",
+        "entries": [
+          1,
+          2
+        ]
+      },
+      {
+        "label": "",
+        "entries": [
+          2,
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

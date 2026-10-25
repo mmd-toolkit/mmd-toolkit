@@ -22440,3 +22440,116 @@ converter の `ARCH_TEXT_ICON` 分岐には到達しません。
 [fixture: architecture/common-empty-block-after-value]
 [fixture: architecture/lex-title-conversion]
 [fixture: architecture/lex-string-conversion]
+
+## radar
+
+`normalizeRadar()` は detector id `radar` を要約する。
+[detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/detector.ts#L7-L11)
+は `radar-beta` を検出し、
+[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/radar/radar.langium#L4-L17)
+は `radar-beta:` と `radar-beta :` も許す。
+[fixture: radar/spec-radar-test-ts-f0c0291e]
+[fixture: radar/header-colon-inline] [fixture: radar/header-separated-colon]
+
+| 項目       | 内容                                                          |
+| ---------- | ------------------------------------------------------------- |
+| `title`    | 図のタイトル。なければ空文字。                                |
+| `accTitle` | アクセシビリティタイトル。なければ空文字。                    |
+| `accDescr` | アクセシビリティ説明。なければ空文字。                        |
+| `axes`     | 公開順の軸。各要素に `label`。                                |
+| `curves`   | 公開順の曲線。各要素に `label` と数列 `entries`。             |
+| `options`  | 公開された `showLegend`、`ticks`、`max`、`min`、`graticule`。 |
+
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L8-L45)
+はタイトルと 3 つのコレクションを読む。
+軸ラベルは
+[`drawAxes()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L95-L132)、
+曲線の数列は
+[`drawCurves()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173)、
+曲線ラベルは
+[`drawLegend()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L209-L243)
+へ渡る。
+アクセシビリティの値は
+[共通描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+へ渡る。
+[fixture: radar/db-all-fields]
+
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/parser.ts#L8-L21)
+は文中の順にかかわらず全軸を全曲線より先に公開する。
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L56-L91)
+はラベル省略時だけ名前をラベルとし、明示した空ラベルは空のまま保持する。
+同名の軸と曲線も順序どおり残る。
+位置による entry は入力順で、個数が軸数と違ってもよい。
+renderer が描かない曲線も、公開値は要約に残す。
+名前つき entry は各軸に最初に一致した entry を採り、軸順の数列になる。
+他の名前の entry は公開しない。
+軸の entry が不足する場合、または軸なしで名前つき entry を使う場合は拒否する。
+[fixture: radar/db-forward-axis] [fixture: radar/db-empty-labels]
+[fixture: radar/db-duplicate-axes] [fixture: radar/db-duplicate-curves]
+[fixture: radar/db-positional-no-axis] [fixture: radar/db-positional-short]
+[fixture: radar/db-positional-long] [fixture: radar/db-extra-detailed-entry]
+[fixture: radar/error-reference-missing]
+[fixture: radar/error-reference-no-axes]
+
+各 option は最後の指定を採る。
+[既定値](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L23-L40)
+は `showLegend: true`、`ticks: 5`、`max: null`、`min: 0`、
+`graticule: "circle"`。
+[`setOptions()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
+は最後の ticks を 32 以下に抑え、0 と小数は保持する。
+要約は最大値 null を描画時の自動最大値で置き換えず、
+entry を上下限へ切り詰めない。
+[fixture: radar/db-options-repeat] [fixture: radar/db-ticks-cap-last]
+[fixture: radar/db-ticks-cap-before-final] [fixture: radar/db-all-fields]
+[fixture: radar/db-min-above-max]
+[fixture: radar/spec-radar-test-ts-f0c0291e]
+
+有限数は JSON の数として保持する。
+非有限数は共通の要約規約に従い、`numberOrText()` により
+テキスト `"Infinity"`、`"-Infinity"`、`"NaN"` として記録する。
+負のゼロはゼロとする。
+到達可能な符号なし十進数 `NUMBER` は正の無限大へ溢れ、0 へ下溢れしうる。
+符号、`NaN`、`Infinity`、指数表記はこの文法の数ではない。
+[fixture: radar/db-number-overflow] [fixture: radar/db-option-overflow]
+[fixture: radar/db-number-underflow] [fixture: radar/number-plus]
+[fixture: radar/number-negative] [fixture: radar/number-negative-zero]
+[fixture: radar/number-nan] [fixture: radar/number-infinity]
+[fixture: radar/number-exponent]
+
+共通の
+[公開 helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+は最終 AST 値が truthy の場合だけ設定する。
+最後の共通指定が空なら以前の本文の値を抑止し、
+最後の title が空なら frontmatter のタイトルが残る。
+[fixture: radar/common-repeat] [fixture: radar/common-repeat-empty]
+[fixture: radar/frontmatter-empty-body-title]
+
+要約は次を除く。
+
+- 軸と曲線の `name`。renderer はこの参照名を読まない。
+  効果は既定ラベルと並べ替えた entry に残り、
+  保持すると参照解決の状態を重ねて持つことになる。
+  [fixture: radar/db-all-fields] [fixture: radar/db-prototype-names]
+- 元の名前つき entry と参照。Db は公開用の数列に置き換える。
+  [fixture: radar/db-extra-detailed-entry]
+- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L42-L54)
+  の設定。公開処理はこれを読まない。
+  `radar.width`、`height`、各 margin、`axisScaleFactor`、
+  `axisLabelFactor`、`curveTension`、`useMaxWidth` は描画だけに効く。
+  `showLegend`、`ticks`、`max`、`min`、`graticule` と同名の設定も
+  Db options には渡らない。
+  設定は site と embedded の欄に残す。
+  opaque-data の比較で取り除く radar の受理判定キーはない。
+  [fixture: radar/config-drawing-only] [fixture: radar/config-options-site]
+  [fixture: radar/config-frontmatter-options]
+  [fixture: radar/config-init-options]
+  [fixture: radar/config-frontmatter-drawing]
+  [fixture: radar/config-init-drawing]
+  [fixture: radar/config-invalid-cannot-rescue]
+- 自動最大値、半径、座標、path、viewBox、CSS class。
+  これらは
+  [描画時に導出する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L21-L173)。
+  色も
+  [テーマ変数から導出する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46)。
+  生成される identity、browser に依存する公開処理、Db patch はない。
+  [fixture: radar/config-drawing-only]

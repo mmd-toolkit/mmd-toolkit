@@ -88,6 +88,13 @@ export const LANGUAGE_INPUTS: readonly LanguageInput[] = [
       acceptedWith(text, (root) => root.body.type === "PacketDiagram"),
   },
   {
+    case: "an architecture diagram",
+    diagram: "common",
+    name: "detect-minimal-architecture",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "ArchitectureDiagram"),
+  },
+  {
     case: "the error pseudo-diagram, accepted, with a comment after it",
     diagram: "common",
     name: "error-trailing-comment-line",

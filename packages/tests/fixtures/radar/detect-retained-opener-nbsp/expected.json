@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can detection pass a retained YAML opener whose NBSP padding the native lexer rejects?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 1: unexpected character: ->-<- at offset: 0, skipped 4 characters.\nLexer error on line 3, column 1: unexpected character: ->-<- at offset: 7, skipped 3 characters. Parse error on line 2, column 1: Expecting: one of these possible Token sequences:\n  1. [radar-beta]\n  2. [radar-beta:]\n  3. [radar-beta, :]\nbut found: 'x'"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site drawing settings cannot rescue a semantic error."
+  },
+  "config": {
+    "radar": {
+      "width": 0,
+      "height": 0,
+      "ticks": 0
+    }
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Missing entry for axis B"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Nonsensical drawing settings do not reject during parsing or change the Db."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "config": {
+      "radar": {
+        "width": 0,
+        "height": -1,
+        "axisScaleFactor": {
+          "nonFinite": "NaN"
+        },
+        "curveTension": {
+          "nonFinite": "Infinity"
+        }
+      }
+    }
+  }
+}

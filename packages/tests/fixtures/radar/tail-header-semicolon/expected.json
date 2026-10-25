@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is an attached semicolon rejected after the bare radar-beta header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 11: unexpected character: ->;<- at offset: 10, skipped 1 characters. Parse error on line 1, column 1: Expecting: one of these possible Token sequences:\n  1. [radar-beta]\n  2. [radar-beta:]\n  3. [radar-beta, :]\nbut found: 'radar-beta'"
+  }
+}

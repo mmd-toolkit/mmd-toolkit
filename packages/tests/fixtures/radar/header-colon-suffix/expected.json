@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The combined colon header leaves a trailing ID that is not a statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 12: Expecting token of type 'EOF' but found `x`."
+  }
+}

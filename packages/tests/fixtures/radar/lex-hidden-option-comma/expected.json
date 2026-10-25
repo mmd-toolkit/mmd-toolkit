@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can native hidden forms stand before and after an option-list comma?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 1,
+      "max": 2,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

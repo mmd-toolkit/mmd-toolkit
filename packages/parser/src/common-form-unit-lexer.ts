@@ -1,10 +1,15 @@
-import { isAsciiDigit, isWhitespace } from "./character-classes.ts"
+import {
+  isAsciiDigit,
+  isWhitespace,
+  isWordCharacter,
+} from "./character-classes.ts"
 import {
   APOSTROPHE,
   CHARACTER_TABULATION,
   COLON,
   DIGIT_ZERO,
   FULL_STOP,
+  HYPHEN_MINUS,
   LEFT_CURLY_BRACKET,
   LINE_FEED,
   LINE_SEPARATOR,
@@ -26,6 +31,7 @@ import { readUnit } from "./diagram-units.ts"
 import type { LineIndex } from "./positions.ts"
 import type { Match } from "./scanning.ts"
 import {
+  isBefore,
   isCodePointAt,
   matchWord,
   samePosition,
@@ -34,8 +40,9 @@ import {
 } from "./scanning.ts"
 import { UnitLexer } from "./unit-lexer.ts"
 
-/** Composite common values, hidden forms, and visible line breaks. */
+/** Shared IDs, composite common values, hidden forms, and visible line breaks. */
 export type CommonFormUnitName =
+  | "id"
   | ":"
   | "accDescr"
   | "accTitle"
@@ -137,6 +144,41 @@ export abstract class CommonFormUnitLexer<
         : matchWord(this.reader, at, word)
     if (match === null) return false
     this.read(word, at, match.end)
+    return true
+  }
+
+  /** architecture.md and radar.md, Names: maximal ASCII word/dash ID, starting and ending with a word character. */
+  private idEnd(at: DiagramCharacter): DiagramPosition | undefined {
+    if (!isWordCharacter(at.codePoint)) return undefined
+    let end = this.reader.after(at)
+    let chosen = end
+    while (
+      end !== null &&
+      (isWordCharacter(end.codePoint) || end.codePoint === HYPHEN_MINUS)
+    ) {
+      const current = end
+      end = this.reader.after(current)
+      if (isWordCharacter(current.codePoint)) chosen = end
+    }
+    return chosen
+  }
+
+  /** Names: read one complete ID, after any earlier lexical rules. */
+  protected readId(at: DiagramCharacter): boolean {
+    const end = this.idEnd(at)
+    if (end === undefined) return false
+    this.read("id", at, end)
+    return true
+  }
+
+  /** Ordered rules: a strictly longer complete ID wins over the keyword. */
+  protected readWord(at: DiagramCharacter, word: Name): boolean {
+    const match = matchWord(this.reader, at, word)
+    if (match === null) return false
+    const end = this.idEnd(at)
+    if (end !== undefined && match.end !== null && isBefore(match.end, end))
+      this.read("id", at, end)
+    else this.read(word, at, match.end)
     return true
   }
 

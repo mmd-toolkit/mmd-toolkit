@@ -1144,3 +1144,23 @@ architecture/div-directive-name] [fixture: architecture/div-directive-line]
 [fixture: architecture/div-semicolon-parent-id] [fixture:
 architecture/hidden-directive-unclosed] [fixture:
 architecture/hidden-directive-close-glued]
+
+## In a radar diagram
+
+The [ordered rules](../../spec/docs/diagrams/radar.md#ordered-rules) scan the
+whole text before grammar and semantic acceptance. An invalid suffix cannot be
+accepted as a recovered prefix. [fixture: radar/error-after-prefix] [fixture:
+radar/error-recovered-curve]
+
+| Cause                                    | Range and message                                                                                                 | Fixtures                                                                                                              |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| No complete lexical rule matches         | The source character, with `Unexpected character`.                                                                | [fixture: radar/error-start] [fixture: radar/space-nbsp-body] [fixture: radar/lex-string-open-axis]                   |
+| The grammar cannot read a component      | Its significant range, with `Unexpected token`; at EOF, the empty source-end range with `Unexpected end of text`. | [fixture: radar/header-repeated] [fixture: radar/gram-axis-trailing-comma] [fixture: radar/gram-entry-empty]          |
+| A hidden form consumes a common EOL      | The next visible component, with `Unexpected token`; EOF still satisfies EOL.                                     | [fixture: radar/hidden-native-title] [fixture: radar/hidden-native-title-eof]                                         |
+| A named curve has no axes                | The whole curve, including its hidden gaps/suffix, with `Radar named curve requires axes`.                        | [fixture: radar/error-reference-no-axes]                                                                              |
+| A named curve omits a declared axis name | The whole curve, including its hidden gaps/suffix, with `Radar named curve is missing an axis entry`.             | [fixture: radar/error-reference-missing] [fixture: radar/error-reference-case] [fixture: radar/error-reference-label] |
+
+Shared atomic-cut errors point at the global directive or selected semicolon. A
+failed native directive may instead become a Comment. [fixture:
+radar/directive-axis-name] [fixture: radar/div-semicolon-number] [fixture:
+radar/hidden-native-unclosed]

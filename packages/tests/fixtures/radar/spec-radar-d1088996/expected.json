@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/radar/radar.spec.ts",
+    "line": 28,
+    "test": "radar diagrams > should handle a simple radar definition"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      },
+      {
+        "label": "B"
+      },
+      {
+        "label": "C"
+      }
+    ],
+    "curves": [
+      {
+        "label": "mycurve",
+        "entries": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

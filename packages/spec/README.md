@@ -50,6 +50,7 @@ specification has a bug, except for the deliberate differences listed under
 | info         | [`docs/diagrams/info.md`](./docs/diagrams/info.md)                 | [`docs/ast/info.md`](./docs/ast/info.md)                 |
 | packet       | [`docs/diagrams/packet.md`](./docs/diagrams/packet.md)             | [`docs/ast/packet.md`](./docs/ast/packet.md)             |
 | architecture | [`docs/diagrams/architecture.md`](./docs/diagrams/architecture.md) | [`docs/ast/architecture.md`](./docs/ast/architecture.md) |
+| radar        | [`docs/diagrams/radar.md`](./docs/diagrams/radar.md)               | [`docs/ast/radar.md`](./docs/ast/radar.md)               |
 
 The other diagram types of mermaid.js are not specified yet.
 

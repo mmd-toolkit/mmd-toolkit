@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does Mermaid join a global directive inside the common keyword title?"
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

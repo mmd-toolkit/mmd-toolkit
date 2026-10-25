@@ -24,6 +24,7 @@ import { gitgraphPrinter } from "./gitgraph.ts"
 import { piePrinter } from "./pie.ts"
 import { infoPrinter } from "./info.ts"
 import { architecturePrinter } from "./architecture.ts"
+import { radarPrinter } from "./radar.ts"
 import { packetPrinter } from "./packet.ts"
 import type { Source } from "./source.ts"
 import type { RootTextPlan } from "./root.ts"
@@ -43,6 +44,10 @@ export interface DiagramTextRules {
 export const diagramTextRules: Readonly<
   Partial<Record<string, DiagramTextRules>>
 > = {
+  RadarDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: radarPrinter.keepsPrefix,
+  },
   ArchitectureDiagram: {
     keepsCommentLines: false,
     keepsPrefix: architecturePrinter.keepsPrefix,
@@ -118,4 +123,5 @@ export const diagramPrinters: Readonly<
   GitgraphDiagram: gitgraphPrinter.print,
   PacketDiagram: packetPrinter.print,
   ArchitectureDiagram: architecturePrinter.print,
+  RadarDiagram: radarPrinter.print,
 }

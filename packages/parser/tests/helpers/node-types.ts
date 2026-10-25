@@ -1,3 +1,4 @@
+import type { RadarNode } from "../../src/ast/radar.ts"
 import type { ArchitectureNode } from "../../src/ast/architecture.ts"
 import type { PacketNode } from "../../src/ast/packet.ts"
 import type { InfoNode } from "../../src/ast/info.ts"
@@ -596,6 +597,29 @@ export const allPacketNodeTypes: Readonly<Record<PacketNode["type"], true>> = {
   PacketIgnoredText: true,
 }
 
+/** Every node type of ast/radar.md, in document order. */
+export const allRadarNodeTypes: Readonly<Record<RadarNode["type"], true>> = {
+  RadarDiagram: true,
+  RadarAxisStatement: true,
+  RadarCurveStatement: true,
+  RadarOptionsStatement: true,
+  RadarAxis: true,
+  RadarCurve: true,
+  RadarNumberEntry: true,
+  RadarNamedEntry: true,
+  RadarShowLegendOption: true,
+  RadarTicksOption: true,
+  RadarMaxOption: true,
+  RadarMinOption: true,
+  RadarGraticuleOption: true,
+  RadarTitleStatement: true,
+  RadarAccTitleStatement: true,
+  RadarAccDescrStatement: true,
+  RadarAccDescrBlockStatement: true,
+  RadarLiteral: true,
+  RadarIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -624,6 +648,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allInfoNodeTypes),
   ...Object.keys(allPacketNodeTypes),
   ...Object.keys(allArchitectureNodeTypes),
+  ...Object.keys(allRadarNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

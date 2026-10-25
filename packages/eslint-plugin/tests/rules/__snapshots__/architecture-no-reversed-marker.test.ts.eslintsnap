@@ -1,0 +1,166 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: architecture-no-reversed-marker >> invalid >>> docs/rules/architecture-no-reversed-marker.md incorrect 1
+Filename: architecture-no-reversed-marker-incorrect-1.mmd
+
+Code:
+  1 | architecture-beta
+  2 |   service api(server)[API]
+  3 |   service db(database)[Database]
+  4 |   api:R >--< L:db
+    |      ^~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/docs-incorrect-1
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/docs-incorrect-1-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 |   service api(server)[API]
+  3 |   service db(database)[Database]
+  4 |   api:R >--< L:db
+    |      ^~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-crlf
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-crlf-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api:T >-- B:db
+    |    ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-directive
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-directive-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api:R %%{init: {}}%% >-- L:db
+    |    ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-native-hidden
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-native-hidden-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api:R %%{}%% > %%{}%% -[calls]- %%{}%% < %%{}%% L:db
+    |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-reversed-both
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-reversed-both-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api(server)[API]
+  3 | service db(database)[Database]
+  4 | api:R >--< L:db
+    |    ^~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-reversed-label
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-reversed-label-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api:R >-[calls]-< L:db
+    |    ^~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-reversed-left
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-reversed-left-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api:R >-- L:db
+    |    ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-reversed-left-with-label
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-reversed-left-with-label-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service a
+  3 | service b
+  4 | a:R >-[link]- L:b
+    |  ^~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-reversed-right
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-reversed-right-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service api
+  3 | service db
+  4 | api:R --< L:db
+    |    ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---
+
+
+Test: architecture-no-reversed-marker >> invalid >>> invalid/architecture/marker-reversed-right-with-label
+Filename: tests/fixtures/rules/architecture-no-reversed-marker/invalid/architecture/marker-reversed-right-with-label-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | service a
+  3 | service b
+  4 | a:R -[link]-< L:b
+    |  ^~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws `>` before the line as `<` and `<` after the line as `>`.
+---

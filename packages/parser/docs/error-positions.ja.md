@@ -1319,3 +1319,24 @@ YAML は範囲のダッシュへ戻り、後の字句・文法エラーになり
 [fixture: architecture/div-semicolon-parent-id]
 [fixture: architecture/hidden-directive-unclosed]
 [fixture: architecture/hidden-directive-close-glued]
+
+## radar 図の中
+
+[順序付き字句規則](../../spec/docs/diagrams/radar.ja.md) が、
+文法と意味上の受理条件より先に全テキストを走査します。
+不正な末尾を含む入力の先頭だけを回復して受理しません。
+[fixture: radar/error-after-prefix] [fixture: radar/error-recovered-curve]
+
+| 原因                              | 範囲とメッセージ                                                                       | fixture                                                                                                               |
+| --------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| 完全な字句規則に一致しない        | ソースの 1 文字。`Unexpected character`。                                              | [fixture: radar/error-start] [fixture: radar/space-nbsp-body] [fixture: radar/lex-string-open-axis]                   |
+| 文法が構成要素を読めない          | 有意範囲で `Unexpected token`。EOF ではソース末尾の空範囲で `Unexpected end of text`。 | [fixture: radar/header-repeated] [fixture: radar/gram-axis-trailing-comma] [fixture: radar/gram-entry-empty]          |
+| hidden form が共通文の EOL を消費 | 次の可視要素で `Unexpected token`。EOF なら EOL を満たす。                             | [fixture: radar/hidden-native-title] [fixture: radar/hidden-native-title-eof]                                         |
+| 名前付き曲線に軸がない            | hidden gap と suffix を含む曲線全体。`Radar named curve requires axes`。               | [fixture: radar/error-reference-no-axes]                                                                              |
+| 名前付き曲線に宣言した軸名がない  | hidden gap と suffix を含む曲線全体。`Radar named curve is missing an axis entry`。    | [fixture: radar/error-reference-missing] [fixture: radar/error-reference-case] [fixture: radar/error-reference-label] |
+
+共通の不可分要素の切断エラーは、
+グローバルディレクティブか選択されたセミコロンを指します。
+不成立の native directive は Comment になることがあります。
+[fixture: radar/directive-axis-name] [fixture: radar/div-semicolon-number]
+[fixture: radar/hidden-native-unclosed]

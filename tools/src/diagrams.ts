@@ -40,6 +40,7 @@ export const diagramIds: Readonly<
   info: ["info"],
   packet: ["packet"],
   architecture: ["architecture"],
+  radar: ["radar"],
 }
 
 /**

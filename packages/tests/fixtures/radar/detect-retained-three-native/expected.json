@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can three adjacent retained fences provide a body line and one hidden YAML match?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

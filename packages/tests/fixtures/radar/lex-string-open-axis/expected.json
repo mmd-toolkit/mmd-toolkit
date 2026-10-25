@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unterminated axis string rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 8: unexpected character: ->\"<- at offset: 18, skipped 1 characters. Parse error on line 2, column 9: Expecting token of type 'STRING' but found `open`."
+  }
+}

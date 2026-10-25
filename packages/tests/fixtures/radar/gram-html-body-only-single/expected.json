@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "html-tag-in-frontmatter.md Radar: Without frontmatter HTML context, does the single-quoted label keep its double quotes?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "x=\"y\">"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

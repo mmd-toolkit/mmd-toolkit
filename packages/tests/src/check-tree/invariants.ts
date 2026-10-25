@@ -160,6 +160,7 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
+  RadarDiagram: ["%%"],
   ArchitectureDiagram: ["%%"],
   GitgraphDiagram: ["%%"],
   InfoDiagram: ["%%"],

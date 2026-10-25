@@ -498,6 +498,52 @@ text/string の値は directive を除いた原文を持てるため受理する
 [fixture: architecture/end-group-unclosed-directive]
 [fixture: architecture/end-junction-unclosed-directive]
 
+### Radar
+
+radar は id・数・固定語の内部の global directive を拒否します。
+true/false・circle/polygon・common keyword の内部も含みます。
+まず木に持てるかを考えると、native hidden form 全体は RadarIgnoredText
+に保てますが、
+不可分な atom の内部には node の置き場所がありません。
+残る差異は、前処理で atom の断片を連結せず、境界の直接の規則に従うものです。
+[fixture: radar/directive-header-middle]
+[fixture: radar/directive-axis-name]
+[fixture: radar/directive-curve-name]
+[fixture: radar/directive-number]
+[fixture: radar/directive-reference]
+[fixture: radar/div-directive-boolean-atom]
+[fixture: radar/div-directive-graticule-atom]
+[fixture: radar/div-directive-common-keyword]
+
+作者の完全な部品の境界には global directive を許します。
+見出しの語と colon、common keyword と colon/brace、label の bracket と string、
+entry の名前・省略可能な colon・数、member と comma の間が該当します。
+除去後にも正しい字句境界を要求します。
+native な形は名前つき gap/body に、global directive は共有 root
+のリストに保ちます。
+string・common 値・native な形の内容にも、atom を割らずに置けます。
+[fixture: radar/gram-directive-composite-header]
+[fixture: radar/directive-common-colon]
+[fixture: radar/common-block-directive-gap]
+[fixture: radar/directive-common]
+[fixture: radar/directive-label-before-open]
+[fixture: radar/directive-label-after-open]
+[fixture: radar/directive-label-before-close]
+[fixture: radar/directive-entry-before-colon]
+[fixture: radar/directive-entry-before-value]
+[fixture: radar/directive-list-comma]
+[fixture: radar/directive-curve-brace]
+[fixture: radar/directive-entry-no-colon-joins]
+[fixture: radar/directive-header-glued]
+[fixture: radar/directive-header-space]
+[fixture: radar/directive-option-space-control]
+[fixture: radar/directive-title-space-control]
+[fixture: radar/lex-hidden-yaml-global-inside]
+[fixture: radar/lex-hidden-yaml-opener-global]
+[fixture: radar/lex-hidden-yaml-closer-global]
+[fixture: radar/lex-hidden-native-opener-global]
+[fixture: radar/lex-hidden-native-closer-global]
+
 ## mermaid.js の文書と issue
 
 - [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
@@ -632,3 +678,14 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
   Open、Status: Approved で、外側の親 group の辺を扱う報告である。
   今回の共通境界に対する maintainer の判断とはしない。
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166) は軸・曲線・option を説明します。
+  2026-10-25 に公式の issue/PR を radar directive、radar semicolon、
+  radar entries で調べましたが、
+  上記の境界を不具合とする判断は見つかりませんでした。
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) は閉じられた
+  Status: Approved の文書報告です。
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
+  文書例の comma の修正で、
+  末尾 comma の文法上の対応を追加したものではありません。

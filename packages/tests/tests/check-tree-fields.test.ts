@@ -88,6 +88,11 @@ const REQUIREMENT_PARTS =
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
+  "RadarLiteral.value": { message: "value is not its written text" },
+  "RadarIgnoredText.value": { message: "value is not its written text" },
+  "RadarIgnoredText.kind": { message: "the field kind is " },
+  "RadarShowLegendOption.value": { message: "the field value is " },
+  "RadarGraticuleOption.value": { message: "the field value is " },
   "ArchitectureLabel.kind": {
     message: "the label kind from its first complete alternative",
   },

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Case, the hash position and missing hash distinguish shared semicolon preprocessing."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Style A: ﬂ°x¶ß",
+    "accTitle": "style A: # x;",
+    "accDescr": "style A: value;",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

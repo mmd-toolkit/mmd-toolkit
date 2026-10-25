@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Valid embedded radar settings cannot rescue a missing detailed entry."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Missing entry for axis B"
+  }
+}

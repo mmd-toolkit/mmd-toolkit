@@ -88,6 +88,9 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/info/infoParser.js": ["parser"],
   "diagrams/packet/parser.js": ["parser"],
   "diagrams/packet/db.js": ["PacketDB"],
+  "diagrams/radar/parser.js": ["parser"],
+  "diagrams/radar/db.js": ["db"],
+  "diagrams/radar/renderer.js": ["relativeRadius", "closedRoundCurve"],
   "diagrams/architecture/architectureParser.js": ["parser"],
   "diagrams/architecture/architectureDb.js": ["ArchitectureDB"],
   "diagrams/architecture/architectureRenderer.js": ["draw"],
@@ -98,6 +101,7 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "Pie",
     "Info",
     "Packet",
+    "Radar",
   ],
   "../../parser/tests/test-util.js": [
     "expectNoErrorsOrAlternatives",
@@ -106,7 +110,9 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "gitGraphParse",
     "infoParse",
     "packetParse",
+    "radarParse",
   ],
+  "../../parser/src/parse.js": ["parse", "MermaidParseError"],
   "diagrams/pie/pieParser.js": ["parser"],
   "diagrams/pie/pieDb.js": ["db", "DEFAULT_PIE_DB"],
   "diagrams/pie/pieRenderer.js": ["draw"],
@@ -494,6 +500,14 @@ export async function recordSpecFile(
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },
     "diagrams/packet/db.js": { PacketDB: anything },
+    "diagrams/radar/parser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/radar/db.js": { db: anything },
+    "diagrams/radar/renderer.js": {
+      relativeRadius: anything,
+      closedRoundCurve: anything,
+    },
     "diagrams/architecture/architectureParser.js": {
       parser: {
         parser: { yy: anything },
@@ -509,6 +523,7 @@ export async function recordSpecFile(
       Pie: anything,
       Info: anything,
       Packet: anything,
+      Radar: anything,
     },
     "../../parser/tests/test-util.js": {
       expectNoErrorsOrAlternatives: anything,
@@ -517,6 +532,12 @@ export async function recordSpecFile(
       gitGraphParse: record,
       infoParse: record,
       packetParse: record,
+      radarParse: record,
+    },
+    "../../parser/src/parse.js": {
+      parse: (_diagram: unknown, text: unknown) =>
+        Promise.resolve(record(text)),
+      MermaidParseError: anything,
     },
     "diagrams/info/infoParser.js": {
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },

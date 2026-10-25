@@ -154,10 +154,10 @@ pie/header-capitalized] [fixture: pie/header-uppercase]
 The frontmatter-shaped block passed at the detection point is still diagram
 text. A comment line followed by `---`, `title: Hidden`, `---`, and `pie`
 selects pie, whose hidden YAML rule skips the block without applying its title.
-Gitgraph, info and packet also retain matching hidden blocks; the cited other
-diagram types reject their corresponding inputs. An adjacent-fence empty block,
-an unmatched fence, or a bare `%%` line before the block instead leaves the
-rejecting `---` pseudo-diagram selected. [fixture:
+Gitgraph, info, packet, architecture and radar also retain matching hidden
+blocks; the cited other diagram types reject their corresponding inputs. An
+adjacent-fence empty block, an unmatched fence, or a bare `%%` line before the
+block instead leaves the rejecting `---` pseudo-diagram selected. [fixture:
 pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment] [fixture:
 packet/detect-one-block] [fixture: common/directive-before-frontmatter]
@@ -279,3 +279,11 @@ Architecture detection precedes C4 and selects the `architecture` prefix. Only
 [architecture](./diagrams/architecture.md). [fixture: architecture/header-beta]
 [fixture: architecture/header-bare-rejected] [fixture:
 architecture/header-letter-suffix] [fixture: architecture/c4-component-service]
+
+The radar detector selects the exact lowercase prefix `radar-beta`.
+[Radar syntax](./diagrams/radar.md#detection) defines the three accepted
+headers, `radar-beta`, `radar-beta:` and `radar-beta :`, with their respective
+boundaries. Detection's prefix has no boundary, but the grammar's header does.
+[fixture: radar/header-colon-inline] [fixture: radar/header-separated-colon]
+[fixture: radar/header-letter-suffix] [fixture: radar/header-uppercase]
+[fixture: radar/retained-yaml-control]

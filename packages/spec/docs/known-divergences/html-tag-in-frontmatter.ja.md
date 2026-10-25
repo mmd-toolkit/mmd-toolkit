@@ -302,6 +302,35 @@ frontmatter 内で開始した属性が、本仕様の受理する文字 icon �
 [fixture: architecture/gram-frontmatter-open-attribute-reference]
 [fixture: architecture/div-frontmatter-open-tag-label]
 
+### Radar
+
+radar は frontmatter の後から本文の HTML 属性の quote を読みます。
+frontmatter の開いた tag の属性状態を label や common 値に持ち越しません。
+引用符の原文は StringLiteral や RadarLiteral に保てるので、
+テキストの欠落を理由に拒否しません。
+残る差異は、前処理の状態を持ち越さず、frontmatter
+と本文の境界を直接定めるものです。
+[fixture: radar/div-html-frontmatter-cross]
+[fixture: radar/div-html-frontmatter-reverse]
+[fixture: radar/gram-html-body-only-double]
+[fixture: radar/gram-html-body-only-single]
+[fixture: radar/div-html-frontmatter-value]
+
+double quote の境界を跨ぐ例は、mermaid が書換え後に受理しますが、
+仕様は本文だけの対照例と同じく拒否します。
+single quote の逆方向の例は、mermaid が拒否し、
+仕様は本文だけの対照例と同じく受理します。
+双方が受理しても、common title が mermaid では `x='y'>`、
+仕様では本文だけの読みと同じ `x="y">` になる場合もあります。
+これらの受理と値の差異には、この識別子を使い、
+比較を specified.json に記録します。
+label と common 値の node は原綴を保ちます。
+[fixture: radar/div-html-frontmatter-cross]
+[fixture: radar/div-html-frontmatter-reverse]
+[fixture: radar/gram-html-body-only-double]
+[fixture: radar/gram-html-body-only-single]
+[fixture: radar/div-html-frontmatter-value]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -399,3 +428,14 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
   Open、Status: Approved で、外側の親 group の辺を扱う報告である。
   今回の共通境界に対する maintainer の判断とはしない。
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166) は軸・曲線・option を説明します。
+  2026-10-25 に公式の issue/PR を radar directive、radar semicolon、
+  radar entries で調べましたが、
+  上記の境界を不具合とする判断は見つかりませんでした。
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) は閉じられた
+  Status: Approved の文書報告です。
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
+  文書例の comma の修正で、
+  末尾 comma の文法上の対応を追加したものではありません。

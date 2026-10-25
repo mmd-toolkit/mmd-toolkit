@@ -373,6 +373,34 @@ LF 終端の接尾辞と検出が通過した残存 YAML は差異のない対�
 [fixture: packet/c4-hidden-suffix-lf]
 [fixture: packet/c4-retained-preheader-yaml]
 
+### Radar
+
+radar の見出しは、その後の title・label・参照に C4Container・C4Component・
+C4Dynamic・C4Deployment があっても radar を選びます。
+まず木に持てるかを考えると、RadarLiteral・StringLiteral・Identifier に、
+C4 として解釈せず原文を保てます。
+新しい無視するテキストの node も拒否も不要です。
+残る逆方向の受理の差異は、先行する C4 の全体 scan に代わる、
+見出しによる直接の選択規則です。
+[fixture: radar/c4-container-title]
+[fixture: radar/c4-component-axis-label]
+[fixture: radar/c4-dynamic-reference]
+[fixture: radar/c4-deployment-line]
+
+C4Context はこの全体一致をしません。
+他の 4 語を持つ LF 終了の先頭 comment は、
+終端がなく C4 の検出に語を露出する comment とは異なる検出の対照例です。
+差異のある radar 入力には同じ共有識別子を付け、仕様の受理結果を記録します。
+[fixture: radar/c4-context-title]
+[fixture: radar/c4-container-header-lf]
+[fixture: radar/c4-container-header-eof]
+[fixture: radar/c4-component-header-lf]
+[fixture: radar/c4-component-header-eof]
+[fixture: radar/c4-dynamic-header-lf]
+[fixture: radar/c4-dynamic-header-eof]
+[fixture: radar/c4-deployment-header-lf]
+[fixture: radar/c4-deployment-header-eof]
+
 ## mermaid.js の文書と issue
 
 - [C4 図の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md)
@@ -471,3 +499,14 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   2026-10-25 に `packet bitsPerRow`、`packet fractional`、
   `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
   ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166) は軸・曲線・option を説明します。
+  2026-10-25 に公式の issue/PR を radar directive、radar semicolon、
+  radar entries で調べましたが、
+  上記の境界を不具合とする判断は見つかりませんでした。
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) は閉じられた
+  Status: Approved の文書報告です。
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
+  文書例の comma の修正で、
+  末尾 comma の文法上の対応を追加したものではありません。

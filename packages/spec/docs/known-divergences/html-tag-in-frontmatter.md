@@ -273,6 +273,29 @@ architecture/div-frontmatter-open-attribute-icon] [fixture:
 architecture/gram-frontmatter-open-attribute-reference] [fixture:
 architecture/div-frontmatter-open-tag-label]
 
+### Radar
+
+Radar starts body HTML-attribute quote reading after frontmatter. An open tag in
+frontmatter does not carry its attribute state into a label or common value. The
+tree can preserve the authored quotes in StringLiteral or RadarLiteral, so loss
+of that text is not a reason to reject. The difference that remains follows a
+direct frontmatter/body boundary instead of carrying a preprocessing state
+across it. [fixture: radar/div-html-frontmatter-cross] [fixture:
+radar/div-html-frontmatter-reverse] [fixture: radar/gram-html-body-only-double]
+[fixture: radar/gram-html-body-only-single] [fixture:
+radar/div-html-frontmatter-value]
+
+The double-quoted crossing example is accepted by Mermaid after its rewrite but
+rejected here like its body-only control. The single-quoted reverse example is
+rejected by Mermaid but accepted here like its body-only control. Both readings
+also accept a common title that becomes `x='y'>` in Mermaid but remains `x="y">`
+here, matching body-only quote reading. These acceptance and value differences
+use this identifier, with their comparisons recorded in specified.json; label
+and common-value nodes keep the authored spelling. [fixture:
+radar/div-html-frontmatter-cross] [fixture: radar/div-html-frontmatter-reverse]
+[fixture: radar/gram-html-body-only-double] [fixture:
+radar/gram-html-body-only-single] [fixture: radar/div-html-frontmatter-value]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -354,3 +377,13 @@ warning. These facts do not justify any additional divergence.
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
   Status: Approved and concerns edges from outer parent groups, not a maintainer
   ruling on this common boundary.
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  documents axes, curves and options. The official issues/PRs were searched on
+  2026-10-25 for radar directive, radar semicolon and radar entries; no
+  inspected result declares the boundaries above a defect.
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) is a closed
+  documentation report marked Status: Approved.
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
+  documentation examples; it does not add grammar support for a trailing comma.

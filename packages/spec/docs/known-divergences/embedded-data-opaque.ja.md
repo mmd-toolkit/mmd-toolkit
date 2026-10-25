@@ -543,6 +543,37 @@ native hidden YAML/DIRECTIVE の本文は ignored form であり、設定 block 
 [fixture: architecture/config-site-maxedges]
 [fixture: architecture/config-limit-small]
 
+### Radar
+
+radar は先頭の frontmatter と global directive の引数を、
+内容を検証しない共有 record として保ちます。
+まず木に持てるかを考えると、Frontmatter と Directive に保てます。
+radar.* に radar の受理を変える鍵はなく、
+両方向の比較から除く radar 固有の acceptance key はありません。
+site・frontmatter・init の描画/option 設定は、
+正しい構文を拒否させず、不足した名前つき entry も救済しません。
+[fixture: radar/frontmatter-invalid]
+[fixture: radar/frontmatter-invalid-keeps-config]
+[fixture: radar/config-invalid-display-mode]
+[fixture: radar/config-drawing-only]
+[fixture: radar/config-options-site]
+[fixture: radar/detect-retained-close-no-lf-control]
+[fixture: radar/detect-retained-opener-nbsp]
+[fixture: radar/detect-retained-closer-u3000]
+[fixture: radar/lex-bare-accessibility-ids]
+[fixture: radar/lex-false-prefix-id]
+
+残る逆方向の受理の差異は、図の文法の外での埋め込みデータの検証です。
+比較では共有の比較規則に従い、拒否の原因だけを除き、無関係な値を保ちます。
+native hidden YAML/directive は RadarIgnoredText が所有します。
+radar は埋め込み payload として検証しません。
+独立した共有の設定の読み方は tests の要約に従います。
+[fixture: radar/frontmatter-invalid-keeps-config]
+[fixture: radar/config-invalid-display-mode]
+[fixture: radar/retained-yaml-control]
+[fixture: radar/lex-hidden-yaml-global-inside]
+[fixture: radar/detect-retained-three-native]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -660,3 +691,14 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
   Open、Status: Approved で、外側の親 group の辺を扱う報告である。
   今回の共通境界に対する maintainer の判断とはしない。
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166) は軸・曲線・option を説明します。
+  2026-10-25 に公式の issue/PR を radar directive、radar semicolon、
+  radar entries で調べましたが、
+  上記の境界を不具合とする判断は見つかりませんでした。
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) は閉じられた
+  Status: Approved の文書報告です。
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
+  文書例の comma の修正で、
+  末尾 comma の文法上の対応を追加したものではありません。

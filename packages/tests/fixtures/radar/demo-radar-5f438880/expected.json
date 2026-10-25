@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/radar.html",
+    "line": 19
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "My favorite ninjas",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "Agility"
+      },
+      {
+        "label": "Speed"
+      },
+      {
+        "label": "Strength"
+      },
+      {
+        "label": "Stamina"
+      },
+      {
+        "label": "Intelligence"
+      }
+    ],
+    "curves": [
+      {
+        "label": "Naruto",
+        "entries": [
+          2,
+          2,
+          3,
+          5,
+          0
+        ]
+      },
+      {
+        "label": "Sasuke",
+        "entries": [
+          2,
+          3,
+          4,
+          1,
+          5
+        ]
+      },
+      {
+        "label": "Ninja",
+        "entries": [
+          3,
+          2,
+          1,
+          5,
+          4
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 3,
+      "max": 8,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

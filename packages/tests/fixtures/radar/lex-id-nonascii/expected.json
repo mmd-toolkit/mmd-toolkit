@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ID is limited to ASCII word characters and interior dashes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->é<- at offset: 16, skipped 1 characters. Parse error on line 2, column 7: Expecting token of type 'ID' but found `\n`."
+  }
+}

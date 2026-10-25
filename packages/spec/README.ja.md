@@ -53,6 +53,7 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 | info         | [`docs/diagrams/info.ja.md`](./docs/diagrams/info.ja.md)                 | [`docs/ast/info.ja.md`](./docs/ast/info.ja.md)                 |
 | packet       | [`docs/diagrams/packet.ja.md`](./docs/diagrams/packet.ja.md)             | [`docs/ast/packet.ja.md`](./docs/ast/packet.ja.md)             |
 | architecture | [`docs/diagrams/architecture.ja.md`](./docs/diagrams/architecture.ja.md) | [`docs/ast/architecture.ja.md`](./docs/ast/architecture.ja.md) |
+| radar        | [`docs/diagrams/radar.ja.md`](./docs/diagrams/radar.ja.md)               | [`docs/ast/radar.ja.md`](./docs/ast/radar.ja.md)               |
 
 mermaid.js のほかの図種は、まだ定めていません。
 

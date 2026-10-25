@@ -21,6 +21,8 @@ interface FlatHiddenLayouts<Diagram extends Node, Statement extends Node> {
    */
   readonly header: (source: Source, diagram: Diagram) => AtomLayout
   readonly statement: (source: Source, statement: Statement) => AtomLayout
+  /** Trailing forms can belong to the last member of a grouped statement. */
+  readonly suffixes?: (statement: Statement) => readonly Node[]
 }
 
 /** The printer and the root-prefix constraint selected with it. */
@@ -92,7 +94,7 @@ export function createFlatHiddenDiagramPrinter<
     const statements = new Map<Node, AtomLayout>()
     for (const item of diagram.body) {
       const layout = layouts.statement(source, item)
-      const suffixes = item.textAfter ?? []
+      const suffixes = layouts.suffixes?.(item) ?? item.textAfter ?? []
       hidden.push(...suffixes)
       // A protected segment can span a suffix boundary. Keep that layout
       // whole rather than cutting an indivisible atom.

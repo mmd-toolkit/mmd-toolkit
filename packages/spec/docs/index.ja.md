@@ -44,6 +44,11 @@ architecture の定義は [構文](./diagrams/architecture.ja.md) と
 [木](./ast/architecture.ja.md) にあります。 [fixture: architecture/header-beta]
 [fixture: architecture/db-mixed]
 
+radar の定義は [構文](./diagrams/radar.ja.md) と
+[木](./ast/radar.ja.md) にあります。
+[fixture: radar/header-colon-inline]
+[fixture: radar/gram-written-tree]
+
 ## 元にしたもの
 
 仕様は、mermaid.js のリポジトリにある次の 3 つを元にしています。

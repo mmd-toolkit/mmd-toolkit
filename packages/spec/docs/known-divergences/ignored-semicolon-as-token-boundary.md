@@ -5,9 +5,9 @@ Japanese version:
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
 requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, venn,
-agentflow, usecase, pie, gitgraph, info, packet, and architecture. This is one
-of the [known divergences](../known-divergences.md) of this specification from
-mermaid.js.
+agentflow, usecase, pie, gitgraph, info, packet, architecture, and radar. This
+is one of the [known divergences](../known-divergences.md) of this specification
+from mermaid.js.
 
 ## The syntax
 
@@ -409,6 +409,28 @@ architecture/div-semicolon-in-keyword] [fixture:
 architecture/gram-semicolon-parent-reference] [fixture:
 architecture/style-fields]
 
+### Radar
+
+The common style/classDef line rule can select a semicolon inside a radar id,
+number or fixed keyword, including boolean and graticule words. First ask
+whether the tree can preserve the reading: it cannot place an ignored-text node
+inside such an atom. The specification rejects that split atom instead of
+reproducing concatenation caused by the preprocessing order. This is the
+existing boundary divergence, not a new identifier. [fixture:
+radar/div-semicolon-id] [fixture: radar/div-semicolon-number] [fixture:
+radar/div-semicolon-keyword] [fixture: radar/div-semicolon-boolean-atom]
+[fixture: radar/div-semicolon-graticule-atom]
+
+A selected semicolon between complete authored units or inside string,
+common-value or native hidden text is retained as common trivia. A whole native
+form can have RadarIgnoredText ownership and is accepted. Ordinary remaining
+semicolons still are not radar statement separators. Thus a tree slot exists for
+hidden text, but does not require accepting a split atom. [fixture:
+radar/gram-semicolon-between-units] [fixture:
+radar/lex-hidden-yaml-opener-selected-control] [fixture:
+radar/lex-hidden-native-opener-selected] [fixture: radar/style-fields] [fixture:
+radar/style-controls] [fixture: radar/tail-option-semicolon]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -509,3 +531,13 @@ warning. These facts do not justify any additional divergence.
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
   Status: Approved and concerns edges from outer parent groups, not a maintainer
   ruling on this common boundary.
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  documents axes, curves and options. The official issues/PRs were searched on
+  2026-10-25 for radar directive, radar semicolon and radar entries; no
+  inspected result declares the boundaries above a defect.
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) is a closed
+  documentation report marked Status: Approved.
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
+  documentation examples; it does not add grammar support for a trailing comma.

@@ -273,6 +273,13 @@ description:
 | packet で、mermaid.js が描く 10,000 行を越える区画、double が持てない数、描画を壊す `bitsPerRow`                                                                                          | mermaid.js の限界であり、書き手の間違いではない。設定は YAML や JSON を読むことにもなり、リリースの後まで待つ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | packet で、見出しの `packet-beta`                                                                                                                                                         | `packet` として、何も失わず警告もなく読まれる（実行）。規則は書き方の好みになる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | packet で、コメントの後や本体の中の YAML のブロック、空か記号だけの指示子、どの `}` も閉じない `accDescr` のブロック                                                                      | 上の pie と同じ。最後のものは mermaid.js が受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| architecture で、1 度以上書いた `title`                                                                                                                                                   | mermaid.js はそれを描かない（`architectureRenderer.ts` の TODO を読んだ）。効果のない正しい書き方は mermaid.js の制限であり、後の `title` は描かれるものを何も置き換えない。architecture-no-duplicate-title は `accTitle` だけを比べる                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| architecture で、同じ端の間に同じ向きで 2 度書いた辺と、id がぶつかる辺（`a-b` から `c` と、`a` から `b-c`）                                                                              | 黙ってはいない。描画は辺を 2 つの id で名づけるので、描画が失敗する（`addEdges()` を読んだ。実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| architecture で、辺とその逆の辺、service から自分への辺、矛盾する `align` 文                                                                                                              | 辺は描かれる（実行）。矛盾する整列は配置を失敗させるか意味を保つかで、失われる値は示されない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| architecture で、登録したどのアイコンの組にもないアイコン（`servre`）                                                                                                                     | アイコンの組はテキストの外で登録するので、木はアイコンがないことを知れない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| architecture で、2 つの service の同じラベル、空のラベル、空のアイコンの文字                                                                                                              | 何も失われない。ラベルは id ではなく、ラベルのない要素も描かれる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| architecture で、2 度宣言した id、定義のない親や端、辺の端の group、1 つの group の 2 つの service の間の `{group}`、`align` で 2 度書いたメンバー                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| architecture で、コメントの後や本体の中の YAML のブロック、空か記号だけの指示子、どの `}` も閉じない `accDescr` のブロック                                                                | 上の pie と同じ。最後のものは mermaid.js が受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 
 ### 迷ったときの問い
 
@@ -807,6 +814,11 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | packet-no-duplicate-title                 | 入れる               |                                                                          |
 | packet-no-duplicate-description           | 入れる               |                                                                          |
 | packet-no-empty-description-block         | 入れる               |                                                                          |
+| architecture-no-duplicate-title           | 入れる               |                                                                          |
+| architecture-no-duplicate-description     | 入れる               |                                                                          |
+| architecture-no-empty-description-block   | 入れる               |                                                                          |
+| architecture-no-reversed-marker           | 入れる               |                                                                          |
+| architecture-no-ungrouped-modifier        | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1701,6 +1713,41 @@ packet の規則は、packet がタイトルと説明を同じに読み、タイ
 「packet duplicate label」「packet contiguous」「packet」と題名の「packet」で、
 タイトルや説明に関するものはなかった。
 
+architecture の規則の注は次のとおりである。
+検索は「architecture title」「architecture arrow」「architecture group edge」
+「architecture group」「architecture-beta group」「architecture diagram title」
+「architecture accTitle」「architecture accDescr」で、
+読み方を変えるものはなかった。
+[#7211](https://github.com/mermaid-js/mermaid/issues/7211)（open）は
+別の group を囲む group からの辺に、
+[#7313](https://github.com/mermaid-js/mermaid/issues/7313)（closed）は
+矢印の長さに関するものである。
+
+- architecture-no-duplicate-title、architecture-no-duplicate-description、
+  architecture-no-empty-description-block:
+  architecture はタイトルと説明を同じに読むので、上の pie の規則の注を持つ
+  （`architectureParser.ts` を読んだ。実行）。
+  `title` は描かれない（`architectureRenderer.ts` を読んだ）ので、
+  タイトルの規則は、タイトルを描かない図種のタイトルの規則と同じく、
+  `accTitle` だけを比べる（2026-10-25 に決めた）。
+- architecture-no-reversed-marker:
+  (1) 文法は `<` と `>` を、どちらもそれが立つ端の矢じりとして読む
+  （`architecture.langium` を読んだ）ので、`>--<` は `<-->` として描かれ、
+  矢じりは書いたのと逆を向く（実行）。
+  (2) なし。文書は左に `<`、右に `>` を書き、
+  ラベルの中の `<` や `>` は文字である。
+  (4) 左に `<`、右に `>` を書く。
+- architecture-no-ungrouped-modifier:
+  (1) group に属さない端では、
+  `{group}` は辺の端を group の余白と 4 だけ動かすので、
+  辺は service に届かずに止まり、group は描かれない
+  （`svgDraw.ts` を読んだ。実行）。
+  Db は 1 つの group の 2 つの service の間の `{group}` を受理しないが、
+  group に属さない端のものは受理する（`architectureDb.ts` を読んだ）。
+  (2) なし。文書は group の中の service にだけ `{group}` を認め、
+  辺の前でも後でも group の中に宣言した端は報告しない（2026-10-25 に決めた）。
+  (4) `{group}` を取り除くか、service をその group の中に宣言する。
+
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
 mermaid.js は次の行を書き手のつもりどおりに別に読むが、
@@ -1796,6 +1843,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | pie-*（4 件すべて）                     | いまはなし（2026-10-23。この節の終わりを見る）   |
 | gitgraph-*（5 件すべて）                | いまはなし（2026-10-23。この節の終わりを見る）   |
 | packet-*（3 件すべて）                  | いまはなし（2026-10-25。この節の終わりを見る）   |
+| architecture-*（5 件すべて）            | いまはなし（2026-10-25。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1923,7 +1971,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `block-*`、`kanban-*`、`c4-*`、`venn-*`（2026-10-21）と
 `agentflow-*` と flowchart-no-duplicate-direction（2026-10-22）と
 `usecase-*` と `pie-*` と `gitgraph-*`（2026-10-23）と
-`packet-*`（2026-10-25）:
+`packet-*` と `architecture-*`（2026-10-25）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

@@ -174,6 +174,12 @@ const SPEC_FILES: Readonly<
     "diagrams/packet/packet.spec.ts",
     "../../parser/tests/packet.test.ts",
   ],
+  // This is the only radar spec in each package; renderer-only cases in the
+  // mermaid spec pass no text, while its draw cases also call public parsing.
+  radar: () => [
+    "diagrams/radar/radar.spec.ts",
+    "../../parser/tests/radar.test.ts",
+  ],
   // architectureSeed.spec.ts tests randomness with no diagram text.
   // svgDraw.spec.ts passes text to Diagram.fromText before rendering; its
   // assertions can use the shared drawing stubs. The parser package tests

@@ -278,7 +278,8 @@ agentflow では、字句解析器がコメント行を自分で読むので、
 検出は、ヘッダーの前の先頭以外のフロントマター形のブロックを、
 1 つ通過させる場合があります。
 ブロックは図のテキストのままです。
-pie・gitgraph・info・packet・architecture は隠れた YAML の規則を適用します。
+pie・gitgraph・info・packet・architecture・radar は隠れた YAML
+の規則を適用します。
 以下で引用する拒否例の範囲は、その fixture の図種です。
 共通のフロントマターやトリビアではありません。
 [fixture: pie/frontmatter-nonleading-comment]
@@ -295,6 +296,7 @@ pie・gitgraph・info・packet・architecture は隠れた YAML の規則を適�
 [fixture: ishikawa/frontmatter-after-comment]
 [fixture: usecase/frontmatter-after-comment]
 [fixture: venn/frontmatter-comment-before]
+[fixture: radar/retained-yaml-control]
 
 ソースの最後の文字の後には、
 `\n` をもう 1 つ読みます（[テキストの終わり](#テキストの終わり)）。
@@ -540,10 +542,11 @@ mermaid.js が本文をどう読むかは、
 上のフロントマターの形を持つブロックを 1 つ通過させ、後のヘッダーを探します。
 図の字句解析器が読むテキストからブロックを除くわけではありません。
 ブロックの前にトリビアがあると、
-pie・gitgraph・info・packet・architecture は残されたテキストに隠れた YAML の規則
+pie・gitgraph・info・packet・architecture・radar は残されたテキストに隠れた
+YAML の規則
 を適用します。
 一致すれば PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText・
-PacketIgnoredText・ArchitectureIgnoredText に持ち、
+PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText に持ち、
 YAML のタイトルも設定も適用しません。
 以下の拒否例で、ほかのすべての図種の拒否を主張するものではありません。
 先頭の空白、開始の区切りだけのバイトオーダーマーク、コメント行、
@@ -572,6 +575,7 @@ YAML のタイトルも設定も適用しません。
 [fixture: ishikawa/frontmatter-after-comment]
 [fixture: usecase/frontmatter-after-comment]
 [fixture: venn/frontmatter-comment-before]
+[fixture: radar/retained-yaml-control]
 
 この飛ばしは、裸の行の通過やディレクティブの再走査の前に、1 回だけ試します。
 2 つ目のブロックや、再走査のディレクティブの後のブロックは飛ばしません。
@@ -1037,7 +1041,8 @@ mermaid.js は、
 その点のブロックが [フロントマター](#フロントマター) の形を満たせば、
 検出は、`%%` だけの行を探す前に、ブロックを 1 回通過させます。
 ブロックは、選んだ図が読む図のテキストのままです。
-pie・gitgraph・info・packet・architecture と拒否する対照例はフロントマターの節に
+pie・gitgraph・info・packet・architecture・radar
+と拒否する対照例はフロントマターの節に
 あります。
 [fixture: pie/frontmatter-nonleading-comment]
 [fixture: gitgraph/lex-yaml-after-comment]
@@ -1082,6 +1087,8 @@ pie・gitgraph・info・packet・architecture と拒否する対照例はフロ�
 ヘッダーが残らず、テキストは mermaid.js と同じく拒否されます。
 mermaid.js の 2 回目のディレクティブの走査が、
 同じディレクティブを見つけるからです。
+[fixture: radar/detect-secondscan-native]
+[fixture: radar/detect-secondscan-native-glued]
 
 flowchart、sequence、class、state では、
 このディレクティブは木になく、入力を拒否させます。
@@ -1101,11 +1108,11 @@ mermaid.js と同じで、その字句解析器はヘッダーの前の `%%{` �
 [fixture: usecase/detect-directive-second-scan-preheader]
 [fixture: venn/detect-directive-second-scan-preheader]
 
-pie・gitgraph・info・packet・architecture は、
+pie・gitgraph・info・packet・architecture・radar は、
 検出の 2 回目の走査でだけ見つかるディレクティブを
 隠れた DIRECTIVE として読み、textBeforeHeader の
 PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText・
-PacketIgnoredText・ArchitectureIgnoredText に持ちます。
+PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText に持ちます。
 `%%{`、`%% gap`、`wrap}%%`、`pie` の各行は受理します。
 閉じの直後に `pie` を接着すると、隠れた形の閉じの境界を満たさず、拒否します。
 [fixture: pie/lex-hidden-directive-second-detection-scan]
@@ -1116,6 +1123,8 @@ PacketIgnoredText・ArchitectureIgnoredText に持ちます。
 [fixture: info/detect-second-scan-glued]
 [fixture: packet/detect-second-scan-directive]
 [fixture: packet/detect-second-scan-glued]
+[fixture: radar/detect-secondscan-native]
+[fixture: radar/detect-secondscan-native-glued]
 
 たどり着いた位置で、[detection.ja.md](./detection.ja.md) の検出器を登録順に、
 図のテキスト（[ソースの読み方](#ソースの読み方)）、
@@ -1123,7 +1132,8 @@ PacketIgnoredText・ArchitectureIgnoredText に持ちます。
 試します。
 条件が最初に成り立った検出器が図種を選びます。
 図の字句解析器は、残したフロントマター形のブロックがあればそれを読み、
-pie・gitgraph・info・packet・architecture は上記の隠れた DIRECTIVE も読みます。
+pie・gitgraph・info・packet・architecture・radar は上記の隠れた DIRECTIVE
+も読みます。
 たどり着いた位置からのテキストも読みます。
 検出が通過させた `%%` だけの行と、一緒に通過した空白・改行は、
 ここでは読み直しません。空白と改行は trivia です。
@@ -1201,6 +1211,7 @@ class はそのような行の後の空白だけの行を `newline` の単位と
 39 個の検出器すべての順序と条件は [detection.ja.md](./detection.ja.md) にあり
 、
 各図の文書はその検出の節で該当する項目を参照します。
+[fixture: radar/retained-yaml-control]
 
 検出器が読むのは、キーワードとその次の文字までです。
 下の `error` 疑似図種の検出器だけは別で、
@@ -1366,7 +1377,7 @@ C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこ
 
 一致する先頭以外の `---` ブロックは、どちらでも検出が通過させ、
 選んだ図が読みます。
-pie・gitgraph・info・packet・architecture は隠れた YAML の規則を適用し、
+pie・gitgraph・info・packet・architecture・radar は隠れた YAML の規則を適用し、
 一致したブロックを無視するテキストとして持ちます。
 以下で引用するほかの図種の対照例は拒否します。
 [フロントマター](#フロントマター) で述べたとおりです。
@@ -1379,6 +1390,7 @@ pie・gitgraph・info・packet・architecture は隠れた YAML の規則を適�
 [fixture: usecase/frontmatter-after-comment]
 [fixture: venn/frontmatter-comment-before]
 [fixture: packet/detect-one-block]
+[fixture: radar/retained-yaml-control]
 
 `error` 疑似図種では、その条件が除く 3 つがこの除去です。
 
@@ -1410,6 +1422,16 @@ ArchitectureDiagram.textBeforeHeader の ArchitectureIgnoredText に持ちます
 [fixture: architecture/detect-second-scan-glued]
 [fixture: architecture/div-retained-bare-second-scan-ls]
 [fixture: architecture/retained-yaml-no-bare]
+
+radar も残存する YAML と第 2 scan の directive を読み、
+RadarDiagram.textBeforeHeader の RadarIgnoredText に保ちます。
+検出で通した裸の行と付随する空白・改行は読み直しません。
+残存する形には native の閉じの境界を要求します。
+[fixture: radar/detect-yaml-before-secondscan-native]
+[fixture: radar/detect-secondscan-before-yaml-native]
+[fixture: radar/detect-secondscan-native-twice]
+[fixture: radar/div-detect-yaml-bare-secondscan-native-ls]
+[fixture: radar/detect-retained-no-bare-control]
 
 ## `style` 行と `classDef` 行
 

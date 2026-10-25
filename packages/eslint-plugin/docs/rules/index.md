@@ -251,6 +251,16 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | --------------------------------------------------------------- | ------------------------------------------------------------------- | --- | --- | --- |
 | [kanban-no-duplicate-section](./kanban-no-duplicate-section.md) | Disallow a repeated section id that lists its items more than once. | ✅  |     |     |
 
+## architecture
+
+| Rule                                                                                    | Description                                                               | ✅  | 💡  | 🚧  |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- | --- | --- | --- |
+| [architecture-no-duplicate-description](./architecture-no-duplicate-description.md)     | Disallow an `accDescr` that replaces the description set before it.       | ✅  |     |     |
+| [architecture-no-duplicate-title](./architecture-no-duplicate-title.md)                 | Disallow an `accTitle` that replaces the title set before it.             | ✅  |     |     |
+| [architecture-no-empty-description-block](./architecture-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.                   | ✅  |     |     |
+| [architecture-no-reversed-marker](./architecture-no-reversed-marker.md)                 | Disallow an arrowhead of an edge written pointing the other way.          | ✅  |     |     |
+| [architecture-no-ungrouped-modifier](./architecture-no-ungrouped-modifier.md)           | Disallow the `{group}` modifier on an end of an edge that is in no group. | ✅  |     |     |
+
 ## venn
 
 | Rule                                                        | Description                                                                | ✅  | 💡  | 🚧  |

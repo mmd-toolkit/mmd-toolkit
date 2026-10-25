@@ -465,6 +465,32 @@ architecture/lex-yaml-global-directive] [fixture:
 architecture/config-drawing-only] [fixture: architecture/config-site-maxedges]
 [fixture: architecture/config-limit-small]
 
+### Radar
+
+Radar retains leading frontmatter and global directive arguments as opaque
+shared records; it does not reject their contents. First ask whether the tree
+can preserve them: it can, in Frontmatter and Directive. No radar.* key changes
+radar acceptance, so there is no radar-specific acceptance key to remove in
+either comparison direction. Site, frontmatter and init drawing/options settings
+neither reject valid syntax nor rescue missing named entries. [fixture:
+radar/frontmatter-invalid] [fixture: radar/frontmatter-invalid-keeps-config]
+[fixture: radar/config-invalid-display-mode] [fixture:
+radar/config-drawing-only] [fixture: radar/config-options-site] [fixture:
+radar/detect-retained-close-no-lf-control] [fixture:
+radar/detect-retained-opener-nbsp] [fixture: radar/detect-retained-closer-u3000]
+[fixture: radar/lex-bare-accessibility-ids] [fixture: radar/lex-false-prefix-id]
+
+The remaining reverse acceptance difference is validation of embedded data
+outside the diagram grammar. Remove only the offending embedded data for the
+comparison, preserving unrelated values under the shared comparison rule. A
+native hidden YAML/directive form instead has RadarIgnoredText ownership; radar
+does not validate it as an embedded payload. Independent shared configuration
+reading still follows the tests summary. [fixture:
+radar/frontmatter-invalid-keeps-config] [fixture:
+radar/config-invalid-display-mode] [fixture: radar/retained-yaml-control]
+[fixture: radar/lex-hidden-yaml-global-inside] [fixture:
+radar/detect-retained-three-native]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -563,3 +589,13 @@ warning. These facts do not justify any additional divergence.
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) was open with
   Status: Approved and concerns edges from outer parent groups, not a maintainer
   ruling on this common boundary.
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  documents axes, curves and options. The official issues/PRs were searched on
+  2026-10-25 for radar directive, radar semicolon and radar entries; no
+  inspected result declares the boundaries above a defect.
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) is a closed
+  documentation report marked Status: Approved.
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
+  documentation examples; it does not add grammar support for a trailing comma.

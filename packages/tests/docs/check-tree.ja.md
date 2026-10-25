@@ -736,6 +736,96 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-yaml-bare-directive] [fixture:
     info/lex-retained-no-bare-ls] [fixture: info/lex-hidden-common-comment]
 
+  - radar: 19 のノード型、欄と訪問順は
+    [ast/radar.ja.md](../../spec/docs/ast/radar.ja.md) に従う。
+    宣言群と option 群は空でない comma 配列にする。
+    軸と曲線の member は任意の label を保ち、
+    曲線の entry は空でなく同じ型で揃う。
+    名前つき entry の任意の colon も保つ。
+    固定 option の語は token と照らし、数の葉は符号なし小数の綴りを保つ。
+    ID は最長の綴りと、
+    先行する keyword・数・boolean・graticule・共通形を調べる。
+    境界のある bare 見出しは、
+    label bracket・entry brace の直前なら名前になる。
+    string は同じ quote で閉じ、定めた escape 境界を守る。
+    これらは木の条件であり、軸参照の不足など意味上の受理条件は parser が扱う。
+    [fixture: radar/gram-written-tree]
+    [fixture: radar/gram-inline-statements]
+    [fixture: radar/gram-curve-kind-per-curve]
+    [fixture: radar/gram-detailed-colon-mixed-spelling]
+    [fixture: radar/db-options-repeat]
+    [fixture: radar/lex-id-keyword-prefix]
+    [fixture: radar/lex-id-numeric-leading]
+    [fixture: radar/lex-id-boolean-prefix]
+    [fixture: radar/lex-id-graticule-prefix]
+    [fixture: radar/lex-id-title-prefix]
+    [fixture: radar/lex-bare-accessibility-ids]
+    [fixture: radar/lex-string-escaped-ls]
+    [fixture: radar/error-reference-label]
+    [fixture: radar/lex-header-as-declaration]
+
+    保持する hidden form の所有者は、指定の gap または body のちょうど 1 つ。
+    原文の形全体を最初の適格な閉じと照らし、
+    YAML は隣接する空 fence より本文ありの選択肢を先にする。
+    消費する LF は範囲に含めない。
+    member と名前つき entry の部品間に可視 LF はない。
+    entry 配列は先頭、comma の後、閉じ brace の前に LF を許し、
+    entry comma の前には許さない。
+    label の gap と不在の部品は指定の所有を守り、
+    colon を省いた textBeforeColon は空にする。
+    [fixture: radar/lex-hidden-axis-comma]
+    [fixture: radar/lex-hidden-curve-comma]
+    [fixture: radar/lex-hidden-option-comma]
+    [fixture: radar/lex-hidden-detailed-before-colon]
+    [fixture: radar/lex-hidden-detailed-no-colon]
+    [fixture: radar/lex-hidden-before-first-entry]
+    [fixture: radar/lex-hidden-before-entries-close]
+    [fixture: radar/hidden-yaml-adjacent-later]
+    [fixture: radar/hidden-yaml-adjacent-eof]
+    [fixture: radar/hidden-native-closer]
+    [fixture: radar/hidden-yaml-crlf]
+    [fixture: radar/gram-entry-newline-after-comma]
+    [fixture: radar/gram-entry-before-comma-native-spare]
+
+    共通形は共有の composite 値の検査を使い、
+    null と空白だけの値、description の最初の閉じを区別する。
+    後の文に可視 EOL が必要なのは共通文だけ。
+    余分な LF、閉じの後の space、EOF は別の場合として調べる。
+    可視 EOL より前の hidden suffix は直前の共通文か群の最後の member に属し、
+    可視 EOL の後は body に属する。
+    先に始まる string と composite 値は内部の hidden らしい文字を所有する。
+    native Comment は先行する hidden directive に化けず、
+    先に始まる string・block・hidden form の内部から始まらない。
+    [fixture: radar/lex-common-empty-values]
+    [fixture: radar/common-block-first-close]
+    [fixture: radar/hidden-native-title]
+    [fixture: radar/hidden-native-title-spare]
+    [fixture: radar/hidden-native-title-space]
+    [fixture: radar/hidden-native-title-eof]
+    [fixture: radar/lex-hidden-after-visible-eol]
+    [fixture: radar/lex-common-hidden-yaml-block-owner]
+    [fixture: radar/lex-common-hidden-percent-block-owner]
+    [fixture: radar/hidden-native-string]
+    [fixture: radar/lex-hidden-native-fallback]
+
+    見出しの語・colon の原文部品と、bare 見出しの境界を調べる。
+    見出し前の保持形も native の境界と検出順を守る。
+    裸の percent Comment とともに通された区間だけが、
+    保持形の間も含めて付随する Unicode trivia を認める。
+    本文の通常の gap は広げない。
+    共有の欄、coverage、原文の値、範囲と token の検査も適用する。
+    [fixture: radar/header-colon-inline]
+    [fixture: radar/header-separated-colon]
+    [fixture: radar/header-colon-hidden]
+    [fixture: radar/header-native-no-boundary]
+    [fixture: radar/detect-retained-two]
+    [fixture: radar/detect-secondscan-native-glued]
+    [fixture: radar/bare-before-header-nbsp]
+    [fixture: radar/bare-line-ls]
+    [fixture: radar/div-detect-yaml-bare-secondscan-native-ls]
+    [fixture: radar/detect-retained-no-bare-control]
+    [fixture: radar/space-nbsp-body]
+
   - architecture: 15 のノード型、子の欄と訪問順は
     [ast/architecture.ja.md](../../spec/docs/ast/architecture.ja.md) に従う。
     ID は keyword・共通の形・方向の優先順位と最長の ID の選択肢を調べる。

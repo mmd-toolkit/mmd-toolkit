@@ -17,6 +17,23 @@
  * recorded tree to have a text here.
  */
 export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  RadarDiagram: [
+    "radar-beta",
+    "axis",
+    "curve",
+    "showlegend",
+    "ticks",
+    "max",
+    "min",
+    "graticule",
+    "true",
+    "false",
+    "circle",
+    "polygon",
+    "title",
+    "acctitle",
+    "accdescr",
+  ],
   ArchitectureDiagram: [
     "architecture-beta",
     "group",

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/radar/radar.spec.ts",
+    "line": 173,
+    "test": "radar diagrams > should limit the number of ticks to MAX_TICKS"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 12,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

@@ -19,6 +19,7 @@ import { getFixturesRoot, loadFixtures } from "../src/index.ts"
 const DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "radar",
   "architecture",
   "gitgraph",
   "info",

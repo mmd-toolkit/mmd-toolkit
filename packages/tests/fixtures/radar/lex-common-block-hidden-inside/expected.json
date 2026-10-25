@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does a percent-brace inside a description close that block before leftover YAML text?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 6, column 1: Expecting token of type 'EOF' but found `}`."
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can HTML quote rewriting across frontmatter make a valid single-quoted label rejected?"
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 12: Expecting token of type ']' but found `y`."
+  }
+}

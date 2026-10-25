@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Repeated curve names remain in publication order."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [
+      {
+        "label": "First",
+        "entries": [
+          1
+        ]
+      },
+      {
+        "label": "d",
+        "entries": [
+          2
+        ]
+      },
+      {
+        "label": "Third",
+        "entries": [
+          3
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

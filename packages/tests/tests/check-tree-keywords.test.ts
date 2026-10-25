@@ -19,6 +19,7 @@ import { readTokenKindRow } from "./spec-field-tables.ts"
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [DiagramType, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["radar", "RadarDiagram"],
   ["architecture", "ArchitectureDiagram"],
   ["gitgraph", "GitgraphDiagram"],
   ["info", "InfoDiagram"],
@@ -68,6 +69,12 @@ function cutProblems(body: string, ...fragments: string[]): string[] {
 }
 
 describe("the check of the cut Keyword tokens", () => {
+  it("reports cuts inside radar header, statement and fixed-value words", () => {
+    expect(cutProblems("RadarDiagram", "radar-", "beta")).toHaveLength(1)
+    expect(cutProblems("RadarDiagram", "ax", "is")).toHaveLength(1)
+    expect(cutProblems("RadarDiagram", "tr", "ue")).toHaveLength(1)
+    expect(cutProblems("RadarDiagram", "poly", "gon")).toHaveLength(1)
+  })
   it("registers the Venn keywords and reports cuts", () => {
     expect(KEYWORD_TEXTS.VennDiagram).toEqual([
       "venn-beta",
@@ -195,6 +202,24 @@ const LINK_TARGETS: readonly string[] = ["_self", "_blank", "_parent", "_top"]
  */
 function textsOfUnitsInTheRow(diagram: string): string[] {
   switch (diagram) {
+    case "radar":
+      return [
+        "radar-beta",
+        "axis",
+        "curve",
+        "showlegend",
+        "ticks",
+        "max",
+        "min",
+        "graticule",
+        "true",
+        "false",
+        "circle",
+        "polygon",
+        "title",
+        "acctitle",
+        "accdescr",
+      ]
     // The header keywords, and the directions of the header context, which
     // include the characters `v`, `<`, `>`, and `^`.
     // The usecase row names the header, statement, direction and semantic families.

@@ -1929,3 +1929,89 @@ Markdown host は payload 最終行の padding を除きますが、
 [test: architecture Markdown: hidden-boundary]
 [test: architecture Markdown: final-hidden-padding]
 [test: architecture Markdown: rejected]
+
+## radar の原文の群と hidden 境界
+
+[radar の規則](./radar.ja.md)は axis・curve・options の群、entry 形式、
+名前つき entry のコロンの有無、反復と原文順をすべて保ちます。
+公開値が使わない余分な名前や重複 entry も残します。
+数だけの curve と名前つき curve は区別します。
+見出しのコロンの有無は保ち、前の普通の空白は gitgraph と同じく詰めます。
+NumericLiteral の source span で、小数の先行・末尾ゼロ、丸められる精度、
+subnormal、underflow、overflow を保ちます。
+double 値から再出力しません。
+option の値は作者のままです。
+ticks の制限、min・max の並べ替え、描画設定からの置換はしません。
+ラベルの StringLiteral は引用符、空・空白だけの文字列、escape、HTML、
+entity、内部の空白を保ち、singleQuote でも書き換えません。
+空ラベルの削除は ID への fallback を変えます。
+内部の空白の書き換えでも Db が変わりえます。
+[fixture: radar/source-order/declaration-order-kept]
+[fixture: radar/source-order/mixed-curve-forms]
+[fixture: radar/header/join-separated-inline-alternative]
+[fixture: radar/numbers/raw-number-forms]
+[corpus fixture: radar/db-number-subnormal]
+[corpus fixture: radar/db-number-underflow]
+[corpus fixture: radar/db-number-overflow]
+[fixture: radar/options/option-repetitions]
+[fixture: radar/options/min-max-order-kept]
+[fixture: radar/quotes/quotes-and-empty]
+[fixture: radar/quotes/padding-label]
+[fixture: radar/quotes/escape-label]
+[fixture: radar/quotes/label-html-entity]
+[fixture: radar/quotes/whitespace-only-labels]
+
+共通行の trim は普通の値の外端だけに適用します。
+trivia と semicolon の保護を優先します。
+説明は共有のブロック配置を使います。
+空白だけの内部は詰め、書かれた継続列は保ちます。
+native hidden form は AST の owner で 1 回だけ印字します。
+範囲外の消費 LF と closer 後の空白も残します。
+群の最後の member が持つ suffix も、ほかの文と同じ境界規則に渡します。
+見出し端の例外は見出し自身の hidden form だけに適用します。
+保持された prefix は全体で残し、無視された YAML の frontmatter 昇格を防ぎます。
+安全な real frontmatter だけ保護つき YAML 整形を使います。
+すべての semicolon は共有の文字区間の保護下に残します。
+保護区間内に字下げを足さず、継続列を保ちます。
+複数行の文の終端行の semicolon も同じです。
+style に似たラベルと結合すると、別の文の値が変わりうるためです。
+[fixture: radar/title/title-edge-trim]
+[fixture: radar/description-blocks/block-empty-fixed]
+[fixture: radar/multiline-values/physical-value-columns]
+[fixture: radar/hidden-forms/named-entry-hidden-owners]
+[fixture: radar/hidden-boundaries/header-axis-suffix]
+[fixture: radar/hidden-boundaries/hidden-title-space]
+[fixture: radar/trailing-whitespace/trailing-hidden-eof-kept]
+[fixture: radar/retained-prefix/retained-leading-lf]
+[fixture: radar/frontmatter-yaml/frontmatter-safe]
+[fixture: radar/semicolons/semicolon-selected-kept]
+[fixture: radar/multi-line-statements/semicolon-terminal-line]
+
+radar は既存の 6 差異の読みを使います。
+原子的な directive・除去対象 semicolon の切断は拒否します。
+frontmatter の HTML は本文から読み、埋め込みデータは不透明なままです。
+検出で通過した bare percent の trivia を保ちます。
+C4 keyword で、選択された radar 図を置き換えません。
+opaque 比較から除く radar 固有の受理設定 key はありません。
+raw の拒否には raw Db がなく、受理された効果を作りません。
+空ラベル、空説明、全体の hidden form はノードであり、新しい差異ではありません。
+standalone の失敗は構文エラーにし、修復した出力を返しません。
+Markdown は埋め込みを辞退します。
+物理 CR・CRLF と先頭 BOM は共有 host の制限に従います。
+LS・PS は lexer が値として読む場所では値の文字のままです。
+Markdown host は最終行の空白を削ります。
+途中の共通文 suffix で必要な空白は残します。
+[corpus fixture: radar/directive-header-middle]
+[corpus fixture: radar/div-semicolon-id]
+[corpus fixture: radar/div-html-frontmatter-cross]
+[corpus fixture: radar/frontmatter-invalid-keeps-config]
+[corpus fixture: radar/bare-before-header-nbsp]
+[corpus fixture: radar/c4-component-axis-label]
+[corpus fixture: radar/db-empty-labels]
+[corpus fixture: radar/common-block-empty-interleaved]
+[test: radar/line-terminators-and-unicode/crlf-values]
+[test: radar/line-terminators-and-unicode/unicode-values]
+[test: radar/line-terminators-and-unicode/leading-bom-header]
+[test: radar Markdown: hidden-boundary]
+[test: radar Markdown: final-hidden-padding]
+[test: radar Markdown: rejected]

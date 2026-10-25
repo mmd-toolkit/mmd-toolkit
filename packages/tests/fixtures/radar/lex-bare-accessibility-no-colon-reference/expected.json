@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can references to accTitle and accDescr be written without colons?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "accTitle"
+      },
+      {
+        "label": "accDescr"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c",
+        "entries": [
+          1,
+          2
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

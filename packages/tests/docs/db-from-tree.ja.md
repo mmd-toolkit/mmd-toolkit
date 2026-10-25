@@ -533,12 +533,16 @@ HTML ラベルが有効で、`securityLevel` が
 
 ## 確かめ
 
+Radar の組み立ては [radar.ja.md](./db-from-tree/radar.ja.md) に定めます。
+原文の宣言群、entry、共通の代入と option から組み立てます。
+[fixture: radar/gram-written-tree] [fixture: radar/db-all-fields]
+
 Architecture の組み立ては
 [architecture.ja.md](./db-from-tree/architecture.ja.md) に定めます。
 [fixture: architecture/db-mixed]
 
 記録した木の比較には C4、block、kanban、Venn、Agentflow、Usecase、pie、
-gitgraph、info、packet と
+gitgraph、info、packet、radar と
 common の検出例を含み、
 C4 の五つの kind もすべて含みます。
 

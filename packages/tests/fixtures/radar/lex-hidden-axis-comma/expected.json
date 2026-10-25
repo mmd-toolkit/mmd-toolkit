@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Can native hidden forms stand before and after an axis-list comma?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      },
+      {
+        "label": "B"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

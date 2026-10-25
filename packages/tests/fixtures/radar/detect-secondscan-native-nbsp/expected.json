@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does NBSP after a second-scan directive closer remain an unreadable native gap?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 8: unexpected character: -> <- at offset: 11, skipped 1 characters. "
+  }
+}

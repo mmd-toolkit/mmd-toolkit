@@ -16,6 +16,7 @@ import { normalizeMindmap } from "./mindmap.ts"
 import { normalizePacket } from "./packet.ts"
 import { normalizePie } from "./pie.ts"
 import { normalizeQuadrant, patchQuadrantDb } from "./quadrant.ts"
+import { normalizeRadar } from "./radar.ts"
 import { normalizeRequirement } from "./requirement.ts"
 import { normalizeSankey } from "./sankey.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
@@ -71,6 +72,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["info", normalizeInfo],
   ["packet", normalizePacket],
   ["architecture", normalizeArchitecture],
+  ["radar", normalizeRadar],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

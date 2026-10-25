@@ -294,6 +294,7 @@ export function checkStringsAreWhole(
           "GitgraphDiagram",
           "PacketDiagram",
           "ArchitectureDiagram",
+          "RadarDiagram",
         ].includes(root.body.type) &&
           first === "'"),
       label(token),

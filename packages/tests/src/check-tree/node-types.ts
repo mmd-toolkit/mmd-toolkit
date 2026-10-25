@@ -5,6 +5,8 @@
  * made of other nodes and of keywords and punctuation.
  */
 export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "RadarLiteral",
+  "RadarIgnoredText",
   "ArchitectureLabel",
   "ArchitectureLiteral",
   "ArchitectureIgnoredText",
@@ -78,6 +80,23 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
  * one of the two, so that a new node type is classified when it is added.
  */
 export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "RadarDiagram",
+  "RadarAxisStatement",
+  "RadarCurveStatement",
+  "RadarOptionsStatement",
+  "RadarAxis",
+  "RadarCurve",
+  "RadarNumberEntry",
+  "RadarNamedEntry",
+  "RadarShowLegendOption",
+  "RadarTicksOption",
+  "RadarMaxOption",
+  "RadarMinOption",
+  "RadarGraticuleOption",
+  "RadarTitleStatement",
+  "RadarAccTitleStatement",
+  "RadarAccDescrStatement",
+  "RadarAccDescrBlockStatement",
   "ArchitectureDiagram",
   "ArchitectureGroupStatement",
   "ArchitectureServiceStatement",

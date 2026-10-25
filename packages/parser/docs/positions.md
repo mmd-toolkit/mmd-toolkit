@@ -197,3 +197,5 @@ Packet ranges are defined in [packet](./positions/packet.md#ranges).
 
 Architecture ranges are defined in
 [architecture](./positions/architecture.md#ranges).
+
+Radar ranges are defined in [radar](./positions/radar.md#ranges).

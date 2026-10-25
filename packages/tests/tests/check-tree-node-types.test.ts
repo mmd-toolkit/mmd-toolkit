@@ -17,6 +17,7 @@ const SPEC_DOCS = path.join(
 )
 
 const DIAGRAMS = [
+  "radar",
   "architecture",
   "gitgraph",
   "info",

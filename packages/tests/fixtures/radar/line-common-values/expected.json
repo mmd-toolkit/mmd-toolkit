@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "LS and PS remain inside common line values."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "A B C",
+    "accTitle": "A B C",
+    "accDescr": "A B C",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

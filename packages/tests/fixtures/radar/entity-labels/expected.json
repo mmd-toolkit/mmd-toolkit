@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Both label fields pass through shared entity encoding."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "&amp; ﬂ°°35¶ß"
+      },
+      {
+        "label": "&ﬂ°°35¶ß &lt;"
+      }
+    ],
+    "curves": [
+      {
+        "label": "&amp; ﬂ°°35¶ß",
+        "entries": [
+          1,
+          2
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

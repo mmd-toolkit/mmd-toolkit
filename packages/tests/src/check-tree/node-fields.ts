@@ -18,6 +18,106 @@ import type { FieldSpec } from "./field-spec.ts"
 export const NODE_FIELDS: Readonly<
   Record<string, Readonly<Record<string, FieldSpec>>>
 > = {
+  RadarDiagram: {
+    textBeforeHeader: { shape: "nodeList" },
+    textBeforeColon: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  RadarAxisStatement: {
+    axes: { shape: "nodeList" },
+  },
+  RadarCurveStatement: {
+    curves: { shape: "nodeList" },
+  },
+  RadarOptionsStatement: {
+    options: { shape: "nodeList" },
+  },
+  RadarAxis: {
+    textBefore: { shape: "nodeList" },
+    name: { shape: "node" },
+    textBeforeLabel: { shape: "nodeList" },
+    textBeforeLabelValue: { shape: "nodeList" },
+    label: { shape: "nodeOrNull" },
+    textBeforeLabelClose: { shape: "nodeList" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarCurve: {
+    textBefore: { shape: "nodeList" },
+    name: { shape: "node" },
+    textBeforeLabel: { shape: "nodeList" },
+    textBeforeLabelValue: { shape: "nodeList" },
+    label: { shape: "nodeOrNull" },
+    textBeforeLabelClose: { shape: "nodeList" },
+    textBeforeEntries: { shape: "nodeList" },
+    entries: { shape: "nodeList" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarNumberEntry: {
+    textBefore: { shape: "nodeList" },
+    value: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarNamedEntry: {
+    textBefore: { shape: "nodeList" },
+    axis: { shape: "node" },
+    textBeforeColon: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarShowLegendOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "value", valueType: "string" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarTicksOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarMaxOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarMinOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarGraticuleOption: {
+    textBefore: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "value", valueType: "string" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  RadarLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  RadarIgnoredText: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
   ArchitectureDiagram: {
     textBeforeHeader: { shape: "nodeList" },
     body: { shape: "nodeList" },

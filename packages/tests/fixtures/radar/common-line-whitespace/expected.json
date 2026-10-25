@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Line common values trim outer whitespace and collapse repeated spaces and tabs."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "A B",
+    "accTitle": "A B",
+    "accDescr": "A B",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

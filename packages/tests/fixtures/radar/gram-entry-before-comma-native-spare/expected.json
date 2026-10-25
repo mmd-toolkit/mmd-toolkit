@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md: Does a spare visible newline after a hidden suffix reject an entry comma?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 1: Expecting token of type '}' but found `,`.\nParse error on line 4, column 2: Expecting token of type 'ID' but found `2`."
+  }
+}

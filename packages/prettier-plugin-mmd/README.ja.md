@@ -163,6 +163,8 @@ flowchart LR
   整形の規則は [docs/gitgraph.ja.md](./docs/gitgraph.ja.md) にあります。
 - architecture 図: `architecture-beta` で始まる図です。
   整形の規則は [docs/architecture.ja.md](./docs/architecture.ja.md) にあります。
+- radar 図: `radar-beta` で始まる図です。
+  整形の規則は [docs/radar.ja.md](./docs/radar.ja.md) にあります。
 - packet 図: `packet` と `packet-beta` で始まる図です。
   整形の規則は [docs/packet.ja.md](./docs/packet.ja.md) にあります。
 - ブロック図。
@@ -199,7 +201,7 @@ flowchart LR
 - flowchart、agentflow、sequence、class、state、ER、Gantt、journey、
   requirement、mindmap、timeline、sankey、XY チャート、象限チャート、
   kanban、C4、Venn、Ishikawa、usecase、pie、gitgraph、info、packet、
-  architecture、ブロック図以外の図種は変えません。
+  architecture、radar、ブロック図以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
 
@@ -258,6 +260,7 @@ flowchart LR
 - [docs/pie.ja.md](./docs/pie.ja.md): pie 図の整形の規則。
 - [docs/architecture.ja.md](./docs/architecture.ja.md):
   architecture 図の整形の規則。
+- [docs/radar.ja.md](./docs/radar.ja.md): radar 図の整形の規則。
 - [docs/packet.ja.md](./docs/packet.ja.md): packet 図の整形の規則。
 - [docs/block.ja.md](./docs/block.ja.md): ブロック図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):

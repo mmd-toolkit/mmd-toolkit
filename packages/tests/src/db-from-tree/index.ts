@@ -1,3 +1,5 @@
+import { radarDbOf } from "./radar.ts"
+import type { RadarDiagram } from "./radar-tree.ts"
 import { architectureDbOf } from "./architecture.ts"
 import type { ArchitectureDiagram } from "./architecture-tree.ts"
 import { gitgraphDbOf } from "./gitgraph.ts"
@@ -62,6 +64,7 @@ export interface ErrorDiagram extends TreeNode {
 
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
+  | RadarDiagram
   | ArchitectureDiagram
   | GitgraphDiagram
   | InfoDiagram
@@ -114,6 +117,8 @@ export function dbFromTree(
     // The error pseudo-diagram has no Db.
     case "ErrorDiagram":
       return {}
+    case "RadarDiagram":
+      return radarDbOf(text, root, root.body, embedded)
     case "ArchitectureDiagram":
       return architectureDbOf(text, root, root.body, embedded)
     case "GitgraphDiagram":

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All text fields pass through shared preprocessing without a diagram-specific browser dependency."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "<b>T</b>",
+    "accTitle": "<i>A</i>",
+    "accDescr": "<u>D</u>",
+    "axes": [
+      {
+        "label": "<b>Axis</b>"
+      }
+    ],
+    "curves": [
+      {
+        "label": "<i>Curve</i>",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

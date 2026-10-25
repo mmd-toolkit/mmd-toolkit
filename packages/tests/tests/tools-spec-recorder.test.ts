@@ -120,6 +120,61 @@ function textsOf(recording: SpecFileRecording): string[] {
 const FLOW_PARSER_IMPORT = `import flowParser from "./flowParser.ts"\n`
 
 describe("recordSpecFile: what is recorded", () => {
+  it("records radar adapter and both parser-package parse signatures", async () => {
+    const root = makeRoot()
+    const checkout = {
+      mermaidSource: path.join(root, "packages/mermaid/src"),
+      workDir: path.join(root, "work"),
+    }
+    mkdirSync(checkout.mermaidSource, { recursive: true })
+    mkdirSync(checkout.workDir)
+    const adapter = writeTestFile(
+      checkout,
+      "diagrams/radar/radar.spec.ts",
+      [
+        'import { it, expect } from "vitest";',
+        'import { parser } from "./parser.js";',
+        'import { db } from "./db.js";',
+        'import { relativeRadius, closedRoundCurve } from "./renderer.js";',
+        'it("adapter", async () => {',
+        'await expect(parser.parse("radar-beta")).resolves.not.toThrow();',
+        'await parser.parse("radar-beta:");',
+        "expect(db.getAxes()).toEqual([]);",
+        "expect(relativeRadius(1, 0, 2, 3)).toBe(1.5);",
+        'expect(closedRoundCurve([], 0)).toBe("");',
+        "});",
+      ].join("\n"),
+    )
+    const adapted = await recordFile(checkout, adapter)
+    expect(adapted.failures).toEqual([])
+    expect(adapted.inputs).toEqual([
+      { text: "radar-beta", line: 6, test: "adapter" },
+      { text: "radar-beta:", line: 7, test: "adapter" },
+    ])
+    const grammar = writeTestFile(
+      checkout,
+      "../../parser/tests/radar.test.ts",
+      [
+        'import { it, expect } from "vitest";',
+        'import { Radar } from "../src/language/index.js";',
+        'import { radarParse as parse } from "./test-util.js";',
+        'import { parse as parseAsync, MermaidParseError } from "../src/parse.js";',
+        'it("grammar", async () => {',
+        'const result = parse("radar-beta axis A");',
+        "expect(result.value.$type).toBe(Radar.$type);",
+        'await parseAsync("radar", "radar-beta curve c{1}");',
+        "void MermaidParseError;",
+        "});",
+      ].join("\n"),
+    )
+    const parsed = await recordFile(checkout, grammar)
+    expect(parsed.failures).toEqual([])
+    expect(parsed.inputs).toEqual([
+      { text: "radar-beta axis A", line: 6, test: "grammar" },
+      { text: "radar-beta curve c{1}", line: 8, test: "grammar" },
+    ])
+  })
+
   it("records architecture adapters and parser-package specs with suite options", async () => {
     const root = makeRoot()
     const checkout = {

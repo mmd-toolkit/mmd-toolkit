@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "radar.md Known divergences: An unclosed frontmatter tag changes the quotes of an accepted title; body-only quote reading keeps the authored value."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "x='y'>",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

@@ -77,6 +77,7 @@ export type DiagramType =
   | "info"
   | "packet"
   | "architecture"
+  | "radar"
 
 /**
  * Where a fixture input came from.

@@ -263,6 +263,13 @@ Dropped:
 | In a packet diagram, blocks past the 10,000 rows that mermaid.js draws, numbers past what a double holds, and a `bitsPerRow` that breaks the drawing                                                           | Limits of mermaid.js, not mistakes of the author; the setting would also need the YAML or the JSON read, which waits until after the release                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | In a packet diagram, the header `packet-beta`                                                                                                                                                                  | Read as `packet`, with no loss and no warning (run); a rule would be about style                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | In a packet diagram, a YAML block after a comment or in the body, an empty or a punctuation-only directive, and an `accDescr` block that no `}` closes                                                         | As in a pie chart above; mermaid.js rejects the last                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| In an architecture diagram, `title`, written once or more                                                                                                                                                      | mermaid.js does not draw it (read: a TODO in `architectureRenderer.ts`): correct writing left without effect is a limit of mermaid.js, and a later `title` replaces nothing that is drawn; architecture-no-duplicate-title compares `accTitle` only                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In an architecture diagram, one edge written twice between the same ends in the same direction, and edges whose ids collide (`a-b` to `c`, and `a` to `b-c`)                                                   | Not silent: drawing fails, since the drawing names an edge by its two ids (read in `addEdges()`; run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| In an architecture diagram, an edge and the edge back, an edge from a service to itself, and `align` statements that conflict                                                                                  | The edges are drawn (run); conflicting alignments either make the layout fail or keep their meaning, and no value is shown lost                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In an architecture diagram, an icon that no registered icon pack has (`servre`)                                                                                                                                | Icon packs are registered outside the text, so the tree cannot tell a missing icon                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| In an architecture diagram, one label on two services, an empty label, and an empty icon text                                                                                                                  | Nothing is lost: labels are no ids, and an element without a label is drawn (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In an architecture diagram, an id declared twice, an undefined parent or end, a group as an end of an edge, `{group}` between two services of one group, and a member twice in `align`                         | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In an architecture diagram, a YAML block after a comment or in the body, an empty or a punctuation-only directive, and an `accDescr` block that no `}` closes                                                  | As in a pie chart above; mermaid.js rejects the last                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### Questions for unclear cases
 
@@ -799,6 +806,11 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | packet-no-duplicate-title                 | yes              |                                                                              |
 | packet-no-duplicate-description           | yes              |                                                                              |
 | packet-no-empty-description-block         | yes              |                                                                              |
+| architecture-no-duplicate-title           | yes              |                                                                              |
+| architecture-no-duplicate-description     | yes              |                                                                              |
+| architecture-no-empty-description-block   | yes              |                                                                              |
+| architecture-no-reversed-marker           | yes              |                                                                              |
+| architecture-no-ungrouped-modifier        | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -1503,6 +1515,37 @@ accDescr", "packet accTitle", "packet duplicate label", "packet contiguous",
 "packet", and "packet" in titles, and found nothing about titles or
 descriptions.
 
+The architecture rules have these notes; the searches were "architecture title",
+"architecture arrow", "architecture group edge", "architecture group",
+"architecture-beta group", "architecture diagram title", "architecture
+accTitle", and "architecture accDescr", and found nothing that changes the
+readings: [#7211](https://github.com/mermaid-js/mermaid/issues/7211) (open)
+concerns edges from a group around another group, and
+[#7313](https://github.com/mermaid-js/mermaid/issues/7313) (closed) the length
+of arrows.
+
+- architecture-no-duplicate-title, architecture-no-duplicate-description,
+  architecture-no-empty-description-block: the notes of the pie rules above,
+  since architecture reads its titles and descriptions in the same way (read in
+  `architectureParser.ts`; run); `title` is not drawn (read in
+  `architectureRenderer.ts`), so the title rule compares `accTitle` only, as the
+  title rules of the diagram types without a drawn title do (decided on
+  2026-10-25).
+- architecture-no-reversed-marker: (1) the grammar reads `<` and `>` alike as an
+  arrowhead at the end where they stand (read in `architecture.langium`), so
+  `>--<` is drawn as `<-->`, and the arrowhead points the other way than written
+  (run); (2) none: the documentation writes `<` on the left and `>` on the
+  right, and `<` or `>` in a label is text; (4) write `<` on the left and `>` on
+  the right.
+- architecture-no-ungrouped-modifier: (1) on an end in no group, `{group}` moves
+  the end of the edge by the padding of a group and 4, so the edge stops short
+  of the service, and no group is drawn (read in `svgDraw.ts`; run); the Db
+  rejects `{group}` between two services of one group but not on an end in no
+  group (read in `architectureDb.ts`); (2) none: the documentation allows
+  `{group}` only for a service in a group, and an end declared in a group,
+  before or after the edge, is not reported (decided on 2026-10-25); (4) remove
+  `{group}`, or declare the service in its group.
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -1592,6 +1635,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | pie-* (all 4 rules)                     | None for now (2026-10-23; see the end of this section)         |
 | gitgraph-* (all 5 rules)                | None for now (2026-10-23; see the end of this section)         |
 | packet-* (all 3 rules)                  | None for now (2026-10-25; see the end of this section)         |
+| architecture-* (all 5 rules)            | None for now (2026-10-25; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1691,8 +1735,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 `sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
 `block-*`, `kanban-*`, `c4-*`, and `venn-*` (2026-10-21), and `agentflow-*` and
 flowchart-no-duplicate-direction (2026-10-22), and `usecase-*`, `pie-*`, and
-`gitgraph-*` (2026-10-23), and `packet-*` (2026-10-25): the rules are
-implemented without suggestions for now. No suggestion had been decided for them
-or described in their documents, and the one planned for the empty block of a
-sequence diagram rested on generated inputs. Whether they get suggestions is
-decided later, in the form of the flowchart rules, with a fixture for each case.
+`gitgraph-*` (2026-10-23), and `packet-*` and `architecture-*` (2026-10-25): the
+rules are implemented without suggestions for now. No suggestion had been
+decided for them or described in their documents, and the one planned for the
+empty block of a sequence diagram rested on generated inputs. Whether they get
+suggestions is decided later, in the form of the flowchart rules, with a fixture
+for each case.

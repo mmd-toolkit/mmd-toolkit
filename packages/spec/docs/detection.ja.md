@@ -187,7 +187,8 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び
 、
 隠れた YAML の規則がタイトルを適用せずにブロックを読み飛ばします。
-gitgraph・info・packet も一致する隠れたブロックを保ちます。
+gitgraph・info・packet・architecture・radar も、
+一致する隠れたブロックを保ちます。
 以下で引用するほかの図種の入力は、字句規則か文法で拒否します。
 隣り合う区切りの空ブロック、閉じない区切り、ブロックの前の裸の `%%` の行では、
 代わりに拒否する `---` 疑似図種が選ばれます。
@@ -361,3 +362,13 @@ architecture の検出は C4 より前で、接頭辞 `architecture` を選び�
 [fixture: architecture/header-bare-rejected]
 [fixture: architecture/header-letter-suffix]
 [fixture: architecture/c4-component-service]
+
+radar の検出器は小文字の接頭辞 `radar-beta` を選びます。
+[radar の構文](./diagrams/radar.ja.md#検出) は、受理する見出しの 3 形
+`radar-beta`・`radar-beta:`・`radar-beta :` と、それぞれの境界を定めます。
+検出する接頭辞に境界がなくても、文法の見出しには境界を要求します。
+[fixture: radar/header-colon-inline]
+[fixture: radar/header-separated-colon]
+[fixture: radar/header-letter-suffix]
+[fixture: radar/header-uppercase]
+[fixture: radar/retained-yaml-control]

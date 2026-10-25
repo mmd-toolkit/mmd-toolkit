@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The common TITLE terminal takes priority over title-prefixed IDs."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting token of type 'ID' but found ` title`.\nParse error on line 2, column 11: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'X'"
+  }
+}

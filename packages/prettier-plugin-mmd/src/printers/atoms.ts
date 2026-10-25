@@ -21,6 +21,8 @@ const { indent } = builders
 export interface Atom {
   readonly start: number
   readonly end: number
+  /** Indentation before a later-line atom; empty when its range owns it. */
+  readonly writtenIndentation?: string
 }
 
 /**
@@ -92,9 +94,10 @@ export interface PrintedAtoms {
  * the spacing of the source around them. Where the source breaks the line
  * inside the statement, the line stays broken, and every later line of the
  * statement starts one level deeper, except the lines of the layout's
- * outdented atoms; runs of empty lines become one. When the layout joins
- * line breaks, or joins the one before an atom (`joinedBefore`), such a line
- * break is printed as whitespace on one line is.
+ * outdented atoms; runs of empty lines become one. An atom's written
+ * indentation overrides that level. When the layout joins line breaks, or joins
+ * the one before an atom (`joinedBefore`), such a line break is printed as
+ * whitespace on one line is.
  */
 export function printAtoms(
   source: Source,
@@ -106,15 +109,24 @@ export function printAtoms(
   let currentBlank = false
   let currentEndsWithWhitespace = false
   let currentOutdented = false
-  let currentWrittenBreak: Doc | undefined, previous: Atom | undefined
+  let currentWrittenIndentation: string | undefined,
+    currentWrittenBreak: Doc | undefined,
+    previous: Atom | undefined
 
   /** Ends the current line and starts a new one. */
-  function breakCurrentLine(blankBefore: boolean, outdented: boolean): void {
+  function breakCurrentLine(
+    blankBefore: boolean,
+    outdented: boolean,
+    writtenIndentation?: string,
+  ): void {
     lines.push({
       doc: current,
       blankBefore: currentBlank,
       endsWithWhitespace: currentEndsWithWhitespace,
       outdented: currentOutdented,
+      ...(currentWrittenIndentation === undefined
+        ? {}
+        : { writtenIndentation: currentWrittenIndentation }),
       ...(currentWrittenBreak === undefined
         ? {}
         : { writtenBreakBefore: currentWrittenBreak }),
@@ -123,6 +135,7 @@ export function printAtoms(
     currentBlank = blankBefore
     currentEndsWithWhitespace = false
     currentOutdented = outdented
+    currentWrittenIndentation = writtenIndentation
     currentWrittenBreak = undefined
   }
 
@@ -169,7 +182,11 @@ export function printAtoms(
           currentEndsWithWhitespace = line.run.endsWithWhitespace
           gapOffset = line.run.range[1]
         }
-        breakCurrentLine(gap.blankAfter, layout.outdented.has(atom.start))
+        breakCurrentLine(
+          gap.blankAfter,
+          layout.outdented.has(atom.start),
+          atom.writtenIndentation,
+        )
         currentWrittenBreak = keepsBreaks
           ? literalBreaksBetween(
               source,

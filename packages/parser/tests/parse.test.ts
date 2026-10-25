@@ -498,7 +498,7 @@ describe("parse: the flowchart diagram types", () => {
 })
 
 describe("parse: detected but unsupported diagram types", () => {
-  it.each([["radar-beta", "radar"]])("%j is %s", (text, diagramType) => {
+  it.each([["treeView-beta", "treeView"]])("%j is %s", (text, diagramType) => {
     let caught: unknown
     try {
       parse(text)

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The summary retains all drawing inputs in published order."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D\nE",
+    "axes": [
+      {
+        "label": "Bee"
+      },
+      {
+        "label": "Ay"
+      }
+    ],
+    "curves": [
+      {
+        "label": "See",
+        "entries": [
+          1,
+          2
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": false,
+      "ticks": 2.5,
+      "max": 8,
+      "min": 1,
+      "graticule": "polygon"
+    }
+  }
+}

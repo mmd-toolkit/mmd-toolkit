@@ -1738,3 +1738,75 @@ architecture/div-retained-bare-second-scan-ls] [fixture:
 architecture/label-content/hidden-looking] [test: architecture Markdown:
 hidden-boundary] [test: architecture Markdown: final-hidden-padding] [test:
 architecture Markdown: rejected]
+
+## Radar authored groups and hidden boundaries
+
+The [radar rules](./radar.md) retain every axis/curve/options group, entry form,
+optional named-entry colon, repetition and source order. Extra or duplicate
+named entries stay even when publication does not use them; positional and named
+curves remain distinct. The header's optional colon is retained, with ordinary
+preceding whitespace compacted as in gitgraph. NumericLiteral source spans
+preserve leading/trailing decimal zeros, rounded precision, subnormals,
+underflow and overflow rather than printing converted double values. Option
+values remain authored: no tick cap, min/max reorder or replacement from drawing
+configuration. Label StringLiteral spans keep quotes, empty/whitespace-only
+text, escapes, HTML, entities and internal whitespace; singleQuote does not
+rewrite them. Deleting an empty label changes the ID fallback, and rewriting
+internal whitespace can change the Db. [fixture:
+radar/source-order/declaration-order-kept] [fixture:
+radar/source-order/mixed-curve-forms] [fixture:
+radar/header/join-separated-inline-alternative] [fixture:
+radar/numbers/raw-number-forms] [corpus fixture: radar/db-number-subnormal]
+[corpus fixture: radar/db-number-underflow] [corpus fixture:
+radar/db-number-overflow] [fixture: radar/options/option-repetitions] [fixture:
+radar/options/min-max-order-kept] [fixture: radar/quotes/quotes-and-empty]
+[fixture: radar/quotes/padding-label] [fixture: radar/quotes/escape-label]
+[fixture: radar/quotes/label-html-entity] [fixture:
+radar/quotes/whitespace-only-labels]
+
+Shared common-line trimming changes only ordinary value edges; trivia and
+semicolon protection take precedence. Descriptions use the shared block layout,
+including compact whitespace-only interiors and written continuation columns.
+Each native hidden form is printed once at its AST owner, with consumed LF and
+closing padding retained outside its range. The last member of a group owns its
+suffix; it uses the same boundary rule as other statements. Only the header's
+own hidden forms use the header-edge exception. Keep the complete retained
+prefix so ignored YAML does not become effective frontmatter; safe real
+frontmatter alone uses guarded YAML formatting. All authored semicolons stay
+under shared segment protection, preserving continuation columns without added
+indentation inside each protected segment, including a semicolon on the last
+line of a multiline statement: joining a style-like label to it can change
+another statement's value. [fixture: radar/title/title-edge-trim] [fixture:
+radar/description-blocks/block-empty-fixed] [fixture:
+radar/multiline-values/physical-value-columns] [fixture:
+radar/hidden-forms/named-entry-hidden-owners] [fixture:
+radar/hidden-boundaries/header-axis-suffix] [fixture:
+radar/hidden-boundaries/hidden-title-space] [fixture:
+radar/trailing-whitespace/trailing-hidden-eof-kept] [fixture:
+radar/retained-prefix/retained-leading-lf] [fixture:
+radar/frontmatter-yaml/frontmatter-safe] [fixture:
+radar/semicolons/semicolon-selected-kept] [fixture:
+radar/multi-line-statements/semicolon-terminal-line]
+
+Radar follows six existing specified readings: atomic directive and selected
+semicolon cuts reject, frontmatter HTML is read from the body, embedded data
+remains opaque, detection-passed bare-percent trivia stays trivia, and C4
+keywords do not replace a selected radar diagram. Opaque comparison removes no
+radar-specific acceptance key. Raw rejection supplies no raw Db or invented
+accepted effects. Empty labels/descriptions and whole hidden forms are nodes,
+not new divergences. Standalone failures report syntax errors without repaired
+output; Markdown declines embedding. Physical CR/CRLF and leading BOM follow the
+shared host limits; LS/PS remain value characters where the lexer reads them.
+Markdown's host trims final payload padding while interior common-suffix padding
+remains necessary. [corpus fixture: radar/directive-header-middle] [corpus
+fixture: radar/div-semicolon-id] [corpus fixture:
+radar/div-html-frontmatter-cross] [corpus fixture:
+radar/frontmatter-invalid-keeps-config] [corpus fixture:
+radar/bare-before-header-nbsp] [corpus fixture: radar/c4-component-axis-label]
+[corpus fixture: radar/db-empty-labels] [corpus fixture:
+radar/common-block-empty-interleaved] [test:
+radar/line-terminators-and-unicode/crlf-values] [test:
+radar/line-terminators-and-unicode/unicode-values] [test:
+radar/line-terminators-and-unicode/leading-bom-header] [test: radar Markdown:
+hidden-boundary] [test: radar Markdown: final-hidden-padding] [test: radar
+Markdown: rejected]

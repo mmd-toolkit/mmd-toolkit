@@ -39,6 +39,10 @@ The architecture definition is in its [syntax](./diagrams/architecture.md) and
 [tree](./ast/architecture.md) documents. [fixture: architecture/header-beta]
 [fixture: architecture/db-mixed]
 
+The radar definition is in its [syntax](./diagrams/radar.md) and
+[tree](./ast/radar.md) documents. [fixture: radar/header-colon-inline] [fixture:
+radar/gram-written-tree]
+
 ## Sources
 
 The specification is derived from three sources in the mermaid.js repository:

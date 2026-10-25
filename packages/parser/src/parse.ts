@@ -1,3 +1,4 @@
+import { parseRadarDiagram } from "./diagrams/radar/index.ts"
 import { parseArchitectureDiagram } from "./diagrams/architecture/index.ts"
 import { parsePacketDiagram } from "./diagrams/packet/index.ts"
 import { parseInfoDiagram } from "./diagrams/info/index.ts"
@@ -94,7 +95,8 @@ export function diagramInputOf(
       diagramType === "gitGraph" ||
       diagramType === "info" ||
       diagramType === "packet" ||
-      diagramType === "architecture"
+      diagramType === "architecture" ||
+      diagramType === "radar"
         ? detection.passed.find(
             (part) => part.kind === "directive-found-once-more",
           )?.opening[0]
@@ -129,6 +131,7 @@ export function parse(text: string): Root {
       detected !== "info" &&
       detected !== "packet" &&
       detected !== "architecture" &&
+      detected !== "radar" &&
       detection.retainedFrontmatterStart !== null)
   ) {
     const start = detection.retainedFrontmatterStart ?? positionReached
@@ -165,6 +168,8 @@ export function parse(text: string): Root {
       return parseMindmapDiagram(input)
     case "gitGraph":
       return parseGitgraphDiagram(input)
+    case "radar":
+      return parseRadarDiagram(input)
     case "architecture":
       return parseArchitectureDiagram(input)
     case "packet":

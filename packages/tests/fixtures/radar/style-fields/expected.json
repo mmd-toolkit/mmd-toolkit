@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Shared preprocessing reaches every text field on a style-like line."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "style A: ﬂ°x¶ß",
+    "accTitle": "classDef A: ﬂ°x¶ß",
+    "accDescr": "style A: ﬂ°x¶ß",
+    "axes": [
+      {
+        "label": "style A: ﬂ°x¶ß"
+      }
+    ],
+    "curves": [
+      {
+        "label": "classDef A: ﬂ°x¶ß",
+        "entries": [
+          1
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

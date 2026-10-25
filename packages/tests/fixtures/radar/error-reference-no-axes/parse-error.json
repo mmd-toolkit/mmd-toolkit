@@ -1,0 +1,17 @@
+{
+  "message": "Radar named curve requires axes",
+  "range": [
+    17,
+    23
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 6
+    },
+    "end": {
+      "line": 2,
+      "column": 12
+    }
+  }
+}

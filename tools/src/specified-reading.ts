@@ -324,7 +324,9 @@ function withTitle(
  * before the header follow detection: one retained frontmatter-shaped block
  * may precede them, and directives found only after source directives and
  * comment regions are left out are passed before testing for a bare line.
- * Both retained forms stay as written. Nothing after the header changes.
+ * Both retained forms stay as written. A later `---` keeps the input unchanged
+ * so that removing bare lines cannot move a block to the detection point.
+ * Nothing after the header changes.
  * A directive that starts on a
  * line stays, with the lines it spans and without the whitespace around it
  * on its line.
@@ -368,12 +370,34 @@ export function withoutBarePercentLinesBeforeHeader(text: string): string {
   }
   let kept = ""
   let at = start
+  let visibleAt = 0
   while (at < text.length) {
     const end = lineEnd(text, at)
     const line = text.slice(at, end.content)
     const trimmed = line.trimStart()
     const marker = at + (line.length - trimmed.length)
     const retainedEnd = retainedEnds.get(marker)
+    while (
+      visibleAt < offsets.length &&
+      ((offsets[visibleAt] ?? text.length) < (retainedEnd ?? marker) ||
+        visible.charAt(visibleAt).trim() === "")
+    ) {
+      visibleAt++
+    }
+    // common.md#diagram-detection: "If one block at that point satisfies the
+    // Frontmatter shape, detection passes it once before looking for bare
+    // `%%` lines." A later `---` selects the rejecting pseudo-diagram;
+    // removing the preceding bare lines could instead make it a skipped
+    // block at the detection point, or even real leading frontmatter.
+    // Read through source removals here too, including a directive on the
+    // opening fence's line; only the block already found above may be passed.
+    const nextVisible = offsets[visibleAt]
+    if (
+      visible.startsWith("---", visibleAt) &&
+      nextVisible !== undefined &&
+      !retainedEnds.has(nextVisible)
+    )
+      return text
     if (retainedEnd !== undefined) {
       const through = lineEnd(text, retainedEnd)
       const rest = text.slice(retainedEnd, through.content)

@@ -4,7 +4,8 @@
 [bare-percent-line-before-header.md](./bare-percent-line-before-header.md)
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
-sankey、block、c4、agentflow、usecase、pie、gitgraph・info・packet・architecture。
+sankey、block、c4、agentflow、usecase、pie、
+gitgraph・info・packet・architecture・radar。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです
 。
 
@@ -442,6 +443,36 @@ mermaid の native lexer は ASCII padding を受理するが、
 [fixture: architecture/retained-directive-no-bare]
 [fixture: architecture/detect-second-scan-glued]
 
+### Radar
+
+radar は検出で通した裸の percent 行を共有 Comment とし、
+付随する空白・改行を trivia とします。
+残存 YAML と第 2 scan の directive の間でも同じです。
+木は各 comment と各 native な残存形を別々に保てます。
+通した Unicode 空白のための汎用 node や拒否は不要です。
+残る差異は、通した区間を図の字句解析器が再読しないという直接の規則です。
+[fixture: radar/bare-before-header-space]
+[fixture: radar/bare-before-header-tab]
+[fixture: radar/bare-before-header-nbsp]
+[fixture: radar/bare-before-header-ls]
+[fixture: radar/bare-before-header-ps]
+[fixture: radar/bare-line-ls]
+[fixture: radar/bare-line-ps]
+[fixture: radar/detect-retained-no-bare-control]
+[fixture: radar/div-detect-yaml-bare-secondscan-native-ls]
+[fixture: radar/detect-yaml-bare-secondscan-native-ascii]
+
+通した行がなければ、空白も図のテキストとして radar の native 規則を満たす必要が
+あります。
+残存形にも固有の閉じの境界を要求し、裸の行を通しても、
+接着した閉じや不適格な閉じを許しません。
+これらの対照例は無印の拒否とし、通した Unicode trivia
+の差異にこの識別子を使います。
+[fixture: radar/detect-yaml-bare-secondscan-native-ascii]
+[fixture: radar/detect-secondscan-native-nbsp]
+[fixture: radar/detect-retained-no-bare-control]
+[fixture: radar/detect-secondscan-native-glued]
+
 ## mermaid.js の文書と issue
 
 - [構文のリファレンス](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
@@ -546,3 +577,14 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7211](https://github.com/mermaid-js/mermaid/issues/7211) は
   Open、Status: Approved で、外側の親 group の辺を扱う報告である。
   今回の共通境界に対する maintainer の判断とはしない。
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166) は軸・曲線・option を説明します。
+  2026-10-25 に公式の issue/PR を radar directive、radar semicolon、
+  radar entries で調べましたが、
+  上記の境界を不具合とする判断は見つかりませんでした。
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) は閉じられた
+  Status: Approved の文書報告です。
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
+  文書例の comma の修正で、
+  末尾 comma の文法上の対応を追加したものではありません。

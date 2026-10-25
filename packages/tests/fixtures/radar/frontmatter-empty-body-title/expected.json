@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A final empty title leaves the frontmatter title in place."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

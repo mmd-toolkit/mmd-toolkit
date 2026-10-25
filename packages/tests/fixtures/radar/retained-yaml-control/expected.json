@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can a retained YAML block follow real frontmatter before the radar header without a bare percent line?"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "A"
+      }
+    ],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

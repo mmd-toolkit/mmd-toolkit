@@ -1,0 +1,17 @@
+{
+  "message": "Radar named curve is missing an axis entry",
+  "range": [
+    79,
+    85
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 6
+    },
+    "end": {
+      "line": 4,
+      "column": 12
+    }
+  }
+}

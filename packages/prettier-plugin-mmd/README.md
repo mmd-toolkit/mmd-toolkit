@@ -122,6 +122,8 @@ flowchart LR
   [docs/gitgraph.md](./docs/gitgraph.md).
 - Architecture diagrams: `architecture-beta`. The formatting rules are in
   [docs/architecture.md](./docs/architecture.md).
+- Radar diagrams: `radar-beta`. The formatting rules are in
+  [docs/radar.md](./docs/radar.md).
 - Packet diagrams: `packet` and `packet-beta`. The formatting rules are in
   [docs/packet.md](./docs/packet.md).
 - Block diagrams: diagrams that start with `block-beta` or `block`. The
@@ -150,8 +152,8 @@ Other diagram types are not formatted yet (see below).
 - A diagram type other than flowchart, agentflow, sequence, class, state, ER,
   Gantt, user journey, requirement, mindmap, timeline, sankey, XY chart,
   quadrant chart, kanban, C4, Venn, Ishikawa, usecase, pie, gitgraph, info,
-  packet, architecture, and block diagram is not changed, except that line
-  endings follow `endOfLine`. In Markdown, it is left to Prettier.
+  packet, architecture, radar, and block diagram is not changed, except that
+  line endings follow `endOfLine`. In Markdown, it is left to Prettier.
 
 ## Guarantees and limitations
 
@@ -209,6 +211,7 @@ The reasons and the details are in
 - [docs/pie.md](./docs/pie.md): the formatting rules for pie charts.
 - [docs/architecture.md](./docs/architecture.md): the formatting rules for
   architecture diagrams.
+- [docs/radar.md](./docs/radar.md): the formatting rules for radar diagrams.
 - [docs/packet.md](./docs/packet.md): the formatting rules for packet diagrams.
 - [docs/block.md](./docs/block.md): the formatting rules for block diagrams.
 - [docs/compatibility.md](./docs/compatibility.md): where the plugin differs

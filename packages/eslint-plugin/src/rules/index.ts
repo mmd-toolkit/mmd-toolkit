@@ -11,6 +11,11 @@ import { agentflowNoRedefinedFlow } from "./agentflow-no-redefined-flow.ts"
 import { agentflowNoRedefinedVertex } from "./agentflow-no-redefined-vertex.ts"
 import { agentflowNoUnclosedDescriptionBlock } from "./agentflow-no-unclosed-description-block.ts"
 import { agentflowNoUndef } from "./agentflow-no-undef.ts"
+import { architectureNoDuplicateDescription } from "./architecture-no-duplicate-description.ts"
+import { architectureNoDuplicateTitle } from "./architecture-no-duplicate-title.ts"
+import { architectureNoEmptyDescriptionBlock } from "./architecture-no-empty-description-block.ts"
+import { architectureNoReversedMarker } from "./architecture-no-reversed-marker.ts"
+import { architectureNoUngroupedModifier } from "./architecture-no-ungrouped-modifier.ts"
 import { blockNoDuplicateBlock } from "./block-no-duplicate-block.ts"
 import { blockNoDuplicateColumns } from "./block-no-duplicate-columns.ts"
 import { blockNoEdgeChain } from "./block-no-edge-chain.ts"
@@ -158,6 +163,12 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "agentflow-no-unclosed-description-block":
     agentflowNoUnclosedDescriptionBlock,
   "agentflow-no-undef": agentflowNoUndef,
+  "architecture-no-duplicate-description": architectureNoDuplicateDescription,
+  "architecture-no-duplicate-title": architectureNoDuplicateTitle,
+  "architecture-no-empty-description-block":
+    architectureNoEmptyDescriptionBlock,
+  "architecture-no-reversed-marker": architectureNoReversedMarker,
+  "architecture-no-ungrouped-modifier": architectureNoUngroupedModifier,
   "block-no-duplicate-block": blockNoDuplicateBlock,
   "block-no-duplicate-columns": blockNoDuplicateColumns,
   "block-no-edge-chain": blockNoEdgeChain,

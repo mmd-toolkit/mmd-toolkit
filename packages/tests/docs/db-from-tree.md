@@ -488,6 +488,10 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
+Radar is built as described in [radar.md](./db-from-tree/radar.md), from the
+authored declaration groups, entries, common assignments and options. [fixture:
+radar/gram-written-tree] [fixture: radar/db-all-fields]
+
 Architecture is built as described in
 [architecture.md](./db-from-tree/architecture.md). [fixture:
 architecture/db-mixed]
@@ -498,8 +502,8 @@ hand-made and recorded trees. The new builders are described in
 and [info.md](./db-from-tree/info.md).
 
 The recorded-tree comparisons include C4, block, kanban, Venn, Agentflow,
-Usecase, pie, gitgraph, info, packet, and their common detection fixtures,
-including all five C4 diagram kinds.
+Usecase, pie, gitgraph, info, packet, radar, and their common detection
+fixtures, including all five C4 diagram kinds.
 
 `tests/db-from-tree.test.ts` builds the Db of every fixture that records a tree
 and an accepted result with a Db, and requires it to be the recorded Db

@@ -1,3 +1,4 @@
+import type { RadarDiagram, RadarNode } from "../src/ast/radar.ts"
 import type {
   ArchitectureDiagram,
   ArchitectureNode,
@@ -83,6 +84,7 @@ describe("the types of ast.md", () => {
       | InfoNode["type"]
       | PacketNode["type"]
       | ArchitectureNode["type"]
+      | RadarNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -111,6 +113,7 @@ describe("the types of ast.md", () => {
       | InfoDiagram
       | PacketDiagram
       | ArchitectureDiagram
+      | RadarDiagram
     >()
   })
 

@@ -451,3 +451,14 @@ site-rejected reading have no comparison Db. [fixture: packet/gram-mixed]
 packet/lex-hidden-two-suffixes] [fixture: packet/title-repeat-empty] [fixture:
 packet/error-single-rounded-end-wide] The ten node-comment examples are checked
 by tests/ast-packet-examples.test.ts.
+
+Radar records and acceptance are checked only by tests/fixtures.test.ts using
+fixtureAccepts. The unit checks in tests/radar.test.ts cover source coverage,
+spelling, ranges, containment, source order and comparable Db readings using
+dbFromTree and embeddedValuesOf. They check authored comma groups, hidden-form
+ownership, both entry forms, repeated/empty common values and double spelling.
+The nineteen node-comment examples are checked by
+tests/ast-radar-examples.test.ts. [fixture: radar/gram-written-tree] [fixture:
+radar/lex-hidden-axis-comma] [fixture:
+radar/lex-named-entry-hidden-across-lines] [fixture: radar/common-repeat-empty]
+[fixture: radar/db-number-rounded] [fixture: common/detect-minimal-radar]

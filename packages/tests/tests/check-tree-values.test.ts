@@ -180,6 +180,10 @@ interface BrokenValueRow {
  * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  { type: "RadarLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "RadarIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "RadarShowLegendOption", message: "the field value is " },
+  { type: "RadarGraticuleOption", message: "the field value is " },
   {
     type: "ArchitectureLabel",
     message: "value is not its written label content",
@@ -421,6 +425,40 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "RadarLiteral",
+    name: "radar common line values keep padding after their colon",
+    diagram: "radar",
+    fixture: "common-all",
+    token: { type: "RawText", value: " A" },
+    side: "start",
+    problems: [
+      {
+        where: "RadarLiteral at 28-30",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      { where: "RadarLiteral at 28-30", message: `${JOINED}: "A", not " A"` },
+      {
+        where: "RadarLiteral at 28-30",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [28,30], not [29,30]",
+      },
+    ],
+  },
+  {
+    type: "RadarIgnoredText",
+    name: "radar hidden text keeps LF beside a common comment cut",
+    diagram: "radar",
+    fixture: "lex-hidden-yaml-content-common-comment",
+    token: { type: "RawText", value: "---\nx\n" },
+    side: "end",
+    problems: [
+      {
+        where: "RadarIgnoredText at 11-33",
+        message: `${JOINED}: "---\\nxy\\n---", not "---\\nx\\ny\\n---"`,
+      },
+    ],
+  },
   {
     type: "ArchitectureLabel",
     name: "architecture bare labels retain their padding in RawText",
@@ -1419,6 +1457,18 @@ interface TypeWithoutTokenWhitespace {
 const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
   Record<string, TypeWithoutTokenWhitespace>
 > = {
+  RadarShowLegendOption: {
+    diagram: "radar",
+    fixture: "db-options-repeat",
+    reason:
+      "its fixed value is one Keyword; this fixture has no hidden forms in the option",
+  },
+  RadarGraticuleOption: {
+    diagram: "radar",
+    fixture: "db-options-repeat",
+    reason:
+      "its fixed value is one Keyword; this fixture has no hidden forms in the option",
+  },
   GitgraphTypeOption: {
     diagram: "gitgraph",
     fixture: "gram-all-fields",

@@ -316,6 +316,27 @@ packet/c4deployment-block] [fixture: packet/c4dynamic-header-comment-eof]
 [fixture: packet/c4-hidden-suffix-lf] [fixture:
 packet/c4-retained-preheader-yaml]
 
+### Radar
+
+A radar header selects radar even when a later title, label or reference
+contains C4Container, C4Component, C4Dynamic or C4Deployment. First ask whether
+the tree can preserve the reading: RadarLiteral, StringLiteral and Identifier
+can hold those authored values without resolving them as C4. No new ignored-text
+node or rejection is needed. The remaining reverse acceptance difference is the
+direct header-selection rule in place of C4's earlier anywhere scan. [fixture:
+radar/c4-container-title] [fixture: radar/c4-component-axis-label] [fixture:
+radar/c4-dynamic-reference] [fixture: radar/c4-deployment-line]
+
+C4Context does not perform that anywhere match. An LF-terminated leading comment
+containing one of the four other words is a detection control, distinct from a
+comment whose missing terminator exposes it to C4 detection. The same shared
+identifier records the differing radar inputs, with their accepted specified
+result. [fixture: radar/c4-context-title] [fixture:
+radar/c4-container-header-lf] [fixture: radar/c4-container-header-eof] [fixture:
+radar/c4-component-header-lf] [fixture: radar/c4-component-header-eof] [fixture:
+radar/c4-dynamic-header-lf] [fixture: radar/c4-dynamic-header-eof] [fixture:
+radar/c4-deployment-header-lf] [fixture: radar/c4-deployment-header-eof]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -404,3 +425,13 @@ warning. These facts do not justify any additional divergence.
   requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
   `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
   this divergence.
+
+- Radar:
+  [radar.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/radar.md#L66-L166)
+  documents axes, curves and options. The official issues/PRs were searched on
+  2026-10-25 for radar directive, radar semicolon and radar entries; no
+  inspected result declares the boundaries above a defect.
+  [#7187](https://github.com/mermaid-js/mermaid/issues/7187) is a closed
+  documentation report marked Status: Approved.
+  [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
+  documentation examples; it does not add grammar support for a trailing comma.

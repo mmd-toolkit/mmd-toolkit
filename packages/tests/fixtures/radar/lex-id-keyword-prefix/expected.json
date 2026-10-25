@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Explicit longer alternatives allow longer keyword-prefixed IDs."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "axisX"
+      },
+      {
+        "label": "curveX"
+      },
+      {
+        "label": "showLegendX"
+      },
+      {
+        "label": "ticksX"
+      },
+      {
+        "label": "maxX"
+      },
+      {
+        "label": "minX"
+      },
+      {
+        "label": "graticuleX"
+      }
+    ],
+    "curves": [
+      {
+        "label": "curveX",
+        "entries": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

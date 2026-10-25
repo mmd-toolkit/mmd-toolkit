@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Without a hash, a style-like common title keeps its final semicolon."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "style A: red;",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

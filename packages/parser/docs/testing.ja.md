@@ -524,3 +524,15 @@ tests/packet.test.ts の単体テストはソースの被覆、トークンと r
 [fixture: packet/lex-hidden-two-suffixes] [fixture: packet/title-repeat-empty]
 [fixture: packet/error-single-rounded-end-wide]
 10 ノードのコメント例は tests/ast-packet-examples.test.ts が検査します。
+
+radar の記録と受理は tests/fixtures.test.ts だけで、
+fixtureAccepts を使って検査します。
+tests/radar.test.ts の単体検査はソース被覆、綴り、範囲、包含、ソース順と、
+dbFromTree、embeddedValuesOf を使った比較可能な Db を確かめます。
+記述されたコンマグループ、hidden form の所有先、両 entry 形式、
+繰り返しと空の共通値、double の綴りを検査します。
+19 ノードのコメントの例は tests/ast-radar-examples.test.ts が検査します。
+[fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-axis-comma]
+[fixture: radar/lex-named-entry-hidden-across-lines]
+[fixture: radar/common-repeat-empty] [fixture: radar/db-number-rounded]
+[fixture: common/detect-minimal-radar]

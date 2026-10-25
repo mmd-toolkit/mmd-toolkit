@@ -41,6 +41,7 @@ const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = GRAPH_SHAPES.flatMap(
  * that row.
  */
 export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  RadarDiagram: [":", ",", "[", "]", "{", "}"],
   ArchitectureDiagram: ARCHITECTURE_PUNCTUATORS,
   GitgraphDiagram: [":", "{", "}"],
   InfoDiagram: [":", "{", "}"],

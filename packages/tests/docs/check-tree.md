@@ -622,6 +622,75 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-yaml-bare-directive] [fixture: info/lex-retained-no-bare-ls]
     [fixture: info/lex-hidden-common-comment]
 
+  - radar: all nineteen node types, fields and visitor order follow
+    [ast/radar.md](../../spec/docs/ast/radar.md). Declaration and options groups
+    are nonempty comma lists. Axis/curve members retain optional labels; curves
+    have a nonempty list of one entry form. Named entries retain an optional
+    colon. Fixed option words agree with their tokens, and numeric leaves retain
+    their complete unsigned-decimal spelling. IDs obey maximal spelling and
+    earlier keyword, number, boolean, graticule and common-form priority. The
+    bounded bare header can instead be a name directly before a label bracket or
+    entry brace. Strings are complete matching quotes with the specified escape
+    boundaries. These are tree conditions; missing axis references and other
+    semantic acceptance conditions remain the parser's responsibility. [fixture:
+    radar/gram-written-tree] [fixture: radar/gram-inline-statements] [fixture:
+    radar/gram-curve-kind-per-curve] [fixture:
+    radar/gram-detailed-colon-mixed-spelling] [fixture: radar/db-options-repeat]
+    [fixture: radar/lex-id-keyword-prefix] [fixture:
+    radar/lex-id-numeric-leading] [fixture: radar/lex-id-boolean-prefix]
+    [fixture: radar/lex-id-graticule-prefix] [fixture:
+    radar/lex-id-title-prefix] [fixture: radar/lex-bare-accessibility-ids]
+    [fixture: radar/lex-string-escaped-ls] [fixture:
+    radar/error-reference-label] [fixture: radar/lex-header-as-declaration]
+
+    Each retained hidden form has exactly one named gap/body owner. Check its
+    complete authored form against the earliest qualifying closer, preferring
+    the YAML body-present alternative to adjacent empty fences. Exclude the
+    consumed LF from its range. Member and named-entry component gaps have no
+    visible LF; entry lists permit LF before their first entry, after commas and
+    before the closing brace, but not before an entry comma. Label gaps and
+    absent components have their specified owners, and an omitted colon has an
+    empty textBeforeColon. [fixture: radar/lex-hidden-axis-comma] [fixture:
+    radar/lex-hidden-curve-comma] [fixture: radar/lex-hidden-option-comma]
+    [fixture: radar/lex-hidden-detailed-before-colon] [fixture:
+    radar/lex-hidden-detailed-no-colon] [fixture:
+    radar/lex-hidden-before-first-entry] [fixture:
+    radar/lex-hidden-before-entries-close] [fixture:
+    radar/hidden-yaml-adjacent-later] [fixture: radar/hidden-yaml-adjacent-eof]
+    [fixture: radar/hidden-native-closer] [fixture: radar/hidden-yaml-crlf]
+    [fixture: radar/gram-entry-newline-after-comma] [fixture:
+    radar/gram-entry-before-comma-native-spare]
+
+    Common forms use the shared composite-value checks, including null versus
+    whitespace-only values and the first description closer. Only common
+    statements require surviving visible EOL before a following statement; a
+    spare LF, closing space and EOF are distinct cases. A hidden suffix before
+    visible EOL stays with its preceding common statement or final group member;
+    after visible EOL it belongs to body. Earlier strings and composite values
+    own enclosed hidden-looking text. A native Comment cannot disguise an
+    earlier hidden directive or start inside an earlier string, block or hidden
+    form. [fixture: radar/lex-common-empty-values] [fixture:
+    radar/common-block-first-close] [fixture: radar/hidden-native-title]
+    [fixture: radar/hidden-native-title-spare] [fixture:
+    radar/hidden-native-title-space] [fixture: radar/hidden-native-title-eof]
+    [fixture: radar/lex-hidden-after-visible-eol] [fixture:
+    radar/lex-common-hidden-yaml-block-owner] [fixture:
+    radar/lex-common-hidden-percent-block-owner] [fixture:
+    radar/hidden-native-string] [fixture: radar/lex-hidden-native-fallback]
+
+    Check authored header word/colon components and the bare header's boundary.
+    Pre-header forms retain their own native boundaries and detection order.
+    Only intervals passed with bare percent Comments admit accompanying Unicode
+    trivia, including between retained forms; ordinary body gaps stay strict.
+    Shared field, coverage, written-value, range and token checks apply.
+    [fixture: radar/header-colon-inline] [fixture: radar/header-separated-colon]
+    [fixture: radar/header-colon-hidden] [fixture:
+    radar/header-native-no-boundary] [fixture: radar/detect-retained-two]
+    [fixture: radar/detect-secondscan-native-glued] [fixture:
+    radar/bare-before-header-nbsp] [fixture: radar/bare-line-ls] [fixture:
+    radar/div-detect-yaml-bare-secondscan-native-ls] [fixture:
+    radar/detect-retained-no-bare-control] [fixture: radar/space-nbsp-body]
+
   - architecture: the fifteen node types, child fields and visitor order follow
     [ast/architecture.md](../../spec/docs/ast/architecture.md). Check complete
     IDs against keyword/common-form/direction priority and the maximal ID

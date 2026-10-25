@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "html-tag-in-frontmatter.md Radar: Without frontmatter HTML context, does the unescaped double quote close this label early?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 12: Expecting token of type ']' but found `y`."
+  }
+}

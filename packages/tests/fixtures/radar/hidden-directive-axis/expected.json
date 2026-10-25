@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A globally recognized directive leaves a visible newline in the axis keyword gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 5: Expecting token of type 'ID' but found `\n`.\nParse error on line 3, column 1: Expecting token of type 'EOF' but found `A`."
+  }
+}

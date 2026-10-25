@@ -12,14 +12,9 @@ import {
 } from "../../code-points.ts"
 import { CommonFormUnitLexer } from "../../common-form-unit-lexer.ts"
 import type { CommonFormUnitName } from "../../common-form-unit-lexer.ts"
-import type { DiagramCharacter, DiagramPosition } from "../../diagram-text.ts"
+import type { DiagramCharacter } from "../../diagram-text.ts"
 import type { DiagramUnit } from "../../diagram-units.ts"
-import {
-  isBefore,
-  isCodePointAt,
-  matchWord,
-  samePosition,
-} from "../../scanning.ts"
+import { isCodePointAt, matchWord, samePosition } from "../../scanning.ts"
 
 /** diagrams/architecture.md, Ordered rules: authored components of complete matches. */
 type ArchitectureUnitName =
@@ -36,7 +31,6 @@ type ArchitectureUnitName =
   | "port-direction"
   | "arrow-marker"
   | "string"
-  | "id"
   | "("
   | "icon-name"
   | ")"
@@ -87,33 +81,6 @@ export class ArchitectureUnitLexer extends CommonFormUnitLexer<ArchitectureUnitN
     throw this.noRuleMatches(at)
   }
 
-  /** Names: maximal ASCII word/dash run ending with a word character. */
-  private idEnd(at: DiagramCharacter): DiagramPosition | undefined {
-    if (!isWordCharacter(at.codePoint)) return undefined
-    let end = this.reader.after(at)
-    let chosen = end
-    while (
-      end !== null &&
-      (isWordCharacter(end.codePoint) || end.codePoint === HYPHEN_MINUS)
-    ) {
-      const current = end
-      end = this.reader.after(current)
-      if (isWordCharacter(current.codePoint)) chosen = end
-    }
-    return chosen
-  }
-
-  /** Keywords: a strictly longer complete ID wins over the fixed word. */
-  private readWord(at: DiagramCharacter, word: ArchitectureUnitName): boolean {
-    const match = matchWord(this.reader, at, word)
-    if (match === null) return false
-    const idEnd = this.idEnd(at)
-    if (idEnd !== undefined && match.end !== null && isBefore(match.end, idEnd))
-      this.read("id", at, idEnd)
-    else this.read(word, at, match.end)
-    return true
-  }
-
   /** Both dash rules prefer a complete longer YAML form; -- stays indivisible. */
   private readDash(at: DiagramCharacter, word: "--" | "-"): boolean {
     const match = matchWord(this.reader, at, word)
@@ -147,14 +114,6 @@ export class ArchitectureUnitLexer extends CommonFormUnitLexer<ArchitectureUnitN
     if (at.codePoint !== LESS_THAN_SIGN && at.codePoint !== GREATER_THAN_SIGN)
       return false
     this.read("arrow-marker", at, this.reader.after(at))
-    return true
-  }
-
-  /** Bare-name rule follows strings and all fixed/common forms. */
-  private readId(at: DiagramCharacter): boolean {
-    const end = this.idEnd(at)
-    if (end === undefined) return false
-    this.read("id", at, end)
     return true
   }
 

@@ -113,6 +113,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   info: true,
   packet: true,
   architecture: true,
+  radar: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

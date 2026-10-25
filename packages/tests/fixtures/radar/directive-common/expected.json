@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Global removal joins pieces of every common line field."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "AB",
+    "accTitle": "CD",
+    "accDescr": "EF",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

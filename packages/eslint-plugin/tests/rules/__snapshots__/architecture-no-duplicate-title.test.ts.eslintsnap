@@ -1,0 +1,180 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: architecture-no-duplicate-title >> invalid >>> docs/rules/architecture-no-duplicate-title.md incorrect 1
+Filename: architecture-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | architecture-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   service api(server)[API]
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-crlf
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-crlf-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | service api
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-directive
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-directive-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: First
+  3 | %% comment
+  4 |
+  5 | %%{init: {}}%%
+  6 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  7 | service api
+  8 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-empty
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-empty-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | service api
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-empty-middle
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-empty-middle-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | accTitle: First
+  5 | service api
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-entity-equal
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-entity-equal-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: #35;
+  3 | accTitle: #
+    | ^~~~~~~~~~~ [1]
+  4 | service api
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-frontmatter-hidden-title-mix
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-frontmatter-hidden-title-mix-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Front
+  3 | ---
+  4 | architecture-beta
+  5 | accTitle: First
+  6 | ---
+  7 | accTitle: Hidden
+  8 | ---
+  9 | %% note
+ 10 | %%{init: {}}%%
+ 11 | title Ignored
+ 12 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+ 13 |
+
+[1] mermaid.js replaces the accessible title set on line 5 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-quoted-attributes-written
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-quoted-attributes-written-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: <b x="a">Text</b>
+  3 | accTitle: <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-replaced
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-replaced-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | service api(server)[API]
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/acctitle-three
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/acctitle-three-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | accTitle: First
+    | ^~~~~~~~~~~~~~~ [2]
+  5 | service api
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+---
+
+
+Test: architecture-no-duplicate-title >> invalid >>> invalid/architecture/docs-incorrect-1
+Filename: tests/fixtures/rules/architecture-no-duplicate-title/invalid/architecture/docs-incorrect-1-input.mmd
+
+Code:
+  1 | architecture-beta
+  2 |   accTitle: First
+  3 |   accTitle: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   service api(server)[API]
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---

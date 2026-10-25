@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common line values retain quote text while Mermaid applies its shared entity encoding."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "\"A &amp; ﬂ°°35¶ß\"",
+    "accTitle": "'A &amp; ﬂ°°35¶ß'",
+    "accDescr": "\"A &amp; ﬂ°°35¶ß\"",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

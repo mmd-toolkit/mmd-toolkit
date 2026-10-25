@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/radar.test.ts",
+    "line": 311,
+    "test": "radar > should handle options > should handle string option graticule polygon"
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [
+      {
+        "label": "ax1"
+      },
+      {
+        "label": "ax2"
+      }
+    ],
+    "curves": [
+      {
+        "label": "c1",
+        "entries": [
+          1,
+          2
+        ]
+      }
+    ],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "polygon"
+    }
+  }
+}

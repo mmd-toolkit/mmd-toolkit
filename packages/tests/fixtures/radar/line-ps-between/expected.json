@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS is not the body NEWLINE terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 11: unexpected character: -> <- at offset: 10, skipped 1 characters. "
+  }
+}

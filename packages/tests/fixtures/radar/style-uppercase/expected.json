@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Uppercase style text does not select the lowercase style-line removal."
+  },
+  "accepted": true,
+  "diagramType": "radar",
+  "db": {
+    "title": "STYLE A: ﬂ°red¶ß",
+    "accTitle": "",
+    "accDescr": "",
+    "axes": [],
+    "curves": [],
+    "options": {
+      "showLegend": true,
+      "ticks": 5,
+      "max": null,
+      "min": 0,
+      "graticule": "circle"
+    }
+  }
+}

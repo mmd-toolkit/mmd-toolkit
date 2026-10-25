@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "graticule requires its bare terminal rather than STRING."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 11: Expecting token of type 'GRATICULE' but found `\"circle\"`."
+  }
+}
