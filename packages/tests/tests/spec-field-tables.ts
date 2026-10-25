@@ -17,6 +17,7 @@ const PARSER_DOCS = path.join(HERE, "../../parser/docs")
 export const TREE_DOCUMENT_DIAGRAMS = [
   "gitgraph",
   "info",
+  "packet",
   "pie",
   "usecase",
   "agentflow",

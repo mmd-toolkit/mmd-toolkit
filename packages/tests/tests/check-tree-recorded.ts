@@ -48,6 +48,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "flowchart",
   "gitgraph",
   "info",
+  "packet",
   "pie",
   "usecase",
   "agentflow",

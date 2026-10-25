@@ -277,6 +277,16 @@ Mermaid だけが受理する場合、ここだけが受理する場合があり
 [fixture: gitgraph/frontmatter-body-tag-control]
 [fixture: gitgraph/frontmatter-html]
 
+### Packet
+
+Frontmatter と値は原文を保持するが、
+本文の quote 変換は不透明な frontmatter の未閉鎖 tag に依存しない。
+値が変わる場合と、両方向に受理が逆転する場合があり、本文だけの対照は一致する。
+[fixture: packet/div-html-frontmatter-value]
+[fixture: packet/div-html-frontmatter-accept]
+[fixture: packet/div-html-frontmatter-reject]
+[fixture: packet/gram-html-body-only-reference]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -356,3 +366,11 @@ gitgraph の
 Status: Approved が付き、
 merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
 重複 ID の警告を加えます。これらから追加の差異は作りません。
+
+- pin の
+  [packet の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  は単一位置・範囲・相対 count を示します。
+  この前処理の境界については定めていません。
+  2026-10-25 に `packet bitsPerRow`、`packet fractional`、
+  `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
+  ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。

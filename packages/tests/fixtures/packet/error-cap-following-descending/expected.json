@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Descending explicit endpoints still reject after the publication cap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 320001 - 320000 is invalid. End must be greater than start."
+  }
+}

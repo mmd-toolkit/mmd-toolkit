@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A C4 word in retained body YAML does not switch the specified header."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npacket---C4Contain\n^"
+  }
+}

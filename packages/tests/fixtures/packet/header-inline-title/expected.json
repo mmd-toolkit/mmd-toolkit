@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md Grammar: ASCII space after the plain packet header satisfies its boundary and allows a title statement on the same line without a newline."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

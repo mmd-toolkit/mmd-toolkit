@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Packet has no data-block syntax after a label."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->@<- at offset: 12, skipped 5 characters.\nLexer error on line 2, column 12: unexpected character: ->b<- at offset: 18, skipped 4 characters. Parse error on line 2, column 11: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: ':'"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS inside a block participates in block whitespace conversion."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A B",
+    "packet": []
+  }
+}

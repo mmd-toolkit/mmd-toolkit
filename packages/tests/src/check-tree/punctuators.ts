@@ -42,6 +42,7 @@ const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = GRAPH_SHAPES.flatMap(
 export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   GitgraphDiagram: [":", "{", "}"],
   InfoDiagram: [":", "{", "}"],
+  PacketDiagram: ["-", "+", ":", "{", "}"],
   PieDiagram: PIE_PUNCTUATORS,
   UsecaseDiagram: USECASE_PUNCTUATORS,
   AgentflowDiagram: [

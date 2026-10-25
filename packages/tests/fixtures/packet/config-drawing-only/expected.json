@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Drawing dimensions and showBits do not change published blocks."
+  },
+  "config": {
+    "packet": {
+      "bitsPerRow": 32,
+      "showBits": false,
+      "rowHeight": 50,
+      "bitWidth": 12,
+      "paddingX": 0,
+      "paddingY": 0
+    }
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 15,
+          "label": "A"
+        }
+      ]
+    ]
+  }
+}

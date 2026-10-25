@@ -10,6 +10,7 @@ import type {
   MermaidError,
 } from "./types.ts"
 import type { EmbeddedValues } from "./mermaid.ts"
+import { restoreConfiguration } from "./configuration.ts"
 
 export type {
   DataBlockEffect,
@@ -74,6 +75,7 @@ export type DiagramType =
   | "pie"
   | "gitgraph"
   | "info"
+  | "packet"
 
 /**
  * Where a fixture input came from.
@@ -110,7 +112,9 @@ export interface RecordedEmbedded {
    * What the input changes in mermaid.js's configuration: the values that
    * differ from the defaults (`getDefaultConfig()`) overlaid with the
    * fixture's own `config`. An implementation reads a key from here, then
-   * from the fixture's `config`, then from the defaults.
+   * from the fixture's `config`, then from the defaults. Non-finite numbers
+   * are recorded as `{ nonFinite: "Infinity" | "-Infinity" | "NaN" }`;
+   * `embeddedValuesOf()` restores them to numbers for Db construction.
    */
   readonly config?: MermaidConfig
   /** The frontmatter title, as `render()` passes it to the Db. */
@@ -325,9 +329,11 @@ const DEFAULT_CONFIG_FILE = "default-config.json"
  * {@link RecordedEmbedded.config} is a difference from.
  */
 export function getDefaultConfig(): MermaidConfig {
-  return JSON.parse(
-    readFileSync(path.join(fixturesRoot, DEFAULT_CONFIG_FILE), "utf8"),
-  ) as MermaidConfig
+  return restoreConfiguration(
+    JSON.parse(
+      readFileSync(path.join(fixturesRoot, DEFAULT_CONFIG_FILE), "utf8"),
+    ) as JsonObject,
+  )
 }
 
 /**
@@ -352,7 +358,9 @@ export function embeddedValuesOf(
   return {
     config: overlay(
       overlay(getDefaultConfig(), fixture.config),
-      embedded?.config,
+      embedded?.config === undefined
+        ? undefined
+        : restoreConfiguration(embedded.config),
     ) as MermaidConfig,
     title: embedded?.title,
     dataBlockEffects: embedded?.dataBlockEffects ?? [],

@@ -622,6 +622,67 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-yaml-bare-directive] [fixture: info/lex-retained-no-bare-ls]
     [fixture: info/lex-hidden-common-comment]
 
+  - packet: all ten node types, fields and visitor order follow
+    [ast/packet.md](../../spec/docs/ast/packet.md). Range, single and relative
+    blocks retain their authored endpoints or count and their own named hidden
+    gaps. Check their dash/plus/colon operators, required closed string label,
+    integer spelling and complete units. The zero integer branch ends after one
+    digit, and the nonzero branch can shorten before a dot. A range dash yields
+    to a whole hidden YAML match. Only the plain packet header requires common
+    whitespace, EOF or a percent-pair boundary; packet-beta may touch its first
+    block or common form. No visible LF can divide block components. Semantic
+    rejection belongs to the parser and fixture result comparison. [fixture:
+    packet/gram-mixed] [fixture: packet/gram-single-hidden-gaps] [fixture:
+    packet/gram-hidden-range-gap-spaced] [fixture: packet/gram-hidden-yaml-gap]
+    [fixture: packet/gram-relative-hidden-colon] [fixture:
+    packet/gram-leading-zero] [fixture: packet/lex-integer-shorter-before-dot]
+    [fixture: packet/lex-dash-before-yaml] [fixture: packet/header-inline-block]
+    [fixture: packet/header-beta-glued-block] [fixture:
+    packet/gram-visible-newline-in-block] [fixture: packet/lex-label-escaped-lf]
+    [fixture: packet/db-label-empty-single]
+
+    Each PacketIgnoredText is one complete hidden match owned exactly once by
+    textBeforeHeader, body, an internal block gap, or textAfter before visible
+    EOL. Scan the earliest qualifying closer in the selected alternative: YAML
+    tries a body-present match before the adjacent empty fallback, and DIRECTIVE
+    uses its first bounded closer. Exclude a consumed following LF from the
+    range; require surviving visible EOL before the next statement. Spare LF,
+    lookahead space and EOF are separate controls. Enclosing strings and common
+    values retain hidden-looking content, and line values absorb YAML dashes.
+    [fixture: packet/lex-hidden-two-suffixes] [fixture:
+    packet/lex-hidden-after-visible-eol] [fixture:
+    packet/hidden-yaml-adjacent-later] [fixture: packet/lex-yaml-two-nonempty]
+    [fixture: packet/hidden-directive-later-close] [fixture:
+    packet/hidden-directive-block] [fixture:
+    packet/hidden-directive-block-spare] [fixture:
+    packet/hidden-directive-block-space] [fixture:
+    packet/hidden-directive-block-eof] [fixture: packet/hidden-yaml-crlf]
+    [fixture: packet/hidden-yaml-in-label] [fixture:
+    packet/hidden-yaml-in-description] [fixture:
+    packet/hidden-yaml-title-absorbed]
+
+    Common statements check their authored keyword, separator/colon/brace,
+    complete value or null, block trim and first closing brace. Shared written
+    values, token kinds, coverage and range hulls apply. After the header a
+    native Comment cannot hide a matching earlier DIRECTIVE or start inside an
+    enclosing string/composite description. Before the header, one retained YAML
+    precedes second-scan directives; detection-passed bare Comments and their
+    accompanying Unicode whitespace remain trivia, including between retained
+    forms. Without a passed bare line those gaps stay native. Ordinary body gaps
+    stay ASCII space/tab and LF only. [fixture: packet/lex-title-two-spaces]
+    [fixture: packet/acctitle-empty] [fixture:
+    packet/accdescr-block-first-close] [fixture:
+    packet/lex-description-comment-only] [fixture:
+    packet/hidden-directive-close-glued] [fixture:
+    packet/lex-label-native-directive] [fixture:
+    packet/lex-description-hidden-first-brace] [fixture:
+    packet/detect-one-block] [fixture: packet/detect-two-blocks] [fixture:
+    packet/detect-second-scan-directive] [fixture:
+    packet/detect-empty-braces-bare] [fixture: packet/retained-yaml-bare-ls]
+    [fixture: packet/retained-directive-bare-bom] [fixture:
+    packet/div-detect-yaml-bare-directive-ls] [fixture:
+    packet/lex-retained-no-bare-ls] [fixture: packet/line-ls-between]
+
   - pie: all eight pie node types and their child order follow
     [ast/pie.md](../../spec/docs/ast/pie.md). The diagram keeps showData only
     for its written flag; textBeforeHeader holds only retained hidden forms,

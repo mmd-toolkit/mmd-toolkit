@@ -48,6 +48,12 @@ mermaid.js の更新のときに printer を直す手順。
    `docs/compatibility.md` は、mermaid.js と違う箇所と、
    書かれたまま残す箇所をどう書くかの手本になる。
 
+図種名は `conventions` の規則に従い、
+パスと fixture の分類では小文字の ASCII 英数字の 1 語、
+ノードの型の接頭辞ではその語の先頭を大文字にした形を使い、
+mermaid.js 自身のテキスト・値・設定の鍵・ソースのパスを持つ所だけ、
+mermaid.js の綴りを使う。
+
 この手順が書くのは `packages/prettier-plugin-mmd` と、この SKILL だけ。
 ほかのパッケージを直す必要が出たら、
 そのパッケージの SKILL の手順で直す。
@@ -66,6 +72,12 @@ fixture は tests の SKILL で直す。
   木が定まるまで、木に依存するコードを書かない。
 - `@mmd-toolkit/tests` に、
   図種のコーパス（`packages/tests/fixtures/<図種>/`）と Db の要約関数がある。
+- `checkTree` は木の条件（欄・範囲・トークン）を確かめ、
+  受理は parser の木・エラーの結果と、
+  `@mmd-toolkit/tests` の `fixtureAccepts` を比べて確かめる。
+- 宣言した差異の印の字句の形は、受理とは別に、
+  parser の共有の `expectDivergenceForm` の経路で確かめ、
+  図種ごとの printer のテストには写さない。
 
 ## 3. 整形方針を決める
 
@@ -109,6 +121,15 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   `atoms.ts` と `layout.ts` は、印字する単位（原子）と、
   その間の隙間の規則で文を組み立てる
   （`printAtoms`、`collectAtoms`、`collectValueNodes`、`accDescr` のブロック）。
+  説明ブロックは共有の `layoutDescriptionBlock` を通し、
+  空白だけの内側を `{}` にする決定を全図種で共有し、
+  詰めを試み、できなければ元の layout に戻す判断は
+  共有の `layoutCompactEmptyDescriptionBlockWithFallback` に置き、
+  図種の printer に独自の空ブロックの判断を書かない。
+  graph 系（flowchart・agentflow）だけは、`graph-layout.ts` で
+  文書が定める行の例外を先に判定してから共有の
+  `layoutCompactEmptyDescriptionBlock` を呼び、
+  詰められなければ通常の文の配置に戻す。
   `kept-lines.ts` は、自分の `;` を持つ行と、行の始まりと終わりを決める。
   `source.ts` の `isStructural` は、
   どのトークンがノードの構造に属するかを決める。
@@ -121,7 +142,14 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   トップレベルで落とす文と、
   コメントの後の空白だけの行を残すかどうかを伝える。
   文とブロックの見出しの配置と、決まった項目の隙間の規則は
-  `<図種>-layout.ts` に、保つ行は `<図種>-kept-lines.ts` に置く。
+  `<図種>-layout.ts` に置き、図種固有の処理が残る場合だけ、
+  保つ行を `<図種>-kept-lines.ts` に置く。
+  隠れた形を保つ平らな本文は、`flat-hidden-diagram.ts` の
+  `createFlatHiddenDiagramPrinter` に図種と無視するノードの型、
+  見出し・文の layout を渡して印字し、
+  見出しの契約は最初の atom がヘッダーの語から始まることを定める。
+  この関数は `keepsPrefix` も返すので、
+  `src/printers/index.ts` の `diagramTextRules` に登録する。
   `BlockRules` は図種の文の型か、
   1 行に残る文をまとめた単位（ブロック図）をとるので、
   その関数にキャストは要らない。
@@ -218,6 +246,23 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   データブロックのノードの型は、`@mmd-toolkit/tests` の
   `DATA_BLOCK_NODE_TYPES` で、仕様の AST の文書と同じであることは
   そちらのテストが保つ。
+- 記録との比較では `reading = fixture.specified ?? fixture.expected` と
+  `embeddedValuesOf(fixture, reading)` を使い、
+  読みが受理で、Db が null でなく、埋め込み値があるときだけ Db を比べる。
+- `embedded-data-opaque` は仕様の
+  [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+  に、リポジトリのルートの `tools/src/specified-reading.ts` の
+  共有の `specifiedRunOf` の経路で従い、
+  拒否の原因の埋め込みブロックか、受理条件が名指す設定の鍵だけを除き、
+  Mermaid が導くタイトルと、ほかの設定を保つ。
+- 整形されるが比べる Db のない場合はテストと報告に明示し、
+  共有の冪等と原文の検査はその場合にも当てる。
+- `tests/format.test.ts` と `tests/corpus.test.ts` は全図種に
+  `tests/db-reading.ts` の `writtenTextKeptUpToSemicolons` を当て、
+  フロントマターと空白の外のテキストを、
+  入力の `;` の削除だけを認めて比べ、Db を比べられない場合も確かめる。
+  この共有の検査は値の中の空白や `;` の保持を証明しないので、
+  その規則には出力全体を比べる fixture を置く。
 - unit 形式: dispatch、失敗の扱い、Markdown のコードブロック。
   ファイルは `tests/dispatch.test.ts`、`failure.test.ts`、
   `markdown.test.ts`、`markdown-flowchart.test.ts`。
@@ -241,8 +286,11 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   fixture は文と一緒に書き、mermaid.js で 1 回確かめる。
   どこで見つかった失敗も、fixture と、欠けていた文で閉じる。
   テストもコマンドも入力を生成せず、入力を乱数や数（seed、件数）で選ばない。
-- fixtureは規則の文が分ける場合から作り、corpusの入力を写さない。
-  corpusの入力は`[corpus fixture: ...]`で引用する。
+- fixture は規則の文が分ける場合から作り、corpus の入力を写さず、
+  異なる場合ごとに最小の入力を書き、同じ場合を示すものはまとめ、
+  corpus の入力は `[corpus fixture: ...]` で引用し、
+  ファイルとエスケープで書いた入力の両方を corpus 全入力とバイトで比べて、
+  写しが 0 件であることを確かめる。
 - `rejected-inputs`フォルダーを作らない。
   受理する差異の入力は規則のフォルダーへ置き、拒否はcorpusテストで確認する。
 - 文書のテスト（`tests/docs.test.ts`）: 規則の文書ごとに、その見出しと、
@@ -263,7 +311,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   `-t` を付けると、ほかのファイルは丸ごと飛ばされ、何も失敗しない。
   そのため、ほかのファイルは `-t` なしで回す。
   - 共有のモジュール: `blocks.ts`、`atoms.ts`、`gap.ts`、`layout.ts`、
-    `lines.ts`、`source.ts`、`kept-lines.ts`。
+    `lines.ts`、`source.ts`、`kept-lines.ts`、`common-layout.ts`、
+    `hidden-forms.ts`、`flat-hidden-diagram.ts`。
     すべての図種のテスト、つまりパッケージ全体。
   - `flowchart*.ts`: `format`、`corpus` を `-t flowchart` で。
     `-t` なしで `markdown-flowchart`、`value-nodes`。
@@ -321,6 +370,10 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
     `dispatch`。
   - `pie*.ts`: `format` と `corpus` を `-t pie` で。
     `-t` なしで `pie`、`markdown-pie`、`value-nodes`、`dispatch`。
+  - `gitgraph*.ts`: `format` と `corpus` を `-t gitgraph` で。
+    `-t` なしで `gitgraph`、`markdown-gitgraph`、`value-nodes`、`dispatch`。
+  - `info*.ts`: `format` と `corpus` を `-t info` で。
+    `-t` なしで `info`、`markdown-info`、`value-nodes`、`dispatch`。
   - `statement-rules.ts`、`accessibility-lines.ts`:
     それを使う図種、ER と requirement のテスト。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:
@@ -336,6 +389,9 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 - 既定の実行は `pnpm vitest run --project prettier-plugin-mmd` で、
   fixture、コーパス、単体テスト。
   完了を報告する前に 1 回回す。
+- 共有の印字を切り出す・変えるときは、
+  既存の呼び出し元すべての fixture・エスケープの例・corpus を、
+  既定と `tabWidth: 0` の両方で前後のバイト列で比べ、拒否の結果も残す。
 
 作業ツリーやマシンをほかの作業と共有しているとき:
 
@@ -450,25 +506,21 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 - Langium の図: 上の手順のとおり、仕様の AST から印字する。
   エンジン自体は印字の規則を変えない。図種の仕様で次を確かめる。
   - 最初の一致の優先順と、キーワード・構成要素の境界。
+  - 意味による受理条件: 文法を満たしていても拒否する条件は、
+    既定値、サイト設定、テキスト内の設定の扱いを含め、仕様の直接の文を要する。
+  - 比較値: 仕様が定める変換の順と等値の規則を、
+    printer が保持する書かれた綴りと分けて読む。
   - 字句規則が定める場合の、隠れた YAML・ディレクティブ。
-    `...IgnoredText` は、仕様が定める AST のフィールドか本体の要素に
+    保持する各ノードは、仕様が定める AST のフィールドか本体の要素に
     原文のまま保持する。
     規則が node の範囲外で消費する LF と、閉じの後の空白も保持する。
     どちらも受理を決める場合がある。
-    atom 間のこれらの隙間を原文のまま保つには `writtenGapsBefore` を使う。
-    例:
-    [Hidden yaml](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#hidden-yaml)
-    と
-    [Hidden directives](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#hidden-directives)。
+    atom 間のこれらの隙間には `hidden-forms.ts` の `protectHiddenGaps` で
+    `writtenGapsBefore` を設定する。
   - 検出がヘッダーに達する前に読み飛ばしたテキスト。
     先頭の空行やコメントを整えると無視された YAML がフロントマターに
-    なる場合は、図種自身の述語で判断し、`keepsPrefix` で前置き全体を保つ。
-    例:
-    [Frontmatter yaml](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#frontmatter-yaml)。
+    なる場合は、4 節の printer の `keepsPrefix` で前置き全体を保つ。
   - 行の値: 文法が次行の値を読まない場所では結合しない。
-    例: [Title](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#title)
-    と
-    [Accessibility lines](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#accessibility-lines)。
-  - 図種のコーパスが印を付けた差異の識別子: その識別子の仕様の読みを使う。
-    例:
-    [Specified readings](../../../packages/prettier-plugin-mmd/docs/pie.ja.md#specified-readings)。
+  - 図種のコーパスが印を付けた差異の識別子: その識別子の仕様の読みを使い、
+    テキスト内の設定が受理を変える場合は、
+    `embedded-data-opaque` の両方向を確かめる。

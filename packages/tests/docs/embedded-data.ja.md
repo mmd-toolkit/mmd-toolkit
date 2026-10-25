@@ -45,6 +45,23 @@ mermaid.js が入力を拒否するとき、
   （`getDefaultConfig()`）の順に探します。
   オブジェクトはキーごとに重ね、配列とその他の値は置き換えます。
 
+記録する設定の中では、非有限の数を、予約した 1 欄のオブジェクト
+`{ "nonFinite": "Infinity" }`、`{ "nonFinite": "-Infinity" }`、
+`{ "nonFinite": "NaN" }` で表します。
+配列の要素を含め、入れ子の中にも同じ形を使います。
+有限の数は JSON の数のままです。
+`"Infinity"`、`"-Infinity"`、`"NaN"` などの文字列は文字列のままです。
+印のある値は重ねる前に数へ戻すので、普通のオブジェクトとして結合せず、
+値を置き換えます。
+`getDefaultConfig()` と `embeddedValuesOf()` は、
+`dbFromTree()` に数の値を渡します。
+[fixture: packet/config-frontmatter-row-infinity]
+[fixture: packet/config-frontmatter-row-negative-infinity]
+[fixture: packet/config-frontmatter-row-nan]
+[fixture: packet/config-frontmatter-row-infinity-string]
+[fixture: packet/config-init-row-overflow]
+[fixture: packet/config-init-row-infinity-word-string]
+
 `embeddedValuesOf(fixture)` は、これらの値を fixture から作ります。
 既定値に、fixture の `config`、`embedded.config` の順に重ねます。
 入力が `theme` を変えると、mermaid.js は `themeVariables` を計算し直して、
@@ -74,6 +91,8 @@ Db の値は、それらのキーに左右されません。
   `mermaid.parse()` の直後に `mermaidAPI.getConfig()` で読みます。
   図種ごとの見た目の既定値（`look` など）は含みません。
   Db の要約には影響しません。
+  実行時に返す設定では、非有限の数もメモリ上の数として保ち、
+  生成器が設定を JSON に記録するときだけ印を付けます。
 - `title` は、`render()` が Db に渡すのと同じフロントマターの title です
   （[expected-results.ja.md](./expected-results.ja.md) を参照）。
 

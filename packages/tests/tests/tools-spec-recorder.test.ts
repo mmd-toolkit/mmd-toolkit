@@ -120,6 +120,24 @@ function textsOf(recording: SpecFileRecording): string[] {
 const FLOW_PARSER_IMPORT = `import flowParser from "./flowParser.ts"\n`
 
 describe("recordSpecFile: what is recorded", () => {
+  it("records awaited packet parser calls without executing Langium", async () => {
+    const recording = await recordSource(
+      [
+        'import { PacketDB } from "./db.js"',
+        'import { parser } from "./parser.js"',
+        'it("two", async () => {',
+        "  if (parser.parser) parser.parser.yy = new PacketDB()",
+        '  await parser.parse("packet")',
+        "  await parser.parse('packet\\n0: \"A\"')",
+        "})",
+      ].join("\n"),
+      "diagrams/packet/packet.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(textsOf(recording)).toEqual(["packet", 'packet\n0: "A"'])
+    expect(recording.inputs.map(({ line }) => line)).toEqual([5, 6])
+  })
+
   it("records awaited info parser calls without executing Langium", async () => {
     const recording = await recordSource(
       [

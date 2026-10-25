@@ -1,10 +1,5 @@
-import path from "node:path"
 import { describe, expect, it } from "vitest"
-import {
-  fixtureAccepts,
-  getFixturesRoot,
-  loadFixtures,
-} from "@mmd-toolkit/tests"
+import { loadFixtures } from "@mmd-toolkit/tests"
 import type { Root, IshikawaDiagram } from "../src/index.ts"
 import { ParseError, parse, traverseNodes } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
@@ -47,7 +42,7 @@ function expectCoverage(text: string, root: Root): void {
   })
 }
 
-describe("ishikawa acceptance fixtures", async () => {
+describe("ishikawa fixtures", async () => {
   const fixtures = await loadFixtures("ishikawa")
 
   /** Parses a fixed corpus input. */
@@ -168,16 +163,13 @@ describe("ishikawa acceptance fixtures", async () => {
   })
 
   for (const fixture of fixtures) {
-    it(fixture.name, async () => {
+    it(fixture.name, () => {
       let root: Root | null = null
-      let rejection: ParseError | null = null
       try {
         root = parse(fixture.input)
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
-        rejection = error
       }
-      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (fixture.knownDivergence === "blank-line-after-header-or-comments")
         expect(
           indentationBlankLinesRejectedByMermaid(fixture.input)?.length,
@@ -187,15 +179,6 @@ describe("ishikawa acceptance fixtures", async () => {
         expectCoverage(fixture.input, root)
         expect(problemsOfTree(fixture.input, root)).toEqual([])
       }
-      const result = root ?? {
-        message: rejection!.message,
-        range: rejection!.range,
-        loc: rejection!.loc,
-      }
-      const file = root === null ? "parse-error.json" : "ast.json"
-      await expect(`${JSON.stringify(result, null, 2)}\n`).toMatchFileSnapshot(
-        path.join(getFixturesRoot(), "ishikawa", fixture.name, file),
-      )
     })
   }
 })

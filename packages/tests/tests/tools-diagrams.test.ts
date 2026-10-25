@@ -2,6 +2,13 @@ import { describe, expect, it } from "vitest"
 import { belongsIn, isDiagramType } from "../../../tools/src/diagrams.ts"
 
 describe("belongsIn", () => {
+  it("takes the packet id shared by both header spellings", () => {
+    expect(isDiagramType("packet")).toBe(true)
+    expect(belongsIn("packet", "packet")).toBe(true)
+    expect(belongsIn("packet", "packet-beta")).toBe(false)
+    expect(belongsIn("packet", "info")).toBe(false)
+  })
+
   it("takes only the info detector id", () => {
     expect(isDiagramType("info")).toBe(true)
     expect(belongsIn("info", "info")).toBe(true)

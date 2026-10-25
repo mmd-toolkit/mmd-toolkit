@@ -5,7 +5,7 @@
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
 mindmap、timeline、xychart、quadrant、block、kanban、c4、venn、agentflow、
-usecase、pie、gitgraph・info。
+usecase、pie、gitgraph・info・packet。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -442,6 +442,21 @@ Mermaid は結合します。逆方向の受理はありません。完全な構
 [fixture: info/lex-selected-keyword-rejected-tail]
 [fixture: info/end-header-semicolon]
 
+### Packet
+
+選ばれた文字は trivia だが、固定語や整数を分割できない。
+完全な構成要素の境界や hidden な句読点には置ける。
+検出は選択より先なので、分割された見出しは差異に至る前に拒否され得る。
+[fixture: packet/div-selected-title-interior]
+[fixture: packet/div-selected-acctitle-interior]
+[fixture: packet/div-selected-accdescr-line-interior]
+[fixture: packet/div-selected-accdescr-block-interior]
+[fixture: packet/div-selected-integer-interior]
+[fixture: packet/lex-selected-colon-boundary]
+[fixture: packet/lex-selected-brace-boundary]
+[fixture: packet/lex-yaml-fence-selected]
+[fixture: packet/detect-selected-split-header]
+
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
@@ -539,3 +554,11 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
   この節は既存の直接の規則に従います。
+
+- pin の
+  [packet の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  は単一位置・範囲・相対 count を示します。
+  この前処理の境界については定めていません。
+  2026-10-25 に `packet bitsPerRow`、`packet fractional`、
+  `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
+  ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。

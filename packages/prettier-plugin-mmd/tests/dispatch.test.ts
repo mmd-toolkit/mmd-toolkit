@@ -34,6 +34,15 @@ beforeEach(() => {
 })
 
 describe("dispatch to diagram printers", () => {
+  it("registers the packet body printer", async () => {
+    const actual = await vi.importActual<typeof ParserModule>(
+      "@mmd-toolkit/parser",
+    )
+    parse.mockImplementation(actual.parse)
+    expect(await formatMermaid('packet-beta0 - 2 :"Dispatch"')).toBe(
+      'packet-beta\n  0-2: "Dispatch"\n',
+    )
+  })
   it("registers the info body printer", async () => {
     const actual = await vi.importActual<typeof ParserModule>(
       "@mmd-toolkit/parser",

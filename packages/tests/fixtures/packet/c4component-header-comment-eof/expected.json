@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An EOF header comment remains visible to the C4 detector."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\npacket %% C4Componen\n^"
+  }
+}

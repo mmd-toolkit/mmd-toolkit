@@ -49,6 +49,11 @@ and in the skill `conventions`.
    limits are written), and `docs/compatibility.md` (how differences from
    mermaid.js, and text kept as written, are described).
 
+Use the diagram name defined by `conventions`: lowercase ASCII letters and
+digits in one word for paths and fixture categories, its capitalized form for
+node type prefixes, and mermaid.js's spelling only where its own text, values,
+configuration keys or source paths are held.
+
 This procedure writes only to `packages/prettier-plugin-mmd` and this SKILL.
 When another package needs a change, make it with that package's SKILL (a gap in
 the specification with the spec SKILL, a change of the tree with the parser
@@ -65,6 +70,12 @@ with `mv` and `rm`.
   settled.
 - `@mmd-toolkit/tests` has the corpus of the diagram type
   (`packages/tests/fixtures/<diagram>/`) and its Db summary.
+- `checkTree` checks tree conditions (fields, ranges and tokens), while parser
+  acceptance is checked by comparing its tree/error results with
+  `fixtureAccepts` from `@mmd-toolkit/tests`.
+- Checks of a declared divergence mark's lexical form belong in the parser's
+  shared `expectDivergenceForm` path, separately from acceptance, rather than in
+  per-diagram printer tests.
 
 ## 3. Deciding the formatting
 
@@ -108,26 +119,39 @@ How it is built (under `src/printers/`):
   `printDiagramBlock`, `printClosedBlock`, `openingLine`); `atoms.ts` and
   `layout.ts` build a statement from the pieces that are printed (atoms) and the
   rules of the gaps between them (`printAtoms`, `collectAtoms`,
-  `collectValueNodes`, the `accDescr` block); `kept-lines.ts` holds the lines
-  that keep a `;` of their own and where a line starts and ends; `source.ts`
-  decides which tokens belong to the structure of a node (`isStructural`). When
-  a diagram type needs something they do not do, extend them, so that one
-  decision stays in one place.
+  `collectValueNodes`, the `accDescr` block). Route description blocks through
+  the shared `layoutDescriptionBlock`, with the decision for all diagram types
+  that whitespace-only interiors become `{}` and the attempt to compact with
+  fallback to the original layout handled by the shared
+  `layoutCompactEmptyDescriptionBlockWithFallback`, and write no diagram-local
+  empty-block decisions. Only graph types (flowchart and agentflow) first check
+  the documented line exceptions in `graph-layout.ts` before calling the shared
+  `layoutCompactEmptyDescriptionBlock`, returning to ordinary statement layout
+  if compaction is unavailable. `kept-lines.ts` holds the lines that keep a `;`
+  of their own and where a line starts and ends; `source.ts` decides which
+  tokens belong to the structure of a node (`isStructural`). When a diagram type
+  needs something they do not do, extend them, so that one decision stays in one
+  place.
 - Each diagram type has its printer (`<diagram>.ts`), which dispatches on its
   node types and gives `blocks.ts` its `BlockRules` (its kept lines, where a
   statement's printed text ends, which statements hold statements, which are
   dropped at the top level, whether a line of only whitespace after a comment is
   kept); the layout of its statements and block headers, with the gap rules of
-  its decided items (`<diagram>-layout.ts`); and its kept lines
-  (`<diagram>-kept-lines.ts`). `BlockRules` takes the statement type of the
-  diagram type, or a unit that groups statements which stay on one line (a block
-  diagram), so that its functions need no cast. When the statements of a diagram
-  type fall into kinds (blocks with one body, blocks of sections, statements
-  that hold no other), decide the kinds in one function whose switch lists every
-  statement type, checks each case against the type of its kind, and ends with a
-  `satisfies` check that fails when a statement type is not listed
-  (`classifySequenceStatement` in `sequence-layout.ts`); everything else asks
-  that function, rather than keeping its own list of types.
+  its decided items (`<diagram>-layout.ts`); and, only when diagram-specific
+  logic remains, its kept lines (`<diagram>-kept-lines.ts`). A flat body with
+  retained hidden forms uses `createFlatHiddenDiagramPrinter` in
+  `flat-hidden-diagram.ts`, supplied with the diagram type, ignored-node type
+  and header/statement layouts, whose header contract requires the first atom to
+  start at the header keyword. The factory also returns `keepsPrefix`; register
+  it in `diagramTextRules` in `src/printers/index.ts`. `BlockRules` takes the
+  statement type of the diagram type, or a unit that groups statements which
+  stay on one line (a block diagram), so that its functions need no cast. When
+  the statements of a diagram type fall into kinds (blocks with one body, blocks
+  of sections, statements that hold no other), decide the kinds in one function
+  whose switch lists every statement type, checks each case against the type of
+  its kind, and ends with a `satisfies` check that fails when a statement type
+  is not listed (`classifySequenceStatement` in `sequence-layout.ts`);
+  everything else asks that function, rather than keeping its own list of types.
 - Value nodes (`Identifier`, `StringLiteral`, labels, and so on) are printed as
   the text of their ranges. Each diagram type has its list of them
   (`valueNodeTypes` in `flowchart-layout.ts`, `sequenceValueNodeTypes` in
@@ -207,6 +231,23 @@ built is in `docs/development.md`.
   checked. The node types of the data blocks are `DATA_BLOCK_NODE_TYPES` of
   `@mmd-toolkit/tests`, which its own test keeps the same as the AST documents
   of the specification.
+- Recorded comparisons use `reading = fixture.specified ?? fixture.expected` and
+  `embeddedValuesOf(fixture, reading)`, comparing the Db only when the reading
+  is accepted, its Db is non-null and its embedded values are available.
+- For `embedded-data-opaque`, follow the specification's
+  [comparison Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.md#the-comparison-db)
+  through the shared `specifiedRunOf` reference path in
+  `tools/src/specified-reading.ts` at the repository root, removing only the
+  rejected embedded blocks or the acceptance-setting keys it names while keeping
+  Mermaid-derived titles and other settings.
+- Formatted cases without a comparison Db remain explicit in the tests and
+  report, and still receive the shared idempotence and written-text checks.
+- `tests/format.test.ts` and `tests/corpus.test.ts` apply
+  `writtenTextKeptUpToSemicolons` from `tests/db-reading.ts` to every diagram,
+  comparing text outside frontmatter and whitespace and allowing only removal of
+  input `;`, even when Db comparison is unavailable. This shared check does not
+  prove preservation of whitespace or semicolons inside values; keep
+  exact-output fixtures for their rules.
 - Unit tests: dispatch, failures, and Markdown code blocks
   (`tests/dispatch.test.ts`, `failure.test.ts`, `markdown.test.ts`,
   `markdown-flowchart.test.ts`). For a new diagram type, add an example that is
@@ -230,7 +271,10 @@ built is in `docs/development.md`.
   and no command generates inputs, and no input is chosen by a random source or
   by a number (a seed, a count).
 - Fixtures come from the cases of the rule sentences, never copies of corpus
-  inputs; cite a corpus input as `[corpus fixture: ...]` instead.
+  inputs; write minimal inputs for distinct cases, merge fixtures that answer
+  the same case, cite corpus inputs as `[corpus fixture: ...]` instead, and
+  compare both file and escaped fixture inputs with all corpus inputs byte for
+  byte to confirm that no copies remain.
 - No `rejected-inputs` folder: accepted divergence inputs belong to their rule
   folders, and the corpus test covers rejected inputs.
 - The document test (`tests/docs.test.ts`): the headings of each rules document
@@ -248,7 +292,8 @@ Running tests; this is what belongs to this package):
   skipped whole and nothing fails, so run the other files without it.
 
   - A shared module (`blocks.ts`, `atoms.ts`, `gap.ts`, `layout.ts`, `lines.ts`,
-    `source.ts`, `kept-lines.ts`): the tests of every diagram type, that is, the
+    `source.ts`, `kept-lines.ts`, `common-layout.ts`, `hidden-forms.ts`,
+    `flat-hidden-diagram.ts`): the tests of every diagram type, that is, the
     whole package.
   - `flowchart*.ts`: `format`, `corpus` with `-t flowchart`; and, without `-t`,
     `markdown-flowchart` and `value-nodes`.
@@ -292,6 +337,10 @@ Running tests; this is what belongs to this package):
     `-t`, `agentflow`, `markdown-agentflow`, `value-nodes`, and `dispatch`.
   - `pie*.ts`: `format` and `corpus` with `-t pie`; and, without `-t`, `pie`,
     `markdown-pie`, `value-nodes`, and `dispatch`.
+  - `gitgraph*.ts`: `format` and `corpus` with `-t gitgraph`; and, without `-t`,
+    `gitgraph`, `markdown-gitgraph`, `value-nodes`, and `dispatch`.
+  - `info*.ts`: `format` and `corpus` with `-t info`; and, without `-t`, `info`,
+    `markdown-info`, `value-nodes`, and `dispatch`.
   - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
     types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
@@ -306,6 +355,9 @@ Running tests; this is what belongs to this package):
 - The default run is `pnpm vitest run --project prettier-plugin-mmd`: the
   fixtures, the corpus, and the unit tests. Run it once before reporting the
   work as done.
+- When extracting or changing shared printing, compare every existing caller's
+  fixtures, escaped cases and corpus byte for byte before and after, with
+  defaults and `tabWidth: 0`, retaining rejected results too.
 
 When the working tree or the machine is shared with other work:
 
@@ -423,23 +475,21 @@ When the working tree or the machine is shared with other work:
 - Langium diagrams: as above, from the specification's AST. The engine itself
   changes no printing rule. Check the diagram's specification for:
   - First-match priority and keyword/component boundaries.
-  - Hidden YAML/directive forms, when its lexical rules define them. Keep
-    `...IgnoredText` as written in its specified AST field or body entry.
-    Preserve any LF the rule consumes outside the node range and whitespace
-    after its closer: both can decide acceptance. Use `writtenGapsBefore` to
-    keep these gaps between atoms as written. Examples:
-    [Hidden yaml](../../../packages/prettier-plugin-mmd/docs/pie.md#hidden-yaml)
-    and
-    [Hidden directives](../../../packages/prettier-plugin-mmd/docs/pie.md#hidden-directives).
+  - Semantic acceptance conditions: require direct specification sentences for
+    rejection after the grammar accepts, including defaults, site configuration
+    and the treatment of settings embedded in the text.
+  - Comparison values: read the specified conversion order and equality rules
+    separately from the authored spelling, which the printer preserves.
+  - Hidden YAML/directive forms, when its lexical rules define them. Keep each
+    retained node as written in its specified AST field or body entry. Preserve
+    any LF the rule consumes outside the node range and whitespace after its
+    closer: both can decide acceptance. Use `protectHiddenGaps` from
+    `hidden-forms.ts` to set `writtenGapsBefore` for these gaps between atoms.
   - Text that detection skips before reaching the header. If formatting leading
     blank lines or comments could turn ignored YAML into frontmatter, preserve
-    the complete prefix with `keepsPrefix`, decided by the diagram's own
-    predicate. Example:
-    [Frontmatter yaml](../../../packages/prettier-plugin-mmd/docs/pie.md#frontmatter-yaml).
+    the complete prefix with the printer's `keepsPrefix` from section 4.
   - Line values: do not join a next-line value where the grammar reads none.
-    Examples: [Title](../../../packages/prettier-plugin-mmd/docs/pie.md#title)
-    and
-    [Accessibility lines](../../../packages/prettier-plugin-mmd/docs/pie.md#accessibility-lines).
   - Divergence identifiers marked by the diagram's corpus: use the
-    specification's reading for those identifiers. Example:
-    [Specified readings](../../../packages/prettier-plugin-mmd/docs/pie.md#specified-readings).
+    specification's reading for those identifiers, checking both directions of
+    `embedded-data-opaque` where settings embedded in the text change
+    acceptance.

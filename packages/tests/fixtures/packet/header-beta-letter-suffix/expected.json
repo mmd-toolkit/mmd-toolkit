@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A beta prefix does not make arbitrary suffix text a statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 12: unexpected character: ->x<- at offset: 11, skipped 1 characters. "
+  }
+}

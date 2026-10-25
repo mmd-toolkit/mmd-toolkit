@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An enclosing STRING wins over keyword-looking label content."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "packet-beta title accTitle: accDescr {} 1-2:+3"
+        }
+      ]
+    ]
+  }
+}

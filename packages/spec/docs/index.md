@@ -31,6 +31,10 @@ The info definition is in its [syntax](./diagrams/info.md) and
 [tree](./ast/info.md) documents. [fixture: info/header-lf] [fixture:
 info/common-all]
 
+The packet definition is in its [syntax](./diagrams/packet.md) and
+[tree](./ast/packet.md) documents. [fixture: packet/gram-mixed] [fixture:
+packet/spec-packet-c4580507]
+
 ## Sources
 
 The specification is derived from three sources in the mermaid.js repository:

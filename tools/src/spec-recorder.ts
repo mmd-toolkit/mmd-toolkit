@@ -86,6 +86,8 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/git/gitGraphParser.js": ["parser"],
   "diagrams/git/gitGraphAst.js": ["db"],
   "diagrams/info/infoParser.js": ["parser"],
+  "diagrams/packet/parser.js": ["parser"],
+  "diagrams/packet/db.js": ["PacketDB"],
   "diagrams/pie/pieParser.js": ["parser"],
   "diagrams/pie/pieDb.js": ["db", "DEFAULT_PIE_DB"],
   "diagrams/pie/pieRenderer.js": ["draw"],
@@ -460,6 +462,10 @@ export async function recordSpecFile(
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },
     "diagrams/git/gitGraphAst.js": { db: anything },
+    "diagrams/packet/parser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/packet/db.js": { PacketDB: anything },
     "diagrams/info/infoParser.js": {
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },

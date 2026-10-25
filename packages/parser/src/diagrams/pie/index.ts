@@ -1,4 +1,5 @@
 import type { Root } from "../../ast.ts"
+import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { DiagramComment, DiagramInput } from "../../diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"
 import type {
@@ -9,11 +10,11 @@ import type {
 } from "../../diagram-text.ts"
 import type { PassedPart } from "../../detection.ts"
 import { PieGrammar } from "./grammar.ts"
-import type { PieLexing } from "./units.ts"
+import type { UnitName } from "./units.ts"
 import { PieUnitLexer } from "./units.ts"
 
 /** The shared reader and units used by the parser and lexical fixture checks. */
-export interface PieUnits extends PieLexing {
+export interface PieUnits extends CommonFormLexing<UnitName> {
   readonly text: DiagramTextReader
 }
 

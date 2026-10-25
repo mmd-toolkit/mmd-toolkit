@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Cross-frontmatter quote conversion can accept a body rejected in the isolated reading."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "b='c'>d"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

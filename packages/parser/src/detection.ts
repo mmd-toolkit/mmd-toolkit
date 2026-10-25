@@ -495,7 +495,7 @@ export interface Detection {
   readonly detectionPoint: number
   /** The position that detection reaches from the detection point ({@link positionReached}), where every detector but that of the `error` pseudo-diagram looks, and where the diagram's lexer starts. */
   readonly positionReached: number
-  /** A block passed once at the detection point, retained for pie, gitgraph and info; null when absent. */
+  /** A block passed once at the detection point, retained for pie, gitgraph, info and packet; null when absent. */
   readonly retainedFrontmatterStart: number | null
   /** What detection passed before {@link Detection.positionReached}, in source order; none for the `error` pseudo-diagram. */
   readonly passed: readonly PassedPart[]

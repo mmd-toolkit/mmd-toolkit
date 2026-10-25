@@ -251,8 +251,9 @@ the diagram sections below: a
 [`AgentflowDiagram`](./ast/agentflow.md#agentflowdiagram), a
 [`UsecaseDiagram`](./ast/usecase.md#usecasediagram), a
 [`PieDiagram`](./ast/pie.md#piediagram), a
-[`GitgraphDiagram`](./ast/gitgraph.md#gitgraphdiagram), or an
-[`InfoDiagram`](./ast/info.md#infodiagram).
+[`GitgraphDiagram`](./ast/gitgraph.md#gitgraphdiagram), an
+[`InfoDiagram`](./ast/info.md#infodiagram), or a
+[`PacketDiagram`](./ast/packet.md#packetdiagram). [fixture: packet/gram-mixed]
 
 ## ErrorDiagram
 
@@ -461,3 +462,6 @@ name that ends so.
   gitgraph/header-only]
 
 - [Info](./ast/info.md): the diagram type `info`. [fixture: info/header-lf]
+
+- [Packet](./ast/packet.md): the diagram type `packet`. [fixture:
+  packet/gram-mixed]

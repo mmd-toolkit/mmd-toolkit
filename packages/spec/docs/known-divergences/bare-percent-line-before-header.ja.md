@@ -4,7 +4,7 @@
 [bare-percent-line-before-header.md](./bare-percent-line-before-header.md)
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
-sankey、block、c4、agentflow、usecase、pie、gitgraph・info。
+sankey、block、c4、agentflow、usecase、pie、gitgraph・info・packet。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです
 。
 
@@ -408,6 +408,20 @@ Mermaid が受理する入力を拒否することはありません。
 [fixture: info/lex-detect-yaml-bare-directive-ascii]
 [fixture: info/lex-retained-no-bare-ls]
 
+### Packet
+
+通過した行は共有 Comment、付随する空白は trivia である。
+直接の検出規則は残存する形の間も含め、
+Mermaid が拒否する Unicode trivia を受理する。
+Mermaid が受理する入力は拒否しない。
+通過した行がなければ native な隙間の規則を適用する。
+[fixture: packet/bare-before-header-bom]
+[fixture: packet/bare-line-ls]
+[fixture: packet/retained-yaml-bare-ls]
+[fixture: packet/div-detect-yaml-bare-directive-ls]
+[fixture: packet/detect-yaml-bare-directive-ascii]
+[fixture: packet/lex-retained-no-bare-ls]
+
 ## mermaid.js の文書と issue
 
 - [構文のリファレンス](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
@@ -494,3 +508,11 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
   この節は既存の直接の規則に従います。
+
+- pin の
+  [packet の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  は単一位置・範囲・相対 count を示します。
+  この前処理の境界については定めていません。
+  2026-10-25 に `packet bitsPerRow`、`packet fractional`、
+  `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
+  ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。

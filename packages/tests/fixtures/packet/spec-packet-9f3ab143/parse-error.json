@@ -1,0 +1,17 @@
+{
+  "message": "Packet block start must follow the previous logical endpoint",
+  "range": [
+    43,
+    54
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 4
+    },
+    "end": {
+      "line": 4,
+      "column": 15
+    }
+  }
+}

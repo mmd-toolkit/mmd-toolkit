@@ -5,7 +5,7 @@ Japanese version:
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
 requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, venn,
-agentflow, usecase, pie, gitgraph, and info. This is one of the
+agentflow, usecase, pie, gitgraph, info, and packet. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -382,6 +382,20 @@ info/lex-selected-brace-boundary] [fixture: info/lex-hidden-opener-selected]
 [fixture: info/lex-selected-header] [fixture:
 info/lex-selected-keyword-rejected-tail] [fixture: info/end-header-semicolon]
 
+### Packet
+
+A selected character is trivia, but cannot split a fixed word or integer.
+Complete component boundaries and hidden punctuation can contain it. Detection
+precedes selection, so a split header can reject before this difference arises.
+[fixture: packet/div-selected-title-interior] [fixture:
+packet/div-selected-acctitle-interior] [fixture:
+packet/div-selected-accdescr-line-interior] [fixture:
+packet/div-selected-accdescr-block-interior] [fixture:
+packet/div-selected-integer-interior] [fixture:
+packet/lex-selected-colon-boundary] [fixture:
+packet/lex-selected-brace-boundary] [fixture: packet/lex-yaml-fence-selected]
+[fixture: packet/detect-selected-split-header]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -464,3 +478,11 @@ warning. These facts do not justify any additional divergence.
   info/showInfo rendering and was open with Type: Bug / Error and Status:
   Triage. No inspected result establishes an info-specific maintainer decision
   to reject this syntax; this section follows the existing direct rule.
+
+- The pinned
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  shows single positions, ranges and relative counts; it does not define this
+  preprocessing boundary. Searches of the official repository's issues and pull
+  requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
+  `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
+  this divergence.

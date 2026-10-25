@@ -87,6 +87,7 @@ const allFixtures = [
   ...(await loadFixtures("pie")),
   ...(await loadFixtures("info")),
   ...(await loadFixtures("gitgraph")),
+  ...(await loadFixtures("packet")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)

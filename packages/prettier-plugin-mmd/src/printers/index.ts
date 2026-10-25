@@ -23,6 +23,7 @@ import { printXychart } from "./xychart.ts"
 import { gitgraphPrinter } from "./gitgraph.ts"
 import { piePrinter } from "./pie.ts"
 import { infoPrinter } from "./info.ts"
+import { packetPrinter } from "./packet.ts"
 import type { Source } from "./source.ts"
 import type { RootTextPlan } from "./root.ts"
 import { agentflowTextPlan } from "./agentflow-size.ts"
@@ -41,6 +42,10 @@ export interface DiagramTextRules {
 export const diagramTextRules: Readonly<
   Partial<Record<string, DiagramTextRules>>
 > = {
+  PacketDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: packetPrinter.keepsPrefix,
+  },
   GitgraphDiagram: {
     keepsCommentLines: false,
     keepsPrefix: gitgraphPrinter.keepsPrefix,
@@ -106,4 +111,5 @@ export const diagramPrinters: Readonly<
   PieDiagram: piePrinter.print,
   InfoDiagram: infoPrinter.print,
   GitgraphDiagram: gitgraphPrinter.print,
+  PacketDiagram: packetPrinter.print,
 }

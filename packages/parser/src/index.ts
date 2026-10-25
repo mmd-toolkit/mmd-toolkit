@@ -521,3 +521,18 @@ export type {
   InfoIgnoredText,
   InfoNode,
 } from "./ast/info.ts"
+
+export type {
+  PacketDiagram,
+  PacketBodyItem,
+  PacketRangeBlockStatement,
+  PacketSingleBlockStatement,
+  PacketRelativeBlockStatement,
+  PacketTitleStatement,
+  PacketAccTitleStatement,
+  PacketAccDescrStatement,
+  PacketAccDescrBlockStatement,
+  PacketLiteral,
+  PacketIgnoredText,
+  PacketNode,
+} from "./ast/packet.ts"

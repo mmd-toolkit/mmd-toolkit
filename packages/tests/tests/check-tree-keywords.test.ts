@@ -21,6 +21,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["flowchart", "FlowchartDiagram"],
   ["gitgraph", "GitgraphDiagram"],
   ["info", "InfoDiagram"],
+  ["packet", "PacketDiagram"],
   ["pie", "PieDiagram"],
   ["usecase", "UsecaseDiagram"],
   ["agentflow", "AgentflowDiagram"],
@@ -360,6 +361,8 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
         "acctitle",
         "accdescr",
       ]
+    case "packet":
+      return []
     case "info":
       return ["info", "showinfo", "title", "acctitle", "accdescr"]
     case "pie":

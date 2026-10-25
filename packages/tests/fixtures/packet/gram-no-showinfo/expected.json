@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: There is no showInfo flag in the packet grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 8: unexpected character: ->s<- at offset: 7, skipped 8 characters. "
+  }
+}

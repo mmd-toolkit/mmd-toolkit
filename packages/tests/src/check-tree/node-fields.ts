@@ -103,6 +103,56 @@ export const NODE_FIELDS: Readonly<
     kind: { shape: "value", valueType: "string" },
     value: { shape: "value", valueType: "string" },
   },
+  PacketDiagram: {
+    textBeforeHeader: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  PacketRangeBlockStatement: {
+    start: { shape: "node" },
+    textBeforeDash: { shape: "nodeList" },
+    textBeforeEnd: { shape: "nodeList" },
+    end: { shape: "node" },
+    textBeforeColon: { shape: "nodeList" },
+    textBeforeLabel: { shape: "nodeList" },
+    label: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  PacketSingleBlockStatement: {
+    start: { shape: "node" },
+    textBeforeColon: { shape: "nodeList" },
+    textBeforeLabel: { shape: "nodeList" },
+    label: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  PacketRelativeBlockStatement: {
+    textBeforeCount: { shape: "nodeList" },
+    count: { shape: "node" },
+    textBeforeColon: { shape: "nodeList" },
+    textBeforeLabel: { shape: "nodeList" },
+    label: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  PacketTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  PacketAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  PacketAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  PacketAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeList" },
+  },
+  PacketLiteral: { value: { shape: "value", valueType: "string" } },
+  PacketIgnoredText: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
   InfoDiagram: {
     showInfo: { shape: "value", valueType: "boolean" },
     textBeforeHeader: { shape: "nodeList" },

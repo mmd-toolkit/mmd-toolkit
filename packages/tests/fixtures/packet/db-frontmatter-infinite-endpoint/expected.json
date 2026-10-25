@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An infinite row width and an overflowing count written only in the source publish an infinite endpoint."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": "Infinity",
+          "label": "A"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": {
+          "nonFinite": "Infinity"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md Detection: Matching byte order marks immediately before both fences form real leading frontmatter rather than hidden YAML."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

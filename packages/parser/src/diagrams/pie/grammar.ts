@@ -8,10 +8,11 @@ import type {
   PieSectionStatement,
   PieTitleStatement,
 } from "../../ast/pie.ts"
+import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
-import type { PieLexing, Unit, UnitName } from "./units.ts"
+import type { Unit, UnitName } from "./units.ts"
 
 /** Written diagram fields and pending tokens, before common token-boundary checks. */
 export interface PieSyntax {
@@ -24,7 +25,7 @@ export interface PieSyntax {
 
 /** diagrams/pie.md, Grammar: recursive descent over all components and retained hidden forms. */
 export class PieGrammar extends UnitGrammar<UnitName, Unit> {
-  public constructor(lexing: PieLexing, lexer: SourceLexer) {
+  public constructor(lexing: CommonFormLexing<UnitName>, lexer: SourceLexer) {
     super(lexing.units, lexer, [], lexing.comments)
   }
 

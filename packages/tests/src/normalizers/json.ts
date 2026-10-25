@@ -13,11 +13,17 @@ import { numberOrText } from "../summary-number.ts"
  * - Numbers use the shared summary form: non-finite numbers become text and
  *   negative zero becomes zero.
  *
+ * `numberValue` supplies the numeric form when copying configuration instead
+ * of summarizing Db data; it can retain numbers for in-memory use.
+ *
  * Throws on other unsupported values, so a change in mermaid
  * surfaces as an error instead of a silent `null`.
  */
-export function toJson(value: unknown): JsonValue {
-  const converted = convert(value, [])
+export function toJson(
+  value: unknown,
+  numberValue: (value: number) => JsonValue = numberOrText,
+): JsonValue {
+  const converted = convert(value, [], numberValue)
   if (converted === undefined) {
     throw new TypeError("toJson: the value itself is undefined or a function")
   }
@@ -27,8 +33,11 @@ export function toJson(value: unknown): JsonValue {
 /**
  * {@link toJson} for a value that must be an object.
  */
-export function toJsonObject(value: unknown): JsonObject {
-  const converted = toJson(value)
+export function toJsonObject(
+  value: unknown,
+  numberValue: (value: number) => JsonValue = numberOrText,
+): JsonObject {
+  const converted = toJson(value, numberValue)
   if (
     typeof converted !== "object" ||
     converted === null ||
@@ -64,7 +73,11 @@ export function ownProperties(
 /**
  * Converts one value; `undefined` means "drop it".
  */
-function convert(value: unknown, path: string[]): JsonValue | undefined {
+function convert(
+  value: unknown,
+  path: string[],
+  numberValue: (value: number) => JsonValue,
+): JsonValue | undefined {
   switch (typeof value) {
     case "undefined":
     case "function":
@@ -73,7 +86,7 @@ function convert(value: unknown, path: string[]): JsonValue | undefined {
     case "boolean":
       return value
     case "number":
-      return numberOrText(value)
+      return numberValue(value)
     case "bigint":
     case "symbol":
       throw new TypeError(`toJson: ${typeof value} at ${where(path)}`)
@@ -81,19 +94,25 @@ function convert(value: unknown, path: string[]): JsonValue | undefined {
     default:
       break
   }
-  return value === null ? null : convertObject(value as object, path)
+  return value === null
+    ? null
+    : convertObject(value as object, path, numberValue)
 }
 
 /**
  * Converts a non-null object: a collection to an array, a plain object to an
  * object.
  */
-function convertObject(value: object, path: string[]): JsonValue {
+function convertObject(
+  value: object,
+  path: string[],
+  numberValue: (value: number) => JsonValue,
+): JsonValue {
   if (value instanceof Map) {
-    return convertList([...value.values()], path)
+    return convertList([...value.values()], path, numberValue)
   }
   if (value instanceof Set || Array.isArray(value)) {
-    return convertList([...(value as Iterable<unknown>)], path)
+    return convertList([...(value as Iterable<unknown>)], path, numberValue)
   }
   const proto: unknown = Object.getPrototypeOf(value)
   if (proto !== Object.prototype && proto !== null) {
@@ -103,7 +122,7 @@ function convertObject(value: object, path: string[]): JsonValue {
   }
   const entries: [string, JsonValue][] = []
   for (const [key, child] of Object.entries(value)) {
-    const converted = convert(child, [...path, key])
+    const converted = convert(child, [...path, key], numberValue)
     if (converted !== undefined) entries.push([key, converted])
   }
   return ownProperties(entries)
@@ -112,9 +131,13 @@ function convertObject(value: object, path: string[]): JsonValue {
 /**
  * Converts array items, keeping positions (dropped items become null).
  */
-function convertList(items: unknown[], path: string[]): JsonValue[] {
+function convertList(
+  items: unknown[],
+  path: string[],
+  numberValue: (value: number) => JsonValue,
+): JsonValue[] {
   return items.map((item, index) => {
-    const converted = convert(item, [...path, String(index)])
+    const converted = convert(item, [...path, String(index)], numberValue)
     // Keep positions stable, as JSON.stringify does for arrays.
     return converted === undefined ? null : converted
   })

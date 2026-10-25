@@ -5,5 +5,10 @@
   },
   "accepted": true,
   "diagramType": "packet",
-  "db": null
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
 }

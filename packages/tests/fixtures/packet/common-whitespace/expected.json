@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common line conversion trims ends and collapses ASCII blank runs."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "A B C",
+    "accTitle": "A B C",
+    "accDescr": "A B C",
+    "packet": []
+  }
+}

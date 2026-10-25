@@ -1482,12 +1482,14 @@ pie/labels/label-quotes] [fixture: pie/numbers/number-spellings] [fixture:
 pie/title/title-next-trivia] [fixture: pie/description-blocks/block-empty]
 
 Hidden YAML and hidden DIRECTIVE are PieIgnoredText, separate from leading
-frontmatter and Root directives. Their source stays in place, including LF
-consumed outside the range, spare EOL and closing whitespace that can determine
-acceptance. Hidden YAML closers keep column one. A detection-skipped prefix
-stays whole, including its leading LF and comments, so ignored YAML cannot be
-promoted into frontmatter. Guarded YAML formatting applies only to real
-frontmatter. [fixture: pie/hidden-yaml/yaml-after-space-boundary] [fixture:
+frontmatter and Root directives. Their complete hidden source stays in place,
+and closing whitespace that can determine acceptance stays, including at EOF.
+Required exterior LF and edge blanks follow
+[pie Blank lines](./pie.md#blank-lines). Hidden YAML closers keep column one. A
+detection-skipped prefix stays whole, including its leading LF and comments, so
+ignored YAML cannot be promoted into frontmatter. Guarded YAML formatting
+applies only to real frontmatter. [fixture:
+pie/hidden-yaml/yaml-after-space-boundary] [fixture:
 pie/hidden-directives/hidden-after-extra-lf] [fixture:
 pie/frontmatter-yaml/preheader-leading-lf] [fixture:
 pie/frontmatter-yaml/frontmatter-safe]
@@ -1527,8 +1529,9 @@ gitgraph/db-cherry-pick-only-empty-tags] [fixture:
 gitgraph/order-and-repetitions/order-reverse-id]
 
 GitgraphIgnoredText holds native hidden YAML/DIRECTIVE, separately from real
-frontmatter and global directives. Keep its complete source at its owner,
-consumed/spare LF and closing padding, including at EOF. Hidden YAML closers
+frontmatter and global directives. Keep its complete hidden source at its owner
+and closing padding, including at EOF. Required exterior LF and edge blanks
+follow [gitgraph Blank lines](./gitgraph.md#blank-lines). Hidden YAML closers
 keep their source columns. Preserve the entire retained preheader prefix so
 ignored YAML cannot become effective frontmatter. Safe real YAML uses the shared
 formatter and positive indentation minimum at tabWidth zero. Global trivia,
@@ -1581,15 +1584,16 @@ info/title/title-next-comment-directive] [fixture:
 info/accessibility-lines/a11y-line-braces]
 
 InfoIgnoredText holds hidden YAML/DIRECTIVE at its original owner, separately
-from real frontmatter and Root directives. Keep complete source, consumed LF
-outside the range, spare LF and closing padding, including at EOF: these
-boundaries can decide acceptance. Hidden YAML closers retain their columns. Keep
-the complete retained prefix, including leading LF and comment columns, to
-prevent ignored YAML from becoming effective frontmatter and changing
-configuration or acceptance. Only safe real YAML uses the shared formatter and
-positive indentation minimum. [fixture: info/hidden-yaml/yaml-block-space]
-[fixture: info/hidden-yaml/yaml-block-spare] [fixture:
-info/hidden-directives/hidden-title-space] [fixture:
+from real frontmatter and Root directives. Keep complete hidden source and
+closing padding, including at EOF: these boundaries can decide acceptance.
+Required exterior LF and edge blanks follow
+[info Blank lines](./info.md#blank-lines). Hidden YAML closers retain their
+columns. Keep the complete retained prefix, including leading LF and comment
+columns, to prevent ignored YAML from becoming effective frontmatter and
+changing configuration or acceptance. Only safe real YAML uses the shared
+formatter and positive indentation minimum. [fixture:
+info/hidden-yaml/yaml-block-space] [fixture: info/hidden-yaml/yaml-block-spare]
+[fixture: info/hidden-directives/hidden-title-space] [fixture:
 info/trailing-whitespace/trailing-hidden-eof-kept] [fixture:
 info/retained-prefix/prefix-leading-lf-kept] [fixture:
 info/frontmatter-yaml/frontmatter-zero-minimum]
@@ -1619,3 +1623,67 @@ info/div-directive-flag-middle] [corpus fixture: info/div-selected-showinfo]
 [corpus fixture: info/div-frontmatter-invalid-yaml] [corpus fixture:
 info/div-c4container-title] [corpus fixture: info/div-bare-before-header-ls]
 [test: info Markdown: rejected]
+
+## Packet hidden boundaries and authored blocks
+
+The [packet rules](./packet.md) keep the authored `packet` / `packet-beta`
+header and all three block forms: range, single and relative. Never reconstruct
+blocks from published rows or remove occurrences after the publication cap.
+Repeated labels stay separate, and empty common assignments remain: deleting an
+empty title can restore an earlier title. Labels retain quotes, padding,
+escapes, HTML, entities and physical continuation columns because rewriting
+these can change the Db. Numeric digits remain written even when double
+conversion rounds or overflows them; exponent/Infinity output is not packet
+syntax. [fixture: packet/block-forms-and-order/block-three-forms] [fixture:
+packet/block-forms-and-order/keep-interleaving] [fixture:
+packet/block-forms-and-order/cap-unpublished-kept] [fixture:
+packet/label-content/label-padding] [fixture:
+packet/label-content/label-escapes] [fixture: packet/numbers/number-precision]
+[fixture: packet/numbers/number-overflow]
+
+PacketIgnoredText holds native hidden YAML/DIRECTIVE separately from real
+frontmatter and Root directives. Keep its complete hidden source in its named
+owner and closing padding, including EOF: these can decide whether a following
+statement has visible EOL. Required exterior LF and edge blanks follow
+[packet Blank lines](./packet.md#blank-lines). Keep internal and closing
+columns, and keep the complete retained preheader prefix so ignored YAML cannot
+become effective title/configuration. Only safe real frontmatter uses the
+guarded YAML formatter and positive minimum indentation. Body indentation can
+instead be zero at `tabWidth: 0`, since packet columns have no grammatical
+meaning. [fixture: packet/hidden-yaml/yaml-all-range-gaps] [fixture:
+packet/hidden-yaml/yaml-suffix-space] [fixture:
+packet/hidden-directives/hidden-common-suffixes] [fixture:
+packet/hidden-directives/hidden-eof-padding] [fixture:
+packet/retained-prefix/prefix-retain] [fixture:
+packet/frontmatter-yaml/frontmatter-zero-min] [fixture:
+packet/indentation/indent-zero]
+
+Common line edges compact, but never read a next-physical-line value. Shared
+accessibility and description layouts retain empty forms, trivia and authored
+continuation columns. Global directives keep opaque content and attachment;
+removing init can change row configuration. All semicolons remain, using shared
+segment protection for crossing values/trivia and header/body groups: removing
+selected semicolons or moving their triggers can change the Db. Physical EOL,
+BOM, final-newline and Markdown handling are shared. Markdown trims final
+payload-line padding; interior hidden padding stays necessary. [fixture:
+packet/title/title-no-next] [fixture:
+packet/accessibility-lines/a11y-empty-next] [fixture:
+packet/description-blocks/description-columns] [fixture:
+packet/global-directives/global-standalone] [fixture:
+packet/semicolons/semicolons-trigger] [fixture:
+packet/semicolons/semicolons-component] [test: packet Markdown: hidden-boundary]
+[test: packet Markdown: final-hidden-padding]
+
+The six [specified readings](./packet.md#specified-readings) cover atomic
+keyword/integer cuts, body-only frontmatter HTML, opaque embedded data, C4
+detection and passed bare-percent trivia. Acceptance-changing text
+`packet.bitsPerRow` follows the specified comparison path, retaining site
+configuration, title and other settings. Raw rejection supplies no raw Db or
+invented accepted effects. Hidden forms, empty labels and empty descriptions
+need no new divergence. Parser failures report standalone syntax errors without
+output and decline Markdown embedding without repairing the payload. [corpus
+fixture: packet/directive-header-middle] [corpus fixture:
+packet/div-selected-title-interior] [corpus fixture:
+packet/config-frontmatter-fraction] [corpus fixture:
+packet/config-frontmatter-overrides-site] [corpus fixture:
+packet/c4container-label] [test: packet Markdown: rejected]

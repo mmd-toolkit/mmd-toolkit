@@ -462,6 +462,23 @@ option の語とコロンの間や引用文字列の中は許し、
 [fixture: info/lex-yaml-opener-global]
 [fixture: info/lex-directive-rejected-tail]
 
+### Packet
+
+共有 Directive がテキストを保持するが、
+固定語と整数の内部に構成要素の境界はない。
+理由 2 の直接の単位規則で分割形を拒否する。
+完全な keyword/colon・keyword/brace の境界と、
+値のテキストは差異のない対照である。
+[fixture: packet/directive-header-middle]
+[fixture: packet/directive-beta-middle]
+[fixture: packet/directive-title-middle]
+[fixture: packet/directive-acctitle-middle]
+[fixture: packet/directive-accdescr-middle]
+[fixture: packet/directive-number-middle]
+[fixture: packet/directive-acctitle-colon]
+[fixture: packet/directive-accdescr-brace]
+[fixture: packet/directive-label-middle]
+
 ## mermaid.js の文書と issue
 
 - [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
@@ -578,3 +595,11 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
   この節は既存の直接の規則に従います。
+
+- pin の
+  [packet の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  は単一位置・範囲・相対 count を示します。
+  この前処理の境界については定めていません。
+  2026-10-25 に `packet bitsPerRow`、`packet fractional`、
+  `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
+  ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。

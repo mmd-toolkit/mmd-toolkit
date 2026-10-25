@@ -389,6 +389,18 @@ info/div-directive-accdescr-line-keyword] [fixture:
 info/directive-acctitle-colon] [fixture: info/directive-block-brace] [fixture:
 info/lex-yaml-opener-global] [fixture: info/lex-directive-rejected-tail]
 
+### Packet
+
+Shared Directive records hold the text, but a fixed word or integer has no
+internal component boundary. The direct atomic rule rejects their split forms
+under reason 2. A complete keyword/colon or keyword/brace boundary and value
+text are nondiffering controls. [fixture: packet/directive-header-middle]
+[fixture: packet/directive-beta-middle] [fixture: packet/directive-title-middle]
+[fixture: packet/directive-acctitle-middle] [fixture:
+packet/directive-accdescr-middle] [fixture: packet/directive-number-middle]
+[fixture: packet/directive-acctitle-colon] [fixture:
+packet/directive-accdescr-brace] [fixture: packet/directive-label-middle]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -481,3 +493,11 @@ warning. These facts do not justify any additional divergence.
   info/showInfo rendering and was open with Type: Bug / Error and Status:
   Triage. No inspected result establishes an info-specific maintainer decision
   to reject this syntax; this section follows the existing direct rule.
+
+- The pinned
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  shows single positions, ranges and relative counts; it does not define this
+  preprocessing boundary. Searches of the official repository's issues and pull
+  requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
+  `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
+  this divergence.

@@ -1,0 +1,92 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A YAML true row width behaves as one bit per row and publishes ten rows."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 1,
+          "end": 1,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 2,
+          "end": 2,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 3,
+          "end": 3,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 4,
+          "end": 4,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 5,
+          "end": 5,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 6,
+          "end": 6,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 7,
+          "end": 7,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 8,
+          "end": 8,
+          "label": "A"
+        }
+      ],
+      [
+        {
+          "start": 9,
+          "end": 9,
+          "label": "A"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": true
+      }
+    }
+  }
+}

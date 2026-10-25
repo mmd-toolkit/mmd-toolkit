@@ -121,6 +121,16 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "written-text",
     spec: "Nonempty written form, including fences. (ast/gitgraph.md).",
   },
+  PacketLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Authored common-value text. (ast/packet.md).",
+  },
+  PacketIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty authored fenced form. (ast/packet.md).",
+  },
   InfoLiteral: {
     field: "value",
     kind: "written-text",

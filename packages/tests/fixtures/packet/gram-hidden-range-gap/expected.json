@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive closer glued to the next range component fails its boundary and the rest of the line becomes a rejecting comment."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 29: Expecting token of type ':' but found `\n`."
+  }
+}

@@ -44,8 +44,8 @@ diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
 (`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
 C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`),
-usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), and info (`info`).
-Every other detected type throws `UnsupportedDiagramError`.
+usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), info (`info`), and
+packet (`packet`). Every other detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -231,3 +231,13 @@ gitgraph/db-state-replacement-source-origin] [fixture:
 gitgraph/db-state-empty-ids-are-fresh] [fixture:
 gitgraph/db-cherry-pick-invalid-parent] [fixture:
 gitgraph/docs-community-contributing-05cdc44b]
+
+The packet lexer follows the specification's
+[ordered rules](../../spec/docs/diagrams/packet.md#ordered-rules), sharing
+common forms with info in src/common-form-unit-lexer.ts. Recursive descent
+retains all three authored block forms and their hidden gaps. After shared token
+checks, src/diagrams/packet/acceptance.ts applies ordered double arithmetic and
+the row iteration with the default width of 32. Tests apply external site width
+to the same analysis; parse(text) keeps its fixed API. [fixture:
+packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced] [fixture:
+packet/db-explicit-start-rounded] [fixture: packet/config-fraction-reject]

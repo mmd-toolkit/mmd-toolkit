@@ -74,7 +74,8 @@ description:
   （`packages/tests/docs/db-summaries.md`、
   `packages/tests/docs/db-from-tree.md`）
   を引く。
-  残すのは、入力を受理するかどうかを決める文、木の型と欄の値とその理由、
+  残すのは、入力を受理するかどうかを決める文（比較値と状態の更新を含む）、
+  木の型と欄の値とその理由、
   字句の読みである。
 - 仕様の主張ごとに fixture を用意する。
   fixture の追加は tests パッケージの生成器を使う。
@@ -376,6 +377,9 @@ mode ごとの空白とコメント、custom matcher の失敗、category と正
    実際の terminal 配列を調べる。
    継承した terminal、custom keyword matcher、長い代替を含め、優先順を記録する。
    宣言順だけや、一般的な最長一致の仮定では、その順は決まらない。
+   インポートされても到達しない terminal を挙げ、
+   mermaid.js の `packages/parser` と
+   `packages/mermaid/src/diagrams/<図種>` の両方の固定したテストを読む。
 2. 実際の keyword matcher と境界の検査を読む。
    境界を満たす文字を正確に述べ、単位間で読み飛ばす空白と区別する。
    境界は、共通のディレクティブと、共通の行規則が選ぶセミコロンを
@@ -386,6 +390,9 @@ mode ごとの空白とコメント、custom matcher の失敗、category と正
    Jison の語境界の規則を持ち込まない。
    同じ場所で競うキーワードと terminal を調べ、
    キーワードと値を一緒に読む複合した行の形も含める。
+   custom matcher を使うキーワードと、
+   それを使わない句読点付きの綴りを別々に調べ、
+   語と句読点の構成要素を区別する。
 3. 隠れた terminal を、flag と一致の終わりを含めて優先順に読む。
    共通の前処理と区別する。
    後の LF を取るか、境界として見るだけか、EOF で足した LF を取るかを調べる。
@@ -393,17 +400,30 @@ mode ごとの空白とコメント、custom matcher の失敗、category と正
    完全な単位間の一致と原子内の一致を調べる。
    まず、読み飛ばす形をそれぞれ木のどこに持てるかを問う。
    隠れていることだけで差異を提案しない。
+   最も近い閉じで終わると仮定せず、隣り合う区切りを使い、
+   各 terminal 内の選択肢の順と貪欲・非貪欲な一致を確かめる。
+   保持する各形の所有者と範囲を決め、消費する後続の LF はその範囲の外に置く。
 4. 図の module から、図固有、共通、既定の value converter をたどる。
    各変換の分岐を、実際に呼ぶ文法の規則名と照合する。
    使われない分岐は挙動ではない。
    文字列のエスケープ、数の変換、両端の空白の除去、空白の圧縮を別々に記録する。
    木の書かれた値と変換した Db の値を区別し、3.3 に従い木が保つ綴りを定める。
+   代入される構文、上書きされる構文、代入のない構文を、
+   生成した model と結果の公開までたどり、
+   Mermaid の model や Db に現れなくても、書かれたすべての出現を保つ。
+   受理で比較する値を、エンティティの置換、引用符とエスケープの復号、
+   空白の扱い、設定に依るエスケープまでたどり、
+   書き換えの順と中間のテキストが生む重なりを確かめる。
 5. 公開の parse wrapper と図の adapter を、完全な消費とすべてのエラー検査まで
    たどる。
    回復した木に付いたものを含め、字句エラーや構文エラーが結果の公開を妨げるか
    確かめる。
    変換後の model の検証と Db による拒否も読む。
    回復した木があることや文法だけから、受理を判断しない。
+   最後の option の選択後に到達する意味の検査を挙げ、
+   その検査が使う状態の更新、同一性、置換を含める。
+   adapter が何も公開しない場合や意味の検査がない場合は、
+   公開の処理や欄を作らず、その不在を記録する。
 6. [common.md](../../../packages/spec/docs/common.ja.md) の共通の前処理と
    検出の規則を読む。
    「ソースの読み方」「フロントマター」「先頭の空白」と、
@@ -447,6 +467,8 @@ mode ごとの空白とコメント、custom matcher の失敗、category と正
    tests パッケージの Mermaid runner で調べる。
    隠れた形の所有、区切り、取られる LF、EOF、差異の逆方向を含める。
    文が区別する場合だけを fixture CLI で加え、入力を生成しない。
+   見出し・flag・文の隙間と EOL の条件は、先行する図の配置を使わず、
+   この図の入口と fragment の規則から求める。
 
 ### 3.2 図種の文書を書く
 
@@ -460,6 +482,11 @@ index.md の「How to read a diagram document」の 4 節で書く。
    各規則がどのノードを作るかを表にする。
    文法が受理した後で mermaid.js が拒否する入力を、
    それを決めるものすべてとともに書く（Rejections outside the grammar）。
+   意味上の受理条件を、書かれた文に対する直接の規則で述べ、
+   各条件の判断に要る比較値と状態の変化を含め、
+   受理に不要な派生値だけを tests の要約に委ねる。
+   テキストの外のサイト設定に依る条件は、既定値と、
+   変更された設定を持つ側がそれを適用し、残りは木だけで決めることを述べる。
 4. Known divergences: known-divergences.md の識別子のうち、
    この図種に当たるものと、
    それがこの図種でどう現れるか。
@@ -471,6 +498,10 @@ index.md の「How to read a diagram document」の 4 節で書く。
    規則とその理由、見つかったときの mermaid.js の文書と issue）。
    - 差異の文書に図種の段落を足すときは、
      「mermaid.js の文書と issue」の節にも、その図種の項を足す。
+   - `embedded-data-opaque` は、
+     [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)と
+     [DIVERGENCE_PROPERTIES](../../../packages/tests/src/fixture-acceptance.ts)
+     に従う。
 
 図種の Db の要約と、それを木から作る手順は、
 `@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と
@@ -481,9 +512,14 @@ index.md の「How to read a diagram document」の 4 節で書く。
 
 `docs/ast/<図種>.md` と `.ja.md`。
 
+図種名とノードの接頭辞は、[conventions](../conventions/SKILL.ja.md#コード)
+の規則に従う。
+
 1. 各ノードの型について、
    欄の表（型は言語に依らない言葉で書く。セルは短く、長い説明は表の下）、
    子の欄（たどる順）、範囲を書く。
+   範囲は各ノード自身の書かれた形で述べ、
+   そのノードが許す始まりと終わりだけを書く。
 2. 各単位のトークンの種類は、parser が
    `packages/parser/docs/tokens/<diagram>.md` で定め、
    仕様の文書はそれに言及しない。
@@ -529,7 +565,8 @@ index.md の「How to read a diagram document」の 4 節で書く。
 1. mermaid.js で確かめる（2.1）。
 2. 既存の fixture を探す（2.2）。
    同じ入力か、同じことを記録する入力があれば、それを引く。
-   そう判断するときは、`expected.json` の `accepted` と値まで読む。
+   そう判断するときは、`expected.json` と、差異が必要とする `specified.json` の
+   `accepted` と値まで読む。
    入力の見た目だけで判断しない。
 3. なければ足す（2.3）。
    対照の例（規則が当たらない最も近い入力）も足す。
@@ -539,6 +576,8 @@ index.md の「How to read a diagram document」の 4 節で書く。
    `fixtures:set-divergence` で識別子を付ける。
    どの識別子かは、known-divergences.md の定義に当てはめて決め、
    同じ種類の既存の fixture に合わせる。
+6. corpus の場合を他パッケージへ渡すときは、入力を別の fixture に写さず、
+   既存の fixture を引用する。
 
 ### 3.5 規則を確かめる
 
@@ -636,6 +675,15 @@ index.md の「How to read a diagram document」の 4 節で書く。
 
 作業の結果として、変えた節、足した fixture の名前、parser が直す点
 （受理、トークン、Db の導出）、parser に `ast.json` が要る fixture を示す。
+
+引き継ぎには、次の責務を含める。
+
+- `checkTree` は、[tests §6](../tests/SKILL.ja.md#6-langium-の図)に従う。
+- 差異の形の検査は、
+  [parser §6](../parser/SKILL.ja.md#6-fixture-が足されたとき規則が変わったとき)に従う。
+- printer の作業は、[prettier-plugin](../prettier-plugin/SKILL.ja.md)に従う。
+- Db に載らない構文は Db の一致では保持を確かめられないため、
+  独立した木の検査と、整形の期待出力全体を比べる fixture を求める。
 
 ### 3.7 parser が仕様を読む前の点検
 
@@ -895,9 +943,12 @@ Langium では、[Langium の図](#langium-の図) の項目 6 で、
 3.2 の Detection を書く前に、共通の前処理と検出の境界を確定する。
 実際の terminal の優先順とキーワード境界、
 隠れた terminal の範囲と LF の消費、使われる value converter、
-wrapper の受理の門を確定する。
-それを 3.2〜3.5 の文、木、明示した fixture の場合に適用する。
-回復した木は受理の根拠ではない。
+wrapper の受理の門を確定し、書かれた構文と結果の公開や意味の検査を区別する。
+それを 3.2〜3.7 の文、木、明示した fixture の場合、引き継ぎに適用する。
+回復した木は受理の根拠ではなく、
+Db が空でも書かれた構文を捨てる根拠にはならない。
+処理系固有の調査はこの手順に置き、
+Mermaid のソースを見ずに実装が従える直接の規則を渡す。
 
 Chevrotain は、その手順と、mode、順序つきの一致、`longer_alt`、
 書かれた境界、エラー処理の確認を使う。

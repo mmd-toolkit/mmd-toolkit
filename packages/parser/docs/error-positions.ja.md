@@ -18,14 +18,14 @@
   [fixture: common/comment-only]
   [fixture: common/whitespace-only]
 - `---` 疑似図種、
-  または pie・gitgraph・info 以外の対応図種の前で保持した非先頭ブロック:
+  または pie・gitgraph・info・packet 以外の対応図種の前で保持した非先頭ブロック:
   `range` は、ブロックの先頭の `-` 3 文字。
   [fixture: common/frontmatter-adjacent-delimiters]
   [fixture: common/frontmatter-nonleading-class]
   [fixture: common/frontmatter-nonleading-sequence]
   [fixture: common/frontmatter-nonleading-state]
   [fixture: common/frontmatter-after-bare-percent-flowchart]
-- pie・gitgraph・info 以外で、
+- pie・gitgraph・info・packet 以外で、
   ヘッダーの前のもう一度の読みで見つかるディレクティブ
   （[図種の検出](../../spec/docs/common.ja.md#図種の検出)）:
   `range` は、その開きの `%%{`。
@@ -1248,3 +1248,39 @@ CSS のその間の U+2028 は、label-symbol 単位全体を報告します。
 
 `html-tag-in-frontmatter` は、どの `"` を `'` として読むかを変えます。
 パーサーはそれを区別しないので、そこから起きる拒否は、上の規則で報告します。
+
+## packet の中
+
+[規則の順序](../../spec/docs/diagrams/packet.ja.md#規則の順序)に従い、
+文法と意味上の受理条件より先にソース全体を走査します。
+後方の字句エラーも、正しい接頭部分を持つ入力全体を拒否します。
+[fixture: packet/error-after-prefix] [fixture: packet/error-recovered-block]
+
+| 拒否                                   | 範囲とメッセージ                                                                            | fixture                                                                                                                                                                                                      |
+| -------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 字句規則が一致しない                   | そのソース文字。`Unexpected character`。                                                    | [fixture: packet/error-start] [fixture: packet/space-header-nbsp] [fixture: packet/lex-integer-shorter-before-dot]                                                                                           |
+| 完全な文字列・説明ブロックが一致しない | 開き引用符またはキーワードの最初の文字。`Unexpected character`。                            | [fixture: packet/lex-label-open] [fixture: packet/lex-label-open-single] [fixture: packet/lex-label-escaped-lf] [fixture: packet/accdescr-block-open]                                                        |
+| 文法が単位を読めない                   | 単位の有意範囲。`Unexpected token`。EOF ではソース末尾の空範囲で `Unexpected end of text`。 | [fixture: packet/gram-second-header] [fixture: packet/gram-same-line-blocks] [fixture: packet/comment-inside-range]                                                                                          |
+| 隠れた形式が唯一の区切り LF を消費する | 次の可視単位。`Unexpected token`。EOF なら EOL を満たす。                                   | [fixture: packet/hidden-directive-block] [fixture: packet/hidden-directive-title] [fixture: packet/hidden-yaml-block] [fixture: packet/hidden-yaml-description] [fixture: packet/hidden-directive-block-eof] |
+| 範囲が降順                             | 記述されたブロック全体。`Packet range end is less than its start`。                         | [fixture: packet/error-descending-before-gap] [fixture: packet/error-cap-following-descending]                                                                                                               |
+| ブロックが連続しない                   | 記述されたブロック全体。`Packet block start must follow the previous logical endpoint`。    | [fixture: packet/error-first-nonzero] [fixture: packet/error-overlap] [fixture: packet/error-repeat-third] [fixture: packet/error-cap-following-noncontiguous]                                               |
+| 相対指定の数がゼロ                     | 記述されたブロック全体。`Packet relative count must be greater than zero`。                 | [fixture: packet/error-zero-after-valid] [fixture: packet/error-cap-following-zero]                                                                                                                          |
+
+ブロック全体の範囲は、[ブロックの位置](./positions/packet.ja.md#範囲)に従い、
+隠れた接尾形式を含みます。
+サイトの行幅の検査は、保留断片の逆転も、
+そのブロックの範囲で `Packet fragment start exceeds its end` として拒否します。
+デフォルトの parse(text) は対応する入力を受理します。
+[fixture: packet/hidden-directive-block-eof]
+[fixture: packet/error-rounded-following-wide]
+[fixture: packet/error-single-rounded-end-wide]
+[fixture: packet/config-fraction-reject]
+
+共通の不可分なトークンの分割エラーは、
+ディレクティブまたは選択されたセミコロンを指します。
+固有ディレクティブの不一致は Comment になり得ます。
+YAML は範囲のダッシュへ戻り、後の字句・文法エラーになり得ます。
+[fixture: packet/directive-number-middle]
+[fixture: packet/div-selected-integer-interior]
+[fixture: packet/hidden-directive-close-glued]
+[fixture: packet/hidden-yaml-unclosed] [fixture: packet/lex-yaml-two-empty]

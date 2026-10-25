@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The beta keyword may meet a common title terminal."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

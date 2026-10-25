@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Global trivia may separate a whole description keyword from its brace."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

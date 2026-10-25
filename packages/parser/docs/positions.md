@@ -192,3 +192,5 @@ The second condition is about the source text: `Token.value` and the text of
 every comment, directive, and frontmatter equal the input in their ranges. The
 values of nodes, which leave out comment regions, directives, and the `;` that
 the line rule ignores, are not part of it.
+
+Packet ranges are defined in [packet](./positions/packet.md#ranges).

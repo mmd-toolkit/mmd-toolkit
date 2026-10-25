@@ -6,6 +6,7 @@
  */
 import type { MermaidConfig } from "../../packages/tests/src/index.ts"
 import { scanSource } from "../../packages/tests/src/source-scan.ts"
+import { configurationFrontmatter } from "../../packages/tests/src/configuration.ts"
 import type {
   DivergenceRemoval,
   MermaidRun,
@@ -78,6 +79,7 @@ const OPAQUE_MARK = "embedded-data-opaque"
 const OPAQUE_ACCEPTANCE_KEYS: Readonly<
   Record<string, readonly (readonly [section: string, key: string])[]>
 > = {
+  packet: [["packet", "bitsPerRow"]],
   gitGraph: [
     ["gitGraph", "mainBranchName"],
     ["gitGraph", "htmlLabels"],
@@ -287,8 +289,8 @@ export async function opaqueReferenceInput(
     }
   }
   if (!changed) return text
-  const metadata = { title: reading.title, config: textConfig }
-  return `---\n${JSON.stringify(metadata)}\n---\n${withoutBlocks(text, embeddedBlocks(text))}`
+  const metadata = configurationFrontmatter(textConfig, reading.title)
+  return `---\n${metadata}\n---\n${withoutBlocks(text, embeddedBlocks(text))}`
 }
 
 /**

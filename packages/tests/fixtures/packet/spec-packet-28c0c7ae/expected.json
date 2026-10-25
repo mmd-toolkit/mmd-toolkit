@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/packet/packet.spec.ts",
+    "line": 33,
+    "test": "packet diagrams > should handle diagram with data and title"
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "Packet diagram",
+    "accTitle": "Packet accTitle",
+    "accDescr": "Packet accDescription",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 10,
+          "label": "test"
+        }
+      ]
+    ]
+  }
+}

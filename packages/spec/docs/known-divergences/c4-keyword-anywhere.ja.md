@@ -356,6 +356,23 @@ info の本文は引き続き拒否します。 [fixture: info/div-c4container-t
 [fixture: info/lex-c4-removed-directive] [fixture: info/lex-c4-frontmatter]
 [fixture: info/lex-c4-invalid-info]
 
+### Packet
+
+文字列、共通 literal、ignored text、Comment は
+C4 語を保持できる。
+理由 2 の逆方向の見出しだけの選択により、
+Mermaid が C4 へ切り替えて拒否する後続の C4 語を受理する。
+Mermaid が受理する入力は拒否しない。
+LF 終端の接尾辞と検出が通過した残存 YAML は差異のない対照である。
+[fixture: packet/c4container-label]
+[fixture: packet/c4component-title]
+[fixture: packet/c4deployment-block]
+[fixture: packet/c4dynamic-header-comment-eof]
+[fixture: packet/div-c4-hidden-yaml]
+[fixture: packet/div-c4-hidden-suffix-eof]
+[fixture: packet/c4-hidden-suffix-lf]
+[fixture: packet/c4-retained-preheader-yaml]
+
 ## mermaid.js の文書と issue
 
 - [C4 図の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md)
@@ -446,3 +463,11 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
   この節は既存の直接の規則に従います。
+
+- pin の
+  [packet の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  は単一位置・範囲・相対 count を示します。
+  この前処理の境界については定めていません。
+  2026-10-25 に `packet bitsPerRow`、`packet fractional`、
+  `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
+  ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。

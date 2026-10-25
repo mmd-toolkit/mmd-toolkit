@@ -255,9 +255,9 @@ describe("runMermaid", () => {
   })
 
   it("returns db null for a diagram type without a normalizer", async () => {
-    expect(await runMermaid("packet\n")).toEqual({
+    expect(await runMermaid("architecture-beta\n")).toEqual({
       accepted: true,
-      diagramType: "packet",
+      diagramType: "architecture",
       db: null,
     })
   })

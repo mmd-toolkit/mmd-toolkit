@@ -154,14 +154,14 @@ pie/header-capitalized] [fixture: pie/header-uppercase]
 The frontmatter-shaped block passed at the detection point is still diagram
 text. A comment line followed by `---`, `title: Hidden`, `---`, and `pie`
 selects pie, whose hidden YAML rule skips the block without applying its title.
-Gitgraph and info also retain matching hidden blocks; the cited other diagram
-types reject their corresponding inputs. An adjacent-fence empty block, an
-unmatched fence, or a bare `%%` line before the block instead leaves the
+Gitgraph, info and packet also retain matching hidden blocks; the cited other
+diagram types reject their corresponding inputs. An adjacent-fence empty block,
+an unmatched fence, or a bare `%%` line before the block instead leaves the
 rejecting `---` pseudo-diagram selected. [fixture:
 pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment] [fixture:
-common/directive-before-frontmatter] [fixture:
-common/frontmatter-nonleading-sequence] [fixture:
+packet/detect-one-block] [fixture: common/directive-before-frontmatter]
+[fixture: common/frontmatter-nonleading-sequence] [fixture:
 common/frontmatter-nonleading-class] [fixture:
 common/frontmatter-nonleading-state] [fixture:
 pie/lex-yaml-after-comment-adjacent-fences] [fixture: pie/frontmatter-unclosed]
@@ -193,6 +193,14 @@ detection and reject syntax. [fixture: gitgraph/header-only] [fixture:
 gitgraph/header-colon] [fixture: gitgraph/header-spaced-colon] [fixture:
 gitgraph/header-lr] [fixture: gitgraph/header-tb] [fixture: gitgraph/header-bt]
 [fixture: gitgraph/detect-letter-suffix]
+
+Entry 24, the
+[packet detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15),
+selects the lowercase prefix `packet` without a suffix boundary, including
+`packet-beta`; both report id `packet`. The
+[packet syntax](./diagrams/packet.md#detection) defines header boundaries and
+acceptance. [fixture: packet/spec-packet-7426afc4] [fixture:
+packet/spec-packet-c4580507] [fixture: packet/header-letter-suffix]
 
 ## Notes
 

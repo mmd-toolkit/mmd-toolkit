@@ -200,9 +200,9 @@ The reference removes only the embedded data responsible for the divergence:
    sequence/div-invalid-frontmatter-preserves-wrap-directive]
 2. When valid embedded configuration changes a diagram's acceptance conditions,
    read with only the keys used by those conditions removed from that
-   configuration. Keep its other values. The gitgraph keys are named below.
-   [fixture: gitgraph/div-frontmatter-main-branch-preserves-title] [fixture:
-   gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
+   configuration. Keep its other values. The gitgraph and packet keys are named
+   below. [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+   [fixture: gitgraph/div-frontmatter-html-labels-default-comparison] [fixture:
    gitgraph/div-init-html-labels-default-comparison]
 
 Keep the frontmatter title as Mermaid derives it, as in
@@ -411,6 +411,40 @@ both and are unmarked. [fixture: info/div-frontmatter-invalid-yaml] [fixture:
 info/div-frontmatter-html-invalid-yaml] [fixture:
 info/hidden-yaml-preheader-invalid] [fixture: info/directive-invalid-init]
 
+### Packet
+
+Frontmatter/directive nodes hold their bodies without interpreting them for
+acceptance. Malformed YAML may reject only in Mermaid. In both acceptance
+directions the comparison removes only `packet.bitsPerRow` from valid text
+configuration, retaining site configuration, Mermaid's derived frontmatter title
+and other valid settings. [fixture: packet/frontmatter-invalid] [fixture:
+packet/frontmatter-invalid-keeps-config] [fixture:
+packet/config-frontmatter-fraction] [fixture: packet/config-directive-fraction]
+[fixture: packet/config-frontmatter-overrides-site] [fixture:
+packet/config-directive-overrides-site]
+
+Use the default `packet.bitsPerRow = 32` for the
+[packet acceptance conditions](../diagrams/packet.md#semantic-acceptance-conditions).
+The named key removed from comparison configuration is **`packet.bitsPerRow`**.
+A fractional width in YAML frontmatter or init can reject in Mermaid and accept
+here; overriding a fractional site width with text width 32 can reverse that
+difference. In both directions specified.json records acceptance, Db and
+embedded values. Whoever holds site configuration applies it; it is not
+reconstructed from text configuration. [fixture:
+packet/config-frontmatter-fraction] [fixture: packet/config-directive-fraction]
+[fixture: packet/config-frontmatter-overrides-site] [fixture:
+packet/config-directive-overrides-site]
+
+Omit a rejected leading frontmatter only from the comparison, keeping a valid
+showBits directive beside it. Nonleading hidden YAML is already held by
+PacketIgnoredText, so invalid content there alone is not a divergence.
+Configuration that changes published rows without changing acceptance follows
+the ordinary embedded-configuration path and the
+[tests summary](../../../tests/docs/db-summaries.md#packet). [fixture:
+packet/frontmatter-invalid-keeps-config] [fixture: packet/hidden-yaml-body]
+[fixture: packet/config-frontmatter-row-fraction-accepted] [fixture:
+packet/config-init-row-integer]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -491,3 +525,11 @@ warning. These facts do not justify any additional divergence.
   info/showInfo rendering and was open with Type: Bug / Error and Status:
   Triage. No inspected result establishes an info-specific maintainer decision
   to reject this syntax; this section follows the existing direct rule.
+
+- The pinned
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  shows single positions, ranges and relative counts; it does not define this
+  preprocessing boundary. Searches of the official repository's issues and pull
+  requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
+  `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
+  this divergence.

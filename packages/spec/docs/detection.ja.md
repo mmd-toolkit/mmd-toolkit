@@ -187,13 +187,14 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び
 、
 隠れた YAML の規則がタイトルを適用せずにブロックを読み飛ばします。
-gitgraph と info も一致する隠れたブロックを保ちます。
+gitgraph・info・packet も一致する隠れたブロックを保ちます。
 以下で引用するほかの図種の入力は、字句規則か文法で拒否します。
 隣り合う区切りの空ブロック、閉じない区切り、ブロックの前の裸の `%%` の行では、
 代わりに拒否する `---` 疑似図種が選ばれます。
 [fixture: pie/frontmatter-nonleading-comment]
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment]
+[fixture: packet/detect-one-block]
 [fixture: common/directive-before-frontmatter]
 [fixture: common/frontmatter-nonleading-sequence]
 [fixture: common/frontmatter-nonleading-class]
@@ -239,6 +240,15 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 [fixture: gitgraph/header-tb]
 [fixture: gitgraph/header-bt]
 [fixture: gitgraph/detect-letter-suffix]
+
+24 番は
+[packet の detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15)
+により、小文字の接頭辞 `packet` を接尾辞境界なしで選びます。
+`packet-beta` も含み、どちらも id は `packet` です。
+見出しの境界と受理は [packet の構文](./diagrams/packet.ja.md#検出)で定めます。
+[fixture: packet/spec-packet-7426afc4]
+[fixture: packet/spec-packet-c4580507]
+[fixture: packet/header-letter-suffix]
 
 ## 注記
 

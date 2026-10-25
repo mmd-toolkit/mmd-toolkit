@@ -6,6 +6,7 @@ import { printAtoms } from "./atoms.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import { findHiddenKeptLines, hiddenBlockRules } from "./hidden-forms.ts"
 import type { DiagramPrinter } from "./index.ts"
+import { lineStartOf } from "./kept-lines.ts"
 import { findLayoutEnd } from "./layout.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
@@ -71,23 +72,68 @@ export function createFlatHiddenDiagramPrinter<
       statement: indentationOf(options, 1),
       continuation: indentationOf(options, 2),
     }
-    const hidden = diagram.body.filter(
+    const hidden: Node[] = diagram.body.filter(
       (item) => item.type === layouts.ignoredType,
     )
-    const hiddenEnds = new Set(hidden.map((item) => item.range[1]))
+    // Only leading forms attached to the header belong to its edge. A
+    // statement's textAfter remains a body boundary even when a kept segment
+    // leaves that statement on the header's line (docs/packet.md, Blank lines).
+    const headerHiddenEnds = new Set<number>()
+    let headerEnd = findLayoutEnd(headerLayout)
     for (const item of diagram.body) {
-      if ((item.textAfter?.length ?? 0) > 0) hiddenEnds.add(item.range[1])
+      if (
+        item.type !== layouts.ignoredType ||
+        lineStartOf(source, item.range[0]) !== lineStartOf(source, headerEnd)
+      )
+        break
+      headerHiddenEnds.add(item.range[1])
+      headerEnd = item.range[1]
     }
-    const statements = new Map(
-      diagram.body.map((item) => [item, layouts.statement(source, item)]),
-    )
+    const statements = new Map<Node, AtomLayout>()
+    for (const item of diagram.body) {
+      const layout = layouts.statement(source, item)
+      const suffixes = item.textAfter ?? []
+      hidden.push(...suffixes)
+      // A protected segment can span a suffix boundary. Keep that layout
+      // whole rather than cutting an indivisible atom.
+      const firstSuffix = suffixes.at(0)
+      if (
+        firstSuffix === undefined ||
+        suffixes.some(
+          (suffix) =>
+            !layout.atoms.some(
+              (atom) =>
+                atom.start === suffix.range[0] && atom.end === suffix.range[1],
+            ),
+        )
+      ) {
+        statements.set(item, layout)
+        continue
+      }
+      statements.set(item, {
+        ...layout,
+        atoms: layout.atoms.filter((atom) => atom.end <= firstSuffix.range[0]),
+      })
+      // Suffix forms are real nodes too. Give their exterior trivia to the
+      // shared block printer, including between suffixes of the same statement
+      // (diagrams/packet.md, Grammar; docs/packet.md, Blank lines and Comments).
+      for (const suffix of suffixes) {
+        statements.set(suffix, {
+          atoms: [{ start: suffix.range[0], end: suffix.range[1] }],
+          rules: new Map(),
+          outdented: new Set(),
+          lineBreaks: "kept",
+        })
+      }
+    }
+    const hiddenEnds = new Set(hidden.map((item) => item.range[1]))
     const block = printBlock(
       [...statements.values()].map(
         (layout) => printAtoms(source, layout, indentation).doc,
       ),
       source,
       {
-        statements: diagram.body,
+        statements: [...statements.keys()],
         start: findLayoutEnd(headerLayout),
         end: source.text.length,
         isTopLevel: true,
@@ -96,7 +142,8 @@ export function createFlatHiddenDiagramPrinter<
         source,
         hiddenEnds,
         findHiddenKeptLines(source, hidden),
-        (item: Statement) => findLayoutEnd(statements.get(item)!),
+        (item: Node) => findLayoutEnd(statements.get(item)!),
+        headerHiddenEnds,
       ),
     )
     const header = openingLine(

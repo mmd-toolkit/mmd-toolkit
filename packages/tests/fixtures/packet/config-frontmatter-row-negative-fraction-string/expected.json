@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet Db configuration: string width \"-0.5\" concatenates with 1 to give \"-0.51\", so the publication guard is negative and packet is empty, unlike numeric width -0.5."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "bitsPerRow": "-0.5"
+      }
+    }
+  }
+}

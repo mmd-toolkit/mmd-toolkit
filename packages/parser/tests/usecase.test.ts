@@ -1,11 +1,5 @@
-import path from "node:path"
 import { describe, expect, it } from "vitest"
-import {
-  fixtureAccepts,
-  getFixturesRoot,
-  loadFixtures,
-  DATA_BLOCK_NODE_TYPES,
-} from "@mmd-toolkit/tests"
+import { loadFixtures, DATA_BLOCK_NODE_TYPES } from "@mmd-toolkit/tests"
 import type { Node, Root, UsecaseDiagram } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
@@ -204,34 +198,18 @@ describe("usecase fixtures", async () => {
   })
 
   for (const fixture of fixtures) {
-    it(fixture.name, async () => {
+    it(fixture.name, () => {
       let root: Root | null = null
-      let rejection: ParseError | null = null
       try {
         root = parse(fixture.input)
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
-        rejection = error
       }
-      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (root !== null) {
         expect(root.diagramType).toBe("usecase")
         expectCoverage(fixture.input, root)
         expect(problemsOfTree(fixture.input, root)).toEqual([])
       }
-      const result = root ?? {
-        message: rejection!.message,
-        range: rejection!.range,
-        loc: rejection!.loc,
-      }
-      await expect(`${JSON.stringify(result, null, 2)}\n`).toMatchFileSnapshot(
-        path.join(
-          getFixturesRoot(),
-          "usecase",
-          fixture.name,
-          root === null ? "parse-error.json" : "ast.json",
-        ),
-      )
     })
   }
 })

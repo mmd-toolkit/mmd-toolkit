@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A native comment after the description keyword on the same line cannot bridge the composite opening gap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 7, skipped 8 characters.\nLexer error on line 3, column 1: unexpected character: ->{<- at offset: 27, skipped 1 characters.\nLexer error on line 3, column 3: unexpected character: ->D<- at offset: 29, skipped 1 characters.\nLexer error on line 3, column 5: unexpected character: ->}<- at offset: 31, skipped 1 characters. "
+  }
+}

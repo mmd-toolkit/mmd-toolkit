@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty final block suppresses earlier line and block descriptions."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

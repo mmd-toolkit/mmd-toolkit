@@ -46,7 +46,7 @@ import {
 import { MermaidEnvironmentError } from "./mermaid-environment-error.ts"
 import { dataBlockEffectsOf } from "./normalizers/data-blocks.ts"
 import { getDbPatches, normalizeDb } from "./normalizers/index.ts"
-import { toJsonObject } from "./normalizers/json.ts"
+import { copyConfiguration } from "./configuration.ts"
 import { errorName, isEnvironmentFailure } from "./rejections.ts"
 import type { RunMermaidOptions } from "./run-mermaid-options.ts"
 import { checkRunMermaidOptions } from "./run-mermaid-options.ts"
@@ -283,7 +283,7 @@ async function readConfigurationAsIs(
     const result = await mermaid.parse(text)
     return {
       accepted: true,
-      config: toJsonObject(result.config),
+      config: copyConfiguration(result.config),
       title: extractFrontmatterTitle(text),
     }
   } catch (error) {
@@ -401,7 +401,7 @@ async function runAsIs(
   }
   // Read now: building the diagram below may change the configuration (the
   // flowchart definition's `init` calls `setConfig`).
-  const config = toJsonObject(mermaid.mermaidAPI.getConfig())
+  const config = copyConfiguration(mermaid.mermaidAPI.getConfig())
   const diagram = await diagramFromText(text)
   return {
     outcome: {

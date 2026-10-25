@@ -1,14 +1,8 @@
-import path from "node:path"
 import { describe, expect, it } from "vitest"
-import {
-  fixtureAccepts,
-  getFixturesRoot,
-  loadFixtures,
-} from "@mmd-toolkit/tests"
+import { loadFixtures } from "@mmd-toolkit/tests"
 import type { AgentflowDiagram, Node, Root } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
-import { outcomeOf } from "./helpers/known-divergences.ts"
 
 /** Losslessness, source spelling, token boundaries, child containment, and source order. */
 function expectCoverage(text: string, root: Root): void {
@@ -357,35 +351,17 @@ describe("agentflow fixtures", async () => {
   })
 
   for (const fixture of fixtures) {
-    it(fixture.name, async () => {
+    it(fixture.name, () => {
       let root: Root | null = null
-      let rejection: ParseError | null = null
       try {
         root = parse(fixture.input)
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
-        rejection = error
       }
-      expect(outcomeOf(fixture.input, fixture.config).kind === "tree").toBe(
-        fixtureAccepts(fixture),
-      )
       if (root !== null) {
         expect(root.diagramType).toBe("agentflow")
         expectCoverage(fixture.input, root)
       }
-      const result = root ?? {
-        message: rejection!.message,
-        range: rejection!.range,
-        loc: rejection!.loc,
-      }
-      await expect(`${JSON.stringify(result, null, 2)}\n`).toMatchFileSnapshot(
-        path.join(
-          getFixturesRoot(),
-          "agentflow",
-          fixture.name,
-          root === null ? "parse-error.json" : "ast.json",
-        ),
-      )
     })
   }
 })

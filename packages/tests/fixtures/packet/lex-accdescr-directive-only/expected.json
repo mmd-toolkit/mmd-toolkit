@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A removed directive after the colon leaves a null line-description value."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

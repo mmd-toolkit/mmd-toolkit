@@ -62,6 +62,7 @@ export function isMermaidRunStoreOn(): boolean {
  * do not change a result, so changing them keeps the stored results.
  */
 export const RESULT_FILES: readonly string[] = [
+  "configuration.ts",
   "divergence-removals.ts",
   "mermaid-environment-error.ts",
   "mermaid-run-store.ts",
@@ -78,6 +79,7 @@ export const RESULT_FILES: readonly string[] = [
   "normalizers/gantt.ts",
   "normalizers/gitgraph.ts",
   "normalizers/info.ts",
+  "normalizers/packet.ts",
   "normalizers/index.ts",
   "normalizers/ishikawa.ts",
   "normalizers/journey.ts",

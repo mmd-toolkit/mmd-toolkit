@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { fixtureAccepts, loadFixtures } from "@mmd-toolkit/tests"
+import { loadFixtures } from "@mmd-toolkit/tests"
 import type { C4Diagram, Root } from "../src/index.ts"
 import { ParseError, parse, traverseNodes } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
@@ -45,7 +45,7 @@ function expectCoverage(text: string, root: Root): void {
 }
 
 // This suite never writes records and does not call mermaid.js or dbFromTree.
-describe("c4 acceptance fixtures", async () => {
+describe("c4 fixtures", async () => {
   const fixtures = await loadFixtures("c4")
 
   /** One fixed corpus input parsed as C4. */
@@ -220,7 +220,6 @@ describe("c4 acceptance fixtures", async () => {
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
       }
-      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (
         fixture.knownDivergence === "directive-as-token-boundary" ||
         fixture.knownDivergence === "ignored-semicolon-as-token-boundary"

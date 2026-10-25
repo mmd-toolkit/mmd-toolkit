@@ -51,6 +51,7 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 | pie       | [`docs/diagrams/pie.ja.md`](./docs/diagrams/pie.ja.md)             | [`docs/ast/pie.ja.md`](./docs/ast/pie.ja.md)             |
 | gitgraph  | [`docs/diagrams/gitgraph.ja.md`](./docs/diagrams/gitgraph.ja.md)   | [`docs/ast/gitgraph.ja.md`](./docs/ast/gitgraph.ja.md)   |
 | info      | [`docs/diagrams/info.ja.md`](./docs/diagrams/info.ja.md)           | [`docs/ast/info.ja.md`](./docs/ast/info.ja.md)           |
+| packet    | [`docs/diagrams/packet.ja.md`](./docs/diagrams/packet.ja.md)       | [`docs/ast/packet.ja.md`](./docs/ast/packet.ja.md)       |
 
 mermaid.js のほかの図種は、まだ定めていません。
 

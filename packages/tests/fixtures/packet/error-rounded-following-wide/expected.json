@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A wide site width reaches the rounded start/end inversion and rejects."
+  },
+  "config": {
+    "packet": {
+      "bitsPerRow": 10000000000000000
+    }
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Block start 9007199254740992 is greater than block end 9007199254740991."
+  }
+}

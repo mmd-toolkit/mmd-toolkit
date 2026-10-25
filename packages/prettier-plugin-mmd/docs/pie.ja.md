@@ -310,16 +310,16 @@ gap・textAfter の元の位置で、trivia を除いた値ではなく範囲全
 pie はこれを適用する最初の printer です。
 pie の hidden 規則は node 外の直後の
 LF を消費し、閉じ境界の空白が必要な EOL を残す場合があります。
-消費される LF と余分の
-LF、EOF も含む閉じの空白、不正・空・入れ子に見える内容、内部の trivia、複数の
-form を保持します。
+EOF も含む閉じの空白を保ちます。
+範囲外の必須 LF と端の空行は [Blank lines](#blank-lines) に従います。
+不正・空・入れ子に見える内容、内部の trivia、複数の form を保持します。
 直前へ改行を加えません。
 通常の開きの前の空白は縮められ、本文の開きには字下げできます。
 内部と先頭列の閉じは元の列です。
 すでに始まった文字列・title・block を優先します。
 
 本文の先頭・途中の単独の form、字下げされた form、header・showData の後、
-EOF の form でも、閉じの空白と余分な LF を保持します。
+EOF の form でも、閉じの空白を保持します。
 hidden YAML と hidden directive に同じ境界の規則を適用します。
 form 間や同じ行の次の文の前でも、閉じの空白を保ちます。
 
@@ -463,6 +463,8 @@ pie
   accTitle: a%% real comment
 ```
 
+[fixture: pie/blank-lines/hidden-comment-whitespace]
+
 ### Directives and semicolons
 
 [global directive の不透明性](./flowchart.ja.md#directives)と
@@ -513,10 +515,33 @@ pie title style:#a;b
 見えるまとまりを保つため、[共有の空行の規則](./flowchart.ja.md#blank-lines)を
 再利用します。
 通常の ASCII の空行の連続は1行にし、文書・本文の端の通常の空行は除きます。
-値・directive・ignored の内部と共通領域の結合は元の空行を保ちます。
-hidden の消費される EOL・余分の EOL と前置き全体は除外します。
-削ると受理や YAML の意味が変わるためです。
+値・directive・ignored の内部、共通領域の結合と前置き全体は元の空行を保ちます。
+変えると原文の役割や YAML の意味が変わり得るためです。
+hidden form が LF を消費した後は、
+次の文に必要なときだけ予備の LF 1 つを保ちます。
+文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
+見出しと最初の文の間に EOL は必要ありません。
+それ以外は予備の LF の後に通常の空行の規則を適用し、
+連続空行を1行、空白だけの行を空行にします。
+予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
 Unicode だけの不正な本文行は corpus の解析失敗です。
+
+hidden の境界や semicolon の保護で文が見出しの行に残っても、
+その文の後置 hidden form の後は文と文の間として扱います。
+
+[fixture: pie/blank-lines/hidden-following-blanks]
+
+[fixture: pie/blank-lines/header-statement-hidden]
+
+[fixture: pie/blank-lines/header-statement-semicolon]
+
+[fixture: pie/blank-lines/hidden-document-end]
+
+[fixture: pie/blank-lines/hidden-body-end]
+
+[fixture: pie/blank-lines/hidden-header-blanks]
+
+[fixture: pie/blank-lines/hidden-comment-whitespace]
 
 固定例: [fixture: pie/blank-lines/blank-runs]
 [fixture: pie/blank-lines/blank-trivia]

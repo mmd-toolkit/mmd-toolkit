@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ACC_DESCR is case sensitive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->A<- at offset: 7, skipped 8 characters.\nLexer error on line 2, column 11: unexpected character: ->D<- at offset: 17, skipped 1 characters. Parse error on line 2, column 9: Expecting token of type 'EOF' but found `:`."
+  }
+}

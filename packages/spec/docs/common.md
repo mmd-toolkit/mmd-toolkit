@@ -242,12 +242,13 @@ Leading whitespace, line terminators, directives and comment regions are trivia
 ([Leading whitespace](#leading-whitespace)). Detection selects the diagram type
 and its lexer ([Diagram detection](#diagram-detection)); this can reject the
 input. Detection can pass one nonleading frontmatter-shaped block before the
-header. The block remains diagram text: pie, gitgraph and info apply their
-hidden YAML rules. The cited flowchart, sequence, class, state, agentflow,
+header. The block remains diagram text: pie, gitgraph, info and packet apply
+their hidden YAML rules. The cited flowchart, sequence, class, state, agentflow,
 block, ishikawa, usecase and venn cases reject it. It is not common frontmatter
 or trivia. [fixture: pie/frontmatter-nonleading-comment] [fixture:
 gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
-[fixture: pie/lex-yaml-leading-config-not-applied] [fixture:
+[fixture: packet/detect-one-block] [fixture:
+pie/lex-yaml-leading-config-not-applied] [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-nonleading-sequence] [fixture:
 common/frontmatter-nonleading-class] [fixture:
@@ -456,16 +457,17 @@ When these conditions do not hold, there is no frontmatter: the block is diagram
 text. At the detection point, before passing bare `%%` lines, detection passes
 one block having the frontmatter shape above and looks for a header after it.
 This does not remove the block from the text the diagram lexer reads. With
-trivia before a block, pie, gitgraph and info apply their hidden YAML rules to
-the retained text. If it matches, PieIgnoredText, GitgraphIgnoredText or
-InfoIgnoredText holds the block and its YAML title and configuration do not
-apply. The rejecting controls below establish the scope of rejection, not a
-claim about all other diagram types. Leading whitespace, a byte order mark on
-the opening fence only, a comment line or a directive can expose this case.
-Matching byte order marks on both fences can instead satisfy the real
+trivia before a block, pie, gitgraph, info and packet apply their hidden YAML
+rules to the retained text. If it matches, PieIgnoredText, GitgraphIgnoredText,
+InfoIgnoredText or PacketIgnoredText holds the block and its YAML title and
+configuration do not apply. The rejecting controls below establish the scope of
+rejection, not a claim about all other diagram types. Leading whitespace, a byte
+order mark on the opening fence only, a comment line or a directive can expose
+this case. Matching byte order marks on both fences can instead satisfy the real
 frontmatter rule. [fixture: pie/frontmatter-nonleading-comment] [fixture:
 gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
-[fixture: pie/lex-yaml-leading-config-not-applied] [fixture:
+[fixture: packet/detect-one-block] [fixture:
+pie/lex-yaml-leading-config-not-applied] [fixture:
 pie/lex-yaml-after-leading-lf] [fixture: pie/lex-yaml-bom-opening-only]
 [fixture: pie/lex-yaml-bom-both-fences] [fixture:
 pie/lex-yaml-after-directive-line] [fixture: pie/lex-yaml-after-directive-glued]
@@ -842,10 +844,11 @@ whitespace, not a line terminator, not inside a directive, and not inside a
 comment region ([Leading whitespace](#leading-whitespace)). If one block at that
 point satisfies the [Frontmatter](#frontmatter) shape, detection passes it once
 before looking for bare `%%` lines. The block remains diagram text for the
-selected diagram to read; see Frontmatter for pie, gitgraph, info and rejecting
-controls. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+selected diagram to read; see Frontmatter for pie, gitgraph, info, packet and
+rejecting controls. [fixture: pie/frontmatter-nonleading-comment] [fixture:
 gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
-[fixture: pie/lex-yaml-leading-config-not-applied] [fixture:
+[fixture: packet/detect-one-block] [fixture:
+pie/lex-yaml-leading-config-not-applied] [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-nonleading-sequence] [fixture:
 common/frontmatter-nonleading-class] [fixture:
@@ -890,24 +893,26 @@ ishikawa/detect-directive-second-scan-preheader] [fixture:
 usecase/detect-directive-second-scan-preheader] [fixture:
 venn/detect-directive-second-scan-preheader]
 
-Pie, gitgraph and info instead read a directive found only by detection's second
-scan as hidden DIRECTIVE and hold it as PieIgnoredText, GitgraphIgnoredText or
-InfoIgnoredText in textBeforeHeader. The lines `%%{`, `%% gap`, `wrap}%%`, and
-`pie` are accepted; gluing `pie` immediately to the closer rejects, because the
-hidden form's closing boundary is not satisfied. [fixture:
-pie/lex-hidden-directive-second-detection-scan] [fixture:
-pie/lex-hidden-directive-second-detection-scan-glued] [fixture:
+Pie, gitgraph, info and packet instead read a directive found only by
+detection's second scan as hidden DIRECTIVE and hold it as PieIgnoredText,
+GitgraphIgnoredText, InfoIgnoredText or PacketIgnoredText in textBeforeHeader.
+The lines `%%{`, `%% gap`, `wrap}%%`, and `pie` are accepted; gluing `pie`
+immediately to the closer rejects, because the hidden form's closing boundary is
+not satisfied. [fixture: pie/lex-hidden-directive-second-detection-scan]
+[fixture: pie/lex-hidden-directive-second-detection-scan-glued] [fixture:
 gitgraph/lex-hidden-directive-second-scan] [fixture:
 gitgraph/lex-hidden-directive-second-scan-glued] [fixture:
 info/detect-second-scan-directive] [fixture: info/detect-second-scan-glued]
+[fixture: packet/detect-second-scan-directive] [fixture:
+packet/detect-second-scan-glued]
 
 At the position reached, the detectors of [detection.md](./detection.md) are
 tried in registration order against the diagram text
 ([Reading a source](#reading-a-source)), that is, the characters from there on,
 directives and comment regions left out. The first detector whose condition
 holds selects the diagram type. The diagram's lexer reads the retained
-frontmatter-shaped block, if any, and pie, gitgraph and info also read the
-hidden DIRECTIVE forms above, as well as the text from the position reached.
+frontmatter-shaped block, if any, and pie, gitgraph, info and packet also read
+the hidden DIRECTIVE forms above, as well as the text from the position reached.
 Bare `%%` lines and their accompanying whitespace and line breaks passed by
 detection are not read again here; that whitespace and those line breaks are
 trivia. Each bare line is a comment of the diagram, with the mark `%%`, from its
@@ -930,6 +935,7 @@ description block, `accDescr {}`, before the header. [fixture: common/empty]
 [fixture: common/comment-only] [fixture: common/bare-percent-line-only]
 [fixture: gitgraph/div-detect-retained-directive-bare-bom] [fixture:
 gitgraph/div-lex-preheader-bare-between-retained-unicode] [fixture:
+packet/div-detect-yaml-bare-directive-ls] [fixture:
 common/bare-percent-line-only-with-line-feed] [fixture:
 sequence/header-after-indented-bare-percent-line] [fixture:
 sequence/header-after-bare-percent-crlf] [fixture:
@@ -1095,15 +1101,15 @@ usecase/detect-directive-second-scan-preheader] [fixture:
 venn/detect-directive-second-scan-preheader]
 
 A matching nonleading `---` block is passed by detection in both and read by the
-selected diagram: pie, gitgraph and info apply their hidden YAML rules and
-retain a matching block as ignored text. The cited rejecting controls have the
-scope stated under [Frontmatter](#frontmatter). [fixture:
+selected diagram: pie, gitgraph, info and packet apply their hidden YAML rules
+and retain a matching block as ignored text. The cited rejecting controls have
+the scope stated under [Frontmatter](#frontmatter). [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
 agentflow/db-frontmatter-after-comment] [fixture:
 block/gram-frontmatter-comment-before] [fixture:
 ishikawa/frontmatter-after-comment] [fixture: usecase/frontmatter-after-comment]
-[fixture: venn/frontmatter-comment-before]
+[fixture: venn/frontmatter-comment-before] [fixture: packet/detect-one-block]
 
 For the `error` pseudo-diagram, the three things left out by its condition are
 these removals.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { fixtureAccepts, loadFixtures } from "@mmd-toolkit/tests"
+import { loadFixtures } from "@mmd-toolkit/tests"
 import type { Root, VennDiagram } from "../src/index.ts"
 import { ParseError, parse, traverseNodes } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
@@ -40,7 +40,7 @@ function expectCoverage(text: string, root: Root): void {
   })
 }
 
-describe("venn acceptance fixtures", async () => {
+describe("venn fixtures", async () => {
   const fixtures = await loadFixtures("venn")
 
   /** Parses a fixed corpus input. */
@@ -297,7 +297,6 @@ describe("venn acceptance fixtures", async () => {
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
       }
-      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (root !== null) {
         expect(root.diagramType).toBe("venn")
         expectCoverage(fixture.input, root)

@@ -1,0 +1,123 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/packet.html",
+    "line": 41
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 15,
+          "label": "Source Port"
+        },
+        {
+          "start": 16,
+          "end": 31,
+          "label": "Destination Port"
+        }
+      ],
+      [
+        {
+          "start": 32,
+          "end": 63,
+          "label": "Sequence Number"
+        }
+      ],
+      [
+        {
+          "start": 64,
+          "end": 95,
+          "label": "Acknowledgment Number"
+        }
+      ],
+      [
+        {
+          "start": 96,
+          "end": 99,
+          "label": "Data Offset"
+        },
+        {
+          "start": 100,
+          "end": 105,
+          "label": "Reserved"
+        },
+        {
+          "start": 106,
+          "end": 106,
+          "label": "URG"
+        },
+        {
+          "start": 107,
+          "end": 107,
+          "label": "ACK"
+        },
+        {
+          "start": 108,
+          "end": 108,
+          "label": "PSH"
+        },
+        {
+          "start": 109,
+          "end": 109,
+          "label": "RST"
+        },
+        {
+          "start": 110,
+          "end": 110,
+          "label": "SYN"
+        },
+        {
+          "start": 111,
+          "end": 111,
+          "label": "FIN"
+        },
+        {
+          "start": 112,
+          "end": 127,
+          "label": "Window"
+        }
+      ],
+      [
+        {
+          "start": 128,
+          "end": 143,
+          "label": "Checksum"
+        },
+        {
+          "start": 144,
+          "end": 159,
+          "label": "Urgent Pointer"
+        }
+      ],
+      [
+        {
+          "start": 160,
+          "end": 191,
+          "label": "(Options and Padding)"
+        }
+      ],
+      [
+        {
+          "start": 192,
+          "end": 223,
+          "label": "data"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "config": {
+      "packet": {
+        "showBits": false
+      }
+    }
+  }
+}

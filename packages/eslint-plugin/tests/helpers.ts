@@ -111,6 +111,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   pie: true,
   gitgraph: true,
   info: true,
+  packet: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

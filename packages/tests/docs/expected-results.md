@@ -40,6 +40,19 @@ values are recorded before mermaid.js would sanitize them.
 4. The Db is summarized by the normalizer registered for the diagram id (see
    [db-summaries.md](./db-summaries.md)).
 
+Configuration captured for embedded values keeps JavaScript numeric types in
+memory. In the recorded `embedded.config`, a number that JSON cannot represent
+uses a one-field object: `{ "nonFinite": "Infinity" }`,
+`{ "nonFinite": "-Infinity" }`, or `{ "nonFinite": "NaN" }`. Finite numbers
+remain JSON numbers, and strings remain strings. `embeddedValuesOf()` restores
+the tagged values to numbers before Db construction; see
+[embedded-data.md](./embedded-data.md). Summary endpoints keep the
+`numberOrText` form, where a non-finite number is a string because the position
+already identifies it as numeric. [fixture:
+packet/config-frontmatter-row-infinity] [fixture:
+packet/config-frontmatter-row-infinity-string] [fixture:
+packet/db-frontmatter-infinite-endpoint]
+
 Calls are serialized because mermaid.js keeps global state.
 
 Before anything else, `runMermaid()` parses a labelled flowchart and refuses to

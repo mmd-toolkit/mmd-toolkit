@@ -1,13 +1,6 @@
-import path from "node:path"
-import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 import type { DbTreeRoot, Fixture } from "@mmd-toolkit/tests"
-import {
-  loadFixtures,
-  fixtureAccepts,
-  dbFromTree,
-  embeddedValuesOf,
-} from "@mmd-toolkit/tests"
+import { loadFixtures, dbFromTree, embeddedValuesOf } from "@mmd-toolkit/tests"
 import type { Node, GitgraphDiagram, Root } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
@@ -208,17 +201,14 @@ describe("gitgraph fixtures", async () => {
   })
 
   for (const fixture of fixtures) {
-    it(`${fixture.diagram}/${fixture.name}`, async () => {
+    it(`${fixture.diagram}/${fixture.name}`, () => {
       let root: Root | null = null
-      let rejection: ParseError | null = null
       try {
         root = parse(fixture.input)
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
-        rejection = error
       }
       const outcome = outcomeOf(fixture.input, fixture.config)
-      expect(outcome.kind === "tree").toBe(fixtureAccepts(fixture))
       if (root !== null) {
         expect(root.diagramType).toBe("gitGraph")
         expectCoverage(fixture.input, root)
@@ -227,19 +217,6 @@ describe("gitgraph fixtures", async () => {
         expectCoverage(fixture.input, outcome.root)
         expectDb(fixture, outcome.root)
       }
-      const result = root ?? {
-        message: rejection!.message,
-        range: rejection!.range,
-        loc: rejection!.loc,
-      }
-      await expect(`${JSON.stringify(result, null, 2)}\n`).toMatchFileSnapshot(
-        path.join(
-          fileURLToPath(new URL("../../tests/fixtures/", import.meta.url)),
-          fixture.diagram,
-          fixture.name,
-          root === null ? "parse-error.json" : "ast.json",
-        ),
-      )
     })
   }
 })

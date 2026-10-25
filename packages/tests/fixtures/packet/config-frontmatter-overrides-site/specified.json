@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Block start 1.5 is greater than block end 1."
+  }
+}

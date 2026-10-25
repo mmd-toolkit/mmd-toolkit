@@ -4,7 +4,7 @@
  * in the rules documents and the READMEs is a copy of the fixture file it
  * links to.
  */
-import { readdir, readFile } from "node:fs/promises"
+import { readdir, readFile, stat } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 import { readRuleNames } from "./fixtures.ts"
@@ -30,6 +30,19 @@ const ruleDocuments: readonly {
    */
   readonly rulesInTestCode: readonly string[]
 }[] = [
+  {
+    diagram: "packet",
+    rulesWithoutExamples: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+    rulesInTestCode: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+  },
   {
     diagram: "info",
     rulesWithoutExamples: [
@@ -426,10 +439,33 @@ async function readCitedTestTitles(): Promise<string[]> {
   return titles
 }
 
-describe("the test citations in the documents", async () => {
+/** Reads bracket citations across wrapped lines, including indented lists. */
+async function readCitations(
+  document: string,
+  kind: "corpus fixture" | "test",
+): Promise<string[]> {
+  const text = await readFile(new URL(document, packageRoot), "utf8")
+  const oneLine = text
+    .split("\n")
+    .map((line) => line.trim())
+    .join(" ")
+  const marker = `[${kind}:`
+  const citations: string[] = []
+  let index = oneLine.indexOf(marker)
+  while (index !== -1) {
+    const end = oneLine.indexOf("]", index)
+    expect(end, `${document}: unclosed ${kind} citation`).toBeGreaterThan(index)
+    citations.push(oneLine.slice(index + marker.length, end).trim())
+    index = oneLine.indexOf(marker, end + 1)
+  }
+  return citations
+}
+
+describe("the citations in the documents", async () => {
   const titles = await readCitedTestTitles()
   const citations: string[] = []
   for (const document of [
+    "docs/packet.md",
     "docs/info.md",
     "docs/gitgraph.md",
     "docs/pie.md",
@@ -455,14 +491,27 @@ describe("the test citations in the documents", async () => {
     "docs/ishikawa.md",
     "docs/compatibility.md",
   ]) {
-    const text = await readFile(new URL(document, packageRoot), "utf8")
-    const oneLine = text.split("\n").join(" ")
-    let index = oneLine.indexOf("[test: ")
-    while (index !== -1) {
-      const end = oneLine.indexOf("]", index)
-      citations.push(oneLine.slice(index + "[test: ".length, end))
-      index = oneLine.indexOf("[test: ", end)
-    }
+    it.each([document, `${document.slice(0, -3)}.ja.md`])(
+      "cites existing corpus fixtures in %s",
+      async (corpusDocument) => {
+        for (const citation of await readCitations(
+          corpusDocument,
+          "corpus fixture",
+        )) {
+          const input = await stat(
+            new URL(`../tests/fixtures/${citation}/input.mmd`, packageRoot),
+          ).catch(() => undefined)
+          expect
+            .soft(
+              input?.isFile() ?? false,
+              `${corpusDocument}: corpus fixture ${citation}/input.mmd does not exist`,
+            )
+            .toBe(true)
+        }
+      },
+    )
+
+    citations.push(...(await readCitations(document, "test")))
   }
 
   /** The title with its line breaks, which a document wraps at, as spaces. */

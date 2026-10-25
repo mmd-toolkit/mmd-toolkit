@@ -1,3 +1,4 @@
+import type { PacketDiagram, PacketNode } from "../src/ast/packet.ts"
 import type { InfoDiagram, InfoNode } from "../src/ast/info.ts"
 import type { GitgraphDiagram, GitgraphNode } from "../src/ast/gitgraph.ts"
 import type { PieDiagram, PieNode } from "../src/ast/pie.ts"
@@ -76,6 +77,7 @@ describe("the types of ast.md", () => {
       | PieNode["type"]
       | GitgraphNode["type"]
       | InfoNode["type"]
+      | PacketNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -102,6 +104,7 @@ describe("the types of ast.md", () => {
       | PieDiagram
       | GitgraphDiagram
       | InfoDiagram
+      | PacketDiagram
     >()
   })
 

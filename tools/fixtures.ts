@@ -33,6 +33,7 @@ import {
   describeExpectedChange,
 } from "../packages/tests/src/expected-changes.ts"
 import { mermaidVersion } from "../packages/tests/src/mermaid.ts"
+import { recordConfiguration } from "../packages/tests/src/configuration.ts"
 import {
   MERMAID_RUN_STORE_DISABLED,
   MERMAID_RUN_STORE_SWITCH,
@@ -183,7 +184,7 @@ async function generateDefaultConfig(
   check: boolean,
   changed: string[],
 ): Promise<void> {
-  const next = `${JSON.stringify(await baselineConfigOf(undefined), null, 2)}\n`
+  const next = `${JSON.stringify(recordConfiguration(await baselineConfigOf(undefined)), null, 2)}\n`
   const previous = existsSync(DEFAULT_CONFIG_PATH)
     ? readFileSync(DEFAULT_CONFIG_PATH, "utf8")
     : undefined

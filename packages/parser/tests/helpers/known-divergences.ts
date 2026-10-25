@@ -1,3 +1,5 @@
+import { readPacketDiagram } from "../../src/diagrams/packet/index.ts"
+import { checkPacketBlocks } from "../../src/diagrams/packet/acceptance.ts"
 /**
  * The known divergences that a test declares for what `parse()` does with a
  * text. The parser does not tell a known divergence apart, so the tests
@@ -50,12 +52,14 @@ export type Outcome =
     }
 
 /**
- * What parse() does under its defaults, with external maxEdges and gitgraph
+ * What parse() does under its defaults, with external maxEdges, packet and gitgraph
  * acceptance settings applied by their holder. A configured gitgraph can
  * reject a default tree or accept a history rejected under the default name
  * and escaping settings; neither direction adds configuration to parse().
  */
 export function outcomeOf(text: string, config?: MermaidConfig): Outcome {
+  const packet = configuredPacketOutcome(text, config)
+  if (packet !== null) return packet
   const gitgraph = configuredGitgraphOutcome(text, config)
   if (gitgraph !== null) return gitgraph
   try {
@@ -67,6 +71,32 @@ export function outcomeOf(text: string, config?: MermaidConfig): Outcome {
     if (error instanceof UnsupportedDiagramError) {
       return { kind: "unsupported", diagramType: error.diagramType }
     }
+    if (error instanceof ParseError) return { kind: "reject", at: error.range }
+    throw error
+  }
+}
+
+/** Apply externally held packet row width; embedded settings remain opaque. */
+function configuredPacketOutcome(
+  text: string,
+  config: MermaidConfig | undefined,
+): Outcome | null {
+  const packet = config?.packet as { readonly bitsPerRow?: number } | undefined
+  const bitsPerRow = packet?.bitsPerRow ?? 32
+  if (bitsPerRow === 32) return null
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "packet") return null
+  try {
+    const root = readPacketDiagram(diagramInputOf(opened, detection, "packet"))
+    try {
+      checkPacketBlocks(root.body, bitsPerRow)
+    } catch (error) {
+      if (error instanceof ParseError) return { kind: "reject", at: null }
+      throw error
+    }
+    return { kind: "tree", text, root }
+  } catch (error) {
     if (error instanceof ParseError) return { kind: "reject", at: error.range }
     throw error
   }

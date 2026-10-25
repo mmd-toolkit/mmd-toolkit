@@ -95,9 +95,30 @@ gitGraph:
 
 通常の連続空行は 1 行にし、文書と本文の端の通常空行は削除します。
 コメントの前後にも同じ規則を使い、作者の区切りを残します。
-引用値・description block・directive と hidden の内部、
-hidden が消費した LF と spare LF、保持する prefix の空行は、
-値や字句境界の一部なので保持します。
+引用値・description block・directive と hidden の内部と、
+保持する prefix の空行は、値や字句上の役割に属するため保持します。
+hidden form が LF を消費した後は、
+次の文に必要なときだけ予備の LF 1 つを保ちます。
+文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
+見出しと最初の文の間に EOL は必要ありません。
+それ以外は予備の LF の後に通常の空行の規則を適用し、
+連続空行を1行、空白だけの行を空行にします。
+予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
+
+hidden の境界や semicolon の保護で文が見出しの行に残っても、
+その文の後置 hidden form の後は文と文の間として扱います。
+
+[fixture: gitgraph/blank-lines/hidden-following-blanks]
+
+[fixture: gitgraph/blank-lines/header-statement-hidden]
+
+[fixture: gitgraph/blank-lines/header-statement-semicolon]
+
+[fixture: gitgraph/blank-lines/hidden-document-end]
+
+[fixture: gitgraph/blank-lines/hidden-body-end]
+
+[fixture: gitgraph/blank-lines/hidden-header-blanks]
 
 固定例:
 [fixture: gitgraph/blank-lines/blank-collapse]
@@ -500,6 +521,8 @@ gitGraph %% header
   %% last
 ```
 
+[fixture: gitgraph/comments/hidden-comment-indentation]
+
 ### Global directives
 
 global directive の内容・順序・位置・左右の接触を保持します。
@@ -532,8 +555,10 @@ gitGraph
 
 yaml-block の GitgraphIgnoredText は見出し・option・名前・textAfter・
 本文の所有位置に、内部の共通 trivia を含む完全な source span で保持します。
-range 外の消費 LF、spare LF、閉じの padding は、
-EOF や trivia・次の form の前でも残します。直前に LF を足しません。
+range 外の消費 LF と閉じの padding は、
+EOF や trivia・次の form の前でも残します。
+範囲外の spare LF と端の空行は [Blank lines](#blank-lines) に従います。
+直前に LF を足しません。
 本文の opener は 1 段にでき、内部と閉じの列は変えません。
 空 body・3 fence・後の有効な closer・複数 form も opaque です。
 先に始まった文字列・block・行値の所有も変えません。

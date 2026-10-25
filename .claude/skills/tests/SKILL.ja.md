@@ -226,65 +226,72 @@ Chevrotain の図種にも同じ手順を適用し、トークン定義を字句
 mode の切替と優先順位の組合せも含める。
 
 Langium の図種では、その図種自身の文法と service から次の事項を導く。
-pie は確認の例であり、terminal の順序と値の規則は図種ごとに導き直す。
+terminal の順序、境界、変換、公開を図種ごとに導き直す。
+共通規則を import しただけでは、その図種での使われ方は決まらない。
 
 1. `entry` 規則から import と規則呼出しをたどる。
    書かれた文法と生成文法を読む。
    token builder と value converter を注入する service module も確かめる。
    hidden を含め、到達可能な terminal だけを結果の順序で列挙する。
    import 先に宣言があるだけでは到達しない。
-   [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
-   は `NUMBER_PIE` に到達するが、部品の FLOAT_PIE・INT_PIE と未使用の共通の
-   BOOLEAN・NUMBER・ID は別の字句単位にならない。
-   [service の配線](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/module.ts#L31-L77)
-   を、インストールされた pin の生成 module・文法と照合する。
-   clone には生成ファイルがない場合がある。
+   terminal の構成規則も、独立した字句単位になるとは限らない。
+   clone に生成ファイルがなければ、インストールされた pin の bundle の
+   source map を読み、生成 module・文法と書かれた service の配線を照合する。
 2. keyword のパターンも読む。
+   独自の境界を持つもの、既定の順序を使うもの、
+   明示的な `longer_alt` の選択肢を持つものを列挙する。
    [共有の token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
-   は pie・showData に空白・EOF・percent ペアの先読み境界を加える。
-   pie で到達する順は showData、pie、colon、NUMBER_PIE、ACC_DESCR、ACC_TITLE、
-   TITLE、STRING、NEWLINE、WHITESPACE、YAML、DIRECTIVE、SINGLE_LINE_COMMENT。
+   は指定された keyword だけに、空白・EOF・percent ペアの先読み境界を加える。
    一般的な最長一致ではなく、最初に合う規則を取る。
    keyword 境界と明示的な選択肢も単位を決める。
-   接着した接尾辞、文字列・共通の複合 terminal との優先順位を probe する。
+   接着した接尾辞、keyword の接頭辞、keyword に接した記号、
+   参照・数・文字列・共通の複合 terminal との優先順位を probe する。
+   検出には、それ自身の境界がある。
 3. hidden terminal が字句規則として消費するテキストを調べる。
    全体の除去とは区別する。
-   pie が import した
+   import した
    [YAML・DIRECTIVE terminal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
    は直後の LF を消費し、ほかの空白境界は先読みだけする。
    各単位の隙間と各文の EOL・EOF を probe する。
    唯一の LF が消えると次の文は拒否されるが、共通の付加 LF が消えた場合は
    EOF で EOL を満たせる。先頭の frontmatter、共通の directive 除去、
    本文の hidden terminal を分ける。
-4. 実際の terminal 規則名から converter の各分岐をたどる。
-   pie の例では、
+   閉じを選ぶ前に、選択肢の優先順位を導く。
+   本文のある選択肢が、隣接する空の閉じより先に選ばれる場合がある。
+   保持する接頭部と、通過した裸行の trivia について、
+   検出から parser への受渡しを、その図種で独立に probe する。
+4. 実際の terminal 規則名から、注入された converter と fallback をたどる。
+   恒等・文字列・整数・double の変換は、到達するものだけを調べる。
    [共通の converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
-   は TITLE・ACC_TITLE・ACC_DESCR を扱い、行とブロックで空白の読みが異なる。
-   [pie の独自分岐](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
-   の PIE_SECTION_LABEL はこの文法から呼ばれない。
-   STRING は Langium の既定の escape 変換、NUMBER_PIE は数の変換に進む。
-   両方の引用符、未知の escape、精度、overflow、負の underflow を集める。
-   メソッドがあるだけで変換を推測しない。
+   は、行とブロックの共通の値で空白の読みが異なる。
+   たとえば pie の
+   [独自分岐](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
+   は PIE_SECTION_LABEL を名指すが、
+   [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
+   は STRING を呼び、既定の escape 変換に進む。
+   到達する単位について、両方の引用符、未知の escape、精度、
+   overflow、underflow を集める。
+   前の図種の単位に到達しない所は、拒否の対照を置き、理由を記す。
 5. 回復した AST だけでなく公開の受理の門を読む。
    [公開 parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
    は字句・構文エラーが 1 つでもあれば拒否する。
    次に、その図種の AST から Db への公開をたどる。
-   pie の例では、
-   [populateDb](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieParser.ts#L9-L21)
-   は共通の最終文字列を条件付きで公開する。
-   showData を写し、区分を順に加える。
-   公開後の意味上の拒否も確認する。
-   pie は重複ラベルでも変換後の負の値を拒否する。
-   先頭・回復した文の内部・正しい接頭辞の後のエラーを、公開と重複の場合とともに
-   調べる。
+   保存する値、条件付き・省略する代入、値を代入しない文法の literal、
+   adapter が捨てる文を区別する。
+   再代入の順序、最後の空値、重複の扱い、公開後の意味上の拒否を記録する。
+   何も公開せず、要約が空になる図種もある。
+   先頭・回復した文の内部・正しい接頭辞の後のエラーを、
+   到達可能な Db の拒否それぞれとは別に調べる。
 6. parse を await する spec を記録できるよう、
    collector の parse stub は非同期にする。
    `Promise.resolve(record(text))` で呼出しを記録する。
    Langium を実行せず、受理を模倣しない。
    共有の recorder で spec を実行し、各記録位置が実際の parse 呼出しであることを
    確かめる。
+   stub のために最後の入力の後でだけ本体が失敗するテストは、
+   入力の欠落がないと証明してから、§5.3.3 の既存の明示的な許可を使える。
    normalizer、固定 fixture、安定した生成は §5.2〜5.3 に従う。
-   AST の定義後は §6 の手順で checker を実装する。
+   AST の定義後は §6 の手順で Db builder と checker を実装する。
 
 ### 5.1 入力
 
@@ -294,27 +301,29 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
   `classDiagram` と `classDiagram-v2` は、
   どちらも `classDiagram` として検出される。
   図種の fixture は、図種 ID がいくつあっても 1 つのディレクトリに置く。
-  ディレクトリ名はこのリポジトリでの図種名（小文字の英数字 1 語。
-  `gitgraph`、`treeview`。規則はスキル `conventions` にある）で、
-  以後すべてのパッケージがこの名前を使う。
+  図種名の規則は [conventions](../conventions/SKILL.ja.md#コード) にある。
 - pin した版のタグの mermaid.js の clone。
   `.gitignore` に入っている `.work/mermaid` に置く。
   作り方は `tools/README.md` にある。
 
 ### 5.2 正規化関数
 
-1. clone の中で、その図種の文法定義（`.jison`）と Db クラスを開く。
-   Db の private フィールドと、
-   文法が呼ぶ Db のメソッド（`yy.` の呼び出し）を全部挙げる。
+1. clone の中で、文法、AST から Db への adapter があればそれ、
+   Db の実装、renderer を開く。
+   private・closure 内の状態と、公開の呼出しを全部挙げる
+   （Jison の `yy.` 呼出しか、上で導いた adapter の呼出し）。
    Db がブラウザのグローバル（`window`、`document`、`Option`、`CSS`）を
    読む箇所をすべて探し、
    それが mermaid の解析中に動くのか、描画の後にだけ動くのかを確かめる。
    class の click のコールバックと tooltip は描画の後に動くので、何も要らない。
-2. 要約に含める欄の案を、
-   欄ごとに「構文が決めるか」「含める理由」「落とすものと理由」の表にする。
+2. 要約に含める欄の案を、欄ごとに、renderer が読む所、
+   構文が決めるか、含める理由、落とすものと理由の表にする。
+   ほかの Db メソッドが読むというだけで、解析・検証用の状態を残さず、
+   値を代入しない keyword、捨てる AST の値、build 定数から欄を作らない。
+   空の要約も正しい結果である。
    次のものは落とす候補として必ず問う。
    括弧に、flowchart と sequence での例を書く。
-   - 描画にだけ使う値、描画が埋める値
+   - 描画から導く値、描画が埋める値
      （`domId`、sequence の `actorCnt` と `rectData`）。
    - ほかの欄から一意に導ける値
      （`textStyles`、sequence のメッセージの `id` とノートの一覧）。
@@ -347,9 +356,16 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
      ほかの形を取らない理由を書き残す
      （state: 文の木は何も変えない文を持ち、状態の表は最上位だけを持つので、
      要約はレイアウトのデータ `getData()` から取る）。
+     collection の走査順、置換の位置、生成の順序を区別し、
+     renderer がそれぞれを必要とする場合だけ残す。
    - mermaid.js が無作為に作る id（state の、最後の `--` の後の領域）。
-     現れるところすべてで、決めた順に番号を付けた名前に置き換え、
-     生成を 2 回動かして fixture が変わらないことを確かめる。
+     綴りから推測せず、公開時に、書かれた id と生成 id のどちらかを記録する。
+     生成された同一性・参照と証明できる位置だけを、定めた生成順で置き換え、
+     後の文に書かれたものも含め、著者の placeholder 名を予約する。
+     著者のテキストから id に見える部分文字列を探さない。
+     記録が変換より前で、公開が変換後に由来を決めるなら、
+     converter を写さず、記録が依る同値性を明記してテストする。
+     拒否後の reset と、生成の 2 回の安定を確かめる。
    - テキストではなく、実行の時刻や偶然に依る値
      （gantt は日付を、プロセスのタイムゾーンで計算し、
      タスクでない id の後ろの開始では今日の日付を読む）。
@@ -403,9 +419,18 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    `tools/src/diagrams.ts` の `diagramIds` に図種を足す。
    `tests/fixtures.test.ts` の、図種ごとの読み込みのテストと、
    全件を読むテストの一覧にも足す。
+   normalizer のファイルを、
+   `packages/tests/src/mermaid-run-store.ts` の `RESULT_FILES` に足す。
+   `codeIdentityOf` はこの一覧を使って結果の識別を作る。
+   他パッケージの利用側の一覧の担当へ図種を伝え、
+   担当範囲の外を編集しない。
 6. `tests/` にテストを足す。
    確かめるのは、落とした欄が出ないこと、パッチが要約を変えないこと、
    データブロックの効果。
+   corpus に基づくテストでは入力文字列を写さず、fixture を名前で読み、
+   足りない入力は probe 後に CLI で足す。
+   新しい図種を要約のない見本として使うテストを探し、
+   その assertion を、確かめた別の要約のない fixture に移す。
 7. `pnpm --filter @mmd-toolkit/tests run fixtures:generate` を実行する。
    変わるのは、`common/` の fixture のうち、
    その図種を載せたもの（`db: null` が要約になる）だけのはず。
@@ -459,9 +484,12 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
      スタックトレースの実パスと合わせるために `realpathSync` を通す。
    - Node は URL ごとにモジュールを 1 回しか評価しないので、
      スタブのモジュールはテストファイルごとに別のディレクトリに置く。
-   - テストの本体の例外を黙って捨てない。
-     スタブが文字列にされたら例外にし、
-     例外で終わったテストがあれば収集を止める（入力が跡を残さず欠けるため）。
+   - 入力を隠し得る例外を黙って捨てない。
+     スタブが文字列にされたら例外にし、本体の例外があれば収集を止める。
+     収集を続けられるのは、ファイル・テスト名・エラーの本文が、
+     `collect.ts` の
+     `ERRORS_AFTER_THEIR_INPUT` に載っていて、
+     最後の parse 呼出しの後でだけ失敗し、全入力を記録したと証明できる場合だけ。
    - 描画の配置を確かめるテストは、スタブで算術をする。
      スタブの算術は `NaN` にし、`NaN` を含むテキストを記録したら止める。
    - 実際の DOM で描画して図を確かめるテストは、スタブでは動かない
@@ -489,6 +517,9 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    `MermaidEnvironmentError` が出たら、
    Node にない機能を mermaid.js が使っている。
    5.2 のとおり代役を与える（`docs/expected-results.md`）。
+   正しい埋め込み設定が受理を両方向に変える場合も probe し、
+   仕様の印と必須の読みを §7.1 で適用する。
+   拒否の一覧だけを、差異の全件の一覧としない。
 8. `fixtures:generate` を 2 回実行し、
    上のハッシュの比較で 2 回目が何も変えないことを確かめる。
    `fixtures:check` を通す。
@@ -551,10 +582,16 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    - Db がテキストから読む数。符号、`-0`（Db は -0 で、JSON は 0 と書く）、
      `NaN`、`Infinity`、倍精度に収まらない大きな数、数の後ろのテキスト
      （journey と sankey の review 441）。
+   - Db が読む埋め込み設定の値（packet の review pk12-1）。
+   - mermaid の parser パッケージのテストの入力（packet の review pk12-2）。
    - 文の直後の hidden の形（本文の `---` ブロック、`%%{...}%%`）。
      消費した LF の後に文が続く場合、空行が余分の LF を与える場合、
      閉じの後の空白が LF を残す場合、EOF を確かめる。
      開きをテキストとして取り込む行の値も含める（pie12-1）。
+   - hidden ブロックの隣接する fence。
+     本文のある選択肢を空の fallback より先に試し、
+     後に適合する閉じがある場合とない場合、EOF と閉じの空白も含める
+     （pie-yaml-1）。
    - 省略可能なヘッダーのフラグの後に、同じ行で文が続く場合（pie12-2）。
    - 重複した定義の 2 度目に、`-0` のような意味上の境目の値を置く場合。
      両方の順で、どの値が残るか、
@@ -587,33 +624,51 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
 ## 6. Langium の図
 
 §5 に従い、その図種の挙動を抽出して固定 fixture を集める。
-新たに保持する形の指定読みを生成する前に、§7.1 に従う。
-構文と AST の定義後は、次の手順で木の checker を実装する。
+保持する形や不透明な埋め込みデータの指定読みを生成する前に、§7.1 に従う。
+構文と AST の定義後は、その契約から、
+次の手順で Db builder と checker を実装する。
 以下のパスは `packages/tests` からの相対パスである。
 
+`checkTree` が見るのは、木の欄、範囲、token、字句の不変条件だけである。
+意味上の受理は parser のもので、記録の種類と `fixtureAccepts` の比較で確かめる。
+仕様側の module と helper は規則で名付ける。
+エンジン名は抽出手順で Mermaid の実装を指すもので、木が実装する規則ではない。
+
 1. その図種の構文・AST の文書、parser の token・位置の契約、
-   `docs/check-tree.md` を読む。
-   その定義とコーパスから `src/check-tree/<図種>.ts` を実装する。
-   coverage、フィールド、範囲、token、書かれた値の共有検査を使う。
-   必要な図種とフィールドを、共有の振り分けと表に登録する。
-2. 各葉が、その位置の完全な字句単位であることを検査する。
+   `docs/db-from-tree.md`、`docs/check-tree.md` を読む。
+   意味上の受理条件は、Db 抽出の文書に委ねず、構文仕様の直接の文として求める。
+   比べる値と状態の遷移も、escaping、entity の変換、実効の同一性、
+   各文の後の更新を含め、そこに定義を求める。
+   定義された全ノードと欄を、共有の振り分けと欄・値の表に登録し、
+   AST 文書の表の形が異なる場合は、共有の表 reader を拡張する。
+2. 要約と仕様の値・状態の規則から `src/db-from-tree/<図種>.ts` を実装し、
+   Mermaid の処理手順を写さず、converted-text、数、埋め込み値の helper と、
+   定めた生成 id の順序を使う。
+   文書の置換・順序の規則を保ち、node があっても公開されない値は除き、
+   木の coverage を落とさずに空の要約を認める。
+   builder には固定の手組みの木のテストを、
+   checker には受理木と不正木のテストを書く。
+3. `src/check-tree/<図種>.ts` に、coverage、欄、範囲、token、
+   書かれた値の共有検査を使う。
+   各葉が、その位置の完全な字句単位であることを検査する。
    その位置の最初の一致の優先順と、keyword・構成要素の境界に従う。
    複合形式は、書かれた keyword、記号、値の構成要素と照合する。
    AST の空・null・空白の規則も含める。
    ここで検査する書かれた綴りと、converter による Db の読みを区別する。
-3. 保持する hidden の一致が、指定された隙間か本体の位置に、
+4. 保持する hidden の一致が、指定された隙間か本体の位置に、
    ソース順でちょうど一度あることを検査する。
-   文字を明示的に走査し、terminal の境界を満たす最初の閉じを探す。
+   文字を明示的に走査し、仕様が先に選ぶ選択肢の中で最初の閉じを探し、
+   本文のある一致が隣接する空の fallback より先なら、その順に試す。
    kind・value フィールドだけでなく、書かれた形式全体を検査する。
    文の末尾の隙間と本体の境界は AST の定義に従う。
    形式の前に可視 EOL があるかも検査する。
-4. hidden terminal が直後の LF を消費するとき、
+5. hidden terminal が直後の LF を消費するとき、
    その LF は保持する形式の範囲の外に置く。
    区切りを検査する前に、その消費を反映する。
    次の文には、文法規則が要求する可視 EOL が残っていなければならない。
    余分の LF、先読みだけの閉じ境界、付加 LF、EOF を別々に確かめる。
    書かれた EOL がなくても、EOF が文法規則を満たす場合がある。
-5. ヘッダー後の native Comment ごとに、その単位位置で、
+6. ヘッダー後の native Comment ごとに、その単位位置で、
    先行する terminal が一致しないことを検査する。
    先に開始した文字列・複合値が、開始点を包んでいないことも検査する。
    terminal の一致は、文字の明示的な走査で確かめる。
@@ -624,9 +679,10 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    保持する接頭部には、それ自身の terminal の規則を適用する。
    本文の通常の隙間と hidden の閉じ境界は、図種の仕様どおり厳密に保つ。
    検出の例外は、検出が通した区間だけに適用する。
-6. `tests/check-tree-<図種>.test.ts` に、明示的な受理木と不正木を書く。
+7. `tests/check-tree-<図種>.test.ts` に、明示的な受理木と不正木を書く。
    hidden の形式を落とす・複製する・移すことで、所有先を壊す。
-   後の閉じを選ぶ、消費した LF を範囲に含める、残る EOL を消す、
+   選んだ選択肢の中で後の閉じを選ぶ、本文に適合する一致があるのに隣接する空の
+   閉じを選ぶ、消費した LF を範囲に含める、残る EOL を消す、
    書かれた構成要素を変える、先行 terminal を Comment に偽装する場合も含める。
    包む値の内側の hidden に見えるテキスト、余分の LF、EOF の受理対照も書く。
    保持する各接頭部の後に、
@@ -635,12 +691,17 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    通過した行がない対照も含める。
    本文の通常の隙間が厳密なままであることも確かめる。
    コーパスの成功だけでなく、各文と規則の接点から場合を導く。
-7. 検査を `docs/check-tree.md` の英日双方に書く。
-   場合を区別する fixture を引用する。
+8. builder を `docs/db-from-tree/<図種>.md`、
+   検査を `docs/check-tree.md` に書く。
+   どちらも日本語の対を持たせ、区別する場合ごとに fixture を引用する。
+   木の記録を待つ間は、記録から契約を推測せず、
+   仕様と固定の手組みの木で実装する。
    木が記録されたら、すべての記録木に checker を実行する。
    共有の埋め込み値の helper を使い、比較可能な `dbFromTree` の結果すべてを、
    記録された読みと比べる。
-   木と Db の件数、不一致ごとの入力を報告する。
+   木と Db の実数、記録の不足、不一致ごとの入力を報告する。
+   受理の読みで木がない場合やエラー記録を黙って飛ばさず、
+   エラー記録を飛ばすのは、その印の読みが拒否するときだけとする。
    §7.1 と同じく、比較する Db のない場合を明示する。
 
 ## 7. ほかのパッケージのための fixture の道具と一覧
@@ -660,6 +721,8 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    （`src/index.ts` の `KNOWN_DIVERGENCES`、README の一覧）を合わせる。
    `src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES` には、
    識別子ごとの向きと指定読みの要否を明記する。
+   利用側は fixture の受理に `fixtureAccepts()` を使う。
+   印の形の検査は [parser のスキル](../parser/SKILL.ja.md) の §6 に従う。
    読み込みは一覧にない識別子を拒否するので、識別子を改名するときは、
    (1) 新しい識別子を一覧に足す（古いものは残す）、
    (2) `fixtures:set-divergence` で fixture を新しい識別子に付け替える、
@@ -703,7 +766,7 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    そのあと、失敗の入力のファイルは、それを持っていたパッケージから消す。
 5. 結果として、変えたもの、足した名前、件数、`fixtures:check` の結果を示す。
 
-### 7.1 保持する形式の指定読み
+### 7.1 保持する形式と埋め込みデータの指定読み
 
 1. 新たに受理して保持する形の `specified.json` を生成する前に、
    新しい接頭部ごとに、
@@ -714,7 +777,21 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    参照テキスト、受理、Db、埋め込みの title・設定・data block effects を調べる。
    仕様が意図する読みと照合する。
    保持する原文と、共有の frontmatter・設定の読みを保つ。
-2. 共有 helper の拡張が必要なら、ほかの呼出し元を読む。
+2. `embedded-data-opaque` の向きと指定読みの要否は、
+   `packages/tests/src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES` の
+   その識別子の行を参照し、
+   [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+   の読みを実装する。
+   `tools/src/specified-reading.ts` の `opaqueReferenceInput` と
+   `specifiedRunOf` を既存の CLI の経路で実行する。
+   固定の frontmatter・directive の場合で、その行の向きを確かめる。
+   参照テキスト、`packages/tests/src/mermaid.ts` の
+   `readMermaidConfiguration` が返す設定とタイトル、
+   生成した受理・Db・埋め込み値を調べ、その定義と照合する。
+   `OPAQUE_ACCEPTANCE_KEYS` を仕様が名指す鍵と照合する。
+   受理条件の鍵と共存する保持タイトル、
+   拒否されたブロックと共存する正しい Db 設定も含める。
+3. 共有 helper の拡張が必要なら、ほかの呼出し元を読む。
    他図種も含め、呼出し元の marked fixture を確かめる。
    共有 helper のテストに固定の回帰例を加える。
    生成の前後で、既存 `specified.json` 全件の hash を比べる。
@@ -723,7 +800,9 @@ pie は確認の例であり、terminal の順序と値の規則は図種ごと�
    受理、Db、埋め込み値、記録の追加・削除も含める。
    既存の共有経路を拡張する。
    図種固有の読み方を加えたり、道具が新しい保持形式を扱うと決めつけたりしない。
-3. 参照経路を確かめてから、§5.3.8 の安定した生成の手順を行う。
+4. 参照経路を確かめてから、§5.3.8 の安定した生成の手順を行う。
+   伝えられた fixture 数を信じず、CLI の操作後の現在の corpus から、
+   印と必須の読みを数え、足りない記録を報告する。
    比較する Db のない opaque-data の場合は、テストと報告で明示する。
    比較できるようにするための指定読みや Db を作り上げない。
 

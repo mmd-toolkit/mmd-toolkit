@@ -248,12 +248,13 @@ info
 
 Keep yaml-block InfoIgnoredText as its complete source span at its owner:
 textBeforeHeader, textBeforeShowInfo, body or textAfter. Preserve consumed LF
-outside the range, spare LF and closing padding, including at EOF: deleting them
-can remove required EOL and reject the next statement. Never insert a break
-before a form or format its opaque body as YAML. Ordinary opener indentation can
-change; interiors and unindented closers retain columns. Empty bodies, multiple
-forms, nonqualifying earlier closers and global cuts retain their written
-extent. Earlier line/block values keep priority over hidden-looking text.
+outside the range and closing padding, including at EOF: deleting required
+boundaries can remove EOL and reject the next statement. Exterior spare LF and
+edge blanks follow [Blank lines](#blank-lines). Never insert a break before a
+form or format its opaque body as YAML. Ordinary opener indentation can change;
+interiors and unindented closers retain columns. Empty bodies, multiple forms,
+nonqualifying earlier closers and global cuts retain their written extent.
+Earlier line/block values keep priority over hidden-looking text.
 
 [fixture: info/hidden-yaml/yaml-before-flag]
 
@@ -404,6 +405,8 @@ info
   accTitle: Access
 ```
 
+[fixture: info/comments/hidden-comment-indentation]
+
 ### Global directives
 
 Keep opaque Root directives in source order and position, including each side's
@@ -491,8 +494,30 @@ info
 Collapse ordinary internal ASCII blank runs to one and remove ordinary
 document/body edge blanks, preserving visible grouping without excess space.
 Apply this around comments too. Values, directives, hidden interiors,
-common-region joins, retained prefixes and hidden consumed/spare LF keep their
-breaks, since these boundaries can affect source roles or acceptance.
+common-region joins and retained prefixes keep their breaks, since these can
+affect source roles. After a hidden form consumes LF, keep one spare LF only
+when a following statement needs it. At the document end use one configured
+final newline; directly after the header remove blank lines, since the header
+needs no EOL before its first statement. Elsewhere apply the ordinary blank-line
+rules after the spare LF: collapse a run to one blank line and clear
+whitespace-only lines. The spare LF meets the grammar; later blanks express
+grouping, just as after comments.
+
+A hidden boundary or semicolon protection can keep a statement on the header's
+line; the gap after that statement's hidden suffix still lies between
+statements.
+
+[fixture: info/blank-lines/hidden-following-blanks]
+
+[fixture: info/blank-lines/header-statement-hidden]
+
+[fixture: info/blank-lines/header-statement-semicolon]
+
+[fixture: info/blank-lines/hidden-document-end]
+
+[fixture: info/blank-lines/hidden-body-end]
+
+[fixture: info/blank-lines/hidden-header-blanks]
 
 [fixture: info/blank-lines/blank-runs]
 

@@ -162,6 +162,7 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   GitgraphDiagram: ["%%"],
   InfoDiagram: ["%%"],
+  PacketDiagram: ["%%"],
   PieDiagram: ["%%"],
   UsecaseDiagram: ["%%"],
   AgentflowDiagram: ["%%"],

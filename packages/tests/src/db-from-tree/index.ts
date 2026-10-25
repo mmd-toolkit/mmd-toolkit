@@ -1,5 +1,7 @@
 import { gitgraphDbOf } from "./gitgraph.ts"
 import { infoDbOf } from "./info.ts"
+import { packetDbOf } from "./packet.ts"
+import type { PacketDiagram } from "./packet-tree.ts"
 import type { GitgraphDiagram } from "./gitgraph-tree.ts"
 import type { InfoDiagram } from "./info-tree.ts"
 import { pieDbOf } from "./pie.ts"
@@ -60,6 +62,7 @@ export interface ErrorDiagram extends TreeNode {
 export type DiagramBody =
   | GitgraphDiagram
   | InfoDiagram
+  | PacketDiagram
   | PieDiagram
   | AgentflowDiagram
   | BlockDiagram
@@ -112,6 +115,8 @@ export function dbFromTree(
       return gitgraphDbOf(text, root, root.body, embedded)
     case "InfoDiagram":
       return infoDbOf()
+    case "PacketDiagram":
+      return packetDbOf(text, root, root.body, embedded)
     case "PieDiagram":
       return pieDbOf(text, root, root.body, embedded)
     case "AgentflowDiagram":

@@ -19,6 +19,7 @@ const SPEC_DOCS = path.join(
 const DIAGRAMS = [
   "gitgraph",
   "info",
+  "packet",
   "pie",
   "usecase",
   "agentflow",

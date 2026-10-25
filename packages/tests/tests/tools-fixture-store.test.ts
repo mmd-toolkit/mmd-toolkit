@@ -433,10 +433,14 @@ describe("generateExpected", () => {
   })
 
   it("records db null in common/ for a diagram type that has no normalizer", async () => {
-    const file = await generateExpected("common", "packet\n", AUTHORED)
+    const file = await generateExpected(
+      "common",
+      "architecture-beta\n",
+      AUTHORED,
+    )
     expect(acceptedOf(file)).toMatchObject({
       accepted: true,
-      diagramType: "packet",
+      diagramType: "architecture",
       db: null,
     })
   })

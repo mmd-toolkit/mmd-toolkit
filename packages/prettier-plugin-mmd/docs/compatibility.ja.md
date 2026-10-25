@@ -1634,8 +1634,10 @@ pie は次の物理行の値を結合しません。
 
 Hidden YAML と hidden DIRECTIVE は PieIgnoredText であり、
 先頭の frontmatter や Root の directive とは別です。
-範囲外で消費する LF、余分な EOL、受理を決める閉じの空白も含め、
-原文の位置に保ちます。
+hidden の範囲全体を原文の位置に保ちます。
+受理を決める閉じの空白は EOF でも保ちます。
+範囲外の必須 LF と端の空行は
+[pie の Blank lines](./pie.ja.md#blank-lines) に従います。
 Hidden YAML の閉じは先頭列を保ちます。
 検出が飛ばした前置きは先頭 LF とコメントも全体を保ち、
 ignored YAML が frontmatter になるのを防ぎます。
@@ -1686,8 +1688,10 @@ summary に message がなくても削除はしません。
 
 GitgraphIgnoredText は native hidden YAML/DIRECTIVE を保持し、
 実 frontmatter と global directive とは別です。
-完全な source を所有位置に残し、消費 LF・spare LF・閉じの padding は
-EOF でも保持します。hidden YAML の閉じの列も残します。
+hidden の範囲全体を所有位置に残し、閉じの padding は EOF でも保持します。
+範囲外の必須 LF と端の空行は
+[gitgraph の Blank lines](./gitgraph.ja.md#blank-lines) に従います。
+hidden YAML の閉じの列も残します。
 見出し前に保持する prefix 全体を残し、hidden YAML の有効化を防ぎます。
 安全な実 YAML は共通の formatter を使い、tabWidth 0 でも正の最小字下げです。
 global trivia、コメント、semicolon の保護は共通の規則に従い、
@@ -1747,8 +1751,10 @@ info の公開 Db summary は、title と accessibility の代入があっても
 
 InfoIgnoredText は実 frontmatter や Root directive と別に、
 hidden YAML/DIRECTIVE を元の所有位置に保ちます。
-原文全体、range 外で消費した LF、spare LF、閉じの padding を EOF でも保ちます。
+hidden の範囲全体と閉じの padding を EOF でも保ちます。
 これらの境界は受理を左右するためです。
+範囲外の必須 LF と端の空行は
+[info の Blank lines](./info.ja.md#blank-lines) に従います。
 hidden YAML の閉じは列を保ちます。
 無視された YAML の実 frontmatter への昇格が設定や受理を変えないよう、
 先頭 LF とコメント列を含む保持 prefix 全体を残します。
@@ -1791,3 +1797,75 @@ payload を修復しません。
 [corpus fixture: info/div-c4container-title]
 [corpus fixture: info/div-bare-before-header-ls]
 [test: info Markdown: rejected]
+
+## Packet の hidden 境界と原綴の block
+
+[packet の規則](./packet.ja.md)は、原綴の `packet`・`packet-beta` と、
+range・single・relative の3形式を保ちます。
+公開行から block を再構成せず、公開上限後の出現も除きません。
+同じ label は別々に残し、空の共通代入も残します。
+空 title の削除は、それ以前の title を復活させ得るためです。
+label の引用符、padding、escape、HTML、entity と物理的な継続列は、
+書き換えが Db を変え得るため保ちます。
+数値は double で丸め・overflow しても原綴です。
+指数・Infinity は packet の構文ではありません。
+[fixture: packet/block-forms-and-order/block-three-forms]
+[fixture: packet/block-forms-and-order/keep-interleaving]
+[fixture: packet/block-forms-and-order/cap-unpublished-kept]
+[fixture: packet/label-content/label-padding]
+[fixture: packet/label-content/label-escapes]
+[fixture: packet/numbers/number-precision]
+[fixture: packet/numbers/number-overflow]
+
+PacketIgnoredText は native hidden YAML・DIRECTIVE を、
+実 frontmatter と Root directive から分けて保持します。
+名前付きの所有位置で hidden の範囲全体と、EOF を含む閉じの padding を保ちます。
+これらは、後続文に可視 EOL があるかを決め得るためです。
+範囲外の必須 LF と端の空行は
+[packet の Blank lines](./packet.ja.md#blank-lines) に従います。
+内部と閉じの列、保持する見出し前の prefix 全体も保ちます。
+無視された YAML を有効な title・設定へ昇格させないためです。
+安全な実 frontmatter だけ、guard 付き YAML 整形と正の最小字下げを使います。
+packet の列には文法上の意味がないため、本文の `tabWidth: 0` は0桁です。
+[fixture: packet/hidden-yaml/yaml-all-range-gaps]
+[fixture: packet/hidden-yaml/yaml-suffix-space]
+[fixture: packet/hidden-directives/hidden-common-suffixes]
+[fixture: packet/hidden-directives/hidden-eof-padding]
+[fixture: packet/retained-prefix/prefix-retain]
+[fixture: packet/frontmatter-yaml/frontmatter-zero-min]
+[fixture: packet/indentation/indent-zero]
+
+共通の行値は外端を詰めますが、次の物理行から値を取りません。
+共有の accessibility と説明配置は、空の形、trivia と原綴の継続列を保ちます。
+global directive は opaque な内容と接触を保ちます。
+init の削除は行設定を変え得ます。
+全セミコロンを残し、共有の segment 保護で交差する値・trivia と、
+見出し・本文の組を保ちます。
+選択セミコロンの削除や trigger の移動は Db を変え得るためです。
+物理 EOL、BOM、末尾改行と Markdown 処理は共有です。
+Markdown は payload 最終行の padding を trim します。
+内部の hidden padding は引き続き必要です。
+[fixture: packet/title/title-no-next]
+[fixture: packet/accessibility-lines/a11y-empty-next]
+[fixture: packet/description-blocks/description-columns]
+[fixture: packet/global-directives/global-standalone]
+[fixture: packet/semicolons/semicolons-trigger]
+[fixture: packet/semicolons/semicolons-component]
+[test: packet Markdown: hidden-boundary]
+[test: packet Markdown: final-hidden-padding]
+
+6つの[指定読み](./packet.ja.md#specified-readings)が、
+keyword・整数の atomic cut、本文だけの frontmatter HTML、
+opaque な埋め込みデータ、C4 検出と通過した bare percent trivia を扱います。
+受理を変える本文の `packet.bitsPerRow` は指定の比較経路に従い、
+site 設定、title と他の設定を残します。
+raw 拒否には raw Db や、受理されたとみなす埋め込み効果はありません。
+hidden form、空 label と空説明には新たな差異は不要です。
+parser の失敗は standalone では出力せず構文エラーを報告し、
+Markdown では埋め込みを辞退して payload を修復しません。
+[corpus fixture: packet/directive-header-middle]
+[corpus fixture: packet/div-selected-title-interior]
+[corpus fixture: packet/config-frontmatter-fraction]
+[corpus fixture: packet/config-frontmatter-overrides-site]
+[corpus fixture: packet/c4container-label]
+[test: packet Markdown: rejected]

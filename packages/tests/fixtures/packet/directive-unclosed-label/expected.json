@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed global directive can remove a label closer."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 3: unexpected character: ->\"<- at offset: 9, skipped 2 characters. Parse error on line 2, column 5: Expecting token of type 'STRING' but found `\n`."
+  }
+}

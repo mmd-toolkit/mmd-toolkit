@@ -12,6 +12,10 @@ import type {
   GitgraphAccTitleStatement,
   GitgraphAccDescrStatement,
   GitgraphAccDescrBlockStatement,
+  PacketTitleStatement,
+  PacketAccTitleStatement,
+  PacketAccDescrStatement,
+  PacketAccDescrBlockStatement,
 } from "@mmd-toolkit/parser"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { collectAtoms, expectToken, layoutDescriptionBlock } from "./layout.ts"
@@ -37,6 +41,10 @@ type CommonStatement =
   | GitgraphAccTitleStatement
   | GitgraphAccDescrStatement
   | GitgraphAccDescrBlockStatement
+  | PacketTitleStatement
+  | PacketAccTitleStatement
+  | PacketAccDescrStatement
+  | PacketAccDescrBlockStatement
 
 /**
  * Shared compact line forms never read the next physical line (docs/pie.md,

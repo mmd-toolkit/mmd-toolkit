@@ -488,13 +488,14 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
-Gitgraph, info, pie, Venn, Agentflow and Usecase are checked with both hand-made
-and recorded trees. The new builders are described in
-[gitgraph.md](./db-from-tree/gitgraph.md) and [info.md](./db-from-tree/info.md).
+Packet, gitgraph, info, pie, Venn, Agentflow and Usecase are checked with both
+hand-made and recorded trees. The new builders are described in
+[packet.md](./db-from-tree/packet.md), [gitgraph.md](./db-from-tree/gitgraph.md)
+and [info.md](./db-from-tree/info.md).
 
 The recorded-tree comparisons include C4, block, kanban, Venn, Agentflow,
-Usecase, pie, gitgraph, info, and their common detection fixtures, including all
-five C4 diagram kinds.
+Usecase, pie, gitgraph, info, packet, and their common detection fixtures,
+including all five C4 diagram kinds.
 
 `tests/db-from-tree.test.ts` builds the Db of every fixture that records a tree
 and an accepted result with a Db, and requires it to be the recorded Db

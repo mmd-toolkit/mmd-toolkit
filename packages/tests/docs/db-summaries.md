@@ -18687,3 +18687,109 @@ info/div-c4deployment-flag-comment-eof] [fixture:
 info/c4container-flag-comment-lf] [fixture: info/c4component-flag-comment-lf]
 [fixture: info/c4dynamic-flag-comment-lf] [fixture:
 info/c4deployment-flag-comment-lf]
+
+## packet
+
+`normalizePacket()` summarizes the shared `packet` detector id for the `packet`
+and `packet-beta` headers.
+
+| Field      | Content                                                                                                                                                         |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`    | Diagram title, or the empty text.                                                                                                                               |
+| `accTitle` | Accessibility title, or the empty text.                                                                                                                         |
+| `accDescr` | Accessibility description, or the empty text.                                                                                                                   |
+| `packet`   | Published rows in order, each an array of blocks in order. Each block keeps `start`, `end` (inclusive bit positions) and `label`. An empty diagram has no rows. |
+
+The source is
+[`PacketDB.getPacket()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/db.ts#L18-L52),
+the rows that the
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/renderer.ts#L8-L90)
+reads. Rows and blocks are copied without sorting or merging adjacent labels.
+The
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/parser.ts#L18-L90)
+fills omitted endpoints and splits blocks at `packet.bitsPerRow` boundaries
+before publishing them; the summary keeps those endpoints and repeated labels.
+An exact boundary creates no empty final row. [fixture: packet/gram-mixed]
+[fixture: packet/db-row-split] [fixture: packet/db-row-exact] [fixture:
+packet/db-same-label] [fixture: packet/config-rows-eight]
+
+The summary drops `bits`, which the renderer never reads. In particular, the
+adapter's split-block counts need not equal `end - start + 1`; the normalizer
+does not correct or retain them. It also drops parsing state (`lastBit`, `row`,
+the working word and the fixed row cap), and the configuration returned by
+[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/db.ts#L16-L29).
+Drawing dimensions and `showBits` do not change the summary. The row width's
+effect remains in the published rows, and configuration travels through the
+existing site and embedded-value fields. [fixture: packet/db-row-split]
+[fixture: packet/config-drawing-only] [fixture: packet/config-row-frontmatter]
+
+Published rows need not correspond to written blocks. With a row width of `-4`,
+YAML `.nan`, or a nonnumeric string, a written block can produce `packet: []`. A
+zero width instead publishes 10,000 rows whose block has start `0` and end `-1`.
+Both frontmatter and init can supply negative, zero and string values. [fixture:
+packet/config-frontmatter-row-negative] [fixture:
+packet/config-init-row-negative] [fixture: packet/config-frontmatter-row-nan]
+[fixture: packet/config-frontmatter-row-text] [fixture:
+packet/config-init-row-text] [fixture: packet/config-frontmatter-row-zero]
+[fixture: packet/config-init-row-zero]
+
+A numeric string such as `"8"` splits the range 0-9 into 0-7 and 8-9. The
+adapter multiplies that string by the row number for endpoints, but concatenates
+it with `1` for the loop bound (`"81"`). A width of `2.5` can be accepted and
+publish fractional endpoints; `true` publishes one-bit rows, and `null` leaves
+the default width of 32. [fixture: packet/config-frontmatter-row-numeric-string]
+[fixture: packet/config-init-row-numeric-string] [fixture:
+packet/config-frontmatter-row-fraction-accepted] [fixture:
+packet/config-init-row-fraction-accepted] [fixture:
+packet/config-frontmatter-row-true] [fixture: packet/config-init-row-true]
+[fixture: packet/config-frontmatter-row-null] [fixture:
+packet/config-init-row-null] [fixture: packet/config-init-row-integer]
+
+YAML `.inf` is infinite, while YAML `1e400` remains a string; JSON `1e400` in
+init is infinite. All three let a finite range fit one row. Bare `.nan` and
+`.inf` are invalid JSON in init, so
+[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L175-L203)
+ignores those arguments and the default width remains. Quoting either value in
+init instead supplies a nonnumeric string and publishes no rows. [fixture:
+packet/config-frontmatter-row-infinity] [fixture:
+packet/config-frontmatter-row-overflow] [fixture:
+packet/config-init-row-overflow] [fixture: packet/config-init-row-nan-token]
+[fixture: packet/config-init-row-infinity-token] [fixture:
+packet/config-init-row-nan-string] [fixture:
+packet/config-init-row-infinity-string]
+
+Only published blocks are kept, including truncation at the adapter's 10,000-row
+cap. A following contiguous block is accepted without being published, while a
+noncontiguous block still rejects after the cap. Finite numeric endpoints are
+JSON numbers; a nonfinite endpoint uses the shared `numberOrText()`
+representation. An infinite width and an overflowing count in the source alone
+can publish an infinite endpoint, without site configuration. [fixture:
+packet/db-precision-rounded] [fixture:
+packet/db-cap-following-block-unpublished] [fixture:
+packet/error-cap-following-noncontiguous] [fixture: packet/db-overflow-wide]
+[fixture: packet/db-frontmatter-infinite-endpoint]
+
+The
+[common publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+sets only truthy final AST values. Repeated common assignments keep the last
+one, including an empty final value that suppresses earlier body assignments. An
+empty final title leaves a frontmatter title in place. Accessibility fields are
+consumed by the
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+Empty labels are published and retained. There are no random ids or diagram
+patches. [fixture: packet/title-repeat] [fixture: packet/title-repeat-empty]
+[fixture: packet/acctitle-repeat-empty] [fixture: packet/accdescr-block-repeat]
+[fixture: packet/frontmatter-empty-body-title] [fixture:
+packet/db-label-empty-double] [fixture: packet/db-label-empty-single]
+
+A schema-valid fractional `bitsPerRow` can also cause splitting to reject. For
+fixtures marked `embedded-data-opaque`, the shared comparison reading removes
+only text configuration's `packet.bitsPerRow`, preserving title, other settings
+and site configuration. This records both a rejected input with an accepted
+reference and an accepted input with a rejected reference. A rejected opaque
+frontmatter is omitted while a valid `showBits` directive beside it remains.
+[fixture: packet/config-frontmatter-fraction] [fixture:
+packet/config-directive-fraction] [fixture:
+packet/config-frontmatter-overrides-site] [fixture:
+packet/config-directive-overrides-site] [fixture:
+packet/frontmatter-invalid-keeps-config]

@@ -35,6 +35,11 @@ info の定義は [構文](./diagrams/info.ja.md) と [木](./ast/info.ja.md) �
 す。
 [fixture: info/header-lf] [fixture: info/common-all]
 
+packet の定義は [構文](./diagrams/packet.ja.md) と
+[木](./ast/packet.ja.md) にあります。
+[fixture: packet/gram-mixed]
+[fixture: packet/spec-packet-c4580507]
+
 ## 元にしたもの
 
 仕様は、mermaid.js のリポジトリにある次の 3 つを元にしています。

@@ -42,6 +42,7 @@ export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
     "accdescr",
   ],
   InfoDiagram: ["info", "showinfo", "title", "acctitle", "accdescr"],
+  PacketDiagram: ["packet-beta", "packet", "title", "acctitle", "accdescr"],
   PieDiagram: ["pie", "showdata", "title", "acctitle", "accdescr"],
   UsecaseDiagram: [
     "usecase-beta",

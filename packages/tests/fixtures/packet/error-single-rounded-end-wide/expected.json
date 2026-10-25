@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md Semantic acceptance conditions: At a wide site row width, a single block computes its end as start plus one then minus one; at 9007199254740992 this yields 9007199254740991 and the entered row-boundary check rejects."
+  },
+  "config": {
+    "packet": {
+      "bitsPerRow": 10000000000000000
+    }
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Block start 9007199254740992 is greater than block end 9007199254740991."
+  }
+}

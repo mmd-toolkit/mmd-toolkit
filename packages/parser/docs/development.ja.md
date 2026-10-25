@@ -45,7 +45,7 @@ sankey 図（`sankey`）と、XY チャート（`xychart`）と、
 kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）と、
 Ishikawa 図（`ishikawa`）と、agentflow（`agentflow`）と、
 usecase 図（`usecase`）、円グラフ（`pie`）、gitgraph 図（`gitGraph`）、
-info 図（`info`）です。
+info 図（`info`）、packet 図（`packet`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -263,3 +263,14 @@ gitgraph の構文解析器は、字句単位から復号した比較値を、
 [fixture: gitgraph/db-state-empty-ids-are-fresh]
 [fixture: gitgraph/db-cherry-pick-invalid-parent]
 [fixture: gitgraph/docs-community-contributing-05cdc44b]
+
+packet の字句解析器は仕様の
+[規則の順序](../../spec/docs/diagrams/packet.ja.md#規則の順序)に従い、
+src/common-form-unit-lexer.ts で info と共通の形式を共有します。
+再帰下降で記述された 3 種のブロックと隠れた隙間を保持します。
+共通のトークン検査の後、src/diagrams/packet/acceptance.ts が、
+順序どおりの倍精度演算とデフォルト幅 32 の行反復を適用します。
+テストは同じ解析へ外部サイトの幅を適用し、parse(text) の API は固定のままです。
+[fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
+[fixture: packet/db-explicit-start-rounded]
+[fixture: packet/config-fraction-reject]

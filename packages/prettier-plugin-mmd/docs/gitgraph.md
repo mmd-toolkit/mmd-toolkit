@@ -84,9 +84,30 @@ gitGraph:
 
 Collapse ordinary blank runs to one blank line and remove ordinary document/body
 edge blanks, retaining visible grouping around comments too. Quoted values,
-description blocks, directive/hidden interiors, consumed and spare hidden LFs
-and retained prefixes keep their authored blanks because those belong to source
-values or lexical boundaries.
+description blocks, directive/hidden interiors and retained prefixes keep their
+authored blanks because those belong to source values or lexical roles. After a
+hidden form consumes LF, keep one spare LF only when a following statement needs
+it. At the document end use one configured final newline; directly after the
+header remove blank lines, since the header needs no EOL before its first
+statement. Elsewhere apply the ordinary blank-line rules after the spare LF:
+collapse a run to one blank line and clear whitespace-only lines. The spare LF
+meets the grammar; later blanks express grouping, just as after comments.
+
+A hidden boundary or semicolon protection can keep a statement on the header's
+line; the gap after that statement's hidden suffix still lies between
+statements.
+
+[fixture: gitgraph/blank-lines/hidden-following-blanks]
+
+[fixture: gitgraph/blank-lines/header-statement-hidden]
+
+[fixture: gitgraph/blank-lines/header-statement-semicolon]
+
+[fixture: gitgraph/blank-lines/hidden-document-end]
+
+[fixture: gitgraph/blank-lines/hidden-body-end]
+
+[fixture: gitgraph/blank-lines/hidden-header-blanks]
 
 Fixed cases: [fixture: gitgraph/blank-lines/blank-collapse] [fixture:
 gitgraph/blank-lines/blank-comment] [fixture:
@@ -457,6 +478,8 @@ gitGraph %% header
   %% last
 ```
 
+[fixture: gitgraph/comments/hidden-comment-indentation]
+
 ### Global directives
 
 Keep global directive content, order, source position and touching/separated
@@ -487,12 +510,13 @@ gitGraph
 
 Keep every yaml-block GitgraphIgnoredText in its named
 header/option/name/textAfter/body owner as the complete source span, including
-internal common trivia. Preserve consumed LF outside its range, spare LF and
-closing padding, also at EOF or before trivia/another form. Do not add LF before
-it. A body opener may indent one step; internal and closing columns stay. Empty
-bodies, three fences, later qualifying closers and multiple forms remain opaque.
-Earlier strings/blocks/line values retain ownership. Moving or trimming these
-boundaries can reject an accepted history.
+internal common trivia. Preserve consumed LF outside its range and closing
+padding, also at EOF or before trivia/another form. Exterior spare LF and edge
+blanks follow [Blank lines](#blank-lines). Do not add LF before it. A body
+opener may indent one step; internal and closing columns stay. Empty bodies,
+three fences, later qualifying closers and multiple forms remain opaque. Earlier
+strings/blocks/line values retain ownership. Moving or trimming these boundaries
+can reject an accepted history.
 
 Fixed cases: [corpus fixture: gitgraph/lex-yaml-invalid-body] [corpus fixture:
 gitgraph/lex-hidden-yaml-before-option-value] [fixture:

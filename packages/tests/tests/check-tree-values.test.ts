@@ -57,6 +57,8 @@ function saidInSpecification(
     [
       "Written text of the common value.",
       "Written common-value text.",
+      "Authored common-value text.",
+      "Nonempty authored fenced form.",
       "Nonempty written form, including fences.",
       "Nonempty written ignored form, including fences.",
       "The written text of this value.",
@@ -181,6 +183,8 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "GitgraphTypeOption", message: "the field value is " },
   { type: "InfoLiteral", message: NOT_WRITTEN_TEXT },
   { type: "InfoIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "PacketLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "PacketIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "PieLiteral", message: NOT_WRITTEN_TEXT },
   { type: "PieIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "UsecaseLabel", message: NOT_WRITTEN_TEXT },
@@ -408,6 +412,45 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "PacketLiteral",
+    name: "packet line values keep their written leading space",
+    diagram: "packet",
+    fixture: "common-whitespace",
+    token: { type: "RawText", value: " A  B\t\tC \t" },
+    side: "start",
+    problems: [
+      {
+        where: "PacketLiteral at 57-67",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "PacketLiteral at 57-67",
+        message:
+          'the texts of its tokens joined are not its written text: "A  B\\t\\tC \\t", not " A  B\\t\\tC \\t"',
+      },
+      {
+        where: "PacketLiteral at 57-67",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [57,67], not [58,67]",
+      },
+    ],
+  },
+  {
+    type: "PacketIgnoredText",
+    name: "packet hidden text keeps LF next to a common comment cut",
+    diagram: "packet",
+    fixture: "lex-yaml-common-comment",
+    token: { type: "RawText", value: "---\nx\n" },
+    side: "end",
+    problems: [
+      {
+        where: "PacketIgnoredText at 7-29",
+        message:
+          'the texts of its tokens joined are not its written text: "---\\nxy\\n---", not "---\\nx\\ny\\n---"',
+      },
+    ],
+  },
   {
     type: "GitgraphLiteral",
     name: "gitgraph line values keep the space after their colon",

@@ -301,13 +301,13 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
         diagram: "gitgraph",
         name: "div-frontmatter-main-branch-duplicate-default-accepted",
         reference:
-          '---\n{"config":{"gitGraph":{}}}\n---\ngitGraph\ncommit\nbranch dev\n',
+          "---\nconfig:\n  gitGraph: {}\n---\ngitGraph\ncommit\nbranch dev\n",
       },
       {
         diagram: "gitgraph",
         name: "div-init-main-branch-duplicate-default-accepted",
         reference:
-          '---\n{"config":{"gitGraph":{}}}\n---\n\ngitGraph\ncommit\nbranch dev\n',
+          "---\nconfig:\n  gitGraph: {}\n---\n\ngitGraph\ncommit\nbranch dev\n",
       },
       {
         diagram: "pie",
@@ -827,11 +827,11 @@ describe("specifiedRunOf: html-tag-in-frontmatter", () => {
   })
 
   it("gives the title to embedded where the diagram type has no Db to summarize", async () => {
-    const input = "---\ntitle: <a\n---\npacket\n"
+    const input = "---\ntitle: <a\n---\narchitecture-beta\n"
     const run = await specifiedRunOf(input, HTML_TAG_MARK, undefined)
     expect(run?.outcome).toEqual({
       accepted: true,
-      diagramType: "packet",
+      diagramType: "architecture",
       db: null,
     })
     expect(run?.embedded?.title).toBe("<a")
@@ -1194,4 +1194,78 @@ describe("blank-line references with multiline directives", () => {
       expect(specified?.outcome).toEqual(control.outcome)
       expect(dbOf(specified).root).toEqual({ text: rootText, children: [] })
     })
+})
+
+describe("packet opaque acceptance settings", () => {
+  it("records both acceptance directions and retains the frontmatter title", async () => {
+    const fixtures = await loadFixtures("packet")
+    for (const entry of [
+      { name: "config-frontmatter-fraction", accepted: true, title: "Front" },
+      { name: "config-directive-fraction", accepted: true, title: undefined },
+      {
+        name: "config-frontmatter-overrides-site",
+        accepted: false,
+        title: "Front",
+      },
+      {
+        name: "config-directive-overrides-site",
+        accepted: false,
+        title: undefined,
+      },
+    ]) {
+      const fixture = fixtures.find((value) => value.name === entry.name)
+      if (fixture === undefined) throw new Error(`missing ${entry.name}`)
+      const reference = await opaqueReferenceInput(
+        fixture.input,
+        fixture.config,
+      )
+      const reading = await readMermaidConfiguration(reference, {
+        config: fixture.config,
+      })
+      expect(reading.accepted, entry.name).toBe(true)
+      if (reading.accepted) {
+        expect(reading.config.packet, entry.name).not.toHaveProperty(
+          "bitsPerRow",
+        )
+        if (entry.title !== undefined)
+          expect(reading.title, entry.name).toBe(entry.title)
+      }
+      const result = await specifiedRunOf(
+        fixture.input,
+        OPAQUE_MARK,
+        fixture.config,
+      )
+      expect(result?.outcome.accepted, entry.name).toBe(entry.accepted)
+      const specified = fixture.specified
+      if (specified === undefined) throw new Error("missing specified reading")
+      const expected = specified.accepted
+        ? {
+            accepted: true,
+            diagramType: specified.diagramType,
+            db: specified.db,
+          }
+        : specified
+      expect(result?.outcome, entry.name).toEqual(expected)
+      if (entry.accepted && entry.title !== undefined) {
+        expect(dbOf(result).title).toBe(entry.title)
+        expect(result?.embedded?.title).toBe(entry.title)
+      }
+    }
+  })
+
+  it("keeps unrelated valid configuration when omitting malformed opaque data", async () => {
+    const fixture = (await loadFixtures("packet")).find(
+      (entry) => entry.name === "frontmatter-invalid-keeps-config",
+    )
+    if (fixture === undefined) throw new Error("missing packet opaque fixture")
+    const reference = await opaqueReferenceInput(fixture.input, fixture.config)
+    expect(reference).toContain('%%{init:{"packet":{"showBits":false}}}%%')
+    const result = await specifiedRunOf(
+      fixture.input,
+      OPAQUE_MARK,
+      fixture.config,
+    )
+    expect(result?.outcome.accepted).toBe(true)
+    expect(result?.embedded?.config.packet).toMatchObject({ showBits: false })
+  })
 })

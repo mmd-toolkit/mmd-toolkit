@@ -252,8 +252,9 @@ info
 
 yaml-block の InfoIgnoredText は原文全体を所有位置に保ちます。
 所有位置は textBeforeHeader、textBeforeShowInfo、body、textAfter です。
-range 外で消費した LF、spare LF、閉じの padding を EOF でも保ちます。
-削除すると必須 EOL が失われ、次の文が拒否されることがあるためです。
+range 外で消費した LF と閉じの padding を EOF でも保ちます。
+必須の境界を削除すると EOL が失われ、次の文が拒否されることがあるためです。
+範囲外の spare LF と端の空行は [Blank lines](#blank-lines) に従います。
 form の前に改行を足さず、opaque な本文を YAML 整形しません。
 opener の通常の字下げは整え、内部と第1列の閉じは列を保ちます。
 空本文、複数 form、前の不成立の閉じ、global cut も原文の範囲を保ちます。
@@ -412,6 +413,8 @@ info
   accTitle: Access
 ```
 
+[fixture: info/comments/hidden-comment-indentation]
+
 ### Global directives
 
 共通の除去が両側を連結するため、opaque な Root directive の原順序と位置、
@@ -501,8 +504,30 @@ info
 余分な空間を減らし、見た目の grouping を残すため、
 通常の内部 ASCII 空行列を1行にし、文書と本文の端の空行は削除します。
 コメントの周囲も同じです。
-値、directive、hidden 内部、共通の結合領域、保持 prefix、
-hidden の消費・spare LF は、原文の役割や受理に関わるため改行を保ちます。
+値、directive、hidden 内部、共通の結合領域、保持 prefix は、
+原文の役割に関わるため改行を保ちます。
+hidden form が LF を消費した後は、
+次の文に必要なときだけ予備の LF 1 つを保ちます。
+文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
+見出しと最初の文の間に EOL は必要ありません。
+それ以外は予備の LF の後に通常の空行の規則を適用し、
+連続空行を1行、空白だけの行を空行にします。
+予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
+
+hidden の境界や semicolon の保護で文が見出しの行に残っても、
+その文の後置 hidden form の後は文と文の間として扱います。
+
+[fixture: info/blank-lines/hidden-following-blanks]
+
+[fixture: info/blank-lines/header-statement-hidden]
+
+[fixture: info/blank-lines/header-statement-semicolon]
+
+[fixture: info/blank-lines/hidden-document-end]
+
+[fixture: info/blank-lines/hidden-body-end]
+
+[fixture: info/blank-lines/hidden-header-blanks]
 
 [fixture: info/blank-lines/blank-runs]
 
@@ -672,9 +697,9 @@ byte 同一は保証しません。
 [corpus fixture: info/space-trailing-unicode]
 [corpus fixture: info/frontmatter-bom-both]
 
-Input (escaped): `"info\rshowInfo\rtitle Topic\r"`.
+入力 (escaped): `"info\rshowInfo\rtitle Topic\r"`.
 
-Output (escaped): `"info showInfo\n  title Topic\n"`.
+出力: `"info showInfo\n  title Topic\n"`.
 
 ### Final newline
 
@@ -808,6 +833,6 @@ Markdown は最終行の hidden 境界を含む padding を削除します。
 
 [test: info Markdown: rejected]
 
-Input (escaped): `"```mermaid\ninfo showInfo title Topic\n```\n"`.
+入力 (escaped): `"```mermaid\ninfo showInfo title Topic\n```\n"`.
 
-Output (escaped): `"```mermaid\ninfo showInfo\n  title Topic\n```\n"`.
+出力: `"```mermaid\ninfo showInfo\n  title Topic\n```\n"`.

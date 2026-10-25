@@ -248,6 +248,15 @@ gitgraph/div-frontmatter-cross-string-enable] [fixture:
 gitgraph/div-frontmatter-cross-string-block] [fixture:
 gitgraph/frontmatter-body-tag-control] [fixture: gitgraph/frontmatter-html]
 
+### Packet
+
+Frontmatter and values retain their source, but body quote conversion does not
+depend on an unclosed opaque frontmatter tag. It can change a value or reverse
+acceptance in either direction; the body-only control agrees. [fixture:
+packet/div-html-frontmatter-value] [fixture: packet/div-html-frontmatter-accept]
+[fixture: packet/div-html-frontmatter-reject] [fixture:
+packet/gram-html-body-only-reference]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -311,3 +320,11 @@ inspected result settles this common boundary behavior.
 Status: Approved; merged
 [#6707](https://github.com/mermaid-js/mermaid/pull/6707) adds a duplicate-id
 warning. These facts do not justify any additional divergence.
+
+- The pinned
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  shows single positions, ranges and relative counts; it does not define this
+  preprocessing boundary. Searches of the official repository's issues and pull
+  requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
+  `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
+  this divergence.

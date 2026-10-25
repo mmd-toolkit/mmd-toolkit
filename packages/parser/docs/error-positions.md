@@ -14,15 +14,15 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   [fixture: common/empty] [fixture: common/comment-only] [fixture:
   common/whitespace-only]
 - The `---` pseudo-diagram, or a retained nonleading block before a supported
-  diagram other than pie, gitgraph or info: `range` covers the three `-`
+  diagram other than pie, gitgraph, info or packet: `range` covers the three `-`
   characters that start the block. [fixture:
   common/frontmatter-adjacent-delimiters] [fixture:
   common/frontmatter-nonleading-class] [fixture:
   common/frontmatter-nonleading-sequence] [fixture:
   common/frontmatter-nonleading-state] [fixture:
   common/frontmatter-after-bare-percent-flowchart]
-- A directive found once more before the header, except in pie, gitgraph or
-  info, ([Diagram detection](../../spec/docs/common.md#diagram-detection)):
+- A directive found once more before the header, except in pie, gitgraph, info
+  or packet, ([Diagram detection](../../spec/docs/common.md#diagram-detection)):
   `range` covers its opening `%%{`, from its first `%` to its `{`, with the
   directives and comment regions of the source between them; of several, the
   first. [fixture: flowchart/detect-directive-across-directive] [fixture:
@@ -1078,3 +1078,36 @@ rejected, `range` is the form that causes it, and the message names the cause:
 `html-tag-in-frontmatter` changes which `"` characters are read as `'`. The
 parser does not tell that apart, so a rejection that follows from it is reported
 by the rules above.
+
+## In a packet diagram
+
+The [ordered rules](../../spec/docs/diagrams/packet.md#ordered-rules) scan the
+whole source before grammar and semantic acceptance. Later lexical errors
+therefore reject valid prefixes too. [fixture: packet/error-after-prefix]
+[fixture: packet/error-recovered-block]
+
+| Rejection                                       | Range and message                                                                                                 | Fixtures                                                                                                                                                                                                     |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| No lexical rule matches                         | The source character, with `Unexpected character`.                                                                | [fixture: packet/error-start] [fixture: packet/space-header-nbsp] [fixture: packet/lex-integer-shorter-before-dot]                                                                                           |
+| No complete string or description block matches | The opening quote or first keyword character, with `Unexpected character`.                                        | [fixture: packet/lex-label-open] [fixture: packet/lex-label-open-single] [fixture: packet/lex-label-escaped-lf] [fixture: packet/accdescr-block-open]                                                        |
+| The grammar cannot read a unit                  | Its significant range, with `Unexpected token`; at EOF, the empty source-end range with `Unexpected end of text`. | [fixture: packet/gram-second-header] [fixture: packet/gram-same-line-blocks] [fixture: packet/comment-inside-range]                                                                                          |
+| A hidden form consumes the only separating LF   | The next visible unit, with `Unexpected token`; EOF instead satisfies EOL.                                        | [fixture: packet/hidden-directive-block] [fixture: packet/hidden-directive-title] [fixture: packet/hidden-yaml-block] [fixture: packet/hidden-yaml-description] [fixture: packet/hidden-directive-block-eof] |
+| A range descends                                | The whole authored block, with `Packet range end is less than its start`.                                         | [fixture: packet/error-descending-before-gap] [fixture: packet/error-cap-following-descending]                                                                                                               |
+| A block is not contiguous                       | The whole authored block, with `Packet block start must follow the previous logical endpoint`.                    | [fixture: packet/error-first-nonzero] [fixture: packet/error-overlap] [fixture: packet/error-repeat-third] [fixture: packet/error-cap-following-noncontiguous]                                               |
+| A relative count is zero                        | The whole authored block, with `Packet relative count must be greater than zero`.                                 | [fixture: packet/error-zero-after-valid] [fixture: packet/error-cap-following-zero]                                                                                                                          |
+
+Whole-block ranges include their hidden suffixes, as defined by the
+[block positions](./positions/packet.md#ranges). Site row-width checks can also
+reject an inverted pending fragment with
+`Packet fragment start exceeds its end`, using that block's range; default
+parse(text) accepts the corresponding inputs. [fixture:
+packet/hidden-directive-block-eof] [fixture:
+packet/error-rounded-following-wide] [fixture:
+packet/error-single-rounded-end-wide] [fixture: packet/config-fraction-reject]
+
+Shared atomic-cut errors point at the directive or selected semicolon. A failed
+native directive may become a Comment, while YAML can fall back to range dashes
+before another lexical or grammatical error. [fixture:
+packet/directive-number-middle] [fixture: packet/div-selected-integer-interior]
+[fixture: packet/hidden-directive-close-glued] [fixture:
+packet/hidden-yaml-unclosed] [fixture: packet/lex-yaml-two-empty]

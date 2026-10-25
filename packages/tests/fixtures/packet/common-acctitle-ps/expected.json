@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS is text inside an accessibility line value."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "A B",
+    "accDescr": "",
+    "packet": []
+  }
+}

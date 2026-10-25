@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { fixtureAccepts, loadFixtures } from "@mmd-toolkit/tests"
+import { loadFixtures } from "@mmd-toolkit/tests"
 import type { KanbanDiagram, Root } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
@@ -30,9 +30,7 @@ function expectCoverage(text: string, root: Root): void {
   }
 }
 
-// Acceptance and coverage are checked separately from the recorded trees in
-// fixtures.test.ts. This test never writes ast.json/parse-error.json.
-describe("kanban acceptance fixtures", async () => {
+describe("kanban fixtures", async () => {
   const fixtures = await loadFixtures("kanban")
 
   /** Parses one fixed corpus input and returns its kanban body. */
@@ -152,7 +150,6 @@ describe("kanban acceptance fixtures", async () => {
       } catch (error) {
         if (!(error instanceof ParseError)) throw error
       }
-      expect(root !== null).toBe(fixtureAccepts(fixture))
       if (root !== null) {
         expect(root.diagramType).toBe(
           fixture.specified?.accepted === true

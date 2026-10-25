@@ -9,10 +9,11 @@ import type {
   GitgraphMergeOption,
   GitgraphOrderOption,
 } from "../../ast/gitgraph.ts"
+import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
-import type { GitgraphLexing, Unit, UnitName } from "./units.ts"
+import type { Unit, UnitName } from "./units.ts"
 import { decodeGitgraphString } from "./comparison-values.ts"
 import type { GitgraphDecodedValues } from "./history.ts"
 
@@ -36,7 +37,7 @@ type Option =
 export class GitgraphGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly decodedValues = new Map<Identifier | StringLiteral, string>()
 
-  public constructor(lexing: GitgraphLexing, lexer: SourceLexer) {
+  public constructor(lexing: CommonFormLexing<UnitName>, lexer: SourceLexer) {
     super(lexing.units, lexer, [], lexing.comments)
   }
 

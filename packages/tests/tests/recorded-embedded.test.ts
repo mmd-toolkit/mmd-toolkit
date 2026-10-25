@@ -59,6 +59,25 @@ describe("recordEmbedded", () => {
     })
   })
 
+  it("tags non-finite configuration numbers without changing strings or Db effects", () => {
+    expect(
+      recordEmbedded(
+        {
+          config: { packet: { bitsPerRow: Infinity }, literal: "Infinity" },
+          title: undefined,
+          dataBlockEffects: [{ id: "A", set: { end: "Infinity" } }],
+        },
+        { packet: { bitsPerRow: 32 } },
+      ),
+    ).toEqual({
+      config: {
+        packet: { bitsPerRow: { nonFinite: "Infinity" } },
+        literal: "Infinity",
+      },
+      dataBlockEffects: [{ id: "A", set: { end: "Infinity" } }],
+    })
+  })
+
   it("records an empty title, which the frontmatter may give", () => {
     expect(
       recordEmbedded(

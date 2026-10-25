@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "INT splits leading zero digits into separate tokens."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 2: Expecting token of type ':' but found `0`."
+  }
+}

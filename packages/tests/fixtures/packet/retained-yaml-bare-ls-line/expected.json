@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Passed Unicode on a line of its own is trivia after a retained block."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: -> <- at offset: 13, skipped 1 characters. "
+  }
+}

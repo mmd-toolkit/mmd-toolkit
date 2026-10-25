@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: Common removal can join the punctuation components of a hidden YAML opener."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "A"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

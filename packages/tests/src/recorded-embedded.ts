@@ -1,4 +1,5 @@
 import { isDeepStrictEqual } from "node:util"
+import { recordConfiguration } from "./configuration.ts"
 import type { MermaidConfig, RecordedEmbedded } from "./index.ts"
 import type { EmbeddedValues } from "./mermaid.ts"
 import type { JsonObject, JsonValue } from "./types.ts"
@@ -13,7 +14,9 @@ export function recordEmbedded(
   embedded: EmbeddedValues,
   baseline: MermaidConfig,
 ): RecordedEmbedded | undefined {
-  const config = configDifference(embedded.config, baseline)
+  const difference = configDifference(embedded.config, baseline)
+  const config =
+    difference === undefined ? undefined : recordConfiguration(difference)
   const recorded: RecordedEmbedded = {
     ...(config === undefined ? {} : { config }),
     ...(embedded.title === undefined ? {} : { title: embedded.title }),

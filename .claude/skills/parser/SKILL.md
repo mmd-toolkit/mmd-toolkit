@@ -361,8 +361,10 @@ Add them in this order; the flowchart files are the model.
 
 ### 4.6 Tests
 
-The flowchart tests are the model. The files to add, or to add a `case` of the
-diagram to:
+Use `tests/usecase.test.ts` for corpus-backed structure, token spelling and
+range checks, `tests/agentflow.test.ts` for retained ignored text, and
+`tests/ast-usecase-examples.test.ts` for node-comment examples. The files to
+add, or to add a `case` of the diagram to:
 
 | File                                   | What to add                            |
 | -------------------------------------- | -------------------------------------- |
@@ -373,33 +375,45 @@ diagram to:
 | `tests/helpers/reference-inputs.ts`    | the diagram's units for the references |
 | `tests/<diagram>.test.ts`              | unit tests of the tree and tokens      |
 
-Use these test steps for every diagram type. Pre-record probes (4.7), diagram
-tests and `tests/fixtures.test.ts` use `fixtureAccepts` from
-`@mmd-toolkit/tests` for acceptance. Its shared `DIVERGENCE_PROPERTIES` table
-defines each identifier's acceptance direction and specified-reading
-requirement. A missing required `specified.json` is an error that fails the
-probe or test. Specified readings decide acceptance when present; unmarked
-fixtures use `expected.json`.
+Use these test steps for every diagram type. Pre-record probes (4.7) and
+`tests/fixtures.test.ts` use `fixtureAccepts` from `@mmd-toolkit/tests` for
+acceptance. Its shared `DIVERGENCE_PROPERTIES` table defines each identifier's
+acceptance direction and specified-reading requirement. A missing required
+`specified.json` is an error that fails the probe or test. Specified readings
+decide acceptance when present; unmarked fixtures use `expected.json`.
+
+For `embedded-data-opaque`, follow the specified reading in either acceptance
+direction and retain the derived title and unaffected embedded values supplied
+for Db comparison.
 
 For Db comparisons, set `reading` to `fixture.specified ?? fixture.expected`.
 When that reading is accepted and has a non-null Db, compare the tree's Db with
 its recorded Db using `embeddedValuesOf(fixture, reading)` and the existing
 `dbOfTree`/`dbFromTree` helpers. Keep accepted opaque fixtures without a
-comparison Db explicit. Separately verify that each marked input has its
-declared lexical form (section 6); acceptance alone does not prove it.
+comparison Db explicit. Do not substitute written embedded settings for those
+derived values, including secure keys that the specification says are removed.
+
+The common fixture loop calls `expectDivergenceForm` in
+`tests/helpers/divergence-form.ts` for every supported diagram to check declared
+forms and their token-cut reference readings independently of acceptance.
+
+For corpus-backed cases, package tests cite and load fixtures by diagram and
+name instead of keeping copies of their inputs and expectations in a local
+fixture corpus.
 
 Steps:
 
-1. `tests/fixtures.test.ts` compares the parse result of each fixture with the
-   one recorded next to it, and checks acceptance with the shared helper above
-   (4.7). It checks neither the tree nor the Db: `@mmd-toolkit/tests` checks
-   each recorded tree (`checkTree`) and builds its Db, which it compares with
-   the Db that the fixture records (the tests skill). Where the Db needs what
-   the tree does not hold, the tree lacks it: report it to the specification,
-   with the input and the result of mermaid.js. What `ast/<diagram>.md` states
-   about the tree of a new diagram type is checked by `@mmd-toolkit/tests`
-   (`checkTree`); ask the tests package for it. The unit tests check their own
-   trees with the same check (`tests/helpers/tree-problems.ts`).
+1. Only `tests/fixtures.test.ts` writes the corpus records. It compares each
+   parse result with its record and checks acceptance with the shared helper
+   above (4.7). Diagram tests check source coverage, spelling, containment,
+   source order, node boundaries and comparable Db values without repeating
+   recording or acceptance checks. `checkTree` checks tree conditions only;
+   acceptance and Db equality are separate checks through `fixtureAccepts` and
+   `dbFromTree`. `@mmd-toolkit/tests` supplies the tree-condition and Db
+   builders, and `tests/helpers/tree-problems.ts` wraps the tree-condition check
+   for unit tests. Report missing information to the specification when neither
+   the specified tree nor its permitted embedded values can supply the
+   comparison Db, with the input and the recorded reading.
 2. Find where text outside a node's range decides a reading. Example from the
    flowchart: the name text of a subgraph runs to its separator, and where empty
    description blocks follow the name, the whitespace between them lies outside
@@ -421,18 +435,28 @@ Recorded parse results). The fixture test compares each result with its file. A
 rejection is thus recorded as fully as a tree: where the parser reports it is
 part of the result.
 
+Records contain the default `parse(text)` result, while
+`outcomeOf(fixture.input, fixture.config)` applies only external site settings
+for acceptance without adding configuration parameters or options to `parse()`.
+
 1. Write and read these files only for fixtures whose rules are implemented. Run
    earlier, the fixture test writes the result of the current parser, which is
-   wrong, and it then passes as recorded. Before writing, probe every fixed
-   fixture with the shared acceptance and Db checks of 4.6 and inspect its tree
-   against the specification. Report undecided inputs without recording them.
-2. Run the fixture test once outside CI, in `packages/parser`, without `-u`; it
-   writes the missing files (in CI, a missing file fails). Use `-u` only for a
-   change that changes existing results (step 4):
+   wrong, and it then passes as recorded. Before writing, use `loadFixtures`,
+   `fixtureAccepts`, `embeddedValuesOf` and `dbFromTree` to probe the diagram's
+   fixed fixtures and applicable common detection fixtures, then inspect the
+   trees and tokens of each sentence's cases against the specification (4.6).
+   Report each undecided input and its question without recording it.
+2. Inventory missing records and run `tests/fixtures.test.ts` once outside CI,
+   in `packages/parser`, without `-u`; it writes the missing files (in CI, a
+   missing file fails). Use `-u` only for a change that changes existing results
+   (step 4):
 
    ```sh
    pnpm run test tests/fixtures.test.ts
    ```
+
+   Scope the run to an already probed diagram with `-t "<diagram> fixtures"`,
+   without temporarily editing tracked tests.
 
 3. Read the new results against the specification, in `packages/parser`:
 
@@ -450,15 +474,20 @@ part of the result.
    accepted is rejected, or the reverse, do not keep its file, and show that.
 
 4. Use `-u` only for a change that changes existing results. Before such a
-   change, copy the fixtures outside the repository; after the change, rewrite
-   the files with `pnpm run test:update`, which runs the fixture test alone with
-   `-u`, and classify the differences, in `packages/parser`:
+   change, copy the fixtures to a new directory outside the repository; after
+   the change, rewrite the files with `pnpm run test:update`, which runs
+   `tests/fixtures.test.ts` alone with `-u`, and classify the differences, in
+   `packages/parser`:
 
    ```sh
-   rm -rf <directory>/ast-before && cp -R ../tests/fixtures/<diagram> <directory>/ast-before
+   cp -R ../tests/fixtures/<diagram> <directory>/ast-before
    pnpm run test:update
    pnpm run diff-trees <directory>/ast-before <diagram>
    ```
+
+   Every missing record that `test:update` would write must have been probed.
+   Compare serialized records or their byte hashes, not a live tree against
+   parsed JSON, and separate new, changed and removed results.
 
    It prints the files that are new or removed, how many fixtures have each kind
    of difference, the same field of the same node type or of the error, and then
@@ -473,10 +502,11 @@ part of the result.
    number of fixtures of each kind in the result. A node whose fields the Db
    does not read shows a wrong change only here (in state, a floating note id
    that a careless edit made end at its first character; the value strings of
-   the leaf nodes and the position of a state note are such fields). After the
-   files are rewritten, run the checks of the corpus on them, in
-   `packages/tests`; the parser tests pass with any recorded tree, so only these
-   show a tree that breaks a condition or gives another Db:
+   the leaf nodes and the position of a state note are such fields). A snapshot
+   comparison alone establishes repeatability, so retain independent
+   tree-condition and Db checks when records are rewritten. Complete the parser
+   build before starting checks that import its `lib` output, then run the
+   corpus checks in `packages/tests`:
 
    ```sh
    npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts
@@ -542,22 +572,40 @@ it was run, read, or not checked.
 ## 5. First-match lexical rules, hidden forms and semantic acceptance
 
 Use this section for diagram types whose specification states the lexical rules
-as a first-match priority list with hidden forms and defines semantic acceptance
-conditions after conversion. Use section 4 for the inputs, wiring, records and
-checks. Implement the lexical rules in their stated first-match priority order;
-do not assume context stacks, longest-match behavior or recovery. Split
-composite matches at authored component boundaries, retain hidden forms as
-ignored text in the named AST gaps, and keep any consumed following LF outside
-their node ranges while allowing EOF to satisfy EOL. Preserve what detection
-leaves for the diagram to read, and do not read passed bare lines or their
-accompanying trivia again. Apply semantic rejections after shared conversion,
-including double underflow and negative zero where numeric leaves use doubles.
-Before recording (4.7), probe every fixed fixture using `fixtureAccepts` for
-acceptance and the recorded reading, `embeddedValuesOf` and Db helpers of 4.6
-for comparable Db values. Keep the separate lexical verification of declared
-divergences (section 6), inspect the trees of the specified cases, and report
-undecided inputs without recording them. The diagram tests use the same shared
-checks.
+as a first-match priority list with hidden forms; apply the semantic steps only
+where the specification defines such conditions. Use section 4 for the inputs,
+wiring, tests and records.
+
+1. Follow [conventions](../conventions/SKILL.md#code) for diagram names, and
+   name internal modules and helpers after the rules they implement.
+2. Implement lexical rules in their stated first-match priority order and split
+   composite matches at authored component boundaries, using context stacks,
+   longest-match behavior or recovery only where specified. Read common
+   conversions through the shared reader and preserve what detection leaves for
+   the diagram, without rereading passed bare lines or their accompanying
+   trivia.
+3. Retain hidden forms in every named AST gap, with the specified kind and
+   source spelling, including gaps before the header or an optional header field
+   when present. Keep a consumed following LF outside the node range and let EOF
+   satisfy EOL only where the specification says so.
+4. Apply semantic acceptance checks after shared conversion and grammar using
+   direct specification sentences for any necessary initial state and
+   statement-by-statement transitions, and report an input and question for each
+   missing rule without recording that fixture.
+5. Require explicit comparison rules for quote and escape decoding, entities,
+   whitespace and case, including replacement order, overlap handling and
+   whether replacements are reread, while keeping authored values in the AST.
+   Carry lexical comparison values to the semantic check when source-preserving
+   leaves do not supply them. Apply each specified numeric conversion and its
+   boundary conditions rather than importing another diagram's numeric
+   assumptions.
+6. Evaluate acceptance under the specification's named defaults with frontmatter
+   configuration and init arguments opaque, leaving only external site settings
+   to their holder as in 4.7 and keeping the public `parse(text)` interface
+   unchanged.
+7. Before recording, use the acceptance, Db and shared declared-form checks of
+   4.6 and inspect the trees of the specified cases as in 4.7; recording and
+   acceptance checks belong to `tests/fixtures.test.ts`.
 
 ## 6. When fixtures are added or a rule changes
 
@@ -574,6 +622,9 @@ checks.
   sections, check them as in 4.2, step 2, and implement them. When existing
   trees change, do 4.7, step 4. Before reporting it, check as in 4.8, and show
   the result as in 4.10.
+- When shared checks are centralized, compare `(fixture, check)` coverage and
+  execution counts before and after, explaining removed duplicate calls and
+  added cases without introducing diagram exemptions to equalize totals.
 - A change accepts a form where it was rejected, or moves where it may stand:
   before implementing it, list every position where the form can stand, every
   unit that can come before and after it there (whitespace, a separator, a
@@ -593,15 +644,15 @@ checks.
   For an existing identifier, reuse `fixtureAccepts` (4.6); adding a diagram
   adds no acceptance table or diagram-local helper. For a new identifier, ask
   the tests package to add its direction and specified-reading requirement to
-  the shared `DIVERGENCE_PROPERTIES` table and run its checks. Extend the
-  lexical checks in `tests/fixtures.test.ts` and the diagram tests. Under
-  "marked fixtures differ only by their divergence", check that the input has
-  the form of the divergence, found by the parser's lexer. For a one-way
-  divergence with acceptance and a non-null Db recorded in `fixture.expected`,
-  use a reference input in `tests/helpers/reference-inputs.ts` whose Db matches
-  that recorded Db. When the shared table requires a specified reading, it is
-  recorded in the corpus (`specified.json`) through the tests package's shared
-  specified-reading path; ask the tests package for it. Add its declaration to
+  the shared `DIVERGENCE_PROPERTIES` table and run its checks. Extend the shared
+  declared-form checks through `expectDivergenceForm` in
+  `tests/helpers/divergence-form.ts`, called by the common fixture loop for all
+  supported diagrams. For a one-way divergence with acceptance and a non-null Db
+  recorded in `fixture.expected`, use a reference input in
+  `tests/helpers/reference-inputs.ts` whose Db matches that recorded Db. When
+  the shared table requires a specified reading, it is recorded in the corpus
+  (`specified.json`) through the tests package's shared specified-reading path;
+  ask the tests package for it. Add its declaration to
   `tests/helpers/known-divergences.ts`. Take every lexical decision of the
   reference input and of the declaration from the parser's units, not from rules
   of its own. Add it to "Known divergences" in `docs/testing.md` and to the

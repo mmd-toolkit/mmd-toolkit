@@ -27,6 +27,7 @@ import { timelineValueNodeTypes } from "../src/printers/timeline-layout.ts"
 import { gitgraphValueNodeTypes } from "../src/printers/gitgraph-layout.ts"
 import { pieValueNodeTypes } from "../src/printers/pie-layout.ts"
 import { infoValueNodeTypes } from "../src/printers/info-layout.ts"
+import { packetValueNodeTypes } from "../src/printers/packet-layout.ts"
 import { xychartValueNodeTypes } from "../src/printers/xychart-layout.ts"
 
 /** The leaf node types that every diagram type shares (ast.md, Shared leaf nodes). */
@@ -50,6 +51,11 @@ interface DiagramValues {
 }
 
 const diagrams: readonly DiagramValues[] = [
+  {
+    prefix: "Packet",
+    values: packetValueNodeTypes,
+    notValues: new Set(["Identifier"]),
+  },
   {
     prefix: "Info",
     values: infoValueNodeTypes,

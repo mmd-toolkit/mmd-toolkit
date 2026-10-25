@@ -66,7 +66,7 @@ export function layoutGitgraphHeader(
   if (colon?.value === ":") end = colon.range[1]
   const hidden = [...diagram.textBeforeDirection, ...diagram.textBeforeColon]
   const atoms = collectAtoms(source, keyword.range[0], end, hidden, [])
-  const rules = gitgraphGapRules(source, atoms, hidden)
+  const rules = gitgraphGapRules(source, atoms)
   return protectHiddenGaps(
     { atoms, rules, outdented: new Set(), lineBreaks: "kept" },
     hidden,
@@ -84,6 +84,10 @@ export function layoutGitgraphStatement(
 ): AtomLayout {
   const [start, end] = statement.range
   const values = collectValueNodes(statement, gitgraphValueNodeTypes)
+  const hidden = values.filter(
+    (value): value is GitgraphIgnoredText =>
+      value.type === "GitgraphIgnoredText",
+  )
   let layout: AtomLayout
   switch (statement.type) {
     case "GitgraphIgnoredText":
@@ -116,10 +120,7 @@ export function layoutGitgraphStatement(
     case "GitgraphMergeStatement":
     case "GitgraphCherryPickStatement": {
       const atoms = collectAtoms(source, start, end, values, [])
-      const hidden = values.filter(
-        (value) => value.type === "GitgraphIgnoredText",
-      )
-      const rules = gitgraphGapRules(source, atoms, hidden)
+      const rules = gitgraphGapRules(source, atoms)
       layout = { atoms, rules, outdented: new Set(), lineBreaks: "kept" }
       break
     }
@@ -133,22 +134,18 @@ export function layoutGitgraphStatement(
       ...layout,
       atoms: protectSemicolonPrefixes(source, start, end, layout.atoms),
     },
-    values.filter(
-      (value): value is GitgraphIgnoredText =>
-        value.type === "GitgraphIgnoredText",
-    ),
+    hidden,
   )
 }
 
 /**
- * Ordinary components use one space except before a colon. Hidden openers
- * retain their contact rather than introducing a new separator
- * (docs/gitgraph.md, Operation spacing, Option colons and Hidden yaml).
+ * Ordinary components use one space except before a colon; the shared hidden
+ * protection removes rules at hidden openers (docs/gitgraph.md, Operation
+ * spacing, Option colons and Hidden yaml).
  */
 function gitgraphGapRules(
   source: Source,
   atoms: readonly Atom[],
-  hidden: readonly Node[],
 ): ReadonlyMap<number, GapRule> {
   const rules = new Map<number, GapRule>(
     atoms
@@ -160,6 +157,5 @@ function gitgraphGapRules(
           : "space",
       ]),
   )
-  for (const item of hidden) rules.delete(item.range[0])
   return rules
 }

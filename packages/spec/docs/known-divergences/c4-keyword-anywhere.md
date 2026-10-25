@@ -304,6 +304,18 @@ info/c4container-header-comment-lf] [fixture: info/c4component-flag-comment-lf]
 [fixture: info/lex-c4context-common] [fixture: info/lex-c4-removed-directive]
 [fixture: info/lex-c4-frontmatter] [fixture: info/lex-c4-invalid-info]
 
+### Packet
+
+Strings, common literals, ignored text and Comments already hold C4 words.
+Header-only selection under reverse reason 2 accepts later C4 words that switch
+Mermaid to C4 and reject. It rejects no Mermaid-accepted input. LF-terminated
+suffixes and detection-passed retained YAML are nondiffering controls. [fixture:
+packet/c4container-label] [fixture: packet/c4component-title] [fixture:
+packet/c4deployment-block] [fixture: packet/c4dynamic-header-comment-eof]
+[fixture: packet/div-c4-hidden-yaml] [fixture: packet/div-c4-hidden-suffix-eof]
+[fixture: packet/c4-hidden-suffix-lf] [fixture:
+packet/c4-retained-preheader-yaml]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -384,3 +396,11 @@ warning. These facts do not justify any additional divergence.
   info/showInfo rendering and was open with Type: Bug / Error and Status:
   Triage. No inspected result establishes an info-specific maintainer decision
   to reject this syntax; this section follows the existing direct rule.
+
+- The pinned
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  shows single positions, ranges and relative counts; it does not define this
+  preprocessing boundary. Searches of the official repository's issues and pull
+  requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
+  `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
+  this divergence.

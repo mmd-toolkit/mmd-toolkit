@@ -26,4 +26,5 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "pie",
   "gitgraph",
   "info",
+  "packet",
 ]

@@ -7,10 +7,11 @@ import type {
   InfoLiteral,
   InfoTitleStatement,
 } from "../../ast/info.ts"
+import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
-import type { InfoLexing, Unit, UnitName } from "./units.ts"
+import type { Unit, UnitName } from "./units.ts"
 
 /** Written diagram fields and pending tokens, before common token-boundary checks. */
 export interface InfoSyntax {
@@ -23,7 +24,7 @@ export interface InfoSyntax {
 
 /** diagrams/info.md, Grammar: recursive descent over all components and retained hidden forms. */
 export class InfoGrammar extends UnitGrammar<UnitName, Unit> {
-  public constructor(lexing: InfoLexing, lexer: SourceLexer) {
+  public constructor(lexing: CommonFormLexing<UnitName>, lexer: SourceLexer) {
     super(lexing.units, lexer, [], lexing.comments)
   }
 

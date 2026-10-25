@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Global directive removal can expose block-opening whitespace."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A",
+    "packet": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

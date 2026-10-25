@@ -17,7 +17,11 @@ import type { CheckedNode } from "./types.ts"
 import { childNodesOf, walkNodes } from "./walk.ts"
 
 /** Common structural invariants, including source order and whole raw lexical values. */
-export function checkStatementNode(reading: Reading, node: CheckedNode): void {
+export function checkStatementNode(
+  reading: Reading,
+  node: CheckedNode,
+  punctuators: readonly string[] = [":", "{", "}"],
+): void {
   const own = ownOf(reading.root, node)
   checkRangeIsHull(reading, node, own)
   if (node.type.endsWith("Literal") || node.type.endsWith("IgnoredText")) {
@@ -25,7 +29,7 @@ export function checkStatementNode(reading: Reading, node: CheckedNode): void {
     checkRawUnit(reading, node)
     return
   }
-  checkOwnKinds(reading, node, own, [":", "{", "}"])
+  checkOwnKinds(reading, node, own, punctuators)
   const children = childNodesOf(node)
   for (const [index, child] of children.entries()) {
     const next = children[index + 1]

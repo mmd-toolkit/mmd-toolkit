@@ -44,6 +44,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "pie",
   "gitgraph",
   "info",
+  "packet",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -70,6 +71,17 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads packet fixtures", () => {
+    const fixtures = fixturesOf("packet")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("packet")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
   it("loads info fixtures", () => {
     const fixtures = fixturesOf("info")
     expect(fixtures.length).toBeGreaterThan(0)
@@ -366,6 +378,30 @@ describe("fixtures", () => {
         named("common", "frontmatter-title-escaped-quotes-in-tag"),
       )?.title,
     ).toBeDefined()
+  })
+
+  it("restores non-finite configuration numbers and keeps authored strings", () => {
+    expect(
+      embeddedValuesOf(named("packet", "config-frontmatter-row-infinity"))
+        ?.config.packet,
+    ).toMatchObject({ bitsPerRow: Infinity })
+    expect(
+      embeddedValuesOf(named("packet", "config-init-row-overflow"))?.config
+        .packet,
+    ).toMatchObject({ bitsPerRow: Infinity })
+    expect(
+      embeddedValuesOf(named("packet", "config-frontmatter-row-nan"))?.config
+        .packet,
+    ).toMatchObject({ bitsPerRow: Number.NaN })
+    expect(
+      embeddedValuesOf(
+        named("packet", "config-frontmatter-row-infinity-string"),
+      )?.config.packet,
+    ).toMatchObject({ bitsPerRow: "Infinity" })
+    expect(
+      embeddedValuesOf(named("packet", "config-init-row-infinity-word-string"))
+        ?.config.packet,
+    ).toMatchObject({ bitsPerRow: "Infinity" })
   })
 
   it("takes the embedded values from the specified reading, which may be a rejection", () => {

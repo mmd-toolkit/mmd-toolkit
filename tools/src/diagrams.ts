@@ -38,6 +38,7 @@ export const diagramIds: Readonly<
   pie: ["pie"],
   gitgraph: ["gitGraph"],
   info: ["info"],
+  packet: ["packet"],
 }
 
 /**

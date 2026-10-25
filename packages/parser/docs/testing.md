@@ -431,3 +431,17 @@ gitgraph/div-frontmatter-main-branch-duplicate-default-accepted] [fixture:
 gitgraph/div-init-main-branch-duplicate-default-accepted]
 
 `tests/ast-gitgraph-examples.test.ts` checks all eighteen node comment examples.
+
+Packet fixture records and acceptance are checked only by
+tests/fixtures.test.ts, using fixtureAccepts and external site configuration in
+outcomeOf. The default records keep parse(text)'s result even when site width
+rejects that tree. [fixture: packet/config-fraction-reject] [fixture:
+packet/config-frontmatter-overrides-site] Unit tests in tests/packet.test.ts
+check source coverage, token/raw spelling, node boundaries, containment, source
+order, authored block forms, hidden ownership and common values. Comparable Db
+readings use dbFromTree and embeddedValuesOf; accepted default trees with a
+site-rejected reading have no comparison Db. [fixture: packet/gram-mixed]
+[fixture: packet/gram-hidden-range-gap-spaced] [fixture:
+packet/lex-hidden-two-suffixes] [fixture: packet/title-repeat-empty] [fixture:
+packet/error-single-rounded-end-wide] The ten node-comment examples are checked
+by tests/ast-packet-examples.test.ts.

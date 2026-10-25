@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty line description publishes no value."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  }
+}

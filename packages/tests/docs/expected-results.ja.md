@@ -43,6 +43,19 @@ pin した mermaid.js がテキストをどう扱うかを得る方法と、
 4. 図種 ID に登録した正規化関数で Db を要約する
    （[db-summaries.ja.md](./db-summaries.ja.md) を参照）。
 
+埋め込み値のために取り出す設定は、メモリ上では JavaScript の数の型を保ちます。
+記録する `embedded.config` では、JSON で表せない数を 1 欄のオブジェクト
+`{ "nonFinite": "Infinity" }`、`{ "nonFinite": "-Infinity" }`、
+`{ "nonFinite": "NaN" }` で表します。
+有限の数は JSON の数のまま、文字列は文字列のままです。
+`embeddedValuesOf()` は、Db を作る前に印のある値を数へ戻します。
+[embedded-data.ja.md](./embedded-data.ja.md) を参照してください。
+要約の端点は、位置で数と分かるので、非有限の数を文字列で表す
+`numberOrText` の形を保ちます。
+[fixture: packet/config-frontmatter-row-infinity]
+[fixture: packet/config-frontmatter-row-infinity-string]
+[fixture: packet/db-frontmatter-infinite-endpoint]
+
 mermaid.js はグローバルな状態を持つので、呼び出しは直列にしています。
 
 `runMermaid()` は最初に、ラベルのある flowchart を解析し、失敗すれば動きません。

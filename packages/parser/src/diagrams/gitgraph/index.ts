@@ -2,6 +2,7 @@ import type { GitgraphDiagram } from "../../ast/gitgraph.ts"
 import { checkGitgraphHistory } from "./history.ts"
 import type { GitgraphDecodedValues } from "./history.ts"
 import type { Root } from "../../ast.ts"
+import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
 import type { DiagramComment, DiagramInput } from "../../diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"
 import type {
@@ -12,11 +13,11 @@ import type {
 } from "../../diagram-text.ts"
 import type { PassedPart } from "../../detection.ts"
 import { GitgraphGrammar } from "./grammar.ts"
-import type { GitgraphLexing } from "./units.ts"
+import type { UnitName } from "./units.ts"
 import { GitgraphUnitLexer } from "./units.ts"
 
 /** The shared reader and units used by the parser and lexical fixture checks. */
-export interface GitgraphUnits extends GitgraphLexing {
+export interface GitgraphUnits extends CommonFormLexing<UnitName> {
   readonly text: DiagramTextReader
 }
 

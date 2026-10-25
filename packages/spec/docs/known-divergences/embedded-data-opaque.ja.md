@@ -245,7 +245,7 @@ mermaid.js は拒否して Db を与えず、この仕様は受理します。
    [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
 2. 正しい埋め込み設定が図の受理条件を変える場合、
    その条件が使う鍵だけを除いた設定で読み、ほかの値は残します。
-   gitgraph の鍵は下記で名指しします。
+   gitgraph と packet の鍵は下記で名指しします。
    [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
    [fixture: gitgraph/div-frontmatter-html-labels-default-comparison]
    [fixture: gitgraph/div-init-html-labels-default-comparison]
@@ -483,6 +483,45 @@ YAML も含め、不正な内容はソースの構造を決めず、Mermaid が�
 [fixture: info/hidden-yaml-preheader-invalid]
 [fixture: info/directive-invalid-init]
 
+### Packet
+
+Frontmatter/directive ノードは内容を受理のために
+解釈せず保持する。
+不正な YAML は Mermaid だけが拒否する場合がある。
+両方向とも比較では有効なテキスト設定から `packet.bitsPerRow` だけを除き、
+サイト設定、Mermaid が導いた frontmatter title、ほかの有効な設定を残す。
+[fixture: packet/frontmatter-invalid]
+[fixture: packet/frontmatter-invalid-keeps-config]
+[fixture: packet/config-frontmatter-fraction]
+[fixture: packet/config-directive-fraction]
+[fixture: packet/config-frontmatter-overrides-site]
+[fixture: packet/config-directive-overrides-site]
+
+受理条件は
+[packet の意味上の受理条件](../diagrams/packet.ja.md#意味上の受理条件)
+で定め、既定の `packet.bitsPerRow = 32` を使います。
+比較設定から除く鍵は **`packet.bitsPerRow`** です。
+YAML frontmatter と init の小数幅は、
+Mermaid が拒否して本仕様が受理する場合があり、
+サイトの小数幅をテキストの 32 で上書きすると逆方向の差異になります。
+両方向とも specified.json に受理と Db・埋め込み値を記録します。
+サイト設定はそれを持つ者が適用し、テキストの設定から再構築しません。
+[fixture: packet/config-frontmatter-fraction]
+[fixture: packet/config-directive-fraction]
+[fixture: packet/config-frontmatter-overrides-site]
+[fixture: packet/config-directive-overrides-site]
+
+不正な先頭 frontmatter は比較からだけ省き、
+隣の有効な showBits directive は残します。
+非先頭の hidden YAML は PacketIgnoredText が所有するので、
+不正な内容だけによる差異ではありません。
+受理を変えずに公開行だけを変える設定は通常の embedded configuration として扱い、
+[tests の要約](../../../tests/docs/db-summaries.md#packet)に従います。
+[fixture: packet/frontmatter-invalid-keeps-config]
+[fixture: packet/hidden-yaml-body]
+[fixture: packet/config-frontmatter-row-fraction-accepted]
+[fixture: packet/config-init-row-integer]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -582,3 +621,11 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   info/showInfo の描画を報告し、open、Type: Bug / Error、Status: Triage でした。
   検査した結果には、この構文の拒否を決める info 固有の保守者の判断はありません。
   この節は既存の直接の規則に従います。
+
+- pin の
+  [packet の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  は単一位置・範囲・相対 count を示します。
+  この前処理の境界については定めていません。
+  2026-10-25 に `packet bitsPerRow`、`packet fractional`、
+  `packet maxPacketSize` で公式 repository の issue・PR を検索しましたが、
+  ここでの差異に関する maintainer の判断を示す結果は見つかりませんでした。

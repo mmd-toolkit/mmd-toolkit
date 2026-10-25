@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Descending-range validation precedes contiguity validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 2 - 1 is invalid. End must be greater than start."
+  }
+}

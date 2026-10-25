@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A nonempty frontmatter title array uses Mermaid string conversion."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "A,B",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "title": "A,B"
+  }
+}

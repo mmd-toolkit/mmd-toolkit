@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: A zero relative count still rejects after the publication cap."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 320000 is invalid. Cannot have a zero bit field."
+  }
+}

@@ -211,63 +211,69 @@ Collect distinguishing cases for each of these, including mode transitions and
 priority interactions that token counts alone cannot establish.
 
 For a Langium diagram, derive the following from its own grammar and services.
-The pie examples illustrate the checks; derive terminal order and value rules
-anew for each diagram.
+Derive terminal order, boundaries, conversion and publication anew for each
+diagram; an imported common rule does not establish how the diagram uses it.
 
 1. Start at the `entry` rule and follow imports and rule calls. Read the
    generated grammar as well as the written grammar, and the service modules
    that inject its token builder and value converter. List only reachable
    terminals in their resulting order, including hidden ones; an imported
-   terminal's declaration alone does not make it reachable. In
-   [pie.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20),
-   `NUMBER_PIE` is reached, while its FLOAT_PIE/INT_PIE components and the
-   unused common BOOLEAN, NUMBER and ID do not become separate lexer units.
-   Check the
-   [service wiring](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/module.ts#L31-L77)
-   against the generated module and grammar of the installed pin; generated
-   files may be absent from the clone.
-2. Read keyword patterns too. The
+   terminal's declaration alone does not make it reachable, and a terminal's
+   component rules need not become separate lexer units. If generated files are
+   absent from the clone, read the installed pin's bundle source maps and check
+   the generated module and grammar against the written service wiring.
+2. Read keyword patterns too: list which keywords receive custom boundaries,
+   which keep the default ordering, and which have explicit `longer_alt`
+   alternatives. The
    [shared token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
-   adds whitespace/EOF-or-percent-pair lookahead to pie/showData. In pie, the
-   reachable order is showData, pie, colon, NUMBER_PIE, ACC_DESCR, ACC_TITLE,
-   TITLE, STRING, NEWLINE, WHITESPACE, YAML, DIRECTIVE, SINGLE_LINE_COMMENT.
-   First matching rule, keyword boundaries and explicit alternatives decide the
-   unit, rather than a general longest match. Probe glued suffixes and priority
-   against strings and composite common terminals.
+   adds whitespace/EOF-or-percent-pair lookahead only to its configured
+   keywords. First matching rule, keyword boundaries and explicit alternatives
+   decide the unit, rather than a general longest match. Probe glued suffixes,
+   keyword prefixes, punctuation attached to keywords, and priority against
+   references, numbers, strings and composite common terminals; detection has
+   boundaries of its own.
 3. Treat hidden terminals as lexer rules with consumed text, not as global
-   removals. In pie, the imported
+   removals. The imported
    [YAML and DIRECTIVE terminals](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
    consume an immediately following LF, whereas another whitespace boundary is
    only looked at. Probe each unit gap and each statement's EOL and EOF: a
    consumed sole LF prevents a later statement, but consuming the common
    appended LF can leave EOF satisfying EOL. Keep leading frontmatter, common
-   directive removal and these body terminals distinct.
-4. Follow the actual terminal rule name through each converter branch. In pie,
-   the
+   directive removal and these body terminals distinct. Derive alternative
+   priority before choosing a closer: a body-present alternative can take
+   precedence over an adjacent empty close. Probe the detection-to-parser
+   handoff for retained prefixes and passed bare-line trivia independently for
+   the new diagram.
+4. Follow the actual terminal rule name through the injected converter and its
+   fallback, including identity, string, integer and double conversion only
+   where reachable. The
    [common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
-   handles TITLE/ACC_TITLE/ACC_DESCR, with different line and block whitespace
-   readings. The
-   [pie custom branch](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
-   names PIE_SECTION_LABEL, which this grammar never calls: STRING instead
-   reaches Langium's default escape conversion, and NUMBER_PIE its number
-   conversion. Collect both quote styles, unknown escapes, precision, overflow
-   and negative underflow; do not infer conversion from a method's presence.
+   gives line and block common values different whitespace readings. For
+   example, the pie
+   [custom branch](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
+   names PIE_SECTION_LABEL, while its
+   [grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
+   calls STRING and reaches the default escape conversion. For reachable units,
+   collect both quote styles, unknown escapes, precision, overflow and
+   underflow; use rejecting controls and record the reason where a previous
+   diagram's unit is unreachable.
 5. Read the public acceptance gate, not just the recoverable AST. The
    [public parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
    rejects any lexer or parser error. Then follow the diagram's AST-to-Db
-   publication. For example,
-   [populateDb in pie](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieParser.ts#L9-L21)
-   publishes common final strings conditionally, copies showData, and adds
-   sections in order. Semantic rejection can occur there after publication: pie
-   rejects negative converted values even on duplicate labels. Test errors at
-   the beginning, in a recovered statement and after a valid prefix, together
-   with publication and duplicate cases.
+   publication, distinguishing stored values, conditional or skipped
+   assignments, unassigned grammar literals and statements the adapter discards.
+   Record repeated-assignment order, empty final values, duplicate handling and
+   semantic rejection after publication; a diagram may publish nothing and have
+   an empty summary. Test errors at the beginning, in a recovered statement and
+   after a valid prefix, separately from each reachable Db rejection.
 6. Keep the collector's parse stub asynchronous so that specs awaiting parse are
    recorded: `Promise.resolve(record(text))` records the call without running
    Langium or imitating acceptance. Run the spec against this shared recorder
-   and check that every recorded location is an actual parse call. Continue with
+   and check that every recorded location is an actual parse call. A stub-only
+   test-body failure after the final input may use the existing explicit
+   allowance of §5.3.3 only after proving that no input was lost. Continue with
    the normalizer, fixed-fixture and stable-generation steps in §5.2–5.3; once
-   the AST is defined, implement its checker with §6.
+   the AST is defined, implement its Db builder and checker with §6.
 
 ### 5.1 Input
 
@@ -275,26 +281,27 @@ anew for each diagram.
   (found in mermaid.js's list of detectors and in the `db` of each diagram
   definition). One detector can stand for several keywords: `classDiagram` and
   `classDiagram-v2` are both detected as `classDiagram`. The diagram type's
-  fixtures go in one directory, whatever ids it has. The directory is named by
-  the repository's name of the type, lowercase letters and digits as one word
-  (`gitgraph`, `treeview`; the skill `conventions` states the rule), and every
-  package uses that name from then on.
+  fixtures go in one directory, whatever ids it has. The diagram-type naming
+  rules are in [conventions](../conventions/SKILL.md#code).
 - A clone of mermaid.js at the tag of the pinned version (in `.work/mermaid`,
   which `.gitignore` lists; how to make it is in `tools/README.md`).
 
 ### 5.2 The normalizer
 
-1. In the clone, open the grammar definition (`.jison`) and the Db class of the
-   diagram type. List every private field of the Db, and every Db method the
-   grammar calls (the `yy.` calls). Look for every place the Db reads a browser
-   global (`window`, `document`, `Option`, `CSS`), and whether it runs while
-   mermaid parses or only after rendering (class's click callbacks and tooltips
-   run after rendering and need nothing).
-2. Make a table of the proposed summary fields: for each field, whether the
-   syntax determines it, why it is kept, and what is dropped and why. Always ask
+1. In the clone, open the grammar, any AST-to-Db adapter, the Db implementation
+   and the renderer. List private or closure-held state and every publication
+   call (Jison `yy.` calls or the adapter calls derived above). Look for every
+   place the Db reads a browser global (`window`, `document`, `Option`, `CSS`),
+   and whether it runs while mermaid parses or only after rendering (class's
+   click callbacks and tooltips run after rendering and need nothing).
+2. Make a table of the proposed summary fields: for each field, its renderer
+   reader, whether the syntax determines it, why it is kept, and what is dropped
+   and why. Do not retain parsing or validation state merely because another Db
+   method reads it, and do not invent fields for unassigned keywords, discarded
+   AST values or build constants; an empty summary is a valid result. Always ask
    whether the following should be dropped (the flowchart and sequence examples
    in parentheses):
-   - a value used only for rendering, or filled in by the renderer (`domId`,
+   - a drawing-derived value, or one filled in by the renderer (`domId`,
      sequence's `actorCnt` and `rectData`);
    - a value derived from other fields alone (`textStyles`, sequence's message
      `id` and the list of notes);
@@ -323,10 +330,18 @@ anew for each diagram.
      which is usually what the renderer reads, and write down why the other
      forms are not taken (state: the statement tree keeps statements that change
      nothing, and the table of states holds only the top level, so the summary
-     is taken from the layout data `getData()`);
+     is taken from the layout data `getData()`). Distinguish collection
+     iteration order, replacement position and creation sequence, and keep each
+     only when its renderer consumer needs it;
    - an id that mermaid.js makes at random (state's region after the last `--`).
-     Replace it, wherever it appears, with a name numbered in a stated order,
-     and check with two runs of the generator that the fixtures do not change;
+     Observe whether each id was authored or generated at publication rather
+     than guessing from its spelling, and replace only proven generated identity
+     and reference positions in a stated generation order, reserving authored
+     placeholder names even in later statements. Do not search authored text for
+     id-shaped substrings. If observation precedes a conversion that publication
+     uses to decide authorship, document and test the equivalence it relies on
+     instead of reproducing the converter. Check reset after rejection and two
+     stable generator runs;
    - a value that depends on the time of the run or on chance, not on the text
      (gantt computes dates, in the time zone of the process, and reads today's
      for a start after an id that is no task). The store of earlier results
@@ -371,9 +386,16 @@ anew for each diagram.
    method `this` is not the Db.
 5. Add the diagram type to `DiagramType` in `src/index.ts` and to `diagramIds`
    in `tools/src/diagrams.ts`, and to the per-diagram loading test and the lists
-   of the tests that read every fixture in `tests/fixtures.test.ts`.
+   of the tests that read every fixture in `tests/fixtures.test.ts`. Add the
+   normalizer's file to `RESULT_FILES` in
+   `packages/tests/src/mermaid-run-store.ts`; `codeIdentityOf` uses this list to
+   build the result identity. Announce the new type to the owners of consumer
+   lists in other packages rather than editing outside the assigned scope.
 6. Add tests in `tests/` (dropped fields do not appear, a patch does not change
-   the summary, data block effects).
+   the summary, data block effects). In corpus-backed tests, load fixtures by
+   name rather than copying their input strings, and add a missing input through
+   the CLI after probing it. Find tests that use the new type as an unsummarized
+   carrier and move those assertions to another verified unsummarized fixture.
 7. Run `pnpm --filter @mmd-toolkit/tests run fixtures:generate`. Only the
    fixtures of `common/` that carry the diagram type should change (`db: null`
    becomes a summary). If anything else changes, find out why. Those fixtures
@@ -423,9 +445,11 @@ anew for each diagram.
      `realpathSync` to match the real paths in stack traces.
    - Node evaluates a module once per URL, so put the stub modules in a separate
      directory for each test file.
-   - Do not swallow errors of test bodies. Make a stub turned into a string
-     throw, and stop the collection when a test ended with an error (inputs
-     would be missing without a trace).
+   - Do not swallow errors that could hide inputs. Make a stub turned into a
+     string throw, and stop on a test-body error unless its file, test title and
+     error message are listed in `ERRORS_AFTER_THEIR_INPUT` in `collect.ts`,
+     with proof that it failed only after its final parse call and every input
+     was recorded.
    - Tests that check the layout of the drawing do arithmetic on stubs. Make it
      give `NaN`, and stop when a recorded text contains `NaN`.
    - Tests that render through a real DOM and check the drawing cannot run
@@ -451,7 +475,10 @@ anew for each diagram.
    a data block, the frontmatter, a directive). Check by hand that an unusual
    error (`TypeError` and the like) is caused by the input. A
    `MermaidEnvironmentError` means mermaid.js uses a feature Node lacks; give a
-   stand-in as in 5.2 (`docs/expected-results.md`).
+   stand-in as in 5.2 (`docs/expected-results.md`). Also probe valid embedded
+   settings that change acceptance in either direction, and apply the
+   specification's marks and required readings through §7.1 rather than treating
+   the rejection list as the whole divergence inventory.
 8. Run `fixtures:generate` twice, and check with the hash comparison above that
    the second run changes nothing. Run `fixtures:check`. Run the collection
    again and check that it finds nothing new (the names are stable).
@@ -510,10 +537,15 @@ anew for each diagram.
    - numbers that the Db reads from text: a sign, `-0` (the Db has -0 and JSON
      writes 0), `NaN`, `Infinity`, a number too large for a double, and text
      after the number (journey and sankey, review 441);
+   - values of embedded settings read by the Db (packet review pk12-1);
+   - input kinds in mermaid's parser package tests (packet review pk12-2);
    - a hidden form immediately after a statement (a body `---` block or
      `%%{...}%%`): a following statement after its consumed LF, a blank line
      supplying a spare LF, a space after its closer leaving the LF visible, and
      EOF; include line values that absorb the opener as text (pie12-1);
+   - adjacent hidden-block fences: a body-present alternative before an empty
+     fallback, with a later qualifying closer and with none, including EOF and
+     closing whitespace (pie-yaml-1);
    - a statement on the same line after an optional header flag (pie12-2);
    - a duplicate definition whose second value is on a semantic boundary, such
      as `-0`, in both orders: which value is retained, and whether semantic
@@ -544,32 +576,53 @@ anew for each diagram.
 ## 6. Langium diagrams
 
 Use §5 to extract the diagram's behavior and collect its fixed fixtures. Before
-generating specified readings for newly retained forms, follow §7.1. Once the
-syntax and AST are defined, implement the tree checker as follows. Paths below
-are relative to `packages/tests`.
+generating specified readings for retained forms or opaque embedded data, follow
+§7.1. Once the syntax and AST are defined, implement the Db builder and tree
+checker from those contracts as follows. Paths below are relative to
+`packages/tests`.
+
+`checkTree` checks tree fields, ranges, tokens and lexical invariants only;
+semantic acceptance belongs to the parser and is checked by comparing recorded
+result kinds with `fixtureAccepts`. Name specification-side modules and helpers
+after their rules; engine names identify Mermaid's implementation in the
+extraction procedure, not the rules that the tree implements.
 
 1. Read the diagram's syntax and AST documents, the parser's token and position
-   contracts, and `docs/check-tree.md`. Implement `src/check-tree/<diagram>.ts`
-   from those definitions and the corpus, reusing the shared coverage, field,
-   range, token and written-value checks. Register the diagram and its fields in
-   the shared dispatch and tables as needed.
-2. Check each leaf as a complete lexical unit at its position, with that
-   position's first-match priority and keyword/component boundaries. Check
-   composite forms against their authored keyword, punctuation and value
-   components, including the AST's empty/null and whitespace rules. Keep the
-   written spelling checked here distinct from the converter's Db reading.
-3. Check every retained hidden match exactly once, in source order, in its named
+   contracts, `docs/db-from-tree.md` and `docs/check-tree.md`. Require semantic
+   acceptance conditions to be direct sentences of the syntax specification,
+   rather than delegated to Db extraction documents. Require their comparison
+   values and state transitions to be defined there too, including escaping,
+   entity conversion, effective identity and updates after each statement.
+   Register every declared node and field in the shared dispatch and field/value
+   tables, extending the shared table reader when the AST document's declared
+   table shape differs.
+2. Implement `src/db-from-tree/<diagram>.ts` from the summary and the
+   specification's value and state rules, reusing converted-text, number and
+   embedded-value helpers and the stated generated-id order instead of copying
+   Mermaid's pipeline. Preserve the documented replacement and ordering rules,
+   omit unpublished values even when their nodes exist, and allow an empty
+   summary without dropping tree coverage. Write fixed hand-built tree tests for
+   the builder, and accepted and broken-tree tests for the checker.
+3. Implement `src/check-tree/<diagram>.ts` with shared coverage, field, range,
+   token and written-value checks. Check each leaf as a complete lexical unit at
+   its position, with that position's first-match priority and keyword/component
+   boundaries. Check composite forms against their authored keyword, punctuation
+   and value components, including the AST's empty/null and whitespace rules.
+   Keep the written spelling checked here distinct from the converter's Db
+   reading.
+4. Check every retained hidden match exactly once, in source order, in its named
    gap or body position. Use explicit character scanning to find the earliest
-   closer satisfying the terminal's boundaries. Check the whole authored form,
-   not just its kind or value field. Enforce the AST's boundary between a
-   statement's trailing gap and body, including whether a visible EOL precedes
-   the form.
-4. Where a hidden terminal consumes the following LF, keep that LF outside the
+   closer within the specification's first applicable alternative, trying a
+   body-present match before an adjacent empty fallback where that is the rule.
+   Check the whole authored form, not just its kind or value field. Enforce the
+   AST's boundary between a statement's trailing gap and body, including whether
+   a visible EOL precedes the form.
+5. Where a hidden terminal consumes the following LF, keep that LF outside the
    retained form's range. Apply its consumption before checking separators: a
    following statement must have the surviving visible EOL its production
    requires. Check spare LF, lookahead-only closing boundaries, the appended LF
    and EOF separately; EOF can satisfy a production without a written EOL.
-5. At each native Comment after the header, check that no earlier-priority
+6. At each native Comment after the header, check that no earlier-priority
    terminal matches at that unit position and that no earlier string or
    composite value encloses its start. Use explicit character scanning for
    terminal matches. Distinguish source comment regions from native Comments.
@@ -579,23 +632,29 @@ are relative to `packages/tests`.
    terminal rules. Keep ordinary body gaps and hidden closing boundaries as
    strict as the diagram specifies; the detection exception applies only to the
    intervals it passed.
-6. Write explicit accepted and broken trees in
+7. Write explicit accepted and broken trees in
    `tests/check-tree-<diagram>.test.ts`. Break ownership by losing, duplicating
-   or moving a hidden form; choose a later closer; include its consumed LF in
-   its range; remove the surviving EOL; change authored components; and disguise
-   an earlier terminal as Comment. Include accepted controls for hidden-looking
-   text inside enclosing values, spare LF and EOF. Write fixed cases for each
-   retained prefix followed by detection-passed bare lines and their Unicode
-   trivia, and with passed trivia between retained forms. Include controls
-   without a passed line. Check that ordinary body gaps stay strict. Derive
-   these cases from each sentence and its rule intersections, not from corpus
-   success alone.
-7. Document the checks in both versions of `docs/check-tree.md`, with the
-   fixtures that distinguish their cases. Once trees are recorded, run the
-   checker on every recorded tree and compare every comparable `dbFromTree`
-   result with its recorded reading, using the shared embedded-value helpers.
-   Report tree and Db counts, and each mismatch with its input. Keep cases
-   without a comparison Db explicit as in §7.1.
+   or moving a hidden form; choose a later closer within the selected
+   alternative or an adjacent empty close despite a qualifying body match;
+   include its consumed LF in its range; remove the surviving EOL; change
+   authored components; and disguise an earlier terminal as Comment. Include
+   accepted controls for hidden-looking text inside enclosing values, spare LF
+   and EOF. Write fixed cases for each retained prefix followed by
+   detection-passed bare lines and their Unicode trivia, and with passed trivia
+   between retained forms. Include controls without a passed line. Check that
+   ordinary body gaps stay strict. Derive these cases from each sentence and its
+   rule intersections, not from corpus success alone.
+8. Document the builder in `docs/db-from-tree/<diagram>.md` and the checks in
+   `docs/check-tree.md`, both with Japanese pairs and fixtures for each
+   distinguishing case. While trees are being recorded, implement from the
+   specification and fixed hand-built trees rather than waiting to infer the
+   contract from records. Once trees are recorded, run the checker on every
+   recorded tree and compare every comparable `dbFromTree` result with its
+   recorded reading, using the shared embedded-value helpers. Report actual tree
+   and Db counts, missing records, and each mismatch with its input; do not
+   silently skip a missing tree or an error record for an accepting reading, and
+   skip an error record only when its mark's reading rejects. Keep cases without
+   a comparison Db explicit as in §7.1.
 
 ## 7. Fixture tools and lists for the other packages
 
@@ -613,8 +672,10 @@ the spec's skill). This skill does the following.
    identifiers (`KNOWN_DIVERGENCES` in `src/index.ts`, and the list in the
    README) to match. Set each identifier's direction and specified-reading
    requirement explicitly in `DIVERGENCE_PROPERTIES` of
-   `src/fixture-acceptance.ts`. The loader rejects an identifier outside the
-   list, so to rename an identifier: (1) add the new identifier to the list
+   `src/fixture-acceptance.ts`. Have consumers use `fixtureAccepts()` for
+   fixture acceptance. For divergence-form checks, follow §6 of the
+   [parser skill](../parser/SKILL.md). The loader rejects an identifier outside
+   the list, so to rename an identifier: (1) add the new identifier to the list
    (keep the old one), (2) move the fixtures to the new identifier with
    `fixtures:set-divergence`, (3) remove the old identifier from the list. To
    withdraw an identifier, remove the marks first, then remove it from the list.
@@ -653,7 +714,7 @@ the spec's skill). This skill does the following.
 5. Show as the result what changed, the names added, the counts, and the result
    of `fixtures:check`.
 
-### 7.1 Specified readings for retained forms
+### 7.1 Specified readings for retained forms and embedded data
 
 1. Before generating `specified.json` for a newly admitted retained form, write
    fixed marked cases where each new retained prefix meets each relevant
@@ -663,7 +724,20 @@ the spec's skill). This skill does the following.
    the reference text, acceptance, Db and embedded title, configuration and data
    block effects against the specification's intended reading. Preserve retained
    source text and the shared frontmatter and configuration reading.
-2. If a shared helper needs extending, read its other callers and check their
+2. Take the direction and specified-reading requirement for
+   `embedded-data-opaque` from its row in `DIVERGENCE_PROPERTIES`
+   (`packages/tests/src/fixture-acceptance.ts`), and implement the reading in
+   [The comparison Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.md#the-comparison-db).
+   Exercise `opaqueReferenceInput` and `specifiedRunOf` in
+   `tools/src/specified-reading.ts` through the existing CLI path with fixed
+   frontmatter and directive cases for the directions in that row. Inspect the
+   reference text, the configuration and title returned by
+   `readMermaidConfiguration` in `packages/tests/src/mermaid.ts`, and the
+   generated acceptance, Db and embedded values against that definition. Check
+   `OPAQUE_ACCEPTANCE_KEYS` against the specification's named keys. Include a
+   retained title beside an acceptance key and a valid Db setting beside a
+   rejected block.
+3. If a shared helper needs extending, read its other callers and check their
    marked fixtures, including other diagram types. Add fixed regression tests to
    the shared helper's tests. Hash every existing `specified.json` before and
    after generation, run `generate --check` across all categories, and classify
@@ -671,9 +745,12 @@ the spec's skill). This skill does the following.
    values and added or removed records. Extend the existing shared path; do not
    add a diagram-local reading or assume the tools already cover a newly
    retained form.
-3. After checking the reference path, run the stable-generation steps of §5.3.8.
-   Keep opaque-data cases with no comparison Db explicit in tests and the
-   report; do not invent a specified reading or Db to make them comparable.
+4. After checking the reference path, run the stable-generation steps of §5.3.8.
+   Count marks and required readings from the current corpus after the CLI
+   operation rather than trusting a handed-down fixture count, and report any
+   missing record. Keep opaque-data cases with no comparison Db explicit in
+   tests and the report; do not invent a specified reading or Db to make them
+   comparable.
 
 ## 8. Updating mermaid.js
 

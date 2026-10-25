@@ -502,3 +502,18 @@ outcomeOf は同じソース解析に fixture.config のサイト設定だけを
 [fixture: gitgraph/div-init-main-branch-duplicate-default-accepted]
 
 `tests/ast-gitgraph-examples.test.ts` は、18 ノードのコメント例を検査します。
+
+packet の fixture 記録と受理判定は tests/fixtures.test.ts だけが検査し、
+fixtureAccepts と outcomeOf の外部サイト設定を使います。
+サイトの幅が木を拒否しても、デフォルト記録は parse(text) の結果を保持します。
+[fixture: packet/config-fraction-reject]
+[fixture: packet/config-frontmatter-overrides-site]
+tests/packet.test.ts の単体テストはソースの被覆、トークンと raw の表記、
+ノード境界、包含、ソース順、記述されたブロック形式、隠れた形式の所有先、
+共通の値を検査します。
+比較できる Db の読みには dbFromTree と embeddedValuesOf を使います。
+デフォルトで受理してサイトの読みが拒否する木には比較 Db がありません。
+[fixture: packet/gram-mixed] [fixture: packet/gram-hidden-range-gap-spaced]
+[fixture: packet/lex-hidden-two-suffixes] [fixture: packet/title-repeat-empty]
+[fixture: packet/error-single-rounded-end-wide]
+10 ノードのコメント例は tests/ast-packet-examples.test.ts が検査します。

@@ -22218,3 +22218,129 @@ LF で終わる comment の control は info として受理する。
 [fixture: info/c4component-flag-comment-lf]
 [fixture: info/c4dynamic-flag-comment-lf]
 [fixture: info/c4deployment-flag-comment-lf]
+
+## packet
+
+`normalizePacket()` は `packet` と `packet-beta` の見出しが共有する
+検出 id `packet` の Db を要約する。
+
+| 項目       | 内容                                                                                                                                                  |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`    | 図題。未設定なら空文字。                                                                                                                              |
+| `accTitle` | アクセシビリティ図題。未設定なら空文字。                                                                                                              |
+| `accDescr` | アクセシビリティ説明。未設定なら空文字。                                                                                                              |
+| `packet`   | 公開された行の順序付き配列。各行はブロックの順序付き配列で、各ブロックは `start`、`end`（両端を含むビット位置）、`label` を持つ。空の図には行がない。 |
+
+要約元は
+[`PacketDB.getPacket()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/db.ts#L18-L52)
+が公開し、
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/renderer.ts#L8-L90)
+が読む行。
+行とブロックは並べ替えず、隣り合う同じラベルもまとめない。
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/parser.ts#L18-L90)
+は公開前に省略された端点を補い、
+`packet.bitsPerRow` の境界でブロックを分割する。
+要約はその端点と繰り返されたラベルを残す。
+境界でちょうど終わる場合、末尾に空の行を作らない。
+[fixture: packet/gram-mixed] [fixture: packet/db-row-split]
+[fixture: packet/db-row-exact] [fixture: packet/db-same-label]
+[fixture: packet/config-rows-eight]
+
+renderer が読まない `bits` は含めない。
+特に分割後のビット数は `end - start + 1` と一致しないことがあり、
+正規化関数はその値を修正せず、保存もしない。
+解析状態（`lastBit`、`row`、作業中の行、固定の行数上限）と、
+[`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/db.ts#L16-L29)
+が返す設定も含めない。
+描画寸法と `showBits` は要約を変えない。
+行幅の効果は公開行に残し、設定自体は既存のサイト設定と
+embedded 値の欄で渡す。
+[fixture: packet/db-row-split] [fixture: packet/config-drawing-only]
+[fixture: packet/config-row-frontmatter]
+
+公開行は、書かれたブロックの数と対応するとは限らない。
+行幅が `-4`、YAML の `.nan`、数でない文字列の場合、
+ブロックを書いても `packet: []` になりうる。
+行幅が 0 の場合は、start が `0`、end が `-1` のブロックの行を
+10,000 行公開する。
+frontmatter と init のどちらからも、負、0、文字列の値を指定できる。
+[fixture: packet/config-frontmatter-row-negative]
+[fixture: packet/config-init-row-negative]
+[fixture: packet/config-frontmatter-row-nan]
+[fixture: packet/config-frontmatter-row-text]
+[fixture: packet/config-init-row-text]
+[fixture: packet/config-frontmatter-row-zero]
+[fixture: packet/config-init-row-zero]
+
+数の文字列 `"8"` は、範囲 0-9 を 0-7 と 8-9 に分割する。
+adapter は端点の計算では文字列を行番号と掛けるが、
+ループの上限では `1` を連結する（`"81"`）。
+行幅 `2.5` は受理されて小数の端点を公開する場合があり、
+`true` は 1 ビットずつの行を公開し、`null` は既定の幅 32 を残す。
+[fixture: packet/config-frontmatter-row-numeric-string]
+[fixture: packet/config-init-row-numeric-string]
+[fixture: packet/config-frontmatter-row-fraction-accepted]
+[fixture: packet/config-init-row-fraction-accepted]
+[fixture: packet/config-frontmatter-row-true]
+[fixture: packet/config-init-row-true]
+[fixture: packet/config-frontmatter-row-null]
+[fixture: packet/config-init-row-null]
+[fixture: packet/config-init-row-integer]
+
+YAML の `.inf` は無限大になり、YAML の `1e400` は文字列のまま残る。
+init の JSON の `1e400` は無限大になる。
+どれも有限の範囲を 1 行に収める。
+init の裸の `.nan` と `.inf` は JSON として不正なので、
+[`detectDirective()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L175-L203)
+はその引数を無視し、既定の行幅が残る。
+init で引用符を付けると数でない文字列になり、行を公開しない。
+[fixture: packet/config-frontmatter-row-infinity]
+[fixture: packet/config-frontmatter-row-overflow]
+[fixture: packet/config-init-row-overflow]
+[fixture: packet/config-init-row-nan-token]
+[fixture: packet/config-init-row-infinity-token]
+[fixture: packet/config-init-row-nan-string]
+[fixture: packet/config-init-row-infinity-string]
+
+adapter が 10,000 行で公開を止めた場合も、公開された範囲だけを残す。
+その後の連続したブロックは公開されずに受理されるが、
+非連続のブロックは上限の後も拒否される。
+有限の端点は JSON 数値とし、非有限の端点には共通の
+`numberOrText()` 表現を使う。
+無限大の行幅と倍精度で overflow する count をテキストだけで指定すると、
+サイト設定なしでも無限大の端点を公開できる。
+[fixture: packet/db-precision-rounded]
+[fixture: packet/db-cap-following-block-unpublished]
+[fixture: packet/error-cap-following-noncontiguous]
+[fixture: packet/db-overflow-wide]
+[fixture: packet/db-frontmatter-infinite-endpoint]
+
+[共通の公開関数](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+は AST の最終値が truthy のときだけ代入する。
+共通項目を繰り返すと最後の代入が残り、
+最後が空ならそれ以前の本文の代入も公開されない。
+本文の最終 title が空なら frontmatter の図題が残る。
+アクセシビリティ項目は
+[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+が読む。
+空ラベルも公開され、要約に残る。
+乱数 id と図種固有の patch はない。
+[fixture: packet/title-repeat] [fixture: packet/title-repeat-empty]
+[fixture: packet/acctitle-repeat-empty]
+[fixture: packet/accdescr-block-repeat]
+[fixture: packet/frontmatter-empty-body-title]
+[fixture: packet/db-label-empty-double] [fixture: packet/db-label-empty-single]
+
+schema で有効な小数の `bitsPerRow` も、分割時の拒否を起こしうる。
+`embedded-data-opaque` を付けた fixture の共通の比較読みでは、
+テキスト設定の `packet.bitsPerRow` だけを取り除き、
+図題、他の設定、サイト設定を残す。
+これにより、入力は拒否・比較読みは受理となる場合と、
+入力は受理・比較読みは拒否となる場合の両方を記録する。
+不正な opaque frontmatter を取り除いても、
+隣にある有効な `showBits` の directive は残る。
+[fixture: packet/config-frontmatter-fraction]
+[fixture: packet/config-directive-fraction]
+[fixture: packet/config-frontmatter-overrides-site]
+[fixture: packet/config-directive-overrides-site]
+[fixture: packet/frontmatter-invalid-keeps-config]

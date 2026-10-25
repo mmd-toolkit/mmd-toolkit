@@ -278,12 +278,13 @@ agentflow では、字句解析器がコメント行を自分で読むので、
 検出は、ヘッダーの前の先頭以外のフロントマター形のブロックを、
 1 つ通過させる場合があります。
 ブロックは図のテキストのままです。
-pie・gitgraph・info は隠れた YAML の規則を適用します。
+pie・gitgraph・info・packet は隠れた YAML の規則を適用します。
 以下で引用する拒否例の範囲は、その fixture の図種です。
 共通のフロントマターやトリビアではありません。
 [fixture: pie/frontmatter-nonleading-comment]
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment]
+[fixture: packet/detect-one-block]
 [fixture: pie/lex-yaml-leading-config-not-applied]
 [fixture: common/directive-before-frontmatter]
 [fixture: common/frontmatter-nonleading-sequence]
@@ -539,8 +540,9 @@ mermaid.js が本文をどう読むかは、
 上のフロントマターの形を持つブロックを 1 つ通過させ、後のヘッダーを探します。
 図の字句解析器が読むテキストからブロックを除くわけではありません。
 ブロックの前にトリビアがあると、
-pie・gitgraph・info は残されたテキストに隠れた YAML の規則を適用します。
-一致すれば PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText に持ち、
+pie・gitgraph・info・packet は残されたテキストに隠れた YAML の規則を適用します。
+一致すれば PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText・
+PacketIgnoredText に持ち、
 YAML のタイトルも設定も適用しません。
 以下の拒否例で、ほかのすべての図種の拒否を主張するものではありません。
 先頭の空白、開始の区切りだけのバイトオーダーマーク、コメント行、
@@ -550,6 +552,7 @@ YAML のタイトルも設定も適用しません。
 [fixture: pie/frontmatter-nonleading-comment]
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment]
+[fixture: packet/detect-one-block]
 [fixture: pie/lex-yaml-leading-config-not-applied]
 [fixture: pie/lex-yaml-after-leading-lf]
 [fixture: pie/lex-yaml-bom-opening-only]
@@ -1033,10 +1036,11 @@ mermaid.js は、
 その点のブロックが [フロントマター](#フロントマター) の形を満たせば、
 検出は、`%%` だけの行を探す前に、ブロックを 1 回通過させます。
 ブロックは、選んだ図が読む図のテキストのままです。
-pie・gitgraph・info と拒否する対照例はフロントマターの節にあります。
+pie・gitgraph・info・packet と拒否する対照例はフロントマターの節にあります。
 [fixture: pie/frontmatter-nonleading-comment]
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment]
+[fixture: packet/detect-one-block]
 [fixture: pie/lex-yaml-leading-config-not-applied]
 [fixture: common/directive-before-frontmatter]
 [fixture: common/frontmatter-nonleading-sequence]
@@ -1095,9 +1099,11 @@ mermaid.js と同じで、その字句解析器はヘッダーの前の `%%{` �
 [fixture: usecase/detect-directive-second-scan-preheader]
 [fixture: venn/detect-directive-second-scan-preheader]
 
-pie・gitgraph・info は、検出の 2 回目の走査でだけ見つかるディレクティブを
+pie・gitgraph・info・packet は、
+検出の 2 回目の走査でだけ見つかるディレクティブを
 隠れた DIRECTIVE として読み、textBeforeHeader の
-PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText に持ちます。
+PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText・
+PacketIgnoredText に持ちます。
 `%%{`、`%% gap`、`wrap}%%`、`pie` の各行は受理します。
 閉じの直後に `pie` を接着すると、隠れた形の閉じの境界を満たさず、拒否します。
 [fixture: pie/lex-hidden-directive-second-detection-scan]
@@ -1106,6 +1112,8 @@ PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText に持ちます。
 [fixture: gitgraph/lex-hidden-directive-second-scan-glued]
 [fixture: info/detect-second-scan-directive]
 [fixture: info/detect-second-scan-glued]
+[fixture: packet/detect-second-scan-directive]
+[fixture: packet/detect-second-scan-glued]
 
 たどり着いた位置で、[detection.ja.md](./detection.ja.md) の検出器を登録順に、
 図のテキスト（[ソースの読み方](#ソースの読み方)）、
@@ -1113,7 +1121,7 @@ PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText に持ちます。
 試します。
 条件が最初に成り立った検出器が図種を選びます。
 図の字句解析器は、残したフロントマター形のブロックがあればそれを読み、
-pie・gitgraph・info は上記の隠れた DIRECTIVE も読みます。
+pie・gitgraph・info・packet は上記の隠れた DIRECTIVE も読みます。
 たどり着いた位置からのテキストも読みます。
 検出が通過させた `%%` だけの行と、一緒に通過した空白・改行は、
 ここでは読み直しません。空白と改行は trivia です。
@@ -1144,6 +1152,7 @@ class はそのような行の後の空白だけの行を `newline` の単位と
 [fixture: common/bare-percent-line-only]
 [fixture: gitgraph/div-detect-retained-directive-bare-bom]
 [fixture: gitgraph/div-lex-preheader-bare-between-retained-unicode]
+[fixture: packet/div-detect-yaml-bare-directive-ls]
 [fixture: common/bare-percent-line-only-with-line-feed]
 [fixture: sequence/header-after-indented-bare-percent-line]
 [fixture: sequence/header-after-bare-percent-crlf]
@@ -1355,7 +1364,7 @@ C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこ
 
 一致する先頭以外の `---` ブロックは、どちらでも検出が通過させ、
 選んだ図が読みます。
-pie・gitgraph・info は隠れた YAML の規則を適用し、
+pie・gitgraph・info・packet は隠れた YAML の規則を適用し、
 一致したブロックを無視するテキストとして持ちます。
 以下で引用するほかの図種の対照例は拒否します。
 [フロントマター](#フロントマター) で述べたとおりです。
@@ -1367,6 +1376,7 @@ pie・gitgraph・info は隠れた YAML の規則を適用し、
 [fixture: ishikawa/frontmatter-after-comment]
 [fixture: usecase/frontmatter-after-comment]
 [fixture: venn/frontmatter-comment-before]
+[fixture: packet/detect-one-block]
 
 `error` 疑似図種では、その条件が除く 3 つがこの除去です。
 

@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "<a x='",
+    "accTitle": "",
+    "accDescr": "",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 0,
+          "label": "<b y='c'>d"
+        }
+      ]
+    ]
+  },
+  "embedded": {
+    "title": "<a x='"
+  }
+}

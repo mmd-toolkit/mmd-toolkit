@@ -288,17 +288,17 @@ position, as a complete source span rather than its trivia-filtered value.
 Preserving hidden forms in place is shared by diagram types whose specified
 lexical rules have these forms; pie is the first printer to apply it. In pie,
 the hidden rule consumes an immediate LF outside the node, and closing-boundary
-whitespace can leave a required visible EOL. Keep consumed and spare LFs,
-closing padding including at EOF, opaque malformed/empty/nested-looking
-contents, internal trivia and multiple forms. Do not insert a break before a
-form. Ordinary opener padding can compact and a body opener can be indented; its
-interior and unindented closer keep their columns. Already-started
-string/title/block text retains priority.
+whitespace can leave a required visible EOL. Keep closing padding, including at
+EOF. Required exterior LF and edge blanks follow [Blank lines](#blank-lines).
+Keep opaque malformed/empty/nested-looking contents, internal trivia and
+multiple forms. Do not insert a break before a form. Ordinary opener padding can
+compact and a body opener can be indented; its interior and unindented closer
+keep their columns. Already-started string/title/block text retains priority.
 
-Keep closing padding and spare LFs for standalone forms at the start or middle
-of the body, indented forms, forms after the header or showData, and forms at
-EOF. The same boundary rule applies to hidden YAML and hidden directives.
-Closing padding also stays between forms or before a same-line statement.
+Keep closing padding for standalone forms at the start or middle of the body,
+indented forms, forms after the header or showData, and forms at EOF. The same
+boundary rule applies to hidden YAML and hidden directives. Closing padding also
+stays between forms or before a same-line statement.
 
 Fixed cases: [fixture: pie/hidden-yaml/yaml-section-gaps] [fixture:
 pie/hidden-yaml/yaml-body] [fixture: pie/hidden-yaml/yaml-move-gap-kept]
@@ -432,6 +432,8 @@ pie
   accTitle: a%% real comment
 ```
 
+[fixture: pie/blank-lines/hidden-comment-whitespace]
+
 ### Directives and semicolons
 
 Reuse [global directive opacity](./flowchart.md#directives) and
@@ -480,10 +482,34 @@ pie title style:#a;b
 
 Reuse [shared blank grouping](./flowchart.md#blank-lines): collapse ordinary
 ASCII blank runs to one and remove ordinary document/body edge blanks,
-preserving a visible grouping choice. Values, directives, ignored interiors and
-common-region joins keep authored blanks. Hidden consumed/spare EOL and complete
-retained preheader prefixes are exempt: deleting them can change acceptance or
-promote YAML. Unicode-only invalid body lines remain corpus failures.
+preserving a visible grouping choice. Values, directives, ignored interiors,
+common-region joins and complete retained prefixes keep authored blanks:
+changing these can alter source roles or promote YAML. After a hidden form
+consumes LF, keep one spare LF only when a following statement needs it. At the
+document end use one configured final newline; directly after the header remove
+blank lines, since the header needs no EOL before its first statement. Elsewhere
+apply the ordinary blank-line rules after the spare LF: collapse a run to one
+blank line and clear whitespace-only lines. The spare LF meets the grammar;
+later blanks express grouping, just as after comments. Unicode-only invalid body
+lines remain corpus failures.
+
+A hidden boundary or semicolon protection can keep a statement on the header's
+line; the gap after that statement's hidden suffix still lies between
+statements.
+
+[fixture: pie/blank-lines/hidden-following-blanks]
+
+[fixture: pie/blank-lines/header-statement-hidden]
+
+[fixture: pie/blank-lines/header-statement-semicolon]
+
+[fixture: pie/blank-lines/hidden-document-end]
+
+[fixture: pie/blank-lines/hidden-body-end]
+
+[fixture: pie/blank-lines/hidden-header-blanks]
+
+[fixture: pie/blank-lines/hidden-comment-whitespace]
 
 Fixed cases: [fixture: pie/blank-lines/blank-runs] [fixture:
 pie/blank-lines/blank-trivia] [fixture: pie/blank-lines/blank-literal] [fixture:

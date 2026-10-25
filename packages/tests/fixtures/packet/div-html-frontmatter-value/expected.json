@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "packet.md: An unclosed frontmatter tag changes body quote conversion in an accepted accessibility value."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "<a",
+    "accTitle": "b='c'>d",
+    "accDescr": "",
+    "packet": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

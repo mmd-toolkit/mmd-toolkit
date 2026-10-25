@@ -1,3 +1,4 @@
+import type { PacketNode } from "../../src/ast/packet.ts"
 import type { InfoNode } from "../../src/ast/info.ts"
 import type { GitgraphNode } from "../../src/ast/gitgraph.ts"
 import type { PieNode } from "../../src/ast/pie.ts"
@@ -559,6 +560,20 @@ export const allInfoNodeTypes: Readonly<Record<InfoNode["type"], true>> = {
   InfoIgnoredText: true,
 }
 
+/** Every node type of ast/packet.md, in document order. */
+export const allPacketNodeTypes: Readonly<Record<PacketNode["type"], true>> = {
+  PacketDiagram: true,
+  PacketRangeBlockStatement: true,
+  PacketSingleBlockStatement: true,
+  PacketRelativeBlockStatement: true,
+  PacketTitleStatement: true,
+  PacketAccTitleStatement: true,
+  PacketAccDescrStatement: true,
+  PacketAccDescrBlockStatement: true,
+  PacketLiteral: true,
+  PacketIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -585,6 +600,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allPieNodeTypes),
   ...Object.keys(allGitgraphNodeTypes),
   ...Object.keys(allInfoNodeTypes),
+  ...Object.keys(allPacketNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

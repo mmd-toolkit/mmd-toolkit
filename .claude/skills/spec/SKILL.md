@@ -68,9 +68,9 @@ in the skill `conventions`.
   reading of a number or a type, nothing that a statement adds to the Db, and no
   names in the Db. They point to the summary of the tests package
   (`packages/tests/docs/db-summaries.md`, `packages/tests/docs/db-from-tree.md`)
-  instead. What stays is what decides whether an input is accepted, the node
-  types and the values of the fields of the tree with their reasons, and how the
-  lexer reads the text.
+  instead. What stays is what decides whether an input is accepted (including
+  comparison values and state updates), the node types and the values of the
+  fields of the tree with their reasons, and how the lexer reads the text.
 - Every claim in the specification has a fixture, added through the tests
   package's generator.
 - The specification introduces no single-letter or abbreviated symbols (no "let
@@ -354,7 +354,9 @@ before any parser error, and a recovered CST need not be accepted.
    the generated grammar, service modules and token builder to the effective
    terminal array. Record its priority order, including inherited terminals,
    custom keyword matchers and longer alternatives. Declaration order alone and
-   a general longest-match assumption do not establish that order.
+   a general longest-match assumption do not establish that order. Inventory
+   imported terminals that are unreachable, and read mermaid.js's fixed tests
+   under both `packages/parser` and `packages/mermaid/src/diagrams/<diagram>`.
 2. Read the actual keyword matcher and its boundary test. State the exact
    characters that satisfy the boundary and distinguish them from whitespace
    skipped between units. Judge the boundary on the diagram text after global
@@ -364,26 +366,40 @@ before any parser error, and a recovered CST need not be accepted.
    where removal leaves a valid boundary with cases where it joins the two
    components. Do not import Jison's word-boundary rule. Check competing
    keywords and terminals at the same position, including composite line forms
-   whose keyword and value are read together.
+   whose keyword and value are read together. Check each keyword with a custom
+   matcher separately from punctuation-joined spellings that do not use it,
+   distinguishing their word and punctuation components.
 3. Read hidden terminals in priority order, including their flags and where
    their match ends. Separate them from global preprocessing. Check whether they
    consume a following line feed, use it only as a boundary, or consume the
    appended line feed at EOF. Check an earlier terminal enclosing the same text,
    fallback to comments when a hidden form fails, and matches between complete
    units versus inside an atom. First ask where the tree can hold every skipped
-   form; do not propose a divergence merely because it is hidden.
+   form; do not propose a divergence merely because it is hidden. Check
+   alternative order and greedy or lazy matches within each terminal with
+   adjacent delimiters, rather than assuming the nearest closer wins. Give each
+   retained form an owner and range, with any consumed following line feed
+   outside that range.
 4. Follow the diagram's module to its custom, common and default value
    converters. Match each conversion branch to the grammar rule name that
    actually calls it; an unused branch is not behavior. Record string escapes,
    numeric conversion, trimming and whitespace collapse separately. Keep the
    tree's authored values distinct from converted Db values, and state which
-   spelling the tree preserves under 3.3.
+   spelling the tree preserves under 3.3. Follow assigned, overwritten and
+   unassigned syntax through the generated model and publication, retaining
+   every written occurrence even when absent from Mermaid's model or Db. Trace
+   acceptance comparison values through entity replacement, quoting and escape
+   decoding, whitespace handling and configuration-dependent escaping, testing
+   rewrite order and overlaps introduced by intermediate text.
 5. Follow the public parse wrapper and the diagram's adapter through complete
    consumption and every error check. Determine whether any lexer error or
    parser error prevents publication, including errors attached to a recovered
    tree. Read model validation and Db rejection after conversion too. Do not
    infer acceptance from the existence of a recovered tree or from the grammar
-   alone.
+   alone. Enumerate reachable semantic checks after final option selection,
+   including the state updates, identities and replacements those checks depend
+   on. If the adapter publishes nothing or has no semantic gate, record that
+   absence rather than inventing a publication step or fields.
 6. Read the shared preprocessing and detection rules in
    [common.md](../../../packages/spec/docs/common.md): Reading a source,
    Frontmatter, Leading whitespace and Diagram detection. Read the diagram's
@@ -424,7 +440,9 @@ before any parser error, and a recovered CST need not be accepted.
    the tests package's Mermaid runner; cover hidden-form ownership, delimiters,
    consumed line feeds, EOF and the reverse direction of any divergence. Add
    only the cases the sentence distinguishes, with the fixture CLI. Do not
-   generate inputs.
+   generate inputs. Derive header, flag and statement gaps and their EOL
+   requirements from this diagram's entry and fragment rules rather than a
+   preceding diagram's layout.
 
 ### 3.2 Writing the diagram document
 
@@ -438,6 +456,12 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
 3. Grammar: in the Notation of common.md, with a table of the node that each
    rule makes, and the inputs that mermaid.js rejects after its grammar has
    accepted them, with all that decides them (Rejections outside the grammar).
+   State semantic acceptance as direct rules over written statements, including
+   the comparison values and state changes needed to decide every condition,
+   leaving only derived values unnecessary for acceptance to the tests summary.
+   For conditions depending on site configuration outside the text, state the
+   defaults and that whoever holds a changed configuration applies it, while the
+   remaining conditions are decided from the tree alone.
 4. Known divergences: those of the identifiers in known-divergences.md that
    apply to the diagram type, and how they show in it. A new divergence is
    defined in a document of its own, `known-divergences/<identifier>.md` and its
@@ -448,6 +472,10 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
    - When adding a diagram's paragraph to a divergence document, also add the
      diagram's entry to the section The documentation of mermaid.js and its
      issues.
+   - For `embedded-data-opaque`, follow
+     [The comparison Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.md#the-comparison-db)
+     and
+     [DIVERGENCE_PROPERTIES](../../../packages/tests/src/fixture-acceptance.ts).
 
 The Db summary of a diagram type and how it is built from the tree are documents
 of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
@@ -457,9 +485,13 @@ of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
 
 `docs/ast/<diagram>.md` and its `.ja.md`.
 
+Use the diagram names and node prefixes defined by
+[conventions](../conventions/SKILL.md#code).
+
 1. For each node type: the table of fields (types in language-neutral words;
    short cells, long explanations below the table), the child fields (in the
-   order a tool visits them), and the range.
+   order a tool visits them), and the range. Write each node's range in its own
+   authored shape, with only the starting and ending forms that node permits.
 2. The token kind of each unit is defined by the parser, in
    `packages/parser/docs/tokens/<diagram>.md`, and the documents of the
    specification do not refer to it; the specification lists the units of the
@@ -498,7 +530,8 @@ Each time a claim is written:
 1. Check it with mermaid.js (2.1).
 2. Look for existing fixtures (2.2). When one has the same input, or an input
    that records the same thing, cite it. Before deciding so, read the `accepted`
-   and the values of its `expected.json`; never decide from how the input looks.
+   and the values of its `expected.json` and, where required by its divergence,
+   `specified.json`; never decide from how the input looks.
 3. Otherwise add one (2.3). Add a contrasting example too: the closest input to
    which the rule does not apply.
 4. Cite it in the sentence of the specification as
@@ -507,6 +540,8 @@ Each time a claim is written:
    divergences) its identifier with `fixtures:set-divergence`. Choose the
    identifier by the definitions in known-divergences.md, and match the existing
    fixtures of the same kind.
+6. When handing a corpus case to another package, cite the existing fixture
+   rather than copying its input into another fixture.
 
 ### 3.5 Checking a rule
 
@@ -595,6 +630,16 @@ it from the cases that its sentences distinguish.
 Show as the result of the work: the sections changed, the names of the fixtures
 added, what the parser has to fix (acceptance, tokens, the Db derivation), and
 the fixtures for which the parser needs an `ast.json`.
+
+Include these responsibilities in the handoff:
+
+- For `checkTree`, follow [tests §6](../tests/SKILL.md#6-langium-diagrams).
+- For divergence-form checks, follow
+  [parser §6](../parser/SKILL.md#6-when-fixtures-are-added-or-a-rule-changes).
+- For printer work, follow [prettier-plugin](../prettier-plugin/SKILL.md).
+- Where the Db omits authored syntax, require independent structural checks and
+  exact expected-output formatting fixtures because Db equality cannot show that
+  syntax was preserved.
 
 ### 3.7 Checks before the parser reads the specification
 
@@ -844,8 +889,12 @@ Use the matching procedure in 3.1. For Langium, use step 6 under
 detection boundary before writing Detection in 3.2. Establish the effective
 terminal priority and keyword boundaries, the scope and line-feed consumption of
 hidden terminals, the active value converters, and the wrapper's acceptance
-gate. Apply those findings to the sentences, tree and explicit fixture cases in
-3.2–3.5; a recovered tree is not evidence of acceptance.
+gate, separating authored syntax from publication and semantic checks. Apply
+those findings to the sentences, tree, explicit fixture cases and handoff in
+3.2–3.7; a recovered tree does not prove acceptance, and an empty Db does not
+prove that written syntax can be dropped. Keep engine-specific investigation in
+this procedure and hand off direct rules that an implementation can follow
+without Mermaid's source.
 
 For Chevrotain, use its procedure and checks of modes, ordered matches,
 `longer_alt`, authored boundaries and error handling. Check the actual engine;

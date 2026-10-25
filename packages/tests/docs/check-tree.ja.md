@@ -736,6 +736,77 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-yaml-bare-directive] [fixture:
     info/lex-retained-no-bare-ls] [fixture: info/lex-hidden-common-comment]
 
+  - packet: 10 ノードの型、欄、訪問順は
+    [ast/packet.md](../../spec/docs/ast/packet.ja.md) に従う。
+    range・single・relative は書いた端点または count と
+    固有の hidden gap を保つ。
+    dash・plus・colon、必須の閉じた label 文字列、
+    整数の綴りと完全な単位を検査する。
+    整数のゼロ分岐は 1 桁で終わり、非ゼロ分岐は dot の前で短くなれる。
+    range dash は全体の hidden YAML に譲る。
+    通常の packet ヘッダーだけが共通空白・EOF・percent ペアの境界を要求し、
+    packet-beta は最初のブロック・共通形式と接してよい。
+    ブロックの成分を可視 LF で分けられない。
+    意味上の拒否は parser と fixture の結果の比較に属する。
+    [fixture: packet/gram-mixed] [fixture: packet/gram-single-hidden-gaps]
+    [fixture: packet/gram-hidden-range-gap-spaced]
+    [fixture: packet/gram-hidden-yaml-gap]
+    [fixture: packet/gram-relative-hidden-colon]
+    [fixture: packet/gram-leading-zero]
+    [fixture: packet/lex-integer-shorter-before-dot]
+    [fixture: packet/lex-dash-before-yaml] [fixture: packet/header-inline-block]
+    [fixture: packet/header-beta-glued-block]
+    [fixture: packet/gram-visible-newline-in-block]
+    [fixture: packet/lex-label-escaped-lf]
+    [fixture: packet/db-label-empty-single]
+
+    PacketIgnoredText は全体の hidden match で、所有者はちょうど 1 つである。
+    textBeforeHeader、body、ブロック内部の gap、可視 EOL 前の textAfter である。
+    選んだ分岐の中で境界を満たす最初の閉じを走査する。
+    YAML は本文ありの match を直後の空の fallback より先に試し、
+    DIRECTIVE は境界を満たす最初の閉じを使う。
+    消費した直後の LF は範囲から除き、次の文には残る可視 EOL を要求する。
+    余分な LF、先読みだけの space、EOF は別の対照である。
+    囲む文字列・共通値は hidden らしい内容を保ち、
+    行の値は YAML の dash を取り込む。
+    [fixture: packet/lex-hidden-two-suffixes]
+    [fixture: packet/lex-hidden-after-visible-eol]
+    [fixture: packet/hidden-yaml-adjacent-later]
+    [fixture: packet/lex-yaml-two-nonempty]
+    [fixture: packet/hidden-directive-later-close]
+    [fixture: packet/hidden-directive-block]
+    [fixture: packet/hidden-directive-block-spare]
+    [fixture: packet/hidden-directive-block-space]
+    [fixture: packet/hidden-directive-block-eof]
+    [fixture: packet/hidden-yaml-crlf]
+    [fixture: packet/hidden-yaml-in-label]
+    [fixture: packet/hidden-yaml-in-description]
+    [fixture: packet/hidden-yaml-title-absorbed]
+
+    共通の文は書いた keyword、区切り・colon・brace、完全な値または null、
+    ブロックの trim と最初の閉じ brace を検査する。
+    共通の written value、token kind、coverage、範囲の hull も適用する。
+    ヘッダー後の native Comment は先行する DIRECTIVE を隠せず、
+    囲む文字列・複合 description 内でも始まれない。
+    ヘッダー前では残存 YAML は二度目の directive より前の 1 つである。
+    検出が通過させた裸の Comment と付随する Unicode 空白は、
+    残存形式の間でも trivia のままである。
+    通過した裸行がなければ native な gap を適用する。
+    通常の本文 gap は ASCII space/tab と LF だけである。
+    [fixture: packet/lex-title-two-spaces] [fixture: packet/acctitle-empty]
+    [fixture: packet/accdescr-block-first-close]
+    [fixture: packet/lex-description-comment-only]
+    [fixture: packet/hidden-directive-close-glued]
+    [fixture: packet/lex-label-native-directive]
+    [fixture: packet/lex-description-hidden-first-brace]
+    [fixture: packet/detect-one-block] [fixture: packet/detect-two-blocks]
+    [fixture: packet/detect-second-scan-directive]
+    [fixture: packet/detect-empty-braces-bare]
+    [fixture: packet/retained-yaml-bare-ls]
+    [fixture: packet/retained-directive-bare-bom]
+    [fixture: packet/div-detect-yaml-bare-directive-ls]
+    [fixture: packet/lex-retained-no-bare-ls] [fixture: packet/line-ls-between]
+
   - pie: 8 種のノードと子の順序は
     [ast/pie.md](../../spec/docs/ast/pie.md) に従う。
     showData は書かれたフラグだけを表す。

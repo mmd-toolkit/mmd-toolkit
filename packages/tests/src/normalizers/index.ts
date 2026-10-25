@@ -12,6 +12,7 @@ import { normalizeIshikawa } from "./ishikawa.ts"
 import { normalizeJourney } from "./journey.ts"
 import { normalizeKanban, patchKanbanDb } from "./kanban.ts"
 import { normalizeMindmap } from "./mindmap.ts"
+import { normalizePacket } from "./packet.ts"
 import { normalizePie } from "./pie.ts"
 import { normalizeQuadrant, patchQuadrantDb } from "./quadrant.ts"
 import { normalizeRequirement } from "./requirement.ts"
@@ -67,6 +68,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["pie", normalizePie],
   ["gitGraph", normalizeGitgraph],
   ["info", normalizeInfo],
+  ["packet", normalizePacket],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

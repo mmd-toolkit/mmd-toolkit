@@ -55,6 +55,7 @@ const DIAGRAMS: readonly [string, string][] = [
   ["flowchart", "FlowchartDiagram"],
   ["gitgraph", "GitgraphDiagram"],
   ["info", "InfoDiagram"],
+  ["packet", "PacketDiagram"],
   ["pie", "PieDiagram"],
   ["usecase", "UsecaseDiagram"],
   ["agentflow", "AgentflowDiagram"],
@@ -83,6 +84,8 @@ const DIAGRAMS: readonly [string, string][] = [
  */
 function textsBesidesTheRow(diagram: string): string[] {
   switch (diagram) {
+    case "packet":
+      return ["-", "+", ":", "{", "}"]
     case "gitgraph":
     case "info":
     case "pie":

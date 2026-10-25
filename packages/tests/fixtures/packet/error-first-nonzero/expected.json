@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The first absolute start must be zero."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Packet block 1 - 1 is not contiguous. It should start from 0."
+  }
+}

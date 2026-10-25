@@ -534,7 +534,7 @@ HTML ラベルが有効で、`securityLevel` が
 ## 確かめ
 
 記録した木の比較には C4、block、kanban、Venn、Agentflow、Usecase、pie、
-gitgraph、info と
+gitgraph、info、packet と
 common の検出例を含み、
 C4 の五つの kind もすべて含みます。
 
@@ -564,9 +564,10 @@ fixture がどれかを教えます。
 3. テストを動かす。木で説明される失敗は、木の文書かパーサーの欠けである。
    入力を付けて報告する。
 
-Gitgraph、info、pie、Venn、Agentflow、Usecase は、
+Packet、gitgraph、info、pie、Venn、Agentflow、Usecase は、
 手作りの木と記録済みの木の両方で検査します。
-新しい builder は [gitgraph.md](./db-from-tree/gitgraph.md) と
+新しい builder は [packet.md](./db-from-tree/packet.ja.md)、
+[gitgraph.md](./db-from-tree/gitgraph.md) と
 [info.md](./db-from-tree/info.md) に説明します。
 文字の置換は frontmatter の初期タイトルも含むタイトルだけに適用します。
 [fixture: venn/config-security-other]

@@ -1,3 +1,4 @@
+import { packetVisitorKeys } from "./visitor-keys/packet.ts"
 import { infoVisitorKeys } from "./visitor-keys/info.ts"
 import { gitgraphVisitorKeys } from "./visitor-keys/gitgraph.ts"
 import { pieVisitorKeys } from "./visitor-keys/pie.ts"
@@ -65,4 +66,5 @@ export const visitorKeys: VisitorKeys = {
   ...pieVisitorKeys,
   ...gitgraphVisitorKeys,
   ...infoVisitorKeys,
+  ...packetVisitorKeys,
 }

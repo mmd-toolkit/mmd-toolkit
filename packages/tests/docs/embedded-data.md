@@ -40,6 +40,20 @@ sequence/div-comment-after-number-with-data-block]
   (`getDefaultConfig()`). An object is merged key by key; an array and any other
   value replace.
 
+Within recorded configuration, a non-finite number is a reserved one-field
+object: `{ "nonFinite": "Infinity" }`, `{ "nonFinite": "-Infinity" }`, or
+`{ "nonFinite": "NaN" }`. This applies recursively, including array items.
+Finite numbers remain JSON numbers; strings such as `"Infinity"`, `"-Infinity"`,
+and `"NaN"` remain strings. A tag is restored to a number before merging, so it
+replaces a value rather than merging as an ordinary object. `getDefaultConfig()`
+and `embeddedValuesOf()` give numeric values to `dbFromTree()`. [fixture:
+packet/config-frontmatter-row-infinity] [fixture:
+packet/config-frontmatter-row-negative-infinity] [fixture:
+packet/config-frontmatter-row-nan] [fixture:
+packet/config-frontmatter-row-infinity-string] [fixture:
+packet/config-init-row-overflow] [fixture:
+packet/config-init-row-infinity-word-string]
+
 `embeddedValuesOf(fixture)` builds these values from the fixture: the defaults,
 then the fixture's `config`, then `embedded.config`. When an input changes
 `theme`, mermaid.js recomputes `themeVariables` and may drop some of its keys;
@@ -64,7 +78,9 @@ compares the recorded values with mermaid.js.
 - The whole `config` is mermaid.js's configuration for the text, derived as
   [configuration.md](./configuration.md) describes, and read with
   `mermaidAPI.getConfig()` right after `mermaid.parse()`. Per-diagram appearance
-  defaults (such as `look`) are not in it; they do not affect Db summaries.
+  defaults (such as `look`) are not in it; they do not affect Db summaries. The
+  runner returns numbers, including non-finite numbers, in memory; the generator
+  applies the tags only when recording configuration as JSON.
 - `title` is the frontmatter title, as `render()` passes it to the Db (see
   [expected-results.md](./expected-results.md)).
 

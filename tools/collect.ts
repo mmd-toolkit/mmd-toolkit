@@ -166,6 +166,8 @@ const SPEC_FILES: Readonly<
   gitgraph: () => ["diagrams/git/gitGraph.spec.ts"],
   // This directory has only this spec; the adapter contains no inline tests.
   info: () => ["diagrams/info/info.spec.ts"],
+  // The other files in this directory contain no inline tests.
+  packet: () => ["diagrams/packet/packet.spec.ts"],
   // Both files parse diagram text. The renderer spec only reads the resulting
   // DOM in assertions; the recorder can leave drawing and those reads empty.
   pie: () => ["diagrams/pie/pie.spec.ts", "diagrams/pie/pieRenderer.spec.ts"],

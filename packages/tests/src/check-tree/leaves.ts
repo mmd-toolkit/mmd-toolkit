@@ -18,6 +18,7 @@ import { WrittenText } from "./written-text.ts"
 const DIAGRAM_TYPES_OF_BODY: Readonly<Record<string, readonly string[]>> = {
   GitgraphDiagram: ["gitGraph"],
   InfoDiagram: ["info"],
+  PacketDiagram: ["packet"],
   PieDiagram: ["pie"],
   UsecaseDiagram: ["usecase"],
   AgentflowDiagram: ["agentflow"],

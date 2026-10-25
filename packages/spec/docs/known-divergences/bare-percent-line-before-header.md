@@ -4,9 +4,9 @@ Japanese version:
 [bare-percent-line-before-header.ja.md](./bare-percent-line-before-header.ja.md)
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
-timeline, sankey, block, c4, agentflow, usecase, pie, gitgraph, and info. This
-is one of the [known divergences](../known-divergences.md) of this specification
-from mermaid.js.
+timeline, sankey, block, c4, agentflow, usecase, pie, gitgraph, info, and
+packet. This is one of the [known divergences](../known-divergences.md) of this
+specification from mermaid.js.
 
 ## The syntax
 
@@ -379,6 +379,17 @@ info/div-detect-yaml-bare-directive] [fixture: info/bare-before-header-space]
 info/lex-detect-yaml-bare-directive-ascii] [fixture:
 info/lex-retained-no-bare-ls]
 
+### Packet
+
+Passed lines are shared Comments and accompanying whitespace is trivia; the
+direct detection rule accepts Unicode trivia Mermaid rejects, including between
+retained forms. This rejects no Mermaid-accepted input. Without a passed line,
+native gap rules still apply. [fixture: packet/bare-before-header-bom] [fixture:
+packet/bare-line-ls] [fixture: packet/retained-yaml-bare-ls] [fixture:
+packet/div-detect-yaml-bare-directive-ls] [fixture:
+packet/detect-yaml-bare-directive-ascii] [fixture:
+packet/lex-retained-no-bare-ls]
+
 ## The documentation of mermaid.js and its issues
 
 - The
@@ -451,3 +462,11 @@ warning. These facts do not justify any additional divergence.
   info/showInfo rendering and was open with Type: Bug / Error and Status:
   Triage. No inspected result establishes an info-specific maintainer decision
   to reject this syntax; this section follows the existing direct rule.
+
+- The pinned
+  [packet documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/packet.md#L12-L28)
+  shows single positions, ranges and relative counts; it does not define this
+  preprocessing boundary. Searches of the official repository's issues and pull
+  requests on 2026-10-25 used `packet bitsPerRow`, `packet fractional` and
+  `packet maxPacketSize`. No inspected result establishes a maintainer ruling on
+  this divergence.

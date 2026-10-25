@@ -1,0 +1,17 @@
+{
+  "message": "Packet range end is less than its start",
+  "range": [
+    7,
+    14
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 7
+    }
+  }
+}

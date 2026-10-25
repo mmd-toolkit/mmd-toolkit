@@ -48,6 +48,7 @@ specification has a bug, except for the deliberate differences listed under
 | pie          | [`docs/diagrams/pie.md`](./docs/diagrams/pie.md)             | [`docs/ast/pie.md`](./docs/ast/pie.md)             |
 | gitgraph     | [`docs/diagrams/gitgraph.md`](./docs/diagrams/gitgraph.md)   | [`docs/ast/gitgraph.md`](./docs/ast/gitgraph.md)   |
 | info         | [`docs/diagrams/info.md`](./docs/diagrams/info.md)           | [`docs/ast/info.md`](./docs/ast/info.md)           |
+| packet       | [`docs/diagrams/packet.md`](./docs/diagrams/packet.md)       | [`docs/ast/packet.md`](./docs/ast/packet.md)       |
 
 The other diagram types of mermaid.js are not specified yet.
 

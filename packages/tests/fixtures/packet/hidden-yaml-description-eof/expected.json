@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EOF satisfies description EOL after YAML consumption."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D",
+    "packet": []
+  }
+}
