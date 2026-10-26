@@ -41,6 +41,9 @@ export const diagramIds: Readonly<
   packet: ["packet"],
   architecture: ["architecture"],
   radar: ["radar"],
+  treemap: ["treemap"],
+  // IR, EBNF, ABNF and PEG have separate parsers but share the railroad Db.
+  railroad: ["railroad", "railroadEbnf", "railroadAbnf", "railroadPeg"],
 }
 
 /**

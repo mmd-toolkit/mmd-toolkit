@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can quoted sections be adjacent without whitespace?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": []
+      },
+      {
+        "name": "B",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

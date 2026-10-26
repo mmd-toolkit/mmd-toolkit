@@ -160,6 +160,7 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
+  TreemapDiagram: ["%%"],
   RadarDiagram: ["%%"],
   ArchitectureDiagram: ["%%"],
   GitgraphDiagram: ["%%"],
@@ -409,6 +410,52 @@ function checkComments(
         where,
         "value of a comment line",
       )
+    } else if (body === "RailroadDiagram") {
+      // Railroad also has closed, multiline native comments. Its dialect
+      // checker owns their lexical bounds and priority; shared source text
+      // and cut-fragment conditions still hold here.
+      const mark = comment.mark ?? ""
+      const markEnd =
+        mark === "%%"
+          ? diagramCommentMarkEnd(text, comment, scan)
+          : comment.range[0] + mark.length
+      problems.expect(
+        mark === "%%"
+          ? text.charAt(comment.range[0]) === "%" &&
+              text.charAt(markEnd - 1) === "%"
+          : text.startsWith(mark, comment.range[0]),
+        where,
+        "mark is not the authored native comment opener",
+      )
+      problems.expectEqual(
+        comment.value,
+        text.slice(markEnd, comment.range[1]),
+        where,
+        "value of a diagram comment",
+      )
+      if (comment.mark === null)
+        problems.expect(
+          followsRegion(text, comment.range[0], regions) &&
+            !isWhitespaceAt(text, comment.range[0]),
+          where,
+          "an unmarked native comment fragment must follow a common region",
+        )
+      if (["%%", "#", ";"].includes(mark))
+        checkDiagramCommentEnd(
+          text,
+          comment,
+          scan,
+          regions,
+          ignoredSemicolonStarts,
+          endsComment,
+          problems,
+        )
+      else if (regionFollowsOnLine(text, comment.range[1], regions))
+        problems.expect(
+          !isWhitespaceAt(text, comment.range[1] - 1),
+          where,
+          "ends with whitespace before a comment region",
+        )
     } else if (comment.mark === null) {
       problems.expect(
         followsRegion(text, comment.range[0], regions),

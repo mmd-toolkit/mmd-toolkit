@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a non-ASCII suffix make a valid header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 8: unexpected character: ->猫<- at offset: 7, skipped 1 characters. "
+  }
+}

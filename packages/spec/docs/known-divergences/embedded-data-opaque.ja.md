@@ -574,6 +574,58 @@ radar は埋め込み payload として検証しません。
 [fixture: radar/lex-hidden-yaml-global-inside]
 [fixture: radar/detect-retained-three-native]
 
+### Treemap
+
+treemap は Frontmatter 全体と各 global Directive を
+opaque な共有 record に保てるため、木に内容の検証は要りません。
+不正な YAML や共通設定の不正な型により、Mermaid だけが拒否する場合があります。
+比較では拒否の原因のデータだけを除き、独立の設定は残します。
+treemap 固有の acceptance key は除きません。
+描画設定は有効な構文を拒否せず、不正な構文も救済しません。
+残る YAML のような block に native の規則はなく、依然拒否します。
+この差異で frontmatter や ignored な形へ昇格させません。
+[fixture: treemap/div-frontmatter-invalid]
+[fixture: treemap/div-invalid-keeps-config]
+[fixture: treemap/div-init-fontfamily-number]
+[fixture: treemap/div-init-primitive-wrap]
+[fixture: treemap/div-init-invalid-colour-base]
+[fixture: treemap/config-frontmatter-drawing]
+[fixture: treemap/config-init-cannot-rescue]
+[fixture: treemap/detect-retained-body-yaml-no-native]
+
+### Railroad
+
+railroad は semantic acceptance key を追加しません。
+有効な railroad の描画設定は文法の受理を変えません。
+Frontmatter と global init の内容は opaque な source record として保ちます。
+不正な YAML や数の railroad.fontFamily は、
+Mermaid の導出を失敗させることがありますが、
+この仕様は適切な delimiter を持つ図を受理します。
+設定で不正な規則を受理させることはできません。
+[fixture: railroad/ir-div-frontmatter-invalid]
+[fixture: railroad/ir-config-frontmatter-drawing]
+[fixture: railroad/ebnf-config-init-drawing]
+[fixture: railroad/abnf-config-frontmatter-drawing]
+[fixture: railroad/peg-config-init-drawing]
+[fixture: railroad/ir-config-frontmatter-fontfamily-number]
+[fixture: railroad/ebnf-config-init-fontfamily-number]
+[fixture: railroad/abnf-config-frontmatter-fontfamily-number]
+[fixture: railroad/peg-config-init-fontfamily-number]
+[fixture: railroad/ir-config-frontmatter-cannot-rescue]
+[fixture: railroad/ebnf-config-frontmatter-cannot-rescue]
+[fixture: railroad/abnf-config-init-cannot-rescue]
+[fixture: railroad/peg-config-init-cannot-rescue]
+
+第 1 の問いでは、共有の Frontmatter と Directive の record が
+書かれたものをすべて持てるため、ignored-text の追加も情報の損失も要りません。
+それでも残る違いは、railroad の構造でなく埋込みデータの検証です。
+第 2 の問いでは、確定済みの opaque-data の規則を適用し、
+Mermaid の YAML/JSON/設定の導出を仕様に複製しません。
+native の残る YAML は別に RailroadIgnoredText に保ち、設定を適用しません。
+[fixture: railroad/ir-frontmatter-title-only]
+[fixture: railroad/ir-prefix-yaml-no-bare]
+[fixture: railroad/ir-div-frontmatter-invalid]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -702,3 +754,31 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
   文書例の comma の修正で、
   末尾 comma の文法上の対応を追加したものではありません。
+
+- Treemap: pin した
+  [treemap の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  は引用した row・字下げ・class 定義を説明し、
+  この共通の前処理の境界は定めていません。
+  2026-10-25 に公式 repository の issue・PR を
+  `treemap frontmatter` で検索しました。
+  調べた結果に、この差異を maintainer が判断した根拠は見つかりませんでした。
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) は
+  treemap を導入し、2025-06-27 に merge された PR で、
+  この境界を判断したものではありません。
+
+- Railroad:
+  [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
+  PEG の predicate を説明します。
+  native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
+  2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
+  railroad directive、railroad semicolon、railroad comment で検索しました。
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は
+  demo の見出し名の報告
+  （closed、Triage）、
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は
+  ABNF の図種の提案（open、Discussion Needed）です。
+  どちらも、これらの前処理の境界について、
+  保守者が defect と判断した事実ではありません。
+  この差異はその判断でなく既存の共通規則に従います。
+  調べた結果だけで、ほかに関連する issue がないとは断定しません。

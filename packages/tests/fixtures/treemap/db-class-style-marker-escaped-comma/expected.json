@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does §§ before an escaped comma become a comma followed by §§?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "ab",
+        "styles": [
+          "fill:,§§x"
+        ]
+      }
+    ]
+  }
+}

@@ -5,7 +5,7 @@
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
 mindmap、timeline、xychart、quadrant、block、kanban、c4、venn、agentflow、
-usecase、pie、gitgraph・info・packet・architecture・radar。
+usecase、pie、gitgraph・info・packet・architecture・radar・treemap・railroad。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -497,6 +497,64 @@ hidden テキストの置き場所があっても、atom の分割を受理す�
 [fixture: radar/style-controls]
 [fixture: radar/tail-option-semicolon]
 
+### Treemap
+
+treemap は string・text のソース範囲に ignored semicolon を保ちますが、
+原子である classDef・共通 keyword、class 名、selector、数、`:::` の
+内部には許しません。
+除去の pipeline を写さずに、その分断した綴りを一つの書かれた原子に
+戻せる ignored text の欄はありません。
+共通の line rule がその semicolon を選ぶ場合、Mermaid は前後を接合します。
+印付き fixture の書かれた text を保ち、ここでは拒否します。
+必須の hash より前の semicolon は選ばれず、両方で拒否します。
+class style は一つの literal のままで、
+text 内の ignored semicolon に新たな拒否を加えません。
+[fixture: treemap/div-semicolon-selector-atom]
+[fixture: treemap/div-semicolon-number-atom]
+[fixture: treemap/div-semicolon-style-marker]
+[fixture: treemap/div-semicolon-class-keyword-style-trigger]
+[fixture: treemap/div-semicolon-class-name-style-trigger]
+[fixture: treemap/div-semicolon-title-keyword]
+[fixture: treemap/div-semicolon-class-keyword-classdef-trigger]
+[fixture: treemap/lex-class-name-unselected-semicolon]
+[fixture: treemap/style-fields]
+
+### Railroad
+
+railroad の 4 方言では、共通の style/classDef の行規則が選ぶセミコロンは、
+見出し、名前、IR constructor、metadata keyword、十進 count、
+複合の代入記号の内部で境界になります。
+ABNF numeric value の text を含む quoted/text の値は分断しません。
+repeat の bound と star の間や、完成した repeat と primary の間でも、
+選ばれたセミコロンは部品を分断せず、受理を変えません。
+これらは共通の trivia であり、ABNF の native semicolon comment と
+visible な規則の終端記号とは別です。
+[fixture: railroad/ir-div-semicolon-rule-name]
+[fixture: railroad/ir-div-semicolon-constructor-keyword]
+[fixture: railroad/ir-div-semicolon-title-keyword]
+[fixture: railroad/abnf-div-semicolon-repeat-number]
+[fixture: railroad/peg-div-semicolon-assignment]
+[fixture: railroad/abnf-semicolon-numval-text]
+[fixture: railroad/abnf-comment-terminator-space]
+[fixture: railroad/abnf-comment-terminator-control]
+[fixture: railroad/abnf-semicolon-repeat-before-star]
+[fixture: railroad/abnf-semicolon-repeat-after-star]
+[fixture: railroad/abnf-semicolon-repeat-before-primary]
+
+第 1 の問いでは、可能な限り hidden form を名前つき gap、
+text の値を書かれた葉に保ちます。
+除かれる句読点自体は共通の trivia に残せますが、
+ignored-text の子では、名前・keyword・count・delimiter の 2 断片を
+1 個の書かれた atom にはできません。
+第 2 の問いの答えは理由 2 で、
+Mermaid の前処理順の代わりに直接の境界規則を使います。
+その規則で異なる読みになる入力だけを既存の識別子で記録します。
+[fixture: railroad/ir-native-ownership]
+[fixture: railroad/ebnf-native-ownership]
+[fixture: railroad/abnf-native-ownership]
+[fixture: railroad/peg-native-ownership]
+[fixture: railroad/abnf-div-semicolon-repeat-number]
+
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
@@ -623,3 +681,31 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
   文書例の comma の修正で、
   末尾 comma の文法上の対応を追加したものではありません。
+
+- Treemap: pin した
+  [treemap の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  は引用した row・字下げ・class 定義を説明し、
+  この共通の前処理の境界は定めていません。
+  2026-10-25 に公式 repository の issue・PR を
+  `treemap semicolon` で検索しました。
+  調べた結果に、この差異を maintainer が判断した根拠は見つかりませんでした。
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) は
+  treemap を導入し、2025-06-27 に merge された PR で、
+  この境界を判断したものではありません。
+
+- Railroad:
+  [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
+  PEG の predicate を説明します。
+  native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
+  2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
+  railroad directive、railroad semicolon、railroad comment で検索しました。
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は
+  demo の見出し名の報告
+  （closed、Triage）、
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は
+  ABNF の図種の提案（open、Discussion Needed）です。
+  どちらも、これらの前処理の境界について、
+  保守者が defect と判断した事実ではありません。
+  この差異はその判断でなく既存の共通規則に従います。
+  調べた結果だけで、ほかに関連する issue がないとは断定しません。

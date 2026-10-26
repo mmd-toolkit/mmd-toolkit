@@ -1,0 +1,268 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: treemap-no-duplicate-description >> invalid >>> docs/rules/treemap-no-duplicate-description.md incorrect 1
+Filename: treemap-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | treemap
+  2 |   accDescr: First
+  3 |   accDescr: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   "Revenue": 10
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/block-closed-by-next-correct
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/block-closed-by-next-correct-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr { Sales }
+  3 | "Revenue":10
+  4 | accDescr { Costs }
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-adjacent-mixed
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-adjacent-mixed-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr { First }accDescr: Second
+    |                   ^~~~~~~~~~~~~~~~ [1]
+  3 | "A":1
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-blank-next
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-blank-next-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 |
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-comment-next
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-comment-next-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %% later
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-directive
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-directive-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr: Sec%%{init: {}}%%ond
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-empty-comment-middle
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-empty-comment-middle-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %% TODO
+    | ~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 | accDescr: Second
+  7 | "A":10
+  8 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-empty-directive-next
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-empty-directive-next-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %%{init: {}}%%
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-empty-line
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-empty-line-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-empty-line-resets
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-empty-line-resets-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr:   
+    | ^~~~~~~~~~~~ [1]
+  4 | accDescr: Second
+  5 | "A":1
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-entity-written
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-entity-written-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: #35;
+  3 | accDescr: #
+    | ^~~~~~~~~~~ [1]
+  4 | "A":1
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-html-written
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-html-written-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: <b x="a">Text</b>
+  3 | accDescr: <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | "A":1
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-mixed
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-mixed-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-three
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-three-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | accDescr: First
+    | ^~~~~~~~~~~~~~~ [2]
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-three-last-same
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-three-last-same-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr { Second }
+    | ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | accDescr: Second
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/description-two
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/description-two-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: treemap-no-duplicate-description >> invalid >>> invalid/treemap/docs-incorrect-1
+Filename: tests/fixtures/rules/treemap-no-duplicate-description/invalid/treemap/docs-incorrect-1-input.mmd
+
+Code:
+  1 | treemap
+  2 |   accDescr: First
+  3 |   accDescr: Second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   "Revenue": 10
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---

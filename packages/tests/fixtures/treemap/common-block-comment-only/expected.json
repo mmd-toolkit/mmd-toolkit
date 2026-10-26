@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treemap.md TreemapAccDescrBlockStatement: A comment-region-only interior gives null without losing the closed statement."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  }
+}

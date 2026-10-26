@@ -1,0 +1,180 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: treemap-no-empty-description-block >> invalid >>> docs/rules/treemap-no-empty-description-block.md incorrect 1
+Filename: treemap-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | treemap
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   "Revenue": 10
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/block-adjacent-statement
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/block-adjacent-statement-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr {}accDescr: Text
+    | ^~~~~~~~~~~ [1]
+  3 | "A":1
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/block-comment-before-brace
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/block-comment-before-brace-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr
+    | ^~~~~~~~\ [1]
+  3 | %% before
+    | ~~~~~~~~~\ [1]
+  4 | {}
+    | ~~ [1]
+  5 | "A":1
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/description-empty-middle
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/description-empty-middle-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr: Second
+  5 | "A":10
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/docs-incorrect-1
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/docs-incorrect-1-input.mmd
+
+Code:
+  1 | treemap
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   "Revenue": 10
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/empty-block-after
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/empty-block-after-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/empty-block-comment-before
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/empty-block-comment-before-input.mmd
+
+Code:
+  1 | treemap
+  2 | %% TODO
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/empty-block-directive
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/empty-block-directive-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr {%%{init: {"theme":"forest"}}%%}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | "A":10
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/empty-block
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/empty-block-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | "A":10
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/empty-block-outside-comment
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/empty-block-outside-comment-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr {} %% TODO
+    | ^~~~~~~~~~~ [1]
+  3 | "A":10
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/number-empty-block
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/number-empty-block-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | "Revenue":1_000
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/parents-interleaved
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/parents-interleaved-input.mmd
+
+Code:
+  1 | treemap
+  2 | "Budget"
+  3 |   "Sales":10
+  4 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  5 | classDef warm fill:red;
+  6 |     "Costs":20
+  7 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---

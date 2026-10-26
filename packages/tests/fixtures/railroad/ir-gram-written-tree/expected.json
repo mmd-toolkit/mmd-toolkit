@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md and ast/railroad.md: Authored IR example preserves all eight calls, every common form, an empty block and an empty quoted value."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "Rules",
+    "accDescr": "Details",
+    "rules": [
+      {
+        "name": "item",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "a\n"
+            },
+            {
+              "type": "nonterminal",
+              "name": "item"
+            },
+            {
+              "type": "choice",
+              "alternatives": [
+                {
+                  "type": "special",
+                  "text": "note"
+                },
+                {
+                  "type": "optional",
+                  "element": {
+                    "type": "terminal",
+                    "value": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "b"
+              },
+              "min": 0,
+              "max": "Infinity"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "c"
+              },
+              "min": 1,
+              "max": "Infinity"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

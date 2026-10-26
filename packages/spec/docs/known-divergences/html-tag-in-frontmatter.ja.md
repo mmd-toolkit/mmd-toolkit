@@ -331,6 +331,73 @@ label と common 値の node は原綴を保ちます。
 [fixture: radar/gram-html-body-only-single]
 [fixture: radar/div-html-frontmatter-value]
 
+### Treemap
+
+treemap は本文の HTML 属性の引用符を frontmatter の後から読みます。
+frontmatter に始まる閉じていない tag の属性の状態を、
+名前・共通の値・class style へ持ち込みません。
+StringLiteral と TreemapLiteral は書かれた引用符を保てます。
+Mermaid に合わせるには、それに加え、前処理の順序に沿って
+frontmatter の HTML の文脈を持ち越す必要があります。
+共有の直接の規則は、代わりに本文を frontmatter の後から読み始め、
+ignored text のノードで閉じ quote を移動しません。
+[fixture: treemap/div-html-tag-starts-in-frontmatter]
+[fixture: treemap/div-html-frontmatter-reverse]
+[fixture: treemap/div-html-frontmatter-title-value]
+[fixture: treemap/div-html-frontmatter-style-value]
+[fixture: treemap/html-fields]
+
+double quote の交差の例を Mermaid は名前 `b='c'>d` として受理しますが、
+ここでは拒否します。
+single quote の逆方向の例を Mermaid は拒否しますが、
+ここでは名前 `x="y">` として受理します。
+共通 title と class 定義の例は両方で受理します。
+Mermaid は title を `x='y'>`、style を `fill:x='y'>` として読みますが、
+この仕様は本文だけの引用符の読みに合わせ、
+`x="y">` と `fill:x="y">` を保ちます。
+受理と値の差異をこの識別子で表し、比較を specified.json に記録します。
+ノードは書かれた綴りを保ちます。
+[fixture: treemap/div-html-tag-starts-in-frontmatter]
+[fixture: treemap/div-html-frontmatter-reverse]
+[fixture: treemap/div-html-frontmatter-title-value]
+[fixture: treemap/div-html-frontmatter-style-value]
+
+### Railroad
+
+railroad の 4 方言とも、
+body の HTML の引用符の読取りを frontmatter の後で始めます。
+比較は受理の両方向と、両受理で値が違う場合を含みます。
+rule-accept の fixture は Mermaid が受理して仕様が拒否し、
+rule-reject は Mermaid が拒否して仕様が受理し、
+acctitle は両方が受理して値が異なります。
+Mermaid が拒否する向きも含め、各 fixture に specified の記録があります。
+[fixture: railroad/ir-div-html-frontmatter-rule-accept]
+[fixture: railroad/ir-div-html-frontmatter-rule-reject]
+[fixture: railroad/ir-div-html-frontmatter-acctitle]
+[fixture: railroad/ebnf-div-html-frontmatter-rule-accept]
+[fixture: railroad/ebnf-div-html-frontmatter-rule-reject]
+[fixture: railroad/ebnf-div-html-frontmatter-acctitle]
+[fixture: railroad/abnf-div-html-frontmatter-rule-accept]
+[fixture: railroad/abnf-div-html-frontmatter-rule-reject]
+[fixture: railroad/abnf-div-html-frontmatter-acctitle]
+[fixture: railroad/peg-div-html-frontmatter-rule-accept]
+[fixture: railroad/peg-div-html-frontmatter-rule-reject]
+[fixture: railroad/peg-div-html-frontmatter-acctitle]
+
+第 1 の問いでは、Frontmatter、StringLiteral、RailroadLiteral に
+引用符の綴りも含めて書かれた source を保ち、
+native hidden form も RailroadIgnoredText の owner に保ちます。
+しかし、値の欄に、
+Mermaid の frontmatter を跨ぐ引用符の文脈を保つことはできません。
+ignored-text の兄弟ノードで文字列の閉じる位置を変えることはできないためです。
+第 2 の問いの答えは理由 2、共通の直接規則です。
+body の内部だけの HTML に見える text には通常の共通引用符規則を適用し、
+tag があるだけでは印を付けません。
+[fixture: railroad/ir-html-body-control]
+[fixture: railroad/ebnf-html-body-control]
+[fixture: railroad/abnf-html-body-control]
+[fixture: railroad/peg-html-body-control]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -439,3 +506,31 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
   文書例の comma の修正で、
   末尾 comma の文法上の対応を追加したものではありません。
+
+- Treemap: pin した
+  [treemap の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  は引用した row・字下げ・class 定義を説明し、
+  この共通の前処理の境界は定めていません。
+  2026-10-25 に公式 repository の issue・PR を
+  `treemap quotes` で検索しました。
+  調べた結果に、この差異を maintainer が判断した根拠は見つかりませんでした。
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) は
+  treemap を導入し、2025-06-27 に merge された PR で、
+  この境界を判断したものではありません。
+
+- Railroad:
+  [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
+  PEG の predicate を説明します。
+  native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
+  2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
+  railroad directive、railroad semicolon、railroad comment で検索しました。
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は
+  demo の見出し名の報告
+  （closed、Triage）、
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は
+  ABNF の図種の提案（open、Discussion Needed）です。
+  どちらも、これらの前処理の境界について、
+  保守者が defect と判断した事実ではありません。
+  この差異はその判断でなく既存の共通規則に従います。
+  調べた結果だけで、ほかに関連する issue がないとは断定しません。

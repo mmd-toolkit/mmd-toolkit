@@ -1,4 +1,4 @@
-import type { Token } from "@mmd-toolkit/parser"
+import type { Range, Token } from "@mmd-toolkit/parser"
 import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
 import { isDroppedSemicolon } from "./kept-lines.ts"
@@ -184,8 +184,15 @@ export function readGap(
   endsText = false,
   keepsInlineDirectivesWithPrevious = false,
   dropsSeparatorsBeforeComments = false,
+  relocatedWhitespace: readonly Range[] = [],
 ): Gap {
-  const lines = scanLines(source, start, end, keepsSeparators)
+  const lines = scanLines(
+    source,
+    start,
+    end,
+    keepsSeparators,
+    relocatedWhitespace,
+  )
   if (lines.length === 1) {
     return readSingleLine(
       source,
@@ -446,6 +453,7 @@ function scanLines(
   start: number,
   end: number,
   keepsSeparators: boolean,
+  relocatedWhitespace: readonly Range[],
 ): ScannedLine[] {
   const lines: ScannedLine[] = [newLine()]
   let current = lines[0]
@@ -469,6 +477,7 @@ function scanLines(
   }
 
   while (offset < end) {
+    const position = offset
     const { element, end: elementEnd } = readGapElement(source, offset)
     switch (element.kind) {
       case "item":
@@ -498,7 +507,15 @@ function scanLines(
         break
       case "whitespace":
         if (element.breaksLine) breakLine(false)
-        else spacePending = true
+        // A meaningful indentation run can have moved to the next row's
+        // printed column. Keep trivia here without printing that run twice
+        // (docs/treemap.md, Carried indentation and Comments).
+        else if (
+          !relocatedWhitespace.some(
+            ([from, to]) => from <= position && position < to,
+          )
+        )
+          spacePending = true
         break
       default:
         // Text that belongs to a node.

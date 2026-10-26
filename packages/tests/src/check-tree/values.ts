@@ -111,6 +111,31 @@ const IGNORED_TEXT =
  * Meaning column of those tables on which of them are the written text.
  */
 export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
+  RailroadLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Written metadata text (ast/railroad.md, RailroadLiteral).",
+  },
+  RailroadIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty authored form including fences (ast/railroad.md).",
+  },
+  RailroadSpecialSequence: {
+    field: "value",
+    kind: "derived",
+    spec: "Authored interior without the two question marks (ast/railroad.md).",
+  },
+  RailroadNumericValue: {
+    field: "value",
+    kind: "written-text",
+    spec: "The complete authored percent-value text (ast/railroad.md).",
+  },
+  TreemapLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text (ast/treemap.md, TreemapLiteral).",
+  },
   RadarLiteral: {
     field: "value",
     kind: "written-text",
@@ -872,11 +897,17 @@ export function checkValues(
   }
   for (const node of nodes) {
     if (node.type !== "NumericLiteral") continue
-    const number = Number(written.of(node.range))
-    // A number that a double cannot hold is `Infinity` or `-Infinity`, and null
-    // in a tree read from JSON, which writes them so; -0 and 0 are equal.
+    const raw = written.of(node.range)
+    const number =
+      root.body.type === "TreemapDiagram"
+        ? Number.parseFloat(raw.replaceAll(",", ""))
+        : Number(raw)
+    // JSON records non-finite doubles, including treemap NaN, as null.
+    // Hand-built trees may retain those numbers; -0 and 0 are equal.
     const isNumber =
-      node.value === null ? !Number.isFinite(number) : node.value === number
+      node.value === null
+        ? !Number.isFinite(number)
+        : Object.is(node.value, number) || node.value === number
     problems.expect(
       isNumber,
       label(node),

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The description terminal stops at the first closing brace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 18: unexpected character: ->}<- at offset: 31, skipped 1 characters. Parse error on line ?, column ?: Expecting token of type '=' but found ``."
+  }
+}

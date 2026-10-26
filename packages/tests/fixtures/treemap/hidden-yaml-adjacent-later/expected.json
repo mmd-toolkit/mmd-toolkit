@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are adjacent body YAML fences assigned an alternative?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->-<- at offset: 8, skipped 3 characters.\nLexer error on line 3, column 1: unexpected character: ->-<- at offset: 12, skipped 3 characters.\nLexer error on line 5, column 1: unexpected character: ->-<- at offset: 21, skipped 3 characters. Parse error on line 4, column 1: Expecting token of type 'EOF' but found `x`.\nParse error on line 4, column 4: Expecting: one of these possible Token sequences:\n  1. [STRING2]\n  2. [CLASS_DEF]\nbut found: 'y'"
+  }
+}

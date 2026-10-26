@@ -5,9 +5,9 @@ Japanese version:
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
 requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, venn,
-agentflow, usecase, pie, gitgraph, info, packet, architecture, and radar. This
-is one of the [known divergences](../known-divergences.md) of this specification
-from mermaid.js.
+agentflow, usecase, pie, gitgraph, info, packet, architecture, radar, treemap
+and railroad. This is one of the [known divergences](../known-divergences.md) of
+this specification from mermaid.js.
 
 ## The syntax
 
@@ -431,6 +431,56 @@ radar/lex-hidden-yaml-opener-selected-control] [fixture:
 radar/lex-hidden-native-opener-selected] [fixture: radar/style-fields] [fixture:
 radar/style-controls] [fixture: radar/tail-option-semicolon]
 
+### Treemap
+
+Treemap keeps an ignored semicolon in string/text source ranges, but not inside
+an atomic classDef/common keyword, class name, selector, number or `:::`. No
+field holding ignored text could make those divided spellings one authored atom
+without copying the removal pipeline. Mermaid joins them when the common line
+rule selects that semicolon. The marked fixtures retain the written text and
+reject here; a semicolon before the required hash is not selected and rejects in
+both readings. Class style remains one literal, with no new rejection for
+ignored semicolons inside its text. [fixture:
+treemap/div-semicolon-selector-atom] [fixture:
+treemap/div-semicolon-number-atom] [fixture: treemap/div-semicolon-style-marker]
+[fixture: treemap/div-semicolon-class-keyword-style-trigger] [fixture:
+treemap/div-semicolon-class-name-style-trigger] [fixture:
+treemap/div-semicolon-title-keyword] [fixture:
+treemap/div-semicolon-class-keyword-classdef-trigger] [fixture:
+treemap/lex-class-name-unselected-semicolon] [fixture: treemap/style-fields]
+
+### Railroad
+
+In all four railroad dialects, a semicolon selected by the common style/classDef
+line rule is a boundary inside a header, name, IR constructor, metadata keyword,
+decimal count or compound assignment. It does not split quoted/text values,
+including ABNF numeric-value text. Between a repeat bound and star, or between a
+complete repeat and its primary, a selected semicolon likewise does not split
+components or change acceptance. These semicolons are common trivia, distinct
+from ABNF’s native semicolon comments and visible rule terminators. [fixture:
+railroad/ir-div-semicolon-rule-name] [fixture:
+railroad/ir-div-semicolon-constructor-keyword] [fixture:
+railroad/ir-div-semicolon-title-keyword] [fixture:
+railroad/abnf-div-semicolon-repeat-number] [fixture:
+railroad/peg-div-semicolon-assignment] [fixture:
+railroad/abnf-semicolon-numval-text] [fixture:
+railroad/abnf-comment-terminator-space] [fixture:
+railroad/abnf-comment-terminator-control] [fixture:
+railroad/abnf-semicolon-repeat-before-star] [fixture:
+railroad/abnf-semicolon-repeat-after-star] [fixture:
+railroad/abnf-semicolon-repeat-before-primary]
+
+The first answer is to retain hidden forms in their named gaps and text values
+as authored leaves wherever possible. A removed punctuation mark can remain
+common trivia, but an ignored-text child cannot make the two
+name/keyword/count/delimiter fragments one authored atom. The second answer is
+reason 2: the direct boundary rule applies instead of Mermaid’s preprocessing
+order. The existing identifier records only inputs read differently by that
+rule. [fixture: railroad/ir-native-ownership] [fixture:
+railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
+[fixture: railroad/peg-native-ownership] [fixture:
+railroad/abnf-div-semicolon-repeat-number]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -541,3 +591,27 @@ warning. These facts do not justify any additional divergence.
   documentation report marked Status: Approved.
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
   documentation examples; it does not add grammar support for a trailing comma.
+
+- Treemap: the pinned
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  describes quoted rows, indentation and class definitions, without defining
+  this common preprocessing boundary. Searches of the official repository's
+  issues and pull requests on 2026-10-25 used `treemap semicolon`; no inspected
+  result establishes a maintainer ruling on this divergence.
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) introduced treemap
+  and was merged on 2025-06-27; it is not a ruling on this boundary.
+
+- Railroad: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  describes the four notations, EBNF exception, ABNF semicolon comments and PEG
+  predicates. It does not define native retained YAML or HTML quote context
+  across frontmatter. Searches of the official repository’s issues and pull
+  requests on 2026-10-26 used railroad frontmatter, railroad directive, railroad
+  semicolon and railroad comment.
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) concerns demo
+  header names (closed, Triage);
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) is an ABNF diagram
+  proposal (open, Discussion Needed). Neither establishes a maintainer defect
+  decision for these preprocessing boundaries. This divergence follows the
+  existing shared rule, not such a decision. The inspected results do not
+  establish that no other relevant issue exists.

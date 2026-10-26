@@ -337,6 +337,38 @@ radar/c4-component-header-lf] [fixture: radar/c4-component-header-eof] [fixture:
 radar/c4-dynamic-header-lf] [fixture: radar/c4-dynamic-header-eof] [fixture:
 radar/c4-deployment-header-lf] [fixture: radar/c4-deployment-header-eof]
 
+### Treemap
+
+A treemap header selects treemap even when a later quoted name or common value
+contains C4Container, C4Component, C4Dynamic or C4Deployment. StringLiteral and
+TreemapLiteral can hold that text as written, so no ignored node or rejection is
+needed. The remaining difference is the direct header rule instead of C4's
+earlier anywhere match. A leading/native header comment ending in LF is a
+nondiffering control; without its terminator the C4 scan may instead select C4.
+Keep the existing accepted specified readings and distinguish those controls.
+[fixture: treemap/c4-container-section] [fixture: treemap/c4-component-leaf]
+[fixture: treemap/c4-dynamic-title] [fixture: treemap/c4-deployment-block]
+[fixture: treemap/c4-component-header-eof] [fixture:
+treemap/c4-component-header-lf]
+
+### Railroad
+
+The selected railroad header chooses IR, EBNF, ABNF or PEG even if later diagram
+text contains C4Container, C4Component, C4Dynamic or C4Deployment. C4Context
+alone is an ordinary value here too. The marked examples have accepted specified
+railroad results where Mermaid instead selects C4. [fixture:
+railroad/ir-c4-container-terminal] [fixture: railroad/ebnf-c4-component-special]
+[fixture: railroad/abnf-c4-dynamic-string] [fixture:
+railroad/peg-c4-deployment-predicate] For the first question, written rule
+names, strings, metadata and special sequences retain these words naturally; no
+ignored-text node is required. What cannot be represented as that source tree is
+switching the entire diagram to C4 despite its header. The second answer is
+reason 2: use the direct header-selection rule rather than detector registration
+order. The four ids still share one RailroadDiagram node. [fixture:
+railroad/ir-c4-container-terminal] [fixture: railroad/ebnf-c4-component-special]
+[fixture: railroad/abnf-c4-dynamic-string] [fixture:
+railroad/peg-c4-deployment-predicate]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -435,3 +467,27 @@ warning. These facts do not justify any additional divergence.
   documentation report marked Status: Approved.
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
   documentation examples; it does not add grammar support for a trailing comma.
+
+- Treemap: the pinned
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  describes quoted rows, indentation and class definitions, without defining
+  this common preprocessing boundary. Searches of the official repository's
+  issues and pull requests on 2026-10-25 used `treemap C4`; no inspected result
+  establishes a maintainer ruling on this divergence.
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) introduced treemap
+  and was merged on 2025-06-27; it is not a ruling on this boundary.
+
+- Railroad: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  describes the four notations, EBNF exception, ABNF semicolon comments and PEG
+  predicates. It does not define native retained YAML or HTML quote context
+  across frontmatter. Searches of the official repository’s issues and pull
+  requests on 2026-10-26 used railroad frontmatter, railroad directive, railroad
+  semicolon and railroad comment.
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) concerns demo
+  header names (closed, Triage);
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) is an ABNF diagram
+  proposal (open, Discussion Needed). Neither establishes a maintainer defect
+  decision for these preprocessing boundaries. This divergence follows the
+  existing shared rule, not such a decision. The inspected results do not
+  establish that no other relevant issue exists.

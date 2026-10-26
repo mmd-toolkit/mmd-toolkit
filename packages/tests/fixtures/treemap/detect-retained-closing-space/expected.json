@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a detection-valid padded closing fence still reject natively?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 1: unexpected character: ->-<- at offset: 0, skipped 3 characters.\nLexer error on line 3, column 1: unexpected character: ->-<- at offset: 9, skipped 3 characters. Parse error on line 2, column 1: Expecting token of type 'TREEMAP_KEYWORD' but found `x`."
+  }
+}

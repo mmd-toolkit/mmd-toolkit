@@ -278,7 +278,7 @@ agentflow では、字句解析器がコメント行を自分で読むので、
 検出は、ヘッダーの前の先頭以外のフロントマター形のブロックを、
 1 つ通過させる場合があります。
 ブロックは図のテキストのままです。
-pie・gitgraph・info・packet・architecture・radar は隠れた YAML
+pie・gitgraph・info・packet・architecture・radar・railroad は隠れた YAML
 の規則を適用します。
 以下で引用する拒否例の範囲は、その fixture の図種です。
 共通のフロントマターやトリビアではありません。
@@ -542,11 +542,12 @@ mermaid.js が本文をどう読むかは、
 上のフロントマターの形を持つブロックを 1 つ通過させ、後のヘッダーを探します。
 図の字句解析器が読むテキストからブロックを除くわけではありません。
 ブロックの前にトリビアがあると、
-pie・gitgraph・info・packet・architecture・radar は残されたテキストに隠れた
+pie・gitgraph・info・packet・architecture・radar・railroad は、
+残されたテキストに隠れた
 YAML の規則
 を適用します。
 一致すれば PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText・
-PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText に持ち、
+PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText・RailroadIgnoredText に持ち、
 YAML のタイトルも設定も適用しません。
 以下の拒否例で、ほかのすべての図種の拒否を主張するものではありません。
 先頭の空白、開始の区切りだけのバイトオーダーマーク、コメント行、
@@ -1041,7 +1042,7 @@ mermaid.js は、
 その点のブロックが [フロントマター](#フロントマター) の形を満たせば、
 検出は、`%%` だけの行を探す前に、ブロックを 1 回通過させます。
 ブロックは、選んだ図が読む図のテキストのままです。
-pie・gitgraph・info・packet・architecture・radar
+pie・gitgraph・info・packet・architecture・radar・railroad
 と拒否する対照例はフロントマターの節に
 あります。
 [fixture: pie/frontmatter-nonleading-comment]
@@ -1108,11 +1109,11 @@ mermaid.js と同じで、その字句解析器はヘッダーの前の `%%{` �
 [fixture: usecase/detect-directive-second-scan-preheader]
 [fixture: venn/detect-directive-second-scan-preheader]
 
-pie・gitgraph・info・packet・architecture・radar は、
+pie・gitgraph・info・packet・architecture・radar・railroad は、
 検出の 2 回目の走査でだけ見つかるディレクティブを
 隠れた DIRECTIVE として読み、textBeforeHeader の
 PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText・
-PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText に持ちます。
+PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText・RailroadIgnoredText に持ちます。
 `%%{`、`%% gap`、`wrap}%%`、`pie` の各行は受理します。
 閉じの直後に `pie` を接着すると、隠れた形の閉じの境界を満たさず、拒否します。
 [fixture: pie/lex-hidden-directive-second-detection-scan]
@@ -1132,7 +1133,8 @@ PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText に持ちます�
 試します。
 条件が最初に成り立った検出器が図種を選びます。
 図の字句解析器は、残したフロントマター形のブロックがあればそれを読み、
-pie・gitgraph・info・packet・architecture・radar は上記の隠れた DIRECTIVE
+pie・gitgraph・info・packet・architecture・radar・railroad は、
+上記の隠れた DIRECTIVE
 も読みます。
 たどり着いた位置からのテキストも読みます。
 検出が通過させた `%%` だけの行と、一緒に通過した空白・改行は、
@@ -1377,7 +1379,8 @@ C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこ
 
 一致する先頭以外の `---` ブロックは、どちらでも検出が通過させ、
 選んだ図が読みます。
-pie・gitgraph・info・packet・architecture・radar は隠れた YAML の規則を適用し、
+pie・gitgraph・info・packet・architecture・radar・railroad は、
+隠れた YAML の規則を適用し、
 一致したブロックを無視するテキストとして持ちます。
 以下で引用するほかの図種の対照例は拒否します。
 [フロントマター](#フロントマター) で述べたとおりです。
@@ -1432,6 +1435,37 @@ RadarDiagram.textBeforeHeader の RadarIgnoredText に保ちます。
 [fixture: radar/detect-secondscan-native-twice]
 [fixture: radar/div-detect-yaml-bare-secondscan-native-ls]
 [fixture: radar/detect-retained-no-bare-control]
+
+treemap に native YAML・DIRECTIVE の規則はありません。
+検出が通す残存 YAML の形の block も拒否します。
+第 2 scan の directive が一行に収まれば native Comment とし、
+後の閉じの行が comment でなければ読めません。
+その Comment 内のソースの directive は共有 Directive のままとし、
+別の ignored-text node は作りません。
+通した裸の行と付随する空白は前述と同じ規則で Comment・trivia とします。
+treemap の可視の字下げは、Mermaid が再び読む gap が
+Unicode だけでなく ASCII の場合も拒否し得ます。
+[fixture: treemap/detect-retained-body-yaml-no-native]
+[fixture: treemap/detect-second-scan-single-line-comment]
+[fixture: treemap/detect-second-scan-multiline-rejected]
+[fixture: treemap/div-bare-retained-ascii-header]
+[fixture: treemap/div-bare-retained-unicode-header]
+
+railroad の 4 id は、残る YAML と真の第二走査 directive を、
+RailroadDiagram.textBeforeHeader の RailroadIgnoredText として保ちます。
+通過した bare line は共有 Comment、伴う空白と改行は trivia で、再び読みません。
+YAML の 1 回の skip は bare line と第二走査より先で、
+残る形は native の closing boundary を満たす必要があります。
+[Railroad の検出](./diagrams/railroad.ja.md#検出)が停止する場合を、
+[木](./ast/railroad.ja.md#gap-の所有)が所有を定めます。
+[fixture: railroad/ir-yaml-before-secondscan-real]
+[fixture: railroad/ebnf-yaml-before-secondscan-real]
+[fixture: railroad/abnf-yaml-before-secondscan-real]
+[fixture: railroad/peg-yaml-before-secondscan-real]
+[fixture: railroad/ir-secondscan-before-yaml-real]
+[fixture: railroad/ir-secondscan-glued]
+[fixture: railroad/ir-retained-bare-secondscan-unicode]
+[fixture: railroad/ir-yaml-unicode-no-bare]
 
 ## `style` 行と `classDef` 行
 

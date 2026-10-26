@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does an ignored semicolon inside a number violate the atomic number?"
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "style:#x",
+        "value": 12
+      }
+    ],
+    "classDefs": []
+  }
+}

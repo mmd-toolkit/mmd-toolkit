@@ -296,6 +296,64 @@ radar/div-html-frontmatter-cross] [fixture: radar/div-html-frontmatter-reverse]
 [fixture: radar/gram-html-body-only-double] [fixture:
 radar/gram-html-body-only-single] [fixture: radar/div-html-frontmatter-value]
 
+### Treemap
+
+Treemap starts body HTML-attribute quote reading after frontmatter. An open tag
+in frontmatter does not carry its attribute state into a name, common value or
+class style. StringLiteral and TreemapLiteral can preserve the authored quotes;
+matching Mermaid would additionally require carrying frontmatter HTML context
+through the preprocessing order. The shared direct rule starts body reading
+after frontmatter instead, without using an ignored-text node to move a closing
+quote. [fixture: treemap/div-html-tag-starts-in-frontmatter] [fixture:
+treemap/div-html-frontmatter-reverse] [fixture:
+treemap/div-html-frontmatter-title-value] [fixture:
+treemap/div-html-frontmatter-style-value] [fixture: treemap/html-fields]
+
+The double-quoted crossing example is accepted by Mermaid with name `b='c'>d`
+but rejected here. The single-quoted reverse example is rejected by Mermaid but
+accepted here with name `x="y">`. Both readings accept the common title and
+class definition examples: Mermaid reads title `x='y'>` and style `fill:x='y'>`,
+whereas this specification keeps `x="y">` and `fill:x="y">`, matching body-only
+quote reading. These acceptance and value differences use this identifier, with
+their comparisons recorded in specified.json; the nodes keep the authored
+spelling. [fixture: treemap/div-html-tag-starts-in-frontmatter] [fixture:
+treemap/div-html-frontmatter-reverse] [fixture:
+treemap/div-html-frontmatter-title-value] [fixture:
+treemap/div-html-frontmatter-style-value]
+
+### Railroad
+
+All four railroad dialects start the body’s HTML quote reading after
+frontmatter. The comparisons cover both acceptance directions and both-accepted
+value differences: the rule-accept fixtures are
+Mermaid-accepted/specification-rejected, rule-reject fixtures are
+Mermaid-rejected/specification-accepted, and acctitle fixtures are accepted by
+both with different values. Each has a specified result, including the
+Mermaid-rejected direction. [fixture:
+railroad/ir-div-html-frontmatter-rule-accept] [fixture:
+railroad/ir-div-html-frontmatter-rule-reject] [fixture:
+railroad/ir-div-html-frontmatter-acctitle] [fixture:
+railroad/ebnf-div-html-frontmatter-rule-accept] [fixture:
+railroad/ebnf-div-html-frontmatter-rule-reject] [fixture:
+railroad/ebnf-div-html-frontmatter-acctitle] [fixture:
+railroad/abnf-div-html-frontmatter-rule-accept] [fixture:
+railroad/abnf-div-html-frontmatter-rule-reject] [fixture:
+railroad/abnf-div-html-frontmatter-acctitle] [fixture:
+railroad/peg-div-html-frontmatter-rule-accept] [fixture:
+railroad/peg-div-html-frontmatter-rule-reject] [fixture:
+railroad/peg-div-html-frontmatter-acctitle]
+
+For the first question, Frontmatter, StringLiteral and RailroadLiteral retain
+their authored source, including quote spelling; native hidden forms also have
+RailroadIgnoredText owners. That does not preserve Mermaid’s cross-frontmatter
+quote context in a value field: an ignored-text sibling cannot change where a
+string closes. The second answer is reason 2, the common direct rule.
+HTML-looking text entirely within the body follows the ordinary shared quote
+rule and needs no mark merely for containing a tag. [fixture:
+railroad/ir-html-body-control] [fixture: railroad/ebnf-html-body-control]
+[fixture: railroad/abnf-html-body-control] [fixture:
+railroad/peg-html-body-control]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -387,3 +445,27 @@ warning. These facts do not justify any additional divergence.
   documentation report marked Status: Approved.
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
   documentation examples; it does not add grammar support for a trailing comma.
+
+- Treemap: the pinned
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  describes quoted rows, indentation and class definitions, without defining
+  this common preprocessing boundary. Searches of the official repository's
+  issues and pull requests on 2026-10-25 used `treemap quotes`; no inspected
+  result establishes a maintainer ruling on this divergence.
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) introduced treemap
+  and was merged on 2025-06-27; it is not a ruling on this boundary.
+
+- Railroad: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  describes the four notations, EBNF exception, ABNF semicolon comments and PEG
+  predicates. It does not define native retained YAML or HTML quote context
+  across frontmatter. Searches of the official repository’s issues and pull
+  requests on 2026-10-26 used railroad frontmatter, railroad directive, railroad
+  semicolon and railroad comment.
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) concerns demo
+  header names (closed, Triage);
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) is an ABNF diagram
+  proposal (open, Discussion Needed). Neither establishes a maintainer defect
+  decision for these preprocessing boundaries. This divergence follows the
+  existing shared rule, not such a decision. The inspected results do not
+  establish that no other relevant issue exists.

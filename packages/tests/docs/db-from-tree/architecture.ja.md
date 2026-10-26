@@ -42,6 +42,7 @@
    [fixture: architecture/common-empty-block-after-value]
    [fixture: architecture/common-block-whitespace]
    [fixture: architecture/html-all-fields]
+   [fixture: architecture/config-security-level-other]
 3. **宣言。**
    ID と明示的な `in` は、変換後の Identifier の range から読む。
    `in` が null なら省く。
@@ -88,6 +89,7 @@
    [fixture: architecture/db-edge-title-quote-only]
    [fixture: architecture/db-title-bare-escaped-double-quote]
    [fixture: architecture/db-title-bare-escaped-single-quote]
+   [fixture: architecture/config-security-level-other]
 5. **辺。**
    lhsId/rhsId は変換後の参照、lhsDir/rhsDir は arrow の方向から読む。
    lhsInto/rhsInto は marker が arrow かどうかで決める。

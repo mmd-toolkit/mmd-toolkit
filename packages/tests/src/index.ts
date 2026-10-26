@@ -78,6 +78,8 @@ export type DiagramType =
   | "packet"
   | "architecture"
   | "radar"
+  | "treemap"
+  | "railroad"
 
 /**
  * Where a fixture input came from.

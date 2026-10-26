@@ -1,0 +1,161 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: radar-no-empty-description-block >> invalid >>> docs/rules/radar-no-empty-description-block.md incorrect 1
+Filename: radar-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | radar-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   axis A, B, C
+  4 |   curve sales{1, 2, 3}
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/block-comment-after
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/block-comment-after-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr {} %% TODO
+    | ^~~~~~~~~~~ [1]
+  3 | axis A, B, C
+  4 | curve sales{1,2,3}
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/block-comment-before
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/block-comment-before-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | %% before
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/block-directive
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/block-directive-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  3 | %%{init: {"theme":"dark"}}%%
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  4 | }
+    | ~ [1]
+  5 | axis A, B, C
+  6 | curve sales{1,2,3}
+  7 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/block-hidden-suffix
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/block-hidden-suffix-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr {} %%{}%%
+    | ^~~~~~~~~~~~~~~~~~ [1]
+  3 |
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/description-empty-middle
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/description-empty-middle-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr: Third
+  5 | axis A, B, C
+  6 | curve sales{1,2,3}
+  7 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/description-only-directive-after
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/description-only-directive-after-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 | }
+    | ~ [1]
+  6 | axis A, B, C
+  7 | curve sales{1,2,3}
+  8 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/docs-incorrect-1
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/docs-incorrect-1-input.mmd
+
+Code:
+  1 | radar-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   axis A, B, C
+  4 |   curve sales{1, 2, 3}
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/empty-block-after
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/empty-block-after-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | axis A, B, C
+  5 | curve sales{1,2,3}
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: radar-no-empty-description-block >> invalid >>> invalid/radar/empty-block
+Filename: tests/fixtures/rules/radar-no-empty-description-block/invalid/radar/empty-block-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | axis A, B, C
+  4 | curve sales{1,2,3}
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---

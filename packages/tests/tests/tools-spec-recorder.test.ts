@@ -120,6 +120,113 @@ function textsOf(recording: SpecFileRecording): string[] {
 const FLOW_PARSER_IMPORT = `import flowParser from "./flowParser.ts"\n`
 
 describe("recordSpecFile: what is recorded", () => {
+  it("records all four railroad adapters asynchronously", async () => {
+    const recording = await recordSource(
+      [
+        'import { it, expect } from "vitest";',
+        'import { parser as ir } from "./railroadParser.js";',
+        'import { parser as ebnf } from "./ebnfParser.js";',
+        'import { parser as abnf } from "./abnfParser.js";',
+        'import { parser as peg } from "./pegParser.js";',
+        'import { db } from "../railroadDb.js";',
+        'it("dialects", async () => {',
+        'await expect(ir.parse("railroad-beta")).resolves.not.toThrow();',
+        'await ebnf.parse("railroad-ebnf-beta");',
+        'await abnf.parse("railroad-abnf-beta");',
+        'await peg.parse("railroad-peg-beta");',
+        'expect(db.getRules()[0].definition.type).toBe("terminal");',
+        "});",
+      ].join("\n"),
+      "diagrams/railroad/parser/example.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs).toEqual([
+      { text: "railroad-beta", line: 8, test: "dialects" },
+      { text: "railroad-ebnf-beta", line: 9, test: "dialects" },
+      { text: "railroad-abnf-beta", line: 10, test: "dialects" },
+      { text: "railroad-peg-beta", line: 11, test: "dialects" },
+    ])
+  })
+
+  it("records railroad's direct service and public parser-package calls", async () => {
+    const recording = await recordSource(
+      [
+        'import { it, expect } from "vitest";',
+        'import { createRailroadServices } from "../src/language/railroad/module.js";',
+        'import { parse } from "../src/parse.js";',
+        "const parser = createRailroadServices().Railroad.parser.LangiumParser;",
+        'it("service", async () => {',
+        'const result = parser.parse("railroad-beta");',
+        'expect(result.value.rules[0].definition.$type).toBe("RailroadTerminalExpr");',
+        'await expect(parse("railroad", "railroad-beta broken")).rejects.toThrow();',
+        "});",
+      ].join("\n"),
+      "../../parser/tests/railroad.test.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs).toEqual([
+      { text: "railroad-beta", line: 6, test: "service" },
+      { text: "railroad-beta broken", line: 8, test: "service" },
+    ])
+  })
+
+  it("records railroad drawing inputs and restores its empty DOM stand-ins", async () => {
+    const recording = await recordSource(
+      [
+        'import { it, beforeEach, expect } from "vitest";',
+        'import { parser } from "./parser/railroadParser.js";',
+        'import { renderer } from "./railroadRenderer.js";',
+        "beforeEach(() => {",
+        'document.body.innerHTML = "<svg/>";',
+        'Object.defineProperty(SVGElement.prototype, "getBBox", {value: () => ({width: 1}), configurable: true});',
+        "});",
+        'it("draw", () => {',
+        'void parser.parse("railroad-beta");',
+        'renderer.draw("railroad-beta", "id", "version", {});',
+        'const svg = document.getElementById("id");',
+        'if (!svg) throw new Error("missing svg");',
+        'const viewBox = svg.getAttribute("viewBox");',
+        'if (!viewBox) throw new Error("missing viewBox");',
+        'expect(viewBox.split(" ").map(Number)).toHaveLength(4);',
+        'expect([...document.querySelectorAll("path")]).toEqual([]);',
+        "});",
+      ].join("\n"),
+      "diagrams/railroad/railroadRenderer.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs).toEqual([
+      { text: "railroad-beta", line: 9, test: "draw" },
+    ])
+    expect(Object.hasOwn(globalThis, "SVGElement")).toBe(false)
+    expect(Object.hasOwn(globalThis, "document")).toBe(false)
+  })
+
+  it("records treemap's directly constructed parser service", async () => {
+    const checkout = makeCheckout()
+    const file = writeTestFile(
+      checkout,
+      "../../parser/tests/treemap.test.ts",
+      [
+        'import { it, expect } from "vitest";',
+        'import { createTreemapServices } from "../src/language/treemap/module.js";',
+        'import { expectNoErrorsOrAlternatives } from "./test-util.js";',
+        "const parser = createTreemapServices().Treemap.parser.LangiumParser;",
+        "it('service', () => {",
+        'const result = parser.parse("treemap");',
+        "expectNoErrorsOrAlternatives(result);",
+        'expect(result.value.$type).toBe("Treemap");',
+        'parser.parse("treemap\\nclass myNode myClass;");',
+        "});",
+      ].join("\n"),
+    )
+    const recording = await recordFile(checkout, file)
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs).toEqual([
+      { text: "treemap", line: 6, test: "service" },
+      { text: "treemap\nclass myNode myClass;", line: 9, test: "service" },
+    ])
+  })
+
   it("records radar adapter and both parser-package parse signatures", async () => {
     const root = makeRoot()
     const checkout = {

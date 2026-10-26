@@ -1810,3 +1810,225 @@ radar/line-terminators-and-unicode/unicode-values] [test:
 radar/line-terminators-and-unicode/leading-bom-header] [test: radar Markdown:
 hidden-boundary] [test: radar Markdown: final-hidden-padding] [test: radar
 Markdown: rejected]
+
+## Treemap parentage and authored values
+
+The [treemap rules](./treemap.md) preserve the ordered forest derived from the
+original row indents. Spaces and tabs each count once; leaves close sections but
+never become parents, and class/common statements do not participate. Ordinary
+roots use one positive configured step, including at tabWidth zero because
+indentation determines parentage. A class name touching a row keeps that contact
+and uses root baseline zero throughout the diagram. Trailing or whitespace-line
+indentation moves once to the following row. Standalone comments and directives
+start at column one to avoid an extra native indentation unit. Protected
+semicolon row boundaries keep the body as written.
+
+[fixture: treemap/indentation/leaf-closes] [fixture:
+treemap/indentation/common-and-class] [fixture: treemap/indentation/zero]
+[fixture: treemap/indentation/glued-roots] [fixture:
+treemap/carried-indentation/section-space] [fixture:
+treemap/carried-indentation/whitespace-line] [fixture:
+treemap/comments/carried-space] [fixture: treemap/directives/leading] [fixture:
+treemap/semicolons/body-kept]
+
+Keep numeric source spelling, including commas, underscores, dots and precision;
+reprinting the numeric value can change its reading or produce rejected syntax.
+Names keep quotes, empty names, whitespace, backslashes, entities, HTML and
+physical continuation columns. Class styles remain whole authored literals,
+including internal and trailing padding; they are not reformatted as CSS. Retain
+repeated classes, empty assignments, unresolved selectors and source order.
+Common values and description blocks use shared exterior spacing while retaining
+internal text and trivia. Every semicolon stays, and protected segments retain
+their columns without extra indentation inside them.
+
+[fixture: treemap/numbers/underscore] [fixture: treemap/numbers/precision]
+[fixture: treemap/names/quotes] [fixture: treemap/names/physical-columns]
+[fixture: treemap/styles/written] [fixture: treemap/styles/trailing] [fixture:
+treemap/source-order/repetitions] [fixture:
+treemap/accessibility-lines/title-padding] [fixture:
+treemap/description-blocks/continuation] [fixture:
+treemap/semicolons/protected-class-column]
+
+The six existing [specified readings](./treemap.md#specified-readings) reject
+atomic directive/selected-semicolon cuts, isolate frontmatter HTML quote
+effects, leave embedded data opaque, do not reread detection-passed bare-percent
+trivia, and keep treemap selected across later C4 words. Treemap has no native
+hidden YAML/directive nodes and no acceptance setting to remove for opaque
+comparison. Rejected input produces no repaired output. A raw-rejected input has
+no raw Db; the corpus's accepted specified reading supplies the comparison
+instead. The shared host normalizes CR/CRLF, guards real frontmatter YAML and
+can trim the last Markdown code line's padding, including a style tail.
+
+[corpus fixture: treemap/directive-header-middle] [corpus fixture:
+treemap/div-semicolon-number-atom] [corpus fixture:
+treemap/div-html-frontmatter-reverse] [corpus fixture:
+treemap/div-frontmatter-invalid] [corpus fixture:
+treemap/bare-before-header-space] [corpus fixture: treemap/c4-component-section]
+[corpus fixture: treemap/hidden-yaml-body] [fixture:
+treemap/frontmatter-yaml/html-guard] [test:
+treemap/line-terminators-and-unicode/crlf-values] [test: treemap Markdown:
+final-style-padding] [test: treemap Markdown: rejected]
+
+## Railroad dialects and authored values
+
+The [railroad rules](./railroad.md) preserve the selected IR, EBNF, ABNF or PEG
+header, authored assignment delimiters, EBNF optional commas and expression
+structure. Singleton calls and groups remain even where their normalized Dbs are
+equal. Keep every rule, alternative, repeated metadata assignment and empty
+reset in source order. The comparison Db excludes body titles; that does not
+permit dropping their contents. [fixture: railroad/assignment/ebnf-spellings]
+[fixture: railroad/ebnf-sequences/mixed] [fixture: railroad/calls/ir-singletons]
+[fixture: railroad/groups/peg-delimiters] [fixture:
+railroad/source-order/ir-duplicates] [fixture:
+railroad/source-order/ebnf-duplicates] [fixture:
+railroad/source-order/abnf-duplicates] [fixture:
+railroad/source-order/peg-duplicates] [fixture: railroad/title/ir-trim]
+
+Strings keep their complete source spans, including quotes, empty and
+whitespace-only values, escape spelling, HTML, entities and continuation
+columns. singleQuote does not rewrite them. ABNF backslash is ordinary content;
+the other three dialects have backslash escapes. ABNF repeat bounds retain
+leading zeroes, omitted bounds, exact forms and large integers; numeric values
+keep base-letter case, digits, dots and hyphens as raw text. EBNF special
+sequences keep their whole span, including exterior and internal whitespace.
+Converting these spellings or reflowing values can change the Db. PEG predicates
+keep their entire authored operand rather than rebuilding it from a published
+label. [fixture: railroad/quotes/ir-escape] [fixture:
+railroad/quotes/ebnf-escape] [fixture: railroad/quotes/abnf-backslash] [fixture:
+railroad/quotes/peg-escape] [fixture: railroad/quotes/ir-empty-and-text]
+[fixture: railroad/quotes/ebnf-empty-and-text] [fixture:
+railroad/quotes/abnf-empty-and-text] [fixture:
+railroad/quotes/peg-empty-and-text] [fixture: railroad/repeats/abnf-spellings]
+[fixture: railroad/repeats/abnf-zero] [fixture: railroad/repeats/abnf-large]
+[fixture: railroad/numeric-values/abnf-spellings] [fixture:
+railroad/special-sequences/ebnf-content] [fixture:
+railroad/multiline-values/peg-columns] [fixture: railroad/predicates/peg-nested]
+
+Comment forms and contents remain written: all four dialects have `%%`, IR has C
+comments, EBNF has C and ISO comments, ABNF has semicolon line comments and PEG
+has hash line comments. LS/PS remain native line-comment content. A bare ABNF
+`;` is punctuation; its terminator must meet LF or EOF immediately. Every rule's
+required visible `;` stays attached where safe, and every other authored
+semicolon stays under shared segment protection, including crossing values. The
+first line uses one body step, matching other flat diagrams; later lines keep
+their written columns. Railroad lines containing the literal string `style` or
+`classDef` after global directive removal stay as written, including every
+statement, comment, native hidden form and inner gap. They do not join their
+neighbors. A removed directive forming a word across lines keeps all those
+lines. [fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
+railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
+railroad/semicolons/abnf-word-unclosed-directive-lines] [fixture:
+railroad/semicolons/peg-word-unclosed-directive-lines] A line is the complete
+range that mermaid.js reads as one line. When a comment line after U+2028 or
+U+2029 joins text before or after the line containing the word, or on both
+sides, retain every connected source line. Only the first source line receives
+one body indentation step; the contents and later source columns remain written.
+[test: railroad/semicolons/ir-style-comment-before-ls] [test:
+railroad/semicolons/ir-style-comment-after-ls] [test:
+railroad/semicolons/ir-style-comment-both-ls] [test:
+railroad/semicolons/ir-classdef-comment-before-ps] [test:
+railroad/semicolons/ir-classdef-comment-after-ps] [test:
+railroad/semicolons/ir-classdef-comment-both-ps] [test:
+railroad/semicolons/ebnf-style-comment-before-ls] [test:
+railroad/semicolons/ebnf-style-comment-after-ls] [test:
+railroad/semicolons/ebnf-style-comment-both-ls] [test:
+railroad/semicolons/ebnf-classdef-comment-before-ps] [test:
+railroad/semicolons/ebnf-classdef-comment-after-ps] [test:
+railroad/semicolons/ebnf-classdef-comment-both-ps] [test:
+railroad/semicolons/abnf-style-comment-before-ls] [test:
+railroad/semicolons/abnf-style-comment-after-ls] [test:
+railroad/semicolons/abnf-style-comment-both-ls] [test:
+railroad/semicolons/abnf-classdef-comment-before-ps] [test:
+railroad/semicolons/abnf-classdef-comment-after-ps] [test:
+railroad/semicolons/abnf-classdef-comment-both-ps] [test:
+railroad/semicolons/peg-style-comment-before-ls] [test:
+railroad/semicolons/peg-style-comment-after-ls] [test:
+railroad/semicolons/peg-style-comment-both-ls] [test:
+railroad/semicolons/peg-classdef-comment-before-ps] [test:
+railroad/semicolons/peg-classdef-comment-after-ps] [test:
+railroad/semicolons/peg-classdef-comment-both-ps] Shared kept-line layout also
+retains whole crossing statements and indivisible values/trivia. mermaid.js can
+ignore the last semicolon of such a line; in railroad this can remove a required
+terminator or an ABNF comment mark, so formatting could reject a rule or turn
+comment text into code. This source preservation protects both without
+predicting the line rule after movement. The cost is that names, strings and
+comments containing these strings leave their lines unformatted even without a
+colon/hash. Other lines format normally; words found only inside removed
+directives do not protect a line. [fixture: railroad/comments/ir-positions]
+[fixture: railroad/comments/ebnf-positions] [fixture:
+railroad/comments/abnf-positions] [fixture: railroad/comments/peg-positions]
+[fixture: railroad/comments/abnf-before-terminator] [fixture:
+railroad/statements-one-per-line/abnf-terminators] [fixture:
+railroad/semicolons/ir-value-last-line] [fixture:
+railroad/semicolons/ebnf-special-last-line] [fixture:
+railroad/semicolons/abnf-protected] [fixture:
+railroad/semicolons/peg-value-last-line] [fixture:
+railroad/semicolons/ir-style-call-close] [fixture:
+railroad/semicolons/abnf-style-group-newline] [fixture:
+railroad/semicolons/ir-protected-rule-indent] [fixture:
+railroad/semicolons/ir-protected-multiline-indent] [fixture:
+railroad/semicolons/ir-leading-c] [fixture:
+railroad/semicolons/ebnf-leading-iso] [fixture:
+railroad/semicolons/ebnf-leading-c] [fixture:
+railroad/semicolons/abnf-leading-hidden] [fixture:
+railroad/semicolons/peg-leading-hidden] [fixture:
+railroad/semicolons/ir-leading-multiline-c] [fixture:
+railroad/semicolons/ir-header-leading-c] [fixture:
+railroad/semicolons/ir-leading-directive-c] [fixture:
+railroad/semicolons/ir-after-rule] [fixture:
+railroad/semicolons/ebnf-after-description] [fixture:
+railroad/semicolons/abnf-after-description] [fixture:
+railroad/semicolons/peg-after-rule-name] [fixture:
+railroad/semicolons/ir-kept-description-hidden] [fixture:
+railroad/semicolons/ebnf-comment-after-moved-rule] [fixture:
+railroad/semicolons/abnf-removed-directive-word] [fixture:
+railroad/semicolons/peg-directive-split-style] [fixture:
+railroad/semicolons/ebnf-terminator-after-hash] [fixture:
+railroad/semicolons/ir-assignment-after-word] [fixture:
+railroad/semicolons/abnf-comment-marker-spaced] [fixture:
+railroad/semicolons/abnf-comment-marker-multiline] [fixture:
+railroad/semicolons/ir-word-multiple-statements] [fixture:
+railroad/semicolons/abnf-word-multiple-statements] [fixture:
+railroad/semicolons/peg-word-quoted] [fixture:
+railroad/semicolons/ebnf-word-rule-name] [fixture:
+railroad/semicolons/ir-word-comment-line] [fixture:
+railroad/semicolons/ebnf-word-directive-lines] [fixture:
+railroad/semicolons/abnf-word-neighbor-boundaries] [fixture:
+railroad/semicolons/peg-word-middle-line]
+
+Common lines and descriptions use the shared layouts. Hidden YAML and native
+directives remain whole RailroadIgnoredText spans at each AST owner; consumed LF
+and closing padding remain outside their ranges. Only header-owned forms use the
+header-edge exception; body forms retain the shared spare-LF rule, including
+after a statement moved from the header line. Keep the complete retained prefix
+so ignored YAML cannot become effective frontmatter. Safe real frontmatter alone
+uses guarded YAML formatting. Physical CR/CRLF, leading BOM and final Markdown
+payload padding follow the shared host limits. [fixture:
+railroad/description-blocks/ir-edges] [fixture: railroad/hidden-forms/ir-owners]
+[fixture: railroad/hidden-forms/ebnf-owners] [fixture:
+railroad/hidden-forms/abnf-owners] [fixture: railroad/hidden-forms/peg-owners]
+[fixture: railroad/hidden-boundaries/ir-moved-before-hidden] [fixture:
+railroad/hidden-boundaries/ebnf-moved-before-hidden] [fixture:
+railroad/hidden-boundaries/abnf-moved-before-hidden] [fixture:
+railroad/hidden-boundaries/peg-moved-before-hidden] [fixture:
+railroad/retained-prefix/ir-leading] [fixture:
+railroad/frontmatter-yaml/abnf-safe] [test:
+railroad/line-terminators-and-unicode/ir-cr] [test:
+railroad/line-terminators-and-unicode/ebnf-leading-bom] [test: railroad
+Markdown: abnf-final-hidden-padding]
+
+The six existing [specified readings](./railroad.md#specified-readings) reject
+atomic directive/selected-semicolon cuts, isolate frontmatter HTML quote
+handling, leave embedded data opaque, keep detection-passed bare-percent trivia
+and retain railroad across later C4 words. There is no railroad acceptance key
+to remove in opaque comparison. Empty strings remain values and empty calls
+reject; no new divergence is added. Raw rejection supplies no raw Db or invented
+accepted effects. Rejected standalone inputs report syntax errors without
+repaired output; Markdown declines embedding. [corpus fixture:
+railroad/ir-div-directive-header] [corpus fixture:
+railroad/abnf-div-semicolon-repeat-number] [corpus fixture:
+railroad/ebnf-div-html-frontmatter-rule-reject] [corpus fixture:
+railroad/peg-config-init-fontfamily-number] [corpus fixture:
+railroad/ir-bare-nbsp] [corpus fixture: railroad/peg-c4-deployment-predicate]
+[corpus fixture: railroad/ir-error-empty-call] [test: railroad Markdown:
+ir-rejected]

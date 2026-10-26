@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A nonqualifying native directive closer falls back to a percent line comment."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "s",
+        "definition": {
+          "type": "terminal",
+          "value": "visible"
+        }
+      }
+    ]
+  }
+}

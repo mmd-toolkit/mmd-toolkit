@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a native open marker start a comment after TITLE?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  }
+}

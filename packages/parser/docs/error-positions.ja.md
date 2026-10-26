@@ -18,7 +18,9 @@
   [fixture: common/comment-only]
   [fixture: common/whitespace-only]
 - `---` 疑似図種、
-  または pie・gitgraph・info・packet・architecture 以外の対応図種の前で
+  または pie・gitgraph・info・packet・architecture・radar・treemap・railroad
+  以外の
+  対応図種の前で
   保持した非先頭ブロック:
   `range` は、ブロックの先頭の `-` 3 文字。
   [fixture: common/frontmatter-adjacent-delimiters]
@@ -26,7 +28,7 @@
   [fixture: common/frontmatter-nonleading-sequence]
   [fixture: common/frontmatter-nonleading-state]
   [fixture: common/frontmatter-after-bare-percent-flowchart]
-- pie・gitgraph・info・packet・architecture 以外で、
+- pie・gitgraph・info・packet・architecture・radar・treemap・railroad 以外で、
   ヘッダーの前のもう一度の読みで見つかるディレクティブ
   （[図種の検出](../../spec/docs/common.ja.md#図種の検出)）:
   `range` は、その開きの `%%{`。
@@ -1340,3 +1342,50 @@ YAML は範囲のダッシュへ戻り、後の字句・文法エラーになり
 不成立の native directive は Comment になることがあります。
 [fixture: radar/directive-axis-name] [fixture: radar/div-semicolon-number]
 [fixture: radar/hidden-native-unclosed]
+
+## treemap 図の中
+
+[順序付き規則](../../spec/docs/diagrams/treemap.md#ordered-rules)は、
+再帰下降の前にテキスト全体を走査します。
+回復した接頭部だけを受理しません。
+[fixture: treemap/error-after-prefix] [fixture: treemap/error-recovered-row]
+
+| 原因                                            | 範囲とメッセージ                                                                                                              | fixture                                                                                                                                                                                                                                                          |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 完全な字句規則に一致しない                      | ソース文字で `Unexpected character`。閉じない文字列は開き引用符を指す。                                                       | [fixture: treemap/error-start] [fixture: treemap/space-nbsp-body] [fixture: treemap/lex-string-open-double] [fixture: treemap/lex-string-open-single] [fixture: treemap/common-block-open]                                                                       |
+| 文法が構成要素を読めない                        | 有意範囲で `Unexpected token`。インデント単位は先頭の空範囲。EOF はソース終端の空範囲で `Unexpected end of text`。            | [fixture: treemap/header-repeat] [fixture: treemap/gram-space-after-selector] [fixture: treemap/gram-two-indent-runs] [fixture: treemap/gram-selector-empty] [fixture: treemap/gram-header-trailing-indent-eof] [fixture: treemap/gram-leaf-trailing-indent-eof] |
+| 共通 directive や選択セミコロンが原子を分割する | 共通の directive・セミコロン範囲で `Unexpected directive` または `Unexpected semicolon`。複合形式の構成要素は別々に検査する。 | [fixture: treemap/directive-header-middle] [fixture: treemap/directive-class-name] [fixture: treemap/div-directive-style-marker] [fixture: treemap/div-semicolon-number-atom] [fixture: treemap/div-semicolon-title-keyword]                                     |
+
+保持された YAML はネイティブには読めないテキストなので、
+ブロック全体ではなく最初のハイフンを指します。
+保持された一行の二回目走査形式は Comment になり得ますが、
+複数行形式のコメントでない閉じ行は読めません。
+複数ルート、空名、NaN に追加の意味エラーを適用しません。
+[fixture: treemap/detect-retained-body-yaml-no-native]
+[fixture: treemap/detect-second-scan-single-line-comment]
+[fixture: treemap/detect-second-scan-multiline-rejected]
+[fixture: treemap/spec-treemap-test-ts-177d3e59]
+[fixture: treemap/db-empty-names] [fixture: treemap/db-number-nan]
+
+## Railroad 図の中
+
+4 方言は、文法の前にソース全体を走査します。
+回復した接頭部分だけでは受理しません。
+[fixture: railroad/ir-error-before-rule]
+[fixture: railroad/ebnf-error-before-rule]
+[fixture: railroad/abnf-error-before-rule]
+[fixture: railroad/peg-error-before-rule]
+
+| 原因                                                   | 範囲とメッセージ                                                                       | fixtures                                                                                                                                                                                                                    |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 完全な字句規則が一致しない                             | ソースの文字に `Unexpected character`。閉じていない文字列は開き引用符。                | [fixture: railroad/ir-lex-string-open-double] [fixture: railroad/ebnf-lex-string-open-single] [fixture: railroad/abnf-lex-string-open] [fixture: railroad/peg-lex-name-nonascii]                                            |
+| 文法が成分を読めない                                   | 有意範囲に `Unexpected token`。EOF ならソース末尾の空範囲に `Unexpected end of text`。 | [fixture: railroad/ir-error-empty-call] [fixture: railroad/ebnf-comma-trailing] [fixture: railroad/abnf-comment-terminator] [fixture: railroad/peg-prefix-missing-operand] [fixture: railroad/ir-metadata-after-rule-title] |
+| 共通ディレクティブか選択されたセミコロンがアトムを切る | 共通の範囲に `Unexpected directive` か `Unexpected semicolon`。                        | [fixture: railroad/ir-div-directive-header] [fixture: railroad/ebnf-div-directive-assignment] [fixture: railroad/abnf-div-semicolon-repeat-number] [fixture: railroad/peg-div-semicolon-assignment]                         |
+
+native の隠れた形式には意味上の拒否がなく、直後の可視 EOL も不要です。
+一致しない native directive は Comment になる場合があります。
+カウント、参照、描画設定による受理条件は追加しません。
+[fixture: railroad/ir-hidden-directive-closing-space]
+[fixture: railroad/ebnf-native-directive-fallback]
+[fixture: railroad/abnf-db-repeat-reversed]
+[fixture: railroad/peg-config-init-drawing]

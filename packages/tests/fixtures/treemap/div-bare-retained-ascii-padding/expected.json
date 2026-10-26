@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does passed bare-line trivia remove ASCII padding before a retained comment?"
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting token of type 'TREEMAP_KEYWORD' but found ` `.\nParse error on line 3, column 1: Expecting: one of these possible Token sequences:\n  1. [STRING2]\n  2. [CLASS_DEF]\nbut found: 'treemap'"
+  }
+}

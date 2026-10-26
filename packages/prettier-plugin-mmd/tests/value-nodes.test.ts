@@ -28,7 +28,9 @@ import { gitgraphValueNodeTypes } from "../src/printers/gitgraph-layout.ts"
 import { pieValueNodeTypes } from "../src/printers/pie-layout.ts"
 import { infoValueNodeTypes } from "../src/printers/info-layout.ts"
 import { architectureValueNodeTypes } from "../src/printers/architecture-layout.ts"
+import { treemapValueNodeTypes } from "../src/printers/treemap-layout.ts"
 import { radarValueNodeTypes } from "../src/printers/radar-layout.ts"
+import { railroadValueNodeTypes } from "../src/printers/railroad-layout.ts"
 import { packetValueNodeTypes } from "../src/printers/packet-layout.ts"
 import { xychartValueNodeTypes } from "../src/printers/xychart-layout.ts"
 
@@ -53,6 +55,13 @@ interface DiagramValues {
 }
 
 const diagrams: readonly DiagramValues[] = [
+  {
+    prefix: "Railroad",
+    values: railroadValueNodeTypes,
+    // PEG's dot is printed as its structural punctuation token.
+    notValues: new Set(["RailroadAnyExpression"]),
+  },
+  { prefix: "Treemap", values: treemapValueNodeTypes, notValues: new Set() },
   { prefix: "Radar", values: radarValueNodeTypes, notValues: new Set() },
   {
     prefix: "Architecture",

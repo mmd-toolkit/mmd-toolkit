@@ -1,0 +1,640 @@
+{
+  "type": "Root",
+  "diagramType": "treemap",
+  "body": {
+    "type": "TreemapDiagram",
+    "body": [
+      {
+        "type": "TreemapSection",
+        "indent": 0,
+        "name": {
+          "type": "StringLiteral",
+          "value": "Market Share",
+          "raw": "\"Market Share\"",
+          "closed": true,
+          "range": [
+            64,
+            78
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 14
+            }
+          }
+        },
+        "classSelector": null,
+        "range": [
+          64,
+          78
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "TreemapLeaf",
+        "indent": 4,
+        "name": {
+          "type": "StringLiteral",
+          "value": "Company A",
+          "raw": "\"Company A\"",
+          "closed": true,
+          "range": [
+            83,
+            94
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 4
+            },
+            "end": {
+              "line": 8,
+              "column": 15
+            }
+          }
+        },
+        "value": {
+          "type": "NumericLiteral",
+          "value": 0.35,
+          "raw": "0.35",
+          "range": [
+            96,
+            100
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 17
+            },
+            "end": {
+              "line": 8,
+              "column": 21
+            }
+          }
+        },
+        "classSelector": null,
+        "range": [
+          83,
+          100
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 4
+          },
+          "end": {
+            "line": 8,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "TreemapLeaf",
+        "indent": 4,
+        "name": {
+          "type": "StringLiteral",
+          "value": "Company B",
+          "raw": "\"Company B\"",
+          "closed": true,
+          "range": [
+            105,
+            116
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 4
+            },
+            "end": {
+              "line": 9,
+              "column": 15
+            }
+          }
+        },
+        "value": {
+          "type": "NumericLiteral",
+          "value": 0.25,
+          "raw": "0.25",
+          "range": [
+            118,
+            122
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 17
+            },
+            "end": {
+              "line": 9,
+              "column": 21
+            }
+          }
+        },
+        "classSelector": null,
+        "range": [
+          105,
+          122
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 4
+          },
+          "end": {
+            "line": 9,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "TreemapLeaf",
+        "indent": 4,
+        "name": {
+          "type": "StringLiteral",
+          "value": "Company C",
+          "raw": "\"Company C\"",
+          "closed": true,
+          "range": [
+            127,
+            138
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 4
+            },
+            "end": {
+              "line": 10,
+              "column": 15
+            }
+          }
+        },
+        "value": {
+          "type": "NumericLiteral",
+          "value": 0.15,
+          "raw": "0.15",
+          "range": [
+            140,
+            144
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 17
+            },
+            "end": {
+              "line": 10,
+              "column": 21
+            }
+          }
+        },
+        "classSelector": null,
+        "range": [
+          127,
+          144
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 4
+          },
+          "end": {
+            "line": 10,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "TreemapLeaf",
+        "indent": 4,
+        "name": {
+          "type": "StringLiteral",
+          "value": "Others",
+          "raw": "\"Others\"",
+          "closed": true,
+          "range": [
+            149,
+            157
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 4
+            },
+            "end": {
+              "line": 11,
+              "column": 12
+            }
+          }
+        },
+        "value": {
+          "type": "NumericLiteral",
+          "value": 0.25,
+          "raw": "0.25",
+          "range": [
+            159,
+            163
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 14
+            },
+            "end": {
+              "line": 11,
+              "column": 18
+            }
+          }
+        },
+        "classSelector": null,
+        "range": [
+          149,
+          163
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 4
+          },
+          "end": {
+            "line": 11,
+            "column": 18
+          }
+        }
+      }
+    ],
+    "range": [
+      51,
+      163
+    ],
+    "loc": {
+      "start": {
+        "line": 6,
+        "column": 0
+      },
+      "end": {
+        "line": 11,
+        "column": 18
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  treemap:\n    valueFormat: '$.1%'",
+    "valueRange": [
+      4,
+      46
+    ],
+    "range": [
+      0,
+      50
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  treemap:\n    valueFormat: '$.1%'",
+      "range": [
+        4,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        47,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "treemap-beta",
+      "range": [
+        51,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Market Share\"",
+      "range": [
+        64,
+        78
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Company A\"",
+      "range": [
+        83,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        94,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 15
+        },
+        "end": {
+          "line": 8,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.35",
+      "range": [
+        96,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 17
+        },
+        "end": {
+          "line": 8,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Company B\"",
+      "range": [
+        105,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        116,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 15
+        },
+        "end": {
+          "line": 9,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.25",
+      "range": [
+        118,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 17
+        },
+        "end": {
+          "line": 9,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Company C\"",
+      "range": [
+        127,
+        138
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 4
+        },
+        "end": {
+          "line": 10,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        138,
+        139
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.15",
+      "range": [
+        140,
+        144
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 17
+        },
+        "end": {
+          "line": 10,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Others\"",
+      "range": [
+        149,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        157,
+        158
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.25",
+      "range": [
+        159,
+        163
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 14
+        },
+        "end": {
+          "line": 11,
+          "column": 18
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    164
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 12,
+      "column": 0
+    }
+  }
+}

@@ -491,6 +491,52 @@ radar/config-invalid-display-mode] [fixture: radar/retained-yaml-control]
 [fixture: radar/lex-hidden-yaml-global-inside] [fixture:
 radar/detect-retained-three-native]
 
+### Treemap
+
+Treemap can preserve the whole Frontmatter and each global Directive as opaque
+shared records, so no payload validation is needed in the syntax tree. Malformed
+YAML and invalid common configuration types may reject only in Mermaid. The
+comparison removes the offending data and retains independent configuration; no
+treemap-specific acceptance key is removed. Drawing settings cannot reject valid
+syntax or rescue invalid syntax. A retained YAML-looking block has no native
+rule and still rejects; this divergence does not promote it to frontmatter or an
+ignored form. [fixture: treemap/div-frontmatter-invalid] [fixture:
+treemap/div-invalid-keeps-config] [fixture: treemap/div-init-fontfamily-number]
+[fixture: treemap/div-init-primitive-wrap] [fixture:
+treemap/div-init-invalid-colour-base] [fixture:
+treemap/config-frontmatter-drawing] [fixture: treemap/config-init-cannot-rescue]
+[fixture: treemap/detect-retained-body-yaml-no-native]
+
+### Railroad
+
+Railroad adds no semantic acceptance key: valid railroad drawing configuration
+does not change grammar acceptance. Frontmatter and global init contents remain
+opaque source records. Malformed YAML and a numeric railroad.fontFamily may make
+Mermaid’s derivation fail while a well-delimited diagram remains accepted by
+this specification. Configuration still cannot rescue an invalid rule. [fixture:
+railroad/ir-div-frontmatter-invalid] [fixture:
+railroad/ir-config-frontmatter-drawing] [fixture:
+railroad/ebnf-config-init-drawing] [fixture:
+railroad/abnf-config-frontmatter-drawing] [fixture:
+railroad/peg-config-init-drawing] [fixture:
+railroad/ir-config-frontmatter-fontfamily-number] [fixture:
+railroad/ebnf-config-init-fontfamily-number] [fixture:
+railroad/abnf-config-frontmatter-fontfamily-number] [fixture:
+railroad/peg-config-init-fontfamily-number] [fixture:
+railroad/ir-config-frontmatter-cannot-rescue] [fixture:
+railroad/ebnf-config-frontmatter-cannot-rescue] [fixture:
+railroad/abnf-config-init-cannot-rescue] [fixture:
+railroad/peg-config-init-cannot-rescue]
+
+For the first question, the shared Frontmatter and Directive records already
+hold everything written; no ignored-text node or loss is needed. The remaining
+difference is validation of embedded data rather than railroad structure. The
+second answer is the established opaque-data rule: the specification does not
+duplicate Mermaid’s YAML/JSON/configuration derivation. Native retained YAML is
+separately RailroadIgnoredText and does not apply configuration. [fixture:
+railroad/ir-frontmatter-title-only] [fixture: railroad/ir-prefix-yaml-no-bare]
+[fixture: railroad/ir-div-frontmatter-invalid]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -599,3 +645,27 @@ warning. These facts do not justify any additional divergence.
   documentation report marked Status: Approved.
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
   documentation examples; it does not add grammar support for a trailing comma.
+
+- Treemap: the pinned
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  describes quoted rows, indentation and class definitions, without defining
+  this common preprocessing boundary. Searches of the official repository's
+  issues and pull requests on 2026-10-25 used `treemap frontmatter`; no
+  inspected result establishes a maintainer ruling on this divergence.
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) introduced treemap
+  and was merged on 2025-06-27; it is not a ruling on this boundary.
+
+- Railroad: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  describes the four notations, EBNF exception, ABNF semicolon comments and PEG
+  predicates. It does not define native retained YAML or HTML quote context
+  across frontmatter. Searches of the official repository’s issues and pull
+  requests on 2026-10-26 used railroad frontmatter, railroad directive, railroad
+  semicolon and railroad comment.
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) concerns demo
+  header names (closed, Triage);
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) is an ABNF diagram
+  proposal (open, Discussion Needed). Neither establishes a maintainer defect
+  decision for these preprocessing boundaries. This divergence follows the
+  existing shared rule, not such a decision. The inspected results do not
+  establish that no other relevant issue exists.

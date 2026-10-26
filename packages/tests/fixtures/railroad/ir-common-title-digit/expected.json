@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A digit immediately after title is not a title value separator."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->1<- at offset: 19, skipped 1 characters. Parse error on line ?, column ?: Expecting token of type '=' but found ``."
+  }
+}

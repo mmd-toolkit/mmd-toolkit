@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/railroadRenderer.spec.ts",
+    "line": 70,
+    "test": "Railroad Renderer > aligns rule markers with the centerline of tall expressions"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "sign",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "+"
+            },
+            {
+              "type": "terminal",
+              "value": "-"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "String-internal tabs, BOM, NBSP and ideographic spaces are retained."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "\ta﻿b 　"
+            },
+            {
+              "type": "nonterminal",
+              "name": "\ta﻿b 　"
+            },
+            {
+              "type": "special",
+              "text": "\ta﻿b 　"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

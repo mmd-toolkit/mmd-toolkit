@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter tag absorbs a closing group delimiter into an EBNF terminal, causing rejection."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 15: Expecting token of type ')' but found `;`."
+  }
+}

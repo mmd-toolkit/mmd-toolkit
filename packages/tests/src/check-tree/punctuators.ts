@@ -1,3 +1,4 @@
+import { RAILROAD_PUNCTUATORS } from "./railroad.ts"
 import { ARCHITECTURE_PUNCTUATORS } from "./architecture.ts"
 import { PIE_PUNCTUATORS } from "./pie.ts"
 import { USECASE_PUNCTUATORS } from "./usecase.ts"
@@ -41,6 +42,8 @@ const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = GRAPH_SHAPES.flatMap(
  * that row.
  */
 export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  RailroadDiagram: RAILROAD_PUNCTUATORS,
+  TreemapDiagram: [":", ",", ":::", ";", "{", "}"],
   RadarDiagram: [":", ",", "[", "]", "{", "}"],
   ArchitectureDiagram: ARCHITECTURE_PUNCTUATORS,
   GitgraphDiagram: [":", "{", "}"],

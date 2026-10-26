@@ -240,3 +240,7 @@ architecture の範囲は
 [architecture](./positions/architecture.ja.md#範囲) で定めます。
 
 radar の範囲は [radar](./positions/radar.ja.md#範囲) で定めます。
+
+Treemap の範囲は [treemap](./positions/treemap.ja.md#範囲)で定義する。
+
+Railroad の範囲は [railroad](./positions/railroad.ja.md#範囲)で定めます。

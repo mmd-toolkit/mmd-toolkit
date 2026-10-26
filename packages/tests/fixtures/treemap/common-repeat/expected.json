@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do final common assignments win across forms?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "Last",
+    "accTitle": "Last",
+    "accDescr": "Last",
+    "nodes": [],
+    "classDefs": []
+  }
+}

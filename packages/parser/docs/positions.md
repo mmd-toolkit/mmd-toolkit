@@ -199,3 +199,7 @@ Architecture ranges are defined in
 [architecture](./positions/architecture.md#ranges).
 
 Radar ranges are defined in [radar](./positions/radar.md#ranges).
+
+Treemap ranges are defined in [treemap](./positions/treemap.md#ranges).
+
+Railroad ranges follow [railroad](./positions/railroad.md#ranges).

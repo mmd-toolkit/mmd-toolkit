@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/ebnfDiagram.spec.ts",
+    "line": 32,
+    "test": "EBNF Parser > Basic Parsing > should parse non-terminal reference"
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "rule",
+        "definition": {
+          "type": "nonterminal",
+          "name": "other_rule"
+        }
+      }
+    ]
+  }
+}

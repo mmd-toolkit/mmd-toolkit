@@ -57,6 +57,10 @@ function saidInSpecification(
     [
       "Written text of the common value.",
       "Written common-value text.",
+      "Written metadata text.",
+      "Nonempty authored form including fences.",
+      "The complete authored percent-value text.",
+      "The authored style or common-value text.",
       "Complete written arrow text.",
       "Nonempty authored form with fences.",
       "Authored common-value text.",
@@ -180,6 +184,14 @@ interface BrokenValueRow {
  * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  { type: "RailroadLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "RailroadIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "RailroadNumericValue", message: NOT_WRITTEN_TEXT },
+  {
+    type: "RailroadSpecialSequence",
+    message: "value is not its written special-sequence interior",
+  },
+  { type: "TreemapLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RadarLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RadarIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "RadarShowLegendOption", message: "the field value is " },
@@ -425,6 +437,66 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "RailroadLiteral",
+    name: "railroad accessibility line values keep padding after the colon",
+    diagram: "railroad",
+    fixture: "ir-db-all-fields",
+    token: { type: "RawText", value: " A" },
+    side: "start",
+    problems: [
+      {
+        where: "RailroadLiteral at 33-35",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "RailroadLiteral at 33-35",
+        message: `${JOINED}: "A", not " A"`,
+      },
+      {
+        where: "RailroadLiteral at 33-35",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [33,35], not [34,35]",
+      },
+    ],
+  },
+  {
+    type: "RailroadIgnoredText",
+    name: "railroad retained second-scan text keeps LF beside an internal cut",
+    diagram: "railroad",
+    fixture: "ir-secondscan-multiline",
+    token: { type: "RawText", value: "%%{\n" },
+    side: "end",
+    problems: [
+      {
+        where: "RailroadIgnoredText at 0-18",
+        message: `${JOINED}: "%%{wrap}%%", not "%%{\\nwrap}%%"`,
+      },
+    ],
+  },
+  {
+    type: "TreemapLiteral",
+    name: "treemap common line values keep padding after their colon",
+    diagram: "treemap",
+    fixture: "common-all",
+    token: { type: "RawText", value: " Accessible" },
+    side: "start",
+    problems: [
+      {
+        where: "TreemapLiteral at 28-39",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TreemapLiteral at 28-39",
+        message: `${JOINED}: "Accessible", not " Accessible"`,
+      },
+      {
+        where: "TreemapLiteral at 28-39",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [28,39], not [29,39]",
+      },
+    ],
+  },
   {
     type: "RadarLiteral",
     name: "radar common line values keep padding after their colon",
@@ -1457,6 +1529,18 @@ interface TypeWithoutTokenWhitespace {
 const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
   Record<string, TypeWithoutTokenWhitespace>
 > = {
+  RailroadSpecialSequence: {
+    diagram: "railroad",
+    fixture: "ebnf-special-whitespace",
+    reason:
+      "the whole RawText item includes its question marks, without an internal cut in this fixture",
+  },
+  RailroadNumericValue: {
+    diagram: "railroad",
+    fixture: "abnf-numval-boundaries",
+    reason:
+      "its text consists of the percent sign, base letter, hexadecimal digits and separators, without padding",
+  },
   RadarShowLegendOption: {
     diagram: "radar",
     fixture: "db-options-repeat",

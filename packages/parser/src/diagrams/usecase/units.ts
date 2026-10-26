@@ -468,11 +468,7 @@ export class UsecaseUnitLexer extends UnitLexer<Context, UnitName, Unit> {
       )(this.reader, at, word)
       if (match === null) continue
       const idEnd = isWord(at) ? skipWhile(this.reader, at, isWord) : at
-      const longer =
-        idEnd !== null && match.end !== null
-          ? idEnd.start > match.end.start
-          : idEnd === null && match.end !== null
-      this.read(longer ? "identifier" : word, at, longer ? idEnd : match.end)
+      this.readUnitOrLongerAlternative(at, word, match.end, "identifier", idEnd)
       return true
     }
     return false
@@ -576,15 +572,17 @@ export class UsecaseUnitLexer extends UnitLexer<Context, UnitName, Unit> {
     return true
   }
 
-  /** Rule 31: Identifier's Number longer alternative can extend an initial integer word. */
+  /** Rule 31: only a strictly longer Number replaces the Identifier. */
   private readIdentifier(at: DiagramCharacter): boolean {
     if (!isWord(at)) return false
     const end = skipWhile(this.reader, at, isWord)
-    const number = this.numberEnd(at)
-    const longer =
-      number !== undefined &&
-      (number === null || (end !== null && number.start > end.start))
-    this.read(longer ? "number" : "identifier", at, longer ? number! : end)
+    this.readUnitOrLongerAlternative(
+      at,
+      "identifier",
+      end,
+      "number",
+      this.numberEnd(at),
+    )
     return true
   }
 

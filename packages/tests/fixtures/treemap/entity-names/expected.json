@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are entities preserved in both node quote styles?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "&amp; ﬂ°°35¶ß",
+        "children": [
+          {
+            "name": "&ﬂ°°35¶ß &quot;",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

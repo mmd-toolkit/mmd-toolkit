@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the global style line rule leave another line alone?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "style:#a",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A;",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

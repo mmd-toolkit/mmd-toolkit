@@ -270,6 +270,20 @@ Dropped:
 | In an architecture diagram, one label on two services, an empty label, and an empty icon text                                                                                                                  | Nothing is lost: labels are no ids, and an element without a label is drawn (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | In an architecture diagram, an id declared twice, an undefined parent or end, a group as an end of an edge, `{group}` between two services of one group, and a member twice in `align`                         | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | In an architecture diagram, a YAML block after a comment or in the body, an empty or a punctuation-only directive, and an `accDescr` block that no `}` closes                                                  | As in a pie chart above; mermaid.js rejects the last                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| In a radar diagram, a `ticks` that is no whole number (`ticks 2.5`, drawn as 3 rings, the last outside the chart)                                                                                              | Comes from not knowing the syntax: `ticks` is the count of the rings, as the documentation writes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In a radar diagram, a `ticks` above 32 (drawn as 32 rings, with a warning in the log only)                                                                                                                     | A limit of mermaid.js: 33 rings is a correct request that mermaid.js does not draw                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| In a radar diagram, one name for two axes or two curves, one label on several of them, and an empty label                                                                                                      | Nothing is lost: every axis and curve is kept and drawn (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| In a radar diagram, a `min` equal to the `max`, and values all 0 with no `max` (drawn with NaN)                                                                                                                | A defect of mermaid.js: values all 0 are correct, and [#8522](https://github.com/mermaid-js/mermaid/pull/8522) (open) fixes the drawing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| In a radar diagram, a missing entry of a curve with axis names, a curve with names and no axes, and a negative value                                                                                           | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a radar diagram, a YAML block after a comment or in the body, and an empty or a punctuation-only directive                                                                                                  | As in a pie chart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| In a treemap, an `accDescr {` block that a `}` written later closes (only a later description block or a text holds one)                                                                                       | No ordinary writing, as in a Gantt chart and a pie chart above; without a later `}` mermaid.js rejects the unclosed block (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a treemap, spaces at the end of a section line, which make the next line a child (`Budget` with two spaces, then `Sales`)                                                                                   | A defect of mermaid.js: [#8205](https://github.com/mermaid-js/mermaid/issues/8205) and [#8524](https://github.com/mermaid-js/mermaid/pull/8524) (open) fix it, and the formatter indents the lines as mermaid.js nests them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| In a treemap, lines indented under a leaf, and a section written with a value before its children (`Budget: 30`)                                                                                               | mermaid.js reads them by its grammar and loses nothing (run): a leaf has no children, and the formatter indents the lines as mermaid.js nests them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| In a treemap, one name on two leaves or sections, several roots, an empty section, and a value of 0                                                                                                            | Nothing is lost: every node is kept and drawn (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a treemap, `:::class` with no `classDef`, and a `classDef` written twice                                                                                                                                    | As in a block diagram above: the styles of a `classDef` written again are added, and a class may come from the styles of the page                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| In a treemap, a `classDef` without styles on the line before a node (the node becomes its styles)                                                                                                              | The formatter makes it visible: it prints the two on one line                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| In a treemap, a leaf with `:` and no value, a sign or an exponent in a value, a value that starts with `_`, and an `accDescr` block that no `}` closes                                                         | Not silent: mermaid.js rejects them                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a treemap, a YAML block after a comment or in the body, and an empty or a punctuation-only directive                                                                                                        | As in a pie chart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ### Questions for unclear cases
 
@@ -811,6 +825,19 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | architecture-no-empty-description-block   | yes              |                                                                              |
 | architecture-no-reversed-marker           | yes              |                                                                              |
 | architecture-no-ungrouped-modifier        | yes              |                                                                              |
+| radar-no-undef                            | yes              |                                                                              |
+| radar-no-duplicate-entry                  | yes              |                                                                              |
+| radar-no-mismatched-entry-count           | yes              |                                                                              |
+| radar-no-duplicate-option                 | yes              |                                                                              |
+| radar-no-reversed-range                   | yes              |                                                                              |
+| radar-no-duplicate-title                  | yes              |                                                                              |
+| radar-no-duplicate-description            | yes              |                                                                              |
+| radar-no-empty-description-block          | yes              |                                                                              |
+| radar-no-unclosed-description-block       | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
+| treemap-no-invalid-value                  | yes              |                                                                              |
+| treemap-no-duplicate-title                | yes              |                                                                              |
+| treemap-no-duplicate-description          | yes              |                                                                              |
+| treemap-no-empty-description-block        | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -1546,6 +1573,73 @@ of arrows.
   before or after the edge, is not reported (decided on 2026-10-25); (4) remove
   `{group}`, or declare the service in its group.
 
+The radar rules have these notes; the searches were "radar curve", "radar
+entry", "radar duplicate", "radar ticks", "radar min max", "radar title", "radar
+accDescr", and "radar axis", and found nothing that changes the readings:
+[#8522](https://github.com/mermaid-js/mermaid/pull/8522) (open) draws equal
+bounds at the center and leaves a minimum above the maximum as it is (read in
+its changes), and [#8301](https://github.com/mermaid-js/mermaid/pull/8301) and
+[#6481](https://github.com/mermaid-js/mermaid/pull/6481) (open) add range values
+and labels of the rings.
+
+- radar-no-undef, radar-no-duplicate-entry: (1) for each declared axis, a curve
+  takes the first entry that names it, so an entry of a name that no axis has
+  and a later entry of an axis are left out (read in `computeCurveEntries`;
+  run); (2) none: names are ids, not labels, an axis declared after the curve
+  counts, and a later entry of the value of the first is not reported; (4)
+  correct the name, or give each axis one value. The name radar-no-undef follows
+  the `<diagram>-no-undef` rules of the other diagram types for a name that
+  nothing declares (decided on 2026-10-25).
+- radar-no-mismatched-entry-count: (1) a curve of values whose count is not the
+  count of the axes is not drawn at all, and only its entry in the legend is
+  left (read in `drawCurves`; run); (2) none: every axis counts, and a curve
+  with axis names is left to the other rules; (4) give one value for each axis.
+- radar-no-duplicate-option: (1) the last value of each option is used (read in
+  `setOptions`; run); (2) none: a value given again is not reported, and a
+  `ticks` above 32 is compared as 32, since mermaid.js draws at most 32 rings;
+  (4) give each option one value.
+- radar-no-reversed-range: (1) with the minimum above the maximum, every point
+  is drawn on the outer ring (read in `relativeRadius`; run); (2) none: an equal
+  minimum, a range that cuts off values, and a diagram with no curve drawn are
+  not reported, and without `max` the rule does not compute the maximum that
+  mermaid.js takes from the values, which the document states; (4) write a `min`
+  below the `max`. The name follows architecture-no-reversed-marker for a value
+  written the other way round (decided on 2026-10-25).
+- radar-no-duplicate-title, radar-no-duplicate-description,
+  radar-no-empty-description-block, radar-no-unclosed-description-block: the
+  notes of the pie rules above, since radar reads its titles and descriptions in
+  the same way and draws the title (read in `parser.ts` and `renderer.ts` of
+  radar; run); every curve holds a `}`, so a block left unclosed is closed by
+  the next curve and takes the axes and the curves up to it (run), which the
+  unclosed block rule reports with the condition of the usecase rule and is not
+  enabled for the same reason.
+
+The treemap rules have these notes; the searches were "treemap number", "treemap
+value", "treemap title", "treemap accDescr", "treemap classDef", and "treemap
+whitespace", and found nothing that changes the readings.
+
+- treemap-no-invalid-value: (1) the value converter removes the commas and reads
+  the rest with `parseFloat`, so `1_000` is 1, `1.2.3` is 1.2, and `.` is no
+  number (read in `valueConverter.ts` of treemap; run); a value holds only
+  digits, `_`, `.`, and `,`, so the condition, `_`, more than one `.`, or no
+  digit, is exactly a value not read whole; a comma meant as the decimal point
+  is removed too (`0,5` is 5, `1.234,5` is 1.2345; run), so a comma after the
+  `.` with a digit after it, or with other than three digits after the last
+  comma that a digit follows, is reported as well, since no way of writing
+  thousands, Western or Indian (`1,00,000`), puts one there (decided on
+  2026-10-26); (2) none: `.5`, `5.`, commas between groups of thousands, and a
+  comma that no digit follows, also after the `.` (`1.5,`, read as 1.5; run),
+  are not reported, and `0,125`, written as thousands are, is read as 125 and
+  not reported, which the document states; (4) write the number with digits, one
+  `.`, and commas between groups of thousands. The name follows
+  sankey-no-invalid-value, which reports the same reading of `parseFloat`.
+- treemap-no-duplicate-title, treemap-no-duplicate-description,
+  treemap-no-empty-description-block: the notes of the pie rules above, since
+  treemap reads its titles and descriptions in the same way and draws the title
+  (read in `parser.ts` of treemap; run); U+2028 in a block is kept by
+  mermaid.js, so a block that differs from an earlier one only by U+2028 for a
+  line feed replaces it, and it is reported (run).
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -1636,6 +1730,8 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | gitgraph-* (all 5 rules)                | None for now (2026-10-23; see the end of this section)         |
 | packet-* (all 3 rules)                  | None for now (2026-10-25; see the end of this section)         |
 | architecture-* (all 5 rules)            | None for now (2026-10-25; see the end of this section)         |
+| radar-* (all 9 rules)                   | None for now (2026-10-25; see the end of this section)         |
+| treemap-* (all 4 rules)                 | None for now (2026-10-26; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1735,9 +1831,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 `sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16), and
 `block-*`, `kanban-*`, `c4-*`, and `venn-*` (2026-10-21), and `agentflow-*` and
 flowchart-no-duplicate-direction (2026-10-22), and `usecase-*`, `pie-*`, and
-`gitgraph-*` (2026-10-23), and `packet-*` and `architecture-*` (2026-10-25): the
-rules are implemented without suggestions for now. No suggestion had been
-decided for them or described in their documents, and the one planned for the
-empty block of a sequence diagram rested on generated inputs. Whether they get
-suggestions is decided later, in the form of the flowchart rules, with a fixture
-for each case.
+`gitgraph-*` (2026-10-23), and `packet-*`, `architecture-*`, and `radar-*`
+(2026-10-25), and `treemap-*` (2026-10-26): the rules are implemented without
+suggestions for now. No suggestion had been decided for them or described in
+their documents, and the one planned for the empty block of a sequence diagram
+rested on generated inputs. Whether they get suggestions is decided later, in
+the form of the flowchart rules, with a fixture for each case.

@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are second and third names retained as distinct tree nodes?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Same",
+        "children": [
+          {
+            "name": "Leaf",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "name": "Other",
+        "children": [
+          {
+            "name": "Leaf",
+            "value": 2
+          }
+        ]
+      },
+      {
+        "name": "Same",
+        "children": [
+          {
+            "name": "Third",
+            "value": 3
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

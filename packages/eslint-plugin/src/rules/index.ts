@@ -97,6 +97,15 @@ import { quadrantNoRedefinedAxis } from "./quadrant-no-redefined-axis.ts"
 import { quadrantNoRedefinedClass } from "./quadrant-no-redefined-class.ts"
 import { quadrantNoRedefinedQuadrant } from "./quadrant-no-redefined-quadrant.ts"
 import { quadrantNoUndef } from "./quadrant-no-undef.ts"
+import { radarNoDuplicateDescription } from "./radar-no-duplicate-description.ts"
+import { radarNoDuplicateEntry } from "./radar-no-duplicate-entry.ts"
+import { radarNoDuplicateOption } from "./radar-no-duplicate-option.ts"
+import { radarNoDuplicateTitle } from "./radar-no-duplicate-title.ts"
+import { radarNoEmptyDescriptionBlock } from "./radar-no-empty-description-block.ts"
+import { radarNoMismatchedEntryCount } from "./radar-no-mismatched-entry-count.ts"
+import { radarNoReversedRange } from "./radar-no-reversed-range.ts"
+import { radarNoUnclosedDescriptionBlock } from "./radar-no-unclosed-description-block.ts"
+import { radarNoUndef } from "./radar-no-undef.ts"
 import { requirementNoDuplicateDescription } from "./requirement-no-duplicate-description.ts"
 import { requirementNoDuplicateField } from "./requirement-no-duplicate-field.ts"
 import { requirementNoDuplicateName } from "./requirement-no-duplicate-name.ts"
@@ -124,6 +133,10 @@ import { stateNoUndef } from "./state-no-undef.ts"
 import { timelineNoDuplicateDescription } from "./timeline-no-duplicate-description.ts"
 import { timelineNoDuplicateTitle } from "./timeline-no-duplicate-title.ts"
 import { timelineNoEmptyDescriptionBlock } from "./timeline-no-empty-description-block.ts"
+import { treemapNoDuplicateDescription } from "./treemap-no-duplicate-description.ts"
+import { treemapNoDuplicateTitle } from "./treemap-no-duplicate-title.ts"
+import { treemapNoEmptyDescriptionBlock } from "./treemap-no-empty-description-block.ts"
+import { treemapNoInvalidValue } from "./treemap-no-invalid-value.ts"
 import { usecaseNoDuplicateDescription } from "./usecase-no-duplicate-description.ts"
 import { usecaseNoDuplicateDirection } from "./usecase-no-duplicate-direction.ts"
 import { usecaseNoDuplicateMetadata } from "./usecase-no-duplicate-metadata.ts"
@@ -251,6 +264,15 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "quadrant-no-redefined-class": quadrantNoRedefinedClass,
   "quadrant-no-redefined-quadrant": quadrantNoRedefinedQuadrant,
   "quadrant-no-undef": quadrantNoUndef,
+  "radar-no-duplicate-description": radarNoDuplicateDescription,
+  "radar-no-duplicate-entry": radarNoDuplicateEntry,
+  "radar-no-duplicate-option": radarNoDuplicateOption,
+  "radar-no-duplicate-title": radarNoDuplicateTitle,
+  "radar-no-empty-description-block": radarNoEmptyDescriptionBlock,
+  "radar-no-mismatched-entry-count": radarNoMismatchedEntryCount,
+  "radar-no-reversed-range": radarNoReversedRange,
+  "radar-no-unclosed-description-block": radarNoUnclosedDescriptionBlock,
+  "radar-no-undef": radarNoUndef,
   "requirement-no-duplicate-description": requirementNoDuplicateDescription,
   "requirement-no-duplicate-field": requirementNoDuplicateField,
   "requirement-no-duplicate-name": requirementNoDuplicateName,
@@ -279,6 +301,10 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "timeline-no-duplicate-description": timelineNoDuplicateDescription,
   "timeline-no-duplicate-title": timelineNoDuplicateTitle,
   "timeline-no-empty-description-block": timelineNoEmptyDescriptionBlock,
+  "treemap-no-duplicate-description": treemapNoDuplicateDescription,
+  "treemap-no-duplicate-title": treemapNoDuplicateTitle,
+  "treemap-no-empty-description-block": treemapNoEmptyDescriptionBlock,
+  "treemap-no-invalid-value": treemapNoInvalidValue,
   "usecase-no-duplicate-description": usecaseNoDuplicateDescription,
   "usecase-no-duplicate-direction": usecaseNoDuplicateDirection,
   "usecase-no-duplicate-metadata": usecaseNoDuplicateMetadata,

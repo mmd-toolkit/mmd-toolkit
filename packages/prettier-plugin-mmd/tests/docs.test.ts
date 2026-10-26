@@ -31,6 +31,33 @@ const ruleDocuments: readonly {
   readonly rulesInTestCode: readonly string[]
 }[] = [
   {
+    diagram: "railroad",
+    rulesWithoutExamples: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+    rulesInTestCode: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+  },
+  {
+    diagram: "treemap",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+    rulesInTestCode: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+  },
+  {
     diagram: "radar",
     rulesWithoutExamples: [
       "line-terminators-and-unicode",

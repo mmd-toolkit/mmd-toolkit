@@ -462,3 +462,15 @@ tests/ast-radar-examples.test.ts. [fixture: radar/gram-written-tree] [fixture:
 radar/lex-hidden-axis-comma] [fixture:
 radar/lex-named-entry-hidden-across-lines] [fixture: radar/common-repeat-empty]
 [fixture: radar/db-number-rounded] [fixture: common/detect-minimal-radar]
+
+Treemap acceptance and records are checked only by tests/fixtures.test.ts, using
+fixtureAccepts. Unit checks in tests/treemap.test.ts cover source coverage,
+spelling, ranges, containment, source order, flat row indentation, composite
+boundaries, empty/repeated common values and authored numeric/string readings.
+Comparable Db values use dbFromTree and embeddedValuesOf. All nine node-comment
+examples are checked by tests/ast-treemap-examples.test.ts. [fixture:
+treemap/gram-written-tree] [fixture: treemap/db-leaf-tail-space] [fixture:
+treemap/gram-indent-around-global-directive] [fixture:
+treemap/common-repeat-empty] [fixture: treemap/db-number-multiple-dots]
+[fixture: treemap/lex-string-conversion] [fixture:
+common/detect-minimal-treemap]

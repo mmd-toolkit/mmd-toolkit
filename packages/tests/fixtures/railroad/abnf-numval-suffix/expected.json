@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A suffix after a numeric token can become a separate rule reference."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "%x41"
+            },
+            {
+              "type": "nonterminal",
+              "name": "Z"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

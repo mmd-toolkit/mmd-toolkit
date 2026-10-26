@@ -1,5 +1,9 @@
 import type {
   Node,
+  RailroadTitleStatement,
+  RailroadAccTitleStatement,
+  RailroadAccDescrStatement,
+  RailroadAccDescrBlockStatement,
   RadarTitleStatement,
   RadarAccTitleStatement,
   RadarAccDescrStatement,
@@ -24,6 +28,10 @@ import type {
   PacketAccTitleStatement,
   PacketAccDescrStatement,
   PacketAccDescrBlockStatement,
+  TreemapTitleStatement,
+  TreemapAccTitleStatement,
+  TreemapAccDescrStatement,
+  TreemapAccDescrBlockStatement,
 } from "@mmd-toolkit/parser"
 import type { AtomLayout, GapRule } from "./atoms.ts"
 import { collectAtoms, expectToken, layoutDescriptionBlock } from "./layout.ts"
@@ -36,7 +44,11 @@ import {
   isStructural,
 } from "./source.ts"
 
-type CommonStatement =
+type CommonStatement = (
+  | RailroadTitleStatement
+  | RailroadAccTitleStatement
+  | RailroadAccDescrStatement
+  | RailroadAccDescrBlockStatement
   | RadarTitleStatement
   | RadarAccTitleStatement
   | RadarAccDescrStatement
@@ -61,6 +73,11 @@ type CommonStatement =
   | PacketAccTitleStatement
   | PacketAccDescrStatement
   | PacketAccDescrBlockStatement
+  | TreemapTitleStatement
+  | TreemapAccTitleStatement
+  | TreemapAccDescrStatement
+  | TreemapAccDescrBlockStatement
+) & { readonly textAfter?: readonly Node[] }
 
 /**
  * Shared compact line forms never read the next physical line (docs/pie.md,
@@ -112,7 +129,7 @@ export function layoutCommonLine(
     atoms: [
       ...collectAtoms(source, start, delimiter.range[1], [], []),
       ...(printedValue === null ? [] : [{ start: valueStart, end: valueEnd }]),
-      ...statement.textAfter.map((item) => ({
+      ...(statement.textAfter ?? []).map((item) => ({
         start: item.range[0],
         end: item.range[1],
       })),
@@ -127,7 +144,7 @@ export function layoutCommonLine(
     ),
   }
   // Null values can still contain common directives outside their range.
-  const textEnd = statement.textAfter.at(0)?.range[0] ?? end
+  const textEnd = statement.textAfter?.at(0)?.range[0] ?? end
   if (
     printedValue === null &&
     delimiter.range[1] < textEnd &&
@@ -156,7 +173,7 @@ export function layoutCommonDescription(
   valueTypes: ReadonlySet<Node["type"]>,
 ): AtomLayout {
   const [start, end] = statement.range
-  const after = statement.textAfter.at(0)?.range[0] ?? end
+  const after = statement.textAfter?.at(0)?.range[0] ?? end
   const closing = findTokensBetween(source, start, after).findLast(
     (token) => isStructural(source, token) && token.value === "}",
   )
@@ -191,7 +208,7 @@ export function layoutCommonDescription(
     ]),
     atoms: [
       ...layout.atoms,
-      ...statement.textAfter.map((item) => ({
+      ...(statement.textAfter ?? []).map((item) => ({
         start: item.range[0],
         end: item.range[1],
       })),

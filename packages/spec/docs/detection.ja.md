@@ -187,7 +187,7 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び
 、
 隠れた YAML の規則がタイトルを適用せずにブロックを読み飛ばします。
-gitgraph・info・packet・architecture・radar も、
+gitgraph・info・packet・architecture・radar・railroad も、
 一致する隠れたブロックを保ちます。
 以下で引用するほかの図種の入力は、字句規則か文法で拒否します。
 隣り合う区切りの空ブロック、閉じない区切り、ブロックの前の裸の `%%` の行では、
@@ -250,6 +250,36 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 [fixture: packet/spec-packet-7426afc4]
 [fixture: packet/spec-packet-c4580507]
 [fixture: packet/header-letter-suffix]
+
+31 番の
+[treemap detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/detector.ts#L7-L11)
+は、小文字の `treemap` を接尾辞の境界なしに選びます。
+受理する見出し `treemap`・`treemap-beta` の id は共に `treemap` です。
+受理と検出で残る接頭部の読みは
+[treemap の構文](./diagrams/treemap.md#detection)で定めます。
+[fixture: treemap/header-beta]
+[fixture: treemap/spec-treemap-test-ts-892fa294]
+[fixture: treemap/header-letter-suffix]
+[fixture: treemap/detect-retained-body-yaml-no-native]
+
+項目 32〜35（
+[IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDetector.ts#L1-L32)、
+[EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/ebnfDetector.ts#L1-L22)、
+[ABNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/abnfDetector.ts#L1-L22)、
+[PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/pegDetector.ts#L1-L22)）は、
+4 個の railroad の接頭辞を大文字小文字を区別せず、接尾辞の境界なしに比較します。
+それぞれ異なる id で IR、EBNF、ABNF、PEG を選びます。
+検出だけでは受理は決まりません。
+[railroad の文法](./diagrams/railroad.ja.md#検出)は、
+方言ごとに正確な小文字の見出しとその境界を要求します。
+[fixture: railroad/ir-header-upper]
+[fixture: railroad/ebnf-header-upper]
+[fixture: railroad/abnf-header-upper]
+[fixture: railroad/peg-header-upper]
+[fixture: railroad/ir-header-inline]
+[fixture: railroad/ebnf-header-inline]
+[fixture: railroad/abnf-header-inline]
+[fixture: railroad/peg-header-inline]
 
 ## 注記
 

@@ -88,6 +88,13 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/info/infoParser.js": ["parser"],
   "diagrams/packet/parser.js": ["parser"],
   "diagrams/packet/db.js": ["PacketDB"],
+  "diagrams/railroad/parser/railroadParser.js": ["parser"],
+  "diagrams/railroad/parser/ebnfParser.js": ["parser"],
+  "diagrams/railroad/parser/abnfParser.js": ["parser"],
+  "diagrams/railroad/parser/pegParser.js": ["parser"],
+  "diagrams/railroad/railroadDb.js": ["db"],
+  "diagrams/railroad/railroadRenderer.js": ["renderer"],
+  "../../parser/src/language/railroad/module.js": ["createRailroadServices"],
   "diagrams/radar/parser.js": ["parser"],
   "diagrams/radar/db.js": ["db"],
   "diagrams/radar/renderer.js": ["relativeRadius", "closedRoundCurve"],
@@ -113,6 +120,7 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "radarParse",
   ],
   "../../parser/src/parse.js": ["parse", "MermaidParseError"],
+  "../../parser/src/language/treemap/module.js": ["createTreemapServices"],
   "diagrams/pie/pieParser.js": ["parser"],
   "diagrams/pie/pieDb.js": ["db", "DEFAULT_PIE_DB"],
   "diagrams/pie/pieRenderer.js": ["draw"],
@@ -500,6 +508,27 @@ export async function recordSpecFile(
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },
     "diagrams/packet/db.js": { PacketDB: anything },
+    "diagrams/railroad/parser/railroadParser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/railroad/parser/ebnfParser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/railroad/parser/abnfParser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/railroad/parser/pegParser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/railroad/railroadDb.js": { db: anything },
+    "diagrams/railroad/railroadRenderer.js": {
+      renderer: { draw: () => undefined },
+    },
+    "../../parser/src/language/railroad/module.js": {
+      createRailroadServices: () => ({
+        Railroad: { parser: { LangiumParser: { parse: record } } },
+      }),
+    },
     "diagrams/radar/parser.js": {
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },
@@ -538,6 +567,11 @@ export async function recordSpecFile(
       parse: (_diagram: unknown, text: unknown) =>
         Promise.resolve(record(text)),
       MermaidParseError: anything,
+    },
+    "../../parser/src/language/treemap/module.js": {
+      createTreemapServices: () => ({
+        Treemap: { parser: { LangiumParser: { parse: record } } },
+      }),
     },
     "diagrams/info/infoParser.js": {
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
@@ -722,7 +756,7 @@ export async function recordSpecFile(
     "diagram-api/diagram-orchestration.js": { addDiagrams: () => undefined },
   }
 
-  // The pie renderer spec reads its drawing only in assertions after parsing.
+  // The pie and railroad renderer specs read drawing state after parsing.
   // Supply empty drawing reads, without executing the renderer or a real DOM.
   const drawingGlobals =
     path.relative(mermaidSource, file) ===
@@ -733,7 +767,18 @@ export async function recordSpecFile(
             querySelectorAll: () => [],
           },
         }
-      : {}
+      : path.relative(mermaidSource, file) ===
+          path.join("diagrams", "railroad", "railroadRenderer.spec.ts")
+        ? {
+            document: {
+              body: { innerHTML: "" },
+              getElementById: () => ({ getAttribute: () => "0 0 1 1" }),
+              querySelector: () => null,
+              querySelectorAll: () => [],
+            },
+            SVGElement: { prototype: {} },
+          }
+        : {}
 
   // Most test files use vitest's functions as globals, without importing them.
   const saved = Object.fromEntries(

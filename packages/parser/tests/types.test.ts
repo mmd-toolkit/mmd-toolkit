@@ -1,3 +1,5 @@
+import type { RailroadDiagram, RailroadNode } from "../src/ast/railroad.ts"
+import type { TreemapDiagram, TreemapNode } from "../src/ast/treemap.ts"
 import type { RadarDiagram, RadarNode } from "../src/ast/radar.ts"
 import type {
   ArchitectureDiagram,
@@ -85,6 +87,8 @@ describe("the types of ast.md", () => {
       | PacketNode["type"]
       | ArchitectureNode["type"]
       | RadarNode["type"]
+      | TreemapNode["type"]
+      | RailroadNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -114,6 +118,8 @@ describe("the types of ast.md", () => {
       | PacketDiagram
       | ArchitectureDiagram
       | RadarDiagram
+      | TreemapDiagram
+      | RailroadDiagram
     >()
   })
 
@@ -174,7 +180,9 @@ describe("the types of ast.md", () => {
     expectTypeOf<keyof Comment>().toEqualTypeOf<
       "type" | "mark" | "value" | "range" | "loc"
     >()
-    expectTypeOf<Comment["mark"]>().toEqualTypeOf<"%%" | "#" | "%" | null>()
+    expectTypeOf<Comment["mark"]>().toEqualTypeOf<
+      "%%" | "#" | "%" | "/*" | "(*" | ";" | null
+    >()
     expectTypeOf<keyof Directive>().toEqualTypeOf<
       "type" | "name" | "value" | "closed" | "range" | "loc"
     >()

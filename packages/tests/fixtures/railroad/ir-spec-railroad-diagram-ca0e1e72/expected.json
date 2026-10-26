@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/railroadDiagram.spec.ts",
+    "line": 32,
+    "test": "Railroad Parser > Basic Parsing > should parse nonterminal"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "rule",
+        "definition": {
+          "type": "nonterminal",
+          "name": "expression"
+        }
+      }
+    ]
+  }
+}

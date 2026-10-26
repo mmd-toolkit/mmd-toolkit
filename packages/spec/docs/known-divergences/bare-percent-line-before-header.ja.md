@@ -5,7 +5,7 @@
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
 sankey、block、c4、agentflow、usecase、pie、
-gitgraph・info・packet・architecture・radar。
+gitgraph・info・packet・architecture・radar・treemap・railroad。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです
 。
 
@@ -473,6 +473,68 @@ radar は検出で通した裸の percent 行を共有 Comment とし、
 [fixture: radar/detect-retained-no-bare-control]
 [fixture: radar/detect-secondscan-native-glued]
 
+### Treemap
+
+treemap は通した裸の行を共有 Comment、付随する空白を trivia とし、
+残る一行の comment の前後や見出しの直前にも適用します。
+木は各 Comment とソースの Directive を保てるため、
+ignored-text node は要りません。
+残る逆方向の差異は、通過区間を再び字句解析しない直接の規則です。
+Mermaid の可視の INDENTATION は ASCII の gap も拒否し、
+ほかの図種の引用された native ASCII の対照とは異なります。
+通した裸の行がなければ後の Unicode gap は依然拒否します。
+残存 YAML や読めない複数行の形も、裸の行を通した後で拒否します。
+受理する specified の記録は、同じ空の treemap Db を持ちます。
+[fixture: treemap/bare-before-header-space]
+[fixture: treemap/bare-before-header-tab] [fixture: treemap/bare-line-nbsp]
+[fixture: treemap/div-retained-before-bare-unicode-line]
+[fixture: treemap/div-bare-before-retained-unicode-line]
+[fixture: treemap/div-bare-retained-ascii-padding]
+[fixture: treemap/div-retained-bare-ascii-line]
+[fixture: treemap/div-bare-retained-unicode-header]
+[fixture: treemap/div-bare-retained-ascii-header]
+[fixture: treemap/lex-retained-no-bare-unicode-line]
+[fixture: treemap/detect-retained-yaml-bare-ascii-gap]
+[fixture: treemap/detect-second-scan-single-line-comment]
+
+### Railroad
+
+railroad の 4 id は、検出が通した bare percent-pair の行を共有 Comment、
+伴う空白と改行を trivia とし、再び読みません。
+合う retained YAML と真の第二走査 directive は
+textBeforeHeader の RailroadIgnoredText に保ちます。
+残る形の前や間も含め、Mermaid の native padding が拒否する
+通過済みの Unicode 空白を受理します。
+通過した bare line のない対照では、後続の Unicode padding は
+native の図のテキストに残って拒否し、ASCII の対照は受理します。
+[fixture: railroad/ir-bare-nbsp]
+[fixture: railroad/ebnf-bare-unicode]
+[fixture: railroad/abnf-bare-unicode]
+[fixture: railroad/peg-bare-unicode]
+[fixture: railroad/ir-secondscan-between-bares-unicode]
+[fixture: railroad/ir-retained-bare-secondscan-unicode]
+[fixture: railroad/ir-yaml-unicode-no-bare]
+[fixture: railroad/ebnf-retained-unicode-no-bare]
+[fixture: railroad/abnf-retained-unicode-no-bare]
+[fixture: railroad/peg-retained-unicode-no-bare]
+[fixture: railroad/ir-prefix-yaml-before-bare]
+[fixture: railroad/ebnf-retained-ascii-control]
+[fixture: railroad/abnf-retained-ascii-control]
+[fixture: railroad/peg-retained-ascii-control]
+
+第 1 の問いの答えは yes です。
+Comment record、source の隙間、名前つき ignored-text の owner に、
+書かれた内容をすべて保てます。
+それでも残る違いは、owner のない text でなく、
+Mermaid が通過済みの trivia を再読することです。
+第 2 の問いの答えは理由 2、共有の直接の検出規則です。
+native の closer の境界は依然必要で、
+先頭の nonword percent-brace の行を、
+自動的に retained native directive にはしません。
+[fixture: railroad/ir-prefix-retained-directive]
+[fixture: railroad/ir-secondscan-real]
+[fixture: railroad/ir-secondscan-glued]
+
 ## mermaid.js の文書と issue
 
 - [構文のリファレンス](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
@@ -588,3 +650,31 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
   文書例の comma の修正で、
   末尾 comma の文法上の対応を追加したものではありません。
+
+- Treemap: pin した
+  [treemap の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  は引用した row・字下げ・class 定義を説明し、
+  この共通の前処理の境界は定めていません。
+  2026-10-25 に公式 repository の issue・PR を
+  `treemap comment` で検索しました。
+  調べた結果に、この差異を maintainer が判断した根拠は見つかりませんでした。
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) は
+  treemap を導入し、2025-06-27 に merge された PR で、
+  この境界を判断したものではありません。
+
+- Railroad:
+  [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
+  PEG の predicate を説明します。
+  native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
+  2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
+  railroad directive、railroad semicolon、railroad comment で検索しました。
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は
+  demo の見出し名の報告
+  （closed、Triage）、
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は
+  ABNF の図種の提案（open、Discussion Needed）です。
+  どちらも、これらの前処理の境界について、
+  保守者が defect と判断した事実ではありません。
+  この差異はその判断でなく既存の共通規則に従います。
+  調べた結果だけで、ほかに関連する issue がないとは断定しません。

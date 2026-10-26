@@ -280,6 +280,20 @@ description:
 | architecture で、2 つの service の同じラベル、空のラベル、空のアイコンの文字                                                                                                              | 何も失われない。ラベルは id ではなく、ラベルのない要素も描かれる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | architecture で、2 度宣言した id、定義のない親や端、辺の端の group、1 つの group の 2 つの service の間の `{group}`、`align` で 2 度書いたメンバー                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | architecture で、コメントの後や本体の中の YAML のブロック、空か記号だけの指示子、どの `}` も閉じない `accDescr` のブロック                                                                | 上の pie と同じ。最後のものは mermaid.js が受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| radar で、整数でない `ticks`（`ticks 2.5` は 3 つの輪として描かれ、最後の輪はグラフの外にある）                                                                                           | 構文を知らないことから来る。文書が書くとおり、`ticks` は輪の数である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| radar で、32 を越える `ticks`（32 の輪として描かれ、警告はログにだけ出る）                                                                                                                | mermaid.js の限界である。33 の輪は、mermaid.js が描かない正しい求めである                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| radar で、2 つの軸や 2 つの曲線の同じ名前、いくつかの軸や曲線の同じラベル、空のラベル                                                                                                     | 何も失われない。どの軸と曲線も保たれ、描かれる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| radar で、`max` と等しい `min` と、`max` がなくすべて 0 の値（NaN で描かれる）                                                                                                            | mermaid.js の不具合である。すべて 0 の値は正しく、[#8522](https://github.com/mermaid-js/mermaid/pull/8522)（open）が描画を直す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| radar で、軸の名前を持つ曲線の欠けた値、軸のない名前の曲線、負の値                                                                                                                        | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| radar で、コメントの後や本体の中の YAML のブロックと、空か記号だけの指示子                                                                                                                | 上の pie と同じ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| treemap で、後に書いた `}` が閉じる `accDescr {` のブロック（それを持つのは後の説明のブロックかテキストだけ）                                                                             | 上の gantt と pie と同じく、普通の書き方ではない。後に `}` がなければ mermaid.js は閉じないブロックを受理しない（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| treemap で、section の行の末尾の空白で、次の行が子になるもの（2 つの空白のある `Budget` の後の `Sales`）                                                                                  | mermaid.js の不具合である。[#8205](https://github.com/mermaid-js/mermaid/issues/8205) と [#8524](https://github.com/mermaid-js/mermaid/pull/8524)（open）が直し、フォーマッターは mermaid.js が入れ子にするとおりに行を字下げする                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| treemap で、葉の下に字下げした行と、子の前に値とともに書いた section（`Budget: 30`）                                                                                                      | mermaid.js は文法によりそれを読み、何も失わない（実行）。葉は子を持たず、フォーマッターは mermaid.js が入れ子にするとおりに行を字下げする                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| treemap で、2 つの葉や section の同じ名前、いくつかの根、空の section、0 の値                                                                                                             | 何も失われない。どのノードも保たれ、描かれる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| treemap で、`classDef` のない `:::class` と、2 度書いた `classDef`                                                                                                                        | 上のブロック図と同じく、もう一度書いた `classDef` のスタイルは足され、クラスはページのスタイルから来ることがある                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| treemap で、ノードの前の行の、スタイルのない `classDef`（ノードがそのスタイルになる）                                                                                                     | フォーマッターで見える。2 つを 1 行に出す                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| treemap で、`:` の後に値のない葉、値の符号や指数、`_` で始まる値、どの `}` も閉じない `accDescr` のブロック                                                                               | 黙ってはいない。mermaid.js は受理しない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| treemap で、コメントの後や本体の中の YAML のブロックと、空か記号だけの指示子                                                                                                              | 上の pie と同じ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
 ### 迷ったときの問い
 
@@ -819,6 +833,19 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | architecture-no-empty-description-block   | 入れる               |                                                                          |
 | architecture-no-reversed-marker           | 入れる               |                                                                          |
 | architecture-no-ungrouped-modifier        | 入れる               |                                                                          |
+| radar-no-undef                            | 入れる               |                                                                          |
+| radar-no-duplicate-entry                  | 入れる               |                                                                          |
+| radar-no-mismatched-entry-count           | 入れる               |                                                                          |
+| radar-no-duplicate-option                 | 入れる               |                                                                          |
+| radar-no-reversed-range                   | 入れる               |                                                                          |
+| radar-no-duplicate-title                  | 入れる               |                                                                          |
+| radar-no-duplicate-description            | 入れる               |                                                                          |
+| radar-no-empty-description-block          | 入れる               |                                                                          |
+| radar-no-unclosed-description-block       | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| treemap-no-invalid-value                  | 入れる               |                                                                          |
+| treemap-no-duplicate-title                | 入れる               |                                                                          |
+| treemap-no-duplicate-description          | 入れる               |                                                                          |
+| treemap-no-empty-description-block        | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1748,6 +1775,88 @@ architecture の規則の注は次のとおりである。
   辺の前でも後でも group の中に宣言した端は報告しない（2026-10-25 に決めた）。
   (4) `{group}` を取り除くか、service をその group の中に宣言する。
 
+radar の規則の注は次のとおりである。
+検索は「radar curve」「radar entry」「radar duplicate」「radar ticks」
+「radar min max」「radar title」「radar accDescr」「radar axis」で、
+読み方を変えるものはなかった。
+[#8522](https://github.com/mermaid-js/mermaid/pull/8522)（open）は
+等しい上下限を中心に描き、最大値より大きい最小値はそのままにする
+（その変更を読んだ）。
+[#8301](https://github.com/mermaid-js/mermaid/pull/8301) と
+[#6481](https://github.com/mermaid-js/mermaid/pull/6481)（open）は
+範囲の値と輪のラベルを足す。
+
+- radar-no-undef、radar-no-duplicate-entry:
+  (1) 曲線は宣言した軸ごとにそれを名指す最初の値を取るので、
+  どの軸も持たない名前の値と、軸の後の値は除かれる
+  （`computeCurveEntries` を読んだ。実行）。
+  (2) なし。名前はラベルではなく id で、曲線の後に宣言した軸も数え、
+  最初の値と同じ値の後の値は報告しない。
+  (4) 名前を直すか、軸ごとに値を 1 つ与える。
+  radar-no-undef の名前は、何も宣言しない名前についての
+  ほかの図種の `<diagram>-no-undef` の規則にならう（2026-10-25 に決めた）。
+- radar-no-mismatched-entry-count:
+  (1) 値の数が軸の数でない値の曲線はまったく描かれず、凡例の項目だけが残る
+  （`drawCurves` を読んだ。実行）。
+  (2) なし。すべての軸を数え、軸の名前を持つ曲線はほかの規則に任せる。
+  (4) 軸ごとに値を 1 つ与える。
+- radar-no-duplicate-option:
+  (1) オプションごとに最後の値が使われる（`setOptions` を読んだ。実行）。
+  (2) なし。もう一度与えた同じ値は報告せず、
+  mermaid.js は輪を 32 までしか描かないので、
+  32 を越える `ticks` は 32 として比べる。
+  (4) オプションごとに値を 1 つ与える。
+- radar-no-reversed-range:
+  (1) 最小値が最大値より大きいと、すべての点が外側の輪に描かれる
+  （`relativeRadius` を読んだ。実行）。
+  (2) なし。等しい最小値、値を切る範囲、描かれる曲線のない図は報告しない。
+  `max` がないとき、mermaid.js が値から取る最大値を規則は計算せず、
+  文書がそれを述べる。
+  (4) `max` より小さい `min` を書く。
+  名前は、逆に書いた値についての architecture-no-reversed-marker にならう
+  （2026-10-25 に決めた）。
+- radar-no-duplicate-title、radar-no-duplicate-description、
+  radar-no-empty-description-block、radar-no-unclosed-description-block:
+  radar はタイトルと説明を同じに読み、タイトルを描くので、
+  上の pie の規則の注を持つ
+  （radar の `parser.ts` と `renderer.ts` を読んだ。実行）。
+  どの曲線も `}` を持つので、閉じていないブロックは次の曲線で閉じ、
+  そこまでの軸と曲線を取る（実行）。
+  閉じないブロックの規則はそれを usecase の規則の条件で報告し、
+  同じ理由で入れない。
+
+treemap の規則の注は次のとおりである。
+検索は「treemap number」「treemap value」「treemap title」「treemap accDescr」
+「treemap classDef」「treemap whitespace」で、読み方を変えるものはなかった。
+
+- treemap-no-invalid-value:
+  (1) 値の変換はカンマを除き、残りを `parseFloat` で読むので、
+  `1_000` は 1、`1.2.3` は 1.2、`.` は数でない
+  （treemap の `valueConverter.ts` を読んだ。実行）。
+  値は数字、`_`、`.`、`,` だけを持つので、条件の
+  `_`、2 つ以上の `.`、数字がないことは、全体を読まれない値とちょうど一致する。
+  小数点のつもりのカンマも除かれる
+  （`0,5` は 5、`1.234,5` は 1.2345。実行）ので、
+  後に数字の続く `.` の後のカンマと、
+  数字が続く最後のカンマの後が 3 桁でないカンマも報告する。
+  西洋式でもインド式（`1,00,000`）でも、
+  桁区切りはそこにカンマを置かないからである
+  （2026-10-26 に決めた）。
+  (2) なし。`.5`、`5.`、桁区切りのカンマ、
+  `.` の後も含めて後に数字の続かないカンマ
+  （`1.5,` は 1.5 と読まれる。実行）は報告しない。
+  桁区切りと同じ書き方の `0,125` は 125 と読まれるが報告せず、
+  文書がそれを述べる。
+  (4) 数は、数字と 1 つの `.` と、桁区切りのカンマで書く。
+  名前は、同じ `parseFloat` の読みを報告する sankey-no-invalid-value にならう。
+- treemap-no-duplicate-title、treemap-no-duplicate-description、
+  treemap-no-empty-description-block:
+  treemap はタイトルと説明を同じに読み、タイトルを描くので、
+  上の pie の規則の注を持つ（treemap の `parser.ts` を読んだ。実行）。
+  ブロックの U+2028 は mermaid.js が保つので、
+  前のブロックと改行の代わりの U+2028 だけが違うブロックはそれを置き換え、
+  報告する（実行）。
+
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
 mermaid.js は次の行を書き手のつもりどおりに別に読むが、
@@ -1844,6 +1953,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | gitgraph-*（5 件すべて）                | いまはなし（2026-10-23。この節の終わりを見る）   |
 | packet-*（3 件すべて）                  | いまはなし（2026-10-25。この節の終わりを見る）   |
 | architecture-*（5 件すべて）            | いまはなし（2026-10-25。この節の終わりを見る）   |
+| radar-*（9 件すべて）                   | いまはなし（2026-10-25。この節の終わりを見る）   |
+| treemap-*（4 件すべて）                 | いまはなし（2026-10-26。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1971,7 +2082,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `block-*`、`kanban-*`、`c4-*`、`venn-*`（2026-10-21）と
 `agentflow-*` と flowchart-no-duplicate-direction（2026-10-22）と
 `usecase-*` と `pie-*` と `gitgraph-*`（2026-10-23）と
-`packet-*` と `architecture-*`（2026-10-25）:
+`packet-*` と `architecture-*` と `radar-*`（2026-10-25）と
+`treemap-*`（2026-10-26）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PEG publication does not read railroad configuration."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "railroad": {
+        "useMaxWidth": false,
+        "padding": 3
+      }
+    }
+  }
+}

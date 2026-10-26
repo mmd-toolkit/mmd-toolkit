@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF permits prototype words as references and literal underscores in strings."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "constructor",
+        "definition": {
+          "type": "nonterminal",
+          "name": "prototype"
+        }
+      },
+      {
+        "name": "prototype",
+        "definition": {
+          "type": "terminal",
+          "value": "__proto__"
+        }
+      }
+    ]
+  }
+}

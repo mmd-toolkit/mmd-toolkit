@@ -4,7 +4,9 @@ import type {
   Node,
   PacketAccDescrBlockStatement,
   PieAccDescrBlockStatement,
+  RadarAccDescrBlockStatement,
   Token,
+  TreemapAccDescrBlockStatement,
   UsecaseAccDescrBlockStatement,
 } from "@mmd-toolkit/parser"
 import type { MermaidSourceCode } from "../source-code.ts"
@@ -159,7 +161,9 @@ export function isEmptyDescriptionBlock(
     | UsecaseAccDescrBlockStatement
     | GitgraphAccDescrBlockStatement
     | PacketAccDescrBlockStatement
-    | ArchitectureAccDescrBlockStatement,
+    | ArchitectureAccDescrBlockStatement
+    | RadarAccDescrBlockStatement
+    | TreemapAccDescrBlockStatement,
 ): boolean {
   return (
     (node.value?.value ?? "").trim() === "" &&

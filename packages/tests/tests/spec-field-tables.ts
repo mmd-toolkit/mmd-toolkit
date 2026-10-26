@@ -15,6 +15,8 @@ const PARSER_DOCS = path.join(HERE, "../../parser/docs")
 
 /** The diagrams that have a tree document. */
 export const TREE_DOCUMENT_DIAGRAMS = [
+  "railroad",
+  "treemap",
   "radar",
   "architecture",
   "gitgraph",
@@ -188,7 +190,11 @@ export function readChildFields(): Map<string, string[]> {
                 .split(",")
                 .map((field) => field.trim())
                 .filter((field) => field !== "")
-        for (const name of names) result.set(name, fields)
+        for (const name of names)
+          result.set(
+            name,
+            fields.filter((field) => field !== "none"),
+          )
       }
       paragraph = ""
     }

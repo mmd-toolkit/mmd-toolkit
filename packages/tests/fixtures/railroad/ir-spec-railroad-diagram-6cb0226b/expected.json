@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/railroadDiagram.spec.ts",
+    "line": 240,
+    "test": "Railroad Parser > Error Handling > should throw on unterminated string"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 25: unexpected character: ->\"<- at offset: 38, skipped 1 characters. Parse error on line 2, column 26: Expecting token of type 'RR_STRING' but found `unclosed`.\nParse error on line 2, column 34: Expecting token of type '=' but found `)`."
+  }
+}

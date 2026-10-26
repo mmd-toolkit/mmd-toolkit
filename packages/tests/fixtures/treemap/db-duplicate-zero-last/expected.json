@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are duplicate names retained even when the final value is zero?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 2
+      },
+      {
+        "name": "B",
+        "value": 1
+      },
+      {
+        "name": "A",
+        "value": 0
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -88,6 +88,19 @@ const REQUIREMENT_PARTS =
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
+  "RailroadLiteral.value": { message: "value is not its written text" },
+  "RailroadIgnoredText.kind": { message: "the field kind is " },
+  "RailroadIgnoredText.value": { message: "value is not its written text" },
+  "RailroadNumericValue.value": { message: "value is not its written text" },
+  "RailroadSpecialSequence.value": {
+    message: "value is not its written special-sequence interior",
+  },
+  "RailroadPostfixExpression.operator": { message: "the field operator is " },
+  "RailroadPredicateExpression.operator": { message: "the field operator is " },
+  "TreemapLiteral.value": { message: "value is not its written text" },
+  "TreemapSection.indent": { message: "indent must equal" },
+  "TreemapLeaf.indent": { message: "indent must equal" },
+  "TreemapClassDefStatement.indent": { message: "indent must equal" },
   "RadarLiteral.value": { message: "value is not its written text" },
   "RadarIgnoredText.value": { message: "value is not its written text" },
   "RadarIgnoredText.kind": { message: "the field kind is " },

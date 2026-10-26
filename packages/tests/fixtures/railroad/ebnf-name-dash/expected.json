@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Dashes inside identifiers do not become exception operators."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "a-b",
+        "definition": {
+          "type": "nonterminal",
+          "name": "c-d"
+        }
+      }
+    ]
+  }
+}

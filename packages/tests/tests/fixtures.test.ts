@@ -47,6 +47,8 @@ const DIAGRAMS: readonly DiagramType[] = [
   "packet",
   "architecture",
   "radar",
+  "treemap",
+  "railroad",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -73,6 +75,34 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads the four railroad dialects in one directory", () => {
+    const fixtures = fixturesOf("railroad")
+    const ids = new Set<string>()
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        ids.add(fixture.expected.diagramType)
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+    expect([...ids].sort()).toEqual([
+      "railroad",
+      "railroadAbnf",
+      "railroadEbnf",
+      "railroadPeg",
+    ])
+  })
+
+  it("loads treemap fixtures", () => {
+    const fixtures = fixturesOf("treemap")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("treemap")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
   it("loads radar fixtures", () => {
     const fixtures = fixturesOf("radar")
     expect(fixtures.length).toBeGreaterThan(0)

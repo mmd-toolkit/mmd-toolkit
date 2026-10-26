@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: After a global directive is removed, a rule name glued to the header fails its header boundary."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting token of type 'railroad-abnf-beta' but found `railroad-abnf-betar`."
+  }
+}

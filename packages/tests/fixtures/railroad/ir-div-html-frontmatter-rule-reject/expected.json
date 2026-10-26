@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter tag makes a valid single-quoted IR terminal reject."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 18: Expecting token of type ')' but found `y`.\nParse error on line 2, column 19: Expecting token of type '=' but found `'>'`."
+  }
+}

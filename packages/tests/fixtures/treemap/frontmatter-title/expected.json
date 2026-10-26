@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does outer frontmatter supply the diagram title?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

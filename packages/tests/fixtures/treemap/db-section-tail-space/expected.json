@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a trailing space on a section become the indentation of the following unindented leaf?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "b",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

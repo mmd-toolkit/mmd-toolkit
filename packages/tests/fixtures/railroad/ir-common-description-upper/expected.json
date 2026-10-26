@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The accessibility description terminal is case sensitive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->:<- at offset: 22, skipped 1 characters. Parse error on line 2, column 11: Expecting token of type '=' but found `D`.\nParse error on line ?, column ?: Expecting token of type '=' but found ``."
+  }
+}

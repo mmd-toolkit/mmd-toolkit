@@ -1,3 +1,5 @@
+import { railroadVisitorKeys } from "./visitor-keys/railroad.ts"
+import { treemapVisitorKeys } from "./visitor-keys/treemap.ts"
 import { radarVisitorKeys } from "./visitor-keys/radar.ts"
 import { architectureVisitorKeys } from "./visitor-keys/architecture.ts"
 import { packetVisitorKeys } from "./visitor-keys/packet.ts"
@@ -71,4 +73,6 @@ export const visitorKeys: VisitorKeys = {
   ...packetVisitorKeys,
   ...architectureVisitorKeys,
   ...radarVisitorKeys,
+  ...treemapVisitorKeys,
+  ...railroadVisitorKeys,
 }

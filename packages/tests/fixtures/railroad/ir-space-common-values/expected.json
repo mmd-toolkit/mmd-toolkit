@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common conversion trims outer Unicode whitespace but keeps internal BOM."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "A﻿B",
+    "accDescr": "A﻿B",
+    "rules": []
+  }
+}

@@ -21,12 +21,14 @@ export interface DiagramInput {
   readonly frontmatter: Frontmatter | null
   readonly diagramType: DiagramType
   /**
-   * common.md, Diagram detection: the position that detection reached,
-   * where the diagram's lexer starts; the detection point for the `error`
-   * pseudo-diagram.
+   * common.md, Diagram detection: where the diagram's lexer starts, including
+   * retained prefixes where its rules read them; otherwise the position
+   * detection reached. The detection point for the `error` pseudo-diagram.
    */
   readonly textStart: number
-  /** What detection read and passed before `textStart`, in source order (see {@link commentsBeforeHeader}). */
+  /** The detected header position, after any retained prefixes and passed trivia. */
+  readonly positionReached: number
+  /** What detection passed before `positionReached`, in source order; each diagram decides how retained forms are read. */
   readonly passed: readonly PassedPart[]
 }
 
@@ -46,9 +48,10 @@ export interface DiagramComment {
   /**
    * The characters of the mark, as the diagram's document defines it: `#`,
    * `%%`, or `%` in sequence, journey, requirement, and timeline, `#` or `%%` in
-   * state, `%%` in class, and `%%` or `%` in gantt.
+   * state, `%%` in class, and `%%` or `%` in gantt. Railroad also uses
+   * `/*`, `(*`, and `;`.
    */
-  readonly mark: "%%" | "#" | "%"
+  readonly mark: "%%" | "#" | "%" | "/*" | "(*" | ";"
   readonly valueStart: number
 }
 

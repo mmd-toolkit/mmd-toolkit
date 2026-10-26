@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can whitespace after a selector indent the next adjacent row?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "R",
+        "classSelector": "aa",
+        "children": [
+          {
+            "name": "B",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

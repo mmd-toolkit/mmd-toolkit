@@ -427,18 +427,24 @@ export function toAsciiLowerCase(text: string): string {
 /**
  * Whole crossing values and CSS declarations stay inside a textual prefix.
  * Its range includes source indentation; later lines add none before it
- * (docs/radar.md, Multi-line statements and Semicolons).
+ * (docs/radar.md, Multi-line statements and Semicolons). Callers can exclude
+ * required grammatical terminators, which are separate atoms rather than
+ * protected text (docs/railroad.md, Semicolons).
  */
 export function protectSemicolonPrefixes(
   source: Source,
   start: number,
   end: number,
   atoms: readonly Atom[],
+  structuralSemicolons: ReadonlySet<number> = new Set(),
 ): Atom[] {
   const kept: Atom[] = []
   for (let position = start; position < end;) {
     const stop = semicolonSegmentEnd(source, position)
-    const semicolon = source.text.lastIndexOf(";", stop - 1)
+    let semicolon = source.text.lastIndexOf(";", stop - 1)
+    while (semicolon >= position && structuralSemicolons.has(semicolon))
+      semicolon =
+        semicolon === 0 ? -1 : source.text.lastIndexOf(";", semicolon - 1)
     if (semicolon < position) {
       position = stop + 1
       continue

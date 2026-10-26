@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How is an array frontmatter title published?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "A,B",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "A,B"
+  }
+}

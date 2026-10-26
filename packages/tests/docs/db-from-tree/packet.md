@@ -20,7 +20,8 @@ The builder does not repeat the parser's rejection checks.
    packet/db-label-space] [fixture: packet/db-label-empty-double] [fixture:
    packet/db-label-empty-single] [fixture: packet/line-crlf-label] [fixture:
    packet/html-all-fields] [fixture: packet/entity-all-text] [fixture:
-   packet/directive-label-middle] [fixture: packet/hidden-yaml-body]
+   packet/directive-label-middle] [fixture: packet/hidden-yaml-body] [fixture:
+   packet/config-security-level-other]
 2. **Common assignments.** Read title, accTitle and both accDescr forms from
    their converted literal ranges, or empty text for null. Trim line values and
    collapse runs of at least two ASCII spaces/tabs. Block values additionally
@@ -34,7 +35,7 @@ The builder does not repeat the parser's rejection checks.
    packet/title-repeat] [fixture: packet/title-repeat-empty] [fixture:
    packet/acctitle-repeat-empty] [fixture: packet/accdescr-block-repeat]
    [fixture: packet/frontmatter-empty-body-title] [fixture:
-   packet/html-all-fields]
+   packet/html-all-fields] [fixture: packet/config-security-level-other]
 3. **Configuration.** Read `packet.bitsPerRow` from the supplied embedded/site
    configuration, with 32 for a missing or null value. `embeddedValuesOf`
    restores a recorded `{ "nonFinite": value }` tag, where value is

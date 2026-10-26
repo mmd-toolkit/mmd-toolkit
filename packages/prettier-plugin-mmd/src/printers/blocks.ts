@@ -51,6 +51,8 @@ export interface Positioned {
  * is the statement type of the diagram type.
  */
 export interface BlockRules<Statement extends Positioned> {
+  /** Whitespace already supplied by a statement's planned indentation. */
+  readonly relocatedWhitespace?: readonly Range[]
   /**
    * Joining regions already belong to complete value atoms in this layout:
    * skip whole-line joining and verbatim fallback for those regions, so gaps
@@ -481,7 +483,11 @@ export function printBlock<Statement extends Positioned>(
         unindented ||
         (afterBareMarker && line.commentLinesOnly)
       pushLine({
-        doc: line.run.doc,
+        // A verbatim trivia line keeps spacing between its comments and
+        // directives too; the block still supplies its ordinary indentation.
+        doc: kept.verbatim.has(lineStartOf(source, line.run.range[0]))
+          ? printAsWritten(source, line.run.range[0], line.run.range[1])
+          : line.run.doc,
         ...(triviaBreakBefore(line.run.range[0]) === undefined
           ? {}
           : { writtenBreakBefore: triviaBreakBefore(line.run.range[0]) }),
@@ -731,6 +737,7 @@ export function printBlock<Statement extends Positioned>(
       false,
       rules.keepsInlineDirectivesWithPrevious,
       rules.dropsSeparatorsBeforeComments,
+      rules.relocatedWhitespace,
     )
     addItemLines(gap, statements[index - 1])
     if (!startsStretch) {
@@ -795,6 +802,7 @@ export function printBlock<Statement extends Positioned>(
     bounds.isTopLevel,
     false,
     rules.dropsSeparatorsBeforeComments,
+    rules.relocatedWhitespace,
   )
   addItemLines(gap, lastStatement)
   const closingJoin = findClosingJoin()

@@ -180,6 +180,22 @@ const SPEC_FILES: Readonly<
     "diagrams/radar/radar.spec.ts",
     "../../parser/tests/radar.test.ts",
   ],
+  // The four detector specs pass text only to detection, not to a parser.
+  // railroadDb.spec.ts and styles.spec.ts build values in code. The renderer
+  // spec parses text before drawing; empty drawing reads suffice for its assertions.
+  // Only the IR dialect has tests in the parser package at this pin.
+  railroad: () => [
+    "diagrams/railroad/parser/railroadDiagram.spec.ts",
+    "diagrams/railroad/parser/ebnfDiagram.spec.ts",
+    "diagrams/railroad/parser/abnfDiagram.spec.ts",
+    "diagrams/railroad/parser/pegDiagram.spec.ts",
+    "diagrams/railroad/railroadRenderer.spec.ts",
+    "../../parser/tests/railroad.test.ts",
+  ],
+  // utils.test.ts builds hierarchy items in code and passes no diagram text.
+  // There is no mermaid-side parser spec; the parser package tests use its
+  // service's LangiumParser directly, including recoverable invalid inputs.
+  treemap: () => ["../../parser/tests/treemap.test.ts"],
   // architectureSeed.spec.ts tests randomness with no diagram text.
   // svgDraw.spec.ts passes text to Diagram.fromText before rendering; its
   // assertions can use the shared drawing stubs. The parser package tests

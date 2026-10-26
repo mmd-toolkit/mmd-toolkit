@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can a quoted node immediately follow a styleless class name?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "B",
+        "value": 1
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "aa",
+        "styles": [
+          ""
+        ]
+      }
+    ]
+  }
+}

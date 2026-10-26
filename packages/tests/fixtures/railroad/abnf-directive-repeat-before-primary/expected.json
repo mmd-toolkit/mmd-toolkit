@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md Common directive and semicolon boundaries: Can a directive between a complete repeat and its primary preserve the 2*4 repeat?"
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          },
+          "min": 2,
+          "max": 4
+        }
+      }
+    ]
+  }
+}

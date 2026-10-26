@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "May a selector begin with underscore?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "classSelector": "_style",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

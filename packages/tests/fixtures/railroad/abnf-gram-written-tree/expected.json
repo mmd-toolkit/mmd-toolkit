@@ -1,0 +1,72 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md and ast/railroad.md: Authored ABNF example preserves padded count bounds, omitted bounds, exact repeat, numeric value and all group forms."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "Rules",
+    "accDescr": "Details",
+    "rules": [
+      {
+        "name": "item",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "repetition",
+              "element": {
+                "type": "choice",
+                "alternatives": [
+                  {
+                    "type": "terminal",
+                    "value": "a"
+                  },
+                  {
+                    "type": "terminal",
+                    "value": "%X41.42-43"
+                  }
+                ]
+              },
+              "min": 2,
+              "max": 4
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "nonterminal",
+                "name": "other"
+              }
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "terminal",
+                "value": ""
+              }
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "x"
+              },
+              "min": 3,
+              "max": 3
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "terminal",
+                "value": "z"
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

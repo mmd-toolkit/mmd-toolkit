@@ -125,10 +125,13 @@ describe("packet normalization", () => {
     })
   })
 
-  it("checks every packet fixture at another supported security level", async () => {
+  it("checks every packet fixture at its configured or sandbox security level", async () => {
     for (const fixture of await loadFixtures("packet")) {
       const { outcome } = await runFixture(fixture.name, {
-        securityLevel: "sandbox",
+        securityLevel:
+          fixture.config?.securityLevel === undefined
+            ? "sandbox"
+            : fixture.config.securityLevel,
       })
       const expected = fixture.expected.accepted
         ? {

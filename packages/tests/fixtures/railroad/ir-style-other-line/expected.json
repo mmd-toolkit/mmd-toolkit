@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared style rule does not consume a semicolon on another line."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "A;",
+    "accDescr": "",
+    "rules": []
+  }
+}

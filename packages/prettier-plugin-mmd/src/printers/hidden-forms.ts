@@ -6,6 +6,7 @@ import type { KeptLines } from "./kept-lines.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
+  findVerbatimStyleLines,
   lineStartOf,
   lineEndOf,
 } from "./kept-lines.ts"
@@ -31,7 +32,10 @@ export function findHiddenKeptLines(
   }
   return {
     joined,
-    verbatim: findLinesEndedBySemicolon(source),
+    verbatim: new Set([
+      ...findLinesEndedBySemicolon(source),
+      ...findVerbatimStyleLines(source),
+    ]),
     writtenIndentation: new Set(),
   }
 }

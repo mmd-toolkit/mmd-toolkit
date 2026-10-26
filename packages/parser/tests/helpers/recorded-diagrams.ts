@@ -29,4 +29,6 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "packet",
   "architecture",
   "radar",
+  "treemap",
+  "railroad",
 ]

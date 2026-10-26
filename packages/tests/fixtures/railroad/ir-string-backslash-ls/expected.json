@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A Unicode line separator cannot be the character of a backslash escape."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 12: unexpected character: ->\"<- at offset: 25, skipped 1 characters.\nLexer error on line 2, column 14: unexpected character: ->\\<- at offset: 27, skipped 2 characters.\nLexer error on line 2, column 17: unexpected character: ->\"<- at offset: 30, skipped 1 characters. Parse error on line 2, column 13: Expecting token of type 'RR_STRING' but found `a`.\nParse error on line 2, column 16: Expecting token of type '=' but found `b`.\nParse error on line 2, column 18: Expecting token of type '=' but found `)`."
+  }
+}

@@ -261,6 +261,29 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [architecture-no-reversed-marker](./architecture-no-reversed-marker.md)                 | Disallow an arrowhead of an edge written pointing the other way.          | ✅  |     |     |
 | [architecture-no-ungrouped-modifier](./architecture-no-ungrouped-modifier.md)           | Disallow the `{group}` modifier on an end of an edge that is in no group. | ✅  |     |     |
 
+## radar
+
+| Rule                                                                            | Description                                                                                               | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --- | --- | --- |
+| [radar-no-duplicate-description](./radar-no-duplicate-description.md)           | Disallow an `accDescr` that replaces the description set before it.                                       | ✅  |     |     |
+| [radar-no-duplicate-entry](./radar-no-duplicate-entry.md)                       | Disallow an entry of a curve that gives another value for an axis that an earlier entry of the curve has. | ✅  |     |     |
+| [radar-no-duplicate-option](./radar-no-duplicate-option.md)                     | Disallow an option that replaces the value of the same option before it.                                  | ✅  |     |     |
+| [radar-no-duplicate-title](./radar-no-duplicate-title.md)                       | Disallow a `title` or an `accTitle` that replaces the title set before it.                                | ✅  |     |     |
+| [radar-no-empty-description-block](./radar-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                                                   | ✅  |     |     |
+| [radar-no-mismatched-entry-count](./radar-no-mismatched-entry-count.md)         | Disallow a curve of values without axes whose count differs from the count of the axes.                   | ✅  |     |     |
+| [radar-no-reversed-range](./radar-no-reversed-range.md)                         | Disallow a `min` above the `max` of a diagram.                                                            | ✅  |     |     |
+| [radar-no-unclosed-description-block](./radar-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for a later statement closes.                           |     |     |     |
+| [radar-no-undef](./radar-no-undef.md)                                           | Disallow an entry of a curve that names no axis.                                                          | ✅  |     |     |
+
+## treemap
+
+| Rule                                                                          | Description                                                                | ✅  | 💡  | 🚧  |
+| ----------------------------------------------------------------------------- | -------------------------------------------------------------------------- | --- | --- | --- |
+| [treemap-no-duplicate-description](./treemap-no-duplicate-description.md)     | Disallow an `accDescr` that replaces the description set before it.        | ✅  |     |     |
+| [treemap-no-duplicate-title](./treemap-no-duplicate-title.md)                 | Disallow a `title` or an `accTitle` that replaces the title set before it. | ✅  |     |     |
+| [treemap-no-empty-description-block](./treemap-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.                    | ✅  |     |     |
+| [treemap-no-invalid-value](./treemap-no-invalid-value.md)                     | Disallow a value of a leaf that mermaid.js reads as another number.        | ✅  |     |     |
+
 ## venn
 
 | Rule                                                        | Description                                                                | ✅  | 💡  | 🚧  |

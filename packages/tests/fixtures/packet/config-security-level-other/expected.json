@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site securityLevel replaces packet common metadata but leaves block labels unchanged."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": {
+    "title": "T&lt;b&gt;&equals;x",
+    "accTitle": "a&lt;b&gt;&equals;c",
+    "accDescr": "d<br/>e&equals;f",
+    "packet": [
+      [
+        {
+          "start": 0,
+          "end": 7,
+          "label": "field<b>=x"
+        }
+      ]
+    ]
+  }
+}

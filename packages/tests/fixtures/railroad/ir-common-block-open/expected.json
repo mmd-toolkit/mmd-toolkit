@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed accessibility block is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 10: unexpected character: ->{<- at offset: 23, skipped 1 characters. Parse error on line 2, column 12: Expecting token of type '=' but found `D`.\nParse error on line ?, column ?: Expecting token of type '=' but found ``."
+  }
+}

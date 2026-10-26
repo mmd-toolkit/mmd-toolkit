@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does TITLE stop before a native retained comment?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "C",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

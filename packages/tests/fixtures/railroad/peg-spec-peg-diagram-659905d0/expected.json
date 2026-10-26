@@ -1,0 +1,184 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/parser/pegDiagram.spec.ts",
+    "line": 158,
+    "test": "PEG Parser > Real-world Examples > should parse expression grammar"
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "Expression",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "Term"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "choice",
+                    "alternatives": [
+                      {
+                        "type": "terminal",
+                        "value": "+"
+                      },
+                      {
+                        "type": "terminal",
+                        "value": "-"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "Term"
+                  }
+                ]
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Term",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "Factor"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "sequence",
+                "elements": [
+                  {
+                    "type": "choice",
+                    "alternatives": [
+                      {
+                        "type": "terminal",
+                        "value": "*"
+                      },
+                      {
+                        "type": "terminal",
+                        "value": "/"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "Factor"
+                  }
+                ]
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "Factor",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "nonterminal",
+              "name": "Number"
+            },
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "terminal",
+                  "value": "("
+                },
+                {
+                  "type": "nonterminal",
+                  "name": "Expression"
+                },
+                {
+                  "type": "terminal",
+                  "value": ")"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "name": "Number",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "nonterminal",
+            "name": "Digit"
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      },
+      {
+        "name": "Digit",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "0"
+            },
+            {
+              "type": "terminal",
+              "value": "1"
+            },
+            {
+              "type": "terminal",
+              "value": "2"
+            },
+            {
+              "type": "terminal",
+              "value": "3"
+            },
+            {
+              "type": "terminal",
+              "value": "4"
+            },
+            {
+              "type": "terminal",
+              "value": "5"
+            },
+            {
+              "type": "terminal",
+              "value": "6"
+            },
+            {
+              "type": "terminal",
+              "value": "7"
+            },
+            {
+              "type": "terminal",
+              "value": "8"
+            },
+            {
+              "type": "terminal",
+              "value": "9"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

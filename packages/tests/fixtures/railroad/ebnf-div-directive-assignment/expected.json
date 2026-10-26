@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A global directive inside the authored ::= delimiter splits an atom."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

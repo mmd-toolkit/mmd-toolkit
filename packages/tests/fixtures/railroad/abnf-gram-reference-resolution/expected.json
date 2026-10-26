@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Acceptance: forward references and a self-recursive ABNF reference add no semantic rejection."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "start",
+        "definition": {
+          "type": "nonterminal",
+          "name": "later"
+        }
+      },
+      {
+        "name": "later",
+        "definition": {
+          "type": "nonterminal",
+          "name": "later"
+        }
+      }
+    ]
+  }
+}

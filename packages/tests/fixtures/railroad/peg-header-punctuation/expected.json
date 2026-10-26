@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The PEG header rejects adjacent punctuation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 1: Expecting token of type 'railroad-peg-beta' but found `railroad-peg-beta`.\nParse error on line 1, column 18: Expecting token of type '<-' but found `;`."
+  }
+}

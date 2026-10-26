@@ -92,7 +92,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   テキストは、範囲のソースと等しいです
   （positions.md の Invariants、[ast.md](../../spec/docs/ast.md)）。
 - **コメント。** コメント行は走査が見つけた所にあり、印は `%%` です。
-  図のコメントはその図種の印を持ち、行の終わりで終わります
+  図のコメントはその図種の印を持ち、
+  railroad の閉じた block comment を除き、行の終わりで終わります
   （mindmap 図のコメントは行の区間の終わりまで走るので、
   U+2028 や U+2029 の前でも終わります）。
   flowchart と ER 図と sankey 図と block 図が印 `%%` を持つのは、
@@ -106,6 +107,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
   印のない断片は、コメント領域に続きます
   （parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
+  railroad の native comment は方言に応じて `/*`、`(*`、`;`、`#` も使います。
+  block comment は最初の必須の閉じを範囲と値に含めます。
+  [fixture: railroad/ir-tail-comment] [fixture: railroad/ebnf-comment-iso]
+  [fixture: railroad/abnf-comment-semicolon-ls]
+  [fixture: railroad/peg-comment-hash-ps]
 - **ディレクティブ。** 木のディレクティブは走査が見つけたものと同じで、
   `closed` と、末尾の空白を除いた一致の範囲を持ちます
   （ast.md の Directive、common.md の Where a directive is）。
@@ -735,6 +741,156 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-retained-directive-bare-bom] [fixture:
     info/div-detect-yaml-bare-directive] [fixture:
     info/lex-retained-no-bare-ls] [fixture: info/lex-hidden-common-comment]
+
+  - railroad: 書かれた 30 種のノード、欄と訪問順は
+    [ast/railroad.md](../../spec/docs/ast/railroad.md) に従います。
+    一つの RailroadDiagram が Root.diagramType で 4 方言を区別します。
+    式の子は方言と優先順位の役割に従います。
+    IR の call と書かれた group をすべて保ちます。
+    自然記法の sequence/choice は member を 2 つ以上必要とします。
+    規則名、代入と必須の visible な semicolon は別々の部品です。
+    [fixture: railroad/ir-gram-written-tree]
+    [fixture: railroad/ebnf-gram-written-tree]
+    [fixture: railroad/abnf-gram-written-tree]
+    [fixture: railroad/peg-gram-written-tree]
+    [fixture: railroad/ir-db-singletons] [fixture: railroad/ebnf-db-singletons]
+
+    完全な first-match の字句単位を検査します。
+    metadata の先行する title prefix、IR constructor の長い名前の選択肢、
+    EBNF の special/ISO/YAML の選択肢と、
+    ABNF の長い semicolon comment も含みます。
+    文字列は方言ごとの引用符と escape の境界に従います。
+    十進 count は数字全体の atom、special sequence と percent の数値は
+    RawText のテキスト単位です。
+    書かれた値は綴りと共通の cut を保ちます。
+    [fixture: railroad/ir-keywords-long-rule-name]
+    [fixture: railroad/ebnf-reference-title-prefix]
+    [fixture: railroad/ebnf-postfix-special-priority]
+    [fixture: railroad/abnf-comment-terminator-control]
+    [fixture: railroad/abnf-string-backslash-quote]
+    [fixture: railroad/peg-string-escaped-lf]
+    [fixture: railroad/abnf-directive-repeat]
+    [fixture: railroad/abnf-directive-numval-digits]
+    [fixture: railroad/ebnf-hidden-directive-special]
+
+    保持した native の形を、名前付きの gap または body で 1 度ずつ検査します。
+    明示の区切りの前は前の member の textAfter、後は次の textBefore に置きます。
+    隣接では gap 全体を次の textBefore に置きます。
+    自然記法のリストの外側の member の gap は空にして、親に任せます。
+    call、group、後置、例外、repeat、述語はそれぞれ名前付きの gap を持ちます。
+    native の形は repeat の部品を分断できません。
+    [fixture: railroad/ir-native-ownership]
+    [fixture: railroad/ebnf-native-ownership]
+    [fixture: railroad/abnf-native-ownership]
+    [fixture: railroad/peg-native-ownership]
+    [fixture: railroad/abnf-native-in-atom]
+
+    YAML は本文のある選択肢の最初の適合する閉じを先に取り、
+    それがなければ空の fallback を使います。
+    native directive は境界のある最初の閉じを取ります。
+    保持する範囲に、前の padding、消費する LF、追加された LF を含めません。
+    railroad は visible EOL の区切りを要求しないので、
+    LF だけ、余分の LF、閉じの後の空白、EOF の対照例を受け入れます。
+    native Comment は方言の行または block の規則に従い、
+    先行する字句の代わりになったり、先に始まる文字列、special sequence、
+    metadata、hidden の形の中で始まったりできません。
+    [fixture: railroad/ir-hidden-yaml-adjacent-later]
+    [fixture: railroad/ir-hidden-yaml-adjacent-eof]
+    [fixture: railroad/ir-native-directive-adjacent]
+    [fixture: railroad/peg-hidden-yaml-sole-lf]
+    [fixture: railroad/peg-hidden-yaml-spare-lf]
+    [fixture: railroad/peg-hidden-directive-closing-space]
+    [fixture: railroad/ir-hidden-directive-eof]
+    [fixture: railroad/ir-tail-comment]
+    [fixture: railroad/ebnf-iso-first-closer]
+    [fixture: railroad/peg-comment-hash-ps]
+    [fixture: railroad/ebnf-enclosing-string-hidden]
+
+    見出しの前は、検出が保持する 1 つの YAML prefix と、
+    本物の second-scan directive を、
+    渡された bare Comment とその付随する trivia から分けて検査します。
+    渡された Unicode trivia は、保持した形の間でも再び読みません。
+    渡された行がなければ native の境界を厳格に保ちます。
+    body の gap は ASCII space/tab と物理改行のままです。
+    metadata は最初の規則より前に限定します。
+    後続する native の形は body に置きます。
+    [fixture: railroad/ir-secondscan-real]
+    [fixture: railroad/ir-secondscan-between-bares-unicode]
+    [fixture: railroad/ir-retained-bare-secondscan-unicode]
+    [fixture: railroad/ir-secondscan-no-bare-unicode]
+    [fixture: railroad/ebnf-retained-ascii-control]
+    [fixture: railroad/ir-hidden-after-title]
+    [fixture: railroad/peg-metadata-after-rule-title]
+
+    これらは木の条件であり、意味的な受理の gate ではありません。
+    参照の解決、名前の一意性、repeat の境界の大小は要求しません。
+    parser の結果の記録は fixtureAccepts と別に比べ、設定は再検証しません。
+    [fixture: railroad/ir-gram-reference-resolution]
+    [fixture: railroad/peg-db-duplicates]
+    [fixture: railroad/abnf-db-repeat-reversed]
+    [fixture: railroad/ir-config-frontmatter-fontfamily-number]
+
+  - treemap: 9種のノードと子の順は
+    [ast/treemap.ja.md](../../spec/docs/ast/treemap.ja.md) に従います。
+    body は平坦です。section・leaf・classDef の indent は、前の行や共通の除去を
+    またぐ場合も、
+    その行の前にある ASCII 空白・タブの単位の文字数と等しくします。
+    範囲に字下げを含めません。別々の2個の run を1個の indent にせず、
+    使われない末尾の run も報告します。
+    共通の複合形は自身の padding を消費します。
+    null の title は区切り1文字、
+    null の class style は最大の区切り空白を消費します。
+    [fixture: treemap/gram-written-tree]
+    [fixture: treemap/db-section-tail-space]
+    [fixture: treemap/db-leaf-tail-tab]
+    [fixture: treemap/gram-indent-around-global-directive]
+    [fixture: treemap/gram-two-indent-runs]
+    [fixture: treemap/gram-header-trailing-indent-eof]
+    [fixture: treemap/common-title-one-space]
+    [fixture: treemap/gram-class-whitespace-style-null]
+
+    header は後ろの境界を求めず全体を確かめます。数は全表記と、コンマを除く
+    parseFloat の値を確かめます。string はエスケープを解釈せず最初の同じ引用符で
+    閉じます。識別子はその位置で最初に適用される字句の規則で確かめます。
+    class 名には selector のキーワード優先を適用せず、2文字以上を求めます。
+    記録した数値の非有限値は JSON の null でも表せます。
+    leaf はコロンかコンマを持ち、selector の間は LF・コメントを許して字下げを
+    許しません。class style は末尾の空白や取り込んだ行らしい文字も含めて、
+    複合形の値全体を満たします。共通 literal は行の padding、または外側だけを
+    trim した block 内部を保ちます。空の内容は null で、block は最初の閉じ括弧を
+    必須とします。共通文の後に EOL を求めません。
+    [fixture: treemap/header-beta] [fixture: treemap/gram-adjacent-sections]
+    [fixture: treemap/db-number-nan] [fixture: treemap/db-number-underscore]
+    [fixture: treemap/lex-string-conversion]
+    [fixture: treemap/lex-class-name-title-prefix]
+    [fixture: treemap/gram-class-one-letter]
+    [fixture: treemap/comment-value-selector-gap]
+    [fixture: treemap/db-class-consumes-next-line]
+    [fixture: treemap/db-style-whitespace]
+    [fixture: treemap/common-title-two-spaces]
+    [fixture: treemap/common-block-first-close]
+    [fixture: treemap/gram-description-block-acctitle-adjacent]
+
+    ネイティブの Comment は、
+    先に始まった string や複合値の内部で開始できません。
+    除去済みのソース Directive 内でも開始できません。
+    ネイティブの YAML・DIRECTIVE の形や ignored-text の欄はありません。
+    header 前では検出が通した bare line と付随 trivia を読み直しません。
+    その行がなければ、残る間はネイティブの LF だけです。
+    2回目の走査で残る1行の形は
+    Comment とし、内部のソース Directive は1回ずつ保ちます。
+    body の間は位置ごとの ASCII 空白・LF の規則を緩めません。
+    木の条件だけを検査し、parser の受理は結果の記録で確かめ、
+    親子は dbFromTree で組み立てます。
+    [fixture: treemap/hidden-comment-class]
+    [fixture: treemap/hidden-comment-string]
+    [fixture: treemap/hidden-comment-block] [fixture: treemap/hidden-yaml-body]
+    [fixture: treemap/div-retained-before-bare-unicode-line]
+    [fixture: treemap/div-bare-retained-unicode-header]
+    [fixture: treemap/lex-retained-no-bare-unicode-header]
+    [fixture: treemap/detect-second-scan-single-line-comment]
+    [fixture: treemap/space-nbsp-body]
+    [fixture: treemap/config-init-drawing]
 
   - radar: 19 のノード型、欄と訪問順は
     [ast/radar.ja.md](../../spec/docs/ast/radar.ja.md) に従う。

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can title immediately follow the bare header?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  }
+}

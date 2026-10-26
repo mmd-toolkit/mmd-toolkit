@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EBNF string and special text are recorded before sanitization."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "<b>x</b>"
+            },
+            {
+              "type": "special",
+              "text": "<i>y</i>"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

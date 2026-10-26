@@ -1,3 +1,5 @@
+import type { RailroadNode } from "../../src/ast/railroad.ts"
+import type { TreemapNode } from "../../src/ast/treemap.ts"
 import type { RadarNode } from "../../src/ast/radar.ts"
 import type { ArchitectureNode } from "../../src/ast/architecture.ts"
 import type { PacketNode } from "../../src/ast/packet.ts"
@@ -620,6 +622,53 @@ export const allRadarNodeTypes: Readonly<Record<RadarNode["type"], true>> = {
   RadarIgnoredText: true,
 }
 
+/** Every railroad node type, in specification order. */
+export const allRailroadNodeTypes: Record<RailroadNode["type"], true> = {
+  RailroadDiagram: true,
+  RailroadRule: true,
+  RailroadTitleStatement: true,
+  RailroadAccTitleStatement: true,
+  RailroadAccDescrStatement: true,
+  RailroadAccDescrBlockStatement: true,
+  RailroadLiteral: true,
+  RailroadIgnoredText: true,
+  RailroadExpressionMember: true,
+  RailroadSequenceCall: true,
+  RailroadChoiceCall: true,
+  RailroadOptionalCall: true,
+  RailroadOneOrMoreCall: true,
+  RailroadZeroOrMoreCall: true,
+  RailroadTerminalCall: true,
+  RailroadNonterminalCall: true,
+  RailroadSpecialCall: true,
+  RailroadChoiceExpression: true,
+  RailroadSequenceExpression: true,
+  RailroadGroupExpression: true,
+  RailroadOptionalGroupExpression: true,
+  RailroadRepetitionGroupExpression: true,
+  RailroadPostfixExpression: true,
+  RailroadExceptionExpression: true,
+  RailroadSpecialSequence: true,
+  RailroadRepeatExpression: true,
+  RailroadRepeatRange: true,
+  RailroadNumericValue: true,
+  RailroadPredicateExpression: true,
+  RailroadAnyExpression: true,
+}
+
+/** Every node type of ast/treemap.md, in document order. */
+export const allTreemapNodeTypes: Record<TreemapNode["type"], true> = {
+  TreemapDiagram: true,
+  TreemapSection: true,
+  TreemapLeaf: true,
+  TreemapClassDefStatement: true,
+  TreemapTitleStatement: true,
+  TreemapAccTitleStatement: true,
+  TreemapAccDescrStatement: true,
+  TreemapAccDescrBlockStatement: true,
+  TreemapLiteral: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -649,6 +698,8 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allPacketNodeTypes),
   ...Object.keys(allArchitectureNodeTypes),
   ...Object.keys(allRadarNodeTypes),
+  ...Object.keys(allTreemapNodeTypes),
+  ...Object.keys(allRailroadNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

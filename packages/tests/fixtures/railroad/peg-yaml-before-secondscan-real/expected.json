@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Detection passes retained YAML before a second-scan directive and the native lexer reads both."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

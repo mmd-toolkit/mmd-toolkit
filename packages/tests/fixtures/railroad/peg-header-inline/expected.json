@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "No visible EOL is required after the PEG header."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

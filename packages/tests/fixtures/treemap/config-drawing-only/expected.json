@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do site treemap drawing settings alter acceptance or the Db?"
+  },
+  "config": {
+    "treemap": {
+      "padding": 2,
+      "diagramPadding": 200,
+      "showValues": false,
+      "nodeWidth": 20,
+      "nodeHeight": 30,
+      "borderWidth": 5,
+      "valueFontSize": 7,
+      "labelFontSize": 9,
+      "valueFormat": "$.2f",
+      "useMaxWidth": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a global directive disappear inside TITLE?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "AB",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  }
+}

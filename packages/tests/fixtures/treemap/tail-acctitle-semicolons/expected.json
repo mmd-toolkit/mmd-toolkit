@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are accessibility-title semicolons ordinary line text?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "A ;;",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  }
+}

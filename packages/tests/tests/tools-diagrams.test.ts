@@ -2,6 +2,27 @@ import { describe, expect, it } from "vitest"
 import { belongsIn, isDiagramType } from "../../../tools/src/diagrams.ts"
 
 describe("belongsIn", () => {
+  it("groups the four railroad ids without treating headers as ids", () => {
+    expect(isDiagramType("railroad")).toBe(true)
+    for (const id of [
+      "railroad",
+      "railroadEbnf",
+      "railroadAbnf",
+      "railroadPeg",
+    ])
+      expect(belongsIn("railroad", id)).toBe(true)
+    expect(belongsIn("railroad", "railroad-beta")).toBe(false)
+    expect(belongsIn("railroad", "radar")).toBe(false)
+    expect(isDiagramType("railroadAbnf")).toBe(false)
+  })
+
+  it("takes the treemap id shared by both header spellings", () => {
+    expect(isDiagramType("treemap")).toBe(true)
+    expect(belongsIn("treemap", "treemap")).toBe(true)
+    expect(belongsIn("treemap", "treemap-beta")).toBe(false)
+    expect(belongsIn("treemap", "radar")).toBe(false)
+  })
+
   it("takes the radar detector id rather than its beta header", () => {
     expect(isDiagramType("radar")).toBe(true)
     expect(belongsIn("radar", "radar")).toBe(true)

@@ -31,7 +31,6 @@ import { readUnit } from "./diagram-units.ts"
 import type { LineIndex } from "./positions.ts"
 import type { Match } from "./scanning.ts"
 import {
-  isBefore,
   isCodePointAt,
   matchWord,
   samePosition,
@@ -171,14 +170,11 @@ export abstract class CommonFormUnitLexer<
     return true
   }
 
-  /** Ordered rules: a strictly longer complete ID wins over the keyword. */
+  /** Match a keyword with the architecture/radar ID as its explicit longer alternative. */
   protected readWord(at: DiagramCharacter, word: Name): boolean {
     const match = matchWord(this.reader, at, word)
     if (match === null) return false
-    const end = this.idEnd(at)
-    if (end !== undefined && match.end !== null && isBefore(match.end, end))
-      this.read("id", at, end)
-    else this.read(word, at, match.end)
+    this.readUnitOrLongerAlternative(at, word, match.end, "id", this.idEnd(at))
     return true
   }
 

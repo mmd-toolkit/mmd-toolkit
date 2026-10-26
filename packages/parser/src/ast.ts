@@ -1,3 +1,5 @@
+import type { RailroadDiagram, RailroadNode } from "./ast/railroad.ts"
+import type { TreemapDiagram, TreemapNode } from "./ast/treemap.ts"
 import type { RadarDiagram, RadarNode } from "./ast/radar.ts"
 import type {
   ArchitectureDiagram,
@@ -146,10 +148,11 @@ export interface Comment {
   /**
    * The characters of the comment's mark: `%%` for a comment line; for a
    * diagram comment, `#`, `%%`, or `%` in sequence, `#` or `%%` in state,
-   * and `%%` in class. Null for a fragment of a diagram comment after a
+   * and `%%` in class; railroad also uses `/*`, `(*`, and `;`. Null for a
+   * fragment of a diagram comment after a
    * comment region, which has no mark.
    */
-  readonly mark: "%%" | "#" | "%" | null
+  readonly mark: "%%" | "#" | "%" | "/*" | "(*" | ";" | null
   /**
    * The source text after the mark, directives included; for a fragment
    * without a mark, the source text of its range.
@@ -306,6 +309,8 @@ export type DiagramBody =
   | PacketDiagram
   | ArchitectureDiagram
   | RadarDiagram
+  | TreemapDiagram
+  | RailroadDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -409,3 +414,5 @@ export type Node =
   | PacketNode
   | ArchitectureNode
   | RadarNode
+  | TreemapNode
+  | RailroadNode

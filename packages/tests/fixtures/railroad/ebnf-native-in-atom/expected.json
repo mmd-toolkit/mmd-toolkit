@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A native hidden form separates complete units rather than joining an identifier or repeat."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "a"
+            },
+            {
+              "type": "nonterminal",
+              "name": "b"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

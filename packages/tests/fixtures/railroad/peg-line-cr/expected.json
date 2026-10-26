@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PEG accepts lone CR as hidden whitespace."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

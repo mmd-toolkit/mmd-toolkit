@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A hyphen inside an identifier differs from an exception operator between primaries."
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "nonterminal",
+              "name": "A-B"
+            },
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "nonterminal",
+                  "name": "A"
+                },
+                {
+                  "type": "terminal",
+                  "value": "-"
+                },
+                {
+                  "type": "nonterminal",
+                  "name": "B"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

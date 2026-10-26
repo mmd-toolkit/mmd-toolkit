@@ -114,6 +114,8 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   packet: true,
   architecture: true,
   radar: true,
+  treemap: true,
+  railroad: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

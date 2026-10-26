@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Passed bare lines and ASCII trivia can surround a retained directive."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

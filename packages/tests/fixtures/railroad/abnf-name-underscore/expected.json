@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ABNF rule names cannot start with underscores."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->_<- at offset: 19, skipped 2 characters.\nLexer error on line 2, column 8: unexpected character: ->_<- at offset: 26, skipped 2 characters. "
+  }
+}

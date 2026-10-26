@@ -19,6 +19,8 @@ import { readTokenKindRow } from "./spec-field-tables.ts"
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [DiagramType, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["railroad", "RailroadDiagram"],
+  ["treemap", "TreemapDiagram"],
   ["radar", "RadarDiagram"],
   ["architecture", "ArchitectureDiagram"],
   ["gitgraph", "GitgraphDiagram"],
@@ -202,6 +204,33 @@ const LINK_TARGETS: readonly string[] = ["_self", "_blank", "_parent", "_top"]
  */
 function textsOfUnitsInTheRow(diagram: string): string[] {
   switch (diagram) {
+    case "railroad":
+      return [
+        "railroad-beta",
+        "railroad-ebnf-beta",
+        "railroad-abnf-beta",
+        "railroad-peg-beta",
+        "nonterminal",
+        "zeroormore",
+        "oneormore",
+        "sequence",
+        "optional",
+        "terminal",
+        "special",
+        "choice",
+        "title",
+        "acctitle",
+        "accdescr",
+      ]
+    case "treemap":
+      return [
+        "treemap",
+        "treemap-beta",
+        "classdef",
+        "title",
+        "acctitle",
+        "accdescr",
+      ]
     case "radar":
       return [
         "radar-beta",

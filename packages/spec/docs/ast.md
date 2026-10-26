@@ -254,8 +254,13 @@ the diagram sections below: a
 [`GitgraphDiagram`](./ast/gitgraph.md#gitgraphdiagram), an
 [`InfoDiagram`](./ast/info.md#infodiagram), a
 [`PacketDiagram`](./ast/packet.md#packetdiagram), an
-[`ArchitectureDiagram`](./ast/architecture.md#architecturediagram), or a
-[`RadarDiagram`](./ast/radar.md#radardiagram). [fixture:
+[`ArchitectureDiagram`](./ast/architecture.md#architecturediagram), a
+[`RadarDiagram`](./ast/radar.md#radardiagram), a
+[`TreemapDiagram`](./ast/treemap.md#treemapdiagram), or a
+[`RailroadDiagram`](./ast/railroad.md#railroaddiagram). [fixture:
+railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
+[fixture: railroad/abnf-gram-written-tree] [fixture:
+railroad/peg-gram-written-tree] [fixture: treemap/gram-written-tree] [fixture:
 radar/gram-written-tree] [fixture: packet/gram-mixed] [fixture:
 architecture/header-beta] [fixture: architecture/db-mixed]
 
@@ -426,6 +431,21 @@ flowchart/gram-linkstyle-index-overflow] [fixture:
 sequence/db-autonumber-start-overflow] [fixture:
 sequence/db-autonumber-step-overflow]
 
+At a treemap leaf value, the position permits digits, underscores, dots and
+commas rather than only conventional decimal spellings. Its value follows
+[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15):
+the double read from the decimal prefix after removing commas, stopping at the
+first underscore or extra dot; if no decimal prefix can be read, value is NaN.
+The prefix must contain at least one digit and at most one dot; a leading dot
+requires a following digit, whereas digits before a dot allow no digits after
+it. `1,234.50`, `1_234.50`, `1.2.3` and `.` therefore have values 1234.5, 1, 1.2
+and NaN respectively. raw keeps the entire original spelling, including the
+parts not read as the numeric prefix. This position-specific definition changes
+no other diagram's numeric grammar. [fixture: treemap/db-number-comma] [fixture:
+treemap/db-number-underscore] [fixture: treemap/db-number-multiple-dots]
+[fixture: treemap/db-number-nan] [fixture: treemap/lex-number-dot-underscore]
+[fixture: treemap/number-leading-dot] [fixture: treemap/number-trailing-dot]
+
 ## Diagram nodes
 
 The nodes of each diagram type, with their fields and child fields, are defined
@@ -475,3 +495,13 @@ name that ends so.
 
 - [Radar](./ast/radar.md): the diagram type `radar`. [fixture:
   radar/gram-written-tree]
+
+- [Treemap](./ast/treemap.md): the diagram type `treemap`. [fixture:
+  treemap/gram-written-tree]
+
+- [Railroad](./ast/railroad.md): the diagram types `railroad`, `railroadEbnf`,
+  `railroadAbnf` and `railroadPeg`. Root.diagramType selects their dialect; the
+  shared diagram node has no header-kind field. [fixture:
+  railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
+  [fixture: railroad/abnf-gram-written-tree] [fixture:
+  railroad/peg-gram-written-tree]

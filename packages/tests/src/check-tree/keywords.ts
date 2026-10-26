@@ -17,6 +17,31 @@
  * recorded tree to have a text here.
  */
 export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  RailroadDiagram: [
+    "railroad-beta",
+    "railroad-ebnf-beta",
+    "railroad-abnf-beta",
+    "railroad-peg-beta",
+    "nonterminal",
+    "zeroormore",
+    "oneormore",
+    "sequence",
+    "optional",
+    "terminal",
+    "special",
+    "choice",
+    "title",
+    "acctitle",
+    "accdescr",
+  ],
+  TreemapDiagram: [
+    "treemap",
+    "treemap-beta",
+    "classdef",
+    "title",
+    "acctitle",
+    "accdescr",
+  ],
   RadarDiagram: [
     "radar-beta",
     "axis",

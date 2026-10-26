@@ -440,13 +440,13 @@ describe("generateExpected", () => {
     const file = await generateExpected(
       "common",
       (await loadFixtures("common")).find(
-        (fixture) => fixture.name === "detect-minimal-treemap",
+        (fixture) => fixture.name === "detect-minimal-tree-view",
       )!.input,
       AUTHORED,
     )
     expect(acceptedOf(file)).toMatchObject({
       accepted: true,
-      diagramType: "treemap",
+      diagramType: "treeView",
       db: null,
     })
   })

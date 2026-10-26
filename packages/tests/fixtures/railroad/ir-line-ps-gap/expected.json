@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PS is not a railroad whitespace terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 2: unexpected character: -> <- at offset: 15, skipped 1 characters. "
+  }
+}

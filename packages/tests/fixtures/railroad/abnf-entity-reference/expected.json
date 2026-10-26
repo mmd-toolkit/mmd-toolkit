@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Character references cannot form an ABNF reference."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 5: unexpected character: ->&<- at offset: 23, skipped 4 characters.\nLexer error on line 2, column 11: unexpected character: ->¶<- at offset: 29, skipped 2 characters. Parse error on line 2, column 13: Expecting: one of these possible Token sequences:\n  1. [ABNF_STRING]\n  2. [ABNF_NUMVAL]\n  3. [ABNF_RULENAME]\n  4. [(]\n  5. [[]\nbut found: ';'"
+  }
+}

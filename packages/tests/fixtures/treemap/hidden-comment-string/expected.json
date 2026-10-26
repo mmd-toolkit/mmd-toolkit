@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does STRING2 protect a retained directive-like form?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A%%{!}%%B",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

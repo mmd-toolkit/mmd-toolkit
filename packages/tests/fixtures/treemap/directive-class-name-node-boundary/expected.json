@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can a directive separate a styleless class name from a quoted node?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "B",
+        "value": 1
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "aa",
+        "styles": [
+          ""
+        ]
+      }
+    ]
+  }
+}

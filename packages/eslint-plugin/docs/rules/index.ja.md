@@ -265,6 +265,29 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [architecture-no-reversed-marker](./architecture-no-reversed-marker.ja.md)                 | 逆の向きに書いた辺の矢じりを禁止する。                   | ✅  |     |     |
 | [architecture-no-ungrouped-modifier](./architecture-no-ungrouped-modifier.ja.md)           | group に属さない辺の端の `{group}` 修飾子を禁止する。    | ✅  |     |     |
 
+## radar
+
+| 規則                                                                               | 説明                                                                  | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------- | --------------------------------------------------------------------- | --- | --- | --- |
+| [radar-no-duplicate-description](./radar-no-duplicate-description.ja.md)           | 前に設定した説明を置き換える `accDescr` を禁止する。                  | ✅  |     |     |
+| [radar-no-duplicate-entry](./radar-no-duplicate-entry.ja.md)                       | 曲線の前の値が持つ軸に、別の値を与える曲線の値を禁止する。            | ✅  |     |     |
+| [radar-no-duplicate-option](./radar-no-duplicate-option.ja.md)                     | 前の同じオプションの値を置き換えるオプションを禁止する。              | ✅  |     |     |
+| [radar-no-duplicate-title](./radar-no-duplicate-title.ja.md)                       | 前に設定したタイトルを置き換える `title` や `accTitle` を禁止する。   | ✅  |     |     |
+| [radar-no-empty-description-block](./radar-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                      | ✅  |     |     |
+| [radar-no-mismatched-entry-count](./radar-no-mismatched-entry-count.ja.md)         | 軸の数と違う数の値を、軸の名前なしに持つ曲線を禁止する。              | ✅  |     |     |
+| [radar-no-reversed-range](./radar-no-reversed-range.ja.md)                         | 図の `max` より大きい `min` を禁止する。                              | ✅  |     |     |
+| [radar-no-unclosed-description-block](./radar-no-unclosed-description-block.ja.md) | 後の文のために書いた `}` が閉じる `accDescr {` のブロックを禁止する。 |     |     |     |
+| [radar-no-undef](./radar-no-undef.ja.md)                                           | どの軸も名指さない曲線の値を禁止する。                                | ✅  |     |     |
+
+## treemap
+
+| 規則                                                                             | 説明                                                                | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------- | --- | --- | --- |
+| [treemap-no-duplicate-description](./treemap-no-duplicate-description.ja.md)     | 前に設定した説明を置き換える `accDescr` を禁止する。                | ✅  |     |     |
+| [treemap-no-duplicate-title](./treemap-no-duplicate-title.ja.md)                 | 前に設定したタイトルを置き換える `title` や `accTitle` を禁止する。 | ✅  |     |     |
+| [treemap-no-empty-description-block](./treemap-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                    | ✅  |     |     |
+| [treemap-no-invalid-value](./treemap-no-invalid-value.ja.md)                     | mermaid.js が別の数として読む葉の値を禁止する。                     | ✅  |     |     |
+
 ## venn
 
 | 規則                                                           | 説明                                                               | ✅  | 💡  | 🚧  |

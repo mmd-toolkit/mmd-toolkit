@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Retain native forms once in the authored gaps, list members, body and passed-prefix records."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "nonterminal",
+                "name": "b"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

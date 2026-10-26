@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does style-line preprocessing affect a description block?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A\nstyle:#a\nB",
+    "nodes": [],
+    "classDefs": []
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do unsanitized HTML spellings remain in every text field?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "<b>T</b>",
+    "accTitle": "<b>A</b>",
+    "accDescr": "<b>D</b>",
+    "nodes": [
+      {
+        "name": "<b>Root</b>",
+        "children": [
+          {
+            "name": "<i>Leaf</i>",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

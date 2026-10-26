@@ -455,6 +455,58 @@ radar/lex-hidden-yaml-closer-global] [fixture:
 radar/lex-hidden-native-opener-global] [fixture:
 radar/lex-hidden-native-closer-global]
 
+### Treemap
+
+Treemap distinguishes authored components even inside its composite terminals.
+An atomic header, classDef/common keyword, class name, selector, number or `:::`
+cannot hold an internal directive as one atomic spelling; adding ignored text
+would not restore that atom. Strings, common text and whole class style can hold
+the directive-spanning authored value, so no rejection is added there. A
+directive between complete components is allowed when required whitespace
+remains. Mermaid's removed-directive reading and the marked accepted fixtures
+establish the difference; missing-whitespace and invalid-suffix controls still
+reject in both readings. [fixture: treemap/directive-header-middle] [fixture:
+treemap/div-directive-beta-header] [fixture: treemap/directive-class-keyword]
+[fixture: treemap/directive-class-name] [fixture:
+treemap/directive-common-keyword] [fixture: treemap/directive-number] [fixture:
+treemap/directive-selector] [fixture: treemap/div-directive-style-marker]
+[fixture: treemap/directive-style] [fixture: treemap/directive-name-middle]
+[fixture: treemap/directive-common-colon] [fixture:
+treemap/directive-class-keyword-name-gap] [fixture:
+treemap/directive-class-keyword-missing-space] [fixture:
+treemap/directive-invalid-number-suffix-control]
+
+### Railroad
+
+The
+[railroad lexical rules](../diagrams/railroad.md#common-directive-and-semicolon-boundaries)
+treat each header, name, IR constructor, metadata keyword, decimal count and
+compound assignment as an authored atom. A common directive inside one splits it
+and rejects. Metadata keywords, their colon/brace and values are separate
+components. ABNF repeat bounds and star are separate components; its percent
+numeric value is a text unit. Directives between complete repeat components or
+within string/text values remain allowed. [fixture:
+railroad/ir-div-directive-header] [fixture: railroad/ir-directive-keyword-glued]
+[fixture: railroad/ir-directive-name] [fixture:
+railroad/ir-directive-description-keyword] [fixture:
+railroad/ebnf-div-directive-assignment] [fixture:
+railroad/peg-directive-operator] [fixture:
+railroad/abnf-directive-repeat-number] [fixture: railroad/abnf-directive-repeat]
+[fixture: railroad/abnf-directive-repeat-star] [fixture:
+railroad/abnf-directive-numval-prefix] [fixture:
+railroad/abnf-directive-numval-digits]
+
+The tree can retain native YAML and nonword native directives in
+RailroadIgnoredText and ordinary comments in Comment; those inputs stay
+accepted. A shared Directive record also preserves a split atom’s source, but no
+expression or ignored-text sibling represents that atom as one authored unit.
+The second answer is therefore reason 2: use the direct boundary rule instead of
+Mermaid’s deletion-and-gluing order. No new divergence identifier is introduced.
+[fixture: railroad/ir-native-ownership] [fixture:
+railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
+[fixture: railroad/peg-native-ownership] [fixture:
+railroad/ir-directive-keyword-glued]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -575,3 +627,27 @@ warning. These facts do not justify any additional divergence.
   documentation report marked Status: Approved.
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
   documentation examples; it does not add grammar support for a trailing comma.
+
+- Treemap: the pinned
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  describes quoted rows, indentation and class definitions, without defining
+  this common preprocessing boundary. Searches of the official repository's
+  issues and pull requests on 2026-10-25 used `treemap directive`; no inspected
+  result establishes a maintainer ruling on this divergence.
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) introduced treemap
+  and was merged on 2025-06-27; it is not a ruling on this boundary.
+
+- Railroad: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  describes the four notations, EBNF exception, ABNF semicolon comments and PEG
+  predicates. It does not define native retained YAML or HTML quote context
+  across frontmatter. Searches of the official repository’s issues and pull
+  requests on 2026-10-26 used railroad frontmatter, railroad directive, railroad
+  semicolon and railroad comment.
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) concerns demo
+  header names (closed, Triage);
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) is an ABNF diagram
+  proposal (open, Discussion Needed). Neither establishes a maintainer defect
+  decision for these preprocessing boundaries. This divergence follows the
+  existing shared rule, not such a decision. The inspected results do not
+  establish that no other relevant issue exists.

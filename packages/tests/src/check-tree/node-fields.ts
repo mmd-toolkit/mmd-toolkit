@@ -18,6 +18,160 @@ import type { FieldSpec } from "./field-spec.ts"
 export const NODE_FIELDS: Readonly<
   Record<string, Readonly<Record<string, FieldSpec>>>
 > = {
+  RailroadDiagram: {
+    textBeforeHeader: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  RailroadRule: {
+    name: { shape: "node" },
+    textBeforeOperator: { shape: "nodeList" },
+    textBeforeDefinition: { shape: "nodeList" },
+    definition: { shape: "node" },
+    textBeforeTerminator: { shape: "nodeList" },
+  },
+  RailroadTitleStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  RailroadAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  RailroadAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  RailroadAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  RailroadLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  RailroadIgnoredText: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
+  RailroadExpressionMember: {
+    textBefore: { shape: "nodeList" },
+    expression: { shape: "node" },
+    textAfter: { shape: "nodeList" },
+  },
+  RailroadSequenceCall: {
+    textBeforeOpen: { shape: "nodeList" },
+    arguments: { shape: "nodeList" },
+  },
+  RailroadChoiceCall: {
+    textBeforeOpen: { shape: "nodeList" },
+    arguments: { shape: "nodeList" },
+  },
+  RailroadOptionalCall: {
+    textBeforeOpen: { shape: "nodeList" },
+    textBeforeElement: { shape: "nodeList" },
+    element: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadOneOrMoreCall: {
+    textBeforeOpen: { shape: "nodeList" },
+    textBeforeElement: { shape: "nodeList" },
+    element: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadZeroOrMoreCall: {
+    textBeforeOpen: { shape: "nodeList" },
+    textBeforeElement: { shape: "nodeList" },
+    element: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadTerminalCall: {
+    textBeforeOpen: { shape: "nodeList" },
+    textBeforeValue: { shape: "nodeList" },
+    value: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadNonterminalCall: {
+    textBeforeOpen: { shape: "nodeList" },
+    textBeforeName: { shape: "nodeList" },
+    name: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadSpecialCall: {
+    textBeforeOpen: { shape: "nodeList" },
+    textBeforeText: { shape: "nodeList" },
+    text: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadChoiceExpression: {
+    alternatives: { shape: "nodeList" },
+  },
+  RailroadSequenceExpression: {
+    elements: { shape: "nodeList" },
+  },
+  RailroadGroupExpression: {
+    textBeforeElement: { shape: "nodeList" },
+    element: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadOptionalGroupExpression: {
+    textBeforeElement: { shape: "nodeList" },
+    element: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadRepetitionGroupExpression: {
+    textBeforeElement: { shape: "nodeList" },
+    element: { shape: "node" },
+    textBeforeClose: { shape: "nodeList" },
+  },
+  RailroadPostfixExpression: {
+    element: { shape: "node" },
+    textBeforeOperator: { shape: "nodeList" },
+    operator: { shape: "value", valueType: "string" },
+  },
+  RailroadExceptionExpression: {
+    left: { shape: "node" },
+    textBeforeOperator: { shape: "nodeList" },
+    textBeforeRight: { shape: "nodeList" },
+    right: { shape: "node" },
+  },
+  RailroadSpecialSequence: {
+    value: { shape: "value", valueType: "string" },
+  },
+  RailroadRepeatExpression: {
+    repeat: { shape: "node" },
+    textBeforeElement: { shape: "nodeList" },
+    element: { shape: "node" },
+  },
+  RailroadRepeatRange: {
+    minimum: { shape: "nodeOrNull" },
+    maximum: { shape: "nodeOrNull" },
+  },
+  RailroadNumericValue: {
+    value: { shape: "value", valueType: "string" },
+  },
+  RailroadPredicateExpression: {
+    operator: { shape: "value", valueType: "string" },
+    textBeforeElement: { shape: "nodeList" },
+    element: { shape: "node" },
+  },
+  RailroadAnyExpression: {},
+  TreemapDiagram: { body: { shape: "nodeList" } },
+  TreemapSection: {
+    indent: { shape: "value", valueType: "number" },
+    name: { shape: "node" },
+    classSelector: { shape: "nodeOrNull" },
+  },
+  TreemapLeaf: {
+    indent: { shape: "value", valueType: "number" },
+    name: { shape: "node" },
+    value: { shape: "node" },
+    classSelector: { shape: "nodeOrNull" },
+  },
+  TreemapClassDefStatement: {
+    indent: { shape: "value", valueType: "number" },
+    name: { shape: "node" },
+    style: { shape: "nodeOrNull" },
+  },
+  TreemapTitleStatement: { value: { shape: "nodeOrNull" } },
+  TreemapAccTitleStatement: { value: { shape: "nodeOrNull" } },
+  TreemapAccDescrStatement: { value: { shape: "nodeOrNull" } },
+  TreemapAccDescrBlockStatement: { value: { shape: "nodeOrNull" } },
+  TreemapLiteral: { value: { shape: "value", valueType: "string" } },
   RadarDiagram: {
     textBeforeHeader: { shape: "nodeList" },
     textBeforeColon: { shape: "nodeList" },

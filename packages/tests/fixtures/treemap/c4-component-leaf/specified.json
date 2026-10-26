@@ -1,0 +1,16 @@
+{
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "C4Component",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  }
+}

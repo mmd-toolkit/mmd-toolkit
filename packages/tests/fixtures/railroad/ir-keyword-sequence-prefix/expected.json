@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "longer_alt lets an identifier extend a sequence keyword."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "sequencex",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

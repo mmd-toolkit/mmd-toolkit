@@ -1,0 +1,17 @@
+{
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "nonterminal",
+          "name": "C4Container"
+        }
+      }
+    ]
+  }
+}

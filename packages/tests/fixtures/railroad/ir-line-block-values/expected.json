@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common block conversion distinguishes CR/LF from LS/PS."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "A\nB\nC D E",
+    "rules": []
+  }
+}

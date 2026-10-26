@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does a one-line second-scan comment swallow its glued header?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting token of type 'TREEMAP_KEYWORD' but found ``."
+  }
+}

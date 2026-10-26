@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "TITLE consumes the entire apparent IR rule, leaving no rules."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
+}

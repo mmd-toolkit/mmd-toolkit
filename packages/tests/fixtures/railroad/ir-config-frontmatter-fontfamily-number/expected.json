@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.fontFamily of numeric type rejects during shared configuration derivation."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "str is not iterable"
+  }
+}

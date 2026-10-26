@@ -27,17 +27,76 @@ export interface KeptLines {
   readonly writtenIndentation: ReadonlySet<number>
 }
 
+/** Grammatical punctuation and whether statement semicolons are optional. */
+interface SemicolonRules {
+  readonly kind: "separators" | "required" | "text"
+  readonly grammatical: ReadonlySet<number>
+}
+
+const semicolonRulesBySource = new WeakMap<Source, SemicolonRules>()
+
+/**
+ * Decide grammar ownership once per source. Railroad keeps required rule
+ * terminators and native ABNF comment marks; selected semicolons still stay
+ * written. Caching the rule/comment scan avoids repeating a whole-diagram
+ * scan for each statement (diagrams/railroad.md, Native comments and Layout
+ * and metadata; docs/railroad.md, Semicolons).
+ */
+function semicolonRulesOf(source: Source): SemicolonRules {
+  const cached = semicolonRulesBySource.get(source)
+  if (cached !== undefined) return cached
+  const body = source.root.body
+  let rules: SemicolonRules
+  switch (body.type) {
+    case "RailroadDiagram": {
+      const terminators = new Set(
+        body.body
+          .filter((item) => item.type === "RailroadRule")
+          .map((item) => item.range[1] - 1),
+      )
+      rules = {
+        kind: "required",
+        grammatical: new Set([
+          ...terminators,
+          ...source.root.comments
+            .filter((comment) => comment.mark === ";")
+            .map((comment) => comment.range[0]),
+        ]),
+      }
+      break
+    }
+    case "FlowchartDiagram":
+    case "AgentflowDiagram":
+    case "SequenceDiagram":
+    case "QuadrantDiagram":
+    case "XychartDiagram":
+      rules = {
+        kind: "separators",
+        grammatical: new Set(),
+      }
+      break
+    default:
+      rules = { kind: "text", grammatical: new Set() }
+  }
+  semicolonRulesBySource.set(source, rules)
+  return rules
+}
+
+/** Offsets owned by grammar rather than textual-prefix protection. */
+export function grammaticalSemicolonsOf(source: Source): ReadonlySet<number> {
+  return semicolonRulesOf(source).grammatical
+}
+
 /**
  * The lines that hold a `;` other than a `;` that separates statements or
  * is a statement of its own. Such a `;` is in a token, as in `A[x;]`,
  * `accTitle: a;b`, or a directive, or in a comment, or it is a `;` that the
  * line rule ignores (`ignoredSemicolons`), also one that stands after a
- * statement. In a flowchart, a sequence diagram, a quadrant chart, and an XY
- * chart a `;` token may separate statements (see
- * `semicolonsSeparateStatements`): then only the `;` tokens that the rule
- * ignores and that do not end their line count. In the other diagram types
- * no `;` separates statements (diagrams/class.md, Diagram and statements), so
- * every `;` token counts.
+ * statement. Optional separating tokens count only when selected and not
+ * last on their line. Required terminators do not protect ordinary layout,
+ * but every selected semicolon remains protected. Native comment marks are
+ * grammatical punctuation; their contents still count. In text-only diagram
+ * types every `;` token counts (see `semicolonRulesOf`).
  *
  * The line rule (common.md, `style` and `classDef` lines) ignores the last
  * `;` of a line that matches it, and it reads the text of the line. Removing
@@ -55,13 +114,14 @@ export function findLinesWithOwnSemicolons(
   source: Source,
 ): ReadonlySet<number> {
   const { root, text } = source
-  const separatesStatements = semicolonsSeparateStatements(source)
+  const rules = semicolonRulesOf(source)
   const lines = new Set<number>()
 
   /** Adds the lines of the `;` characters in a range. */
   function addSemicolonsIn(range: Range): void {
     for (let offset = range[0]; offset < range[1]; offset++) {
-      if (text[offset] === ";") lines.add(lineStartOf(source, offset))
+      if (text[offset] === ";" && !rules.grammatical.has(offset))
+        lines.add(lineStartOf(source, offset))
     }
   }
 
@@ -69,9 +129,9 @@ export function findLinesWithOwnSemicolons(
     if (token.value !== ";") {
       addSemicolonsIn(token.range)
     } else if (
-      !separatesStatements ||
+      rules.kind === "text" ||
       (source.ignoredSemicolons.has(token.range[0]) &&
-        !isLastOnItsLine(source, token.range[0]))
+        (rules.kind === "required" || !isLastOnItsLine(source, token.range[0])))
     ) {
       lines.add(lineStartOf(source, token.range[0]))
     }
@@ -80,26 +140,10 @@ export function findLinesWithOwnSemicolons(
     addSemicolonsIn(comment.range)
   }
   for (const offset of source.ignoredSemicolons) {
-    if (!isLastOnItsLine(source, offset)) lines.add(lineStartOf(source, offset))
+    if (rules.kind === "required" || !isLastOnItsLine(source, offset))
+      lines.add(lineStartOf(source, offset))
   }
   return lines
-}
-
-/**
- * Whether a `;` token may separate statements in the diagram of the source:
- * in a flowchart, in a sequence diagram, in a quadrant chart, and in an XY
- * chart. The other diagram types have no such `;`, so every `;` in them is a
- * character of a token or a `;` that the line rule ignores.
- */
-function semicolonsSeparateStatements(source: Source): boolean {
-  const { type } = source.root.body
-  return (
-    type === "FlowchartDiagram" ||
-    type === "AgentflowDiagram" ||
-    type === "SequenceDiagram" ||
-    type === "QuadrantDiagram" ||
-    type === "XychartDiagram"
-  )
 }
 
 /**
@@ -239,9 +283,8 @@ function isNextToSemicolon(source: Source, offset: number): boolean {
 /**
  * Whether nothing but whitespace follows the `;` at `offset` on its line: no
  * token, comment, or directive starts after it before the line ends. A `;`
- * that the line rule ignores and that ends its line is at the end of a
- * statement: it is dropped as a `;` that separates statements is, since
- * mermaid.js removes it from the text (docs/flowchart.md, Semicolons).
+ * that the line rule ignores and that ends its line can be dropped only
+ * where it is optional (see `isDroppedSemicolon`).
  */
 export function isLastOnItsLine(source: Source, offset: number): boolean {
   const lineEnd = lineEndOf(source, offset)
@@ -259,12 +302,13 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
  * which is printed as written, and a `;` that was dropped only when it stands
  * outside the comment would make a second formatting differ from the first
  * (ast.md, Comment). Not one in a diagram type where no `;` separates
- * statements (see `semicolonsSeparateStatements`): there the line that holds
- * it is kept as written, with the `;`.
+ * statements: there the line that holds it is kept as written, with the `;`.
+ * Required punctuation is never dropped, including selected semicolons in a
+ * diagram with required terminators (see `semicolonRulesOf`).
  */
 export function isDroppedSemicolon(source: Source, offset: number): boolean {
   return (
-    semicolonsSeparateStatements(source) &&
+    semicolonRulesOf(source).kind === "separators" &&
     source.ignoredSemicolons.has(offset) &&
     isLastOnItsLine(source, offset) &&
     !source.root.comments.some((comment) => comment.range[1] === offset)
@@ -379,6 +423,9 @@ export function isInsideStyleRuleStretch(
   start: number,
   end: number,
 ): boolean {
+  // Required semicolons use complete verbatim word lines. Every other
+  // gap in that diagram follows its ordinary spacing rule.
+  if (semicolonRulesOf(source).kind === "required") return false
   return findStyleRuleStretches(source).some(
     ([first, last]) => first < start && end <= last,
   )
@@ -395,7 +442,7 @@ const styleRuleStretchesBySource = new WeakMap<
  * printer keeps, or -1. The printer drops the `;` that the line rule ignores
  * at the end of the line (see `isDroppedSemicolon`), and the `;` tokens that
  * separate statements on a line that keeps no `;` of its own (see
- * `findSemicolonLines`); a `;` inside a token or a comment stays. The line
+ * `findSemicolonLines`). A `;` inside a token or a comment stays. The line
  * that it prints has the rule only through the `;` that stay, so a stretch is
  * decided by those, or a second formatting would find none.
  */
@@ -432,22 +479,107 @@ function findStyleRuleStretches(
   let start = 0
   while (start <= source.text.length) {
     const end = lineEndOf(source, start)
-    const line = source.text.slice(start, end)
-    const words = [line.indexOf("style"), line.indexOf("classDef")].filter(
-      (index) => index !== -1,
-    )
-    const colon = line.indexOf(":", Math.min(...words))
-    const hash = line.lastIndexOf(
-      "#",
-      findLastKeptSemicolon(source, start, line),
-    )
-    if (words.length > 0 && colon !== -1 && colon < hash) {
-      stretches.push([start + colon, start + hash])
-    }
+    const stretch = findPotentialStyleRuleStretch(source, start, end)
+    if (stretch !== null) stretches.push(stretch)
     start = end + 1
   }
   styleRuleStretchesBySource.set(source, stretches)
   return stretches
+}
+
+/** The first of the two literal words used by the common line rule. */
+function findStyleWord(text: string): number {
+  const style = text.indexOf("style")
+  const classDef = text.indexOf("classDef")
+  if (style === -1) return classDef
+  return classDef === -1 ? style : Math.min(style, classDef)
+}
+
+/** Verbatim word lines, computed once for a source with required semicolons. */
+const verbatimStyleLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
+
+/**
+ * Railroad keeps a complete source line containing either common line-rule
+ * word after global directives are omitted. Keeping the line, including every
+ * statement and comment, protects both rule terminators and ABNF comment marks
+ * without predicting which semicolon the line rule selects. A removed directive
+ * can join a word across physical lines; all those lines stay together
+ * (common.md, Where a directive is; docs/railroad.md, Semicolons).
+ */
+export function findVerbatimStyleLines(source: Source): ReadonlySet<number> {
+  const cached = verbatimStyleLinesBySource.get(source)
+  if (cached !== undefined) return cached
+  const lines = new Set<number>()
+  verbatimStyleLinesBySource.set(source, lines)
+  if (semicolonRulesOf(source).kind !== "required") return lines
+  let lineStart = source.root.body.range[0]
+  let position = lineStart
+  const parts: string[] = []
+
+  /** Retains every source line contributing to this directive-free line. */
+  function finishLine(end: number): void {
+    if (findStyleWord(parts.join("")) !== -1) {
+      let start = lineStartOf(source, lineStart)
+      while (start <= end) {
+        lines.add(start)
+        const next = source.text.indexOf("\n", start)
+        if (next === -1) break
+        start = next + 1
+      }
+    }
+    parts.length = 0
+    lineStart = end + 1
+  }
+
+  /** Reads authored line boundaries outside the omitted directive ranges. */
+  function append(end: number): void {
+    while (position < end) {
+      const lineFeed = source.text.indexOf("\n", position)
+      if (lineFeed === -1 || lineFeed >= end) break
+      parts.push(source.text.slice(position, lineFeed))
+      finishLine(lineFeed)
+      position = lineFeed + 1
+    }
+    parts.push(source.text.slice(position, end))
+    position = end
+  }
+
+  for (const directive of source.root.directives) {
+    if (directive.range[1] <= position) continue
+    append(directive.range[0])
+    position = directive.range[1]
+    // An unclosed directive also consumes following notation whitespace.
+    if (!directive.closed)
+      while (
+        position < source.text.length &&
+        isWhitespace(source.text[position])
+      )
+        position++
+  }
+  append(source.text.length)
+  finishLine(source.text.length)
+  return lines
+}
+
+/**
+ * The conservative colon/hash stretch used for ordinary gaps. Railroad
+ * instead keeps complete lines containing the shared words as written
+ * (common.md, The `style` and `classDef` lines; docs/railroad.md, Semicolons).
+ */
+function findPotentialStyleRuleStretch(
+  source: Source,
+  start: number,
+  end: number,
+): readonly [number, number] | null {
+  const first = lineStartOf(source, start)
+  const text = source.text.slice(first, lineEndOf(source, end))
+  const semicolon = findLastKeptSemicolon(source, first, text)
+  if (semicolon < 0) return null
+  const firstWord = findStyleWord(text)
+  if (firstWord === -1) return null
+  const colon = text.indexOf(":", firstWord)
+  const hash = text.lastIndexOf("#", semicolon)
+  return colon !== -1 && colon < hash ? [first + colon, first + hash] : null
 }
 
 /**

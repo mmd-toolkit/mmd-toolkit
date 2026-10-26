@@ -1,0 +1,74 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/treemap.html",
+    "line": 49
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Technology Stack",
+        "children": [
+          {
+            "name": "Frontend",
+            "children": [
+              {
+                "name": "React",
+                "value": 35
+              },
+              {
+                "name": "CSS",
+                "value": 15
+              },
+              {
+                "name": "HTML",
+                "value": 10
+              }
+            ]
+          },
+          {
+            "name": "Backend",
+            "children": [
+              {
+                "name": "Node.js",
+                "value": 25
+              },
+              {
+                "name": "Express",
+                "value": 10
+              },
+              {
+                "name": "MongoDB",
+                "value": 15
+              }
+            ]
+          },
+          {
+            "name": "DevOps",
+            "children": [
+              {
+                "name": "Docker",
+                "value": 10
+              },
+              {
+                "name": "Kubernetes",
+                "value": 15
+              },
+              {
+                "name": "CI/CD",
+                "value": 5
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

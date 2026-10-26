@@ -7,6 +7,7 @@ import type {
 import type { DiagramUnit, UnitEnds } from "./diagram-units.ts"
 import { ParseError } from "./errors.ts"
 import type { LineIndex } from "./positions.ts"
+import { isBefore } from "./scanning.ts"
 
 /**
  * What every diagram's lexer does in the same way, as each diagram's Units
@@ -85,6 +86,23 @@ export abstract class UnitLexer<
     const unit = this.addUnit(name, at, to, ends)
     this.position = to
     return unit
+  }
+
+  /** Ordered rules: only a strictly longer explicit alternative replaces the matched unit. */
+  protected readUnitOrLongerAlternative(
+    at: DiagramCharacter,
+    name: Name,
+    end: DiagramPosition,
+    alternative: Name,
+    alternativeEnd: DiagramPosition | undefined,
+  ): void {
+    if (
+      alternativeEnd !== undefined &&
+      end !== null &&
+      isBefore(end, alternativeEnd)
+    )
+      this.read(alternative, at, alternativeEnd)
+    else this.read(name, at, end)
   }
 
   /** Reads the diagram text to its end, the first rule of the current context that matches at each place. */

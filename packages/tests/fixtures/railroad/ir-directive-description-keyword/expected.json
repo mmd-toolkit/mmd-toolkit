@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removing a directive can reconstruct a description keyword."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "A",
+    "rules": []
+  }
+}

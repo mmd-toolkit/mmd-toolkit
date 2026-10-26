@@ -1,0 +1,170 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: radar-no-duplicate-option >> invalid >>> docs/rules/radar-no-duplicate-option.md incorrect 1
+Filename: radar-no-duplicate-option-incorrect-1.mmd
+
+Code:
+  1 | radar-beta
+  2 |   axis A, B, C
+  3 |   curve sales{1, 2, 3}
+  4 |   ticks 2, ticks 3, ticks 2
+    |            ^~~~~~~  ^~~~~~~
+    |            [1]      [2]
+  5 |
+
+[1] mermaid.js uses this `ticks` value instead of the one given on line 4.
+[2] mermaid.js uses this `ticks` value instead of the one given on line 4.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/docs-incorrect-1
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/docs-incorrect-1-input.mmd
+
+Code:
+  1 | radar-beta
+  2 |   axis A, B, C
+  3 |   curve sales{1, 2, 3}
+  4 |   ticks 2, ticks 3, ticks 2
+    |            ^~~~~~~  ^~~~~~~
+    |            [1]      [2]
+  5 |
+
+[1] mermaid.js uses this `ticks` value instead of the one given on line 4.
+[2] mermaid.js uses this `ticks` value instead of the one given on line 4.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/option-five
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/option-five-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{1,2,3}
+  4 | showLegend false, ticks 2, min 1, max 4, graticule polygon
+  5 | showLegend true ticks 3 min 0 max 5 graticule circle
+    | ^~~~~~~~~~~~~~~ ^~~~~~~ ^~~~~ ^~~~~ ^~~~~~~~~~~~~~~~
+    | [1]             [2]     [3]   [4]   [5]
+  6 |
+
+[1] mermaid.js uses this `showLegend` value instead of the one given on line 4.
+[2] mermaid.js uses this `ticks` value instead of the one given on line 4.
+[3] mermaid.js uses this `min` value instead of the one given on line 4.
+[4] mermaid.js uses this `max` value instead of the one given on line 4.
+[5] mermaid.js uses this `graticule` value instead of the one given on line 4.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/option-five-same-group
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/option-five-same-group-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | showLegend false, showLegend true, ticks 2, ticks 3, min 1, min 0, max 4, max 5, graticule polygon, graticule circle
+    |                   ^~~~~~~~~~~~~~~ [1]       ^~~~~~~ [2]     ^~~~~ [3]     ^~~~~ [4]                 ^~~~~~~~~~~~~~~~ [5]
+  3 |
+
+[1] mermaid.js uses this `showLegend` value instead of the one given on line 2.
+[2] mermaid.js uses this `ticks` value instead of the one given on line 2.
+[3] mermaid.js uses this `min` value instead of the one given on line 2.
+[4] mermaid.js uses this `max` value instead of the one given on line 2.
+[5] mermaid.js uses this `graticule` value instead of the one given on line 2.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/option-three
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/option-three-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{1,2,3}
+  4 | ticks 2, ticks 3, ticks 2
+    |          ^~~~~~~  ^~~~~~~
+    |          [1]      [2]
+  5 |
+
+[1] mermaid.js uses this `ticks` value instead of the one given on line 4.
+[2] mermaid.js uses this `ticks` value instead of the one given on line 4.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/option-trivia
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/option-trivia-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{1,2,3}
+  4 | ticks 2
+  5 | %% note
+  6 | %%{init: {}}%%
+  7 |
+  8 | ticks %%{}%%
+    | ^~~~~~~~~~~~\ [1]
+  9 | 3
+    | ~ [1]
+ 10 |
+
+[1] mermaid.js uses this `ticks` value instead of the one given on line 4.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/range-final
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/range-final-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{1,2,3}
+  4 | min 10, max 5
+  5 | min 0
+    | ^~~~~ [1]
+  6 |
+
+[1] mermaid.js uses this `min` value instead of the one given on line 4.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/ticks-cap-overwritten
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/ticks-cap-overwritten-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{1,2,3}
+  4 | ticks 33, ticks 3
+    |           ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js uses this `ticks` value instead of the one given on line 4.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/ticks-fraction-at-cap
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/ticks-fraction-at-cap-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | ticks 32.5, ticks 32, ticks 31.5
+    |                       ^~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js uses this `ticks` value instead of the one given on line 2.
+---
+
+
+Test: radar-no-duplicate-option >> invalid >>> invalid/radar/ticks-fraction-overwritten
+Filename: tests/fixtures/rules/radar-no-duplicate-option/invalid/radar/ticks-fraction-overwritten-input.mmd
+
+Code:
+  1 | radar-beta
+  2 | axis A, B, C
+  3 | curve sales{1,2,3}
+  4 | ticks 2.5, ticks 3
+    |            ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js uses this `ticks` value instead of the one given on line 4.
+---

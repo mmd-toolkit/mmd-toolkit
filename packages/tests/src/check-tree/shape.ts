@@ -43,8 +43,8 @@ function describe(value: unknown): string {
 /**
  * Whether `value` is a value of the field `field` of the node type `type` that
  * the form of a recorded tree allows besides its kind: the `value` of a
- * NumericLiteral is also `Infinity`, `-Infinity`, or null for a number that a
- * double cannot hold, since JSON writes the non-finite numbers as null
+ * NumericLiteral is also `Infinity`, `-Infinity`, NaN, or null for a non-finite
+ * double, since JSON writes non-finite numbers as null
  * (tests/docs/maintaining-fixtures.md, The recorded tree is JSON). Which of them is right
  * for the written text is checked with the value (`values.ts`).
  */
@@ -56,7 +56,10 @@ function isNonFiniteNumber(
   return (
     type === "NumericLiteral" &&
     field === "value" &&
-    (value === null || value === Infinity || value === -Infinity)
+    (value === null ||
+      value === Infinity ||
+      value === -Infinity ||
+      Number.isNaN(value))
   )
 }
 

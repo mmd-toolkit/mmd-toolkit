@@ -22553,3 +22553,312 @@ entry を上下限へ切り詰めない。
   [テーマ変数から導出する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46)。
   生成される identity、browser に依存する公開処理、Db patch はない。
   [fixture: radar/config-drawing-only]
+
+## treemap
+
+`normalizeTreemap()` は detector id `treemap` を要約する。
+[`treemap` と `treemap-beta` の見出し](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/treemap.langium#L44-L49)
+は同じ id を使う。
+[fixture: treemap/header-beta] [fixture: treemap/spec-treemap-test-ts-892fa294]
+
+| 項目        | 内容                                                                          |
+| ----------- | ----------------------------------------------------------------------------- |
+| `title`     | 公開された図のタイトル。なければ空文字。                                      |
+| `accTitle`  | 公開されたアクセシビリティタイトル。なければ空文字。                          |
+| `accDescr`  | 公開されたアクセシビリティ説明。なければ空文字。                              |
+| `nodes`     | 外側のノード。各要素に `name` と任意の `value`、`classSelector`、`children`。 |
+| `classDefs` | 初出順のクラス。各要素に `id` と `styles`。                                   |
+
+要約は
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L24-L30)
+が読む
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L37-L48)
+の子を採り、同じノードを `getNodes()` でも重ねて保持しない。
+adapter は Db に追加する前に
+[`buildHierarchy()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/utils.ts#L25-L66)
+で親子を作る。
+順序と同名の重複は公開どおり残す。
+section は空配列を含む `children` を持ち、
+leaf は `value` を持って `children` を持たない。
+複数の外側ノードと空名も要約に残す。
+[fixture: treemap/db-all-fields] [fixture: treemap/db-indent-pop]
+[fixture: treemap/db-first-indented] [fixture: treemap/db-leaf-not-parent]
+[fixture: treemap/db-duplicate-names] [fixture: treemap/db-empty-names]
+
+Db の木を作る字下げには、直前の見出し・section・leaf の行末、
+または classDef を終えるセミコロンの後の空白・タブも数える。
+section の行末の空白によって、
+次の行の字下げのないノードがその子になることがある。
+leaf の行末の空白によって、
+次のノードが leaf の属する section の下に残ることがある。
+次の行にも字下げがある場合、2 つの空白の連なりは別々のままで、
+Mermaid は入力を拒否する。
+これは
+[行の文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/treemap.langium#L57-L70)
+と
+[公開される字下げ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/parser.ts#L34-L55)
+に従う。
+[fixture: treemap/db-section-tail-no-space]
+[fixture: treemap/db-section-tail-space] [fixture: treemap/db-section-tail-tab]
+[fixture: treemap/db-leaf-tail-no-space] [fixture: treemap/db-leaf-tail-space]
+[fixture: treemap/db-leaf-tail-tab] [fixture: treemap/db-header-tail-space]
+[fixture: treemap/db-header-tail-tab] [fixture: treemap/db-class-tail-no-space]
+[fixture: treemap/db-class-tail-space] [fixture: treemap/db-class-tail-tab]
+[fixture: treemap/gram-section-tail-space-next-indent]
+[fixture: treemap/gram-section-tail-tab-next-indent]
+[fixture: treemap/gram-leaf-tail-space-next-indent]
+[fixture: treemap/gram-leaf-tail-tab-next-indent]
+[fixture: treemap/gram-header-tail-space-next-indent]
+[fixture: treemap/gram-header-tail-tab-next-indent]
+[fixture: treemap/gram-class-tail-space-next-indent]
+[fixture: treemap/gram-class-tail-tab-next-indent]
+
+adapter は
+[全クラスをノードより先に公開する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/parser.ts#L27-L55)。
+[`addClass()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L50-L77)
+は再定義時にクラスの位置を動かさず style を追加する。
+未参照のクラスと未解決の selector も要約に残す。
+prototype の名前は通常の Map キーとして扱う。
+class style は `\,` を `§§§` に、残るコンマを `;` に置き換えた後、
+左から重なりのない各 `§§§` をコンマに置き換え、`;` で分ける。
+書かれた `§§§` も項目内のコンマになる。
+`a§§§b` は `a,b`、`a§§§§b` は `a,§b`、`§§\,x` は `,§§x` になる。
+空の項目も残す。
+各 style は `trimEnd()` で末尾の空白だけを除き、先頭の空白は残す。
+[fixture: treemap/db-class-forward] [fixture: treemap/db-class-repeat]
+[fixture: treemap/db-class-unused] [fixture: treemap/db-class-missing]
+[fixture: treemap/db-prototype-names] [fixture: treemap/db-class-empty-final]
+[fixture: treemap/db-class-escaped-comma] [fixture: treemap/db-style-whitespace]
+[fixture: treemap/space-style-all-trailing]
+[fixture: treemap/db-class-style-marker]
+[fixture: treemap/db-class-style-marker-four]
+[fixture: treemap/db-class-style-marker-escaped-comma]
+
+[`NUMBER2` の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L17-L29)
+はカンマを除いて `parseFloat()` を呼ぶ。
+`1,234.5` は 1234.5、`1_234.50` は 1、`1.2.3` は 1.2 になる。
+ドットだけなら NaN になる。
+有限値は数として保持し、非有限値は `numberOrText()` により
+`"NaN"`、`"Infinity"`、`"-Infinity"` とし、負のゼロはゼロとする。
+到達する値には NaN、正の overflow、非正規化数、ゼロへの下溢れがある。
+符号、指数表記、`NaN`、`Infinity` は数値の入力形式ではない。
+`STRING2` は外側の引用符だけを除き、バックスラッシュの escape を解釈しない。
+[fixture: treemap/db-number-comma] [fixture: treemap/db-number-underscore]
+[fixture: treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan]
+[fixture: treemap/db-number-overflow] [fixture: treemap/db-number-subnormal]
+[fixture: treemap/db-number-underflow] [fixture: treemap/number-negative-zero]
+[fixture: treemap/number-plus] [fixture: treemap/number-exponent]
+[fixture: treemap/number-nan] [fixture: treemap/number-infinity]
+[fixture: treemap/lex-string-conversion]
+
+共通の
+[公開 helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+は最終 AST 値が truthy のときだけ設定する。
+最後の共通値が空なら以前の本文の代入を抑止し、
+最後の title が空なら frontmatter のタイトルを残す。
+アクセシビリティ値は
+[共通描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+へ渡る。
+[fixture: treemap/common-repeat] [fixture: treemap/common-repeat-empty]
+[fixture: treemap/frontmatter-empty-body-title]
+
+要約は次を除く。
+
+- 人工の根の空名、重複するノード一覧、private の `levels` と `root`、
+  元の字下げ幅。公開された森が親子を一度ずつ保持している。
+- ノードの `cssCompiledStyles` とクラスの `textStyles`。
+  selector とクラス定義から導出する。
+  描画は compiled styles を
+  [`styles2String()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L210-L240)
+  に渡し、クラスを
+  [`getClasses()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L529-L535)
+  で公開する。
+  [fixture: treemap/db-class-forward] [fixture: treemap/db-class-repeat]
+- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L28-L35)。
+  公開処理は treemap の設定を読まない。
+  padding、寸法、値の表示と書式、
+  `useMaxWidth` は描画だけに効く。
+  renderer は `borderWidth`、`valueFontSize`、`labelFontSize` を読まない。
+  設定は site または embedded config に残す。
+  opaque-data 比較で除く treemap の受理判定キーはない。
+  [fixture: treemap/config-drawing-only]
+  [fixture: treemap/config-frontmatter-drawing]
+  [fixture: treemap/config-init-drawing]
+  [fixture: treemap/config-frontmatter-cannot-rescue]
+  [fixture: treemap/config-init-cannot-rescue]
+- section の集計値、描画の並べ替え後の順序、座標、寸法、色、描画用 id。
+  renderer が描画時に
+  [集計、並べ替え、配置](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L141-L175)
+  と
+  [テーマ色](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L79-L126)
+  を導出する。
+  [fixture: treemap/db-all-fields]
+
+Db パッチは不要。
+公開処理は browser global、時刻、乱数を読まず、リンクと data block もない。
+
+## railroad
+
+`normalizeRailroad()` は `railroad`、`railroadEbnf`、`railroadAbnf`、
+`railroadPeg` を一つの形で要約する。
+4 つの
+[図の定義](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDiagram.ts#L12-L17)
+は Db と renderer を共有する。
+`diagramType` は検出された id を保持する。
+[fixture: railroad/ir-header-only] [fixture: railroad/ebnf-header-only]
+[fixture: railroad/abnf-header-only] [fixture: railroad/peg-header-only]
+
+| フィールド | 内容                                                   |
+| ---------- | ------------------------------------------------------ |
+| `accTitle` | 公開されたアクセシビリティタイトル。未設定なら空文字。 |
+| `accDescr` | 公開されたアクセシビリティ説明。未設定なら空文字。     |
+| `rules`    | 宣言順の規則。各要素は `name` と `definition`。        |
+
+要約は
+[`getRules()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L71-L102)
+を使い、
+[renderer も同じ配列を読む](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L647-L657)。
+同名の規則も別々の宣言として残る。
+非公開の `ruleMap` は検索項目を置き換えるが、配列の宣言は置換も移動もしない。
+要約はこの重複する索引を除く。
+[fixture: railroad/ir-db-duplicates] [fixture: railroad/ebnf-db-duplicates]
+[fixture: railroad/abnf-db-duplicates] [fixture: railroad/peg-db-duplicates]
+
+式は `type` と次の表のフィールドを再帰的に持つ。
+配列順は公開されたとおりに保つ。
+[式の renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L504-L525)
+は `max` 以外の全項目を読む。
+上限は ABNF の構文が独立して決めるため保持する。
+`min` から導出されず、解析や検証の状態でもない。
+[fixture: railroad/ir-db-all-fields] [fixture: railroad/ebnf-db-all-fields]
+[fixture: railroad/abnf-db-all-fields] [fixture: railroad/peg-db-all-fields]
+
+| `type`        | フィールド              |
+| ------------- | ----------------------- |
+| `terminal`    | `value`                 |
+| `nonterminal` | `name`                  |
+| `special`     | `text`                  |
+| `sequence`    | `elements`              |
+| `choice`      | `alternatives`          |
+| `optional`    | `element`               |
+| `repetition`  | `element`、`min`、`max` |
+
+4 つの adapter は次の値を公開する。
+
+- [IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/railroadParser.ts#L28-L80):
+  constructor を対応する式の種類へ変換する。
+  単一要素の sequence と choice は要素へ畳む。
+  `zeroOrMore` と `oneOrMore` の下限は 0 と 1、上限は Infinity。
+  [fixture: railroad/ir-db-singletons] [fixture: railroad/ir-db-all-fields]
+- [EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/ebnfParser.ts#L30-L156):
+  単一要素の sequence、choice と group は畳む。
+  角括弧と後置 `?` は `optional`、波括弧と `*` は下限 0、
+  `+` は下限 1 の repetition となり、上限は Infinity。
+  後置演算子は出現順に適用する。
+  例外 `A - B` は A、terminal `-`、B の sequence となる。
+  [fixture: railroad/ebnf-db-singletons] [fixture: railroad/ebnf-db-all-fields]
+  [fixture: railroad/ebnf-db-postfix-order]
+- [ABNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/abnfParser.ts#L26-L120):
+  単一要素の連結、選択と group は畳む。
+  数値 terminal は `%x41` などの文字列のまま残る。
+  繰り返し境界は十進の `parseInt` で読む。
+  変換後の下限が 0、上限が 1 なら `optional`、
+  それ以外の繰り返し境界は `repetition` となる。
+  adapter は逆転した上下限を拒否しない。
+  有限の境界値は数、非有限値は `numberOrText()` により
+  `"Infinity"` などの文字列で記録する。
+  [fixture: railroad/abnf-db-singletons] [fixture: railroad/abnf-db-all-fields]
+  [fixture: railroad/abnf-db-repeat-optional]
+  [fixture: railroad/abnf-db-repeat-implicit-optional]
+  [fixture: railroad/abnf-db-repeat-implicit-zero]
+  [fixture: railroad/abnf-db-repeat-zero-padded-optional]
+  [fixture: railroad/abnf-db-repeat-reversed]
+  [fixture: railroad/abnf-db-repeat-precision]
+  [fixture: railroad/abnf-db-repeat-overflow]
+  [fixture: railroad/abnf-db-repeat-max-overflow]
+- [PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/pegParser.ts#L27-L148):
+  単一要素の sequence、choice と group は畳む。
+  後置 `?`、`*`、`+` は同じ optional と repetition の形になる。
+  dot は special の `.` となる。
+  predicate は `&` または `!` と、その後に対象の terminal の二重引用文字列、
+  参照名または special の文字列を持つ special となる。
+  畳み込み後に terminal、nonterminal、special でない対象は `(...)` となる。
+  元の式の木は公開されない。
+  対象の terminal の値にある引用符と改行は、predicate のラベルで escape しない。
+  [fixture: railroad/peg-db-singletons] [fixture: railroad/peg-db-all-fields]
+  [fixture: railroad/peg-db-predicates]
+  [fixture: railroad/peg-db-predicate-singleton-group]
+  [fixture: railroad/peg-db-predicate-predicate]
+  [fixture: railroad/peg-db-predicate-quote-newline]
+
+[IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad/valueConverter.ts#L5-L34)、
+[EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L5-L34)、
+[PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-peg/valueConverter.ts#L5-L34)
+の文字列の変換は、両端の単一引用符または二重引用符を除き、
+`\n`、`\r`、`\t` を制御文字に、ほかの backslash escape `\x` を `x` にする。
+[fixture: railroad/ir-lex-string-conversion]
+[fixture: railroad/ebnf-lex-string-conversion]
+[fixture: railroad/peg-lex-string-conversion]
+[ABNF の文字列](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-abnf/valueConverter.ts#L26-L33)
+は二重引用符を使い、両端の引用符だけを除く。
+backslash は escape として解釈せず、そのまま残す。
+[fixture: railroad/abnf-lex-string-conversion]
+[EBNF の special の文字列](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L66-L68)
+は両端の `?` を除き、両端の空白を trim する。
+[fixture: railroad/ebnf-special-whitespace]
+
+[共通の公開関数](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+はアクセシビリティ値について、最終の AST 値が truthy の場合だけ設定する。
+空の最終代入は前の本文の値を抑制する。
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L107-L135)
+はさらにアクセシビリティタイトルの先頭空白と、説明の LF 後の空白を除く。
+[fixture: railroad/ir-common-repeat] [fixture: railroad/ir-common-repeat-empty]
+[fixture: railroad/ebnf-common-repeat-empty]
+[fixture: railroad/abnf-common-repeat-empty]
+[fixture: railroad/peg-common-repeat-empty]
+
+要約は次も除く。
+
+- 図全体のタイトル。
+  adapter は本文の title を公開するが、railroad の
+  [`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+  はそれを読まない。
+  [共通描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+  もアクセシビリティ値だけを読む。
+  書かれた title は構文木に残し、
+  frontmatter の title は `embedded.title` に残る。
+  各 adapter は parse 開始時に Db を clear する。
+  これは
+  [`Diagram.fromText()` が frontmatter の title を設定](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L49-L54)
+  した後なので、この title は正規化前の Db にも残らない。
+  [fixture: railroad/ir-db-all-fields]
+  [fixture: railroad/ir-frontmatter-empty-body-title]
+  [fixture: railroad/ebnf-frontmatter-empty-body-title]
+  [fixture: railroad/abnf-frontmatter-empty-body-title]
+  [fixture: railroad/peg-frontmatter-empty-body-title]
+- 規則の `comment` と repetition の `separator`:
+  [型](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadTypes.ts#L33-L69)
+  にはあるが、どの adapter も設定せず renderer も読まない。
+- railroad 設定:
+  [描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+  と
+  [style の構築](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/styles.ts#L1-L44)
+  が使う。
+  Db と adapter は `railroad.*` を読まず、設定は site と embedded に残す。
+  ただし埋め込み `railroad.fontFamily` が数の場合は、公開前の再帰的な
+  [設定の無害化](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils/sanitizeDirective.ts#L65-L85)
+  で拒否されるため、その fixture は `embedded-data-opaque` とする。
+  正しく導出できる設定から除く railroad 固有の意味的な受理キーはない。
+  [fixture: railroad/ir-config-drawing-site]
+  [fixture: railroad/ir-config-frontmatter-drawing]
+  [fixture: railroad/ebnf-config-init-drawing]
+  [fixture: railroad/abnf-config-frontmatter-drawing]
+  [fixture: railroad/peg-config-init-drawing]
+  [fixture: railroad/ir-config-frontmatter-fontfamily-number]
+  [fixture: railroad/ebnf-config-init-fontfamily-number]
+- 測定値、座標、SVG path、寸法、描画 id:
+  [描画中](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L535-L624)
+  に計算される。
+
+公開処理は browser global、時刻、乱数を読まず、リンクや data block もない。
+Db patch は不要。

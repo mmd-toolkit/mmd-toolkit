@@ -17,11 +17,13 @@ import { normalizePacket } from "./packet.ts"
 import { normalizePie } from "./pie.ts"
 import { normalizeQuadrant, patchQuadrantDb } from "./quadrant.ts"
 import { normalizeRadar } from "./radar.ts"
+import { normalizeRailroad } from "./railroad.ts"
 import { normalizeRequirement } from "./requirement.ts"
 import { normalizeSankey } from "./sankey.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
 import { normalizeTimeline } from "./timeline.ts"
+import { normalizeTreemap } from "./treemap.ts"
 import { normalizeUsecase, patchUsecaseDb } from "./usecase.ts"
 import { normalizeVenn } from "./venn.ts"
 import { normalizeXyChart } from "./xychart.ts"
@@ -73,6 +75,11 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["packet", normalizePacket],
   ["architecture", normalizeArchitecture],
   ["radar", normalizeRadar],
+  ["treemap", normalizeTreemap],
+  ["railroad", normalizeRailroad],
+  ["railroadEbnf", normalizeRailroad],
+  ["railroadAbnf", normalizeRailroad],
+  ["railroadPeg", normalizeRailroad],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

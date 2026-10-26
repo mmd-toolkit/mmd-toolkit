@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Known divergences: Does an open frontmatter tag change common title quotes while both readings accept?"
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "x='y'>",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

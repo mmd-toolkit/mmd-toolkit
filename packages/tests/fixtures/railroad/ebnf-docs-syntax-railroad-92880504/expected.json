@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/railroad.md",
+    "line": 46
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "letter",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "terminal",
+              "value": "b"
+            },
+            {
+              "type": "terminal",
+              "value": "c"
+            }
+          ]
+        }
+      },
+      {
+        "name": "identifier",
+        "definition": {
+          "type": "nonterminal",
+          "name": "letter"
+        }
+      }
+    ]
+  }
+}

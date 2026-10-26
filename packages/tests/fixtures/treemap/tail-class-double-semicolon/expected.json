@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does CLASS_DEF absorb more than one semicolon?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 26: unexpected character: ->;<- at offset: 33, skipped 1 characters. "
+  }
+}

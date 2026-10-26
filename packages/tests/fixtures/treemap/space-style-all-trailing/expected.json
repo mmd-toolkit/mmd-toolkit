@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does trimEnd remove the complete non-CR/LF JavaScript whitespace set from a style?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "whitespace",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

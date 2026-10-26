@@ -85,17 +85,23 @@ const problems: TreeProblem[] = checkTree(text, tree)
   the frontmatter, equal the source of their ranges (positions.md, Invariants;
   [ast.md](../../spec/docs/ast.md)).
 - **Comments.** A comment line is where the scan finds it, with the mark `%%`; a
-  diagram comment has a mark that its diagram has, and ends where its line ends
-  (before a U+2028 or a U+2029 too in a mindmap diagram, whose comments run to
-  the end of their line segment); a flowchart, an ER diagram, a sankey diagram,
-  and a block diagram have the mark `%%` for a line of `%%` alone before their
-  header, as every diagram type does, and for no other comment; a gantt diagram
-  has the marks `%%` and `%` for its diagram comments, and a journey diagram and
-  a requirement diagram the marks `#`, `%%`, and `%`, a timeline diagram the
-  same marks, a mindmap diagram, an xychart diagram, a C4 diagram, and a
-  quadrant chart the mark `%%`; a fragment without a mark follows a comment
-  region (parser/docs/tokens.md, Comment;
+  diagram comment has a mark that its diagram has, and, except for railroad's
+  closed block comments, ends where its line ends (before a U+2028 or a U+2029
+  too in a mindmap diagram, whose comments run to the end of their line
+  segment); a flowchart, an ER diagram, a sankey diagram, and a block diagram
+  have the mark `%%` for a line of `%%` alone before their header, as every
+  diagram type does, and for no other comment; a gantt diagram has the marks
+  `%%` and `%` for its diagram comments, and a journey diagram and a requirement
+  diagram the marks `#`, `%%`, and `%`, a timeline diagram the same marks, a
+  mindmap diagram, an xychart diagram, a C4 diagram, and a quadrant chart the
+  mark `%%`; a fragment without a mark follows a comment region
+  (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
+  Railroad's native comments also use `/*`, `(*`, `;` and `#` as their dialect
+  permits. Its block comments include the first required closer in range and
+  value. [fixture: railroad/ir-tail-comment] [fixture:
+  railroad/ebnf-comment-iso] [fixture: railroad/abnf-comment-semicolon-ls]
+  [fixture: railroad/peg-comment-hash-ps]
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
   (ast.md, Directive; common.md, Where a directive is).
@@ -621,6 +627,134 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-retained-directive-bare-bom] [fixture:
     info/div-detect-yaml-bare-directive] [fixture: info/lex-retained-no-bare-ls]
     [fixture: info/lex-hidden-common-comment]
+
+  - railroad: all thirty authored node types, fields and visitor order follow
+    [ast/railroad.md](../../spec/docs/ast/railroad.md). One RailroadDiagram uses
+    Root.diagramType for four dialects. Check expression children in their
+    dialect and precedence roles, retaining IR calls and every written group;
+    natural sequence/choice wrappers need at least two members. Rule names,
+    assignment and the required visible semicolon remain distinct components.
+    [fixture: railroad/ir-gram-written-tree] [fixture:
+    railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
+    [fixture: railroad/peg-gram-written-tree] [fixture:
+    railroad/ir-db-singletons] [fixture: railroad/ebnf-db-singletons]
+
+    Check complete first-match lexical units, including metadata's earlier title
+    prefix, the IR constructor's longer name alternative, EBNF special/ISO/YAML
+    alternatives and ABNF's longer semicolon comment. Strings use their
+    dialect's quote and escape boundaries; decimal counts remain whole digit
+    atoms, while special sequences and percent numeric values are RawText text
+    units. Written values retain their spelling and common cuts. [fixture:
+    railroad/ir-keywords-long-rule-name] [fixture:
+    railroad/ebnf-reference-title-prefix] [fixture:
+    railroad/ebnf-postfix-special-priority] [fixture:
+    railroad/abnf-comment-terminator-control] [fixture:
+    railroad/abnf-string-backslash-quote] [fixture:
+    railroad/peg-string-escaped-lf] [fixture: railroad/abnf-directive-repeat]
+    [fixture: railroad/abnf-directive-numval-digits] [fixture:
+    railroad/ebnf-hidden-directive-special]
+
+    Check each retained native form once in its named gap or body position.
+    Members before an explicit separator own textAfter and members after it own
+    textBefore; adjacency puts the whole gap in the following textBefore.
+    Natural lists leave their outer member gaps empty for their parent. Calls,
+    groups, postfixes, exceptions, repeats and predicates have their separate
+    named gaps. Native forms cannot split repeat components. [fixture:
+    railroad/ir-native-ownership] [fixture: railroad/ebnf-native-ownership]
+    [fixture: railroad/abnf-native-ownership] [fixture:
+    railroad/peg-native-ownership] [fixture: railroad/abnf-native-in-atom]
+
+    Match the earliest qualifying closer within YAML's body-present alternative
+    before its empty fallback, or the native directive's first bounded closer.
+    The retained range excludes preceding padding, consumed LF and appended LF.
+    Railroad has no visible-EOL separator requirement: sole LF, spare LF, closer
+    plus space and EOF controls remain valid. Native Comments follow their
+    dialect's line or block rule and cannot replace an earlier terminal or start
+    inside an enclosing string, special sequence, metadata or hidden form.
+    [fixture: railroad/ir-hidden-yaml-adjacent-later] [fixture:
+    railroad/ir-hidden-yaml-adjacent-eof] [fixture:
+    railroad/ir-native-directive-adjacent] [fixture:
+    railroad/peg-hidden-yaml-sole-lf] [fixture:
+    railroad/peg-hidden-yaml-spare-lf] [fixture:
+    railroad/peg-hidden-directive-closing-space] [fixture:
+    railroad/ir-hidden-directive-eof] [fixture: railroad/ir-tail-comment]
+    [fixture: railroad/ebnf-iso-first-closer] [fixture:
+    railroad/peg-comment-hash-ps] [fixture:
+    railroad/ebnf-enclosing-string-hidden]
+
+    Before the header, check the single detection-retained YAML prefix and
+    genuine second-scan directives separately from passed bare Comments and
+    their accompanying trivia. Passed Unicode trivia is not read again, also
+    between retained forms; without a passed line the native boundary stays
+    strict. Body gaps remain ASCII space/tab and physical line endings. Metadata
+    is confined to the prefix before the first rule, and a following native form
+    is a body item. [fixture: railroad/ir-secondscan-real] [fixture:
+    railroad/ir-secondscan-between-bares-unicode] [fixture:
+    railroad/ir-retained-bare-secondscan-unicode] [fixture:
+    railroad/ir-secondscan-no-bare-unicode] [fixture:
+    railroad/ebnf-retained-ascii-control] [fixture:
+    railroad/ir-hidden-after-title] [fixture:
+    railroad/peg-metadata-after-rule-title]
+
+    These are tree conditions, not semantic acceptance gates. References need
+    not resolve, duplicate names remain declarations, and repeat bounds need not
+    be ordered. The parser's result records are compared with fixtureAccepts
+    separately; configuration is not revalidated by the checker. [fixture:
+    railroad/ir-gram-reference-resolution] [fixture: railroad/peg-db-duplicates]
+    [fixture: railroad/abnf-db-repeat-reversed] [fixture:
+    railroad/ir-config-frontmatter-fontfamily-number]
+
+  - treemap: all nine node types and their child order follow
+    [ast/treemap.md](../../spec/docs/ast/treemap.md). The body is flat: section,
+    leaf and classDef indent equals the ASCII space/tab unit before that row,
+    even on a preceding line or across common source removals. Ranges exclude
+    indentation. Two separate runs cannot stand for one indent, and an unused
+    trailing run is reported. Common composites consume their own padding; null
+    title consumes its one separator, and null class style consumes its maximal
+    separator whitespace. [fixture: treemap/gram-written-tree] [fixture:
+    treemap/db-section-tail-space] [fixture: treemap/db-leaf-tail-tab] [fixture:
+    treemap/gram-indent-around-global-directive] [fixture:
+    treemap/gram-two-indent-runs] [fixture:
+    treemap/gram-header-trailing-indent-eof] [fixture:
+    treemap/common-title-one-space] [fixture:
+    treemap/gram-class-whitespace-style-null]
+
+    Check complete headers without a suffix boundary, whole numeric spellings
+    with treemap's comma-removing parseFloat value, first-closing-quote strings
+    without escape decoding, and identifiers at their first-applicable lexical
+    position. Class names bypass selector keyword priority and require two
+    characters. Recorded non-finite numeric values may be JSON null. Leaves own
+    a colon or comma; selector gaps allow native LF and comments but no
+    indentation. Class styles fill their complete composite, including trailing
+    whitespace and any swallowed later-looking row. Common literals retain line
+    padding or the trimmed block interior; null denotes empty content and the
+    first block closer is required. No EOL is required after a common statement.
+    [fixture: treemap/header-beta] [fixture: treemap/gram-adjacent-sections]
+    [fixture: treemap/db-number-nan] [fixture: treemap/db-number-underscore]
+    [fixture: treemap/lex-string-conversion] [fixture:
+    treemap/lex-class-name-title-prefix] [fixture:
+    treemap/gram-class-one-letter] [fixture: treemap/comment-value-selector-gap]
+    [fixture: treemap/db-class-consumes-next-line] [fixture:
+    treemap/db-style-whitespace] [fixture: treemap/common-title-two-spaces]
+    [fixture: treemap/common-block-first-close] [fixture:
+    treemap/gram-description-block-acctitle-adjacent]
+
+    Native Comments cannot start inside an earlier string or composite value, or
+    inside a removed source Directive. There is no native YAML or DIRECTIVE form
+    or ignored-text field. Before the header, detection-passed bare lines carry
+    their accompanying trivia; without such a line the remaining gap must be
+    native LF. A retained one-line second-scan form is a Comment, with each
+    inner source Directive held once. Body gaps remain strict ASCII
+    whitespace/LF in their named positions. Check tree conditions only; recorded
+    result kinds check parser acceptance, and dbFromTree constructs parentage.
+    [fixture: treemap/hidden-comment-class] [fixture:
+    treemap/hidden-comment-string] [fixture: treemap/hidden-comment-block]
+    [fixture: treemap/hidden-yaml-body] [fixture:
+    treemap/div-retained-before-bare-unicode-line] [fixture:
+    treemap/div-bare-retained-unicode-header] [fixture:
+    treemap/lex-retained-no-bare-unicode-header] [fixture:
+    treemap/detect-second-scan-single-line-comment] [fixture:
+    treemap/space-nbsp-body] [fixture: treemap/config-init-drawing]
 
   - radar: all nineteen node types, fields and visitor order follow
     [ast/radar.md](../../spec/docs/ast/radar.md). Declaration and options groups

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does an ignored semicolon inside the class marker violate the atomic delimiter?"
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "style:#x",
+        "classSelector": "aa",
+        "children": []
+      }
+    ],
+    "classDefs": []
+  }
+}

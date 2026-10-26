@@ -544,6 +544,65 @@ string・common 値・native な形の内容にも、atom を割らずに置け�
 [fixture: radar/lex-hidden-native-opener-global]
 [fixture: radar/lex-hidden-native-closer-global]
 
+### Treemap
+
+treemap は複合 terminal の中でも、書かれた構成要素を区別します。
+原子である見出し、classDef・共通の keyword、class 名、selector、数、
+`:::` は内部の directive を一つの原子の綴りとして持てず、
+ignored text を足してもその原子を復元できません。
+string・共通 text・class style 全体は directive をまたぐ値を持てるため、
+そこに拒否を加えません。
+必須の空白を残す完全な構成要素の間では directive を許します。
+Mermaid の directive 除去後の読みと印付きの受理 fixture が差異を示し、
+空白不足や不正な接尾辞の対照は両方で拒否します。
+[fixture: treemap/directive-header-middle]
+[fixture: treemap/div-directive-beta-header]
+[fixture: treemap/directive-class-keyword]
+[fixture: treemap/directive-class-name]
+[fixture: treemap/directive-common-keyword]
+[fixture: treemap/directive-number] [fixture: treemap/directive-selector]
+[fixture: treemap/div-directive-style-marker]
+[fixture: treemap/directive-style] [fixture: treemap/directive-name-middle]
+[fixture: treemap/directive-common-colon]
+[fixture: treemap/directive-class-keyword-name-gap]
+[fixture: treemap/directive-class-keyword-missing-space]
+[fixture: treemap/directive-invalid-number-suffix-control]
+
+### Railroad
+
+[railroad の字句規則](../diagrams/railroad.ja.md#共通-directive-とセミコロンの境界)は、
+見出し、名前、IR constructor、metadata keyword、十進 count、
+複合の代入記号をそれぞれ書かれた atom とします。
+その内部の共通 directive は atom を分断し、拒否します。
+metadata の keyword、colon/brace、値は別の部品です。
+ABNF repeat は bound と star を別部品とし、
+percent numeric value は text 単位とします。
+完成した repeat の部品の間や string/text の値の内部の directive は許します。
+[fixture: railroad/ir-div-directive-header]
+[fixture: railroad/ir-directive-keyword-glued]
+[fixture: railroad/ir-directive-name]
+[fixture: railroad/ir-directive-description-keyword]
+[fixture: railroad/ebnf-div-directive-assignment]
+[fixture: railroad/peg-directive-operator]
+[fixture: railroad/abnf-directive-repeat-number]
+[fixture: railroad/abnf-directive-repeat]
+[fixture: railroad/abnf-directive-repeat-star]
+[fixture: railroad/abnf-directive-numval-prefix]
+[fixture: railroad/abnf-directive-numval-digits]
+
+木は native YAML と nonword の native directive を RailroadIgnoredText、
+通常の comment を Comment に保てるので、それらの入力は受理します。
+分断した atom の source も共有 Directive record に残せますが、
+式や ignored-text の兄弟ノードでは、それを 1 個の書かれた単位として表せません。
+第 2 の問いの答えは理由 2 です。
+Mermaid の削除して接合する順序の代わりに、直接の境界規則を使います。
+新しい差異の識別子は作りません。
+[fixture: railroad/ir-native-ownership]
+[fixture: railroad/ebnf-native-ownership]
+[fixture: railroad/abnf-native-ownership]
+[fixture: railroad/peg-native-ownership]
+[fixture: railroad/ir-directive-keyword-glued]
+
 ## mermaid.js の文書と issue
 
 - [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
@@ -689,3 +748,31 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
   文書例の comma の修正で、
   末尾 comma の文法上の対応を追加したものではありません。
+
+- Treemap: pin した
+  [treemap の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  は引用した row・字下げ・class 定義を説明し、
+  この共通の前処理の境界は定めていません。
+  2026-10-25 に公式 repository の issue・PR を
+  `treemap directive` で検索しました。
+  調べた結果に、この差異を maintainer が判断した根拠は見つかりませんでした。
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) は
+  treemap を導入し、2025-06-27 に merge された PR で、
+  この境界を判断したものではありません。
+
+- Railroad:
+  [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
+  PEG の predicate を説明します。
+  native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
+  2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
+  railroad directive、railroad semicolon、railroad comment で検索しました。
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は
+  demo の見出し名の報告
+  （closed、Triage）、
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は
+  ABNF の図種の提案（open、Discussion Needed）です。
+  どちらも、これらの前処理の境界について、
+  保守者が defect と判断した事実ではありません。
+  この差異はその判断でなく既存の共通規則に従います。
+  調べた結果だけで、ほかに関連する issue がないとは断定しません。

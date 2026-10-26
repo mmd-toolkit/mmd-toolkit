@@ -90,6 +90,8 @@ const allFixtures = [
   ...(await loadFixtures("packet")),
   ...(await loadFixtures("architecture")),
   ...(await loadFixtures("radar")),
+  ...(await loadFixtures("treemap")),
+  ...(await loadFixtures("railroad")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)

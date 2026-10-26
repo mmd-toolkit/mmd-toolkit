@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter tag changes double quotes in the ABNF accessibility title."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "x='y'>",
+    "accDescr": "",
+    "rules": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

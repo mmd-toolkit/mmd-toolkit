@@ -20,6 +20,8 @@ const BUILDS_EVERY_DB = 60_000
 const DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "railroad",
+  "treemap",
   "radar",
   "architecture",
   "gitgraph",

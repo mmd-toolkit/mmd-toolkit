@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Removing a directive joins fragments of a rule identifier."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "ab",
+        "definition": {
+          "type": "terminal",
+          "value": "x"
+        }
+      }
+    ]
+  }
+}

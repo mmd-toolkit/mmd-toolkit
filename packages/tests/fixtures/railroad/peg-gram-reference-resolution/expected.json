@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Acceptance: forward references and a self-recursive PEG reference add no semantic rejection."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "start",
+        "definition": {
+          "type": "nonterminal",
+          "name": "later"
+        }
+      },
+      {
+        "name": "later",
+        "definition": {
+          "type": "nonterminal",
+          "name": "later"
+        }
+      }
+    ]
+  }
+}

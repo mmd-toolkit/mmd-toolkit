@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Known divergences: Does an open frontmatter tag change class style quotes while both readings accept?"
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "ab",
+        "styles": [
+          "fill:x='y'>"
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

@@ -5,5 +5,9 @@
   },
   "accepted": true,
   "diagramType": "railroadPeg",
-  "db": null
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
 }

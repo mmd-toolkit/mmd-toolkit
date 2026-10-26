@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PEG literal and predicate labels are recorded before sanitization."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "<b>x</b>"
+            },
+            {
+              "type": "special",
+              "text": "&\"<i>y</i>\""
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

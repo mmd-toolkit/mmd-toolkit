@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A frontmatter tag changes one single-quoted EBNF terminal into a sequence."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "terminal",
+              "value": "x="
+            },
+            {
+              "type": "nonterminal",
+              "name": "y"
+            },
+            {
+              "type": "terminal",
+              "value": ">"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

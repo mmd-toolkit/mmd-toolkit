@@ -14,15 +14,15 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   [fixture: common/empty] [fixture: common/comment-only] [fixture:
   common/whitespace-only]
 - The `---` pseudo-diagram, or a retained nonleading block before a supported
-  diagram other than pie, gitgraph, info, packet or architecture: `range` covers
-  the three `-` characters that start the block. [fixture:
-  common/frontmatter-adjacent-delimiters] [fixture:
+  diagram other than pie, gitgraph, info, packet, architecture, radar, treemap
+  or railroad: `range` covers the three `-` characters that start the block.
+  [fixture: common/frontmatter-adjacent-delimiters] [fixture:
   common/frontmatter-nonleading-class] [fixture:
   common/frontmatter-nonleading-sequence] [fixture:
   common/frontmatter-nonleading-state] [fixture:
   common/frontmatter-after-bare-percent-flowchart]
 - A directive found once more before the header, except in pie, gitgraph, info,
-  packet or architecture,
+  packet, architecture, radar, treemap or railroad,
   ([Diagram detection](../../spec/docs/common.md#diagram-detection)): `range`
   covers its opening `%%{`, from its first `%` to its `{`, with the directives
   and comment regions of the source between them; of several, the first.
@@ -1164,3 +1164,45 @@ Shared atomic-cut errors point at the global directive or selected semicolon. A
 failed native directive may instead become a Comment. [fixture:
 radar/directive-axis-name] [fixture: radar/div-semicolon-number] [fixture:
 radar/hidden-native-unclosed]
+
+## In a treemap diagram
+
+The [ordered rules](../../spec/docs/diagrams/treemap.md#ordered-rules) scan the
+complete text before recursive descent. No recovered prefix is accepted.
+[fixture: treemap/error-after-prefix] [fixture: treemap/error-recovered-row]
+
+| Cause                                                   | Range and message                                                                                                                                                         | Fixtures                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No complete lexical rule matches                        | The source character, with `Unexpected character`; an unclosed string points at its opening quote.                                                                        | [fixture: treemap/error-start] [fixture: treemap/space-nbsp-body] [fixture: treemap/lex-string-open-double] [fixture: treemap/lex-string-open-single] [fixture: treemap/common-block-open]                                                                       |
+| The grammar cannot read a component                     | Its significant range, with `Unexpected token`; an indentation unit has an empty range at its start. At EOF, use the empty source-end range and `Unexpected end of text`. | [fixture: treemap/header-repeat] [fixture: treemap/gram-space-after-selector] [fixture: treemap/gram-two-indent-runs] [fixture: treemap/gram-selector-empty] [fixture: treemap/gram-header-trailing-indent-eof] [fixture: treemap/gram-leaf-trailing-indent-eof] |
+| A common directive or selected semicolon splits an atom | The shared directive/semicolon range, with `Unexpected directive` or `Unexpected semicolon`; composite components are checked separately.                                 | [fixture: treemap/directive-header-middle] [fixture: treemap/directive-class-name] [fixture: treemap/div-directive-style-marker] [fixture: treemap/div-semicolon-number-atom] [fixture: treemap/div-semicolon-title-keyword]                                     |
+
+Retained YAML is native unreadable text, so it points at its first dash rather
+than the whole block. A single-line retained second-scan form can instead be a
+Comment; its noncomment multiline closer remains unreadable. No additional
+semantic error is applied to multiple roots, empty names or NaN. [fixture:
+treemap/detect-retained-body-yaml-no-native] [fixture:
+treemap/detect-second-scan-single-line-comment] [fixture:
+treemap/detect-second-scan-multiline-rejected] [fixture:
+treemap/spec-treemap-test-ts-177d3e59] [fixture: treemap/db-empty-names]
+[fixture: treemap/db-number-nan]
+
+## In a railroad diagram
+
+All four dialects scan the complete source before grammar; no recovered prefix
+establishes acceptance. [fixture: railroad/ir-error-before-rule] [fixture:
+railroad/ebnf-error-before-rule] [fixture: railroad/abnf-error-before-rule]
+[fixture: railroad/peg-error-before-rule]
+
+| Cause                                                   | Range and message                                                                                                 | Fixtures                                                                                                                                                                                                                    |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No complete lexical rule matches                        | The source character, with `Unexpected character`; an unclosed string points at its opening quote.                | [fixture: railroad/ir-lex-string-open-double] [fixture: railroad/ebnf-lex-string-open-single] [fixture: railroad/abnf-lex-string-open] [fixture: railroad/peg-lex-name-nonascii]                                            |
+| The grammar cannot read a component                     | Its significant range, with `Unexpected token`; at EOF, the empty source-end range with `Unexpected end of text`. | [fixture: railroad/ir-error-empty-call] [fixture: railroad/ebnf-comma-trailing] [fixture: railroad/abnf-comment-terminator] [fixture: railroad/peg-prefix-missing-operand] [fixture: railroad/ir-metadata-after-rule-title] |
+| A common directive or selected semicolon splits an atom | The shared directive/semicolon range, with `Unexpected directive` or `Unexpected semicolon`.                      | [fixture: railroad/ir-div-directive-header] [fixture: railroad/ebnf-div-directive-assignment] [fixture: railroad/abnf-div-semicolon-repeat-number] [fixture: railroad/peg-div-semicolon-assignment]                         |
+
+Native hidden forms have no semantic rejection and need no visible EOL after
+them. A failed native directive may instead become a Comment. Counts, references
+and drawing configuration add no acceptance gate. [fixture:
+railroad/ir-hidden-directive-closing-space] [fixture:
+railroad/ebnf-native-directive-fallback] [fixture:
+railroad/abnf-db-repeat-reversed] [fixture: railroad/peg-config-init-drawing]

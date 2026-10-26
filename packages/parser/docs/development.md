@@ -45,8 +45,9 @@ diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
 (`quadrantChart`), the block diagram (`block`), the kanban diagram (`kanban`),
 C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`),
 usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), info (`info`), packet
-(`packet`), architecture (`architecture`), and radar (`radar`). Every other
-detected type throws `UnsupportedDiagramError`.
+(`packet`), architecture (`architecture`), radar (`radar`), and treemap
+(`treemap`), and railroad (`railroad`, `railroadEbnf`, `railroadAbnf`,
+`railroadPeg`). Every other detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -258,3 +259,23 @@ acceptance. [fixture: radar/gram-written-tree] [fixture:
 radar/lex-hidden-entry-comma] [fixture: radar/db-forward-axis] [fixture:
 radar/error-reference-missing] [fixture:
 radar/config-site-invalid-cannot-rescue]
+
+The treemap lexer follows its
+[ordered rules](../../spec/docs/diagrams/treemap.md#ordered-rules). It reuses
+composite common-form character rules without importing their EOL grammar;
+indentation, class definitions, identifiers, numbers and quoted names follow its
+own terminals. The body stays flat, keeping each row's indentation, including
+preceding trailing whitespace. Detection retains its reached position so passed
+bare-line trivia is excluded around retained native comments. Public acceptance
+adds no root-count, numeric-finiteness or configuration gate. [fixture:
+treemap/gram-written-tree] [fixture: treemap/db-header-tail-space] [fixture:
+treemap/div-retained-before-bare-unicode-line] [fixture: treemap/db-empty-names]
+[fixture: treemap/db-number-nan] [fixture: treemap/config-drawing-only]
+
+Railroad keeps one authored AST for its four dialects. Each dialect has its own
+ordered lexical rules and expression grammar, sharing only matching terminals,
+metadata, named hidden gaps and natural list/group productions. It has no
+configuration-dependent or semantic acceptance gate. [fixture:
+railroad/ir-gram-written-tree] [fixture: railroad/ebnf-native-ownership]
+[fixture: railroad/abnf-directive-repeat] [fixture:
+railroad/peg-config-init-drawing]

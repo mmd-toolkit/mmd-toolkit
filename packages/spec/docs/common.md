@@ -243,9 +243,9 @@ Leading whitespace, line terminators, directives and comment regions are trivia
 and its lexer ([Diagram detection](#diagram-detection)); this can reject the
 input. Detection can pass one nonleading frontmatter-shaped block before the
 header. The block remains diagram text: pie, gitgraph, info, packet,
-architecture and radar apply their hidden YAML rules. The cited flowchart,
-sequence, class, state, agentflow, block, ishikawa, usecase and venn cases
-reject it. It is not common frontmatter or trivia. [fixture:
+architecture, radar and railroad apply their hidden YAML rules. The cited
+flowchart, sequence, class, state, agentflow, block, ishikawa, usecase and venn
+cases reject it. It is not common frontmatter or trivia. [fixture:
 pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment] [fixture:
 packet/detect-one-block] [fixture: pie/lex-yaml-leading-config-not-applied]
@@ -458,20 +458,20 @@ When these conditions do not hold, there is no frontmatter: the block is diagram
 text. At the detection point, before passing bare `%%` lines, detection passes
 one block having the frontmatter shape above and looks for a header after it.
 This does not remove the block from the text the diagram lexer reads. With
-trivia before a block, pie, gitgraph, info, packet, architecture and radar apply
-their hidden YAML rules to the retained text. If it matches, PieIgnoredText,
-GitgraphIgnoredText, InfoIgnoredText, PacketIgnoredText, ArchitectureIgnoredText
-or RadarIgnoredText holds the block and its YAML title and configuration do not
-apply. The rejecting controls below establish the scope of rejection, not a
-claim about all other diagram types. Leading whitespace, a byte order mark on
-the opening fence only, a comment line or a directive can expose this case.
-Matching byte order marks on both fences can instead satisfy the real
-frontmatter rule. [fixture: pie/frontmatter-nonleading-comment] [fixture:
-gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
-[fixture: packet/detect-one-block] [fixture:
-pie/lex-yaml-leading-config-not-applied] [fixture:
-pie/lex-yaml-after-leading-lf] [fixture: pie/lex-yaml-bom-opening-only]
-[fixture: pie/lex-yaml-bom-both-fences] [fixture:
+trivia before a block, pie, gitgraph, info, packet, architecture, radar and
+railroad apply their hidden YAML rules to the retained text. If it matches,
+PieIgnoredText, GitgraphIgnoredText, InfoIgnoredText, PacketIgnoredText,
+ArchitectureIgnoredText, RadarIgnoredText or RailroadIgnoredText holds the block
+and its YAML title and configuration do not apply. The rejecting controls below
+establish the scope of rejection, not a claim about all other diagram types.
+Leading whitespace, a byte order mark on the opening fence only, a comment line
+or a directive can expose this case. Matching byte order marks on both fences
+can instead satisfy the real frontmatter rule. [fixture:
+pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
+[fixture: info/frontmatter-nonleading-comment] [fixture:
+packet/detect-one-block] [fixture: pie/lex-yaml-leading-config-not-applied]
+[fixture: pie/lex-yaml-after-leading-lf] [fixture:
+pie/lex-yaml-bom-opening-only] [fixture: pie/lex-yaml-bom-both-fences] [fixture:
 pie/lex-yaml-after-directive-line] [fixture: pie/lex-yaml-after-directive-glued]
 [fixture: common/frontmatter-leading-newline] [fixture:
 common/directive-before-frontmatter] [fixture: common/frontmatter-bom] [fixture:
@@ -848,7 +848,7 @@ comment region ([Leading whitespace](#leading-whitespace)). If one block at that
 point satisfies the [Frontmatter](#frontmatter) shape, detection passes it once
 before looking for bare `%%` lines. The block remains diagram text for the
 selected diagram to read; see Frontmatter for pie, gitgraph, info, packet,
-architecture, radar and rejecting controls. [fixture:
+architecture, radar, railroad and rejecting controls. [fixture:
 pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment] [fixture:
 packet/detect-one-block] [fixture: pie/lex-yaml-leading-config-not-applied]
@@ -897,13 +897,14 @@ ishikawa/detect-directive-second-scan-preheader] [fixture:
 usecase/detect-directive-second-scan-preheader] [fixture:
 venn/detect-directive-second-scan-preheader]
 
-Pie, gitgraph, info, packet, architecture and radar instead read a directive
-found only by detection's second scan as hidden DIRECTIVE and hold it as
-PieIgnoredText, GitgraphIgnoredText, InfoIgnoredText, PacketIgnoredText,
-ArchitectureIgnoredText or RadarIgnoredText in textBeforeHeader. The lines
-`%%{`, `%% gap`, `wrap}%%`, and `pie` are accepted; gluing `pie` immediately to
-the closer rejects, because the hidden form's closing boundary is not satisfied.
-[fixture: pie/lex-hidden-directive-second-detection-scan] [fixture:
+Pie, gitgraph, info, packet, architecture, radar and railroad instead read a
+directive found only by detection's second scan as hidden DIRECTIVE and hold it
+as PieIgnoredText, GitgraphIgnoredText, InfoIgnoredText, PacketIgnoredText,
+ArchitectureIgnoredText, RadarIgnoredText or RailroadIgnoredText in
+textBeforeHeader. The lines `%%{`, `%% gap`, `wrap}%%`, and `pie` are accepted;
+gluing `pie` immediately to the closer rejects, because the hidden form's
+closing boundary is not satisfied. [fixture:
+pie/lex-hidden-directive-second-detection-scan] [fixture:
 pie/lex-hidden-directive-second-detection-scan-glued] [fixture:
 gitgraph/lex-hidden-directive-second-scan] [fixture:
 gitgraph/lex-hidden-directive-second-scan-glued] [fixture:
@@ -912,22 +913,36 @@ info/detect-second-scan-directive] [fixture: info/detect-second-scan-glued]
 packet/detect-second-scan-glued] [fixture: radar/detect-secondscan-native]
 [fixture: radar/detect-secondscan-native-glued]
 
+Treemap has no native YAML or DIRECTIVE rule. It rejects a retained YAML-shaped
+block even when detection passes it. A retained second-scan directive that fits
+on one line is instead a native Comment; a later noncomment closing line is
+unreadable. Source directives inside that Comment remain shared Directives,
+without creating another ignored-text node. Passed bare lines and accompanying
+whitespace remain Comments and trivia under the same rule above; treemap's
+visible indentation can reject ASCII gaps as well as Unicode gaps when Mermaid
+reads them again. [fixture: treemap/detect-retained-body-yaml-no-native]
+[fixture: treemap/detect-second-scan-single-line-comment] [fixture:
+treemap/detect-second-scan-multiline-rejected] [fixture:
+treemap/div-bare-retained-ascii-header] [fixture:
+treemap/div-bare-retained-unicode-header]
+
 At the position reached, the detectors of [detection.md](./detection.md) are
 tried in registration order against the diagram text
 ([Reading a source](#reading-a-source)), that is, the characters from there on,
 directives and comment regions left out. The first detector whose condition
 holds selects the diagram type. The diagram's lexer reads the retained
-frontmatter-shaped block, if any, and pie, gitgraph, info, packet, architecture
-and radar also read the hidden DIRECTIVE forms above, as well as the text from
-the position reached. Bare `%%` lines and their accompanying whitespace and line
-breaks passed by detection are not read again here; that whitespace and those
-line breaks are trivia. Each bare line is a comment of the diagram, with the
-mark `%%`, from its `%%` to the end of its line, in every diagram type.
-mermaid.js reads such a line with the lexer of the detected diagram, and some of
-its lexers reject it: flowchart reads `%%` as an id before the header, state
-does not take the `{` of a line that begins with `%%{`, and class reads a line
-of whitespace only after such a line as a `newline` unit that its grammar does
-not take before the header. These inputs are the known divergence
+frontmatter-shaped block, if any, and pie, gitgraph, info, packet, architecture,
+radar and railroad also read the hidden DIRECTIVE forms above, as well as the
+text from the position reached. Bare `%%` lines and their accompanying
+whitespace and line breaks passed by detection are not read again here; that
+whitespace and those line breaks are trivia. Each bare line is a comment of the
+diagram, with the mark `%%`, from its `%%` to the end of its line, in every
+diagram type. mermaid.js reads such a line with the lexer of the detected
+diagram, and some of its lexers reject it: flowchart reads `%%` as an id before
+the header, state does not take the `{` of a line that begins with `%%{`, and
+class reads a line of whitespace only after such a line as a `newline` unit that
+its grammar does not take before the header. These inputs are the known
+divergence
 [`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.md).
 No detector matching means the text is rejected with `UnknownDiagramError`; so
 is a text with no diagram text at all, such as an empty text or a text of
@@ -1107,12 +1122,12 @@ usecase/detect-directive-second-scan-preheader] [fixture:
 venn/detect-directive-second-scan-preheader]
 
 A matching nonleading `---` block is passed by detection in both and read by the
-selected diagram: pie, gitgraph, info, packet, architecture and radar apply
-their hidden YAML rules and retain a matching block as ignored text. The cited
-rejecting controls have the scope stated under [Frontmatter](#frontmatter).
-[fixture: common/directive-before-frontmatter] [fixture:
-common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
-agentflow/db-frontmatter-after-comment] [fixture:
+selected diagram: pie, gitgraph, info, packet, architecture, radar and railroad
+apply their hidden YAML rules and retain a matching block as ignored text. The
+cited rejecting controls have the scope stated under
+[Frontmatter](#frontmatter). [fixture: common/directive-before-frontmatter]
+[fixture: common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom]
+[fixture: agentflow/db-frontmatter-after-comment] [fixture:
 block/gram-frontmatter-comment-before] [fixture:
 ishikawa/frontmatter-after-comment] [fixture: usecase/frontmatter-after-comment]
 [fixture: venn/frontmatter-comment-before] [fixture: packet/detect-one-block]
@@ -1155,6 +1170,21 @@ radar/detect-secondscan-before-yaml-native] [fixture:
 radar/detect-secondscan-native-twice] [fixture:
 radar/div-detect-yaml-bare-secondscan-native-ls] [fixture:
 radar/detect-retained-no-bare-control]
+
+For all four railroad ids, retained YAML and genuine second-scan directives are
+RailroadIgnoredText in RailroadDiagram.textBeforeHeader. Passed bare lines are
+shared Comments and accompanying whitespace and line breaks are trivia; they are
+not read again. The single YAML skip precedes bare lines and the second scan,
+and retained forms still require their native closing boundary.
+[Railroad detection](./diagrams/railroad.md#detection) defines the stopping
+cases and [its tree](./ast/railroad.md#gap-ownership) defines ownership.
+[fixture: railroad/ir-yaml-before-secondscan-real] [fixture:
+railroad/ebnf-yaml-before-secondscan-real] [fixture:
+railroad/abnf-yaml-before-secondscan-real] [fixture:
+railroad/peg-yaml-before-secondscan-real] [fixture:
+railroad/ir-secondscan-before-yaml-real] [fixture: railroad/ir-secondscan-glued]
+[fixture: railroad/ir-retained-bare-secondscan-unicode] [fixture:
+railroad/ir-yaml-unicode-no-bare]
 
 ## `style` and `classDef` lines
 

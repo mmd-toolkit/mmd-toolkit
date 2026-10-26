@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A percent pair ends a composite accessibility-title value."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "A",
+    "accDescr": "",
+    "rules": []
+  }
+}

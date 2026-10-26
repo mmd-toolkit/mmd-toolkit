@@ -587,6 +587,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      `NaN`、`Infinity`、倍精度に収まらない大きな数、数の後ろのテキスト
      （journey と sankey の review 441）。
    - Db が読む埋め込み設定の値（packet の review pk12-1）。
+   - `html-tag-in-frontmatter` の受理の両方向と値だけの違い
+     （review ra3-1、tm3-1、rr12-3）。
    - 文の直後の hidden の形（本文の `---` ブロック、`%%{...}%%`）。
      消費した LF の後に文が続く場合、空行が余分の LF を与える場合、
      閉じの後の空白が LF を残す場合、EOF を確かめる。

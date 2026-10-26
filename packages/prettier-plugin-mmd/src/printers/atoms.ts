@@ -74,6 +74,8 @@ export interface AtomLayout {
 
 /** Where the lines of a statement start. */
 export interface StatementIndentation {
+  /** Explicit trivia columns when indentation itself is grammar. */
+  readonly trivia?: string
   /** The indentation of the statement's first line. */
   readonly statement: string
   /** The indentation of its later lines, one level deeper. */
@@ -174,7 +176,7 @@ export function printAtoms(
           gapOffset = gap.trailing.range[1]
         }
         for (const line of gap.lines) {
-          breakCurrentLine(line.blankBefore, false)
+          breakCurrentLine(line.blankBefore, false, indentation.trivia)
           currentWrittenBreak = keepsBreaks
             ? literalBreaksBetween(source, gapOffset, line.run.range[0])
             : undefined

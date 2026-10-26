@@ -536,3 +536,17 @@ dbFromTree、embeddedValuesOf を使った比較可能な Db を確かめます�
 [fixture: radar/lex-named-entry-hidden-across-lines]
 [fixture: radar/common-repeat-empty] [fixture: radar/db-number-rounded]
 [fixture: common/detect-minimal-radar]
+
+treemap の受理と記録は tests/fixtures.test.ts だけで、
+fixtureAccepts を使って検査します。
+tests/treemap.test.ts の単体検査はソース被覆、表記、範囲、包含、ソース順、
+平坦な行のインデント、複合形式の境界、空・反復の共通値、
+書かれた数値と文字列の読みを検査します。
+比較可能な Db は dbFromTree と embeddedValuesOf で検査します。
+全 9 ノードのコメント例は tests/ast-treemap-examples.test.ts が検査します。
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-leaf-tail-space]
+[fixture: treemap/gram-indent-around-global-directive]
+[fixture: treemap/common-repeat-empty]
+[fixture: treemap/db-number-multiple-dots]
+[fixture: treemap/lex-string-conversion]
+[fixture: common/detect-minimal-treemap]

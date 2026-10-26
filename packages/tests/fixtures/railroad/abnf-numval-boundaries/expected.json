@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Numeric terminals preserve spelling and accept their grammar even outside base digits."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "%x41.42-43"
+            },
+            {
+              "type": "terminal",
+              "value": "%D65"
+            },
+            {
+              "type": "terminal",
+              "value": "%b2"
+            },
+            {
+              "type": "terminal",
+              "value": "%dAF"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

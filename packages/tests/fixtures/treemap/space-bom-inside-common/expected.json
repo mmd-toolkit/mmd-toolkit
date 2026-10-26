@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is internal BOM preserved in common line values?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "A﻿B",
+    "accTitle": "A﻿B",
+    "accDescr": "A﻿B",
+    "nodes": [],
+    "classDefs": []
+  }
+}

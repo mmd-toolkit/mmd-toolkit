@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Does CLASS_DEF enclose a class name with a title prefix?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "classDefs": [
+      {
+        "id": "titleClass",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

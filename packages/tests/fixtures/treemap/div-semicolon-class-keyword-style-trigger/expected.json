@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md: Can the style line rule join a divided classDef keyword in Mermaid?"
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "style:#x",
+        "children": []
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "aa",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "longer_alt lets an identifier extend a zeroOrMore keyword."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "zeroOrMorex",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  }
+}

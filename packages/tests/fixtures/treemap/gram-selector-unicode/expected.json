@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "May a selector contain non-ASCII letters?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 7: unexpected character: ->猫<- at offset: 14, skipped 1 characters. Parse error on line ?, column ?: Expecting token of type 'ID2' but found ``."
+  }
+}

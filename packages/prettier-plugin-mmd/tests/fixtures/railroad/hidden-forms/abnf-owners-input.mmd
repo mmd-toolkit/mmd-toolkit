@@ -1,0 +1,10 @@
+railroad-abnf-beta
+r = 2*4 %%{!repeat}%%
+( %%{!start}%%
+"owned" %%{!after}%%
+/ %%{!next}%%
+%X41 %%{!close}%%
+) %%{!tail}%%
+[ %%{!optional}%%
+ref %%{!end}%%
+];

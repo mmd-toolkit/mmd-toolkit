@@ -64,8 +64,9 @@ Each fixture is a directory `fixtures/<diagram>/<name>/` in this package
 (`flowchart`, `sequence`, `class`, `state`, `er`, `gantt`, `journey`,
 `requirement`, `mindmap`, `timeline`, `sankey`, `xychart`, `quadrant`, `block`,
 `kanban`, `c4`, `venn`, `ishikawa`, `agentflow`, `usecase`, `pie`, `gitgraph`,
-`info`, `packet`, `architecture`, `radar`) or `common`, for syntax that every
-diagram type shares (frontmatter, directives, comments, diagram detection).
+`info`, `packet`, `architecture`, `radar`, `treemap`, `railroad`) or `common`,
+for syntax that every diagram type shares (frontmatter, directives, comments,
+diagram detection).
 
 - `input.mmd`: the text under test, byte for byte.
 - `expected.json`: what mermaid.js did with it.
@@ -140,12 +141,13 @@ Reads the fixtures. It does not load mermaid.js.
   `"requirement"`, `"mindmap"`, `"timeline"`, `"sankey"`, `"xychart"`,
   `"quadrant"`, `"block"`, `"kanban"`, `"c4"`, `"venn"`, `"ishikawa"`,
   `"agentflow"`, `"usecase"`, `"pie"`, `"gitGraph"`, `"info"`, `"packet"`,
-  `"architecture"` or `"radar"`, sorted by name. Each has `diagram`, `name`,
-  `input` (the text of `input.mmd`), `source`, `config` and `knownDivergence`
-  (when set), `specified` (when its file is present), and `expected`: either
-  `{ accepted: true, diagramType, db }` or `{ accepted: false, error }`. It
-  reads the files one at a time, so that test files loading the fixtures in
-  parallel workers stay within the system's limit of open files.
+  `"architecture"`, `"radar"`, `"treemap"` or `"railroad"`, sorted by name. Each
+  has `diagram`, `name`, `input` (the text of `input.mmd`), `source`, `config`
+  and `knownDivergence` (when set), `specified` (when its file is present), and
+  `expected`: either `{ accepted: true, diagramType, db }` or
+  `{ accepted: false, error }`. It reads the files one at a time, so that test
+  files loading the fixtures in parallel workers stay within the system's limit
+  of open files.
 - `KNOWN_DIVERGENCES`: the identifiers a fixture's `knownDivergence` can have.
   Each is defined in the specification:
   - `directive-as-token-boundary`: see

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site securityLevel replaces treemap common metadata but leaves section and leaf names unchanged."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "T&lt;b&gt;&equals;x",
+    "accTitle": "a&lt;b&gt;&equals;c",
+    "accDescr": "d<br/>e&equals;f",
+    "nodes": [
+      {
+        "name": "root<b>=x",
+        "children": [
+          {
+            "name": "leaf<br>=y",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

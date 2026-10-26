@@ -17,6 +17,7 @@ function inputOf(text: string): DiagramInput {
     frontmatter: null,
     diagramType: "error",
     textStart: 0,
+    positionReached: 0,
     passed: [],
   }
 }

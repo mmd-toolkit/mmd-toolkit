@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Is a semicolon after a block accepted?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 15: unexpected character: ->;<- at offset: 22, skipped 1 characters. "
+  }
+}

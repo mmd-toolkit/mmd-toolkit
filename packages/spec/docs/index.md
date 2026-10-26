@@ -43,6 +43,16 @@ The radar definition is in its [syntax](./diagrams/radar.md) and
 [tree](./ast/radar.md) documents. [fixture: radar/header-colon-inline] [fixture:
 radar/gram-written-tree]
 
+The treemap definition is in its [syntax](./diagrams/treemap.md) and
+[tree](./ast/treemap.md) documents. [fixture: treemap/gram-written-tree]
+[fixture: treemap/header-beta]
+
+The railroad definition covers four dialects in its
+[syntax](./diagrams/railroad.md) and [tree](./ast/railroad.md) documents.
+[fixture: railroad/ir-gram-written-tree] [fixture:
+railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
+[fixture: railroad/peg-gram-written-tree]
+
 ## Sources
 
 The specification is derived from three sources in the mermaid.js repository:

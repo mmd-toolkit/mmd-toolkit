@@ -5,7 +5,7 @@ Japanese version:
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
 timeline, sankey, block, c4, agentflow, usecase, pie, gitgraph, info, packet,
-architecture, and radar. This is one of the
+architecture, radar, treemap and railroad. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -434,6 +434,59 @@ this identifier. [fixture: radar/detect-yaml-bare-secondscan-native-ascii]
 radar/detect-retained-no-bare-control] [fixture:
 radar/detect-secondscan-native-glued]
 
+### Treemap
+
+Treemap holds passed bare lines as shared Comments and their accompanying
+whitespace as trivia, including before/after retained one-line comments and
+immediately before the header. The tree can preserve each Comment and source
+Directive, so it needs no ignored-text node. The remaining reverse difference is
+the direct rule that passed intervals are not lexed again: Mermaid's visible
+INDENTATION rejects ASCII gaps too, unlike the cited native-ASCII controls of
+some other diagrams. Without a passed line, later Unicode gaps still reject; a
+retained YAML or unreadable multiline form still rejects after passing bare
+lines. The accepted specified records use the same empty treemap Db. [fixture:
+treemap/bare-before-header-space] [fixture: treemap/bare-before-header-tab]
+[fixture: treemap/bare-line-nbsp] [fixture:
+treemap/div-retained-before-bare-unicode-line] [fixture:
+treemap/div-bare-before-retained-unicode-line] [fixture:
+treemap/div-bare-retained-ascii-padding] [fixture:
+treemap/div-retained-bare-ascii-line] [fixture:
+treemap/div-bare-retained-unicode-header] [fixture:
+treemap/div-bare-retained-ascii-header] [fixture:
+treemap/lex-retained-no-bare-unicode-line] [fixture:
+treemap/detect-retained-yaml-bare-ascii-gap] [fixture:
+treemap/detect-second-scan-single-line-comment]
+
+### Railroad
+
+All four railroad ids treat detection-passed bare percent-pair lines as shared
+Comments and accompanying whitespace and line breaks as trivia, without reading
+them again. Matching retained YAML or genuine second-scan directives stay
+RailroadIgnoredText in textBeforeHeader. This accepts passed Unicode whitespace
+that Mermaid’s native padding rejects, including before or between retained
+forms. Without a passed bare line, later Unicode padding remains native diagram
+text and rejects; ASCII controls accept. [fixture: railroad/ir-bare-nbsp]
+[fixture: railroad/ebnf-bare-unicode] [fixture: railroad/abnf-bare-unicode]
+[fixture: railroad/peg-bare-unicode] [fixture:
+railroad/ir-secondscan-between-bares-unicode] [fixture:
+railroad/ir-retained-bare-secondscan-unicode] [fixture:
+railroad/ir-yaml-unicode-no-bare] [fixture:
+railroad/ebnf-retained-unicode-no-bare] [fixture:
+railroad/abnf-retained-unicode-no-bare] [fixture:
+railroad/peg-retained-unicode-no-bare] [fixture:
+railroad/ir-prefix-yaml-before-bare] [fixture:
+railroad/ebnf-retained-ascii-control] [fixture:
+railroad/abnf-retained-ascii-control] [fixture:
+railroad/peg-retained-ascii-control]
+
+The first answer is yes: Comment records, source gaps and named ignored-text
+owners preserve all authored content. The difference that remains is Mermaid
+reading already-passed trivia again, not text without an owner. The second
+answer is reason 2, the shared direct detection rule. Native closer boundaries
+still apply, and a leading nonword percent-brace line is not automatically a
+retained native directive. [fixture: railroad/ir-prefix-retained-directive]
+[fixture: railroad/ir-secondscan-real] [fixture: railroad/ir-secondscan-glued]
+
 ## The documentation of mermaid.js and its issues
 
 - The
@@ -534,3 +587,27 @@ warning. These facts do not justify any additional divergence.
   documentation report marked Status: Approved.
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) corrects commas in
   documentation examples; it does not add grammar support for a trailing comma.
+
+- Treemap: the pinned
+  [treemap documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  describes quoted rows, indentation and class definitions, without defining
+  this common preprocessing boundary. Searches of the official repository's
+  issues and pull requests on 2026-10-25 used `treemap comment`; no inspected
+  result establishes a maintainer ruling on this divergence.
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) introduced treemap
+  and was merged on 2025-06-27; it is not a ruling on this boundary.
+
+- Railroad: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  describes the four notations, EBNF exception, ABNF semicolon comments and PEG
+  predicates. It does not define native retained YAML or HTML quote context
+  across frontmatter. Searches of the official repository’s issues and pull
+  requests on 2026-10-26 used railroad frontmatter, railroad directive, railroad
+  semicolon and railroad comment.
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) concerns demo
+  header names (closed, Triage);
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) is an ABNF diagram
+  proposal (open, Discussion Needed). Neither establishes a maintainer defect
+  decision for these preprocessing boundaries. This divergence follows the
+  existing shared rule, not such a decision. The inspected results do not
+  establish that no other relevant issue exists.

@@ -533,6 +533,17 @@ HTML ラベルが有効で、`securityLevel` が
 
 ## 確かめ
 
+Railroad の 4 方言は、一つの authored tree から組み立てます。
+[railroad.ja.md](./db-from-tree/railroad.ja.md) に定めます。
+[fixture: railroad/ir-gram-written-tree]
+[fixture: railroad/ebnf-gram-written-tree]
+[fixture: railroad/abnf-gram-written-tree]
+[fixture: railroad/peg-gram-written-tree]
+
+Treemap の組み立ては [treemap.ja.md](./db-from-tree/treemap.ja.md) に定めます。
+平坦な字下げ付きの行、classDef と共通値から組み立てます。
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-indent-pop]
+
 Radar の組み立ては [radar.ja.md](./db-from-tree/radar.ja.md) に定めます。
 原文の宣言群、entry、共通の代入と option から組み立てます。
 [fixture: radar/gram-written-tree] [fixture: radar/db-all-fields]
@@ -542,7 +553,7 @@ Architecture の組み立ては
 [fixture: architecture/db-mixed]
 
 記録した木の比較には C4、block、kanban、Venn、Agentflow、Usecase、pie、
-gitgraph、info、packet、radar と
+gitgraph、info、packet、radar、treemap、railroad と
 common の検出例を含み、
 C4 の五つの kind もすべて含みます。
 

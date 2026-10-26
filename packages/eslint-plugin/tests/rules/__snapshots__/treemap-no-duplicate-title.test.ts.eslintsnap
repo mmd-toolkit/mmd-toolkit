@@ -1,0 +1,277 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: treemap-no-duplicate-title >> invalid >>> docs/rules/treemap-no-duplicate-title.md incorrect 1
+Filename: treemap-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | treemap
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   "Revenue": 10
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-comment-next
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-comment-next-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %% next
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-directive-next
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-directive-next-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | %%{init: {"theme":"forest"}}%%
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-empty
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-empty-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: First
+  3 | accTitle:
+    | ^~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-three-mixed
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-three-mixed-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: A
+  3 | title Other
+  4 | accTitle: B
+    | ^~~~~~~~~~~ [1]
+  5 | accTitle:
+    | ^~~~~~~~~ [2]
+  6 | accTitle: A
+  7 | "A":10
+  8 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the accessible title set on line 4 with the one of this `accTitle`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/acctitle-two
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/acctitle-two-input.mmd
+
+Code:
+  1 | treemap
+  2 | accTitle: First
+  3 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/docs-incorrect-1
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/docs-incorrect-1-input.mmd
+
+Code:
+  1 | treemap
+  2 |   title First
+  3 |   title Second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   "Revenue": 10
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-directive-only
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-directive-only-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title %%{init: {}}%%
+    | ^~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-empty
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-empty-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-empty-resets
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-empty-resets-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title
+    | ^~~~~ [1]
+  4 | title Second
+  5 | "A":1
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-empty-same-front
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-empty-same-front-input.mmd
+
+Code:
+  1 | ---
+  2 | title: First
+  3 | ---
+  4 | treemap
+  5 | title First
+  6 | title
+    | ^~~~~ [1]
+  7 | "A":10
+  8 |
+
+[1] mermaid.js replaces the title set on line 5 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-entity-equivalent
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-entity-equivalent-input.mmd
+
+Code:
+  1 | treemap
+  2 | title #35;
+  3 | title #
+    | ^~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-front
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-front-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Front
+  3 | ---
+  4 | treemap
+  5 | title First
+  6 | title
+    | ^~~~~ [1]
+  7 | "A":10
+  8 |
+
+[1] mermaid.js replaces the title set on line 5 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-html-written
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-html-written-input.mmd
+
+Code:
+  1 | treemap
+  2 | title <b x="a">Text</b>
+  3 | title <b x='a'>Text</b>
+    | ^~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | "A":1
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-three
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-three-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | title First
+    | ^~~~~~~~~~~ [2]
+  5 | "A":10
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-two
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-two-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | title Second
+    | ^~~~~~~~~~~~ [1]
+  4 | "A":10
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-whitespace-clears
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-whitespace-clears-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | accTitle: First
+  4 | title   
+    | ^~~~~~~~ [1]
+  5 | accTitle:   
+    | ^~~~~~~~~~~~ [2]
+  6 | "A":1
+  7 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+---

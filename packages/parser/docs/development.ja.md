@@ -46,7 +46,9 @@ kanban 図（`kanban`）と、C4 図（`c4`）と、venn 図（`venn`）と、
 Ishikawa 図（`ishikawa`）と、agentflow（`agentflow`）と、
 usecase 図（`usecase`）、円グラフ（`pie`）、gitgraph 図（`gitGraph`）、
 info 図（`info`）、packet 図（`packet`）、
-architecture 図（`architecture`）、radar 図（`radar`）です。
+architecture 図（`architecture`）、radar 図（`radar`）、
+treemap 図（`treemap`）、railroad の 4 方言
+（`railroad`、`railroadEbnf`、`railroadAbnf`、`railroadPeg`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -292,3 +294,26 @@ hidden form の gap を保持します。
 [fixture: radar/gram-written-tree] [fixture: radar/lex-hidden-entry-comma]
 [fixture: radar/db-forward-axis] [fixture: radar/error-reference-missing]
 [fixture: radar/config-site-invalid-cannot-rescue]
+
+treemap の lexer は
+[順序付き規則](../../spec/docs/diagrams/treemap.md#ordered-rules)に従います。
+共通形式の文字規則を共有し、EOL の文法は取り込みません。
+インデント、クラス定義、識別子、数値、引用符付きの名前は専用の終端に従います。
+body は平坦なまま、先行行の末尾空白を含む各行のインデントを保持します。
+検出の到達位置を保持し、保持されたネイティブコメントの周囲でも、
+通過した bare 行の trivia を除外します。
+公開の受理条件にルート数、数値の有限性、設定による検査を加えません。
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-header-tail-space]
+[fixture: treemap/div-retained-before-bare-unicode-line]
+[fixture: treemap/db-empty-names] [fixture: treemap/db-number-nan]
+[fixture: treemap/config-drawing-only]
+
+Railroad は 4 方言で 1 つの authored AST を保持します。
+各方言は専用の順序付き字句規則と式文法を持ち、
+一致する終端、メタデータ、名前付き hidden gap、
+自然方言のリストとグループの生成規則だけを共有します。
+設定や意味による追加の受理条件はありません。
+[fixture: railroad/ir-gram-written-tree]
+[fixture: railroad/ebnf-native-ownership]
+[fixture: railroad/abnf-directive-repeat]
+[fixture: railroad/peg-config-init-drawing]

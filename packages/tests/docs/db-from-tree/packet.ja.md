@@ -23,6 +23,7 @@
    [fixture: packet/db-label-empty-single] [fixture: packet/line-crlf-label]
    [fixture: packet/html-all-fields] [fixture: packet/entity-all-text]
    [fixture: packet/directive-label-middle] [fixture: packet/hidden-yaml-body]
+   [fixture: packet/config-security-level-other]
 2. **共通の代入。** title、accTitle、両 accDescr を変換した literal の範囲から
    読み、null は空文字にします。行の値は両端を trim し、
    2 個以上続く ASCII space/tab を 1 個にします。
@@ -38,6 +39,7 @@
    [fixture: packet/accdescr-block-repeat]
    [fixture: packet/frontmatter-empty-body-title]
    [fixture: packet/html-all-fields]
+   [fixture: packet/config-security-level-other]
 3. **設定。** 渡された embedded/site 設定の `packet.bitsPerRow` を読み、
    欠落と null は 32 にします。`embeddedValuesOf` が記録した
    `{ "nonFinite": value }` のタグを builder が読む前に数値へ戻します。

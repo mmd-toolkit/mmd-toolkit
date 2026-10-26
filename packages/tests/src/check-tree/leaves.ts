@@ -16,6 +16,8 @@ import { WrittenText } from "./written-text.ts"
  * `flowchart-elk` of `flowchart-elk`, and `swimlane` of `swimlane-beta`.
  */
 const DIAGRAM_TYPES_OF_BODY: Readonly<Record<string, readonly string[]>> = {
+  RailroadDiagram: ["railroad", "railroadEbnf", "railroadAbnf", "railroadPeg"],
+  TreemapDiagram: ["treemap"],
   RadarDiagram: ["radar"],
   ArchitectureDiagram: ["architecture"],
   GitgraphDiagram: ["gitGraph"],

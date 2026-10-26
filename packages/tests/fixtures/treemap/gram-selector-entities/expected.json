@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can selectors contain character references?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 7: unexpected character: ->&<- at offset: 14, skipped 1 characters.\nLexer error on line 2, column 11: unexpected character: ->;<- at offset: 18, skipped 1 characters. "
+  }
+}

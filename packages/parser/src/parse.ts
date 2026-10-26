@@ -1,3 +1,5 @@
+import { parseRailroadDiagram } from "./diagrams/railroad/index.ts"
+import { parseTreemapDiagram } from "./diagrams/treemap/index.ts"
 import { parseRadarDiagram } from "./diagrams/radar/index.ts"
 import { parseArchitectureDiagram } from "./diagrams/architecture/index.ts"
 import { parsePacketDiagram } from "./diagrams/packet/index.ts"
@@ -89,6 +91,7 @@ export function diagramInputOf(
     lexer: opened.lexer,
     frontmatter: opened.frontmatter,
     diagramType,
+    positionReached: detection.positionReached,
     textStart:
       detection.retainedFrontmatterStart ??
       (diagramType === "pie" ||
@@ -96,7 +99,12 @@ export function diagramInputOf(
       diagramType === "info" ||
       diagramType === "packet" ||
       diagramType === "architecture" ||
-      diagramType === "radar"
+      diagramType === "radar" ||
+      diagramType === "treemap" ||
+      diagramType === "railroad" ||
+      diagramType === "railroadEbnf" ||
+      diagramType === "railroadAbnf" ||
+      diagramType === "railroadPeg"
         ? detection.passed.find(
             (part) => part.kind === "directive-found-once-more",
           )?.opening[0]
@@ -132,6 +140,11 @@ export function parse(text: string): Root {
       detected !== "packet" &&
       detected !== "architecture" &&
       detected !== "radar" &&
+      detected !== "treemap" &&
+      detected !== "railroad" &&
+      detected !== "railroadEbnf" &&
+      detected !== "railroadAbnf" &&
+      detected !== "railroadPeg" &&
       detection.retainedFrontmatterStart !== null)
   ) {
     const start = detection.retainedFrontmatterStart ?? positionReached
@@ -168,6 +181,13 @@ export function parse(text: string): Root {
       return parseMindmapDiagram(input)
     case "gitGraph":
       return parseGitgraphDiagram(input)
+    case "railroad":
+    case "railroadEbnf":
+    case "railroadAbnf":
+    case "railroadPeg":
+      return parseRailroadDiagram(input)
+    case "treemap":
+      return parseTreemapDiagram(input)
     case "radar":
       return parseRadarDiagram(input)
     case "architecture":

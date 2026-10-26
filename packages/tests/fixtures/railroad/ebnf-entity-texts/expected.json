@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Records shared entity placeholder conversion in each published text position."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 26: unexpected character: ->&<- at offset: 120, skipped 8 characters.\nLexer error on line 5, column 35: unexpected character: ->&<- at offset: 129, skipped 1 characters. Parse error on line 5, column 24: Expecting: one of these possible Token sequences:\n  1. [EBNF_STRING]\n  2. [EBNF_SPECIAL_SEQUENCE]\n  3. [EBNF_ID]\n  4. [(]\n  5. [[]\n  6. [{]\nbut found: '?'\nParse error on line 5, column 41: Expecting token of type 'EOF' but found `?`."
+  }
+}

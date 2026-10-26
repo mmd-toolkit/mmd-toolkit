@@ -94,17 +94,16 @@ export class GitgraphUnitLexer extends CommonFormUnitLexer<GitgraphUnitName> {
           : matchWord(this.reader, at, word)
       if (match === null) continue
       if (!word.endsWith(":")) {
-        const reference = this.referenceEnd(at)
-        if (
-          reference !== undefined &&
-          match.end !== null &&
-          (reference === null || reference.start > match.end.start)
-        ) {
-          this.read("bare-reference", at, reference)
-          return true
-        }
+        this.readUnitOrLongerAlternative(
+          at,
+          word as UnitName,
+          match.end,
+          "bare-reference",
+          this.referenceEnd(at),
+        )
+        return true
       }
-      if (word.endsWith(":") && word !== ":") {
+      if (word !== ":") {
         const name = word.slice(0, -1)
         const keyword = matchWord(this.reader, at, name)!
         this.addUnit(
@@ -113,7 +112,7 @@ export class GitgraphUnitLexer extends CommonFormUnitLexer<GitgraphUnitName> {
           keyword.end,
         )
         this.read(":", keyword.end!, match.end)
-      } else this.read(word as UnitName, at, match.end)
+      } else this.read(":", at, match.end)
       return true
     }
     return false

@@ -5,5 +5,9 @@
   },
   "accepted": true,
   "diagramType": "railroadEbnf",
-  "db": null
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  }
 }

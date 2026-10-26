@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are tabs accepted as common separators?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D",
+    "nodes": [],
+    "classDefs": []
+  }
+}

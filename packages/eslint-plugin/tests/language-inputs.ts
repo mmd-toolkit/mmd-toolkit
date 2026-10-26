@@ -95,6 +95,20 @@ export const LANGUAGE_INPUTS: readonly LanguageInput[] = [
       acceptedWith(text, (root) => root.body.type === "ArchitectureDiagram"),
   },
   {
+    case: "a radar diagram",
+    diagram: "common",
+    name: "detect-minimal-radar",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "RadarDiagram"),
+  },
+  {
+    case: "a treemap",
+    diagram: "common",
+    name: "detect-minimal-treemap",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "TreemapDiagram"),
+  },
+  {
     case: "the error pseudo-diagram, accepted, with a comment after it",
     diagram: "common",
     name: "error-trailing-comment-line",

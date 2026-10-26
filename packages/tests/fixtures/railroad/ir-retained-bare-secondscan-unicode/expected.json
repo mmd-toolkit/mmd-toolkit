@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: Passed bare-line Unicode trivia between retained YAML and a second-scan directive is not read again."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 5, column 1: unexpected character: -> <- at offset: 13, skipped 1 characters. "
+  }
+}

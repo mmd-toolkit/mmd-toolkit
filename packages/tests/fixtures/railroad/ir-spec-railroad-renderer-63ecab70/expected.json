@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/railroad/railroadRenderer.spec.ts",
+    "line": 155,
+    "test": "Railroad Renderer > orients repetition loop corners in the direction of travel"
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "number",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "nonterminal",
+            "name": "digit"
+          },
+          "min": 1,
+          "max": "Infinity"
+        }
+      }
+    ]
+  }
+}

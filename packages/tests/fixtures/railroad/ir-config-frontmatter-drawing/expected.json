@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Railroad-specific embedded drawing settings, even unusual values, do not alter parsing."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "a"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "railroad": {
+        "fontFamily": "serif",
+        "padding": {
+          "nonFinite": "Infinity"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared style-line rule changes the last semicolon in an accessibility title."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "style x:#f00",
+    "accDescr": "",
+    "rules": []
+  }
+}

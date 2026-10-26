@@ -1,0 +1,98 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/railroad.html",
+    "line": 24
+  },
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "identifier",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "letter"
+            },
+            {
+              "type": "repetition",
+              "element": {
+                "type": "choice",
+                "alternatives": [
+                  {
+                    "type": "nonterminal",
+                    "name": "letter"
+                  },
+                  {
+                    "type": "nonterminal",
+                    "name": "digit"
+                  },
+                  {
+                    "type": "terminal",
+                    "value": "_"
+                  }
+                ]
+              },
+              "min": 0,
+              "max": "Infinity"
+            }
+          ]
+        }
+      },
+      {
+        "name": "letter",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "a"
+            },
+            {
+              "type": "terminal",
+              "value": "b"
+            },
+            {
+              "type": "terminal",
+              "value": "c"
+            },
+            {
+              "type": "terminal",
+              "value": "d"
+            },
+            {
+              "type": "terminal",
+              "value": "e"
+            }
+          ]
+        }
+      },
+      {
+        "name": "digit",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "terminal",
+              "value": "0"
+            },
+            {
+              "type": "terminal",
+              "value": "1"
+            },
+            {
+              "type": "terminal",
+              "value": "2"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

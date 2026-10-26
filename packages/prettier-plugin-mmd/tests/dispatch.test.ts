@@ -34,6 +34,24 @@ beforeEach(() => {
 })
 
 describe("dispatch to diagram printers", () => {
+  it("registers the railroad body printer for all four dialects", async () => {
+    const actual = await vi.importActual<typeof ParserModule>(
+      "@mmd-toolkit/parser",
+    )
+    parse.mockImplementation(actual.parse)
+    expect(await formatMermaid('railroad-beta r=terminal("dispatch");')).toBe(
+      'railroad-beta\n  r = terminal("dispatch");\n',
+    )
+    expect(await formatMermaid('railroad-ebnf-beta r::="dispatch";')).toBe(
+      'railroad-ebnf-beta\n  r ::= "dispatch";\n',
+    )
+    expect(await formatMermaid('railroad-abnf-beta r="dispatch";')).toBe(
+      'railroad-abnf-beta\n  r = "dispatch";\n',
+    )
+    expect(await formatMermaid('railroad-peg-beta r<-"dispatch";')).toBe(
+      'railroad-peg-beta\n  r <- "dispatch";\n',
+    )
+  })
   it("registers the radar body printer", async () => {
     const actual = await vi.importActual<typeof ParserModule>(
       "@mmd-toolkit/parser",

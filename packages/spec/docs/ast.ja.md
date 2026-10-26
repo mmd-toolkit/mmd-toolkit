@@ -280,7 +280,14 @@ mermaid.js はこれらを
 [`InfoDiagram`](./ast/info.ja.md#infodiagram)、
 [`PacketDiagram`](./ast/packet.ja.md#packetdiagram)、
 [`ArchitectureDiagram`](./ast/architecture.ja.md#architecturediagram)、
-[`RadarDiagram`](./ast/radar.ja.md#radardiagram) のどれかです。
+[`RadarDiagram`](./ast/radar.ja.md#radardiagram)、
+[`TreemapDiagram`](./ast/treemap.ja.md#treemapdiagram)、
+[`RailroadDiagram`](./ast/railroad.ja.md#railroaddiagram) のどれかです。
+[fixture: railroad/ir-gram-written-tree]
+[fixture: railroad/ebnf-gram-written-tree]
+[fixture: railroad/abnf-gram-written-tree]
+[fixture: railroad/peg-gram-written-tree]
+[fixture: treemap/gram-written-tree]
 [fixture: radar/gram-written-tree]
 [fixture: packet/gram-mixed]
 [fixture: architecture/header-beta]
@@ -478,6 +485,25 @@ linkStyle の番号では範囲の外です。
 [fixture: sequence/db-autonumber-start-overflow]
 [fixture: sequence/db-autonumber-step-overflow]
 
+treemap の leaf の値の位置は、通常の十進表記だけでなく、
+数字・underscore・dot・comma を許します。
+value は
+[TreemapValueConverter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15)
+に従い、comma を除いて十進の先頭部分を読んだ倍精度の数とし、
+最初の underscore や余分な dot で読み終えます。
+十進の先頭部分を読めなければ value は NaN です。
+その部分は数字を一つ以上、dot を高々一つ含みます。
+先頭の dot は後続の数字を要しますが、
+dot より前に数字があれば後続の数字はなくてもかまいません。
+`1,234.50`、`1_234.50`、`1.2.3`、`.` の値は、
+それぞれ 1234.5、1、1.2、NaN となります。
+raw は数の先頭部分として読まれない文字も含め、元の綴り全体を保ちます。
+この位置に限った定義は、ほかの図種の数の文法を変えません。
+[fixture: treemap/db-number-comma] [fixture: treemap/db-number-underscore]
+[fixture: treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan]
+[fixture: treemap/lex-number-dot-underscore]
+[fixture: treemap/number-leading-dot] [fixture: treemap/number-trailing-dot]
+
 ## 図ごとのノード
 
 各図種のノードと、その欄と子の欄は、
@@ -530,3 +556,14 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 
 - [Radar](./ast/radar.ja.md): 図種 `radar`。
   [fixture: radar/gram-written-tree]
+
+- [Treemap](./ast/treemap.ja.md): 図種 `treemap`。
+  [fixture: treemap/gram-written-tree]
+
+- [Railroad](./ast/railroad.ja.md): 図種 `railroad`、`railroadEbnf`、
+  `railroadAbnf`、`railroadPeg`。方言は Root.diagramType で選び、
+  共通する図の node に見出しの kind の欄は持ちません。
+  [fixture: railroad/ir-gram-written-tree]
+  [fixture: railroad/ebnf-gram-written-tree]
+  [fixture: railroad/abnf-gram-written-tree]
+  [fixture: railroad/peg-gram-written-tree]

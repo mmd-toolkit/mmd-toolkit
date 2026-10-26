@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does the common converter normalize line whitespace?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "A B",
+    "accTitle": "C D",
+    "accDescr": "E F",
+    "nodes": [],
+    "classDefs": []
+  }
+}

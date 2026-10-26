@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the line-description alternative take priority over block-looking text?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "{ D }",
+    "nodes": [],
+    "classDefs": []
+  }
+}

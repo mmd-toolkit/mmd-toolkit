@@ -493,9 +493,9 @@ export interface Detection {
   readonly detected: DetectorId | null
   /** The detection point: the first position after the frontmatter that is not leading trivia, or the end of the source. */
   readonly detectionPoint: number
-  /** The position that detection reaches from the detection point ({@link positionReached}), where every detector but that of the `error` pseudo-diagram looks, and where the diagram's lexer starts. */
+  /** The position that detection reaches from the detection point ({@link positionReached}), where every detector but that of the `error` pseudo-diagram looks, after any retained prefixes. */
   readonly positionReached: number
-  /** A block passed once at the detection point, retained for pie, gitgraph, info, packet, architecture and radar; null when absent. */
+  /** A block passed once at the detection point, retained for pie, gitgraph, info, packet, architecture, radar, treemap and railroad; null when absent. */
   readonly retainedFrontmatterStart: number | null
   /** What detection passed before {@link Detection.positionReached}, in source order; none for the `error` pseudo-diagram. */
   readonly passed: readonly PassedPart[]

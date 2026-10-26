@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag starting in frontmatter changes the discarded body title without changing the summary."
+  },
+  "accepted": true,
+  "diagramType": "railroad",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

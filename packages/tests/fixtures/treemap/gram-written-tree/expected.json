@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Grammar and ast/treemap.md Example: Preserve both row kinds, both value separators, both quotes, classDef indentation and all common statement occurrences in one flat body."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "Map",
+    "accTitle": "Map",
+    "accDescr": "Details",
+    "nodes": [
+      {
+        "name": "Root",
+        "classSelector": "aa",
+        "children": [
+          {
+            "name": "Left",
+            "value": 1234.5
+          },
+          {
+            "name": "Right",
+            "value": 2,
+            "classSelector": "aa"
+          }
+        ]
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "aa",
+        "styles": [
+          "fill:red",
+          "color:blue"
+        ]
+      }
+    ]
+  }
+}

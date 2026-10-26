@@ -541,6 +541,8 @@ diagram; an imported common rule does not establish how the diagram uses it.
      writes 0), `NaN`, `Infinity`, a number too large for a double, and text
      after the number (journey and sankey, review 441);
    - values of embedded settings read by the Db (packet review pk12-1);
+   - `html-tag-in-frontmatter`: acceptance in both directions and value-only
+     differences (reviews ra3-1, tm3-1 and rr12-3);
    - a hidden form immediately after a statement (a body `---` block or
      `%%{...}%%`): a following statement after its consumed LF, a blank line
      supplying a spare LF, a space after its closer leaving the LF visible, and

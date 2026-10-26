@@ -1,0 +1,17 @@
+{
+  "accepted": true,
+  "diagramType": "railroadEbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "C4Deployment",
+        "definition": {
+          "type": "nonterminal",
+          "name": "other"
+        }
+      }
+    ]
+  }
+}

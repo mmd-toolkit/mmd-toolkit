@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can valid init drawing configuration reject otherwise valid syntax?"
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "value": 1
+      }
+    ],
+    "classDefs": []
+  },
+  "embedded": {
+    "config": {
+      "treemap": {
+        "useMaxWidth": false,
+        "padding": 2,
+        "diagramPadding": 200,
+        "showValues": false,
+        "nodeWidth": 20,
+        "nodeHeight": 30,
+        "borderWidth": 5,
+        "valueFontSize": 7,
+        "labelFontSize": 9,
+        "valueFormat": "invalid-format"
+      }
+    }
+  }
+}

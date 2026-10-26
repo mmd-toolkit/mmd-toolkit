@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Second detection and native lexing see a retained multiline directive differently."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: \ntext\n}\nrailroad-beta\nr = terminal(\"a\");"
+  }
+}

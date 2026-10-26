@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Infinity is a rule reference rather than a numeric bound."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "sequence",
+          "elements": [
+            {
+              "type": "nonterminal",
+              "name": "Infinity"
+            },
+            {
+              "type": "terminal",
+              "value": "a"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

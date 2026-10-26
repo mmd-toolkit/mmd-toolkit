@@ -49,6 +49,17 @@ radar の定義は [構文](./diagrams/radar.ja.md) と
 [fixture: radar/header-colon-inline]
 [fixture: radar/gram-written-tree]
 
+treemap の定義は [構文](./diagrams/treemap.ja.md) と
+[木](./ast/treemap.ja.md) にあります。
+[fixture: treemap/gram-written-tree] [fixture: treemap/header-beta]
+
+railroad の定義は 4 方言を扱い、
+[構文](./diagrams/railroad.ja.md) と [木](./ast/railroad.ja.md) にあります。
+[fixture: railroad/ir-gram-written-tree]
+[fixture: railroad/ebnf-gram-written-tree]
+[fixture: railroad/abnf-gram-written-tree]
+[fixture: railroad/peg-gram-written-tree]
+
 ## 元にしたもの
 
 仕様は、mermaid.js のリポジトリにある次の 3 つを元にしています。

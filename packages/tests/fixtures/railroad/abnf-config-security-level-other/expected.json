@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site securityLevel replaces ABNF string text while preserving numeric-value spelling and repeat bounds."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "a&lt;b&gt;&equals;c",
+    "accDescr": "d<br/>e&equals;f",
+    "rules": [
+      {
+        "name": "r-1",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "terminal",
+                  "value": "a&lt;b&gt;&equals;"
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "terminal",
+                    "value": "%x41"
+                  },
+                  "min": 2,
+                  "max": 3
+                }
+              ]
+            },
+            {
+              "type": "optional",
+              "element": {
+                "type": "nonterminal",
+                "name": "name"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -154,10 +154,10 @@ pie/header-capitalized] [fixture: pie/header-uppercase]
 The frontmatter-shaped block passed at the detection point is still diagram
 text. A comment line followed by `---`, `title: Hidden`, `---`, and `pie`
 selects pie, whose hidden YAML rule skips the block without applying its title.
-Gitgraph, info, packet, architecture and radar also retain matching hidden
-blocks; the cited other diagram types reject their corresponding inputs. An
-adjacent-fence empty block, an unmatched fence, or a bare `%%` line before the
-block instead leaves the rejecting `---` pseudo-diagram selected. [fixture:
+Gitgraph, info, packet, architecture, radar and railroad also retain matching
+hidden blocks; the cited other diagram types reject their corresponding inputs.
+An adjacent-fence empty block, an unmatched fence, or a bare `%%` line before
+the block instead leaves the rejecting `---` pseudo-diagram selected. [fixture:
 pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment] [fixture:
 packet/detect-one-block] [fixture: common/directive-before-frontmatter]
@@ -201,6 +201,29 @@ selects the lowercase prefix `packet` without a suffix boundary, including
 [packet syntax](./diagrams/packet.md#detection) defines header boundaries and
 acceptance. [fixture: packet/spec-packet-7426afc4] [fixture:
 packet/spec-packet-c4580507] [fixture: packet/header-letter-suffix]
+
+Entry 31, the
+[treemap detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/detector.ts#L7-L11),
+selects lowercase `treemap` without a suffix boundary. The accepted headers
+`treemap` and `treemap-beta` share id `treemap`;
+[treemap syntax](./diagrams/treemap.md#detection) defines acceptance and the
+reading of detection-retained prefixes. [fixture: treemap/header-beta] [fixture:
+treemap/spec-treemap-test-ts-892fa294] [fixture: treemap/header-letter-suffix]
+[fixture: treemap/detect-retained-body-yaml-no-native]
+
+Entries 32–35
+([IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDetector.ts#L1-L32),
+[EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/ebnfDetector.ts#L1-L22),
+[ABNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/abnfDetector.ts#L1-L22),
+[PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/pegDetector.ts#L1-L22))
+compare the four railroad prefixes case-insensitively without a suffix boundary.
+Their distinct ids select IR, EBNF, ABNF and PEG. Detection alone does not
+establish acceptance: the [railroad grammar](./diagrams/railroad.md#detection)
+requires an exact lowercase header and its boundary for each dialect. [fixture:
+railroad/ir-header-upper] [fixture: railroad/ebnf-header-upper] [fixture:
+railroad/abnf-header-upper] [fixture: railroad/peg-header-upper] [fixture:
+railroad/ir-header-inline] [fixture: railroad/ebnf-header-inline] [fixture:
+railroad/abnf-header-inline] [fixture: railroad/peg-header-inline]
 
 ## Notes
 

@@ -33,6 +33,7 @@ architecture/db-mixed] [fixture: architecture/header-beta]
    architecture/common-repeat-empty] [fixture:
    architecture/common-empty-block-after-value] [fixture:
    architecture/common-block-whitespace] [fixture: architecture/html-all-fields]
+   [fixture: architecture/config-security-level-other]
 3. **Declarations.** Read IDs and explicit `in` references from converted
    Identifier ranges; omit `in` when null. Keep case and prototype-shaped names.
    Each service has type service, each junction type junction; groups have no
@@ -66,7 +67,8 @@ architecture/db-mixed] [fixture: architecture/header-beta]
    architecture/db-title-quote-only-padded] [fixture:
    architecture/db-edge-title-quote-only] [fixture:
    architecture/db-title-bare-escaped-double-quote] [fixture:
-   architecture/db-title-bare-escaped-single-quote]
+   architecture/db-title-bare-escaped-single-quote] [fixture:
+   architecture/config-security-level-other]
 5. **Edges.** Read lhsId/rhsId from their converted references, lhsDir/rhsDir
    from the arrow directions, and lhsInto/rhsInto from whether each marker is
    arrow. Either authored marker character means true. Copy lhsGroup/rhsGroup as

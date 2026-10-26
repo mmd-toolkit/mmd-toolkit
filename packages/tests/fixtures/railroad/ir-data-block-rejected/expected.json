@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Railroad has no authored data-block syntax."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 19: unexpected character: ->@<- at offset: 32, skipped 2 characters.\nLexer error on line 2, column 22: unexpected character: ->:<- at offset: 35, skipped 1 characters.\nLexer error on line 2, column 24: unexpected character: ->}<- at offset: 37, skipped 1 characters. Parse error on line 2, column 21: Expecting token of type ';' but found `x`.\nParse error on line 2, column 23: Expecting token of type '=' but found `y`.\nParse error on line 2, column 25: Expecting token of type '=' but found `;`."
+  }
+}

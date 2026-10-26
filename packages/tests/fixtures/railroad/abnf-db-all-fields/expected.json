@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Publishes ABNF bounds and numeric spellings without character conversion."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "A",
+    "accDescr": "D\nE",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "choice",
+          "alternatives": [
+            {
+              "type": "sequence",
+              "elements": [
+                {
+                  "type": "terminal",
+                  "value": "a"
+                },
+                {
+                  "type": "nonterminal",
+                  "name": "ref"
+                },
+                {
+                  "type": "optional",
+                  "element": {
+                    "type": "terminal",
+                    "value": "b"
+                  }
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "terminal",
+                    "value": "c"
+                  },
+                  "min": 0,
+                  "max": "Infinity"
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "terminal",
+                    "value": "d"
+                  },
+                  "min": 1,
+                  "max": "Infinity"
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "terminal",
+                    "value": "e"
+                  },
+                  "min": 2,
+                  "max": 4
+                },
+                {
+                  "type": "repetition",
+                  "element": {
+                    "type": "terminal",
+                    "value": "f"
+                  },
+                  "min": 3,
+                  "max": 3
+                },
+                {
+                  "type": "terminal",
+                  "value": "%x41"
+                }
+              ]
+            },
+            {
+              "type": "terminal",
+              "value": "%d65"
+            },
+            {
+              "type": "terminal",
+              "value": "%b1000001"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

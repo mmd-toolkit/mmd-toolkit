@@ -18981,3 +18981,284 @@ The summary drops the following:
   [derived from theme variables](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/styles.ts#L8-L46).
   There are no generated identities, browser-dependent publication calls or Db
   patches. [fixture: radar/config-drawing-only]
+
+## treemap
+
+`normalizeTreemap()` summarizes detector id `treemap`, shared by the
+[`treemap` and `treemap-beta` headers](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/treemap.langium#L44-L49).
+[fixture: treemap/header-beta] [fixture: treemap/spec-treemap-test-ts-892fa294]
+
+| Field       | Content                                                                                 |
+| ----------- | --------------------------------------------------------------------------------------- |
+| `title`     | Published diagram title, or the empty text.                                             |
+| `accTitle`  | Published accessibility title, or the empty text.                                       |
+| `accDescr`  | Published accessibility description, or the empty text.                                 |
+| `nodes`     | The outer nodes, each with `name` and optional `value`, `classSelector` and `children`. |
+| `classDefs` | Classes in first-definition order, each with `id` and `styles`.                         |
+
+The summary takes the children of
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L37-L48),
+which the
+[renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L24-L30)
+reads, rather than repeating the same nodes in `getNodes()`. The adapter builds
+their hierarchy with
+[`buildHierarchy()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/utils.ts#L25-L66)
+before adding them to the Db. Order and duplicate names stay as published.
+Sections have `children`, including an empty array; leaves have `value` and no
+`children`. The summary keeps multiple outer nodes and empty names. [fixture:
+treemap/db-all-fields] [fixture: treemap/db-indent-pop] [fixture:
+treemap/db-first-indented] [fixture: treemap/db-leaf-not-parent] [fixture:
+treemap/db-duplicate-names] [fixture: treemap/db-empty-names]
+
+The indentation used to build the Db tree also counts spaces or tabs at the end
+of the preceding header, section or leaf line, or after the semicolon ending a
+class definition. A section's trailing whitespace can make an unindented node on
+the next line its child; a leaf's trailing whitespace can keep the next node
+under the leaf's enclosing section. If the next line also has indentation of its
+own, Mermaid rejects the two separate whitespace runs. This follows the
+[row grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/treemap.langium#L57-L70)
+and the
+[published indentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/parser.ts#L34-L55).
+[fixture: treemap/db-section-tail-no-space] [fixture:
+treemap/db-section-tail-space] [fixture: treemap/db-section-tail-tab] [fixture:
+treemap/db-leaf-tail-no-space] [fixture: treemap/db-leaf-tail-space] [fixture:
+treemap/db-leaf-tail-tab] [fixture: treemap/db-header-tail-space] [fixture:
+treemap/db-header-tail-tab] [fixture: treemap/db-class-tail-no-space] [fixture:
+treemap/db-class-tail-space] [fixture: treemap/db-class-tail-tab] [fixture:
+treemap/gram-section-tail-space-next-indent] [fixture:
+treemap/gram-section-tail-tab-next-indent] [fixture:
+treemap/gram-leaf-tail-space-next-indent] [fixture:
+treemap/gram-leaf-tail-tab-next-indent] [fixture:
+treemap/gram-header-tail-space-next-indent] [fixture:
+treemap/gram-header-tail-tab-next-indent] [fixture:
+treemap/gram-class-tail-space-next-indent] [fixture:
+treemap/gram-class-tail-tab-next-indent]
+
+The adapter publishes
+[all classes before nodes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/parser.ts#L27-L55).
+[`addClass()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L50-L77)
+appends styles on redefinition without moving the class. An unused class and an
+unresolved selector remain in the summary. Prototype names are ordinary Map
+keys. Class styles replace `\,` with `§§§`, remaining commas with `;`, then
+nonoverlapping `§§§` groups with commas from left to right, before splitting at
+`;`. Authored `§§§` therefore becomes an internal comma too: `a§§§b` becomes
+`a,b`, `a§§§§b` becomes `a,§b`, and `§§\,x` becomes `,§§x`. Empty entries
+remain. Each style loses only its trailing whitespace, using `trimEnd()`; its
+leading whitespace stays. [fixture: treemap/db-class-forward] [fixture:
+treemap/db-class-repeat] [fixture: treemap/db-class-unused] [fixture:
+treemap/db-class-missing] [fixture: treemap/db-prototype-names] [fixture:
+treemap/db-class-empty-final] [fixture: treemap/db-class-escaped-comma]
+[fixture: treemap/db-style-whitespace] [fixture:
+treemap/space-style-all-trailing] [fixture: treemap/db-class-style-marker]
+[fixture: treemap/db-class-style-marker-four] [fixture:
+treemap/db-class-style-marker-escaped-comma]
+
+[`NUMBER2` conversion](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L17-L29)
+removes commas and calls `parseFloat()`: `1,234.5` becomes 1234.5, `1_234.50`
+becomes 1, and `1.2.3` becomes 1.2. A dot alone becomes NaN. Finite values stay
+numbers; `numberOrText()` records non-finite values as `"NaN"`, `"Infinity"` or
+`"-Infinity"`, and negative zero as zero. The reachable values include NaN,
+positive overflow, subnormals and underflow to zero; signs, exponent notation,
+`NaN` and `Infinity` are not numeric input forms. `STRING2` drops the
+surrounding quotes without interpreting backslash escapes. [fixture:
+treemap/db-number-comma] [fixture: treemap/db-number-underscore] [fixture:
+treemap/db-number-multiple-dots] [fixture: treemap/db-number-nan] [fixture:
+treemap/db-number-overflow] [fixture: treemap/db-number-subnormal] [fixture:
+treemap/db-number-underflow] [fixture: treemap/number-negative-zero] [fixture:
+treemap/number-plus] [fixture: treemap/number-exponent] [fixture:
+treemap/number-nan] [fixture: treemap/number-infinity] [fixture:
+treemap/lex-string-conversion]
+
+The common
+[publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+sets only truthy final AST values. An empty final common value suppresses the
+previous body assignment; an empty final title leaves the frontmatter title.
+Accessibility values go to the
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[fixture: treemap/common-repeat] [fixture: treemap/common-repeat-empty]
+[fixture: treemap/frontmatter-empty-body-title]
+
+The summary drops:
+
+- The artificial root's empty name, the duplicate flat node list, private
+  `levels` and `root`, and the original indentation widths. The published forest
+  already holds the hierarchy once.
+- Node `cssCompiledStyles` and class `textStyles`, derived from the selector and
+  class definitions. Drawing reads the compiled styles through
+  [`styles2String()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L210-L240),
+  and exposes classes through
+  [`getClasses()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L529-L535).
+  [fixture: treemap/db-class-forward] [fixture: treemap/db-class-repeat]
+- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/db.ts#L28-L35).
+  Publication reads no treemap settings. Padding, dimensions, value display and
+  formatting, and `useMaxWidth` affect drawing only. The renderer does not read
+  `borderWidth`, `valueFontSize` or `labelFontSize`. Settings stay in site or
+  embedded configuration. There are no treemap acceptance keys to remove for
+  opaque-data comparison. [fixture: treemap/config-drawing-only] [fixture:
+  treemap/config-frontmatter-drawing] [fixture: treemap/config-init-drawing]
+  [fixture: treemap/config-frontmatter-cannot-rescue] [fixture:
+  treemap/config-init-cannot-rescue]
+- Aggregated section values, sorted drawing order, coordinates, dimensions,
+  colours and drawing ids. The renderer derives
+  [sums, sorting and layout](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L141-L175)
+  and
+  [theme colours](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/renderer.ts#L79-L126)
+  when drawing. [fixture: treemap/db-all-fields]
+
+The Db needs no patch: publication reads no browser globals, time or random
+values, and has no links or data blocks.
+
+## railroad
+
+`normalizeRailroad()` summarizes `railroad`, `railroadEbnf`, `railroadAbnf` and
+`railroadPeg` in one shape. The four
+[diagram definitions](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDiagram.ts#L12-L17)
+share the same Db and renderer. `diagramType` keeps the detected id. [fixture:
+railroad/ir-header-only] [fixture: railroad/ebnf-header-only] [fixture:
+railroad/abnf-header-only] [fixture: railroad/peg-header-only]
+
+| Field      | Content                                                        |
+| ---------- | -------------------------------------------------------------- |
+| `accTitle` | Published accessibility title, or the empty text.              |
+| `accDescr` | Published accessibility description, or the empty text.        |
+| `rules`    | Rules in declaration order, each with `name` and `definition`. |
+
+The summary uses
+[`getRules()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L71-L102),
+which the
+[renderer reads](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L647-L657).
+Repeated names remain separate rules; the private `ruleMap` replaces its lookup
+entry but does not replace or move a declaration in the array. The summary drops
+that duplicate index. [fixture: railroad/ir-db-duplicates] [fixture:
+railroad/ebnf-db-duplicates] [fixture: railroad/abnf-db-duplicates] [fixture:
+railroad/peg-db-duplicates]
+
+An expression has `type` and the fields in the following table, recursively.
+Array order stays as published. The
+[expression renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L504-L525)
+reads every listed field except `max`. That upper bound remains because the ABNF
+syntax independently determines it; it is neither derived from `min` nor parsing
+or validation state. [fixture: railroad/ir-db-all-fields] [fixture:
+railroad/ebnf-db-all-fields] [fixture: railroad/abnf-db-all-fields] [fixture:
+railroad/peg-db-all-fields]
+
+| `type`        | Fields                  |
+| ------------- | ----------------------- |
+| `terminal`    | `value`                 |
+| `nonterminal` | `name`                  |
+| `special`     | `text`                  |
+| `sequence`    | `elements`              |
+| `choice`      | `alternatives`          |
+| `optional`    | `element`               |
+| `repetition`  | `element`, `min`, `max` |
+
+The four adapters publish these values:
+
+- [IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/railroadParser.ts#L28-L80):
+  constructors map to the corresponding expression kinds. A single-element
+  sequence or choice collapses to its element. `zeroOrMore` and `oneOrMore` give
+  minimum 0 and 1, respectively, with maximum Infinity. [fixture:
+  railroad/ir-db-singletons] [fixture: railroad/ir-db-all-fields]
+- [EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/ebnfParser.ts#L30-L156):
+  single-element sequences, choices and groups collapse. Brackets and postfix
+  `?` give `optional`; braces and `*` give repetition from 0, and `+` from 1,
+  with maximum Infinity. Postfixes fold in source order. An exception `A - B`
+  becomes a sequence of A, terminal `-`, and B. [fixture:
+  railroad/ebnf-db-singletons] [fixture: railroad/ebnf-db-all-fields] [fixture:
+  railroad/ebnf-db-postfix-order]
+- [ABNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/abnfParser.ts#L26-L120):
+  single-element concatenations, alternatives and groups collapse. Numeric
+  terminals remain strings such as `%x41`. Repeat bounds use decimal `parseInt`;
+  a converted lower bound of 0 and upper bound of 1 give `optional`; all other
+  repeat bounds give `repetition`. The adapter does not reject reversed bounds.
+  Finite bounds stay numbers; `numberOrText()` records non-finite bounds as
+  strings such as `"Infinity"`. [fixture: railroad/abnf-db-singletons] [fixture:
+  railroad/abnf-db-all-fields] [fixture: railroad/abnf-db-repeat-optional]
+  [fixture: railroad/abnf-db-repeat-implicit-optional] [fixture:
+  railroad/abnf-db-repeat-implicit-zero] [fixture:
+  railroad/abnf-db-repeat-zero-padded-optional] [fixture:
+  railroad/abnf-db-repeat-reversed] [fixture: railroad/abnf-db-repeat-precision]
+  [fixture: railroad/abnf-db-repeat-overflow] [fixture:
+  railroad/abnf-db-repeat-max-overflow]
+- [PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/parser/pegParser.ts#L27-L148):
+  single-element sequences, choices and groups collapse. Suffix `?`, `*` and `+`
+  give the same optional and repetition forms. Dot becomes special text `.`. A
+  predicate becomes special text starting with `&` or `!`, followed by its
+  terminal in double quotes, reference name or special text. An operand that is
+  neither a terminal, a nonterminal nor special text after collapsing becomes
+  `(...)`; its original operand tree is not published. Quotes and line breaks
+  inside terminal values are not escaped in the predicate label. [fixture:
+  railroad/peg-db-singletons] [fixture: railroad/peg-db-all-fields] [fixture:
+  railroad/peg-db-predicates] [fixture:
+  railroad/peg-db-predicate-singleton-group] [fixture:
+  railroad/peg-db-predicate-predicate] [fixture:
+  railroad/peg-db-predicate-quote-newline]
+
+The string converters for
+[IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad/valueConverter.ts#L5-L34),
+[EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L5-L34)
+and
+[PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-peg/valueConverter.ts#L5-L34)
+remove the surrounding single or double quotes, decode `\n`, `\r` and `\t` to
+their control characters, and turn every other backslash escape `\x` into `x`.
+[fixture: railroad/ir-lex-string-conversion] [fixture:
+railroad/ebnf-lex-string-conversion] [fixture:
+railroad/peg-lex-string-conversion]
+[ABNF strings](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-abnf/valueConverter.ts#L26-L33)
+use double quotes and drop only the surrounding quotes, keeping backslashes
+without interpreting escapes. [fixture: railroad/abnf-lex-string-conversion]
+[EBNF special text](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/railroad-ebnf/valueConverter.ts#L66-L68)
+drops its surrounding `?` and trims whitespace from both ends. [fixture:
+railroad/ebnf-special-whitespace]
+
+The
+[common publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+sets accessibility values only when the final AST value is truthy. An empty
+final assignment suppresses previous body values. The
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDb.ts#L107-L135)
+further removes leading whitespace from the accessibility title and whitespace
+following LF in the description. [fixture: railroad/ir-common-repeat] [fixture:
+railroad/ir-common-repeat-empty] [fixture: railroad/ebnf-common-repeat-empty]
+[fixture: railroad/abnf-common-repeat-empty] [fixture:
+railroad/peg-common-repeat-empty]
+
+The summary also drops:
+
+- The diagram title. The adapters publish body titles, but railroad's
+  [`draw()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+  never reads them. The
+  [common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+  reads only accessibility metadata. Written titles remain in the syntax tree;
+  frontmatter title remains available in `embedded.title`. Each adapter clears
+  the Db at parse entry, after
+  [`Diagram.fromText()` sets the frontmatter title](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L49-L54),
+  so that title is already absent from the Db before normalization. [fixture:
+  railroad/ir-db-all-fields] [fixture: railroad/ir-frontmatter-empty-body-title]
+  [fixture: railroad/ebnf-frontmatter-empty-body-title] [fixture:
+  railroad/abnf-frontmatter-empty-body-title] [fixture:
+  railroad/peg-frontmatter-empty-body-title]
+- Rule `comment` and repetition `separator`: declared in the
+  [types](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadTypes.ts#L33-L69),
+  but none of the adapters assigns them and the renderer does not read them.
+- Railroad configuration, consumed by
+  [drawing](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L637-L667)
+  and
+  [style construction](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/styles.ts#L1-L44).
+  The Db and adapters read no `railroad.*` options. Settings remain in site or
+  embedded configuration. A numeric embedded `railroad.fontFamily` does reject
+  during recursive
+  [configuration sanitization](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils/sanitizeDirective.ts#L65-L85),
+  before publication; those fixtures carry `embedded-data-opaque`. No railroad
+  semantic acceptance key needs removal from otherwise valid configuration.
+  [fixture: railroad/ir-config-drawing-site] [fixture:
+  railroad/ir-config-frontmatter-drawing] [fixture:
+  railroad/ebnf-config-init-drawing] [fixture:
+  railroad/abnf-config-frontmatter-drawing] [fixture:
+  railroad/peg-config-init-drawing] [fixture:
+  railroad/ir-config-frontmatter-fontfamily-number] [fixture:
+  railroad/ebnf-config-init-fontfamily-number]
+- Measurements, coordinates, SVG paths, dimensions and drawing ids, computed
+  [while rendering](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadRenderer.ts#L535-L624).
+
+Publication needs no Db patch: it reads no browser globals, time or random
+values, and has no links or data blocks.

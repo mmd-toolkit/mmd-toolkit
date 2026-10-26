@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "PEG duplicates remain separate declarations rather than map replacements."
+  },
+  "accepted": true,
+  "diagramType": "railroadPeg",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "first"
+        }
+      },
+      {
+        "name": "other",
+        "definition": {
+          "type": "nonterminal",
+          "name": "r"
+        }
+      },
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": "second"
+        }
+      },
+      {
+        "name": "r",
+        "definition": {
+          "type": "terminal",
+          "value": ""
+        }
+      }
+    ]
+  }
+}

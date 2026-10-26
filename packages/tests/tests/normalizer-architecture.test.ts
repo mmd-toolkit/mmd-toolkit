@@ -51,14 +51,13 @@ describe("architecture summary", () => {
     })
   })
 
-  it("matches every fixed fixture and stays the same at every security level", async () => {
+  it("matches every fixed fixture at its configured or standard security levels", async () => {
     for (const fixture of fixtures) {
-      for (const securityLevel of [
-        "strict",
-        "loose",
-        "antiscript",
-        "sandbox",
-      ] as const) {
+      const levels =
+        fixture.config?.securityLevel === undefined
+          ? ["strict", "loose", "antiscript", "sandbox"]
+          : [fixture.config.securityLevel]
+      for (const securityLevel of levels) {
         const outcome = await runMermaid(fixture.input, {
           config: { ...fixture.config, securityLevel },
         })

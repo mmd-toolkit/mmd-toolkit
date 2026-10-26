@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: A common directive inside a decimal repeat count splits a number unit."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "repetition",
+          "element": {
+            "type": "terminal",
+            "value": "a"
+          },
+          "min": 23,
+          "max": 23
+        }
+      }
+    ]
+  }
+}

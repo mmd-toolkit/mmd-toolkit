@@ -53,6 +53,8 @@ function textsOfRow(diagram: string): string[] {
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [string, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["railroad", "RailroadDiagram"],
+  ["treemap", "TreemapDiagram"],
   ["radar", "RadarDiagram"],
   ["architecture", "ArchitectureDiagram"],
   ["gitgraph", "GitgraphDiagram"],
@@ -86,6 +88,32 @@ const DIAGRAMS: readonly [string, string][] = [
  */
 function textsBesidesTheRow(diagram: string): string[] {
   switch (diagram) {
+    case "railroad":
+      return [
+        "=",
+        "::=",
+        "<-",
+        ";",
+        "(",
+        ")",
+        ",",
+        "|",
+        "/",
+        "[",
+        "]",
+        "{",
+        "}",
+        "?",
+        "*",
+        "+",
+        "-",
+        "&",
+        "!",
+        ".",
+        ":",
+      ]
+    case "treemap":
+      return [":", ",", ";", "{", "}"]
     case "radar":
       return [":", ",", "[", "]", "{", "}"]
     case "architecture":

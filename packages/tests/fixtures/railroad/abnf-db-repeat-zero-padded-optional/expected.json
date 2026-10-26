@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Zero-padded bounds become optional after decimal conversion to zero and one."
+  },
+  "accepted": true,
+  "diagramType": "railroadAbnf",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "rules": [
+      {
+        "name": "r",
+        "definition": {
+          "type": "optional",
+          "element": {
+            "type": "terminal",
+            "value": "d"
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,3 +1,7 @@
+import { railroadDbOf } from "./railroad.ts"
+import type { RailroadDiagram } from "./railroad-tree.ts"
+import { treemapDbOf } from "./treemap.ts"
+import type { TreemapDiagram } from "./treemap-tree.ts"
 import { radarDbOf } from "./radar.ts"
 import type { RadarDiagram } from "./radar-tree.ts"
 import { architectureDbOf } from "./architecture.ts"
@@ -64,6 +68,8 @@ export interface ErrorDiagram extends TreeNode {
 
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
+  | RailroadDiagram
+  | TreemapDiagram
   | RadarDiagram
   | ArchitectureDiagram
   | GitgraphDiagram
@@ -117,6 +123,10 @@ export function dbFromTree(
     // The error pseudo-diagram has no Db.
     case "ErrorDiagram":
       return {}
+    case "RailroadDiagram":
+      return railroadDbOf(text, root, root.body, embedded)
+    case "TreemapDiagram":
+      return treemapDbOf(text, root, root.body, embedded)
     case "RadarDiagram":
       return radarDbOf(text, root, root.body, embedded)
     case "ArchitectureDiagram":

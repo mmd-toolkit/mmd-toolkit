@@ -1,3 +1,7 @@
+import type { RailroadUnits } from "../../src/diagrams/railroad/index.ts"
+import { lexRailroad } from "../../src/diagrams/railroad/index.ts"
+import type { TreemapUnits } from "../../src/diagrams/treemap/index.ts"
+import { lexTreemap } from "../../src/diagrams/treemap/index.ts"
 import type { AgentflowUnits } from "../../src/diagrams/agentflow/index.ts"
 import { lexAgentflow } from "../../src/diagrams/agentflow/index.ts"
 import type { Range, Root } from "../../src/index.ts"
@@ -2144,6 +2148,38 @@ export function agentflowLexingOf(text: string): AgentflowUnits | null {
   if (detection.detected !== "agentflow") return null
   try {
     return lexAgentflow(diagramInputOf(opened, detection, "agentflow"))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/** Treemap ordered lexical units, including visible indentation and composite boundaries. */
+export function treemapLexingOf(text: string): TreemapUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "treemap") return null
+  try {
+    return lexTreemap(diagramInputOf(opened, detection, "treemap"))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/** Railroad ordered lexical units, including visible indentation and composite boundaries. */
+export function railroadLexingOf(text: string): RailroadUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (
+    detection.detected !== "railroad" &&
+    detection.detected !== "railroadEbnf" &&
+    detection.detected !== "railroadAbnf" &&
+    detection.detected !== "railroadPeg"
+  )
+    return null
+  try {
+    return lexRailroad(diagramInputOf(opened, detection, detection.detected))
   } catch (error) {
     if (error instanceof ParseError) return null
     throw error

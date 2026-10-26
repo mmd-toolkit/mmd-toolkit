@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "railroad.md: EBNF units: a non-ASCII continuation is not a word character in a name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 2: unexpected character: ->é<- at offset: 20, skipped 1 characters. "
+  }
+}

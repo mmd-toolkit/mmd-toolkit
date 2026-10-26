@@ -2015,3 +2015,291 @@ Markdown host は最終行の空白を削ります。
 [test: radar Markdown: hidden-boundary]
 [test: radar Markdown: final-hidden-padding]
 [test: radar Markdown: rejected]
+
+## treemap の親子と作者の値
+
+[treemap の規則](./treemap.ja.md)は、
+元の行の indent から得る森の順序を保ちます。
+space と tab は各 1 文字と数えます。
+leaf は section を閉じますが親にはならず、class と common の文は参加しません。
+普通の根は設定の正の 1 段に置きます。
+字下げが親子を決めるので、tabWidth 0 でも 1 段 1 文字以上です。
+class 名と行が接する場合は接触を保ち、図全体の根の基準を 0 にします。
+行末や空白行の字下げは、次の行へ一度だけ移します。
+独立したコメントと directive は第 1 列に置きます。
+native の余分な字下げの unit を作らないためです。
+semicolon が保護する行の境界は、本文の原文を保ちます。
+
+[fixture: treemap/indentation/leaf-closes]
+[fixture: treemap/indentation/common-and-class]
+[fixture: treemap/indentation/zero]
+[fixture: treemap/indentation/glued-roots]
+[fixture: treemap/carried-indentation/section-space]
+[fixture: treemap/carried-indentation/whitespace-line]
+[fixture: treemap/comments/carried-space]
+[fixture: treemap/directives/leading]
+[fixture: treemap/semicolons/body-kept]
+
+数は comma、underscore、dot、精度を含む source の綴りを保ちます。
+数値から印字し直すと、読みが変わったり拒否される構文になったりします。
+名前は引用符、空名、空白、backslash、entity、HTML、物理継続列を保ちます。
+class style は内部と末尾の padding を含め、作者の literal 全体として保ちます。
+CSS としては整形しません。
+class の再定義、空代入、未解決の selector、元順を保ちます。
+common 値と説明ブロックは共有の外側の配置を使い、
+内側の文字と trivia を保ちます。
+全 semicolon を保ち、保護区間の内部に字下げを足さず列を保ちます。
+
+[fixture: treemap/numbers/underscore]
+[fixture: treemap/numbers/precision]
+[fixture: treemap/names/quotes]
+[fixture: treemap/names/physical-columns]
+[fixture: treemap/styles/written]
+[fixture: treemap/styles/trailing]
+[fixture: treemap/source-order/repetitions]
+[fixture: treemap/accessibility-lines/title-padding]
+[fixture: treemap/description-blocks/continuation]
+[fixture: treemap/semicolons/protected-class-column]
+
+既存の 6 つの[指定読み](./treemap.ja.md#specified-readings)に従います。
+atomic な directive と選ばれた semicolon の切断は拒否します。
+frontmatter の HTML 引用符の影響を分離し、埋め込みを opaque とします。
+検出で通過した bare percent の trivia は再読せず、後の C4 語で図種を変えません。
+treemap に native hidden YAML や directive の node はありません。
+opaque 比較で除く受理設定もありません。
+拒否入力の修復出力は作りません。
+raw で拒否された入力には raw Db がなく、
+corpus が記録する受理された指定読みを比較に使います。
+共有の host は CR と CRLF を正規化し、
+実際の frontmatter YAML に guard を使います。
+最後の Markdown コード行の padding は、style の末尾も含めて除かれえます。
+
+[corpus fixture: treemap/directive-header-middle]
+[corpus fixture: treemap/div-semicolon-number-atom]
+[corpus fixture: treemap/div-html-frontmatter-reverse]
+[corpus fixture: treemap/div-frontmatter-invalid]
+[corpus fixture: treemap/bare-before-header-space]
+[corpus fixture: treemap/c4-component-section]
+[corpus fixture: treemap/hidden-yaml-body]
+[fixture: treemap/frontmatter-yaml/html-guard]
+[test: treemap/line-terminators-and-unicode/crlf-values]
+[test: treemap Markdown: final-style-padding]
+[test: treemap Markdown: rejected]
+
+## railroad の方言と書かれた値
+
+[railroad の規則](./railroad.ja.md)は、選ばれた IR、EBNF、ABNF、PEG の見出し、
+代入記号、EBNF の任意 comma、式の構造を保ちます。
+正規化した Db が同じでも singleton の call と group は残します。
+規則、選択肢、metadata の繰返しと空の reset を出現順に保ちます。
+比較 Db は本文の title を除きますが、その内容を削除する許可にはなりません。
+[fixture: railroad/assignment/ebnf-spellings]
+[fixture: railroad/ebnf-sequences/mixed]
+[fixture: railroad/calls/ir-singletons]
+[fixture: railroad/groups/peg-delimiters]
+[fixture:
+railroad/source-order/ir-duplicates]
+[fixture: railroad/source-order/ebnf-duplicates]
+[fixture: railroad/source-order/abnf-duplicates]
+[fixture:
+railroad/source-order/peg-duplicates]
+[fixture: railroad/title/ir-trim]
+
+文字列は source span 全体を保ちます。
+引用符、空値、空白だけの値、escape、HTML、entity、継続列も対象です。
+singleQuote では書き換えません。
+ABNF は backslash を普通の文字として読み、他の3方言は escape として読みます。
+ABNF の repeat は先頭ゼロ、上下限の省略、exact 形、巨大な整数を保ちます。
+numeric value は base letter の大小、数字、dot、hyphen を
+raw text として保ちます。
+EBNF の special sequence は外端と内部の空白も含め、span 全体を保ちます。
+これらの表記の変換や値の reflow で Db が変わることがあります。
+PEG predicate は公開 label から再構築せず、書かれた operand 全体を残します。
+[fixture: railroad/quotes/ir-escape]
+[fixture:
+railroad/quotes/ebnf-escape]
+[fixture: railroad/quotes/abnf-backslash]
+[fixture:
+railroad/quotes/peg-escape]
+[fixture: railroad/quotes/ir-empty-and-text]
+[fixture:
+railroad/quotes/ebnf-empty-and-text]
+[fixture:
+railroad/quotes/abnf-empty-and-text]
+[fixture: railroad/quotes/peg-empty-and-text]
+[fixture: railroad/repeats/abnf-spellings]
+[fixture:
+railroad/repeats/abnf-zero]
+[fixture: railroad/repeats/abnf-large]
+[fixture:
+railroad/numeric-values/abnf-spellings]
+[fixture:
+railroad/special-sequences/ebnf-content]
+[fixture:
+railroad/multiline-values/peg-columns]
+[fixture: railroad/predicates/peg-nested]
+
+コメントの形と内容も書かれたままにします。
+全方言の `%%`、IR の C comment、EBNF の C と ISO comment、
+ABNF の semicolon 行コメント、PEG の hash 行コメントが対象です。
+LS と PS は native line comment の内容として保ちます。
+裸の ABNF `;` は句読点であり、終端の直後は LF または EOF にします。
+規則の必須の可視 `;` は安全な場所で定義に付けます。
+その他の semicolon は共有の区間保護に従い、交差する値も保ちます。
+最初の行は他の平坦な図種と同じく本文の1段に揃え、
+2行目以降は書かれた列を保ちます。
+global directive を除いた後に文字列 style または classDef を含む原文の行は、
+すべての文、コメント、native hidden form、内部の空白を書かれたまま保ちます。
+前後の行とは結合しません。
+directive の除去で語が複数の行をまたいでできる場合は、その行をすべて保ちます。
+[fixture: railroad/semicolons/ir-word-unclosed-directive-lines]
+[fixture: railroad/semicolons/ebnf-word-unclosed-directive-lines]
+[fixture: railroad/semicolons/abnf-word-unclosed-directive-lines]
+[fixture: railroad/semicolons/peg-word-unclosed-directive-lines]
+ここでいう行は、mermaid.js が1行として読む範囲全体です。
+U+2028 や U+2029 の後の comment line が語を含む行の前、後、両方をつなぐ場合は、
+つながる原文の行をすべて保ちます。
+最初の行の字下げは本文の1段に揃え、中身と2行目以降の列は書かれたままです。
+[test: railroad/semicolons/ir-style-comment-before-ls]
+[test: railroad/semicolons/ir-style-comment-after-ls]
+[test: railroad/semicolons/ir-style-comment-both-ls]
+[test: railroad/semicolons/ir-classdef-comment-before-ps]
+[test: railroad/semicolons/ir-classdef-comment-after-ps]
+[test: railroad/semicolons/ir-classdef-comment-both-ps]
+[test: railroad/semicolons/ebnf-style-comment-before-ls]
+[test: railroad/semicolons/ebnf-style-comment-after-ls]
+[test: railroad/semicolons/ebnf-style-comment-both-ls]
+[test: railroad/semicolons/ebnf-classdef-comment-before-ps]
+[test: railroad/semicolons/ebnf-classdef-comment-after-ps]
+[test: railroad/semicolons/ebnf-classdef-comment-both-ps]
+[test: railroad/semicolons/abnf-style-comment-before-ls]
+[test: railroad/semicolons/abnf-style-comment-after-ls]
+[test: railroad/semicolons/abnf-style-comment-both-ls]
+[test: railroad/semicolons/abnf-classdef-comment-before-ps]
+[test: railroad/semicolons/abnf-classdef-comment-after-ps]
+[test: railroad/semicolons/abnf-classdef-comment-both-ps]
+[test: railroad/semicolons/peg-style-comment-before-ls]
+[test: railroad/semicolons/peg-style-comment-after-ls]
+[test: railroad/semicolons/peg-style-comment-both-ls]
+[test: railroad/semicolons/peg-classdef-comment-before-ps]
+[test: railroad/semicolons/peg-classdef-comment-after-ps]
+[test: railroad/semicolons/peg-classdef-comment-both-ps]
+共有の kept-line 配置に従い、交差する文や不可分な値・trivia も全体を保ちます。
+mermaid.js は、そのような行の最後の semicolon を無視し得ます。
+railroad では規則の必須終端や ABNF のコメントの印がその対象になり得るため、
+行を変えると規則が拒否されたり、コメントがコードとして読まれたりします。
+原文を保つことで、移した後の行規則を予測せずに両方を守ります。
+払うものは、名前、文字列、コメントにこれらの文字列を含む行が、
+colon や hash がなくても整形されないことです。
+その他の行は通常どおり整形します。
+除かれる directive の中にしかない語は、行を保つ対象にしません。
+[fixture: railroad/comments/ir-positions]
+[fixture: railroad/comments/ebnf-positions]
+[fixture: railroad/comments/abnf-positions]
+[fixture:
+railroad/comments/peg-positions]
+[fixture:
+railroad/comments/abnf-before-terminator]
+[fixture:
+railroad/statements-one-per-line/abnf-terminators]
+[fixture:
+railroad/semicolons/ir-value-last-line]
+[fixture:
+railroad/semicolons/ebnf-special-last-line]
+[fixture:
+railroad/semicolons/abnf-protected]
+[fixture:
+railroad/semicolons/peg-value-last-line]
+[fixture: railroad/semicolons/ir-style-call-close]
+[fixture: railroad/semicolons/abnf-style-group-newline]
+[fixture: railroad/semicolons/ir-protected-rule-indent]
+[fixture: railroad/semicolons/ir-protected-multiline-indent]
+[fixture: railroad/semicolons/ir-leading-c]
+[fixture: railroad/semicolons/ebnf-leading-iso]
+[fixture: railroad/semicolons/ebnf-leading-c]
+[fixture: railroad/semicolons/abnf-leading-hidden]
+[fixture: railroad/semicolons/peg-leading-hidden]
+[fixture: railroad/semicolons/ir-leading-multiline-c]
+[fixture: railroad/semicolons/ir-header-leading-c]
+[fixture: railroad/semicolons/ir-leading-directive-c]
+[fixture: railroad/semicolons/ir-after-rule]
+[fixture: railroad/semicolons/ebnf-after-description]
+[fixture: railroad/semicolons/abnf-after-description]
+[fixture: railroad/semicolons/peg-after-rule-name]
+[fixture: railroad/semicolons/ir-kept-description-hidden]
+[fixture: railroad/semicolons/ebnf-comment-after-moved-rule]
+[fixture: railroad/semicolons/abnf-removed-directive-word]
+[fixture: railroad/semicolons/peg-directive-split-style]
+[fixture: railroad/semicolons/ebnf-terminator-after-hash]
+[fixture: railroad/semicolons/ir-assignment-after-word]
+[fixture: railroad/semicolons/abnf-comment-marker-spaced]
+[fixture: railroad/semicolons/abnf-comment-marker-multiline]
+[fixture: railroad/semicolons/ir-word-multiple-statements]
+[fixture: railroad/semicolons/abnf-word-multiple-statements]
+[fixture: railroad/semicolons/peg-word-quoted]
+[fixture: railroad/semicolons/ebnf-word-rule-name]
+[fixture: railroad/semicolons/ir-word-comment-line]
+[fixture: railroad/semicolons/ebnf-word-directive-lines]
+[fixture: railroad/semicolons/abnf-word-neighbor-boundaries]
+[fixture: railroad/semicolons/peg-word-middle-line]
+
+common line と説明ブロックは共有の配置に従います。
+hidden YAML と native directive は AST の owner ごとに
+RailroadIgnoredText の span 全体を保ち、
+range 外の消費 LF と closing padding も残します。
+見出し自身の form だけに header-edge の例外を使います。
+本文の form は、見出しの行から文を移した後も共有の予備 LF 規則に従います。
+保持 prefix 全体を保ち、無効だった YAML が frontmatter になるのを防ぎます。
+安全な実際の frontmatter だけを guard 付き YAML 整形に通します。
+物理 CR と CRLF、先頭 BOM、Markdown 本文末尾の padding は、
+共有 host の制限に従います。
+[fixture: railroad/description-blocks/ir-edges]
+[fixture:
+railroad/hidden-forms/ir-owners]
+[fixture: railroad/hidden-forms/ebnf-owners]
+[fixture: railroad/hidden-forms/abnf-owners]
+[fixture:
+railroad/hidden-forms/peg-owners]
+[fixture:
+railroad/hidden-boundaries/ir-moved-before-hidden]
+[fixture:
+railroad/hidden-boundaries/ebnf-moved-before-hidden]
+[fixture:
+railroad/hidden-boundaries/abnf-moved-before-hidden]
+[fixture:
+railroad/hidden-boundaries/peg-moved-before-hidden]
+[fixture:
+railroad/retained-prefix/ir-leading]
+[fixture:
+railroad/frontmatter-yaml/abnf-safe]
+[test:
+railroad/line-terminators-and-unicode/ir-cr]
+[test:
+railroad/line-terminators-and-unicode/ebnf-leading-bom]
+[test: railroad Markdown:
+abnf-final-hidden-padding]
+
+既存の6つの[仕様による読み](./railroad.ja.md#仕様による読み)は、
+atom 内の directive と選択された semicolon の分割を拒否し、
+frontmatter の HTML quote の影響を分け、埋込みデータを opaque にし、
+検出で通過した bare-percent trivia を保ち、後の C4 語でも railroad を保ちます。
+opaque 比較から除く railroad の受理設定 key はありません。
+空文字列は値として保ち、空 call は拒否し、新しい差異は加えません。
+raw の拒否に raw Db や架空の受理効果はありません。
+拒否される単体入力は修復出力なしで構文エラーを返し、
+Markdown は埋込み整形を辞退します。
+[corpus fixture:
+railroad/ir-div-directive-header]
+[corpus fixture:
+railroad/abnf-div-semicolon-repeat-number]
+[corpus fixture:
+railroad/ebnf-div-html-frontmatter-rule-reject]
+[corpus fixture:
+railroad/peg-config-init-fontfamily-number]
+[corpus fixture:
+railroad/ir-bare-nbsp]
+[corpus fixture:
+railroad/peg-c4-deployment-predicate]
+[corpus fixture:
+railroad/ir-error-empty-call]
+[test: railroad Markdown: ir-rejected]

@@ -18,6 +18,7 @@ import { printRequirement } from "./requirement.ts"
 import { printSankey } from "./sankey.ts"
 import { printSequence } from "./sequence.ts"
 import { printState } from "./state.ts"
+import { printTreemap } from "./treemap.ts"
 import { printTimeline } from "./timeline.ts"
 import { printXychart } from "./xychart.ts"
 import { gitgraphPrinter } from "./gitgraph.ts"
@@ -25,6 +26,7 @@ import { piePrinter } from "./pie.ts"
 import { infoPrinter } from "./info.ts"
 import { architecturePrinter } from "./architecture.ts"
 import { radarPrinter } from "./radar.ts"
+import { railroadPrinter } from "./railroad.ts"
 import { packetPrinter } from "./packet.ts"
 import type { Source } from "./source.ts"
 import type { RootTextPlan } from "./root.ts"
@@ -44,6 +46,10 @@ export interface DiagramTextRules {
 export const diagramTextRules: Readonly<
   Partial<Record<string, DiagramTextRules>>
 > = {
+  RailroadDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: railroadPrinter.keepsPrefix,
+  },
   RadarDiagram: {
     keepsCommentLines: false,
     keepsPrefix: radarPrinter.keepsPrefix,
@@ -124,4 +130,6 @@ export const diagramPrinters: Readonly<
   PacketDiagram: packetPrinter.print,
   ArchitectureDiagram: architecturePrinter.print,
   RadarDiagram: radarPrinter.print,
+  TreemapDiagram: printTreemap,
+  RailroadDiagram: railroadPrinter.print,
 }

@@ -401,6 +401,45 @@ C4Context はこの全体一致をしません。
 [fixture: radar/c4-deployment-header-lf]
 [fixture: radar/c4-deployment-header-eof]
 
+### Treemap
+
+treemap の見出しがあれば、後の引用した名前や共通値が
+C4Container・C4Component・C4Dynamic・C4Deployment を含んでも、
+見出しによって treemap を選びます。
+StringLiteral・TreemapLiteral はその text を書かれたまま持てるため、
+ignored node や拒否は要りません。
+残る差異は、先に試す C4 の anywhere 一致の代わりに使う直接の見出しの規則です。
+先頭・見出しの native comment が LF で終わる場合は差異のない対照とし、
+終端がなければ C4 scan が C4 を選ぶ場合があります。
+既存の受理する specified を保ち、これらの対照と区別します。
+[fixture: treemap/c4-container-section] [fixture: treemap/c4-component-leaf]
+[fixture: treemap/c4-dynamic-title] [fixture: treemap/c4-deployment-block]
+[fixture: treemap/c4-component-header-eof]
+[fixture: treemap/c4-component-header-lf]
+
+### Railroad
+
+選んだ railroad の見出しが IR、EBNF、ABNF、PEG を決め、
+後の図の text に C4Container、C4Component、C4Dynamic、
+C4Deployment があっても変えません。C4Context だけの場合も通常の値です。
+印のある例は、Mermaid が C4 を選ぶのに対し、
+specified の railroad の結果は受理です。
+[fixture: railroad/ir-c4-container-terminal]
+[fixture: railroad/ebnf-c4-component-special]
+[fixture: railroad/abnf-c4-dynamic-string]
+[fixture: railroad/peg-c4-deployment-predicate]
+
+第 1 の問いでは、書かれた規則名、文字列、metadata、special sequence が
+これらの語を自然に保てるため、ignored-text の node は要りません。
+その原文の木で表せないのは、見出しにかかわらず図全体を C4 へ切り替えることです。
+第 2 の問いの答えは理由 2 で、detector の登録順の代わりに
+見出しを選ぶ直接の規則を使います。
+4 id は引き続き 1 個の RailroadDiagram を共有します。
+[fixture: railroad/ir-c4-container-terminal]
+[fixture: railroad/ebnf-c4-component-special]
+[fixture: railroad/abnf-c4-dynamic-string]
+[fixture: railroad/peg-c4-deployment-predicate]
+
 ## mermaid.js の文書と issue
 
 - [C4 図の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md)
@@ -510,3 +549,31 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   [#7188](https://github.com/mermaid-js/mermaid/pull/7188) は、
   文書例の comma の修正で、
   末尾 comma の文法上の対応を追加したものではありません。
+
+- Treemap: pin した
+  [treemap の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treemap.md#L24-L115)
+  は引用した row・字下げ・class 定義を説明し、
+  この共通の前処理の境界は定めていません。
+  2026-10-25 に公式 repository の issue・PR を
+  `treemap C4` で検索しました。
+  調べた結果に、この差異を maintainer が判断した根拠は見つかりませんでした。
+  [#6590](https://github.com/mermaid-js/mermaid/pull/6590) は
+  treemap を導入し、2025-06-27 に merge された PR で、
+  この境界を判断したものではありません。
+
+- Railroad:
+  [pin した構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/railroad.md#L1-L280)
+  は 4 記法、EBNF の例外、ABNF のセミコロンの comment、
+  PEG の predicate を説明します。
+  native の残る YAML と frontmatter を跨ぐ HTML の引用符の文脈は定義しません。
+  2026-10-26 に公式 repository の issue と PR を railroad frontmatter、
+  railroad directive、railroad semicolon、railroad comment で検索しました。
+  [#7979](https://github.com/mermaid-js/mermaid/issues/7979) は
+  demo の見出し名の報告
+  （closed、Triage）、
+  [#6620](https://github.com/mermaid-js/mermaid/issues/6620) は
+  ABNF の図種の提案（open、Discussion Needed）です。
+  どちらも、これらの前処理の境界について、
+  保守者が defect と判断した事実ではありません。
+  この差異はその判断でなく既存の共通規則に従います。
+  調べた結果だけで、ほかに関連する issue がないとは断定しません。
