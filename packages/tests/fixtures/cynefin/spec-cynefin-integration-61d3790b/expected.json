@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/cynefin/cynefin.integration.spec.ts",
+    "line": 138,
+    "test": "Cynefin Parsing - Accessibility > should parse accTitle"
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "Cynefin Framework Overview",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "Emergent"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

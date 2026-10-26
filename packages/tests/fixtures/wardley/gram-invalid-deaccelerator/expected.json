@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does deaccelerator evolution have a range gate?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Deaccelerator \"A\" evolution must be between 0-1 (decimal) or 0-100 (percentage). Received: 101"
+  }
+}

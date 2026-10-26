@@ -1,0 +1,135 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-empty-description-block >> invalid >>> docs/rules/wardley-no-empty-description-block.md incorrect 1
+Filename: wardley-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   component API [0.6, 0.7]
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/description-empty-reset
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/description-empty-reset-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr: Last
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/description-multiline-directive
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/description-multiline-directive-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr: First
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | %%{init:
+    | ~~~~~~~~\ [1]
+  5 | {}
+    | ~~\ [1]
+  6 | }%%
+    | ~~~\ [1]
+  7 | }
+    | ~ [1]
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   component API [0.6, 0.7]
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/empty-block-before-brace-comment
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-block-before-brace-comment-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr
+    | ^~~~~~~~\ [1]
+  3 | %% TODO
+    | ~~~~~~~\ [1]
+  4 | {}
+    | ~~ [1]
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/empty-block-crlf
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-block-crlf-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr { 
+    | ^~~~~~~~~~~\ [1]
+  3 |  }
+    | ~~ [1]
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/empty-block-directive
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-block-directive-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  3 | %%{init:{}}%%
+    | ~~~~~~~~~~~~~\ [1]
+  4 | }
+    | ~ [1]
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/empty-block
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-block-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: wardley-no-empty-description-block >> invalid >>> invalid/wardley/empty-comment-after-brace
+Filename: tests/fixtures/rules/wardley-no-empty-description-block/invalid/wardley/empty-comment-after-brace-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | %% TODO
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common boundaries in authored components: A selected semicolon may separate the parenthesis and complete strategy word."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "style:#x",
+        "label": "style:#x",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "build"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Detection: leading trimming permits an indented opener with an unindented closer."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

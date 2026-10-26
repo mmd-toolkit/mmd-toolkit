@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A final empty body title leaves the frontmatter title intact."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  },
+  "embedded": {
+    "title": "Front"
+  }
+}

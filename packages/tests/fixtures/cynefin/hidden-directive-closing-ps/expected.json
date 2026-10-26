@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden directives: a closing U+2029 boundary does not consume unreadable body padding."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 26: unexpected character: -> <- at offset: 38, skipped 1 characters. "
+  }
+}

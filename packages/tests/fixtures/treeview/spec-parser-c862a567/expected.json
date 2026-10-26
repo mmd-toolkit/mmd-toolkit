@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/parser.spec.ts",
+    "line": 371,
+    "test": "box-drawing ↔ indent equivalence > deeply nested (4 levels)"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "b",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "c",
+                "nodeType": "directory",
+                "children": [
+                  {
+                    "name": "d.txt",
+                    "nodeType": "file",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "name": "e.txt",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "f.txt",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

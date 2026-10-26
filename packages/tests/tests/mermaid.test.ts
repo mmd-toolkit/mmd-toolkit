@@ -254,14 +254,14 @@ describe("runMermaid", () => {
     })
   })
 
-  it("returns db null for a diagram type without a normalizer", async () => {
+  it("summarizes the final detector type, treeView", async () => {
     const fixture = (await loadFixtures("common")).find(
       (item) => item.name === "detect-minimal-tree-view",
     )!
     expect(await runMermaid(fixture.input)).toEqual({
       accepted: true,
       diagramType: "treeView",
-      db: null,
+      db: { accTitle: "", accDescr: "", nodes: [] },
     })
   })
 })

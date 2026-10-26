@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A percent pair within a quoted name remains text except common comment-line removal."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a%%comment\nb",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

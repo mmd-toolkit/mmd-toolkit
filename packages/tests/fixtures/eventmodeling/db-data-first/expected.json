@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The first matching data definition survives two later redefinitions."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\nfirst\n}\n"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "B",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\npartner\n}\n"
+        }
+      }
+    ]
+  }
+}

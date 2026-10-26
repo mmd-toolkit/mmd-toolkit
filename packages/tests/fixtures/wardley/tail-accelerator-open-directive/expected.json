@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does an unclosed directive affect accelerator EOL?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [
+      {
+        "name": "A",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

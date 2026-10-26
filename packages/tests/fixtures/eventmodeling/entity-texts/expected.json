@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How do numeric and named character references pass through global entity encoding and native text publication?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ &ﬂ°°35¶ß &quot; &amp; }"
+        }
+      }
+    ]
+  }
+}

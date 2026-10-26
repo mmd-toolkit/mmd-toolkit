@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 70
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Coordinate Examples",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Infrastructure",
+        "label": "Infrastructure",
+        "x": 20,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Product",
+        "label": "Product",
+        "x": 60,
+        "y": 70,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "User Need",
+        "label": "User Need",
+        "x": 95,
+        "y": 90,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

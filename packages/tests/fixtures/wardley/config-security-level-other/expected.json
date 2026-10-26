@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does nonstandard site securityLevel replace only common metadata while Wardley strings stay unchanged?"
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": true
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "T&lt;b&gt;&equals;x",
+    "accTitle": "A&lt;b&gt;&equals;x",
+    "accDescr": "D<br/>&equals;x",
+    "nodes": [
+      {
+        "id": "C<b>=x",
+        "label": "C<b>=x",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "N<br>=x",
+        "x": 30,
+        "y": 20
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

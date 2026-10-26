@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ACC_TITLE does not take a later line as its value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: ->A<- at offset: 23, skipped 1 characters. "
+  }
+}

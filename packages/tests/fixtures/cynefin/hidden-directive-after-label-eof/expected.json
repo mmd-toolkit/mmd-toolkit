@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EOF completes a labeled transition after native directive consumption."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "A"
+      }
+    ]
+  }
+}

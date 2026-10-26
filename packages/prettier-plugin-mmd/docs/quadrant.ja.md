@@ -878,12 +878,11 @@ quadrantChart
 
 ### 指令
 
-指令は、書かれた場所に残します。
-文の単位の間にあっても、文の間にあっても同じです。
-両側の空白は、それぞれ、あるかないかを保ちます。
+指令は元の単位の間に残します。
+同じ印字行の中では、両側の空白の有無を保ちます。
 空白が書かれていれば空白 1 つ、接していれば接したままです。
 mermaid.js は、テキスト、名前、文字列の中の指令の前後を結んで読むので、
-指令の隣の空白は動かさず、取り除きもしません
+文の内部では、指令の隣が接しているか離れているかを保ちます
 （[ディレクティブ](./journey.ja.md#ディレクティブ)を参照）。
 単独の行にある指令は、後ろの文と同じ段に置き、
 行の中で 2 つの文の間にある指令は、後ろの文と一緒に動きます。
@@ -897,6 +896,12 @@ mermaid.js は、テキスト、名前、文字列の中の指令の前後を結
 [fixture: directives/directive-inside-a-coordinate]
 [fixture: directives/directive-over-several-lines]
 [fixture: directives/directive-and-comment-on-a-line]
+
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+
+[fixture: quadrant/directives/directive-between-two-statements-moves-with-the-next]
 
 入力
 ([directives/directive-line-at-the-level-of-the-next-statement-input.mmd](../tests/fixtures/quadrant/directives/directive-line-at-the-level-of-the-next-statement-input.mmd)):

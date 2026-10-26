@@ -16,6 +16,7 @@ const documentDirectories = [
 /**
  * Diagram families in the order of Mermaid 12.0.0's sidebarSyntax(). Existing
  * families use their specification filenames; other entries use diagram ids.
+ * The sidebar omits agentflow and railroad; they follow it in that order.
  * https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/config.ts#L160-L207
  */
 const diagramOrder = [
@@ -51,6 +52,7 @@ const diagramOrder = [
   "cynefin",
   "treeView",
   "agentflow",
+  "railroad",
 ]
 
 const sourceDirectories = [

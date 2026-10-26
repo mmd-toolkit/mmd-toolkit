@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Indentation and lines: Does an empty accessibility block after a branch node still reject even though the branch tail is excluded?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 1: Expecting token of type 'EOF' but found `accDescr {}`."
+  }
+}

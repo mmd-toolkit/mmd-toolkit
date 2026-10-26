@@ -620,13 +620,18 @@ radar-beta
 
 ### Global directives
 
-Keep Root directive content, order, ownership and each side's contact or
-separation, including component/value-internal directives. Ordinary standalone
-starts use one body step; multiline interiors and EOF-reaching unfinished
-endings remain written. Never format these as JSON or gather them elsewhere:
-removal joins surrounding text, so deleting a boundary space can reject an
-accepted keyword/value pair. Native RadarIgnoredText directives are separate
-authored nodes.
+Keep Root directive content, order and ownership, including
+component/value-internal directives. Within a printed line, keep whether each
+side touches or is separated. When formatting splits units that were on the same
+line, a directive in their gap moves with the following unit: its right boundary
+stays touching or separated, while its left contact is broken. Ordinary
+standalone starts use one body step; multiline interiors and EOF-reaching
+unfinished endings remain written. Never format these as JSON or gather them
+elsewhere: removal joins surrounding text, so deleting a component-boundary
+space can reject an accepted keyword/value pair. Native RadarIgnoredText
+directives are separate authored nodes.
+
+[fixture: radar/global-directives/header-to-body]
 
 [fixture: radar/global-directives/global-components]
 
@@ -835,6 +840,8 @@ selection, both removal passes, case/colon/hash nontriggers, Unicode segment
 boundaries and directive-rejoined triggers. Removing even a selected semicolon
 can select another and change a value; radar has no ordinary semicolon
 separators.
+
+[fixture: radar/semicolons/native-axis-value]
 
 [fixture: radar/semicolons/semicolon-value-kept]
 

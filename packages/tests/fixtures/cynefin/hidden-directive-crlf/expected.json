@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden directives: source CRLF is retained and a spare visible EOL separates the next statement."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "C"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

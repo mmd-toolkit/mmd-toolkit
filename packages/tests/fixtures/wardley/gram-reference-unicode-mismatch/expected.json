@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: canonically equivalent quoted names are not Unicode-normalized for exact parent lookup."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Pipeline \"é\" must reference an existing component with coordinates."
+  }
+}

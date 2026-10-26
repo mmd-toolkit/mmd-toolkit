@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Keyword and name boundaries: Without padding, A-->B is read with source A- and arrow ->."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "A-",
+        "target": "B",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

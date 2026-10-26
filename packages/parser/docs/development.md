@@ -47,7 +47,9 @@ C4 (`c4`), venn (`venn`), Ishikawa (`ishikawa`), agentflow (`agentflow`),
 usecase (`usecase`), pie (`pie`), gitgraph (`gitGraph`), info (`info`), packet
 (`packet`), architecture (`architecture`), radar (`radar`), and treemap
 (`treemap`), and railroad (`railroad`, `railroadEbnf`, `railroadAbnf`,
-`railroadPeg`). Every other detected type throws `UnsupportedDiagramError`.
+`railroadPeg`), Wardley (`wardley`), Cynefin (`cynefin`), and eventmodeling
+(`eventmodeling`), and treeview (`treeView`). Every detected type is
+implemented.
 
 ## How a diagram's parser is built
 
@@ -279,3 +281,16 @@ configuration-dependent or semantic acceptance gate. [fixture:
 railroad/ir-gram-written-tree] [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-directive-repeat] [fixture:
 railroad/peg-config-init-drawing]
+
+Treeview implements its
+[ordered units](../../spec/docs/diagrams/treeview.md#ordered-units) without the
+shared common grammar. Its source reader classifies logical lines and applies
+the direct box rules at original positions, without rewritten text or a
+line-number map. Units carry assigned prefix indentation and the branch marker;
+the grammar assigns outer box forms to their named owners and retains enclosed
+forms in authored leaves. Shared common-form readers supply matching
+title/accessibility line forms and native comments; the block reader
+additionally keeps box forms in its required opener gap. [fixture:
+treeview/gram-written-tree] [fixture: treeview/box-written-tree] [fixture:
+treeview/box-prefix-common-block-two-prefixes] [fixture:
+treeview/ast-prefix-inside-and-outside]

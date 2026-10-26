@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Native hidden forms and comments: A slash-block comment requires its closer. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 27: unexpected character: ->/<- at offset: 26, skipped 2 characters. Parse error on line 1, column 29: Expecting end of file but found `open`."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/cynefin.md",
+    "line": 145
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "Cynefin Framework",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

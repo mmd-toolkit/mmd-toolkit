@@ -1,0 +1,78 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "All published fields precede layout, and all confusion items remain even beyond the display cap."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D\nE",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "X"
+          },
+          {
+            "label": "Y"
+          }
+        ]
+      },
+      {
+        "name": "complicated",
+        "items": [
+          {
+            "label": "Q"
+          }
+        ]
+      },
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "Z"
+          }
+        ]
+      },
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "C"
+          }
+        ]
+      },
+      {
+        "name": "confusion",
+        "items": [
+          {
+            "label": "F"
+          },
+          {
+            "label": "G"
+          },
+          {
+            "label": "H"
+          },
+          {
+            "label": "I"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "complicated",
+        "label": "Move"
+      },
+      {
+        "from": "chaotic",
+        "to": "clear"
+      }
+    ]
+  }
+}

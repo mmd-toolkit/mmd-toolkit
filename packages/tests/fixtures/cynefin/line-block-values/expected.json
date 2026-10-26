@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Description block conversion distinguishes LF from LS and PS."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A\nB\nC D E",
+    "domains": [],
+    "transitions": []
+  }
+}

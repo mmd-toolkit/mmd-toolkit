@@ -1,3 +1,10 @@
+import type { TreeviewDiagram, TreeviewTreeNode } from "../src/ast/treeview.ts"
+import type {
+  EventmodelingDiagram,
+  EventmodelingNode,
+} from "../src/ast/eventmodeling.ts"
+import type { CynefinDiagram, CynefinNode } from "../src/ast/cynefin.ts"
+import type { WardleyDiagram, WardleyNode } from "../src/ast/wardley.ts"
 import type { RailroadDiagram, RailroadNode } from "../src/ast/railroad.ts"
 import type { TreemapDiagram, TreemapNode } from "../src/ast/treemap.ts"
 import type { RadarDiagram, RadarNode } from "../src/ast/radar.ts"
@@ -89,6 +96,10 @@ describe("the types of ast.md", () => {
       | RadarNode["type"]
       | TreemapNode["type"]
       | RailroadNode["type"]
+      | WardleyNode["type"]
+      | CynefinNode["type"]
+      | EventmodelingNode["type"]
+      | TreeviewTreeNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -120,6 +131,10 @@ describe("the types of ast.md", () => {
       | RadarDiagram
       | TreemapDiagram
       | RailroadDiagram
+      | WardleyDiagram
+      | CynefinDiagram
+      | EventmodelingDiagram
+      | TreeviewDiagram
     >()
   })
 
@@ -181,7 +196,7 @@ describe("the types of ast.md", () => {
       "type" | "mark" | "value" | "range" | "loc"
     >()
     expectTypeOf<Comment["mark"]>().toEqualTypeOf<
-      "%%" | "#" | "%" | "/*" | "(*" | ";" | null
+      "%%" | "#" | "%" | "/*" | "//" | "(*" | ";" | null
     >()
     expectTypeOf<keyof Directive>().toEqualTypeOf<
       "type" | "name" | "value" | "closed" | "range" | "loc"

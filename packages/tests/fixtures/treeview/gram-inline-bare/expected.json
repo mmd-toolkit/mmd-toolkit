@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A bare name consumes spaces rather than making two nodes."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a b",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

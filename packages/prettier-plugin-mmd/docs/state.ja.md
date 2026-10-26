@@ -795,12 +795,18 @@ stateDiagram-v2
 
 flowchart と同じです。
 行に単独のディレクティブは周りの文と同じ段に置き、
-文の行にあるディレクティブは、両側に空白が書かれているかどうかを保ちます。
+同じ印字行の中では、両側に空白が書かれているかどうかを保ちます。
 書かれていればそこに空白 1 つを置き、トークンに接していれば接したまま残します。
 [fixture: directives/kept]
 [fixture: directives/before-header]
 [fixture: directives/after-statement]
 [fixture: directives/whitespace-on-each-side-kept]
+
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+
+[fixture: state/directives/split-directive-gap]
 
 入力
 ([directives/kept-input.mmd](../tests/fixtures/state/directives/kept-input.mmd)):

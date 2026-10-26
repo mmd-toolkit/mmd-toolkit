@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does publication group anchors before components and resolve links after pipelines?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "B",
+        "label": "B",
+        "x": 90,
+        "y": 80,
+        "className": "anchor"
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "A_C",
+        "label": "C",
+        "x": 60,
+        "y": 20,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "A",
+        "target": "A_C",
+        "dashed": false
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "A",
+        "targetX": 80
+      }
+    ],
+    "pipelines": [
+      {
+        "nodeId": "A",
+        "componentIds": [
+          "A_C"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

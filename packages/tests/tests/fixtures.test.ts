@@ -48,7 +48,11 @@ const DIAGRAMS: readonly DiagramType[] = [
   "architecture",
   "radar",
   "treemap",
+  "treeview",
   "railroad",
+  "wardley",
+  "cynefin",
+  "eventmodeling",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -75,6 +79,50 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads treeview fixtures under Mermaid's treeView id", () => {
+    const fixtures = fixturesOf("treeview")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("treeView")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
+  it("loads eventmodeling fixtures", () => {
+    const fixtures = fixturesOf("eventmodeling")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("eventmodeling")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
+  it("loads Cynefin fixtures", () => {
+    const fixtures = fixturesOf("cynefin")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("cynefin")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
+  it("loads Wardley fixtures", () => {
+    const fixtures = fixturesOf("wardley")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("wardley")
+        expect(fixture.expected.db).not.toBeNull()
+      }
+    }
+  })
+
   it("loads the four railroad dialects in one directory", () => {
     const fixtures = fixturesOf("railroad")
     const ids = new Set<string>()

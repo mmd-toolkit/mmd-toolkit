@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Strings and link labels: A bidirectional marker inside the label changes Mermaid's derived direction without changing the authored terminal marker."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "label": "x<>y",
+        "flow": "bidirectional"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

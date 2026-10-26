@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check leading, internal, value-tail and file-tail 3000 in bare."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "　a　b　　",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

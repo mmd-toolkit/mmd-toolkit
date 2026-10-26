@@ -5,9 +5,9 @@ Japanese version:
 
 Diagram types: flowchart, class, state, er, gantt, journey, requirement,
 timeline, sankey, block, c4, agentflow, usecase, pie, gitgraph, info, packet,
-architecture, radar, treemap and railroad. This is one of the
-[known divergences](../known-divergences.md) of this specification from
-mermaid.js.
+architecture, radar, treemap, railroad, wardley, cynefin and treeview. This is
+one of the [known divergences](../known-divergences.md) of this specification
+from mermaid.js.
 
 ## The syntax
 
@@ -487,6 +487,63 @@ still apply, and a leading nonword percent-brace line is not automatically a
 retained native directive. [fixture: railroad/ir-prefix-retained-directive]
 [fixture: railroad/ir-secondscan-real] [fixture: railroad/ir-secondscan-glued]
 
+### Wardley
+
+The tree holds each passed bare percent-pair line as a shared Comment with mark
+%%, its accompanying whitespace as trivia, and retained native forms in
+WardleyDiagram.textBeforeHeader. No source is missing. The difference that
+remains is whether detection-passed trivia is read again by the native lexer:
+the common direct skip rule does not re-read it. Unicode trivia after passed
+bare lines can therefore accept here while Mermaid rejects, including before or
+between retained forms. ASCII controls agree. Without a passed line, native
+Unicode gaps retain their ordinary rejection, so merely containing Unicode
+whitespace does not justify a mark. [fixture: wardley/bare-before-ls] [fixture:
+wardley/bare-line-ps] [fixture: wardley/prefix-yaml-bare-unicode] [fixture:
+wardley/detect-retained-secondscan-bare-ls] [fixture:
+wardley/detect-retained-secondscan-bare-ascii] [fixture:
+wardley/prefix-yaml-unicode-no-bare] [fixture: wardley/retained-no-bare-unicode]
+
+### Cynefin
+
+Shared Comments and trivia hold detection-passed bare lines and whitespace.
+State the direct passed-prefix rule rather than re-reading passed Unicode trivia
+with the native lexer. Native retained forms still need their own boundaries.
+[fixture: cynefin/bare-before-ls] [fixture: cynefin/bare-line-ps] [fixture:
+cynefin/detect-retained-secondscan-bare-ascii] [fixture:
+cynefin/detect-retained-secondscan-bare-ls] [fixture:
+cynefin/detect-retained-secondscan-bare-ps] [fixture:
+cynefin/retained-directive-between-bares] [fixture:
+cynefin/prefix-yaml-unicode-no-bare]
+
+The
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+and
+[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+read the result of the common preprocessing/detection pipeline. The
+[Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
+[tree](../ast/cynefin.md) retains its authored forms. [fixture:
+cynefin/db-all-fields]
+
+### Treeview
+
+Treeview retains passed bare percent-pair lines as shared Comments and their
+accompanying whitespace/line breaks as trivia. Neither is reread before the
+header. Mermaid can instead leave ASCII space/tab as visible indentation or
+Unicode padding as a bare name, rejecting before the keyword. A retained
+one-line second-scan form is still a native Comment, while retained YAML and
+noncomment multiline closers remain unreadable: this divergence does not waive
+their native rules. The [tree](../ast/treeview.md#gap-ownership) and
+[detection rules](../diagrams/treeview.md#detection) assign each retained or
+passed range once. [fixture: treeview/bare-line-space] [fixture:
+treeview/bare-line-tab] [fixture: treeview/bare-line-nbsp] [fixture:
+treeview/bare-line-ls] [fixture: treeview/bare-line-ps] [fixture:
+treeview/detect-secondscan-bare-ascii] [fixture:
+treeview/detect-secondscan-bare-unicode] [fixture:
+treeview/detect-retained-comment-ascii-header] [fixture:
+treeview/detect-retained-comment-unicode-header] [fixture:
+treeview/detect-secondscan-multiline] [fixture:
+treeview/detect-block-after-directive]
+
 ## The documentation of mermaid.js and its issues
 
 - The
@@ -611,3 +668,43 @@ warning. These facts do not justify any additional divergence.
   decision for these preprocessing boundaries. This divergence follows the
   existing shared rule, not such a decision. The inspected results do not
   establish that no other relevant issue exists.
+
+- Wardley: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  shows coordinates, decorations and flows without defining this common
+  boundary. Searches of the official issues and pull requests on 2026-10-26 used
+  wardley directive, wardley semicolon and wardley flow.
+  [#7642](https://github.com/mermaid-js/mermaid/pull/7642) fixes hyphenated
+  names and [#7726](https://github.com/mermaid-js/mermaid/pull/7726) removes
+  unnecessary sanitization; both are reflected in the pin.
+  [#8379](https://github.com/mermaid-js/mermaid/pull/8379) was an open
+  configuration-retention PR. The inspected results establish no maintainer
+  defect decision for this boundary; the existing direct rule applies. The
+  search is not claimed to be exhaustive.
+- Cynefin’s
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  describes fixed domains, quoted items and labeled transitions; its
+  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  state that self transitions are ignored.
+  [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
+  and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
+  cynefin semicolon and cynefin frontmatter found no inspected maintainer
+  judgment on this boundary.
+  [Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) was open with
+  Status: Triage and requested framework naming/drawing changes, not a ruling on
+  these lexical rules.
+
+### Treeview
+
+The pinned
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+describes indentation, quoted names, annotations and box drawing, without
+defining this common boundary. On 2026-10-26 the official issues/PRs were
+searched for `treeView quoted`, `treeView indentation`, `treeView box`,
+`treeView quotes`, `treeView whitespace` and `treeView accDescr`.
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) is the merged
+box-drawing addition;
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) is an open
+Enhancement/Triage proposal to omit the header. Inspected results establish no
+maintainer defect ruling on this boundary; the existing direct rule applies. The
+search is not claimed to be exhaustive.

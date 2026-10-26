@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does spaced semicolon reject after component?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 23: unexpected character: ->;<- at offset: 35, skipped 1 characters. "
+  }
+}

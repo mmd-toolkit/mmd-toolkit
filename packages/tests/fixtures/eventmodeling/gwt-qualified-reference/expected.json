@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "GWT references are single identifiers despite qualified entity declarations."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 19: Expecting token of type 'then' but found `.`."
+  }
+}

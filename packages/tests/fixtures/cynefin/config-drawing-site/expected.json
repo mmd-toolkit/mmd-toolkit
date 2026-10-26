@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Site drawing settings affect no published summary field."
+  },
+  "config": {
+    "cynefin": {
+      "width": 1000,
+      "height": 700,
+      "padding": 20,
+      "showDomainDescriptions": false,
+      "boundaryAmplitude": 0,
+      "seed": 42,
+      "useMaxWidth": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "L"
+      }
+    ]
+  }
+}

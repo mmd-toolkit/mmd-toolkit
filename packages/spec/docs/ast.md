@@ -256,8 +256,14 @@ the diagram sections below: a
 [`PacketDiagram`](./ast/packet.md#packetdiagram), an
 [`ArchitectureDiagram`](./ast/architecture.md#architecturediagram), a
 [`RadarDiagram`](./ast/radar.md#radardiagram), a
-[`TreemapDiagram`](./ast/treemap.md#treemapdiagram), or a
-[`RailroadDiagram`](./ast/railroad.md#railroaddiagram). [fixture:
+[`TreemapDiagram`](./ast/treemap.md#treemapdiagram), a
+[`RailroadDiagram`](./ast/railroad.md#railroaddiagram), a
+[`WardleyDiagram`](./ast/wardley.md#wardleydiagram), a
+[`CynefinDiagram`](./ast/cynefin.md#cynefindiagram), an
+[`EventmodelingDiagram`](./ast/eventmodeling.md#eventmodelingdiagram), or a
+[`TreeviewDiagram`](./ast/treeview.md#treeviewdiagram). [fixture:
+treeview/gram-written-tree] [fixture: eventmodeling/gram-written-tree] [fixture:
+cynefin/db-all-fields] [fixture: wardley/db-all-fields] [fixture:
 railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree] [fixture:
 railroad/peg-gram-written-tree] [fixture: treemap/gram-written-tree] [fixture:
@@ -505,3 +511,25 @@ name that ends so.
   railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
   [fixture: railroad/abnf-gram-written-tree] [fixture:
   railroad/peg-gram-written-tree]
+
+- [Wardley](./ast/wardley.md): the diagram type `wardley`; bare names use
+  WardleyIdentifier because their positions permit whitespace. Quoted names use
+  shared StringLiteral. [fixture: wardley/db-all-fields] [fixture:
+  wardley/db-id-underscore] [fixture: wardley/db-unquoted-names] [fixture:
+  wardley/lex-string-conversion]
+- [Cynefin](./ast/cynefin.md): the diagram type `cynefin`; fixed domain words
+  are string fields, and item/transition labels use shared StringLiteral.
+  [fixture: cynefin/db-all-fields] [fixture: cynefin/lex-string-conversion]
+
+- [eventmodeling](./ast/eventmodeling.md): digit-string names use Identifier;
+  dotted names use EventmodelingQualifiedName with head/tail members. All
+  occurrences, tags and unassigned GWT type words remain authored nodes.
+  [fixture: eventmodeling/gram-written-tree] [fixture:
+  eventmodeling/db-source-leading-zero] [fixture:
+  eventmodeling/lex-qualified-hidden-components] [fixture:
+  eventmodeling/gram-gwt-unassigned-type]
+
+- [Treeview](./ast/treeview.md): diagram type `treeView`. Bare names use
+  TreeviewIdentifier, quoted names StringLiteral, and class/icon names
+  Identifier. Prefixes and decorations preserve authored box drawing. [fixture:
+  treeview/gram-written-tree] [fixture: treeview/box-written-tree]

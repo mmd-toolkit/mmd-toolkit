@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Native hidden forms and comments: this word-named global directive is removed before native lexing; its glued following frame remains readable, so this does not demonstrate native comment fallback."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

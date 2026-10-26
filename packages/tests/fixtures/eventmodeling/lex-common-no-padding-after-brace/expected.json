@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Common statements: A common prefix directly after a closing brace loses to identifier without leading padding. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 34: unexpected character: ->:<- at offset: 33, skipped 1 characters. Parse error on line 1, column 26: Expecting token of type 'EOF' but found `accTitle`."
+  }
+}

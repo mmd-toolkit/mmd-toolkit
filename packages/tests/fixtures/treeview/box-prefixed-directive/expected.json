@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: Removing a directive that was the whole branch content leaves an empty branch and rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Line 3: Empty node — expected a filename or directory name after the box-drawing prefix"
+  }
+}

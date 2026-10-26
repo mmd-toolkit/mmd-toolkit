@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A branch can introduce an annotation on the preceding node instead of introducing another node."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "parent",
+        "nodeType": "file",
+        "cssClass": "high",
+        "children": []
+      }
+    ]
+  }
+}

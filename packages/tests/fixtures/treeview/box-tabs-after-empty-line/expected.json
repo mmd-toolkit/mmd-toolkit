@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With an empty physical line, do tabs expand only on the rewritten branch line?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": " a    b",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "x\t─ y",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

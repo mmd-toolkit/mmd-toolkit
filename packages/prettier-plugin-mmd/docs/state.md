@@ -751,11 +751,17 @@ stateDiagram-v2
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive on the line of a statement keeps whether
+statements around it, and a directive within a printed line keeps whether
 whitespace is written on each side of it: where it is, one space stands there,
 and where the directive touches a token, it keeps touching. [fixture:
 directives/kept] [fixture: directives/before-header] [fixture:
 directives/after-statement] [fixture: directives/whitespace-on-each-side-kept]
+
+When formatting splits units that were on the same line, a directive in their
+gap moves with the following unit. Keep its right-side contact or separation;
+break its left contact.
+
+[fixture: state/directives/split-directive-gap]
 
 Input
 ([directives/kept-input.mmd](../tests/fixtures/state/directives/kept-input.mmd)):

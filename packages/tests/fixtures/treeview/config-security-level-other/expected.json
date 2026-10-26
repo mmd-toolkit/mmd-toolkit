@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unrecognized site securityLevel replaces markup characters in sanitized description text."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "&lt;b&gt;A&lt;/b&gt;",
+    "accDescr": "&lt;b&gt;D&lt;/b&gt;",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "description": "a&lt;b&gt;&equals;c<br/>d",
+        "children": []
+      }
+    ]
+  }
+}

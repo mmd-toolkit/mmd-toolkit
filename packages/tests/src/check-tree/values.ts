@@ -111,6 +111,88 @@ const IGNORED_TEXT =
  * Meaning column of those tables on which of them are the written text.
  */
 export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
+  TreeviewIdentifier: {
+    field: "name",
+    kind: "written-text",
+    spec: "Authored bare node name. (ast/treeview.md).",
+  },
+  TreeviewLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Authored common or description payload. (ast/treeview.md).",
+  },
+  TreeviewBranchPrefix: {
+    field: "value",
+    kind: "written-text",
+    spec: "Authored prefix spelling. (ast/treeview.md).",
+  },
+  TreeviewIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Authored decoration spelling. (ast/treeview.md).",
+  },
+  EventmodelingArrow: {
+    field: "value",
+    kind: "written-text",
+    oneToken: true,
+    spec: "The complete authored ->> (ast/eventmodeling.md).",
+  },
+  EventmodelingLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty authored payload with its whitespace (ast/eventmodeling.md).",
+  },
+  EventmodelingIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "The whole authored native form without its consumed LF (ast/eventmodeling.md).",
+  },
+  CynefinDomainStatement: {
+    field: "name",
+    kind: "derived",
+    spec: "The fixed domain word, checked against its Keyword (ast/cynefin.md).",
+  },
+  CynefinArrow: {
+    field: "value",
+    kind: "written-text",
+    oneToken: true,
+    spec: "The complete authored arrow glyph (ast/cynefin.md).",
+  },
+  CynefinLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty authored common text (ast/cynefin.md).",
+  },
+  CynefinIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty authored whole native match (ast/cynefin.md).",
+  },
+  WardleyIdentifier: {
+    field: "name",
+    kind: "written-text",
+    spec: "Authored bare name text (ast/wardley.md).",
+  },
+  WardleyLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty authored common or link-label text (ast/wardley.md).",
+  },
+  WardleyIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Nonempty whole authored hidden form (ast/wardley.md).",
+  },
+  WardleyArrow: {
+    field: "value",
+    kind: "written-text",
+    spec: "Whole authored arrow text (ast/wardley.md).",
+  },
+  WardleySourceStrategyDecoration: {
+    field: "value",
+    kind: "derived",
+    spec: "Written fixed strategy, checked against its token (ast/wardley.md).",
+  },
   RailroadLiteral: {
     field: "value",
     kind: "written-text",

@@ -36,8 +36,8 @@ export interface Kit {
   ) => CheckedNode
   /** The next directive `text` in the source, with its token. */
   directive: (text: string) => void
-  /** The next diagram comment `text` in the source, with the mark `mark`. */
-  comment: (mark: string | null, text: string) => void
+  /** The next diagram comment, with an explicit value when delimiters or cuts change it. */
+  comment: (mark: string | null, text: string, value?: string) => void
 }
 
 /** A tree with its source. */
@@ -84,8 +84,8 @@ export function buildTree(
       tokens.push(tokenOf(source, "Directive", { text, from: cursor }))
       cursor += text.length
     },
-    comment(mark, text) {
-      const found = commentOf(source, mark, { text, from: cursor })
+    comment(mark, text, value) {
+      const found = commentOf(source, mark, { text, from: cursor }, value)
       comments.push(found)
       cursor = found.range[1]
     },

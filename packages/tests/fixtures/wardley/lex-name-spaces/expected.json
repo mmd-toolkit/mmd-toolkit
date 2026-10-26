@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does NAME_WITH_SPACES retain hyphens, parentheses and ampersands?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 38: unexpected character: ->&<- at offset: 50, skipped 1 characters.\nLexer error on line 4, column 38: unexpected character: ->&<- at offset: 134, skipped 1 characters. Parse error on line 2, column 40: Expecting token of type '[' but found `cache`.\nParse error on line 4, column 40: Expecting: one of these possible Token sequences:\n  1. [NEWLINE]\n  2. [EOF]\nbut found: 'cache'\nParse error on line 4, column 45: Expecting: one of these possible Token sequences:\n  1. [STRING]\n  2. [ID]\n  3. [NAME_WITH_SPACES]\nbut found: '\n'"
+  }
+}

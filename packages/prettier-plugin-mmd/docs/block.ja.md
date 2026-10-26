@@ -744,12 +744,11 @@ block-beta
 
 ### 指令
 
-指令は、書かれた場所に残します。
-文の単位の間にあっても、文の間にあっても同じです。
-両側の空白は、それぞれ、あるかないかを保ちます。
+指令は元の単位の間に残します。
+同じ印字行の中では、両側の空白の有無を保ちます。
 空白が書かれていれば空白 1 つ、接していれば接したままです。
 mermaid.js は読む前に指令を取り除くので、
-指令の隣の空白は動かさず、取り除きもしません
+文の内部では、指令の隣が接しているか離れているかを保ちます
 （[ディレクティブ](./journey.ja.md#ディレクティブ)を参照）。
 単独の行にある指令は、後ろの文と同じ段に置き、
 ヘッダーより前の指令は、コメント行と同じに 1 列目に置きます。
@@ -770,6 +769,12 @@ mermaid.js は読む前に指令を取り除くので、
 [fixture: directives/directive-after-columns]
 [fixture: directives/directive-after-end]
 [fixture: directives/directive-before-the-directions-of-a-block-arrow]
+
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+
+[fixture: block/directives/directive-after-columns]
 
 入力
 ([directives/directive-between-statements-of-a-row-input.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-input.mmd)):

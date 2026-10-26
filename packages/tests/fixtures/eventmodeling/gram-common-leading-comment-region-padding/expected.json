@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/eventmodeling.md Common statement values: Are the comment region and its indentation and terminating LF omitted while only the surviving space/tab run prefixes accDescr?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " \taccDescr: D",
+    "frames": []
+  }
+}

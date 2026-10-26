@@ -680,11 +680,17 @@ architecture-beta
 
 ### Global directives
 
-Keep Root directive content, order, ownership and contact on each side. Ordinary
-standalone starts align one body step in; multiline interiors and EOF-reaching
-endings stay written. Common removal joins surrounding text, so deleting
-boundary whitespace can reject a declaration. Preserve component/value-internal
-directives rather than treating their opaque text as JSON.
+Keep Root directive content, order and ownership. Within a printed line, keep
+whether each side touches or is separated. When formatting splits units that
+were on the same line, a directive in their gap moves with the following unit:
+its right boundary stays touching or separated, while its left contact is
+broken. Ordinary standalone starts align one body step in; multiline interiors
+and EOF-reaching endings stay written. Common removal joins surrounding text, so
+deleting component-boundary whitespace can reject a declaration. Preserve
+component/value-internal directives rather than treating their opaque text as
+JSON.
+
+[fixture: architecture/global-directives/header-to-body]
 
 [fixture: architecture/global-directives/composite-boundaries]
 
@@ -1014,6 +1020,8 @@ header/first-statement groups stay together. Removing one selected semicolon or
 moving style/classDef triggers can select another and change the Db, so keep
 both passes, nontriggers, entities, physical value lines and global-rejoined
 triggers.
+
+[fixture: architecture/semicolons/native-service-value]
 
 [fixture: architecture/semicolons/crossing-comment]
 

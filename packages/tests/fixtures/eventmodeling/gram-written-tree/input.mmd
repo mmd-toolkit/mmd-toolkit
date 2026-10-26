@@ -1,0 +1,14 @@
+eventmodeling accTitle: Title
+tf 01 evt Shop.Bought ->> 02 ->> 02 [[D]] `json`{x} accDescr: D
+rf 02 cmd Shop.Buy
+entity Shop.Buy
+data D `text`{
+y
+}
+note 99 {
+}
+gwt 99 given evt Bought when cmd Buy then ui Screen
+---
+hidden
+---
+tf 03 ui Shop.Screen accDescr {} title All

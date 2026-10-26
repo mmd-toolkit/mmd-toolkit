@@ -48,8 +48,10 @@ usecase 図（`usecase`）、円グラフ（`pie`）、gitgraph 図（`gitGraph`
 info 図（`info`）、packet 図（`packet`）、
 architecture 図（`architecture`）、radar 図（`radar`）、
 treemap 図（`treemap`）、railroad の 4 方言
-（`railroad`、`railroadEbnf`、`railroadAbnf`、`railroadPeg`）です。
-ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
+（`railroad`、`railroadEbnf`、`railroadAbnf`、`railroadPeg`）、
+Wardley（`wardley`）、Cynefin（`cynefin`）、
+eventmodeling（`eventmodeling`）、treeview（`treeView`）です。
+検出するすべての図種を実装しています。
 
 ## 図のパーサーの作り
 
@@ -317,3 +319,18 @@ Railroad は 4 方言で 1 つの authored AST を保持します。
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-directive-repeat]
 [fixture: railroad/peg-config-init-drawing]
+
+Treeview は
+[順序付き単位](../../spec/docs/diagrams/treeview.md#ordered-units)を、
+共通文法なしで実装する。
+ソース reader は論理行を分類し、書き換えたテキストや行番号対応表を作らず、
+元の位置に直接の罫線規則を適用する。
+単位は接頭辞の割り当て字下げと枝マーカーを保持する。
+文法は外側の罫線形式を名前付きの所有先に割り当て、
+内包する形式は書かれた葉に残す。
+共通形式の reader から、一致する title・アクセシビリティ行と
+native comment の読みを共有する。
+ブロック reader は、必須の開始波括弧の前にある罫線形式も保持する。
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
+[fixture: treeview/box-prefix-common-block-two-prefixes] [fixture:
+treeview/ast-prefix-inside-and-outside]

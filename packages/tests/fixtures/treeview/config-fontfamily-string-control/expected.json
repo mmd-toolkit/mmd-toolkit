@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A valid string font family is the accepting control for the non-string rejection."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "fontFamily": "serif",
+      "themeVariables": {
+        "fontFamily": "serif"
+      }
+    }
+  }
+}

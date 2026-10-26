@@ -774,12 +774,18 @@ statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive on the line of a statement keeps whether
+statements around it, and a directive within a printed line keeps whether
 whitespace is written on each side of it: where it is, one space stands there,
 and where the directive touches a token, it keeps touching. [fixture:
 directives/kept] [fixture: directives/section-edges-kept] [fixture:
 directives/whitespace-on-each-side-kept] [fixture: directives/touching-kept]
 [fixture: directives/block-lines-kept]
+
+When formatting splits units that were on the same line, a directive in their
+gap moves with the following unit. Keep its right-side contact or separation;
+break its left contact.
+
+[fixture: sequence/directives/split-directive-gap]
 
 Input
 ([directives/kept-input.mmd](../tests/fixtures/sequence/directives/kept-input.mmd)):

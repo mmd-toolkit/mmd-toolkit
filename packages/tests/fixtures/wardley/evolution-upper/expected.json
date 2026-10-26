@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Keyword and name boundaries: uppercase Evolution A is a link source name, not an evolution keyword; the input creates a link to B and no evolution stages."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "Evolution A",
+        "target": "B",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

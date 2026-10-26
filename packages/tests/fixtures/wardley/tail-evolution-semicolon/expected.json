@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does semicolon become extra text after evolution?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 17: unexpected character: ->;<- at offset: 29, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are size and evolution last-wins while annotations box is first-wins?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "annotationsBox": {
+      "x": 2,
+      "y": 100
+    },
+    "axes": {
+      "stages": [
+        "E",
+        "F"
+      ],
+      "stageBoundaries": [
+        0.8
+      ]
+    },
+    "size": {
+      "width": 5,
+      "height": 6
+    }
+  }
+}

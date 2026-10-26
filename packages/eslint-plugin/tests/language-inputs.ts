@@ -109,6 +109,91 @@ export const LANGUAGE_INPUTS: readonly LanguageInput[] = [
       acceptedWith(text, (root) => root.body.type === "TreemapDiagram"),
   },
   {
+    case: "a tree view with indentation",
+    diagram: "treeview",
+    name: "gram-written-tree",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "TreeviewDiagram"),
+  },
+  {
+    case: "a tree view with box drawing",
+    diagram: "treeview",
+    name: "box-written-tree",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "TreeviewDiagram"),
+  },
+  {
+    case: "an Event Modeling diagram",
+    diagram: "eventmodeling",
+    name: "gram-written-tree",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "EventmodelingDiagram"),
+  },
+  {
+    case: "an IR railroad diagram",
+    diagram: "railroad",
+    name: "ir-gram-written-tree",
+    holds: (text) =>
+      acceptedWith(
+        text,
+        (root) =>
+          root.diagramType === "railroad" &&
+          root.body.type === "RailroadDiagram",
+      ),
+  },
+  {
+    case: "an EBNF railroad diagram",
+    diagram: "railroad",
+    name: "ebnf-gram-written-tree",
+    holds: (text) =>
+      acceptedWith(
+        text,
+        (root) =>
+          root.diagramType === "railroadEbnf" &&
+          root.body.type === "RailroadDiagram",
+      ),
+  },
+  {
+    case: "an ABNF railroad diagram",
+    diagram: "railroad",
+    name: "abnf-gram-written-tree",
+    holds: (text) =>
+      acceptedWith(
+        text,
+        (root) =>
+          root.diagramType === "railroadAbnf" &&
+          root.body.type === "RailroadDiagram",
+      ),
+  },
+  {
+    case: "a PEG railroad diagram",
+    diagram: "railroad",
+    name: "peg-gram-written-tree",
+    holds: (text) =>
+      acceptedWith(
+        text,
+        (root) =>
+          root.diagramType === "railroadPeg" &&
+          root.body.type === "RailroadDiagram",
+      ),
+  },
+  {
+    case: "a Cynefin diagram with the bare header",
+    diagram: "cynefin",
+    name: "db-all-fields",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "CynefinDiagram") &&
+      text.startsWith("cynefin-beta\n"),
+  },
+  {
+    case: "a Cynefin diagram with the colon header",
+    diagram: "cynefin",
+    name: "header-colon-title",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "CynefinDiagram") &&
+      text.startsWith("cynefin-beta:"),
+  },
+  {
     case: "the error pseudo-diagram, accepted, with a comment after it",
     diagram: "common",
     name: "error-trailing-comment-line",
@@ -128,10 +213,17 @@ export const LANGUAGE_INPUTS: readonly LanguageInput[] = [
     holds: (text) => treeOf(text) === null && text.includes("\n"),
   },
   {
-    case: "a diagram type that the parser does not support",
+    case: "a Wardley map",
+    diagram: "wardley",
+    name: "db-all-fields",
+    holds: (text) =>
+      acceptedWith(text, (root) => root.body.type === "WardleyDiagram"),
+  },
+  {
+    case: "text for which no diagram type is detected",
     diagram: "common",
-    name: "detect-minimal-wardley",
-    holds: (text) => treeOf(text) === null && text.startsWith("wardley-beta"),
+    name: "rejection-unknown-diagram-quotes-browser-word",
+    holds: (text) => text === "window\n" && treeOf(text) === null,
   },
   {
     case: "no text at all",

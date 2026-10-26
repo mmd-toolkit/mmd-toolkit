@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Description blocks use their first closing brace, even inside directive-looking text."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A%%{!body",
+    "domains": [],
+    "transitions": []
+  }
+}

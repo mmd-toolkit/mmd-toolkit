@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "EOF completes a block description after native directive consumption."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A",
+    "domains": [],
+    "transitions": []
+  }
+}

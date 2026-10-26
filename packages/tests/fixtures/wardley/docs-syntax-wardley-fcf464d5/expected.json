@@ -1,0 +1,72 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 353
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Forces",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Legacy",
+        "label": "Legacy",
+        "x": 85,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Modern",
+        "label": "Modern",
+        "x": 60,
+        "y": 55.00000000000001,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "AI",
+        "label": "AI",
+        "x": 35,
+        "y": 70,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "Legacy",
+        "target": "Modern",
+        "dashed": false
+      },
+      {
+        "source": "Modern",
+        "target": "AI",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [
+      {
+        "name": "AI Adoption",
+        "x": 25,
+        "y": 55.00000000000001
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "Legacy Constraints",
+        "x": 75,
+        "y": 15
+      }
+    ],
+    "axes": {}
+  }
+}

@@ -375,7 +375,8 @@ mermaid.js は引用符のないラベルの先頭の空白を取り除き、整
 ## トークンの間のディレクティブ
 
 mermaid.js はディレクティブを取り除き、その両側のテキストをつないで読みます。
-そのため整形は、ディレクティブの各側に空白が書かれていたかどうかを保ちます。
+そのため同じ印字行の中では、
+ディレクティブの各側に空白が書かれていたかどうかを保ちます。
 `flowchart %%{init: {}}%%LR` はそのまま残します。
 `flowchart%%{init: {}}%%LR` は拒否されるからです。
 [fixture: flowchart/directives/whitespace-on-each-side-kept]
@@ -1769,7 +1770,7 @@ hidden YAML の閉じは列を保ちます。
 すべての semicolon を残し、共有の source segment 保護で、
 交差する値・trivia と保護された見出し・本文 group を完全な形に保ちます。
 trigger の segment 変更は受理を変えうるためです。
-global directive の原文と左右の接触も保ちます。
+global directive の原文を保ち、同じ印字行の中では左右の接触も保ちます。
 info の Db が空でも init の削除は設定を変えうるためです。
 物理 EOL と EOF に達する global の終端は共有経路を使います。
 Prettier は先頭 BOM を除去・復元します。
@@ -2086,6 +2087,56 @@ corpus が記録する受理された指定読みを比較に使います。
 [test: treemap Markdown: final-style-padding]
 [test: treemap Markdown: rejected]
 
+## Treeview modes and authored values
+
+[treeview の規則](./treeview.ja.md)は論理的な原文の行が選ぶモードを保ちます。
+引用名と説明ブロックの中の罫線も判定に含みます。
+普通の字下げは AST の割り当て済みの indent を使い、file も親になれます。
+根は設定の正の 1 段とし、持ち越された run は 1 回だけ移します。
+罫線の prefix、列、装飾と値の物理行は、
+全体の幅、丸めと受理を決めうるため綴りを保ちます。
+
+[fixture: treeview/indentation/indent-irregular]
+[fixture: treeview/indentation/indent-file-parent]
+[fixture: treeview/carried-indentation/carry-quote]
+[fixture: treeview/modes/quoted-box-without-prefix]
+[fixture: treeview/branch-prefixes/first-positive]
+[fixture: treeview/decorations/pending-owner]
+[corpus fixture: treeview/box-tail-branch-no-carry]
+
+名前、注釈、description、prefix と装飾は、
+重複、空名、`icon()` と上書き注釈も含めて所有位置に残します。
+名前と description の末尾は原文の値として保ち、
+共通の行値と普通の accessibility block は共有の外側の配置に従います。
+罫線モードの普通の block は第 1 列に置き、罫線の形のある block は形を保ちます。
+semicolon はすべて残し、行の境界が親子を制約するときは本文を原文のまま保ちます。
+
+[fixture: treeview/names/name-single]
+[fixture: treeview/annotation-components/icon-empty]
+[fixture: treeview/repeated-annotations/repeat-class]
+[fixture: treeview/descriptions/description-padding]
+[fixture: treeview/modes/ordinary-block]
+[fixture: treeview/semicolons/protected-row-body]
+[corpus fixture: treeview/box-block-decoration]
+
+既存の六つの[仕様上の読み](./treeview.ja.md#specified-readings)を使い、
+空の形の新しい差異と opaque の受理設定は加えません。
+単独ファイルの構文エラーは修復した出力を作らず報告します。
+共有の host は CR・CRLF を正規化し、実効 frontmatter を guard します。
+Markdown の最後のコード行の padding は落としえますが、
+引用内の padding は値に残ります。
+
+[corpus fixture: treeview/directive-header-inside]
+[corpus fixture: treeview/semicolon-class-inside]
+[corpus fixture: treeview/div-html-frontmatter-reject]
+[corpus fixture: treeview/div-frontmatter-invalid]
+[corpus fixture: treeview/bare-line-nbsp]
+[corpus fixture: treeview/c4-container-bare]
+[test: treeview/line-terminators-and-unicode/eol-cr-structure]
+[test: treeview Markdown: final-bare-padding]
+[test: treeview Markdown: quoted-interior]
+[test: treeview Markdown: rejected]
+
 ## railroad の方言と書かれた値
 
 [railroad の規則](./railroad.ja.md)は、選ばれた IR、EBNF、ABNF、PEG の見出し、
@@ -2303,3 +2354,268 @@ railroad/peg-c4-deployment-predicate]
 [corpus fixture:
 railroad/ir-error-empty-call]
 [test: railroad Markdown: ir-rejected]
+
+## Wardley の原文と必須の改行
+
+[Wardley の規則](./wardley.ja.md)は名前、文字列、数の原綴、
+原順、全出現を保ちます。
+bare 名がちょうど `title` のときは、後続部品との接し方を保ちます。
+空白を入れると component、link、evolve、evolution stage が
+metadata に変わることがあるためです。
+引用名と長い bare 名には普通の空白を置きます。
+[fixture: wardley/name-boundaries/component-title-contact]
+[fixture: wardley/name-boundaries/link-title-contact]
+[fixture: wardley/name-boundaries/title-evolve-hidden]
+[fixture: wardley/name-boundaries/stage-title-contact]
+[fixture: wardley/name-boundaries/force-title-contact]
+[fixture: wardley/name-boundaries/quoted-title]
+[fixture: wardley/name-boundaries/title-prefix-safe]
+
+flow の内部は空ラベル、backslash、継続行の列を含め、書かれたまま保ちます。
+link の文法上のラベル開始 `;` は前の部品に付け、後ろは物理行末まで保ちます。
+空白だけのラベルと末尾 padding も含み、裸の `;` は拒否されます。
+共有の textual-prefix 保護はその開始印を除外します。
+後続のセミコロンは区間と交差する値と trivia 全体を保護します。
+Db に影響するのが片方だけでも、両ラベルと port を残します。
+[fixture: wardley/flows/flow-ports-and-label]
+[fixture: wardley/flows/flow-padding-escapes]
+[fixture: wardley/multiline-values/multiline-flow-columns]
+[fixture: wardley/semicolon-labels/label-exterior]
+[fixture: wardley/semicolon-labels/label-whitespace]
+[fixture: wardley/semicolon-labels/label-two-semicolons]
+[corpus fixture: wardley/tail-link-empty-label]
+
+global directive を除いた後で literal の `style` か `classDef` を含む原文行は、
+共有の行保護で文、コメント、hidden form を含めて丸ごと保ちます。
+セミコロンが選ばれない行にも適用します。
+最初の行は本文の段に揃え、中身と後続行の列は保ち、前後の行と結びません。
+directive をまたぐ語と U+2028/U+2029 後の comment-region の結合も、
+mermaid が 1 行として読む範囲で数えます。
+行規則が文法上のラベル開始を無視して端点やラベルを変えることがあるため、
+原文行を丸ごと保ち、移動後の効き方を予測する必要をなくします。
+除去する global directive の内部だけにある語は、行を保護する理由にしません。
+[fixture: wardley/semicolons/style-selected-delimiter]
+[fixture: wardley/semicolons/style-delimiter-hash-after]
+[fixture: wardley/semicolons/style-colon-space-nontrigger]
+[fixture: wardley/semicolons/style-no-semicolon]
+[fixture: wardley/semicolons/style-header-group]
+[fixture: wardley/semicolons/style-directive-lines]
+[test: wardley/semicolons/style-comment-before-connected]
+[test: wardley/semicolons/style-comment-ls-connected]
+[test: wardley/semicolons/style-comment-both-connected]
+[fixture: wardley/semicolons/style-inside-global]
+
+hidden form は木の owner で source span を保ち、
+消費 LF と closing padding を共有規則で保護します。
+pipeline の開き括弧と子文には、幅 0 でも可視 LF が必要です。
+hidden form の LF では代用できません。
+見出し自身の form だけに header-edge の例外を使います。
+保持 prefix 全体を残し、無視する YAML が実フロントマターになるのを防ぎます。
+安全な実 YAML だけを guarded 整形に通し、
+説明ブロックも共有の layout を使います。
+[fixture: wardley/pipeline/pipeline-zero]
+[fixture: wardley/hidden-boundaries/hidden-pipeline-opening]
+[fixture: wardley/hidden-boundaries/hidden-pipeline-child]
+[fixture: wardley/hidden-boundaries/header-first-statement-hidden]
+[fixture: wardley/frontmatter-yaml/retained-prefix]
+[fixture: wardley/frontmatter-yaml/frontmatter-safe]
+[fixture: wardley/accessibility/description-empty]
+
+既存の 6 つの[仕様による読み](./wardley.ja.md#仕様による読み)を使います。
+atom 内の directive と選択したセミコロンの分割、フロントマターの HTML、
+不透明な埋め込みデータ、通過した bare-percent trivia、後の C4 語が対象です。
+Wardley は差異と opaque な受理設定キーを足しません。
+raw の拒否に raw Db はありません。
+解析失敗は単独ファイルでは出力せず構文エラーにし、
+Markdown では埋め込みを断ります。
+CR/CRLF と先頭 BOM は共有の host 制限に従います。
+Markdown は最後の code 行を trim します。
+空白だけのラベルを落とすと裸の `;` が残り、受理された payload が拒否されます。
+単独ファイルではその padding を保ちます。
+[corpus fixture: wardley/directive-arrow-inside]
+[corpus fixture: wardley/lex-selected-decimal-inside]
+[corpus fixture: wardley/div-html-frontmatter-reject]
+[corpus fixture: wardley/config-fontfamily-keeps-title]
+[corpus fixture: wardley/bare-before-ls]
+[corpus fixture: wardley/c4-component-component]
+[test: wardley Markdown: rejected]
+[test: wardley/line-terminators-and-unicode/crlf-string]
+[test: wardley Markdown: final-whitespace-label]
+
+## cynefin の書かれた領域と hidden の境界
+
+native の suffix が行を保つ場合も、semicolon で保護した prefix は
+一度だけ印字し、suffix の owner を保ちます。
+
+[fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
+
+[fixture: cynefin/hidden-boundaries/semicolon-hidden-body-directive]
+
+[fixture: cynefin/hidden-boundaries/semicolon-hidden-header-yaml]
+
+[fixture: cynefin/hidden-boundaries/semicolon-hidden-body-yaml]
+
+[cynefin の規則](./cynefin.ja.md)は見出しの二形、領域の再宣言と空領域、
+項目の順と重複、自己遷移、空ラベル、共通文のリセットを残します。
+領域と項目の行は木を示すもので、列が親を選ぶわけではありません。
+有効な Db からの再構築は出現を失い、置換やリセットの読みを変え得ます。
+文字列は空の値や native form に見える文字も含め、
+引用符、escape、内部の列を保ちます。
+[fixture: cynefin/empty-domains/empty-domain-last-reset]
+[fixture: cynefin/redeclarations/domain-repeat-order]
+[fixture: cynefin/transition-occurrences/transition-occurrences]
+[fixture: cynefin/source-order/source-common-empty-resets]
+[fixture: cynefin/strings/strings-quote-backslash]
+[fixture: cynefin/multiline-values/multiline-string-columns]
+
+native hidden form は各 AST owner に残します。
+prefix、本文、名前の suffix、項目の先頭・末尾、
+遷移の隙間、共通文の suffix です。
+source は一度だけ印字し、内部と closer の列、範囲外の消費 LF、
+必要な closing padding を保ちます。
+遷移と共通文には可視 EOL が要り、領域と項目には不要です。
+見出しの端の例外は見出し自身の form だけに適用します。
+保つ行では項目の suffix form も含め、
+見出し、領域の開き、項目に同じ判断を使います。
+子の移動によって親の保護を失わないためです。
+無視された YAML を有効な frontmatter にしないよう、
+skip された prefix 全体を保ちます。
+安全な real YAML と説明ブロックは共有 layout を使います。
+[fixture: cynefin/hidden-forms/hidden-domain-name]
+[fixture: cynefin/hidden-forms/hidden-between-items]
+[fixture: cynefin/hidden-forms/hidden-body-after-last-item]
+[fixture: cynefin/hidden-forms/hidden-transition-all-gaps]
+[fixture: cynefin/hidden-boundaries/boundary-suffix-directive-spare]
+[fixture: cynefin/hidden-boundaries/boundary-suffix-yaml-tab]
+[fixture: cynefin/hidden-boundaries/boundary-header-body-suffix]
+[fixture: cynefin/hidden-boundaries/header-inline-domain-item-directive]
+[fixture: cynefin/hidden-boundaries/header-inline-domain-item-yaml]
+[fixture: cynefin/retained-prefix/prefix-retained-yaml]
+[fixture: cynefin/frontmatter-yaml/frontmatter-safe-yaml]
+[fixture: cynefin/description-blocks/description-empty]
+
+共有の textual-prefix 保護で、segment の最後の semicolon までと、
+交差する値・trivia 全体を保ち、全 semicolon を残します。
+保護した最初の行は本文または項目の段にし、中身と後続列は保ちます。
+除去される directive と comment の結合を含め、
+segment は mermaid の読みで決まります。
+cynefin に文法上の semicolon はないため、
+semicolon のない style・classDef の語の行も整形し、
+語を含む行全体の保持は適用しません。
+同じ印字行の中では Root directive の接触を保ちます。
+文や項目を行に分ける所では directive を次の単位に付け、
+右側を保ち、左側の接触は切れます。
+native comment は LS・PS を内容に残します。
+これらの境界は選択、値、受理を変え得るためです。
+[fixture: cynefin/semicolons/semi-selected-before-arrow]
+[fixture: cynefin/semicolons/semi-item-body-indentation]
+[fixture: cynefin/semicolons/semi-plain-style-line-formats]
+[fixture: cynefin/semicolons/semi-multiline-global-word]
+[fixture: cynefin/global-directives/between-items-contact]
+[test: cynefin/comments/comment-ls-native-content]
+[test: cynefin/comments/comment-unicode-join]
+
+既存の[六つの指定読み](./cynefin.ja.md#specified-readings)は、
+atom 内の cut、frontmatter の HTML、opaque embedded data、
+passed bare-percent trivia、C4 の語を扱います。
+raw 拒否には raw Db がなく、
+cynefin 固有の差異や acceptance-setting key は加えません。
+単独の parse 失敗は構文エラーを通じてファイルを変えず、
+Markdown は embedding を辞退します。
+CR・CRLF と先頭 BOM は共有の host の制限に従います。
+Markdown は最終 code line の hidden padding を削りますが、
+単独整形では保ち、必要な内部の padding も保護します。
+[corpus fixture: cynefin/directive-arrow-inside]
+[corpus fixture: cynefin/semicolon-arrow-inside]
+[test: cynefin/specified-readings/divergence-html-cross]
+[test: cynefin/specified-readings/divergence-opaque-yaml]
+[test: cynefin/specified-readings/divergence-c4-string]
+[test: cynefin/specified-readings/divergence-bare-unicode]
+[test: cynefin/line-terminators-and-unicode/eol-crlf-string]
+[test: cynefin Markdown: final-hidden-padding]
+[test: cynefin Markdown: rejected]
+
+## Eventmodeling terminals and source boundaries
+
+eventmodeling の[規則](./eventmodeling.ja.md)は
+inline・block data の本文全体を保ちます。
+tag は整形できますが、payload は引用符、波括弧、空白、
+見かけの後続文も含む raw terminal です。
+block-data は直後の LF を消費し、それ以外の空白は lookahead です。
+閉じの空白と LS・PS の境界は EOF でも保ちます。
+block closer の字下げは拒否を、lookahead の LF への置換は比較 Db の変更を
+起こす場合があります。
+native data は埋め込まれた設定として評価せず、source から直接読みます。
+[fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
+[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe]
+[fixture: eventmodeling/data-boundaries/same-line-block-successor]
+[test: eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
+[fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+共通の EM terminal は keyword、delimiter、前置 ASCII 空白も値に含みます。
+global directive、選ばれた semicolon、除去される comment region を挟む場合も、
+原文全体とその前方区間を保ちます。
+通常の accessibility の空白と共有 description-block の圧縮は使いません。
+空白だけの description も内部を保ちます。
+共通文は見出し・先行文・消費 LF との元の接続に依存する場合があり、
+普通の本文行へ置くと拒否される場合があります。
+required identifier の `title` も、水平空白を足すと metadata になりうるため、
+成立している LF や hidden の境界を保ちます。
+[fixture: eventmodeling/header/accdescr-moved-to-line-start]
+[fixture: eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
+[fixture: eventmodeling/semicolons/metadata-across-selected-semicolon-gap-exact]
+[fixture: eventmodeling/common-boundaries/common-comment-region-join]
+[fixture: eventmodeling/description-blocks/description-whitespace-literal-retained]
+[fixture: eventmodeling/frame-components/hidden-before-required-title-identifier-keep-zero-indentation]
+
+model entity、note、GWT、未使用・後続の同名 data、重複参照、型語、
+参照と併記した inline data も、全出現を残します。
+GWT の clause・item は範囲で終わる共有の本文経路を使います。
+hidden YAML と native DIRECTIVE は元の owner で 1 回印字し、
+消費 LF と閉じの空白は共有 hidden 規則で保護します。
+見出し前の保持 form があれば prefix 全体を保ち、本物の frontmatter にしません。
+安全な本物の frontmatter だけを guard 付き YAML formatter に通します。
+[fixture: eventmodeling/source-order/all-occurrences-retained]
+[fixture: eventmodeling/hidden-forms/hidden-gwt-clause-item-owners]
+[fixture: eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps]
+[fixture: eventmodeling/frontmatter-yaml/retained-prefix-whole]
+[fixture: eventmodeling/frontmatter-yaml/safe-real-yaml]
+
+全 authored semicolon は、子の本文の opening edge も含め、
+共有 textual-prefix 保護を使います。
+最初の保護された本文行は所属の段に揃え、後続列と値に属する空白は保ちます。
+文法上の semicolon はなく、
+style・classDef という語だけでは行全体を固定しません。
+directive は同じ印字行では両側の接触を保ち、
+単位を行に分けるときは次の単位へ付けます。
+共通値の区間では原文保持を優先します。
+comment は mark と内容を保ち、native 行 comment は LS・PS を含み、
+common-region join は元の区間を保ちます。
+単位を行に分けるとき、
+間の inline comment と directive は原順で次側へ付けます。
+共有の置き方に揃え、同じ comment を図種の間で同じように扱います。
+[fixture: eventmodeling/comments/mixed-directive-order]
+[fixture: eventmodeling/semicolons/gwt-protected-opening-kept]
+[fixture: eventmodeling/semicolons/no-grammar-semicolon-style-word-line-formats]
+[fixture: eventmodeling/global-directives/directive-follows-split-next-gwt-item]
+[test: eventmodeling/comments/native-line-comment-ls-stays-content]
+[test: eventmodeling/comments/comment-region-ls-join-unchanged]
+
+既存の 5 つの
+[specified reading](./eventmodeling.ja.md#specified-readings) に従い、
+差異は足しません。
+対象は atomic な directive・semicolon の分断、
+frontmatter を跨ぐ HTML quote、
+opaque な埋め込み設定、後出の C4 語です。
+raw 拒否には raw Db がありません。
+拒否ファイルは構文エラーを報告して書き換えず、Markdown の拒否 payload は
+Prettier に任せます。
+共有の CR・CRLF 変換と、
+Markdown host が最後の code 行の空白を削る制限も適用します。
+[corpus fixture: eventmodeling/directive-arrow-inside]
+[corpus fixture: eventmodeling/lex-semicolon-frame-id-inside]
+[corpus fixture: eventmodeling/div-html-frontmatter-value]
+[corpus fixture: eventmodeling/div-frontmatter-invalid]
+[corpus fixture: eventmodeling/c4-container-data]
+[test: eventmodeling Markdown: rejected]
+[test: eventmodeling Markdown: final-hidden-padding]

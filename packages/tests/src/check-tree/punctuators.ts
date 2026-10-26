@@ -1,3 +1,5 @@
+import { EVENTMODELING_PUNCTUATORS } from "./eventmodeling.ts"
+import { WARDLEY_PUNCTUATORS } from "./wardley.ts"
 import { RAILROAD_PUNCTUATORS } from "./railroad.ts"
 import { ARCHITECTURE_PUNCTUATORS } from "./architecture.ts"
 import { PIE_PUNCTUATORS } from "./pie.ts"
@@ -42,6 +44,10 @@ const FLOWCHART_SHAPE_DELIMITERS: readonly string[] = GRAPH_SHAPES.flatMap(
  * that row.
  */
 export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
+  TreeviewDiagram: [":::", "##", "(", ")", ":", "{", "}"],
+  EventmodelingDiagram: EVENTMODELING_PUNCTUATORS,
+  CynefinDiagram: ["-->", ":", "{", "}"],
+  WardleyDiagram: WARDLEY_PUNCTUATORS,
   RailroadDiagram: RAILROAD_PUNCTUATORS,
   TreemapDiagram: [":", ",", ":::", ";", "{", "}"],
   RadarDiagram: [":", ",", "[", "]", "{", "}"],

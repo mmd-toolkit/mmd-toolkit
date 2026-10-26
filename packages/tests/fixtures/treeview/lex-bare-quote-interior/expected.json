@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names: quotes inside an already-started bare name are ordinary characters."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node \"quoted\" tail",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

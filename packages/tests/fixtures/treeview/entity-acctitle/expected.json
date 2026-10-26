@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check entity preprocessing in acctitle text."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "a &amp; &ﬂ°°65¶ß ﬂ°°65¶ß ﬂ°quot¶ß #br# b",
+    "accDescr": "",
+    "nodes": []
+  }
+}

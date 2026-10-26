@@ -843,7 +843,7 @@ journey # c
 ### ディレクティブ
 
 単独の行のディレクティブは、その次の文と同じ段に置きます。
-文の行にあるディレクティブは、両側の空白の有無を残します。
+同じ印字行の中では、両側の空白の有無を残します。
 空白がある所には空白 1 つを置き、接している所は接したままにします。
 [fixture: directives/kept]
 [fixture: directives/levels-around-sections]
@@ -852,6 +852,12 @@ journey # c
 [fixture: directives/after-header-touching-kept]
 [fixture: directives/whitespace-on-both-sides-collapsed]
 [fixture: directives/statement-after-directive-line]
+
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+
+[fixture: journey/directives/split-directive-gap]
 
 文の 2 つの単位の間のディレクティブは、
 両側に書かれた空白を保ってその位置に残し、

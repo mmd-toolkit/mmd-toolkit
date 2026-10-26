@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A bare percent-pair line inside the body is hidden by the native comment terminal."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "other",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Native hidden forms and comments: this word-named multiline form is removed by the global directive scan; genuine native-only forms have a nonword body."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

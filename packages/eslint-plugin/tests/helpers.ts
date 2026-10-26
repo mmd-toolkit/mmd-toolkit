@@ -116,6 +116,10 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   radar: true,
   treemap: true,
   railroad: true,
+  wardley: true,
+  cynefin: true,
+  eventmodeling: true,
+  treeview: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

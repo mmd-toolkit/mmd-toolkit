@@ -474,3 +474,36 @@ treemap/gram-indent-around-global-directive] [fixture:
 treemap/common-repeat-empty] [fixture: treemap/db-number-multiple-dots]
 [fixture: treemap/lex-string-conversion] [fixture:
 common/detect-minimal-treemap]
+
+`tests/wardley.test.ts` checks corpus-backed authored structure, component
+tokens, named hidden-form ownership, source coverage and comparable Db values.
+`tests/fixtures.test.ts` checks acceptance and records, including common Wardley
+detection cases. `tests/ast-wardley-examples.test.ts` checks the 28 node type
+comment examples. [fixture: wardley/db-all-fields] [fixture:
+wardley/hidden-all-unit-gaps] [fixture: common/detect-minimal-wardley]
+
+`tests/cynefin.test.ts` checks corpus-backed fields, hidden-form ownership,
+component boundaries, source coverage and Db values. Acceptance and records,
+including common detection cases, belong to `tests/fixtures.test.ts`.
+`tests/ast-cynefin-examples.test.ts` checks the eleven node-comment examples.
+[fixture: cynefin/db-all-fields] [fixture: cynefin/hidden-domain-item-members]
+[fixture: cynefin/hidden-all-unit-gaps] [fixture: common/detect-minimal-cynefin]
+
+`tests/eventmodeling.test.ts` checks corpus-backed structure, source coverage,
+token spelling, ranges, hidden-form ownership and comparable Db values.
+Acceptance and records belong to `tests/fixtures.test.ts`, including the common
+detection fixture. `tests/ast-eventmodeling-examples.test.ts` checks all 22 node
+comment examples. [fixture: eventmodeling/gram-written-tree] [fixture:
+eventmodeling/lex-hidden-frame-optional-gaps] [fixture:
+eventmodeling/lex-hidden-gwt-required-gaps] [fixture:
+common/detect-minimal-eventmodeling]
+
+`tests/treeview.test.ts` checks corpus-backed authored fields, assigned
+indentation, box-form ownership, token/comment coverage, spelling, node ranges,
+child containment, source order and comparable Db values. Acceptance and
+records, including the common detection fixture, belong to
+`tests/fixtures.test.ts`. `tests/ast-treeview-examples.test.ts` checks all
+thirteen node-comment examples; ASCII display escapes are decoded before
+checking their marked source ranges. [fixture: treeview/gram-written-tree]
+[fixture: treeview/box-written-tree] [fixture: treeview/ast-annotation-prefixes]
+[fixture: common/detect-minimal-tree-view]

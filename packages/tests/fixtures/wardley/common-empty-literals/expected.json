@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common metadata values: Empty and whitespace-only values distinguish null common values from nonempty authored literals."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

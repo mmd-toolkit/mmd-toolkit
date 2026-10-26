@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md WardleyIgnoredText: Is a whole hidden node kept once while YAML-looking text inside a description block remains common-value content?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "---\nx\n---",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

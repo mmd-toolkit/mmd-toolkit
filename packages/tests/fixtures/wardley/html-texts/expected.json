@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are body HTML attribute quotes converted before lexing all text fields?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "<b x='y'>T</b>",
+    "accTitle": "<b x='y'>A</b>",
+    "accDescr": "<b x='y'>D</b>",
+    "nodes": [
+      {
+        "id": "<b x='y'>C</b>",
+        "label": "<b x='y'>C</b>",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "<b x='y'>N</b>",
+        "x": 30,
+        "y": 20
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

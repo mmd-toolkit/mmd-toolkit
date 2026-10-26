@@ -369,6 +369,70 @@ railroad/ir-c4-container-terminal] [fixture: railroad/ebnf-c4-component-special]
 [fixture: railroad/abnf-c4-dynamic-string] [fixture:
 railroad/peg-c4-deployment-predicate]
 
+### Wardley
+
+Wardley follows C4 in detector registration. Its names, strings, literals and
+native hidden forms can hold the written C4 word, but a Wardley tree cannot
+simultaneously be the displaced C4 diagram. The existing reason-2 direct
+header-selection rule selects Wardley from its leading header instead. Later
+C4Container, C4Component, C4Dynamic or C4Deployment can therefore make Mermaid
+reject where this specification accepts. Ordinary LF-terminated comments removed
+before detection remain nondiffering; an EOF comment is not the same control.
+[fixture: wardley/c4-component-component] [fixture:
+wardley/c4-dynamic-flow-label] [fixture: wardley/c4-container-title] [fixture:
+wardley/c4-component-header-eof] [fixture: wardley/c4-component-header-lf]
+
+### Cynefin
+
+Select cynefin from its header even when a later value contains a C4 detector
+word. The value has a Cynefin node, but the same tree cannot also have the
+displaced C4 diagram kind. An ordinary LF-terminated comment removed for
+detection is a nondiffering control. [fixture: cynefin/c4-component-item]
+[fixture: cynefin/c4-container-title] [fixture: cynefin/c4-component-header-eof]
+[fixture: cynefin/c4-component-header-lf]
+
+The
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+and
+[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+read the result of the common preprocessing/detection pipeline. The
+[Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
+[tree](../ast/cynefin.md) retains its authored forms. [fixture:
+cynefin/db-all-fields]
+
+### eventmodeling
+
+Eventmodeling occurs after C4 detection. Its authored identifiers, references,
+inline/block data, notes, GWT and common values can hold C4Container,
+C4Component, C4Dynamic or C4Deployment. Selecting C4 from those later words
+would replace the written header's diagram rather than change those nodes.
+Follow header selection instead: the marked cases reject in Mermaid but accept
+in the specified eventmodeling reading. LF-terminated percent-comment controls
+do not exhibit this detection difference, and no mark is added when both
+readings reject. [fixture: eventmodeling/c4-container-data] [fixture:
+eventmodeling/c4-component-identifier] [fixture: eventmodeling/c4-dynamic-gwt]
+[fixture: eventmodeling/c4-deployment-reference] [fixture:
+eventmodeling/c4-component-header-lf] [fixture:
+eventmodeling/prefix-directive-c4] [fixture: eventmodeling/prefix-yaml-c4]
+[fixture: eventmodeling/prefix-yaml-between-bares-c4]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
+their direct boundaries.
+
+### Treeview
+
+Treeview is registered after C4. A later name, common value, description,
+comment or directive can contain C4Container, C4Component, C4Dynamic or
+C4Deployment. That text has a place in the tree; choose this diagram from its
+header under the existing direct detection rule. The specified treeview readings
+record the comparison, including an unterminated percent-comment control that
+the earlier detector can still see. The
+[syntax](../diagrams/treeview.md#detection) separates detection from its own
+grammar acceptance. [fixture: treeview/c4-container-bare] [fixture:
+treeview/c4-component-header-eof] [fixture: treeview/c4-dynamic-title] [fixture:
+treeview/c4-deployment-block] [fixture: treeview/c4-component-header-lf]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -491,3 +555,56 @@ warning. These facts do not justify any additional divergence.
   decision for these preprocessing boundaries. This divergence follows the
   existing shared rule, not such a decision. The inspected results do not
   establish that no other relevant issue exists.
+
+- Wardley: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  shows coordinates, decorations and flows without defining this common
+  boundary. Searches of the official issues and pull requests on 2026-10-26 used
+  wardley directive, wardley semicolon and wardley flow.
+  [#7642](https://github.com/mermaid-js/mermaid/pull/7642) fixes hyphenated
+  names and [#7726](https://github.com/mermaid-js/mermaid/pull/7726) removes
+  unnecessary sanitization; both are reflected in the pin.
+  [#8379](https://github.com/mermaid-js/mermaid/pull/8379) was an open
+  configuration-retention PR. The inspected results establish no maintainer
+  defect decision for this boundary; the existing direct rule applies. The
+  search is not claimed to be exhaustive.
+- Cynefin’s
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  describes fixed domains, quoted items and labeled transitions; its
+  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  state that self transitions are ignored.
+  [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
+  and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
+  cynefin semicolon and cynefin frontmatter found no inspected maintainer
+  judgment on this boundary.
+  [Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) was open with
+  Status: Triage and requested framework naming/drawing changes, not a ruling on
+  these lexical rules.
+
+### eventmodeling
+
+The pinned
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+describes frames, data and tags without defining this shared preprocessing
+boundary. Searches of the official issues and pull requests on 2026-10-26 used
+eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
+accTitle and eventmodeling validator.
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588), merged on
+2026-04-16, adds validator registration; it does not establish a maintainer
+ruling on this boundary. The inspected results establish no such ruling; the
+existing direct rule applies. The search is not claimed to be exhaustive.
+
+### Treeview
+
+The pinned
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+describes indentation, quoted names, annotations and box drawing, without
+defining this common boundary. On 2026-10-26 the official issues/PRs were
+searched for `treeView quoted`, `treeView indentation`, `treeView box`,
+`treeView quotes`, `treeView whitespace` and `treeView accDescr`.
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) is the merged
+box-drawing addition;
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) is an open
+Enhancement/Triage proposal to omit the header. Inspected results establish no
+maintainer defect ruling on this boundary; the existing direct rule applies. The
+search is not claimed to be exhaustive.

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unresolved explicit source remains distinct from implicit inference."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "A",
+        "sourceFrames": [
+          "99"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

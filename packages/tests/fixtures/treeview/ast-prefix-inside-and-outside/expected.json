@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treeview.md TreeviewBranchPrefix: an outer prefix is a node while a prefix enclosed in a quoted leaf stays in its raw spelling."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "one\n        two",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "tail",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

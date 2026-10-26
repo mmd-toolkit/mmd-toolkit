@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A shallower arbitrary indentation pops ancestors until the last strictly smaller level."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "deep",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "deeper",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "shallow",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "below",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "last",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

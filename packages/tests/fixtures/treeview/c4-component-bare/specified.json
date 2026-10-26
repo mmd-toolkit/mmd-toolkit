@@ -1,0 +1,15 @@
+{
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "C4Component",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

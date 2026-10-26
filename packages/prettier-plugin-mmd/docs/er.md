@@ -1272,9 +1272,9 @@ erDiagram
 ### Directives
 
 A directive on a line of its own stands at the level of the statements around
-it, and a directive on the line of a statement keeps whether whitespace is
-written on each side of it: where it is, one space stands there, and where it
-touches a token, it keeps touching. [fixture: directives/kept] [fixture:
+it, and a directive within a printed line keeps whether whitespace is written on
+each side of it: where it is, one space stands there, and where it touches a
+token, it keeps touching. [fixture: directives/kept] [fixture:
 directives/before-header] [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-header-touching-kept] [fixture:
 directives/whitespace-on-both-sides-collapsed] [fixture:
@@ -1283,6 +1283,12 @@ directives/after-statement-at-end-of-line] [fixture: directives/in-blocks] A
 directive that is not closed takes the rest of the text, and is kept as written.
 [fixture: directives/unclosed-at-end-of-text-kept] [fixture:
 directives/unclosed-after-statement-kept]
+
+When formatting splits units that were on the same line, a directive in their
+gap moves with the following unit. Keep its right-side contact or separation;
+break its left contact.
+
+[fixture: er/directives/whitespace-on-both-sides-collapsed]
 
 Input
 ([directives/kept-input.mmd](../tests/fixtures/er/directives/kept-input.mmd)):

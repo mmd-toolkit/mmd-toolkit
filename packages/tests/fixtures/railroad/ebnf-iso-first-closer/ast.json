@@ -84,7 +84,7 @@
     {
       "type": "Comment",
       "mark": "(*",
-      "value": " outer (* inner *)",
+      "value": " outer (* inner ",
       "range": [
         19,
         39

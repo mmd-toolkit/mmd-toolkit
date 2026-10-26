@@ -1,0 +1,650 @@
+{
+  "type": "Root",
+  "diagramType": "treeView",
+  "body": {
+    "type": "TreeviewDiagram",
+    "body": [
+      {
+        "type": "TreeviewNode",
+        "indent": 0,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "docs",
+          "raw": "\"docs\"",
+          "closed": true,
+          "range": [
+            14,
+            20
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 6
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          14,
+          20
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 6
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 4,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "build",
+          "raw": "\"build\"",
+          "closed": true,
+          "range": [
+            25,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 4
+            },
+            "end": {
+              "line": 3,
+              "column": 11
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          25,
+          32
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 4
+          },
+          "end": {
+            "line": 3,
+            "column": 11
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 4,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "make.bat",
+          "raw": "\"make.bat\"",
+          "closed": true,
+          "range": [
+            37,
+            47
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 4
+            },
+            "end": {
+              "line": 4,
+              "column": 14
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          37,
+          47
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 4
+          },
+          "end": {
+            "line": 4,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 4,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "Makefile",
+          "raw": "\"Makefile\"",
+          "closed": true,
+          "range": [
+            52,
+            62
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 4
+            },
+            "end": {
+              "line": 5,
+              "column": 14
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          52,
+          62
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 4
+          },
+          "end": {
+            "line": 5,
+            "column": 14
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 4,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "out",
+          "raw": "\"out\"",
+          "closed": true,
+          "range": [
+            67,
+            72
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 4
+            },
+            "end": {
+              "line": 6,
+              "column": 9
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          67,
+          72
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 4
+          },
+          "end": {
+            "line": 6,
+            "column": 9
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 4,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "source",
+          "raw": "\"source\"",
+          "closed": true,
+          "range": [
+            77,
+            85
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 4
+            },
+            "end": {
+              "line": 7,
+              "column": 12
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          77,
+          85
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 4
+          },
+          "end": {
+            "line": 7,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 8,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "build",
+          "raw": "\"build\"",
+          "closed": true,
+          "range": [
+            94,
+            101
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 8
+            },
+            "end": {
+              "line": 8,
+              "column": 15
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          94,
+          101
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 8
+          },
+          "end": {
+            "line": 8,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 8,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "static",
+          "raw": "\"static\"",
+          "closed": true,
+          "range": [
+            110,
+            118
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 8
+            },
+            "end": {
+              "line": 9,
+              "column": 16
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          110,
+          118
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 8
+          },
+          "end": {
+            "line": 9,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 12,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "_templates",
+          "raw": "\"_templates\"",
+          "closed": true,
+          "range": [
+            131,
+            143
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 12
+            },
+            "end": {
+              "line": 10,
+              "column": 24
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          131,
+          143
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 12
+          },
+          "end": {
+            "line": 10,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "TreeviewNode",
+        "indent": 12,
+        "prefix": null,
+        "textBeforeName": [],
+        "name": {
+          "type": "StringLiteral",
+          "value": "div. Files",
+          "raw": "\"div. Files\"",
+          "closed": true,
+          "range": [
+            156,
+            168
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 12
+            },
+            "end": {
+              "line": 11,
+              "column": 24
+            }
+          }
+        },
+        "annotations": [],
+        "range": [
+          156,
+          168
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 12
+          },
+          "end": {
+            "line": 11,
+            "column": 24
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      168
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 11,
+        "column": 24
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "treeView-beta",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"docs\"",
+      "range": [
+        14,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"build\"",
+      "range": [
+        25,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"make.bat\"",
+      "range": [
+        37,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Makefile\"",
+      "range": [
+        52,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 4
+        },
+        "end": {
+          "line": 5,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"out\"",
+      "range": [
+        67,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 6,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"source\"",
+      "range": [
+        77,
+        85
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 4
+        },
+        "end": {
+          "line": 7,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"build\"",
+      "range": [
+        94,
+        101
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"static\"",
+      "range": [
+        110,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"_templates\"",
+      "range": [
+        131,
+        143
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 12
+        },
+        "end": {
+          "line": 10,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"div. Files\"",
+      "range": [
+        156,
+        168
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 24
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    168
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 24
+    }
+  }
+}

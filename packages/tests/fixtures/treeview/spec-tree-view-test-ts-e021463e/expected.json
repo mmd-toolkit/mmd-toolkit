@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/treeView.test.ts",
+    "line": 12,
+    "test": "TreeView Parser > Title and Accessibilities > should parse a treeView with accTitle"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "Accessible Title",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "Child",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

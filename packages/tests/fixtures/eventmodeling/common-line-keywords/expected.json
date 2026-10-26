@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "At line starts hidden whitespace is consumed before EM_ID beats common terminals."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 9: unexpected character: ->:<- at offset: 30, skipped 1 characters.\nLexer error on line 4, column 9: unexpected character: ->:<- at offset: 42, skipped 1 characters. Parse error on line 2, column 1: Expecting token of type 'EOF' but found `title`."
+  }
+}

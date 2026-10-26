@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Full comment lines are removed by common preprocessing between nodes; bare percent lines separately exercise the native comment terminal."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "other",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

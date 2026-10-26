@@ -1080,7 +1080,7 @@ timeline
 ### 指令
 
 単独の行にある指令は、後ろの文と同じ段に置きます。
-文の行にある指令は、両側に空白が書かれているかを残します。
+同じ印字行の中では、両側に空白が書かれているかを残します。
 空白があればそこに空白 1 つを置き、トークンに接していれば接したままにします。
 journey と同じ規則です。
 [fixture: directives/kept]
@@ -1090,6 +1090,12 @@ journey と同じ規則です。
 [fixture: directives/after-header-touching-kept]
 [fixture: directives/whitespace-on-both-sides-collapsed]
 [fixture: directives/statement-after-directive-line]
+
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+
+[fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
 文の 2 つの単位の間の指令は、両側に書かれた空白とともにその場所に残します。
 テキストの中の指令は、テキストの一部です。

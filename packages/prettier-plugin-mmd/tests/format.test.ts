@@ -46,7 +46,9 @@ describe("formatting fixtures", () => {
       ).not.toBeNull()
       const output = fixture.output as string
       expect(await format(fixture, fixture.input)).toBe(output)
-      expect(await format(fixture, output)).toBe(output)
+      const twice = await format(fixture, output)
+      expect(twice).toBe(output)
+      expect(await format(fixture, twice)).toBe(twice)
       expect(writtenTextKeptUpToSemicolons(fixture.input, output), output).toBe(
         true,
       )

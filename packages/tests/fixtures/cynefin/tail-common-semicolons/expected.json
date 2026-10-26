@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Semicolons in common line values remain value text."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "T ;",
+    "accTitle": "A;",
+    "accDescr": "D;;",
+    "domains": [],
+    "transitions": []
+  }
+}

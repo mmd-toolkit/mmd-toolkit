@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "BOM inside an identifier splits units rather than joining their text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 10: Expecting end of file but found `B`."
+  }
+}

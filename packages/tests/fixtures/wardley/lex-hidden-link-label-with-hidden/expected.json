@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md WardleyIgnoredText: Is a whole hidden node kept once while native-directive-looking text inside a semicolon label remains label content?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": false,
+        "label": "%%{!x}%%"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

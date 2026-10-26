@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: decoded escaped double quotes differ from unescaped HTML attribute quotes converted to single quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Pipeline \"<a x='y'>\" must reference an existing component with coordinates."
+  }
+}

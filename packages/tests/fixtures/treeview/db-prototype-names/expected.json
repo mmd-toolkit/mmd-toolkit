@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Prototype spellings are ordinary names and annotation values."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "__proto__",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "constructor",
+            "nodeType": "file",
+            "cssClass": "__proto__",
+            "icon": "constructor",
+            "description": "__proto__",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "__proto__",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

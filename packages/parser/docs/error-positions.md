@@ -14,15 +14,17 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   [fixture: common/empty] [fixture: common/comment-only] [fixture:
   common/whitespace-only]
 - The `---` pseudo-diagram, or a retained nonleading block before a supported
-  diagram other than pie, gitgraph, info, packet, architecture, radar, treemap
-  or railroad: `range` covers the three `-` characters that start the block.
-  [fixture: common/frontmatter-adjacent-delimiters] [fixture:
+  diagram other than pie, gitgraph, info, packet, architecture, radar, treemap,
+  railroad, wardley, cynefin or eventmodeling: `range` covers the three `-`
+  characters that start the block. [fixture:
+  common/frontmatter-adjacent-delimiters] [fixture:
   common/frontmatter-nonleading-class] [fixture:
   common/frontmatter-nonleading-sequence] [fixture:
   common/frontmatter-nonleading-state] [fixture:
   common/frontmatter-after-bare-percent-flowchart]
 - A directive found once more before the header, except in pie, gitgraph, info,
-  packet, architecture, radar, treemap or railroad,
+  packet, architecture, radar, treemap, railroad, wardley, cynefin or
+  eventmodeling,
   ([Diagram detection](../../spec/docs/common.md#diagram-detection)): `range`
   covers its opening `%%{`, from its first `%` to its `{`, with the directives
   and comment regions of the source between them; of several, the first.
@@ -1206,3 +1208,87 @@ and drawing configuration add no acceptance gate. [fixture:
 railroad/ir-hidden-directive-closing-space] [fixture:
 railroad/ebnf-native-directive-fallback] [fixture:
 railroad/abnf-db-repeat-reversed] [fixture: railroad/peg-config-init-drawing]
+
+## In a Wardley diagram
+
+The complete lexical scan precedes grammar and semantic acceptance; an accepted
+prefix does not excuse unread text. [fixture: wardley/error-after-prefix]
+[fixture: wardley/error-recovered]
+
+| Cause                                                    | Range and message                                                                                                 | Fixtures                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No complete lexical rule matches                         | The source character, with `Unexpected character`; an unclosed string points at its opening quote.                | [fixture: wardley/error-start] [fixture: wardley/lex-string-open-double] [fixture: wardley/lex-string-open-single] [fixture: wardley/space-nbsp-body] [fixture: wardley/tail-link-empty-label]                                                                                                                                                                                                                                               |
+| The grammar cannot read a unit                           | Its significant range, with `Unexpected token`; at source EOF, the empty end range with `Unexpected end of text`. | [fixture: wardley/gram-pipeline-open] [fixture: wardley/gram-coordinate-trailing-comma] [fixture: wardley/header-upper] [fixture: wardley/gram-component-strategy-duplicate]                                                                                                                                                                                                                                                                 |
+| A shared directive or selected semicolon splits an atom  | The directive/semicolon range, with `Unexpected directive` or `Unexpected semicolon`.                             | [fixture: wardley/directive-id-inside] [fixture: wardley/directive-number] [fixture: wardley/directive-arrow-inside] [fixture: wardley/lex-selected-port-inside] [fixture: wardley/lex-selected-decimal-inside]                                                                                                                                                                                                                              |
+| A checked normalized coordinate is outside 0 through 100 | The offending unsigned numeric leaf, with `A Wardley coordinate must be between 0 and 100`.                       | [fixture: wardley/gram-invalid-anchor] [fixture: wardley/gram-replaced-invalid-node] [fixture: wardley/gram-invalid-note] [fixture: wardley/gram-invalid-annotation] [fixture: wardley/gram-invalid-accelerator] [fixture: wardley/gram-invalid-deaccelerator] [fixture: wardley/gram-invalid-pipeline-child] [fixture: wardley/gram-invalid-evolve] [fixture: wardley/gram-box-first-invalid] [fixture: wardley/number-coordinate-overflow] |
+| A pipeline parent has no exact registered ID             | Its authored reference leaf, with `A Wardley pipeline parent must exist`.                                         | [fixture: wardley/gram-missing-pipeline-parent] [fixture: wardley/gram-pipeline-plain-name-ref] [fixture: wardley/gram-pipeline-child-parent-before] [fixture: wardley/gram-reference-case-mismatch] [fixture: wardley/gram-reference-unicode-mismatch]                                                                                                                                                                                      |
+
+Coordinate checks use rounded doubles, check every registered occurrence and
+pipeline child, check evolve targets only for existing IDs after registration,
+and check only the first annotations box. Size and stage numbers add no range
+restriction; configuration adds no Wardley acceptance condition. [fixture:
+wardley/db-coordinate-double-one] [fixture:
+wardley/db-coordinate-double-hundred] [fixture:
+wardley/gram-replaced-invalid-node-last] [fixture:
+wardley/gram-evolve-forward-invalid] [fixture: wardley/db-trend-missing]
+[fixture: wardley/db-later-invalid-box] [fixture: wardley/db-number-overflow]
+[fixture: wardley/db-stages-boundaries] [fixture:
+wardley/config-frontmatter-cannot-rescue]
+
+## In a cynefin diagram
+
+The public gate requires complete lexing and parsing without recovery. There is
+no additional semantic or configuration-dependent rejection. [fixture:
+cynefin/error-recovered] [fixture: cynefin/db-self-loops] [fixture:
+cynefin/config-site-small-limits]
+
+| Rejection                                        | Range and message                                                                                                                                       | Fixtures                                                                                                                                                                   |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No complete lexical rule matches                 | Source character, with `Unexpected character`; unclosed strings point at their opener.                                                                  | [fixture: cynefin/error-start] [fixture: cynefin/lex-string-open-double] [fixture: cynefin/lex-string-open-single] [fixture: cynefin/space-nbsp-body]                      |
+| The grammar cannot read a unit                   | Its significant range, with `Unexpected token` (empty for an appended LF); without a remaining unit, the empty end range with `Unexpected end of text`. | [fixture: cynefin/gram-missing-target] [fixture: cynefin/gram-label-missing-string] [fixture: cynefin/gram-orphan-item] [fixture: cynefin/hidden-directive-sole-lf]        |
+| A directive or selected semicolon splits an atom | Directive/semicolon range, with `Unexpected directive` or `Unexpected ; that the line rule ignores`.                                                    | [fixture: cynefin/directive-domain-inside] [fixture: cynefin/directive-arrow-inside] [fixture: cynefin/semicolon-complex-inside] [fixture: cynefin/semicolon-arrow-inside] |
+
+## In an eventmodeling diagram
+
+The complete first-match lexical scan precedes recursive descent. The public
+gate accepts no recovered prefix, resolves no references and adds no validator
+or configuration-dependent condition. [fixture: eventmodeling/error-recovered]
+[fixture: eventmodeling/link-note-forward] [fixture:
+eventmodeling/validator-multiple-invalid] [fixture:
+eventmodeling/config-frontmatter-cannot-rescue]
+
+| Cause                                                   | Range and message                                                                                                                   | Fixtures                                                                                                                                                                                                      |
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No complete lexical rule matches                        | Source character, with `Unexpected character`; an unclosed data/comment form points at its opener.                                  | [fixture: eventmodeling/error-start] [fixture: eventmodeling/lex-inline-open-double] [fixture: eventmodeling/lex-block-open] [fixture: eventmodeling/comment-block-open]                                      |
+| The grammar cannot read a unit                          | Its significant range, with `Unexpected token`; without a remaining unit, the empty source-end range with `Unexpected end of text`. | [fixture: eventmodeling/header-double] [fixture: eventmodeling/frame-source-missing] [fixture: eventmodeling/gwt-empty-then] [fixture: eventmodeling/data-block-inline-rejected]                              |
+| A common directive or selected semicolon splits an atom | The shared directive/semicolon range, with `Unexpected directive` or `Unexpected ; that the line rule ignores`.                     | [fixture: eventmodeling/directive-id-inside] [fixture: eventmodeling/directive-arrow-inside] [fixture: eventmodeling/directive-reference-close-inside] [fixture: eventmodeling/lex-semicolon-frame-id-inside] |
+
+Native hidden forms consume no visible EOL and add no semantic rejection. A
+failed native directive can instead become a Comment; other unreadable suffixes
+still reject. [fixture: eventmodeling/lex-native-directive-one-line-fallback]
+[fixture: eventmodeling/hidden-directive-no-boundary] [fixture:
+eventmodeling/error-after-prefix]
+
+## In a treeview diagram
+
+The complete ordered lexical scan and grammar must succeed. The two box errors
+apply independently of quote/block contexts, at original source positions even
+after decorations. There is no configuration-dependent or additional semantic
+acceptance gate. [fixture: treeview/error-after-prefix] [fixture:
+treeview/box-error-remap] [fixture: treeview/box-block-indent-error] [fixture:
+treeview/config-frontmatter-cannot-rescue]
+
+| Cause                                                           | Range and message                                                                                                                                                            | Fixtures                                                                                                                                                                               |
+| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No complete lexical rule matches                                | The source character, with `Unexpected character`; an unclosed quoted name points at its opening quote.                                                                      | [fixture: treeview/error-after-prefix] [fixture: treeview/box-error-remap]                                                                                                             |
+| The grammar cannot read a unit                                  | Its significant range, with `Unexpected token`; indentation has an empty range at its start. With no unit left, use the empty source-end range and `Unexpected end of text`. | [fixture: treeview/gram-repeated-header] [fixture: treeview/gram-accessibility-after-node] [fixture: treeview/gram-quoted-tail-space-next-indent] [fixture: treeview/space-double-tab] |
+| A directive or selected semicolon splits an atom                | The shared directive/semicolon range, with `Unexpected directive` or `Unexpected ; that the line rule ignores`.                                                              | [fixture: treeview/directive-class-value-inside] [fixture: treeview/directive-icon-value-inside] [fixture: treeview/semicolon-class-inside]                                            |
+| A box branch has no remaining content                           | Its authored prefix from first non-whitespace character through the branch/dash run, with `A treeview branch must have content`.                                             | [fixture: treeview/box-empty-branch-after-decoration] [fixture: treeview/box-prefixed-directive]                                                                                       |
+| A box-mode line mixes ordinary indentation with non-box content | Its leading common-whitespace range, with `Cannot mix ordinary indentation with treeview branches`.                                                                          | [fixture: treeview/box-mixed-reject] [fixture: treeview/box-mixed-indent-nbsp] [fixture: treeview/box-quoted-indent-error] [fixture: treeview/box-block-indent-error]                  |
+
+Retained fences have no native YAML rule: grammar rejects their first bare-name
+unit before the header. A single-line second-scan form can instead be a native
+Comment; a later noncomment closing line rejects before the header. [fixture:
+treeview/detect-block-after-directive] [fixture:
+treeview/detect-secondscan-singleline] [fixture:
+treeview/detect-secondscan-multiline]

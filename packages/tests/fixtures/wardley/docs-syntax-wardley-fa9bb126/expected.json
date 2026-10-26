@@ -1,0 +1,70 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 282
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Custom Widths",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Novel",
+        "label": "Novel",
+        "x": 15,
+        "y": 75,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Bespoke",
+        "label": "Bespoke",
+        "x": 35,
+        "y": 70,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Product",
+        "label": "Product",
+        "x": 65,
+        "y": 65,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Utility",
+        "label": "Utility",
+        "x": 90,
+        "y": 60,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {
+      "stages": [
+        "Genesis",
+        "Custom",
+        "Product",
+        "Commodity"
+      ],
+      "stageBoundaries": [
+        0.2,
+        0.4,
+        0.75,
+        1
+      ]
+    }
+  }
+}

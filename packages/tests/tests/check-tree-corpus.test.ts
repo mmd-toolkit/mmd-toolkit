@@ -19,6 +19,10 @@ import { getFixturesRoot, loadFixtures } from "../src/index.ts"
 const DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "treeview",
+  "eventmodeling",
+  "cynefin",
+  "wardley",
   "railroad",
   "treemap",
   "radar",

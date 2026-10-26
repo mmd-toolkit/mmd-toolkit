@@ -1,0 +1,9 @@
+{
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": " accDescr {\nC4Container\n}",
+    "frames": []
+  }
+}

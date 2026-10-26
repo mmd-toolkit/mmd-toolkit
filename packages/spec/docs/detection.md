@@ -122,7 +122,8 @@ not at the start. [fixture: common/detect-minimal-c4-container] [fixture:
 common/detect-minimal-c4-component] [fixture: common/detect-minimal-c4-dynamic]
 [fixture: common/detect-minimal-c4-deployment] [fixture: common/detect-c4-case]
 [fixture: common/detect-c4-word-after] [fixture:
-common/detect-c4-keyword-after-word]
+common/detect-c4-keyword-after-word] [fixture:
+eventmodeling/detect-real-retained-secondscan]
 
 Entry 6,
 [`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11),
@@ -154,14 +155,15 @@ pie/header-capitalized] [fixture: pie/header-uppercase]
 The frontmatter-shaped block passed at the detection point is still diagram
 text. A comment line followed by `---`, `title: Hidden`, `---`, and `pie`
 selects pie, whose hidden YAML rule skips the block without applying its title.
-Gitgraph, info, packet, architecture, radar and railroad also retain matching
-hidden blocks; the cited other diagram types reject their corresponding inputs.
-An adjacent-fence empty block, an unmatched fence, or a bare `%%` line before
-the block instead leaves the rejecting `---` pseudo-diagram selected. [fixture:
-pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
-[fixture: info/frontmatter-nonleading-comment] [fixture:
-packet/detect-one-block] [fixture: common/directive-before-frontmatter]
-[fixture: common/frontmatter-nonleading-sequence] [fixture:
+Gitgraph, info, packet, architecture, radar, railroad, wardley, cynefin and
+eventmodeling also retain matching hidden blocks; the cited other diagram types
+reject their corresponding inputs. An adjacent-fence empty block, an unmatched
+fence, or a bare `%%` line before the block instead leaves the rejecting `---`
+pseudo-diagram selected. [fixture: pie/frontmatter-nonleading-comment] [fixture:
+gitgraph/lex-yaml-after-comment] [fixture: info/frontmatter-nonleading-comment]
+[fixture: packet/detect-one-block] [fixture:
+common/directive-before-frontmatter] [fixture:
+common/frontmatter-nonleading-sequence] [fixture:
 common/frontmatter-nonleading-class] [fixture:
 common/frontmatter-nonleading-state] [fixture:
 pie/lex-yaml-after-comment-adjacent-fences] [fixture: pie/frontmatter-unclosed]
@@ -171,7 +173,10 @@ common/frontmatter-adjacent-delimiters] [fixture: common/frontmatter-unclosed]
 agentflow/db-frontmatter-after-comment] [fixture:
 block/gram-frontmatter-comment-before] [fixture:
 ishikawa/frontmatter-after-comment] [fixture: usecase/frontmatter-after-comment]
-[fixture: venn/frontmatter-comment-before]
+[fixture: venn/frontmatter-comment-before] [fixture:
+wardley/detect-block-after-directive] [fixture: wardley/detect-retained-two]
+[fixture: cynefin/detect-block-after-directive] [fixture:
+eventmodeling/detect-real-retained-secondscan]
 
 Entry 39,
 [`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14),
@@ -224,6 +229,54 @@ railroad/ir-header-upper] [fixture: railroad/ebnf-header-upper] [fixture:
 railroad/abnf-header-upper] [fixture: railroad/peg-header-upper] [fixture:
 railroad/ir-header-inline] [fixture: railroad/ebnf-header-inline] [fixture:
 railroad/abnf-header-inline] [fixture: railroad/peg-header-inline]
+
+Entry 37,
+[wardleyDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyDetector.ts#L7-L11),
+selects wardley-beta case-insensitively with no suffix boundary. The accepted
+header is lowercase and needs no following EOL, so a statement can be glued to
+it. Wardley is after C4; its [syntax](./diagrams/wardley.md#detection) defines
+acceptance of retained YAML/second-scan prefixes and the C4 divergence.
+[fixture: wardley/header-upper] [fixture: wardley/header-glued-statement]
+[fixture: wardley/detect-real-before-retained-secondscan] [fixture:
+wardley/c4-component-component]
+
+Entry 38,
+[cynefinDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDetector.ts#L7-L11),
+selects exact lower-case cynefin-beta followed by common whitespace, colon or
+end of text. Its grammar has the two headers cynefin-beta and cynefin-beta:;
+neither needs a following EOL. For %% touching the bare header, detection-only
+comment removal requires a later LF in the source being detected; without it, %%
+is not a detector boundary. Its [syntax](./diagrams/cynefin.md#detection) and
+[tree](./ast/cynefin.md) define retained prefixes and their owners. [fixture:
+cynefin/header-uppercase] [fixture: cynefin/header-colon-inline] [fixture:
+cynefin/header-inline] [fixture: cynefin/header-native-no-eol] [fixture:
+cynefin/header-native-glued-line-feed] [fixture:
+cynefin/header-native-comment-glued-eof] [fixture:
+cynefin/detect-real-before-retained-secondscan]
+
+Entry 27,
+[detector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8),
+selects the exact lowercase prefix eventmodeling with no following boundary. The
+accepted grammar header has its own whitespace, percent-pair or end-of-text
+boundary; a suffix can therefore be detected and rejected. Its
+[syntax](./diagrams/eventmodeling.md#detection) and
+[tree](./ast/eventmodeling.md#gap-ownership) define retained forms and passed
+bare lines. [fixture: eventmodeling/header-letter] [fixture:
+eventmodeling/header-inline] [fixture: eventmodeling/header-percent-comment]
+[fixture: eventmodeling/detect-real-retained-secondscan] [fixture:
+eventmodeling/detect-retained-bare-ls-line]
+
+Entry 28, the
+[treeview detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8),
+selects exact case-sensitive `treeView-beta` without a suffix boundary. The
+[syntax](./diagrams/treeview.md#detection) distinguishes the keyword lookahead
+and bare longer alternative, retained prefixes and passed bare-line trivia.
+There is no native YAML rule: detection passing a block does not make it
+readable before this header. [fixture: treeview/header-only] [fixture:
+treeview/header-lower] [fixture: treeview/header-letter] [fixture:
+treeview/header-nbsp-custom-boundary] [fixture:
+treeview/detect-block-after-directive] [fixture:
+treeview/detect-secondscan-bare-unicode]
 
 ## Notes
 

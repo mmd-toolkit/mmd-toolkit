@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are integers unavailable where the grammar requires WARDLEY_NUMBER?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 14: Expecting token of type 'WARDLEY_NUMBER' but found `0`."
+  }
+}

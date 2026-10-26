@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Strings and link labels: Short dotted-arrow text inside a flow label also affects Mermaid's derived dashed value without rewriting the tree."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [
+      {
+        "source": "A",
+        "target": "B",
+        "dashed": true,
+        "label": "x.-.y",
+        "flow": "forward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

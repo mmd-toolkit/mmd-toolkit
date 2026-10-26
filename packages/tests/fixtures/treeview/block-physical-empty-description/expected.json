@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: an inner empty-description-looking text closes the outer block at its first brace."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "one\naccDescr {",
+    "nodes": [
+      {
+        "name": "two}",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "node",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

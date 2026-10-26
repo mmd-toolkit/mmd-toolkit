@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How is an array frontmatter title converted?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "A,B",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  },
+  "embedded": {
+    "title": "A,B"
+  }
+}

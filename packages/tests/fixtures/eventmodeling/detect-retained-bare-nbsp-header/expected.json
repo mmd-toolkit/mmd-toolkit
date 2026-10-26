@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Detection: NBSP directly before the header passes with the preceding bare line. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

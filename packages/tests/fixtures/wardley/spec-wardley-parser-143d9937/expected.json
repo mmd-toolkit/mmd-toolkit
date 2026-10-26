@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/wardley/wardleyParser.spec.ts",
+    "line": 286,
+    "test": "wardley parser > parses foo-bar->baz as link from foo-bar to baz"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "foo-bar",
+        "label": "foo-bar",
+        "x": 30,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "baz",
+        "label": "baz",
+        "x": 60,
+        "y": 60,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "foo-bar",
+        "target": "baz",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import type { Range, Root } from "../src/index.ts"
-import { ParseError, UnsupportedDiagramError, parse } from "../src/index.ts"
+import { ParseError, parse } from "../src/index.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 /**
@@ -494,22 +494,6 @@ describe("parse: the flowchart diagram types", () => {
     expect(parseError("flowchart%%{init: {}}%%LR\nA-->B").message).toBe(
       "Unexpected token",
     )
-  })
-})
-
-describe("parse: detected but unsupported diagram types", () => {
-  it.each([["treeView-beta", "treeView"]])("%j is %s", (text, diagramType) => {
-    let caught: unknown
-    try {
-      parse(text)
-    } catch (error) {
-      caught = error
-    }
-    expect(caught).toBeInstanceOf(UnsupportedDiagramError)
-    expect(caught).toMatchObject({
-      name: "UnsupportedDiagramError",
-      diagramType,
-    })
   })
 })
 

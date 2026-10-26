@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/parser.spec.ts",
+    "line": 319,
+    "test": "box-drawing ↔ indent equivalence > nested directories"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "src",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "components",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "Button.tsx",
+                "nodeType": "file",
+                "children": []
+              },
+              {
+                "name": "Modal.tsx",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "utils",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "helpers.ts",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "README.md",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

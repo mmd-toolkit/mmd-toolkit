@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Detection: a native hidden gap cannot join the bare header word and colon, even with valid boundaries."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 23: Expecting token of type 'EOF' but found `:`."
+  }
+}

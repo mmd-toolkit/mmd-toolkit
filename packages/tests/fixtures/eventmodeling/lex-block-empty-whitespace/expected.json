@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Data: Opening padding and blank interior lines remain literal block content. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{ \t\n \t\n}\n"
+        }
+      }
+    ]
+  }
+}

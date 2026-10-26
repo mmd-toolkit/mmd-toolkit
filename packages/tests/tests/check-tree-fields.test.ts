@@ -88,6 +88,70 @@ const REQUIREMENT_PARTS =
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
+  "TreeviewNode.indent": { message: "indent must equal" },
+  "TreeviewIdentifier.name": { message: "name is not its written text" },
+  "TreeviewLiteral.value": { message: "value is not its written text" },
+  "TreeviewBranchPrefix.value": { message: "value is not its written text" },
+  "TreeviewBranchPrefix.marker": { message: "the first branch marker" },
+  "TreeviewIgnoredText.value": { message: "value is not its written text" },
+  "TreeviewIgnoredText.kind": {
+    message: "the only ignored kind is box-decoration",
+  },
+  "EventmodelingTimeFrameStatement.modelEntityType": {
+    message: "the field modelEntityType is ",
+  },
+  "EventmodelingResetFrameStatement.modelEntityType": {
+    message: "the field modelEntityType is ",
+  },
+  "EventmodelingGwtItem.modelEntityType": {
+    message: "the field modelEntityType is ",
+  },
+  "EventmodelingArrow.value": { message: "value is not its written text" },
+  "EventmodelingArrow.startMarker": { message: "the field startMarker is " },
+  "EventmodelingArrow.line": { message: "the field line is " },
+  "EventmodelingArrow.endMarker": { message: "the field endMarker is " },
+  "EventmodelingInlineData.dataType": {
+    message: "the field dataType is its written type word",
+  },
+  "EventmodelingDataBlock.dataType": {
+    message: "the field dataType is its written type word",
+  },
+  "EventmodelingGwtClause.kind": { message: "the field kind is " },
+  "EventmodelingLiteral.value": { message: "value is not its written text" },
+  "EventmodelingIgnoredText.kind": { message: "the field kind is " },
+  "EventmodelingIgnoredText.value": {
+    message: "value is not its written text",
+  },
+  "CynefinDomainStatement.name": { message: "the field name is " },
+  "CynefinTransitionStatement.from": { message: "the field from is " },
+  "CynefinTransitionStatement.to": { message: "the field to is " },
+  "CynefinArrow.value": { message: "value is not its written text" },
+  "CynefinArrow.startMarker": { message: "the field startMarker is " },
+  "CynefinArrow.line": { message: "the field line is " },
+  "CynefinArrow.endMarker": { message: "the field endMarker is " },
+  "CynefinLiteral.value": { message: "value is not its written text" },
+  "CynefinIgnoredText.kind": { message: "the field kind is " },
+  "CynefinIgnoredText.value": { message: "value is not its written text" },
+  "WardleyIdentifier.name": { message: "name is not its written text" },
+  "WardleyLiteral.value": { message: "value is not its written text" },
+  "WardleyIgnoredText.kind": { message: "the field kind is " },
+  "WardleyIgnoredText.value": { message: "value is not its written text" },
+  "WardleyArrow.value": { message: "value is not its written text" },
+  "WardleyArrow.kind": { message: "the field kind is " },
+  "WardleyArrow.line": { message: "the field line is " },
+  "WardleyArrow.startMarker": { message: "the field startMarker is " },
+  "WardleyArrow.endMarker": { message: "the field endMarker is " },
+  "WardleyLabelOffsetDecoration.negativeX": {
+    message: "the written negativeX sign",
+  },
+  "WardleyLabelOffsetDecoration.negativeY": {
+    message: "the written negativeY sign",
+  },
+  "WardleyLinkStatement.fromPort": {
+    message: "the written fromPort direction",
+  },
+  "WardleyLinkStatement.toPort": { message: "the written toPort direction" },
+  "WardleySourceStrategyDecoration.value": { message: "the field value is " },
   "RailroadLiteral.value": { message: "value is not its written text" },
   "RailroadIgnoredText.kind": { message: "the field kind is " },
   "RailroadIgnoredText.value": { message: "value is not its written text" },
@@ -840,6 +904,71 @@ function problemsOf(testCase: FieldCase): {
  * field.
  */
 const STRING_FIELD_CASES: readonly FieldCase[] = [
+  {
+    diagram: "eventmodeling",
+    type: "EventmodelingInlineData",
+    fixture: "data-all-types",
+    field: "dataType",
+    set: null,
+    message: 'the written dataType: null, not "json"',
+  },
+  {
+    diagram: "eventmodeling",
+    type: "EventmodelingInlineData",
+    fixture: "lex-inline-empty",
+    field: "dataType",
+    set: "json",
+    message: 'the written dataType: "json", not null',
+  },
+  {
+    diagram: "eventmodeling",
+    type: "EventmodelingDataBlock",
+    fixture: "data-block-types",
+    field: "dataType",
+    set: null,
+    message: 'the written dataType: null, not "json"',
+  },
+  {
+    diagram: "eventmodeling",
+    type: "EventmodelingDataBlock",
+    fixture: "data-block-empty",
+    field: "dataType",
+    set: "json",
+    message: 'the written dataType: "json", not null',
+  },
+
+  {
+    diagram: "wardley",
+    fixture: "lex-flow-port-wins",
+    type: "WardleyLinkStatement",
+    field: "fromPort",
+    set: null,
+    message: 'the written fromPort direction: null, not "forward"',
+  },
+  {
+    diagram: "wardley",
+    fixture: "db-bare-link",
+    type: "WardleyLinkStatement",
+    field: "fromPort",
+    set: "forward",
+    message: 'the written fromPort direction: "forward", not null',
+  },
+  {
+    diagram: "wardley",
+    fixture: "lex-link-target-port-no-arrow",
+    type: "WardleyLinkStatement",
+    field: "toPort",
+    set: null,
+    message: 'the written toPort direction: null, not "bidirectional"',
+  },
+  {
+    diagram: "wardley",
+    fixture: "db-bare-link",
+    type: "WardleyLinkStatement",
+    field: "toPort",
+    set: "forward",
+    message: 'the written toPort direction: "forward", not null',
+  },
   {
     diagram: "gitgraph",
     fixture: "header-tb",

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: comparison names preserve letter case, so a differently cased pipeline parent is missing."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Pipeline \"a\" must reference an existing component with coordinates."
+  }
+}

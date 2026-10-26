@@ -1,3 +1,11 @@
+import { treeviewDbOf } from "./treeview.ts"
+import type { TreeviewDiagram } from "./treeview-tree.ts"
+import { eventmodelingDbOf } from "./eventmodeling.ts"
+import type { EventmodelingDiagram } from "./eventmodeling-tree.ts"
+import { wardleyDbOf } from "./wardley.ts"
+import { cynefinDbOf } from "./cynefin.ts"
+import type { CynefinDiagram } from "./cynefin-tree.ts"
+import type { WardleyDiagram } from "./wardley-tree.ts"
 import { railroadDbOf } from "./railroad.ts"
 import type { RailroadDiagram } from "./railroad-tree.ts"
 import { treemapDbOf } from "./treemap.ts"
@@ -68,6 +76,10 @@ export interface ErrorDiagram extends TreeNode {
 
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
+  | TreeviewDiagram
+  | EventmodelingDiagram
+  | CynefinDiagram
+  | WardleyDiagram
   | RailroadDiagram
   | TreemapDiagram
   | RadarDiagram
@@ -123,6 +135,14 @@ export function dbFromTree(
     // The error pseudo-diagram has no Db.
     case "ErrorDiagram":
       return {}
+    case "TreeviewDiagram":
+      return treeviewDbOf(text, root, root.body, embedded)
+    case "EventmodelingDiagram":
+      return eventmodelingDbOf(text, root, root.body, embedded)
+    case "WardleyDiagram":
+      return wardleyDbOf(text, root, root.body, embedded)
+    case "CynefinDiagram":
+      return cynefinDbOf(text, root, root.body, embedded)
     case "RailroadDiagram":
       return railroadDbOf(text, root, root.body, embedded)
     case "TreemapDiagram":

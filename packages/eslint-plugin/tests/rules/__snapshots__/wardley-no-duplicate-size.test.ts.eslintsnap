@@ -1,0 +1,71 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-duplicate-size >> invalid >>> docs/rules/wardley-no-duplicate-size.md incorrect 1
+Filename: wardley-no-duplicate-size-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   size [1100, 600]
+  3 |   size [800, 1000]
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the map size set on line 2 with this size.
+---
+
+
+Test: wardley-no-duplicate-size >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-duplicate-size/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   size [1100, 600]
+  3 |   size [800, 1000]
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the map size set on line 2 with this size.
+---
+
+
+Test: wardley-no-duplicate-size >> invalid >>> invalid/wardley/size-duplicate
+Filename: tests/fixtures/rules/wardley-no-duplicate-size/invalid/wardley/size-duplicate-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | size [1100,600]
+  3 | size [800,1000]
+    | ^~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the map size set on line 2 with this size.
+---
+
+
+Test: wardley-no-duplicate-size >> invalid >>> invalid/wardley/size-height-only
+Filename: tests/fixtures/rules/wardley-no-duplicate-size/invalid/wardley/size-height-only-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | size [800,600]
+  3 | size [800,700]
+    | ^~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the map size set on line 2 with this size.
+---
+
+
+Test: wardley-no-duplicate-size >> invalid >>> invalid/wardley/size-triple
+Filename: tests/fixtures/rules/wardley-no-duplicate-size/invalid/wardley/size-triple-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | size [800,600]
+  3 | size [900,600]
+    | ^~~~~~~~~~~~~~ [1]
+  4 | size [800,600]
+    | ^~~~~~~~~~~~~~ [2]
+
+[1] mermaid.js replaces the map size set on line 2 with this size.
+[2] mermaid.js replaces the map size set on line 3 with this size.
+---

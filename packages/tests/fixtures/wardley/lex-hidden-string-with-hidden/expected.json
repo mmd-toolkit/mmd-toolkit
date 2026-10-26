@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md WardleyIgnoredText: Is a whole hidden node kept once while YAML-looking text inside a note string remains string content?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "---\nx\n---",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

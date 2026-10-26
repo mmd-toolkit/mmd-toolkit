@@ -537,6 +537,91 @@ separately RailroadIgnoredText and does not apply configuration. [fixture:
 railroad/ir-frontmatter-title-only] [fixture: railroad/ir-prefix-yaml-no-bare]
 [fixture: railroad/ir-div-frontmatter-invalid]
 
+### Wardley
+
+The tree holds recognized real frontmatter and global directives as shared
+opaque records. Native retained YAML instead belongs to WardleyIgnoredText and
+applies no configuration. Keeping those nodes does not require parsing embedded
+YAML or configuration; the existing opaque rule accepts recognized bodies whose
+Mermaid data processing fails, with the specified comparison preserving the
+title and other valid configuration. Numeric wardley.fontFamily can fail common
+configuration handling, whereas the wardley-beta drawing control does not.
+Neither is a new Wardley semantic acceptance setting. [fixture:
+wardley/div-frontmatter-invalid] [fixture:
+wardley/config-frontmatter-fontfamily-number] [fixture:
+wardley/config-init-fontfamily-number] [fixture:
+wardley/config-fontfamily-keeps-title] [fixture:
+wardley/div-invalid-keeps-config] [fixture:
+wardley/config-frontmatter-beta-fontfamily-number] [fixture:
+wardley/detect-block-after-directive]
+
+### Cynefin
+
+Shared records hold whole recognized frontmatter/global directives, so do not
+reject syntax because their YAML or configuration cannot be read. Apply the
+shared comparison-configuration rule rather than letting invalid data erase a
+valid title or configuration. Retained native YAML is instead
+CynefinIgnoredText. [fixture: cynefin/div-frontmatter-invalid] [fixture:
+cynefin/div-init-invalid-colour] [fixture: cynefin/div-init-primitive-wrap]
+[fixture: cynefin/config-frontmatter-fontfamily-number] [fixture:
+cynefin/config-init-fontfamily-number] [fixture:
+cynefin/config-fontfamily-keeps-title] [fixture:
+cynefin/div-invalid-keeps-config] [fixture:
+cynefin/detect-retained-yaml-properties]
+
+The
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+and
+[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+read the result of the common preprocessing/detection pipeline. The
+[Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
+[tree](../ast/cynefin.md) retains its authored forms. [fixture:
+cynefin/db-all-fields]
+
+### eventmodeling
+
+Eventmodeling has no diagram-specific acceptance key to remove. Frontmatter and
+global directive records can hold malformed YAML or rejected configuration
+without evaluating it; copying configuration validation into the syntax tree
+would violate this opaque-data contract. Numeric embedded
+eventmodeling.fontFamily and invalid common theme data can fail Mermaid
+configuration derivation. The specified comparison removes only rejected
+embedded blocks, retaining independent valid title/configuration and native
+retained prefixes. Native data bodies and their json/type tags are authored
+syntax, not opaque configuration blocks. [fixture:
+eventmodeling/div-frontmatter-invalid] [fixture:
+eventmodeling/config-frontmatter-fontfamily-number] [fixture:
+eventmodeling/config-init-fontfamily-number] [fixture:
+eventmodeling/div-init-invalid-colour] [fixture:
+eventmodeling/div-init-primitive-wrap] [fixture:
+eventmodeling/config-fontfamily-keeps-title] [fixture:
+eventmodeling/div-invalid-keeps-config] [fixture:
+eventmodeling/prefix-directive-opaque] [fixture:
+eventmodeling/prefix-yaml-opaque] [fixture: eventmodeling/data-all-types]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
+their direct boundaries.
+
+### Treeview
+
+Treeview has no diagram-specific acceptance key. Its frontmatter and directive
+bodies remain opaque authored data; no treeView key is removed or specially
+retained in the comparison. Invalid YAML, nonstring fontFamily, invalid common
+theme data and primitive init combined with wrap can reject in Mermaid while the
+opaque reading accepts. Preserve valid neighboring title/configuration when
+forming that reference. The
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57)
+and [diagram syntax](../diagrams/treeview.md#semantic-acceptance-conditions) add
+no hidden semantic gate. [fixture: treeview/div-frontmatter-invalid] [fixture:
+treeview/config-frontmatter-fontfamily-number] [fixture:
+treeview/config-init-fontfamily-number] [fixture:
+treeview/div-init-invalid-colour] [fixture: treeview/div-init-primitive-wrap]
+[fixture: treeview/config-fontfamily-keeps-title] [fixture:
+treeview/div-invalid-keeps-config] [fixture:
+treeview/config-frontmatter-cannot-rescue] [fixture:
+treeview/config-frontmatter-cannot-reject]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -669,3 +754,56 @@ warning. These facts do not justify any additional divergence.
   decision for these preprocessing boundaries. This divergence follows the
   existing shared rule, not such a decision. The inspected results do not
   establish that no other relevant issue exists.
+
+- Wardley: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  shows coordinates, decorations and flows without defining this common
+  boundary. Searches of the official issues and pull requests on 2026-10-26 used
+  wardley directive, wardley semicolon and wardley flow.
+  [#7642](https://github.com/mermaid-js/mermaid/pull/7642) fixes hyphenated
+  names and [#7726](https://github.com/mermaid-js/mermaid/pull/7726) removes
+  unnecessary sanitization; both are reflected in the pin.
+  [#8379](https://github.com/mermaid-js/mermaid/pull/8379) was an open
+  configuration-retention PR. The inspected results establish no maintainer
+  defect decision for this boundary; the existing direct rule applies. The
+  search is not claimed to be exhaustive.
+- Cynefin’s
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  describes fixed domains, quoted items and labeled transitions; its
+  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  state that self transitions are ignored.
+  [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
+  and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
+  cynefin semicolon and cynefin frontmatter found no inspected maintainer
+  judgment on this boundary.
+  [Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) was open with
+  Status: Triage and requested framework naming/drawing changes, not a ruling on
+  these lexical rules.
+
+### eventmodeling
+
+The pinned
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+describes frames, data and tags without defining this shared preprocessing
+boundary. Searches of the official issues and pull requests on 2026-10-26 used
+eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
+accTitle and eventmodeling validator.
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588), merged on
+2026-04-16, adds validator registration; it does not establish a maintainer
+ruling on this boundary. The inspected results establish no such ruling; the
+existing direct rule applies. The search is not claimed to be exhaustive.
+
+### Treeview
+
+The pinned
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+describes indentation, quoted names, annotations and box drawing, without
+defining this common boundary. On 2026-10-26 the official issues/PRs were
+searched for `treeView quoted`, `treeView indentation`, `treeView box`,
+`treeView quotes`, `treeView whitespace` and `treeView accDescr`.
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) is the merged
+box-drawing addition;
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) is an open
+Enhancement/Triage proposal to omit the header. Inspected results establish no
+maintainer defect ruling on this boundary; the existing direct rule applies. The
+search is not claimed to be exhaustive.

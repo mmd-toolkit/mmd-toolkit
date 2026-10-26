@@ -143,7 +143,9 @@ mermaid.js は、パターンを文字ではなく UTF-16 のコード単位に�
   BMP の外の文字はそれ自身としか一致しません。
 
 長さを測る箇所では、単位は UTF-16 のコード単位で、本文でそう述べます。
-下の `maxTextSize` の上限です。
+下の `maxTextSize` の上限と、treeview の
+[branch の列](./diagrams/treeview.ja.md)です。
+[fixture: treeview/box-column-nonbmp-discriminating]
 
 ## mermaid.js とこの仕様
 
@@ -278,7 +280,9 @@ agentflow では、字句解析器がコメント行を自分で読むので、
 検出は、ヘッダーの前の先頭以外のフロントマター形のブロックを、
 1 つ通過させる場合があります。
 ブロックは図のテキストのままです。
-pie・gitgraph・info・packet・architecture・radar・railroad は隠れた YAML
+pie・gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin・eventmodeling は
+隠れた
+YAML
 の規則を適用します。
 以下で引用する拒否例の範囲は、その fixture の図種です。
 共通のフロントマターやトリビアではありません。
@@ -297,6 +301,9 @@ pie・gitgraph・info・packet・architecture・radar・railroad は隠れた YA
 [fixture: usecase/frontmatter-after-comment]
 [fixture: venn/frontmatter-comment-before]
 [fixture: radar/retained-yaml-control]
+[fixture: wardley/detect-block-after-directive]
+[fixture: cynefin/detect-block-after-directive]
+[fixture: eventmodeling/detect-real-retained-secondscan]
 
 ソースの最後の文字の後には、
 `\n` をもう 1 つ読みます（[テキストの終わり](#テキストの終わり)）。
@@ -331,6 +338,66 @@ Db の値が設定に依存する場合、
 
 検出が図種を選び、字句解析器が読んだものを図の文法と Db が受け入れるとき、
 入力は受理されます。
+
+Wardley も残存 YAML と真の第 2 scan の directive
+を、WardleyDiagram.textBeforeHeader の WardleyIgnoredText として読み、
+残存 YAML の properties は適用しません。
+通した裸の行と伴う trivia は残存形の間も再読せず、native の閉じ境界は適用しま
+す。[検出規則](./diagrams/wardley.ja.md#検出)が一つの block の skip、
+停止条件、prefix の両順序を区別し、[木](./ast/wardley.ja.md)が所有を定めます。
+[fixture: wardley/detect-block-after-directive]
+[fixture: wardley/detect-real-before-retained-secondscan]
+[fixture: wardley/detect-retained-two]
+[fixture: wardley/prefix-yaml-after-secondscan]
+[fixture: wardley/prefix-yaml-before-secondscan]
+[fixture: wardley/detect-secondscan-glued]
+[fixture: wardley/detect-retained-secondscan-bare-ascii]
+[fixture: wardley/detect-retained-secondscan-bare-ls]
+
+Cynefin は retained YAML と本物の二度目の走査の directive を
+CynefinDiagram.textBeforeHeader の CynefinIgnoredText として読みます。retained
+YAML の属性は設定になりません。通過した裸の行と一緒に通過した空白と改行
+は、retained な形の間でも共有の Comment と trivia となり、native の閉じの境目は
+依然必要です。[検出の規則](./diagrams/cynefin.ja.md#検出)が一つのブロックの飛ば
+し、停止条件、接頭の両順序を区別し、[木](./ast/cynefin.ja.md)が名前つきの所有者
+を定めます。 [fixture: cynefin/detect-real-before-retained-secondscan]
+[fixture: cynefin/detect-retained-yaml-properties]
+[fixture: cynefin/prefix-yaml-before-secondscan]
+[fixture: cynefin/prefix-yaml-after-secondscan]
+[fixture: cynefin/detect-retained-two]
+[fixture: cynefin/detect-secondscan-glued]
+[fixture: cynefin/detect-retained-secondscan-bare-ascii]
+[fixture: cynefin/detect-retained-secondscan-bare-ls]
+
+eventmodeling は common grammar を import しませんが、
+固有の native YAML、directive、percent/slash comment の規則を持ちま
+す。[検出の規則](./diagrams/eventmodeling.ja.md#検出)が本当の frontmatter、
+一つの retained block の通過、裸の行の通過、
+二度目の directive 走査を区別し、[木](./ast/eventmodeling.ja.md#gap-の所有)が
+retained form の所有者を定めます。native の一般空白が LS と PS を含むため、
+引用した裸の行の有無の対照は両方受理します。EM_* metadata の規則は共通 metadata
+converter を使いません。
+[fixture: eventmodeling/detect-real-retained-secondscan]
+[fixture: eventmodeling/detect-retained-two]
+[fixture: eventmodeling/detect-secondscan-yaml]
+[fixture: eventmodeling/detect-yaml-secondscan]
+[fixture: eventmodeling/detect-secondscan-glued]
+[fixture: eventmodeling/detect-retained-bare-ls-line]
+[fixture: eventmodeling/detect-retained-no-bare-ls-line]
+[fixture: eventmodeling/common-inline]
+[fixture: eventmodeling/common-line-keywords]
+
+treeview は共通文法を import せず、native YAML と hidden directive の規則を
+持ちません。見出し前に保持された YAML は拒否し、1 行の 2 回目の scan の形は
+native Comment になりえます。通過した裸の行と付随する trivia は再び読みません。
+[罫線の直接規則](./diagrams/treeview.ja.md)は原文の行の prefix と装飾を、
+引用名や accessibility block の中でも読みます。
+[木](./ast/treeview.ja.md)では名前つき owner または包む葉にそれらを保ちます。
+[fixture: treeview/detect-block-after-directive]
+[fixture: treeview/detect-secondscan-singleline]
+[fixture: treeview/detect-secondscan-bare-ascii]
+[fixture: treeview/box-written-tree] [fixture: treeview/box-multiline-quoted]
+[fixture: treeview/box-block-decoration]
 
 ## 行終端
 
@@ -542,12 +609,13 @@ mermaid.js が本文をどう読むかは、
 上のフロントマターの形を持つブロックを 1 つ通過させ、後のヘッダーを探します。
 図の字句解析器が読むテキストからブロックを除くわけではありません。
 ブロックの前にトリビアがあると、
-pie・gitgraph・info・packet・architecture・radar・railroad は、
+pie・gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin・eventmodeling
+は、
 残されたテキストに隠れた
 YAML の規則
 を適用します。
 一致すれば PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText・
-PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText・RailroadIgnoredText に持ち、
+PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText・RailroadIgnoredText・WardleyIgnoredText・CynefinIgnoredText・EventmodelingIgnoredText に持ち、
 YAML のタイトルも設定も適用しません。
 以下の拒否例で、ほかのすべての図種の拒否を主張するものではありません。
 先頭の空白、開始の区切りだけのバイトオーダーマーク、コメント行、
@@ -577,6 +645,9 @@ YAML のタイトルも設定も適用しません。
 [fixture: usecase/frontmatter-after-comment]
 [fixture: venn/frontmatter-comment-before]
 [fixture: radar/retained-yaml-control]
+[fixture: wardley/detect-block-after-directive]
+[fixture: cynefin/detect-block-after-directive]
+[fixture: eventmodeling/detect-real-retained-secondscan]
 
 この飛ばしは、裸の行の通過やディレクティブの再走査の前に、1 回だけ試します。
 2 つ目のブロックや、再走査のディレクティブの後のブロックは飛ばしません。
@@ -1042,7 +1113,7 @@ mermaid.js は、
 その点のブロックが [フロントマター](#フロントマター) の形を満たせば、
 検出は、`%%` だけの行を探す前に、ブロックを 1 回通過させます。
 ブロックは、選んだ図が読む図のテキストのままです。
-pie・gitgraph・info・packet・architecture・radar・railroad
+pie・gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin・eventmodeling
 と拒否する対照例はフロントマターの節に
 あります。
 [fixture: pie/frontmatter-nonleading-comment]
@@ -1090,6 +1161,9 @@ mermaid.js の 2 回目のディレクティブの走査が、
 同じディレクティブを見つけるからです。
 [fixture: radar/detect-secondscan-native]
 [fixture: radar/detect-secondscan-native-glued]
+[fixture: wardley/detect-block-after-directive]
+[fixture: cynefin/detect-block-after-directive]
+[fixture: eventmodeling/detect-real-retained-secondscan]
 
 flowchart、sequence、class、state では、
 このディレクティブは木になく、入力を拒否させます。
@@ -1109,11 +1183,12 @@ mermaid.js と同じで、その字句解析器はヘッダーの前の `%%{` �
 [fixture: usecase/detect-directive-second-scan-preheader]
 [fixture: venn/detect-directive-second-scan-preheader]
 
-pie・gitgraph・info・packet・architecture・radar・railroad は、
+pie・gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin・eventmodeling
+は、
 検出の 2 回目の走査でだけ見つかるディレクティブを
 隠れた DIRECTIVE として読み、textBeforeHeader の
 PieIgnoredText・GitgraphIgnoredText・InfoIgnoredText・
-PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText・RailroadIgnoredText に持ちます。
+PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText・RailroadIgnoredText・WardleyIgnoredText・CynefinIgnoredText・EventmodelingIgnoredText に持ちます。
 `%%{`、`%% gap`、`wrap}%%`、`pie` の各行は受理します。
 閉じの直後に `pie` を接着すると、隠れた形の閉じの境界を満たさず、拒否します。
 [fixture: pie/lex-hidden-directive-second-detection-scan]
@@ -1126,6 +1201,9 @@ PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText・RailroadIgnored
 [fixture: packet/detect-second-scan-glued]
 [fixture: radar/detect-secondscan-native]
 [fixture: radar/detect-secondscan-native-glued]
+[fixture: wardley/prefix-secondscan] [fixture: wardley/detect-secondscan-glued]
+[fixture: cynefin/prefix-two-secondscans]
+[fixture: eventmodeling/detect-real-retained-secondscan]
 
 たどり着いた位置で、[detection.ja.md](./detection.ja.md) の検出器を登録順に、
 図のテキスト（[ソースの読み方](#ソースの読み方)）、
@@ -1133,7 +1211,8 @@ PacketIgnoredText・ArchitectureIgnoredText・RadarIgnoredText・RailroadIgnored
 試します。
 条件が最初に成り立った検出器が図種を選びます。
 図の字句解析器は、残したフロントマター形のブロックがあればそれを読み、
-pie・gitgraph・info・packet・architecture・radar・railroad は、
+pie・gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin・eventmodeling
+は、
 上記の隠れた DIRECTIVE
 も読みます。
 たどり着いた位置からのテキストも読みます。
@@ -1213,7 +1292,10 @@ class はそのような行の後の空白だけの行を `newline` の単位と
 39 個の検出器すべての順序と条件は [detection.ja.md](./detection.ja.md) にあり
 、
 各図の文書はその検出の節で該当する項目を参照します。
-[fixture: radar/retained-yaml-control]
+[fixture: radar/retained-yaml-control] [fixture: wardley/prefix-secondscan]
+[fixture: wardley/detect-secondscan-glued]
+[fixture: cynefin/prefix-two-secondscans]
+[fixture: eventmodeling/detect-real-retained-secondscan]
 
 検出器が読むのは、キーワードとその次の文字までです。
 下の `error` 疑似図種の検出器だけは別で、
@@ -1379,7 +1461,8 @@ C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこ
 
 一致する先頭以外の `---` ブロックは、どちらでも検出が通過させ、
 選んだ図が読みます。
-pie・gitgraph・info・packet・architecture・radar・railroad は、
+pie・gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin・eventmodeling
+は、
 隠れた YAML の規則を適用し、
 一致したブロックを無視するテキストとして持ちます。
 以下で引用するほかの図種の対照例は拒否します。
@@ -1394,6 +1477,9 @@ pie・gitgraph・info・packet・architecture・radar・railroad は、
 [fixture: venn/frontmatter-comment-before]
 [fixture: packet/detect-one-block]
 [fixture: radar/retained-yaml-control]
+[fixture: wardley/detect-block-after-directive]
+[fixture: cynefin/detect-block-after-directive]
+[fixture: eventmodeling/detect-real-retained-secondscan]
 
 `error` 疑似図種では、その条件が除く 3 つがこの除去です。
 

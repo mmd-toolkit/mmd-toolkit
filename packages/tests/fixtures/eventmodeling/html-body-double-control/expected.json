@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Matching outer body quotes are accepted."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "E",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "\"<b x='y'>t\""
+        }
+      }
+    ]
+  }
+}

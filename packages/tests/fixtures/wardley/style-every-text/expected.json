@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the selected final semicolon line rule affect every text field?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "style:#a",
+    "accTitle": "style:#b",
+    "accDescr": "style:#d",
+    "nodes": [
+      {
+        "id": "style:#g",
+        "label": "style:#g",
+        "x": 20,
+        "y": 10,
+        "className": "anchor"
+      },
+      {
+        "id": "style:#h",
+        "label": "style:#h",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "style:ﬂ°g¶ß",
+        "target": "style:ﬂ°h¶ß",
+        "dashed": false,
+        "label": "style:ﬂ°i¶ß",
+        "flow": "forward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "style:#l"
+      }
+    ],
+    "notes": [
+      {
+        "text": "style:#k",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "style:#m",
+        "x": 50,
+        "y": 40
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "style:#n",
+        "x": 60,
+        "y": 50
+      }
+    ],
+    "axes": {
+      "stages": [
+        "style:ﬂ°e¶ß",
+        "classDef:#f"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

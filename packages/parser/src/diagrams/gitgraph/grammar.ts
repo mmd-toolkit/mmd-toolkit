@@ -14,7 +14,7 @@ import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
 import type { Unit, UnitName } from "./units.ts"
-import { decodeGitgraphString } from "./comparison-values.ts"
+import { decodeStringEscapes } from "../../string-escapes.ts"
 import type { GitgraphDecodedValues } from "./history.ts"
 
 /** Written fields and pending tokens, before common token recording. */
@@ -294,7 +294,7 @@ export class GitgraphGrammar extends UnitGrammar<UnitName, Unit> {
   private parseString(): StringLiteral {
     const unit = this.take("string")
     const node = this.closedStringLiteralOf(unit)
-    this.decodedValues.set(node, decodeGitgraphString(unit.text))
+    this.decodedValues.set(node, decodeStringEscapes(unit.text))
     return node
   }
 

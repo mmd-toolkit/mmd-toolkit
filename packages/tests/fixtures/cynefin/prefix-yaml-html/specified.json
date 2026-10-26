@@ -1,0 +1,14 @@
+{
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "<a",
+    "accTitle": "b=\"c\">d",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

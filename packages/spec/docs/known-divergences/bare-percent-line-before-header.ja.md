@@ -5,7 +5,7 @@
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
 sankey、block、c4、agentflow、usecase、pie、
-gitgraph・info・packet・architecture・radar・treemap・railroad。
+gitgraph・info・packet・architecture・radar・treemap・railroad・wardley・cynefin・treeview。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです
 。
 
@@ -535,6 +535,60 @@ native の closer の境界は依然必要で、
 [fixture: railroad/ir-secondscan-real]
 [fixture: railroad/ir-secondscan-glued]
 
+### Wardley
+
+木は通した裸の percent pair の行を mark %% の共有 Comment、伴う空白を trivia、
+残存 native 形を WardleyDiagram.textBeforeHeader に持てるため、
+失う原文はありません。
+残る違いは検出が通した trivia を native lexer が再読するかどうかです。
+共通の直接の skip 規則は再読しないため、通した裸の行の後の Unicode trivia は、
+残存形の前や間も、
+この仕様が受理して Mermaid が拒否することがあります。ASCII の control は一致しま
+す。
+通した行がなければ native の Unicode gap の通常の拒否を保つため、Unicode 空白が
+あるだけでは印を付けません。
+[fixture: wardley/bare-before-ls] [fixture: wardley/bare-line-ps]
+[fixture: wardley/prefix-yaml-bare-unicode]
+[fixture: wardley/detect-retained-secondscan-bare-ls]
+[fixture: wardley/detect-retained-secondscan-bare-ascii]
+[fixture: wardley/prefix-yaml-unicode-no-bare]
+[fixture: wardley/retained-no-bare-unicode]
+
+### Cynefin
+
+検出が通過した裸の行と空白を共有の Comment と trivia に持つ。通過した Unicode の
+trivia を native lexer で読み直さず、通過した接頭の直接の規則を使う。native の
+retained な形には依然としてそれ自体の境目が必要である。
+[fixture: cynefin/bare-before-ls] [fixture: cynefin/bare-line-ps]
+[fixture: cynefin/detect-retained-secondscan-bare-ascii]
+[fixture: cynefin/detect-retained-secondscan-bare-ls]
+[fixture: cynefin/detect-retained-secondscan-bare-ps]
+[fixture: cynefin/retained-directive-between-bares]
+[fixture: cynefin/prefix-yaml-unicode-no-bare]
+
+[pin の文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)と[公開の adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)は共通の前処理と検出の結果を読みます。[Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、[木](../ast/cynefin.ja.md)に書かれた形を保ちます。 [fixture: cynefin/db-all-fields]
+
+### Treeview
+
+treeview は通過した裸の percent-pair 行を共有 Comment、
+付随する空白と改行を trivia に保ち、見出しの前で読み直しません。
+Mermaid は ASCII space/tab を可視の字下げ、Unicode の空白を bare 名として残し、
+keyword の前で拒否することがあります。
+保持された 1 行の 2 回目の scan の形は native Comment のままですが、
+保持 YAML やコメントでない複数行の閉じは読めません。
+この差異は native な規則を免除しません。
+[木](../ast/treeview.ja.md)と[検出規則](../diagrams/treeview.ja.md)が保持・通過
+の範囲を一度だけ所有します。
+[fixture: treeview/bare-line-space] [fixture: treeview/bare-line-tab]
+[fixture: treeview/bare-line-nbsp] [fixture: treeview/bare-line-ls]
+[fixture: treeview/bare-line-ps]
+[fixture: treeview/detect-secondscan-bare-ascii]
+[fixture: treeview/detect-secondscan-bare-unicode]
+[fixture: treeview/detect-retained-comment-ascii-header]
+[fixture: treeview/detect-retained-comment-unicode-header]
+[fixture: treeview/detect-secondscan-multiline]
+[fixture: treeview/detect-block-after-directive]
+
 ## mermaid.js の文書と issue
 
 - [構文のリファレンス](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/intro/syntax-reference.md)
@@ -678,3 +732,22 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   保守者が defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
   調べた結果だけで、ほかに関連する issue がないとは断定しません。
+
+- Wardley: pin し
+  た[構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)は座標・装飾・flow を示しますが、この共通の境界を定義しません。2026-10-26 に公式 repository の issue/PR を wardley directive、wardley semicolon、wardley flow で検索しました。[#7642](https://github.com/mermaid-js/mermaid/pull/7642) は hyphen の名、[#7726](https://github.com/mermaid-js/mermaid/pull/7726) は不要な sanitization の修正で、いずれも pin に反映済みです。[#8379](https://github.com/mermaid-js/mermaid/pull/8379) は設定保持に関する open PR でした。確認した結果はこの境界を不具合と認める判断を示さず、既存の直接の規則を適用します。検索の網羅性は主張しません。
+- Cynefin
+  の[pin の構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)は固定の領域、引用符つきの項目、ラベルつきの遷移を説明し、[注記](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)は自己遷移を無視すると述べます。[PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) は図を加えて merge されました。2026-10-26 に cynefin parser、cynefin directive、cynefin semicolon、cynefin frontmatter で検索し、この境目について調べた範囲で maintainer の判断は見つかりませんでした。[Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) は open、Status: Triage で、framework の名前と描画の変更を求めるもので、この字句の規則の判断ではありません。
+
+### Treeview
+
+固定版の
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277) は字下げ・引用名・注釈・罫線を説明します。
+この共通の境目を定義してはいません。2026-10-26 に公式 issue/PR を
+`treeView quoted`、`treeView indentation`、`treeView box`、
+`treeView quotes`、`treeView whitespace`、`treeView accDescr` で検索しました。
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
+merged の PR、
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) は
+header 省略を提案する open の Enhancement/Triage です。
+調べた結果はこの共通の境目を defect と認める maintainer の判断を示しません。
+既存の直接規則を適用するもので、網羅的な検索という主張ではありません。

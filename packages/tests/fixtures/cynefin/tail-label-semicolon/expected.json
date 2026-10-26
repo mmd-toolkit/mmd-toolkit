@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A labeled transition cannot end with an attached semicolon."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 24: unexpected character: ->;<- at offset: 36, skipped 1 characters. "
+  }
+}

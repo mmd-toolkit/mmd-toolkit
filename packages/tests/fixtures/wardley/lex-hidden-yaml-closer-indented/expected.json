@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Native padding, hidden forms and EOL: A native YAML closer must start its line rather than be indented."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting token of type 'EOF' but found `-`.\nParse error on line 3, column 2: Expecting: one of these possible Token sequences:\n  1. [STRING]\n  2. [ID]\n  3. [NAME_WITH_SPACES]\nbut found: '\n'\nParse error on line 4, column 2: Expecting token of type 'EOF' but found `-`."
+  }
+}

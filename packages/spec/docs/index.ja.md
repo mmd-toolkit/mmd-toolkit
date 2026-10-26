@@ -60,6 +60,22 @@ railroad の定義は 4 方言を扱い、
 [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/peg-gram-written-tree]
 
+wardley の定義は[構文](./diagrams/wardley.ja.md)と[木](./ast/wardley.ja.md)の文
+書にあります。
+[fixture: wardley/header-only] [fixture: wardley/db-all-fields]
+
+cynefin の定義は[構文](./diagrams/cynefin.ja.md)と[木](./ast/cynefin.ja.md)にあ
+ります。 [fixture: cynefin/header-only] [fixture: cynefin/db-all-fields]
+
+eventmodeling
+は[構文](./diagrams/eventmodeling.ja.md)と[木](./ast/eventmodeling.ja.md)の文書
+で定義します。 [fixture: eventmodeling/header-only]
+[fixture: eventmodeling/gram-written-tree]
+
+treeview の定義は[構文](./diagrams/treeview.ja.md)と
+[木](./ast/treeview.ja.md)の文書にあります。
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
+
 ## 元にしたもの
 
 仕様は、mermaid.js のリポジトリにある次の 3 つを元にしています。

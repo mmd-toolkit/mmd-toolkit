@@ -1,0 +1,107 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-duplicate-evolve >> invalid >>> docs/rules/wardley-no-duplicate-evolve.md incorrect 1
+Filename: wardley-no-duplicate-evolve-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   component API [0.3, 0.4]
+  3 |   evolve API 0.6
+  4 |   evolve API 0.9
+    |   ^~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the evolution target of `API`, set on line 3, with this target.
+---
+
+
+Test: wardley-no-duplicate-evolve >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolve/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   component API [0.3, 0.4]
+  3 |   evolve API 0.6
+  4 |   evolve API 0.9
+    |   ^~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the evolution target of `API`, set on line 3, with this target.
+---
+
+
+Test: wardley-no-duplicate-evolve >> invalid >>> invalid/wardley/evolve-anchor-target-change
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolve/invalid/wardley/evolve-anchor-target-change-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | anchor U [0.8,0.5]
+  3 | evolve U 0.6
+  4 | evolve U 0.9
+    | ^~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the evolution target of `U`, set on line 3, with this target.
+---
+
+
+Test: wardley-no-duplicate-evolve >> invalid >>> invalid/wardley/evolve-child-id-target-change
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolve/invalid/wardley/evolve-child-id-target-change-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolve P_X 0.6
+  3 | evolve P_X 0.9
+    | ^~~~~~~~~~~~~~ [1]
+  4 | component P [0.4,0.5]
+  5 | pipeline P {
+  6 | component X [0.7]
+  7 | }
+
+[1] mermaid.js replaces the evolution target of `P_X`, set on line 2, with this target.
+---
+
+
+Test: wardley-no-duplicate-evolve >> invalid >>> invalid/wardley/evolve-duplicate-definition-later
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolve/invalid/wardley/evolve-duplicate-definition-later-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolve API 0.6
+  3 | evolve API 0.9
+    | ^~~~~~~~~~~~~~ [1]
+  4 | component API [0.3,0.4]
+
+[1] mermaid.js replaces the evolution target of `API`, set on line 2, with this target.
+---
+
+
+Test: wardley-no-duplicate-evolve >> invalid >>> invalid/wardley/evolve-duplicate
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolve/invalid/wardley/evolve-duplicate-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component API [0.3,0.4]
+  3 | evolve API 0.6
+  4 | evolve API 0.9
+    | ^~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the evolution target of `API`, set on line 3, with this target.
+---
+
+
+Test: wardley-no-duplicate-evolve >> invalid >>> invalid/wardley/evolve-triple
+Filename: tests/fixtures/rules/wardley-no-duplicate-evolve/invalid/wardley/evolve-triple-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component A [0.1,0.2]
+  3 | evolve A 0.4
+  4 | evolve A 0.8
+    | ^~~~~~~~~~~~ [1]
+  5 | evolve A 0.4
+    | ^~~~~~~~~~~~ [2]
+
+[1] mermaid.js replaces the evolution target of `A`, set on line 3, with this target.
+[2] mermaid.js replaces the evolution target of `A`, set on line 4, with this target.
+---

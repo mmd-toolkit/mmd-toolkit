@@ -354,6 +354,77 @@ railroad/ir-html-body-control] [fixture: railroad/ebnf-html-body-control]
 [fixture: railroad/abnf-html-body-control] [fixture:
 railroad/peg-html-body-control]
 
+### Wardley
+
+Frontmatter, StringLiteral and WardleyLiteral can preserve the written quotes.
+They cannot make an unfinished opaque frontmatter tag control the lexical
+boundary of a body string under the shared body-only HTML rule. This remaining
+difference uses reason 2, the direct frontmatter/body boundary. Mermaid accepts
+the double-quoted note example with text b='c'>d while this specification
+rejects it; Mermaid rejects the single-quoted example while this specification
+accepts text b="c">d. Both accept the accessibility-title example, but Mermaid
+reads b='c'>d and this specification reads b="c">d. The body-only controls
+agree, and each differing comparison has specified.json, including the
+Mermaid-rejected direction. [fixture: wardley/div-html-frontmatter-accept]
+[fixture: wardley/div-html-frontmatter-reject] [fixture:
+wardley/div-html-frontmatter-value] [fixture: wardley/html-body-double-control]
+[fixture: wardley/html-body-single-control]
+
+### Cynefin
+
+Keep frontmatter and body nodes, but start body HTML attribute scanning after
+real frontmatter. An unfinished tag in opaque YAML cannot govern a later
+string’s quotes. Mermaid can accept when this rule rejects, reject when it
+accepts, or accept with only a different value; body-only quote controls still
+use the common HTML rule. [fixture: cynefin/div-html-frontmatter-accept]
+[fixture: cynefin/div-html-frontmatter-reject] [fixture:
+cynefin/div-html-frontmatter-value] [fixture: cynefin/html-body-double-control]
+[fixture: cynefin/html-body-single-control]
+
+The
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+and
+[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+read the result of the common preprocessing/detection pipeline. The
+[Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
+[tree](../ast/cynefin.md) retains its authored forms. [fixture:
+cynefin/db-all-fields]
+
+### eventmodeling
+
+For eventmodeling the opaque Frontmatter and later StringLiteral/Literal can
+hold the source, but frontmatter content must not control later HTML quote
+conversion. Apply the shared rule only after real frontmatter. Mermaid can
+repair mismatched inline quotes and accept where this specification rejects; it
+can damage matching quotes and reject where this specification accepts. Both may
+also accept with different accessibility text: single attribute quotes in
+Mermaid versus the authored double quotes in the specified reading. Retained
+prefixes are preserved in both comparison readings. [fixture:
+eventmodeling/div-html-frontmatter-accept] [fixture:
+eventmodeling/div-html-frontmatter-reject] [fixture:
+eventmodeling/div-html-frontmatter-value] [fixture:
+eventmodeling/html-body-double-control] [fixture:
+eventmodeling/html-body-mismatch-control] [fixture:
+eventmodeling/prefix-yaml-html] [fixture: eventmodeling/prefix-directive-html]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
+their direct boundaries.
+
+### Treeview
+
+Treeview retains frontmatter and body spelling in their nodes, but its body
+quote reading does not inspect an opaque frontmatter tag opener. The difference
+can reverse acceptance in either direction: div-html-frontmatter-accept is
+accepted by Mermaid and rejected here, while div-html-frontmatter-reject is the
+reverse. div-html-frontmatter-value is accepted by both with different bare-name
+quotes. Their specified readings retain the comparison Db and applicable
+embedded values. The [diagram syntax](../diagrams/treeview.md#known-divergences)
+applies this existing direct rule; no box-specific divergence is needed.
+[fixture: treeview/div-html-frontmatter-accept] [fixture:
+treeview/div-html-frontmatter-reject] [fixture:
+treeview/div-html-frontmatter-value]
+
 ## The documentation of mermaid.js and its issues
 
 - The pinned
@@ -469,3 +540,56 @@ warning. These facts do not justify any additional divergence.
   decision for these preprocessing boundaries. This divergence follows the
   existing shared rule, not such a decision. The inspected results do not
   establish that no other relevant issue exists.
+
+- Wardley: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  shows coordinates, decorations and flows without defining this common
+  boundary. Searches of the official issues and pull requests on 2026-10-26 used
+  wardley directive, wardley semicolon and wardley flow.
+  [#7642](https://github.com/mermaid-js/mermaid/pull/7642) fixes hyphenated
+  names and [#7726](https://github.com/mermaid-js/mermaid/pull/7726) removes
+  unnecessary sanitization; both are reflected in the pin.
+  [#8379](https://github.com/mermaid-js/mermaid/pull/8379) was an open
+  configuration-retention PR. The inspected results establish no maintainer
+  defect decision for this boundary; the existing direct rule applies. The
+  search is not claimed to be exhaustive.
+- Cynefin’s
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  describes fixed domains, quoted items and labeled transitions; its
+  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  state that self transitions are ignored.
+  [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
+  and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
+  cynefin semicolon and cynefin frontmatter found no inspected maintainer
+  judgment on this boundary.
+  [Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) was open with
+  Status: Triage and requested framework naming/drawing changes, not a ruling on
+  these lexical rules.
+
+### eventmodeling
+
+The pinned
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+describes frames, data and tags without defining this shared preprocessing
+boundary. Searches of the official issues and pull requests on 2026-10-26 used
+eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
+accTitle and eventmodeling validator.
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588), merged on
+2026-04-16, adds validator registration; it does not establish a maintainer
+ruling on this boundary. The inspected results establish no such ruling; the
+existing direct rule applies. The search is not claimed to be exhaustive.
+
+### Treeview
+
+The pinned
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+describes indentation, quoted names, annotations and box drawing, without
+defining this common boundary. On 2026-10-26 the official issues/PRs were
+searched for `treeView quoted`, `treeView indentation`, `treeView box`,
+`treeView quotes`, `treeView whitespace` and `treeView accDescr`.
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) is the merged
+box-drawing addition;
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) is an open
+Enhancement/Triage proposal to omit the header. Inspected results establish no
+maintainer defect ruling on this boundary; the existing direct rule applies. The
+search is not claimed to be exhaustive.

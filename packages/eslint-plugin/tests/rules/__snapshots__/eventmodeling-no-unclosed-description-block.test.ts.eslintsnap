@@ -1,0 +1,115 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> docs/rules/eventmodeling-no-unclosed-description-block.md incorrect 1
+Filename: eventmodeling-no-unclosed-description-block-incorrect-1.mmd
+
+Code:
+  1 | eventmodeling accDescr { first
+    |               ^~~~~~~~~~ [1]
+  2 |   tf 01 ui Cart
+  3 |   tf 02 cmd Buy { item }
+  4 |   tf 03 evt Bought
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/after-description
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/after-description-input.mmd
+
+Code:
+  1 | eventmodeling accDescr: First
+  2 |   tf 01 ui Cart accDescr { Second
+    |                 ^~~~~~~~~~ [1]
+  3 |   tf 02 cmd Buy { item }
+  4 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/closed-block-literal-brace
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/closed-block-literal-brace-input.mmd
+
+Code:
+  1 | eventmodeling accDescr {
+    |               ^~~~~~~~~~ [1]
+  2 | a {b }
+  3 |   tf 01 cmd Buy { item }
+  4 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/closed-by-inline-data
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/closed-by-inline-data-input.mmd
+
+Code:
+  1 | eventmodeling accDescr { unfinished
+    |               ^~~~~~~~~~ [1]
+  2 |   tf 01 ui Cart
+  3 |   tf 02 cmd Buy { item }
+  4 |   tf 03 evt Bought
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/comment-line-closing-brace
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/comment-line-closing-brace-input.mmd
+
+Code:
+  1 | eventmodeling accDescr { first
+    |               ^~~~~~~~~~ [1]
+  2 | %% note }
+  3 |   tf 01 cmd Buy { item }
+  4 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/crlf
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/crlf-input.mmd
+
+Code:
+  1 | eventmodeling accDescr { first
+    |               ^~~~~~~~~~ [1]
+  2 |   tf 01 cmd Buy { item }
+  3 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/docs-incorrect-1
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/docs-incorrect-1-input.mmd
+
+Code:
+  1 | eventmodeling accDescr { first
+    |               ^~~~~~~~~~ [1]
+  2 |   tf 01 ui Cart
+  3 |   tf 02 cmd Buy { item }
+  4 |   tf 03 evt Bought
+  5 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: eventmodeling-no-unclosed-description-block >> invalid >>> invalid/eventmodeling/unclosed-swallows-gwt
+Filename: tests/fixtures/rules/eventmodeling-no-unclosed-description-block/invalid/eventmodeling/unclosed-swallows-gwt-input.mmd
+
+Code:
+  1 | eventmodeling accDescr { first
+    |               ^~~~~~~~~~ [1]
+  2 | gwt 99 given evt Bought then cmd Buy
+  3 | tf 01 cmd Buy { item }
+  4 | tf 02 evt Bought
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---

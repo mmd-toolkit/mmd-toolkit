@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Grammar: zero unsigned size dimensions are accepted without positive-size validation."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {},
+    "size": {
+      "width": 0,
+      "height": 0
+    }
+  }
+}

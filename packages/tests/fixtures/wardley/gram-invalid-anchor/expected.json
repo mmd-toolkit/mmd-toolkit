@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does anchor evolution have the same range gate?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Anchor \"A\" evolution must be between 0-1 (decimal) or 0-100 (percentage). Received: 101"
+  }
+}

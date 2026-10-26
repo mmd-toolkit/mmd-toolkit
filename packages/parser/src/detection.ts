@@ -216,7 +216,17 @@ export const detectors: readonly Detector[] = [
     id: "wardley",
     matches: atStartIgnoringCase("wardley-beta", anythingMayFollow),
   },
-  { id: "cynefin", matches: atStart("cynefin-beta", whitespaceColonOrEnd) },
+  {
+    id: "cynefin",
+    matches: (lexer: SourceLexer, position: number): boolean => {
+      const end = keywordEnd(lexer, position, "cynefin-beta", exactly)
+      if (end === null) return false
+      // cynefin.md, Detection: a glued percent pair exposes a boundary only
+      // when detection-only comment removal finds a following physical LF.
+      const suffix = removePercentRuns(diagramTextFrom(lexer, end))
+      return whitespaceColonOrEnd(suffix.codePointAt(0))
+    },
+  },
   { id: "usecase", matches: atStart("usecase-beta", whitespaceOrEnd) },
 ]
 
@@ -495,7 +505,7 @@ export interface Detection {
   readonly detectionPoint: number
   /** The position that detection reaches from the detection point ({@link positionReached}), where every detector but that of the `error` pseudo-diagram looks, after any retained prefixes. */
   readonly positionReached: number
-  /** A block passed once at the detection point, retained for pie, gitgraph, info, packet, architecture, radar, treemap and railroad; null when absent. */
+  /** A block passed once at the detection point, retained for pie, gitgraph, info, packet, architecture, radar, treemap, railroad, wardley, cynefin, eventmodeling and treeview; null when absent. */
   readonly retainedFrontmatterStart: number | null
   /** What detection passed before {@link Detection.positionReached}, in source order; none for the `error` pseudo-diagram. */
   readonly passed: readonly PassedPart[]

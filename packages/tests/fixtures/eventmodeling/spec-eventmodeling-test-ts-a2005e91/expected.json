@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/eventmodeling.test.ts",
+    "line": 12,
+    "test": "Parse Event Model > should parse complex model"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "UpdateCartCommand",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "CartUpdatedEvent",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": {
+          "kind": "inline",
+          "value": "{ a: b }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "CartItemsReadModel",
+        "sourceFrames": [
+          "02"
+        ],
+        "data": {
+          "kind": "block",
+          "value": "{\n  { a: b }\n}\n"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "04",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ProductDescriptionUpdatedEvent",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": {
+          "kind": "inline",
+          "value": "{ a: { c: d } }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "05",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ProductTitleUpdatedEvent",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": {
+          "kind": "inline",
+          "value": "{ \"a\": { \"c\": true } }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "06",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ProductCountIncrementedEvent",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": {
+          "kind": "inline",
+          "value": "\" { \"a\": { \"c\": true } } \""
+        }
+      }
+    ]
+  }
+}

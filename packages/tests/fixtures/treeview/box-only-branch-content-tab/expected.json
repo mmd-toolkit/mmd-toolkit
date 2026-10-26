@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: Tab expansion on a branch line also affects annotation separators."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "name",
+        "nodeType": "file",
+        "cssClass": "high",
+        "icon": "file",
+        "description": "d",
+        "children": []
+      }
+    ]
+  }
+}

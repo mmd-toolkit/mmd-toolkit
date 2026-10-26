@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md AST gap ownership: an unlabeled transition has arrow/target gaps and a suffix, with no label gaps."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

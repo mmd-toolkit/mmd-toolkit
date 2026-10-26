@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Detection: Selected-semicolon removal occurs after detection, so this split header fails detection first."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: wardley-be;ta %%{!style:#x}%%"
+  }
+}

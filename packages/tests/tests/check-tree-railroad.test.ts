@@ -628,7 +628,7 @@ const VALID: readonly { name: string; built: () => Built }[] = [
         'railroad-beta\n/* first\n second */\nr=terminal("a"); %%\n',
         "railroad",
         (kit) => {
-          kit.comment("/*", "/* first\n second */")
+          kit.comment("/*", "/* first\n second */", " first\n second ")
           const r = rule(kit, "r", () =>
             call(kit, "terminal", () => string(kit, '"a"')),
           )
@@ -644,7 +644,7 @@ const VALID: readonly { name: string; built: () => Built }[] = [
         'railroad-ebnf-beta\n(* x *)\nr="a";',
         "railroadEbnf",
         (kit) => {
-          kit.comment("(*", "(* x *)")
+          kit.comment("(*", "(* x *)", " x ")
           return [rule(kit, "r", () => string(kit, '"a"'))]
         },
       ),
@@ -1400,8 +1400,8 @@ describe("railroad authored component boundaries", () => {
       'railroad-ebnf-beta\n(* a *) (* b *)\nr="a";',
       "railroadEbnf",
       (kit) => {
-        kit.comment("(*", "(* a *)")
-        kit.comment("(*", "(* b *)")
+        kit.comment("(*", "(* a *)", " a ")
+        kit.comment("(*", "(* b *)", " b ")
         return [rule(kit, "r", () => string(kit, '"a"'))]
       },
     )
@@ -1414,7 +1414,7 @@ describe("railroad authored component boundaries", () => {
     setField(
       first,
       "value",
-      built.source.slice(first.range[0] + 2, first.range[1]),
+      built.source.slice(first.range[0] + 2, first.range[1] - 2),
     )
     setField(broken, "comments", [first])
     expect(
@@ -1426,6 +1426,116 @@ describe("railroad authored component boundaries", () => {
 })
 
 describe("railroad retained openers and comment continuations", () => {
+  it("checks the authored percent mark of a detection-passed bare line", () => {
+    const built = prefix("%%\nrailroad-beta", [], ["%%"])
+    expect(checkTree(built.source, built.tree)).toEqual([])
+    expect(
+      checkTree("xx\nrailroad-beta", built.tree).some((p) =>
+        p.message.includes("a detection-passed bare line has mark %%"),
+      ),
+    ).toBe(true)
+  })
+
+  for (const row of [
+    {
+      name: "IR C",
+      dialect: "railroad",
+      source: 'railroad-beta\n/%%{init:{}}%%*body*/\nr=terminal("a");',
+      raw: "/%%{init:{}}%%*body*/",
+      mark: "/*",
+    },
+    {
+      name: "EBNF C",
+      dialect: "railroadEbnf",
+      source: 'railroad-ebnf-beta\n/%%{init:{}}%%*body*/\nr="a";',
+      raw: "/%%{init:{}}%%*body*/",
+      mark: "/*",
+    },
+    {
+      name: "EBNF ISO",
+      dialect: "railroadEbnf",
+      source: 'railroad-ebnf-beta\n(%%{init:{}}%%*body*)\nr="a";',
+      raw: "(%%{init:{}}%%*body*)",
+      mark: "(*",
+    },
+  ] as const)
+    it(`reads the ${row.name} opener after a common directive is removed`, () => {
+      const built = buildRailroad(row.source, row.dialect, (kit) => {
+        kit.comment(row.mark, row.raw, "body")
+        return [
+          rule(kit, "r", () =>
+            row.dialect === "railroad"
+              ? call(kit, "terminal", () => string(kit, '"a"'))
+              : string(kit, '"a"'),
+          ),
+        ]
+      })
+      setField(built.tree, "directives", [
+        directiveOf(row.source, "%%{init:{}}%%"),
+      ])
+      expect(checkTree(row.source, built.tree)).toEqual([])
+      const edited = copyOf(built.tree)
+      setField(edited.comments[0], "mark", row.mark === "/*" ? "(*" : "/*")
+      expect(
+        checkTree(row.source, edited).some((p) =>
+          p.message.includes("earlier terminal wins"),
+        ),
+      ).toBe(true)
+    })
+
+  for (const row of [
+    { name: "C", raw: "/* body */", mark: "/*", value: " body " },
+    { name: "ISO", raw: "(* body *)", mark: "(*", value: " body " },
+    { name: "empty C", raw: "/**/", mark: "/*", value: "" },
+    { name: "empty ISO", raw: "(**)", mark: "(*", value: "" },
+    {
+      name: "C closer joined by a directive",
+      raw: "/*body*%%{init:{}}%%/",
+      mark: "/*",
+      value: "body",
+    },
+    {
+      name: "ISO closer joined by a directive",
+      raw: "(*body*%%{init:{}}%%)",
+      mark: "(*",
+      value: "body",
+    },
+  ])
+    it(`keeps the ${row.name} closer in range and outside value`, () => {
+      const built = buildRailroad(
+        `railroad-ebnf-beta\n${row.raw}\nr="a";`,
+        "railroadEbnf",
+        (kit) => {
+          kit.comment(row.mark, row.raw, row.value)
+          return [rule(kit, "r", () => string(kit, '"a"'))]
+        },
+      )
+      if (row.raw.includes("%%{init:{}}%%"))
+        setField(built.tree, "directives", [
+          directiveOf(built.source, "%%{init:{}}%%"),
+        ])
+      expect(checkTree(built.source, built.tree)).toEqual([])
+      const comment = built.tree.comments[0]
+      expect(built.source.slice(...comment.range)).toBe(row.raw)
+      const withCloser = copyOf(built.tree)
+      setField(withCloser.comments[0], "value", row.raw.slice(2))
+      expect(
+        checkTree(built.source, withCloser).some((p) =>
+          p.message.includes("value of a native Comment"),
+        ),
+      ).toBe(true)
+      const withoutCloser = copyOf(built.tree)
+      rangeOf(built.source, withoutCloser.comments[0], [
+        comment.range[0],
+        comment.range[1] - 2,
+      ])
+      expect(
+        checkTree(built.source, withoutCloser).some((p) =>
+          p.message.includes("first lexical closer"),
+        ),
+      ).toBe(true)
+    })
+
   it("excludes leading padding from a retained prefix range", () => {
     const built = prefix(
       "  ---\nx\n---\nrailroad-beta",
@@ -1447,19 +1557,45 @@ describe("railroad retained openers and comment continuations", () => {
       ),
     ).toBe(true)
   })
-  it("keeps a native block Comment across a common comment region", () => {
-    const built = buildRailroad(
-      "railroad-beta\n/* a\u2028%% note\n b */",
-      "railroad",
-      (kit) => {
-        kit.comment("/*", "/* a")
+  for (const row of [
+    {
+      name: "IR C",
+      dialect: "railroad",
+      source: "railroad-beta\n/* a\u2028%% note\n b */",
+      first: "/* a",
+      last: "b */",
+      mark: "/*",
+    },
+    {
+      name: "EBNF ISO",
+      dialect: "railroadEbnf",
+      source: "railroad-ebnf-beta\n(* a\u2028%% note\n b *)",
+      first: "(* a",
+      last: "b *)",
+      mark: "(*",
+    },
+  ] as const)
+    it(`keeps an unmarked ${row.name} block fragment after a common comment region`, () => {
+      const built = buildRailroad(row.source, row.dialect, (kit) => {
+        kit.comment(row.mark, row.first)
         kit.comment("%%", "%% note")
-        kit.comment(null, "b */")
+        kit.comment(null, row.last, "b ")
         return []
-      },
-    )
-    expect(checkTree(built.source, built.tree)).toEqual([])
-  })
+      })
+      expect(checkTree(built.source, built.tree)).toEqual([])
+      for (const [index, wrong] of [
+        [0, "a"],
+        [2, row.last],
+      ] as const) {
+        const edited = copyOf(built.tree)
+        setField(edited.comments[index], "value", wrong)
+        expect(
+          checkTree(built.source, edited).some((p) =>
+            p.message.includes("value of a native Comment"),
+          ),
+        ).toBe(true)
+      }
+    })
   it("does not let an unmarked Comment fragment replace a rule after a common region", () => {
     const control = buildRailroad(
       'railroad-beta\n%% note\nr=terminal("a");',

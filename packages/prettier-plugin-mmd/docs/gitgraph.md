@@ -482,11 +482,16 @@ gitGraph %% header
 
 ### Global directives
 
-Keep global directive content, order, source position and touching/separated
-sides; only ordinary standalone starting indentation becomes one body step.
-Preserve directives inside strings, word/colon boundaries and EOF-reaching
-unclosed forms. Their opaque text and independent configuration effect must not
-be reconstructed. Atomic cuts remain specified failures.
+Keep global directive content, order and authored gaps. Within a printed line,
+keep whether each side touches or is separated. When formatting splits units
+that were on the same line, a directive in their gap moves with the following
+unit: its right boundary stays touching or separated, while its left contact is
+broken. Ordinary standalone starting indentation becomes one body step. Preserve
+directives inside strings, word/colon boundaries and EOF-reaching unclosed
+forms. Their opaque text and independent configuration effect must not be
+reconstructed. Atomic cuts remain specified failures.
+
+[fixture: gitgraph/global-directives/header-to-body]
 
 Fixed cases: [fixture: gitgraph/global-directives/directive-sides] [fixture:
 gitgraph/global-directives/directive-lines] [corpus fixture:
@@ -654,9 +659,11 @@ whitespace, case, repeated semicolons and directive-rejoined triggers; LS/PS
 segment bounds stay distinct. Removing a selected semicolon can select another
 and change the Db. Format safe suffix gaps only; atomic cuts remain failures.
 
-Fixed cases: [fixture: gitgraph/semicolons/semicolon-header-protect] [corpus
-fixture: gitgraph/style-both-words] [corpus fixture: gitgraph/style-colon-space]
-[corpus fixture: gitgraph/style-tag-three-semicolons] [corpus fixture:
+Fixed cases: [fixture: gitgraph/semicolons/native-commit-value]
+
+[fixture: gitgraph/semicolons/semicolon-header-protect] [corpus fixture:
+gitgraph/style-both-words] [corpus fixture: gitgraph/style-colon-space] [corpus
+fixture: gitgraph/style-tag-three-semicolons] [corpus fixture:
 gitgraph/style-directive-rejoins] [fixture:
 gitgraph/semicolons/semicolon-cross-trigger] [fixture:
 gitgraph/semicolons/semicolon-remove-selected] [corpus fixture:

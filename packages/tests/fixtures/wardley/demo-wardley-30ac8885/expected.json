@@ -1,0 +1,107 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/wardley.html",
+    "line": 85
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Data Evolution Pipeline",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "User Needs",
+        "label": "User Needs",
+        "x": 5,
+        "y": 95,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Data Collection",
+        "label": "Data Collection",
+        "x": 15,
+        "y": 80,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Custom Analytics",
+        "label": "Custom Analytics",
+        "x": 35,
+        "y": 70,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Standardized Reports",
+        "label": "Standardized Reports",
+        "x": 65,
+        "y": 65,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Commodity Storage",
+        "label": "Commodity Storage",
+        "x": 85,
+        "y": 60,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "User Needs",
+        "target": "Data Collection",
+        "dashed": false
+      },
+      {
+        "source": "Data Collection",
+        "target": "Custom Analytics",
+        "dashed": false
+      },
+      {
+        "source": "Custom Analytics",
+        "target": "Standardized Reports",
+        "dashed": false
+      },
+      {
+        "source": "Standardized Reports",
+        "target": "Commodity Storage",
+        "dashed": false
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "Custom Analytics",
+        "targetX": 60
+      },
+      {
+        "nodeId": "Standardized Reports",
+        "targetX": 85
+      }
+    ],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {
+      "stages": [
+        "Unmodelled",
+        "Divergent",
+        "Convergent",
+        "Modelled"
+      ],
+      "stageBoundaries": []
+    },
+    "size": {
+      "width": 1100,
+      "height": 800
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The first description closer ends its terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 43: unexpected character: ->}<- at offset: 42, skipped 1 characters. Parse error on line 1, column 34: Expecting end of file but found `trailing`."
+  }
+}

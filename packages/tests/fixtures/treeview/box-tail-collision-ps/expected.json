@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Indentation and lines: Does U+2029 consume the pending ordinary run as a bare name rather than a hidden newline before the branch?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": " ",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "b",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+import { RuleTester } from "eslint"
+import { treeviewNoDuplicateAnnotation } from "../../src/rules/treeview-no-duplicate-annotation.ts"
+import { LANGUAGE_CONFIG } from "../helpers.ts"
+import { testRule } from "../rule-test.ts"
+
+testRule("treeview-no-duplicate-annotation", treeviewNoDuplicateAnnotation)
+
+new RuleTester(LANGUAGE_CONFIG).run(
+  "treeview-no-duplicate-annotation",
+  treeviewNoDuplicateAnnotation,
+  {
+    valid: [
+      {
+        name: "valid/treeview/node-desc-same",
+        filename: "node-desc-same.mmd",
+        code: `treeView-beta
+  file ## First
+  ##  First\u0020
+`,
+      },
+    ],
+    invalid: [
+      {
+        name: "invalid/treeview/corpus-gram-written-tree",
+        filename: "corpus-gram-written-tree.mmd",
+        code: `treeView-beta
+title  Tree\u0020
+accTitle:  Access\u0020
+accDescr: Line\u0020
+accDescr {  Block
+  text  }
+root/ :::first icon(pack:file) :::last icon() ##  detail\u0020\u0020
+  "child/ "
+''
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the class given on line 7 for this node with this class.",
+            line: 7,
+            column: 32,
+            endLine: 7,
+            endColumn: 39,
+          },
+          {
+            message:
+              "mermaid.js keeps only this icon setting, replacing the one given on line 7 for this node.",
+            line: 7,
+            column: 40,
+            endLine: 7,
+            endColumn: 46,
+          },
+        ],
+      },
+      {
+        name: "invalid/treeview/node-desc-prefixed-tab",
+        filename: "node-desc-prefixed-tab.mmd",
+        code: `treeView-beta
+└── file ## a\tb
+└── ## a    b
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the description given on line 2 for this node with this description.",
+            line: 3,
+            column: 1,
+            endLine: 3,
+            endColumn: 14,
+          },
+        ],
+      },
+      {
+        name: "invalid/treeview/node-desc-ls-ps-kept",
+        filename: "node-desc-ls-ps-kept.mmd",
+        code: `treeView-beta
+file ## A\u2028B\u2029C
+ ## A B C
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the description given on line 2 for this node with this description.",
+            line: 3,
+            column: 2,
+            endLine: 3,
+            endColumn: 10,
+          },
+        ],
+      },
+      {
+        name: "invalid/treeview/node-desc-whitespace-clears",
+        filename: "node-desc-whitespace-clears.mmd",
+        code: `treeView-beta
+file ## First
+ ## \t\u0020
+ ## Second
+`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the description given on line 2 for this node with this description.",
+            line: 3,
+            column: 2,
+            endLine: 3,
+            endColumn: 7,
+          },
+        ],
+      },
+      {
+        name: "invalid/treeview/annotations-lone-cr",
+        filename: "annotations-lone-cr.mmd",
+        code: `treeView-beta\rfile :::first\r :::second\r`,
+        errors: [
+          {
+            message:
+              "mermaid.js replaces the class given on line 2 for this node with this class.",
+            line: 3,
+            column: 2,
+            endLine: 3,
+            endColumn: 11,
+          },
+        ],
+      },
+    ],
+  },
+)

@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/treeView.html",
+    "line": 169
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "My Project",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "Source Files",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "App.tsx",
+                "nodeType": "file",
+                "cssClass": "highlight",
+                "description": "main component",
+                "children": []
+              },
+              {
+                "name": "index.js",
+                "nodeType": "file",
+                "description": "entry point",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "My Documents",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "meeting notes.md",
+                "nodeType": "file",
+                "children": []
+              },
+              {
+                "name": "project plan.md",
+                "nodeType": "file",
+                "description": "Q3 roadmap",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": ".gitignore",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "README.md",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

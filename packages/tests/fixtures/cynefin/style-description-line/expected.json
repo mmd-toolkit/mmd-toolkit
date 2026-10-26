@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The final style-line semicolon is dropped inside a line description."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "domains": [],
+    "transitions": []
+  }
+}

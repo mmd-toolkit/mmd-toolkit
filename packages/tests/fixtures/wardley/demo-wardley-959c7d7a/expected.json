@@ -1,0 +1,117 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/wardley.html",
+    "line": 134
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Link Features Demo",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "User",
+        "label": "User",
+        "x": 90,
+        "y": 95,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "App",
+        "label": "App",
+        "x": 75,
+        "y": 75,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "API",
+        "label": "API",
+        "x": 60,
+        "y": 60,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Cache",
+        "label": "Cache",
+        "x": 45,
+        "y": 65,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 80,
+        "y": 15,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Service",
+        "label": "Service",
+        "x": 50,
+        "y": 45,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "User",
+        "target": "App",
+        "dashed": false
+      },
+      {
+        "source": "App",
+        "target": "API",
+        "dashed": false,
+        "label": "+>",
+        "flow": "forward"
+      },
+      {
+        "source": "API",
+        "target": "Database",
+        "dashed": false,
+        "label": "constraint"
+      },
+      {
+        "source": "API",
+        "target": "Cache",
+        "dashed": false,
+        "label": "+<>",
+        "flow": "bidirectional"
+      },
+      {
+        "source": "Cache",
+        "target": "Service",
+        "dashed": false,
+        "label": "+<",
+        "flow": "backward"
+      },
+      {
+        "source": "Service",
+        "target": "Database",
+        "dashed": false,
+        "label": "backup",
+        "flow": "forward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {},
+    "size": {
+      "width": 1100,
+      "height": 800
+    }
+  }
+}

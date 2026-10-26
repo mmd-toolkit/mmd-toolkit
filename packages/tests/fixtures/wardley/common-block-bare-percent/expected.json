@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common metadata values: A bare percent line inside a description block remains authored block content."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A\n%%\nB",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

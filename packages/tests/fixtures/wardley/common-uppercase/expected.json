@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Are common metadata terminals case-sensitive?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 9: unexpected character: ->:<- at offset: 29, skipped 1 characters.\nLexer error on line 4, column 9: unexpected character: ->:<- at offset: 41, skipped 1 characters. Parse error on line 2, column 8: Expecting: one of these possible Token sequences:\n  1. [STRING]\n  2. [ID]\n  3. [NAME_WITH_SPACES]\nbut found: '\n'"
+  }
+}

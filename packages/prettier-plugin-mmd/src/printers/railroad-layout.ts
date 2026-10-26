@@ -11,8 +11,6 @@ import { protectHiddenGaps } from "./hidden-forms.ts"
 import {
   findSemicolonLines,
   grammaticalSemicolonsOf,
-  findVerbatimStyleLines,
-  lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
 import {
@@ -21,6 +19,7 @@ import {
   expectToken,
   layoutKeywordHeader,
   keptAsWritten,
+  layoutOnVerbatimStyleLine,
   protectSemicolonPrefixes,
   walk,
 } from "./layout.ts"
@@ -72,13 +71,8 @@ export function layoutRailroadStatement(
   // A statement crossing a kept line cannot join either neighboring line.
   // The shared block printer also keeps every same-line sibling and trivia
   // (docs/railroad.md, Semicolons).
-  const verbatim = findVerbatimStyleLines(source)
-  for (
-    let line = lineStartOf(source, start);
-    line < end;
-    line = lineEndOf(source, line) + 1
-  )
-    if (verbatim.has(line)) return keptAsWritten(start, end)
+  const verbatim = layoutOnVerbatimStyleLine(source, start, end)
+  if (verbatim !== null) return verbatim
   const values = collectValueNodes(statement, railroadValueNodeTypes)
   const hidden = values.filter(
     (value): value is RailroadIgnoredText =>

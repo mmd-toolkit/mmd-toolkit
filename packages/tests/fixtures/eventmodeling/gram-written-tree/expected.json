@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Preserving occurrences: All 22 authored node types occur, including repeated sources, inline data alongside a reference, metadata, a typed block, an empty note and an ignored block. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: Title",
+    "accDescr": " accDescr {}",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Shop.Bought",
+        "sourceFrames": [
+          "02"
+        ],
+        "data": {
+          "kind": "block",
+          "value": "{\ny\n}\n"
+        }
+      },
+      {
+        "kind": "reset",
+        "name": "02",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "Shop.Buy",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "ui",
+        "entityIdentifier": "Shop.Screen",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

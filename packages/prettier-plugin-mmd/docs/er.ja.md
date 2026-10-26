@@ -1338,7 +1338,7 @@ erDiagram
 ### ディレクティブ
 
 行に単独で置かれたディレクティブは、周りの文と同じ段に置きます。
-文の行にあるディレクティブは、両側に空白が書かれているかどうかを保ちます。
+同じ印字行の中では、両側に空白が書かれているかどうかを保ちます。
 空白があれば空白 1 つを置き、トークンに接していれば接したままにします。
 [fixture: directives/kept]
 [fixture: directives/before-header]
@@ -1351,6 +1351,12 @@ erDiagram
 閉じていないディレクティブはテキストの残りを取り込むので、書かれたまま残します。
 [fixture: directives/unclosed-at-end-of-text-kept]
 [fixture: directives/unclosed-after-statement-kept]
+
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+
+[fixture: er/directives/whitespace-on-both-sides-collapsed]
 
 入力
 ([directives/kept-input.mmd](../tests/fixtures/er/directives/kept-input.mmd)):

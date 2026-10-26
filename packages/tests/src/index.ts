@@ -79,7 +79,11 @@ export type DiagramType =
   | "architecture"
   | "radar"
   | "treemap"
+  | "treeview"
   | "railroad"
+  | "wardley"
+  | "cynefin"
+  | "eventmodeling"
 
 /**
  * Where a fixture input came from.

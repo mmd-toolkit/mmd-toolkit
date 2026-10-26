@@ -42,6 +42,10 @@ import { classNoInlineComment } from "./class-no-inline-comment.ts"
 import { classNoRedefinedClass } from "./class-no-redefined-class.ts"
 import { classNoUnclosedBackquote } from "./class-no-unclosed-backquote.ts"
 import { classNoUndef } from "./class-no-undef.ts"
+import { cynefinNoDuplicateDescription } from "./cynefin-no-duplicate-description.ts"
+import { cynefinNoDuplicateTitle } from "./cynefin-no-duplicate-title.ts"
+import { cynefinNoEmptyDescriptionBlock } from "./cynefin-no-empty-description-block.ts"
+import { cynefinNoRedefinedDomain } from "./cynefin-no-redefined-domain.ts"
 import { erNoDuplicateDescription } from "./er-no-duplicate-description.ts"
 import { erNoDuplicateTitle } from "./er-no-duplicate-title.ts"
 import { erNoEmptyDescriptionBlock } from "./er-no-empty-description-block.ts"
@@ -49,6 +53,12 @@ import { erNoIgnoredText } from "./er-no-ignored-text.ts"
 import { erNoRedefinedEntity } from "./er-no-redefined-entity.ts"
 import { erNoUnclosedDescriptionBlock } from "./er-no-unclosed-description-block.ts"
 import { erNoUndef } from "./er-no-undef.ts"
+import { eventmodelingNoDuplicateDescription } from "./eventmodeling-no-duplicate-description.ts"
+import { eventmodelingNoDuplicateTitle } from "./eventmodeling-no-duplicate-title.ts"
+import { eventmodelingNoEmptyDescriptionBlock } from "./eventmodeling-no-empty-description-block.ts"
+import { eventmodelingNoRedefinedData } from "./eventmodeling-no-redefined-data.ts"
+import { eventmodelingNoUnclosedDescriptionBlock } from "./eventmodeling-no-unclosed-description-block.ts"
+import { eventmodelingNoUndef } from "./eventmodeling-no-undef.ts"
 import { flowchartNoDuplicateDescription } from "./flowchart-no-duplicate-description.ts"
 import { flowchartNoDuplicateDirection } from "./flowchart-no-duplicate-direction.ts"
 import { flowchartNoDuplicateTitle } from "./flowchart-no-duplicate-title.ts"
@@ -106,6 +116,9 @@ import { radarNoMismatchedEntryCount } from "./radar-no-mismatched-entry-count.t
 import { radarNoReversedRange } from "./radar-no-reversed-range.ts"
 import { radarNoUnclosedDescriptionBlock } from "./radar-no-unclosed-description-block.ts"
 import { radarNoUndef } from "./radar-no-undef.ts"
+import { railroadNoDuplicateDescription } from "./railroad-no-duplicate-description.ts"
+import { railroadNoDuplicateTitle } from "./railroad-no-duplicate-title.ts"
+import { railroadNoEmptyDescriptionBlock } from "./railroad-no-empty-description-block.ts"
 import { requirementNoDuplicateDescription } from "./requirement-no-duplicate-description.ts"
 import { requirementNoDuplicateField } from "./requirement-no-duplicate-field.ts"
 import { requirementNoDuplicateName } from "./requirement-no-duplicate-name.ts"
@@ -137,6 +150,11 @@ import { treemapNoDuplicateDescription } from "./treemap-no-duplicate-descriptio
 import { treemapNoDuplicateTitle } from "./treemap-no-duplicate-title.ts"
 import { treemapNoEmptyDescriptionBlock } from "./treemap-no-empty-description-block.ts"
 import { treemapNoInvalidValue } from "./treemap-no-invalid-value.ts"
+import { treeviewNoDuplicateAnnotation } from "./treeview-no-duplicate-annotation.ts"
+import { treeviewNoDuplicateDescription } from "./treeview-no-duplicate-description.ts"
+import { treeviewNoDuplicateTitle } from "./treeview-no-duplicate-title.ts"
+import { treeviewNoEmptyDescriptionBlock } from "./treeview-no-empty-description-block.ts"
+import { treeviewNoUnclosedDescriptionBlock } from "./treeview-no-unclosed-description-block.ts"
 import { usecaseNoDuplicateDescription } from "./usecase-no-duplicate-description.ts"
 import { usecaseNoDuplicateDirection } from "./usecase-no-duplicate-direction.ts"
 import { usecaseNoDuplicateMetadata } from "./usecase-no-duplicate-metadata.ts"
@@ -150,6 +168,17 @@ import { vennNoDuplicateTitle } from "./venn-no-duplicate-title.ts"
 import { vennNoIgnoredText } from "./venn-no-ignored-text.ts"
 import { vennNoInvalidStyleKey } from "./venn-no-invalid-style-key.ts"
 import { vennNoUndef } from "./venn-no-undef.ts"
+import { wardleyNoDuplicateAnnotations } from "./wardley-no-duplicate-annotations.ts"
+import { wardleyNoDuplicateDescription } from "./wardley-no-duplicate-description.ts"
+import { wardleyNoDuplicateEvolution } from "./wardley-no-duplicate-evolution.ts"
+import { wardleyNoDuplicateEvolve } from "./wardley-no-duplicate-evolve.ts"
+import { wardleyNoDuplicatePipeline } from "./wardley-no-duplicate-pipeline.ts"
+import { wardleyNoDuplicateSize } from "./wardley-no-duplicate-size.ts"
+import { wardleyNoDuplicateTitle } from "./wardley-no-duplicate-title.ts"
+import { wardleyNoEmptyDescriptionBlock } from "./wardley-no-empty-description-block.ts"
+import { wardleyNoIgnoredLinkLabel } from "./wardley-no-ignored-link-label.ts"
+import { wardleyNoRedefinedNode } from "./wardley-no-redefined-node.ts"
+import { wardleyNoUndef } from "./wardley-no-undef.ts"
 import { xychartNoDuplicateDescription } from "./xychart-no-duplicate-description.ts"
 import { xychartNoDuplicateTitle } from "./xychart-no-duplicate-title.ts"
 import { xychartNoEmptyDescriptionBlock } from "./xychart-no-empty-description-block.ts"
@@ -208,6 +237,10 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "class-no-redefined-class": classNoRedefinedClass,
   "class-no-unclosed-backquote": classNoUnclosedBackquote,
   "class-no-undef": classNoUndef,
+  "cynefin-no-duplicate-description": cynefinNoDuplicateDescription,
+  "cynefin-no-duplicate-title": cynefinNoDuplicateTitle,
+  "cynefin-no-empty-description-block": cynefinNoEmptyDescriptionBlock,
+  "cynefin-no-redefined-domain": cynefinNoRedefinedDomain,
   "er-no-duplicate-description": erNoDuplicateDescription,
   "er-no-duplicate-title": erNoDuplicateTitle,
   "er-no-empty-description-block": erNoEmptyDescriptionBlock,
@@ -215,6 +248,14 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "er-no-redefined-entity": erNoRedefinedEntity,
   "er-no-unclosed-description-block": erNoUnclosedDescriptionBlock,
   "er-no-undef": erNoUndef,
+  "eventmodeling-no-duplicate-description": eventmodelingNoDuplicateDescription,
+  "eventmodeling-no-duplicate-title": eventmodelingNoDuplicateTitle,
+  "eventmodeling-no-empty-description-block":
+    eventmodelingNoEmptyDescriptionBlock,
+  "eventmodeling-no-redefined-data": eventmodelingNoRedefinedData,
+  "eventmodeling-no-unclosed-description-block":
+    eventmodelingNoUnclosedDescriptionBlock,
+  "eventmodeling-no-undef": eventmodelingNoUndef,
   "flowchart-no-duplicate-description": flowchartNoDuplicateDescription,
   "flowchart-no-duplicate-direction": flowchartNoDuplicateDirection,
   "flowchart-no-duplicate-title": flowchartNoDuplicateTitle,
@@ -273,6 +314,9 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "radar-no-reversed-range": radarNoReversedRange,
   "radar-no-unclosed-description-block": radarNoUnclosedDescriptionBlock,
   "radar-no-undef": radarNoUndef,
+  "railroad-no-duplicate-description": railroadNoDuplicateDescription,
+  "railroad-no-duplicate-title": railroadNoDuplicateTitle,
+  "railroad-no-empty-description-block": railroadNoEmptyDescriptionBlock,
   "requirement-no-duplicate-description": requirementNoDuplicateDescription,
   "requirement-no-duplicate-field": requirementNoDuplicateField,
   "requirement-no-duplicate-name": requirementNoDuplicateName,
@@ -305,6 +349,11 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "treemap-no-duplicate-title": treemapNoDuplicateTitle,
   "treemap-no-empty-description-block": treemapNoEmptyDescriptionBlock,
   "treemap-no-invalid-value": treemapNoInvalidValue,
+  "treeview-no-duplicate-annotation": treeviewNoDuplicateAnnotation,
+  "treeview-no-duplicate-description": treeviewNoDuplicateDescription,
+  "treeview-no-duplicate-title": treeviewNoDuplicateTitle,
+  "treeview-no-empty-description-block": treeviewNoEmptyDescriptionBlock,
+  "treeview-no-unclosed-description-block": treeviewNoUnclosedDescriptionBlock,
   "usecase-no-duplicate-description": usecaseNoDuplicateDescription,
   "usecase-no-duplicate-direction": usecaseNoDuplicateDirection,
   "usecase-no-duplicate-metadata": usecaseNoDuplicateMetadata,
@@ -318,6 +367,17 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "venn-no-ignored-text": vennNoIgnoredText,
   "venn-no-invalid-style-key": vennNoInvalidStyleKey,
   "venn-no-undef": vennNoUndef,
+  "wardley-no-duplicate-annotations": wardleyNoDuplicateAnnotations,
+  "wardley-no-duplicate-description": wardleyNoDuplicateDescription,
+  "wardley-no-duplicate-evolution": wardleyNoDuplicateEvolution,
+  "wardley-no-duplicate-evolve": wardleyNoDuplicateEvolve,
+  "wardley-no-duplicate-pipeline": wardleyNoDuplicatePipeline,
+  "wardley-no-duplicate-size": wardleyNoDuplicateSize,
+  "wardley-no-duplicate-title": wardleyNoDuplicateTitle,
+  "wardley-no-empty-description-block": wardleyNoEmptyDescriptionBlock,
+  "wardley-no-ignored-link-label": wardleyNoIgnoredLinkLabel,
+  "wardley-no-redefined-node": wardleyNoRedefinedNode,
+  "wardley-no-undef": wardleyNoUndef,
   "xychart-no-duplicate-description": xychartNoDuplicateDescription,
   "xychart-no-duplicate-title": xychartNoDuplicateTitle,
   "xychart-no-empty-description-block": xychartNoEmptyDescriptionBlock,

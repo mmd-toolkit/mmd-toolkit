@@ -1,3 +1,7 @@
+import { parseTreeviewDiagram } from "./diagrams/treeview/index.ts"
+import { parseEventmodelingDiagram } from "./diagrams/eventmodeling/index.ts"
+import { parseCynefinDiagram } from "./diagrams/cynefin/index.ts"
+import { parseWardleyDiagram } from "./diagrams/wardley/index.ts"
 import { parseRailroadDiagram } from "./diagrams/railroad/index.ts"
 import { parseTreemapDiagram } from "./diagrams/treemap/index.ts"
 import { parseRadarDiagram } from "./diagrams/radar/index.ts"
@@ -104,7 +108,11 @@ export function diagramInputOf(
       diagramType === "railroad" ||
       diagramType === "railroadEbnf" ||
       diagramType === "railroadAbnf" ||
-      diagramType === "railroadPeg"
+      diagramType === "railroadPeg" ||
+      diagramType === "wardley" ||
+      diagramType === "eventmodeling" ||
+      diagramType === "treeView" ||
+      diagramType === "cynefin"
         ? detection.passed.find(
             (part) => part.kind === "directive-found-once-more",
           )?.opening[0]
@@ -145,6 +153,10 @@ export function parse(text: string): Root {
       detected !== "railroadEbnf" &&
       detected !== "railroadAbnf" &&
       detected !== "railroadPeg" &&
+      detected !== "wardley" &&
+      detected !== "cynefin" &&
+      detected !== "eventmodeling" &&
+      detected !== "treeView" &&
       detection.retainedFrontmatterStart !== null)
   ) {
     const start = detection.retainedFrontmatterStart ?? positionReached
@@ -186,6 +198,14 @@ export function parse(text: string): Root {
     case "railroadAbnf":
     case "railroadPeg":
       return parseRailroadDiagram(input)
+    case "treeView":
+      return parseTreeviewDiagram(input)
+    case "eventmodeling":
+      return parseEventmodelingDiagram(input)
+    case "cynefin":
+      return parseCynefinDiagram(input)
+    case "wardley":
+      return parseWardleyDiagram(input)
     case "treemap":
       return parseTreemapDiagram(input)
     case "radar":

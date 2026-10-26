@@ -1,5 +1,13 @@
 import type {
   Node,
+  CynefinTitleStatement,
+  CynefinAccTitleStatement,
+  CynefinAccDescrStatement,
+  CynefinAccDescrBlockStatement,
+  WardleyTitleStatement,
+  WardleyAccTitleStatement,
+  WardleyAccDescrStatement,
+  WardleyAccDescrBlockStatement,
   RailroadTitleStatement,
   RailroadAccTitleStatement,
   RailroadAccDescrStatement,
@@ -28,6 +36,10 @@ import type {
   PacketAccTitleStatement,
   PacketAccDescrStatement,
   PacketAccDescrBlockStatement,
+  TreeviewTitleStatement,
+  TreeviewAccTitleStatement,
+  TreeviewAccDescrStatement,
+  TreeviewAccDescrBlockStatement,
   TreemapTitleStatement,
   TreemapAccTitleStatement,
   TreemapAccDescrStatement,
@@ -45,6 +57,14 @@ import {
 } from "./source.ts"
 
 type CommonStatement = (
+  | CynefinTitleStatement
+  | CynefinAccTitleStatement
+  | CynefinAccDescrStatement
+  | CynefinAccDescrBlockStatement
+  | WardleyTitleStatement
+  | WardleyAccTitleStatement
+  | WardleyAccDescrStatement
+  | WardleyAccDescrBlockStatement
   | RailroadTitleStatement
   | RailroadAccTitleStatement
   | RailroadAccDescrStatement
@@ -73,6 +93,10 @@ type CommonStatement = (
   | PacketAccTitleStatement
   | PacketAccDescrStatement
   | PacketAccDescrBlockStatement
+  | TreeviewTitleStatement
+  | TreeviewAccTitleStatement
+  | TreeviewAccDescrStatement
+  | TreeviewAccDescrBlockStatement
   | TreemapTitleStatement
   | TreemapAccTitleStatement
   | TreemapAccDescrStatement
@@ -186,6 +210,7 @@ export function layoutCommonDescription(
   let layout = layoutDescriptionBlock(source, block, blockEnd, valueTypes, {
     keepsTrailingTrivia: true,
     formatsEmptyTrivia: true,
+    trimValueEdges: true,
   })
   const opener = expectToken(findStructuralToken(source, start), "accDescr")
   const brace = expectToken(

@@ -439,14 +439,21 @@ pie
 Reuse [global directive opacity](./flowchart.md#directives) and
 [C4 textual semicolon protection](./c4.md#line-rule-and-semicolons), because
 common removal supplies no separator and semicolon selection reads source
-segments. Keep directives in place with touching versus separated sides,
-multiline contents and EOF-reaching endings. Protect from the first
+segments. Keep directives in their authored gaps, including multiline contents
+and EOF-reaching endings. Within a printed line, keep whether each side touches
+or is separated. When formatting splits units that were on the same line, a
+directive in their gap moves with the following unit: its right boundary stays
+touching or separated, while its left contact is broken. Protect from the first
 non-whitespace character through the last semicolon, extending through complete
 crossing values/comments/directives; do not split a protected header/body group.
 Keep every semicolon and both style/classDef passes, case/colon-hash whitespace
 distinctions, Unicode segment bounds, directive-rejoined triggers and comment
 semicolons. Format only safe exterior/suffix gaps. Atomic keyword/number cuts
 remain specified failures.
+
+[fixture: pie/directives-and-semicolons/native-label-value]
+
+[fixture: pie/directives-and-semicolons/global-header-first-statement]
 
 Fixed cases: [fixture: pie/directives-and-semicolons/global-align] [fixture:
 pie/directives-and-semicolons/global-touch] [fixture:

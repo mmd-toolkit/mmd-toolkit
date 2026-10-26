@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Transition order and duplicates remain, including undeclared endpoint domains."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "First"
+      },
+      {
+        "from": "clear",
+        "to": "chaotic"
+      },
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "Second"
+      },
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "Third"
+      }
+    ]
+  }
+}

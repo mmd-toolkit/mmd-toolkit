@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A labeled transition needs a surviving LF after a native directive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 9: Expecting token of type 'EOF' but found `-->`.\nParse error on line 2, column 19: Expecting token of type 'EOF' but found `:`."
+  }
+}

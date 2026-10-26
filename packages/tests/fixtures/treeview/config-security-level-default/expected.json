@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Default security keeps description text while sanitizers are disabled."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "<b>A</b>",
+    "accDescr": "<b>D</b>",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "description": "a<b>=c<BR>d",
+        "children": []
+      }
+    ]
+  }
+}

@@ -160,6 +160,10 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
+  TreeviewDiagram: ["%%"],
+  EventmodelingDiagram: ["%%", "//", "/*"],
+  CynefinDiagram: ["%%"],
+  WardleyDiagram: ["%%"],
   TreemapDiagram: ["%%"],
   RadarDiagram: ["%%"],
   ArchitectureDiagram: ["%%"],
@@ -253,7 +257,7 @@ function isLineSegmentEndCode(code: number): boolean {
  * the end of its line segment ({@link COMMENT_ENDS_AT_LINE_SEGMENT}), a U+2028
  * or a U+2029 ends it too, and `endsComment` says so.
  */
-function checkDiagramCommentEnd(
+export function checkDiagramCommentEnd(
   text: string,
   comment: CheckedComment,
   scan: SourceScan,
@@ -365,7 +369,7 @@ function checkEveryCharacterPlaced(
  * source after the second; a fragment of a diagram comment after a comment
  * region has no mark and starts at its first character; any other comment is a
  * diagram comment, whose range starts at its mark and whose `value` is the
- * source after the mark.
+ * source after the mark, excluding a block comment's closer.
  */
 function checkComments(
   text: string,
@@ -410,29 +414,17 @@ function checkComments(
         where,
         "value of a comment line",
       )
+    } else if (body === "EventmodelingDiagram") {
+      problems.expect(
+        comment.mark === null || ["%%", "//", "/*"].includes(comment.mark),
+        where,
+        "the mark is no native eventmodeling comment mark",
+      )
     } else if (body === "RailroadDiagram") {
       // Railroad also has closed, multiline native comments. Its dialect
-      // checker owns their lexical bounds and priority; shared source text
-      // and cut-fragment conditions still hold here.
+      // checker owns their marks, lexical bounds, priority and delimited
+      // values; shared cut-fragment conditions still hold here.
       const mark = comment.mark ?? ""
-      const markEnd =
-        mark === "%%"
-          ? diagramCommentMarkEnd(text, comment, scan)
-          : comment.range[0] + mark.length
-      problems.expect(
-        mark === "%%"
-          ? text.charAt(comment.range[0]) === "%" &&
-              text.charAt(markEnd - 1) === "%"
-          : text.startsWith(mark, comment.range[0]),
-        where,
-        "mark is not the authored native comment opener",
-      )
-      problems.expectEqual(
-        comment.value,
-        text.slice(markEnd, comment.range[1]),
-        where,
-        "value of a diagram comment",
-      )
       if (comment.mark === null)
         problems.expect(
           followsRegion(text, comment.range[0], regions) &&
@@ -589,7 +581,10 @@ function checkFrontmatter(
 
 /** Where the value starts, inside the opening delimiter of a data block or bracketed label. */
 function valueStartOf(node: CheckedNode, root: CheckedRoot): number {
-  if (node.type === "UsecaseJsonDataBlock")
+  if (
+    node.type === "UsecaseJsonDataBlock" ||
+    node.type === "EventmodelingDataBlock"
+  )
     return (
       root.tokens.find(
         (token) => token.value === "{" && contains(node.range, token.range),
@@ -942,6 +937,7 @@ function checkNodeRanges(
 /** positions.md, Invariants, last item: the `raw` of a StringLiteral or a NumericLiteral equals the source text of its range; ast.md, StringLiteral: `closed` is whether the `raw` has more than one character and ends with the quote that it starts with. */
 function checkRaw(
   text: string,
+  root: CheckedRoot,
   nodes: readonly CheckedNode[],
   problems: Problems,
 ): void {
@@ -950,7 +946,13 @@ function checkRaw(
       continue
     const where = label(node)
     problems.expectEqual(node.raw, text.slice(...node.range), where, "raw")
-    if (node.type === "StringLiteral" && typeof node.raw === "string") {
+    // Treeview checks its first effective closer after attribute conversion
+    // in its lexical check; the authored closing character can differ.
+    if (
+      root.body.type !== "TreeviewDiagram" &&
+      node.type === "StringLiteral" &&
+      typeof node.raw === "string"
+    ) {
       const quote = node.raw.slice(0, 1)
       problems.expectEqual(
         node.closed,
@@ -1028,5 +1030,5 @@ export function checkInvariants(
   // Invariant 9 and the child nodes.
   checkNodeRanges(text, root, problems)
   // Invariant 11.
-  checkRaw(text, nodes, problems)
+  checkRaw(text, root, nodes, problems)
 }

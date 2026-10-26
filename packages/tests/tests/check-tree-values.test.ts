@@ -55,9 +55,23 @@ function saidInSpecification(
   // ast/agentflow.md names the written arrow, literal and retained ignored spelling.
   if (
     [
+      "Authored bare node name.",
+      "Authored common or description payload.",
+      "Authored prefix spelling.",
+      "Authored decoration spelling.",
       "Written text of the common value.",
+      "Written ->>.",
+      "Unconverted authored payload.",
+      "Written native ignored form.",
+      "-->, the complete authored glyph.",
+      "Unconverted authored common value outside common removals.",
+      "Authored whole native match outside common removals.",
       "Written common-value text.",
       "Written metadata text.",
+      "Authored bare name text.",
+      "Nonempty authored common or link-label text.",
+      "Nonempty whole authored hidden form.",
+      "Whole authored arrow text.",
       "Nonempty authored form including fences.",
       "The complete authored percent-value text.",
       "The authored style or common-value text.",
@@ -169,6 +183,8 @@ const NAME_NOT_TOKENS_JOINED = "name is not the texts of its tokens joined"
 interface BrokenValueRow {
   /** The node type of `VALUE_RULES` whose value is broken. */
   readonly type: string
+  /** A named fixed witness when scanning unrelated diagrams would hide this new type. */
+  readonly fixture?: string
   /** What the row breaks, when the type has more than one rule. */
   readonly variant?:
     "a style" | "an accessibility text" | "a title or an accessibility text"
@@ -184,6 +200,38 @@ interface BrokenValueRow {
  * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  {
+    type: "TreeviewIdentifier",
+    fixture: "treeview/box-written-tree",
+    message: "name is not its written text",
+  },
+  {
+    type: "TreeviewLiteral",
+    fixture: "treeview/gram-written-tree",
+    message: NOT_WRITTEN_TEXT,
+  },
+  {
+    type: "TreeviewBranchPrefix",
+    fixture: "treeview/box-written-tree",
+    message: NOT_WRITTEN_TEXT,
+  },
+  {
+    type: "TreeviewIgnoredText",
+    fixture: "treeview/box-written-tree",
+    message: NOT_WRITTEN_TEXT,
+  },
+  { type: "EventmodelingArrow", message: NOT_WRITTEN_TEXT },
+  { type: "EventmodelingLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "EventmodelingIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "CynefinDomainStatement", message: "the field name is " },
+  { type: "CynefinArrow", message: NOT_WRITTEN_TEXT },
+  { type: "CynefinLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "CynefinIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "WardleyIdentifier", message: "name is not its written text" },
+  { type: "WardleyLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "WardleyIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "WardleyArrow", message: NOT_WRITTEN_TEXT },
+  { type: "WardleySourceStrategyDecoration", message: "the field value is " },
   { type: "RailroadLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RailroadIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "RailroadNumericValue", message: NOT_WRITTEN_TEXT },
@@ -371,10 +419,14 @@ describe("a broken value", () => {
     for (const row of BROKEN_VALUE_ROWS) {
       const rule = VALUE_RULES[row.type]
       if (rule === undefined) throw new Error(`${row.type} has no value rule`)
+      const candidates =
+        row.fixture === undefined
+          ? trees
+          : trees.filter((recorded) => recorded.name === row.fixture)
       for (const { name, edit } of VALUE_EDITS) {
         const failure = `${nameOfRow(row)}.${rule.field}: ${name}`
         let found = false
-        for (const recorded of trees) {
+        for (const recorded of candidates) {
           const tree = JSON.parse(recorded.json) as CheckedRoot
           const instance = instancesOfRow(tree, row)[0]
           if (instance === undefined) continue
@@ -437,6 +489,152 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "TreeviewIdentifier",
+    name: "treeview bare names keep owned trailing ASCII space",
+    diagram: "treeview",
+    fixture: "db-bare-tail-space",
+    token: { type: "RawText", value: "root " },
+    side: "end",
+    problems: [
+      {
+        where: "TreeviewNode at 14-19",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TreeviewIdentifier at 14-19",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TreeviewIdentifier at 14-19",
+        message: `${JOINED}: "root", not "root "`,
+      },
+    ],
+  },
+  {
+    type: "TreeviewLiteral",
+    name: "treeview description payload keeps owned trailing ASCII space",
+    diagram: "treeview",
+    fixture: "db-description-tail-space",
+    token: { type: "RawText", value: " d " },
+    side: "end",
+    problems: [
+      {
+        where: "TreeviewNode at 14-24",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TreeviewDescriptionAnnotation at 19-24",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TreeviewLiteral at 21-24",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TreeviewLiteral at 21-24",
+        message: `${JOINED}: " d", not " d "`,
+      },
+    ],
+  },
+
+  {
+    type: "EventmodelingLiteral",
+    name: "eventmodeling accessibility payload keeps all padding after its colon",
+    diagram: "eventmodeling",
+    fixture: "common-whitespace",
+    token: { type: "RawText", value: "  A\t B  " },
+    side: "start",
+    problems: [
+      {
+        where: "EventmodelingLiteral at 23-31",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "EventmodelingLiteral at 23-31",
+        message: `${JOINED}: "A\\t B  ", not "  A\\t B  "`,
+      },
+      {
+        where: "EventmodelingLiteral at 23-31",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [23,31], not [25,31]",
+      },
+    ],
+  },
+  {
+    type: "CynefinLiteral",
+    name: "cynefin common line values keep padding after their colon",
+    diagram: "cynefin",
+    fixture: "common-repeat",
+    token: { type: "RawText", value: " One" },
+    side: "start",
+    problems: [
+      {
+        where: "CynefinLiteral at 34-38",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "CynefinLiteral at 34-38",
+        message: `${JOINED}: "One", not " One"`,
+      },
+      {
+        where: "CynefinLiteral at 34-38",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [34,38], not [35,38]",
+      },
+    ],
+  },
+  {
+    type: "CynefinIgnoredText",
+    name: "cynefin hidden text keeps LF beside a common comment cut",
+    diagram: "cynefin",
+    fixture: "hidden-yaml-comment-region",
+    token: { type: "RawText", value: "---\nA\n" },
+    side: "end",
+    problems: [
+      {
+        where: "CynefinIgnoredText at 13-35",
+        message: `${JOINED}: "---\\nAB\\n---", not "---\\nA\\nB\\n---"`,
+      },
+    ],
+  },
+  {
+    type: "WardleyLiteral",
+    name: "wardley common line values keep padding after their colon",
+    diagram: "wardley",
+    fixture: "common-repeat",
+    token: { type: "RawText", value: " First" },
+    side: "start",
+    problems: [
+      {
+        where: "WardleyLiteral at 32-38",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "WardleyLiteral at 32-38",
+        message: `${JOINED}: "First", not " First"`,
+      },
+      {
+        where: "WardleyLiteral at 32-38",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [32,38], not [33,38]",
+      },
+    ],
+  },
+  {
+    type: "WardleyIgnoredText",
+    name: "wardley hidden text keeps LF beside a common comment cut",
+    diagram: "wardley",
+    fixture: "lex-hidden-yaml-comment-region",
+    token: { type: "RawText", value: "---\nx\n" },
+    side: "end",
+    problems: [
+      {
+        where: "WardleyIgnoredText at 13-29",
+        message: `${JOINED}: "---\\nxy\\n---", not "---\\nx\\ny\\n---"`,
+      },
+    ],
+  },
   {
     type: "RailroadLiteral",
     name: "railroad accessibility line values keep padding after the colon",
@@ -1529,6 +1727,57 @@ interface TypeWithoutTokenWhitespace {
 const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
   Record<string, TypeWithoutTokenWhitespace>
 > = {
+  TreeviewBranchPrefix: {
+    diagram: "treeview",
+    fixture: "box-prefix-arbitrary",
+    reason:
+      "the uncut whole RawText prefix starts at its authored text and ends at its dash, with no outer whitespace",
+  },
+  TreeviewIgnoredText: {
+    diagram: "treeview",
+    fixture: "box-written-tree",
+    reason:
+      "the uncut decoration starts and ends at its box glyph, excluding outer padding and LF",
+  },
+  EventmodelingArrow: {
+    diagram: "eventmodeling",
+    fixture: "gram-written-tree",
+    reason: "the complete ->> atom has no padding or internal cuts",
+  },
+  EventmodelingIgnoredText: {
+    diagram: "eventmodeling",
+    fixture: "lex-native-directive-object",
+    reason:
+      "this uncut whole native match starts and ends at its delimiters, excluding outside padding and LF",
+  },
+  CynefinDomainStatement: {
+    diagram: "cynefin",
+    fixture: "gram-domain-empty-eof",
+    reason: "its sole fixed Keyword has no padding or native forms",
+  },
+  CynefinArrow: {
+    diagram: "cynefin",
+    fixture: "db-transition-duplicates",
+    reason: "the whole arrow glyph has no padding or internal cuts",
+  },
+  WardleyIdentifier: {
+    diagram: "wardley",
+    fixture: "db-unquoted-names",
+    reason:
+      "spaced names exclude outer padding; this fixture has no internal common cuts",
+  },
+  WardleyArrow: {
+    diagram: "wardley",
+    fixture: "db-link-forms",
+    reason:
+      "whole glyph and complete quoted-label tokens have no padding at their ends in this fixture",
+  },
+  WardleySourceStrategyDecoration: {
+    diagram: "wardley",
+    fixture: "db-inertia-forms",
+    reason:
+      "the fixed strategy is one Keyword and this fixture has no native gap forms",
+  },
   RailroadSpecialSequence: {
     diagram: "railroad",
     fixture: "ebnf-special-whitespace",

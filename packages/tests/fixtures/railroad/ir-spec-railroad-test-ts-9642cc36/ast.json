@@ -182,7 +182,7 @@
     {
       "type": "Comment",
       "mark": "/*",
-      "value": " comment before the first rule */",
+      "value": " comment before the first rule ",
       "range": [
         14,
         49

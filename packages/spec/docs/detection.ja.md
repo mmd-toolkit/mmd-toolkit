@@ -133,6 +133,7 @@ mermaid.js がその id として受理する最小の入力があります。
 [fixture: common/detect-minimal-wardley]
 [fixture: common/detect-minimal-cynefin]
 [fixture: common/detect-minimal-usecase]
+[fixture: eventmodeling/detect-real-retained-secondscan]
 
 項目 7 では、他の 4 つのキーワードも先頭にあれば `c4` を選びます。
 大文字小文字の違うキーワードは、比較が完全一致なので何も選びません。
@@ -187,7 +188,7 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び
 、
 隠れた YAML の規則がタイトルを適用せずにブロックを読み飛ばします。
-gitgraph・info・packet・architecture・radar・railroad も、
+gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin・eventmodeling も、
 一致する隠れたブロックを保ちます。
 以下で引用するほかの図種の入力は、字句規則か文法で拒否します。
 隣り合う区切りの空ブロック、閉じない区切り、ブロックの前の裸の `%%` の行では、
@@ -211,6 +212,10 @@ gitgraph・info・packet・architecture・radar・railroad も、
 [fixture: ishikawa/frontmatter-after-comment]
 [fixture: usecase/frontmatter-after-comment]
 [fixture: venn/frontmatter-comment-before]
+[fixture: wardley/detect-block-after-directive]
+[fixture: wardley/detect-retained-two]
+[fixture: cynefin/detect-block-after-directive]
+[fixture: eventmodeling/detect-real-retained-secondscan]
 
 項目 39 の
 [`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14)
@@ -280,6 +285,35 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 [fixture: railroad/ebnf-header-inline]
 [fixture: railroad/abnf-header-inline]
 [fixture: railroad/peg-header-inline]
+
+項目 37 の
+[wardleyDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyDetector.ts#L7-L11)
+は、後続の境界なしで wardley-beta を大文字小文字を区別せず選びます。
+受理する見出しは小文字で後続 EOL が不要なため、
+文を直接つなげられます。Wardley は C4 より後で
+す。[構文](./diagrams/wardley.ja.md#検出)が残存 YAML/第 2 scan の prefix の受理
+と C4 の差異を定めます。
+[fixture: wardley/header-upper] [fixture: wardley/header-glued-statement]
+[fixture: wardley/detect-real-before-retained-secondscan]
+[fixture: wardley/c4-component-component]
+
+38 番の
+[cynefinDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDetector.ts#L7-L11) は正確に小文字の cynefin-beta と、その後の共通空白、colon、テキスト末尾を要求します。文法の見出しは cynefin-beta と cynefin-beta: で、どちらにも後続の EOL は要りません。colon の無い見出しに接する %% では、検出用のコメント除去に、検出対象のソースの後続の LF が必要で、それが無ければ %% は検出の境目になりません。[構文](./diagrams/cynefin.ja.md#検出)と[木](./ast/cynefin.ja.md)が retained な接頭とその所有者を定めます。 [fixture: cynefin/header-uppercase] [fixture: cynefin/header-colon-inline] [fixture: cynefin/header-inline] [fixture: cynefin/header-native-no-eol] [fixture: cynefin/header-native-glued-line-feed] [fixture: cynefin/header-native-comment-glued-eof] [fixture: cynefin/detect-real-before-retained-secondscan]
+
+項目 27 の
+[detector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8) は、小文字そのままの prefix eventmodeling を後ろの境目を見ず選びます。受理する文法の見出しは別に空白、二つの percent、text の終わりの境目を持ち、suffix 付きの入力は検出されても拒否されえます。[構文](./diagrams/eventmodeling.ja.md#検出)と[木](./ast/eventmodeling.ja.md#gap-の所有)が retained form と通過する裸の行を定めます。 [fixture: eventmodeling/header-letter] [fixture: eventmodeling/header-inline] [fixture: eventmodeling/header-percent-comment] [fixture: eventmodeling/detect-real-retained-secondscan] [fixture: eventmodeling/detect-retained-bare-ls-line]
+
+項目 28 の
+[treeview の検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)は、
+大文字小文字を区別する `treeView-beta` を接尾の境目無しで選びます。
+[構文](./diagrams/treeview.ja.md)が keyword の lookahead と長い bare の代案、
+保持される prefix、通過する裸の行の trivia を区別します。
+native YAML の規則は無く、検出が通過した block も見出しの前では読めません。
+[fixture: treeview/header-only] [fixture: treeview/header-lower]
+[fixture: treeview/header-letter]
+[fixture: treeview/header-nbsp-custom-boundary]
+[fixture: treeview/detect-block-after-directive]
+[fixture: treeview/detect-secondscan-bare-unicode]
 
 ## 注記
 

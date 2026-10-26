@@ -57,8 +57,8 @@ railroad/ir-directive-common-colon] [fixture: railroad/abnf-directive-repeat]
 Native percent comments have mark `%%`; PEG hash comments have mark `#`; ABNF
 semicolon comments have mark `;`. Their ranges exclude the physical line ending;
 LS/PS remain content. IR/EBNF C comments have mark `/*`, and EBNF ISO comments
-have mark `(*`; their ranges include their first required closer. Comment.value
-is source text after the opening mark, including a block closer. [fixture:
+have mark `(*`; their first required closer ends the comment. Their ranges and
+values follow the [shared Comment definition](../tokens.md#comment). [fixture:
 railroad/ir-comment-percent-ls] [fixture: railroad/peg-comment-hash-ps]
 [fixture: railroad/abnf-comment-semicolon-ls] [fixture:
 railroad/ir-tail-comment] [fixture: railroad/ebnf-comment-iso] [fixture:

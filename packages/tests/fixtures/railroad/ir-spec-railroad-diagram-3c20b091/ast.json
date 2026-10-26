@@ -104,7 +104,7 @@
     {
       "type": "Comment",
       "mark": "/*",
-      "value": " this is a comment */",
+      "value": " this is a comment ",
       "range": [
         31,
         54

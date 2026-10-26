@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A semicolon inside the header is rejected by detection before a later style/hash trigger."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: treeV;iew-beta\nstyle:#fff"
+  }
+}

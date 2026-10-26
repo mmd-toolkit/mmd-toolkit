@@ -1,0 +1,15 @@
+{
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle: b=\"c\">d",
+    "accDescr": "",
+    "frames": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    },
+    "title": "<a"
+  }
+}

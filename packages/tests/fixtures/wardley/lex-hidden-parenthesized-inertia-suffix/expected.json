@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md WardleyParenthesizedInertiaDecoration: Does a hidden suffix after parenthesized inertia belong to the component while a preceding source strategy remains a different decoration?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": true,
+        "sourceStrategy": "buy"
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

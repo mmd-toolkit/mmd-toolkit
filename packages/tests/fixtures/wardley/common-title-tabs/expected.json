@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Common metadata values: Exactly one title separator is excluded; later tabs remain authored title-literal text."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "A B",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

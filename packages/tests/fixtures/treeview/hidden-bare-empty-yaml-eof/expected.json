@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check body hidden-form applicability: bare-empty-yaml-eof."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "---",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "---",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

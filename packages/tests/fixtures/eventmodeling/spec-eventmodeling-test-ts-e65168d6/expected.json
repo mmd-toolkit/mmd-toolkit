@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/eventmodeling.test.ts",
+    "line": 75,
+    "test": "Parse Event Model > should parse simple model with full syntax"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "event",
+        "entityIdentifier": "Start",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

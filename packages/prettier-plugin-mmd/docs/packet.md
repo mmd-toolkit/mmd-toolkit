@@ -449,12 +449,17 @@ packet
 
 ### Global directives
 
-Use shared Root directive attachment and preserve opaque content, order, each
-side's contact, component boundaries and value-internal text. Ordinary
-standalone starts align one body step in; multiline interiors and EOF-reaching
-endings stay written. Common removal supplies no separator, and deleting init
-can change row configuration. Native hidden DIRECTIVE stays a separate owned
-node.
+Use shared Root directive attachment and preserve opaque content, order,
+component boundaries and value-internal text. Within a printed line, keep
+whether each side touches or is separated. When formatting splits units that
+were on the same line, a directive in their gap moves with the following unit:
+its right boundary stays touching or separated, while its left contact is
+broken. Ordinary standalone starts align one body step in; multiline interiors
+and EOF-reaching endings stay written. Common removal supplies no separator, and
+deleting init can change row configuration. Native hidden DIRECTIVE stays a
+separate owned node.
+
+[fixture: packet/global-directives/header-to-body]
 
 [fixture: packet/global-directives/global-positions]
 
@@ -641,6 +646,8 @@ groups together, formatting only safe exterior/suffix gaps. Both style/classDef
 passes, case, colon/hash whitespace, repetitions, Unicode segment bounds and
 directive-rejoined triggers stay written. Removing one selected semicolon can
 select another and change the Db; atomic cuts remain failures.
+
+[fixture: packet/semicolons/native-field-value]
 
 [fixture: packet/semicolons/semicolons-text]
 

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity cannot bypass the restricted class alphabet."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a :::&amp;",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

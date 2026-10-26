@@ -807,46 +807,81 @@ function checkComments(reading: Reading, headerEnd: number): void {
       label(comment),
       "a native Comment cannot start inside an earlier enclosing value or hidden form",
     )
+    let start = at
+    if (comment.mark !== null) {
+      let remaining = comment.mark.length
+      while (start < comment.range[1] && remaining > 0) {
+        if (!reading.written.isLeftOut(start)) remaining--
+        start++
+      }
+    }
     if (at < headerEnd) {
       reading.problems.expect(
-        comment.mark === "%%",
+        comment.mark === "%%" &&
+          reading.converted.of(comment.range).startsWith("%%"),
         label(comment),
         "a detection-passed bare line has mark %%",
       )
+      reading.problems.expectEqual(
+        comment.value,
+        reading.text.slice(start, comment.range[1]),
+        label(comment),
+        "value of a detection-passed bare line",
+      )
       continue
     }
-    if (comment.mark === null) {
-      const anchor = reading.root.comments.findLast((candidate) => {
-        if (
-          candidate.mark === null ||
-          candidate.range[0] < headerEnd ||
-          candidate.range[1] > at ||
-          reading.written.isLeftOut(candidate.range[0])
-        )
-          return false
-        const start = unitAt(
-          following(reading, candidate.range[0]),
-          dialectOf(reading),
-        )
-        return (
-          start?.kind === "comment" &&
-          reading.converted.of([candidate.range[0], comment.range[1]]).length <=
-            start.end
-        )
-      })
+    const anchor =
+      comment.mark === null
+        ? reading.root.comments.findLast((candidate) => {
+            if (
+              candidate.mark === null ||
+              candidate.range[0] < headerEnd ||
+              candidate.range[1] > at ||
+              reading.written.isLeftOut(candidate.range[0])
+            )
+              return false
+            const candidateUnit = unitAt(
+              following(reading, candidate.range[0]),
+              dialectOf(reading),
+            )
+            return (
+              candidateUnit?.kind === "comment" &&
+              reading.converted.of([candidate.range[0], comment.range[1]])
+                .length <= candidateUnit.end
+            )
+          })
+        : comment
+    if (comment.mark === null)
       reading.problems.expect(
         anchor !== undefined,
         label(comment),
         "an unmarked fragment must belong to an earlier native Comment lexical unit",
       )
-      continue
-    }
-    const unit = unitAt(following(reading, at), dialectOf(reading))
+    if (anchor === undefined) continue
+    const unit = unitAt(following(reading, anchor.range[0]), dialectOf(reading))
     reading.problems.expect(
-      unit?.kind === "comment" && unit.mark === comment.mark,
+      unit?.kind === "comment" && unit.mark === anchor.mark,
       label(comment),
       "an earlier terminal wins or this dialect has no such native Comment",
     )
+    let valueEnd = comment.range[1]
+    if (
+      (unit?.mark === "/*" || unit?.mark === "(*") &&
+      reading.converted.of([anchor.range[0], valueEnd]).length === unit.end
+    ) {
+      let remaining = 2
+      while (valueEnd > start && remaining > 0) {
+        valueEnd--
+        if (!reading.written.isLeftOut(valueEnd)) remaining--
+      }
+    }
+    reading.problems.expectEqual(
+      comment.value,
+      reading.text.slice(start, valueEnd),
+      label(comment),
+      "value of a native Comment",
+    )
+    if (comment.mark === null) continue
     let end = comment.range[1]
     if (unit?.kind === "comment")
       for (const continuation of reading.root.comments) {

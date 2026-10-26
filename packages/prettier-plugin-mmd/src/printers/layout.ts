@@ -3,6 +3,8 @@ import { visitorKeys } from "@mmd-toolkit/parser"
 import type { Atom, AtomLayout } from "./atoms.ts"
 import {
   findSemicolonLines,
+  findVerbatimStyleLines,
+  lineEndOf,
   lineStartOf,
   semicolonSegmentEnd,
 } from "./kept-lines.ts"
@@ -75,7 +77,11 @@ export function collectAtoms(
   for (const token of findTokensBetween(source, start, end)) {
     if (
       isStructural(source, token) &&
-      !covered.some((atom) => contains(atom, token.range))
+      // A common literal can own exterior padding beyond its printed range.
+      // Such a token already contributes its printed part through the value.
+      !covered.some(
+        (atom) => atom.start < token.range[1] && token.range[0] < atom.end,
+      )
     ) {
       atoms.push(toAtom(token))
     }
@@ -138,6 +144,26 @@ export function spansLinesThatCannotJoin(
   return findSemicolonLines(source).has(lineStartOf(source, end - 1))
 }
 
+/**
+ * A statement crossing a shared word-protected line keeps its complete source
+ * span, so moving its edges cannot alter line-rule selection (docs/railroad.md
+ * and docs/wardley.md, Semicolons). The block printer retains same-line siblings.
+ */
+export function layoutOnVerbatimStyleLine(
+  source: Source,
+  start: number,
+  end: number,
+): AtomLayout | null {
+  const verbatim = findVerbatimStyleLines(source)
+  for (
+    let line = lineStartOf(source, start);
+    line < end;
+    line = lineEndOf(source, line) + 1
+  )
+    if (verbatim.has(line)) return keptAsWritten(start, end)
+  return null
+}
+
 /** A layout of one atom, the text from `start` to `end` as written. */
 export function keptAsWritten(start: number, end: number): AtomLayout {
   return {
@@ -192,7 +218,9 @@ export function layoutEmptyDescriptionBlock(
     return keptAsWritten(start, end)
   }
   return {
-    atoms: collectAtoms(source, start, end, [], []),
+    atoms: collectAtoms(source, start, end, [], []).filter(
+      (atom) => source.text.slice(atom.start, atom.end).trim() !== "",
+    ),
     rules: new Map(),
     outdented: new Set(),
     lineBreaks: formatsTriviaLines ? "kept" : "joined",
@@ -267,10 +295,32 @@ export function layoutDescriptionBlock(
     readonly keepsTrailingTrivia?: boolean
     /** Formats an empty block's tokens and trivia lines, keeping its breaks. */
     readonly formatsEmptyTrivia?: boolean
+    /** Common converters trim literal edges even when the AST owns them. */
+    readonly trimValueEdges?: boolean
   } = {},
 ): AtomLayout {
   const start = statement.range[0]
-  if (statement.value === null) {
+  let valueRange = statement.value?.range ?? null
+  if (options.trimValueEdges && valueRange !== null) {
+    let [from, to] = valueRange
+    while (from < to && source.text[from].trim() === "") from++
+    while (to > from && source.text[to - 1].trim() === "") to--
+    const trivia = findTriviaBetween(source, ...valueRange)
+    let hasText = false
+    for (let offset = from; offset < to; offset++) {
+      const item = trivia.find(
+        (entry) => entry.range[0] <= offset && offset < entry.range[1],
+      )
+      if (item !== undefined) offset = item.range[1] - 1
+      else if (source.text[offset].trim() !== "") hasText = true
+    }
+    for (const item of trivia) {
+      from = Math.min(from, item.range[0])
+      to = Math.max(to, item.range[1])
+    }
+    valueRange = hasText ? [from, to] : null
+  }
+  if (valueRange === null) {
     /** Keeps the existing empty-block trivia and continuation layout. */
     function originalLayout(): AtomLayout {
       return layoutEmptyDescriptionBlock(
@@ -301,11 +351,13 @@ export function layoutDescriptionBlock(
       source,
       start,
       end,
-      collectValueNodes(statement, valueTypes),
+      collectValueNodes(statement, valueTypes).map((value) =>
+        value === statement.value ? { ...value, range: valueRange } : value,
+      ),
       findAccDescrBlockStretches(
         source,
         block,
-        statement.value.range,
+        valueRange,
         options.keepsTrailingTrivia,
       ),
     ),

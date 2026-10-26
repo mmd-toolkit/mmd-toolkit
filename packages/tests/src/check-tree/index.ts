@@ -1,3 +1,7 @@
+import { checkTreeviewTree } from "./treeview.ts"
+import { checkEventmodelingTree } from "./eventmodeling.ts"
+import { checkWardleyTree } from "./wardley.ts"
+import { checkCynefinTree } from "./cynefin.ts"
 import { checkRailroadTree } from "./railroad.ts"
 import { checkTreemapTree } from "./treemap.ts"
 import { checkRadarTree } from "./radar.ts"
@@ -84,6 +88,18 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   switch (root.body.type) {
     case "ErrorDiagram":
       checkErrorDiagramTokens(root, problems)
+      break
+    case "TreeviewDiagram":
+      checkTreeviewTree(text, root, problems)
+      break
+    case "EventmodelingDiagram":
+      checkEventmodelingTree(text, root, problems)
+      break
+    case "WardleyDiagram":
+      checkWardleyTree(text, root, problems)
+      break
+    case "CynefinDiagram":
+      checkCynefinTree(text, root, problems)
       break
     case "RailroadDiagram":
       checkRailroadTree(text, root, problems)

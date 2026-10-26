@@ -1,3 +1,7 @@
+import { treeviewVisitorKeys } from "./visitor-keys/treeview.ts"
+import { eventmodelingVisitorKeys } from "./visitor-keys/eventmodeling.ts"
+import { cynefinVisitorKeys } from "./visitor-keys/cynefin.ts"
+import { wardleyVisitorKeys } from "./visitor-keys/wardley.ts"
 import { railroadVisitorKeys } from "./visitor-keys/railroad.ts"
 import { treemapVisitorKeys } from "./visitor-keys/treemap.ts"
 import { radarVisitorKeys } from "./visitor-keys/radar.ts"
@@ -75,4 +79,8 @@ export const visitorKeys: VisitorKeys = {
   ...radarVisitorKeys,
   ...treemapVisitorKeys,
   ...railroadVisitorKeys,
+  ...wardleyVisitorKeys,
+  ...cynefinVisitorKeys,
+  ...eventmodelingVisitorKeys,
+  ...treeviewVisitorKeys,
 }

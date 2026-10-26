@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Strings and link labels: a dangling backslash cannot close a required string."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 6: unexpected character: ->\"<- at offset: 18, skipped 1 characters.\nLexer error on line 2, column 8: unexpected character: ->\\<- at offset: 20, skipped 1 characters. Parse error on line 2, column 7: Expecting token of type 'STRING' but found `N`.\nParse error on line 2, column 9: Expecting: one of these possible Token sequences:\n  1. [STRING]\n  2. [ID]\n  3. [NAME_WITH_SPACES]\nbut found: '\n'"
+  }
+}

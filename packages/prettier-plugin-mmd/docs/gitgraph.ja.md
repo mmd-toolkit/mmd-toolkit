@@ -525,11 +525,17 @@ gitGraph %% header
 
 ### Global directives
 
-global directive の内容・順序・位置・左右の接触を保持します。
+global directive の内容・順序・単位の間の位置を保持します。
+同じ印字行の中では、両側の接触・分離を保ちます。
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立した開始位置だけ本文 1 段へ揃えます。
 文字列内部、語と colon の間、EOF に達する未閉鎖の形も保持します。
 opaque な本文と独立した設定効果を再構築しません。
 atomic な語の分断は仕様どおり拒否します。
+
+[fixture: gitgraph/global-directives/header-to-body]
 
 固定例:
 [fixture: gitgraph/global-directives/directive-sides]
@@ -707,6 +713,8 @@ directive が再結合する trigger と LS/PS の境界を残します。
 安全な suffix の隙間だけ整形し、atomic な分断は拒否します。
 
 固定例:
+[fixture: gitgraph/semicolons/native-commit-value]
+
 [fixture: gitgraph/semicolons/semicolon-header-protect]
 [corpus fixture: gitgraph/style-both-words]
 [corpus fixture: gitgraph/style-colon-space]

@@ -67,7 +67,7 @@ fixture は 1 件ごとに、
 `requirement`、`mindmap`、`timeline`、`sankey`、`xychart`、`quadrant`、
 `block`、`kanban`、`c4`、`venn`、`ishikawa`、`agentflow`、`usecase`、`pie`、
 `gitgraph`、`info`、`packet`、`architecture`、`radar`、`treemap`、
-`railroad`）か、
+`treeview`、`railroad`、`wardley`、`eventmodeling`）か、
 `common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
@@ -149,7 +149,7 @@ mermaid.js は読み込みません。
   `"timeline"`、`"sankey"`、`"xychart"`、`"quadrant"`、`"block"`、
   `"kanban"`、`"c4"`、`"venn"`、`"ishikawa"`、`"agentflow"`、`"usecase"`、
   `"pie"`、`"gitGraph"`、`"info"`、`"packet"`、`"architecture"`、`"radar"`、
-  `"treemap"`、`"railroad"` の
+  `"treemap"`、`"treeview"`、`"railroad"`、`"wardley"`、`"eventmodeling"` の
   どれかの fixture を、名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
   `config` と `knownDivergence`（あるとき）、

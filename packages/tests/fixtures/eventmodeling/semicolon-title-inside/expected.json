@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A semicolon before the style/hash trigger is not selected and the split atom is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 17: unexpected character: ->;<- at offset: 16, skipped 1 characters.\nLexer error on line 1, column 27: unexpected character: ->:<- at offset: 26, skipped 2 characters. Parse error on line 1, column 15: Expecting token of type 'EOF' but found `ti`."
+  }
+}

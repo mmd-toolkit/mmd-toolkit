@@ -693,14 +693,14 @@ block-beta
 
 ### Directives
 
-A directive stays where it is written, between the units of a statement, and
-between statements, and each side of it keeps whether it touches: one space
-where whitespace was written beside it, touching where it was not. mermaid.js
-removes a directive before it reads the text, so the whitespace beside the
-directive is not moved or removed (see [Directives](./journey.md#directives)). A
-directive on a line of its own stands at the level of the statement after it,
-and one before the header stands at the first column, as a comment line does.
-[fixture: directives/directive-before-the-header] [fixture:
+Keep directives in their authored gaps. Within a printed line, each side keeps
+whether it touches: one space where whitespace was written beside it, touching
+where it was not. mermaid.js removes a directive before it reads the text, so
+retain touching versus separated gaps within a statement (see
+[Directives](./journey.md#directives)). A directive on a line of its own stands
+at the level of the statement after it, and one before the header stands at the
+first column, as a comment line does. [fixture:
+directives/directive-before-the-header] [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
 directives/directive-between-statements-of-a-row] [fixture:
 directives/directive-between-statements-touching] [fixture:
@@ -716,6 +716,12 @@ directives/directive-between-the-id-and-the-width] [fixture:
 directives/directive-after-the-head-of-a-composite] [fixture:
 directives/directive-after-columns] [fixture: directives/directive-after-end]
 [fixture: directives/directive-before-the-directions-of-a-block-arrow]
+
+When formatting splits units that were on the same line, a directive in their
+gap moves with the following unit. Keep its right-side contact or separation;
+break its left contact.
+
+[fixture: block/directives/directive-after-columns]
 
 Input
 ([directives/directive-between-statements-of-a-row-input.mmd](../tests/fixtures/block/directives/directive-between-statements-of-a-row-input.mmd)):

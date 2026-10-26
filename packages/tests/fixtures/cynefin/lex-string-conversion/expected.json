@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The default STRING converter interprets named escapes and drops backslashes from unknown escapes."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "a\nb\tc\r\fd\be\u000bf\u0000gqu0041x41"
+          },
+          {
+            "label": "a\nbqu0041"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

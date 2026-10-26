@@ -91,7 +91,11 @@ const allFixtures = [
   ...(await loadFixtures("architecture")),
   ...(await loadFixtures("radar")),
   ...(await loadFixtures("treemap")),
+  ...(await loadFixtures("treeview")),
   ...(await loadFixtures("railroad")),
+  ...(await loadFixtures("wardley")),
+  ...(await loadFixtures("cynefin")),
+  ...(await loadFixtures("eventmodeling")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)
@@ -108,7 +112,9 @@ describe("the conformance corpus", () => {
   )("%s: formatting is idempotent and keeps the Db", async (_name, fixture) => {
     const input = withoutByteOrderMark(fixture.input)
     const output = await formatMermaid(fixture.input)
-    expect(await formatMermaid(output)).toBe(output)
+    const twice = await formatMermaid(output)
+    expect(twice).toBe(output)
+    expect(await formatMermaid(twice)).toBe(twice)
     const formatted = withoutByteOrderMark(output)
     expect(writtenEmbeddedTexts(formatted), output).toEqual(
       writtenEmbeddedTexts(input),
@@ -116,7 +122,7 @@ describe("the conformance corpus", () => {
     expect(await describeFrontmatterChange(input, formatted)).toBeNull()
     expect(writtenTextKeptUpToSemicolons(input, formatted), output).toBe(true)
     const recorded = fixture.specified ?? fixture.expected
-    const embedded = embeddedValuesOf(fixture)
+    const embedded = embeddedValuesOf(fixture, recorded)
     if (!recorded.accepted || recorded.db === null || embedded === undefined)
       return
     expect(dbOfText(formatted, embedded), output).toEqual(recorded.db)

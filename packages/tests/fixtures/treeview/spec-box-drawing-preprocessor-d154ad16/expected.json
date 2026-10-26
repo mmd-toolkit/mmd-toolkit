@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 46,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > indent format passthrough > should return input without keyword unchanged"
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: not-a-keyword\nsome text"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared pipeline removes a full comment line even inside a quoted name."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a\nb",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

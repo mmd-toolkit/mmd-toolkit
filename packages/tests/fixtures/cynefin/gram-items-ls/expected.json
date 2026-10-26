@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Grammar: U+2028 between domain items is neither native padding nor NEWLINE."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: -> <- at offset: 25, skipped 1 characters. "
+  }
+}

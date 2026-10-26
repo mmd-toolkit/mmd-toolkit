@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/wardley/wardleyParser.spec.ts",
+    "line": 161,
+    "test": "wardley parser > parses component decorators"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Test Decorators",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "API",
+        "label": "API",
+        "x": 70,
+        "y": 60,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "build"
+      },
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 50,
+        "y": 40,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "buy"
+      },
+      {
+        "id": "Cache",
+        "label": "Cache",
+        "x": 60,
+        "y": 50,
+        "className": "component",
+        "inertia": false,
+        "sourceStrategy": "outsource"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

@@ -244,3 +244,12 @@ radar の範囲は [radar](./positions/radar.ja.md#範囲) で定めます。
 Treemap の範囲は [treemap](./positions/treemap.ja.md#範囲)で定義する。
 
 Railroad の範囲は [railroad](./positions/railroad.ja.md#範囲)で定めます。
+
+Wardley の範囲は [wardley](./positions/wardley.ja.md#範囲)で定める。
+
+Cynefin の範囲は [cynefin](./positions/cynefin.ja.md#範囲)に従います。
+
+Eventmodeling の範囲は
+[eventmodeling](./positions/eventmodeling.ja.md#範囲)に従います。
+
+Treeview の範囲は [treeview](./positions/treeview.ja.md#範囲)に従う。

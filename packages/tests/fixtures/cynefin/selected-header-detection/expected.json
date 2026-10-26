@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Detection: a header split by a same-segment selected semicolon rejects before its removal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: cynefin-;beta:complex \"style:#x\""
+  }
+}

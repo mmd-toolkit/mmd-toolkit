@@ -618,6 +618,15 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      その後に次の keyword や値が接着する場合。
      境界は global な directive と選ばれたセミコロンを除いた文で判定する
      （pie3-7）。
+   - 各図種の atom（固定語、ヘッダーの keyword、矢印、共通の keyword、
+     空白を含められない class 名や icon の値）の中と、
+     作者が書いた部品の間にある global な directive と選ばれたセミコロン。
+     atom の中を割り、mermaid.js が受理する場合は、
+     `directive-as-token-boundary` または
+     `ignored-semicolon-as-token-boundary` の印を付ける。
+     pie3-7 のように末尾に接する場合と、atom 自体を割る場合を区別する
+     （review cy12-1、tv12-2。railroad の工程 1・2 と、
+     wardley の工程 1・2 および 3 の review でも確認）。
 
    review がこの一覧にない種類を見つけたら、review の番号とともにここに足す。
    その review を閉じる変更で行う。

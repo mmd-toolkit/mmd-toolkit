@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A retained directive between bare lines survives the C4 reference reading."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 4. Unrecognized text.\n%%%%{wrap}%%%% eventmodelingtf 01 \n---------------^"
+  }
+}

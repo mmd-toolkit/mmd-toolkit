@@ -31,4 +31,8 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "radar",
   "treemap",
   "railroad",
+  "wardley",
+  "cynefin",
+  "eventmodeling",
+  "treeview",
 ]

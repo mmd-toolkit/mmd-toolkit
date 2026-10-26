@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Embedded drawing settings cannot rescue a grammar rejection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 13: unexpected character: ->u<- at offset: 25, skipped 7 characters. Parse error on line 2, column 9: Expecting token of type 'EOF' but found `-->`."
+  }
+}

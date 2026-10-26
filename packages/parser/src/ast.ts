@@ -1,3 +1,10 @@
+import type { TreeviewDiagram, TreeviewTreeNode } from "./ast/treeview.ts"
+import type {
+  EventmodelingDiagram,
+  EventmodelingNode,
+} from "./ast/eventmodeling.ts"
+import type { CynefinDiagram, CynefinNode } from "./ast/cynefin.ts"
+import type { WardleyDiagram, WardleyNode } from "./ast/wardley.ts"
 import type { RailroadDiagram, RailroadNode } from "./ast/railroad.ts"
 import type { TreemapDiagram, TreemapNode } from "./ast/treemap.ts"
 import type { RadarDiagram, RadarNode } from "./ast/radar.ts"
@@ -148,14 +155,15 @@ export interface Comment {
   /**
    * The characters of the comment's mark: `%%` for a comment line; for a
    * diagram comment, `#`, `%%`, or `%` in sequence, `#` or `%%` in state,
-   * and `%%` in class; railroad also uses `/*`, `(*`, and `;`. Null for a
+   * and `%%` in class; railroad also uses `/*`, `(*`, and `;`, and eventmodeling `/*` and `//`. Null for a
    * fragment of a diagram comment after a
    * comment region, which has no mark.
    */
-  readonly mark: "%%" | "#" | "%" | "/*" | "(*" | ";" | null
+  readonly mark: "%%" | "#" | "%" | "/*" | "//" | "(*" | ";" | null
   /**
-   * The source text after the mark, directives included; for a fragment
-   * without a mark, the source text of its range.
+   * The source text of the comment's content, directives included. Excludes
+   * the opening mark and any block closer; a fragment without a mark starts
+   * at its range's start.
    */
   readonly value: string
   /**
@@ -311,6 +319,10 @@ export type DiagramBody =
   | RadarDiagram
   | TreemapDiagram
   | RailroadDiagram
+  | WardleyDiagram
+  | CynefinDiagram
+  | EventmodelingDiagram
+  | TreeviewDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -416,3 +428,7 @@ export type Node =
   | RadarNode
   | TreemapNode
   | RailroadNode
+  | WardleyNode
+  | CynefinNode
+  | EventmodelingNode
+  | TreeviewTreeNode

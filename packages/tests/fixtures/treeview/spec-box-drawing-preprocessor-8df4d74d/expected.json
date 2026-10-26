@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 389,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > error cases > should normalize tabs to spaces"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "file.txt",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

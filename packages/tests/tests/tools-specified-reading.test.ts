@@ -826,13 +826,13 @@ describe("specifiedRunOf: html-tag-in-frontmatter", () => {
     expect(run?.embedded?.title).toBe("<a")
   })
 
-  it("gives the title to embedded where the diagram type has no Db to summarize", async () => {
+  it("keeps an undrawn treeView title in embedded values only", async () => {
     const input = "---\ntitle: <a\n---\ntreeView-beta\n"
     const run = await specifiedRunOf(input, HTML_TAG_MARK, undefined)
     expect(run?.outcome).toEqual({
       accepted: true,
       diagramType: "treeView",
-      db: null,
+      db: { accTitle: "", accDescr: "", nodes: [] },
     })
     expect(run?.embedded?.title).toBe("<a")
   })

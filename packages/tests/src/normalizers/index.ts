@@ -3,7 +3,12 @@ import { normalizeAgentflow, patchAgentflowDb } from "./agentflow.ts"
 import { normalizeArchitecture } from "./architecture.ts"
 import { normalizeBlock, patchBlockDb } from "./block.ts"
 import { normalizeC4, patchC4Db } from "./c4.ts"
+import { normalizeCynefin } from "./cynefin.ts"
 import { normalizeClass, patchClassDb } from "./class.ts"
+import {
+  normalizeEventmodeling,
+  patchEventmodelingDb,
+} from "./eventmodeling.ts"
 import { normalizeEr } from "./er.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
 import { normalizeGantt, patchGanttDb } from "./gantt.ts"
@@ -24,6 +29,8 @@ import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
 import { normalizeTimeline } from "./timeline.ts"
 import { normalizeTreemap } from "./treemap.ts"
+import { normalizeTreeview } from "./treeview.ts"
+import { normalizeWardley } from "./wardley.ts"
 import { normalizeUsecase, patchUsecaseDb } from "./usecase.ts"
 import { normalizeVenn } from "./venn.ts"
 import { normalizeXyChart } from "./xychart.ts"
@@ -76,10 +83,14 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["architecture", normalizeArchitecture],
   ["radar", normalizeRadar],
   ["treemap", normalizeTreemap],
+  ["treeView", normalizeTreeview],
   ["railroad", normalizeRailroad],
   ["railroadEbnf", normalizeRailroad],
   ["railroadAbnf", normalizeRailroad],
   ["railroadPeg", normalizeRailroad],
+  ["wardley", normalizeWardley],
+  ["cynefin", normalizeCynefin],
+  ["eventmodeling", normalizeEventmodeling],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])
@@ -129,6 +140,14 @@ const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
   string,
   DbPatchEntry
 >([
+  [
+    "eventmodeling",
+    {
+      sampleText: "eventmodeling\n",
+      patch: patchEventmodelingDb,
+      appliedTo: "object",
+    },
+  ],
   [
     "gitGraph",
     { sampleText: "gitGraph\n", patch: patchGitgraphDb, appliedTo: "object" },

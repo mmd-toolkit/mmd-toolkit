@@ -18,6 +18,7 @@ import { printRequirement } from "./requirement.ts"
 import { printSankey } from "./sankey.ts"
 import { printSequence } from "./sequence.ts"
 import { printState } from "./state.ts"
+import { printTreeview } from "./treeview.ts"
 import { printTreemap } from "./treemap.ts"
 import { printTimeline } from "./timeline.ts"
 import { printXychart } from "./xychart.ts"
@@ -26,6 +27,9 @@ import { piePrinter } from "./pie.ts"
 import { infoPrinter } from "./info.ts"
 import { architecturePrinter } from "./architecture.ts"
 import { radarPrinter } from "./radar.ts"
+import { eventmodelingPrinter } from "./eventmodeling.ts"
+import { cynefinPrinter } from "./cynefin.ts"
+import { wardleyPrinter } from "./wardley.ts"
 import { railroadPrinter } from "./railroad.ts"
 import { packetPrinter } from "./packet.ts"
 import type { Source } from "./source.ts"
@@ -46,6 +50,18 @@ export interface DiagramTextRules {
 export const diagramTextRules: Readonly<
   Partial<Record<string, DiagramTextRules>>
 > = {
+  EventmodelingDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: eventmodelingPrinter.keepsPrefix,
+  },
+  CynefinDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: cynefinPrinter.keepsPrefix,
+  },
+  WardleyDiagram: {
+    keepsCommentLines: false,
+    keepsPrefix: wardleyPrinter.keepsPrefix,
+  },
   RailroadDiagram: {
     keepsCommentLines: false,
     keepsPrefix: railroadPrinter.keepsPrefix,
@@ -131,5 +147,9 @@ export const diagramPrinters: Readonly<
   ArchitectureDiagram: architecturePrinter.print,
   RadarDiagram: radarPrinter.print,
   TreemapDiagram: printTreemap,
+  TreeviewDiagram: printTreeview,
   RailroadDiagram: railroadPrinter.print,
+  WardleyDiagram: wardleyPrinter.print,
+  CynefinDiagram: cynefinPrinter.print,
+  EventmodelingDiagram: eventmodelingPrinter.print,
 }

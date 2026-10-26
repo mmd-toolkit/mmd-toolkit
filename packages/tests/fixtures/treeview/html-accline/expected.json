@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check HTML attribute rewriting and line-break text in accline."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "<b x='y'>a</b><BR>z",
+    "nodes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: An empty branch after a decoration rejects with its original physical line number."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Line 4: Empty node — expected a filename or directory name after the box-drawing prefix"
+  }
+}

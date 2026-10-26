@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quoted empty content is nonempty to preprocessing and publishes an empty name."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

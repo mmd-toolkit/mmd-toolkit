@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does attached semicolon reject after a pipeline child?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 18: unexpected character: ->;<- at offset: 65, skipped 1 characters. "
+  }
+}

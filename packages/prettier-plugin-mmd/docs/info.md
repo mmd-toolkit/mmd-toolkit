@@ -409,12 +409,17 @@ info
 
 ### Global directives
 
-Keep opaque Root directives in source order and position, including each side's
-touching or separation, because common removal joins the surrounding text. Align
-only an ordinary standalone start one body step in. Keep complete component
-boundaries and value-internal directives, multiline contents, malformed init
-arguments and EOF-reaching endings. Do not gather, reformat or delete them: an
-init directive can change configuration even though info's Db remains empty.
+Keep opaque Root directive source and order because common removal joins the
+surrounding text. Within a printed line, keep whether each side touches or is
+separated. When formatting splits units that were on the same line, a directive
+in their gap moves with the following unit: its right boundary stays touching or
+separated, while its left contact is broken. Align only an ordinary standalone
+start one body step in. Keep complete component boundaries and value-internal
+directives, multiline contents, malformed init arguments and EOF-reaching
+endings. Do not gather, reformat or delete them: an init directive can change
+configuration even though info’s Db remains empty.
+
+[fixture: info/global-directives/header-to-body]
 
 [fixture: info/global-directives/global-colon-brace]
 
@@ -454,6 +459,8 @@ moving a trigger can change semicolon selection and acceptance. Both
 style/classDef passes, case and colon/hash whitespace, Unicode segment bounds
 and directive-rejoined triggers retain source; safe exterior/suffix gaps still
 format. A semicolon is not a general info statement separator.
+
+[fixture: info/semicolons/native-description-value]
 
 [fixture: info/semicolons/semicolon-line-values]
 

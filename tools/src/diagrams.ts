@@ -42,8 +42,12 @@ export const diagramIds: Readonly<
   architecture: ["architecture"],
   radar: ["radar"],
   treemap: ["treemap"],
+  treeview: ["treeView"],
   // IR, EBNF, ABNF and PEG have separate parsers but share the railroad Db.
   railroad: ["railroad", "railroadEbnf", "railroadAbnf", "railroadPeg"],
+  wardley: ["wardley"],
+  cynefin: ["cynefin"],
+  eventmodeling: ["eventmodeling"],
 }
 
 /**

@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Can frontmatter drawing settings change publication or acceptance?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Front",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  },
+  "embedded": {
+    "config": {
+      "wardley": {
+        "width": 14,
+        "height": 15
+      }
+    },
+    "title": "Front"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Detection: a second-scan native directive still needs a closing boundary before the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting: one of these possible Token sequences:\n  1. [cynefin-beta]\n  2. [cynefin-beta:]\nbut found: ''"
+  }
+}

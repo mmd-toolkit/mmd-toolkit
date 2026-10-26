@@ -203,3 +203,12 @@ Radar ranges are defined in [radar](./positions/radar.md#ranges).
 Treemap ranges are defined in [treemap](./positions/treemap.md#ranges).
 
 Railroad ranges follow [railroad](./positions/railroad.md#ranges).
+
+Wardley ranges follow [wardley](./positions/wardley.md#ranges).
+
+Cynefin ranges follow [cynefin](./positions/cynefin.md#ranges).
+
+Eventmodeling ranges follow
+[eventmodeling](./positions/eventmodeling.md#ranges).
+
+Treeview ranges follow [treeview](./positions/treeview.md#ranges).

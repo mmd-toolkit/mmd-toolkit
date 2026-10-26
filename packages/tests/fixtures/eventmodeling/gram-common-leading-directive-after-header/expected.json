@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/eventmodeling.md Common statement values: Does removing a directive immediately after the header join its two surrounding spaces before accDescr?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "  accDescr: D",
+    "frames": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: An empty description block cannot stand as a GWT item and leaves the required clause incomplete. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 33: Expecting token of type 'then' but found ` accDescr {}`.\nParse error on line 1, column 46: Expecting token of type 'EOF' but found `cmd`."
+  }
+}

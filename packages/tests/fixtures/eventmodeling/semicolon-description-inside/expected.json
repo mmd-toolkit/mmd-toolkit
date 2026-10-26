@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A semicolon before the style/hash trigger is not selected and the split atom is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 20: unexpected character: ->;<- at offset: 19, skipped 1 characters.\nLexer error on line 1, column 24: unexpected character: ->:<- at offset: 23, skipped 1 characters.\nLexer error on line 1, column 31: unexpected character: ->:<- at offset: 30, skipped 2 characters. Parse error on line 1, column 15: Expecting token of type 'EOF' but found `accDe`."
+  }
+}

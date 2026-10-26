@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive touching a keyword and its colon is removed before composite-terminal matching."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "accTitle:A",
+    "accDescr": "",
+    "frames": []
+  }
+}

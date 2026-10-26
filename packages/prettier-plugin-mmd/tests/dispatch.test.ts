@@ -34,6 +34,27 @@ beforeEach(() => {
 })
 
 describe("dispatch to diagram printers", () => {
+  it("registers the eventmodeling body printer", async () => {
+    const actual = await vi.importActual<typeof ParserModule>(
+      "@mmd-toolkit/parser",
+    )
+    parse.mockImplementation(actual.parse)
+    expect(await formatMermaid("eventmodeling tf 007evt Dispatch")).toBe(
+      "eventmodeling\n  tf 007 evt Dispatch\n",
+    )
+  })
+  it("registers both cynefin header forms", async () => {
+    const actual = await vi.importActual<typeof ParserModule>(
+      "@mmd-toolkit/parser",
+    )
+    parse.mockImplementation(actual.parse)
+    expect(await formatMermaid('cynefin-beta clear "DispatchBare"')).toBe(
+      'cynefin-beta\n  clear\n    "DispatchBare"\n',
+    )
+    expect(await formatMermaid('cynefin-beta:clear "DispatchColon"')).toBe(
+      'cynefin-beta:\n  clear\n    "DispatchColon"\n',
+    )
+  })
   it("registers the railroad body printer for all four dialects", async () => {
     const actual = await vi.importActual<typeof ParserModule>(
       "@mmd-toolkit/parser",

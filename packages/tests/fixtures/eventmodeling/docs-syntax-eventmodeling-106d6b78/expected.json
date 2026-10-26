@@ -1,0 +1,72 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/eventmodeling.md",
+    "line": 181
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "CartUI",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "command",
+        "entityIdentifier": "AddItem",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "event",
+        "entityIdentifier": "ItemAdded",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "04",
+        "modelEntityType": "event",
+        "entityIdentifier": "External.InventoryChanged",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "05",
+        "modelEntityType": "processor",
+        "entityIdentifier": "InventoryProcessor",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "06",
+        "modelEntityType": "command",
+        "entityIdentifier": "ChangeInventory",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "07",
+        "modelEntityType": "event",
+        "entityIdentifier": "Cart.InventoryChanged",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

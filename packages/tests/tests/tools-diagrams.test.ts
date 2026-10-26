@@ -2,6 +2,29 @@ import { describe, expect, it } from "vitest"
 import { belongsIn, isDiagramType } from "../../../tools/src/diagrams.ts"
 
 describe("belongsIn", () => {
+  it("maps lowercase treeview to Mermaid's mixed-case treeView id", () => {
+    expect(isDiagramType("treeview")).toBe(true)
+    expect(isDiagramType("treeView")).toBe(false)
+    expect(belongsIn("treeview", "treeView")).toBe(true)
+    expect(belongsIn("treeview", "treeview")).toBe(false)
+    expect(belongsIn("treeview", "treeView-beta")).toBe(false)
+  })
+
+  it("takes the Cynefin detector id rather than either header spelling", () => {
+    expect(isDiagramType("cynefin")).toBe(true)
+    expect(belongsIn("cynefin", "cynefin")).toBe(true)
+    expect(belongsIn("cynefin", "cynefin-beta")).toBe(false)
+    expect(belongsIn("cynefin", "cynefin-beta:")).toBe(false)
+    expect(belongsIn("cynefin", "wardley")).toBe(false)
+  })
+
+  it("takes the Wardley detector id rather than its beta header", () => {
+    expect(isDiagramType("wardley")).toBe(true)
+    expect(belongsIn("wardley", "wardley")).toBe(true)
+    expect(belongsIn("wardley", "wardley-beta")).toBe(false)
+    expect(belongsIn("wardley", "radar")).toBe(false)
+  })
+
   it("groups the four railroad ids without treating headers as ids", () => {
     expect(isDiagramType("railroad")).toBe(true)
     for (const id of [

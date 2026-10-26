@@ -22862,3 +22862,734 @@ backslash は escape として解釈せず、そのまま残す。
 
 公開処理は browser global、時刻、乱数を読まず、リンクや data block もない。
 Db patch は不要。
+
+## wardley
+
+`normalizeWardley()` は図種 id `wardley` を要約する。
+描画前に
+[builder の公開値](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L187-L207)を一度読む。
+空の配列は保持し、未定義の任意項目は省く。
+進化の設定がなければ `axes: {}` となる。
+[fixture: wardley/header-only]
+
+| 項目                             | 内容                                                                                                        |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `title`                          | 公開された図全体の題名。なければ空文字。                                                                    |
+| `accTitle`, `accDescr`           | 公開されたアクセシビリティのテキスト。なければ空文字。                                                      |
+| `nodes`                          | `id`, `label`, `x`, `y`, `className` と任意の `labelOffsetX`, `labelOffsetY`, `inertia`, `sourceStrategy`。 |
+| `links`                          | `source`, `target`, `dashed` と任意の `label`, `flow`。                                                     |
+| `trends`                         | `nodeId`, `targetX`。                                                                                       |
+| `pipelines`                      | `nodeId`, `componentIds`。                                                                                  |
+| `annotations`                    | `number`, `coordinates`（各要素は `x`, `y`）, `text`。                                                      |
+| `notes`                          | `text`, `x`, `y`。                                                                                          |
+| `accelerators`, `deaccelerators` | `name`, `x`, `y`。                                                                                          |
+| `annotationsBox`                 | 任意の `x`, `y`。                                                                                           |
+| `axes`                           | 任意の `stages`, `stageBoundaries`。                                                                        |
+| `size`                           | 任意の `width`, `height`。                                                                                  |
+
+renderer は
+[title と size](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L72-L82)を読み、
+[title を実際に描画する](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L164-L181)。
+アクセシビリティの値は
+[共通の描画経路](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)へ渡る。
+[共通の公開 helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)は、
+最後の AST 値が truthy の場合だけ設定する。
+最後が空なら以前の本文の値は公開されず、
+空の本文 title は frontmatter の title を残す。
+[fixture: wardley/db-all-fields] [fixture: wardley/common-repeat]
+[fixture: wardley/common-repeat-empty]
+[fixture: wardley/frontmatter-empty-body-title]
+
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)は、
+anchor、component、pipeline の子の順に公開し、種類の中では記載順を保つ。
+通常の node の id と label は名前で、pipeline の子の id は
+`${parent}_${name}`、label は子の名前となる。
+子の `y` は親の公開値を引き継ぐ。
+リンクの参照解決は id の完全一致、最初の label 一致の順で、
+どちらもなければ未解決の名前を残す。
+[fixture: wardley/db-publication-order]
+[fixture: wardley/db-link-resolution] [fixture: wardley/db-link-exact-id]
+[fixture: wardley/db-pipeline-forward-parent]
+[fixture: wardley/db-pipeline-nested-parent]
+
+builder の
+[Map の更新](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L133)は、
+node、trend、pipeline の初回登録位置を保って値を置き換える。
+node の再定義で label offset を省くと以前の値が残るが、
+strategy などの公開された undefined は以前の値を上書きする。
+component は省略時も `inertia: false` を公開し、
+anchor と pipeline の子はこの項目を省く。
+pipeline の再定義は所属配列を置き換えるが以前の子 node は残す。
+所属配列には子 id の重複も残り、生成 id と記載した id は衝突し得る。
+prototype の名前も通常の Map のキーとなる。
+[fixture: wardley/db-node-duplicates]
+[fixture: wardley/db-trend-duplicates]
+[fixture: wardley/db-pipeline-duplicates]
+[fixture: wardley/db-pipeline-collision]
+[fixture: wardley/db-pipeline-label-inheritance]
+[fixture: wardley/db-prototype-names] [fixture: wardley/db-zero-first]
+[fixture: wardley/db-zero-last]
+
+[リンク](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L173-L187)は、
+重複、自己参照、未解決の端点も保持する。
+破線の矢印は `dashed` を設定する。
+flow は始点の port、終点の port、矢印の順に優先する。
+flow のラベルは空文字でもセミコロンのラベルに優先する。
+[fixture: wardley/db-link-forms]
+[fixture: wardley/db-link-unresolved-duplicates]
+
+[座標変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L9-L30)は、
+進化を `x`、可視性を `y` とする。
+座標は double に直した値で比較し、
+1 以下なら 100 倍し、それより大きければ百分率として保つ。
+結果の double が 0 以上 100 以下でなければ拒否する。
+注釈と加速・減速の座標も、記載した二つの値をこの順に入れ替える。
+ラベル offset は符号付き整数のまま保持する。
+これらは renderer による
+[画面への投影](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L183-L184)の前の値である。
+[fixture: wardley/db-all-fields]
+[fixture: wardley/db-coordinate-boundary]
+[fixture: wardley/db-coordinate-rounding]
+[fixture: wardley/db-coordinate-double-one]
+[fixture: wardley/db-coordinate-double-hundred]
+[fixture: wardley/gram-replaced-invalid-node]
+[fixture: wardley/number-offset-negative-zero]
+
+[残りの公開処理](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L226)は、
+note、注釈、加速・減速をそれぞれ記載順に保持する。
+重複と空文字も残す。
+存在しない id の evolve は公開せず、その目標の範囲も調べない。
+size と evolution は最後の AST の代入を使う。
+annotations box は最初の一つだけを変換し、公開する。
+[fixture: wardley/db-array-duplicates] [fixture: wardley/db-empty-texts]
+[fixture: wardley/db-empty-pipeline-names]
+[fixture: wardley/db-trend-missing] [fixture: wardley/db-singletons-last]
+[fixture: wardley/db-later-invalid-box]
+
+[進化の公開](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)は、
+段階名の端の空白を除き、
+二つ目の名前が truthy なら前後に空白1文字を置いた `/` で結ぶ。
+境界は記載された値だけを段階の順に保持し、
+不足を補わず、範囲や順序も検査しない。
+その境界を使うか等分するかは renderer が決める。
+有限数は数値のまま、非有限数は `toJsonObject()` が共通の
+`numberOrText()` で `"Infinity"`, `"-Infinity"`、負のゼロは 0 とする。
+座標の overflow は正規化より前に拒否されるが、
+size、ラベル offset、段階境界、注釈番号は overflow し得る。
+小数の精度、非正規化数、underflow は注入された converter の
+既定の数値変換に従う。
+[fixture: wardley/db-stages-boundaries]
+[fixture: wardley/db-stage-empty-second-name]
+[fixture: wardley/db-number-overflow]
+[fixture: wardley/number-coordinate-overflow]
+[fixture: wardley/db-number-int-precision]
+[fixture: wardley/db-number-subnormal]
+[fixture: wardley/db-number-underflow]
+
+次の値は要約から除く。
+
+- node の `inPipeline` は renderer が読まない。
+  `isPipelineParent` は `pipelines[].nodeId` から決まる。
+  これらは builder が
+  [設定するフラグ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133)である。
+  [fixture: wardley/db-pipeline-duplicates]
+- trend の `targetY` は全 node の公開後に node の `y` を複製する。
+  [adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)は、
+  その後 node を変更しない。
+  [fixture: wardley/db-all-fields]
+- 軸の `xLabel`, `yLabel` は adapter が代入しない。
+  既定の段階名と等分した幅も
+  [描画の既定値](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L205-L256)である。
+  [fixture: wardley/header-only]
+- 設定、色、描画 id、画面座標と寸法、pipeline の親の描画時の移動。
+  renderer は
+  [`wardley-beta` の設定と theme](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L32-L63)を読む。
+  adapter と builder は `wardley.*` も `wardley-beta.*` も読まない。
+  これらの設定は Wardley の受理条件や公開値を変えない。
+  ただし数値の `wardley.fontFamily` は共通の再帰的な設定の処理で拒否され、
+  該当する fixture は `embedded-data-opaque` を付ける。
+  有効な設定から取り除く Wardley の受理条件のキーはない。
+  [fixture: wardley/config-drawing-site]
+  [fixture: wardley/config-frontmatter-drawing]
+  [fixture: wardley/config-init-drawing]
+  [fixture: wardley/config-frontmatter-cannot-rescue]
+  [fixture: wardley/config-init-cannot-rescue]
+  [fixture: wardley/config-frontmatter-fontfamily-number]
+  [fixture: wardley/config-init-fontfamily-number]
+
+標準の securityLevel では要約は同じになる。
+site の値が `other` で `htmlLabels: true` なら、
+共通のメタデータだけで文字が置き換わり、Wardley 固有のテキストは変わらない。
+[fixture: wardley/config-security-level-other]
+公開処理はブラウザ global、時刻、乱数を読まない。
+外部リンクと data block もなく、Db の patch は不要である。
+
+## cynefin
+
+`normalizeCynefin()` は図 id `cynefin` を要約する。
+描画前の
+[公開 Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L17-L69)
+を読む。空の集合は配列のまま保持し、無い遷移 label は省略する。
+[fixture: cynefin/header-only] [fixture: cynefin/db-empty-texts]
+
+| 項目                   | 内容                                                               |
+| ---------------------- | ------------------------------------------------------------------ |
+| `title`                | 公開された図の title。無ければ空文字列。                           |
+| `accTitle`, `accDescr` | 公開されたアクセシビリティのテキスト。無ければ空文字列。           |
+| `domains`              | 項目を 1 つ以上持つ領域。`name` と、`label` を持つ項目の `items`。 |
+| `transitions`          | 公開順の遷移。`from`、`to`、任意の `label`。                       |
+
+renderer は
+[title](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L423-L433)
+と
+[アクセシビリティのテキスト](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L102-L109)
+を描画する。
+[共通の公開処理](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+は AST の最後の代入が truthy の場合だけ公開する。
+最後が空なら以前の本文の値を抑制する。
+本文の最後の title が空なら frontmatter の title を保持する。
+[fixture: cynefin/db-all-fields] [fixture: cynefin/common-repeat]
+[fixture: cynefin/common-repeat-empty]
+[fixture: cynefin/common-empty-interleaved]
+[fixture: cynefin/frontmatter-empty-body-title]
+
+領域は renderer の
+[参照順](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L233-L246)
+`complex`、`complicated`、`chaotic`、`clear`、`confusion` に並べる。
+要約には項目を 1 つ以上持つ領域だけを含める。
+renderer が
+[未宣言の領域と項目の無い領域を同じ分岐で飛ばす](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L235-L238)
+ため、空の領域の宣言は描画に現れない。
+Map の挿入順は描画で使わない。
+同じ領域の再定義は項目のリスト全体を置き換える。
+最後のブロックが空なら、その領域は要約から省略する。
+項目の順序、重複、空の label、空白を保持する。
+空の label も項目 1 つとして数える。
+renderer が超過表示にまとめる confusion の項目もすべて保持する。
+[fixture: cynefin/header-only]
+[fixture: cynefin/spec-cynefin-integration-d626b3bc]
+[fixture: cynefin/gram-glued-domains] [fixture: cynefin/db-all-fields]
+[fixture: cynefin/db-domain-duplicates]
+[fixture: cynefin/db-domain-empty-first]
+[fixture: cynefin/db-domain-empty-last] [fixture: cynefin/db-empty-texts]
+[fixture: cynefin/gram-inline-items]
+
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+は全領域を公開してから全遷移を公開する。
+遷移の重複や未宣言領域への参照は残り、自己遷移は
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L48-L69)
+が除外する。空の遷移 label は無いものとなり、空白だけの label は残る。
+[fixture: cynefin/gram-transition-first]
+[fixture: cynefin/db-transition-duplicates] [fixture: cynefin/db-self-loops]
+[fixture: cynefin/db-self-loop-empty-label] [fixture: cynefin/db-empty-texts]
+
+図固有の文字列は注入された
+[共通 converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/module.ts#L30-L37)
+の既定の STRING 変換を使う。
+共通メタデータには
+[行とブロックの変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L46-L70)
+を使う。
+cynefin の
+[到達する値の規則](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L19-L31)
+に数値 terminal は無い。
+文字列の数値らしい綴りはテキストのままで、引用しない数は変換前に拒否する。
+正規化する数値比較や丸めの境界は無い。
+[fixture: cynefin/lex-string-conversion]
+[fixture: cynefin/lex-transition-string-conversion]
+[fixture: cynefin/common-line-whitespace]
+[fixture: cynefin/common-block-whitespace]
+[fixture: cynefin/db-number-strings] [fixture: cynefin/number-plus]
+[fixture: cynefin/number-negative-zero] [fixture: cynefin/number-nan]
+[fixture: cynefin/number-infinity] [fixture: cynefin/number-overflow]
+[fixture: cynefin/number-suffix]
+
+要約から除くもの:
+
+- [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L71-L77)
+  が返す設定、theme の色、SVG id、文字の計測値、画面座標。
+  [renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L73-L118)
+  が描画設定を読んで形状を求める。
+  [境界の helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinBoundaries.ts#L31-L79)
+  が描画 id や設定の seed を使うのは描画時だけである。
+  adapter と公開処理は `cynefin.*` を読まない。
+  有効な図の描画設定は受理も公開値も変えない。
+  [fixture: cynefin/config-drawing-site]
+  [fixture: cynefin/config-frontmatter-drawing]
+  [fixture: cynefin/config-init-drawing]
+  [fixture: cynefin/config-frontmatter-cannot-rescue]
+  [fixture: cynefin/config-init-cannot-rescue]
+- 領域の既定の副題、表示件数の上限、超過の label。
+  [描画定数](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L23-L29)
+  または保持した項目リストから求める値である。
+  [fixture: cynefin/db-all-fields]
+- `domains[].name` と重複する Map key と挿入位置。
+  renderer は名前で領域を参照するためである。
+  [fixture: cynefin/db-domain-duplicates]
+
+埋め込まれた数値の `cynefin.fontFamily` は共通の再帰的な設定検査で拒否する。
+その例には `embedded-data-opaque` を付ける。
+それ以外の有効なテキスト内設定から除く cynefin 固有の受理キーは無い。
+比較用の読み取りでは有効な設定と frontmatter の title を保持する。
+[fixture: cynefin/config-frontmatter-fontfamily-number]
+[fixture: cynefin/config-init-fontfamily-number]
+[fixture: cynefin/config-fontfamily-keeps-title]
+[fixture: cynefin/div-invalid-keeps-config]
+[fixture: cynefin/config-frontmatter-nonfinite]
+
+標準の securityLevel では要約は同じになる。
+サイトの値 `other` と `htmlLabels: true` は共通メタデータの文字を置換し、
+項目と遷移の文字列は変えない。
+[fixture: cynefin/config-security-level-other]
+Db のパッチは不要である。
+公開処理は browser global、時刻、乱数を読まず、リンクもデータブロックも無い。
+
+## eventmodeling
+
+[`parser.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14)
+adapter は AST 全体を `setAst` で保存する。
+AST の getter はないため、パッチで `setAst` と `clear` を観測する。
+元の処理を変えず、DOM を使う
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+builder は呼ばない。
+[fixture: eventmodeling/header-only] [fixture: eventmodeling/db-all-fields]
+
+| フィールド                  | 内容                                                        |
+| --------------------------- | ----------------------------------------------------------- |
+| `accTitle`、`accDescr`      | 共通 Db のアクセシビリティ文字列。                          |
+| `frames`                    | 宣言順の frame。同名の重複も残す。                          |
+| `frames[].kind`             | `"time"` または `"reset"`。                                 |
+| `frames[].name`             | 先頭のゼロを含む、書かれた数字列。                          |
+| `frames[].modelEntityType`  | 省略名・正式名を含む、書かれた entity type。                |
+| `frames[].entityIdentifier` | 完全な修飾名。                                              |
+| `frames[].sourceFrames`     | 参照文字列の集合を文字列の昇順で記録。                      |
+| `frames[].data`             | `null`、または kind（inline / block）と value（本文）の組。 |
+
+[`mermaidAPI.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+は共通 getter を読む。
+EM terminal 名は
+[`valueConverter.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41)
+の
+`TITLE`、`ACC_TITLE`、`ACC_DESCR` と異なる。
+fallback は keyword と区切りを含む terminal 全体を残す。
+[`commonDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L24)
+setter は title の先頭空白と description の LF 後の空白を除く。
+繰り返しは最後の terminal が残り、
+payload が空でも生の terminal が空でなければ置き換える。
+
+到達する terminal は unit の先頭に ASCII space/tab の連なりを持つ。
+字下げは共通 directive、共通 comment region、
+選ばれた semicolon を除いた後の本文で判断する。
+共通 comment region は、その字下げと終わりの LF ごと除かれる。
+閉じた共通 directive だけを除いても、その外の LF は残るため、
+directive だけの行と空行は LF を残す。
+選ばれた semicolon を除いても LF は残る。
+その後、次の行の字下げを取れるかは、
+字下げの直前に残る LF を前の単位が消費したかで決まる。
+消費していれば、共通の形が字下げを terminal の値の一部として取れる。
+字下げがなければ `EM_ID` が勝つ。
+LF が残っていれば、空白 token が LF と字下げを消費し、
+keyword の位置では `EM_ID` が勝つ。
+block-data、隠れた YAML、隠れた directive は直後の LF を消費するが、
+LS と PS は空白 token が読むために残る。
+選ばれた semicolon の除去で native directive の closer と LF が直結すると、
+その directive が LF を消費できる。
+closer と LF の間に水平空白があれば、その LF は消費しない。
+同じ行では、行内の共通 directive や選ばれた semicolon をまたいでも、
+残る ASCII space/tab の連なりが共通の形を成立させられる。
+選ばれない semicolon は空白ではなく、その gap では拒否する。
+空の説明ブロックは文として残り、後ろの LF は消費しないが、
+同じ行の closing brace の直後の padding は次の共通の形が取れる。
+この規則は
+[`event-modeling.langium`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70)
+による。
+[fixture: eventmodeling/common-inline]
+[fixture: eventmodeling/common-whitespace]
+[fixture: eventmodeling/common-repeat]
+[fixture: eventmodeling/common-repeat-empty]
+[fixture: eventmodeling/common-description-repeat]
+[fixture: eventmodeling/common-line-keywords]
+[fixture: eventmodeling/lex-common-after-block-lf-indented]
+[fixture: eventmodeling/lex-common-after-block-lf-unindented]
+[fixture: eventmodeling/lex-common-after-note-lf-tab]
+[fixture: eventmodeling/lex-common-after-yaml-lf-indented]
+[fixture: eventmodeling/lex-common-after-yaml-lf-unindented]
+[fixture: eventmodeling/lex-common-after-directive-lf-indented]
+[fixture: eventmodeling/lex-common-after-directive-lf-unindented]
+[fixture: eventmodeling/lex-common-after-block-same-line-tab]
+[fixture: eventmodeling/lex-common-after-block-ls-indented]
+[fixture: eventmodeling/lex-common-after-yaml-crlf-indented]
+[fixture: eventmodeling/lex-common-after-block-ps-indented]
+[fixture: eventmodeling/lex-common-yaml-comment-line-padding]
+[fixture: eventmodeling/lex-common-block-comment-line-padding]
+[fixture: eventmodeling/lex-common-native-directive-comment-line-padding]
+[fixture: eventmodeling/lex-common-yaml-directive-only-line]
+[fixture: eventmodeling/lex-common-block-directive-only-line]
+[fixture: eventmodeling/lex-common-yaml-blank-line-padding]
+[fixture: eventmodeling/lex-common-block-inline-directive-padding]
+[fixture: eventmodeling/lex-common-selected-semicolon-exposes-lf]
+[fixture: eventmodeling/lex-common-selected-semicolon-padding]
+[fixture: eventmodeling/lex-common-selected-semicolon-before-lf]
+[fixture: eventmodeling/lex-common-unselected-semicolon-padding]
+[fixture: eventmodeling/lex-common-empty-description-inline-padding]
+[fixture: eventmodeling/lex-common-empty-description-leaves-lf]
+
+公開される `EM_*` の値には前置の水平 padding、keyword、区切りも入る。
+直前の ASCII space/tab の連なりは、上記の共通の除去をすべて施した後に数える。
+除いた共通 directive または選ばれた semicolon の両側の space と tab は、
+一つの連なりにつながる。
+たとえば ` \t; accDescr: D` の semicolon が選ばれれば、
+` \t accDescr: D` になる。
+共通 comment region 自身の字下げと終わりの LF は除き、
+残る prefix だけを保つ。
+除いた閉じた directive の外の LF、空行の LF、
+選ばれた semicolon の後の LF は残る。
+LF、LS、PS は水平の連なりに含めず、terminal は上記の字下げの条件も満たす。
+選ばれない semicolon はこの gap では拒否され、
+空の説明ブロックは文の境目として残る。
+どちらも除かれたかのように、前後の padding をつながない。
+[fixture: eventmodeling/gram-common-leading-directive-both-sides]
+[fixture: eventmodeling/gram-common-leading-directive-before-padding]
+[fixture: eventmodeling/gram-common-leading-directive-after-padding]
+[fixture: eventmodeling/gram-common-leading-directive-after-header]
+[fixture: eventmodeling/gram-common-block-leading-directive]
+[fixture: eventmodeling/lex-common-block-directive-only-line]
+[fixture: eventmodeling/gram-common-leading-semicolon-both-sides]
+[fixture: eventmodeling/gram-common-leading-semicolon-after-padding]
+[fixture: eventmodeling/gram-common-leading-semicolon-before-padding]
+[fixture: eventmodeling/gram-common-leading-semicolon-unselected]
+[fixture: eventmodeling/gram-common-leading-comment-region-padding]
+[fixture: eventmodeling/lex-common-yaml-blank-line-padding]
+[fixture: eventmodeling/lex-common-after-block-ls-indented]
+[fixture: eventmodeling/lex-common-after-block-ps-indented]
+[fixture: eventmodeling/gram-common-leading-empty-description-boundary]
+
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+builder は frame を宣言順に処理する。
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L179-L318)
+は entity type と修飾名を読む。
+reset frame は
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L531-L601)
+builder で入力の関係線を作らない。
+名前は数ではなく文字列で、`1`、`01`、`001` は別名である。
+同じ名前の再定義でも frame は置き換わらない。
+[fixture: eventmodeling/db-all-aliases]
+[fixture: eventmodeling/db-qualified-names]
+[fixture: eventmodeling/db-frame-order]
+[fixture: eventmodeling/db-frame-duplicates]
+[fixture: eventmodeling/db-source-leading-zero]
+
+source の探索は frame 宣言順に `$refText` の所属を調べる。
+参照の記述順と重複は読まれないため、要約はソートした集合を持つ。
+空集合では暗黙の関係を推論するが、
+一致先のない非空集合はその代用にならないので区別を残す。
+前方参照と自己参照も文字列であり、Langium の `.ref` は読まない。
+[fixture: eventmodeling/db-source-order]
+[fixture: eventmodeling/db-source-order-control]
+[fixture: eventmodeling/db-source-missing]
+[fixture: eventmodeling/db-source-forward]
+[fixture: eventmodeling/db-source-self]
+
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L320-L368)
+は参照名と一致する最初の data 宣言を選ぶ。
+一致すれば inline data に優先し、
+未解決なら inline data またはデータなしになる。
+要約は選ばれた terminal を frame ごとに一度保持し、
+区切りと空白も残す。
+未使用の data 宣言と探索後の参照名は保持しない。
+空の block も一致として扱う。
+[fixture: eventmodeling/db-data-first]
+[fixture: eventmodeling/db-data-empty-first]
+[fixture: eventmodeling/db-data-empty-last]
+[fixture: eventmodeling/db-data-reference-inline]
+[fixture: eventmodeling/db-data-unresolved-inline]
+[fixture: eventmodeling/db-data-unresolved]
+[fixture: eventmodeling/db-data-unused]
+
+[`parse.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+は lexer error と parser error を拒否する。
+登録された
+[`event-modeling-validator.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L25)
+と参照の解決は実行しない。
+不適切な source type、未定義参照、前方参照、重複定義も受理される。
+entity 宣言、note、GWT は AST にあるが
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+は読まない。
+[fixture: eventmodeling/error-start]
+[fixture: eventmodeling/error-recovered]
+[fixture: eventmodeling/error-after-prefix]
+[fixture: eventmodeling/frame-missing-name]
+[fixture: eventmodeling/validator-command-invalid]
+[fixture: eventmodeling/validator-event-invalid]
+[fixture: eventmodeling/validator-readmodel-invalid]
+[fixture: eventmodeling/validator-processor-invalid]
+[fixture: eventmodeling/validator-ui-invalid]
+[fixture: eventmodeling/validator-reset-invalid]
+[fixture: eventmodeling/link-note-forward]
+[fixture: eventmodeling/link-gwt-forward]
+[fixture: eventmodeling/db-entities-notes-gwt]
+
+除外するもの：
+
+- 図全体の title：保存はされるが
+  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
+  は描かない。
+  アクセシビリティ文字列は別に残す。
+  [fixture: eventmodeling/common-title-only]
+  [fixture: eventmodeling/frontmatter-title]
+- data type：
+  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L320-L368)
+  と描画は tag を参照せず、
+  JSON、Markdown、HTML などとして本文を解析しない。
+  native な text terminal であり、opaque な `@{ ... }` ではない。
+  `dataBlockEffects` はない。
+  [fixture: eventmodeling/data-all-types]
+  [fixture: eventmodeling/data-block-types]
+  [fixture: eventmodeling/lex-inline-empty]
+- 残りの AST、CST、container、参照オブジェクト、
+  model entity、note、GWT、未使用 data：描画入力を追加しない。
+  [fixture: eventmodeling/db-all-fields]
+  [fixture: eventmodeling/db-entities-notes-gwt]
+- 座標、寸法、HTML、色、swimlane、推論された関係：
+  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+  と
+  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
+  が保持した項目、測定、定数、設定から導く。
+  要約はこの計算を実行しない。
+  [fixture: eventmodeling/config-drawing-site]
+  [fixture: eventmodeling/config-frontmatter-drawing]
+  [fixture: eventmodeling/config-init-drawing]
+
+数の Db 項目はない。
+frame 名も data 内の数も文字列なので、
+非有限値の正規化と丸めの境界は到達しない。
+[fixture: eventmodeling/number-data-text]
+[fixture: eventmodeling/number-four]
+[fixture: eventmodeling/number-overflow]
+
+公開時に eventmodeling 固有の受理用設定は読まない。
+有効な `eventmodeling.padding` と `eventmodeling.useMaxWidth` でも、
+不正な構文を受理させられない。
+埋め込みの `eventmodeling.fontFamily` が数なら、
+共通の再帰的な設定処理が失敗する。
+opaque-data の比較は独立した有効な frontmatter title と設定を残す。
+未知の site `securityLevel` は共通の文字列処理を変えるが、
+標準の四つでは要約が一致する。
+[fixture: eventmodeling/config-frontmatter-cannot-rescue]
+[fixture: eventmodeling/config-init-cannot-rescue]
+[fixture: eventmodeling/config-frontmatter-fontfamily-number]
+[fixture: eventmodeling/config-init-fontfamily-number]
+[fixture: eventmodeling/config-fontfamily-keeps-title]
+[fixture: eventmodeling/div-invalid-keeps-config]
+[fixture: eventmodeling/config-security-level-other]
+
+本文は共通の前処理と
+[`utils.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L924)
+を経て公開された terminal の値である。
+数値文字参照の内部マーカーもそのまま保持する。
+[fixture: eventmodeling/entity-texts]
+[fixture: eventmodeling/entity-common]
+
+[`Diagram.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L77-L83)
+は parse の前に LF を足す。
+EOF で閉じる data block の公開値には、その LF も含まれ得る。
+要約はそれも保持する。
+閉じた後の空白は、LF を消費しない lookahead の境界にもなる。
+[fixture: eventmodeling/data-block-close-eof]
+[fixture: eventmodeling/data-block-close-space]
+
+## treeview
+
+`normalizeTreeview()` は Mermaid の検出 id `treeView` を要約する。
+[大文字小文字を区別する header](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)
+は `treeView-beta`。[fixture: treeview/header-only] [fixture:
+treeview/header-lower]
+
+| フィールド                        | 内容                                               |
+| --------------------------------- | -------------------------------------------------- |
+| `accTitle`, `accDescr`            | 公開されたアクセシビリティ文字列。なければ空文字。 |
+| `nodes`                           | 公開順の外側のノード。                             |
+| `name`, `nodeType`                | 変換後の名前と `"file"` または `"directory"`。     |
+| `cssClass`, `icon`, `description` | 変換後の任意の注釈。値がなければ省略。             |
+| `children`                        | 公開順の子ノード。葉でも空の配列を持つ。           |
+
+要約は
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/db.ts#L40-L75)
+の children を取り、renderer はそれを
+[再帰的にたどる](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/renderer.ts#L140-L182)。
+階層、順序、重複名、空の名前を保つ。file も子を持てる。
+Db は新しいノード以上の字下げを持つ祖先を取り除き、
+最後に残ったノードの子へ追加する。[fixture: treeview/db-indent-pop]
+[fixture: treeview/db-first-indented] [fixture: treeview/db-file-parent]
+[fixture: treeview/db-duplicate-names] [fixture: treeview/db-empty-names]
+
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39)
+は変換後の名前の末尾の `/` を一文字除いて `"directory"` を公開し、
+それ以外は `"file"` を公開する。
+空の `icon()` は `"none"`、未指定の icon は省略。
+変換後が空の description は公開しない。
+class と icon の反復代入は最後の値を保つ。[fixture:
+treeview/db-directory-trailing-space] [fixture: treeview/db-icon-none]
+[fixture: treeview/db-description-empty] [fixture: treeview/db-repeat-class]
+[fixture: treeview/db-repeat-icon]
+[fixture: treeview/db-repeat-icon-empty-first]
+
+この図種の
+[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L1-L64)
+は `common.langium` を import しない。
+独自の共通 terminal も名前が `TITLE`、`ACC_TITLE`、`ACC_DESCR` なので、
+common converter が接頭辞を除き、空白を正規化する。
+共通の
+[公開 helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+は最後の値が truthy の場合だけ代入する。
+アクセシビリティ文字列は
+[共通の SVG 描画処理](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628)
+が読む。[fixture: treeview/common-whitespace] [fixture: treeview/common-repeat]
+[fixture: treeview/common-repeat-empty]
+
+独自の
+[converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/valueConverter.ts#L10-L38)
+は空白もタブも字下げ一文字分と数える。
+引用符は区切りだけを除き、escape は解釈しない。
+bare name は末尾の ASCII 空白とタブだけを除く。
+改行が hidden なので、
+引用名の行末字下げが次のノードの字下げになる場合がある。
+[fixture: treeview/db-tabs-one-unit] [fixture: treeview/db-quote-conversion]
+[fixture: treeview/db-bare-internal-space]
+[fixture: treeview/db-quoted-tail-space]
+[fixture: treeview/db-quoted-tail-tab]
+
+parse の前の
+[`preprocessBoxDrawing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.ts#L67-L208)
+は、共通の
+[directive とコメントの除去](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L33-L65)
+および
+[選ばれたセミコロンの除去と文字参照の符号化](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L919)
+の後で、LF で区切る物理行を処理する。
+[Diagram.fromText](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L77-L83)
+がこの順序で adapter に渡す。
+行の中か行だけの directive とともに除かれた罫線の文字は、
+罫線モードの選択に使われない。
+`#9500;` のような数値文字参照は branch の文字にならないが、
+隣の実際の dash は罫線モードを選べる。[fixture:
+treeview/box-global-directive-line]
+[fixture: treeview/box-global-directive-inline]
+[fixture: treeview/box-entity-not-branch]
+[fixture: treeview/box-entity-mixed-indent]
+[fixture: treeview/box-physical-selected-semicolon]
+[fixture:
+treeview/box-physical-comment-line]
+
+前処理は引用符やアクセシビリティのブロックの状態を持たない。
+どちらの値の中でも、罫線モードでは branch のない装飾だけの物理行が消え、
+通常の字下げ行は拒否されうる。
+空の物理行は残り、U+2028 と U+2029 は物理行を区切らない。
+[fixture: treeview/box-drop-decoration]
+[fixture: treeview/box-block-decoration]
+[fixture:
+treeview/box-block-decoration-plain]
+[fixture: treeview/box-block-indent-error]
+[fixture: treeview/box-quoted-decoration]
+[fixture:
+treeview/box-quoted-indent-error]
+[fixture: treeview/box-physical-directive-line]
+[fixture: treeview/box-physical-directive-inline]
+[fixture:
+treeview/box-physical-selected-semicolon]
+[fixture:
+treeview/box-physical-comment-line]
+[fixture: treeview/box-physical-empty-line]
+[fixture: treeview/box-physical-ls]
+[fixture: treeview/box-physical-ps]
+[fixture:
+treeview/box-physical-empty-description]
+
+名前や description の中の branch でも、前の文字列を捨てることがある。
+書き換える branch の行ではタブを 4 つの ASCII 空白へ展開する。
+branch と直後の連続する dash の後は ASCII 空白だけを飛ばし、
+先頭の NBSP は名前に残る。
+装飾だけの行を除き、branch がなく罫線の文字を含む行は、
+タブを含めて元の文字列を保つ。
+[fixture: treeview/box-quoted-branch]
+[fixture: treeview/box-description-branch]
+[fixture: treeview/box-tab-name]
+[fixture: treeview/box-branch-leading-nbsp]
+[fixture: treeview/box-branchless-tab-preserved]
+[fixture:
+treeview/box-tabs-after-directive-line]
+[fixture:
+treeview/box-tabs-after-directive-inline]
+[fixture:
+treeview/box-tabs-after-selected-semicolon]
+[fixture:
+treeview/box-tabs-after-comment-line]
+[fixture: treeview/box-tabs-after-empty-line]
+[fixture: treeview/box-tabs-after-empty-description]
+[fixture:
+treeview/box-branch-leading-ls]
+[fixture: treeview/box-branch-leading-ps]
+
+空白だけの行、コメント行、metadata の行はそのまま通す。
+罫線モードのそれ以外の空白だけでない行は、
+先頭に空白があり罫線の文字がなければ拒否する。
+この判定は文法の ASCII 空白とタブではなく、JavaScript の `\s` を使う。
+そのため、空白でないテキストの前の NBSP、U+2028、U+2029 は拒否されるが、
+NBSP だけの行は空白だけの行として通す。[fixture: treeview/box-mixed-reject]
+[fixture: treeview/box-mixed-indent-nbsp]
+[fixture: treeview/box-mixed-indent-ls]
+[fixture: treeview/box-mixed-indent-ps]
+[fixture:
+treeview/box-mixed-indent-directive-inline]
+[fixture:
+treeview/box-mixed-indent-directive-line]
+[fixture:
+treeview/box-mixed-indent-selected-semicolon]
+[fixture:
+treeview/box-mixed-indent-comment-line]
+[fixture:
+treeview/box-mixed-indent-empty-line]
+[fixture:
+treeview/box-mixed-indent-empty-description]
+[fixture:
+treeview/box-blank-nbsp-line]
+[fixture: treeview/box-tabs-after-empty-description]
+[fixture: treeview/box-physical-empty-description]
+[fixture: treeview/box-native-comment-pass]
+
+最初の正の branch 列が区間の幅を決め、
+列を幅で割った値を丸めて 1 を足し、branch の深さにする。
+[fixture: treeview/box-infer-first-column]
+[fixture: treeview/box-round-below]
+[fixture: treeview/box-round-above]
+
+要約から除くもの:
+
+- 固定の人工 root（`/`、directory）、生成 id、counter、stack、元の字下げ幅。
+  階層がすでに各ノードを一度ずつ保つ。[fixture: treeview/header-only]
+  [fixture: treeview/db-all-fields]
+- 図全体の title。adapter は保存するが
+  [renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/renderer.ts#L218-L240)
+  は描かない。frontmatter title は embedded に残る。[fixture:
+  treeview/db-all-fields] [fixture: treeview/frontmatter-title]
+- `getConfig()` の設定、解決後の icon 参照と SVG、`BBox`、座標、寸法、色。
+  描画への入力か描画時に導く値。
+  明示された icon は要約に残すが、既定値や filename/extension の対応は
+  [`getNodeIcon()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/icons.ts#L77-L100)
+  が描画時に解決する。
+  `treeView.*` は parse と公開へ影響せず、opaque data の受理の鍵もない。
+  [fixture: treeview/config-drawing-site] [fixture:
+  treeview/config-frontmatter-drawing] [fixture: treeview/config-init-drawing]
+  [fixture: treeview/config-frontmatter-cannot-rescue] [fixture:
+  treeview/config-frontmatter-cannot-reject] [fixture:
+  treeview/config-init-cannot-rescue] [fixture:
+  treeview/config-init-cannot-reject]
+
+adapter は description、
+共通 setter はアクセシビリティのテキストを sanitize する。
+サイトの `securityLevel` が未知の値なら DOMPurify を無効にしていても
+markup の文字を置き換え、`htmlLabels` を無効にすると置き換えを行わない。
+[fixture: treeview/config-security-level-default] [fixture:
+treeview/config-security-level-other] [fixture:
+treeview/config-security-level-other-html-false]
+
+parse は browser global、時刻、乱数を読まず、link と data block もなく、
+Db の patch は不要。数値の要約項目もない。

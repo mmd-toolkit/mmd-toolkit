@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Selected semicolons: a semicolon before the qualifying hash is not removed and splits the arrow."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->-<- at offset: 21, skipped 4 characters. Parse error on line 2, column 20: Expecting token of type 'EOF' but found `:`."
+  }
+}

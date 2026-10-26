@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does spaced semicolon reject after a pipeline child?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 19: unexpected character: ->;<- at offset: 66, skipped 1 characters. "
+  }
+}

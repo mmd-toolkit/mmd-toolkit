@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directives between components preserve existing whitespace boundaries."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [
+          "02"
+        ],
+        "data": {
+          "kind": "inline",
+          "value": "{ x }"
+        }
+      }
+    ]
+  }
+}

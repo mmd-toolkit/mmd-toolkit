@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Directive treeView settings affect only drawing."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a.ts",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "child",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "treeView": {
+        "useMaxWidth": false,
+        "rowIndent": 3,
+        "paddingX": 2,
+        "paddingY": 1,
+        "lineThickness": 4,
+        "showIcons": true,
+        "defaultIconPack": "custom",
+        "filenameIcons": {
+          "a.ts": "logos:typescript"
+        },
+        "extensionIcons": {
+          "ts": "none"
+        }
+      }
+    }
+  }
+}

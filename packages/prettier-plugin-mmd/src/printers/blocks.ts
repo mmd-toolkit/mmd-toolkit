@@ -3,6 +3,7 @@ import { builders } from "prettier/doc"
 import type { Range } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
+import type { GapRule } from "./atoms.ts"
 import { endsWithSpaceOrTab, readGap } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
 import {
@@ -51,6 +52,12 @@ export interface Positioned {
  * is the statement type of the diagram type.
  */
 export interface BlockRules<Statement extends Positioned> {
+  /** Attach a unit with its complete source gap instead of choosing a new line. */
+  readonly writtenGapBefore?: (statement: Statement) => boolean
+  /** A leading owned form can print separately before the unit's first atom. */
+  readonly printedStart?: (statement: Statement) => number
+  /** Ordinary gaps between joined statements, after protected/trivia gaps. */
+  readonly inlineGapBefore?: (statement: Statement) => GapRule | undefined
   /** Whitespace already supplied by a statement's planned indentation. */
   readonly relocatedWhitespace?: readonly Range[]
   /**
@@ -350,6 +357,11 @@ export function printBlock<Statement extends Positioned>(
    */
   let extra = ""
 
+  /** The source boundary after any separately printed owned prefix forms. */
+  function printedStartOf(statement: Statement): number {
+    return rules.printedStart?.(statement) ?? statement.range[0]
+  }
+
   /**
    * The indentation that a line of only directives keeps instead of the one
    * of the block, or undefined (see `BlockRules.keepsDirectiveLinesUnindented`):
@@ -538,7 +550,7 @@ export function printBlock<Statement extends Positioned>(
         rules.diagramLineEnd?.(stretchEnd) ?? Infinity,
       )
       const following = statements[after]
-      if (following === undefined || following.range[0] >= lineEnd) {
+      if (following === undefined || printedStartOf(following) >= lineEnd) {
         return { start, end: Math.max(stretchEnd, lineEnd), first, after }
       }
       stretchEnd = Math.max(stretchEnd, rules.printedEnd(following))
@@ -604,17 +616,22 @@ export function printBlock<Statement extends Positioned>(
     let position = stretch.start
     for (const [index, statement] of covered.entries()) {
       parts.push(
-        printInlineGap(
-          source,
-          position,
-          statement.range[0],
-          {
-            atLineStart:
-              position === stretch.start && stretch.start !== bounds.start,
-            atLineEnd: false,
-          },
-          rules.keptInlineGapEnd,
-        ),
+        rules.writtenGapBefore?.(statement) === true
+          ? printAsWritten(source, position, printedStartOf(statement))
+          : printInlineGap(
+              source,
+              position,
+              printedStartOf(statement),
+              {
+                atLineStart:
+                  position === stretch.start &&
+                  (stretch.start !== bounds.start ||
+                    rules.keepsOpeningLine === false),
+                atLineEnd: false,
+              },
+              rules.keptInlineGapEnd,
+              rules.inlineGapBefore?.(statement),
+            ),
         docs[stretch.first + index],
       )
       position = rules.printedEnd(statement)
@@ -697,9 +714,30 @@ export function printBlock<Statement extends Positioned>(
     const index = next
     const statement = statements[index]
     const end = rules.printedEnd(statement)
+    if (rules.writtenGapBefore?.(statement) === true) {
+      // The gap is part of the unit's lexical boundary, including whitespace
+      // across removed trivia. Preserve it before ordinary line selection
+      // (docs/eventmodeling.md, Common boundaries).
+      const previous = lines.pop()
+      pushLine({
+        ...(previous ?? { blankBefore: false }),
+        doc: [
+          previous?.doc ?? "",
+          printAsWritten(source, offset, printedStartOf(statement)),
+          docs[index],
+        ],
+        endsWithWhitespace: endsWithSpaceOrTab(
+          source.text.slice(printedStartOf(statement), end),
+        ),
+      })
+      if (previous === undefined) continuesOpeningLine = true
+      next++
+      offset = end
+      continue
+    }
     const startsStretch =
       isKept(end - 1) ||
-      (!rules.holdsStatements(statement) && isKept(statement.range[0]))
+      (!rules.holdsStatements(statement) && isKept(printedStartOf(statement)))
     if (
       !startsStretch &&
       bounds.isTopLevel &&
@@ -712,15 +750,15 @@ export function printBlock<Statement extends Positioned>(
     // A kept line starts where its content starts, so that a `;` or a
     // directive before its first statement stays on it, unless the line of
     // the diagram starts later on the line of the source.
-    const contentStart = findContentStart(source, statement.range[0])
+    const contentStart = findContentStart(source, printedStartOf(statement))
     const contentEnd = rules.diagramLineEnd?.(contentStart)
     const start =
-      (contentEnd === undefined || statement.range[0] <= contentEnd) &&
+      (contentEnd === undefined || printedStartOf(statement) <= contentEnd) &&
       startsStretch &&
-      isKept(statement.range[0]) &&
+      isKept(printedStartOf(statement)) &&
       (rules.diagramLineEnd === undefined || contentStart >= offset)
         ? Math.max(offset, contentStart)
-        : statement.range[0]
+        : printedStartOf(statement)
     const keptEnd = rules.keptGapEnd?.(offset, start, true)
     const triviaBreak = triviaBreakBefore(start)
     const writtenBreak =
@@ -750,7 +788,7 @@ export function printBlock<Statement extends Positioned>(
           rules.blankBeforeStatement?.(statement, gap) ??
           (hasBodyLines() && gap.blankAfter),
         endsWithWhitespace: endsWithSpaceOrTab(
-          source.text.slice(statement.range[0], end),
+          source.text.slice(printedStartOf(statement), end),
         ),
       })
       next++
@@ -828,6 +866,7 @@ export function printBlock<Statement extends Positioned>(
         : {
             writtenEnd: [
               triviaEnd,
+              !bounds.isTopLevel ||
               source.text.endsWith("\n") ||
               endsInsideOpenText(source) ||
               endsInsideValue
@@ -956,6 +995,32 @@ export function printClosedBlock(
   ]
 }
 
+/** A range-ended child body has no closing line or final line break of its own. */
+export function printOpenBlock(
+  header: Line,
+  block: PrintedBlock,
+  depth: number,
+  options: ParserOptions<MermaidAst>,
+): Doc {
+  const first = block.lines.at(0)
+  return [
+    header.doc,
+    first === undefined
+      ? ""
+      : indent([
+          block.continuesOpeningLine
+            ? ""
+            : lineBreakBetween(
+                header,
+                first,
+                indentationOf(options, depth + 1),
+              ),
+          joinLines(block.lines, indentationOf(options, depth + 1)),
+        ]),
+    block.writtenEnd ?? "",
+  ]
+}
+
 /** Where a gap within a kept line lies on the line. */
 interface InlinePlace {
   /** Whether nothing is printed before the gap on its line. */
@@ -975,10 +1040,14 @@ function printInlineGap(
   end: number,
   place: InlinePlace,
   keptEnd?: (start: number) => number,
+  ordinaryRule?: GapRule,
 ): Doc {
-  if (start >= end) return ""
-  if (keptEnd !== undefined && end <= keptEnd(start))
+  if (keptEnd !== undefined && keptEnd(start) > start && end <= keptEnd(start))
     return printAsWritten(source, start, end)
+  if (start >= end)
+    return ordinaryRule === "space" && !place.atLineStart && !place.atLineEnd
+      ? " "
+      : ""
   const gap = readGap(source, start, end, true)
   if (gap.breaksLine) {
     throw new Error(
@@ -987,6 +1056,8 @@ function printInlineGap(
   }
   const run = gap.leading ?? gap.trailing
   if (run === null) {
+    if (ordinaryRule !== undefined && !place.atLineStart && !place.atLineEnd)
+      return ordinaryRule === "space" ? " " : ""
     const spaced =
       !place.atLineStart &&
       !place.atLineEnd &&

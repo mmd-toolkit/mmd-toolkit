@@ -626,6 +626,87 @@ native の残る YAML は別に RailroadIgnoredText に保ち、設定を適用�
 [fixture: railroad/ir-prefix-yaml-no-bare]
 [fixture: railroad/ir-div-frontmatter-invalid]
 
+### Wardley
+
+木は認識した真の frontmatter と global directive を共有の不透明な record に持て
+ます。native の残存 YAML は別に WardleyIgnoredText に属し、
+設定を適用しません。node を持つことは埋め込み YAML や設定を解釈することを要しな
+いため、
+既存の opaque 規則は Mermaid のデータ処理が失敗する認識済みの本文を受理しま
+す。specified の比較は title と他の有効な設定を保ちます。
+数値の wardley.fontFamily は共通の設定処理で失敗しえますが、wardley-beta の描画
+設定の control は失敗しません。
+いずれも新たな Wardley 固有の受理設定ではありません。
+[fixture: wardley/div-frontmatter-invalid]
+[fixture: wardley/config-frontmatter-fontfamily-number]
+[fixture: wardley/config-init-fontfamily-number]
+[fixture: wardley/config-fontfamily-keeps-title]
+[fixture: wardley/div-invalid-keeps-config]
+[fixture: wardley/config-frontmatter-beta-fontfamily-number]
+[fixture: wardley/detect-block-after-directive]
+
+### Cynefin
+
+共有のレコードに認識した frontmatter と共通 directive の全体を持てるため、YAML
+や設定が読めないことを理由に構文を拒否しない。不正なデータで有効な title や設定
+を消さず、共有の比較の設定の規則を適用する。retained な native YAML は代わりに
+CynefinIgnoredText である。 [fixture: cynefin/div-frontmatter-invalid]
+[fixture: cynefin/div-init-invalid-colour]
+[fixture: cynefin/div-init-primitive-wrap]
+[fixture: cynefin/config-frontmatter-fontfamily-number]
+[fixture: cynefin/config-init-fontfamily-number]
+[fixture: cynefin/config-fontfamily-keeps-title]
+[fixture: cynefin/div-invalid-keeps-config]
+[fixture: cynefin/detect-retained-yaml-properties]
+
+[pin の文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)と[公開の adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)は共通の前処理と検出の結果を読みます。[Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、[木](../ast/cynefin.ja.md)に書かれた形を保ちます。 [fixture: cynefin/db-all-fields]
+
+### eventmodeling
+
+eventmodeling には除くべき図種固有の受理の鍵はありません。
+Frontmatter と共通 directive の record は、
+不正な YAML や拒否される設定を評価せず持てます。
+設定検証を構文木に写すと opaque-data の契約を破ります。
+数値の埋め込み eventmodeling.fontFamily や不正な共通 theme の data は Mermaid の
+設定の導出で失敗しえます。
+指定の比較は拒否された埋め込み block だけを除き、
+独立した有効な title/設定と native の retained prefix を保ちます。
+native data の 本文や json/type tag は書かれた構文で、
+opaque な設定 block ではありません。
+[fixture: eventmodeling/div-frontmatter-invalid]
+[fixture: eventmodeling/config-frontmatter-fontfamily-number]
+[fixture: eventmodeling/config-init-fontfamily-number]
+[fixture: eventmodeling/div-init-invalid-colour]
+[fixture: eventmodeling/div-init-primitive-wrap]
+[fixture: eventmodeling/config-fontfamily-keeps-title]
+[fixture: eventmodeling/div-invalid-keeps-config]
+[fixture: eventmodeling/prefix-directive-opaque]
+[fixture: eventmodeling/prefix-yaml-opaque]
+[fixture: eventmodeling/data-all-types]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+
+### Treeview
+
+treeview 固有の受理の鍵はありません。
+frontmatter と directive の本文は書かれた opaque data とし、
+比較で treeView の鍵を特別に除去・保持しません。不正な YAML、
+文字列でない fontFamily、不正な共通 theme、
+primitive な init と wrap の組合せは、
+Mermaid が拒否して opaque な読みが受理する場合があります。
+その参照を作るときも隣の有効な title・設定を保ちます。
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L57) と[図の構文](../diagrams/treeview.ja.md)には隠れた意味の gate はありません。
+[fixture: treeview/div-frontmatter-invalid]
+[fixture: treeview/config-frontmatter-fontfamily-number]
+[fixture: treeview/config-init-fontfamily-number]
+[fixture: treeview/div-init-invalid-colour]
+[fixture: treeview/div-init-primitive-wrap]
+[fixture: treeview/config-fontfamily-keeps-title]
+[fixture: treeview/div-invalid-keeps-config]
+[fixture: treeview/config-frontmatter-cannot-rescue]
+[fixture: treeview/config-frontmatter-cannot-reject]
+
 ## mermaid.js の文書と issue
 
 - 固定した版の
@@ -782,3 +863,36 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   保守者が defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
   調べた結果だけで、ほかに関連する issue がないとは断定しません。
+
+- Wardley: pin し
+  た[構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)は座標・装飾・flow を示しますが、この共通の境界を定義しません。2026-10-26 に公式 repository の issue/PR を wardley directive、wardley semicolon、wardley flow で検索しました。[#7642](https://github.com/mermaid-js/mermaid/pull/7642) は hyphen の名、[#7726](https://github.com/mermaid-js/mermaid/pull/7726) は不要な sanitization の修正で、いずれも pin に反映済みです。[#8379](https://github.com/mermaid-js/mermaid/pull/8379) は設定保持に関する open PR でした。確認した結果はこの境界を不具合と認める判断を示さず、既存の直接の規則を適用します。検索の網羅性は主張しません。
+- Cynefin
+  の[pin の構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)は固定の領域、引用符つきの項目、ラベルつきの遷移を説明し、[注記](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)は自己遷移を無視すると述べます。[PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) は図を加えて merge されました。2026-10-26 に cynefin parser、cynefin directive、cynefin semicolon、cynefin frontmatter で検索し、この境目について調べた範囲で maintainer の判断は見つかりませんでした。[Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) は open、Status: Triage で、framework の名前と描画の変更を求めるもので、この字句の規則の判断ではありません。
+
+### eventmodeling
+
+pin した
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
+2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
+event modeling data、eventmodeling accTitle、
+eventmodeling validator で検索しました。
+2026-04-16 に merged となった
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588) は validator の登録
+を追加し、この境目に関する保守者の判断ではありません。
+確認した結果にはその判断はなく、既存の直接の規則を適用します。
+網羅的な検索だとはしません。
+
+### Treeview
+
+固定版の
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277) は字下げ・引用名・注釈・罫線を説明します。
+この共通の境目を定義してはいません。2026-10-26 に公式 issue/PR を
+`treeView quoted`、`treeView indentation`、`treeView box`、
+`treeView quotes`、`treeView whitespace`、`treeView accDescr` で検索しました。
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
+merged の PR、
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) は
+header 省略を提案する open の Enhancement/Triage です。
+調べた結果はこの共通の境目を defect と認める maintainer の判断を示しません。
+既存の直接規則を適用するもので、網羅的な検索という主張ではありません。

@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do annotation, note and force arrays retain duplicate numbers and names?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 20,
+            "y": 10
+          }
+        ],
+        "text": "one"
+      },
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 40,
+            "y": 30
+          }
+        ],
+        "text": "two"
+      }
+    ],
+    "notes": [
+      {
+        "text": "N",
+        "x": 20,
+        "y": 10
+      },
+      {
+        "text": "N",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "A",
+        "x": 20,
+        "y": 10
+      },
+      {
+        "name": "A",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "D",
+        "x": 20,
+        "y": 10
+      },
+      {
+        "name": "D",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "axes": {}
+  }
+}

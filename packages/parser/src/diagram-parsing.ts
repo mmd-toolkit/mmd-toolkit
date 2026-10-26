@@ -39,10 +39,10 @@ export interface DiagramInput {
  */
 export interface DiagramComment {
   /**
-   * From the mark to the end of its line: where the line feed that ends it
-   * starts, directives and comment regions before it included, or the end
-   * of the text. The comments of the tree that it makes, cut at the comment
-   * regions, are decided by `SourceLexer.recordTokens`.
+   * From the mark through a block closer, or to the end of a line comment:
+   * where its line feed starts, or the end of the text. Directives and
+   * comment regions inside are included. The comments of the tree that it
+   * makes, cut at the comment regions, are decided by `SourceLexer.recordTokens`.
    */
   readonly range: Range
   /**
@@ -51,8 +51,10 @@ export interface DiagramComment {
    * state, `%%` in class, and `%%` or `%` in gantt. Railroad also uses
    * `/*`, `(*`, and `;`.
    */
-  readonly mark: "%%" | "#" | "%" | "/*" | "(*" | ";"
+  readonly mark: "%%" | "#" | "%" | "/*" | "//" | "(*" | ";"
   readonly valueStart: number
+  /** Start of a block comment's closer; absent for a line comment. */
+  readonly valueEnd?: number
 }
 
 /**

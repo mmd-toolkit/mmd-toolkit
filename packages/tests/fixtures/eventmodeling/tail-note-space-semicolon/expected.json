@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "How does a note space semicolon tail affect this statement?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 3: unexpected character: ->;<- at offset: 28, skipped 1 characters. "
+  }
+}

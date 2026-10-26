@@ -124,11 +124,19 @@ flowchart LR
   [docs/architecture.md](./docs/architecture.md).
 - Treemap diagrams: `treemap` and `treemap-beta`. The formatting rules are in
   [docs/treemap.md](./docs/treemap.md).
+- Treeview diagrams: `treeView-beta`. The formatting rules are in
+  [docs/treeview.md](./docs/treeview.md).
 - Radar diagrams: `radar-beta`. The formatting rules are in
   [docs/radar.md](./docs/radar.md).
+- Wardley maps: `wardley-beta`. The formatting rules are in
+  [docs/wardley.md](./docs/wardley.md).
 - Railroad diagrams: `railroad-beta`, `railroad-ebnf-beta`, `railroad-abnf-beta`
   and `railroad-peg-beta`. The formatting rules are in
   [docs/railroad.md](./docs/railroad.md).
+- Cynefin diagrams: `cynefin-beta` and `cynefin-beta:`. The formatting rules are
+  in [docs/cynefin.md](./docs/cynefin.md).
+- Eventmodeling diagrams: `eventmodeling`. The formatting rules are in
+  [docs/eventmodeling.md](./docs/eventmodeling.md).
 - Packet diagrams: `packet` and `packet-beta`. The formatting rules are in
   [docs/packet.md](./docs/packet.md).
 - Block diagrams: diagrams that start with `block-beta` or `block`. The
@@ -156,10 +164,10 @@ Other diagram types are not formatted yet (see below).
   list is in [docs/compatibility.md](./docs/compatibility.md).
 - A diagram type other than flowchart, agentflow, sequence, class, state, ER,
   Gantt, user journey, requirement, mindmap, timeline, sankey, XY chart,
-  quadrant chart, kanban, C4, Venn, Ishikawa, usecase, pie, gitgraph, info,
-  packet, architecture, radar, treemap, railroad, and block diagram is not
-  changed, except that line endings follow `endOfLine`. In Markdown, it is left
-  to Prettier.
+  quadrant chart, kanban, C4, Venn, Ishikawa, usecase, pie, info, gitgraph,
+  architecture, treemap, treeview, radar, wardley, railroad, cynefin,
+  eventmodeling, packet, and block diagram is not changed, except that line
+  endings follow `endOfLine`. In Markdown, it is left to Prettier.
 
 ## Guarantees and limitations
 
@@ -212,13 +220,21 @@ The reasons and the details are in
   diagrams.
 - [docs/usecase.md](./docs/usecase.md): the formatting rules for usecase
   diagrams.
+- [docs/pie.md](./docs/pie.md): the formatting rules for pie charts.
 - [docs/info.md](./docs/info.md): the formatting rules for info diagrams.
 - [docs/gitgraph.md](./docs/gitgraph.md): the formatting rules for git graphs.
-- [docs/pie.md](./docs/pie.md): the formatting rules for pie charts.
 - [docs/architecture.md](./docs/architecture.md): the formatting rules for
   architecture diagrams.
 - [docs/treemap.md](./docs/treemap.md): the formatting rules for treemaps.
+- [docs/treeview.md](./docs/treeview.md): the formatting rules for treeviews.
 - [docs/radar.md](./docs/radar.md): the formatting rules for radar diagrams.
+- [docs/wardley.md](./docs/wardley.md): the formatting rules for Wardley maps.
+- [docs/railroad.md](./docs/railroad.md): the formatting rules for railroad
+  diagrams.
+- [docs/cynefin.md](./docs/cynefin.md): the formatting rules for cynefin
+  diagrams.
+- [docs/eventmodeling.md](./docs/eventmodeling.md): Eventmodeling formatting
+  rules.
 - [docs/packet.md](./docs/packet.md): the formatting rules for packet diagrams.
 - [docs/block.md](./docs/block.md): the formatting rules for block diagrams.
 - [docs/compatibility.md](./docs/compatibility.md): where the plugin differs

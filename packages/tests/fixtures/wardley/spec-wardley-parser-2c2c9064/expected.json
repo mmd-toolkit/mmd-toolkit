@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/wardley/wardleyParser.spec.ts",
+    "line": 62,
+    "test": "wardley parser > parses pipeline blocks with single-coordinate components"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Test Pipeline",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "Kettle",
+        "label": "Kettle",
+        "x": 56.99999999999999,
+        "y": 45,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Kettle_Campfire Kettle",
+        "label": "Campfire Kettle",
+        "x": 35,
+        "y": 45,
+        "className": "pipeline-component",
+        "labelOffsetX": -60,
+        "labelOffsetY": 35
+      },
+      {
+        "id": "Kettle_Electric Kettle",
+        "label": "Electric Kettle",
+        "x": 53,
+        "y": 45,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "Kettle",
+        "componentIds": [
+          "Kettle_Campfire Kettle",
+          "Kettle_Electric Kettle"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

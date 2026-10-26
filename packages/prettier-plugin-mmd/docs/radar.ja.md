@@ -638,13 +638,19 @@ radar-beta
 
 ### Global directives
 
-Root directive の内容、順、owner、両側の接着と分離を保ちます。
+Root directive の内容、順、owner を保ちます。
 部品や値の内部の directive も残します。
+同じ印字行の中では、両側の接触・分離を保ちます。
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
 普通の独立した開始位置は本文 1 段です。
 複数行の内部と EOF に届く未完の末尾は書かれたままです。
 JSON 整形や集約はしません。
-除去時に周囲が接合され、境界の空白を消すと受理を壊しうるためです。
+除去時に周囲が接合され、部品の境界の空白を消すと受理を壊しうるためです。
 native の RadarIgnoredText directive は別の原文ノードです。
+
+[fixture: radar/global-directives/header-to-body]
 
 [fixture: radar/global-directives/global-components]
 
@@ -859,6 +865,8 @@ style・classDef の選択、2 回の除去、大小文字・colon・hash の非
 Unicode の区間境界、directive 除去後の接合を保ちます。
 選択された semicolon の削除でも別のものが選択され、値が変わりえます。
 radar に普通の semicolon 区切りはありません。
+
+[fixture: radar/semicolons/native-axis-value]
 
 [fixture: radar/semicolons/semicolon-value-kept]
 

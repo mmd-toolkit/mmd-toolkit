@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A lexer error after a removed decoration reports the original line number."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 5: unexpected character: ->\"<- at offset: 27, skipped 1 characters. "
+  }
+}

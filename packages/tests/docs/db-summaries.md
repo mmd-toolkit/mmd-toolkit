@@ -19262,3 +19262,638 @@ The summary also drops:
 
 Publication needs no Db patch: it reads no browser globals, time or random
 values, and has no links or data blocks.
+
+## wardley
+
+`normalizeWardley()` summarizes the `wardley` diagram id. It reads the
+[builder's published data](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L187-L207)
+once, before drawing. Empty collections remain arrays; absent optional fields
+are omitted, and absent evolution settings give `axes: {}`. [fixture:
+wardley/header-only]
+
+| Field                            | Content                                                                                                         |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `title`                          | Published diagram title, or the empty text.                                                                     |
+| `accTitle`, `accDescr`           | Published accessibility texts, or the empty text.                                                               |
+| `nodes`                          | `id`, `label`, `x`, `y`, `className`, and optional `labelOffsetX`, `labelOffsetY`, `inertia`, `sourceStrategy`. |
+| `links`                          | `source`, `target`, `dashed`, and optional `label`, `flow`.                                                     |
+| `trends`                         | `nodeId`, `targetX`.                                                                                            |
+| `pipelines`                      | `nodeId`, `componentIds`.                                                                                       |
+| `annotations`                    | `number`, `coordinates` (each with `x`, `y`), and `text`.                                                       |
+| `notes`                          | `text`, `x`, `y`.                                                                                               |
+| `accelerators`, `deaccelerators` | `name`, `x`, `y`.                                                                                               |
+| `annotationsBox`                 | Optional `x`, `y`.                                                                                              |
+| `axes`                           | Optional `stages`, `stageBoundaries`.                                                                           |
+| `size`                           | Optional `width`, `height`.                                                                                     |
+
+The renderer reads the
+[title and size](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L72-L82)
+and actually
+[draws the title](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L164-L181).
+Accessibility texts go to the
+[common rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+The
+[common publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+sets only truthy final AST values: an empty final assignment suppresses earlier
+body values, while an empty final body title leaves the frontmatter title.
+[fixture: wardley/db-all-fields] [fixture: wardley/common-repeat] [fixture:
+wardley/common-repeat-empty] [fixture: wardley/frontmatter-empty-body-title]
+
+The
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
+publishes anchors before components, then pipeline children. Within each group,
+source order stays. Nodes use their name as both id and label; pipeline child
+ids are the deterministic `${parent}_${name}` and their labels are the child
+names. A child inherits its parent's published `y`. Links resolve an exact id
+first, then the first matching label, otherwise keeping the unresolved name.
+[fixture: wardley/db-publication-order] [fixture: wardley/db-link-resolution]
+[fixture: wardley/db-link-exact-id] [fixture:
+wardley/db-pipeline-forward-parent] [fixture: wardley/db-pipeline-nested-parent]
+
+The builder's
+[Map updates](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L133)
+replace nodes, trends and pipelines without moving their first insertion slot. A
+repeated node keeps earlier label offsets when the new definition omits them;
+other published undefined fields, including strategy, overwrite earlier values.
+Components publish `inertia: false` when absent; anchors and pipeline children
+omit it. A repeated pipeline replaces its membership array but leaves earlier
+child nodes. Repeated child ids can remain in the membership array, and a
+synthetic id can collide with an authored node id. Prototype names are ordinary
+Map keys. [fixture: wardley/db-node-duplicates] [fixture:
+wardley/db-trend-duplicates] [fixture: wardley/db-pipeline-duplicates] [fixture:
+wardley/db-pipeline-collision] [fixture: wardley/db-pipeline-label-inheritance]
+[fixture: wardley/db-prototype-names] [fixture: wardley/db-zero-first] [fixture:
+wardley/db-zero-last]
+
+[Links](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L173-L187)
+keep duplicates, self links and unresolved endpoints. Dashed arrows set
+`dashed`; a source port takes priority over a target port, then the arrow's
+flow. A flow-arrow label, even an empty one, takes priority over the semicolon
+label. [fixture: wardley/db-link-forms] [fixture:
+wardley/db-link-unresolved-duplicates]
+
+[Coordinate conversion](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L9-L30)
+uses evolution as `x` and visibility as `y`. Coordinates are converted to double
+before comparison: values at most 1 are multiplied by 100; larger values stay as
+percentages. The resulting double must be between 0 and 100. This also swaps the
+two written values of annotation coordinates and force positions. Label offsets
+keep their signed integer values. These values precede the renderer's
+[screen projection](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L183-L184).
+[fixture: wardley/db-all-fields] [fixture: wardley/db-coordinate-boundary]
+[fixture: wardley/db-coordinate-rounding] [fixture:
+wardley/db-coordinate-double-one] [fixture:
+wardley/db-coordinate-double-hundred] [fixture:
+wardley/gram-replaced-invalid-node] [fixture:
+wardley/number-offset-negative-zero]
+
+The
+[remaining publication](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L226)
+keeps notes, annotations, accelerators and deaccelerators in their respective
+source order, including duplicates and empty texts. An evolve of a missing id
+publishes nothing, without checking its target range. Size and evolution use
+their final AST assignment; only the first annotations box is converted and
+published. [fixture: wardley/db-array-duplicates] [fixture:
+wardley/db-empty-texts] [fixture: wardley/db-empty-pipeline-names] [fixture:
+wardley/db-trend-missing] [fixture: wardley/db-singletons-last] [fixture:
+wardley/db-later-invalid-box]
+
+[Evolution publication](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L76-L90)
+trims stage names and joins a truthy second name with a slash surrounded by one
+space on each side. It keeps only written boundaries, in stage order, without
+filling gaps or validating their range or order. The renderer decides whether to
+use them or equal stage widths. Finite numbers remain numbers; `toJsonObject()`
+uses shared `numberOrText()` for non-finite values (`"Infinity"`, `"-Infinity"`)
+and negative zero (0). Coordinate overflow rejects before normalization, but
+size, label offsets, stage boundaries and annotation numbers can overflow.
+Decimal precision, subnormals and underflow follow the injected converter's
+default numeric conversion. [fixture: wardley/db-stages-boundaries] [fixture:
+wardley/db-stage-empty-second-name] [fixture: wardley/db-number-overflow]
+[fixture: wardley/number-coordinate-overflow] [fixture:
+wardley/db-number-int-precision] [fixture: wardley/db-number-subnormal]
+[fixture: wardley/db-number-underflow]
+
+The summary drops:
+
+- Node `inPipeline`, which the renderer never reads, and `isPipelineParent`,
+  which is determined by `pipelines[].nodeId`. The builder
+  [sets those flags](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L133).
+  [fixture: wardley/db-pipeline-duplicates]
+- Trend `targetY`, copied from its node after all nodes are published. The
+  [adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
+  never changes nodes afterward. [fixture: wardley/db-all-fields]
+- Axis `xLabel` and `yLabel`, which the adapter never assigns; default stage
+  names and equal stage widths are
+  [drawing defaults](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L205-L256).
+  [fixture: wardley/header-only]
+- Configuration, colours, drawing ids, screen coordinates and dimensions, and
+  the renderer's repositioning of pipeline parents. The renderer reads
+  [`wardley-beta` options and theme](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyRenderer.ts#L32-L63);
+  neither the adapter nor the builder reads `wardley.*` or `wardley-beta.*`.
+  These settings change no Wardley acceptance condition or published value. A
+  numeric embedded `wardley.fontFamily` does reject during common recursive
+  configuration sanitization; those fixtures carry `embedded-data-opaque`. No
+  Wardley acceptance key needs removal from otherwise valid configuration.
+  [fixture: wardley/config-drawing-site] [fixture:
+  wardley/config-frontmatter-drawing] [fixture: wardley/config-init-drawing]
+  [fixture: wardley/config-frontmatter-cannot-rescue] [fixture:
+  wardley/config-init-cannot-rescue] [fixture:
+  wardley/config-frontmatter-fontfamily-number] [fixture:
+  wardley/config-init-fontfamily-number]
+
+Standard security levels give the same summary. The site value `other` with
+`htmlLabels: true` replaces characters in common metadata, while Wardley's own
+text fields remain unchanged. [fixture: wardley/config-security-level-other] The
+Db needs no patch: publication reads no browser globals, time or randomness, and
+has no external links or data blocks.
+
+## cynefin
+
+`normalizeCynefin()` summarizes the `cynefin` diagram id. It reads the
+[published Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L17-L69)
+before drawing. Empty collections remain arrays; absent transition labels are
+omitted. [fixture: cynefin/header-only] [fixture: cynefin/db-empty-texts]
+
+| Field                  | Content                                                                               |
+| ---------------------- | ------------------------------------------------------------------------------------- |
+| `title`                | Published diagram title, or the empty text.                                           |
+| `accTitle`, `accDescr` | Published accessibility texts, or the empty text.                                     |
+| `domains`              | Domains with at least one item, each with `name` and `items` (each with `label`).     |
+| `transitions`          | Published transitions, each with `from`, `to`, and optional `label`, in source order. |
+
+The renderer
+[draws the title](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L423-L433)
+and
+[accessibility texts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L102-L109).
+The
+[common publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+publishes only truthy final AST assignments. A final empty value suppresses an
+earlier body value; a final empty body title leaves the frontmatter title.
+[fixture: cynefin/db-all-fields] [fixture: cynefin/common-repeat] [fixture:
+cynefin/common-repeat-empty] [fixture: cynefin/common-empty-interleaved]
+[fixture: cynefin/frontmatter-empty-body-title]
+
+Domains appear in the renderer's
+[lookup order](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L233-L246):
+`complex`, `complicated`, `chaotic`, `clear`, `confusion`. Only domains with at
+least one item are included: the renderer
+[skips undeclared domains and empty item lists in the same branch](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L235-L238),
+so an empty domain declaration has no effect on drawing. The Map's insertion
+order is not consumed. A repeated domain replaces its entire item list; if its
+final block is empty, the domain is omitted from the summary. Item order,
+duplicates, empty labels and whitespace are retained: an empty label still
+counts as an item. All confusion items remain in the summary, including those
+represented by the renderer's overflow badge. [fixture: cynefin/header-only]
+[fixture: cynefin/spec-cynefin-integration-d626b3bc] [fixture:
+cynefin/gram-glued-domains] [fixture: cynefin/db-all-fields] [fixture:
+cynefin/db-domain-duplicates] [fixture: cynefin/db-domain-empty-first] [fixture:
+cynefin/db-domain-empty-last] [fixture: cynefin/db-empty-texts] [fixture:
+cynefin/gram-inline-items]
+
+The
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+publishes all domains, then all transitions. Transition duplicates and
+references to undeclared domains remain; self loops are discarded by the
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L48-L69).
+An empty transition label becomes absent; a whitespace-only label remains.
+[fixture: cynefin/gram-transition-first] [fixture:
+cynefin/db-transition-duplicates] [fixture: cynefin/db-self-loops] [fixture:
+cynefin/db-self-loop-empty-label] [fixture: cynefin/db-empty-texts]
+
+Diagram strings use the injected
+[common converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/module.ts#L30-L37)'s
+default STRING conversion, whereas common metadata uses its
+[line and block conversion](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L46-L70).
+Cynefin's
+[reachable value rules](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L19-L31)
+include no numeric terminal: numeric spellings in strings remain text, and
+unquoted numbers are rejected before conversion. There are no numeric comparison
+or rounding boundaries to normalize. [fixture: cynefin/lex-string-conversion]
+[fixture: cynefin/lex-transition-string-conversion] [fixture:
+cynefin/common-line-whitespace] [fixture: cynefin/common-block-whitespace]
+[fixture: cynefin/db-number-strings] [fixture: cynefin/number-plus] [fixture:
+cynefin/number-negative-zero] [fixture: cynefin/number-nan] [fixture:
+cynefin/number-infinity] [fixture: cynefin/number-overflow] [fixture:
+cynefin/number-suffix]
+
+The summary drops:
+
+- Configuration returned by
+  [`getConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDb.ts#L71-L77),
+  theme colours, SVG ids, measured text sizes and screen coordinates. The
+  [renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L73-L118)
+  reads drawing settings and derives the geometry; the
+  [boundary helpers](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinBoundaries.ts#L31-L79)
+  use the drawing id or configured seed only during rendering. Neither the
+  adapter nor publication reads `cynefin.*`; valid diagram drawing settings
+  change neither acceptance nor published values. [fixture:
+  cynefin/config-drawing-site] [fixture: cynefin/config-frontmatter-drawing]
+  [fixture: cynefin/config-init-drawing] [fixture:
+  cynefin/config-frontmatter-cannot-rescue] [fixture:
+  cynefin/config-init-cannot-rescue]
+- Fixed domain subtitles, display limits and overflow labels. These are
+  [drawing constants](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinRenderer.ts#L23-L29)
+  or derived from the retained item list. [fixture: cynefin/db-all-fields]
+- The Map key as a second identity alongside `domains[].name`, and insertion
+  positions, because the renderer looks domains up by name. [fixture:
+  cynefin/db-domain-duplicates]
+
+A numeric embedded `cynefin.fontFamily` rejects during the common recursive
+configuration check, so these cases carry `embedded-data-opaque`. No
+Cynefin-specific acceptance key needs removing from otherwise valid text
+configuration. The reference retains valid settings and the frontmatter title.
+[fixture: cynefin/config-frontmatter-fontfamily-number] [fixture:
+cynefin/config-init-fontfamily-number] [fixture:
+cynefin/config-fontfamily-keeps-title] [fixture:
+cynefin/div-invalid-keeps-config] [fixture:
+cynefin/config-frontmatter-nonfinite]
+
+Standard security levels give the same summary. The site value `other` with
+`htmlLabels: true` replaces characters in common metadata, while item and
+transition strings remain unchanged. [fixture:
+cynefin/config-security-level-other] The Db needs no patch: publication reads no
+browser globals, time or randomness, and has no links or data blocks.
+
+## eventmodeling
+
+The
+[`parser.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/parser.ts#L8-L14)
+adapter stores the complete AST through `setAst`. The Db has no getter for that
+AST; a patch observes `setAst` and `clear` without changing them. The summary
+reads that published object, without calling the DOM-dependent
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+builder. [fixture: eventmodeling/header-only] [fixture:
+eventmodeling/db-all-fields]
+
+| Field                       | Content                                                                                |
+| --------------------------- | -------------------------------------------------------------------------------------- |
+| `accTitle`, `accDescr`      | The common Db's accessibility strings.                                                 |
+| `frames`                    | Frames in declaration order, including duplicate names.                                |
+| `frames[].kind`             | `"time"` or `"reset"`.                                                                 |
+| `frames[].name`             | The authored digit string, including leading zeroes.                                   |
+| `frames[].modelEntityType`  | The authored entity type, including its short or long spelling.                        |
+| `frames[].entityIdentifier` | The complete qualified name.                                                           |
+| `frames[].sourceFrames`     | The distinct reference strings in ascending string order.                              |
+| `frames[].data`             | `null`, or an object with kind (inline / block) and value (the selected raw terminal). |
+
+[`mermaidAPI.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L626-L628)
+consumes the common getters. EM terminal names do not match the
+[`valueConverter.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41)'s
+`TITLE`, `ACC_TITLE` and `ACC_DESCR` cases: the fallback leaves their entire
+terminal text, including keyword and delimiter prefixes. The
+[`commonDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L16-L24)
+setters remove leading whitespace from the accessibility title and whitespace
+after LF from the description. Repeated assignments keep the final terminal,
+including an empty payload whose raw terminal is nonempty.
+
+A reachable terminal has leading ASCII spaces/tabs at its own unit position.
+Judge indentation in the body after common removals: global directives, common
+comment regions and selected semicolons. A common comment region is removed
+together with its padding and terminating LF. Removing a closed global directive
+alone leaves the LF outside it; directive-only lines and blank lines therefore
+leave LF. Removing a selected semicolon also leaves LF. Whether next-line
+indentation is available then depends on whether the preceding unit consumed the
+remaining LF immediately before that indentation. If so, the common form can
+claim that indentation as part of its terminal value; without indentation,
+`EM_ID` wins. If the LF remains, a whitespace token consumes it and the
+indentation, so `EM_ID` wins at the keyword. Block-data, hidden YAML and hidden
+directives consume an immediately following LF, whereas LS and PS remain for the
+whitespace token. If removing a selected semicolon places LF immediately after a
+native directive closer, that directive can consume the LF; horizontal padding
+between the closer and LF prevents that consumption. On the same line, surviving
+ASCII spaces/tabs can enable a common form across an inline global directive or
+selected semicolon. An unselected semicolon is not whitespace and rejects in
+that gap. An empty description block remains a statement and leaves its
+following LF unconsumed; a common form can claim padding immediately after its
+closing brace on the same line. These terminal rules are in
+[`event-modeling.langium`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L1-L70).
+[fixture: eventmodeling/common-inline] [fixture:
+eventmodeling/common-whitespace] [fixture: eventmodeling/common-repeat]
+[fixture: eventmodeling/common-repeat-empty] [fixture:
+eventmodeling/common-description-repeat] [fixture:
+eventmodeling/common-line-keywords] [fixture:
+eventmodeling/lex-common-after-block-lf-indented] [fixture:
+eventmodeling/lex-common-after-block-lf-unindented] [fixture:
+eventmodeling/lex-common-after-note-lf-tab] [fixture:
+eventmodeling/lex-common-after-yaml-lf-indented] [fixture:
+eventmodeling/lex-common-after-yaml-lf-unindented] [fixture:
+eventmodeling/lex-common-after-directive-lf-indented] [fixture:
+eventmodeling/lex-common-after-directive-lf-unindented] [fixture:
+eventmodeling/lex-common-after-block-same-line-tab] [fixture:
+eventmodeling/lex-common-after-block-ls-indented] [fixture:
+eventmodeling/lex-common-after-yaml-crlf-indented] [fixture:
+eventmodeling/lex-common-after-block-ps-indented] [fixture:
+eventmodeling/lex-common-yaml-comment-line-padding] [fixture:
+eventmodeling/lex-common-block-comment-line-padding] [fixture:
+eventmodeling/lex-common-native-directive-comment-line-padding] [fixture:
+eventmodeling/lex-common-yaml-directive-only-line] [fixture:
+eventmodeling/lex-common-block-directive-only-line] [fixture:
+eventmodeling/lex-common-yaml-blank-line-padding] [fixture:
+eventmodeling/lex-common-block-inline-directive-padding] [fixture:
+eventmodeling/lex-common-selected-semicolon-exposes-lf] [fixture:
+eventmodeling/lex-common-selected-semicolon-padding] [fixture:
+eventmodeling/lex-common-selected-semicolon-before-lf] [fixture:
+eventmodeling/lex-common-unselected-semicolon-padding] [fixture:
+eventmodeling/lex-common-empty-description-inline-padding] [fixture:
+eventmodeling/lex-common-empty-description-leaves-lf]
+
+The public `EM_*` values include leading horizontal padding, keywords and
+delimiters. Count the immediately preceding ASCII space/tab run after all the
+common removals above. Spaces and tabs on both sides of a removed global
+directive or selected semicolon join into one run: ` \t; accDescr: D` becomes
+` \t accDescr: D` when that semicolon is selected. A common comment region's own
+padding and terminating LF are removed, retaining only the surviving prefix. The
+LF outside a removed closed directive, on a blank line or after a selected
+semicolon remains; LF, LS and PS are not part of the horizontal run, and the
+terminal must still satisfy the indentation conditions above. An unselected
+semicolon rejects in that gap, and an empty description block remains a
+statement boundary. Do not join padding across either as if it were removed.
+[fixture: eventmodeling/gram-common-leading-directive-both-sides] [fixture:
+eventmodeling/gram-common-leading-directive-before-padding] [fixture:
+eventmodeling/gram-common-leading-directive-after-padding] [fixture:
+eventmodeling/gram-common-leading-directive-after-header] [fixture:
+eventmodeling/gram-common-block-leading-directive] [fixture:
+eventmodeling/lex-common-block-directive-only-line] [fixture:
+eventmodeling/gram-common-leading-semicolon-both-sides] [fixture:
+eventmodeling/gram-common-leading-semicolon-after-padding] [fixture:
+eventmodeling/gram-common-leading-semicolon-before-padding] [fixture:
+eventmodeling/gram-common-leading-semicolon-unselected] [fixture:
+eventmodeling/gram-common-leading-comment-region-padding] [fixture:
+eventmodeling/lex-common-yaml-blank-line-padding] [fixture:
+eventmodeling/lex-common-after-block-ls-indented] [fixture:
+eventmodeling/lex-common-after-block-ps-indented] [fixture:
+eventmodeling/gram-common-leading-empty-description-boundary]
+
+The
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+builder iterates frames in declaration order. Lane and colour helpers in
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L179-L318)
+read the entity type and qualified name; reset frames suppress incoming
+relations in the
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L531-L601)
+builder. Names are strings rather than numbers, so `1`, `01` and `001` are
+distinct. A repeated name does not replace a frame. [fixture:
+eventmodeling/db-all-aliases] [fixture: eventmodeling/db-qualified-names]
+[fixture: eventmodeling/db-frame-order] [fixture:
+eventmodeling/db-frame-duplicates] [fixture:
+eventmodeling/db-source-leading-zero]
+
+Source lookup tests `$refText` membership while iterating all frames in their
+declaration order. The authored order and repetition of references are unused,
+so the summary keeps a sorted set. An empty set permits implicit inference; a
+nonempty set with no matching frame suppresses that fallback and must remain
+distinct. Forward and self references remain strings; no Langium `.ref` value is
+read. [fixture: eventmodeling/db-source-order] [fixture:
+eventmodeling/db-source-order-control] [fixture:
+eventmodeling/db-source-missing] [fixture: eventmodeling/db-source-forward]
+[fixture: eventmodeling/db-source-self]
+
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L320-L368)
+uses the first data declaration whose name equals the frame's reference string.
+A match overrides inline data; an unresolved reference leaves inline data, or no
+data. The summary stores the selected terminal once per frame, preserving its
+delimiters and whitespace; it keeps neither unused data declarations nor the
+reference spelling after lookup. An empty block is still a match. [fixture:
+eventmodeling/db-data-first] [fixture: eventmodeling/db-data-empty-first]
+[fixture: eventmodeling/db-data-empty-last] [fixture:
+eventmodeling/db-data-reference-inline] [fixture:
+eventmodeling/db-data-unresolved-inline] [fixture:
+eventmodeling/db-data-unresolved] [fixture: eventmodeling/db-data-unused]
+
+The
+[`parse.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+gate rejects lexer and parser errors. It does not run the registered
+[`event-modeling-validator.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling-validator.ts#L12-L25)
+or link references. Invalid source-type pairs, missing references, forward
+references and duplicate definitions therefore do not reject public parse.
+Entity declarations, notes and GWT statements are stored in the AST but the
+[`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+builder never reads them. [fixture: eventmodeling/error-start] [fixture:
+eventmodeling/error-recovered] [fixture: eventmodeling/error-after-prefix]
+[fixture: eventmodeling/frame-missing-name] [fixture:
+eventmodeling/validator-command-invalid] [fixture:
+eventmodeling/validator-event-invalid] [fixture:
+eventmodeling/validator-readmodel-invalid] [fixture:
+eventmodeling/validator-processor-invalid] [fixture:
+eventmodeling/validator-ui-invalid] [fixture:
+eventmodeling/validator-reset-invalid] [fixture:
+eventmodeling/link-note-forward] [fixture: eventmodeling/link-gwt-forward]
+[fixture: eventmodeling/db-entities-notes-gwt]
+
+Dropped:
+
+- The diagram title: publication stores it, but
+  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
+  never draws it. Accessibility strings remain separately. [fixture:
+  eventmodeling/common-title-only] [fixture: eventmodeling/frontmatter-title]
+- Data-type tags:
+  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L320-L368)
+  selection and drawing do not inspect them or parse their contents as JSON,
+  Markdown, HTML or another declared type. These are native text terminals, not
+  opaque `@{ ... }` data blocks, and have no `dataBlockEffects`. [fixture:
+  eventmodeling/data-all-types] [fixture: eventmodeling/data-block-types]
+  [fixture: eventmodeling/lex-inline-empty]
+- The remaining AST, CST, containers, reference objects, model entities, notes,
+  GWT and unused data: none supplies another drawing input. [fixture:
+  eventmodeling/db-all-fields] [fixture: eventmodeling/db-entities-notes-gwt]
+- Coordinates, dimensions, HTML, colours, swimlanes and inferred relations:
+  [`db.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/db.ts#L87-L143)
+  and
+  [`renderer.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/renderer.ts#L128-L171)
+  derive them from the retained fields, measurements, constants and
+  configuration. The summary does not invoke those computations. [fixture:
+  eventmodeling/config-drawing-site] [fixture:
+  eventmodeling/config-frontmatter-drawing] [fixture:
+  eventmodeling/config-init-drawing]
+
+There is no numeric Db field: frame names and data numbers are strings, so
+neither nonfinite-number normalization nor a numeric rounding boundary is
+reachable. [fixture: eventmodeling/number-data-text] [fixture:
+eventmodeling/number-four] [fixture: eventmodeling/number-overflow]
+
+No eventmodeling-specific acceptance key is read during publication. Valid
+`eventmodeling.padding` and `eventmodeling.useMaxWidth` drawing settings cannot
+rescue invalid syntax. Numeric embedded `eventmodeling.fontFamily` instead fails
+the common recursive configuration processing; its opaque-data comparison
+preserves independently valid frontmatter title and configuration. An
+unrecognized site `securityLevel` changes common accessibility sanitization,
+while the standard four levels give the same summaries. [fixture:
+eventmodeling/config-frontmatter-cannot-rescue] [fixture:
+eventmodeling/config-init-cannot-rescue] [fixture:
+eventmodeling/config-frontmatter-fontfamily-number] [fixture:
+eventmodeling/config-init-fontfamily-number] [fixture:
+eventmodeling/config-fontfamily-keeps-title] [fixture:
+eventmodeling/div-invalid-keeps-config] [fixture:
+eventmodeling/config-security-level-other]
+
+Terminal values are those published after common preprocessing and
+[`utils.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L924),
+including internal markers for numeric character references. [fixture:
+eventmodeling/entity-texts] [fixture: eventmodeling/entity-common]
+
+[`Diagram.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L77-L83)
+appends LF before parsing. A data block closed at EOF can include that appended
+LF in its published terminal; the summary keeps it. Closing whitespace can
+instead provide the lookahead boundary without consuming LF. [fixture:
+eventmodeling/data-block-close-eof] [fixture:
+eventmodeling/data-block-close-space]
+
+## treeview
+
+`normalizeTreeview()` summarizes Mermaid's `treeView` detector id, whose
+[case-sensitive header](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)
+is `treeView-beta`. [fixture: treeview/header-only] [fixture:
+treeview/header-lower]
+
+| Field                             | Content                                                              |
+| --------------------------------- | -------------------------------------------------------------------- |
+| `accTitle`, `accDescr`            | Published accessibility strings, or empty text.                      |
+| `nodes`                           | Outer nodes, in published order.                                     |
+| `name`, `nodeType`                | Converted name and `"file"` or `"directory"`.                        |
+| `cssClass`, `icon`, `description` | Optional converted annotations; absent values are omitted.           |
+| `children`                        | Child nodes in published order, including an empty array for leaves. |
+
+The summary takes the children of
+[`getRoot()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/db.ts#L40-L75),
+which the renderer
+[visits recursively](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/renderer.ts#L140-L182).
+It preserves hierarchy, order, duplicate names and empty names. Files can have
+children too. The Db pops ancestors whose indentation is at least the new node's
+indentation, then appends to the last remaining node. [fixture:
+treeview/db-indent-pop] [fixture: treeview/db-first-indented] [fixture:
+treeview/db-file-parent] [fixture: treeview/db-duplicate-names] [fixture:
+treeview/db-empty-names]
+
+The
+[adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/parser.ts#L11-L39)
+removes one final `/` from the converted name and publishes `"directory"`;
+otherwise it publishes `"file"`. An empty `icon()` publishes `"none"`, while an
+absent icon stays absent. An empty converted description is unpublished.
+Repeated class and icon assignments keep the last value. [fixture:
+treeview/db-directory-trailing-space] [fixture: treeview/db-icon-none] [fixture:
+treeview/db-description-empty] [fixture: treeview/db-repeat-class] [fixture:
+treeview/db-repeat-icon] [fixture: treeview/db-repeat-icon-empty-first]
+
+The diagram's
+[grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L1-L64)
+does not import `common.langium`. Its own common terminals still pass through
+the common converter because they are named `TITLE`, `ACC_TITLE` and
+`ACC_DESCR`. Prefixes are removed and whitespace is normalized. The common
+[publication helper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L13)
+sets only truthy final values. Accessibility strings feed the
+[common SVG rendering path](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L624-L628).
+[fixture: treeview/common-whitespace] [fixture: treeview/common-repeat]
+[fixture: treeview/common-repeat-empty]
+
+The custom
+[converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/valueConverter.ts#L10-L38)
+counts each space or tab as one indentation unit, removes quote delimiters
+without interpreting escapes, and trims only trailing ASCII spaces and tabs from
+bare names. Trailing indentation after a quoted node can become the next node's
+indentation because newlines are hidden. [fixture: treeview/db-tabs-one-unit]
+[fixture: treeview/db-quote-conversion] [fixture:
+treeview/db-bare-internal-space] [fixture: treeview/db-quoted-tail-space]
+[fixture: treeview/db-quoted-tail-tab]
+
+Before parsing,
+[`preprocessBoxDrawing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.ts#L67-L208)
+processes LF-delimited physical lines after the common
+[directive and comment removal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L33-L65)
+and
+[selected-semicolon removal and character-reference encoding](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L919),
+before
+[Diagram.fromText](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L77-L83)
+calls the adapter. A box character removed with an inline directive or a
+directive-only line cannot select box mode. A numeric reference such as `#9500;`
+does not become a branch character; literal dashes beside it can still select
+box mode. [fixture: treeview/box-global-directive-line] [fixture:
+treeview/box-global-directive-inline] [fixture: treeview/box-entity-not-branch]
+[fixture: treeview/box-entity-mixed-indent] [fixture:
+treeview/box-physical-selected-semicolon] [fixture:
+treeview/box-physical-comment-line]
+
+The pass has no quote or accessibility-block state: branchless decoration-only
+physical lines inside either value disappear in box mode, and ordinary indented
+lines inside either value can reject. An empty physical line survives; U+2028
+and U+2029 do not split physical lines. [fixture: treeview/box-drop-decoration]
+[fixture: treeview/box-block-decoration] [fixture:
+treeview/box-block-decoration-plain] [fixture: treeview/box-block-indent-error]
+[fixture: treeview/box-quoted-decoration] [fixture:
+treeview/box-quoted-indent-error] [fixture:
+treeview/box-physical-directive-line] [fixture:
+treeview/box-physical-directive-inline] [fixture:
+treeview/box-physical-selected-semicolon] [fixture:
+treeview/box-physical-comment-line] [fixture: treeview/box-physical-empty-line]
+[fixture: treeview/box-physical-ls] [fixture: treeview/box-physical-ps]
+[fixture: treeview/box-physical-empty-description]
+
+A branch inside a name or description can discard its prefix. On rewritten
+branch lines, tabs expand to four ASCII spaces. After the branch and adjacent
+dash run, only ASCII spaces are skipped: a leading NBSP remains in the name. A
+nondecoration line containing box characters but no branch keeps its original
+text, including tabs. [fixture: treeview/box-quoted-branch] [fixture:
+treeview/box-description-branch] [fixture: treeview/box-tab-name] [fixture:
+treeview/box-branch-leading-nbsp] [fixture:
+treeview/box-branchless-tab-preserved] [fixture:
+treeview/box-tabs-after-directive-line] [fixture:
+treeview/box-tabs-after-directive-inline] [fixture:
+treeview/box-tabs-after-selected-semicolon] [fixture:
+treeview/box-tabs-after-comment-line] [fixture:
+treeview/box-tabs-after-empty-line] [fixture:
+treeview/box-tabs-after-empty-description] [fixture:
+treeview/box-branch-leading-ls] [fixture: treeview/box-branch-leading-ps]
+
+Blank, comment and metadata lines pass through. For other nonblank lines in box
+mode, leading whitespace without any box character rejects using JavaScript's
+`\s`, rather than the grammar's ASCII space/tab set. NBSP, U+2028 and U+2029
+before nonblank text therefore reject, while an NBSP-only line takes the
+blank-line path. [fixture: treeview/box-mixed-reject] [fixture:
+treeview/box-mixed-indent-nbsp] [fixture: treeview/box-mixed-indent-ls]
+[fixture: treeview/box-mixed-indent-ps] [fixture:
+treeview/box-mixed-indent-directive-inline] [fixture:
+treeview/box-mixed-indent-directive-line] [fixture:
+treeview/box-mixed-indent-selected-semicolon] [fixture:
+treeview/box-mixed-indent-comment-line] [fixture:
+treeview/box-mixed-indent-empty-line] [fixture:
+treeview/box-mixed-indent-empty-description] [fixture:
+treeview/box-blank-nbsp-line] [fixture:
+treeview/box-tabs-after-empty-description] [fixture:
+treeview/box-physical-empty-description] [fixture:
+treeview/box-native-comment-pass]
+
+The first positive branch column determines segment width; branch depth rounds
+the column/width ratio before adding one. [fixture:
+treeview/box-infer-first-column] [fixture: treeview/box-round-below] [fixture:
+treeview/box-round-above]
+
+The summary drops:
+
+- The fixed artificial root (`/`, directory), generated `id`, counter, stack and
+  original indentation widths. The hierarchy already holds each authored node
+  once. [fixture: treeview/header-only] [fixture: treeview/db-all-fields]
+- The diagram title: the adapter stores it, but the
+  [renderer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/renderer.ts#L218-L240)
+  does not draw it. Frontmatter title remains in embedded values. [fixture:
+  treeview/db-all-fields] [fixture: treeview/frontmatter-title]
+- Configuration returned by `getConfig()`, resolved icon references and SVG,
+  `BBox`, coordinates, dimensions and colours. These are drawing inputs or
+  drawing-derived values. Explicit authored icons remain in the summary;
+  defaults and filename/extension mappings are resolved by
+  [`getNodeIcon()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/icons.ts#L77-L100)
+  during drawing. No `treeView.*` key affects parsing or publication, so none is
+  an opaque-data acceptance key. [fixture: treeview/config-drawing-site]
+  [fixture: treeview/config-frontmatter-drawing] [fixture:
+  treeview/config-init-drawing] [fixture:
+  treeview/config-frontmatter-cannot-rescue] [fixture:
+  treeview/config-frontmatter-cannot-reject] [fixture:
+  treeview/config-init-cannot-rescue] [fixture:
+  treeview/config-init-cannot-reject]
+
+The adapter sanitizes description text, and common setters sanitize
+accessibility text. An unrecognized site `securityLevel` can therefore replace
+markup characters even with DOMPurify disabled; disabling `htmlLabels` bypasses
+that replacement. [fixture: treeview/config-security-level-default] [fixture:
+treeview/config-security-level-other] [fixture:
+treeview/config-security-level-other-html-false]
+
+The Db needs no patch: parsing reads no browser globals, time or random values,
+and has no links or data blocks. There is no numeric summary field.

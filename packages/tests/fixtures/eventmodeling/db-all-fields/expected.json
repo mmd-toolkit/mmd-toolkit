@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frames retain drawing inputs while entity, note, GWT and data-type declarations are unused."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "Shop.Screen",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "Shop.Buy",
+        "sourceFrames": [
+          "01"
+        ],
+        "data": {
+          "kind": "inline",
+          "value": "{ x: 1 }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Shop.Bought",
+        "sourceFrames": [
+          "02"
+        ],
+        "data": {
+          "kind": "block",
+          "value": "{\n<b>x</b>\n}\n"
+        }
+      },
+      {
+        "kind": "reset",
+        "name": "04",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "Shop.View",
+        "sourceFrames": [
+          "03"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

@@ -440,6 +440,69 @@ specified の railroad の結果は受理です。
 [fixture: railroad/abnf-c4-dynamic-string]
 [fixture: railroad/peg-c4-deployment-predicate]
 
+### Wardley
+
+Wardley は検出の登録順で C4 より後です。
+名前・文字列・literal・native hidden は書いた C4 語を保持できますが、Wardley の
+木が同時に横取りした C4 図種でもあることはできません。
+既存の理由 2 の直接の見出し選択規則は先頭の見出しで Wardley を選びます。
+そのため後続の C4Container・C4Component・C4Dynamic・C4Deployment により、Mermaid
+が拒否し、この仕様が受理する場合があります。
+検出前に除かれる通常の LF 終端のコメントは差異がなく、EOF のコメントは同じ
+control ではありません。
+[fixture: wardley/c4-component-component]
+[fixture: wardley/c4-dynamic-flow-label] [fixture: wardley/c4-container-title]
+[fixture: wardley/c4-component-header-eof]
+[fixture: wardley/c4-component-header-lf]
+
+### Cynefin
+
+後の値に C4 の検出の語があっても見出しから cynefin を選ぶ。値は Cynefin の node
+を持つが、同じ木に置き換わった C4 の図種も持つことはできない。検出用に除去する通
+常の LF つきコメントは差異の無い対照である。
+[fixture: cynefin/c4-component-item] [fixture: cynefin/c4-container-title]
+[fixture: cynefin/c4-component-header-eof]
+[fixture: cynefin/c4-component-header-lf]
+
+[pin の文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)と[公開の adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)は共通の前処理と検出の結果を読みます。[Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、[木](../ast/cynefin.ja.md)に書かれた形を保ちます。 [fixture: cynefin/db-all-fields]
+
+### eventmodeling
+
+eventmodeling は C4 の検出より後です。
+書かれた identifier、 参照、inline/block data、note、GWT、
+共通の値には C4Container、C4Component、C4Dynamic、C4Deployment を持てます。
+後の語から C4 を選ぶと、それらの node を変えるのでなく、
+書かれた見出しの図を置き換えます。
+見出しから選ぶ規則に従い、 印付きの例は Mermaid では拒否、
+指定の eventmodeling の読みでは受理します。
+LF で終わる percent comment の対照で はその検出の差がなく、
+両方拒否する場合も印を足しません。
+[fixture: eventmodeling/c4-container-data]
+[fixture: eventmodeling/c4-component-identifier]
+[fixture: eventmodeling/c4-dynamic-gwt]
+[fixture: eventmodeling/c4-deployment-reference]
+[fixture: eventmodeling/c4-component-header-lf]
+[fixture: eventmodeling/prefix-directive-c4]
+[fixture: eventmodeling/prefix-yaml-c4]
+[fixture: eventmodeling/prefix-yaml-between-bares-c4]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+
+### Treeview
+
+treeview は C4 より後に登録されます。
+後の名前・共通値・description・コメント・directive に C4Container、C4Component、
+C4Dynamic、C4Deployment が入りえます。木にその字を置く場所があり、
+既存の直接の検出規則に従って見出しからこの図種を選びます。
+specified の treeview の読みが、
+先の検出器からまだ見える終端改行の無い percent-comment の対照も含めて比較を記録
+します。[構文](../diagrams/treeview.ja.md)は検出と文法の受理を分けます。
+[fixture: treeview/c4-container-bare]
+[fixture: treeview/c4-component-header-eof] [fixture: treeview/c4-dynamic-title]
+[fixture: treeview/c4-deployment-block]
+[fixture: treeview/c4-component-header-lf]
+
 ## mermaid.js の文書と issue
 
 - [C4 図の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/c4.md)
@@ -577,3 +640,36 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   保守者が defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
   調べた結果だけで、ほかに関連する issue がないとは断定しません。
+
+- Wardley: pin し
+  た[構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)は座標・装飾・flow を示しますが、この共通の境界を定義しません。2026-10-26 に公式 repository の issue/PR を wardley directive、wardley semicolon、wardley flow で検索しました。[#7642](https://github.com/mermaid-js/mermaid/pull/7642) は hyphen の名、[#7726](https://github.com/mermaid-js/mermaid/pull/7726) は不要な sanitization の修正で、いずれも pin に反映済みです。[#8379](https://github.com/mermaid-js/mermaid/pull/8379) は設定保持に関する open PR でした。確認した結果はこの境界を不具合と認める判断を示さず、既存の直接の規則を適用します。検索の網羅性は主張しません。
+- Cynefin
+  の[pin の構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)は固定の領域、引用符つきの項目、ラベルつきの遷移を説明し、[注記](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)は自己遷移を無視すると述べます。[PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) は図を加えて merge されました。2026-10-26 に cynefin parser、cynefin directive、cynefin semicolon、cynefin frontmatter で検索し、この境目について調べた範囲で maintainer の判断は見つかりませんでした。[Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) は open、Status: Triage で、framework の名前と描画の変更を求めるもので、この字句の規則の判断ではありません。
+
+### eventmodeling
+
+pin した
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
+2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
+event modeling data、eventmodeling accTitle、
+eventmodeling validator で検索しました。
+2026-04-16 に merged となった
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588) は validator の登録
+を追加し、この境目に関する保守者の判断ではありません。
+確認した結果にはその判断はなく、既存の直接の規則を適用します。
+網羅的な検索だとはしません。
+
+### Treeview
+
+固定版の
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277) は字下げ・引用名・注釈・罫線を説明します。
+この共通の境目を定義してはいません。2026-10-26 に公式 issue/PR を
+`treeView quoted`、`treeView indentation`、`treeView box`、
+`treeView quotes`、`treeView whitespace`、`treeView accDescr` で検索しました。
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
+merged の PR、
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) は
+header 省略を提案する open の Enhancement/Triage です。
+調べた結果はこの共通の境目を defect と認める maintainer の判断を示しません。
+既存の直接規則を適用するもので、網羅的な検索という主張ではありません。

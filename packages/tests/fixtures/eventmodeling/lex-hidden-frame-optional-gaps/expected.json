@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: Optional source, data-reference and inline-data continuations own their preceding native forms. Accepted by Mermaid."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "A",
+        "sourceFrames": [
+          "02"
+        ],
+        "data": {
+          "kind": "inline",
+          "value": "{x}"
+        }
+      }
+    ]
+  }
+}

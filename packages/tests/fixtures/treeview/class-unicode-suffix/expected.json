@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Names, annotations and common forms: A non-ASCII letter after a class name begins a new bare node rather than extending the class."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "cssClass": "x",
+        "children": []
+      },
+      {
+        "name": "é",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

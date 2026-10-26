@@ -1432,8 +1432,8 @@ A directive (`%%{ ... }%%`) on a line of its own stands at the level of the
 statements around it, for the same reason as a comment. [fixture:
 directives/own-line-in-subgraph] [fixture: directives/several-on-own-line]
 [fixture: directives/multi-line-on-own-line] [fixture:
-directives/own-line-between-comment-and-empty-line] A directive on the same line
-as a statement stays on that line. [fixture:
+directives/own-line-between-comment-and-empty-line] Within a printed line, a
+directive stays in its authored gap. [fixture:
 directives/after-header-on-same-line] [fixture:
 directives/after-end-on-same-line] [fixture:
 directives/after-last-statement-without-line-break] Where whitespace was written
@@ -1444,6 +1444,12 @@ directives/meets-empty-description-block] mermaid.js reads the text without the
 directive, so whether two tokens are apart must not change. The content of a
 directive is kept as written. [fixture:
 directives/compat-malformed-directive-kept] [fixture: directives/content-kept]
+
+When formatting splits units that were on the same line, a directive in their
+gap moves with the following unit. Keep its right-side contact or separation;
+break its left contact.
+
+[fixture: flowchart/directives/same-line-as-statements]
 
 Input
 ([directives/indented-input.mmd](../tests/fixtures/flowchart/directives/indented-input.mmd)):

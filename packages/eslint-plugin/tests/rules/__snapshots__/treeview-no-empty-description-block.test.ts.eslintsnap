@@ -1,0 +1,249 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: treeview-no-empty-description-block >> invalid >>> docs/rules/treeview-no-empty-description-block.md incorrect 1
+Filename: treeview-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   root/
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/corpus-common-repeat-empty
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/corpus-common-repeat-empty-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | title first
+  3 | accTitle: first
+  4 | accDescr: first
+  5 | title
+  6 | accTitle:
+  7 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  8 | root
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/desc-directive-middle
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/desc-directive-middle-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr: First
+  3 | accDescr { %%{init: {}}%% }
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | accDescr: Third
+  5 | root/
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/desc-empty-middle
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/desc-empty-middle-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accDescr: First
+  3 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  4 |   accDescr: Third
+  5 |   root/
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/docs-incorrect-1
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/docs-incorrect-1-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   root/
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-before-comment-opener
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-before-comment-opener-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr
+    | ^~~~~~~~\ [1]
+  3 | %% TODO before opener
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+  4 | {}
+    | ~~ [1]
+  5 | root/
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-block-after-desc
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-block-after-desc-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accDescr: First
+  3 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  4 |   root/
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-block-before-desc
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-block-before-desc-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   accDescr: First
+  4 |   root/
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-block-box
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-block-box-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | root/
+  4 | └── file
+  5 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-block-box-prefix
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-block-box-prefix-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | └── accDescr {}
+    | ^~~~~~~~~~~~~~~ [1]
+  3 | root/
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-block
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-block-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   root/
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-box-after-desc
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-box-after-desc-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | root/
+  5 | └── file
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-box-before-desc
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-box-before-desc-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | accDescr: First
+  4 | root/
+  5 | └── file
+  6 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-comment-adjacent
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-comment-adjacent-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accDescr {}%% TODO
+    |   ^~~~~~~~~~~ [1]
+  3 |   root/
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-directive-block
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-directive-block-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 |   accDescr { %%{init: {}}%% }
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |   root/
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: treeview-no-empty-description-block >> invalid >>> invalid/treeview/empty-frontmatter-directive-comment
+Filename: tests/fixtures/rules/treeview-no-empty-description-block/invalid/treeview/empty-frontmatter-directive-comment-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Frontmatter
+  3 | ---
+  4 | %%{init: {}}%%
+  5 | treeView-beta
+  6 | %% before block
+  7 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  8 | root/
+  9 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Keep accessibility, hierarchy and every authored node field without drawing state or the diagram title."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "Accessible",
+    "accDescr": "Description",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "cssClass": "highlight",
+        "icon": "folder",
+        "description": "root description",
+        "children": [
+          {
+            "name": "child.txt",
+            "nodeType": "file",
+            "icon": "logos:react",
+            "description": "child description",
+            "children": []
+          },
+          {
+            "name": "plain",
+            "nodeType": "file",
+            "icon": "none",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "last",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

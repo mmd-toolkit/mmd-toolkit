@@ -1038,7 +1038,7 @@ timeline
 ### Directives
 
 A directive on a line of its own stands at the level of the statement after it,
-as in a user journey, and a directive on the line of a statement keeps whether
+as in a user journey, and a directive within a printed line keeps whether
 whitespace is written on each side of it: where it is, one space stands there,
 and where it touches a token, it keeps touching. [fixture: directives/kept]
 [fixture: directives/levels-around-sections] [fixture: directives/before-header]
@@ -1046,6 +1046,12 @@ and where it touches a token, it keeps touching. [fixture: directives/kept]
 directives/after-header-touching-kept] [fixture:
 directives/whitespace-on-both-sides-collapsed] [fixture:
 directives/statement-after-directive-line]
+
+When formatting splits units that were on the same line, a directive in their
+gap moves with the following unit. Keep its right-side contact or separation;
+break its left contact.
+
+[fixture: timeline/directives/whitespace-on-both-sides-collapsed]
 
 A directive between two units of a statement stays where it is, with the
 whitespace written on each side of it, and a directive inside a text is part of

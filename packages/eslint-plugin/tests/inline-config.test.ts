@@ -120,3 +120,70 @@ describe("a fragment of a diagram comment", () => {
     expect(sourceCode?.getInlineConfigNodes()).toHaveLength(1)
   })
 })
+
+// The control disables inline configuration without changing the fixed input.
+describe("block comments configure the language", () => {
+  it.each([
+    {
+      name: "railroad-c-disable",
+      code: `railroad-beta
+/* eslint-disable mmd/identifiers */
+word = terminal("a");
+`,
+    },
+    {
+      name: "railroad-c-off",
+      code: `railroad-beta
+/* eslint mmd/identifiers: off */
+word = terminal("a");
+`,
+    },
+    {
+      name: "railroad-iso-disable",
+      code: `railroad-ebnf-beta
+(* eslint-disable mmd/identifiers *)
+word = "a";
+`,
+    },
+    {
+      name: "railroad-iso-off",
+      code: `railroad-ebnf-beta
+(* eslint mmd/identifiers: off *)
+word = "a";
+`,
+    },
+    {
+      name: "eventmodeling-c-disable",
+      code: `eventmodeling
+/* eslint-disable mmd/identifiers */
+entity Shop.Bought
+`,
+    },
+    {
+      name: "eventmodeling-c-off",
+      code: `eventmodeling
+/* eslint mmd/identifiers: off */
+entity Shop.Bought
+`,
+    },
+  ])("$name", ({ code }) => {
+    const config: Linter.Config[] = [
+      LANGUAGE_CONFIG,
+      {
+        files: ["**/*.mmd"],
+        plugins: { mmd: { rules: { identifiers } } },
+        rules: { "mmd/identifiers": "error" },
+      },
+    ]
+    const linter = new Linter({ configType: "flat" })
+    const control = linter.verify(
+      code,
+      [...config, { linterOptions: { noInlineConfig: true } }],
+      "block-comment.mmd",
+    )
+    expect(
+      control.some((message) => message.ruleId === "mmd/identifiers"),
+    ).toBe(true)
+    expect(linter.verify(code, config, "block-comment.mmd")).toEqual([])
+  })
+})

@@ -20,6 +20,10 @@ const BUILDS_EVERY_DB = 60_000
 const DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "treeview",
+  "eventmodeling",
+  "cynefin",
+  "wardley",
   "railroad",
   "treemap",
   "radar",

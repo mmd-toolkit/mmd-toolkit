@@ -859,8 +859,8 @@ export class SourceLexer {
    * last fragment keeps the whitespace before its line terminator, as any
    * comment does. The
    * first fragment starts at the mark and has the comment's mark and the
-   * value after it; a fragment after a region has no mark, and the value of
-   * its range.
+   * content after it; a fragment after a region has no mark, and the content
+   * of its range, excluding any block closer.
    *
    * The comment ends where its line ends, as `commentEnd` says, except
    * that a `;` that the line rule ignores and that is its last character
@@ -956,8 +956,8 @@ export class SourceLexer {
   /**
    * Records the fragment `range` of the diagram comment `comment`. The
    * fragment that starts at the comment's mark has the mark and the value
-   * after it; a fragment after a comment region has no mark, and the value
-   * of its range.
+   * after it; a fragment after a comment region has no mark, and the content
+   * of its range, excluding any block closer.
    */
   private recordCommentFragment(range: Range, comment: DiagramComment): void {
     const startsAtMark = range[0] === comment.range[0]
@@ -966,7 +966,7 @@ export class SourceLexer {
       mark: startsAtMark ? comment.mark : null,
       value: this.text.slice(
         startsAtMark ? comment.valueStart : range[0],
-        range[1],
+        Math.min(range[1], comment.valueEnd ?? range[1]),
       ),
       range,
       loc: this.lines.location(range),

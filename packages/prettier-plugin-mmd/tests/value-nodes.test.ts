@@ -28,8 +28,12 @@ import { gitgraphValueNodeTypes } from "../src/printers/gitgraph-layout.ts"
 import { pieValueNodeTypes } from "../src/printers/pie-layout.ts"
 import { infoValueNodeTypes } from "../src/printers/info-layout.ts"
 import { architectureValueNodeTypes } from "../src/printers/architecture-layout.ts"
+import { treeviewValueNodeTypes } from "../src/printers/treeview-layout.ts"
 import { treemapValueNodeTypes } from "../src/printers/treemap-layout.ts"
 import { radarValueNodeTypes } from "../src/printers/radar-layout.ts"
+import { eventmodelingValueNodeTypes } from "../src/printers/eventmodeling-layout.ts"
+import { cynefinValueNodeTypes } from "../src/printers/cynefin-layout.ts"
+import { wardleyValueNodeTypes } from "../src/printers/wardley-layout.ts"
 import { railroadValueNodeTypes } from "../src/printers/railroad-layout.ts"
 import { packetValueNodeTypes } from "../src/printers/packet-layout.ts"
 import { xychartValueNodeTypes } from "../src/printers/xychart-layout.ts"
@@ -56,10 +60,33 @@ interface DiagramValues {
 
 const diagrams: readonly DiagramValues[] = [
   {
+    prefix: "Eventmodeling",
+    values: eventmodelingValueNodeTypes,
+    // Arrows are complete punctuation tokens; frame names are identifiers.
+    notValues: new Set(["NumericLiteral", "EventmodelingArrow"]),
+  },
+  {
+    prefix: "Cynefin",
+    values: cynefinValueNodeTypes,
+    // Endpoints are keyword tokens; the whole arrow is structural punctuation.
+    notValues: new Set(["Identifier", "NumericLiteral", "CynefinArrow"]),
+  },
+  {
+    prefix: "Wardley",
+    values: wardleyValueNodeTypes,
+    // Bare names use WardleyIdentifier rather than the shared Identifier.
+    notValues: new Set(["Identifier"]),
+  },
+  {
     prefix: "Railroad",
     values: railroadValueNodeTypes,
     // PEG's dot is printed as its structural punctuation token.
     notValues: new Set(["RailroadAnyExpression"]),
+  },
+  {
+    prefix: "Treeview",
+    values: treeviewValueNodeTypes,
+    notValues: new Set(["NumericLiteral"]),
   },
   { prefix: "Treemap", values: treemapValueNodeTypes, notValues: new Set() },
   { prefix: "Radar", values: radarValueNodeTypes, notValues: new Set() },

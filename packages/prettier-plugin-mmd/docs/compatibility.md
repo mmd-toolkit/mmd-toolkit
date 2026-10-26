@@ -336,9 +336,9 @@ shape with the label `x`, and `A[x@]` is rejected. See
 ## Directives between tokens
 
 mermaid.js removes a directive and reads the text on its two sides joined.
-Formatting therefore keeps, on each side of a directive, whether whitespace was
-written there: `flowchart %%{init: {}}%%LR` stays as it is, because
-`flowchart%%{init: {}}%%LR` would be rejected. [fixture:
+Within a printed line, formatting therefore keeps whether whitespace was written
+on each side of a directive: `flowchart %%{init: {}}%%LR` stays as it is,
+because `flowchart%%{init: {}}%%LR` would be rejected. [fixture:
 flowchart/directives/whitespace-on-each-side-kept] [fixture:
 flowchart/directives/touching-token-kept] [fixture:
 sequence/directives/compat-whitespace-on-one-side-of-directive-kept] [fixture:
@@ -1600,14 +1600,14 @@ info/frontmatter-yaml/frontmatter-zero-minimum]
 
 All semicolons remain, and shared source-segment protection keeps crossing
 values/trivia and protected header/body groups whole; changing a trigger's
-segment can change acceptance. Global directive source and each side's contact
-remain, since removing init can change configuration despite the empty Db.
-Physical EOL and EOF-reaching global endings use the shared path. Prettier
-removes/restores a leading BOM; inside the plugin, an opening-fence BOM can
-therefore make hidden YAML read as real frontmatter. A BOM repeated before the
-closer instead causes the shared standalone syntax-error limitation. Markdown
-trims final payload padding; interior hidden boundaries remain. [fixture:
-info/semicolons/semicolon-style-classdef] [fixture:
+segment can change acceptance. Global directive source remains, with each side's
+contact retained within a printed line, since removing init can change
+configuration despite the empty Db. Physical EOL and EOF-reaching global endings
+use the shared path. Prettier removes/restores a leading BOM; inside the plugin,
+an opening-fence BOM can therefore make hidden YAML read as real frontmatter. A
+BOM repeated before the closer instead causes the shared standalone syntax-error
+limitation. Markdown trims final payload padding; interior hidden boundaries
+remain. [fixture: info/semicolons/semicolon-style-classdef] [fixture:
 info/global-directives/global-config-align] [fixture:
 info/final-newline/final-open-global] [test:
 info/line-terminators-and-unicode/bom-frontmatter-opening] [corpus fixture:
@@ -1869,6 +1869,52 @@ treemap/frontmatter-yaml/html-guard] [test:
 treemap/line-terminators-and-unicode/crlf-values] [test: treemap Markdown:
 final-style-padding] [test: treemap Markdown: rejected]
 
+## Treeview modes and authored values
+
+The [treeview rules](./treeview.md) preserve the mode selected by logical source
+lines, including box characters inside quoted names and description blocks.
+Ordinary indentation uses the AST’s assigned indents and includes file parents;
+roots use one positive configured step. Carried runs move once. Box prefixes,
+columns, decorations and physical value lines keep their spelling because they
+can determine the global width, rounding and acceptance.
+
+[fixture: treeview/indentation/indent-irregular] [fixture:
+treeview/indentation/indent-file-parent] [fixture:
+treeview/carried-indentation/carry-quote] [fixture:
+treeview/modes/quoted-box-without-prefix] [fixture:
+treeview/branch-prefixes/first-positive] [fixture:
+treeview/decorations/pending-owner] [corpus fixture:
+treeview/box-tail-branch-no-carry]
+
+Keep every name, annotation, description, prefix and decoration at its source
+owner, including duplicates, empty names, `icon()` and overwritten annotations.
+Name and description tails are authored text; common line values and ordinary
+accessibility blocks use shared exterior spacing. Ordinary blocks in box mode
+use column one; blocks with box geometry retain it. Every semicolon remains, and
+fixed row boundaries that constrain parentage keep the body as written.
+
+[fixture: treeview/names/name-single] [fixture:
+treeview/annotation-components/icon-empty] [fixture:
+treeview/repeated-annotations/repeat-class] [fixture:
+treeview/descriptions/description-padding] [fixture:
+treeview/modes/ordinary-block] [fixture: treeview/semicolons/protected-row-body]
+[corpus fixture: treeview/box-block-decoration]
+
+The six existing [specified readings](./treeview.md#specified-readings) apply;
+there is no additional empty-form divergence or opaque acceptance setting.
+Standalone syntax errors are reported without repaired output. The shared host
+normalizes CR/CRLF, guards real frontmatter and can trim final Markdown
+code-line padding. Quoted interior padding remains value text.
+
+[corpus fixture: treeview/directive-header-inside] [corpus fixture:
+treeview/semicolon-class-inside] [corpus fixture:
+treeview/div-html-frontmatter-reject] [corpus fixture:
+treeview/div-frontmatter-invalid] [corpus fixture: treeview/bare-line-nbsp]
+[corpus fixture: treeview/c4-container-bare] [test:
+treeview/line-terminators-and-unicode/eol-cr-structure] [test: treeview
+Markdown: final-bare-padding] [test: treeview Markdown: quoted-interior] [test:
+treeview Markdown: rejected]
+
 ## Railroad dialects and authored values
 
 The [railroad rules](./railroad.md) preserve the selected IR, EBNF, ABNF or PEG
@@ -2032,3 +2078,239 @@ railroad/peg-config-init-fontfamily-number] [corpus fixture:
 railroad/ir-bare-nbsp] [corpus fixture: railroad/peg-c4-deployment-predicate]
 [corpus fixture: railroad/ir-error-empty-call] [test: railroad Markdown:
 ir-rejected]
+
+## Wardley authored text and required line breaks
+
+The [Wardley rules](./wardley.md) preserve names and strings, numeric spellings,
+source order and every occurrence. Bare names exactly `title` keep their contact
+with following components: inserting whitespace can turn a component, link,
+evolve or evolution stage into metadata. Quoted names and longer bare names use
+ordinary spacing. [fixture: wardley/name-boundaries/component-title-contact]
+[fixture: wardley/name-boundaries/link-title-contact] [fixture:
+wardley/name-boundaries/title-evolve-hidden] [fixture:
+wardley/name-boundaries/stage-title-contact] [fixture:
+wardley/name-boundaries/force-title-contact] [fixture:
+wardley/name-boundaries/quoted-title] [fixture:
+wardley/name-boundaries/title-prefix-safe]
+
+Flow interiors keep their complete authored spelling, including empty labels,
+backslashes and continuation columns. A link's grammatical label-opening `;`
+attaches to the preceding component, while everything after it through physical
+line end remains written, including whitespace-only labels and trailing padding.
+Bare `;` rejects. The shared textual-prefix protection excludes that opener;
+further semicolons protect their segment and whole crossing values/trivia. Keep
+both labels and ports even when only one affects the Db. [fixture:
+wardley/flows/flow-ports-and-label] [fixture:
+wardley/flows/flow-padding-escapes] [fixture:
+wardley/multiline-values/multiline-flow-columns] [fixture:
+wardley/semicolon-labels/label-exterior] [fixture:
+wardley/semicolon-labels/label-whitespace] [fixture:
+wardley/semicolon-labels/label-two-semicolons] [corpus fixture:
+wardley/tail-link-empty-label]
+
+Shared line protection keeps a complete source line containing literal `style`
+or `classDef` after global directives are omitted, including its statements,
+comments and hidden forms. This applies even without a selected semicolon. The
+first line starts at its body indentation; content and later source columns stay
+written, without joining neighboring lines. Count lines as Mermaid reads them,
+including directive-spanning words and U+2028/U+2029 comment-region joins. The
+line rule can ignore the grammatical label opener and change a link's endpoints
+or label, so complete source preservation avoids predicting the rule after
+moving text. Words only inside removed global directives do not protect a line.
+[fixture: wardley/semicolons/style-selected-delimiter] [fixture:
+wardley/semicolons/style-delimiter-hash-after] [fixture:
+wardley/semicolons/style-colon-space-nontrigger] [fixture:
+wardley/semicolons/style-no-semicolon] [fixture:
+wardley/semicolons/style-header-group] [fixture:
+wardley/semicolons/style-directive-lines] [test:
+wardley/semicolons/style-comment-before-connected] [test:
+wardley/semicolons/style-comment-ls-connected] [test:
+wardley/semicolons/style-comment-both-connected] [fixture:
+wardley/semicolons/style-inside-global]
+
+Hidden forms remain source spans at their AST owner, with consumed LF and
+closing padding protected by shared rules. Pipeline opening braces and children
+need visible LF even at tabWidth zero; hidden forms do not supply it. Only
+header-owned forms use the header-edge exception. Keep the complete retained
+prefix so ignored YAML cannot become effective frontmatter. Safe real YAML alone
+uses guarded formatting; description blocks use the shared layout. [fixture:
+wardley/pipeline/pipeline-zero] [fixture:
+wardley/hidden-boundaries/hidden-pipeline-opening] [fixture:
+wardley/hidden-boundaries/hidden-pipeline-child] [fixture:
+wardley/hidden-boundaries/header-first-statement-hidden] [fixture:
+wardley/frontmatter-yaml/retained-prefix] [fixture:
+wardley/frontmatter-yaml/frontmatter-safe] [fixture:
+wardley/accessibility/description-empty]
+
+The six existing [specified readings](./wardley.md#specified-readings) handle
+atomic directive/selected-semicolon cuts, frontmatter HTML, opaque embedded
+data, passed bare-percent trivia and later C4 words. Wardley adds no divergence
+or opaque acceptance-setting key. Raw rejection supplies no raw Db. Parse
+failures report standalone syntax errors without output and decline Markdown
+embedding. CR/CRLF and leading BOM use shared host limits. Markdown trims the
+final code line: removing a whitespace-only link label leaves bare `;`, making
+an accepted payload reject. Standalone formatting keeps that padding. [corpus
+fixture: wardley/directive-arrow-inside] [corpus fixture:
+wardley/lex-selected-decimal-inside] [corpus fixture:
+wardley/div-html-frontmatter-reject] [corpus fixture:
+wardley/config-fontfamily-keeps-title] [corpus fixture: wardley/bare-before-ls]
+[corpus fixture: wardley/c4-component-component] [test: wardley Markdown:
+rejected] [test: wardley/line-terminators-and-unicode/crlf-string] [test:
+wardley Markdown: final-whitespace-label]
+
+## Cynefin authored domains and hidden boundaries
+
+A semicolon-protected prefix is printed once even when a native suffix keeps the
+line; the suffix retains its owner.
+
+[fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
+
+[fixture: cynefin/hidden-boundaries/semicolon-hidden-body-directive]
+
+[fixture: cynefin/hidden-boundaries/semicolon-hidden-header-yaml]
+
+[fixture: cynefin/hidden-boundaries/semicolon-hidden-body-yaml]
+
+The [Cynefin rules](./cynefin.md) keep both header spellings, every domain
+redeclaration and empty domain, item order and duplicates, self transitions,
+empty labels and common resets. Domain/item lines express the authored tree;
+columns do not select parents. Rebuilding from the effective Db would lose
+occurrences and can change replacement or reset behavior. Strings retain quotes,
+escapes and interior columns, including empty values and native-looking text.
+[fixture: cynefin/empty-domains/empty-domain-last-reset] [fixture:
+cynefin/redeclarations/domain-repeat-order] [fixture:
+cynefin/transition-occurrences/transition-occurrences] [fixture:
+cynefin/source-order/source-common-empty-resets] [fixture:
+cynefin/strings/strings-quote-backslash] [fixture:
+cynefin/multiline-values/multiline-string-columns]
+
+Each native hidden form stays at its AST owner: prefix, body, name suffix,
+item-leading/trailing form, transition gap or common suffix. Print its source
+once, preserving interiors and closer columns, consumed LF outside the node and
+required closing padding. Transitions/common statements need visible EOL;
+domains/items do not. Only header-owned forms use the header's edge exception.
+Kept lines use the same decision for the header, domain openings and items,
+including item suffix forms, so moving a child cannot remove its parent's
+protection. Retain the complete skipped prefix so ignored YAML cannot become
+effective frontmatter. Safe real YAML and description blocks use the shared
+layouts. [fixture: cynefin/hidden-forms/hidden-domain-name] [fixture:
+cynefin/hidden-forms/hidden-between-items] [fixture:
+cynefin/hidden-forms/hidden-body-after-last-item] [fixture:
+cynefin/hidden-forms/hidden-transition-all-gaps] [fixture:
+cynefin/hidden-boundaries/boundary-suffix-directive-spare] [fixture:
+cynefin/hidden-boundaries/boundary-suffix-yaml-tab] [fixture:
+cynefin/hidden-boundaries/boundary-header-body-suffix] [fixture:
+cynefin/hidden-boundaries/header-inline-domain-item-directive] [fixture:
+cynefin/hidden-boundaries/header-inline-domain-item-yaml] [fixture:
+cynefin/retained-prefix/prefix-retained-yaml] [fixture:
+cynefin/frontmatter-yaml/frontmatter-safe-yaml] [fixture:
+cynefin/description-blocks/description-empty]
+
+Keep every semicolon with shared textual-prefix protection through the last
+semicolon of a segment and whole crossing values/trivia. The first protected
+line uses body or item depth; its content and subsequent columns remain written.
+Mermaid's reading determines segments, including removed directives and comment
+joins. Cynefin has no grammatical semicolons, so style/classDef word lines
+without semicolons still format; complete word-line preservation does not apply.
+Root directives retain contact within a printed line. At split statement/item
+boundaries they attach to the following unit, retaining the right boundary and
+breaking left contact. Native comments retain LS/PS as content. These boundaries
+can affect selection, values and acceptance. [fixture:
+cynefin/semicolons/semi-selected-before-arrow] [fixture:
+cynefin/semicolons/semi-item-body-indentation] [fixture:
+cynefin/semicolons/semi-plain-style-line-formats] [fixture:
+cynefin/semicolons/semi-multiline-global-word] [fixture:
+cynefin/global-directives/between-items-contact] [test:
+cynefin/comments/comment-ls-native-content] [test:
+cynefin/comments/comment-unicode-join]
+
+The six existing [specified readings](./cynefin.md#specified-readings) cover
+atomic cuts, frontmatter HTML, opaque embedded data, passed bare-percent trivia
+and C4 words. Raw rejection supplies no raw Db; Cynefin adds no divergence or
+acceptance-setting key. Standalone parse failures leave files unchanged through
+a syntax error; Markdown declines embedding. CR/CRLF and leading BOM follow
+shared host limits. Markdown trims final code-line hidden padding; standalone
+formatting retains it, and required internal padding stays protected. [corpus
+fixture: cynefin/directive-arrow-inside] [corpus fixture:
+cynefin/semicolon-arrow-inside] [test:
+cynefin/specified-readings/divergence-html-cross] [test:
+cynefin/specified-readings/divergence-opaque-yaml] [test:
+cynefin/specified-readings/divergence-c4-string] [test:
+cynefin/specified-readings/divergence-bare-unicode] [test:
+cynefin/line-terminators-and-unicode/eol-crlf-string] [test: cynefin Markdown:
+final-hidden-padding] [test: cynefin Markdown: rejected]
+
+## Eventmodeling terminals and source boundaries
+
+The [eventmodeling rules](./eventmodeling.md) preserve complete inline and block
+data bodies. Tags can format, but their payloads are raw terminals, including
+quotes, braces, padding and apparent following statements. Block-data consumes
+an immediately following LF; other whitespace is lookahead. Closing padding and
+LS/PS boundaries stay written, including at EOF. Reindenting a block closer can
+reject input, and replacing closing lookahead with LF can change the comparison
+Db. Native data is read directly from source rather than evaluated as embedded
+configuration. [fixture: eventmodeling/inline-data/greedy-apparent-frames-kept]
+[fixture: eventmodeling/data-blocks/block-closer-indent-unsafe] [fixture:
+eventmodeling/data-boundaries/same-line-block-successor] [test:
+eventmodeling/line-terminators-and-unicode/block-ls-boundary-stays-outside-value]
+[fixture: eventmodeling/final-newline/final-block-padding-kept]
+
+Common EM terminals retain keyword, delimiter and leading ASCII padding as
+values. Preserve their complete source and preceding interval, including across
+global directives, selected semicolons and removed comment regions. Ordinary
+accessibility spacing and shared description-block compaction therefore do not
+apply: even a whitespace-only description keeps its interior. Common statements
+can depend on their original connection to the header, a preceding statement or
+a consumed LF; putting them on ordinary body lines can reject input. Required
+identifier `title` likewise keeps its successful LF or hidden boundary, because
+adding horizontal padding can turn it into metadata. [fixture:
+eventmodeling/header/accdescr-moved-to-line-start] [fixture:
+eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps]
+[fixture: eventmodeling/semicolons/metadata-across-selected-semicolon-gap-exact]
+[fixture: eventmodeling/common-boundaries/common-comment-region-join] [fixture:
+eventmodeling/description-blocks/description-whitespace-literal-retained]
+[fixture:
+eventmodeling/frame-components/hidden-before-required-title-identifier-keep-zero-indentation]
+
+Every source occurrence remains, including model entities, notes, GWT, unused or
+later same-name data, repeated references, type words and inline data alongside
+a reference. GWT's clauses/items use the shared range-ended body path. Hidden
+YAML and native DIRECTIVE print once at their original owner; consumed LF and
+closing padding are protected by the shared hidden rules. A retained pre-header
+form keeps the complete prefix so it cannot become real frontmatter. Safe real
+frontmatter alone uses the guarded YAML formatter. [fixture:
+eventmodeling/source-order/all-occurrences-retained] [fixture:
+eventmodeling/hidden-forms/hidden-gwt-clause-item-owners] [fixture:
+eventmodeling/hidden-forms/gwt-required-source-and-given-hidden-gaps] [fixture:
+eventmodeling/frontmatter-yaml/retained-prefix-whole] [fixture:
+eventmodeling/frontmatter-yaml/safe-real-yaml]
+
+All authored semicolons use shared textual-prefix protection, including a child
+body's opening edge. The first protected body line aligns with the body; later
+columns and value-owned padding remain written. There are no grammatical
+semicolons, so a style/classDef word alone does not freeze the entire line.
+Directives keep both contacts within a printed line; when units split, the
+directive moves with the following unit. Common-value intervals override this
+ordinary placement. Comments keep their marks and contents; native line comments
+include LS/PS, while common-region joins retain their original interval. When
+units split, intervening inline comments and directives move with the following
+unit in source order. This shared placement treats comments alike across diagram
+types. [fixture: eventmodeling/comments/mixed-directive-order] [fixture:
+eventmodeling/semicolons/gwt-protected-opening-kept] [fixture:
+eventmodeling/semicolons/no-grammar-semicolon-style-word-line-formats] [fixture:
+eventmodeling/global-directives/directive-follows-split-next-gwt-item] [test:
+eventmodeling/comments/native-line-comment-ls-stays-content] [test:
+eventmodeling/comments/comment-region-ls-join-unchanged]
+
+The five existing [specified readings](./eventmodeling.md#specified-readings)
+apply without new divergences: atomic directive/semicolon cuts,
+cross-frontmatter HTML quotes, opaque embedded configuration and later C4 words.
+Raw rejection provides no raw Db. Rejected files report syntax errors and are
+not rewritten; Markdown leaves rejected payloads to Prettier. Shared CR/CRLF
+conversion and the Markdown host's final-code-line padding limitation still
+apply. [corpus fixture: eventmodeling/directive-arrow-inside] [corpus fixture:
+eventmodeling/lex-semicolon-frame-id-inside] [corpus fixture:
+eventmodeling/div-html-frontmatter-value] [corpus fixture:
+eventmodeling/div-frontmatter-invalid] [corpus fixture:
+eventmodeling/c4-container-data] [test: eventmodeling Markdown: rejected] [test:
+eventmodeling Markdown: final-hidden-padding]

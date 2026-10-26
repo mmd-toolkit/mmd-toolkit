@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Empty quoted names are published; a slash alone becomes an empty directory name."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "",
+        "nodeType": "directory",
+        "children": []
+      },
+      {
+        "name": "/",
+        "nodeType": "directory",
+        "children": []
+      }
+    ]
+  }
+}

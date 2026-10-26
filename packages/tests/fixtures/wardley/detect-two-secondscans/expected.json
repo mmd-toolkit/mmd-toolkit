@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Detection: Multiple separately retained second-scan directives remain readable before the header."
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

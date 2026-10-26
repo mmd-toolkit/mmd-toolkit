@@ -1,0 +1,242 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: railroad-no-empty-description-block >> invalid >>> docs/rules/railroad-no-empty-description-block.md incorrect 1
+Filename: railroad-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   word = "a";
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/abnf-empty-after-description
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/abnf-empty-after-description-input.mmd
+
+Code:
+  1 | railroad-abnf-beta
+  2 | accDescr: First
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | word="a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/abnf-empty-comment-before-brace
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/abnf-empty-comment-before-brace-input.mmd
+
+Code:
+  1 | railroad-abnf-beta
+  2 | accDescr
+    | ^~~~~~~~\ [1]
+  3 | %% TODO
+    | ~~~~~~~\ [1]
+  4 | {}
+    | ~~ [1]
+  5 | word="a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/abnf-empty-gap-directive
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/abnf-empty-gap-directive-input.mmd
+
+Code:
+  1 | railroad-abnf-beta
+  2 | accDescr %%{wrap}%% {}
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | word="a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/docs-incorrect-1
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/docs-incorrect-1-input.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   word = "a";
+  4 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/ebnf-empty-comment-outside
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/ebnf-empty-comment-outside-input.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 | accDescr {} %% TODO
+    | ^~~~~~~~~~~ [1]
+  3 | word="a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/ebnf-empty-gap-comment
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/ebnf-empty-gap-comment-input.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 | accDescr
+    | ^~~~~~~~\ [1]
+  3 | %% gap
+    | ~~~~~~\ [1]
+  4 | {}
+    | ~~ [1]
+  5 | word="a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/ebnf-empty
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/ebnf-empty-input.mmd
+
+Code:
+  1 | railroad-ebnf-beta
+  2 | accDescr { }
+    | ^~~~~~~~~~~~ [1]
+  3 | word="a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/ir-empty-directive
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/ir-empty-directive-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accDescr {%%{init: {"theme":"dark"}}%%}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | word=terminal("a");
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/ir-empty-frontmatter-comment-and-directive
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/ir-empty-frontmatter-comment-and-directive-input.mmd
+
+Code:
+  1 | ---
+  2 | title: Front
+  3 | ---
+  4 | railroad-beta
+  5 | %% before
+  6 | accDescr {%%{init: {}}%%} %% after
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  7 | word=terminal("a");
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/ir-empty-inline
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/ir-empty-inline-input.mmd
+
+Code:
+  1 | railroad-beta accDescr {} word=terminal("a");
+    |               ^~~~~~~~~~~ [1]
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/ir-empty
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/ir-empty-input.mmd
+
+Code:
+  1 | railroad-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | word=terminal("a");
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/peg-empty-crlf
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/peg-empty-crlf-input.mmd
+
+Code:
+  1 | railroad-peg-beta
+  2 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  3 | }
+    | ~ [1]
+  4 | word<-"a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/peg-empty-directive
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/peg-empty-directive-input.mmd
+
+Code:
+  1 | railroad-peg-beta
+  2 | accDescr {%%{init: {}}%%}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | word<-"a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/peg-empty
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/peg-empty-input.mmd
+
+Code:
+  1 | railroad-peg-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | word<-"a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/peg-empty-repeated
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/peg-empty-repeated-input.mmd
+
+Code:
+  1 | railroad-peg-beta
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [2]
+  4 | word<-"a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+[2] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
+Test: railroad-no-empty-description-block >> invalid >>> invalid/railroad/peg-empty-three
+Filename: tests/fixtures/rules/railroad-no-empty-description-block/invalid/railroad/peg-empty-three-input.mmd
+
+Code:
+  1 | railroad-peg-beta
+  2 | accDescr: A
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr: B
+  5 | word<-"a";
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---

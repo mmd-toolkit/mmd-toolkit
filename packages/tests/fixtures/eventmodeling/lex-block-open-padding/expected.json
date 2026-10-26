@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Data: NBSP between the opening brace and LF is not permitted ASCII horizontal padding. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 22: unexpected character: ->{<- at offset: 21, skipped 1 characters.\nLexer error on line 3, column 1: unexpected character: ->}<- at offset: 26, skipped 1 characters. Parse error on line 2, column 1: Expecting token of type 'EM_DATA_BLOCK' but found `x`."
+  }
+}

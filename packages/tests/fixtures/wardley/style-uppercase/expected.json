@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does uppercase spelling keep the final semicolon?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "STYLE:ﬂ°a¶ß",
+    "accTitle": "CLASSDEF:ﬂ°b¶ß",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [
+      {
+        "text": "STYLE:ﬂ°c¶ß",
+        "x": 20,
+        "y": 10
+      }
+    ],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

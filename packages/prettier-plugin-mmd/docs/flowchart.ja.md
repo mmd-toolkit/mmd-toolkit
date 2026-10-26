@@ -1471,7 +1471,7 @@ flowchart LR
 [fixture: directives/several-on-own-line]
 [fixture: directives/multi-line-on-own-line]
 [fixture: directives/own-line-between-comment-and-empty-line]
-文と同じ行にあるディレクティブはその行に残ります。
+同じ印字行の中では、ディレクティブの位置を保ちます。
 [fixture: directives/after-header-on-same-line]
 [fixture: directives/after-end-on-same-line]
 [fixture: directives/after-last-statement-without-line-break]
@@ -1484,6 +1484,12 @@ mermaid.js はディレクティブを除いたテキストを読むので、
 ディレクティブの中身は書かれたまま残します。
 [fixture: directives/content-kept]
 [fixture: directives/compat-malformed-directive-kept]
+
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+
+[fixture: flowchart/directives/same-line-as-statements]
 
 入力
 ([directives/indented-input.mmd](../tests/fixtures/flowchart/directives/indented-input.mmd)):

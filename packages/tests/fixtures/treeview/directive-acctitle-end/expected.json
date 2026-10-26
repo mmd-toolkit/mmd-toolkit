@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check removal of a global directive at the end of acctitle."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "ab",
+    "accDescr": "",
+    "nodes": []
+  }
+}

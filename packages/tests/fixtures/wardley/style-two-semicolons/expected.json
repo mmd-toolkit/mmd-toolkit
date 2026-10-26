@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which semicolon is removed when another ends an entity reference?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "style:ﬂ°a¶ß&amp",
+    "accTitle": "classDef:ﬂ°b¶ß",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

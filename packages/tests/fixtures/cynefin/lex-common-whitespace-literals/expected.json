@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Common values: whitespace-only line values are literals, whereas a whitespace-only block is null."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
+}

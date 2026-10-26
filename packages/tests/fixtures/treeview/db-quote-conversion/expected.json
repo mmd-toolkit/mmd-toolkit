@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Quoted names lose delimiters without interpreting escapes."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a\\nb\\t\\u0041\\q",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": "a\\nb\\q",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

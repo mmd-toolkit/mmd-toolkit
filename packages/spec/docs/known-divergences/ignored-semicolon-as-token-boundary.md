@@ -5,9 +5,10 @@ Japanese version:
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
 requirement, mindmap, timeline, xychart, quadrant, block, kanban, c4, venn,
-agentflow, usecase, pie, gitgraph, info, packet, architecture, radar, treemap
-and railroad. This is one of the [known divergences](../known-divergences.md) of
-this specification from mermaid.js.
+agentflow, usecase, pie, gitgraph, info, packet, architecture, radar, treemap,
+railroad, wardley, cynefin, eventmodeling and treeview. This is one of the
+[known divergences](../known-divergences.md) of this specification from
+mermaid.js.
 
 ## The syntax
 
@@ -481,6 +482,106 @@ railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership] [fixture:
 railroad/abnf-div-semicolon-repeat-number]
 
+### Wardley
+
+Only semicolons actually selected by the common line rule use this boundary
+rule. Shared trivia retains the selected semicolon, and text, string and native
+hidden nodes retain their written content. A split inside a number, fixed word,
+ID-form name or indivisible arrow, port or marker still needs fragment joining
+rather than an authored gap. The existing reason-2 rule rejects these atomic
+splits. Coordinate, offset and decoration components remain separate boundaries;
+labeled flows also permit selected trivia between their plus, quoted label and
+complete end marker. Unselected semicolons are not separators. [fixture:
+wardley/lex-selected-decimal-inside] [fixture:
+wardley/lex-selected-label-keyword] [fixture:
+wardley/lex-selected-strategy-inside] [fixture:
+wardley/lex-selected-target-id-inside] [fixture:
+wardley/lex-selected-arrow-inside] [fixture: wardley/lex-selected-port-inside]
+[fixture: wardley/lex-selected-flow-marker-inside] [fixture:
+wardley/lex-selected-coordinate-parts] [fixture:
+wardley/lex-selected-offset-sign] [fixture: wardley/lex-selected-strategy-parts]
+[fixture: wardley/lex-selected-parenthesized-inertia-parts] [fixture:
+wardley/lex-selected-flow-after-label] [fixture:
+wardley/lex-selected-native-yaml-opener] [fixture:
+wardley/lex-selected-keyword-inside]
+
+### Cynefin
+
+Only actually selected semicolons obey the same atomic boundary rule. Shared
+trivia can hold the punctuation, but cannot create an internal gap in a fixed
+word or -->. Component boundaries, string text and native fence punctuation
+remain allowed; arbitrary semicolons are not separators. [fixture:
+cynefin/semicolon-complex-inside] [fixture: cynefin/semicolon-clear-inside]
+[fixture: cynefin/semicolon-arrow-inside] [fixture:
+cynefin/semicolon-title-inside] [fixture: cynefin/semicolon-acctitle-inside]
+[fixture: cynefin/semicolon-block-inside] [fixture:
+cynefin/semicolon-colon-header-selected-parts] [fixture:
+cynefin/semicolon-arrow-parts] [fixture:
+cynefin/selected-colon-label-components] [fixture:
+cynefin/selected-native-yaml-opener] [fixture:
+cynefin/selected-native-directive-opener] [fixture:
+cynefin/selected-string-interior] [fixture: cynefin/selected-title-components]
+[fixture: cynefin/selected-native-directive-closer]
+
+The
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+and
+[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+read the result of the common preprocessing/detection pipeline. The
+[Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
+[tree](../ast/cynefin.md) retains its authored forms. [fixture:
+cynefin/db-all-fields]
+
+### eventmodeling
+
+Eventmodeling applies this identifier to the same indivisible words,
+digit-string names, ->>, [[ and ]] as its directive boundary. The ignored
+semicolon can be recorded, but joining a split atomic spelling would still
+change that unit. Mermaid accepts the selected-semicolon cases inside those
+atoms; this specification rejects them. A selected semicolon between a dot and a
+complete name, between reference components or between type-tag components
+splits no atom and remains permitted. Ordinary semicolons still reject, and
+selecting the last semicolon does not remove earlier ones. [fixture:
+eventmodeling/lex-semicolon-identifier-inside] [fixture:
+eventmodeling/lex-semicolon-frame-id-inside] [fixture:
+eventmodeling/semicolon-arrow-inside] [fixture:
+eventmodeling/semicolon-reference-inside] [fixture:
+eventmodeling/semicolon-reference-close-inside] [fixture:
+eventmodeling/lex-semicolon-before-dot] [fixture:
+eventmodeling/lex-semicolon-after-dot] [fixture:
+eventmodeling/lex-semicolon-after-reference-open] [fixture:
+eventmodeling/lex-semicolon-before-reference-close] [fixture:
+eventmodeling/lex-semicolon-after-tag-open] [fixture:
+eventmodeling/lex-semicolon-before-tag-close] [fixture:
+eventmodeling/lex-semicolon-after-tag] [fixture:
+eventmodeling/tail-frame-semicolon] [fixture:
+eventmodeling/style-two-semicolons]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
+their direct boundaries.
+
+### Treeview
+
+Treeview uses the same authored boundaries for semicolons actually selected by
+the common line rule. A selected semicolon inside a keyword, `:::`/`##`, class
+name or whole icon reference is this divergence; Mermaid joins the parts. Its
+character can remain a source unit, but the joined atomic reading contradicts
+the direct boundary rule. Gaps between components and text/string interiors
+remain allowed. An unselected semicolon is ordinary text; a semicolon-split
+header normally fails earlier detection and is not a marked divergence. The
+[diagram syntax](../diagrams/treeview.md#comments-and-boundaries) defines the
+scope. [fixture: treeview/semicolon-class-inside] [fixture:
+treeview/semicolon-description-inside] [fixture:
+treeview/semicolon-class-value-inside] [fixture:
+treeview/semicolon-icon-value-inside] [fixture:
+treeview/semicolon-class-value-parts] [fixture:
+treeview/icon-word-open-semicolon] [fixture: treeview/icon-name-close-semicolon]
+[fixture: treeview/box-branch-selected-semicolon] [fixture:
+treeview/box-dash-selected-semicolon] [fixture:
+treeview/box-branch-unselected-semicolon] [fixture:
+treeview/semicolon-header-inside]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -615,3 +716,56 @@ warning. These facts do not justify any additional divergence.
   decision for these preprocessing boundaries. This divergence follows the
   existing shared rule, not such a decision. The inspected results do not
   establish that no other relevant issue exists.
+
+- Wardley: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  shows coordinates, decorations and flows without defining this common
+  boundary. Searches of the official issues and pull requests on 2026-10-26 used
+  wardley directive, wardley semicolon and wardley flow.
+  [#7642](https://github.com/mermaid-js/mermaid/pull/7642) fixes hyphenated
+  names and [#7726](https://github.com/mermaid-js/mermaid/pull/7726) removes
+  unnecessary sanitization; both are reflected in the pin.
+  [#8379](https://github.com/mermaid-js/mermaid/pull/8379) was an open
+  configuration-retention PR. The inspected results establish no maintainer
+  defect decision for this boundary; the existing direct rule applies. The
+  search is not claimed to be exhaustive.
+- Cynefin’s
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  describes fixed domains, quoted items and labeled transitions; its
+  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  state that self transitions are ignored.
+  [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
+  and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
+  cynefin semicolon and cynefin frontmatter found no inspected maintainer
+  judgment on this boundary.
+  [Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) was open with
+  Status: Triage and requested framework naming/drawing changes, not a ruling on
+  these lexical rules.
+
+### eventmodeling
+
+The pinned
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+describes frames, data and tags without defining this shared preprocessing
+boundary. Searches of the official issues and pull requests on 2026-10-26 used
+eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
+accTitle and eventmodeling validator.
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588), merged on
+2026-04-16, adds validator registration; it does not establish a maintainer
+ruling on this boundary. The inspected results establish no such ruling; the
+existing direct rule applies. The search is not claimed to be exhaustive.
+
+### Treeview
+
+The pinned
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+describes indentation, quoted names, annotations and box drawing, without
+defining this common boundary. On 2026-10-26 the official issues/PRs were
+searched for `treeView quoted`, `treeView indentation`, `treeView box`,
+`treeView quotes`, `treeView whitespace` and `treeView accDescr`.
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) is the merged
+box-drawing addition;
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) is an open
+Enhancement/Triage proposal to omit the header. Inspected results establish no
+maintainer defect ruling on this boundary; the existing direct rule applies. The
+search is not claimed to be exhaustive.

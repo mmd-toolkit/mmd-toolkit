@@ -53,6 +53,22 @@ The railroad definition covers four dialects in its
 railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/peg-gram-written-tree]
 
+The wardley definition is in its [syntax](./diagrams/wardley.md) and
+[tree](./ast/wardley.md) documents. [fixture: wardley/header-only] [fixture:
+wardley/db-all-fields]
+
+The cynefin definition is in its [syntax](./diagrams/cynefin.md) and
+[tree](./ast/cynefin.md) documents. [fixture: cynefin/header-only] [fixture:
+cynefin/db-all-fields]
+
+The eventmodeling definition is in its [syntax](./diagrams/eventmodeling.md) and
+[tree](./ast/eventmodeling.md) documents. [fixture: eventmodeling/header-only]
+[fixture: eventmodeling/gram-written-tree]
+
+The treeview definition is in its [syntax](./diagrams/treeview.md) and
+[tree](./ast/treeview.md) documents. [fixture: treeview/gram-written-tree]
+[fixture: treeview/box-written-tree]
+
 ## Sources
 
 The specification is derived from three sources in the mermaid.js repository:

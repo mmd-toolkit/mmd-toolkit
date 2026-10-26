@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A branch inside a quoted name triggers rewriting without quote awareness."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "b\"",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

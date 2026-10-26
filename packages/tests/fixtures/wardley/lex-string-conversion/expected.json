@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do both STRING quote styles use default escape conversion in every published field?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "b\nq",
+        "label": "b\nq",
+        "x": 30,
+        "y": 20,
+        "className": "anchor"
+      },
+      {
+        "id": "a\n\r\tqu0041",
+        "label": "a\n\r\tqu0041",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "fq"
+      }
+    ],
+    "notes": [
+      {
+        "text": "c\tq",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "gq",
+        "x": 50,
+        "y": 40
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "hq",
+        "x": 60,
+        "y": 50
+      }
+    ],
+    "axes": {
+      "stages": [
+        "d\nq",
+        "e\tq"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

@@ -70,8 +70,8 @@ native percent コメントの mark は `%%`、PEG hash は `#`、
 ABNF semicolon は `;` です。
 範囲に物理改行は含めず、LS/PS は内容に含めます。
 IR/EBNF C コメントの mark は `/*`、EBNF ISO は `(*` で、
-範囲に最初の必須の閉じを含めます。
-Comment.value は開始マークの後のソースで、ブロックの閉じも含みます。
+最初の必須の閉じで終わります。
+範囲と値は[共有の Comment の定義](../tokens.ja.md#comment)に従います。
 [fixture: railroad/ir-comment-percent-ls]
 [fixture: railroad/peg-comment-hash-ps]
 [fixture: railroad/abnf-comment-semicolon-ls]

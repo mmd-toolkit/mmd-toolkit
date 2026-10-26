@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Block conversion trims lines, collapses horizontal runs and repeated line breaks."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A B\nC D",
+    "domains": [],
+    "transitions": []
+  }
+}

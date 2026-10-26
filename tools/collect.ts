@@ -196,6 +196,25 @@ const SPEC_FILES: Readonly<
   // There is no mermaid-side parser spec; the parser package tests use its
   // service's LangiumParser directly, including recoverable invalid inputs.
   treemap: () => ["../../parser/tests/treemap.test.ts"],
+  // db.spec.ts and icons.spec.ts build values without diagram texts.
+  // treeViewValueConverter.test.ts tests isolated terminal fragments, not
+  // diagram inputs. The preprocessor spec passes complete inputs to the
+  // adapter's preprocessing boundary; its detector and line-map tests do not.
+  treeview: () => [
+    "diagrams/treeView/parser.spec.ts",
+    "diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "../../parser/tests/treeView.test.ts",
+  ],
+  // wardleyBuilder.spec.ts constructs builder values without diagram text.
+  // The pinned parser package has no Wardley test file.
+  wardley: () => ["diagrams/wardley/wardleyParser.spec.ts"],
+  // cynefin.spec.ts constructs Db and boundary values without parsing text.
+  // The pinned parser package has no Cynefin test file.
+  cynefin: () => ["diagrams/cynefin/cynefin.integration.spec.ts"],
+  eventmodeling: () => [
+    "diagrams/eventmodeling/eventmodeling.spec.ts",
+    "../../parser/tests/eventmodeling.test.ts",
+  ],
   // architectureSeed.spec.ts tests randomness with no diagram text.
   // svgDraw.spec.ts passes text to Diagram.fromText before rendering; its
   // assertions can use the shared drawing stubs. The parser package tests

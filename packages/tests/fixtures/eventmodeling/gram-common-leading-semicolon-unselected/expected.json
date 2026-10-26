@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/eventmodeling.md Common statement values: Without a matching style/hash trigger, does a semicolon remain syntax instead of joining the surrounding leading spaces?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 24: unexpected character: ->;<- at offset: 37, skipped 1 characters. "
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Grammar: the documented trend-indicator spelling is not a grammar production."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 4: unexpected character: ->.<- at offset: 16, skipped 1 characters. Parse error on line 2, column 3: Expecting: one of these possible Token sequences:\n  1. [STRING]\n  2. [ID]\n  3. [NAME_WITH_SPACES]\nbut found: '-'"
+  }
+}

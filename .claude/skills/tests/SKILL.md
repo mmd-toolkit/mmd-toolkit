@@ -568,7 +568,15 @@ diagram; an imported common rule does not establish how the diagram uses it.
      closing fences share indentation (six cases, pie3-6);
    - a global directive glued immediately after a keyword, with the next keyword
      or value glued after it: judge the keyword boundary in the text without
-     global directives and selected semicolons (pie3-7).
+     global directives and selected semicolons (pie3-7);
+   - a global directive or a selected semicolon inside each diagram atom (a
+     fixed word, a header keyword, an arrow, a common keyword, or a class name
+     or icon value that cannot contain whitespace), and between its authored
+     parts. Inside cases accepted by mermaid.js carry
+     `directive-as-token-boundary` or `ignored-semicolon-as-token-boundary`:
+     these split the atom itself, whereas the pie3-7 cases touch its end (review
+     cy12-1 and tv12-2; also the railroad steps 1–2 review and the wardley steps
+     1–2 and 3 reviews).
 
    When a review finds a kind that the list lacks, add it here, with the review
    number, in the change that closes the review.

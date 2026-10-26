@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An enclosing STRING wins over a hidden YAML-looking interior."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A\n---\nx\n---\nB"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

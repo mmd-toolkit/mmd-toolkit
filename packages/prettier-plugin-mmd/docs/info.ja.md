@@ -417,13 +417,19 @@ info
 
 ### Global directives
 
-共通の除去が両側を連結するため、opaque な Root directive の原順序と位置、
-左右それぞれの接触・離隔を保ちます。
+共通の除去が両側を連結するため、
+opaque な Root directive の原文と順序を保ちます。
+同じ印字行の中では、両側の接触・分離を保ちます。
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立 directive の開始列だけを本文の1段へ合わせます。
 完全な component 境界、値内部、複数行、malformed init、
 EOF に達する終端も保ちます。
 収集、再整形、削除はしません。
 info の Db が空でも init は設定を変えうるためです。
+
+[fixture: info/global-directives/header-to-body]
 
 [fixture: info/global-directives/global-colon-brace]
 
@@ -463,6 +469,8 @@ trigger の移動が選択と受理を変えうるため、保護された見出
 style/classDef の両 pass、大小文字、colon と hash の空白、Unicode 境界、
 directive で再結合する trigger は原文を保ち、安全な外側と suffix は整えます。
 semicolon は info の一般的な文区切りではありません。
+
+[fixture: info/semicolons/native-description-value]
 
 [fixture: info/semicolons/semicolon-line-values]
 

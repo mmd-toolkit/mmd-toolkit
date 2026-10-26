@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Three same-name frames remain, including a third referring to a different partner."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "First",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "Second",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "ui",
+        "entityIdentifier": "Partner",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "Third",
+        "sourceFrames": [
+          "02"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

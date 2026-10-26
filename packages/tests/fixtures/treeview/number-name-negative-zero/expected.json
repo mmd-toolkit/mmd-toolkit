@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Numeric-looking node -0 stays text; there is no reachable number converter."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "-0",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

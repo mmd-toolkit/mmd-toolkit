@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The grammar reaches no numeric terminal; a signed number is rejected as an item."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 9: unexpected character: ->+<- at offset: 21, skipped 2 characters. "
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Prototype-shaped identifiers are plain strings."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "__proto__.constructor",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\nconstructor\n}\n"
+        }
+      }
+    ]
+  }
+}

@@ -1,3 +1,7 @@
+import type { TreeviewTreeNode } from "../../src/ast/treeview.ts"
+import type { EventmodelingNode } from "../../src/ast/eventmodeling.ts"
+import type { CynefinNode } from "../../src/ast/cynefin.ts"
+import type { WardleyNode } from "../../src/ast/wardley.ts"
 import type { RailroadNode } from "../../src/ast/railroad.ts"
 import type { TreemapNode } from "../../src/ast/treemap.ts"
 import type { RadarNode } from "../../src/ast/radar.ts"
@@ -669,6 +673,102 @@ export const allTreemapNodeTypes: Record<TreemapNode["type"], true> = {
   TreemapLiteral: true,
 }
 
+/** Every Wardley node type, in specification order. */
+export const allWardleyNodeTypes: Readonly<Record<WardleyNode["type"], true>> =
+  {
+    WardleyDiagram: true,
+    WardleyAnchorStatement: true,
+    WardleyComponentStatement: true,
+    WardleyLinkStatement: true,
+    WardleyEvolveStatement: true,
+    WardleyPipelineStatement: true,
+    WardleyPipelineComponent: true,
+    WardleyNoteStatement: true,
+    WardleyAnnotationsStatement: true,
+    WardleyAnnotationStatement: true,
+    WardleyAcceleratorStatement: true,
+    WardleyDeacceleratorStatement: true,
+    WardleyEvolutionStatement: true,
+    WardleyEvolutionStage: true,
+    WardleySizeStatement: true,
+    WardleyCoordinates: true,
+    WardleyLabelOffsetDecoration: true,
+    WardleySourceStrategyDecoration: true,
+    WardleyInertiaDecoration: true,
+    WardleyParenthesizedInertiaDecoration: true,
+    WardleyArrow: true,
+    WardleyTitleStatement: true,
+    WardleyAccTitleStatement: true,
+    WardleyAccDescrStatement: true,
+    WardleyAccDescrBlockStatement: true,
+    WardleyIdentifier: true,
+    WardleyLiteral: true,
+    WardleyIgnoredText: true,
+  }
+
+/** Every Cynefin node type, in specification order. */
+export const allCynefinNodeTypes: Readonly<Record<CynefinNode["type"], true>> =
+  {
+    CynefinDiagram: true,
+    CynefinDomainStatement: true,
+    CynefinDomainItem: true,
+    CynefinTransitionStatement: true,
+    CynefinArrow: true,
+    CynefinTitleStatement: true,
+    CynefinAccTitleStatement: true,
+    CynefinAccDescrStatement: true,
+    CynefinAccDescrBlockStatement: true,
+    CynefinLiteral: true,
+    CynefinIgnoredText: true,
+  }
+
+/** Every Eventmodeling node type, in specification order. */
+export const allEventmodelingNodeTypes: Readonly<
+  Record<EventmodelingNode["type"], true>
+> = {
+  EventmodelingDiagram: true,
+  EventmodelingTimeFrameStatement: true,
+  EventmodelingResetFrameStatement: true,
+  EventmodelingQualifiedName: true,
+  EventmodelingQualifiedNamePart: true,
+  EventmodelingSourceReference: true,
+  EventmodelingArrow: true,
+  EventmodelingDataReference: true,
+  EventmodelingInlineData: true,
+  EventmodelingDataBlock: true,
+  EventmodelingModelEntityStatement: true,
+  EventmodelingDataEntityStatement: true,
+  EventmodelingNoteStatement: true,
+  EventmodelingGwtStatement: true,
+  EventmodelingGwtClause: true,
+  EventmodelingGwtItem: true,
+  EventmodelingTitleStatement: true,
+  EventmodelingAccTitleStatement: true,
+  EventmodelingAccDescrStatement: true,
+  EventmodelingAccDescrBlockStatement: true,
+  EventmodelingLiteral: true,
+  EventmodelingIgnoredText: true,
+}
+
+/** Every Treeview node type, in specification order. */
+export const allTreeviewNodeTypes: Readonly<
+  Record<TreeviewTreeNode["type"], true>
+> = {
+  TreeviewDiagram: true,
+  TreeviewNode: true,
+  TreeviewClassAnnotation: true,
+  TreeviewIconAnnotation: true,
+  TreeviewDescriptionAnnotation: true,
+  TreeviewTitleStatement: true,
+  TreeviewAccTitleStatement: true,
+  TreeviewAccDescrStatement: true,
+  TreeviewAccDescrBlockStatement: true,
+  TreeviewIdentifier: true,
+  TreeviewLiteral: true,
+  TreeviewBranchPrefix: true,
+  TreeviewIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -700,6 +800,10 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allRadarNodeTypes),
   ...Object.keys(allTreemapNodeTypes),
   ...Object.keys(allRailroadNodeTypes),
+  ...Object.keys(allWardleyNodeTypes),
+  ...Object.keys(allCynefinNodeTypes),
+  ...Object.keys(allEventmodelingNodeTypes),
+  ...Object.keys(allTreeviewNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

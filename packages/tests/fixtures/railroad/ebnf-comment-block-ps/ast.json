@@ -84,7 +84,7 @@
     {
       "type": "Comment",
       "mark": "/*",
-      "value": " A B */",
+      "value": " A B ",
       "range": [
         19,
         28

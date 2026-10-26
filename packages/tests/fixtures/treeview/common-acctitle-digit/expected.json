@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check the common terminal case acctitle-digit."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "accTitle2: text",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

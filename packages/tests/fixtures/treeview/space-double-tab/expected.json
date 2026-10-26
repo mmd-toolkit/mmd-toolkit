@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check leading, internal, value-tail and file-tail tab in double."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line ?, column ?: Expecting: one of these possible Token sequences:\n  1. [QUOTED_NAME]\n  2. [BARE_NAME]\nbut found: ''"
+  }
+}

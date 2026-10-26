@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Detection: After a retained comment and a passed bare line, Unicode whitespace is trivia here but Mermaid reads it again."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 3, column 1: Expecting token of type 'treeView-beta' but found ` `.\nParse error on line 4, column 1: Expecting token of type 'EOF' but found `treeView-beta`."
+  }
+}

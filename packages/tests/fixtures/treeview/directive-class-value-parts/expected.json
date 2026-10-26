@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "May a directive stand between the class marker and the complete class name?"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "cssClass": "highlight",
+        "children": []
+      },
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

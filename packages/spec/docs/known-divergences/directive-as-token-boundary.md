@@ -507,6 +507,113 @@ railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership] [fixture:
 railroad/ir-directive-keyword-glued]
 
+### Wardley
+
+Global directives have shared Directive records. WardleyIdentifier,
+StringLiteral, WardleyLiteral and WardleyIgnoredText retain the remaining
+authored text wherever the syntax permits text. Fixed words, numbers, ID-form
+names and indivisible arrow, port or marker glyphs have no internal authored
+gap, so joining their fragments would require a different lexical rule, even
+though their raw source can be retained. The existing reason-2 atomic-boundary
+rule therefore rejects such splits. [fixture: wardley/directive-keyword-middle]
+[fixture: wardley/directive-header-inside] [fixture:
+wardley/directive-id-inside] [fixture: wardley/directive-strategy-inside]
+[fixture: wardley/directive-arrow-inside] [fixture:
+wardley/directive-port-inside] [fixture: wardley/directive-flow-marker-inside]
+[fixture: wardley/directive-number]
+
+The authored components of coordinates, signed offsets and parenthesized
+decorations are separate boundaries. A labeled flow similarly has a plus, a
+quoted label and an end marker. Global directives may occur between these
+complete parts, inside strings or spaced-name text, and inside native hidden
+punctuation. This does not permit ordinary padding or native hidden text inside
+the composite flow unit. A directive is not made indivisible merely because
+Mermaid matches the whole coordinate or decoration with one terminal. [fixture:
+wardley/directive-coordinate-parts] [fixture: wardley/directive-offset-sign]
+[fixture: wardley/directive-strategy-parts] [fixture:
+wardley/directive-parenthesized-inertia-parts] [fixture:
+wardley/directive-flow-before-label] [fixture:
+wardley/directive-flow-after-label] [fixture: wardley/directive-name-inside]
+[fixture: wardley/directive-native-opener-split] [fixture:
+wardley/lex-link-native-flow-components]
+
+### Cynefin
+
+Shared directive records can hold a directive’s source, but a fixed
+header/domain/common word or indivisible arrow has no internal authored gap.
+Reject a global directive inside such an atom. Complete component boundaries and
+text interiors remain allowed; native hidden forms already have nodes and need
+no divergence. [fixture: cynefin/directive-header-inside] [fixture:
+cynefin/directive-domain-inside] [fixture: cynefin/directive-arrow-inside]
+[fixture: cynefin/directive-common-keyword] [fixture:
+cynefin/directive-title-inside] [fixture: cynefin/directive-block-inside]
+[fixture: cynefin/directive-clear-inside] [fixture:
+cynefin/directive-transition-parts] [fixture:
+cynefin/directive-description-brace] [fixture:
+cynefin/directive-native-yaml-components] [fixture:
+cynefin/directive-native-directive-components] [fixture:
+cynefin/directive-every-field]
+
+The
+[pinned grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)
+and
+[public adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)
+read the result of the common preprocessing/detection pipeline. The
+[Cynefin syntax](../diagrams/cynefin.md) states the direct rule and
+[tree](../ast/cynefin.md) retains its authored forms. [fixture:
+cynefin/db-all-fields]
+
+### eventmodeling
+
+Eventmodeling treats each header/statement/common keyword, entity/data-type
+word, single identifier segment, frame-name digit string, ->>, [[ and ]] as an
+atom. Root.directives can retain the removed directive, but cannot join the two
+atomic spellings into one authored unit. Mermaid accepts the split atoms; this
+specification rejects them under this existing boundary rule. Type-tag
+backticks/type word/body, qualified-name dots/segments and reference
+delimiters/name are separate components, so their boundaries remain permitted
+when the remaining lexical text is valid. Native comment marks and ignored
+fences have their own whole Comment/IgnoredText owners; they are not rejected
+merely for being hidden. [fixture: eventmodeling/directive-header-inside]
+[fixture: eventmodeling/directive-id-inside] [fixture:
+eventmodeling/directive-number-inside] [fixture:
+eventmodeling/directive-arrow-inside] [fixture:
+eventmodeling/directive-reference-inside] [fixture:
+eventmodeling/directive-reference-close-inside] [fixture:
+eventmodeling/directive-json-inside] [fixture:
+eventmodeling/directive-qualified] [fixture: eventmodeling/directive-reference]
+[fixture: eventmodeling/directive-tag] [fixture:
+eventmodeling/lex-hidden-yaml-fence-directive] [fixture:
+eventmodeling/comment-mark-directive]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+defines the units; [the diagram syntax](../diagrams/eventmodeling.md) defines
+their direct boundaries.
+
+### Treeview
+
+Treeview rejects directives inside the exact header, common keywords, the word
+`icon`, `:::` or `##`, class names and complete icon references. The latter
+reference includes its colon. Shared Directive records can retain the removed
+text, but joining atomic spellings across it would violate the direct boundary
+rule. Bare names and other text/string interiors can hold fragments;
+complete-component gaps remain allowed. A branch and each dash are separate
+components, so directives between them are allowed. The
+[diagram syntax](../diagrams/treeview.md#comments-and-boundaries) defines these
+boundaries from
+[treeView.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L15-L64).
+[fixture: treeview/directive-header-inside] [fixture:
+treeview/directive-class-inside] [fixture:
+treeview/directive-description-inside] [fixture:
+treeview/directive-class-value-inside] [fixture:
+treeview/directive-icon-value-inside] [fixture:
+treeview/icon-pack-name-directive] [fixture: treeview/directive-bare-middle]
+[fixture: treeview/directive-class-value-parts] [fixture:
+treeview/directive-icon-parts-parts] [fixture:
+treeview/icon-name-close-directive] [fixture:
+treeview/box-branch-directive-parts] [fixture:
+treeview/box-dash-directive-inside]
+
 ## The documentation of mermaid.js and its issues
 
 - The documentation of
@@ -651,3 +758,56 @@ warning. These facts do not justify any additional divergence.
   decision for these preprocessing boundaries. This divergence follows the
   existing shared rule, not such a decision. The inspected results do not
   establish that no other relevant issue exists.
+
+- Wardley: the
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)
+  shows coordinates, decorations and flows without defining this common
+  boundary. Searches of the official issues and pull requests on 2026-10-26 used
+  wardley directive, wardley semicolon and wardley flow.
+  [#7642](https://github.com/mermaid-js/mermaid/pull/7642) fixes hyphenated
+  names and [#7726](https://github.com/mermaid-js/mermaid/pull/7726) removes
+  unnecessary sanitization; both are reflected in the pin.
+  [#8379](https://github.com/mermaid-js/mermaid/pull/8379) was an open
+  configuration-retention PR. The inspected results establish no maintainer
+  defect decision for this boundary; the existing direct rule applies. The
+  search is not claimed to be exhaustive.
+- Cynefin’s
+  [pinned syntax documentation](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)
+  describes fixed domains, quoted items and labeled transitions; its
+  [notes](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)
+  state that self transitions are ignored.
+  [PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) added the diagram
+  and was merged. On 2026-10-26, searches for cynefin parser, cynefin directive,
+  cynefin semicolon and cynefin frontmatter found no inspected maintainer
+  judgment on this boundary.
+  [Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) was open with
+  Status: Triage and requested framework naming/drawing changes, not a ruling on
+  these lexical rules.
+
+### eventmodeling
+
+The pinned
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+describes frames, data and tags without defining this shared preprocessing
+boundary. Searches of the official issues and pull requests on 2026-10-26 used
+eventmodeling title, eventmodeling parser, event modeling data, eventmodeling
+accTitle and eventmodeling validator.
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588), merged on
+2026-04-16, adds validator registration; it does not establish a maintainer
+ruling on this boundary. The inspected results establish no such ruling; the
+existing direct rule applies. The search is not claimed to be exhaustive.
+
+### Treeview
+
+The pinned
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277)
+describes indentation, quoted names, annotations and box drawing, without
+defining this common boundary. On 2026-10-26 the official issues/PRs were
+searched for `treeView quoted`, `treeView indentation`, `treeView box`,
+`treeView quotes`, `treeView whitespace` and `treeView accDescr`.
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) is the merged
+box-drawing addition;
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) is an open
+Enhancement/Triage proposal to omit the header. Inspected results establish no
+maintainer defect ruling on this boundary; the existing direct rule applies. The
+search is not claimed to be exhaustive.

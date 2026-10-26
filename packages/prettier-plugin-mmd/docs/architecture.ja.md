@@ -693,10 +693,17 @@ architecture-beta
 
 ### Global directives
 
-Root directive の内容・順序・所有位置・各側の接触を保ちます。
+Root directive の内容・順序・所有位置を保ちます。
+同じ印字行の中では、両側の接触・分離を保ちます。
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立開始だけ本文の1段に揃え、複数行の内部と EOF までの末尾は保ちます。
-common の除去は両側を結合するため、境界の空白を消すと宣言が拒否され得ます。
+common の除去は両側を結合するため、
+部品の境界の空白を消すと宣言が拒否され得ます。
 部品間・値内部の directive を保ち、不透明な内容を JSON として扱いません。
+
+[fixture: architecture/global-directives/header-to-body]
 
 [fixture: architecture/global-directives/composite-boundaries]
 
@@ -1035,6 +1042,8 @@ architecture-beta
 entity、
 値の物理行、
 global 除去で結合する trigger を保ちます。
+
+[fixture: architecture/semicolons/native-service-value]
 
 [fixture: architecture/semicolons/crossing-comment]
 

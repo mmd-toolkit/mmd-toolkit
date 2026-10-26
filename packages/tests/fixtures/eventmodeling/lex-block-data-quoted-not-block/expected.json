@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: A data declaration requires block data and cannot take quoted inline data. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 22: Expecting token of type 'EM_DATA_BLOCK' but found `\"x\"`."
+  }
+}

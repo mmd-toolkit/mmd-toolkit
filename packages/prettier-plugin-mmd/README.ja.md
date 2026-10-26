@@ -165,11 +165,19 @@ flowchart LR
   整形の規則は [docs/architecture.ja.md](./docs/architecture.ja.md) にあります。
 - treemap 図: `treemap` と `treemap-beta` で始まる図です。
   整形の規則は [docs/treemap.ja.md](./docs/treemap.ja.md) にあります。
+- treeview 図: `treeView-beta` で始まる図です。
+  整形の規則は [docs/treeview.ja.md](./docs/treeview.ja.md) にあります。
 - radar 図: `radar-beta` で始まる図です。
   整形の規則は [docs/radar.ja.md](./docs/radar.ja.md) にあります。
+- Wardley 図: `wardley-beta` で始まる図です。
+  整形の規則は [docs/wardley.ja.md](./docs/wardley.ja.md) にあります。
 - railroad 図: `railroad-beta`、`railroad-ebnf-beta`、
   `railroad-abnf-beta`、`railroad-peg-beta` で始まる図です。
   整形の規則は [docs/railroad.ja.md](./docs/railroad.ja.md) にあります。
+- cynefin 図: `cynefin-beta` と `cynefin-beta:` で始まる図です。
+  整形の規則は [docs/cynefin.ja.md](./docs/cynefin.ja.md) にあります。
+- eventmodeling 図: `eventmodeling` で始まる図です。
+  規則は [docs/eventmodeling.ja.md](./docs/eventmodeling.ja.md) にあります。
 - packet 図: `packet` と `packet-beta` で始まる図です。
   整形の規則は [docs/packet.ja.md](./docs/packet.ja.md) にあります。
 - ブロック図。
@@ -205,8 +213,9 @@ flowchart LR
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
 - flowchart、agentflow、sequence、class、state、ER、Gantt、journey、
   requirement、mindmap、timeline、sankey、XY チャート、象限チャート、
-  kanban、C4、Venn、Ishikawa、usecase、pie、gitgraph、info、packet、
-  architecture、radar、treemap、railroad、ブロック図以外の図種は変えません。
+  kanban、C4、Venn、Ishikawa、usecase、pie、info、gitgraph、
+  architecture、treemap、treeview、radar、wardley、railroad、cynefin、eventmodeling、packet、
+  ブロック図以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
 
@@ -260,13 +269,19 @@ flowchart LR
 - [docs/venn.ja.md](./docs/venn.ja.md): Venn 図の整形の規則。
 - [docs/ishikawa.ja.md](./docs/ishikawa.ja.md): Ishikawa 図の整形の規則。
 - [docs/usecase.ja.md](./docs/usecase.ja.md): usecase 図の整形の規則。
+- [docs/pie.ja.md](./docs/pie.ja.md): pie 図の整形の規則。
 - [docs/info.ja.md](./docs/info.ja.md): info の整形の規則。
 - [docs/gitgraph.ja.md](./docs/gitgraph.ja.md): gitgraph の整形の規則。
-- [docs/pie.ja.md](./docs/pie.ja.md): pie 図の整形の規則。
 - [docs/architecture.ja.md](./docs/architecture.ja.md):
   architecture 図の整形の規則。
 - [docs/treemap.ja.md](./docs/treemap.ja.md): treemap 図の整形の規則。
+- [docs/treeview.ja.md](./docs/treeview.ja.md): treeview 図の整形の規則。
 - [docs/radar.ja.md](./docs/radar.ja.md): radar 図の整形の規則。
+- [docs/wardley.ja.md](./docs/wardley.ja.md): Wardley 図の整形の規則。
+- [docs/railroad.ja.md](./docs/railroad.ja.md): railroad 図の整形の規則。
+- [docs/cynefin.ja.md](./docs/cynefin.ja.md): cynefin 図の整形規則。
+- [docs/eventmodeling.ja.md](./docs/eventmodeling.ja.md):
+  eventmodeling 図の整形規則。
 - [docs/packet.ja.md](./docs/packet.ja.md): packet 図の整形の規則。
 - [docs/block.ja.md](./docs/block.ja.md): ブロック図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):

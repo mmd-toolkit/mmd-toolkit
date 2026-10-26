@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/treeView.html",
+    "line": 113
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "my-project",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "src",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "App.tsx",
+                "nodeType": "file",
+                "cssClass": "highlight",
+                "icon": "logos:react",
+                "description": "main component",
+                "children": []
+              },
+              {
+                "name": "index.js",
+                "nodeType": "file",
+                "description": "entry point",
+                "children": []
+              },
+              {
+                "name": "styles.css",
+                "nodeType": "file",
+                "icon": "none",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "data",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "model.bin",
+                "nodeType": "file",
+                "icon": "logos:mysql",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": ".env",
+            "nodeType": "file",
+            "description": "environment variables",
+            "children": []
+          },
+          {
+            "name": "Dockerfile",
+            "nodeType": "file",
+            "icon": "logos:docker-icon",
+            "children": []
+          },
+          {
+            "name": "package.json",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "treeView": {
+        "showIcons": true
+      }
+    }
+  }
+}

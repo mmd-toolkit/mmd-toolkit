@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts",
+    "line": 62,
+    "test": "eventmodeling diagrams > should handle reset frames"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "reset",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "CartUI",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "02",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "AddItem",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ItemAdded",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A native bare-percent line inside an enclosing description is text."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "A\n%%\nB",
+    "domains": [],
+    "transitions": []
+  }
+}

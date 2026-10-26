@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What follows a header terminal with an attached dash?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 13: Expecting token of type 'EOF' but found `-`."
+  }
+}

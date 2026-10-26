@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Frames retain declaration order rather than numeric-name order."
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Third",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "First",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "02",
+        "modelEntityType": "ui",
+        "entityIdentifier": "Second",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

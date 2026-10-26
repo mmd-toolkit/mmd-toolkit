@@ -1280,11 +1280,16 @@ railroad-peg-beta
 
 ### Global directives
 
-Print every Root directive from its source span once at its owner position. Keep
-touching versus separated boundaries on both sides and use one body step for
-ordinary standalone directives. Do not format their contents as JSON or collect
-them before the header. Uniform added spaces can change strings, repeat
-components, numeric values and predicate operands after common removal.
+Print every Root directive from its source span once at its owner position.
+Within a printed line, keep whether each side touches or is separated. When
+formatting splits units that were on the same line, a directive in their gap
+moves with the following unit: its right boundary stays touching or separated,
+while its left contact is broken. Use one body step for ordinary standalone
+directives. Do not format their contents as JSON or collect them before the
+header. Uniform added spaces can change strings, repeat components, numeric
+values and predicate operands after common removal.
+
+[fixture: railroad/global-directives/between-rules]
 
 [fixture: railroad/global-directives/abnf-components]
 
@@ -1655,6 +1660,8 @@ Keep an authored railroad line as written when it contains the literal string
 all statements, comments and native hidden forms on the line, with their inner
 spacing. Do not join the line to either neighbor. When removing a directive
 forms one of these strings across physical lines, keep every contributing line.
+[fixture: railroad/semicolons/native-terminal-value]
+
 [fixture: railroad/semicolons/ir-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/ebnf-word-unclosed-directive-lines] [fixture:
 railroad/semicolons/abnf-word-unclosed-directive-lines] [fixture:

@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Valid embedded Cynefin settings change drawing alone."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  },
+  "embedded": {
+    "config": {
+      "cynefin": {
+        "width": 1000,
+        "height": 700,
+        "padding": 20,
+        "showDomainDescriptions": false,
+        "boundaryAmplitude": 0,
+        "seed": 42
+      }
+    }
+  }
+}

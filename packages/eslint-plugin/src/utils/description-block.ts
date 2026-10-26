@@ -1,13 +1,18 @@
 import type {
   ArchitectureAccDescrBlockStatement,
+  CynefinAccDescrBlockStatement,
+  EventmodelingAccDescrBlockStatement,
   GitgraphAccDescrBlockStatement,
   Node,
   PacketAccDescrBlockStatement,
   PieAccDescrBlockStatement,
   RadarAccDescrBlockStatement,
+  RailroadAccDescrBlockStatement,
   Token,
   TreemapAccDescrBlockStatement,
+  TreeviewAccDescrBlockStatement,
   UsecaseAccDescrBlockStatement,
+  WardleyAccDescrBlockStatement,
 } from "@mmd-toolkit/parser"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { textWithoutDirectives } from "./directive-free-text.ts"
@@ -163,7 +168,12 @@ export function isEmptyDescriptionBlock(
     | PacketAccDescrBlockStatement
     | ArchitectureAccDescrBlockStatement
     | RadarAccDescrBlockStatement
-    | TreemapAccDescrBlockStatement,
+    | TreemapAccDescrBlockStatement
+    | RailroadAccDescrBlockStatement
+    | CynefinAccDescrBlockStatement
+    | WardleyAccDescrBlockStatement
+    | EventmodelingAccDescrBlockStatement
+    | TreeviewAccDescrBlockStatement,
 ): boolean {
   return (
     (node.value?.value ?? "").trim() === "" &&

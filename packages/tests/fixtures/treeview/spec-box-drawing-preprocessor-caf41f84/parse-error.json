@@ -1,0 +1,17 @@
+{
+  "message": "A treeview branch must have content",
+  "range": [
+    29,
+    36
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 7
+    }
+  }
+}

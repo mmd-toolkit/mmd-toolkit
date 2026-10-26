@@ -1,0 +1,83 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does the last pipeline replace its membership while old child nodes and duplicate member ids remain?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "P",
+        "label": "P",
+        "x": 20,
+        "y": 10,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Q",
+        "label": "Q",
+        "x": 40,
+        "y": 30,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "P_A",
+        "label": "A",
+        "x": 20,
+        "y": 10,
+        "className": "pipeline-component"
+      },
+      {
+        "id": "Q_B",
+        "label": "B",
+        "x": 30,
+        "y": 30,
+        "className": "pipeline-component"
+      },
+      {
+        "id": "P_C",
+        "label": "C",
+        "x": 40,
+        "y": 10,
+        "className": "pipeline-component"
+      },
+      {
+        "id": "P_D",
+        "label": "D",
+        "x": 60,
+        "y": 10,
+        "className": "pipeline-component",
+        "labelOffsetX": -2,
+        "labelOffsetY": 3
+      }
+    ],
+    "links": [],
+    "trends": [],
+    "pipelines": [
+      {
+        "nodeId": "P",
+        "componentIds": [
+          "P_D",
+          "P_D"
+        ]
+      },
+      {
+        "nodeId": "Q",
+        "componentIds": [
+          "Q_B"
+        ]
+      }
+    ],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

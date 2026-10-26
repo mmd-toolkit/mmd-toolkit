@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/cynefin.md",
+    "line": 94
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "Incident Response",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "Investigate root cause"
+          },
+          {
+            "label": "Run chaos experiment"
+          }
+        ]
+      },
+      {
+        "name": "complicated",
+        "items": [
+          {
+            "label": "Analyze performance data"
+          },
+          {
+            "label": "Expert review needed"
+          }
+        ]
+      },
+      {
+        "name": "chaotic",
+        "items": [
+          {
+            "label": "Page on-call immediately"
+          }
+        ]
+      },
+      {
+        "name": "clear",
+        "items": [
+          {
+            "label": "Restart service"
+          },
+          {
+            "label": "Apply known fix"
+          }
+        ]
+      },
+      {
+        "name": "confusion",
+        "items": [
+          {
+            "label": "Unknown failure mode"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

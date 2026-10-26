@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Line conversion trims ends and collapses repeated spaces or tabs."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "A B",
+    "accTitle": "C D",
+    "accDescr": "E F",
+    "domains": [],
+    "transitions": []
+  }
+}

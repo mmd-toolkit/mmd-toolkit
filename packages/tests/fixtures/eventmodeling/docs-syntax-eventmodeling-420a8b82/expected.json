@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/eventmodeling.md",
+    "line": 198
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "reset",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "CartCreated",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "03",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ItemAdded",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "04",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ItemRemoved",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "05",
+        "modelEntityType": "evt",
+        "entityIdentifier": "CartCleared",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "CartUI",
+        "sourceFrames": [
+          "02",
+          "03",
+          "04",
+          "05"
+        ],
+        "data": null
+      }
+    ]
+  }
+}

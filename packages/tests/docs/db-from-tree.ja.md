@@ -533,6 +533,33 @@ HTML ラベルが有効で、`securityLevel` が
 
 ## 確かめ
 
+Treeview は平らな node、書かれた注釈、罫線の直接の読みから構築する。
+手順は [treeview.ja.md](./db-from-tree/treeview.ja.md) にある。
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
+[fixture: treeview/config-security-level-other]
+[fixture: treeview/div-html-frontmatter-value]
+
+Eventmodeling は書かれた frame、data 宣言、
+原文から読む共通 terminal 全体から作る。
+手順は [eventmodeling.ja.md](./db-from-tree/eventmodeling.ja.md) にある。
+[fixture: eventmodeling/gram-written-tree]
+[fixture: eventmodeling/db-reset-data-reference]
+[fixture: eventmodeling/config-security-level-other]
+[fixture: eventmodeling/div-html-frontmatter-value]
+
+Cynefin は、書かれた領域のブロック、項目の文字列、
+遷移と共通の代入から組み立てます。
+手順は [cynefin.ja.md](./db-from-tree/cynefin.ja.md) にあります。
+[fixture: cynefin/db-all-fields] [fixture: cynefin/db-domain-empty-last]
+[fixture: cynefin/config-security-level-other]
+[fixture: cynefin/div-html-frontmatter-value]
+
+Wardley は、書かれた全出現と仕様の比較名から組み立てます。
+手順は [wardley.ja.md](./db-from-tree/wardley.ja.md) にあります。
+[fixture: wardley/db-all-fields] [fixture: wardley/db-publication-order]
+[fixture: wardley/config-security-level-other]
+[fixture: wardley/div-html-frontmatter-value]
+
 Railroad の 4 方言は、一つの authored tree から組み立てます。
 [railroad.ja.md](./db-from-tree/railroad.ja.md) に定めます。
 [fixture: railroad/ir-gram-written-tree]
@@ -555,7 +582,7 @@ Architecture の組み立ては
 記録した木の比較には C4、block、kanban、Venn、Agentflow、Usecase、pie、
 gitgraph、info、packet、radar、treemap、railroad と
 common の検出例を含み、
-C4 の五つの kind もすべて含みます。
+Wardley と C4 の五つの kind もすべて含みます。
 
 `tests/db-from-tree.test.ts` は、木と受理の結果（Db 付き）を記録する
 すべての fixture の Db を作り、記録した Db

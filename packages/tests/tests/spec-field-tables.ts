@@ -15,6 +15,10 @@ const PARSER_DOCS = path.join(HERE, "../../parser/docs")
 
 /** The diagrams that have a tree document. */
 export const TREE_DOCUMENT_DIAGRAMS = [
+  "treeview",
+  "eventmodeling",
+  "cynefin",
+  "wardley",
   "railroad",
   "treemap",
   "radar",
@@ -175,9 +179,10 @@ export function readChildFields(): Map<string, string[]> {
       const at = paragraph.indexOf(prefix)
       if (at !== -1) {
         // The first sentence ends at a period, or at a colon after the list:
-        // `Child fields: `a`, `b`, in source order: …`.
+        // `Child fields: `a`, `b`, in source order: …`. A semicolon starts
+        // an explanation after the list, as in ast/cynefin.md.
         const rest = paragraph.slice(at + prefix.length)
-        const end = rest.search(/[.:]/u)
+        const end = rest.search(/[.:;]/u)
         const sentence = end < 0 ? rest : rest.slice(0, end)
         const quoted = [...sentence.matchAll(/`(\w+)`/gu)].map(
           (match) => match[1] ?? "",

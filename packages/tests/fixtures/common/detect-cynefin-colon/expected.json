@@ -5,5 +5,11 @@
   },
   "accepted": true,
   "diagramType": "cynefin",
-  "db": null
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": []
+  }
 }

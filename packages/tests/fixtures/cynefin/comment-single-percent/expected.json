@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A single percent starts no native comment."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->%<- at offset: 13, skipped 1 characters.\nLexer error on line 2, column 3: unexpected character: ->c<- at offset: 15, skipped 7 characters. "
+  }
+}

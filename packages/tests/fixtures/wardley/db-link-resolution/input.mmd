@@ -1,0 +1,12 @@
+wardley-beta
+component P [0.1,0.2]
+component Q [0.3,0.4]
+pipeline P {
+component X [0.5]
+}
+pipeline Q {
+component X [0.6]
+}
+X -> P_X
+P_X -> Q
+evolve X 0.9

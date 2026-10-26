@@ -31,6 +31,13 @@ export interface KeptLines {
 interface SemicolonRules {
   readonly kind: "separators" | "required" | "text"
   readonly grammatical: ReadonlySet<number>
+  /**
+   * Keep lines containing `style` or `classDef` as written in diagrams with
+   * grammatical `;`, so printing does not predict which `;` the line rule
+   * selects (railroad review 151-4; Wardley decision 28; docs/railroad.md and
+   * docs/wardley.md, Semicolons).
+   */
+  readonly verbatimStyleLines: boolean
 }
 
 const semicolonRulesBySource = new WeakMap<Source, SemicolonRules>()
@@ -56,6 +63,7 @@ function semicolonRulesOf(source: Source): SemicolonRules {
       )
       rules = {
         kind: "required",
+        verbatimStyleLines: true,
         grammatical: new Set([
           ...terminators,
           ...source.root.comments
@@ -63,6 +71,28 @@ function semicolonRulesOf(source: Source): SemicolonRules {
             .map((comment) => comment.range[0]),
         ]),
       }
+      break
+    }
+    case "WardleyDiagram": {
+      // Link-label openers are grammatical punctuation, not text prefixes
+      // (diagrams/wardley.md, Strings and link labels; docs/wardley.md,
+      // Semicolon labels). Selected semicolons remain ordinary protected text.
+      const grammatical = new Set<number>()
+      for (const item of body.body) {
+        if (item.type !== "WardleyLinkStatement" || item.label === null)
+          continue
+        const mark = findTokensBetween(
+          source,
+          item.to.range[1],
+          item.label.range[0],
+        ).findLast(
+          (token) =>
+            token.value === ";" &&
+            !source.ignoredSemicolons.has(token.range[0]),
+        )
+        if (mark !== undefined) grammatical.add(mark.range[0])
+      }
+      rules = { kind: "text", grammatical, verbatimStyleLines: true }
       break
     }
     case "FlowchartDiagram":
@@ -73,10 +103,15 @@ function semicolonRulesOf(source: Source): SemicolonRules {
       rules = {
         kind: "separators",
         grammatical: new Set(),
+        verbatimStyleLines: false,
       }
       break
     default:
-      rules = { kind: "text", grammatical: new Set() }
+      rules = {
+        kind: "text",
+        grammatical: new Set(),
+        verbatimStyleLines: false,
+      }
   }
   semicolonRulesBySource.set(source, rules)
   return rules
@@ -96,7 +131,7 @@ export function grammaticalSemicolonsOf(source: Source): ReadonlySet<number> {
  * last on their line. Required terminators do not protect ordinary layout,
  * but every selected semicolon remains protected. Native comment marks are
  * grammatical punctuation; their contents still count. In text-only diagram
- * types every `;` token counts (see `semicolonRulesOf`).
+ * types every nongrammatical `;` token counts (see `semicolonRulesOf`).
  *
  * The line rule (common.md, `style` and `classDef` lines) ignores the last
  * `;` of a line that matches it, and it reads the text of the line. Removing
@@ -129,9 +164,11 @@ export function findLinesWithOwnSemicolons(
     if (token.value !== ";") {
       addSemicolonsIn(token.range)
     } else if (
-      rules.kind === "text" ||
-      (source.ignoredSemicolons.has(token.range[0]) &&
-        (rules.kind === "required" || !isLastOnItsLine(source, token.range[0])))
+      !rules.grammatical.has(token.range[0]) &&
+      (rules.kind === "text" ||
+        (source.ignoredSemicolons.has(token.range[0]) &&
+          (rules.kind === "required" ||
+            !isLastOnItsLine(source, token.range[0]))))
     ) {
       lines.add(lineStartOf(source, token.range[0]))
     }
@@ -423,9 +460,9 @@ export function isInsideStyleRuleStretch(
   start: number,
   end: number,
 ): boolean {
-  // Required semicolons use complete verbatim word lines. Every other
-  // gap in that diagram follows its ordinary spacing rule.
-  if (semicolonRulesOf(source).kind === "required") return false
+  // Complete verbatim word lines protect grammatical semicolons. Every
+  // other gap in those diagrams follows its ordinary spacing rule.
+  if (usesVerbatimStyleLines(source)) return false
   return findStyleRuleStretches(source).some(
     ([first, last]) => first < start && end <= last,
   )
@@ -495,23 +532,29 @@ function findStyleWord(text: string): number {
   return classDef === -1 ? style : Math.min(style, classDef)
 }
 
-/** Verbatim word lines, computed once for a source with required semicolons. */
+/** Diagrams whose grammatical punctuation needs complete word-line protection. */
+function usesVerbatimStyleLines(source: Source): boolean {
+  return semicolonRulesOf(source).verbatimStyleLines
+}
+
+/** Verbatim word lines, computed once for protected grammatical punctuation. */
 const verbatimStyleLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
 
 /**
- * Railroad keeps a complete source line containing either common line-rule
- * word after global directives are omitted. Keeping the line, including every
- * statement and comment, protects both rule terminators and ABNF comment marks
- * without predicting which semicolon the line rule selects. A removed directive
+ * Railroad and Wardley keep complete source lines containing a common line-rule
+ * word after global directives are omitted. Keeping every statement and comment
+ * protects required terminators, ABNF comment marks and Wardley link-label
+ * openers without predicting which semicolon the line rule selects. A removed directive
  * can join a word across physical lines; all those lines stay together
- * (common.md, Where a directive is; docs/railroad.md, Semicolons).
+ * (common.md, Where a directive is; docs/railroad.md and docs/wardley.md,
+ * Semicolons).
  */
 export function findVerbatimStyleLines(source: Source): ReadonlySet<number> {
   const cached = verbatimStyleLinesBySource.get(source)
   if (cached !== undefined) return cached
   const lines = new Set<number>()
   verbatimStyleLinesBySource.set(source, lines)
-  if (semicolonRulesOf(source).kind !== "required") return lines
+  if (!usesVerbatimStyleLines(source)) return lines
   let lineStart = source.root.body.range[0]
   let position = lineStart
   const parts: string[] = []
@@ -562,9 +605,10 @@ export function findVerbatimStyleLines(source: Source): ReadonlySet<number> {
 }
 
 /**
- * The conservative colon/hash stretch used for ordinary gaps. Railroad
- * instead keeps complete lines containing the shared words as written
- * (common.md, The `style` and `classDef` lines; docs/railroad.md, Semicolons).
+ * The conservative colon/hash stretch used for ordinary gaps. Railroad and
+ * Wardley instead keep complete lines containing the shared words as written
+ * (common.md, The `style` and `classDef` lines; docs/railroad.md and
+ * docs/wardley.md, Semicolons).
  */
 function findPotentialStyleRuleStretch(
   source: Source,

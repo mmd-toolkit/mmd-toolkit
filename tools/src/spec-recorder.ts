@@ -83,6 +83,14 @@ const STUBS_GLOBAL = "__mmdSpecStubs"
  * test file imports and others do not costs nothing.
  */
 const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
+  "diagrams/treeView/parser.js": ["parser"],
+  "diagrams/treeView/db.js": ["default"],
+  "diagrams/treeView/boxDrawingPreprocessor.js": [
+    "isBoxDrawingFormat",
+    "preprocessBoxDrawing",
+    "remapErrorLines",
+  ],
+  "../../parser/src/language/treeView/module.js": ["createTreeViewServices"],
   "diagrams/git/gitGraphParser.js": ["parser"],
   "diagrams/git/gitGraphAst.js": ["db"],
   "diagrams/info/infoParser.js": ["parser"],
@@ -95,6 +103,15 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/railroad/railroadDb.js": ["db"],
   "diagrams/railroad/railroadRenderer.js": ["renderer"],
   "../../parser/src/language/railroad/module.js": ["createRailroadServices"],
+  "diagrams/wardley/wardleyDiagram.js": ["diagram"],
+  "diagrams/cynefin/cynefinParser.js": ["parser"],
+  "diagrams/cynefin/cynefinDb.js": ["db"],
+  "diagrams/eventmodeling/parser.js": ["parser"],
+  "diagrams/eventmodeling/db.js": ["db"],
+  "../../parser/src/language/eventmodeling/event-modeling-validator.js": [
+    "EventModelingValidator",
+    "registerValidationChecks",
+  ],
   "diagrams/radar/parser.js": ["parser"],
   "diagrams/radar/db.js": ["db"],
   "diagrams/radar/renderer.js": ["relativeRadius", "closedRoundCurve"],
@@ -118,6 +135,7 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "infoParse",
     "packetParse",
     "radarParse",
+    "eventModelingParse",
   ],
   "../../parser/src/parse.js": ["parse", "MermaidParseError"],
   "../../parser/src/language/treemap/module.js": ["createTreemapServices"],
@@ -500,6 +518,23 @@ export async function recordSpecFile(
     getData: () => ({ nodes: [], edges: [] }),
   })
   const stubs: Record<string, Record<string, unknown>> = {
+    "diagrams/treeView/parser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/treeView/db.js": { default: anything },
+    "diagrams/treeView/boxDrawingPreprocessor.js": {
+      isBoxDrawingFormat: anything,
+      preprocessBoxDrawing: (text: unknown) => {
+        record(text)
+        return { text, lineMap: new Map() }
+      },
+      remapErrorLines: anything,
+    },
+    "../../parser/src/language/treeView/module.js": {
+      createTreeViewServices: () => ({
+        TreeView: { parser: { LangiumParser: { parse: record } } },
+      }),
+    },
     "diagrams/git/gitGraphParser.js": {
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
     },
@@ -528,6 +563,27 @@ export async function recordSpecFile(
       createRailroadServices: () => ({
         Railroad: { parser: { LangiumParser: { parse: record } } },
       }),
+    },
+    "diagrams/cynefin/cynefinParser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/cynefin/cynefinDb.js": { db: anything },
+    "diagrams/eventmodeling/parser.js": {
+      parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
+    },
+    "diagrams/eventmodeling/db.js": { db: anything },
+    "../../parser/src/language/eventmodeling/event-modeling-validator.js": {
+      EventModelingValidator: anything,
+      registerValidationChecks: anything,
+    },
+    "diagrams/wardley/wardleyDiagram.js": {
+      diagram: {
+        parser: {
+          parser: { yy: undefined },
+          parse: (text: unknown) => Promise.resolve(record(text)),
+        },
+        db: anything,
+      },
     },
     "diagrams/radar/parser.js": {
       parser: { parse: (text: unknown) => Promise.resolve(record(text)) },
@@ -562,6 +618,7 @@ export async function recordSpecFile(
       infoParse: record,
       packetParse: record,
       radarParse: record,
+      eventModelingParse: record,
     },
     "../../parser/src/parse.js": {
       parse: (_diagram: unknown, text: unknown) =>

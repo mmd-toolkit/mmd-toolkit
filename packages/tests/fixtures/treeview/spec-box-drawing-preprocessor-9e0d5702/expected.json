@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/treeView/boxDrawingPreprocessor.spec.ts",
+    "line": 224,
+    "test": "boxDrawingPreprocessor > preprocessBoxDrawing > annotations > should preserve :::class annotation"
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "file.txt",
+        "nodeType": "file",
+        "cssClass": "highlight",
+        "children": []
+      }
+    ]
+  }
+}

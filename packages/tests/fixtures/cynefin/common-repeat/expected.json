@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The final AST assignment of each common field is published."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "Third",
+    "accTitle": "Three",
+    "accDescr": "Final",
+    "domains": [],
+    "transitions": []
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "message": "A Wardley coordinate must be between 0 and 100",
+  "range": [
+    29,
+    32
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 16
+    },
+    "end": {
+      "line": 2,
+      "column": 19
+    }
+  }
+}

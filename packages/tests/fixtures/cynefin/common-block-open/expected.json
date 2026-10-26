@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unterminated description block rejects at EOF."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 13, skipped 8 characters.\nLexer error on line 2, column 10: unexpected character: ->{<- at offset: 22, skipped 2 characters. "
+  }
+}

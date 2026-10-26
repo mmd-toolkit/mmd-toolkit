@@ -830,14 +830,13 @@ quadrantChart
 
 ### Directives
 
-A directive stays where it is written, between the units of a statement, and
-between statements, and each side of it keeps whether it touches: one space
-where whitespace was written beside it, touching where it was not. mermaid.js
-joins the text around a directive in a text, a name, and a string, so the
-whitespace beside the directive is not moved or removed (see
-[Directives](./journey.md#directives)). A directive on a line of its own stands
-at the level of the statement after it, and a directive between two statements
-on a line moves with the statement after it. [fixture:
+Keep directives in their authored gaps. Within a printed line, each side keeps
+whether it touches: one space where whitespace was written beside it, touching
+where it was not. mermaid.js joins the text around a directive in a text, a
+name, and a string, so retain touching versus separated gaps within a statement
+(see [Directives](./journey.md#directives)). A directive on a line of its own
+stands at the level of the statement after it, and a directive between two
+statements on a line moves with the statement after it. [fixture:
 directives/directive-line-at-the-level-of-the-next-statement] [fixture:
 directives/directive-line-before-the-header] [fixture:
 directives/directive-after-a-statement-spaced] [fixture:
@@ -848,6 +847,13 @@ directives/directive-between-colon-and-bracket] [fixture:
 directives/directive-inside-a-coordinate] [fixture:
 directives/directive-over-several-lines] [fixture:
 directives/directive-and-comment-on-a-line]
+
+When formatting splits units that were on the same line, a directive in their
+gap moves with the following unit. Keep its right-side contact or separation;
+break its left contact.
+
+[fixture:
+quadrant/directives/directive-between-two-statements-moves-with-the-next]
 
 Input
 ([directives/directive-line-at-the-level-of-the-next-statement-input.mmd](../tests/fixtures/quadrant/directives/directive-line-at-the-level-of-the-next-statement-input.mmd)):

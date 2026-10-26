@@ -19,6 +19,10 @@ import { readTokenKindRow } from "./spec-field-tables.ts"
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [DiagramType, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["treeview", "TreeviewDiagram"],
+  ["eventmodeling", "EventmodelingDiagram"],
+  ["cynefin", "CynefinDiagram"],
+  ["wardley", "WardleyDiagram"],
   ["railroad", "RailroadDiagram"],
   ["treemap", "TreemapDiagram"],
   ["radar", "RadarDiagram"],
@@ -71,6 +75,11 @@ function cutProblems(body: string, ...fragments: string[]): string[] {
 }
 
 describe("the check of the cut Keyword tokens", () => {
+  it("reports cuts inside cynefin header, domain and common words", () => {
+    expect(cutProblems("CynefinDiagram", "cynefin-", "beta")).toHaveLength(1)
+    expect(cutProblems("CynefinDiagram", "com", "plex")).toHaveLength(1)
+    expect(cutProblems("CynefinDiagram", "accTi", "tle")).toHaveLength(1)
+  })
   it("reports cuts inside radar header, statement and fixed-value words", () => {
     expect(cutProblems("RadarDiagram", "radar-", "beta")).toHaveLength(1)
     expect(cutProblems("RadarDiagram", "ax", "is")).toHaveLength(1)
@@ -204,6 +213,80 @@ const LINK_TARGETS: readonly string[] = ["_self", "_blank", "_parent", "_top"]
  */
 function textsOfUnitsInTheRow(diagram: string): string[] {
   switch (diagram) {
+    case "treeview":
+      return ["treeview-beta", "title", "acctitle", "accdescr", "icon"]
+    case "eventmodeling":
+      return [
+        "eventmodeling",
+        "tf",
+        "timeframe",
+        "rf",
+        "resetframe",
+        "entity",
+        "data",
+        "note",
+        "gwt",
+        "given",
+        "when",
+        "then",
+        "rmo",
+        "readmodel",
+        "ui",
+        "cmd",
+        "command",
+        "evt",
+        "event",
+        "pcr",
+        "processor",
+        "json",
+        "jsobj",
+        "figma",
+        "salt",
+        "uri",
+        "md",
+        "html",
+        "text",
+        "title",
+        "acctitle",
+        "accdescr",
+      ]
+    case "cynefin":
+      return [
+        "cynefin-beta",
+        "complex",
+        "complicated",
+        "clear",
+        "chaotic",
+        "confusion",
+        "title",
+        "acctitle",
+        "accdescr",
+      ]
+    // The Wardley row names its header, command, strategy and inertia families.
+    case "wardley":
+      return [
+        "wardley-beta",
+        "size",
+        "evolution",
+        "anchor",
+        "component",
+        "label",
+        "inertia",
+        "evolve",
+        "pipeline",
+        "note",
+        "annotations",
+        "annotation",
+        "accelerator",
+        "deaccelerator",
+        "build",
+        "buy",
+        "outsource",
+        "market",
+        "title",
+        "acctitle",
+        "accdescr",
+      ]
     case "railroad":
       return [
         "railroad-beta",

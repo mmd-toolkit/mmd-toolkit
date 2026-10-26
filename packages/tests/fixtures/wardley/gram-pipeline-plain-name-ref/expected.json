@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: Pipeline parents require an exact registered ID and cannot fall back to a child's label."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Pipeline \"X\" must reference an existing component with coordinates."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Configuration: site maxEdges and maxTextSize do not add a cynefin parse rejection."
+  },
+  "config": {
+    "maxEdges": 0,
+    "maxTextSize": 1
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

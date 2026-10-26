@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An open directive after a transition leaves EOF as EOL."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Grammar: an empty description block cannot supply or precede the required identifier within an incomplete GWT item."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 31: Expecting token of type 'EM_ID' but found ` accDescr {}`."
+  }
+}

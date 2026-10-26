@@ -459,12 +459,18 @@ packet
 
 ### Global directives
 
-共有の Root directive の接触規則を使い、opaque な内容、順序、
-各側の接触、component の境界と値内部の文字列を保ちます。
+共有の Root directive の配置規則を使い、opaque な内容、順序、
+component の境界と値内部の文字列を保ちます。
+同じ印字行の中では、両側の接触・分離を保ちます。
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
 通常の独立した開始だけ本文1段に揃えます。
 複数行の内部と EOF に達する末尾は原形を保ちます。
 共通の削除は区切りを補わず、init の削除は行設定を変えるためです。
 native hidden DIRECTIVE は別の所有ノードのままです。
+
+[fixture: packet/global-directives/header-to-body]
 
 [fixture: packet/global-directives/global-positions]
 
@@ -655,6 +661,8 @@ style・classDef の両 pass、大文字小文字、colon・hash の空白、反
 Unicode の境界と directive で再結合する trigger を保ちます。
 選ばれた1個の削除が別の1個を選び、Db を変え得るためです。
 atomic cut は失敗のままです。
+
+[fixture: packet/semicolons/native-field-value]
 
 [fixture: packet/semicolons/semicolons-text]
 

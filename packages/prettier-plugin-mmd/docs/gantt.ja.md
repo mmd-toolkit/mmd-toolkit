@@ -1229,7 +1229,7 @@ gantt
 ### ディレクティブ
 
 単独の行のディレクティブは周りの文と同じ段に置きます。
-文の行にあるディレクティブは、両側の空白の有無を残します。
+同じ印字行の中では、両側の空白の有無を残します。
 空白がある所には空白 1 つを置き、接している所は接したままにします。
 [fixture: directives/kept]
 [fixture: directives/before-header]
@@ -1239,6 +1239,12 @@ gantt
 [fixture: directives/touching-one-side-kept]
 [fixture: directives/after-statement-at-end-of-line]
 [fixture: directives/statement-after-directive-line]
+
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+
+[fixture: gantt/directives/split-directive-gap]
 
 文の 2 つの単位の間のディレクティブは、
 両側に書かれた空白を保ってその位置に残し、

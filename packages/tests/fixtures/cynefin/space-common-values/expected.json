@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common line conversion trims Unicode ends but retains interior characters."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "A﻿B C",
+    "accTitle": "D﻿E F",
+    "accDescr": "G﻿H I",
+    "domains": [],
+    "transitions": []
+  }
+}

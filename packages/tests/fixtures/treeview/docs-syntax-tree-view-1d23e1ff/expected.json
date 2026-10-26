@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/treeView.md",
+    "line": 184
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "my-project",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "src",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "App.tsx",
+                "nodeType": "file",
+                "cssClass": "highlight",
+                "icon": "logos:react",
+                "description": "main component",
+                "children": []
+              },
+              {
+                "name": "index.js",
+                "nodeType": "file",
+                "description": "entry point",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": ".env",
+            "nodeType": "file",
+            "description": "environment variables",
+            "children": []
+          },
+          {
+            "name": "Dockerfile",
+            "nodeType": "file",
+            "children": []
+          },
+          {
+            "name": "package.json",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

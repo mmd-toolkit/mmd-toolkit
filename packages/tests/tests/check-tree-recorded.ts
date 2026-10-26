@@ -46,6 +46,9 @@ export interface CorpusTree {
 const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "common",
   "flowchart",
+  "eventmodeling",
+  "cynefin",
+  "wardley",
   "railroad",
   "treemap",
   "radar",
@@ -73,6 +76,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "c4",
   "venn",
   "ishikawa",
+  "treeview",
 ]
 
 /**

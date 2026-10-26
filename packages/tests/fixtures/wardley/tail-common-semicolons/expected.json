@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Do semicolons stay inside common line values?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "T;",
+    "accTitle": "A ;",
+    "accDescr": "D;;",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

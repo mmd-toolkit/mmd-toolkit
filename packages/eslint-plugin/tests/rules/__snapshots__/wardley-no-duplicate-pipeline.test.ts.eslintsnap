@@ -1,0 +1,174 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-duplicate-pipeline >> invalid >>> docs/rules/wardley-no-duplicate-pipeline.md incorrect 1
+Filename: wardley-no-duplicate-pipeline-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   component Database [0.4, 0.8]
+  3 |   pipeline Database {
+  4 |     component SQL [0.5]
+  5 |   }
+  6 |   pipeline Database {
+    |   ^~~~~~~~~~~~~~~~~~~\ [1]
+  7 |     component Cloud [0.9]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  8 |   }
+    | ~~~ [1]
+  9 |
+
+[1] mermaid.js replaces the pipeline children of `Database`, set on line 3, with these children.
+---
+
+
+Test: wardley-no-duplicate-pipeline >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-duplicate-pipeline/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   component Database [0.4, 0.8]
+  3 |   pipeline Database {
+  4 |     component SQL [0.5]
+  5 |   }
+  6 |   pipeline Database {
+    |   ^~~~~~~~~~~~~~~~~~~\ [1]
+  7 |     component Cloud [0.9]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  8 |   }
+    | ~~~ [1]
+  9 |
+
+[1] mermaid.js replaces the pipeline children of `Database`, set on line 3, with these children.
+---
+
+
+Test: wardley-no-duplicate-pipeline >> invalid >>> invalid/wardley/pipeline-added-child
+Filename: tests/fixtures/rules/wardley-no-duplicate-pipeline/invalid/wardley/pipeline-added-child-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component P [0.4,0.8]
+  3 | pipeline P {
+  4 | component X [0.5]
+  5 | }
+  6 | pipeline P {
+    | ^~~~~~~~~~~~\ [1]
+  7 | component X [0.5]
+    | ~~~~~~~~~~~~~~~~~\ [1]
+  8 | component Y [0.6]
+    | ~~~~~~~~~~~~~~~~~\ [1]
+  9 | }
+    | ~ [1]
+
+[1] mermaid.js replaces the pipeline children of `P`, set on line 3, with these children.
+---
+
+
+Test: wardley-no-duplicate-pipeline >> invalid >>> invalid/wardley/pipeline-duplicate
+Filename: tests/fixtures/rules/wardley-no-duplicate-pipeline/invalid/wardley/pipeline-duplicate-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component Database [0.4,0.8]
+  3 | pipeline Database {
+  4 | component SQL [0.5]
+  5 | }
+  6 | pipeline Database {
+    | ^~~~~~~~~~~~~~~~~~~\ [1]
+  7 | component Cloud [0.9]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+  8 | }
+    | ~ [1]
+
+[1] mermaid.js replaces the pipeline children of `Database`, set on line 3, with these children.
+---
+
+
+Test: wardley-no-duplicate-pipeline >> invalid >>> invalid/wardley/pipeline-duplicate-parent-later
+Filename: tests/fixtures/rules/wardley-no-duplicate-pipeline/invalid/wardley/pipeline-duplicate-parent-later-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | pipeline Database {
+  3 | component SQL [0.5]
+  4 | }
+  5 | pipeline Database {
+    | ^~~~~~~~~~~~~~~~~~~\ [1]
+  6 | component Cloud [0.9]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+  7 | }
+    | ~ [1]
+  8 | component Database [0.4,0.8]
+
+[1] mermaid.js replaces the pipeline children of `Database`, set on line 2, with these children.
+---
+
+
+Test: wardley-no-duplicate-pipeline >> invalid >>> invalid/wardley/pipeline-duplicate-triple
+Filename: tests/fixtures/rules/wardley-no-duplicate-pipeline/invalid/wardley/pipeline-duplicate-triple-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component P [0.4,0.8]
+  3 | pipeline P {
+  4 | component X [0.2]
+  5 | }
+  6 | pipeline P {
+    | ^~~~~~~~~~~~\ [1]
+  7 | component Y [0.5]
+    | ~~~~~~~~~~~~~~~~~\ [1]
+  8 | }
+    | ~ [1]
+  9 | pipeline P {
+    | ^~~~~~~~~~~~\ [2]
+ 10 | component X [0.2]
+    | ~~~~~~~~~~~~~~~~~\ [2]
+ 11 | }
+    | ~ [2]
+
+[1] mermaid.js replaces the pipeline children of `P`, set on line 3, with these children.
+[2] mermaid.js replaces the pipeline children of `P`, set on line 6, with these children.
+---
+
+
+Test: wardley-no-duplicate-pipeline >> invalid >>> invalid/wardley/pipeline-html-alias-same-members
+Filename: tests/fixtures/rules/wardley-no-duplicate-pipeline/invalid/wardley/pipeline-html-alias-same-members-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component P [0.4,0.8]
+  3 | pipeline P {
+  4 | component "<a x="y">" [0.5]
+  5 | }
+  6 | pipeline P {
+    | ^~~~~~~~~~~~\ [1]
+  7 | component "<a x='y'>" [0.5]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  8 | }
+    | ~ [1]
+
+[1] mermaid.js replaces the pipeline children of `P`, set on line 3, with these children.
+---
+
+
+Test: wardley-no-duplicate-pipeline >> invalid >>> invalid/wardley/pipeline-repeated-child-count
+Filename: tests/fixtures/rules/wardley-no-duplicate-pipeline/invalid/wardley/pipeline-repeated-child-count-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component P [0.4,0.8]
+  3 | pipeline P {
+  4 | component X [0.5]
+  5 | }
+  6 | pipeline P {
+    | ^~~~~~~~~~~~\ [1]
+  7 | component X [0.5]
+    | ~~~~~~~~~~~~~~~~~\ [1]
+  8 | component X [0.5]
+    | ~~~~~~~~~~~~~~~~~\ [1]
+  9 | }
+    | ~ [1]
+
+[1] mermaid.js replaces the pipeline children of `P`, set on line 3, with these children.
+---

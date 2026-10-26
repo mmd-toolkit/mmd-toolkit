@@ -70,6 +70,8 @@ export interface AtomLayout {
   readonly keptBreaksBefore?: ReadonlySet<number>
   /** Exact gaps after hidden forms, including a consumed LF outside the node. */
   readonly writtenGapsBefore?: ReadonlySet<number>
+  /** Align these atoms after retained hidden LF, outside the hidden source. */
+  readonly alignedGapsBefore?: ReadonlySet<number>
 }
 
 /** Where the lines of a statement start. */
@@ -145,7 +147,22 @@ export function printAtoms(
     const text = source.text.slice(atom.start, atom.end)
     if (previous !== undefined) {
       if (layout.writtenGapsBefore?.has(atom.start) === true) {
-        current.push(printAsWritten(source, previous.end, atom.start))
+        // An explicitly aligned atom after a hidden form keeps the consumed
+        // LF and closer padding, while its new line uses the statement depth
+        // (docs/cynefin.md, Hidden forms). Other hidden gaps remain exact.
+        const lastBreak = source.text.lastIndexOf("\n", atom.start - 1)
+        if (
+          layout.alignedGapsBefore?.has(atom.start) === true &&
+          lastBreak >= previous.end &&
+          [...source.text.slice(lastBreak + 1, atom.start)].every(
+            (character) => character === " " || character === "\t",
+          )
+        ) {
+          current.push(
+            printAsWritten(source, previous.end, lastBreak + 1),
+            indentation.statement,
+          )
+        } else current.push(printAsWritten(source, previous.end, atom.start))
         current.push(printAsWritten(source, atom.start, atom.end))
         currentEndsWithWhitespace = endsWithSpaceOrTab(text)
         previous = atom

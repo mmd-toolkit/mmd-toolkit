@@ -1,0 +1,94 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does global removal affect every text and reference position?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "TX",
+    "accTitle": "AX",
+    "accDescr": "BX",
+    "nodes": [
+      {
+        "id": "UX",
+        "label": "UX",
+        "x": 20,
+        "y": 10,
+        "className": "anchor"
+      },
+      {
+        "id": "CX",
+        "label": "CX",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "CX_PX",
+        "label": "PX",
+        "x": 50,
+        "y": 20,
+        "className": "pipeline-component"
+      }
+    ],
+    "links": [
+      {
+        "source": "UX",
+        "target": "CX",
+        "dashed": false,
+        "label": "FX",
+        "flow": "forward"
+      }
+    ],
+    "trends": [
+      {
+        "nodeId": "CX",
+        "targetX": 80
+      }
+    ],
+    "pipelines": [
+      {
+        "nodeId": "CX",
+        "componentIds": [
+          "CX_PX"
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "TX"
+      }
+    ],
+    "notes": [],
+    "accelerators": [
+      {
+        "name": "XX",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "YX",
+        "x": 50,
+        "y": 40
+      }
+    ],
+    "axes": {
+      "stages": [
+        "GX",
+        "P"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

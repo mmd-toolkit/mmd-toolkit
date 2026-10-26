@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: A double still above 100 after rounding fails coordinate range checking."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Component \"A\" visibility must be between 0-1 (decimal) or 0-100 (percentage). Received: 100.00000000000001"
+  }
+}

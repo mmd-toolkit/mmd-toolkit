@@ -17,6 +17,10 @@ const SPEC_DOCS = path.join(
 )
 
 const DIAGRAMS = [
+  "treeview",
+  "eventmodeling",
+  "cynefin",
+  "wardley",
   "railroad",
   "treemap",
   "radar",

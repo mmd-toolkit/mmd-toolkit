@@ -255,9 +255,14 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "kanban",
   "architecture",
   "radar",
+  "eventmodeling",
   "treemap",
   "venn",
+  "wardley",
+  "cynefin",
+  "treeview",
   "agentflow",
+  "railroad",
 ]
 
 /**
@@ -266,6 +271,7 @@ export const DIAGRAM_ORDER: readonly string[] = [
  */
 const SITE_DIAGRAM_IDS: Readonly<Record<string, string>> = {
   quadrant: "quadrantChart",
+  treeview: "treeView",
 }
 
 /** The name of `diagram` in `diagramOrder` of the documentation site. */

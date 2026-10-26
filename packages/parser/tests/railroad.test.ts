@@ -1,13 +1,31 @@
 import { describe, expect, it } from "vitest"
 import type { DbTreeRoot, Fixture } from "@mmd-toolkit/tests"
 import { loadFixtures, dbFromTree, embeddedValuesOf } from "@mmd-toolkit/tests"
-import type { Node, RailroadDiagram, Root } from "../src/index.ts"
+import type { Comment, Node, RailroadDiagram, Root } from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
 import { railroadLexingOf } from "./helpers/reference-inputs.ts"
 
+/** Native block ranges own their marked and unmarked fragments, excluding shared comment regions. */
+function blockCommentPartsOf(text: string, root: Root): ReadonlySet<Comment> {
+  const lexing = railroadLexingOf(text)
+  if (lexing === null) throw new Error("no railroad lexical reading")
+  return new Set(
+    root.comments.filter((comment) =>
+      lexing.comments.some(
+        (native) =>
+          native.valueEnd !== undefined &&
+          (comment.mark === null || comment.mark === native.mark) &&
+          comment.range[0] >= native.range[0] &&
+          comment.range[1] <= native.range[1],
+      ),
+    ),
+  )
+}
+
 /** Losslessness, source spelling, token boundaries, child containment, and source order. */
 function expectCoverage(text: string, root: Root): void {
+  const blockParts = blockCommentPartsOf(text, root)
   const entries = [...root.tokens, ...root.comments].toSorted(
     (a, b) => a.range[0] - b.range[0],
   )
@@ -22,7 +40,9 @@ function expectCoverage(text: string, root: Root): void {
     ).toBe(true)
     expect(
       entry.type === "Comment"
-        ? text.slice(...entry.range).endsWith(entry.value)
+        ? blockParts.has(entry)
+          ? text.slice(...entry.range).includes(entry.value)
+          : text.slice(...entry.range).endsWith(entry.value)
         : text.slice(...entry.range) === entry.value,
     ).toBe(true)
     end = entry.range[1]
@@ -113,6 +133,52 @@ describe("railroad fixtures", async () => {
       throw new Error("no railroad diagram")
     return root.body
   }
+
+  it.each([
+    ["ir-comment-block-common-region", "/*"],
+    ["ebnf-comment-iso-common-region", "(*"],
+  ] as const)(
+    "%s: block fragments keep their ownership across a shared comment region",
+    (name, mark) => {
+      const fixture = fixtureOf(name)
+      const root = parse(fixture.input)
+      const parts = blockCommentPartsOf(fixture.input, root)
+      expect(
+        root.comments.map((comment) => [comment.mark, parts.has(comment)]),
+      ).toEqual([
+        [mark, true],
+        ["%%", false],
+        [null, true],
+      ])
+      expect([...parts].map((comment) => comment.value)).toEqual([" a", "b "])
+    },
+  )
+
+  it.each([
+    ["ebnf-comment-block-ps", [["/*", " A\u2029B "]]],
+    [
+      "ebnf-comment-iso",
+      [
+        ["(*", " first "],
+        ["/*", " second "],
+      ],
+    ],
+    ["ebnf-iso-first-closer", [["(*", " outer (* inner "]]],
+    ["ir-c-comment-first-closer", [["/*", " outer /* inner "]]],
+    ["ir-spec-railroad-diagram-3c20b091", [["/*", " this is a comment "]]],
+    [
+      "ir-spec-railroad-test-ts-9642cc36",
+      [["/*", " comment before the first rule "]],
+    ],
+  ] as const)(
+    "%s: block comment values exclude their closer",
+    (name, comments) => {
+      const root = parse(fixtureOf(name).input)
+      expect(
+        root.comments.map((comment) => [comment.mark, comment.value]),
+      ).toEqual(comments)
+    },
+  )
 
   it("keeps all authored expression kinds and metadata in the four grammar examples", () => {
     for (const dialect of ["ir", "ebnf", "abnf", "peg"]) {

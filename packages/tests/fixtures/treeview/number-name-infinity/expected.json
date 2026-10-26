@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Numeric-looking node Infinity stays text; there is no reachable number converter."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "Infinity",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

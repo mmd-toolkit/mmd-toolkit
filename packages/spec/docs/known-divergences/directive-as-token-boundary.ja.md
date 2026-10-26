@@ -603,6 +603,111 @@ Mermaid の削除して接合する順序の代わりに、直接の境界規則
 [fixture: railroad/peg-native-ownership]
 [fixture: railroad/ir-directive-keyword-glued]
 
+### Wardley
+
+global directive は共有 Directive に持ち、
+構文が text を許す所の残りの原文は
+WardleyIdentifier・StringLiteral・WardleyLiteral・WardleyIgnoredText に保持でき
+ます。
+固定語・数・ID 形の名前・不可分の arrow/port/marker には作者の内部 gap がありま
+せん。原文を保存できても断片を接合するには異なる字句規則が要るため、
+既存の理由 2 の直接の境界規則でその分割を拒否します。
+[fixture: wardley/directive-keyword-middle]
+[fixture: wardley/directive-header-inside]
+[fixture: wardley/directive-id-inside]
+[fixture: wardley/directive-strategy-inside]
+[fixture: wardley/directive-arrow-inside]
+[fixture: wardley/directive-port-inside]
+[fixture: wardley/directive-flow-marker-inside]
+[fixture: wardley/directive-number]
+
+座標・符号つき offset・括弧つき装飾の作者の部品の間は境界です。label つき flow
+にも plus・引用した label・終端 marker があります。global directive は完全な部品
+の間、文字列や空白を含む名の text、native hidden の記号内に置けます。
+複合 flow の中へ通常の padding や native hidden を許す規則ではありませ
+ん。Mermaid が座標や装飾全体を一つの terminal で読むことだけを理由に不可分にはし
+ません。
+[fixture: wardley/directive-coordinate-parts]
+[fixture: wardley/directive-offset-sign]
+[fixture: wardley/directive-strategy-parts]
+[fixture: wardley/directive-parenthesized-inertia-parts]
+[fixture: wardley/directive-flow-before-label]
+[fixture: wardley/directive-flow-after-label]
+[fixture: wardley/directive-name-inside]
+[fixture: wardley/directive-native-opener-split]
+[fixture: wardley/lex-link-native-flow-components]
+
+### Cynefin
+
+共有の directive のレコードにソースを持てても、固定の見出し、領域、共通の語や分
+割しない矢印には内部の作者の gap が無い。その atom 内の共通 directive を拒否す
+る。完全な部品の境目と文字の内部は許す。native hidden な形はすでに node を持ち、
+差異を要しない。 [fixture: cynefin/directive-header-inside]
+[fixture: cynefin/directive-domain-inside]
+[fixture: cynefin/directive-arrow-inside]
+[fixture: cynefin/directive-common-keyword]
+[fixture: cynefin/directive-title-inside]
+[fixture: cynefin/directive-block-inside]
+[fixture: cynefin/directive-clear-inside]
+[fixture: cynefin/directive-transition-parts]
+[fixture: cynefin/directive-description-brace]
+[fixture: cynefin/directive-native-yaml-components]
+[fixture: cynefin/directive-native-directive-components]
+[fixture: cynefin/directive-every-field]
+
+[pin の文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)と[公開の adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)は共通の前処理と検出の結果を読みます。[Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、[木](../ast/cynefin.ja.md)に書かれた形を保ちます。 [fixture: cynefin/db-all-fields]
+
+### eventmodeling
+
+eventmodeling では各見出し・文・共通文の keyword、entity/data type の語、
+単一の identifier segment、frame-name の数字列、->>、[[、]] を atom とします。
+除いた directive は Root.directives に持てても、
+二つの atom の綴りを一つの書かれた単位として結合できません。
+Mermaid は割れた atom を受理しますが、この仕様は既存の境界規則で拒否します。
+type tag の backtick・型の語・本文、修飾名の dot・segment、
+参照の delimiter・名前は別の部品なので、
+残る字句の text が有効なら部品の境目を許します。
+native comment の mark と無視さ れる fence は全体を Comment/IgnoredText に持て、
+hidden であるだけでは拒否しませ ん。
+[fixture: eventmodeling/directive-header-inside]
+[fixture: eventmodeling/directive-id-inside]
+[fixture: eventmodeling/directive-number-inside]
+[fixture: eventmodeling/directive-arrow-inside]
+[fixture: eventmodeling/directive-reference-inside]
+[fixture: eventmodeling/directive-reference-close-inside]
+[fixture: eventmodeling/directive-json-inside]
+[fixture: eventmodeling/directive-qualified]
+[fixture: eventmodeling/directive-reference]
+[fixture: eventmodeling/directive-tag]
+[fixture: eventmodeling/lex-hidden-yaml-fence-directive]
+[fixture: eventmodeling/comment-mark-directive]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+
+### Treeview
+
+treeview は、
+正確な見出し・共通 keyword・語 `icon`・`:::`・`##`・class 名・icon
+参照全体の内側の directive を拒否します。icon 参照は colon も含みます。
+除かれる字は共有 Directive に保持できますが、
+その両側で原子の綴りを結ぶ読みは直接の境目の規則に反します。
+bare 名などの text/string の内側は断片を持て、完成部品の間も許します。
+branch と各 dash は別の部品なので、その間の directive も許します。
+[treeView.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treeView/treeView.langium#L15-L64) に基づく境目を[図の構文](../diagrams/treeview.ja.md)が定めます。
+[fixture: treeview/directive-header-inside]
+[fixture: treeview/directive-class-inside]
+[fixture: treeview/directive-description-inside]
+[fixture: treeview/directive-class-value-inside]
+[fixture: treeview/directive-icon-value-inside]
+[fixture: treeview/icon-pack-name-directive]
+[fixture: treeview/directive-bare-middle]
+[fixture: treeview/directive-class-value-parts]
+[fixture: treeview/directive-icon-parts-parts]
+[fixture: treeview/icon-name-close-directive]
+[fixture: treeview/box-branch-directive-parts]
+[fixture: treeview/box-dash-directive-inside]
+
 ## mermaid.js の文書と issue
 
 - [ディレクティブ](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md)
@@ -776,3 +881,36 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   保守者が defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
   調べた結果だけで、ほかに関連する issue がないとは断定しません。
+
+- Wardley: pin し
+  た[構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)は座標・装飾・flow を示しますが、この共通の境界を定義しません。2026-10-26 に公式 repository の issue/PR を wardley directive、wardley semicolon、wardley flow で検索しました。[#7642](https://github.com/mermaid-js/mermaid/pull/7642) は hyphen の名、[#7726](https://github.com/mermaid-js/mermaid/pull/7726) は不要な sanitization の修正で、いずれも pin に反映済みです。[#8379](https://github.com/mermaid-js/mermaid/pull/8379) は設定保持に関する open PR でした。確認した結果はこの境界を不具合と認める判断を示さず、既存の直接の規則を適用します。検索の網羅性は主張しません。
+- Cynefin
+  の[pin の構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)は固定の領域、引用符つきの項目、ラベルつきの遷移を説明し、[注記](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)は自己遷移を無視すると述べます。[PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) は図を加えて merge されました。2026-10-26 に cynefin parser、cynefin directive、cynefin semicolon、cynefin frontmatter で検索し、この境目について調べた範囲で maintainer の判断は見つかりませんでした。[Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) は open、Status: Triage で、framework の名前と描画の変更を求めるもので、この字句の規則の判断ではありません。
+
+### eventmodeling
+
+pin した
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
+2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
+event modeling data、eventmodeling accTitle、
+eventmodeling validator で検索しました。
+2026-04-16 に merged となった
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588) は validator の登録
+を追加し、この境目に関する保守者の判断ではありません。
+確認した結果にはその判断はなく、既存の直接の規則を適用します。
+網羅的な検索だとはしません。
+
+### Treeview
+
+固定版の
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277) は字下げ・引用名・注釈・罫線を説明します。
+この共通の境目を定義してはいません。2026-10-26 に公式 issue/PR を
+`treeView quoted`、`treeView indentation`、`treeView box`、
+`treeView quotes`、`treeView whitespace`、`treeView accDescr` で検索しました。
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
+merged の PR、
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) は
+header 省略を提案する open の Enhancement/Triage です。
+調べた結果はこの共通の境目を defect と認める maintainer の判断を示しません。
+既存の直接規則を適用するもので、網羅的な検索という主張ではありません。

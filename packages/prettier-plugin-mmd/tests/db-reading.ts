@@ -27,13 +27,24 @@ import {
 } from "@mmd-toolkit/tests"
 import * as prettier from "prettier"
 import type { Options } from "prettier"
-import type { Root } from "@mmd-toolkit/parser"
+import type {
+  DiagramBody,
+  Root,
+  EventmodelingDataBlock,
+} from "@mmd-toolkit/parser"
 import { parse, visitorKeys } from "@mmd-toolkit/parser"
 import { significantIndentationWidth } from "../src/printers/lines.ts"
 
 /** Whether a node is a data block, whose written text is embedded data. */
 function isDataBlock(node: { type: string }): boolean {
   return DATA_BLOCK_NODE_TYPES.has(node.type)
+}
+
+/** Native raw terminals need no externally evaluated data effects. */
+function isNativeDataBlock(node: {
+  type: string
+}): node is EventmodelingDataBlock {
+  return node.type === "EventmodelingDataBlock"
 }
 
 /** The values of a text whose embedded data gives mermaid.js nothing to derive. */
@@ -69,7 +80,9 @@ export function dbOfText(
 function writtenDataBlockTexts(root: Root): unknown[] {
   const blocks: unknown[] = []
   walk(root.body, (node) => {
-    if (isDataBlock(node)) blocks.push(node)
+    // Native data terminals are read directly from the tree and source, with
+    // no externally evaluated effects (diagrams/eventmodeling.md, Data).
+    if (isDataBlock(node) && !isNativeDataBlock(node)) blocks.push(node)
   })
   return blocks
 }
@@ -102,7 +115,20 @@ export function writtenEmbeddedTexts(
   for (const directive of root.directives) ranges.push(directive.range)
   walk(root.body, (node) => {
     if (isDataBlock(node)) {
-      ranges.push((node as unknown as { range: [number, number] }).range)
+      if (isNativeDataBlock(node)) {
+        // The optional tag and named gaps can format; only the complete brace
+        // body is opaque (docs/eventmodeling.md, Data blocks).
+        const block = node
+        const opening = root.tokens.find(
+          (token) =>
+            token.type === "Punctuator" &&
+            token.value === "{" &&
+            block.range[0] <= token.range[0] &&
+            token.range[1] <= block.value.range[0],
+        )
+        if (opening === undefined) throw new Error("missing native data opener")
+        ranges.push([opening.range[0], block.range[1]])
+      } else ranges.push((node as unknown as { range: [number, number] }).range)
     }
   })
   return ranges
@@ -161,16 +187,33 @@ export function treeProblemsOfText(text: string): TreeProblem[] {
 }
 
 /**
- * Every printer keeps written characters, but one-statement-per-line rules and
- * rules for ignored line-end semicolons may drop `;`. Ignore common.md's
- * whitespace (including BOM) and frontmatter; describeFrontmatterChange checks
- * its YAML separately. The output must be the input with zero or more semicolons
- * removed.
+ * Only these diagram types may drop separator or ignored line-end `;`:
+ * docs/flowchart.md and docs/agentflow.md, Semicolons; docs/sequence.md,
+ * docs/quadrant.md and docs/xychart.md, Statements one per line. Their rules
+ * replace statement separators with line breaks. Every other diagram type
+ * keeps all semicolons, including grammatical punctuation and text.
+ */
+const semicolonSeparatorDiagramTypes: ReadonlySet<DiagramBody["type"]> =
+  new Set([
+    "FlowchartDiagram",
+    "AgentflowDiagram",
+    "SequenceDiagram",
+    "QuadrantDiagram",
+    "XychartDiagram",
+  ])
+
+/**
+ * Every printer keeps written characters. Only semicolonSeparatorDiagramTypes
+ * may remove input `;`. Ignore common.md's whitespace (including BOM) and
+ * frontmatter; describeFrontmatterChange checks its YAML separately.
  */
 export function writtenTextKeptUpToSemicolons(
   before: string,
   after: string,
 ): boolean {
+  const keepsAllSemicolons = !semicolonSeparatorDiagramTypes.has(
+    parse(before).body.type,
+  )
   const [input, output] = [before, after].map((text) => {
     const frontmatter = parse(text).frontmatter
     const outside =
@@ -186,7 +229,7 @@ export function writtenTextKeptUpToSemicolons(
   let outputIndex = 0
   for (let inputIndex = 0; inputIndex < input.length; inputIndex++) {
     if (input[inputIndex] === output[outputIndex]) outputIndex++
-    else if (input[inputIndex] !== ";") return false
+    else if (input[inputIndex] !== ";" || keepsAllSemicolons) return false
   }
   return outputIndex === output.length
 }

@@ -488,6 +488,32 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
+Treeview is built from flat nodes, authored annotations and direct box readings,
+as described in [treeview.md](./db-from-tree/treeview.md). [fixture:
+treeview/gram-written-tree] [fixture: treeview/box-written-tree] [fixture:
+treeview/config-security-level-other] [fixture:
+treeview/div-html-frontmatter-value]
+
+Eventmodeling is built from authored frames, data declarations and complete
+source-based common terminals, as described in
+[eventmodeling.md](./db-from-tree/eventmodeling.md). [fixture:
+eventmodeling/gram-written-tree] [fixture:
+eventmodeling/db-reset-data-reference] [fixture:
+eventmodeling/config-security-level-other] [fixture:
+eventmodeling/div-html-frontmatter-value]
+
+Cynefin is built from authored domain blocks, item strings, transitions and
+common assignments, as described in [cynefin.md](./db-from-tree/cynefin.md).
+[fixture: cynefin/db-all-fields] [fixture: cynefin/db-domain-empty-last]
+[fixture: cynefin/config-security-level-other] [fixture:
+cynefin/div-html-frontmatter-value]
+
+Wardley is built from authored occurrences and its specified comparison names,
+as described in [wardley.md](./db-from-tree/wardley.md). [fixture:
+wardley/db-all-fields] [fixture: wardley/db-publication-order] [fixture:
+wardley/config-security-level-other] [fixture:
+wardley/div-html-frontmatter-value]
+
 Railroad is built from one authored tree for four dialects, as described in
 [railroad.md](./db-from-tree/railroad.md). [fixture:
 railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
@@ -513,7 +539,7 @@ and [info.md](./db-from-tree/info.md).
 
 The recorded-tree comparisons include C4, block, kanban, Venn, Agentflow,
 Usecase, pie, gitgraph, info, packet, radar, treemap, railroad, and their common
-detection fixtures, including all five C4 diagram kinds.
+detection fixtures, including Wardley and all five C4 diagram kinds.
 
 `tests/db-from-tree.test.ts` builds the Db of every fixture that records a tree
 and an accepted result with a Db, and requires it to be the recorded Db

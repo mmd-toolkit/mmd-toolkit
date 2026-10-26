@@ -550,3 +550,39 @@ tests/treemap.test.ts の単体検査はソース被覆、表記、範囲、包�
 [fixture: treemap/db-number-multiple-dots]
 [fixture: treemap/lex-string-conversion]
 [fixture: common/detect-minimal-treemap]
+
+`tests/wardley.test.ts` は corpus の記述構造、構成要素のトークン、
+隠し形式の名前付き所有先、ソースの被覆、比較可能な Db を検証する。
+`tests/fixtures.test.ts` は共通の検出例も含む受理と記録を検証する。
+`tests/ast-wardley-examples.test.ts` は 28 ノード型のコメント例を検証する。
+[fixture: wardley/db-all-fields] [fixture: wardley/hidden-all-unit-gaps]
+[fixture: common/detect-minimal-wardley]
+
+`tests/cynefin.test.ts` はコーパスのフィールド、隠し形式の所有先、
+構成要素の境界、ソースの被覆と Db 値を検査します。
+共通の検出ケースを含む受理と記録は `tests/fixtures.test.ts` が検査します。
+`tests/ast-cynefin-examples.test.ts` は 11 ノードのコメント例を検査します。
+[fixture: cynefin/db-all-fields]
+[fixture: cynefin/hidden-domain-item-members]
+[fixture: cynefin/hidden-all-unit-gaps]
+[fixture: common/detect-minimal-cynefin]
+
+`tests/eventmodeling.test.ts` はコーパスの構造、ソース被覆、トークン表記、
+範囲、hidden form の所有先、比較可能な Db を検査します。
+受理と記録は共通検出 fixture も含め `tests/fixtures.test.ts` が担当します。
+`tests/ast-eventmodeling-examples.test.ts` は
+全 22 ノードのコメント例を検査します。
+[fixture: eventmodeling/gram-written-tree]
+[fixture: eventmodeling/lex-hidden-frame-optional-gaps]
+[fixture: eventmodeling/lex-hidden-gwt-required-gaps]
+[fixture: common/detect-minimal-eventmodeling]
+
+`tests/treeview.test.ts` はコーパスの書かれたフィールド、割り当て字下げ、
+罫線形式の所有先、トークンとコメントの被覆、綴り、ノード範囲、
+子の包含、ソース順、比較できる Db 値を検査する。
+共通検出 fixture を含む受理と記録は `tests/fixtures.test.ts` が担当する。
+`tests/ast-treeview-examples.test.ts` は全 13 ノードのコメント例を検査する。
+ASCII 表示用の escape を復元してから、印の付いたソース範囲を検査する。
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
+[fixture: treeview/ast-annotation-prefixes] [fixture:
+common/detect-minimal-tree-view]

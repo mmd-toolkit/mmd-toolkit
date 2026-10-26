@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Semantic acceptance conditions: A later replacement cannot bypass checking an earlier pipeline child's invalid evolution."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Pipeline component \"X\" evolution must be between 0-1 (decimal) or 0-100 (percentage). Received: 101"
+  }
+}

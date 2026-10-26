@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Entity preprocessing reaches a line description without a later overwrite."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "&ﬂ°°65¶ß ﬂ°°35¶ß &quot;",
+    "domains": [],
+    "transitions": []
+  }
+}

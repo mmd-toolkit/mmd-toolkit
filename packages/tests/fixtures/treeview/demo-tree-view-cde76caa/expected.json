@@ -1,0 +1,75 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/treeView.html",
+    "line": 188
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "src",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "components",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "Button.tsx",
+                "nodeType": "file",
+                "children": []
+              },
+              {
+                "name": "Modal.tsx",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "utils",
+            "nodeType": "directory",
+            "children": [
+              {
+                "name": "helpers.ts",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "index.js",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "docs",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "README.md",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "package.json",
+        "nodeType": "file",
+        "children": []
+      },
+      {
+        "name": ".gitignore",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Disabling HTML labels bypasses markup replacement under an unrecognized securityLevel."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "<b>A</b>",
+    "accDescr": "<b>D</b>",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "description": "a<b>=c<BR>d",
+        "children": []
+      }
+    ]
+  }
+}

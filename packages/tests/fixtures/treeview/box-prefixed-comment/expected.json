@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A prefix before a native comment leaves indentation that conflicts with the following branch indentation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 4, column 1: Expecting: one of these possible Token sequences:\n  1. [QUOTED_NAME]\n  2. [BARE_NAME]\nbut found: '    '"
+  }
+}

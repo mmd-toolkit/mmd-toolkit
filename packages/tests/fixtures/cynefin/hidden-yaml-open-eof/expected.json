@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden YAML: an unclosed native block at EOF rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 3, column 1: unexpected character: ->-<- at offset: 21, skipped 3 characters.\nLexer error on line 4, column 1: unexpected character: ->a<- at offset: 25, skipped 1 characters. "
+  }
+}

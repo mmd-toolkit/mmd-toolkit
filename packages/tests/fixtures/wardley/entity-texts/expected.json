@@ -1,0 +1,81 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "What does common preprocessing do to entity references in every published text field?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "T&amp; &ﬂ°°65¶ß ﬂ°°35¶ß",
+    "accTitle": "A&amp;",
+    "accDescr": "B&amp;",
+    "nodes": [
+      {
+        "id": "U&amp;",
+        "label": "U&amp;",
+        "x": 20,
+        "y": 10,
+        "className": "anchor"
+      },
+      {
+        "id": "C&ﬂ°°65¶ß",
+        "label": "C&ﬂ°°65¶ß",
+        "x": 30,
+        "y": 20,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "U&amp;",
+        "target": "C&ﬂ°°65¶ß",
+        "dashed": false,
+        "label": "F&amp;",
+        "flow": "forward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [
+      {
+        "number": 1,
+        "coordinates": [
+          {
+            "x": 2,
+            "y": 100
+          }
+        ],
+        "text": "T&ﬂ°°65¶ß"
+      }
+    ],
+    "notes": [
+      {
+        "text": "N&amp;",
+        "x": 40,
+        "y": 30
+      }
+    ],
+    "accelerators": [
+      {
+        "name": "X&amp;",
+        "x": 50,
+        "y": 40
+      }
+    ],
+    "deaccelerators": [
+      {
+        "name": "Y&ﬂ°°65¶ß",
+        "x": 60,
+        "y": 50
+      }
+    ],
+    "axes": {
+      "stages": [
+        "G&amp;",
+        "P&ﬂ°°65¶ß"
+      ],
+      "stageBoundaries": []
+    }
+  }
+}

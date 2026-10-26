@@ -1,0 +1,95 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 185
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Link Types",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "User",
+        "label": "User",
+        "x": 95,
+        "y": 90,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "App",
+        "label": "App",
+        "x": 75,
+        "y": 75,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "API",
+        "label": "API",
+        "x": 60,
+        "y": 60,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Cache",
+        "label": "Cache",
+        "x": 45,
+        "y": 65,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "Database",
+        "label": "Database",
+        "x": 80,
+        "y": 15,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "User",
+        "target": "App",
+        "dashed": false
+      },
+      {
+        "source": "App",
+        "target": "API",
+        "dashed": false,
+        "flow": "forward"
+      },
+      {
+        "source": "API",
+        "target": "Database",
+        "dashed": false
+      },
+      {
+        "source": "API",
+        "target": "Cache",
+        "dashed": false,
+        "flow": "bidirectional"
+      },
+      {
+        "source": "Cache",
+        "target": "Database",
+        "dashed": false,
+        "label": "backup",
+        "flow": "forward"
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

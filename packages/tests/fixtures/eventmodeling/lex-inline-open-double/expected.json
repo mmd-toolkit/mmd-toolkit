@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An open double-quoted value rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 13: unexpected character: ->\"<- at offset: 26, skipped 1 characters. Parse error on line 2, column 14: Expecting end of file but found `open`."
+  }
+}

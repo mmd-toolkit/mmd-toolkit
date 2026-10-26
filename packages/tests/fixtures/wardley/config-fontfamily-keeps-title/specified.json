@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Kept",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  },
+  "embedded": {
+    "title": "Kept"
+  }
+}

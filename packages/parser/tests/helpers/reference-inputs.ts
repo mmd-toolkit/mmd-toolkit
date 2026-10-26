@@ -1,3 +1,11 @@
+import type { TreeviewUnits } from "../../src/diagrams/treeview/index.ts"
+import { lexTreeview } from "../../src/diagrams/treeview/index.ts"
+import type { EventmodelingUnits } from "../../src/diagrams/eventmodeling/index.ts"
+import { lexEventmodeling } from "../../src/diagrams/eventmodeling/index.ts"
+import type { CynefinUnits } from "../../src/diagrams/cynefin/index.ts"
+import { lexCynefin } from "../../src/diagrams/cynefin/index.ts"
+import type { WardleyUnits } from "../../src/diagrams/wardley/index.ts"
+import { lexWardley } from "../../src/diagrams/wardley/index.ts"
 import type { RailroadUnits } from "../../src/diagrams/railroad/index.ts"
 import { lexRailroad } from "../../src/diagrams/railroad/index.ts"
 import type { TreemapUnits } from "../../src/diagrams/treemap/index.ts"
@@ -2180,6 +2188,58 @@ export function railroadLexingOf(text: string): RailroadUnits | null {
     return null
   try {
     return lexRailroad(diagramInputOf(opened, detection, detection.detected))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/** Wardley ordered units, retaining common conversions and complete authored component boundaries. */
+export function wardleyLexingOf(text: string): WardleyUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "wardley") return null
+  try {
+    return lexWardley(diagramInputOf(opened, detection, "wardley"))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/** Cynefin ordered units, retaining common conversions and complete authored component boundaries. */
+export function cynefinLexingOf(text: string): CynefinUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "cynefin") return null
+  try {
+    return lexCynefin(diagramInputOf(opened, detection, "cynefin"))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/** Eventmodeling ordered units, retaining common conversions and complete authored component boundaries. */
+export function eventmodelingLexingOf(text: string): EventmodelingUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "eventmodeling") return null
+  try {
+    return lexEventmodeling(diagramInputOf(opened, detection, "eventmodeling"))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/** Treeview ordered units and direct box forms, at their original source positions. */
+export function treeviewLexingOf(text: string): TreeviewUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  if (detection.detected !== "treeView") return null
+  try {
+    return lexTreeview(diagramInputOf(opened, detection, "treeView"))
   } catch (error) {
     if (error instanceof ParseError) return null
     throw error

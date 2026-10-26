@@ -120,6 +120,113 @@ function textsOf(recording: SpecFileRecording): string[] {
 const FLOW_PARSER_IMPORT = `import flowParser from "./flowParser.ts"\n`
 
 describe("recordSpecFile: what is recorded", () => {
+  it("records awaited treeView adapter calls without running its parser", async () => {
+    const recording = await recordSource(
+      [
+        'import { it } from "vitest";',
+        'import { parser } from "./parser.js";',
+        'import db from "./db.js";',
+        'it("adapter", async () => {',
+        "db.clear();",
+        'await parser.parse("treeView-beta\\nroot");',
+        'await parser.parse("treeView-beta\\nroot/\\n child");',
+        "});",
+      ].join("\n"),
+      "diagrams/treeView/example.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(textsOf(recording)).toEqual([
+      "treeView-beta\nroot",
+      "treeView-beta\nroot/\n child",
+    ])
+    expect(recording.inputs.map((input) => input.line)).toEqual([6, 7])
+  })
+
+  it("records the treeView preprocessing boundary without rewriting text", async () => {
+    const recording = await recordSource(
+      [
+        'import { it } from "vitest";',
+        'import { isBoxDrawingFormat, preprocessBoxDrawing, remapErrorLines } from "./boxDrawingPreprocessor.js";',
+        'it("preprocessing", () => {',
+        'isBoxDrawingFormat(["plain"]);',
+        'const result = preprocessBoxDrawing("treeView-beta\\n├── child");',
+        'result.text.split("\\n");',
+        "result.lineMap.get(1);",
+        'remapErrorLines("line 2", new Map());',
+        "});",
+      ].join("\n"),
+      "diagrams/treeView/example.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs).toEqual([
+      { text: "treeView-beta\n├── child", line: 5, test: "preprocessing" },
+    ])
+  })
+
+  it("records treeView parser-package service calls", async () => {
+    const recording = await recordSource(
+      [
+        'import { it } from "vitest";',
+        'import { createTreeViewServices } from "../src/language/treeView/module.js";',
+        "const parser = createTreeViewServices().TreeView.parser.LangiumParser;",
+        'it("grammar", () => {',
+        'parser.parse("treeView-beta");',
+        'parser.parse("treeView-beta broken");',
+        "});",
+      ].join("\n"),
+      "../../parser/tests/treeView.test.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs.map((input) => input.line)).toEqual([5, 6])
+    expect(textsOf(recording)).toEqual([
+      "treeView-beta",
+      "treeView-beta broken",
+    ])
+  })
+
+  it("records awaited eventmodeling adapter calls", async () => {
+    const recording = await recordSource(
+      [
+        'import { it, expect } from "vitest";',
+        'import { parser } from "./parser.js";',
+        'import { db } from "./db.js";',
+        'it("adapter", async () => {',
+        "db.clear();",
+        'await expect(parser.parse("eventmodeling")).resolves.not.toThrow();',
+        'await parser.parse("eventmodeling tf 01 evt A");',
+        "});",
+      ].join("\n"),
+      "diagrams/eventmodeling/example.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs).toEqual([
+      { text: "eventmodeling", line: 6, test: "adapter" },
+      { text: "eventmodeling tf 01 evt A", line: 7, test: "adapter" },
+    ])
+  })
+
+  it("records eventmodeling parser-package helpers without invoking validators", async () => {
+    const recording = await recordSource(
+      [
+        'import { it } from "vitest";',
+        'import { eventModelingParse as parse } from "./test-util.js";',
+        'import { EventModelingValidator, registerValidationChecks } from "../src/language/eventmodeling/event-modeling-validator.js";',
+        'it("grammar", () => {',
+        "registerValidationChecks({});",
+        "new EventModelingValidator().checkSourceFrameTypes({}, () => {});",
+        'parse("eventmodeling tf 01 evt A");',
+        'parse("eventmodeling broken");',
+        "});",
+      ].join("\n"),
+      "../../parser/tests/eventmodeling.test.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs).toEqual([
+      { text: "eventmodeling tf 01 evt A", line: 7, test: "grammar" },
+      { text: "eventmodeling broken", line: 8, test: "grammar" },
+    ])
+  })
+
   it("records all four railroad adapters asynchronously", async () => {
     const recording = await recordSource(
       [
@@ -145,6 +252,28 @@ describe("recordSpecFile: what is recorded", () => {
       { text: "railroad-ebnf-beta", line: 9, test: "dialects" },
       { text: "railroad-abnf-beta", line: 10, test: "dialects" },
       { text: "railroad-peg-beta", line: 11, test: "dialects" },
+    ])
+  })
+
+  it("records awaited Wardley diagram parser calls without reading builder state", async () => {
+    const recording = await recordSource(
+      [
+        'import { it, beforeEach, expect } from "vitest";',
+        'import { diagram } from "./wardleyDiagram.js";',
+        "const { parser, db } = diagram;",
+        "beforeEach(() => { parser.parser.yy = db; db.clear(); });",
+        'it("Wardley", async () => {',
+        'await parser.parse("wardley-beta");',
+        "expect(db.getWardleyData().nodes).toHaveLength(0);",
+        'await parser.parse("wardley-beta broken");',
+        "});",
+      ].join("\n"),
+      "diagrams/wardley/wardleyParser.spec.ts",
+    )
+    expect(recording.failures).toEqual([])
+    expect(recording.inputs).toEqual([
+      { text: "wardley-beta", line: 6, test: "Wardley" },
+      { text: "wardley-beta broken", line: 8, test: "Wardley" },
     ])
   })
 

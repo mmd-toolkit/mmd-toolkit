@@ -168,6 +168,7 @@ export abstract class RailroadUnitLexer extends CommonFormUnitLexer<UnitName> {
           range: [at.start, end],
           mark,
           valueStart: this.reader.after(at)!.end,
+          valueEnd: cursor.start,
         })
         this.position = close.end
         return true

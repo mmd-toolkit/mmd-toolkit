@@ -1323,10 +1323,16 @@ railroad-peg-beta
 ### 共有 directive
 
 Root directive を source span から元の所有位置に1回印字します。
-両側の接触と分離を保ち、通常の独立した directive を本文で1段字下げします。
+同じ印字行の中では、両側の接触・分離を保ちます。
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
+通常の独立した directive を本文で1段字下げします。
 内容の JSON 整形や見出し前への収集はしません。
 一律の空白追加が、共有処理後の文字列、repeat の部品、numeric value、
 predicate の operand を変えるためです。
+
+[fixture: railroad/global-directives/between-rules]
 
 [fixture: railroad/global-directives/abnf-components]
 
@@ -1706,6 +1712,8 @@ railroad では、global directive を除いた後の原文の行に、
 前後の行とは結合しません。
 directive の除去で、これらの文字列が複数の物理行をまたいでできる場合は、
 またがる行をすべて保ちます。
+[fixture: railroad/semicolons/native-terminal-value]
+
 [fixture: railroad/semicolons/ir-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/ebnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/abnf-word-unclosed-directive-lines]

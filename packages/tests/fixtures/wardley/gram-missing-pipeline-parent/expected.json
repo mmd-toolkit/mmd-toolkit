@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does publication reject a missing pipeline parent?"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Pipeline \"Missing\" must reference an existing component with coordinates."
+  }
+}

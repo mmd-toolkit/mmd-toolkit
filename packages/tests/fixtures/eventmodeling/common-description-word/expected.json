@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Common terminal spelling and keyword boundaries are independent of common.langium."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 1, column 24: unexpected character: ->:<- at offset: 23, skipped 1 characters. Parse error on line 1, column 15: Expecting token of type 'EOF' but found `accDescr_`."
+  }
+}

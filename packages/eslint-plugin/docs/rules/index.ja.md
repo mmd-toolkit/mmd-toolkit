@@ -279,6 +279,17 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [radar-no-unclosed-description-block](./radar-no-unclosed-description-block.ja.md) | 後の文のために書いた `}` が閉じる `accDescr {` のブロックを禁止する。 |     |     |     |
 | [radar-no-undef](./radar-no-undef.ja.md)                                           | どの軸も名指さない曲線の値を禁止する。                                | ✅  |     |     |
 
+## eventmodeling
+
+| 規則                                                                                               | 説明                                                                             | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | --- | --- | --- |
+| [eventmodeling-no-duplicate-description](./eventmodeling-no-duplicate-description.ja.md)           | 前に設定した説明を置き換える `accDescr` を禁止する。                             | ✅  |     |     |
+| [eventmodeling-no-duplicate-title](./eventmodeling-no-duplicate-title.ja.md)                       | 前に設定したアクセシブルなタイトルを置き換える `accTitle` を禁止する。           | ✅  |     |     |
+| [eventmodeling-no-empty-description-block](./eventmodeling-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                                 | ✅  |     |     |
+| [eventmodeling-no-redefined-data](./eventmodeling-no-redefined-data.ja.md)                         | 前のブロックが名前を持つので、どのフレームも示せない `data` ブロックを禁止する。 | ✅  |     |     |
+| [eventmodeling-no-unclosed-description-block](./eventmodeling-no-unclosed-description-block.ja.md) | 後の文のために書いた `}` が閉じる `accDescr {` のブロックを禁止する。            |     |     |     |
+| [eventmodeling-no-undef](./eventmodeling-no-undef.ja.md)                                           | 何も名指さない source やデータの参照を禁止する。                                 | ✅  |     |     |
+
 ## treemap
 
 | 規則                                                                             | 説明                                                                | ✅  | 💡  | 🚧  |
@@ -299,6 +310,41 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [venn-no-invalid-style-key](./venn-no-invalid-style-key.ja.md) | 描画が読まないスタイルのプロパティを禁止する。                     | ✅  |     |     |
 | [venn-no-undef](./venn-no-undef.ja.md)                         | どの集合も和も宣言しない領域への文字のノードやスタイルを禁止する。 | ✅  |     |     |
 
+## wardley
+
+| 規則                                                                             | 説明                                                                 | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------------------------- | -------------------------------------------------------------------- | --- | --- | --- |
+| [wardley-no-duplicate-annotations](./wardley-no-duplicate-annotations.ja.md)     | 注釈の枠に別の位置を与える、最初より後の `annotations` を禁止する。  | ✅  |     |     |
+| [wardley-no-duplicate-description](./wardley-no-duplicate-description.ja.md)     | 前に設定した説明を置き換える `accDescr` を禁止する。                 | ✅  |     |     |
+| [wardley-no-duplicate-evolution](./wardley-no-duplicate-evolution.ja.md)         | 前に設定した段階を置き換える `evolution` を禁止する。                | ✅  |     |     |
+| [wardley-no-duplicate-evolve](./wardley-no-duplicate-evolve.ja.md)               | 前の同じノードの `evolve` の行き先を置き換える `evolve` を禁止する。 | ✅  |     |     |
+| [wardley-no-duplicate-pipeline](./wardley-no-duplicate-pipeline.ja.md)           | 前の同じ親の pipeline の子を置き換える pipeline を禁止する。         | ✅  |     |     |
+| [wardley-no-duplicate-size](./wardley-no-duplicate-size.ja.md)                   | 前に設定した大きさを置き換える `size` を禁止する。                   | ✅  |     |     |
+| [wardley-no-duplicate-title](./wardley-no-duplicate-title.ja.md)                 | 前に設定したタイトルを置き換える `title` や `accTitle` を禁止する。  | ✅  |     |     |
+| [wardley-no-empty-description-block](./wardley-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                     | ✅  |     |     |
+| [wardley-no-ignored-link-label](./wardley-no-ignored-link-label.ja.md)           | リンクの矢印の中のラベルが置き換える、`;` の後のラベルを禁止する。   | ✅  |     |     |
+| [wardley-no-redefined-node](./wardley-no-redefined-node.ja.md)                   | 別の値でもう一度宣言したノードを禁止する。                           | ✅  |     |     |
+| [wardley-no-undef](./wardley-no-undef.ja.md)                                     | どのノードも名指さないリンクや `evolve` を禁止する。                 | ✅  |     |     |
+
+## cynefin
+
+| 規則                                                                             | 説明                                                                | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------- | --- | --- | --- |
+| [cynefin-no-duplicate-description](./cynefin-no-duplicate-description.ja.md)     | 前に設定した説明を置き換える `accDescr` を禁止する。                | ✅  |     |     |
+| [cynefin-no-duplicate-title](./cynefin-no-duplicate-title.ja.md)                 | 前に設定したタイトルを置き換える `title` や `accTitle` を禁止する。 | ✅  |     |     |
+| [cynefin-no-empty-description-block](./cynefin-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                    | ✅  |     |     |
+| [cynefin-no-redefined-domain](./cynefin-no-redefined-domain.ja.md)               | 前に持っていた項目を持たずに、もう一度書いた領域を禁止する。        | ✅  |     |     |
+
+## treeview
+
+| 規則                                                                                     | 説明                                                                   | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --- | --- | --- |
+| [treeview-no-duplicate-annotation](./treeview-no-duplicate-annotation.ja.md)             | 1 つのノードの同じ種類の注釈を置き換える注釈を禁止する。               | ✅  |     |     |
+| [treeview-no-duplicate-description](./treeview-no-duplicate-description.ja.md)           | 前に設定した説明を置き換える `accDescr` を禁止する。                   | ✅  |     |     |
+| [treeview-no-duplicate-title](./treeview-no-duplicate-title.ja.md)                       | 前に設定したアクセシブルなタイトルを置き換える `accTitle` を禁止する。 | ✅  |     |     |
+| [treeview-no-empty-description-block](./treeview-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                       | ✅  |     |     |
+| [treeview-no-unclosed-description-block](./treeview-no-unclosed-description-block.ja.md) | どの `}` も閉じない `accDescr {` のブロックを禁止する。                | ✅  |     |     |
+
 ## agentflow
 
 | 規則                                                                                       | 説明                                                                        | ✅  | 💡  | 🚧  |
@@ -313,5 +359,13 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [agentflow-no-redefined-vertex](./agentflow-no-redefined-vertex.ja.md)                     | その id に前に書いたラベルや形を置き換える頂点を禁止する。                  | ✅  |     |     |
 | [agentflow-no-unclosed-description-block](./agentflow-no-unclosed-description-block.ja.md) | `}` で閉じていない `accDescr {` のブロックを禁止する。                      |     |     |     |
 | [agentflow-no-undef](./agentflow-no-undef.ja.md)                                           | 何も宣言しない id への `style`、`class`、`click` の文を禁止する。           | ✅  |     |     |
+
+## railroad
+
+| 規則                                                                               | 説明                                                     | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------- | --- | --- | --- |
+| [railroad-no-duplicate-description](./railroad-no-duplicate-description.ja.md)     | 前に設定した説明を置き換える `accDescr` を禁止する。     | ✅  |     |     |
+| [railroad-no-duplicate-title](./railroad-no-duplicate-title.ja.md)                 | 前に設定したタイトルを置き換える `accTitle` を禁止する。 | ✅  |     |     |
+| [railroad-no-empty-description-block](./railroad-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。         | ✅  |     |     |
 
 <!-- end auto-generated rules list -->

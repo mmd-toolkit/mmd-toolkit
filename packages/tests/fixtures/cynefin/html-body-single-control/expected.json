@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Without a preceding tag opener a single-quoted item accepts double quotes."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "b=\"c\">d"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

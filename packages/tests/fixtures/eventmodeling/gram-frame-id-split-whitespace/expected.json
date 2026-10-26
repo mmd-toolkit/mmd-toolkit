@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Names and references: Two whitespace-separated digit units cannot form one frame name. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 1, column 20: Expecting: one of these possible Token sequences:\n  1. [rmo]\n  2. [readmodel]\n  3. [ui]\n  4. [cmd]\n  5. [command]\n  6. [evt]\n  7. [event]\n  8. [pcr]\n  9. [processor]\nbut found: '1'"
+  }
+}

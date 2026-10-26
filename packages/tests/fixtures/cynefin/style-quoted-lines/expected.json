@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A style-looking line inside a multiline item is still a preprocessor line."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "A\nstyle:#x\nB"
+          }
+        ]
+      }
+    ],
+    "transitions": []
+  }
+}

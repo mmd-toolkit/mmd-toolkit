@@ -1,0 +1,174 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: wardley-no-undef >> invalid >>> docs/rules/wardley-no-undef.md incorrect 1
+Filename: wardley-no-undef-incorrect-1.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   component API [0.6, 0.7]
+  3 |   component Database [0.3, 0.8]
+  4 |   API -> Databse
+    |          ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws no link because `Databse` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/docs-incorrect-1
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/docs-incorrect-1-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 |   component API [0.6, 0.7]
+  3 |   component Database [0.3, 0.8]
+  4 |   API -> Databse
+    |          ^~~~~~~ [1]
+  5 |
+
+[1] mermaid.js draws no link because `Databse` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/evolve-child-label
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/evolve-child-label-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component Database [0.3,0.8]
+  3 | pipeline Database {
+  4 | component SQL [0.5]
+  5 | }
+  6 | evolve SQL 0.9
+    |        ^~~ [1]
+
+[1] mermaid.js draws no evolution arrow because `SQL` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/evolve-undefined-after
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/evolve-undefined-after-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | evolve Databse 0.9
+    |        ^~~~~~~ [1]
+  3 | component Database [0.3,0.8]
+
+[1] mermaid.js draws no evolution arrow because `Databse` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/evolve-undefined-before
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/evolve-undefined-before-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component Database [0.3,0.8]
+  3 | evolve Databse 0.9
+    |        ^~~~~~~ [1]
+
+[1] mermaid.js draws no evolution arrow because `Databse` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/link-undefined-after
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/link-undefined-after-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component API [0.6,0.7]
+  3 | API -> Databse; storage
+    |        ^~~~~~~ [1]
+  4 | component Database [0.3,0.8]
+
+[1] mermaid.js draws no link because `Databse` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/link-undefined-before
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/link-undefined-before-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component API [0.6,0.7]
+  3 | component Database [0.3,0.8]
+  4 | API -> Databse; storage
+    |        ^~~~~~~ [1]
+
+[1] mermaid.js draws no link because `Databse` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/name-escaped-reference
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/name-escaped-reference-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component "A\q" [0.3,0.4]
+  3 | component B [0.6,0.8]
+  4 | Aq -> B
+    | ^~ [1]
+  5 | evolve Aq 0.9
+    |        ^~ [2]
+
+[1] mermaid.js draws no link because `Aq` names no node.
+[2] mermaid.js draws no evolution arrow because `Aq` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/name-html-normalization-alias
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/name-html-normalization-alias-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component "<a x="y">" [0.3,0.4]
+  3 | component B [0.6,0.8]
+  4 | "<a x='y'>" -> B
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js draws no link because `<a x='y'>` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/name-padding-distinct
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/name-padding-distinct-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component " A " [0.4,0.5]
+  3 | component B [0.6,0.7]
+  4 | A -> B
+    | ^ [1]
+
+[1] mermaid.js draws no link because `A` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/name-reference-case-distinct
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/name-reference-case-distinct-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | component API [0.3,0.4]
+  3 | component B [0.6,0.8]
+  4 | api -> B
+    | ^~~ [1]
+
+[1] mermaid.js draws no link because `api` names no node.
+---
+
+
+Test: wardley-no-undef >> invalid >>> invalid/wardley/undef-both-endpoints
+Filename: tests/fixtures/rules/wardley-no-undef/invalid/wardley/undef-both-endpoints-input.mmd
+
+Code:
+  1 | wardley-beta
+  2 | Missing -> Absent
+    | ^~~~~~~    ^~~~~~
+    | [1]        [2]
+
+[1] mermaid.js draws no link because `Missing` names no node.
+[2] mermaid.js draws no link because `Absent` names no node.
+---

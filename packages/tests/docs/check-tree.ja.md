@@ -93,7 +93,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   （positions.md の Invariants、[ast.md](../../spec/docs/ast.md)）。
 - **コメント。** コメント行は走査が見つけた所にあり、印は `%%` です。
   図のコメントはその図種の印を持ち、
-  railroad の閉じた block comment を除き、行の終わりで終わります
+  閉じた block comment を除き、行の終わりで終わります
   （mindmap 図のコメントは行の区間の終わりまで走るので、
   U+2028 や U+2029 の前でも終わります）。
   flowchart と ER 図と sankey 図と block 図が印 `%%` を持つのは、
@@ -108,10 +108,20 @@ const problems: TreeProblem[] = checkTree(text, tree)
   （parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
   railroad の native comment は方言に応じて `/*`、`(*`、`;`、`#` も使います。
-  block comment は最初の必須の閉じを範囲と値に含めます。
+  eventmodeling は `/*` と `//` も使います。
+  block comment は最初の必須の閉じを範囲に含み、値からは除きます。
+  共通のコメント領域の後の最後の断片でも同じです。
+  [fixture: eventmodeling/comment-native]
   [fixture: railroad/ir-tail-comment] [fixture: railroad/ebnf-comment-iso]
   [fixture: railroad/abnf-comment-semicolon-ls]
   [fixture: railroad/peg-comment-hash-ps]
+  印と閉じは共通の除去の後のテキストで検査します。
+  その中の directive も共有記録に残ります。
+  [fixture: railroad/ir-comment-block-common-region]
+  [fixture: railroad/ebnf-comment-iso-common-region]
+  [fixture: railroad/ir-comment-c-open-mark-directive]
+  [fixture: railroad/ebnf-comment-c-open-mark-directive]
+  [fixture: railroad/ebnf-comment-iso-open-mark-directive]
 - **ディレクティブ。** 木のディレクティブは走査が見つけたものと同じで、
   `closed` と、末尾の空白を除いた一致の範囲を持ちます
   （ast.md の Directive、common.md の Where a directive is）。
@@ -741,6 +751,319 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-retained-directive-bare-bom] [fixture:
     info/div-detect-yaml-bare-directive] [fixture:
     info/lex-retained-no-bare-ls] [fixture: info/lex-hidden-common-comment]
+
+  - treeview: 13 の node 型、子の欄と訪問順は
+    [ast/treeview.ja.md](../../spec/docs/ast/treeview.ja.md)に従う。
+    大文字小文字を区別する見出し全体と優先順での読み、
+    bare 名・引用名の全体、class と icon の atom、注釈と共通文の部品を調べる。
+    値は書かれた空白を保ち、共通の除去の後に何も残らない場合だけ null にする。
+    空白だけの内容は literal に保つ。
+    書かれた値は罫線の綴りを保ち、変換した Db の値とは分ける。
+    prefix 全体は内部の空白を保つ 1 つの RawText unit にする。
+    共通の除去による分割は共有の契約に従う。
+    引用名の closed は共通の属性の引用符の変換後の閉じで調べる。
+    原文の区切りが異なる文字でも raw と token は原綴を保つ。
+    [fixture: treeview/box-prefix-arbitrary] [fixture: treeview/html-single]
+    [fixture: treeview/gram-written-tree]
+    [fixture: treeview/ast-common-whitespace-values]
+    [fixture: treeview/ast-common-removal-only-values]
+    [fixture: treeview/ast-icon-removal-only]
+    [fixture: treeview/ast-numeric-name]
+
+    葉の外の各 branch prefix と罫線の装飾行は、ソース順で 1 つだけ所有する。
+    所有先は body、Node.prefix/textBeforeName、
+    注釈の prefix/textBefore、ブロックの textBeforeOpen。
+    葉の中の形はその葉に保ち、重なる子を作らない。
+    prefix と装飾の範囲から外端の空白を除き、装飾から後続の LF も除く。
+    node の indent は割り当てた通常の空白・タブの列か
+    branch の深さに一致させる。
+    装飾や native Comment を越える保留中の字下げも数える。
+    親、同一性、icon の登録、意味上の受理の gate は足さない。
+    [fixture: treeview/box-written-tree]
+    [fixture: treeview/box-decoration-pending-name-gap]
+    [fixture: treeview/box-decoration-before-annotation]
+    [fixture: treeview/ast-annotation-prefixes]
+    [fixture: treeview/box-prefix-common-block-two-prefixes]
+    [fixture: treeview/ast-decoration-internal-and-body]
+    [fixture: treeview/box-comment-indent-carry]
+    [fixture: treeview/db-quoted-tail-tab] [fixture: treeview/db-file-parent]
+    [fixture: treeview/db-duplicate-names]
+
+    native の percent Comment は、先に始まった名前や値の中で始めない。
+    検出が通した裸の行と付随する Unicode の trivia は読み直さない。
+    保持した native Comment の前と間も同じ。
+    通過した行がなければ、通常の見出し前の gap は厳密に調べる。
+    共有の coverage、欄、ソース範囲、token の種類、atom の境目、
+    書かれた値の検査を適用する。
+    treeview に native のブロックコメントはない。
+    共有の契約では引き続き、閉じを範囲に含め、値からは除く。
+    [fixture: treeview/comment-in-quotes] [fixture: treeview/comment-in-bare]
+    [fixture: treeview/common-block-bare-percent]
+    [fixture: treeview/detect-secondscan-bare-unicode]
+    [fixture: treeview/detect-retained-comment-unicode-header]
+    [fixture: treeview/detect-retained-gap-ls-control]
+    [fixture: treeview/directive-class-value-parts]
+    [fixture: treeview/directive-icon-value-parts]
+    [fixture: treeview/directive-class-value-inside]
+    [fixture: treeview/semicolon-icon-value-inside]
+    [fixture: railroad/ir-comment-block-common-region]
+
+  - eventmodeling: 22 の node 型、子の欄と訪問順は
+    [ast/eventmodeling.ja.md](../../spec/docs/ast/eventmodeling.ja.md)に従う。
+    小文字の見出し全体と固有の境界、identifier の longer alternative、
+    Identifier である 1〜3 桁の frame 名、修飾名の member、
+    固定の entity/data type の語を調べる。
+    Arrow の値 ->> と none/solid/arrow の欄を一致させる。
+    Data tag はタグがないときだけ null。
+    Clause は kind、空でない item の body、必須・任意の順序を保つ。
+    参照は書かれた名前のままで、validator や linking の条件は足さない。
+    [fixture: eventmodeling/gram-written-tree]
+    [fixture: eventmodeling/lex-keyword-prefix-name]
+    [fixture: eventmodeling/lex-name-custom-header-dot]
+    [fixture: eventmodeling/db-source-leading-zero]
+    [fixture: eventmodeling/db-reset-data-reference]
+    [fixture: eventmodeling/gwt-without-when]
+    [fixture: eventmodeling/validator-command-invalid]
+    [fixture: eventmodeling/db-source-forward]
+
+    native の無視された一致は一つの所有者を持つ。
+    必須の部品には named gap を使う。
+    後続の任意の source/reference/data member が、その前の形を持つ。
+    修飾名の tail member は dot/name の gap を持ち、
+    GWT の item/clause は前の形を持つ。
+    完了した文の後の hidden は body に置く。
+    可視の EOL と textAfter 欄はない。
+    普通の gap は Notation の空白と完全な native comment を受け入れる。
+    [fixture: eventmodeling/lex-hidden-frame-type-gap]
+    [fixture: eventmodeling/lex-hidden-frame-entity-gap]
+    [fixture: eventmodeling/lex-hidden-frame-optional-gaps]
+    [fixture: eventmodeling/lex-qualified-hidden-components]
+    [fixture: eventmodeling/lex-hidden-reference-name-close]
+    [fixture: eventmodeling/lex-hidden-data-tag-gaps]
+    [fixture: eventmodeling/lex-hidden-gwt-required-gaps]
+    [fixture: eventmodeling/lex-hidden-gwt-items]
+    [fixture: eventmodeling/lex-hidden-gwt-clause]
+    [fixture: eventmodeling/lex-native-directive-object-eof]
+    [fixture: eventmodeling/space-nbsp-body]
+    [fixture: eventmodeling/line-ls-gap]
+
+    Inline data は同じ行の最後の closer を選び、escape を復号しない。
+    Block data と hidden YAML は本文ありを優先し、なければ隣接する空の形を使い、
+    選んだ代替の最初の有効な closer で止まる。
+    native directive は最初の有効な境界付き closer で止まる。
+    消費した閉じの LF は範囲の外で、space/LS/PS は lookahead だけ。
+    追加する論理 LF は原文の範囲を作らない。
+    共通文の本文はすべての padding を保ち、区切りは本文の外に置く。
+    null は除去後の内部が空であることを表す。
+    [fixture: eventmodeling/lex-inline-quote-greedy]
+    [fixture: eventmodeling/lex-inline-quote-conversion]
+    [fixture: eventmodeling/lex-block-adjacent-later-close]
+    [fixture: eventmodeling/hidden-yaml-adjacent-later]
+    [fixture: eventmodeling/hidden-native-directive-later]
+    [fixture: eventmodeling/data-block-close-eof]
+    [fixture: eventmodeling/data-block-close-space]
+    [fixture: eventmodeling/lex-block-close-ps-boundary]
+    [fixture: eventmodeling/common-whitespace]
+    [fixture: eventmodeling/gram-empty-payload-after-removals]
+
+    字句の優先順位は共通の除去後に調べる。
+    共通 comment region は自身の padding と LF ごと除かれ、
+    共通 directive だけの行、空行、選ばれた semicolon は LF を残す。
+    選ばれた semicolon の除去で native directive の closer と LF が直結すると、
+    その LF を消費できる。
+    その後、共通 terminal が次の行の字下げを取れるのは、
+    その LF が消費されたときだけ。
+    LS と PS は空白として残る。
+    空の説明ブロックは文、選ばれない semicolon は構文のまま。
+    [fixture: eventmodeling/lex-common-yaml-comment-line-padding]
+    [fixture: eventmodeling/lex-common-block-comment-line-padding]
+    [fixture: eventmodeling/lex-common-native-directive-comment-line-padding]
+    [fixture: eventmodeling/lex-common-yaml-directive-only-line]
+    [fixture: eventmodeling/lex-common-block-directive-only-line]
+    [fixture: eventmodeling/lex-common-yaml-blank-line-padding]
+    [fixture: eventmodeling/lex-common-block-inline-directive-padding]
+    [fixture: eventmodeling/lex-common-selected-semicolon-exposes-lf]
+    [fixture: eventmodeling/lex-common-selected-semicolon-before-lf]
+    [fixture: eventmodeling/lex-common-selected-semicolon-padding]
+    [fixture: eventmodeling/lex-common-after-block-ls-indented]
+    [fixture: eventmodeling/lex-common-after-block-ps-indented]
+    [fixture: eventmodeling/lex-common-unselected-semicolon-padding]
+    [fixture: eventmodeling/lex-common-empty-description-inline-padding]
+    [fixture: eventmodeling/lex-common-empty-description-leaves-lf]
+
+    native Comment は percent/slash の mark を持ち、
+    先に読まれる data・共通文・hidden の単位の中から始まれない。
+    Slash block の範囲は最初の closer を含むが、値からは除く。
+    Slash line の comment は LS/PS を値に残す。
+    見出しの前では、検出が飛ばした bare percent 行と付随する Unicode の空白を、
+    保持する形の間も含めて native 単位として読み直さない。
+    保持する形自身の閉じの境界は、飛ばす行がなくても調べる。
+    共通 trivia は literal や保持する本文を割ったり、
+    作者の部品を隔てたりできるが、
+    atom の語・数字の名前・`->>`・`[[`・`]]` の中は割れない。
+    書かれた値は変換後の Db の値と分けて調べる。
+    [fixture: eventmodeling/comment-native]
+    [fixture: eventmodeling/comment-block-nearest-close]
+    [fixture: eventmodeling/comment-line-ls-body]
+    [fixture: eventmodeling/comment-line-ps-body]
+    [fixture: eventmodeling/lex-native-directive-one-line-fallback]
+    [fixture: eventmodeling/lex-native-yaml-in-inline]
+    [fixture: eventmodeling/lex-native-yaml-inside-common]
+    [fixture: eventmodeling/detect-retained-bare-ls-line]
+    [fixture: eventmodeling/detect-retained-no-bare-ls-line]
+    [fixture: eventmodeling/detect-retained-bare-nbsp-header]
+    [fixture: eventmodeling/detect-retained-no-bare-nbsp-header]
+    [fixture: eventmodeling/detect-real-retained-secondscan]
+    [fixture: eventmodeling/lex-hidden-yaml-fence-directive]
+    [fixture: eventmodeling/directive-qualified]
+    [fixture: eventmodeling/directive-arrow-inside]
+    [fixture: eventmodeling/config-security-level-other]
+    [fixture: eventmodeling/div-html-frontmatter-value]
+
+  - cynefin: 11 のノード型、子の欄と訪問順は
+    [ast/cynefin.md](../../spec/docs/ast/cynefin.ja.md) に従う。
+    小文字の header の語と接着した省略可能なコロン、完全な領域の固定語、
+    共通の keyword の部品、引用符つきの文字列全体を検査する。
+    領域の name・from・to は、書かれた Keyword と一致する。
+    CynefinArrow は全体の --> と、none・solid・arrow の固定の欄を持つ。
+    自己遷移、未宣言の端点、領域の再宣言、空文字列も書かれたノードとして保つ。
+    [fixture: cynefin/db-all-fields] [fixture: cynefin/header-colon-inline]
+    [fixture: cynefin/gram-glued-domains] [fixture: cynefin/db-self-loops]
+    [fixture: cynefin/gram-transition-first]
+    [fixture: cynefin/db-domain-duplicates] [fixture: cynefin/db-empty-texts]
+
+    native の一致は全体で一つの名前つきの欄に属する。
+    textAfterName と項目の textAfter は、
+    最初の可視 LF または次の可視単位で終わる。
+    可視 LF の後で同じブロックの実際の次の項目の前にある形は、
+    その項目の textBefore に属する。次の項目が無ければ Diagram.body に属する。
+    hidden の LF の消費を先に適用して可視 LF を決める。
+    遷移の欄は textBeforeArrow・textBeforeTo・textBeforeColon・
+    textBeforeLabel・textAfter。label が無ければコロンと label の gap は空。
+    共通文の末尾の形は可視 EOL の前までで、その後の形は body に属する。
+    [fixture: cynefin/hidden-domain-item-members]
+    [fixture: cynefin/hidden-before-first-item-after-eol]
+    [fixture: cynefin/hidden-item-after-visible-eol]
+    [fixture: cynefin/hidden-domain-end-after-visible-eol]
+    [fixture: cynefin/hidden-empty-domain-after-visible-eol]
+    [fixture: cynefin/hidden-all-unit-gaps]
+    [fixture: cynefin/hidden-unlabeled-transition-gaps]
+    [fixture: cynefin/hidden-common-after-visible-eol]
+
+    CynefinIgnoredText は kind が yaml-block または directive で、
+    共通の除去を除いた、変換前の原文全体を value に保つ。
+    範囲は開きから最初の適合する閉じまでで、消費した後続の CR・LF を含めない。
+    YAML は本文のある一致を空の fallback より先に試す。
+    native の Comment は先行する hidden directive に負け、
+    文字列、共通のブロック、hidden の形の中では始まらない。
+    hidden directive の一致に失敗すれば Comment になれる。
+    [fixture: cynefin/hidden-yaml-adjacent-later]
+    [fixture: cynefin/hidden-yaml-two-nonempty]
+    [fixture: cynefin/hidden-directive-adjacent]
+    [fixture: cynefin/hidden-directive-crlf]
+    [fixture: cynefin/hidden-directive-comment-fallback-kept]
+    [fixture: cynefin/hidden-directive-string]
+    [fixture: cynefin/hidden-yaml-block]
+
+    遷移と共通文には、次の body の形の前に消費されない可視 EOL が必要。
+    領域の語と項目には不要。
+    余分の LF、空白で LF を残す場合、EOF を別に検査する。
+    共通の行の値は区切りの後の空白を保ち、
+    ブロックの中は前後の共通の空白だけを trim する。
+    title の値が null で textAfter が無ければ、範囲は keyword までで、
+    区切りは範囲の外に置く。
+    Diagram は最後のトークンまでである。
+    [fixture: cynefin/hidden-directive-sole-lf]
+    [fixture: cynefin/hidden-directive-spare-lf]
+    [fixture: cynefin/hidden-directive-closing-space]
+    [fixture: cynefin/hidden-directive-eof]
+    [fixture: cynefin/hidden-after-domain]
+    [fixture: cynefin/common-line-whitespace]
+    [fixture: cynefin/common-block-whitespace]
+    [fixture: cynefin/lex-title-one-space] [fixture: cynefin/lex-title-one-tab]
+    [fixture: cynefin/lex-title-two-spaces]
+    [fixture: cynefin/common-title-comment-only]
+    [fixture: cynefin/common-title-directive-only]
+
+    retained prefix の native な境目を保つ。
+    検出が通した裸の行は Comment で、
+    付随する空白は retained な形の間でも trivia。
+    通過した Unicode の trivia と通常の厳密な境目を別に検査する。
+    global directive と選ばれたセミコロンは作者の部品を区切り、
+    値の中を切れるが、
+    固定語と --> の中は割れない。
+    原綴の値は Db の変換と別に検査する。
+    サイトの security と frontmatter の HTML による値の指定の読みも含める。
+    [fixture: cynefin/detect-retained-secondscan-bare-ls]
+    [fixture: cynefin/detect-retained-secondscan-bare-ps]
+    [fixture: cynefin/retained-directive-between-bares]
+    [fixture: cynefin/prefix-yaml-unicode-no-bare]
+    [fixture: cynefin/directive-transition-parts]
+    [fixture: cynefin/semicolon-arrow-parts]
+    [fixture: cynefin/directive-every-field]
+    [fixture: cynefin/config-security-level-other]
+    [fixture: cynefin/div-html-frontmatter-value]
+
+  - wardley: 書かれた 28 種のノード、欄と訪問順は
+    [ast/wardley.md](../../spec/docs/ast/wardley.ja.md) に従う。
+    正確な小文字の header、
+    最初に一致する完全な spaced-name・id-name と数の単位、
+    通常の文字列と flow label の異なる escape 規則を検査する。
+    decimal と integer の位置を区別し、offset の符号は符号なしの葉の外に置く。
+    装飾は offset、strategy、一つの inertia の順とする。
+    共通の行・block の値は仕様の null と空白の形を保つ。
+    [fixture: wardley/db-all-fields] [fixture: wardley/db-id-underscore]
+    [fixture: wardley/lex-name-priority] [fixture: wardley/number-leading-zero]
+    [fixture: wardley/lex-link-flow-raw-escapes]
+    [fixture: wardley/number-offset-negative-zero]
+    [fixture: wardley/db-inertia-forms] [fixture: wardley/common-empty-literals]
+
+    各 hidden form 全体を名前つき gap または body の所有位置で一度だけ検査する。
+    YAML は本文ありの分岐の最初の有効な closer を隣接した空の分岐より優先し、
+    directive は最初の境界を満たす closer を使う。
+    範囲には前の padding、消費した LF、追加した LF を含めない。
+    文と pipeline child は残った可視 LF で区切り、
+    pipeline の opener も可視 LF を必要とする。
+    header は EOL を必要としない。
+    可視 EOL の後の form は前の suffix でなく body に属し、
+    evolution の suffix は最後の stage に属する。
+    [fixture: wardley/hidden-all-unit-gaps]
+    [fixture: wardley/hidden-yaml-adjacent-later]
+    [fixture: wardley/hidden-directive-adjacent]
+    [fixture: wardley/lex-hidden-directive-cr]
+    [fixture: wardley/hidden-directive-spare-lf]
+    [fixture: wardley/lex-hidden-pipeline-open-spare]
+    [fixture: wardley/lex-hidden-pipeline-child-spare]
+    [fixture: wardley/lex-hidden-after-visible-eol]
+    [fixture: wardley/lex-hidden-evolution-members]
+
+    native Comment は先行する hidden directive を置き換えず、
+    文字列・flow arrow・semicolon label・共通値・hidden form の
+    内側から始まらない。
+    header 前では detection が通した裸の Comment と伴う trivia を読み直さず、
+    残された form の間も同じように扱う。
+    通した行が無い場合の native 境界と通常の本文 gap は厳密なままとする。
+    [fixture: wardley/comment-native-triple]
+    [fixture: wardley/hidden-directive-no-boundary]
+    [fixture: wardley/hidden-directive-string]
+    [fixture: wardley/lex-hidden-directive-multiline-label]
+    [fixture: wardley/detect-retained-secondscan-bare-ls]
+    [fixture: wardley/prefix-yaml-bare-unicode]
+    [fixture: wardley/retained-directive-between-bares]
+    [fixture: wardley/retained-no-bare-unicode] [fixture: wardley/line-ls-gap]
+
+    arrow の欄は書かれた dependency・flow の記号と marker を示し、
+    label で変わる Db の flow と dashed の読みを示すものではない。
+    port 全体、独立した二つの label、省略可能な部品の各 gap を検査する。
+    checker は座標の範囲、
+    親や evolve target の解決などの意味上の受理を検査しない。
+    それらは parser とその結果の記録が扱う。
+    [fixture: wardley/db-link-forms]
+    [fixture: wardley/lex-flow-label-changes-direction]
+    [fixture: wardley/lex-flow-label-changes-dashed]
+    [fixture: wardley/gram-invalid-anchor]
+    [fixture: wardley/gram-missing-pipeline-parent]
+    [fixture: wardley/gram-invalid-evolve]
 
   - railroad: 書かれた 30 種のノード、欄と訪問順は
     [ast/railroad.md](../../spec/docs/ast/railroad.md) に従います。

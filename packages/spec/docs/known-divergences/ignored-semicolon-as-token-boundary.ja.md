@@ -5,7 +5,8 @@
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
 mindmap、timeline、xychart、quadrant、block、kanban、c4、venn、agentflow、
-usecase、pie、gitgraph・info・packet・architecture・radar・treemap・railroad。
+usecase、pie、
+gitgraph・info・packet・architecture・radar・treemap・railroad・wardley・cynefin・eventmodeling・treeview。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -555,6 +556,103 @@ Mermaid の前処理順の代わりに直接の境界規則を使います。
 [fixture: railroad/peg-native-ownership]
 [fixture: railroad/abnf-div-semicolon-repeat-number]
 
+### Wardley
+
+共通の行規則で実際に選ばれた semicolon だけがこの境界規則を使います。
+選んだ semicolon は共有 trivia、text・文字列・native hidden の原文は各 node に持
+てます。
+それでも数・固定語・ID 形の名・不可分の arrow/port/marker の中の分割は作者の gap
+ではなく断片の接合を要するため、既存の理由 2 で拒否します。
+座標・offset・装飾の部品の間は境界のままです。label つき flow も plus・引用した
+label・完全な終端 marker の間に選択済み trivia を許します。
+選ばれない semicolon は separator ではありません。
+[fixture: wardley/lex-selected-decimal-inside]
+[fixture: wardley/lex-selected-label-keyword]
+[fixture: wardley/lex-selected-strategy-inside]
+[fixture: wardley/lex-selected-target-id-inside]
+[fixture: wardley/lex-selected-arrow-inside]
+[fixture: wardley/lex-selected-port-inside]
+[fixture: wardley/lex-selected-flow-marker-inside]
+[fixture: wardley/lex-selected-coordinate-parts]
+[fixture: wardley/lex-selected-offset-sign]
+[fixture: wardley/lex-selected-strategy-parts]
+[fixture: wardley/lex-selected-parenthesized-inertia-parts]
+[fixture: wardley/lex-selected-flow-after-label]
+[fixture: wardley/lex-selected-native-yaml-opener]
+[fixture: wardley/lex-selected-keyword-inside]
+
+### Cynefin
+
+実際に選ばれた semicolon だけに同じ atom の境目の規則を適用する。共有の trivia
+に句読を持てても、固定語や --> の内部に gap は作れない。部品の境目、文字列の文
+字、native fence の句読は許す。任意の semicolon が区切りになるわけではない。
+[fixture: cynefin/semicolon-complex-inside]
+[fixture: cynefin/semicolon-clear-inside]
+[fixture: cynefin/semicolon-arrow-inside]
+[fixture: cynefin/semicolon-title-inside]
+[fixture: cynefin/semicolon-acctitle-inside]
+[fixture: cynefin/semicolon-block-inside]
+[fixture: cynefin/semicolon-colon-header-selected-parts]
+[fixture: cynefin/semicolon-arrow-parts]
+[fixture: cynefin/selected-colon-label-components]
+[fixture: cynefin/selected-native-yaml-opener]
+[fixture: cynefin/selected-native-directive-opener]
+[fixture: cynefin/selected-string-interior]
+[fixture: cynefin/selected-title-components]
+[fixture: cynefin/selected-native-directive-closer]
+
+[pin の文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/cynefin/cynefin.langium#L4-L30)と[公開の adapter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinParser.ts#L8-L19)は共通の前処理と検出の結果を読みます。[Cynefin の構文](../diagrams/cynefin.ja.md)に直接の規則を定め、[木](../ast/cynefin.ja.md)に書かれた形を保ちます。 [fixture: cynefin/db-all-fields]
+
+### eventmodeling
+
+eventmodeling では directive の境目と同じ不可分の語、 数字列の名前、->>、
+[[、]] にこの識別子を適用します。
+無視した semicolon を記録できても、
+割れた atom の綴りを結合すればその単位を変えます。
+Mermaid は atom 内の選ばれた semicolon の場合を受理し、この仕様は拒否します。
+dot と完全な名前の間、 参照の部品間、
+type tag の部品間の選ばれた semicolon は atom を割らず許します。
+普通の semicolon は拒否したままで、
+最後の semicolon を選んでも前のものは除きません。
+[fixture: eventmodeling/lex-semicolon-identifier-inside]
+[fixture: eventmodeling/lex-semicolon-frame-id-inside]
+[fixture: eventmodeling/semicolon-arrow-inside]
+[fixture: eventmodeling/semicolon-reference-inside]
+[fixture: eventmodeling/semicolon-reference-close-inside]
+[fixture: eventmodeling/lex-semicolon-before-dot]
+[fixture: eventmodeling/lex-semicolon-after-dot]
+[fixture: eventmodeling/lex-semicolon-after-reference-open]
+[fixture: eventmodeling/lex-semicolon-before-reference-close]
+[fixture: eventmodeling/lex-semicolon-after-tag-open]
+[fixture: eventmodeling/lex-semicolon-before-tag-close]
+[fixture: eventmodeling/lex-semicolon-after-tag]
+[fixture: eventmodeling/tail-frame-semicolon]
+[fixture: eventmodeling/style-two-semicolons]
+
+[event-modeling.langium](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L9-L70)
+が単位を、[図の構文](../diagrams/eventmodeling.ja.md)が直接の境目を定義します。
+
+### Treeview
+
+treeview は共通の行規則が実際に選ぶセミコロンにも同じ部品の境目を使います。
+keyword、`:::`・`##`、class 名、icon 参照全体の内部ならこの差異であり、
+Mermaid は両側を結びます。字を原文の unit として保てても、
+原子を結ぶ読みは直接の境目の規則に反します。
+部品の間と text/string の内側は許します。選ばれないセミコロンは通常の字です。
+セミコロンで割れた見出しは通常、先の検出で失敗し、差異の印を付けません。
+[図の構文](../diagrams/treeview.ja.md)が範囲を定めます。
+[fixture: treeview/semicolon-class-inside]
+[fixture: treeview/semicolon-description-inside]
+[fixture: treeview/semicolon-class-value-inside]
+[fixture: treeview/semicolon-icon-value-inside]
+[fixture: treeview/semicolon-class-value-parts]
+[fixture: treeview/icon-word-open-semicolon]
+[fixture: treeview/icon-name-close-semicolon]
+[fixture: treeview/box-branch-selected-semicolon]
+[fixture: treeview/box-dash-selected-semicolon]
+[fixture: treeview/box-branch-unselected-semicolon]
+[fixture: treeview/semicolon-header-inside]
+
 ## mermaid.js の文書と issue
 
 - [flowchart](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1237-L1237)
@@ -709,3 +807,36 @@ merge 済みの [#6707](https://github.com/mermaid-js/mermaid/pull/6707) は
   保守者が defect と判断した事実ではありません。
   この差異はその判断でなく既存の共通規則に従います。
   調べた結果だけで、ほかに関連する issue がないとは断定しません。
+
+- Wardley: pin し
+  た[構文の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/wardley.md#L1-L461)は座標・装飾・flow を示しますが、この共通の境界を定義しません。2026-10-26 に公式 repository の issue/PR を wardley directive、wardley semicolon、wardley flow で検索しました。[#7642](https://github.com/mermaid-js/mermaid/pull/7642) は hyphen の名、[#7726](https://github.com/mermaid-js/mermaid/pull/7726) は不要な sanitization の修正で、いずれも pin に反映済みです。[#8379](https://github.com/mermaid-js/mermaid/pull/8379) は設定保持に関する open PR でした。確認した結果はこの境界を不具合と認める判断を示さず、既存の直接の規則を適用します。検索の網羅性は主張しません。
+- Cynefin
+  の[pin の構文文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L21-L111)は固定の領域、引用符つきの項目、ラベルつきの遷移を説明し、[注記](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/cynefin.md#L203-L210)は自己遷移を無視すると述べます。[PR #7535](https://github.com/mermaid-js/mermaid/pull/7535) は図を加えて merge されました。2026-10-26 に cynefin parser、cynefin directive、cynefin semicolon、cynefin frontmatter で検索し、この境目について調べた範囲で maintainer の判断は見つかりませんでした。[Issue #7921](https://github.com/mermaid-js/mermaid/issues/7921) は open、Status: Triage で、framework の名前と描画の変更を求めるもので、この字句の規則の判断ではありません。
+
+### eventmodeling
+
+pin した
+[eventmodeling.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/eventmodeling.md#L37-L322)
+は frame、data、tag を説明しますが、共有の前処理の境目を定義しません。
+2026-10-26 に公式 issue と PR を eventmodeling title、eventmodeling parser、
+event modeling data、eventmodeling accTitle、
+eventmodeling validator で検索しました。
+2026-04-16 に merged となった
+[PR #7588](https://github.com/mermaid-js/mermaid/pull/7588) は validator の登録
+を追加し、この境目に関する保守者の判断ではありません。
+確認した結果にはその判断はなく、既存の直接の規則を適用します。
+網羅的な検索だとはしません。
+
+### Treeview
+
+固定版の
+[treeView.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/treeView.md#L1-L277) は字下げ・引用名・注釈・罫線を説明します。
+この共通の境目を定義してはいません。2026-10-26 に公式 issue/PR を
+`treeView quoted`、`treeView indentation`、`treeView box`、
+`treeView quotes`、`treeView whitespace`、`treeView accDescr` で検索しました。
+[PR #7721](https://github.com/mermaid-js/mermaid/pull/7721) は罫線を追加した
+merged の PR、
+[Issue #8014](https://github.com/mermaid-js/mermaid/issues/8014) は
+header 省略を提案する open の Enhancement/Triage です。
+調べた結果はこの共通の境目を defect と認める maintainer の判断を示しません。
+既存の直接規則を適用するもので、網羅的な検索という主張ではありません。

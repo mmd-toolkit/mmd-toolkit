@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: A decoration followed by an annotation-introducing branch belongs to that annotation's textBefore."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "parent",
+        "nodeType": "file",
+        "cssClass": "high",
+        "children": []
+      }
+    ]
+  }
+}

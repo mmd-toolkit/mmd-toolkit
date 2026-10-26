@@ -84,7 +84,7 @@
     {
       "type": "Comment",
       "mark": "(*",
-      "value": " first *)",
+      "value": " first ",
       "range": [
         23,
         34
@@ -103,7 +103,7 @@
     {
       "type": "Comment",
       "mark": "/*",
-      "value": " second */",
+      "value": " second ",
       "range": [
         39,
         51

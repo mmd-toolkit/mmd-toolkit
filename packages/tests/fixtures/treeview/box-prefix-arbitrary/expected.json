@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: Arbitrary authored text before a branch is prefix text rather than a node or annotation."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "child",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts",
+    "line": 25,
+    "test": "eventmodeling diagrams > should handle data inline in frames"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "AddItem",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ productId: 7 }"
+        }
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "ItemAdded",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "{ productId: 7 }"
+        }
+      }
+    ]
+  }
+}

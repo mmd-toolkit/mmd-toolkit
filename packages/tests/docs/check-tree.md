@@ -85,23 +85,30 @@ const problems: TreeProblem[] = checkTree(text, tree)
   the frontmatter, equal the source of their ranges (positions.md, Invariants;
   [ast.md](../../spec/docs/ast.md)).
 - **Comments.** A comment line is where the scan finds it, with the mark `%%`; a
-  diagram comment has a mark that its diagram has, and, except for railroad's
-  closed block comments, ends where its line ends (before a U+2028 or a U+2029
-  too in a mindmap diagram, whose comments run to the end of their line
-  segment); a flowchart, an ER diagram, a sankey diagram, and a block diagram
-  have the mark `%%` for a line of `%%` alone before their header, as every
-  diagram type does, and for no other comment; a gantt diagram has the marks
-  `%%` and `%` for its diagram comments, and a journey diagram and a requirement
-  diagram the marks `#`, `%%`, and `%`, a timeline diagram the same marks, a
-  mindmap diagram, an xychart diagram, a C4 diagram, and a quadrant chart the
-  mark `%%`; a fragment without a mark follows a comment region
-  (parser/docs/tokens.md, Comment;
+  diagram comment has a mark that its diagram has, and, except for closed block
+  comments, ends where its line ends (before a U+2028 or a U+2029 too in a
+  mindmap diagram, whose comments run to the end of their line segment); a
+  flowchart, an ER diagram, a sankey diagram, and a block diagram have the mark
+  `%%` for a line of `%%` alone before their header, as every diagram type does,
+  and for no other comment; a gantt diagram has the marks `%%` and `%` for its
+  diagram comments, and a journey diagram and a requirement diagram the marks
+  `#`, `%%`, and `%`, a timeline diagram the same marks, a mindmap diagram, an
+  xychart diagram, a C4 diagram, and a quadrant chart the mark `%%`; a fragment
+  without a mark follows a comment region (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
   Railroad's native comments also use `/*`, `(*`, `;` and `#` as their dialect
-  permits. Its block comments include the first required closer in range and
-  value. [fixture: railroad/ir-tail-comment] [fixture:
+  permits; eventmodeling also uses `/*` and `//`. A block comment includes its
+  first required closer in its range and excludes it from its value, including
+  in the last fragment after a common comment region. [fixture:
+  eventmodeling/comment-native] [fixture: railroad/ir-tail-comment] [fixture:
   railroad/ebnf-comment-iso] [fixture: railroad/abnf-comment-semicolon-ls]
-  [fixture: railroad/peg-comment-hash-ps]
+  [fixture: railroad/peg-comment-hash-ps] Marks and closers are checked in the
+  text after common removals; directives inside them remain shared records.
+  [fixture: railroad/ir-comment-block-common-region] [fixture:
+  railroad/ebnf-comment-iso-common-region] [fixture:
+  railroad/ir-comment-c-open-mark-directive] [fixture:
+  railroad/ebnf-comment-c-open-mark-directive] [fixture:
+  railroad/ebnf-comment-iso-open-mark-directive]
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
   (ast.md, Directive; common.md, Where a directive is).
@@ -627,6 +634,289 @@ const problems: TreeProblem[] = checkTree(text, tree)
     info/div-detect-retained-directive-bare-bom] [fixture:
     info/div-detect-yaml-bare-directive] [fixture: info/lex-retained-no-bare-ls]
     [fixture: info/lex-hidden-common-comment]
+
+  - treeview: all thirteen node types, child fields and visitor order follow
+    [ast/treeview.md](../../spec/docs/ast/treeview.md). Check the complete
+    case-sensitive header and its first-priority reading, whole bare/quoted
+    names, class and icon atoms, and annotation/common components. Payloads
+    preserve authored padding; null means nothing remains after shared removals,
+    while whitespace-only interiors remain literals. Written values retain box
+    spelling; converted Db values are separate. The complete prefix is one
+    RawText unit, retaining internal whitespace; common cuts fragment it under
+    the shared contract. A quoted name's closed flag follows its effective
+    closer after shared attribute-quote conversion, even when the authored
+    delimiter differs; raw and tokens retain source spelling. [fixture:
+    treeview/box-prefix-arbitrary] [fixture: treeview/html-single] [fixture:
+    treeview/gram-written-tree] [fixture: treeview/ast-common-whitespace-values]
+    [fixture: treeview/ast-common-removal-only-values] [fixture:
+    treeview/ast-icon-removal-only] [fixture: treeview/ast-numeric-name]
+
+    Every external branch prefix and box-decoration line has exactly one owner
+    in source order: body, Node.prefix/textBeforeName, annotation
+    prefix/textBefore or block textBeforeOpen. Enclosed forms stay inside their
+    leaf, without an overlapping child. Prefix and decoration ranges exclude
+    outer whitespace; decoration ranges also exclude the following LF. A node's
+    indent agrees with its assigned ordinary space/tab run or branch depth,
+    including a pending run across decoration or native comments. The checker
+    adds no parent, identity, installed-icon or semantic acceptance gate.
+    [fixture: treeview/box-written-tree] [fixture:
+    treeview/box-decoration-pending-name-gap] [fixture:
+    treeview/box-decoration-before-annotation] [fixture:
+    treeview/ast-annotation-prefixes] [fixture:
+    treeview/box-prefix-common-block-two-prefixes] [fixture:
+    treeview/ast-decoration-internal-and-body] [fixture:
+    treeview/box-comment-indent-carry] [fixture: treeview/db-quoted-tail-tab]
+    [fixture: treeview/db-file-parent] [fixture: treeview/db-duplicate-names]
+
+    Native percent Comments cannot start inside an earlier name or payload.
+    Detection-passed bare lines and accompanying Unicode trivia are not read
+    again, including before and between retained native Comments; without a
+    passed line the ordinary pre-header gap stays strict. Shared coverage,
+    fields, source ranges, token kinds, atom boundaries and written-value checks
+    apply. Treeview has no native block comment; the shared block-comment
+    contract still includes closers in ranges and excludes them from values.
+    [fixture: treeview/comment-in-quotes] [fixture: treeview/comment-in-bare]
+    [fixture: treeview/common-block-bare-percent] [fixture:
+    treeview/detect-secondscan-bare-unicode] [fixture:
+    treeview/detect-retained-comment-unicode-header] [fixture:
+    treeview/detect-retained-gap-ls-control] [fixture:
+    treeview/directive-class-value-parts] [fixture:
+    treeview/directive-icon-value-parts] [fixture:
+    treeview/directive-class-value-inside] [fixture:
+    treeview/semicolon-icon-value-inside] [fixture:
+    railroad/ir-comment-block-common-region]
+
+  - eventmodeling: all 22 node types, child fields and visitor order follow
+    [ast/eventmodeling.md](../../spec/docs/ast/eventmodeling.md). Check the
+    whole lowercase header with its own boundary, identifier longer
+    alternatives, one-to-three-digit frame names as Identifier, qualified-name
+    members and fixed entity/data-type words. Arrow value ->> and
+    none/solid/arrow fields agree. Data tags are null exactly without a tag.
+    Clauses keep their kind, nonempty item bodies and required/optional order.
+    References stay written names; the checker adds no validator or linking
+    conditions. [fixture: eventmodeling/gram-written-tree] [fixture:
+    eventmodeling/lex-keyword-prefix-name] [fixture:
+    eventmodeling/lex-name-custom-header-dot] [fixture:
+    eventmodeling/db-source-leading-zero] [fixture:
+    eventmodeling/db-reset-data-reference] [fixture:
+    eventmodeling/gwt-without-when] [fixture:
+    eventmodeling/validator-command-invalid] [fixture:
+    eventmodeling/db-source-forward]
+
+    Every native ignored match has one owner. Required components use their
+    named gaps; following optional source/reference/data members own their
+    leading forms, qualified tail members own their dot/name gaps, and GWT
+    items/clauses own their leading forms. Completed statements leave subsequent
+    hidden forms in body. There is no visible EOL or textAfter field. Ordinary
+    gaps accept Notation whitespace and complete native comments. [fixture:
+    eventmodeling/lex-hidden-frame-type-gap] [fixture:
+    eventmodeling/lex-hidden-frame-entity-gap] [fixture:
+    eventmodeling/lex-hidden-frame-optional-gaps] [fixture:
+    eventmodeling/lex-qualified-hidden-components] [fixture:
+    eventmodeling/lex-hidden-reference-name-close] [fixture:
+    eventmodeling/lex-hidden-data-tag-gaps] [fixture:
+    eventmodeling/lex-hidden-gwt-required-gaps] [fixture:
+    eventmodeling/lex-hidden-gwt-items] [fixture:
+    eventmodeling/lex-hidden-gwt-clause] [fixture:
+    eventmodeling/lex-native-directive-object-eof] [fixture:
+    eventmodeling/space-nbsp-body] [fixture: eventmodeling/line-ls-gap]
+
+    Inline data chooses the last same-line closer without escape decoding. Block
+    data and hidden YAML prefer a body-present alternative, then an adjacent
+    empty fallback, and stop at the earliest qualifying closer of that
+    alternative. Native directives stop at their first qualifying bounded
+    closer. Consumed closing LF stays outside ranges; space/LS/PS boundaries are
+    lookahead only. The logical appended LF makes no authored range. Common
+    payloads preserve all their padding and delimiters stay outside the payload;
+    null means an empty surviving interior. [fixture:
+    eventmodeling/lex-inline-quote-greedy] [fixture:
+    eventmodeling/lex-inline-quote-conversion] [fixture:
+    eventmodeling/lex-block-adjacent-later-close] [fixture:
+    eventmodeling/hidden-yaml-adjacent-later] [fixture:
+    eventmodeling/hidden-native-directive-later] [fixture:
+    eventmodeling/data-block-close-eof] [fixture:
+    eventmodeling/data-block-close-space] [fixture:
+    eventmodeling/lex-block-close-ps-boundary] [fixture:
+    eventmodeling/common-whitespace] [fixture:
+    eventmodeling/gram-empty-payload-after-removals]
+
+    Check lexical priority after common removals. A common comment region loses
+    its padding and LF; a global-directive-only line, blank line and selected
+    semicolon leave LF. A selected semicolon can expose LF directly after a
+    native directive closer, allowing its consumption. Next-line indentation
+    then belongs to a common terminal only when that LF was consumed. LS and PS
+    remain whitespace. Empty description blocks stay statements, and unselected
+    semicolons stay syntax. [fixture:
+    eventmodeling/lex-common-yaml-comment-line-padding] [fixture:
+    eventmodeling/lex-common-block-comment-line-padding] [fixture:
+    eventmodeling/lex-common-native-directive-comment-line-padding] [fixture:
+    eventmodeling/lex-common-yaml-directive-only-line] [fixture:
+    eventmodeling/lex-common-block-directive-only-line] [fixture:
+    eventmodeling/lex-common-yaml-blank-line-padding] [fixture:
+    eventmodeling/lex-common-block-inline-directive-padding] [fixture:
+    eventmodeling/lex-common-selected-semicolon-exposes-lf] [fixture:
+    eventmodeling/lex-common-selected-semicolon-before-lf] [fixture:
+    eventmodeling/lex-common-selected-semicolon-padding] [fixture:
+    eventmodeling/lex-common-after-block-ls-indented] [fixture:
+    eventmodeling/lex-common-after-block-ps-indented] [fixture:
+    eventmodeling/lex-common-unselected-semicolon-padding] [fixture:
+    eventmodeling/lex-common-empty-description-inline-padding] [fixture:
+    eventmodeling/lex-common-empty-description-leaves-lf]
+
+    Native Comments have percent/slash marks and cannot start inside an earlier
+    data, common or hidden unit. Slash block ranges include their first closer
+    but values exclude it; slash line comments retain LS/PS. Before the header,
+    detection-passed bare percent lines and their accompanying Unicode trivia
+    are not read again as native units, including between retained forms.
+    Retained forms still obey their own closing boundaries, also without a
+    passed line. Global trivia can cut literal or retained text and separate
+    authored components, but cannot split atomic words, digit names, `->>`, `[[`
+    or `]]`. Written values remain separate from converted Db values. [fixture:
+    eventmodeling/comment-native] [fixture:
+    eventmodeling/comment-block-nearest-close] [fixture:
+    eventmodeling/comment-line-ls-body] [fixture:
+    eventmodeling/comment-line-ps-body] [fixture:
+    eventmodeling/lex-native-directive-one-line-fallback] [fixture:
+    eventmodeling/lex-native-yaml-in-inline] [fixture:
+    eventmodeling/lex-native-yaml-inside-common] [fixture:
+    eventmodeling/detect-retained-bare-ls-line] [fixture:
+    eventmodeling/detect-retained-no-bare-ls-line] [fixture:
+    eventmodeling/detect-retained-bare-nbsp-header] [fixture:
+    eventmodeling/detect-retained-no-bare-nbsp-header] [fixture:
+    eventmodeling/detect-real-retained-secondscan] [fixture:
+    eventmodeling/lex-hidden-yaml-fence-directive] [fixture:
+    eventmodeling/directive-qualified] [fixture:
+    eventmodeling/directive-arrow-inside] [fixture:
+    eventmodeling/config-security-level-other] [fixture:
+    eventmodeling/div-html-frontmatter-value]
+
+  - cynefin: the eleven node types, child fields and visitor order follow
+    [ast/cynefin.md](../../spec/docs/ast/cynefin.md). Check the exact lowercase
+    header word and attached optional colon, complete fixed domain words, common
+    keyword components and whole quoted strings. Domain name/from/to fields
+    agree with their written Keywords. CynefinArrow has the whole --> value and
+    fixed none/solid/arrow fields. The checker retains self transitions,
+    undeclared endpoints, repeated blocks and empty strings as authored nodes.
+    [fixture: cynefin/db-all-fields] [fixture: cynefin/header-colon-inline]
+    [fixture: cynefin/gram-glued-domains] [fixture: cynefin/db-self-loops]
+    [fixture: cynefin/gram-transition-first] [fixture:
+    cynefin/db-domain-duplicates] [fixture: cynefin/db-empty-texts]
+
+    Each whole native match has exactly one named owner. textAfterName and an
+    item's textAfter stop at the first visible LF or next visible unit. After
+    visible LF, native forms before an actual next item of the same block belong
+    to that item's textBefore; without such an item they belong to Diagram.body.
+    Hidden LF consumption is applied before locating visible LF. Transitions use
+    textBeforeArrow, textBeforeTo, textBeforeColon, textBeforeLabel and
+    textAfter. An absent label has empty colon/label gaps. Common suffixes stop
+    before visible EOL; forms after it belong to body. [fixture:
+    cynefin/hidden-domain-item-members] [fixture:
+    cynefin/hidden-before-first-item-after-eol] [fixture:
+    cynefin/hidden-item-after-visible-eol] [fixture:
+    cynefin/hidden-domain-end-after-visible-eol] [fixture:
+    cynefin/hidden-empty-domain-after-visible-eol] [fixture:
+    cynefin/hidden-all-unit-gaps] [fixture:
+    cynefin/hidden-unlabeled-transition-gaps] [fixture:
+    cynefin/hidden-common-after-visible-eol]
+
+    CynefinIgnoredText has kind yaml-block or directive and the unconverted
+    authored whole value outside common removals. Its range starts at its opener
+    and ends at the earliest qualifying closer, excluding a consumed following
+    CR/LF. YAML tries a body-present match before an empty fallback. Native
+    Comments lose to an earlier hidden directive and cannot start inside a
+    string, common block or hidden form. A failed hidden directive can become a
+    Comment. [fixture: cynefin/hidden-yaml-adjacent-later] [fixture:
+    cynefin/hidden-yaml-two-nonempty] [fixture:
+    cynefin/hidden-directive-adjacent] [fixture: cynefin/hidden-directive-crlf]
+    [fixture: cynefin/hidden-directive-comment-fallback-kept] [fixture:
+    cynefin/hidden-directive-string] [fixture: cynefin/hidden-yaml-block]
+
+    Transitions and common statements require surviving visible EOL before a
+    following body form. Domain names and items require none. Check spare LF, a
+    space leaving LF visible and EOF separately. Common line values retain all
+    padding after their separator; block interiors trim only outer common
+    whitespace. A title with null value and no textAfter ends at its keyword;
+    its separator stays outside the range. The diagram ends at its last token.
+    [fixture: cynefin/hidden-directive-sole-lf] [fixture:
+    cynefin/hidden-directive-spare-lf] [fixture:
+    cynefin/hidden-directive-closing-space] [fixture:
+    cynefin/hidden-directive-eof] [fixture: cynefin/hidden-after-domain]
+    [fixture: cynefin/common-line-whitespace] [fixture:
+    cynefin/common-block-whitespace] [fixture: cynefin/lex-title-one-space]
+    [fixture: cynefin/lex-title-one-tab] [fixture: cynefin/lex-title-two-spaces]
+    [fixture: cynefin/common-title-comment-only] [fixture:
+    cynefin/common-title-directive-only]
+
+    Retained prefixes keep native boundaries. Detection-passed bare lines are
+    Comments; their accompanying whitespace is trivia, including between
+    retained forms. Check passed Unicode trivia and ordinary strict boundaries
+    separately. Global directives and selected semicolons may separate authored
+    components and cut values, but cannot split fixed words or -->. Check
+    written values separately from Db conversion, including the site security
+    and specified frontmatter HTML value readings. [fixture:
+    cynefin/detect-retained-secondscan-bare-ls] [fixture:
+    cynefin/detect-retained-secondscan-bare-ps] [fixture:
+    cynefin/retained-directive-between-bares] [fixture:
+    cynefin/prefix-yaml-unicode-no-bare] [fixture:
+    cynefin/directive-transition-parts] [fixture: cynefin/semicolon-arrow-parts]
+    [fixture: cynefin/directive-every-field] [fixture:
+    cynefin/config-security-level-other] [fixture:
+    cynefin/div-html-frontmatter-value]
+
+  - wardley: all 28 authored node types, fields and visitor order follow
+    [ast/wardley.md](../../spec/docs/ast/wardley.md). Check the exact lowercase
+    header, complete first-match spaced-name/id-name and numeric units, and the
+    distinct escape rules of ordinary strings and flow labels. Decimal and
+    integer positions keep their authored roles; signs stay outside unsigned
+    offset leaves. Decorations follow offset, strategy, then one inertia form.
+    Common line/block values retain their specified null and whitespace forms.
+    [fixture: wardley/db-all-fields] [fixture: wardley/db-id-underscore]
+    [fixture: wardley/lex-name-priority] [fixture: wardley/number-leading-zero]
+    [fixture: wardley/lex-link-flow-raw-escapes] [fixture:
+    wardley/number-offset-negative-zero] [fixture: wardley/db-inertia-forms]
+    [fixture: wardley/common-empty-literals]
+
+    Check each whole hidden form once in its named gap or body position. Use
+    YAML's earliest qualifying body-present alternative before its adjacent
+    empty fallback, and a directive's first bounded closer. Ranges exclude
+    preceding padding, consumed LF and appended LF. The surviving visible LF
+    separates statements and pipeline children; a pipeline opener requires a
+    visible LF too. The header has no EOL requirement. After a visible EOL a
+    form belongs to body, not the preceding suffix; an evolution suffix belongs
+    to its last stage. [fixture: wardley/hidden-all-unit-gaps] [fixture:
+    wardley/hidden-yaml-adjacent-later] [fixture:
+    wardley/hidden-directive-adjacent] [fixture:
+    wardley/lex-hidden-directive-cr] [fixture:
+    wardley/hidden-directive-spare-lf] [fixture:
+    wardley/lex-hidden-pipeline-open-spare] [fixture:
+    wardley/lex-hidden-pipeline-child-spare] [fixture:
+    wardley/lex-hidden-after-visible-eol] [fixture:
+    wardley/lex-hidden-evolution-members]
+
+    Native Comments cannot replace an earlier hidden directive or start inside
+    an enclosing string, flow arrow, semicolon label, common value or hidden
+    form. Before the header, detection-passed bare Comments and accompanying
+    trivia are not read again, including between retained forms. Without a
+    passed line native boundaries remain strict, as do ordinary body gaps.
+    [fixture: wardley/comment-native-triple] [fixture:
+    wardley/hidden-directive-no-boundary] [fixture:
+    wardley/hidden-directive-string] [fixture:
+    wardley/lex-hidden-directive-multiline-label] [fixture:
+    wardley/detect-retained-secondscan-bare-ls] [fixture:
+    wardley/prefix-yaml-bare-unicode] [fixture:
+    wardley/retained-directive-between-bares] [fixture:
+    wardley/retained-no-bare-unicode] [fixture: wardley/line-ls-gap]
+
+    Arrow fields describe the written dependency/flow glyph and marker, not the
+    Db's label-sensitive flow and dashed reading. Check whole ports, both
+    independent labels and every named optional gap. The checker does not check
+    coordinate ranges, resolve parents or evolve targets, or repeat any other
+    semantic acceptance condition. Those belong to the parser and its result
+    records. [fixture: wardley/db-link-forms] [fixture:
+    wardley/lex-flow-label-changes-direction] [fixture:
+    wardley/lex-flow-label-changes-dashed] [fixture:
+    wardley/gram-invalid-anchor] [fixture: wardley/gram-missing-pipeline-parent]
+    [fixture: wardley/gram-invalid-evolve]
 
   - railroad: all thirty authored node types, fields and visitor order follow
     [ast/railroad.md](../../spec/docs/ast/railroad.md). One RailroadDiagram uses

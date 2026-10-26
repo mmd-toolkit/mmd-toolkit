@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "eventmodeling.md Native hidden forms and comments: A multiline nonword directive glued to the next frame fails the native boundary and leaves unreadable text after comment fallback. Rejected by Mermaid."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 4, column 1: unexpected character: ->}<- at offset: 35, skipped 1 characters. Parse error on line 3, column 1: Expecting end of file but found `{ nested: true }`."
+  }
+}

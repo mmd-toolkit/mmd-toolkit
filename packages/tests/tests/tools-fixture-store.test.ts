@@ -436,7 +436,7 @@ describe("generateExpected", () => {
     expect(file.accepted).toBe(false)
   })
 
-  it("records db null in common/ for a diagram type that has no normalizer", async () => {
+  it("records the treeView summary in common/ after its normalizer is added", async () => {
     const file = await generateExpected(
       "common",
       (await loadFixtures("common")).find(
@@ -447,7 +447,7 @@ describe("generateExpected", () => {
     expect(acceptedOf(file)).toMatchObject({
       accepted: true,
       diagramType: "treeView",
-      db: null,
+      db: { accTitle: "", accDescr: "", nodes: [] },
     })
   })
 

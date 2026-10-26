@@ -18,7 +18,8 @@
   [fixture: common/comment-only]
   [fixture: common/whitespace-only]
 - `---` 疑似図種、
-  または pie・gitgraph・info・packet・architecture・radar・treemap・railroad
+  または pie・gitgraph・info・packet・architecture・radar・
+  treemap・railroad・wardley・cynefin・eventmodeling
   以外の
   対応図種の前で
   保持した非先頭ブロック:
@@ -28,7 +29,8 @@
   [fixture: common/frontmatter-nonleading-sequence]
   [fixture: common/frontmatter-nonleading-state]
   [fixture: common/frontmatter-after-bare-percent-flowchart]
-- pie・gitgraph・info・packet・architecture・radar・treemap・railroad 以外で、
+- pie・gitgraph・info・packet・architecture・radar・
+  treemap・railroad・wardley・cynefin・eventmodeling 以外で、
   ヘッダーの前のもう一度の読みで見つかるディレクティブ
   （[図種の検出](../../spec/docs/common.ja.md#図種の検出)）:
   `range` は、その開きの `%%{`。
@@ -1389,3 +1391,93 @@ native の隠れた形式には意味上の拒否がなく、直後の可視 EOL
 [fixture: railroad/ebnf-native-directive-fallback]
 [fixture: railroad/abnf-db-repeat-reversed]
 [fixture: railroad/peg-config-init-drawing]
+
+## Wardley 図の中
+
+字句走査全体の後に文法と意味的受理条件を検証する。
+受理できる接頭部分があっても未読テキストを許容しない。
+[fixture: wardley/error-after-prefix] [fixture: wardley/error-recovered]
+
+| 原因                                                 | 範囲とメッセージ                                                                        | fixture                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 完全な字句規則が一致しない                           | ソースの一文字で `Unexpected character`。未閉鎖文字列は開き引用符。                     | [fixture: wardley/error-start] [fixture: wardley/lex-string-open-double] [fixture: wardley/lex-string-open-single] [fixture: wardley/space-nbsp-body] [fixture: wardley/tail-link-empty-label]                                                                                                                                                                                                                                               |
+| 文法が単位を読めない                                 | 有意範囲で `Unexpected token`。ソース EOF なら末尾の空範囲で `Unexpected end of text`。 | [fixture: wardley/gram-pipeline-open] [fixture: wardley/gram-coordinate-trailing-comma] [fixture: wardley/header-upper] [fixture: wardley/gram-component-strategy-duplicate]                                                                                                                                                                                                                                                                 |
+| 共通ディレクティブか選択されたセミコロンが原子を分割 | その範囲で `Unexpected directive` または `Unexpected semicolon`。                       | [fixture: wardley/directive-id-inside] [fixture: wardley/directive-number] [fixture: wardley/directive-arrow-inside] [fixture: wardley/lex-selected-port-inside] [fixture: wardley/lex-selected-decimal-inside]                                                                                                                                                                                                                              |
+| 検査対象の正規化座標が 0 から 100 の外               | 問題の符号なし数値の葉で `A Wardley coordinate must be between 0 and 100`。             | [fixture: wardley/gram-invalid-anchor] [fixture: wardley/gram-replaced-invalid-node] [fixture: wardley/gram-invalid-note] [fixture: wardley/gram-invalid-annotation] [fixture: wardley/gram-invalid-accelerator] [fixture: wardley/gram-invalid-deaccelerator] [fixture: wardley/gram-invalid-pipeline-child] [fixture: wardley/gram-invalid-evolve] [fixture: wardley/gram-box-first-invalid] [fixture: wardley/number-coordinate-overflow] |
+| pipeline の親に登録済みの完全一致 ID がない          | 記述された参照の葉で `A Wardley pipeline parent must exist`。                           | [fixture: wardley/gram-missing-pipeline-parent] [fixture: wardley/gram-pipeline-plain-name-ref] [fixture: wardley/gram-pipeline-child-parent-before] [fixture: wardley/gram-reference-case-mismatch] [fixture: wardley/gram-reference-unicode-mismatch]                                                                                                                                                                                      |
+
+座標検査は丸め済み double を使い、置換される宣言も各出現と pipeline 子を調べる。
+登録後に既存 ID の evolve 目標のみを調べ、最初の annotations box のみを調べる。
+size と stage の数値に追加の範囲制約はない。
+設定は Wardley の受理条件を増やさない。
+[fixture: wardley/db-coordinate-double-one]
+[fixture: wardley/db-coordinate-double-hundred]
+[fixture: wardley/gram-replaced-invalid-node-last]
+[fixture: wardley/gram-evolve-forward-invalid]
+[fixture: wardley/db-trend-missing]
+[fixture: wardley/db-later-invalid-box] [fixture: wardley/db-number-overflow]
+[fixture: wardley/db-stages-boundaries]
+[fixture: wardley/config-frontmatter-cannot-rescue]
+
+## cynefin 図の中
+
+公開の受理判定は、回復せず字句・構文を最後まで読むことを要求します。
+追加の意味検査や設定による拒否はありません。
+[fixture: cynefin/error-recovered]
+[fixture: cynefin/db-self-loops]
+[fixture: cynefin/config-site-small-limits]
+
+| 拒否                                                   | 範囲とメッセージ                                                                                            | fixture                                                                                                                                                                    |
+| ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 完全な字句規則に一致しない                             | ソースの文字。`Unexpected character`。未閉鎖文字列は開始引用符。                                            | [fixture: cynefin/error-start] [fixture: cynefin/lex-string-open-double] [fixture: cynefin/lex-string-open-single] [fixture: cynefin/space-nbsp-body]                      |
+| 文法が単位を読めない                                   | 有意範囲。`Unexpected token`（追加 LF なら空）。単位が残らなければ末尾の空範囲で `Unexpected end of text`。 | [fixture: cynefin/gram-missing-target] [fixture: cynefin/gram-label-missing-string] [fixture: cynefin/gram-orphan-item] [fixture: cynefin/hidden-directive-sole-lf]        |
+| ディレクティブや選ばれたセミコロンが不可分な単位を切る | 対象の範囲。`Unexpected directive` または `Unexpected ; that the line rule ignores`。                       | [fixture: cynefin/directive-domain-inside] [fixture: cynefin/directive-arrow-inside] [fixture: cynefin/semicolon-complex-inside] [fixture: cynefin/semicolon-arrow-inside] |
+
+## Eventmodeling 図内
+
+先勝ちの字句走査全体を再帰下降より先に行います。
+公開 gate は回復した prefix を受理せず、参照を解決せず、
+validator や設定依存の条件を加えません。
+[fixture: eventmodeling/error-recovered]
+[fixture: eventmodeling/link-note-forward]
+[fixture: eventmodeling/validator-multiple-invalid]
+[fixture: eventmodeling/config-frontmatter-cannot-rescue]
+
+| 原因                                               | 範囲とメッセージ                                                                                            | fixture                                                                                                                                                                                                       |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 完全な字句規則がない                               | ソース文字に `Unexpected character`。未閉鎖の data/comment は開始記号。                                     | [fixture: eventmodeling/error-start] [fixture: eventmodeling/lex-inline-open-double] [fixture: eventmodeling/lex-block-open] [fixture: eventmodeling/comment-block-open]                                      |
+| 文法が単位を読めない                               | 有意範囲に `Unexpected token`。残る単位がなければソース末尾の空範囲に `Unexpected end of text`。            | [fixture: eventmodeling/header-double] [fixture: eventmodeling/frame-source-missing] [fixture: eventmodeling/gwt-empty-then] [fixture: eventmodeling/data-block-inline-rejected]                              |
+| 共通 directive または選択 semicolon が atom を切る | 共有 directive/semicolon の範囲に `Unexpected directive` または `Unexpected ; that the line rule ignores`。 | [fixture: eventmodeling/directive-id-inside] [fixture: eventmodeling/directive-arrow-inside] [fixture: eventmodeling/directive-reference-close-inside] [fixture: eventmodeling/lex-semicolon-frame-id-inside] |
+
+native hidden form は可視 EOL を消費せず、意味上の拒否を加えません。
+失敗した native directive は Comment になれますが、
+ほかの読めない suffix は拒否します。
+[fixture: eventmodeling/lex-native-directive-one-line-fallback]
+[fixture: eventmodeling/hidden-directive-no-boundary]
+[fixture: eventmodeling/error-after-prefix]
+
+## Treeview 図内
+
+順序付きの字句走査全体と文法が成功する必要がある。
+二つの罫線エラーは引用符・ブロックの文脈とは独立に適用し、
+装飾の後でも元のソース位置を示す。
+設定依存の条件や追加の意味上の受理条件はない。
+[fixture: treeview/error-after-prefix] [fixture: treeview/box-error-remap]
+[fixture: treeview/box-block-indent-error] [fixture:
+treeview/config-frontmatter-cannot-rescue]
+
+| 原因                                               | 範囲とメッセージ                                                                                                 | fixture                                                                                                                                                                                |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 完全な字句規則が一致しない                         | ソース文字に `Unexpected character`。閉じない引用名は開始引用符。                                                | [fixture: treeview/error-after-prefix] [fixture: treeview/box-error-remap]                                                                                                             |
+| 文法が単位を読めない                               | 有意範囲に `Unexpected token`。字下げは先頭の空範囲。単位が残らなければ末尾の空範囲に `Unexpected end of text`。 | [fixture: treeview/gram-repeated-header] [fixture: treeview/gram-accessibility-after-node] [fixture: treeview/gram-quoted-tail-space-next-indent] [fixture: treeview/space-double-tab] |
+| directive または選択 semicolon が atom を切る      | 共通 directive/semicolon の範囲に `Unexpected directive` または `Unexpected ; that the line rule ignores`。      | [fixture: treeview/directive-class-value-inside] [fixture: treeview/directive-icon-value-inside] [fixture: treeview/semicolon-class-inside]                                            |
+| 罫線の枝に内容が残らない                           | 最初の非空白文字から枝・横棒の連続までの接頭辞に `A treeview branch must have content`。                         | [fixture: treeview/box-empty-branch-after-decoration] [fixture: treeview/box-prefixed-directive]                                                                                       |
+| 罫線モードで通常の字下げと罫線のない内容が混在する | 先頭の共通空白の範囲に `Cannot mix ordinary indentation with treeview branches`。                                | [fixture: treeview/box-mixed-reject] [fixture: treeview/box-mixed-indent-nbsp] [fixture: treeview/box-quoted-indent-error] [fixture: treeview/box-block-indent-error]                  |
+
+保持された fence に native YAML 規則はなく、
+ヘッダー前の最初の bare-name 単位で文法が拒否する。
+一行の二回目走査形式は native Comment になれるが、
+後の非コメントの閉じ行はヘッダー前で拒否する。
+[fixture: treeview/detect-block-after-directive] [fixture:
+treeview/detect-secondscan-singleline] [fixture:
+treeview/detect-secondscan-multiline]

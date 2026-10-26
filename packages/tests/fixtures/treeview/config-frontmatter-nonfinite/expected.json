@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Non-finite drawing configuration uses the embedded numeric tag, without a numeric Db field."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "node",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "treeView": {
+        "rowIndent": {
+          "nonFinite": "Infinity"
+        }
+      }
+    }
+  }
+}

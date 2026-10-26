@@ -1,0 +1,649 @@
+{
+  "type": "Root",
+  "diagramType": "wardley",
+  "body": {
+    "type": "WardleyDiagram",
+    "textBeforeHeader": [],
+    "body": [
+      {
+        "type": "WardleyEvolutionStatement",
+        "stages": [
+          {
+            "type": "WardleyEvolutionStage",
+            "textBefore": [
+              {
+                "type": "WardleyIgnoredText",
+                "kind": "directive",
+                "value": "%%{!a}%%",
+                "range": [
+                  23,
+                  31
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 18
+                  }
+                }
+              }
+            ],
+            "name": {
+              "type": "WardleyIdentifier",
+              "name": "G",
+              "range": [
+                32,
+                33
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 19
+                },
+                "end": {
+                  "line": 2,
+                  "column": 20
+                }
+              }
+            },
+            "textBeforeBoundaryMark": [
+              {
+                "type": "WardleyIgnoredText",
+                "kind": "directive",
+                "value": "%%{!b}%%",
+                "range": [
+                  34,
+                  42
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 21
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 29
+                  }
+                }
+              }
+            ],
+            "textBeforeBoundary": [
+              {
+                "type": "WardleyIgnoredText",
+                "kind": "directive",
+                "value": "%%{!c}%%",
+                "range": [
+                  45,
+                  53
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 32
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 40
+                  }
+                }
+              }
+            ],
+            "boundary": {
+              "type": "NumericLiteral",
+              "value": 0.3,
+              "raw": "0.3",
+              "range": [
+                54,
+                57
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 41
+                },
+                "end": {
+                  "line": 2,
+                  "column": 44
+                }
+              }
+            },
+            "textBeforeSecondNameMark": [
+              {
+                "type": "WardleyIgnoredText",
+                "kind": "directive",
+                "value": "%%{!d}%%",
+                "range": [
+                  58,
+                  66
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 45
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 53
+                  }
+                }
+              }
+            ],
+            "textBeforeSecondName": [
+              {
+                "type": "WardleyIgnoredText",
+                "kind": "directive",
+                "value": "%%{!e}%%",
+                "range": [
+                  69,
+                  77
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 56
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 64
+                  }
+                }
+              }
+            ],
+            "secondName": {
+              "type": "WardleyIdentifier",
+              "name": "C",
+              "range": [
+                78,
+                79
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 65
+                },
+                "end": {
+                  "line": 2,
+                  "column": 66
+                }
+              }
+            },
+            "textAfter": [
+              {
+                "type": "WardleyIgnoredText",
+                "kind": "directive",
+                "value": "%%{!f}%%",
+                "range": [
+                  80,
+                  88
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 67
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 75
+                  }
+                }
+              }
+            ],
+            "range": [
+              23,
+              88
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 10
+              },
+              "end": {
+                "line": 2,
+                "column": 75
+              }
+            }
+          },
+          {
+            "type": "WardleyEvolutionStage",
+            "textBefore": [
+              {
+                "type": "WardleyIgnoredText",
+                "kind": "directive",
+                "value": "%%{!g}%%",
+                "range": [
+                  92,
+                  100
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 79
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 87
+                  }
+                }
+              }
+            ],
+            "name": {
+              "type": "WardleyIdentifier",
+              "name": "P",
+              "range": [
+                101,
+                102
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 88
+                },
+                "end": {
+                  "line": 2,
+                  "column": 89
+                }
+              }
+            },
+            "textBeforeBoundaryMark": [],
+            "textBeforeBoundary": [],
+            "boundary": null,
+            "textBeforeSecondNameMark": [],
+            "textBeforeSecondName": [],
+            "secondName": null,
+            "textAfter": [
+              {
+                "type": "WardleyIgnoredText",
+                "kind": "directive",
+                "value": "%%{!h}%%",
+                "range": [
+                  103,
+                  111
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 90
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 98
+                  }
+                }
+              }
+            ],
+            "range": [
+              92,
+              111
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 79
+              },
+              "end": {
+                "line": 2,
+                "column": 98
+              }
+            }
+          }
+        ],
+        "range": [
+          13,
+          111
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 98
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      111
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 98
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "wardley-beta",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "evolution",
+      "range": [
+        13,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{!a}%%",
+      "range": [
+        23,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "G",
+      "range": [
+        32,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 19
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{!b}%%",
+      "range": [
+        34,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 21
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@",
+      "range": [
+        43,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{!c}%%",
+      "range": [
+        45,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 32
+        },
+        "end": {
+          "line": 2,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Numeric",
+      "value": "0.3",
+      "range": [
+        54,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 41
+        },
+        "end": {
+          "line": 2,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{!d}%%",
+      "range": [
+        58,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 45
+        },
+        "end": {
+          "line": 2,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "/",
+      "range": [
+        67,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 54
+        },
+        "end": {
+          "line": 2,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{!e}%%",
+      "range": [
+        69,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 56
+        },
+        "end": {
+          "line": 2,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "C",
+      "range": [
+        78,
+        79
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 65
+        },
+        "end": {
+          "line": 2,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{!f}%%",
+      "range": [
+        80,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 67
+        },
+        "end": {
+          "line": 2,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "->",
+      "range": [
+        89,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 76
+        },
+        "end": {
+          "line": 2,
+          "column": 78
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{!g}%%",
+      "range": [
+        92,
+        100
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 79
+        },
+        "end": {
+          "line": 2,
+          "column": 87
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "P",
+      "range": [
+        101,
+        102
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 88
+        },
+        "end": {
+          "line": 2,
+          "column": 89
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%%{!h}%%",
+      "range": [
+        103,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 90
+        },
+        "end": {
+          "line": 2,
+          "column": 98
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    113
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

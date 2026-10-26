@@ -31,8 +31,61 @@ const ruleDocuments: readonly {
   readonly rulesInTestCode: readonly string[]
 }[] = [
   {
+    diagram: "eventmodeling",
+    rulesWithoutExamples: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+    rulesInTestCode: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+  },
+  {
+    diagram: "cynefin",
+    rulesWithoutExamples: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+    rulesInTestCode: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+  },
+  {
+    diagram: "wardley",
+    rulesWithoutExamples: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+    rulesInTestCode: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+  },
+  {
     diagram: "railroad",
     rulesWithoutExamples: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+    rulesInTestCode: [
+      "line-terminators-and-unicode",
+      "specified-readings",
+      "markdown-fences",
+    ],
+  },
+  {
+    diagram: "treeview",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
       "line-terminators-and-unicode",
       "specified-readings",
       "markdown-fences",
@@ -518,6 +571,9 @@ describe("the citations in the documents", async () => {
   const titles = await readCitedTestTitles()
   const citations: string[] = []
   for (const document of [
+    "docs/eventmodeling.md",
+    "docs/cynefin.md",
+    "docs/wardley.md",
     "docs/radar.md",
     "docs/architecture.md",
     "docs/packet.md",
@@ -544,6 +600,7 @@ describe("the citations in the documents", async () => {
     "docs/c4.md",
     "docs/venn.md",
     "docs/ishikawa.md",
+    "docs/treeview.md",
     "docs/compatibility.md",
   ]) {
     it.each([document, `${document.slice(0, -3)}.ja.md`])(

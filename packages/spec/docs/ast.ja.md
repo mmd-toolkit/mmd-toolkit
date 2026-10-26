@@ -282,7 +282,15 @@ mermaid.js はこれらを
 [`ArchitectureDiagram`](./ast/architecture.ja.md#architecturediagram)、
 [`RadarDiagram`](./ast/radar.ja.md#radardiagram)、
 [`TreemapDiagram`](./ast/treemap.ja.md#treemapdiagram)、
-[`RailroadDiagram`](./ast/railroad.ja.md#railroaddiagram) のどれかです。
+[`RailroadDiagram`](./ast/railroad.ja.md#railroaddiagram)
+、[`WardleyDiagram`](./ast/wardley.ja.md#wardleydiagram)、
+[`CynefinDiagram`](./ast/cynefin.ja.md#cynefindiagram)、
+[`EventmodelingDiagram`](./ast/eventmodeling.ja.md#eventmodelingdiagram)、
+[`TreeviewDiagram`](./ast/treeview.ja.md#treeviewdiagram)
+のどれかです。 [fixture: treeview/gram-written-tree]
+[fixture: eventmodeling/gram-written-tree]
+[fixture: cynefin/db-all-fields]
+[fixture: wardley/db-all-fields]
 [fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
@@ -567,3 +575,25 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
   [fixture: railroad/ebnf-gram-written-tree]
   [fixture: railroad/abnf-gram-written-tree]
   [fixture: railroad/peg-gram-written-tree]
+
+- [Wardley](./ast/wardley.ja.md): 図種 `wardley`。
+  名前の位置は空白を許すため bare name は WardleyIdentifier、
+  引用した名は共有 StringLiteral を使います。
+  [fixture: wardley/db-all-fields] [fixture: wardley/db-id-underscore]
+  [fixture: wardley/db-unquoted-names] [fixture: wardley/lex-string-conversion]
+- [Cynefin](./ast/cynefin.ja.md): 図種は `cynefin`。固定の領域の語は文字列の欄と
+  し、項目と遷移のラベルは共有の StringLiteral を使います。
+  [fixture: cynefin/db-all-fields] [fixture: cynefin/lex-string-conversion]
+
+- [eventmodeling](./ast/eventmodeling.ja.md): 数字列の名前は Identifier、dot の
+  名前は head/tail member を持つ EventmodelingQualifiedName を使います。
+  全出現、tag、unassigned な GWT の型の語も書かれた node に保ちます。
+  [fixture: eventmodeling/gram-written-tree]
+  [fixture: eventmodeling/db-source-leading-zero]
+  [fixture: eventmodeling/lex-qualified-hidden-components]
+  [fixture: eventmodeling/gram-gwt-unassigned-type]
+
+- [Treeview](./ast/treeview.ja.md): 図種は `treeView`。bare 名は
+  TreeviewIdentifier、引用名は StringLiteral、class/icon 名は Identifier。
+  prefix と装飾に書かれた罫線を保ちます。
+  [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]

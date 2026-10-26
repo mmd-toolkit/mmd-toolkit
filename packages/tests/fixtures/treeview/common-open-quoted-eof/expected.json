@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Check the common terminal case open-quoted-eof."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "\"open",
+    "accDescr": "",
+    "nodes": []
+  }
+}

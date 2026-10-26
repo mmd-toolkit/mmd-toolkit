@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/wardley.md",
+    "line": 102
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "Hyphenated Names",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "id": "real-time processing",
+        "label": "real-time processing",
+        "x": 40,
+        "y": 55.00000000000001,
+        "className": "component",
+        "inertia": false
+      },
+      {
+        "id": "end-user",
+        "label": "end-user",
+        "x": 95,
+        "y": 90,
+        "className": "component",
+        "inertia": false
+      }
+    ],
+    "links": [
+      {
+        "source": "end-user",
+        "target": "real-time processing",
+        "dashed": false
+      }
+    ],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

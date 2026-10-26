@@ -470,7 +470,11 @@ pie
 [global directive の不透明性](./flowchart.ja.md#directives)と
 [C4 のセミコロン保護](./c4.ja.md#line-rule-and-semicolons)を再利用します。
 共通の削除は区切りを供給せず、セミコロンの選択は原文の区間を読むためです。
-位置、両側の接触の有無、複数行の内部、EOF までの末尾を保持します。
+単位の間の位置、複数行の内部、EOF までの末尾を保持します。
+同じ印字行の中では、両側の接触・分離を保ちます。
+元は同じ行にあった単位を別の行へ分けるときは、
+間の directive を次の単位に付けます。
+右側の接触・分離は保ち、左側の接触は切れます。
 最初の空白以外の文字から最後のセミコロンまでを保護し、
 交差する値・コメント・directive の全体まで広げます。
 保護した header/body を分割しません。
@@ -479,6 +483,10 @@ colon-hash の空白の区別、Unicode の区間境界、directive が再結合
 コメント内のセミコロンを残します。
 安全な外側と後続の gap だけ整えます。
 語・数値の内部の切断は指定の解析失敗です。
+
+[fixture: pie/directives-and-semicolons/native-label-value]
+
+[fixture: pie/directives-and-semicolons/global-header-first-statement]
 
 固定例: [fixture: pie/directives-and-semicolons/global-align]
 [fixture: pie/directives-and-semicolons/global-touch]

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading: Only the first branch on a physical line denotes its prefix; a later branch remains quoted name text."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a└── b",
+        "nodeType": "file",
+        "children": []
+      }
+    ]
+  }
+}

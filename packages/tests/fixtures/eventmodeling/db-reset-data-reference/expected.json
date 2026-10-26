@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Does a reset frame preserve its explicit data reference and inline fallback while the first referenced block supplies its published data?"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "reset",
+        "name": "01",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "A",
+        "sourceFrames": [],
+        "data": {
+          "kind": "block",
+          "value": "{\nx\n}\n"
+        }
+      }
+    ]
+  }
+}

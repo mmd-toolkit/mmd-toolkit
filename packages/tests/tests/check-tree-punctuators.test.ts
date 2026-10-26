@@ -53,6 +53,10 @@ function textsOfRow(diagram: string): string[] {
 /** The diagrams, with the type of their body. */
 const DIAGRAMS: readonly [string, string][] = [
   ["flowchart", "FlowchartDiagram"],
+  ["treeview", "TreeviewDiagram"],
+  ["eventmodeling", "EventmodelingDiagram"],
+  ["cynefin", "CynefinDiagram"],
+  ["wardley", "WardleyDiagram"],
   ["railroad", "RailroadDiagram"],
   ["treemap", "TreemapDiagram"],
   ["radar", "RadarDiagram"],
@@ -88,6 +92,38 @@ const DIAGRAMS: readonly [string, string][] = [
  */
 function textsBesidesTheRow(diagram: string): string[] {
   switch (diagram) {
+    case "treeview":
+      return ["(", ")", ":", "{", "}"]
+    case "eventmodeling":
+      return ["->>", "[[", "]]", ".", "`", ":", "{", "}"]
+    case "cynefin":
+      return ["-->", ":", "{", "}"]
+    // The Wardley row names punctuation families, including whole arrow and port glyphs.
+    case "wardley":
+      return [
+        "[",
+        ",",
+        "]",
+        "@",
+        "/",
+        "(",
+        ")",
+        "-",
+        "{",
+        "}",
+        "->",
+        "-->",
+        "-.->",
+        ">",
+        "+",
+        "<",
+        "<>",
+        "+>",
+        "+<",
+        "+<>",
+        ";",
+        ":",
+      ]
     case "railroad":
       return [
         "=",

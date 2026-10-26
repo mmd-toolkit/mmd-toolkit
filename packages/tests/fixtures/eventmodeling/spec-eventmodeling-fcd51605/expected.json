@@ -1,0 +1,97 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/eventmodeling/eventmodeling.spec.ts",
+    "line": 77,
+    "test": "eventmodeling diagrams > should handle all entity types"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "ui",
+        "entityIdentifier": "UI",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "ui",
+        "entityIdentifier": "UI2",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "03",
+        "modelEntityType": "cmd",
+        "entityIdentifier": "Command",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "04",
+        "modelEntityType": "command",
+        "entityIdentifier": "Command2",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "05",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Event",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "06",
+        "modelEntityType": "event",
+        "entityIdentifier": "Event2",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "07",
+        "modelEntityType": "pcr",
+        "entityIdentifier": "Processor",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "08",
+        "modelEntityType": "processor",
+        "entityIdentifier": "Processor2",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "09",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "ReadModel",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "10",
+        "modelEntityType": "readmodel",
+        "entityIdentifier": "ReadModel2",
+        "sourceFrames": [],
+        "data": null
+      }
+    ]
+  }
+}

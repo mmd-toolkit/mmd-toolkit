@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Detection: Without a passed bare line, NBSP after a retained comment remains unreadable native text before the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 1: Expecting token of type 'treeView-beta' but found ` treeView-beta`."
+  }
+}

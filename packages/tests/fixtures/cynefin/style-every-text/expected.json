@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The shared style-line semicolon rule can act inside every text field."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "style:#x",
+    "accTitle": "style:#a",
+    "accDescr": "style:#c",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "style:#d"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "style:#e"
+      }
+    ]
+  }
+}

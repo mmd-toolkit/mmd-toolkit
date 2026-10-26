@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Entity preprocessing reaches every text field and STRING quote styles; hash starts no comment."
+  },
+  "accepted": true,
+  "diagramType": "cynefin",
+  "db": {
+    "title": "&amp; ﬂ°°35¶ß",
+    "accTitle": "&ﬂ°°65¶ß &lt;",
+    "accDescr": "&gt; ﬂ°°67¶ß",
+    "domains": [
+      {
+        "name": "complex",
+        "items": [
+          {
+            "label": "&amp; &ﬂ°°65¶ß ﬂ°°35¶ß"
+          }
+        ]
+      }
+    ],
+    "transitions": [
+      {
+        "from": "complex",
+        "to": "clear",
+        "label": "&lt; ﬂ°°66¶ß"
+      }
+    ]
+  }
+}

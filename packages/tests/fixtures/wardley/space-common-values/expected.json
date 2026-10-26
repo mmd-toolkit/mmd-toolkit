@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Which Unicode whitespace does the common line converter trim or collapse?"
+  },
+  "accepted": true,
+  "diagramType": "wardley",
+  "db": {
+    "title": "A B C　D",
+    "accTitle": "A B C　D",
+    "accDescr": "A B C　D",
+    "nodes": [],
+    "links": [],
+    "trends": [],
+    "pipelines": [],
+    "annotations": [],
+    "notes": [],
+    "accelerators": [],
+    "deaccelerators": [],
+    "axes": {}
+  }
+}

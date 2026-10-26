@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A cross-frontmatter attribute repairs otherwise mismatched body quotes."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "E",
+        "sourceFrames": [],
+        "data": {
+          "kind": "inline",
+          "value": "'b='c'>d'"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a z='"
+  }
+}

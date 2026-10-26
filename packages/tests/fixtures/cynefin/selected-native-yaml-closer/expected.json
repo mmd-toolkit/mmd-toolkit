@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "cynefin.md Hidden YAML: a semicolon inside the closing fence before a qualifying hash is not selected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->-<- at offset: 13, skipped 3 characters.\nLexer error on line 3, column 1: unexpected character: ->a<- at offset: 17, skipped 1 characters.\nLexer error on line 4, column 1: unexpected character: ->-<- at offset: 19, skipped 4 characters. "
+  }
+}

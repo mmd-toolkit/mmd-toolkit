@@ -1,0 +1,17 @@
+{
+  "message": "Cannot mix ordinary indentation with treeview branches",
+  "range": [
+    95,
+    97
+  ],
+  "loc": {
+    "start": {
+      "line": 10,
+      "column": 0
+    },
+    "end": {
+      "line": 10,
+      "column": 2
+    }
+  }
+}

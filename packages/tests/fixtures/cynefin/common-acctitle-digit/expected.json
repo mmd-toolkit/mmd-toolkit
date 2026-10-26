@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A digit glued to accTitle prevents its terminal."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed: Lexer error on line 2, column 1: unexpected character: ->a<- at offset: 13, skipped 9 characters.\nLexer error on line 2, column 12: unexpected character: ->A<- at offset: 24, skipped 1 characters. Parse error on line 2, column 10: Expecting token of type 'EOF' but found `:`."
+  }
+}

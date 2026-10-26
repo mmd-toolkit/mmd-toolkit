@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "wardley.md Keyword and name boundaries: The accTitle prefix excludes spaced-name matching and cannot supply the entire multiword component name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "MermaidParseError",
+    "message": "Parsing failed:  Parse error on line 2, column 21: Expecting token of type '[' but found `Foo`."
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/parser/tests/eventmodeling.test.ts",
+    "line": 315,
+    "test": "Parse Event Model > should parse multiple source frames model"
+  },
+  "accepted": true,
+  "diagramType": "eventmodeling",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "frames": [
+      {
+        "kind": "time",
+        "name": "01",
+        "modelEntityType": "evt",
+        "entityIdentifier": "Start",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "time",
+        "name": "02",
+        "modelEntityType": "evt",
+        "entityIdentifier": "End",
+        "sourceFrames": [],
+        "data": null
+      },
+      {
+        "kind": "reset",
+        "name": "03",
+        "modelEntityType": "readmodel",
+        "entityIdentifier": "ReadModel01",
+        "sourceFrames": [
+          "01",
+          "02"
+        ],
+        "data": {
+          "kind": "inline",
+          "value": "{ a: true }"
+        }
+      },
+      {
+        "kind": "reset",
+        "name": "04",
+        "modelEntityType": "rmo",
+        "entityIdentifier": "ReadModel02",
+        "sourceFrames": [
+          "01",
+          "02"
+        ],
+        "data": null
+      }
+    ]
+  }
+}
