@@ -182,6 +182,31 @@ after the header. [fixture: kanban/header-statement-on-header-line] [fixture:
 kanban/header-statement-on-header-line-tab] After a U+2028 or U+2029 ending a
 diagram comment, indentation starts with that separator. [fixture:
 kanban/lex-node-comment-ls] [fixture: kanban/div-header-comment-ps-node]
+[fixture: kanban/lex-indent-comment-ps-semicolon-space] [fixture:
+kanban/lex-indent-comment-ls-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ls-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-no-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-no-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-semicolon-wide-tail] [fixture:
+kanban/lex-indent-comment-ps-space-after-card] [fixture:
+kanban/lex-indent-comment-ps-space-after-column] [fixture:
+kanban/lex-indent-comment-ls-space-after-column] [fixture:
+kanban/lex-indent-comment-ps-two-spaces-after-card] [fixture:
+kanban/lex-indent-comment-ps-after-card-then-column] [fixture:
+kanban/lex-indent-comment-ps-zero-baseline] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-unselected-semicolon-node] [fixture:
+kanban/lex-indent-comment-lf-semicolon-space] [fixture:
+kanban/lex-indent-comment-crlf-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-common-line] [fixture:
+kanban/lex-indent-comment-ps-indent-directive] [fixture:
+kanban/lex-indent-comment-ps-tail-directive] [fixture:
+kanban/lex-indent-comment-ps-empty-line-before] [fixture:
+kanban/lex-indent-comment-ls-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-tail-directive-touching] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-indent-directive]
 
 ### Directives inside units
 
@@ -576,7 +601,13 @@ text after the mark up to line feed, U+2028, U+2029, or end of text. [fixture:
 kanban/lex-node-comment-ls] [fixture: kanban/lex-icon-comment-ls] [fixture:
 kanban/db-metadata-comment-ls] [fixture: kanban/div-header-comment-ls-node]
 [fixture: kanban/div-header-comment-ps-node] [fixture:
-kanban/lex-between-comment-ls-node]
+kanban/lex-between-comment-ls-node] [fixture:
+kanban/lex-indent-comment-ps-semicolon-space] [fixture:
+kanban/lex-indent-comment-ls-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ls-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-tail-directive-touching]
 
 An ordinary `#` or single `%` is node text. [fixture: kanban/lex-comment-hash]
 [fixture: kanban/lex-comment-single-percent] A percent pair inside a node text
@@ -589,7 +620,8 @@ A line of `%%` alone or `%%{ }%%` is a diagram comment. [fixture:
 kanban/lex-comment-bare] [fixture: kanban/header-after-empty-braces-line] A
 common comment line is removed with its line terminator, including text after
 U+2028 or U+2029 on that line. [fixture: kanban/lex-between-comments-ls-node]
-[fixture: kanban/lex-comment-quoted-line]
+[fixture: kanban/lex-comment-quoted-line] [fixture:
+kanban/lex-indent-comment-ps-common-line]
 
 The end of a diagram comment is a `newline` unit, also at U+2028 or U+2029.
 Indentation after it starts a new node line. The separator and the whitespace on
@@ -597,6 +629,11 @@ its right count as indentation. [fixture: kanban/div-header-comment-ls-node]
 [fixture: kanban/div-header-comment-ps-node] [fixture:
 kanban/lex-between-comment-ls-node] [fixture: kanban/lex-node-comment-ls]
 [fixture: kanban/lex-icon-comment-ls] [fixture: kanban/db-metadata-comment-ls]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ls-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-indent-directive] [fixture:
+kanban/lex-indent-comment-ps-space-after-card] [fixture:
+kanban/lex-indent-comment-ps-space-after-column]
 
 ## Grammar
 
@@ -746,15 +783,16 @@ kanban/db-name-space-before-shape] A shape alone has no id child. [fixture:
 kanban/db-name-no-id] [fixture: kanban/spec-kanban-46081dfb] [fixture:
 kanban/spec-kanban-3ef59952]
 
-The diagram body is a flat list of nodes with their absolute indentation. Deeper
-nodes do not create nested children. [fixture: kanban/db-indent-unindented]
-[fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-deeper] [fixture:
+The diagram body contains columns, each with its cards, under
+[Indentation and parents](#indentation-and-parents). Nodes retain their absolute
+indentation. [fixture: kanban/db-indent-unindented] [fixture:
+kanban/db-indent-tabs] [fixture: kanban/db-indent-deeper] [fixture:
 kanban/db-indent-shallower-last] [fixture: kanban/db-sections-items] [fixture:
 kanban/spec-kanban-d05521ff] [fixture: kanban/spec-kanban-2ae1792f] [fixture:
 kanban/spec-kanban-9d61a67e] [fixture: kanban/docs-syntax-kanban-64d47195]
 [fixture: kanban/docs-syntax-kanban-1463e787] The
-[tests package](../../../tests/docs/db-summaries.md#kanban) defines section and
-item assignment.
+[tests package](../../../tests/docs/db-summaries.md#kanban) defines value
+conversion and publication.
 
 Repeated ids remain separate nodes in source order. Ids need not be unique.
 [fixture: kanban/db-section-three-definitions] [fixture:
@@ -904,6 +942,53 @@ kanban/div-comment-blank-before-class] [fixture:
 kanban/div-between-real-comments-ls-node] [fixture:
 kanban/div-between-real-comments-ps-node] [fixture:
 kanban/div-header-space-node]
+
+### Indentation and parents
+
+The first node is a column. A later node with the same indentation as that first
+node is another column; every other node is a card of the most recent column.
+Columns appear in KanbanDiagram.body and their cards in KanbanNode.children, in
+source order. A card is never a parent, even when a later card is more deeply
+indented. The first indentation may be zero or nonzero; multiple columns and
+arbitrary increases or decreases above that baseline are allowed. [fixture:
+kanban/db-indent-unindented] [fixture: kanban/db-indent-tabs] [fixture:
+kanban/db-sections-items] [fixture: kanban/spec-kanban-d05521ff] [fixture:
+kanban/db-indent-deeper] [fixture: kanban/lex-indent-comment-ps-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-space-after-card] [fixture:
+kanban/lex-indent-comment-ps-space-after-column] [fixture:
+kanban/lex-indent-comment-ls-space-after-column] [fixture:
+kanban/lex-indent-comment-ps-two-spaces-after-card] [fixture:
+kanban/lex-indent-comment-ps-after-card-then-column] [fixture:
+kanban/lex-indent-comment-ps-zero-baseline]
+
+A final node shallower than the first column is still a card of the most recent
+column. The rejection below prevents another node from following it; decorations
+and empty lines do not count as another node. Repeated ids do not merge columns
+or cards. [fixture: kanban/db-indent-shallower-last] [fixture:
+kanban/gram-indent-shallower-followed] [fixture:
+kanban/gram-shallower-then-decoration] [fixture:
+kanban/gram-shallower-then-empty] [fixture: kanban/db-section-three-definitions]
+[fixture: kanban/db-section-item-same-id]
+
+Icon and class lines decorate the last written node regardless of indentation;
+they do not become cards or change the next card's column. Shared directives,
+comments, empty lines and selected ignored semicolons add no hierarchy nodes.
+Retain the lexical indentation count, including a comment-ending LS/PS. An
+unselected semicolon remains text rather than separating cards. Title and
+classDef-looking text remain nodes; an empty description block is not a common
+statement here. [fixture: kanban/gram-decoration-then-child] [fixture:
+kanban/gram-nesting-item-decoration-before-deeper-item] [fixture:
+kanban/lex-indent-directive] [fixture:
+kanban/lex-keyword-gap-title-directive-line] [fixture: kanban/lex-comment-line]
+[fixture: kanban/lex-keyword-gap-title-blank-line] [fixture:
+kanban/lex-id-style-rule] [fixture: kanban/lex-after-bare-semicolon-spaced]
+[fixture: kanban/lex-node-comment-ls] [fixture:
+kanban/gram-nesting-card-after-comment-ps] [fixture:
+kanban/gram-nesting-card-ls-ordinary-indent] [fixture:
+kanban/gram-nesting-card-ps-ordinary-indent] [fixture:
+kanban/gram-nesting-common-looking-title-is-card] [fixture:
+kanban/gram-nesting-classdef-looking-text-is-card] [fixture:
+kanban/gram-empty-description-block-after-value]
 
 ### Rejections outside the grammar
 

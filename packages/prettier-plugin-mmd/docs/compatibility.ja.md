@@ -2020,8 +2020,9 @@ Markdown host は最終行の空白を削ります。
 ## treemap の親子と作者の値
 
 [treemap の規則](./treemap.ja.md)は、
-元の行の indent から得る森の順序を保ちます。
-space と tab は各 1 文字と数えます。
+AST の children にある森の順序を保ちます。
+木は、space と tab を各 1 文字と数える、
+行の割り当て済みの indent を反映しています。
 leaf は section を閉じますが親にはならず、class と common の文は参加しません。
 普通の根は設定の正の 1 段に置きます。
 字下げが親子を決めるので、tabWidth 0 でも 1 段 1 文字以上です。
@@ -2089,42 +2090,256 @@ corpus が記録する受理された指定読みを比較に使います。
 
 ## Treeview modes and authored values
 
-[treeview の規則](./treeview.ja.md)は論理的な原文の行が選ぶモードを保ちます。
-引用名と説明ブロックの中の罫線も判定に含みます。
-普通の字下げは AST の割り当て済みの indent を使い、file も親になれます。
-根は設定の正の 1 段とし、持ち越された run は 1 回だけ移します。
-罫線の prefix、列、装飾と値の物理行は、
-全体の幅、丸めと受理を決めうるため綴りを保ちます。
+[treeview の規則](./treeview.ja.md)は字下げモードの入力をそのモードに保ちます。
+罫線の図は、file の親も含めて AST の children から森を読み、
+普通の枝と案内線を固定の 4 列の部品で描き直します。
+次の兄弟があれば `├── `、最後なら `└── `、続く祖先の段は `│   ` です。
+枝付きや混在の根は全部に枝を付け、
+それ以外は根と第 1 世代の枝を第 1 列に置きます。
+誤った見た目の列、兄弟の印、太さと dash の数を、読む木の形に置き換えます。
+同じ物理行のノードも原順で行を分け、その木から枝を描きます。
 
-[fixture: treeview/indentation/indent-irregular]
-[fixture: treeview/indentation/indent-file-parent]
-[fixture: treeview/carried-indentation/carry-quote]
-[fixture: treeview/modes/quoted-box-without-prefix]
+[fixture: treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-two]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-three]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-wide-gap]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-class]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-forest]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-unbranched-root]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-inline-directive]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-directive-line]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-unselected-semicolon]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-protected-semicolon]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-comment-line]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-empty-line]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-ls]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-unprefixed-leading-ps]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-ps]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-empty-block]
+
+[test: treeview/tabs/review159-box-multiple-value-tab-retained]
+
+[test: treeview/trailing-whitespace/review159-box-multiple-owned-tail-retained]
+
+[fixture: treeview/branch-prefixes/rounding-half]
 [fixture: treeview/branch-prefixes/first-positive]
-[fixture: treeview/decorations/pending-owner]
-[corpus fixture: treeview/box-tail-branch-no-carry]
+[fixture: treeview/branch-prefixes/box-redraw-deep-jump]
+[fixture: treeview/branch-prefixes/box-redraw-mixed-roots]
+[fixture: treeview/branch-prefixes/box-redraw-heavy-to-light]
 
-名前、注釈、description、prefix と装飾は、
-重複、空名、`icon()` と上書き注釈も含めて所有位置に残します。
-名前と description の末尾は原文の値として保ち、
-共通の行値と普通の accessibility block は共有の外側の配置に従います。
-罫線モードの普通の block は第 1 列に置き、罫線の形のある block は形を保ちます。
-semicolon はすべて残し、行の境界が親子を制約するときは本文を原文のまま保ちます。
+[corpus fixture: treeview/nested-box-directive-line]
 
-[fixture: treeview/names/name-single]
-[fixture: treeview/annotation-components/icon-empty]
-[fixture: treeview/repeated-annotations/repeat-class]
-[fixture: treeview/descriptions/description-padding]
-[fixture: treeview/modes/ordinary-block]
-[fixture: treeview/semicolons/protected-row-body]
-[corpus fixture: treeview/box-block-decoration]
+[corpus fixture: treeview/nested-box-selected-semicolon]
 
-既存の六つの[仕様上の読み](./treeview.ja.md#specified-readings)を使い、
-空の形の新しい差異と opaque の受理設定は加えません。
-単独ファイルの構文エラーは修復した出力を作らず報告します。
-共有の host は CR・CRLF を正規化し、実効 frontmatter を guard します。
-Markdown の最後のコード行の padding は落としえますが、
-引用内の padding は値に残ります。
+[corpus fixture: treeview/nested-box-comment-line]
+
+[corpus fixture: treeview/nested-box-empty-line]
+
+[corpus fixture: treeview/nested-box-ls]
+
+[corpus fixture: treeview/nested-box-ps]
+
+[corpus fixture: treeview/nested-box-empty-block]
+
+[corpus fixture: treeview/box-physical-directive-inline]
+
+[corpus fixture: treeview/box-physical-directive-line]
+
+[corpus fixture: treeview/box-physical-selected-semicolon]
+
+[corpus fixture: treeview/box-physical-comment-line]
+
+[corpus fixture: treeview/box-physical-empty-line]
+
+[corpus fixture: treeview/box-physical-ls]
+
+[corpus fixture: treeview/box-physical-ps]
+
+[corpus fixture: treeview/box-physical-empty-description]
+
+外側の装飾は続く案内線か空行にし、モードの選択に必要な装飾は残します。
+`accDescr` の opener の gap にある唯一の選び手は gap だけを保ち、
+block の残りと本文は普通に整形します。
+共通文と native comment の prefix を外し、
+コメントが運んだ枝はノードへ 1 回描きます。
+枝付き注釈は、前に description が無く、
+間に共有の trivia や選ばれる semicolon が無い場合だけ、原順で同じ行へ寄せます。
+字下げモードの注釈の行は分けたままです。
+comment region や除かれた directive の後の物理行から始まる注釈は、
+前置の spaces を所有ノードの名前の列に揃え、最低 1 space を残します。
+LF がつながっても注釈の印を前の名前と分けて読むためです。
+名前、値、注釈の各出現、prefix の任意文字と共有の trivia は原文として保ちます。
+
+[fixture: treeview/decorations/review159-sole-opener-selector-line-rule-semicolon]
+
+[fixture: treeview/decorations/review159-sole-opener-selector]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-empty-block]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-inline-directive]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-directive-line]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-comment]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-empty-line]
+
+[test: treeview/decorations/review159-sole-opener-selector-ls]
+
+[test: treeview/decorations/review159-sole-opener-selector-ps]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-value-prefix]
+
+[test: treeview/annotation-lines/review159-region-line-rule-semicolon]
+
+[test: treeview/annotation-lines/review159-region-class-ls-four]
+
+[test: treeview/annotation-lines/review159-region-class-ps-four]
+
+[test: treeview/annotation-lines/review159-region-class-ls-one]
+
+[test: treeview/annotation-lines/review159-region-class-ps-one]
+
+[test: treeview/annotation-lines/review159-region-class-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-class-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-four]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-four]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-one]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-one]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-description-ls-four]
+
+[test: treeview/annotation-lines/review159-region-description-ps-four]
+
+[test: treeview/annotation-lines/review159-region-description-ls-one]
+
+[test: treeview/annotation-lines/review159-region-description-ps-one]
+
+[test: treeview/annotation-lines/review159-region-description-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-description-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-unbranched-root-class-ls]
+
+[test: treeview/annotation-lines/review159-region-unbranched-root-icon-ps]
+
+[test: treeview/annotation-lines/review159-region-unbranched-root-description-ls]
+
+[test: treeview/annotation-lines/review159-region-forest-class-ps]
+
+[test: treeview/annotation-lines/review159-region-forest-icon-ls]
+
+[test: treeview/annotation-lines/review159-region-forest-description-ps]
+
+[test: treeview/annotation-lines/review159-region-unprefixed-quoted-ls]
+
+[test: treeview/annotation-lines/review159-region-quoted-class-ls]
+
+[test: treeview/annotation-lines/review159-region-quoted-icon-ps]
+
+[test: treeview/annotation-lines/review159-region-quoted-description-ls]
+
+[test: treeview/annotation-lines/review159-region-repeated-classes-ps]
+
+[test: treeview/annotation-lines/review159-region-directive-inline]
+
+[test: treeview/annotation-lines/review159-region-protected-semicolon]
+
+[test: treeview/annotation-lines/review159-region-unselected-semicolon]
+
+[test: treeview/annotation-lines/review159-region-empty-block]
+
+[test: treeview/annotation-lines/review159-region-value-prefix-and-protected-row]
+
+[fixture: treeview/decorations/box-redraw-decorations-guides]
+[fixture: treeview/decorations/box-redraw-sole-selector-after-empty-block]
+[fixture: treeview/comments/box-redraw-move-comment-prefix-once]
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-class]
+[fixture: treeview/annotation-lines/box-redraw-keep-after-description]
+[fixture: treeview/annotation-lines/box-redraw-keep-comment-between]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-repeat]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-and-gap]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-before-comment]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-before-directive-line]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-at-eof]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-with-protected-name]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ls]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ps]
+
+prefix と装飾の trivia、prefix の任意文字、固定された行の境界、
+危険な注釈の移動、モードの喪失や値の読みの変化があれば本文を保ちます。
+行分けで名前の先頭の Unicode 空白が新しい枝なしの行に露出する場合も同じです。
+値内の prefix と装飾は綴りを保ち、
+予定した最初の正の branch 列の幅でも、
+その indent の読みが変わらないことを確認します。
+枝の追加や除去で値の tab や末尾の読みも変えません。
+共有の semicolon の保護とこれらの条件は重ねて適用します。
+本文を保った図には見た目の不一致が残りえます。
+見た目を強制するために作者の文字を捨てることはしません。
+
+[fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
+[fixture: treeview/multiline-values/box-redraw-value-width-changes]
+[fixture: treeview/multiline-values/box-redraw-value-width-and-protected-line]
+[fixture: treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-name]
+[corpus fixture: treeview/box-tabs-after-selected-semicolon]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-inline-directive-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-directive-line-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-selected-semicolon-between]
+
+[fixture:
+treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
+
+[fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
+
+[fixture: treeview/tabs/box-redraw-joined-description-value-tab-kept]
+
+[fixture: treeview/tabs/box-redraw-joined-description-directive-tab]
+
+既存の六つの[仕様上の読み](./treeview.ja.md#specified-readings)、
+frontmatter の guard、共有の CR・CRLF の処理と
+Markdown の最終行の trim は維持します。
+拒否される単独入力は構文エラーのままとし、修復しません。
 
 [corpus fixture: treeview/directive-header-inside]
 [corpus fixture: treeview/semicolon-class-inside]
@@ -2132,9 +2347,7 @@ Markdown の最後のコード行の padding は落としえますが、
 [corpus fixture: treeview/div-frontmatter-invalid]
 [corpus fixture: treeview/bare-line-nbsp]
 [corpus fixture: treeview/c4-container-bare]
-[test: treeview/line-terminators-and-unicode/eol-cr-structure]
 [test: treeview Markdown: final-bare-padding]
-[test: treeview Markdown: quoted-interior]
 [test: treeview Markdown: rejected]
 
 ## railroad の方言と書かれた値

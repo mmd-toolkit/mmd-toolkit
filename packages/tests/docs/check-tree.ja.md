@@ -771,14 +771,22 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: treeview/ast-numeric-name]
 
     葉の外の各 branch prefix と罫線の装飾行は、ソース順で 1 つだけ所有する。
-    所有先は body、Node.prefix/textBeforeName、
-    注釈の prefix/textBefore、ブロックの textBeforeOpen。
+    既存の名前待ち、注釈、ブロックの gap を先に採る。
+    Node.prefix/textBeforeName、注釈の prefix/textBefore、
+    ブロックの textBeforeOpen が該当する。
+    完了した階層ノード間の残る装飾は、次の node.textBefore に置く。
+    次が子、祖先の別の子、別の根でも同じである。
+    最初の階層ノードより前と最後より後の独立した装飾は body に保つ。
     葉の中の形はその葉に保ち、重なる子を作らない。
     prefix と装飾の範囲から外端の空白を除き、装飾から後続の LF も除く。
     node の indent は割り当てた通常の空白・タブの列か
     branch の深さに一致させる。
     装飾や native Comment を越える保留中の字下げも数える。
-    親、同一性、icon の登録、意味上の受理の gate は足さない。
+    親子は原順と割り当て済みの indent から独立に検査する。
+    現在以上の indent を持つ開いた node を末尾から取り除き、
+    最後に残る node、なければ body を親にする。file も親になれる。
+    範囲は最初の所有構文から最後の子孫までを覆い、兄弟は重ならない。
+    同一性、icon の登録、意味上の受理の gate は足さない。
     [fixture: treeview/box-written-tree]
     [fixture: treeview/box-decoration-pending-name-gap]
     [fixture: treeview/box-decoration-before-annotation]
@@ -787,7 +795,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: treeview/ast-decoration-internal-and-body]
     [fixture: treeview/box-comment-indent-carry]
     [fixture: treeview/db-quoted-tail-tab] [fixture: treeview/db-file-parent]
-    [fixture: treeview/db-duplicate-names]
+    [fixture: treeview/db-duplicate-names] [fixture: treeview/db-indent-pop]
+    [fixture: treeview/gram-nesting-decoration-before-parent]
+    [fixture: treeview/gram-nesting-decoration-before-ancestor-child]
+    [fixture: treeview/gram-nesting-decoration-after-subtree]
 
     native の percent Comment は、先に始まった名前や値の中で始めない。
     検出が通した裸の行と付随する Unicode の trivia は読み直さない。
@@ -1155,10 +1166,25 @@ const problems: TreeProblem[] = checkTree(text, tree)
 
   - treemap: 9種のノードと子の順は
     [ast/treemap.ja.md](../../spec/docs/ast/treemap.ja.md) に従います。
-    body は平坦です。section・leaf・classDef の indent は、前の行や共通の除去を
-    またぐ場合も、
-    その行の前にある ASCII 空白・タブの単位の文字数と等しくします。
-    範囲に字下げを含めません。別々の2個の run を1個の indent にせず、
+    body は根と外側の文を持ち、section は section と leaf の子を持ちます。
+    leaf に children 欄はありません。
+    親子は原順から独立に検査します。
+    現在の行以上の indent の開いた section を末尾から取り除き、
+    最後に残る section、なければ body に置きます。
+    開いた列に積むのは section だけです。
+    leaf は section を閉じても親にはなりません。
+    階層ノード間の独立した classDef と共通の文は、
+    次のノードの statementsBefore に一度だけ置きます。
+    次が祖先の別の子や別の根でも同じです。
+    最初の階層ノードより前と最後より後は body に保ちます。
+    名前、数、literal の中の内容は先にその葉に保ちます。
+    所有先は図全体への効力を変えません。
+    範囲は最初の所有文か名前から最後の子孫までを覆い、兄弟は重なりません。
+    section・leaf・classDef の indent は、
+    自身の構文の前の ASCII 空白・タブ数です。
+    前の行や共通の除去をまたぐ場合も同じです。
+    先頭の字下げは範囲に含めません。
+    別々の2個の run を1個の indent にせず、
     使われない末尾の run も報告します。
     共通の複合形は自身の padding を消費します。
     null の title は区切り1文字、
@@ -1171,6 +1197,12 @@ const problems: TreeProblem[] = checkTree(text, tree)
     [fixture: treemap/gram-header-trailing-indent-eof]
     [fixture: treemap/common-title-one-space]
     [fixture: treemap/gram-class-whitespace-style-null]
+    [fixture: treemap/db-leaf-not-parent]
+    [fixture: treemap/db-leaf-closes-open-sections]
+    [fixture: treemap/gram-nesting-statement-before-section]
+    [fixture: treemap/gram-nesting-statement-before-ancestor-child]
+    [fixture: treemap/gram-nesting-statement-after-last-child]
+    [fixture: treemap/common-block-empty-interleaved]
 
     header は後ろの境界を求めず全体を確かめます。数は全表記と、コンマを除く
     parseFloat の値を確かめます。string はエスケープを解釈せず最初の同じ引用符で
@@ -2187,7 +2219,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
     五つの kind の common の検出例を含みます。
     C4 を記録済みの木の検査から除外しません。
   - kanban: 子の型と欄の語は ast/kanban.md の表に従います。
-    body は平坦で、data と decorations のリストと同じく空でも構いません。
+    body は列、その children はカードを持ち、カードの children は空です。
+    2段の親子を原順と indent から独立に検査します。
+    最初の node の indent が列を定め、それ以外は直前の列のカードです。
+    最後の浅いカードも同じです。
+    body、children、data、decorations のリストは空でも構いません。
     ノードはテキスト、形、または両方を持ち、
     字下げは書かれた空白と等しい非負の整数です。
     テキストは末尾の空白を保ち、形は text、string、markdown の
@@ -2212,6 +2248,35 @@ const problems: TreeProblem[] = checkTree(text, tree)
     名前を指定したフィクスチャの記録済みの木を壊します。
     コーパスの検査は kanban の記録済みの木すべてと common の検出例を含み、
     kanban を記録済みの木の検査から除外しません。
+    範囲は自身の構文から最後の子孫までを覆い、兄弟は重なりません。
+    装飾は字下げにかかわらず、最後に書かれた node に一度だけ置きます。
+    受理は parser の結果の記録で確かめ、ここでは再実装しません。
+    [fixture: kanban/db-indent-deeper]
+    [fixture: kanban/db-indent-shallower-last]
+    [fixture: kanban/gram-decoration-then-child]
+    [fixture: kanban/gram-nesting-item-decoration-before-deeper-item]
+
+    字下げの逆走査は、保持された native コメントの本文で止めます。
+    コメントを終える LS/PS と右側の字下げは数え、
+    コメント内部の空白は数えません。
+    共有の directive、コメント領域、選ばれた無視するセミコロンは透明に扱います。
+    コメントの範囲の次の有効な文字を、これらの共有の除去を越えて確かめ、
+    コメントを終える LS/PS を行末と認めます。
+    値や通常の空白の gap にある LS/PS は行末にしません。
+    この検査は kanban に限り、treemap と treeview の native コメントは、
+    引き続き LS/PS を越えて LF まで続きます。
+    [fixture: kanban/lex-indent-comment-ps-semicolon-space]
+    [fixture: kanban/lex-indent-comment-ls-semicolon-space]
+    [fixture: kanban/lex-indent-comment-ps-semicolon-wide-tail]
+    [fixture: kanban/lex-indent-comment-ps-space-after-card]
+    [fixture: kanban/lex-indent-comment-ps-space-after-column]
+    [fixture: kanban/lex-indent-comment-ls-selected-semicolon-touching]
+    [fixture: kanban/lex-indent-comment-ps-selected-semicolon-indent-directive]
+    [fixture: kanban/lex-indent-comment-ps-common-line]
+    [fixture: kanban/lex-ps-bare-value] [fixture: kanban/lex-ls-bare-value]
+    [fixture: treemap/lex-indent-comment-ps-semicolon-space]
+    [fixture: treeview/lex-indent-comment-ps-semicolon-space]
+
   - block: 子の型は `BLOCK_CHILD_TYPES` に従い、
     ast/block.md と合わせます。
     図と複合ブロックの本体、class の id、スタイルの区間リストは空にできず、
@@ -2415,6 +2480,13 @@ journey のファイルは 14 本作ります）。
 トークンの種類、切られた文字列とデータの断片、字下げ、
 テキストと形の欠落、形の終わり、ラベルの種類、保たれる空白、
 隣接するデータブロックの順序、ノードの範囲を確かめます。
+`check-tree-nesting.test.ts` は treeview・treemap・kanban の
+入れ子の木を手で作り、
+親、子の順、leaf の子、kanban の2段構造、前置 gap の所有、
+兄弟の重なり、所有構文や最後の子孫を含まない範囲を壊します。
+対照では外側の文と装飾を body に保ちます。
+各図のテストでも引き続き、
+既存の名前待ち、注釈、ブロックの gap の優先を確かめます。
 `check-tree-string-tokens.test.ts` は、flowchart、class、state、ER、sankey の
 名前を挙げた fixture の記録した木で、最初の文字列のトークンの種類を変え、
 文字列のトークンの検査がそれを報告することを求めます。

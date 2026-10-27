@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -30,114 +31,120 @@
         "annotations": [],
         "range": [
           14,
-          18
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 4
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 4,
-        "prefix": {
-          "type": "TreeviewBranchPrefix",
-          "value": "├──",
-          "marker": "├",
-          "range": [
-            19,
-            22
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 0
-            },
-            "end": {
-              "line": 3,
-              "column": 3
-            }
-          }
-        },
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": "child",
-          "range": [
-            23,
-            28
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 4
-            },
-            "end": {
-              "line": 3,
-              "column": 9
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          19,
-          28
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 0
-          },
-          "end": {
-            "line": 3,
-            "column": 9
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 2,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": "A─B",
-          "range": [
-            31,
-            34
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 2
-            },
-            "end": {
-              "line": 4,
-              "column": 5
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          31,
           34
         ],
         "loc": {
           "start": {
-            "line": 4,
-            "column": 2
+            "line": 2,
+            "column": 0
           },
           "end": {
             "line": 4,
             "column": 5
           }
-        }
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 4,
+            "textBefore": [],
+            "prefix": {
+              "type": "TreeviewBranchPrefix",
+              "value": "├──",
+              "marker": "├",
+              "range": [
+                19,
+                22
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 0
+                },
+                "end": {
+                  "line": 3,
+                  "column": 3
+                }
+              }
+            },
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "child",
+              "range": [
+                23,
+                28
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 9
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              19,
+              28
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 9
+              }
+            },
+            "children": []
+          },
+          {
+            "type": "TreeviewNode",
+            "indent": 2,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "A─B",
+              "range": [
+                31,
+                34
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 2
+                },
+                "end": {
+                  "line": 4,
+                  "column": 5
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              31,
+              34
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 2
+              },
+              "end": {
+                "line": 4,
+                "column": 5
+              }
+            },
+            "children": []
+          }
+        ]
       }
     ],
     "range": [

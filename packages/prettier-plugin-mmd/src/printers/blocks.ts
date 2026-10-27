@@ -52,6 +52,8 @@ export interface Positioned {
  * is the statement type of the diagram type.
  */
 export interface BlockRules<Statement extends Positioned> {
+  /** Source structure replaced by the supplied statement docs, excluding trivia. */
+  readonly omittedRanges?: readonly Range[]
   /** Attach a unit with its complete source gap instead of choosing a new line. */
   readonly writtenGapBefore?: (statement: Statement) => boolean
   /** A leading owned form can print separately before the unit's first atom. */
@@ -70,6 +72,8 @@ export interface BlockRules<Statement extends Positioned> {
   readonly kept: KeptLines
   /** Overrides ordinary blank placement before a statement, when supplied. */
   readonly blankBeforeStatement?: (statement: Statement, gap: Gap) => boolean
+  /** A moved owned blank joins the next gap's ordinary blank-line placement. */
+  readonly blankAfterStatement?: (statement: Statement) => boolean
   /**
    * A retained break after trivia or the preceding printed boundary,
    * excluding the next line's indentation.
@@ -348,6 +352,7 @@ export function printBlock<Statement extends Positioned>(
   let next = 0
   let continuesOpeningLine = false
   let spaceLinePending = false
+  let blankLinePending = false
   let stretchEndsWithComment = false
   let endsAfterBareMarker = false
   let endsAfterTakingComment = false
@@ -405,12 +410,15 @@ export function printBlock<Statement extends Positioned>(
    * one (see `BlockRules.keepsWhitespaceLineAfterComment`).
    */
   function pushLine(line: Line): void {
+    const separated =
+      blankLinePending && hasBodyLines() ? { ...line, blankBefore: true } : line
     const placed =
-      extra === "" || line.writtenIndentation !== undefined
-        ? line
-        : { ...line, extraIndentation: extra }
+      extra === "" || separated.writtenIndentation !== undefined
+        ? separated
+        : { ...separated, extraIndentation: extra }
     lines.push(spaceLinePending ? { ...placed, spaceLineBefore: true } : placed)
     spaceLinePending = false
+    blankLinePending = false
   }
 
   /**
@@ -470,6 +478,8 @@ export function printBlock<Statement extends Positioned>(
    * those on lines of their own as lines.
    */
   function addItemLines(gap: Gap, previous: Statement | undefined): void {
+    blankLinePending =
+      previous !== undefined && rules.blankAfterStatement?.(previous) === true
     const readsWhitespace = readsWhitespaceAfter(previous)
     if (lines.length === 0) headerTrailing = gap.trailing
     else appendTrailing(lines, gap.trailing)
@@ -631,6 +641,7 @@ export function printBlock<Statement extends Positioned>(
               },
               rules.keptInlineGapEnd,
               rules.inlineGapBefore?.(statement),
+              rules.omittedRanges,
             ),
         docs[stretch.first + index],
       )
@@ -654,6 +665,8 @@ export function printBlock<Statement extends Positioned>(
               atLineEnd: true,
             },
             rules.keptInlineGapEnd,
+            undefined,
+            rules.omittedRanges,
           )
     return {
       doc: [...parts, trailing],
@@ -772,10 +785,13 @@ export function printBlock<Statement extends Positioned>(
       keptEnd === undefined ? offset : start,
       start,
       false,
-      false,
-      rules.keepsInlineDirectivesWithPrevious,
-      rules.dropsSeparatorsBeforeComments,
-      rules.relocatedWhitespace,
+      {
+        keepsInlineDirectivesWithPrevious:
+          rules.keepsInlineDirectivesWithPrevious,
+        dropsSeparatorsBeforeComments: rules.dropsSeparatorsBeforeComments,
+        relocatedWhitespace: rules.relocatedWhitespace,
+        omitted: rules.omittedRanges,
+      },
     )
     addItemLines(gap, statements[index - 1])
     if (!startsStretch) {
@@ -837,10 +853,12 @@ export function printBlock<Statement extends Positioned>(
     keepsEnd ? bounds.end : offset,
     bounds.end,
     false,
-    bounds.isTopLevel,
-    false,
-    rules.dropsSeparatorsBeforeComments,
-    rules.relocatedWhitespace,
+    {
+      endsText: bounds.isTopLevel,
+      dropsSeparatorsBeforeComments: rules.dropsSeparatorsBeforeComments,
+      relocatedWhitespace: rules.relocatedWhitespace,
+      omitted: rules.omittedRanges,
+    },
   )
   addItemLines(gap, lastStatement)
   const closingJoin = findClosingJoin()
@@ -1041,6 +1059,7 @@ function printInlineGap(
   place: InlinePlace,
   keptEnd?: (start: number) => number,
   ordinaryRule?: GapRule,
+  omittedRanges: readonly Range[] = [],
 ): Doc {
   if (keptEnd !== undefined && keptEnd(start) > start && end <= keptEnd(start))
     return printAsWritten(source, start, end)
@@ -1048,7 +1067,9 @@ function printInlineGap(
     return ordinaryRule === "space" && !place.atLineStart && !place.atLineEnd
       ? " "
       : ""
-  const gap = readGap(source, start, end, true)
+  const gap = readGap(source, start, end, true, {
+    omitted: omittedRanges,
+  })
   if (gap.breaksLine) {
     throw new Error(
       `prettier-plugin-mmd: a line break within a kept line at offset ${start}`,

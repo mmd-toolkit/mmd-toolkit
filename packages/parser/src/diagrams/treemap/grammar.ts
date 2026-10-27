@@ -16,10 +16,16 @@ import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
 import type { Unit, UnitName } from "./units.ts"
 
-/** The flat authored body and its tokens, before shared token-boundary checks. */
+/** The nested authored body and its tokens, before shared token-boundary checks. */
 export interface TreemapSyntax {
   readonly body: readonly TreemapBodyItem[]
   readonly tokens: readonly PendingToken[]
+}
+
+/** An open section whose children are completed in source order. */
+interface OpenSection {
+  readonly section: TreemapSection
+  readonly children: (TreemapSection | TreemapLeaf)[]
 }
 
 /** diagrams/treemap.md, Grammar: recursive descent without additional semantic gates. */
@@ -33,8 +39,72 @@ export class TreemapGrammar extends UnitGrammar<UnitName, Unit> {
     const header = this.takeIf("treemap-beta") ?? this.take("treemap")
     this.addItem("Keyword", [header])
     const body: TreemapBodyItem[] = []
-    while (this.peek() !== null) body.push(this.parseStatement())
+    const open: OpenSection[] = []
+    let statementsBefore: (
+      | TreemapClassDefStatement
+      | TreemapTitleStatement
+      | TreemapAccTitleStatement
+      | TreemapAccDescrStatement
+      | TreemapAccDescrBlockStatement
+    )[] = []
+    let hasNode = false
+    while (this.peek() !== null) {
+      const statement = this.parseStatement()
+      if (
+        statement.type !== "TreemapSection" &&
+        statement.type !== "TreemapLeaf"
+      ) {
+        if (hasNode) statementsBefore.push(statement)
+        else body.push(statement)
+        continue
+      }
+      const range: TreemapSection["range"] = [
+        statementsBefore[0]?.range[0] ?? statement.range[0],
+        statement.range[1],
+      ]
+      const node = {
+        ...statement,
+        statementsBefore,
+        range,
+        loc: this.lines.location(range),
+      }
+      statementsBefore = []
+      // Indentation and parents: a leaf closes sections but never opens one.
+      while ((open.at(-1)?.section.indent ?? -1) >= node.indent)
+        this.finishSection(open, body)
+      if (node.type === "TreemapSection")
+        open.push({ section: node, children: [] })
+      else {
+        const parent = open.at(-1)
+        if (parent === undefined) body.push(node)
+        else parent.children.push(node)
+      }
+      hasNode = true
+    }
+    while (open.length > 0) this.finishSection(open, body)
+    body.push(...statementsBefore)
     return { body, tokens: this.tokensInOrder() }
+  }
+
+  /** ast/treemap.md, Section ranges: finish descendants before their parent. */
+  private finishSection(open: OpenSection[], body: TreemapBodyItem[]): void {
+    const entry = open.pop()
+    if (entry === undefined)
+      throw new Error("mmd-toolkit parser bug: no open treemap section")
+    const { section, children } = entry
+    const range: TreemapSection["range"] = [
+      section.range[0],
+      children.at(-1)?.range[1] ?? section.range[1],
+    ]
+    const completed: TreemapSection = {
+      ...section,
+      children,
+      range,
+      loc: this.lines.location(range),
+    }
+    const parent = open.at(-1)
+    if (parent === undefined) body.push(completed)
+    else parent.children.push(completed)
   }
 
   /** Empty names and blocks are retained; shared recording checks indivisible cuts. */
@@ -68,6 +138,7 @@ export class TreemapGrammar extends UnitGrammar<UnitName, Unit> {
       return {
         type: "TreemapLeaf",
         indent,
+        statementsBefore: [],
         name,
         value,
         classSelector,
@@ -78,8 +149,10 @@ export class TreemapGrammar extends UnitGrammar<UnitName, Unit> {
     return {
       type: "TreemapSection",
       indent,
+      statementsBefore: [],
       name,
       classSelector,
+      children: [],
       ...this.placeFrom(start),
     }
   }

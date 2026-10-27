@@ -18,7 +18,7 @@ import type { UnitName } from "./units.ts"
 
 /** What the grammar makes of the units of a kanban. */
 export interface KanbanSyntax {
-  /** The written nodes in source order. */
+  /** The columns, each with its cards, in source order. */
   readonly body: readonly KanbanNode[]
   /** The tokens of the diagram, in source order. */
   readonly tokens: readonly PendingToken[]
@@ -49,7 +49,7 @@ interface NodeLine {
  * units of the kanban lexer. Each method reads one rule of the grammar,
  * which its comment names, and makes the node that the specification
  * gives for the rule, with the tokens of `docs/tokens/kanban.md`, Tokens.
- * The body stays flat; each node keeps its absolute indentation.
+ * Columns own their cards; each node keeps its absolute indentation.
  */
 export class KanbanGrammar extends UnitGrammar<UnitName, Unit> {
   /** The node lines read so far, in source order. */
@@ -324,17 +324,37 @@ export class KanbanGrammar extends UnitGrammar<UnitName, Unit> {
     return { type: "KanbanLiteral", value: this.textOf(place.range), ...place }
   }
 
-  /** ast/kanban.md, KanbanDiagram and KanbanNode: a flat body, each node ending at its last decoration or data block. */
+  /** Indentation and parents: the first indentation identifies columns; all other nodes are cards. */
   private makeBody(): KanbanNode[] {
-    return this.nodeLines.map((line) => ({
+    const body: KanbanNode[] = []
+    let column: NodeLine | null = null
+    let children: KanbanNode[] = []
+    for (const line of this.nodeLines) {
+      if (column === null || line.indent === this.nodeLines[0].indent) {
+        if (column !== null) body.push(this.nodeOf(column, children))
+        column = line
+        children = []
+      } else children.push(this.nodeOf(line, []))
+    }
+    if (column !== null) body.push(this.nodeOf(column, children))
+    return body
+  }
+
+  /** ast/kanban.md, Node ranges: owned syntax through the final card, when present. */
+  private nodeOf(line: NodeLine, children: readonly KanbanNode[]): KanbanNode {
+    const range = this.placeOf([line.first, line.last]).range
+    range[1] = children.at(-1)?.range[1] ?? range[1]
+    return {
       type: "KanbanNode",
       indent: line.indent,
       id: line.id,
       shape: line.shape,
       data: line.data,
       decorations: line.decorations,
-      ...this.placeOf([line.first, line.last]),
-    }))
+      children,
+      range,
+      loc: this.lines.location(range),
+    }
   }
 
   /** Rejections outside the grammar: the error with the message `message`, over the units from `first` to `last`. */

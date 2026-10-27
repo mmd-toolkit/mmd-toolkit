@@ -7,7 +7,8 @@
  * it. The values of the fields keep what the author wrote: each is the text
  * of a range (ast.md, Nodes), not the converted form of common.md, Reading
  * a source. A **node** is a box of the kanban, written on a line of its own
- * with its indentation; the body stays flat. An **icon** line and
+ * with its indentation. Columns own cards in children; cards have no children.
+ * An **icon** line and
  * a **class** line decorate the node written last before them.
  *
  * The comment of each node type shows examples of the syntax it stands for.
@@ -33,20 +34,25 @@ import type { NodeBase } from "../ast.ts"
  */
 export interface KanbanDiagram extends NodeBase {
   readonly type: "KanbanDiagram"
-  /** The written nodes, in source order; may be empty. */
+  /** The columns, in source order; may be empty. */
   readonly body: readonly KanbanNode[]
 }
 
 /**
  * ast/kanban.md, KanbanNode: a node, with the icon and class lines that
  * decorate it and its data blocks. Its child fields are `id`, `shape`,
- * `data`, and `decorations`.
+ * `data`, `decorations`, and `children`. The range ends at the last descendant,
+ * or its own last decoration, data block, shape or node text without children.
  *
  * ```text
- * a(text)
- * ^^^^^^^
- *   ::icon(fa fa-book)
- * ^^^^^^^^^^^^^^^^^^^^
+ *  S
+ *  ^
+ *    A
+ * ^^^^
+ *  ::icon(x)
+ * ^^^^^^^^^^
+ *      B
+ * ^^^^^^
  * ```
  */
 export interface KanbanNode extends NodeBase {
@@ -61,6 +67,8 @@ export interface KanbanNode extends NodeBase {
   readonly data: readonly KanbanDataBlock[]
   /** The icon and class lines after the node and before the next node, in source order. */
   readonly decorations: readonly (KanbanIconStatement | KanbanClassStatement)[]
+  /** The column's cards, in source order; always empty on a card. */
+  readonly children: readonly KanbanNode[]
 }
 
 /** ast/kanban.md, KanbanShape: the openers, as written. */

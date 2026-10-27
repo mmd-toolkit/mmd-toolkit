@@ -18,11 +18,11 @@ import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 
 /**
- * Prints a flat board (docs/kanban.md, Indentation). A section stands one
+ * Prints the column/card tree (docs/kanban.md, Indentation). A section stands one
  * step deeper than the header and an item two steps, with the characters of
  * the options, and an icon or a class line stands where its node does; the
- * Db tells a section from an item by comparing the indentation with that of
- * the first node, which the printed columns keep. The shared block machinery
+ * AST identifies sections in body and items in their children. The printed
+ * columns preserve these roles. The shared block machinery
  * places comments/directives and keeps semicolon lines; protected comment
  * gaps and inline-directive lines keep their written text apart from the
  * indentation, which counts the same.

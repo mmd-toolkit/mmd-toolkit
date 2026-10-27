@@ -28,92 +28,96 @@
         "shape": null,
         "data": [],
         "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 6,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "child1",
+              "range": [
+                22,
+                28
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 6
+                },
+                "end": {
+                  "line": 3,
+                  "column": 12
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              22,
+              28
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 6
+              },
+              "end": {
+                "line": 3,
+                "column": 12
+              }
+            }
+          },
+          {
+            "type": "KanbanNode",
+            "indent": 6,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "child2",
+              "range": [
+                35,
+                41
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 6
+                },
+                "end": {
+                  "line": 4,
+                  "column": 12
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              35,
+              41
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 6
+              },
+              "end": {
+                "line": 4,
+                "column": 12
+              }
+            }
+          }
+        ],
         "range": [
           11,
-          15
+          41
         ],
         "loc": {
           "start": {
             "line": 2,
             "column": 4
-          },
-          "end": {
-            "line": 2,
-            "column": 8
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 6,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "child1",
-          "range": [
-            22,
-            28
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 6
-            },
-            "end": {
-              "line": 3,
-              "column": 12
-            }
-          }
-        },
-        "shape": null,
-        "data": [],
-        "decorations": [],
-        "range": [
-          22,
-          28
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 6
-          },
-          "end": {
-            "line": 3,
-            "column": 12
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 6,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "child2",
-          "range": [
-            35,
-            41
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 6
-            },
-            "end": {
-              "line": 4,
-              "column": 12
-            }
-          }
-        },
-        "shape": null,
-        "data": [],
-        "decorations": [],
-        "range": [
-          35,
-          41
-        ],
-        "loc": {
-          "start": {
-            "line": 4,
-            "column": 6
           },
           "end": {
             "line": 4,

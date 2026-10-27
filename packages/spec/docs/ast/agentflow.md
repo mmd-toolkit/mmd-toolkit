@@ -89,9 +89,8 @@ agentflow/gram-flow-all-forms] [fixture: agentflow/gram-flow-inline-data]
 [fixture: agentflow/gram-flow-empty] [fixture:
 agentflow/gram-flow-name-whitespace-only] [fixture:
 agentflow/gram-empty-description-after-flow-name] [fixture:
-agentflow/gram-empty-description-after-flow-title]
-
-[fixture: agentflow/gram-nested-unnamed-flow]
+agentflow/gram-empty-description-after-flow-title] [fixture:
+agentflow/gram-nested-unnamed-flow]
 
 ### AgentflowGlobalStatement
 
@@ -687,9 +686,8 @@ agentflow/gram-click-callback-blank-args] [fixture:
 agentflow/gram-click-callback-space-args] [fixture:
 agentflow/gram-click-erased-before-callback-tooltip] [fixture:
 agentflow/gram-callback-arguments-after-second-call] [fixture:
-agentflow/gram-click-id-empty-ends]
-
-[fixture: agentflow/gram-empty-description-before-callback-tooltip]
+agentflow/gram-click-id-empty-ends] [fixture:
+agentflow/gram-empty-description-before-callback-tooltip]
 
 ### AgentflowClickUrlStatement
 

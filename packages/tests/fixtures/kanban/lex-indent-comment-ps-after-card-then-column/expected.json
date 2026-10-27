@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Units and contexts, Comments and Indentation and parents; ast/kanban.md indent: An inline comment on a card can introduce another column; the previous node type does not supply indent. Mermaid accepts; the Db is recorded for column/card or parent/child comparison."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "x",
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "T;x",
+        "label": "T;x",
+        "isGroup": true
+      },
+      {
+        "id": "B;b",
+        "label": "B;b",
+        "isGroup": false,
+        "parentId": "T;x"
+      }
+    ]
+  }
+}

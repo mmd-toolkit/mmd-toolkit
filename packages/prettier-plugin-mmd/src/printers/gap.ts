@@ -181,17 +181,26 @@ export function readGap(
   start: number,
   end: number,
   keepsSeparators: boolean,
-  endsText = false,
-  keepsInlineDirectivesWithPrevious = false,
-  dropsSeparatorsBeforeComments = false,
-  relocatedWhitespace: readonly Range[] = [],
+  options: {
+    readonly endsText?: boolean
+    readonly keepsInlineDirectivesWithPrevious?: boolean
+    readonly dropsSeparatorsBeforeComments?: boolean
+    readonly relocatedWhitespace?: readonly Range[]
+    readonly omitted?: readonly Range[]
+  } = {},
 ): Gap {
+  const {
+    endsText = false,
+    keepsInlineDirectivesWithPrevious = false,
+    dropsSeparatorsBeforeComments = false,
+  } = options
   const lines = scanLines(
     source,
     start,
     end,
     keepsSeparators,
-    relocatedWhitespace,
+    options.relocatedWhitespace ?? [],
+    options.omitted ?? [],
   )
   if (lines.length === 1) {
     return readSingleLine(
@@ -454,6 +463,7 @@ function scanLines(
   end: number,
   keepsSeparators: boolean,
   relocatedWhitespace: readonly Range[],
+  omittedRanges: readonly Range[],
 ): ScannedLine[] {
   const lines: ScannedLine[] = [newLine()]
   let current = lines[0]
@@ -478,6 +488,13 @@ function scanLines(
 
   while (offset < end) {
     const position = offset
+    const omitted = omittedRanges.find(
+      ([from, to]) => from <= position && position < to,
+    )
+    if (omitted !== undefined) {
+      offset = Math.min(end, omitted[1])
+      continue
+    }
     const { element, end: elementEnd } = readGapElement(source, offset)
     switch (element.kind) {
       case "item":

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading; ast/treeview.md Authored values and Gap ownership: A heavy branch and dashes before the closing quote keep their authored spelling while denoting branch indentation in the reading. Mermaid accepts; the raw and value retain the authored quoted interior while box reading gives the recorded Db."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a\n    b\n",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "root",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -2,12 +2,12 @@ import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject, JsonValue } from "../types.ts"
 import { commonValue } from "./statement-values.ts"
 import { textReplacementOf } from "./text-replacement.ts"
-import type { TreeviewDiagram } from "./treeview-tree.ts"
+import type { TreeviewDiagram, TreeviewNode } from "./treeview-tree.ts"
 import { TreeviewText } from "./treeview-text.ts"
 import type { TreeRoot } from "./tree.ts"
 import { descriptionOf } from "./values.ts"
 
-/** docs/db-from-tree/treeview.md: publish the accepted flat tree's forest. */
+/** docs/db-from-tree/treeview.md: publish the accepted nested tree's forest. */
 export function treeviewDbOf(
   source: string,
   root: TreeRoot,
@@ -17,47 +17,12 @@ export function treeviewDbOf(
   const text = new TreeviewText(source, root)
   const replace = textReplacementOf(embedded.config)
   const nodes: JsonObject[] = []
-  const ancestors: { indent: number; children: JsonObject[] }[] = []
   let accTitle = ""
   let accDescr = ""
   for (const statement of diagram.body) {
     switch (statement.type) {
       case "TreeviewNode": {
-        while (
-          ancestors.length > 0 &&
-          ancestors.at(-1)!.indent >= statement.indent
-        )
-          ancestors.pop()
-        let name = text.of(statement.name.range)
-        if (statement.name.type === "StringLiteral") name = name.slice(1, -1)
-        else
-          while (name.endsWith(" ") || name.endsWith("\t"))
-            name = name.slice(0, -1)
-        const directory = name.endsWith("/")
-        const children: JsonObject[] = []
-        const node: Record<string, JsonValue> = {
-          name: directory ? name.slice(0, -1) : name,
-          nodeType: directory ? "directory" : "file",
-          children,
-        }
-        for (const annotation of statement.annotations) {
-          if (annotation.type === "TreeviewClassAnnotation")
-            node.cssClass = text.of(annotation.name.range)
-          else if (annotation.type === "TreeviewIconAnnotation")
-            node.icon =
-              annotation.name === null ? "none" : text.of(annotation.name.range)
-          else {
-            const value = replace(
-              annotation.value === null
-                ? ""
-                : text.of(annotation.value.range).trim(),
-            )
-            if (value === "") delete node.description
-            else node.description = value
-          }
-        }
-        ;(ancestors.at(-1)?.children ?? nodes).push(node)
-        ancestors.push({ indent: statement.indent, children })
+        nodes.push(nodeOf(statement))
         break
       }
       case "TreeviewAccTitleStatement":
@@ -82,6 +47,39 @@ export function treeviewDbOf(
         )
     }
   }
+
+  /** Project each node's authored children without repairing its parent. */
+  function nodeOf(statement: TreeviewNode): JsonObject {
+    let name = text.of(statement.name.range)
+    if (statement.name.type === "StringLiteral") name = name.slice(1, -1)
+    else
+      while (name.endsWith(" ") || name.endsWith("\t")) name = name.slice(0, -1)
+    const directory = name.endsWith("/")
+    const children = statement.children.map(nodeOf)
+    const node: Record<string, JsonValue> = {
+      name: directory ? name.slice(0, -1) : name,
+      nodeType: directory ? "directory" : "file",
+      children,
+    }
+    for (const annotation of statement.annotations) {
+      if (annotation.type === "TreeviewClassAnnotation")
+        node.cssClass = text.of(annotation.name.range)
+      else if (annotation.type === "TreeviewIconAnnotation")
+        node.icon =
+          annotation.name === null ? "none" : text.of(annotation.name.range)
+      else {
+        const value = replace(
+          annotation.value === null
+            ? ""
+            : text.of(annotation.value.range).trim(),
+        )
+        if (value === "") delete node.description
+        else node.description = value
+      }
+    }
+    return node
+  }
+
   return {
     accTitle: replace(accTitle),
     accDescr: replace(descriptionOf(accDescr)),

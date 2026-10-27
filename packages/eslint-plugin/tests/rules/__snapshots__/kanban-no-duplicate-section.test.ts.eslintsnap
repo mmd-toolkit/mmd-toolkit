@@ -210,3 +210,39 @@ Code:
 [1] mermaid.js lists every item belonging to `Todo` under each section with this id.
 [2] mermaid.js lists every item belonging to `Todo` under each section with this id.
 ---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-with-cards-own-data-range
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-with-cards-own-data-range-input.mmd
+
+Code:
+  1 | kanban
+  2 |  S
+  3 |    a
+  4 |  S@{label: Ready}
+    |  ^~~~~~~~~~~~~~~~ [1]
+  5 |    b
+  6 |
+
+[1] mermaid.js lists every item belonging to `S` under each section with this id.
+---
+
+
+Test: kanban-no-duplicate-section >> invalid >>> invalid/kanban/section-with-cards-own-decoration-range
+Filename: tests/fixtures/rules/kanban-no-duplicate-section/invalid/kanban/section-with-cards-own-decoration-range-input.mmd
+
+Code:
+  1 | kanban
+  2 |  S[First]
+  3 |    a
+  4 |  S[Second]@{label: Ready}
+    |  ^~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  5 |  ::icon(fa fa-book)
+    | ~~~~~~~~~~~~~~~~~~~\ [1]
+  6 |  :::highlight
+    | ~~~~~~~~~~~~~ [1]
+  7 |    b
+  8 |
+
+[1] mermaid.js lists every item belonging to `S` under each section with this id.
+---

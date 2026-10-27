@@ -5,10 +5,10 @@ Japanese version: [treeview.ja.md](./treeview.ja.md)
 How prettier-plugin-mmd formats `treeView-beta`. The
 [syntax](../../spec/docs/diagrams/treeview.md) and
 [source tree](../../spec/docs/ast/treeview.md) define its reading. The printer
-uses shared blocks, atoms, gaps, common layouts and root handling; the flat body
-supplies the mode and forest column plan. Inputs the parser rejects are reported
-as syntax errors in standalone files and left to the Markdown host in fences.
-See [compatibility](./compatibility.md).
+uses shared blocks, atoms, gaps, common layouts and root handling; the nested
+tree supplies the forest column plan, and the source supplies the mode. Inputs
+the parser rejects are reported as syntax errors in standalone files and left to
+the Markdown host in fences. See [compatibility](./compatibility.md).
 
 ## Rules
 
@@ -39,15 +39,15 @@ treeView-beta
 
 ### Modes
 
-Keep the original indentation or box-drawing mode. Apply the syntax
-specification’s mode test to logical LF lines after the header: exclude
-whitespace-only, comment-shaped, metadata-shaped and vertical-only lines, then
-look for `─━│┃└┗├┣` anywhere in a remaining line, including inside quotes or
-blocks. Prefix nodes alone cannot decide this. In box mode preserve physical
-node lines and columns, including branchless roots, while ordinary common
-statements and their block closers use column one. Prefix-following common and
-annotation components use the same inline rules as indentation mode; adding a
-body step could reject mixed indentation.
+Keep the original indentation or box-drawing mode. The mode test still examines
+logical LF lines after the header, including value interiors, excluding
+whitespace-only, comment-shaped, metadata-shaped and vertical-only lines. Prefix
+presence alone is insufficient. In box mode redraw ordinary outer structure from
+the AST forest; do not convert indentation-mode input into a box diagram.
+Preserve the mode and the reading of enclosed box forms, using the
+body-retention conditions in Branch prefixes. Common statement prefixes are
+removed and ordinary common statements use column one, so they do not appear as
+children.
 
 [corpus fixture: treeview/box-written-tree]
 
@@ -125,14 +125,146 @@ x─
 }
 ```
 
+[fixture: treeview/modes/box-redraw-indent-kept-mode]
+
+[fixture: treeview/branch-prefixes/rounding-half]
+
+[fixture: treeview/branch-prefixes/box-redraw-redraw-ancestor-guide]
+
+[fixture: treeview/branch-prefixes/box-redraw-deep-jump]
+
+[fixture: treeview/branch-prefixes/box-redraw-file-parent]
+
+[fixture: treeview/branch-prefixes/box-redraw-multi-root-redraw]
+
+[fixture: treeview/branch-prefixes/box-redraw-flat-forest-branches]
+
+[fixture: treeview/branch-prefixes/box-redraw-mixed-root-redraw-all-branches]
+
+[fixture: treeview/branch-prefixes/box-redraw-explicit-multiple-roots]
+
+[corpus fixture: treeview/box-decoration-only]
+
+[fixture:
+treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
+
+[fixture: treeview/decorations/value-owner]
+
+[fixture: treeview/multiline-values/box-redraw-value-quote-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-block-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-prefix-width-preserved]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-changes]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-and-protected-line]
+
+[fixture: treeview/multiline-values/box-redraw-value-entity-width]
+
+[fixture: treeview/decorations/box-redraw-sole-selector-after-empty-block]
+
+[fixture:
+treeview/annotation-lines/box-redraw-joining-would-expose-value-branch]
+
+[fixture: treeview/annotation-lines/box-redraw-joining-would-drop-mode]
+
+[corpus fixture: treeview/box-common-prefix]
+
+[corpus fixture: treeview/box-prefix-common-block-two-prefixes]
+
+[fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
+
+[fixture:
+treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
+
+[fixture: treeview/description-blocks/box-redraw-opener-prefix-with-comment-gap]
+
+[fixture: treeview/description-blocks/box-redraw-common-prefix-tab-kept]
+
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-common]
+
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-opener]
+
 ### Branch prefixes
 
-Keep each prefix’s source span, leading column, separator padding, light/heavy
-spelling and dash run. The first positive branch column determines the width, or
-four when absent; depth is `round(column / width) + 1`, with halves upward.
-Columns count UTF-16 units and tabs as four spaces. Changing columns or choosing
-the smallest width can change parentage, so do not normalize this geometry; a
-dash after separator spaces remains content.
+Read parents from AST children, including file parents, and compress authored
+depth jumps. Draw `├── ` for a node with a following sibling and `└── ` for the
+last sibling. Each ancestor with a later sibling contributes `│   `; other
+ancestor cells are four spaces. Common statements, annotations, comments and
+decorations do not count as siblings. With no prefixed root, roots and
+first-generation branches start at column one, and grandchildren branch at
+zero-based column four. If any root originally has a prefix, give every root a
+branch at column one, including mixed roots. This forest form preserves
+parentage and box mode. Use light box characters, two dashes and fixed
+four-column cells: they describe the read tree consistently rather than
+retaining misleading authored depth, sibling marks or mixed weights.
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-two]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-three]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-wide-gap]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-class]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-forest]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-unbranched-root]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-inline-directive]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-directive-line]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-unselected-semicolon]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-protected-semicolon]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-comment-line]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-empty-line]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-ls]
+
+[test:
+treeview/statements-one-per-line/review159-box-quoted-unprefixed-leading-ps]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-ps]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-empty-block]
+
+[test: treeview/tabs/review159-box-multiple-value-tab-retained]
+
+[test: treeview/trailing-whitespace/review159-box-multiple-owned-tail-retained]
+
+[fixture: treeview/branch-prefixes/box-redraw-nested-guides]
+
+[fixture: treeview/branch-prefixes/box-redraw-nested-uneven-columns]
+
+[fixture: treeview/branch-prefixes/box-redraw-nested-mixed-weights]
+
+Choose body retention once before drawing. Keep the complete body as written if
+an outer prefix or its separator crosses arbitrary text, a directive, selected
+semicolon or comment region, or a decoration line crosses shared trivia. Also
+retain it for fixed source row boundaries, unsafe annotation moves, loss of box
+mode, changed effective indentation of a prefix inside a value, or a newly
+added/removed branch changing owned value tabs or tails. Splitting a box-mode
+logical line also retains the body when it would expose leading Unicode
+whitespace in a name on a new unprefixed line. These conditions compose; one
+protected row can determine the first positive branch column for every other
+row. Body-retained diagrams are exempt from visual agreement. Names, values,
+arbitrary prefix text and shared trivia are never discarded.
+
+[test: treeview/annotation-lines/box-redraw-comment-region-prefix-ls]
+
+[test: treeview/annotation-lines/box-redraw-comment-region-prefix-ps]
+
+[test: treeview/branch-prefixes/box-redraw-comment-region-in-prefix-ps]
+
+[test: treeview/decorations/box-redraw-decoration-comment-region-ps]
 
 [corpus fixture: treeview/box-infer-first-column]
 
@@ -180,23 +312,242 @@ dash after separator spaces remains content.
 
 [corpus fixture: treeview/box-skip-space-before-dash]
 
-Input (escaped): `"treeView-beta\na\n \u2517\u2501\u2501 \u2500content\n"`.
+Input (escaped): `"treeView-beta\na\n    ├─ b\n  └─ c\n"`.
 
 Output
-([branch-prefixes/dash-content-output.mmd](../tests/fixtures/treeview/branch-prefixes/dash-content-output.mmd)):
+([branch-prefixes/rounding-half-output.mmd](../tests/fixtures/treeview/branch-prefixes/rounding-half-output.mmd)):
 
 ```mmd
 treeView-beta
 a
- ┗━━ ─content
+├── b
+└── c
 ```
+
+[fixture: treeview/branch-prefixes/rounding-half]
+
+[fixture: treeview/branch-prefixes/box-redraw-redraw-ancestor-guide]
+
+[fixture: treeview/branch-prefixes/box-redraw-deep-jump]
+
+[fixture: treeview/branch-prefixes/box-redraw-file-parent]
+
+[fixture: treeview/branch-prefixes/box-redraw-multi-root-redraw]
+
+[fixture: treeview/branch-prefixes/box-redraw-flat-forest-branches]
+
+[fixture: treeview/branch-prefixes/box-redraw-heavy-to-light]
+
+[fixture: treeview/branch-prefixes/box-redraw-one-dash-to-two]
+
+[corpus fixture: treeview/box-first-branch-leading-text]
+
+[fixture: treeview/branch-prefixes/box-redraw-opening-quote-in-prefix]
+
+[corpus fixture: treeview/box-description-branch]
+
+[fixture: treeview/branch-prefixes/box-redraw-directive-in-prefix-keep]
+
+[fixture: treeview/branch-prefixes/box-redraw-selected-semicolon-keep]
+
+[fixture: treeview/branch-prefixes/box-redraw-non-init-directive-keep]
+
+[test: treeview/branch-prefixes/box-redraw-comment-region-in-prefix]
+
+[fixture: treeview/branch-prefixes/box-redraw-multiline-directive-in-prefix]
+
+[fixture: treeview/branch-prefixes/box-redraw-mixed-root-redraw-all-branches]
+
+[fixture: treeview/branch-prefixes/box-redraw-explicit-multiple-roots]
+
+[fixture: treeview/branch-prefixes/box-redraw-branch-no-dashes]
+
+[fixture: treeview/branch-prefixes/box-redraw-unselected-semicolon-content]
+
+[fixture: treeview/branch-prefixes/box-redraw-mixed-roots]
+
+[fixture: treeview/branch-prefixes/box-redraw-siblings-after-subtree]
+
+[fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
+
+[fixture:
+treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
+
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-name]
+
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-common]
+
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-opener]
+
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-annotation]
+
+[corpus fixture: treeview/nested-box-directive-line]
+
+[corpus fixture: treeview/nested-box-selected-semicolon]
+
+[corpus fixture: treeview/nested-box-comment-line]
+
+[corpus fixture: treeview/nested-box-empty-line]
+
+[corpus fixture: treeview/nested-box-ls]
+
+[corpus fixture: treeview/nested-box-ps]
+
+[corpus fixture: treeview/nested-box-empty-block]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-child]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-sibling]
+
+[corpus fixture: treeview/box-common-prefix]
+
+[corpus fixture: treeview/box-prefix-common-block-two-prefixes]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-class]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-icon]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-description]
+
+[fixture: treeview/annotation-lines/box-redraw-join-overwritten-in-order]
+
+[fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
+
+[fixture: treeview/comments/box-redraw-move-comment-prefix-once]
+
+[fixture: treeview/decorations/box-redraw-decorations-guides]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-class-in-box]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-icon-in-box]
+
+[fixture:
+treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
+
+[fixture: treeview/decorations/value-owner]
+
+[fixture: treeview/annotation-lines/box-redraw-joining-would-drop-mode]
+
+[fixture: treeview/tabs/box-redraw-tab-prefix]
+
+[test: treeview/tabs/box-redraw-use-tabs-fixed4]
+
+[test: treeview/tabs/box-redraw-tabwidth-zero-fixed4]
+
+[test: treeview/tabs/box-redraw-tabwidth-zero-tabs-fixed4]
+
+[test: treeview/tabs/box-redraw-combined-zero-tabs]
+
+[fixture: treeview/decorations/box-redraw-decoration-directive-preserved]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-and-protected-line]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-description-and-semicolon]
+
+[fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
+
+[test: treeview/decorations/box-redraw-decoration-comment-region]
+
+[test: treeview/multiline-values/box-redraw-quote-value-ls-keep]
+
+[test: treeview/multiline-values/box-redraw-quote-value-ps-keep]
+
+[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+
+[fixture: treeview/multiline-values/box-redraw-value-prefix-width-preserved]
+
+[fixture: treeview/accessibility-lines/box-redraw-common-tab-prefix-preserved]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-changes]
+
+[fixture: treeview/multiline-values/box-redraw-value-entity-width]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-after-description]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-comment-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-inline-directive-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-directive-line-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-selected-semicolon-between]
+
+[fixture:
+treeview/annotation-lines/box-redraw-joining-would-expose-value-branch]
+
+[fixture: treeview/description-blocks/box-redraw-common-prefix-tab-kept]
+
+[fixture: treeview/semicolons/protected-row-body]
+
+[fixture: treeview/decorations/opener-owner]
+
+[fixture: treeview/semicolons/box-redraw-protected-line-and-enclosed-prefix]
+
+[fixture:
+treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+
+[fixture: treeview/multiline-values/box-redraw-value-quote-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-block-keep]
+
+[corpus fixture: treeview/box-physical-directive-inline]
+
+[corpus fixture: treeview/box-physical-directive-line]
+
+[corpus fixture: treeview/box-physical-selected-semicolon]
+
+[corpus fixture: treeview/box-physical-comment-line]
+
+[corpus fixture: treeview/box-physical-empty-line]
+
+[corpus fixture: treeview/box-physical-ls]
+
+[corpus fixture: treeview/box-physical-ps]
+
+[corpus fixture: treeview/box-physical-empty-description]
+
+[fixture: treeview/tabs/box-redraw-joined-description-value-tab-kept]
 
 ### Decorations
 
-Print each decoration once from its source span at its AST owner: body,
-pending-name gap, annotation gap or block-opener gap. Preserve exterior columns
-and physical boundaries. Enclosed forms stay inside their value leaf. Even
-Db-ignored decoration can select box mode, so deleting or moving it is unsafe.
+Redraw each ordinary outer decoration once as the guide continuing toward the
+next node, or as a blank line when no tree continues there. Apply this at body,
+pending-name, annotation and opener-gap owners; moved blanks join the following
+gap's single-blank placement, including before its first trivia item, and edge
+blanks follow Final newline. When a prefixed annotation moves inline, its
+decorations remain after the joined node line, before the continuing tree. This
+replaces stale verticals, heavy lines and dash-only shapes with the tree's
+continuation. Keep a decoration needed to select box mode, including its
+complete gap before an `accDescr` opener when it is the only selector there;
+format the rest of the block and body normally. Keeping that gap preserves mode
+without freezing unrelated title spacing or blank lines. Keep value-owned
+decoration spans unchanged. Shared trivia on a decoration line invokes body
+retention rather than deletion.
+
+[fixture:
+treeview/decorations/review159-sole-opener-selector-line-rule-semicolon]
+
+[fixture: treeview/decorations/review159-sole-opener-selector]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-empty-block]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-inline-directive]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-directive-line]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-comment]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-empty-line]
+
+[test: treeview/decorations/review159-sole-opener-selector-ls]
+
+[test: treeview/decorations/review159-sole-opener-selector-ps]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-value-prefix]
+
+[test: treeview/decorations/box-redraw-decoration-comment-region-ps]
 
 [corpus fixture: treeview/box-decoration-trailing-body]
 
@@ -246,14 +597,77 @@ a
 └─ :::x
 ```
 
+[fixture: treeview/decorations/box-redraw-decorations-guides]
+
+[fixture: treeview/decorations/box-redraw-decoration-directive-preserved]
+
+[fixture: treeview/decorations/box-redraw-decoration-end]
+
+[corpus fixture: treeview/box-decoration-only]
+
+[fixture: treeview/decorations/value-owner]
+
+[test: treeview/decorations/box-redraw-decoration-comment-region]
+
+[fixture: treeview/decorations/box-redraw-sole-selector-after-empty-block]
+
+[fixture: treeview/decorations/box-redraw-decoration-directive-line]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-child]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-sibling]
+
+[fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
+
+[corpus fixture: treeview/box-tail-decoration-directive-line]
+
+[corpus fixture: treeview/box-tail-decoration-selected-semicolon]
+
+[corpus fixture: treeview/box-tail-decoration-comment-line]
+
+[corpus fixture: treeview/box-tail-decoration-empty-line]
+
+[corpus fixture: treeview/box-tail-decoration-ls]
+
+[corpus fixture: treeview/box-tail-decoration-ps]
+
+[corpus fixture: treeview/box-tail-decoration-empty-block]
+
+[corpus fixture: treeview/box-tail-branch-no-carry]
+
+[fixture: treeview/multiline-values/box-redraw-value-quote-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-block-keep]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-repeat]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-and-gap]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-before-comment]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-before-directive-line]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-at-eof]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-with-protected-name]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ls]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ps]
+
 ### Indentation
 
-In indentation mode derive the forest from assigned AST indents: close open
-nodes whose indent is greater than or equal to the new node’s, then push every
-node, including files. Print roots at one configured step and children one step
-beyond their parent. A space step is `max(1, tabWidth)`; useTabs uses one tab.
-This selects a uniform Db-equivalent width even for a deep first node, later
-shallower roots, irregular increments, duplicate names and empty names.
+In indentation mode read the forest from AST children, including file parents.
+Print roots at one configured step and children one step beyond their parent. A
+space step is `max(1, tabWidth)`; useTabs uses one tab. This selects a uniform
+Db-equivalent width even for a deep first node, later shallower roots, irregular
+increments, duplicate names and empty names.
 
 [fixture: treeview/indentation/indent-irregular]
 
@@ -303,11 +717,14 @@ treeView-beta
 
 ### Carried indentation
 
-Use the AST’s assigned indent to move a run after a quote, class, icon or
-whitespace-only line once to the next node’s planned column. Do not retain a
-second copy of that run. A branch line’s excluded tail does not carry, while
-intervening decoration does not clear an ordinary pending run. This preserves
-parentage across hidden LF.
+Use the AST hierarchy, which already accounts for assigned indentation, to move
+a run after a quote, class, icon or whitespace-only line once to the next node's
+planned position, across comments, directives, blank lines and decoration. In
+box mode it becomes a branch position, while the old gap run disappears;
+indentation mode still uses its configured step. Branch-line tails already
+excluded by the lexical reading do not carry. This preserves parentage without
+adding a second indentation run. Fixed or value-owned source boundaries follow
+Branch prefixes.
 
 [fixture: treeview/carried-indentation/carry-quote]
 
@@ -372,12 +789,71 @@ treeView-beta
     C
 ```
 
+[fixture: treeview/carried-indentation/box-redraw-comment-empty-gap]
+
+[fixture: treeview/carried-indentation/box-redraw-directive-gap]
+
+[corpus fixture: treeview/box-tail-decoration-carry]
+
+[corpus fixture: treeview/box-tail-branch-no-carry]
+
+[fixture: treeview/carried-indentation/box-redraw-blank-space-carry]
+
+[fixture: treeview/carried-indentation/box-redraw-carried-run-move-once]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-class-in-box]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-icon-in-box]
+
+[fixture: treeview/comments/box-redraw-move-comment-prefix-once]
+
+[fixture: treeview/modes/box-redraw-indent-kept-mode]
+
+[corpus fixture: treeview/nested-box-directive-line]
+
+[corpus fixture: treeview/nested-box-selected-semicolon]
+
+[corpus fixture: treeview/nested-box-comment-line]
+
+[corpus fixture: treeview/nested-box-empty-line]
+
+[corpus fixture: treeview/nested-box-ls]
+
+[corpus fixture: treeview/nested-box-ps]
+
+[corpus fixture: treeview/nested-box-empty-block]
+
+[fixture: treeview/tabs/box-redraw-branch-excluded-tail-trim]
+
+[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+
+[fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-changes]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-and-protected-line]
+
+[fixture:
+treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-description-and-semicolon]
+
+[fixture: treeview/semicolons/box-redraw-protected-line-and-enclosed-prefix]
+
+[fixture:
+treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+
+[fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
+
 ### Tabs
 
-Count ordinary indentation spaces and tabs once each; normalize only those
-structural columns. Keep tabs inside authored values and box lines. Expanding
-ordinary tabs to tab stops can change parentage, while replacing value tabs
-loses authored text.
+Ordinary indentation still counts each space or tab once and uses its configured
+positive step. Box structure instead always uses four-column space cells,
+independently of useTabs and tabWidth, including zero. Keep tabs in authored
+values. Existing branch lines retain their tab-expansion reading; adding a
+branch to a previously branchless value line or removing a common or annotation
+prefix can change tab or trailing-whitespace reading and therefore retains the
+body. This separates structural drawing from authored value spelling.
 
 [fixture: treeview/tabs/tabs-mixed]
 
@@ -407,16 +883,85 @@ Output
 ```mmd
 treeView-beta
 a
-	└─ b	c
+└── b	c
 ```
+
+[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+
+[fixture: treeview/tabs/box-redraw-tab-prefix]
+
+[corpus fixture: treeview/box-tab-quoted]
+
+[test: treeview/tabs/box-redraw-use-tabs-fixed4]
+
+[test: treeview/tabs/box-redraw-tabwidth-zero-fixed4]
+
+[test: treeview/tabs/box-redraw-tabwidth-zero-tabs-fixed4]
+
+[fixture: treeview/tabs/box-redraw-branch-excluded-tail-trim]
+
+[test: treeview/tabs/box-redraw-combined-zero-tabs]
+
+[fixture: treeview/modes/box-redraw-indent-kept-mode]
+
+[fixture: treeview/accessibility-lines/box-redraw-common-tab-prefix-preserved]
+
+[fixture: treeview/description-blocks/box-redraw-common-prefix-tab-kept]
+
+[fixture: treeview/tabs/box-redraw-joined-description-value-tab-kept]
+
+[fixture: treeview/tabs/box-redraw-joined-description-directive-tab]
 
 ### Statements one per line
 
-Split ordinary same-line nodes into separate lines in source order, using their
-assigned indentation, including quoted/quoted, quoted/bare and icon-suffix
-nodes. This chooses readable boundaries without changing the forest.
-Quote-looking text inside a bare name stays inside that name. Box geometry and
-semicolon protection take precedence.
+Split ordinary nodes into separate lines in source order in both modes, using
+AST children to read their parents. In box mode redraw their branches from that
+forest, including several quoted nodes on one physical line; this makes the
+visible parentage match the reading rather than preserving a misleading shared
+row. Quote-looking text inside a bare name stays name text. Retain the body when
+shared source row boundaries or changed value tabs, tails or newly exposed
+leading Unicode whitespace prevent safe splitting, as described in Branch
+prefixes.
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-two]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-three]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-wide-gap]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-class]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-forest]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-unbranched-root]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-inline-directive]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-directive-line]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-unselected-semicolon]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-protected-semicolon]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-comment-line]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-empty-line]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-ls]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-ps]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-empty-block]
+
+[test: treeview/tabs/review159-box-multiple-value-tab-retained]
+
+[test: treeview/trailing-whitespace/review159-box-multiple-owned-tail-retained]
 
 [fixture: treeview/statements-one-per-line/adjacent-quoted]
 
@@ -440,6 +985,128 @@ semicolon protection take precedence.
 
 [corpus fixture: treeview/gram-inline-quoted]
 
+In box mode, move directives between nodes that split onto separate lines to a
+directive-only line at column one, immediately before the next node. This also
+applies when the next node is a bare name or an unbranched root, and at each
+split of three or more nodes. Keeping directives outside branches prevents a
+visible shift and keeps later passes free to redraw the tree.
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-inline-directive]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-quoted-bare]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-bare-quoted]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-three-nodes]
+
+[fixture: treeview/statements-one-per-line/review159-split-directive-deep]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-redraw-again]
+
+[test: treeview split directives remain redrawable]
+
+Input (escaped): `"treeView-beta\nroot\n├── \"a\" %%{x}%% \"b\"\n└── c\n"`.
+
+Output
+([statements-one-per-line/review159-box-quoted-inline-directive-output.mmd](../tests/fixtures/treeview/statements-one-per-line/review159-box-quoted-inline-directive-output.mmd)):
+
+```mmd
+treeView-beta
+root
+├── "a"
+%%{x}%%
+└── "b"
+    └── c
+```
+
+Preserve the directive order for a run of multiple directives. The same
+placement applies with or without spaces on either side of the run; breaks
+inside a directive stay inside that directive. On a directive-only line created
+by such a split, remove spaces and tabs between directives: keeping them would
+leave a whitespace-only line after directive removal, which mermaid.js rejects.
+
+[fixture: treeview/statements-one-per-line/review159-split-directives-touching]
+
+[fixture: treeview/statements-one-per-line/review159-split-directives-spaced]
+
+[fixture: treeview/statements-one-per-line/review159-split-directives-three]
+
+[test: treeview/statements-one-per-line/review159-split-directives-tab]
+
+[fixture: treeview/statements-one-per-line/review159-split-directive-touching]
+
+[fixture: treeview/statements-one-per-line/review159-split-directive-left-space]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-right-space]
+
+[fixture: treeview/statements-one-per-line/review159-split-directive-multiline]
+
+Existing directive-only lines, comment lines and blank lines retain their gap
+placement around the split. An empty description block in the common preamble
+does not change this directive placement.
+
+[fixture: treeview/statements-one-per-line/review159-split-directive-own-line]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-comment-line]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directives-comment-line]
+
+[fixture: treeview/statements-one-per-line/review159-split-directive-empty-line]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directives-empty-line]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-empty-block]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directives-empty-block]
+
+Keep the existing body-retention conditions for selected or unselected
+semicolons and unsafe LS/PS-leading values. Comment regions held inside a value
+stay in that value while an intervening directive before it takes the separate
+line. In indentation mode keep the existing placement of a leading directive
+with its node.
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-selected-semicolon]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directives-selected-semicolon]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-unselected-semicolon]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directives-unselected-semicolon]
+
+[test: treeview/statements-one-per-line/review159-split-directive-ls]
+
+[test: treeview/statements-one-per-line/review159-split-directives-ls]
+
+[test: treeview/statements-one-per-line/review159-split-directive-ps]
+
+[test: treeview/statements-one-per-line/review159-split-directives-ps]
+
+[test: treeview/statements-one-per-line/review159-split-directive-region-ls]
+
+[test: treeview/statements-one-per-line/review159-split-directives-region-ls]
+
+[test: treeview/statements-one-per-line/review159-split-directive-region-ps]
+
+[test: treeview/statements-one-per-line/review159-split-directives-region-ps]
+
+[fixture:
+treeview/statements-one-per-line/review159-split-directive-indent-control]
+
 Input (escaped): `"treeView-beta\n\"A\"\"B\"'C'\n"`.
 
 Output
@@ -451,6 +1118,16 @@ treeView-beta
   "B"
   'C'
 ```
+
+[fixture: treeview/branch-prefixes/rounding-half]
+
+[fixture: treeview/branch-prefixes/box-redraw-multi-root-redraw]
+
+[fixture: treeview/branch-prefixes/box-redraw-flat-forest-branches]
+
+[corpus fixture: treeview/box-tail-collision-unselected-semicolon]
+
+[fixture: treeview/semicolons/protected-row-body]
 
 ### Annotation gaps
 
@@ -518,11 +1195,97 @@ treeView-beta
 
 ### Annotation lines
 
-Keep a later-line annotation on a later line and align it with its owning node,
-retaining positive leading whitespace in indentation mode. Do not join across
-descriptions, comments or multiline names. This is a consistent choice among
-Db-equal joins and avoids absorbing annotation text into a description. Prefixes
-and decorations retain their box geometry.
+In indentation mode keep later-line annotations separate and align them with
+their owner, retaining positive leading whitespace. In box mode move a
+branch-prefixed annotation onto its owner's line, in source order with one
+separating space, only when no earlier description and no intervening comment,
+directive, selected semicolon or comment region prevents it. Retain the whole
+body otherwise, including when joining exposes a branch in a value, changes
+value tabs or loses box mode. When an annotation starts a retained physical line
+after a joining comment region or removed directive, align its leading spaces
+with the owner's name column, with a minimum of one space. That positive width
+is required for Mermaid to read class, icon and description markers as
+annotations rather than name text, even when the physical LF disappears from its
+logical line. A truly separate indentation-only logical line in a box diagram is
+rejected. Joining removes a false child branch; replacing it with a vertical
+guide creates a vertical-bar node. Preserve all repeated classes, icons and
+descriptions.
+
+[test: treeview/annotation-lines/review159-region-line-rule-semicolon]
+
+[test: treeview/annotation-lines/review159-region-class-ls-four]
+
+[test: treeview/annotation-lines/review159-region-class-ps-four]
+
+[test: treeview/annotation-lines/review159-region-class-ls-one]
+
+[test: treeview/annotation-lines/review159-region-class-ps-one]
+
+[test: treeview/annotation-lines/review159-region-class-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-class-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-four]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-four]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-one]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-one]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-description-ls-four]
+
+[test: treeview/annotation-lines/review159-region-description-ps-four]
+
+[test: treeview/annotation-lines/review159-region-description-ls-one]
+
+[test: treeview/annotation-lines/review159-region-description-ps-one]
+
+[test: treeview/annotation-lines/review159-region-description-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-description-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-unbranched-root-class-ls]
+
+[test: treeview/annotation-lines/review159-region-unbranched-root-icon-ps]
+
+[test:
+treeview/annotation-lines/review159-region-unbranched-root-description-ls]
+
+[test: treeview/annotation-lines/review159-region-forest-class-ps]
+
+[test: treeview/annotation-lines/review159-region-forest-icon-ls]
+
+[test: treeview/annotation-lines/review159-region-forest-description-ps]
+
+[test: treeview/annotation-lines/review159-region-unprefixed-quoted-ls]
+
+[test: treeview/annotation-lines/review159-region-quoted-class-ls]
+
+[test: treeview/annotation-lines/review159-region-quoted-icon-ps]
+
+[test: treeview/annotation-lines/review159-region-quoted-description-ls]
+
+[test: treeview/annotation-lines/review159-region-repeated-classes-ps]
+
+[test: treeview/annotation-lines/review159-region-directive-inline]
+
+[test: treeview/annotation-lines/review159-region-protected-semicolon]
+
+[test: treeview/annotation-lines/review159-region-unselected-semicolon]
+
+[test: treeview/annotation-lines/review159-region-empty-block]
+
+[test:
+treeview/annotation-lines/review159-region-value-prefix-and-protected-row]
+
+[test: treeview/annotation-lines/box-redraw-comment-region-prefix-ls]
+
+[test: treeview/annotation-lines/box-redraw-comment-region-prefix-ps]
 
 [fixture: treeview/annotation-lines/later-class-keep]
 
@@ -557,6 +1320,78 @@ treeView-beta
  tail"
   :::X
 ```
+
+[fixture: treeview/annotation-lines/box-redraw-repeat-prefixed-annotations-kept]
+
+[fixture:
+treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
+
+[corpus fixture: treeview/box-annotation-prefix]
+
+[corpus fixture: treeview/box-comment-indent-carry]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-class]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-icon]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-description]
+
+[fixture: treeview/annotation-lines/box-redraw-join-overwritten-in-order]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-after-description]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-description-and-semicolon]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-comment-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-inline-directive-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-directive-line-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-selected-semicolon-between]
+
+[test: treeview/annotation-lines/box-redraw-join-description-ls]
+
+[test: treeview/annotation-lines/box-redraw-join-description-ps]
+
+[fixture:
+treeview/annotation-lines/box-redraw-joining-would-expose-value-branch]
+
+[fixture: treeview/annotation-lines/box-redraw-joining-would-drop-mode]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-child]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-sibling]
+
+[corpus fixture: treeview/box-decoration-annotation-gap]
+
+[fixture: treeview/annotation-lines/box-redraw-vertical-is-a-node]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-repeat]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-and-gap]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-before-comment]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-before-directive-line]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-at-eof]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-with-protected-name]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ls]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ps]
+
+[fixture: treeview/tabs/box-redraw-joined-description-directive-tab]
+
+[fixture: treeview/tabs/box-redraw-joined-description-value-tab-kept]
 
 ### Annotation components
 
@@ -680,11 +1515,13 @@ treeView-beta
 
 ### Multiline values
 
-Keep quoted-name continuation columns, internal blank lines and LS/PS as
-authored. Only the first node line takes the planned indentation. Box prefixes
-and decorations enclosed by a value remain in that value. Reindentation, joining
-or wrapping introduces different name characters or changes physical box
-reading.
+Keep quoted-name continuation columns, internal blank lines, LS/PS and enclosed
+box spellings as authored. Only the node's first line receives the planned head.
+Determine the first positive branch column from the new outer heads and
+unchanged value-owned prefixes in written order. If any enclosed prefix's
+`4 * (round(column / width) + 1)` changes, retain the complete body. This
+preserves value reading as well as spelling; a fixed source span alone cannot
+protect its indentation from an external width change.
 
 [fixture: treeview/multiline-values/multiline-keep]
 
@@ -723,6 +1560,36 @@ treeView-beta
 
  last'
 ```
+
+[test: treeview/multiline-values/box-redraw-quote-value-ls-keep]
+
+[test: treeview/multiline-values/box-redraw-quote-value-ps-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-quote-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-block-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-prefix-width-preserved]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-changes]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-and-protected-line]
+
+[fixture: treeview/multiline-values/box-redraw-value-entity-width]
+
+[fixture: treeview/semicolons/box-redraw-protected-line-and-enclosed-prefix]
+
+[fixture:
+treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+
+[corpus fixture: treeview/box-physical-directive-inline]
+
+[corpus fixture: treeview/box-physical-directive-line]
+
+[fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
+
+[fixture:
+treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
 
 ### Title
 
@@ -846,17 +1713,42 @@ treeView-beta
   R
 ```
 
+[fixture: treeview/accessibility-lines/box-redraw-common-tab-prefix-preserved]
+
+[corpus fixture: treeview/box-common-prefix]
+
+[corpus fixture: treeview/box-prefix-common-block-two-prefixes]
+
 ### Description blocks
 
-Use shared description-block layout: whitespace-only interiors become `{}`;
-touching edges stay touching and existing ordinary edge padding becomes one
-space. Join plain opener whitespace. Keep nonempty continuation columns,
-internal blank lines and comment/directive-only interiors; align a separate
-closer with its statement. These Db-equivalent edges follow the other diagrams.
-In box mode ordinary blocks and closers use column one; blocks with owned
-prefixes/decorations or enclosed box geometry keep their source span, because
-moving those physical lines can reject. The first effective `}` remains the
-closer.
+Use shared description-block layout for ordinary blocks: whitespace-only
+interiors become `{}`, touching edges remain touching, and ordinary edge padding
+becomes one space. Join plain opener whitespace, preserve nonempty continuation
+columns and trivia-only interiors, and align separate closers with the
+statement. In box mode remove ordinary keyword/opener prefixes and place the
+common statement at column one. Keep the complete brace span when it contains
+value-owned box geometry, because moving its physical lines can change the
+reading. The first effective `}` remains the closer. Unsafe removal follows
+Branch prefixes, including common-value tabs. A sole mode selector in the opener
+gap keeps just that gap, as described in Decorations.
+
+[fixture: treeview/decorations/review159-sole-opener-selector]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-empty-block]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-inline-directive]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-directive-line]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-comment]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-empty-line]
+
+[test: treeview/decorations/review159-sole-opener-selector-ls]
+
+[test: treeview/decorations/review159-sole-opener-selector-ps]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-value-prefix]
 
 [fixture: treeview/description-blocks/block-empty]
 
@@ -931,14 +1823,55 @@ treeView-beta
 
 [fixture: treeview/description-blocks/box-directive-is-not-geometry]
 
+[fixture: treeview/description-blocks/box-redraw-remove-opener-prefixes]
+
+[fixture:
+treeview/description-blocks/box-redraw-opener-prefix-with-directive-gap]
+
+[fixture: treeview/description-blocks/box-redraw-opener-prefix-with-comment-gap]
+
+[fixture: treeview/description-blocks/box-redraw-common-prefix-tab-kept]
+
+[fixture: treeview/multiline-values/box-redraw-value-block-keep]
+
+[fixture: treeview/accessibility-lines/box-redraw-common-tab-prefix-preserved]
+
+[fixture:
+treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
+
+[corpus fixture: treeview/box-common-prefix]
+
+[corpus fixture: treeview/box-prefix-common-block-two-prefixes]
+
+[corpus fixture: treeview/box-physical-directive-inline]
+
+[corpus fixture: treeview/box-physical-directive-line]
+
+[corpus fixture: treeview/box-physical-selected-semicolon]
+
+[corpus fixture: treeview/box-physical-comment-line]
+
+[corpus fixture: treeview/box-physical-empty-line]
+
+[corpus fixture: treeview/box-physical-ls]
+
+[corpus fixture: treeview/box-physical-ps]
+
+[corpus fixture: treeview/box-physical-empty-description]
+
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-opener]
+
+[fixture: treeview/decorations/opener-owner]
+
 ### Comments
 
 Put ordinary standalone comment marks at column one and keep inline comments on
-their line. Preserve marks, contents, tails and source ownership; native
-comments run through LS/PS to LF. A meaningful run before a comment moves to its
-next node once, so the comment may touch the preceding token. Percent text
-enclosed by names, descriptions or blocks stays value text. Box-prefixed
-comments and common joining regions retain their source boundaries.
+their line, preserving marks, contents and tails, including native LS/PS. Move
+meaningful indentation runs once to their assigned node. In a drawable box
+diagram remove a native comment's structural prefix and draw that assigned
+branch once on the node's name line. The comment is not a tree child. Percent
+text inside names, descriptions or blocks stays value text; common joining
+regions and unsafe prefix intersections follow body retention.
 
 [fixture: treeview/comments/comment-standalone-column-one]
 
@@ -986,16 +1919,99 @@ treeView-beta
 
 [fixture: treeview/comments/box-carried-padded-comment]
 
+[fixture: treeview/comments/box-redraw-move-comment-prefix-once]
+
+[corpus fixture: treeview/box-comment-indent-carry]
+
+[corpus fixture: treeview/nested-box-directive-line]
+
+[corpus fixture: treeview/nested-box-selected-semicolon]
+
+[corpus fixture: treeview/nested-box-comment-line]
+
+[corpus fixture: treeview/nested-box-empty-line]
+
+[corpus fixture: treeview/nested-box-ls]
+
+[corpus fixture: treeview/nested-box-ps]
+
+[corpus fixture: treeview/nested-box-empty-block]
+
+[fixture: treeview/carried-indentation/box-redraw-comment-empty-gap]
+
+[fixture: treeview/carried-indentation/box-redraw-directive-gap]
+
+[fixture: treeview/carried-indentation/box-redraw-blank-space-carry]
+
+[fixture: treeview/carried-indentation/box-redraw-carried-run-move-once]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-class-in-box]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-icon-in-box]
+
+[test: treeview/branch-prefixes/box-redraw-comment-region-in-prefix]
+
+[test: treeview/decorations/box-redraw-decoration-comment-region]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-comment-between]
+
+[corpus fixture: treeview/box-physical-directive-inline]
+
+[corpus fixture: treeview/box-physical-directive-line]
+
+[corpus fixture: treeview/box-physical-selected-semicolon]
+
+[corpus fixture: treeview/box-physical-comment-line]
+
+[corpus fixture: treeview/box-physical-empty-line]
+
+[corpus fixture: treeview/box-physical-ls]
+
+[corpus fixture: treeview/box-physical-ps]
+
+[corpus fixture: treeview/box-physical-empty-description]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-before-comment]
+
 ### Directives
 
 Keep directive text and order. Within one printed line retain contact or
-separation on each side; when units split, attach the directive to the following
-unit and retain its right boundary. Standalone directives use column one. For a
-leading indentation unit, keep following gaps while they fit, shorten excess
-from the last gap, then supply the remaining indentation before the first
-directive. This preserves the assigned indent without duplicating earlier
-carried runs. Multiline interiors, value-owned forms and unfinished EOF
-directives remain written.
+separation on each side, except between directives moved to a new directive-only
+line as described in [Statements one per line](#statements-one-per-line). When
+units split, attach the directive to the following unit and retain its right
+boundary. Standalone directives use column one. For a leading indentation unit,
+keep following gaps while they fit, shorten excess from the last gap, then
+supply the remaining indentation before the first directive. This preserves the
+assigned indent without duplicating earlier carried runs. Multiline interiors,
+value-owned forms and unfinished EOF directives remain written.
+
+[fixture: treeview/directives/review159-box-tail-directive-gap]
+
+[fixture: treeview/directives/review159-box-tail-directive-repeat]
+
+[fixture: treeview/directives/review159-box-tail-quoted]
+
+[fixture: treeview/directives/review159-box-tail-class]
+
+[fixture: treeview/directives/review159-box-tail-icon]
+
+[fixture: treeview/directives/review159-box-tail-joined-class]
+
+[test: treeview/directives/review159-box-tail-joined-icon]
+
+[fixture: treeview/directives/review159-box-tail-joined-description]
+
+[fixture: treeview/directives/review159-box-tail-common]
+
+[fixture: treeview/directives/review159-box-tail-forest]
+
+[fixture: treeview/directives/review159-box-tail-comment]
+
+[fixture: treeview/directives/review159-box-tail-decoration]
+
+[fixture: treeview/directives/review159-box-tail-empty-line]
+
+[fixture: treeview/directives/review159-box-tail-child]
 
 [fixture: treeview/directives/directive-split]
 
@@ -1041,13 +2057,14 @@ treeView-beta
 
 ### Semicolons
 
-Keep every authored `;` through shared textual-prefix and kept-line protection.
-Treeview has no grammatical semicolon, so style/classDef words alone do not
-freeze a line. A protected first line uses its planned body column; interiors
-and later lines remain written. If fixed node boundaries constrain the forest,
-retain the body as written, including its ending; a single line of zero-indent
-roots needs no forest fallback. This keeps shared semicolon selection and
-parentage together without predicting a second line-rule model.
+Keep every authored semicolon through shared textual-prefix and kept-line
+protection; treeview has no grammatical semicolon and style/classDef words alone
+do not freeze a line. Draw a safe outer box head around protected content, while
+protected interiors and value columns remain written. Retain the whole body when
+protected source row boundaries constrain parentage or when another Branch
+prefixes condition applies. These protections compose with unchanged value-owned
+prefixes on the same line or elsewhere in the diagram; they are not permission
+to discard a semicolon or partially redraw an unsafe body.
 
 [corpus fixture: treeview/semicolon-selected]
 
@@ -1101,13 +2118,55 @@ treeView-beta
   "style:#z;"
 ```
 
+[fixture: treeview/semicolons/box-redraw-protected-line-and-enclosed-prefix]
+
+[fixture:
+treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+
+[fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
+
+[fixture: treeview/branch-prefixes/box-redraw-selected-semicolon-keep]
+
+[fixture: treeview/branch-prefixes/box-redraw-unselected-semicolon-content]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-and-protected-line]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-description-and-semicolon]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-selected-semicolon-between]
+
+[fixture:
+treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
+
+[corpus fixture: treeview/nested-box-directive-line]
+
+[corpus fixture: treeview/nested-box-selected-semicolon]
+
+[corpus fixture: treeview/nested-box-comment-line]
+
+[corpus fixture: treeview/nested-box-empty-line]
+
+[corpus fixture: treeview/nested-box-ls]
+
+[corpus fixture: treeview/nested-box-ps]
+
+[corpus fixture: treeview/nested-box-empty-block]
+
+[fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-changes]
+
+[corpus fixture: treeview/box-tail-collision-unselected-semicolon]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-with-protected-name]
+
 ### Blank lines
 
-Keep at most one ordinary ASCII blank line between items and remove ordinary
-edge blanks. Move any meaningful whitespace-only run to its assigned node first.
-This bounds visual separation without changing the forest. Keep
-value/directive/comment-region interiors and box physical boundaries;
-Unicode-only names are not ordinary blank lines.
+Keep at most one ordinary ASCII blank line between items and remove edge blanks,
+after relocating meaningful indentation runs and replacing outer decoration.
+This gives bounded separation while preserving parentage. Keep value, directive
+and comment-region interiors unchanged; Unicode-only names are not ordinary
+blank lines. Body-retained diagrams keep their source boundaries.
 
 [fixture: treeview/blank-lines/blank-collapse]
 
@@ -1134,14 +2193,127 @@ treeView-beta
     C
 ```
 
+[fixture: treeview/decorations/box-redraw-decorations-guides]
+
+[fixture: treeview/decorations/box-redraw-decoration-directive-preserved]
+
+[fixture: treeview/decorations/box-redraw-decoration-end]
+
+[corpus fixture: treeview/box-decoration-only]
+
+[fixture: treeview/decorations/value-owner]
+
+[fixture: treeview/carried-indentation/box-redraw-comment-empty-gap]
+
+[fixture: treeview/carried-indentation/box-redraw-directive-gap]
+
+[corpus fixture: treeview/box-tail-decoration-carry]
+
+[corpus fixture: treeview/box-tail-branch-no-carry]
+
+[fixture: treeview/carried-indentation/box-redraw-blank-space-carry]
+
+[fixture: treeview/carried-indentation/box-redraw-carried-run-move-once]
+
+[fixture: treeview/decorations/box-redraw-decoration-directive-line]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-child]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-sibling]
+
+[corpus fixture: treeview/nested-box-directive-line]
+
+[corpus fixture: treeview/nested-box-selected-semicolon]
+
+[corpus fixture: treeview/nested-box-comment-line]
+
+[corpus fixture: treeview/nested-box-ls]
+
+[corpus fixture: treeview/nested-box-ps]
+
+[corpus fixture: treeview/nested-box-empty-block]
+
+[fixture: treeview/comments/box-redraw-move-comment-prefix-once]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-class-in-box]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-icon-in-box]
+
+[test: treeview/branch-prefixes/box-redraw-comment-region-in-prefix]
+
+[fixture: treeview/branch-prefixes/box-redraw-multiline-directive-in-prefix]
+
+[test: treeview/multiline-values/box-redraw-quote-value-ls-keep]
+
+[test: treeview/multiline-values/box-redraw-quote-value-ps-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-quote-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-block-keep]
+
+[test: treeview/decorations/box-redraw-decoration-comment-region]
+
+[corpus fixture: treeview/box-physical-directive-inline]
+
+[corpus fixture: treeview/box-physical-directive-line]
+
+[corpus fixture: treeview/box-physical-selected-semicolon]
+
+[corpus fixture: treeview/box-physical-comment-line]
+
+[corpus fixture: treeview/box-physical-empty-line]
+
+[corpus fixture: treeview/box-physical-ls]
+
+[corpus fixture: treeview/box-physical-ps]
+
+[corpus fixture: treeview/box-physical-empty-description]
+
+[fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-changes]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-and-protected-line]
+
+[fixture:
+treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-after-description]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-comment-between]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-repeat]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-and-gap]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-before-comment]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-before-directive-line]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-at-eof]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-with-protected-name]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ls]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ps]
+
+[fixture: treeview/tabs/box-redraw-joined-description-directive-tab]
+
 ### Trailing whitespace
 
-Decide by owner: retain authored bare-name, description, quoted-interior,
-comment and directive tails. Structural carried runs move once; common line
-values use shared outer trimming and excluded branch tails keep their box
-spelling. A blanket trim would erase authored values or change the next node’s
-parent. Significant tails are visible in the fixture files rather than code
-blocks.
+Decide by owner: keep bare-name, description, quoted-interior, comment and
+directive tails as authored values. Move structural carried runs once. Common
+line values use shared outer trimming; a branch-line tail already excluded from
+the value is removed rather than carried. Adding a branch that would newly trim
+an owned tail retains the body. This avoids confusing value text with structural
+padding; significant fixture tails are not shown in code blocks.
 
 [fixture: treeview/trailing-whitespace/trailing-bare-kept]
 
@@ -1154,6 +2326,56 @@ blocks.
 [corpus fixture: treeview/box-trim-unicode-tail]
 
 [corpus fixture: treeview/box-tail-branch-no-carry]
+
+[fixture: treeview/tabs/box-redraw-description-tail-as-value]
+
+[fixture: treeview/tabs/box-redraw-tab-prefix]
+
+[corpus fixture: treeview/box-tab-quoted]
+
+[test: treeview/tabs/box-redraw-use-tabs-fixed4]
+
+[test: treeview/tabs/box-redraw-tabwidth-zero-fixed4]
+
+[test: treeview/tabs/box-redraw-tabwidth-zero-tabs-fixed4]
+
+[fixture: treeview/tabs/box-redraw-branch-excluded-tail-trim]
+
+[fixture: treeview/multiline-values/box-redraw-value-quote-keep]
+
+[fixture: treeview/accessibility-lines/box-redraw-common-tab-prefix-preserved]
+
+[fixture: treeview/description-blocks/box-redraw-common-prefix-tab-kept]
+
+[fixture: treeview/carried-indentation/box-redraw-comment-empty-gap]
+
+[fixture: treeview/carried-indentation/box-redraw-directive-gap]
+
+[fixture: treeview/carried-indentation/box-redraw-blank-space-carry]
+
+[fixture: treeview/carried-indentation/box-redraw-carried-run-move-once]
+
+[fixture: treeview/comments/box-redraw-move-comment-prefix-once]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-class-in-box]
+
+[fixture: treeview/carried-indentation/box-redraw-carry-icon-in-box]
+
+[corpus fixture: treeview/box-tail-decoration-directive-line]
+
+[corpus fixture: treeview/box-tail-decoration-selected-semicolon]
+
+[corpus fixture: treeview/box-tail-decoration-comment-line]
+
+[corpus fixture: treeview/box-tail-decoration-empty-line]
+
+[corpus fixture: treeview/box-tail-decoration-ls]
+
+[corpus fixture: treeview/box-tail-decoration-ps]
+
+[corpus fixture: treeview/box-tail-decoration-empty-block]
+
+[corpus fixture: treeview/box-common-prefix]
 
 ### Long lines
 
@@ -1259,10 +2481,13 @@ frontmatter limitation.
 
 ### Source order
 
-Keep all authored occurrences and order: duplicate/empty names, overridden
-annotations, empty common assignments, unrendered titles, prefix spelling and
-decoration. The normalized Db omits some syntax and cannot reconstruct it.
-Sorting, deduplication or dropping empty resets can also change its reading.
+Keep every authored node, name, annotation, common assignment and shared trivia
+in source order, including duplicates, empty values and overwritten assignments.
+Redraw only structural box forms and relocate eligible prefixed annotations and
+their decoration as described above. Preserve arbitrary prefix text and
+value-owned box spellings; the normalized Db is not a source-text replacement.
+Structural weight, dash count, sibling marks and ordinary outer decoration are
+deliberately reselected to show the read forest.
 
 [fixture: treeview/source-order/source-duplicate]
 
@@ -1282,6 +2507,175 @@ treeView-beta
     X
   R
 ```
+
+[fixture: treeview/branch-prefixes/rounding-half]
+
+[fixture: treeview/branch-prefixes/box-redraw-redraw-ancestor-guide]
+
+[fixture: treeview/branch-prefixes/box-redraw-deep-jump]
+
+[fixture: treeview/branch-prefixes/box-redraw-file-parent]
+
+[fixture: treeview/branch-prefixes/box-redraw-multi-root-redraw]
+
+[fixture: treeview/branch-prefixes/box-redraw-flat-forest-branches]
+
+[fixture: treeview/branch-prefixes/box-redraw-heavy-to-light]
+
+[fixture: treeview/branch-prefixes/box-redraw-one-dash-to-two]
+
+[corpus fixture: treeview/box-first-branch-leading-text]
+
+[fixture: treeview/branch-prefixes/box-redraw-opening-quote-in-prefix]
+
+[corpus fixture: treeview/box-description-branch]
+
+[fixture: treeview/branch-prefixes/box-redraw-directive-in-prefix-keep]
+
+[fixture: treeview/branch-prefixes/box-redraw-selected-semicolon-keep]
+
+[fixture: treeview/branch-prefixes/box-redraw-non-init-directive-keep]
+
+[test: treeview/branch-prefixes/box-redraw-comment-region-in-prefix]
+
+[fixture: treeview/branch-prefixes/box-redraw-multiline-directive-in-prefix]
+
+[fixture: treeview/branch-prefixes/box-redraw-mixed-root-redraw-all-branches]
+
+[fixture: treeview/branch-prefixes/box-redraw-explicit-multiple-roots]
+
+[fixture: treeview/branch-prefixes/box-redraw-branch-no-dashes]
+
+[fixture: treeview/branch-prefixes/box-redraw-unselected-semicolon-content]
+
+[test: treeview/multiline-values/box-redraw-quote-value-ls-keep]
+
+[test: treeview/multiline-values/box-redraw-quote-value-ps-keep]
+
+[fixture: treeview/annotation-lines/box-redraw-repeat-prefixed-annotations-kept]
+
+[fixture: treeview/decorations/box-redraw-decorations-guides]
+
+[fixture: treeview/decorations/box-redraw-decoration-directive-preserved]
+
+[fixture: treeview/decorations/box-redraw-decoration-end]
+
+[corpus fixture: treeview/box-decoration-only]
+
+[fixture: treeview/multiline-values/box-redraw-value-quote-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-block-keep]
+
+[fixture: treeview/multiline-values/box-redraw-value-prefix-width-preserved]
+
+[fixture: treeview/accessibility-lines/box-redraw-common-tab-prefix-preserved]
+
+[fixture:
+treeview/annotation-lines/box-redraw-sole-common-mode-selector-preserved]
+
+[fixture: treeview/decorations/value-owner]
+
+[corpus fixture: treeview/box-annotation-prefix]
+
+[corpus fixture: treeview/box-common-prefix]
+
+[corpus fixture: treeview/box-prefix-common-block-two-prefixes]
+
+[corpus fixture: treeview/box-comment-indent-carry]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-class]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-icon]
+
+[fixture: treeview/annotation-lines/box-redraw-join-prefixed-description]
+
+[fixture: treeview/annotation-lines/box-redraw-join-overwritten-in-order]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-after-description]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-comment-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-inline-directive-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-directive-line-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-selected-semicolon-between]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-child]
+
+[fixture:
+treeview/annotation-lines/box-redraw-annotation-decoration-before-sibling]
+
+[fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-changes]
+
+[fixture: treeview/multiline-values/box-redraw-value-width-and-protected-line]
+
+[fixture: treeview/multiline-values/box-redraw-value-entity-width]
+
+[fixture:
+treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
+
+[fixture: treeview/semicolons/box-redraw-protected-line-and-enclosed-prefix]
+
+[fixture:
+treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+
+[fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
+
+[corpus fixture: treeview/box-physical-directive-inline]
+
+[corpus fixture: treeview/box-physical-directive-line]
+
+[corpus fixture: treeview/box-physical-selected-semicolon]
+
+[corpus fixture: treeview/box-physical-comment-line]
+
+[corpus fixture: treeview/box-physical-empty-line]
+
+[corpus fixture: treeview/box-physical-ls]
+
+[corpus fixture: treeview/box-physical-ps]
+
+[corpus fixture: treeview/box-physical-empty-description]
+
+[fixture: treeview/tabs/box-redraw-tab-prefix]
+
+[test: treeview/tabs/box-redraw-use-tabs-fixed4]
+
+[test: treeview/tabs/box-redraw-tabwidth-zero-fixed4]
+
+[test: treeview/tabs/box-redraw-tabwidth-zero-tabs-fixed4]
+
+[fixture: treeview/branch-prefixes/box-redraw-siblings-after-subtree]
+
+[test: treeview/tabs/box-redraw-combined-zero-tabs]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-repeat]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-and-gap]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-before-comment]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-before-directive-line]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-at-eof]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-with-protected-name]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ls]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ps]
+
+[fixture: treeview/tabs/box-redraw-joined-description-value-tab-kept]
+
+[fixture: treeview/tabs/box-redraw-joined-description-directive-tab]
 
 ### Final newline
 

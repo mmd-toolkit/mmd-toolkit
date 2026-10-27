@@ -22,7 +22,8 @@ gantt
   b : 2d
 ```
 
-[fixture: gantt/lex-percent-brace-line-after-task]
+The example puts a `%%{ }%%` comment between tasks. [fixture:
+gantt/lex-percent-brace-line-after-task]
 
 This document is about such a `%%{` where mermaid.js reaches it directly, as
 [Comments](../diagrams/gantt.md#comments) defines it: right after a unit on its
@@ -96,7 +97,8 @@ Each example is a whole Gantt chart.
 | 6       | rejected   | a chart with no statement        |
 | 7       | the same   | a chart with the title T         |
 
-[fixture: gantt/div-percent-brace-glued-after-header] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+gantt/div-percent-brace-glued-after-header] [fixture:
 gantt/div-percent-brace-glued-after-keyword] [fixture:
 gantt/div-percent-brace-glued-after-string] [fixture:
 gantt/div-percent-brace-after-two-spaces] [fixture:

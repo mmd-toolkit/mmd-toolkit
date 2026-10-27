@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treemap.md Comments and authored boundaries: Treemap comments continue through PS to LF, so T is comment text and A remains a child of S. Mermaid accepts; the Db is recorded for column/card or parent/child comparison."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "S",
+        "children": [
+          {
+            "name": "A",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": []
+  }
+}

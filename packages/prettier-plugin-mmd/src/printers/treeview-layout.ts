@@ -16,9 +16,19 @@ import {
   keptAsWritten,
   protectSemicolonPrefixes,
 } from "./layout.ts"
+import type { TreeviewBoxPlan } from "./treeview-box.ts"
+import { treeviewContentStart } from "./treeview-box.ts"
+import {
+  treeviewBoxCharacters,
+  treeviewBranchCharacters,
+} from "./treeview-characters.ts"
 import { lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween, isWhitespace } from "./source.ts"
+import {
+  findStructuralToken,
+  findTriviaBetween,
+  isWhitespace,
+} from "./source.ts"
 
 /** Values and outer box forms each print once at their authored owner. */
 export const treeviewValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -36,6 +46,8 @@ export interface TreeviewLine {
   readonly item: TreeviewBodyItem
   readonly depth: number
   readonly leading: LeadingDirectives | null
+  readonly ancestors: readonly TreeviewNode[]
+  readonly hasNextSibling: boolean
 }
 
 /** Common preamble items share their column and exterior-gap policy. */
@@ -74,13 +86,59 @@ function isMetadataLine(text: string): boolean {
   return false
 }
 
+/** Logical LF lines and source positions needed by the direct box rules. */
+export interface TreeviewPhysicalLine {
+  readonly range: Range
+  readonly text: string
+  /** Original offsets of the logical line's UTF-16 units, after removals. */
+  readonly offsets: readonly number[]
+  readonly candidate: boolean
+  readonly prefix: Range | null
+  readonly column: number
+  readonly decoration: boolean
+}
+
+/** ASCII entity words have the common placeholder's UTF-16 width. */
+function branchColumn(text: string, branch: number): number {
+  let column = 0
+  for (let index = 0; index < branch; index++) {
+    if (text[index] === "#") {
+      let end = index + 1
+      let numeric = true
+      while (end < branch) {
+        const character = text[end]
+        if (!(
+          (character >= "0" && character <= "9") ||
+          (character >= "a" && character <= "z") ||
+          (character >= "A" && character <= "Z") ||
+          character === "_"
+        ))
+          break
+        if (character < "0" || character > "9") numeric = false
+        end++
+      }
+      if (end > index + 1 && text[end] === ";") {
+        // common.md, Entities: numeric placeholders add five units to the
+        // word, named placeholders four. They cannot introduce a branch.
+        column += end - index - 1 + (numeric ? 5 : 4)
+        index = end
+        continue
+      }
+    }
+    column += text[index] === "\t" ? 4 : 1
+  }
+  return column
+}
+
 /**
- * Implements diagrams/treeview.md, Scope and mode, once: inspect logical LF
- * lines after the standalone header, including quoted and block interiors.
- * Common removals do not contribute characters or boundaries. Prefix presence
- * alone cannot decide the mode (docs/treeview.md, Modes).
+ * Implements diagrams/treeview.md, Scope and mode and Columns and prefix
+ * indentation, once. Inspect logical LF lines including value interiors;
+ * common removals contribute neither characters nor line boundaries.
  */
-export function treeviewBoxMode(source: Source, headerEnd: number): boolean {
+export function treeviewPhysicalLines(
+  source: Source,
+  headerEnd: number,
+): TreeviewPhysicalLine[] {
   const removed: Range[] = [
     ...source.root.directives.map((item): Range => {
       let end = item.range[1]
@@ -90,26 +148,12 @@ export function treeviewBoxMode(source: Source, headerEnd: number): boolean {
     }),
     ...source.joiningRegions.map((region): Range => [region.start, region.end]),
   ].sort((a, b) => a[0] - b[0])
+  const lines: TreeviewPhysicalLine[] = []
   let rangeIndex = 0
-  let line = ""
+  let text = ""
+  let offsets: number[] = []
   let afterHeader = false
-
-  /** Inspect the complete logical line, with the specified exclusions. */
-  function selectsMode(): boolean {
-    const text = line.trimStart()
-    if (
-      text.trim() === "" ||
-      text.startsWith("%%") ||
-      isMetadataLine(text) ||
-      [...text].every(
-        (character) =>
-          isWhitespace(character) || character === "│" || character === "┃",
-      )
-    )
-      return false
-    return [...text].some((character) => "─━│┃└┗├┣".includes(character))
-  }
-
+  let start = headerEnd
   for (let position = headerEnd; position <= source.text.length; position++) {
     while (removed[rangeIndex]?.[1] <= position) rangeIndex++
     const range = removed[rangeIndex]
@@ -119,19 +163,87 @@ export function treeviewBoxMode(source: Source, headerEnd: number): boolean {
     }
     if (source.ignoredSemicolons.has(position)) continue
     const character = source.text[position]
-    if (character === "\n" || character === undefined) {
-      if (afterHeader && selectsMode()) return true
-      afterHeader = true
-      line = ""
-    } else line += character
+    if (character !== "\n" && character !== undefined) {
+      text += character
+      offsets.push(position)
+      continue
+    }
+    if (afterHeader) {
+      const trimmed = text.trimStart()
+      const vertical = [...text].every(
+        (part) => isWhitespace(part) || part === "│" || part === "┃",
+      )
+      const candidate =
+        trimmed.trim() !== "" &&
+        !trimmed.startsWith("%%") &&
+        !isMetadataLine(trimmed) &&
+        !vertical
+      const branch = candidate
+        ? [...text].find((part) => treeviewBranchCharacters.includes(part))
+        : undefined
+      const index = branch === undefined ? -1 : text.indexOf(branch)
+      let end = index + 1
+      while (text[end] === "─" || text[end] === "━") end++
+      let first = 0
+      while (first < text.length && isWhitespace(text[first])) first++
+      lines.push({
+        range: [start, position],
+        text,
+        offsets,
+        candidate,
+        column: index === -1 ? -1 : branchColumn(text, index),
+        prefix: index === -1 ? null : [offsets[first], offsets[end - 1] + 1],
+        decoration:
+          trimmed.trim() !== "" &&
+          !isMetadataLine(trimmed) &&
+          !trimmed.startsWith("%%") &&
+          index === -1 &&
+          [...text].every(
+            (part) =>
+              isWhitespace(part) || treeviewBoxCharacters.includes(part),
+          ),
+      })
+    }
+    afterHeader = true
+    start = position + 1
+    text = ""
+    offsets = []
   }
-  return false
+  return lines
+}
+
+/** Prefix presence alone cannot select box mode (docs/treeview.md, Modes). */
+export function treeviewBoxMode(source: Source, headerEnd: number): boolean {
+  return treeviewPhysicalLines(source, headerEnd).some(
+    (line) =>
+      line.candidate &&
+      [...line.text].some((character) =>
+        treeviewBoxCharacters.includes(character),
+      ),
+  )
+}
+
+/** Own syntax in source order, always including the required name. */
+function treeviewNodeParts(node: TreeviewNode): readonly Node[] {
+  return [
+    ...(node.prefix === null ? [] : [node.prefix]),
+    ...node.textBeforeName,
+    node.name,
+    ...node.annotations,
+  ]
+}
+
+/** Only this item's syntax is printed here; gaps and descendants have lines. */
+export function treeviewStatementRange(item: TreeviewBodyItem): Range {
+  if (item.type !== "TreeviewNode") return item.range
+  const parts = treeviewNodeParts(item)
+  return [parts[0].range[0], parts.at(-1)!.range[1]]
 }
 
 /**
- * All nodes enter the open stack, including files. Use assigned AST indents,
- * not physical leading whitespace, so carried runs move only once
- * (diagrams/treeview.md, Indentation and parents; docs/treeview.md, Indentation).
+ * Read parents and sibling order from children, including file parents.
+ * Named gaps print at their source position, outside the node's own syntax
+ * (ast/treeview.md, Gap ownership; docs/treeview.md, Indentation).
  */
 export function treeviewLines(
   source: Source,
@@ -139,16 +251,34 @@ export function treeviewLines(
   headerEnd: number,
   boxMode: boolean,
 ): TreeviewLine[] {
-  const open: TreeviewNode[] = []
+  const lines: TreeviewLine[] = []
   let previousEnd = headerEnd
-  return diagram.body.map((item) => {
-    let depth = 1
-    if (item.type === "TreeviewNode") {
-      while (open.length > 0 && open.at(-1)!.indent >= item.indent) open.pop()
-      depth += open.length
-      open.push(item)
+  visit(diagram.body, [])
+  return lines
+
+  /** Visits the authored forest without deriving hierarchy from indentation. */
+  function visit(
+    items: readonly TreeviewBodyItem[],
+    ancestors: readonly TreeviewNode[],
+  ): void {
+    const nodes = items.filter((item) => item.type === "TreeviewNode")
+    for (const item of items) {
+      if (item.type === "TreeviewNode") {
+        for (const decoration of item.textBefore) addLine(decoration, [], false)
+        addLine(item, ancestors, item !== nodes.at(-1))
+        visit(item.children, [...ancestors, item])
+      } else addLine(item, [], false)
     }
-    const start = item.range[0]
+  }
+
+  /** Retains the existing directive and carried-gap placement for one line. */
+  function addLine(
+    item: TreeviewBodyItem,
+    ancestors: readonly TreeviewNode[],
+    hasNextSibling: boolean,
+  ): void {
+    const range = treeviewStatementRange(item)
+    const start = range[0]
     let from = start
     for (;;) {
       while (
@@ -164,24 +294,26 @@ export function treeviewLines(
       from = directive.range[0]
     }
     const leading =
-      !boxMode &&
+      (!boxMode || (item.type === "TreeviewNode" && item.prefix === null)) &&
       from >= previousEnd &&
       findTriviaBetween(source, from, start).length > 0
         ? findLeadingDirectives(source, from, start)
         : null
     const precedingEnd = previousEnd
-    previousEnd = item.range[1]
-    return {
-      range: [leading?.directives[0]?.[0] ?? start, item.range[1]],
+    previousEnd = range[1]
+    lines.push({
+      range: [leading?.directives[0]?.[0] ?? start, range[1]],
       item,
-      depth,
+      depth: ancestors.length + 1,
+      ancestors,
+      hasNextSibling,
       leading:
         leading !== null &&
         lineStartOf(source, from) === lineStartOf(source, precedingEnd - 1)
           ? { ...leading, gaps: leading.gaps.map((gap) => Math.min(1, gap)) }
           : leading,
-    }
-  })
+    })
+  }
 }
 
 /**
@@ -193,11 +325,9 @@ export function treeviewLines(
 function keepsBlockGeometry(item: TreeviewBodyItem): boolean {
   return (
     item.type === "TreeviewAccDescrBlockStatement" &&
-    (item.prefix !== null ||
-      item.textBeforeOpen.length > 0 ||
-      [...(item.value?.value ?? "")].some((character) =>
-        "─━│┃└┗├┣".includes(character),
-      ))
+    [...(item.value?.value ?? "")].some((character) =>
+      treeviewBoxCharacters.includes(character),
+    )
   )
 }
 
@@ -207,14 +337,14 @@ export function layoutTreeviewStatement(
   item: TreeviewBodyItem,
   column: string,
   boxMode: boolean,
+  drawing?: Extract<TreeviewBoxPlan, { readonly kind: "drawn" }>,
 ): AtomLayout {
-  const [start, end] = item.range
+  const [start, end] = treeviewStatementRange(item)
   let layout: AtomLayout
   switch (item.type) {
     case "TreeviewTitleStatement":
     case "TreeviewAccTitleStatement":
     case "TreeviewAccDescrStatement": {
-      // Prefixes are value atoms; the common path starts at its own keyword.
       const common = {
         ...item,
         range: [item.prefix?.range[1] ?? start, end] as Range,
@@ -224,20 +354,61 @@ export function layoutTreeviewStatement(
         common,
         item.type === "TreeviewTitleStatement",
       )
-      if (item.prefix !== null)
-        layout = {
-          ...layout,
-          atoms: [{ start, end: item.prefix.range[1] }, ...layout.atoms],
-          writtenGapsBefore: new Set([layout.atoms[0].start]),
-        }
       break
     }
-    case "TreeviewAccDescrBlockStatement":
-      layout =
-        boxMode && keepsBlockGeometry(item)
-          ? keptAsWritten(start, end)
-          : layoutCommonDescription(source, item, treeviewValueNodeTypes)
+    case "TreeviewAccDescrBlockStatement": {
+      const content =
+        drawing === undefined
+          ? item
+          : {
+              ...item,
+              range: [treeviewContentStart(source, item), end] as Range,
+            }
+      if (boxMode && keepsBlockGeometry(item)) {
+        // Value-owned box lines keep the complete brace interior; only the
+        // outer structure before the opener is replaced (Description blocks).
+        const keyword = findStructuralToken(source, content.range[0])!
+        const brace = findStructuralToken(
+          source,
+          item.textBeforeOpen.at(-1)?.range[1] ?? keyword.range[1],
+        )!
+        layout = {
+          atoms: [
+            { start: keyword.range[0], end: keyword.range[1] },
+            { start: brace.range[0], end },
+          ],
+          rules: new Map(),
+          outdented: new Set(),
+          lineBreaks: "kept",
+          joinedBefore:
+            findTriviaBetween(source, keyword.range[1], brace.range[0])
+              .length === 0
+              ? new Set([brace.range[0]])
+              : new Set(),
+        }
+      } else
+        layout = layoutCommonDescription(
+          source,
+          content,
+          treeviewValueNodeTypes,
+        )
+      const gap = drawing?.keptOpenerGaps.get(item)
+      if (gap !== undefined) {
+        // A sole mode selector belongs to this gap; keep only that gap while
+        // the shared description layout formats the brace interior normally.
+        layout = {
+          ...layout,
+          atoms: layout.atoms.filter(
+            (atom) => atom.end <= gap[0] || atom.start >= gap[1],
+          ),
+          joinedBefore: new Set(
+            [...(layout.joinedBefore ?? [])].filter((at) => at !== gap[1]),
+          ),
+          writtenGapsBefore: new Set([gap[1]]),
+        }
+      }
       break
+    }
     case "TreeviewIgnoredText":
       layout = keptAsWritten(start, end)
       break
@@ -246,49 +417,53 @@ export function layoutTreeviewStatement(
         source,
         start,
         end,
-        collectValueNodes(item, treeviewValueNodeTypes),
+        treeviewNodeParts(item).flatMap((part) =>
+          treeviewValueNodeTypes.has(part.type)
+            ? [part]
+            : collectValueNodes(part, treeviewValueNodeTypes),
+        ),
         [],
       )
       const rules = new Map<number, GapRule>()
       const annotationStarts = new Set(
         item.annotations.map((annotation) => annotation.range[0]),
       )
-      const writtenGapsBefore = new Set<number>()
-      for (const [index, atom] of atoms.entries()) {
-        const previous = atoms[index - 1]
-        if (previous === undefined) continue
+      for (const atom of atoms.slice(1)) {
         rules.set(
           atom.start,
           annotationStarts.has(atom.start) ? "space" : "none",
         )
-        // In box mode the original physical boundaries, prefixes, separator
-        // padding and decorations determine the reading. Ordinary same-line
-        // annotation components still use the decided compact layout.
-        if (
-          boxMode &&
-          (source.text.slice(previous.end, atom.start).includes("\n") ||
-            item.prefix?.range[0] === previous.start ||
-            item.textBeforeName.some(
-              (form) => form.range[0] === previous.start,
-            ) ||
-            item.annotations.some(
-              (annotation) =>
-                annotation.prefix?.range[0] === previous.start ||
-                annotation.textBefore.some(
-                  (form) =>
-                    form.range[0] === previous.start ||
-                    form.range[0] === atom.start,
-                ),
-            ))
-        )
-          writtenGapsBefore.add(atom.start)
       }
+      // An annotation on its own physical line still needs ASCII separation
+      // after Mermaid joins a comment region or removes a directive. Logical
+      // lineStartOf cannot detect that boundary (diagrams/treeview.md,
+      // Annotations; docs/treeview.md, Annotation lines).
+      const laterAnnotations = new Set(
+        item.annotations
+          .filter((annotation) => {
+            const physicalStart =
+              source.text.lastIndexOf("\n", annotation.range[0] - 1) + 1
+            return (
+              physicalStart > item.name.range[0] &&
+              !drawing?.joinedAnnotations.has(annotation.range[0])
+            )
+          })
+          .map((annotation) => annotation.range[0]),
+      )
+      const annotationColumn =
+        drawing === undefined
+          ? column
+          : " ".repeat(Math.max(1, drawing.heads.get(item)!.length))
       layout = {
-        atoms: atoms.map((atom) => ({ ...atom, writtenIndentation: column })),
+        atoms: atoms.map((atom) => ({
+          ...atom,
+          writtenIndentation: laterAnnotations.has(atom.start)
+            ? annotationColumn
+            : column,
+        })),
         rules,
         outdented: new Set(),
         lineBreaks: "kept",
-        writtenGapsBefore,
       }
       break
     }
@@ -297,13 +472,27 @@ export function layoutTreeviewStatement(
         `prettier-plugin-mmd: unknown treeview item ${JSON.stringify(item satisfies never)}`,
       )
   }
+  const omitted = drawing?.omitted ?? []
+  const atoms = layout.atoms.filter(
+    (atom) =>
+      !omitted.some(([from, to]) => from <= atom.start && atom.end <= to),
+  )
+  const joinedBefore = new Set([
+    ...(layout.joinedBefore ?? []),
+    ...(drawing?.joinedAnnotations ?? []),
+  ])
+  const rules = new Map(layout.rules)
+  for (const at of drawing?.joinedAnnotations ?? []) rules.set(at, "space")
   return {
     ...layout,
+    rules,
+    joinedBefore,
+    omittedRanges: omitted,
     atoms: protectSemicolonPrefixes(
       source,
-      start,
+      drawing === undefined ? start : treeviewContentStart(source, item),
       end,
-      layout.atoms.map((atom) =>
+      atoms.map((atom) =>
         layout.outdented.has(atom.start)
           ? { ...atom, writtenIndentation: column }
           : atom,

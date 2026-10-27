@@ -7,15 +7,15 @@ mermaid.js reads from the board; where a change would alter it, the text is kept
 as written, and the rule says where. Where a rule is the same as in a mindmap,
 it says so, and the reason is in the mindmap rules.
 
-A kanban board is a flat list of lines (see the
+A kanban board has columns with cards as their children (see the
 [kanban tree](../../spec/docs/ast/kanban.md)). The Db has, for each node,
 whether it is a section and which section it belongs to, and it has no
 indentation. The node on the first line sets the indentation of the sections: a
 node written at that indentation is a section, and every other node is an item
-of the section before it, however deep it is written. A deeper line is no child
-of the line before it. So the printer keeps every line in its place in the list
-and keeps its role, and it chooses the indentation (see
-[Indentation](#indentation)).
+of the section before it, however deep it is written. A deeper item is no child
+of the item before it. The printer reads columns from Diagram.body and cards
+from each column’s children, keeps every line in source order and preserves its
+role, and chooses the indentation (see [Indentation](#indentation)).
 
 Some words are used in the rules below:
 
@@ -198,17 +198,18 @@ kanban
 
 ### Nodes one per line
 
-The nodes of a board are a flat list: the node on the first line sets the
-indentation of the sections, a node at that indentation starts a section, and
-every other node is an item of the section before it, however deep it is
-written. An item written deeper than the item before it (`A`, then a deeper `B`)
-is not a child of it. So the printer prints the nodes in the order written, one
-per line, and it does not nest, merge, sort, or join them: two sections with the
+Read sections from Diagram.body and their items from children. These roles
+reflect the input: the node on the first line sets the indentation of the
+sections, a node at that indentation starts a section, and every other node is
+an item of the section before it, however deep it is written. An item written
+deeper than the item before it (`A`, then a deeper `B`) is not a child of it. So
+the printer prints the nodes in the order written, one per line, and it does not
+nest items under other items, merge, sort, or join nodes: two sections with the
 same id stay two sections, items at any depth are printed at the one depth of an
 item, and a last line that is shallower than the first section is printed as an
-item (see [Indentation](#indentation)). Nesting, merging, sorting, or joining
-would change the board that mermaid.js builds. [fixture:
-nodes-one-per-line/flat-order] [fixture:
+item (see [Indentation](#indentation)). Nesting items under other items,
+merging, sorting, or joining would change the board that mermaid.js builds.
+[fixture: nodes-one-per-line/flat-order] [fixture:
 nodes-one-per-line/deeper-to-regular-items] [fixture:
 nodes-one-per-line/repeated-ids] [fixture: nodes-one-per-line/shallower-last]
 

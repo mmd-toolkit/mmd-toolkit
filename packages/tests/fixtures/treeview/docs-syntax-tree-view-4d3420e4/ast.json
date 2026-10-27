@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -30,7 +31,7 @@
         "annotations": [],
         "range": [
           66,
-          70
+          87
         ],
         "loc": {
           "start": {
@@ -38,53 +39,58 @@
             "column": 4
           },
           "end": {
-            "line": 7,
-            "column": 8
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 8,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": "index.js",
-          "range": [
-            79,
-            87
-          ],
-          "loc": {
-            "start": {
-              "line": 8,
-              "column": 8
-            },
-            "end": {
-              "line": 8,
-              "column": 16
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          79,
-          87
-        ],
-        "loc": {
-          "start": {
-            "line": 8,
-            "column": 8
-          },
-          "end": {
             "line": 8,
             "column": 16
           }
-        }
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 8,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "index.js",
+              "range": [
+                79,
+                87
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 8
+                },
+                "end": {
+                  "line": 8,
+                  "column": 16
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              79,
+              87
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 8
+              },
+              "end": {
+                "line": 8,
+                "column": 16
+              }
+            },
+            "children": []
+          }
+        ]
       },
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -119,7 +125,8 @@
             "line": 9,
             "column": 16
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

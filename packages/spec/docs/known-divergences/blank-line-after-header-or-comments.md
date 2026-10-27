@@ -202,7 +202,8 @@ described in words.
 | 4       | rejected   | the root with the children a and b |
 | 5       | rejected   | the root                           |
 
-[fixture: mindmap/db-blank-line-after-header] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+mindmap/db-blank-line-after-header] [fixture:
 mindmap/div-header-two-comments-then-blank] [fixture:
 mindmap/div-comment-then-blank-between-nodes] [fixture:
 mindmap/div-shape-comment-then-blank] [fixture:

@@ -97,7 +97,8 @@ Each example is a whole diagram.
 | 5       | the vertex A with the class c                               | rejected           |
 | 6       | the vertex A with the label `style:#x`, two spaces, and `y` | the same           |
 
-[fixture: flowchart/div-ignored-semicolon-in-id] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+flowchart/div-ignored-semicolon-in-id] [fixture:
 sequence/div-ignored-semicolon-in-autonumber-start] [fixture:
 flowchart/div-ignored-semicolon-in-keyword] [fixture:
 flowchart/div-ignored-semicolon-in-arrow] [fixture:

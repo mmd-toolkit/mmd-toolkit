@@ -17,7 +17,8 @@ flowchart LR
   click A href "u" "tip"
 ```
 
-[fixture: flowchart/gram-click-href-tooltip]
+The example gives A the link `u` and tooltip `tip`. [fixture:
+flowchart/gram-click-href-tooltip]
 
 The word `click` where a unit starts, with the whitespace after it, is a `click`
 unit (see [Click and callbacks](../diagrams/flowchart.md#click-and-callbacks)).
@@ -70,7 +71,8 @@ Each example is a whole flowchart.
 | 3       | the link `u` and the tooltip `tip` of A                        | rejected           |
 | 4       | a click on the id `---`, and no vertices                       | the same           |
 
-[fixture: flowchart/db-subgraph-name-click-word-indented] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+flowchart/db-subgraph-name-click-word-indented] [fixture:
 flowchart/gram-click-bare-after-vertex] [fixture:
 flowchart/gram-click-mid-statement-tooltip] [fixture:
 flowchart/lex-click-id-arrow-callback]

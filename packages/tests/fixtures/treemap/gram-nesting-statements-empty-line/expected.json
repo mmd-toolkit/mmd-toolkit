@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treemap.md Gap ownership and node ranges: statementsBefore with an empty line before the name; preserve the lexical reading and assign the gap to the next hierarchy node."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "B",
+            "value": 1
+          }
+        ]
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "xx",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

@@ -889,6 +889,7 @@ trivia 以外の位置はすべて字句規則で読める必要があります�
 | style-declaration / property name / value                             | UsecaseStyleDeclaration / UsecaseIdentifier / UsecaseLiteral                        |
 | acc-title-statement / acc-descr-statement / acc-descr-block-statement | UsecaseAccTitleStatement / UsecaseAccDescrStatement / UsecaseAccDescrBlockStatement |
 
+表の文と値の形を次の fixture が示します。
 [fixture: usecase/gram-actor-list]
 [fixture: usecase/gram-actor-relation]
 [fixture: usecase/db-labeled-arrows]
@@ -908,7 +909,6 @@ direction とアクセシビリティの文は繰り返せ、`TD` は書かれ�
 [fixture: usecase/db-accdescr-empty]
 空の引用ラベルも実在する節点で、
 空のアクセシビリティ値と空白だけの値は区別します。
-
 [fixture: usecase/gram-empty-actor-label]
 [fixture: usecase/gram-empty-single-string-node]
 [fixture: usecase/gram-a11y-line-raw-padding]

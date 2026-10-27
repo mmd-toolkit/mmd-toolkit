@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treemap.md Gap ownership: global class before child; retain the authored occurrences and nesting without changing acceptance or the Db."
+  },
+  "accepted": true,
+  "diagramType": "treemap",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "A",
+        "children": [
+          {
+            "name": "B",
+            "value": 1,
+            "classSelector": "xx"
+          }
+        ]
+      },
+      {
+        "name": "C",
+        "value": 2,
+        "classSelector": "xx"
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "xx",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

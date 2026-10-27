@@ -21,10 +21,12 @@ export const NODE_FIELDS: Readonly<
   TreeviewDiagram: { body: { shape: "nodeList" } },
   TreeviewNode: {
     indent: { shape: "value", valueType: "number" },
+    textBefore: { shape: "nodeList" },
     prefix: { shape: "nodeOrNull" },
     textBeforeName: { shape: "nodeList" },
     name: { shape: "node" },
     annotations: { shape: "nodeList" },
+    children: { shape: "nodeList" },
   },
   TreeviewClassAnnotation: {
     textBefore: { shape: "nodeList" },
@@ -563,11 +565,14 @@ export const NODE_FIELDS: Readonly<
   TreemapDiagram: { body: { shape: "nodeList" } },
   TreemapSection: {
     indent: { shape: "value", valueType: "number" },
+    statementsBefore: { shape: "nodeList" },
     name: { shape: "node" },
     classSelector: { shape: "nodeOrNull" },
+    children: { shape: "nodeList" },
   },
   TreemapLeaf: {
     indent: { shape: "value", valueType: "number" },
+    statementsBefore: { shape: "nodeList" },
     name: { shape: "node" },
     value: { shape: "node" },
     classSelector: { shape: "nodeOrNull" },
@@ -1701,6 +1706,7 @@ export const NODE_FIELDS: Readonly<
     shape: { shape: "nodeOrNull" },
     data: { shape: "nodeList" },
     decorations: { shape: "nodeList" },
+    children: { shape: "nodeList" },
   },
   KanbanShape: {
     opener: { shape: "value", valueType: "string" },

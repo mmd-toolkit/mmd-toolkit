@@ -28,53 +28,56 @@
         "shape": null,
         "data": [],
         "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 2,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "A",
+              "range": [
+                15,
+                16
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 2
+                },
+                "end": {
+                  "line": 3,
+                  "column": 3
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              15,
+              16
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 3
+              }
+            }
+          }
+        ],
         "range": [
           11,
-          12
+          16
         ],
         "loc": {
           "start": {
             "line": 2,
             "column": 4
-          },
-          "end": {
-            "line": 2,
-            "column": 5
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 2,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "A",
-          "range": [
-            15,
-            16
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 2
-            },
-            "end": {
-              "line": 3,
-              "column": 3
-            }
-          }
-        },
-        "shape": null,
-        "data": [],
-        "decorations": [],
-        "range": [
-          15,
-          16
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 2
           },
           "end": {
             "line": 3,

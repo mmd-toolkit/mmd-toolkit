@@ -428,6 +428,37 @@ Code:
 ---
 
 
+Test: treeview-no-duplicate-annotation >> invalid >>> invalid/treeview/nested-box-gap-grandchild-icon
+Filename: tests/fixtures/rules/treeview-no-duplicate-annotation/invalid/treeview/nested-box-gap-grandchild-icon-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | root/
+  3 | ├── directory/
+  4 | │
+  5 | │   └── file icon(file) icon(folder)
+    |                         ^~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js keeps only this icon setting, replacing the one given on line 5 for this node.
+---
+
+
+Test: treeview-no-duplicate-annotation >> invalid >>> invalid/treeview/nested-grandchild-class
+Filename: tests/fixtures/rules/treeview-no-duplicate-annotation/invalid/treeview/nested-grandchild-class-input.mmd
+
+Code:
+  1 | treeView-beta
+  2 | root/
+  3 |   directory/
+  4 |     file :::first :::second
+    |                   ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the class given on line 4 for this node with this class.
+---
+
+
 Test: treeview-no-duplicate-annotation >> invalid >>> invalid/treeview/node-desc-box-forward
 Filename: tests/fixtures/rules/treeview-no-duplicate-annotation/invalid/treeview/node-desc-box-forward-input.mmd
 

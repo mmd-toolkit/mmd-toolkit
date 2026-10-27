@@ -71,3 +71,8 @@ kanban の字句解析器は、単位の始まりの `%%` から始まる図の�
 [fixture: kanban/div-directive-data-marker]
 [fixture: kanban/div-directive-opener] [fixture: kanban/div-semicolon-closer]
 [fixture: kanban/lex-after-shape-comment]
+
+カードを列の children に入れても、トークンや字下げの文字は追加しません。
+カードの装飾トークンは、後の深いカードが始まる前のカードに属します。
+[fixture: kanban/lex-indent-directive] [fixture: kanban/db-indent-deeper]
+[fixture: kanban/gram-nesting-item-decoration-before-deeper-item]

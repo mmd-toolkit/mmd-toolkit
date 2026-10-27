@@ -9,7 +9,7 @@
 次の手順を実装します。
 `tests/db-from-tree-kanban.test.ts` は各行を手作りし、
 引用した fixture の記録済み Db と、JSON 往復後も含めて比較します。
-kanban のパーサーの記録済みの木はまだありません。
+コーパスのテストでも、kanban と common の検出例の記録済みの木を確かめます。
 
 ## 木から要約を組み立てる
 
@@ -43,10 +43,12 @@ kanban のパーサーの記録済みの木はまだありません。
    [fixture: kanban/db-name-space-before-shape]
    [fixture: kanban/db-name-trailing-space]
    [fixture: kanban/config-security-level-other]
-3. **所属。** 平坦な body をソース順に読み、字下げは保ちません。
-   最初の行が列の字下げを定め、同じ字下げは `isGroup: true` の列を始めます。
-   それ以外は `isGroup: false` の項目で、
-   直前の列の id を `parentId` とします。最後の浅い行も項目です。
+3. **所属。** Diagram.body は `isGroup: true` の列、
+   各列の children は `isGroup: false` のカードとして読む。
+   所有する列の変換した id を `parentId` にし、列をカードより先に原順で訪れる。
+   indent を読んだり所属を再計算したりしない。
+   parser が2段の入れ子を作り、checkTree が独立に確かめる。
+   最後の浅いカードも同じである。
    [fixture: kanban/db-sections-items] [fixture: kanban/db-indent-unindented]
    [fixture: kanban/db-indent-tabs] [fixture: kanban/db-indent-deeper]
    [fixture: kanban/db-indent-shallower-last]

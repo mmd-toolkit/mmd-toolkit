@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest"
 import type { DbTreeRoot, Fixture } from "@mmd-toolkit/tests"
 import { loadFixtures, dbFromTree, embeddedValuesOf } from "@mmd-toolkit/tests"
-import type { Node, TreemapDiagram, Root } from "../src/index.ts"
+import type {
+  Node,
+  TreemapBodyItem,
+  TreemapDiagram,
+  Root,
+} from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
 import { treemapLexingOf } from "./helpers/reference-inputs.ts"
@@ -114,6 +119,29 @@ describe("treemap fixtures", async () => {
     return root.body
   }
 
+  /** Every authored statement, with nested gaps and hierarchy in visitor order. */
+  function statementsOf(name: string): TreemapBodyItem[] {
+    const statements: TreemapBodyItem[] = []
+    traverseNodes(parse(fixtureOf(name).input), {
+      enterNode(node) {
+        if (
+          node.type === "TreemapSection" ||
+          node.type === "TreemapLeaf" ||
+          node.type === "TreemapClassDefStatement" ||
+          node.type === "TreemapTitleStatement" ||
+          node.type === "TreemapAccTitleStatement" ||
+          node.type === "TreemapAccDescrStatement" ||
+          node.type === "TreemapAccDescrBlockStatement"
+        )
+          statements.push(node)
+      },
+      leaveNode() {
+        /* Collected on entry. */
+      },
+    })
+    return statements
+  }
+
   it("keeps all nine node kinds, row indentation, separators and quote styles", () => {
     expect(diagramOf("gram-written-tree").body).toMatchObject([
       { type: "TreemapTitleStatement", value: { value: "Map" } },
@@ -122,27 +150,33 @@ describe("treemap fixtures", async () => {
         indent: 0,
         name: { raw: '"Root"', closed: true },
         classSelector: { name: "aa" },
-      },
-      {
-        type: "TreemapLeaf",
-        indent: 2,
-        name: { value: "Left" },
-        value: { raw: "1,234.5", value: 1234.5 },
-        classSelector: null,
-      },
-      {
-        type: "TreemapClassDefStatement",
-        indent: 2,
-        name: { name: "aa" },
-        style: { value: "fill:red,color:blue" },
-      },
-      { type: "TreemapAccDescrBlockStatement", value: null },
-      {
-        type: "TreemapLeaf",
-        indent: 2,
-        name: { raw: "'Right'" },
-        value: { raw: "2", value: 2 },
-        classSelector: { name: "aa" },
+        statementsBefore: [],
+        children: [
+          {
+            type: "TreemapLeaf",
+            indent: 2,
+            name: { value: "Left" },
+            value: { raw: "1,234.5", value: 1234.5 },
+            classSelector: null,
+            statementsBefore: [],
+          },
+          {
+            type: "TreemapLeaf",
+            indent: 2,
+            name: { raw: "'Right'" },
+            value: { raw: "2", value: 2 },
+            classSelector: { name: "aa" },
+            statementsBefore: [
+              {
+                type: "TreemapClassDefStatement",
+                indent: 2,
+                name: { name: "aa" },
+                style: { value: "fill:red,color:blue" },
+              },
+              { type: "TreemapAccDescrBlockStatement", value: null },
+            ],
+          },
+        ],
       },
       { type: "TreemapAccTitleStatement", value: { value: " Map" } },
       { type: "TreemapAccDescrStatement", value: { value: " Short" } },
@@ -161,21 +195,30 @@ describe("treemap fixtures", async () => {
       "db-class-tail-space",
       "db-class-tail-tab",
     ])
-      expect(diagramOf(name).body.at(-1)).toMatchObject({ indent: 1 })
-    expect(diagramOf("gram-indent-from-whitespace-line").body).toMatchObject([
+      expect(
+        statementsOf(name)
+          .filter(
+            (statement) =>
+              statement.type === "TreemapSection" ||
+              statement.type === "TreemapLeaf",
+          )
+          .at(-1),
+      ).toMatchObject({ indent: 1 })
+    expect(statementsOf("gram-indent-from-whitespace-line")).toMatchObject([
       { indent: 0 },
       { indent: 4 },
     ])
-    expect(diagramOf("gram-indent-around-global-directive").body).toMatchObject(
-      [{ indent: 0 }, { indent: 2 }],
-    )
+    expect(statementsOf("gram-indent-around-global-directive")).toMatchObject([
+      { indent: 0 },
+      { indent: 2 },
+    ])
     expect(
-      diagramOf("gram-selector-followed-by-indented-row").body,
+      statementsOf("gram-selector-followed-by-indented-row"),
     ).toMatchObject([
       { indent: 0, classSelector: { name: "aa" } },
       { indent: 2 },
     ])
-    expect(diagramOf("db-leaf-closes-open-sections").body).toMatchObject([
+    expect(statementsOf("db-leaf-closes-open-sections")).toMatchObject([
       { type: "TreemapSection", indent: 0 },
       { type: "TreemapSection", indent: 2 },
       { type: "TreemapLeaf", indent: 0 },
@@ -208,7 +251,7 @@ describe("treemap fixtures", async () => {
   })
 
   it("preserves empty strings, raw line endings and backslashes without escape decoding", () => {
-    expect(diagramOf("db-empty-names").body).toMatchObject([
+    expect(statementsOf("db-empty-names")).toMatchObject([
       { name: { value: "", raw: '""', closed: true } },
       { name: { value: "", raw: "''", closed: true } },
       { name: { value: "", raw: '""', closed: true } },
@@ -283,6 +326,95 @@ describe("treemap fixtures", async () => {
     expect(diagramOf("gram-selector-keywords").body).toMatchObject([
       { classSelector: { name: "true" } },
       { classSelector: { name: "false" } },
+    ])
+  })
+
+  it("keeps sections open across statements, closes them at leaves, and never parents under a leaf", () => {
+    expect(diagramOf("db-leaf-closes-open-sections").body).toMatchObject([
+      {
+        name: { value: "A" },
+        children: [{ name: { value: "B" }, children: [] }],
+      },
+      { name: { value: "L" } },
+      { name: { value: "C" } },
+    ])
+    expect(diagramOf("db-leaf-not-parent").body).toMatchObject([
+      {
+        name: { value: "A" },
+        children: [{ name: { value: "B" } }, { name: { value: "C" } }],
+      },
+      { name: { value: "D" } },
+      { name: { value: "E" } },
+    ])
+    expect(
+      diagramOf("gram-nesting-statement-before-section").body,
+    ).toMatchObject([
+      {
+        children: [
+          {
+            range: [12, 41],
+            statementsBefore: [
+              { type: "TreemapAccTitleStatement", range: [12, 25] },
+            ],
+            children: [{ name: { value: "C" }, range: [36, 41] }],
+          },
+        ],
+      },
+    ])
+    expect(
+      diagramOf("gram-nesting-statement-before-ancestor-child").body,
+    ).toMatchObject([
+      {
+        children: [
+          { range: [16, 31] },
+          {
+            range: [32, 66],
+            statementsBefore: [
+              { type: "TreemapClassDefStatement", range: [32, 53] },
+            ],
+          },
+        ],
+      },
+    ])
+    expect(
+      diagramOf("gram-nesting-statement-after-last-child").body,
+    ).toMatchObject([
+      { range: [8, 19], children: [{ range: [14, 19] }] },
+      { type: "TreemapClassDefStatement", range: [20, 41] },
+    ])
+    for (const [name, type] of [
+      ["gram-nesting-title-before-child", "TreemapTitleStatement"],
+      ["gram-nesting-acctitle-before-child", "TreemapAccTitleStatement"],
+      ["gram-nesting-description-before-child", "TreemapAccDescrStatement"],
+      ["gram-nesting-block-before-child", "TreemapAccDescrBlockStatement"],
+      ["gram-nesting-empty-class-before-child", "TreemapClassDefStatement"],
+      ["gram-nesting-statements-directive-inline", "TreemapClassDefStatement"],
+      ["gram-nesting-statements-directive-line", "TreemapClassDefStatement"],
+      ["gram-nesting-statements-comment-line", "TreemapClassDefStatement"],
+      ["gram-nesting-statements-empty-line", "TreemapClassDefStatement"],
+      ["gram-nesting-statements-comment-ls", "TreemapClassDefStatement"],
+      ["gram-nesting-statements-comment-ps", "TreemapClassDefStatement"],
+    ]) {
+      const section = diagramOf(name).body[0]
+      if (section.type !== "TreemapSection")
+        throw new Error("Expected a section")
+      const child = section.children[0]
+      expect(child.statementsBefore).toMatchObject([{ type }])
+      expect(child.range[0]).toBe(child.statementsBefore[0].range[0])
+      expect(section.range[1]).toBe(child.range[1])
+      expect(child).not.toHaveProperty("children")
+    }
+    expect(visitorKeys.TreemapSection).toEqual([
+      "statementsBefore",
+      "name",
+      "classSelector",
+      "children",
+    ])
+    expect(visitorKeys.TreemapLeaf).toEqual([
+      "statementsBefore",
+      "name",
+      "value",
+      "classSelector",
     ])
   })
 

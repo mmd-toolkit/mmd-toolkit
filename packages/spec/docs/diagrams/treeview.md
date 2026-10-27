@@ -292,7 +292,11 @@ treeview/common-repeat-empty] [fixture: treeview/common-block-whitespace-raw]
 [fixture: treeview/common-block-first-close] [fixture:
 treeview/common-block-quoted-close] [fixture:
 treeview/common-block-escaped-close] [fixture: treeview/common-block-open]
-[fixture: treeview/box-decoration-before-block-open]
+[fixture: treeview/box-decoration-before-block-open] [fixture:
+treeview/box-block-tail-decoration-light-vertical] [fixture:
+treeview/box-block-tail-decoration-empty-control] [fixture:
+treeview/box-block-tail-decoration-empty-block-before] [fixture:
+treeview/box-block-tail-branch-closer]
 
 ### Comments and boundaries
 
@@ -303,7 +307,10 @@ comment. Hidden newline reads LF separately, including the logical LF at EOF.
 [fixture: treeview/tail-quoted-comment] [fixture:
 treeview/native-comment-closer-greedy] [fixture: treeview/native-comment-ls]
 [fixture: treeview/native-comment-ps] [fixture: treeview/comment-bare-body]
-[fixture: treeview/gram-body-hidden-eof]
+[fixture: treeview/gram-body-hidden-eof] [fixture:
+treeview/lex-indent-comment-ps-semicolon-space] [fixture:
+treeview/lex-indent-comment-ls-semicolon-space] [fixture:
+treeview/lex-indent-comment-ps-selected-semicolon]
 
 An earlier enclosing name, quoted value, description-annotation or accessibility
 block owns its percent-looking text. Common line values instead stop before
@@ -350,7 +357,20 @@ reading, not U+2028/U+2029, and a line break inside a common directive is not a
 boundary. [fixture: treeview/box-written-tree] [fixture:
 treeview/box-header-same-line] [fixture: treeview/box-physical-directive-inline]
 [fixture: treeview/box-physical-directive-line] [fixture:
-treeview/box-physical-ls] [fixture: treeview/box-physical-ps]
+treeview/box-physical-ls] [fixture: treeview/box-physical-ps] [fixture:
+treeview/box-block-tail-decoration-directive-inline] [fixture:
+treeview/box-block-tail-decoration-directive-line] [fixture:
+treeview/box-block-tail-decoration-directive-at-start] [fixture:
+treeview/box-block-tail-decoration-selected-semicolon] [fixture:
+treeview/box-block-tail-decoration-unselected-semicolon] [fixture:
+treeview/box-block-tail-decoration-comment-line] [fixture:
+treeview/box-block-tail-decoration-comment-after] [fixture:
+treeview/box-block-tail-decoration-ls] [fixture:
+treeview/box-block-tail-decoration-ps] [fixture:
+treeview/box-block-tail-decoration-comment-ls] [fixture:
+treeview/box-block-tail-decoration-comment-ps] [fixture:
+treeview/box-block-tail-decoration-crlf] [fixture:
+treeview/box-block-tail-decoration-cr]
 
 For mode detection, exclude whitespace-only lines, lines starting after common
 whitespace with `%%`, metadata-shaped lines, and lines made only of common
@@ -421,6 +441,41 @@ Inactive mode leaves these characters to the ordinary unit rules. [fixture:
 treeview/box-quoted-decoration] [fixture: treeview/box-block-decoration]
 [fixture: treeview/box-block-decoration-plain] [fixture:
 treeview/box-quoted-indent-error] [fixture: treeview/box-block-indent-error]
+[fixture: treeview/box-block-tail-decoration-light-vertical] [fixture:
+treeview/box-block-tail-decoration-heavy-vertical] [fixture:
+treeview/box-block-tail-decoration-light-dash] [fixture:
+treeview/box-block-tail-decoration-heavy-dash] [fixture:
+treeview/box-block-tail-decoration-vertical-whitespace] [fixture:
+treeview/box-block-tail-decoration-close-same-line] [fixture:
+treeview/box-block-tail-decoration-dash-close-same-line] [fixture:
+treeview/box-block-tail-decoration-multiple-lines] [fixture:
+treeview/box-block-tail-branch-content] [fixture:
+treeview/box-block-tail-branch-closer] [fixture:
+treeview/box-block-tail-decoration-inactive] [fixture:
+treeview/box-block-tail-decoration-indent-control] [fixture:
+treeview/box-block-tail-decoration-only-interior] [fixture:
+treeview/box-block-tail-decoration-empty-control] [fixture:
+treeview/box-block-tail-decoration-opener-line] [fixture:
+treeview/box-block-tail-decoration-ascii-dash-control] [fixture:
+treeview/box-block-tail-decoration-single-dash] [fixture:
+treeview/box-block-tail-decoration-spaces-after] [fixture:
+treeview/box-block-tail-decoration-spaces-before] [fixture:
+treeview/box-block-tail-decoration-blank-after] [fixture:
+treeview/box-block-tail-decoration-two-vertical-lines] [fixture:
+treeview/box-block-tail-decoration-blank-before] [fixture:
+treeview/box-block-tail-decoration-empty-block-before] [fixture:
+treeview/box-block-tail-decoration-closer-indent] [fixture:
+treeview/box-block-tail-decoration-branch-empty] [fixture:
+treeview/box-quoted-tail-decoration-light-vertical] [fixture:
+treeview/box-quoted-tail-decoration-light-dash] [fixture:
+treeview/box-quoted-tail-branch-content] [fixture:
+treeview/box-quoted-tail-decoration-single-quoted] [fixture:
+treeview/box-quoted-tail-decoration-heavy-vertical] [fixture:
+treeview/box-quoted-tail-decoration-heavy-dash] [fixture:
+treeview/box-quoted-tail-branch-heavy] [fixture:
+treeview/box-quoted-tail-decoration-two-lines] [fixture:
+treeview/box-quoted-tail-branch-then-decoration] [fixture:
+treeview/box-quoted-tail-decoration-then-branch]
 
 | Case                                            | Direct reading                                          |
 | ----------------------------------------------- | ------------------------------------------------------- |
@@ -576,23 +631,41 @@ treeview/gram-repeated-header] [fixture: treeview/tail-quoted-semicolon]
 
 ### Indentation and parents
 
-Keep nodes flat and in written order, with indentation assigned once to each
-node. To interpret parents, keep the still-open preceding nodes in order. Before
-a new node, remove open nodes from the end while their indentation is greater
-than or equal to its indentation. The last remaining node is its parent; with
-none it is another root. Add the current node to the open list. Common
-statements and decorations do not participate. [fixture: treeview/db-indent-pop]
-[fixture: treeview/box-written-tree] [fixture:
-treeview/box-decoration-trailing-body] [fixture: treeview/gram-written-tree]
+The following rule determines the nesting of TreeviewNode.children and the roots
+in TreeviewDiagram.body. Keep the still-open preceding nodes in written order,
+with indentation assigned once to each node. Before a new node, remove open
+nodes from the end while their indentation is greater than or equal to its
+indentation. The last remaining node is its parent; with none it is another
+root. Add the current node to the open list. Common statements and decorations
+do not participate. [fixture: treeview/db-indent-pop] [fixture:
+treeview/box-written-tree] [fixture: treeview/box-decoration-trailing-body]
+[fixture: treeview/gram-written-tree]
 
 Files as well as directory-looking names can be parents. The first node can be
 indented; multiple roots, arbitrary indentation increases/decreases, duplicate
 names and empty quoted names are allowed. Ordinary indentation and
-branch-denoted indentation use the same comparison. Do not synthesize an
-authored root, parent field or children list. [fixture: treeview/db-file-parent]
-[fixture: treeview/db-first-indented] [fixture: treeview/db-duplicate-names]
-[fixture: treeview/db-empty-names] [fixture: treeview/box-indented-box-text]
-[fixture: treeview/box-round-below]
+branch-denoted indentation use the same comparison. Keep each root separately in
+the diagram body; do not add an artificial root, a parent reference or a derived
+depth. [fixture: treeview/db-file-parent] [fixture: treeview/db-first-indented]
+[fixture: treeview/db-duplicate-names] [fixture: treeview/db-empty-names]
+[fixture: treeview/box-indented-box-text] [fixture: treeview/box-round-below]
+
+Shared trivia and empty lines do not add parents. Retain assigned indentation
+through inline directives and directive-only lines; a second pending run still
+rejects. LS/PS retain their lexical reading as name or comment content, not
+extra hierarchy line breaks. An empty description block after a node still
+rejects rather than becoming a gap entry. [fixture:
+treeview/nested-child-directive-unindented] [fixture:
+treeview/nested-child-directive-line] [fixture:
+treeview/box-tail-decoration-directive-inline] [fixture:
+treeview/nested-child-comment-line] [fixture: treeview/nested-child-empty-line]
+[fixture: treeview/nested-child-selected-semicolon] [fixture:
+treeview/box-tail-decoration-unselected-semicolon] [fixture:
+treeview/gram-nesting-ls-before-child] [fixture:
+treeview/gram-nesting-ps-before-child] [fixture:
+treeview/gram-nesting-comment-ls-before-child] [fixture:
+treeview/gram-nesting-comment-ps-before-child] [fixture:
+treeview/nested-child-empty-block]
 
 Inside an accessibility block, an empty-description-looking line is still
 content through its first closing brace; that brace closes the enclosing block.

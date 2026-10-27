@@ -28,6 +28,7 @@
         "shape": null,
         "data": [],
         "decorations": [],
+        "children": [],
         "range": [
           8,
           17
@@ -104,6 +105,7 @@
         },
         "data": [],
         "decorations": [],
+        "children": [],
         "range": [
           19,
           26

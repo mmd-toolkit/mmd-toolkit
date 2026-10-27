@@ -20,6 +20,7 @@ flowchart LR
   A --> B
 ```
 
+この例は見出しの前に `init` ディレクティブを置きます。
 [fixture: common/directive-init-theme]
 
 mermaid.js は、図を読む前に、
@@ -232,22 +233,24 @@ directive を含められ、値からは除きます。
      A[x%%{init: {}}%%y]
    ```
 
-| 例                                                    | mermaid.js                              | この仕様 |
-| ----------------------------------------------------- | --------------------------------------- | -------- |
-| 1                                                     | 参加者 A                                | 拒否     |
-| 2                                                     | クラス c を持つ頂点 A                   | 拒否     |
-| 3                                                     | 頂点 `AB` から C への辺                 | 拒否     |
-| 4                                                     | `A--->B` と同じ、A から B への辺        | 拒否     |
-| 5                                                     | 10 から始まるメッセージの番号           | 拒否     |
-| 6                                                     | ラベル `a`、空白 2 つ、`b` を持つ頂点 A | 同じ     |
-| 7                                                     | ラベル `xy` を持つ頂点 A                | 同じ     |
-| [fixture: sequence/div-directive-in-keyword]          |
-| [fixture: flowchart/div-directive-in-style-separator] |
-| [fixture: flowchart/div-directive-in-id]              |
-| [fixture: flowchart/div-directive-in-arrow-length]    |
-| [fixture: sequence/div-directive-in-number]           |
-| [fixture: common/directive-in-string]                 |
-| [fixture: common/directive-in-label-text]             |
+| 例  | mermaid.js                              | この仕様 |
+| --- | --------------------------------------- | -------- |
+| 1   | 参加者 A                                | 拒否     |
+| 2   | クラス c を持つ頂点 A                   | 拒否     |
+| 3   | 頂点 `AB` から C への辺                 | 拒否     |
+| 4   | `A--->B` と同じ、A から B への辺        | 拒否     |
+| 5   | 10 から始まるメッセージの番号           | 拒否     |
+| 6   | ラベル `a`、空白 2 つ、`b` を持つ頂点 A | 同じ     |
+| 7   | ラベル `xy` を持つ頂点 A                | 同じ     |
+
+表で比較した読みを次の fixture が記録します。
+[fixture: sequence/div-directive-in-keyword]
+[fixture: flowchart/div-directive-in-style-separator]
+[fixture: flowchart/div-directive-in-id]
+[fixture: flowchart/div-directive-in-arrow-length]
+[fixture: sequence/div-directive-in-number]
+[fixture: common/directive-in-string]
+[fixture: common/directive-in-label-text]
 
 つまり mermaid.js は、どの入力も、ディレクティブを除いたテキストとして読みます。
 この仕様もそうしますが、

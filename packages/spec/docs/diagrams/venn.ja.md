@@ -1287,58 +1287,36 @@ style-atom = identifier | number | hex-color | rgb-color | rgba-color
 [fixture: venn/gram-union-label-colon-size-unclosed-directive-gap]
 [fixture: venn/gram-style-target-property-unclosed-directive-gap]
 [fixture: venn/gram-style-property-colon-unclosed-directive-gap]
-
 [fixture: venn/lex-after-set-directive]
-
 [fixture: venn/lex-after-set-label-directive]
-
 [fixture: venn/lex-after-set-size-directive]
-
 [fixture: venn/db-after-set-label-size-directive]
 [fixture: venn/db-after-set-label-size-unclosed-directive]
-
 [fixture: venn/lex-after-union-directive]
-
 [fixture: venn/db-after-union-label-directive]
 [fixture: venn/db-after-union-label-unclosed-directive]
-
 [fixture: venn/db-after-union-size-directive]
 [fixture: venn/db-after-union-size-unclosed-directive]
-
 [fixture: venn/lex-after-union-label-size-directive]
-
 [fixture: venn/lex-after-text-directive]
-
 [fixture: venn/lex-after-text-label-directive]
-
 [fixture: venn/lex-after-text-string-directive]
-
 [fixture: venn/db-after-text-string-label-directive]
 [fixture: venn/db-after-text-string-label-unclosed-directive]
-
 [fixture: venn/lex-after-text-number-directive]
-
 [fixture: venn/lex-after-indent-directive]
-
 [fixture: venn/db-after-indent-id-label-directive]
 [fixture: venn/db-after-indent-id-label-unclosed-directive]
-
 [fixture: venn/db-after-indent-string-directive]
 [fixture: venn/db-after-indent-string-unclosed-directive]
-
 [fixture: venn/db-after-indent-string-label-directive]
 [fixture: venn/db-after-indent-string-label-unclosed-directive]
-
 [fixture: venn/db-after-indent-number-directive]
 [fixture: venn/db-after-indent-number-unclosed-directive]
-
 [fixture: venn/lex-after-style-directive]
-
 [fixture: venn/lex-after-style-string-directive]
-
 [fixture: venn/db-after-style-list-directive]
 [fixture: venn/db-after-style-list-unclosed-directive]
-
 [fixture: venn/lex-after-title-directive]
 
 セミコロンは文の区切りではありません。

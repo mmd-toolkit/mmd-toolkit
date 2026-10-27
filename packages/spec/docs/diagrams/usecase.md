@@ -834,10 +834,11 @@ usecase/gram-native-invalid-property-later-fix]
 | style-declaration / property name / value                             | UsecaseStyleDeclaration / UsecaseIdentifier / UsecaseLiteral                        |
 | acc-title-statement / acc-descr-statement / acc-descr-block-statement | UsecaseAccTitleStatement / UsecaseAccDescrStatement / UsecaseAccDescrBlockStatement |
 
-[fixture: usecase/gram-actor-list] [fixture: usecase/gram-actor-relation]
-[fixture: usecase/db-labeled-arrows] [fixture: usecase/gram-json-empty]
-[fixture: usecase/db-metadata-forward] [fixture:
-usecase/db-accdescr-block-comment] [fixture: usecase/gram-styles-components]
+The fixtures illustrate the statement and value forms in the table. [fixture:
+usecase/gram-actor-list] [fixture: usecase/gram-actor-relation] [fixture:
+usecase/db-labeled-arrows] [fixture: usecase/gram-json-empty] [fixture:
+usecase/db-metadata-forward] [fixture: usecase/db-accdescr-block-comment]
+[fixture: usecase/gram-styles-components]
 
 An explicit id is the name before its parenthesis/bracket label; a quoted-only
 name supplies a label without an authored id. There is no `as` alias or title

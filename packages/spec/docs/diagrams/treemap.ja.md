@@ -446,6 +446,9 @@ value は mark を除いた内容である。
 [fixture: treemap/hidden-comment-sole-lf]
 [fixture: treemap/hidden-comment-spare-lf]
 [fixture: treemap/hidden-comment-eof]
+[fixture: treemap/lex-indent-comment-ps-semicolon-space]
+[fixture: treemap/lex-indent-comment-ls-semicolon-space]
+[fixture: treemap/lex-indent-comment-ps-selected-semicolon]
 
 先に囲んだ string・class style・description block は percent のような text も
 所有する。
@@ -572,8 +575,8 @@ EOL は要求しない。
 
 ### 字下げと親
 
-木の body は平らに保ち、親子は [buildHierarchy][hierarchy] に対応する
-次の直接の規則で決める。
+[buildHierarchy][hierarchy] に対応する次の直接の規則が、
+TreemapSection.children の入れ子と TreemapDiagram.body の根を決める。
 section と leaf を記述順に処理し、共通の文と class 定義は参加させない。
 開いている section のリストを保つ。
 各 node の前に、末尾の開いている section の字下げがその node 以上なら、
@@ -603,6 +606,24 @@ leaf の後の深い row は、まだ開いている section の子か新しい�
 [fixture: treemap/db-leaf-tail-space]
 [fixture: treemap/db-header-tail-space]
 [fixture: treemap/db-class-tail-space]
+
+directive・コメント・空行・選択された無視するセミコロンは
+階層 node を増やさない。
+字下げへの字句上の効果は変えない。
+空の description block は共通の文であり、開いている section を閉じない。
+unit の外の LS・PS は引き続き拒否する。
+native comment の内側では LF までコメントの内容なので、
+その中の見かけの node は子にならない。
+[fixture: treemap/gram-indent-around-global-directive]
+[fixture: treemap/gram-nesting-child-after-directive-line]
+[fixture: treemap/gram-nesting-child-after-comment]
+[fixture: treemap/gram-nesting-child-after-empty-line]
+[fixture: treemap/db-class-tail-space]
+[fixture: treemap/common-block-empty-interleaved]
+[fixture: treemap/line-ls-between]
+[fixture: treemap/line-ps-between]
+[fixture: treemap/gram-nesting-child-after-comment-ls]
+[fixture: treemap/gram-nesting-child-after-comment-ps]
 
 ### 意味による受理条件
 

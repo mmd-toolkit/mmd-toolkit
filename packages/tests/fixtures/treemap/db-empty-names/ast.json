@@ -7,6 +7,7 @@
       {
         "type": "TreemapSection",
         "indent": 0,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "",
@@ -28,72 +29,75 @@
           }
         },
         "classSelector": null,
+        "children": [
+          {
+            "type": "TreemapLeaf",
+            "indent": 2,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "",
+              "raw": "''",
+              "closed": true,
+              "range": [
+                13,
+                15
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 2
+                },
+                "end": {
+                  "line": 3,
+                  "column": 4
+                }
+              }
+            },
+            "value": {
+              "type": "NumericLiteral",
+              "value": 0,
+              "raw": "0",
+              "range": [
+                16,
+                17
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 5
+                },
+                "end": {
+                  "line": 3,
+                  "column": 6
+                }
+              }
+            },
+            "classSelector": null,
+            "range": [
+              13,
+              17
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 2
+              },
+              "end": {
+                "line": 3,
+                "column": 6
+              }
+            }
+          }
+        ],
         "range": [
           8,
-          10
+          17
         ],
         "loc": {
           "start": {
             "line": 2,
             "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 2
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 2,
-        "name": {
-          "type": "StringLiteral",
-          "value": "",
-          "raw": "''",
-          "closed": true,
-          "range": [
-            13,
-            15
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 2
-            },
-            "end": {
-              "line": 3,
-              "column": 4
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 0,
-          "raw": "0",
-          "range": [
-            16,
-            17
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 5
-            },
-            "end": {
-              "line": 3,
-              "column": 6
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          13,
-          17
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 2
           },
           "end": {
             "line": 3,
@@ -104,6 +108,7 @@
       {
         "type": "TreemapSection",
         "indent": 0,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "",
@@ -142,6 +147,7 @@
             }
           }
         },
+        "children": [],
         "range": [
           18,
           33

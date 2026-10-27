@@ -177,8 +177,21 @@ export class TreeviewUnitLexer extends CommonFormUnitLexer<TreeviewUnitName> {
     this.addUnit("accDescr", start, word.end)
     for (const form of forms) this.addBoxForm(form)
     this.addUnit("{", brace, value)
-    if (value !== null && !samePosition(value, close))
-      this.addUnit("block-text", value, close, "keep-whitespace")
+    // Authored values retain box forms and line endings skipped by the close search.
+    const writtenValue = this.source.after(brace)
+    if (writtenValue !== null && !samePosition(writtenValue, close)) {
+      this.units.push(
+        readUnit(
+          this.source,
+          "block-text",
+          this.units.length,
+          writtenValue,
+          close,
+          null,
+          "keep-whitespace",
+        ),
+      )
+    }
     this.read("}", close, this.reader.after(close))
     return true
   }
@@ -344,7 +357,7 @@ export class TreeviewUnitLexer extends CommonFormUnitLexer<TreeviewUnitName> {
       name,
       from,
       to,
-      name === "block-text" || name === "bare-name" ? "keep-whitespace" : ends,
+      name === "bare-name" ? "keep-whitespace" : ends,
     )
   }
 

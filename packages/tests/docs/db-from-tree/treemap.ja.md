@@ -3,8 +3,7 @@
 英語版: [treemap.md](./treemap.md)
 
 `treemapDbOf` は [ast/treemap.md](../../../spec/docs/ast/treemap.ja.md) の
-受理済みの平坦な body を読み、
-[親の規則](../../../spec/docs/diagrams/treemap.ja.md) と
+受理済みの入れ子の木を読み、
 [公開される要約](../db-summaries.ja.md#treemap) に従います。
 受理は判定しません。
 [fixture: treemap/gram-written-tree] [fixture: treemap/db-all-fields]
@@ -30,19 +29,25 @@
    [fixture: treemap/frontmatter-empty-body-title]
    [fixture: treemap/html-fields]
    [fixture: treemap/config-security-level-other]
-3. section と leaf を body 順に読みます。各行の前で、その indent 以上の
-   indent を持つ section を stack から外します。残った最後の section、
-   または外側の森に行を加えます。stack に積むのは section だけです。
-   leaf も同じ比較で section を閉じますが、子は持ちません。共通文と classDef は
-   stack を変えません。indent は前の行の行末空白、1文字として数えるタブ、
-   共通の除去を反映済みです。物理行の行頭から数え直しません。
-   重複名・空の名前・複数の外側のノードを保ちます。
+3. Diagram.body の根と外側の文を読む。
+   section と leaf の前で statementsBefore を原順で適用し、
+   自身の値を写してから section.children を再帰的に訪れる。
+   children を持つのは section だけで、leaf は葉のままである。
+   indent を読んだり親を再計算したりしない。
+   parser が入れ子を作り、checkTree が独立に確かめる。
+   前置 gap の classDef と共通の代入も図全体に効き、
+   section の出入りでは履歴をリセットしない。
+   重複名、空名、複数の根を保つ。
    [fixture: treemap/db-indent-pop] [fixture: treemap/db-leaf-not-parent]
    [fixture: treemap/db-first-indented] [fixture: treemap/db-duplicate-names]
    [fixture: treemap/db-empty-names] [fixture: treemap/db-section-tail-space]
    [fixture: treemap/db-leaf-tail-tab]
    [fixture: treemap/db-class-indented]
    [fixture: treemap/common-block-empty-interleaved]
+   [fixture: treemap/gram-nesting-global-class-before-child]
+   [fixture: treemap/gram-nesting-title-before-child]
+   [fixture: treemap/gram-nesting-statement-before-ancestor-child]
+   [fixture: treemap/gram-nesting-statement-after-last-child]
 4. 名前は StringLiteral 内部の変換済みテキストで、両端の引用符を外します。
    バックスラッシュを解釈せず、追加の無害化もしません。selector は Identifier の
    変換済みテキストを保ち、未定義の名前も残します。section は空配列でも

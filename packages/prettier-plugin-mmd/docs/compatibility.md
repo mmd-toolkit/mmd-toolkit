@@ -1813,15 +1813,16 @@ Markdown: rejected]
 
 ## Treemap parentage and authored values
 
-The [treemap rules](./treemap.md) preserve the ordered forest derived from the
-original row indents. Spaces and tabs each count once; leaves close sections but
-never become parents, and class/common statements do not participate. Ordinary
-roots use one positive configured step, including at tabWidth zero because
-indentation determines parentage. A class name touching a row keeps that contact
-and uses root baseline zero throughout the diagram. Trailing or whitespace-line
-indentation moves once to the following row. Standalone comments and directives
-start at column one to avoid an extra native indentation unit. Protected
-semicolon row boundaries keep the body as written.
+The [treemap rules](./treemap.md) preserve the ordered forest in AST children.
+The tree already accounts for assigned row indentation: spaces and tabs each
+count once; leaves close sections but never become parents, and class/common
+statements do not participate. Ordinary roots use one positive configured step,
+including at tabWidth zero because indentation determines parentage. A class
+name touching a row keeps that contact and uses root baseline zero throughout
+the diagram. Trailing or whitespace-line indentation moves once to the following
+row. Standalone comments and directives start at column one to avoid an extra
+native indentation unit. Protected semicolon row boundaries keep the body as
+written.
 
 [fixture: treemap/indentation/leaf-closes] [fixture:
 treemap/indentation/common-and-class] [fixture: treemap/indentation/zero]
@@ -1871,49 +1872,271 @@ final-style-padding] [test: treemap Markdown: rejected]
 
 ## Treeview modes and authored values
 
-The [treeview rules](./treeview.md) preserve the mode selected by logical source
-lines, including box characters inside quoted names and description blocks.
-Ordinary indentation uses the AST’s assigned indents and includes file parents;
-roots use one positive configured step. Carried runs move once. Box prefixes,
-columns, decorations and physical value lines keep their spelling because they
-can determine the global width, rounding and acceptance.
+The [treeview rules](./treeview.md) keep indentation-mode input in that mode.
+For box diagrams they read the forest from AST children, including file parents,
+and redraw ordinary branches and guides with fixed four-column cells. A
+following sibling uses `├── `, the last sibling `└── `, and continuing ancestors
+`│   `. Mixed or prefixed roots all receive root branches; otherwise roots and
+first-generation branches start at column one. This deliberately replaces
+misleading source columns, sibling marks, heavy strokes and dash counts with the
+tree Mermaid reads. Nodes sharing a physical line also split in source order and
+receive their branches from that tree.
 
-[fixture: treeview/indentation/indent-irregular] [fixture:
-treeview/indentation/indent-file-parent] [fixture:
-treeview/carried-indentation/carry-quote] [fixture:
-treeview/modes/quoted-box-without-prefix] [fixture:
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-line-rule-semicolon]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-two]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-three]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-wide-gap]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-class]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-forest]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-unbranched-root]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-inline-directive]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-directive-line]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-unselected-semicolon]
+
+[fixture:
+treeview/statements-one-per-line/review159-box-quoted-protected-semicolon]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-comment-line]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-empty-line]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-ls]
+
+[test:
+treeview/statements-one-per-line/review159-box-quoted-unprefixed-leading-ps]
+
+[test: treeview/statements-one-per-line/review159-box-quoted-ps]
+
+[fixture: treeview/statements-one-per-line/review159-box-quoted-empty-block]
+
+[test: treeview/tabs/review159-box-multiple-value-tab-retained]
+
+[test: treeview/trailing-whitespace/review159-box-multiple-owned-tail-retained]
+
+[fixture: treeview/branch-prefixes/rounding-half] [fixture:
 treeview/branch-prefixes/first-positive] [fixture:
-treeview/decorations/pending-owner] [corpus fixture:
-treeview/box-tail-branch-no-carry]
+treeview/branch-prefixes/box-redraw-deep-jump] [fixture:
+treeview/branch-prefixes/box-redraw-mixed-roots] [fixture:
+treeview/branch-prefixes/box-redraw-heavy-to-light]
 
-Keep every name, annotation, description, prefix and decoration at its source
-owner, including duplicates, empty names, `icon()` and overwritten annotations.
-Name and description tails are authored text; common line values and ordinary
-accessibility blocks use shared exterior spacing. Ordinary blocks in box mode
-use column one; blocks with box geometry retain it. Every semicolon remains, and
-fixed row boundaries that constrain parentage keep the body as written.
+[corpus fixture: treeview/nested-box-directive-line]
 
-[fixture: treeview/names/name-single] [fixture:
-treeview/annotation-components/icon-empty] [fixture:
-treeview/repeated-annotations/repeat-class] [fixture:
-treeview/descriptions/description-padding] [fixture:
-treeview/modes/ordinary-block] [fixture: treeview/semicolons/protected-row-body]
-[corpus fixture: treeview/box-block-decoration]
+[corpus fixture: treeview/nested-box-selected-semicolon]
 
-The six existing [specified readings](./treeview.md#specified-readings) apply;
-there is no additional empty-form divergence or opaque acceptance setting.
-Standalone syntax errors are reported without repaired output. The shared host
-normalizes CR/CRLF, guards real frontmatter and can trim final Markdown
-code-line padding. Quoted interior padding remains value text.
+[corpus fixture: treeview/nested-box-comment-line]
+
+[corpus fixture: treeview/nested-box-empty-line]
+
+[corpus fixture: treeview/nested-box-ls]
+
+[corpus fixture: treeview/nested-box-ps]
+
+[corpus fixture: treeview/nested-box-empty-block]
+
+[corpus fixture: treeview/box-physical-directive-inline]
+
+[corpus fixture: treeview/box-physical-directive-line]
+
+[corpus fixture: treeview/box-physical-selected-semicolon]
+
+[corpus fixture: treeview/box-physical-comment-line]
+
+[corpus fixture: treeview/box-physical-empty-line]
+
+[corpus fixture: treeview/box-physical-ls]
+
+[corpus fixture: treeview/box-physical-ps]
+
+[corpus fixture: treeview/box-physical-empty-description]
+
+Outer decoration becomes a continuing guide or a blank line, while a necessary
+mode selector remains. A sole selector in an `accDescr` opener gap keeps only
+that gap; the rest of the block and body formats normally. Common and
+native-comment prefixes are removed; a comment's carried branch is drawn once at
+its node. Prefixed annotations move inline in source order only without an
+earlier description or intervening shared trivia or selected semicolon.
+Indentation-mode annotation lines stay separate. After a joining comment region
+or removed directive, an annotation starting its own physical line keeps
+positive leading spaces at its owner's name column, with a minimum of one space.
+This keeps its marker separate from the preceding name even when Mermaid joins
+the LF. Every name, value, annotation occurrence, arbitrary prefix character and
+shared trivia remains authored text.
+
+[fixture:
+treeview/decorations/review159-sole-opener-selector-line-rule-semicolon]
+
+[fixture: treeview/decorations/review159-sole-opener-selector]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-empty-block]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-inline-directive]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-directive-line]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-comment]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-empty-line]
+
+[test: treeview/decorations/review159-sole-opener-selector-ls]
+
+[test: treeview/decorations/review159-sole-opener-selector-ps]
+
+[fixture: treeview/decorations/review159-sole-opener-selector-value-prefix]
+
+[test: treeview/annotation-lines/review159-region-line-rule-semicolon]
+
+[test: treeview/annotation-lines/review159-region-class-ls-four]
+
+[test: treeview/annotation-lines/review159-region-class-ps-four]
+
+[test: treeview/annotation-lines/review159-region-class-ls-one]
+
+[test: treeview/annotation-lines/review159-region-class-ps-one]
+
+[test: treeview/annotation-lines/review159-region-class-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-class-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-four]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-four]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-one]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-one]
+
+[test: treeview/annotation-lines/review159-region-icon-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-icon-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-description-ls-four]
+
+[test: treeview/annotation-lines/review159-region-description-ps-four]
+
+[test: treeview/annotation-lines/review159-region-description-ls-one]
+
+[test: treeview/annotation-lines/review159-region-description-ps-one]
+
+[test: treeview/annotation-lines/review159-region-description-ls-tab]
+
+[test: treeview/annotation-lines/review159-region-description-ps-tab]
+
+[test: treeview/annotation-lines/review159-region-unbranched-root-class-ls]
+
+[test: treeview/annotation-lines/review159-region-unbranched-root-icon-ps]
+
+[test:
+treeview/annotation-lines/review159-region-unbranched-root-description-ls]
+
+[test: treeview/annotation-lines/review159-region-forest-class-ps]
+
+[test: treeview/annotation-lines/review159-region-forest-icon-ls]
+
+[test: treeview/annotation-lines/review159-region-forest-description-ps]
+
+[test: treeview/annotation-lines/review159-region-unprefixed-quoted-ls]
+
+[test: treeview/annotation-lines/review159-region-quoted-class-ls]
+
+[test: treeview/annotation-lines/review159-region-quoted-icon-ps]
+
+[test: treeview/annotation-lines/review159-region-quoted-description-ls]
+
+[test: treeview/annotation-lines/review159-region-repeated-classes-ps]
+
+[test: treeview/annotation-lines/review159-region-directive-inline]
+
+[test: treeview/annotation-lines/review159-region-protected-semicolon]
+
+[test: treeview/annotation-lines/review159-region-unselected-semicolon]
+
+[test: treeview/annotation-lines/review159-region-empty-block]
+
+[test:
+treeview/annotation-lines/review159-region-value-prefix-and-protected-row]
+
+[fixture: treeview/decorations/box-redraw-decorations-guides] [fixture:
+treeview/decorations/box-redraw-sole-selector-after-empty-block] [fixture:
+treeview/comments/box-redraw-move-comment-prefix-once] [fixture:
+treeview/annotation-lines/box-redraw-join-prefixed-class] [fixture:
+treeview/annotation-lines/box-redraw-keep-after-description] [fixture:
+treeview/annotation-lines/box-redraw-keep-comment-between]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-repeat]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-and-gap]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-before-comment]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-before-directive-line]
+
+[fixture:
+treeview/decorations/box-redraw-annotation-blank-after-inline-directive]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-at-eof]
+
+[fixture: treeview/decorations/box-redraw-annotation-blank-with-protected-name]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ls]
+
+[test: treeview/decorations/box-redraw-annotation-blank-ps]
+
+Retain the complete body when prefix/decoration trivia, arbitrary prefix text,
+fixed row boundaries, unsafe annotation movement, mode loss or changed value
+reading prevents safe redrawing. Splitting that exposes leading Unicode
+whitespace in a name on a new unprefixed line also keeps the body. Value-owned
+prefixes and decoration keep their spelling, and the planned first-positive
+branch width must preserve their indentation reading. Adding/removing a branch
+must preserve value tabs and owned tails. Shared semicolon protection composes
+with these conditions. Body-retained diagrams can still look different from
+their read tree; the printer does not discard authored text to force visual
+agreement.
+
+[fixture: treeview/branch-prefixes/box-redraw-arbitrary-and-value-width]
+[fixture: treeview/multiline-values/box-redraw-value-width-changes] [fixture:
+treeview/multiline-values/box-redraw-value-width-and-protected-line] [fixture:
+treeview/semicolons/box-redraw-protected-value-on-enclosed-prefix-line]
+[fixture: treeview/branch-prefixes/box-redraw-trivia-after-dashes-name] [corpus
+fixture: treeview/box-tabs-after-selected-semicolon]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-inline-directive-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-directive-line-between]
+
+[fixture: treeview/annotation-lines/box-redraw-keep-selected-semicolon-between]
+
+[fixture:
+treeview/branch-prefixes/box-redraw-prefix-trivia-and-value-protection]
+
+[fixture: treeview/semicolons/box-redraw-arbitrary-prefix-on-protected-line]
+
+[fixture: treeview/tabs/box-redraw-joined-description-value-tab-kept]
+
+[fixture: treeview/tabs/box-redraw-joined-description-directive-tab]
+
+The six existing [specified readings](./treeview.md#specified-readings), guarded
+frontmatter, shared CR/CRLF handling and Markdown final-line trimming still
+apply. Rejected standalone input produces a syntax error, without repair.
 
 [corpus fixture: treeview/directive-header-inside] [corpus fixture:
 treeview/semicolon-class-inside] [corpus fixture:
 treeview/div-html-frontmatter-reject] [corpus fixture:
 treeview/div-frontmatter-invalid] [corpus fixture: treeview/bare-line-nbsp]
-[corpus fixture: treeview/c4-container-bare] [test:
-treeview/line-terminators-and-unicode/eol-cr-structure] [test: treeview
-Markdown: final-bare-padding] [test: treeview Markdown: quoted-interior] [test:
-treeview Markdown: rejected]
+[corpus fixture: treeview/c4-container-bare] [test: treeview Markdown:
+final-bare-padding] [test: treeview Markdown: rejected]
 
 ## Railroad dialects and authored values
 

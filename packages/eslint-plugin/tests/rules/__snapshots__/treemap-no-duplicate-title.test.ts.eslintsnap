@@ -113,6 +113,47 @@ Code:
 ---
 
 
+Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/nested-statement-gaps-title-history
+Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/nested-statement-gaps-title-history-input.mmd
+
+Code:
+  1 | treemap
+  2 | title First
+  3 | accTitle: First
+  4 | "Root"
+  5 | title Second
+    | ^~~~~~~~~~~~ [1]
+  6 | accTitle: Second
+    | ^~~~~~~~~~~~~~~~ [2]
+  7 |   "Branch"
+  8 | title Third
+    | ^~~~~~~~~~~ [3]
+  9 | accTitle: Third
+    | ^~~~~~~~~~~~~~~ [4]
+ 10 |     "Leaf":1
+ 11 | classDef aa fill:red;
+ 12 | title Fourth
+    | ^~~~~~~~~~~~ [5]
+ 13 | accTitle: Fourth
+    | ^~~~~~~~~~~~~~~~ [6]
+ 14 |   "Sibling":2
+ 15 | title Fifth
+    | ^~~~~~~~~~~ [7]
+ 16 | accTitle: Fifth
+    | ^~~~~~~~~~~~~~~ [8]
+ 17 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+[3] mermaid.js replaces the title set on line 5 with the one of this `title`.
+[4] mermaid.js replaces the accessible title set on line 6 with the one of this `accTitle`.
+[5] mermaid.js replaces the title set on line 8 with the one of this `title`.
+[6] mermaid.js replaces the accessible title set on line 9 with the one of this `accTitle`.
+[7] mermaid.js replaces the title set on line 12 with the one of this `title`.
+[8] mermaid.js replaces the accessible title set on line 13 with the one of this `accTitle`.
+---
+
+
 Test: treemap-no-duplicate-title >> invalid >>> invalid/treemap/title-directive-only
 Filename: tests/fixtures/rules/treemap-no-duplicate-title/invalid/treemap/title-directive-only-input.mmd
 

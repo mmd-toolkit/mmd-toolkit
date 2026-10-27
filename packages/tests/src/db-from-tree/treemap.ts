@@ -4,7 +4,7 @@ import type { DbSummary, JsonObject, JsonValue } from "../types.ts"
 import { ConvertedText, readConvertedCharacters } from "./converted-text.ts"
 import { commonValue } from "./statement-values.ts"
 import { textReplacementOf } from "./text-replacement.ts"
-import type { TreemapDiagram } from "./treemap-tree.ts"
+import type { TreemapDiagram, TreemapRow } from "./treemap-tree.ts"
 import type { TreeRoot } from "./tree.ts"
 import { descriptionOf } from "./values.ts"
 
@@ -21,7 +21,7 @@ function stylesOf(value: string): string[] {
     .map((style) => style.trimEnd())
 }
 
-/** docs/db-from-tree/treemap.md: rebuild the forest and publish classes and common values. */
+/** docs/db-from-tree/treemap.md: project the nested forest and publish classes and common values. */
 export function treemapDbOf(
   source: string,
   root: TreeRoot,
@@ -31,39 +31,34 @@ export function treemapDbOf(
   const text = new ConvertedText(readConvertedCharacters(source, root))
   const replace = textReplacementOf(embedded.config)
   const nodes: JsonObject[] = []
-  const sections: { indent: number; children: JsonObject[] }[] = []
   const classes = new Map<string, string[]>()
   let title = ""
   let accTitle = ""
   let accDescr = ""
-  for (const statement of diagram.body) {
+
+  /** Project a hierarchy occurrence, applying its leading statements globally. */
+  function nodeOf(statement: TreemapRow): JsonObject {
+    for (const before of statement.statementsBefore) visit(before)
+    const node: Record<string, JsonValue> = {
+      name: text.of(statement.name.range).slice(1, -1),
+    }
+    if (statement.type === "TreemapLeaf")
+      node.value = numberOrText(
+        Number.parseFloat(text.of(statement.value.range).replaceAll(",", "")),
+      )
+    if (statement.classSelector !== null)
+      node.classSelector = text.of(statement.classSelector.range)
+    if (statement.type === "TreemapSection")
+      node.children = statement.children.map(nodeOf)
+    return node
+  }
+
+  /** Apply gap statements before projecting each hierarchy node, in written order. */
+  function visit(statement: TreemapDiagram["body"][number]): JsonObject | null {
     switch (statement.type) {
       case "TreemapSection":
-      case "TreemapLeaf": {
-        while (
-          sections.length > 0 &&
-          (sections.at(-1)?.indent ?? -1) >= statement.indent
-        )
-          sections.pop()
-        const node: Record<string, JsonValue> = {
-          name: text.of(statement.name.range).slice(1, -1),
-        }
-        if (statement.type === "TreemapLeaf")
-          node.value = numberOrText(
-            Number.parseFloat(
-              text.of(statement.value.range).replaceAll(",", ""),
-            ),
-          )
-        if (statement.classSelector !== null)
-          node.classSelector = text.of(statement.classSelector.range)
-        ;(sections.at(-1)?.children ?? nodes).push(node)
-        if (statement.type === "TreemapSection") {
-          const children: JsonObject[] = []
-          node.children = children
-          sections.push({ indent: statement.indent, children })
-        }
-        break
-      }
+      case "TreemapLeaf":
+        return nodeOf(statement)
       case "TreemapClassDefStatement": {
         const id = text.of(statement.name.range)
         const styles = classes.get(id) ?? []
@@ -93,6 +88,12 @@ export function treemapDbOf(
           `treemap Db: unknown statement ${JSON.stringify(statement satisfies never)}`,
         )
     }
+    return null
+  }
+
+  for (const statement of diagram.body) {
+    const node = visit(statement)
+    if (node !== null) nodes.push(node)
   }
   return {
     title: replace(title || embedded.title || ""),

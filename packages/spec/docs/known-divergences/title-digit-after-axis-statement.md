@@ -100,7 +100,8 @@ Each example is a whole diagram:
 | 4       | rejected   | the x axis `A` and the title `Q1`             |
 | 5       | rejected   | the x axis `A`, two lines, and the title `Q1` |
 
-[fixture: xychart/div-title-digit-after-axis-semicolon] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+xychart/div-title-digit-after-axis-semicolon] [fixture:
 xychart/div-title-digit-after-axis-band-same-line] [fixture:
 xychart/div-title-digit-next-line-after-axis-and-plot] [fixture:
 xychart/div-title-digit-after-axis-trailing-space] [fixture:

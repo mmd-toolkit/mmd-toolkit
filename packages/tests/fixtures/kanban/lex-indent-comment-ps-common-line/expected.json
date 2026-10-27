@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Units and contexts, Comments and Indentation and parents; ast/kanban.md indent: A common comment region on its own line consumes T;x through LF, rather than exposing a native comment-ending PS. Mermaid accepts; the Db is recorded for column/card or parent/child comparison."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "isGroup": true
+      },
+      {
+        "id": "A;b",
+        "label": "A;b",
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

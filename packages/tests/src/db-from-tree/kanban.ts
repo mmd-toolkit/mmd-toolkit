@@ -7,7 +7,7 @@ import { textReplacementOf } from "./text-replacement.ts"
 import { TreeError } from "./tree.ts"
 import type { TreeRoot } from "./tree.ts"
 
-/** docs/db-from-tree/kanban.md: the normalized renderer data, read from the flat written rows. */
+/** docs/db-from-tree/kanban.md: the normalized renderer data, read from columns and their cards. */
 export function kanbanDbOf(
   source: string,
   root: TreeRoot,
@@ -18,10 +18,14 @@ export function kanbanDbOf(
   const replace = textReplacementOf(embedded.config)
   const sections: JsonObject[] = []
   const items: JsonObject[] = []
-  const sectionLevel = diagram.body[0]?.indent
-  let sectionId: string | undefined
   let effectIndex = 0
-  for (const [index, node] of diagram.body.entries()) {
+
+  /** Read one occurrence and consume its own suffix effect once. */
+  function publish(
+    node: KanbanNode,
+    isGroup: boolean,
+    sectionId?: string,
+  ): JsonObject {
     const { id, shape } = node
     if (id === null && shape === null)
       throw new TreeError(
@@ -44,19 +48,6 @@ export function kanbanDbOf(
     const writtenId =
       id === null ? (description ?? "") : readValue(id.range, id.value)
     const nodeId = replace(writtenId)
-    const isGroup = node.indent === sectionLevel
-    if (
-      sectionLevel !== undefined &&
-      node.indent < sectionLevel &&
-      index < diagram.body.length - 1
-    ) {
-      throw new TreeError(
-        "kanban",
-        node.type,
-        "a shallower item is followed by another node",
-      )
-    }
-    if (isGroup) sectionId = nodeId
     const summary: Record<string, JsonValue> = {
       id: nodeId,
       label: replace(description ?? writtenId),
@@ -82,8 +73,14 @@ export function kanbanDbOf(
       Object.assign(summary, effect.set)
     }
     applyDecorations(readValue, node, summary, isGroup, replace)
-    if (isGroup) sections.push(summary)
-    else items.push(summary)
+    return summary
+  }
+
+  for (const column of diagram.body) {
+    const section = publish(column, true)
+    sections.push(section)
+    for (const card of column.children)
+      items.push(publish(card, false, String(section.id)))
   }
   if (effectIndex !== embedded.dataBlockEffects.length)
     throw new TreeError(

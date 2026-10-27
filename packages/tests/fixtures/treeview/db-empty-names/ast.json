@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -43,11 +44,13 @@
             "line": 2,
             "column": 2
           }
-        }
+        },
+        "children": []
       },
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -84,11 +87,13 @@
             "line": 3,
             "column": 2
           }
-        }
+        },
+        "children": []
       },
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -125,11 +130,13 @@
             "line": 4,
             "column": 3
           }
-        }
+        },
+        "children": []
       },
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -166,7 +173,8 @@
             "line": 5,
             "column": 4
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

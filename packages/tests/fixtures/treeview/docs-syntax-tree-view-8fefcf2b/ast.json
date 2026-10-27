@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -30,7 +31,7 @@
         "annotations": [],
         "range": [
           66,
-          70
+          98
         ],
         "loc": {
           "start": {
@@ -38,91 +39,96 @@
             "column": 4
           },
           "end": {
-            "line": 7,
-            "column": 8
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 8,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": "index.js",
-          "range": [
-            79,
-            87
-          ],
-          "loc": {
-            "start": {
-              "line": 8,
-              "column": 8
-            },
-            "end": {
-              "line": 8,
-              "column": 16
-            }
+            "line": 8,
+            "column": 27
           }
         },
-        "annotations": [
+        "children": [
           {
-            "type": "TreeviewIconAnnotation",
+            "type": "TreeviewNode",
+            "indent": 8,
             "textBefore": [],
             "prefix": null,
+            "textBeforeName": [],
             "name": {
-              "type": "Identifier",
-              "name": "none",
+              "type": "TreeviewIdentifier",
+              "name": "index.js",
               "range": [
-                93,
-                97
+                79,
+                87
               ],
               "loc": {
                 "start": {
                   "line": 8,
-                  "column": 22
+                  "column": 8
                 },
                 "end": {
                   "line": 8,
-                  "column": 26
+                  "column": 16
                 }
               }
             },
+            "annotations": [
+              {
+                "type": "TreeviewIconAnnotation",
+                "textBefore": [],
+                "prefix": null,
+                "name": {
+                  "type": "Identifier",
+                  "name": "none",
+                  "range": [
+                    93,
+                    97
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 22
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 26
+                    }
+                  }
+                },
+                "range": [
+                  88,
+                  98
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 17
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 27
+                  }
+                }
+              }
+            ],
             "range": [
-              88,
+              79,
               98
             ],
             "loc": {
               "start": {
                 "line": 8,
-                "column": 17
+                "column": 8
               },
               "end": {
                 "line": 8,
                 "column": 27
               }
-            }
+            },
+            "children": []
           }
-        ],
-        "range": [
-          79,
-          98
-        ],
-        "loc": {
-          "start": {
-            "line": 8,
-            "column": 8
-          },
-          "end": {
-            "line": 8,
-            "column": 27
-          }
-        }
+        ]
       },
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -157,7 +163,8 @@
             "line": 9,
             "column": 16
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

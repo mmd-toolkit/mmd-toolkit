@@ -26,7 +26,8 @@ sequenceDiagram
   A ->> B: x
 ```
 
-[fixture: sequence/header-after-bare-percent-line]
+The example places a bare `%%` line before the header. [fixture:
+sequence/header-after-bare-percent-line]
 
 mermaid.js reads the same input differently: its detection strips every `%%`
 that has a line break after it together with the rest of its line, finds the
@@ -157,13 +158,16 @@ Each example is a whole diagram.
 | 12      | rejected: the `%%` is a field before the header     | a sankey diagram with the link a to b        |
 | 13      | rejected: the `%%` is an id before the header       | a block diagram with the block A             |
 
-[fixture: flowchart/header-after-bare-percent-line] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line] [fixture:
 state/header-after-empty-braces-line] [fixture:
 class/header-after-bare-percent-then-whitespace-line] [fixture:
 class/header-after-empty-braces-then-whitespace-line] [fixture:
-er/header-after-bare-percent-line] [fixture: er/header-after-empty-braces-line]
-[fixture: er/header-after-bare-percent-line-and-whitespace-line] [fixture:
+er/header-after-bare-percent-line] [fixture:
+er/header-after-bare-percent-line-relationship] [fixture:
+er/header-after-empty-braces-line] [fixture:
+er/header-after-bare-percent-line-and-whitespace-line] [fixture:
 gantt/header-after-bare-percent-line] [fixture:
 gantt/header-after-empty-braces-line] [fixture:
 gantt/header-after-bare-percent-line-and-whitespace-line] [fixture:

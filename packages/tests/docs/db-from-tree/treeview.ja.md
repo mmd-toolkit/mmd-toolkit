@@ -3,8 +3,7 @@
 英語版: [treeview.md](./treeview.md)
 
 `treeviewDbOf` は受理済みの
-[平らな木](../../../spec/docs/ast/treeview.ja.md)を読む。
-[親子の直接規則](../../../spec/docs/diagrams/treeview.ja.md#字下げと親子)と
+[入れ子の木](../../../spec/docs/ast/treeview.ja.md)を読み、
 [公開する要約](../db-summaries.ja.md#treeview)に従い、受理を判定しない。
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 
@@ -48,15 +47,12 @@
    [fixture: treeview/common-block-whitespace-raw]
    [fixture: treeview/db-all-fields] [fixture: treeview/frontmatter-title]
    [fixture: treeview/config-security-level-other]
-3. TreeviewNode を body 順に訪れる。
-   indent が新しい node 以上の祖先を末尾から取り除く。
-   最後に残った祖先の children、なければ外側の森に追加し、
-   新しい node を祖先の列に積む。file も directory も積む。
-   割り当て済みの indent を使い、物理行の先頭から数え直さない。
-   通常のタブ、末尾の字下げの列、branch の深さは既に反映されている。
-   共通の文と装飾は祖先の列を変えない。
-   最初の字下げ、重複名、空名、すべての root を保つ。
-   すべての node に children を置き、子がなくても空リストにする。
+3. Diagram.body の根を読み、各 TreeviewNode.children を原順で再帰的に写す。
+   file も directory も子を持てる。
+   indent を読んだり親を再計算したりしない。
+   parser が入れ子を作り、checkTree が独立に確かめる。
+   重複名、空名、すべての根、空の children リストを保つ。
+   node の textBefore とほかの所有する装飾は Db の node を作らない。
    [fixture: treeview/db-indent-pop] [fixture: treeview/db-file-parent]
    [fixture: treeview/db-first-indented] [fixture: treeview/db-duplicate-names]
    [fixture: treeview/db-empty-names] [fixture: treeview/db-tabs-one-unit]

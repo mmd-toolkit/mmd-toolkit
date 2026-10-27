@@ -42,6 +42,7 @@
       {
         "type": "TreemapLeaf",
         "indent": 0,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "A",

@@ -1,7 +1,9 @@
+import { treeviewBoxCharacters } from "../src/printers/treeview-characters.ts"
 /**
  * What formatting must keep, checked without mermaid.js: the Db that the tree
  * of a text denotes, the texts of the embedded data, and the written source
- * apart from whitespace, frontmatter, and removed semicolons.
+ * apart from whitespace, frontmatter, removed semicolons and redrawn outer
+ * box structure.
  *
  * The Db is built from the tree by `dbFromTree` of `@mmd-toolkit/tests`, with
  * the values that mermaid.js derives from the embedded data of the input (the
@@ -31,6 +33,9 @@ import type {
   DiagramBody,
   Root,
   EventmodelingDataBlock,
+  Range,
+  TreeviewBranchPrefix,
+  TreeviewIgnoredText,
 } from "@mmd-toolkit/parser"
 import { parse, visitorKeys } from "@mmd-toolkit/parser"
 import { significantIndentationWidth } from "../src/printers/lines.ts"
@@ -203,9 +208,10 @@ const semicolonSeparatorDiagramTypes: ReadonlySet<DiagramBody["type"]> =
   ])
 
 /**
- * Every printer keeps written characters. Only semicolonSeparatorDiagramTypes
- * may remove input `;`. Ignore common.md's whitespace (including BOM) and
- * frontmatter; describeFrontmatterChange checks its YAML separately.
+ * Compare authored text while allowing treeview's explicitly redrawn outer
+ * box structure. Only semicolonSeparatorDiagramTypes may remove input `;`.
+ * Ignore common.md's whitespace (including BOM) and frontmatter;
+ * describeFrontmatterChange checks its YAML separately.
  */
 export function writtenTextKeptUpToSemicolons(
   before: string,
@@ -215,14 +221,37 @@ export function writtenTextKeptUpToSemicolons(
     parse(before).body.type,
   )
   const [input, output] = [before, after].map((text) => {
-    const frontmatter = parse(text).frontmatter
-    const outside =
-      frontmatter === null
-        ? text
-        : text.slice(0, frontmatter.range[0]) + text.slice(frontmatter.range[1])
+    const root = parse(text)
+    const structural: Range[] = []
+    // Only authored outer box forms may be redrawn. Value-owned box text,
+    // arbitrary prefix characters, trivia and every semicolon still compare
+    // exactly (docs/treeview.md, Branch prefixes and Source order).
+    walk(root.body, (node) => {
+      if (
+        node.type === "TreeviewBranchPrefix" ||
+        node.type === "TreeviewIgnoredText"
+      )
+        structural.push(
+          (node as TreeviewBranchPrefix | TreeviewIgnoredText).range,
+        )
+    })
     let written = ""
-    for (const character of outside) {
-      if (character.trim() !== "") written += character
+    for (let offset = 0; offset < text.length; offset++) {
+      const character = text[offset]
+      const frontmatter = root.frontmatter?.range
+      if (
+        frontmatter !== undefined &&
+        frontmatter[0] <= offset &&
+        offset < frontmatter[1]
+      )
+        continue
+      const drawn =
+        treeviewBoxCharacters.includes(character) &&
+        structural.some(([from, to]) => from <= offset && offset < to) &&
+        ![...root.comments, ...root.directives].some(
+          (item) => item.range[0] <= offset && offset < item.range[1],
+        )
+      if (!drawn && character.trim() !== "") written += character
     }
     return written
   })

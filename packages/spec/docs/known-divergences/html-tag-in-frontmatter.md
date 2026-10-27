@@ -107,7 +107,8 @@ Each example is a whole diagram.
 | 4       | the message `b='c'>d`                 | the message `b="c">d`                    |
 | 5       | the message `b="c">d`                 | the same                                 |
 
-[fixture: flowchart/html-tag-starts-in-frontmatter] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+flowchart/html-tag-starts-in-frontmatter] [fixture:
 flowchart/html-tag-starts-in-frontmatter-value] [fixture:
 flowchart/html-tag-starts-in-frontmatter-acc-title] [fixture:
 sequence/div-html-tag-starts-in-frontmatter-message] [fixture:

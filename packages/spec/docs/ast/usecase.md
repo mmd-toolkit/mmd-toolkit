@@ -16,7 +16,6 @@ terminator that ends a statement or unrelated indentation/trailing trivia.
 Ordinary whitespace belongs to no node except where a value's own rule reads it.
 Values leave common directives, comment regions, and selected semicolons out,
 but otherwise retain original characters, entities, line terminators, and case.
-
 [fixture: usecase/db-all-fields]
 
 ## Nodes

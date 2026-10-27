@@ -153,8 +153,8 @@ are read from the tree like this:
   and named attributes update the complete own attribute bags (the steps are in
   [db-from-tree/c4.md](./db-from-tree/c4.md)). [fixture: c4/db-all-fields]
 - **Kanban rows**: ids, labels, and icons use only their node ranges and written
-  values; the flat body determines membership, and each adjacent data suffix
-  consumes one embedded effect (the steps are in
+  values; body columns and their children determine membership, and each
+  adjacent data suffix consumes one embedded effect (the steps are in
   [db-from-tree/kanban.md](./db-from-tree/kanban.md)). [fixture:
   kanban/db-sections-items] [fixture: kanban/db-metadata-two-items]
 - **Block directions, classes, and styles**: directions, class ids, and styles
@@ -488,8 +488,8 @@ mermaid.js reads them further, and the builders do the same.
 
 ## The check
 
-Treeview is built from flat nodes, authored annotations and direct box readings,
-as described in [treeview.md](./db-from-tree/treeview.md). [fixture:
+Treeview is built from nested nodes, authored annotations and direct box
+readings, as described in [treeview.md](./db-from-tree/treeview.md). [fixture:
 treeview/gram-written-tree] [fixture: treeview/box-written-tree] [fixture:
 treeview/config-security-level-other] [fixture:
 treeview/div-html-frontmatter-value]
@@ -520,9 +520,9 @@ railroad/ir-gram-written-tree] [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree] [fixture:
 railroad/peg-gram-written-tree]
 
-Treemap is built from flat indented rows, class definitions and common values as
-described in [treemap.md](./db-from-tree/treemap.md). [fixture:
-treemap/gram-written-tree] [fixture: treemap/db-indent-pop]
+Treemap is built from nested sections and leaves, leading gap statements and
+outer common values as described in [treemap.md](./db-from-tree/treemap.md).
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-indent-pop]
 
 Radar is built as described in [radar.md](./db-from-tree/radar.md), from the
 authored declaration groups, entries, common assignments and options. [fixture:

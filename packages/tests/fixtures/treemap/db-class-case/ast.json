@@ -115,6 +115,7 @@
       {
         "type": "TreemapSection",
         "indent": 0,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "A",
@@ -153,6 +154,7 @@
             }
           }
         },
+        "children": [],
         "range": [
           58,
           68

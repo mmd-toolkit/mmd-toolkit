@@ -25,6 +25,7 @@ flowchart LR
   A@{ shape: rect }
 ```
 
+The example includes frontmatter, directive arguments and a data block.
 [fixture: flowchart/frontmatter-title] [fixture:
 common/config-font-family-string] [fixture: flowchart/gram-data-shape-known]
 
@@ -135,10 +136,10 @@ Each example is a whole diagram.
 | 4       | rejected, "No such shape"      | accepted           |
 | 5       | the vertex A with the label 12 | the same           |
 
-[fixture: flowchart/frontmatter-invalid-yaml] [fixture:
-common/frontmatter-duplicate-key] [fixture: common/config-css-key-not-string]
-[fixture: flowchart/div-data-unknown-shape] [fixture:
-flowchart/db-data-label-number]
+The fixtures record the readings compared in the table. [fixture:
+flowchart/frontmatter-invalid-yaml] [fixture: common/frontmatter-duplicate-key]
+[fixture: common/config-css-key-not-string] [fixture:
+flowchart/div-data-unknown-shape] [fixture: flowchart/db-data-label-number]
 
 So mermaid.js rejects an input when it cannot parse embedded data, or when the
 result has a form that it does not know. This specification accepts every such

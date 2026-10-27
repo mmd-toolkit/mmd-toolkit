@@ -2,12 +2,10 @@
 
 Japanese version: [treemap.ja.md](./treemap.ja.md)
 
-`treemapDbOf` reads the accepted flat body defined by
-[ast/treemap.md](../../../spec/docs/ast/treemap.md), using the
-[parent rule](../../../spec/docs/diagrams/treemap.md#indentation-and-parents)
-and the [published summary](../db-summaries.md#treemap). It does not decide
-acceptance. [fixture: treemap/gram-written-tree] [fixture:
-treemap/db-all-fields]
+`treemapDbOf` reads the accepted nested tree defined by
+[ast/treemap.md](../../../spec/docs/ast/treemap.md) and the
+[published summary](../db-summaries.md#treemap). It does not decide acceptance.
+[fixture: treemap/gram-written-tree] [fixture: treemap/db-all-fields]
 
 ## Building the summary
 
@@ -28,19 +26,22 @@ treemap/db-all-fields]
    treemap/common-line-whitespace] [fixture: treemap/common-block-whitespace]
    [fixture: treemap/frontmatter-empty-body-title] [fixture:
    treemap/html-fields] [fixture: treemap/config-security-level-other]
-3. Visit sections and leaves in body order. Before each row, pop open sections
-   whose indent is greater than or equal to that row's indent. Append the row to
-   the last remaining section, or to the outer forest. Push only sections;
-   leaves close sections by the same comparison but never take children. Common
-   statements and class definitions leave the stack unchanged. Indent already
-   counts a preceding line's trailing whitespace, tabs as one each and common
-   removals; it is not recomputed from physical line starts. Keep duplicate and
-   empty names and multiple outer nodes. [fixture: treemap/db-indent-pop]
-   [fixture: treemap/db-leaf-not-parent] [fixture: treemap/db-first-indented]
-   [fixture: treemap/db-duplicate-names] [fixture: treemap/db-empty-names]
-   [fixture: treemap/db-section-tail-space] [fixture: treemap/db-leaf-tail-tab]
-   [fixture: treemap/db-class-indented] [fixture:
-   treemap/common-block-empty-interleaved]
+3. Read roots and outer statements from Diagram.body. Before each section or
+   leaf, apply its statementsBefore in source order, then project its own values
+   and recursively visit a section's children. Only sections have children;
+   leaves remain leaves. Do not read indent or reconstruct parents: the parser
+   builds the nesting and checkTree independently checks it. Class definitions
+   and common assignments in leading gaps still have diagram-wide effects;
+   entering or leaving a section does not reset them. Keep duplicate and empty
+   names and multiple roots. [fixture: treemap/db-indent-pop] [fixture:
+   treemap/db-leaf-not-parent] [fixture: treemap/db-first-indented] [fixture:
+   treemap/db-duplicate-names] [fixture: treemap/db-empty-names] [fixture:
+   treemap/db-section-tail-space] [fixture: treemap/db-leaf-tail-tab] [fixture:
+   treemap/db-class-indented] [fixture: treemap/common-block-empty-interleaved]
+   [fixture: treemap/gram-nesting-global-class-before-child] [fixture:
+   treemap/gram-nesting-title-before-child] [fixture:
+   treemap/gram-nesting-statement-before-ancestor-child] [fixture:
+   treemap/gram-nesting-statement-after-last-child]
 4. A name is its converted StringLiteral interior, with both quotes removed and
    no backslash decoding or further sanitization. Keep an explicit selector's
    converted Identifier text, including unresolved names. A section always has

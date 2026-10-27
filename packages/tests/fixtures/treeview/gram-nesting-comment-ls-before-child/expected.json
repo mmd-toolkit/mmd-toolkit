@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "diagrams/treeview.md Indentation and parents: comment ls before child; retain the authored occurrences and nesting without changing acceptance or the Db."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "kept",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -7,6 +7,7 @@
       {
         "type": "TreemapSection",
         "indent": 0,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "R",
@@ -28,71 +29,74 @@
           }
         },
         "classSelector": null,
+        "children": [
+          {
+            "type": "TreemapLeaf",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "A",
+              "raw": "\"A\"",
+              "closed": true,
+              "range": [
+                17,
+                20
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 0
+                },
+                "end": {
+                  "line": 4,
+                  "column": 3
+                }
+              }
+            },
+            "value": {
+              "type": "NumericLiteral",
+              "value": 1,
+              "raw": "1",
+              "range": [
+                21,
+                22
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 5
+                }
+              }
+            },
+            "classSelector": null,
+            "range": [
+              17,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 5
+              }
+            }
+          }
+        ],
         "range": [
           8,
-          11
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 3
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 4,
-        "name": {
-          "type": "StringLiteral",
-          "value": "A",
-          "raw": "\"A\"",
-          "closed": true,
-          "range": [
-            17,
-            20
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 0
-            },
-            "end": {
-              "line": 4,
-              "column": 3
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 1,
-          "raw": "1",
-          "range": [
-            21,
-            22
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 4
-            },
-            "end": {
-              "line": 4,
-              "column": 5
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          17,
           22
         ],
         "loc": {
           "start": {
-            "line": 4,
+            "line": 2,
             "column": 0
           },
           "end": {

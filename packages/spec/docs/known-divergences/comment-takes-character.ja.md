@@ -18,6 +18,7 @@ sequenceDiagram
   John -->> Alice: Great!
 ```
 
+この例はメッセージの間の単独行にコメントを置きます。
 [fixture: sequence/docs-syntax-sequence-diagram-c404e4ed]
 
 この文書は、`autonumber 10%% c` のように、
@@ -93,6 +94,7 @@ id の並びかテキストの文字です。
 | 5   | 開始番号を指定しない番号付け | 5 からの番号付け                    |
 | 6   | 10 からの番号付け            | 同じ                                |
 
+表で比較した読みを次の fixture が記録します。
 [fixture: sequence/div-comment-after-one-character-id] [fixture:
 sequence/div-comment-after-id-run-first-character-target] [fixture:
 sequence/div-comment-after-text-colon] [fixture:

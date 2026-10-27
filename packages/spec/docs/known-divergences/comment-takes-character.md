@@ -19,7 +19,8 @@ sequenceDiagram
   John -->> Alice: Great!
 ```
 
-[fixture: sequence/docs-syntax-sequence-diagram-c404e4ed]
+The example puts a comment on its own line between messages. [fixture:
+sequence/docs-syntax-sequence-diagram-c404e4ed]
 
 This document is about a `%%` that comes right after another character on its
 line, with no whitespace between them, as in `autonumber 10%% c`. In this
@@ -91,7 +92,8 @@ Each example is a whole sequence diagram.
 | 5       | numbering with no start    | numbering from 5                    |
 | 6       | numbering from 10          | the same                            |
 
-[fixture: sequence/div-comment-after-one-character-id] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+sequence/div-comment-after-one-character-id] [fixture:
 sequence/div-comment-after-id-run-first-character-target] [fixture:
 sequence/div-comment-after-text-colon] [fixture:
 sequence/div-comment-after-two-digit-number] [fixture:

@@ -1,4 +1,9 @@
-import type { TreeviewDiagram, TreeviewTreeNode } from "../src/ast/treeview.ts"
+import type {
+  TreeviewDiagram,
+  TreeviewNode,
+  TreeviewIgnoredText,
+  TreeviewTreeNode,
+} from "../src/ast/treeview.ts"
 import type {
   EventmodelingDiagram,
   EventmodelingNode,
@@ -6,7 +11,17 @@ import type {
 import type { CynefinDiagram, CynefinNode } from "../src/ast/cynefin.ts"
 import type { WardleyDiagram, WardleyNode } from "../src/ast/wardley.ts"
 import type { RailroadDiagram, RailroadNode } from "../src/ast/railroad.ts"
-import type { TreemapDiagram, TreemapNode } from "../src/ast/treemap.ts"
+import type {
+  TreemapDiagram,
+  TreemapNode,
+  TreemapSection,
+  TreemapLeaf,
+  TreemapClassDefStatement,
+  TreemapTitleStatement,
+  TreemapAccTitleStatement,
+  TreemapAccDescrStatement,
+  TreemapAccDescrBlockStatement,
+} from "../src/ast/treemap.ts"
 import type { RadarDiagram, RadarNode } from "../src/ast/radar.ts"
 import type {
   ArchitectureDiagram,
@@ -51,7 +66,11 @@ import type { SankeyDiagram, SankeyNode } from "../src/ast/sankey.ts"
 import type { XychartDiagram, XychartNode } from "../src/ast/xychart.ts"
 import type { QuadrantDiagram, QuadrantNode } from "../src/ast/quadrant.ts"
 import type { BlockDiagram, BlockTreeNode } from "../src/ast/block.ts"
-import type { KanbanDiagram, KanbanTreeNode } from "../src/ast/kanban.ts"
+import type {
+  KanbanDiagram,
+  KanbanNode,
+  KanbanTreeNode,
+} from "../src/ast/kanban.ts"
 import type { C4Diagram, C4Node } from "../src/ast/c4.ts"
 import type { VennDiagram, VennNode } from "../src/ast/venn.ts"
 import type { IshikawaDiagram, IshikawaTreeNode } from "../src/ast/ishikawa.ts"
@@ -151,6 +170,34 @@ describe("the types of ast.md", () => {
       | "loc"
     >()
     expectTypeOf<keyof ErrorDiagram>().toEqualTypeOf<"type" | "range" | "loc">()
+  })
+
+  it("gives treeview, treemap and kanban their specified hierarchy and gap fields", () => {
+    expectTypeOf<TreeviewNode["textBefore"]>().toEqualTypeOf<
+      readonly TreeviewIgnoredText[]
+    >()
+    expectTypeOf<TreeviewNode["children"]>().toEqualTypeOf<
+      readonly TreeviewNode[]
+    >()
+    expectTypeOf<TreemapSection["children"]>().toEqualTypeOf<
+      readonly (TreemapSection | TreemapLeaf)[]
+    >()
+    expectTypeOf<TreemapSection["statementsBefore"]>().toEqualTypeOf<
+      readonly (
+        | TreemapClassDefStatement
+        | TreemapTitleStatement
+        | TreemapAccTitleStatement
+        | TreemapAccDescrStatement
+        | TreemapAccDescrBlockStatement
+      )[]
+    >()
+    expectTypeOf<TreemapLeaf["statementsBefore"]>().toEqualTypeOf<
+      TreemapSection["statementsBefore"]
+    >()
+    expectTypeOf<TreemapLeaf>().not.toHaveProperty("children")
+    expectTypeOf<KanbanNode["children"]>().toEqualTypeOf<
+      readonly KanbanNode[]
+    >()
   })
 
   it("lists tokens, comments, directives, and the frontmatter on the root", () => {

@@ -18,13 +18,19 @@ kanban/db-empty-board-comment] [fixture: kanban/db-empty-board-whitespace]
 
 ### KanbanNode
 
-A node runs from its node text or shape opener to its last data block or last
-decoration, when present. Its indentation is outside its range; its trailing
-node-text whitespace is inside. Later nodes remain separate siblings, whatever
-their indentation. [fixture: kanban/db-name-trailing-space] [fixture:
-kanban/db-name-no-id] [fixture: kanban/db-name-space-before-shape] [fixture:
-kanban/db-metadata-all] [fixture: kanban/db-metadata-two-items] [fixture:
-kanban/gram-decoration-then-child] [fixture: kanban/db-indent-deeper]
+A node starts at its node text or shape opener. A column ends at its last card,
+or at its own last decoration, data block, shape or node text without children.
+Cards always have empty children and end at their own last component. These
+ranges are continuous and siblings do not overlap. Leading indentation and
+unrelated trailing trivia are outside the range; trailing node-text whitespace
+is inside. A deeper card after a card remains a sibling under the column.
+[fixture: kanban/db-name-trailing-space] [fixture: kanban/db-name-no-id]
+[fixture: kanban/db-name-space-before-shape] [fixture: kanban/db-metadata-all]
+[fixture: kanban/db-metadata-two-items] [fixture:
+kanban/gram-decoration-then-child] [fixture: kanban/db-indent-deeper] [fixture:
+kanban/gram-nesting-item-decoration-before-deeper-item] [fixture:
+kanban/db-indent-shallower-last] [fixture:
+kanban/gram-shallower-then-decoration]
 
 ### KanbanShape, KanbanIconStatement, and KanbanClassStatement
 

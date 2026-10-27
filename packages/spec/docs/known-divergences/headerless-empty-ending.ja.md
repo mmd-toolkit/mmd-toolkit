@@ -86,6 +86,7 @@ class 図として検出されますが、ヘッダーを持ちません。
 | 5   | 空の図                    | 拒否     |
 | 6   | 空の図                    | 拒否     |
 
+表で比較した読みを次の fixture が記録します。
 [fixture: class/div-headerless-relation-empty-title] [fixture:
 class/header-word-relation-title] [fixture:
 class/lex-acc-title-at-end-after-relation] [fixture:

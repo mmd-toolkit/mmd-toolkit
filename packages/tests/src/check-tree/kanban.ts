@@ -22,7 +22,7 @@ import {
 import type { Reading } from "./statement-checks.ts"
 import { checkTokensInValueNodes } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot, CheckedToken } from "./types.ts"
-import { walkNodes } from "./walk.ts"
+import { nodesOf, walkNodes } from "./walk.ts"
 
 // ast/kanban.md and diagrams/kanban.md define these checks; token kinds and
 // ranges follow parser/docs/tokens/kanban.md and positions/kanban.md.
@@ -81,17 +81,24 @@ export const KANBAN_CHILD_TYPES: FieldTable<readonly string[]> = {
     shape: ["KanbanShape"],
     data: ["KanbanDataBlock"],
     decorations: ["KanbanIconStatement", "KanbanClassStatement"],
+    children: ["KanbanNode"],
   },
   KanbanShape: { label: ["KanbanLabel"] },
   KanbanIconStatement: { icon: ["KanbanLiteral"] },
   KanbanClassStatement: { cssClass: ["KanbanLiteral"] },
 }
 
-/** Units and contexts: indentation counts whitespace other than CR and LF, leaving directives out. */
+/** Units and contexts: count non-CR/LF whitespace through shared trivia, stopping at native comment text. */
 function indentationBefore(reading: Reading, offset: number): number {
   let count = 0
   for (let at = offset - 1; at >= 0; at--) {
     if (reading.written.isLeftOut(at)) continue
+    if (
+      reading.root.comments.some(
+        (comment) => comment.range[0] <= at && at < comment.range[1],
+      )
+    )
+      break
     const code = reading.text.charCodeAt(at)
     if (code === 10 || code === 13 || !isWhitespace(code)) break
     count++
@@ -117,9 +124,10 @@ function checkLineGap(
   const lineEnd =
     gap.includes("\n") ||
     gap.includes("\r") ||
-    comments.some((comment) =>
-      ["\u2028", "\u2029"].includes(reading.text.charAt(comment.range[1])),
-    )
+    comments.some((comment) => {
+      const next = nextWrittenCharacter(reading, comment.range[1])
+      return next === "\u2028" || next === "\u2029"
+    })
   reading.problems.expect(
     isBlank(gap) && (!needsEnd || lineEnd),
     label(node),
@@ -322,6 +330,43 @@ function checkValueTokens(
   )
 }
 
+/** The occurrence ends at its own final decoration or suffix, before any cards. */
+function ownEnd(node: CheckedNode): number {
+  return (
+    (
+      entriesOf(node, "decorations").at(-1) ??
+      entriesOf(node, "data").at(-1) ??
+      childOf(node, "shape") ??
+      childOf(node, "id")
+    )?.range[1] ?? node.range[1]
+  )
+}
+
+/** Columns use the first node's indent; all other nodes belong to the latest column. */
+function checkParents(reading: Reading, ordered: readonly CheckedNode[]): void {
+  const expected = new Map<CheckedNode, CheckedNode[]>()
+  const columns: CheckedNode[] = []
+  let column: CheckedNode | undefined
+  for (const node of ordered) {
+    if (column === undefined || node.indent === ordered[0]?.indent) {
+      columns.push(node)
+      column = node
+    } else expected.set(column, [...(expected.get(column) ?? []), node])
+  }
+  for (const node of [reading.root.body, ...ordered]) {
+    reading.problems.expectEqual(
+      entriesOf(node, node === reading.root.body ? "body" : "children").map(
+        (child) => child?.range,
+      ),
+      (node === reading.root.body ? columns : (expected.get(node) ?? [])).map(
+        (child) => child.range,
+      ),
+      label(node),
+      "the children do not follow the kanban two-level first-indent column rule",
+    )
+  }
+}
+
 /** Checks a kanban tree against ast/kanban.md and parser/docs/tokens/kanban.md and positions/kanban.md. */
 export function checkKanbanTree(
   text: string,
@@ -330,7 +375,14 @@ export function checkKanbanTree(
 ): void {
   const reading = readingOf(text, root, problems)
   checkTokensInValueNodes(root, problems)
-  const body = entriesOf(root.body, "body")
+  const body = nodesOf(root)
+    .filter((node) => node.type === "KanbanNode")
+    .sort(
+      (a, b) =>
+        ((childOf(a, "id") ?? childOf(a, "shape"))?.range[0] ?? a.range[0]) -
+        ((childOf(b, "id") ?? childOf(b, "shape"))?.range[0] ?? b.range[0]),
+    )
+  checkParents(reading, body)
   const header = ownOf(root, root.body).tokens[0]
   let previous = header?.range[1] ?? root.body.range[0]
   if (header !== undefined) {
@@ -347,19 +399,32 @@ export function checkKanbanTree(
       "the header has neither a body nor a source line end or comment",
     )
   }
-  const firstLevel = body[0]?.indent
   for (const [index, node] of body.entries()) {
-    if (node === null) continue
     checkLineGap(reading, node, previous, node.range[0], index > 0)
-    problems.expect(
-      index === body.length - 1 || Number(node.indent) >= Number(firstLevel),
-      label(node),
-      "a shallower item is followed by another node",
-    )
-    previous = node.range[1]
+    previous = ownEnd(node)
   }
   checkLineGap(reading, root.body, previous, text.length, false)
   walkNodes(root, (node, parent) => {
+    if (
+      node.type === "KanbanIconStatement" ||
+      node.type === "KanbanClassStatement"
+    ) {
+      const preceding = body
+        .filter(
+          (item) =>
+            ((childOf(item, "shape") ?? childOf(item, "id"))?.range[1] ??
+              Infinity) <= node.range[0],
+        )
+        .at(-1)
+      problems.expect(
+        parent === preceding &&
+          entriesOf(parent ?? root.body, "decorations").filter(
+            (entry) => entry === node,
+          ).length === 1,
+        label(node),
+        "the decoration belongs exactly once to the last written node",
+      )
+    }
     checkChildTypes(reading, node, KANBAN_CHILD_TYPES)
     checkFieldWords(reading, node, KANBAN_FIELD_WORDS)
     if (!node.type.startsWith("Kanban")) return

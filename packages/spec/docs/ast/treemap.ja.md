@@ -11,12 +11,12 @@
 [fixture: treemap/db-empty-names]
 [fixture: treemap/common-repeat-empty]
 
-body は平らに保ち、section・leaf・class 定義それぞれの
-ソースの字下げを一度だけ残す。
-親・深さ・children は合成しない。
-親の section と後の子の間には共通の文と class 定義を置ける。
-解釈は[親の規則](../diagrams/treemap.md#indentation-and-parents)、
-導出する森は [tests の要約][summary]で定める。
+body は根と独立した外側の文を持つ。
+section は[親の規則](../diagrams/treemap.ja.md#字下げと親)による直接の子を持ち、
+leaf は親にならない。
+section・leaf・class 定義のソースの字下げは全て残す。
+階層ノードの間の共通の文と class 定義の owner は「gap の所有」で定める。
+値の変換と公開は [tests の要約][summary]で定める。
 [fixture: treemap/gram-written-tree]
 [fixture: treemap/common-block-empty-interleaved]
 [fixture: treemap/db-class-indented]
@@ -44,13 +44,71 @@ Identifier は書かれた class・selector の名前を保つ。
 [fixture: treemap/db-number-overflow]
 [fixture: treemap/gram-selector-underscore]
 
+## gap の所有
+
+階層ノードは TreemapSection と TreemapLeaf である。
+非階層の文は TreemapClassDefStatement、TreemapTitleStatement、
+TreemapAccTitleStatement、TreemapAccDescrStatement、
+TreemapAccDescrBlockStatement であり、階層の親を決める判定に参加しない。
+[fixture: treemap/db-class-indented]
+[fixture: treemap/common-block-empty-interleaved]
+[fixture: treemap/gram-nesting-title-before-child]
+[fixture: treemap/gram-nesting-acctitle-before-child]
+[fixture: treemap/gram-nesting-description-before-child]
+[fixture: treemap/gram-nesting-block-before-child]
+
+まず名前・数・literal の内側として読んだテキストはその葉に保つ。
+改行をまたぐ style から別の文を作らない。
+完成した階層ノードの間の独立した非階層の文は、
+次の階層ノードの statementsBefore にソース順で置く。
+次のノードは子、祖先の別の子、別の根のいずれでもよい。
+前の leaf に gap を所有させない。
+空の block と繰り返した文も別々に保つ。
+[fixture: treemap/lex-class-style-crosses-blank-line]
+[fixture: treemap/gram-written-tree]
+[fixture: treemap/gram-nesting-statement-before-section]
+[fixture: treemap/gram-nesting-statement-before-ancestor-child]
+[fixture: treemap/db-acctitle-tail-stays-content]
+[fixture: treemap/db-class-tail-no-space]
+[fixture: treemap/common-block-empty-interleaved]
+
+最初の階層ノードより前と最後より後の独立した文は Diagram.body に残す。
+階層ノードが無ければ全ての文をそこに置く。
+所有はソースの位置であり、section の内側だけに効く範囲を作るものではない。
+class 定義と共通の文は引き続き図全体に効く。
+[fixture: treemap/gram-written-tree]
+[fixture: treemap/gram-nesting-statement-after-last-child]
+[fixture: treemap/common-repeat-empty]
+[fixture: treemap/gram-nesting-global-class-before-child]
+
+共有 Comment・Directive、選択された無視するセミコロン、空白、空行は
+既存の所有を保ち、statementsBefore の要素を作らない。
+section を閉じたり、非階層の文を消したりしない。
+class の終端の後の字下げも含め、unit の字句上の境界と割り当てた字下げを保つ。
+空の description block は、これらとは別に保持する文である。
+[fixture: treemap/gram-indent-around-global-directive]
+[fixture: treemap/gram-nesting-child-after-directive-line]
+[fixture: treemap/gram-nesting-child-after-comment]
+[fixture: treemap/gram-nesting-child-after-empty-line]
+[fixture: treemap/gram-nesting-child-after-comment-ls]
+[fixture: treemap/gram-nesting-child-after-comment-ps]
+[fixture: treemap/gram-nesting-empty-class-before-child]
+[fixture: treemap/db-class-tail-space]
+[fixture: treemap/common-block-empty-interleaved]
+[fixture: treemap/gram-nesting-statements-directive-inline]
+[fixture: treemap/gram-nesting-statements-directive-line]
+[fixture: treemap/gram-nesting-statements-comment-line]
+[fixture: treemap/gram-nesting-statements-empty-line]
+[fixture: treemap/gram-nesting-statements-comment-ls]
+[fixture: treemap/gram-nesting-statements-comment-ps]
+
 ## ノード
 
 ### TreemapDiagram
 
-| 欄     | 型                      | 意味               |
-| ------ | ----------------------- | ------------------ |
-| `body` | list of TreemapBodyItem | 記述順の全ての文。 |
+| 欄     | 型                      | 意味                   |
+| ------ | ----------------------- | ---------------------- |
+| `body` | list of TreemapBodyItem | 根と独立した外側の文。 |
 
 子の欄: body。
 範囲は見出しの先頭から最後の書かれた body の文までとし、
@@ -69,9 +127,11 @@ TreemapClassDefStatement、TreemapTitleStatement、
 TreemapAccTitleStatement、TreemapAccDescrStatement、
 TreemapAccDescrBlockStatement のいずれか。
 公開する最後の値だけでなく、反復・空の共通の形も一つずつ保つ。
+body に直接置く section と leaf は根だけとする。
+独立した非階層の文は最初の階層ノードより前と最後より後だけ body に残す。
+間の文は「gap の所有」に従って statementsBefore に置く。
 空行・Comment は body 要素を作らず、body は空でもよい。
-native comment は共有 Comment record とし、
-TreemapIgnoredText や hidden-gap の欄は作らない。
+native comment は共有 Comment record とし、TreemapIgnoredText は作らない。
 [fixture: treemap/gram-written-tree]
 [fixture: treemap/common-repeat]
 [fixture: treemap/common-repeat-empty]
@@ -83,27 +143,36 @@ TreemapIgnoredText や hidden-gap の欄は作らない。
 
 ### TreemapSection
 
-| 欄              | 型                  | 意味                                   |
-| --------------- | ------------------- | -------------------------------------- |
-| `indent`        | nonnegative integer | row の前の ASCII space・tab の文字数。 |
-| `name`          | StringLiteral       | 空も許す引用した名前。                 |
-| `classSelector` | Identifier or null  | `:::` の後の名前。なければ null。      |
+| 欄                 | 型                                            | 意味                                   |
+| ------------------ | --------------------------------------------- | -------------------------------------- |
+| `indent`           | nonnegative integer                           | row の前の ASCII space・tab の文字数。 |
+| `statementsBefore` | 非階層の文のリスト                            | 名前より前の独立した文。               |
+| `name`             | StringLiteral                                 | 空も許す引用した名前。                 |
+| `classSelector`    | Identifier or null                            | `:::` の後の名前。なければ null。      |
+| `children`         | （TreemapSection または TreemapLeaf）のリスト | 直接の子。ソース順。                   |
 
-子の欄: name、classSelector。
-範囲は名前の開始引用符から終了引用符まで、selector があればその終端まで。
-前置する row の字下げは含めない。
-導出する森で子を持つ場合も持たない場合も、
-section に数値の value や children の欄は設けない。
+子の欄: statementsBefore、name、classSelector、children。
+範囲の開始は最初の statementsBefore の要素、空なら名前の開始引用符とする。
+末尾は最後の子孫まで、子が無ければ自身の selector か名前の終了引用符まで。
+連続した範囲の開始は名前の開始とは限らず、兄弟は重ならない。
+外側の字下げや無関係な末尾の trivia で範囲を延ばさない。
+section は数値の value を持たない。
+statementsBefore と children は、無ければ空のリストとする。
+children は親の規則に従う。
 [fixture: treemap/gram-written-tree]
 [fixture: treemap/db-empty-names]
 [fixture: treemap/db-indent-pop]
 [fixture: treemap/gram-adjacent-sections]
+[fixture: treemap/gram-nesting-statement-before-section]
+[fixture: treemap/gram-nesting-statement-after-last-child]
 
 indent は共通の除去の後の ASCII space・tab を一文字ずつ数える。
 深さではない。
 前の行や空白だけの行の連続から来る場合もあり、tab は展開しない。
 連続の中の directive は数える際に前後を接合する。
-元の空白の綴りは、このノードの範囲の外のソース文字として残る。
+indent は木の深さではなく割り当てた連続を保つ。
+字下げの空白は葉の値ではなくソース文字のままとし、
+statementsBefore によりノードの範囲が連続より前から始まる場合も同じである。
 [fixture: treemap/db-tabs-count]
 [fixture: treemap/db-section-tail-space]
 [fixture: treemap/db-leaf-tail-tab]
@@ -112,16 +181,20 @@ indent は共通の除去の後の ASCII space・tab を一文字ずつ数える
 
 ### TreemapLeaf
 
-| 欄              | 型                  | 意味                                   |
-| --------------- | ------------------- | -------------------------------------- |
-| `indent`        | nonnegative integer | row の前の ASCII space・tab の文字数。 |
-| `name`          | StringLiteral       | 空も許す引用した名前。                 |
-| `value`         | NumericLiteral      | 書かれた leaf の数。                   |
-| `classSelector` | Identifier or null  | `:::` の後の名前。なければ null。      |
+| 欄                 | 型                  | 意味                                   |
+| ------------------ | ------------------- | -------------------------------------- |
+| `indent`           | nonnegative integer | row の前の ASCII space・tab の文字数。 |
+| `statementsBefore` | 非階層の文のリスト  | 名前より前の独立した文。               |
+| `name`             | StringLiteral       | 空も許す引用した名前。                 |
+| `value`            | NumericLiteral      | 書かれた leaf の数。                   |
+| `classSelector`    | Identifier or null  | `:::` の後の名前。なければ null。      |
 
-子の欄: name、value、classSelector。
-範囲は名前の開始引用符から数まで、selector があればその終端まで。
-前置する row の字下げは含めない。
+子の欄: statementsBefore、name、value、classSelector。
+範囲の開始は最初の statementsBefore の要素、空なら名前の開始引用符とする。
+末尾は数か selector まで。範囲は連続し、名前の開始から始まるとは限らない。
+兄弟は重ならず、外側の字下げや無関係な末尾の trivia で範囲を延ばさない。
+leaf は children の欄を持たず、後のより深い row はその子ではない。
+statementsBefore は、無ければ空のリストとする。
 colon・comma の separator は句読点として保ち、欄にはしない。
 両方の形がこの型を使う。
 数の綴りと構成要素の間のソースの gap を保ち、子のノードへは変えない。
@@ -131,12 +204,16 @@ colon・comma の separator は句読点として保ち、欄にはしない。
 [fixture: treemap/gram-leaf-newlines-around-separator]
 [fixture: treemap/comment-value-selector-gap]
 [fixture: treemap/db-number-comma]
+[fixture: treemap/common-block-empty-interleaved]
+[fixture: treemap/db-leaf-not-parent]
 
 indent は共通の除去の後の ASCII space・tab を一文字ずつ数える。
 深さではない。
 前の行や空白だけの行の連続から来る場合もあり、tab は展開しない。
 連続の中の directive は数える際に前後を接合する。
-元の空白の綴りは、このノードの範囲の外のソース文字として残る。
+indent は木の深さではなく割り当てた連続を保つ。
+字下げの空白は葉の値ではなくソース文字のままとし、
+statementsBefore によりノードの範囲が連続より前から始まる場合も同じである。
 [fixture: treemap/db-tabs-count]
 [fixture: treemap/db-section-tail-space]
 [fixture: treemap/db-leaf-tail-tab]
@@ -185,7 +262,8 @@ U+2028・U+2029、末尾空白を一つの literal に保つ。
 style は後の行から始まり、別の node や class 定義に見える文字も囲み得る。
 その文字はこの literal のままとし、追加の文を合成しない。
 完了した class 定義の後の row は、
-semicolon の後から字下げを取る場合も別の body 要素として残す。
+semicolon の後から字下げを取る場合も別の階層ノードとして残す。
+class 定義の所有先は「gap の所有」で決める。
 [fixture: treemap/lex-class-style-takes-next-class]
 [fixture: treemap/lex-class-style-crosses-blank-line]
 [fixture: treemap/comment-region-in-class-style-gap]
@@ -359,13 +437,14 @@ accDescr: Short
 accDescr { Details }
 ```
 
-TreemapDiagram.body は順に title、section、leaf、class 定義、
-空の description block、leaf、accessibility title、
-行の description、空でない description block の九つの文を持つ。
+TreemapDiagram.body は title、根の section、accessibility title、
+行の description、空でない description block を持つ。
+section.children は Left と Right、Right.statementsBefore は
+class 定義と空の block をこの順に持つ。
 二つの leaf と class 定義の indent は 2、section は 0。
 最初の leaf は raw `1,234.5` と colon、
 第 2 は raw `2`、comma、single quote、selector aa を保つ。
-共通の文や class 定義を section の中へ移さない。
+class 定義と共通の文は、ソース上の owner に関わらず図全体への意味を保つ。
 [fixture: treemap/gram-written-tree]
 
 [summary]: ../../../tests/docs/db-summaries.md#treemap

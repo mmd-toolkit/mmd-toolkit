@@ -17,6 +17,7 @@ flowchart LR
   click A href "u" "tip"
 ```
 
+この例は A にリンク `u` とツールチップ `tip` を与えます。
 [fixture: flowchart/gram-click-href-tooltip]
 
 単位が始まる場所の語 `click` は、その後の空白とともに `click` の単位です
@@ -72,6 +73,7 @@ flowchart/spec-flow-singlenode-ada86e69]
 | 3   | A のリンク `u` とツールチップ `tip`             | 拒否     |
 | 4   | id `---` へのクリック。頂点はない               | 同じ     |
 
+表で比較した読みを次の fixture が記録します。
 [fixture: flowchart/db-subgraph-name-click-word-indented] [fixture:
 flowchart/gram-click-bare-after-vertex] [fixture:
 flowchart/gram-click-mid-statement-tooltip] [fixture:

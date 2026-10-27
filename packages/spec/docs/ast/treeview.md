@@ -25,7 +25,17 @@ or normalize line endings. Empty quoted names remain nodes, and closed is true.
 [fixture: treeview/gram-written-tree] [fixture: treeview/db-empty-names]
 [fixture: treeview/db-quote-conversion] [fixture:
 treeview/directive-double-middle] [fixture: treeview/comment-line-in-quotes]
-[fixture: treeview/text-double-crlf]
+[fixture: treeview/text-double-crlf] [fixture:
+treeview/box-quoted-tail-decoration-light-vertical] [fixture:
+treeview/box-quoted-tail-decoration-light-dash] [fixture:
+treeview/box-quoted-tail-branch-content] [fixture:
+treeview/box-quoted-tail-decoration-single-quoted] [fixture:
+treeview/box-quoted-tail-decoration-heavy-vertical] [fixture:
+treeview/box-quoted-tail-decoration-heavy-dash] [fixture:
+treeview/box-quoted-tail-branch-heavy] [fixture:
+treeview/box-quoted-tail-decoration-two-lines] [fixture:
+treeview/box-quoted-tail-branch-then-decoration] [fixture:
+treeview/box-quoted-tail-decoration-then-branch]
 
 Values keep authored tabs, slashes, quotes, entity spelling and owned
 whitespace. Box prefixes and decorations inside a value remain in that leaf's
@@ -36,54 +46,105 @@ to the [tests summary](../../../tests/docs/db-summaries.md#treeview). [fixture:
 treeview/gram-written-tree] [fixture: treeview/entity-double] [fixture:
 treeview/box-multiline-quoted] [fixture: treeview/box-quoted-decoration]
 [fixture: treeview/box-trim-string-closing-quote] [fixture:
-treeview/box-multiline-name-tail-trim]
+treeview/box-multiline-name-tail-trim] [fixture:
+treeview/box-block-tail-decoration-light-vertical] [fixture:
+treeview/box-block-tail-branch-content] [fixture:
+treeview/box-block-tail-decoration-crlf] [fixture:
+treeview/box-quoted-tail-decoration-light-vertical] [fixture:
+treeview/box-quoted-tail-decoration-light-dash] [fixture:
+treeview/box-quoted-tail-branch-content] [fixture:
+treeview/box-quoted-tail-decoration-single-quoted] [fixture:
+treeview/box-quoted-tail-decoration-heavy-vertical] [fixture:
+treeview/box-quoted-tail-decoration-heavy-dash] [fixture:
+treeview/box-quoted-tail-branch-heavy] [fixture:
+treeview/box-quoted-tail-decoration-two-lines] [fixture:
+treeview/box-quoted-tail-branch-then-decoration] [fixture:
+treeview/box-quoted-tail-decoration-then-branch]
 
 ## Gap ownership
 
 TreeviewIgnoredText holds only box-decoration forms, not shared Comments,
 Directives, whitespace or native YAML. There are no native hidden YAML or
-directive nodes. Every retained form has one owner; the following rules apply in
-source order. [fixture: treeview/box-written-tree] [fixture:
-treeview/gram-body-yaml] [fixture: treeview/detect-secondscan-singleline]
+directive nodes. Each retained form has one owner. Apply the following rules in
+order. [fixture: treeview/box-written-tree] [fixture: treeview/gram-body-yaml]
+[fixture: treeview/detect-secondscan-singleline]
 
-Decorations after the header, between complete top-level items and after the
-final item belong to Diagram.body. They do not end the common preamble. When
-indentation has been read but a name is still required, intervening decorations
-instead belong to Node.textBeforeName. A prefix supplying that indentation
-belongs to Node.prefix even if a native comment intervenes before the name.
-[fixture: treeview/box-written-tree] [fixture:
-treeview/box-decoration-preamble-body] [fixture:
-treeview/box-decoration-trailing-body] [fixture:
+Inside an already-open leaf, keep enclosed box forms in that leaf instead of
+extracting gap nodes. When indentation has been read but a name is still
+required, intervening outer decorations belong to Node.textBeforeName. The
+prefix supplying that indentation belongs to Node.prefix even if a native
+comment intervenes before the name. [fixture:
+treeview/ast-decoration-internal-and-body] [fixture:
+treeview/box-physical-directive-inline] [fixture:
 treeview/box-decoration-pending-name-gap] [fixture:
-treeview/box-comment-indent-carry]
+treeview/box-comment-indent-carry] [fixture:
+treeview/box-block-tail-decoration-opener-gap-selector] [fixture:
+treeview/box-quoted-tail-decoration-light-vertical] [fixture:
+treeview/box-quoted-tail-decoration-light-dash] [fixture:
+treeview/box-quoted-tail-branch-content] [fixture:
+treeview/box-quoted-tail-decoration-single-quoted] [fixture:
+treeview/box-quoted-tail-decoration-heavy-vertical] [fixture:
+treeview/box-quoted-tail-decoration-heavy-dash] [fixture:
+treeview/box-quoted-tail-branch-heavy] [fixture:
+treeview/box-quoted-tail-decoration-two-lines] [fixture:
+treeview/box-quoted-tail-branch-then-decoration] [fixture:
+treeview/box-quoted-tail-decoration-then-branch]
 
-When a later annotation follows the node, decorations before that annotation
-belong to its textBefore. With no following annotation they return to top-level
-body. A branch that introduces an annotation belongs to that annotation's prefix
-and does not alter the node's indent. Between accDescr and its block opener,
-decorations and prefixes belong to textBeforeOpen. [fixture:
-treeview/box-decoration-before-annotation] [fixture:
+When an annotation follows, decorations before it belong to that annotation's
+textBefore. Its introducing branch belongs to its prefix and does not change the
+node's indent. Between accDescr and its required block opener, decorations and
+prefixes belong to textBeforeOpen. These owners take precedence over the node's
+textBefore. [fixture: treeview/box-decoration-before-annotation] [fixture:
 treeview/ast-annotation-prefixes] [fixture:
-treeview/box-decoration-trailing-body] [fixture:
 treeview/box-branch-before-block-open] [fixture:
 treeview/box-decoration-before-block-open] [fixture:
 treeview/box-prefix-common-block-two-prefixes]
 
-Inside an already-open leaf, keep enclosed box forms in the leaf instead of
-extracting gap nodes. Excluded decoration line endings remain source trivia
-outside the decoration node; a logical appended LF is never authored syntax.
-Shared comments and directives retain their independent shared ownership.
-[fixture: treeview/ast-decoration-internal-and-body] [fixture:
-treeview/box-physical-directive-inline] [fixture:
-treeview/block-physical-comment-line] [fixture: treeview/gram-body-hidden-eof]
+Remaining decorations between complete hierarchy nodes belong to the next
+TreeviewNode.textBefore, in source order. This applies whether the next node is
+a child, a different child of an ancestor, or another root. Without a following
+annotation, decorations proceed to this rule rather than returning to the
+preceding node. Before the first hierarchy node and after the last, independent
+decorations instead remain in Diagram.body; they do not end the common preamble.
+A decoration-only diagram has no hierarchy node. [fixture:
+treeview/box-written-tree] [fixture:
+treeview/gram-nesting-decoration-before-parent] [fixture:
+treeview/gram-nesting-decoration-before-ancestor-child] [fixture:
+treeview/spec-box-drawing-preprocessor-e9d19370] [fixture:
+treeview/box-decoration-preamble-body] [fixture:
+treeview/box-decoration-trailing-body] [fixture:
+treeview/gram-nesting-decoration-after-subtree] [fixture:
+treeview/box-mode-dash-only]
+
+Shared comments and directives retain their shared ownership, and empty lines
+make no gap nodes. They do not determine hierarchy parents or own decorations;
+their lexical effect on assigned indentation is unchanged. Excluded decoration
+line endings remain source trivia outside the decoration node; an appended LF is
+never authored syntax. A selected ignored semicolon remains shared trivia, while
+an unselected semicolon keeps its lexical reading. [fixture:
+treeview/box-tail-decoration-directive-inline] [fixture:
+treeview/box-tail-decoration-directive-line] [fixture:
+treeview/box-tail-decoration-comment-line] [fixture:
+treeview/box-tail-decoration-empty-line] [fixture:
+treeview/box-tail-decoration-selected-semicolon] [fixture:
+treeview/box-tail-decoration-unselected-semicolon] [fixture:
+treeview/box-tail-decoration-ls] [fixture: treeview/box-tail-decoration-ps]
+[fixture: treeview/block-physical-comment-line] [fixture:
+treeview/gram-body-hidden-eof] [fixture:
+treeview/gram-nesting-decoration-directive-inline] [fixture:
+treeview/gram-nesting-decoration-directive-line] [fixture:
+treeview/gram-nesting-decoration-comment-line] [fixture:
+treeview/gram-nesting-decoration-empty-line] [fixture:
+treeview/gram-nesting-decoration-selected-semicolon] [fixture:
+treeview/gram-nesting-decoration-unselected-semicolon]
 
 ## Nodes
 
 ### TreeviewDiagram
 
-| Field  | Type                     | Meaning                                       |
-| ------ | ------------------------ | --------------------------------------------- |
-| `body` | list of TreeviewBodyItem | All written statements and outer decorations. |
+| Field  | Type                     | Meaning                            |
+| ------ | ------------------------ | ---------------------------------- |
+| `body` | list of TreeviewBodyItem | Roots and independent outer items. |
 
 Child fields: body. Range: the header start through the final authored body
 item, or the header end when body is empty. Exclude outer padding, later shared
@@ -94,32 +155,54 @@ treeview/box-decoration-trailing-body]
 
 TreeviewBodyItem is TreeviewNode, TreeviewIgnoredText, TreeviewTitleStatement,
 TreeviewAccTitleStatement, TreeviewAccDescrStatement or
-TreeviewAccDescrBlockStatement. Common statements stay before the nodes.
-Decorations can appear among either group. The body stays flat and records every
-occurrence; do not synthesize parent/children fields or an artificial root.
-Empty lines and shared Comments make no body items. [fixture:
+TreeviewAccDescrBlockStatement. Common statements stay before the nodes. Only
+root TreeviewNode occurrences appear directly in body; their children follow the
+[parent rule](../diagrams/treeview.md#indentation-and-parents). Independent
+decorations before the first hierarchy node and after the last stay in body
+under Gap ownership. Preserve every occurrence without an artificial root or
+parent reference. Empty lines and shared Comments make no body items. [fixture:
 treeview/gram-written-tree] [fixture: treeview/box-written-tree] [fixture:
 treeview/box-decoration-preamble-body] [fixture: treeview/common-repeat-empty]
 [fixture: treeview/comment-native]
 
 ### TreeviewNode
 
-| Field            | Type                                | Meaning                                   |
-| ---------------- | ----------------------------------- | ----------------------------------------- |
-| `indent`         | nonnegative integer                 | Assigned indentation units.               |
-| `prefix`         | TreeviewBranchPrefix or null        | Prefix supplying this node's indentation. |
-| `textBeforeName` | list of TreeviewIgnoredText         | Decorations while the name is required.   |
-| `name`           | TreeviewIdentifier or StringLiteral | The authored node name.                   |
-| `annotations`    | list of TreeviewAnnotation          | All annotations in source order.          |
+| Field            | Type                                | Meaning                                              |
+| ---------------- | ----------------------------------- | ---------------------------------------------------- |
+| `indent`         | nonnegative integer                 | Assigned indentation units.                          |
+| `textBefore`     | list of TreeviewIgnoredText         | Decorations between complete nodes before this node. |
+| `prefix`         | TreeviewBranchPrefix or null        | Prefix supplying this node's indentation.            |
+| `textBeforeName` | list of TreeviewIgnoredText         | Decorations while the name is required.              |
+| `name`           | TreeviewIdentifier or StringLiteral | The authored node name.                              |
+| `annotations`    | list of TreeviewAnnotation          | All annotations in source order.                     |
+| `children`       | list of TreeviewNode                | Its direct children, in source order.                |
 
-Child fields: prefix, textBeforeName, name, annotations. Range: the earliest
-start of prefix, textBeforeName or name through the final annotation, or through
-name when there is none. Exclude preceding ordinary indentation and later
-whitespace belonging to another node. name is never null; an empty quoted name
-is a StringLiteral with an empty value. [fixture: treeview/gram-written-tree]
+Child fields: textBefore, prefix, textBeforeName, name, annotations, children.
+The range starts at the first textBefore decoration when present, otherwise at
+the earliest prefix, textBeforeName decoration or name. It ends at the last
+descendant, or at this node's final annotation or name when it has no children.
+Thus the node's range need not start at its name. Each range is continuous;
+siblings do not overlap. Preceding ordinary indentation and unrelated later
+trivia do not extend it. name is never null; an empty quoted name is a
+StringLiteral with an empty value. [fixture: treeview/gram-written-tree]
 [fixture: treeview/box-written-tree] [fixture:
 treeview/box-comment-indent-carry] [fixture:
 treeview/box-decoration-pending-name-gap] [fixture: treeview/db-empty-names]
+[fixture: treeview/gram-nesting-decoration-before-parent] [fixture:
+treeview/gram-nesting-decoration-after-subtree] [fixture:
+treeview/gram-nesting-decoration-directive-inline] [fixture:
+treeview/gram-nesting-decoration-directive-line] [fixture:
+treeview/gram-nesting-decoration-comment-line] [fixture:
+treeview/gram-nesting-decoration-empty-line] [fixture:
+treeview/gram-nesting-decoration-selected-semicolon] [fixture:
+treeview/gram-nesting-decoration-unselected-semicolon]
+
+textBefore and children are empty lists when absent. Children contain only
+hierarchy nodes, with no derived depth or parent field. Their nesting follows
+the parent rule even for file names, jumps in indentation and multiple roots.
+[fixture: treeview/db-file-parent] [fixture: treeview/db-indent-pop] [fixture:
+treeview/db-first-indented] [fixture:
+treeview/gram-nesting-decoration-before-ancestor-child]
 
 indent counts each assigned ordinary ASCII space/tab once; a prefix supplies
 four times its depth under the
@@ -136,8 +219,8 @@ TreeviewAnnotation is TreeviewClassAnnotation, TreeviewIconAnnotation or
 TreeviewDescriptionAnnotation. Keep the list empty when no annotation is
 written, otherwise keep every occurrence, including overwritten classes/icons
 and empty descriptions. Leave the original slash in name; there is no nodeType
-field and no hierarchy field. [fixture: treeview/gram-written-tree] [fixture:
-treeview/db-repeat-class] [fixture: treeview/db-repeat-icon] [fixture:
+field. [fixture: treeview/gram-written-tree] [fixture: treeview/db-repeat-class]
+[fixture: treeview/db-repeat-icon] [fixture:
 treeview/annotation-description-repeat-empty] [fixture:
 treeview/db-directory-trailing-space] [fixture: treeview/db-file-parent]
 
@@ -314,6 +397,43 @@ treeview/ast-common-whitespace-values] [fixture:
 treeview/ast-common-removal-only-values] [fixture:
 treeview/common-block-whitespace-raw] [fixture:
 treeview/common-block-escaped-close] [fixture: treeview/box-block-decoration]
+[fixture: treeview/box-block-tail-decoration-light-vertical] [fixture:
+treeview/box-block-tail-decoration-heavy-vertical] [fixture:
+treeview/box-block-tail-decoration-light-dash] [fixture:
+treeview/box-block-tail-decoration-heavy-dash] [fixture:
+treeview/box-block-tail-decoration-vertical-whitespace] [fixture:
+treeview/box-block-tail-decoration-close-same-line] [fixture:
+treeview/box-block-tail-decoration-dash-close-same-line] [fixture:
+treeview/box-block-tail-decoration-multiple-lines] [fixture:
+treeview/box-block-tail-branch-content] [fixture:
+treeview/box-block-tail-branch-closer] [fixture:
+treeview/box-block-tail-decoration-inactive] [fixture:
+treeview/box-block-tail-decoration-indent-control] [fixture:
+treeview/box-block-tail-decoration-only-interior] [fixture:
+treeview/box-block-tail-decoration-empty-control] [fixture:
+treeview/box-block-tail-decoration-opener-line] [fixture:
+treeview/box-block-tail-decoration-ascii-dash-control] [fixture:
+treeview/box-block-tail-decoration-single-dash] [fixture:
+treeview/box-block-tail-decoration-spaces-after] [fixture:
+treeview/box-block-tail-decoration-spaces-before] [fixture:
+treeview/box-block-tail-decoration-blank-after] [fixture:
+treeview/box-block-tail-decoration-two-vertical-lines] [fixture:
+treeview/box-block-tail-decoration-directive-inline] [fixture:
+treeview/box-block-tail-decoration-directive-line] [fixture:
+treeview/box-block-tail-decoration-directive-at-start] [fixture:
+treeview/box-block-tail-decoration-selected-semicolon] [fixture:
+treeview/box-block-tail-decoration-unselected-semicolon] [fixture:
+treeview/box-block-tail-decoration-comment-line] [fixture:
+treeview/box-block-tail-decoration-comment-after] [fixture:
+treeview/box-block-tail-decoration-blank-before] [fixture:
+treeview/box-block-tail-decoration-ls] [fixture:
+treeview/box-block-tail-decoration-ps] [fixture:
+treeview/box-block-tail-decoration-comment-ls] [fixture:
+treeview/box-block-tail-decoration-comment-ps] [fixture:
+treeview/box-block-tail-decoration-empty-block-before] [fixture:
+treeview/box-block-tail-decoration-crlf] [fixture:
+treeview/box-block-tail-decoration-cr] [fixture:
+treeview/box-block-tail-decoration-opener-gap-selector]
 
 ### TreeviewIdentifier
 
@@ -411,10 +531,11 @@ treeview/box-comment-indent-carry]
 ## Example
 
 This example intentionally displays authored indentation and spelling rather
-than selecting a formatting policy. The flat body contains all four common
-statement kinds followed by three nodes. The first node retains two classes, two
-icons and a description; its child keeps its quoted trailing space, and the last
-node keeps an empty single-quoted name. [fixture: treeview/gram-written-tree]
+than selecting a formatting policy. The body contains all four common statement
+kinds followed by two roots; the first root has a child. The first node retains
+two classes, two icons and a description; its child keeps its quoted trailing
+space, and the last node keeps an empty single-quoted name. [fixture:
+treeview/gram-written-tree]
 
 ```mmd
 treeView-beta
@@ -429,9 +550,10 @@ root/ :::first icon(pack:file) :::last icon() ##  detail
 ```
 
 In the box example, root/ and all branch rows remain in written order. The
-vertical decoration between src/ and its child is a separate body item; src/
-retains its class, icon and description. Prefix depths are interpreted from
-their original columns, without a synthesized source hierarchy. [fixture:
+vertical decoration between src/ and its child belongs to the child's
+textBefore. root/.children contains src/ and other; src/.children contains my
+file. src/ retains its class, icon and description. Assigned indentation and
+prefix spelling are retained alongside this nesting. [fixture:
 treeview/box-written-tree]
 
 ```mmd

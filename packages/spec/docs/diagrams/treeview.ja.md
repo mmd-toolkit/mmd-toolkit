@@ -319,6 +319,10 @@ acc-descr-block は `accDescr`、任意個の common の Notation の空白、`{
 [fixture: treeview/common-block-escaped-close]
 [fixture: treeview/common-block-open]
 [fixture: treeview/box-decoration-before-block-open]
+[fixture: treeview/box-block-tail-decoration-light-vertical]
+[fixture: treeview/box-block-tail-decoration-empty-control]
+[fixture: treeview/box-block-tail-decoration-empty-block-before]
+[fixture: treeview/box-block-tail-branch-closer]
 
 ### コメントと部品の境目
 
@@ -330,6 +334,9 @@ hidden な改行は EOF の論理的な LF も含め、LF を別に読む。
 [fixture: treeview/native-comment-closer-greedy]
 [fixture: treeview/native-comment-ls] [fixture: treeview/native-comment-ps]
 [fixture: treeview/comment-bare-body] [fixture: treeview/gram-body-hidden-eof]
+[fixture: treeview/lex-indent-comment-ps-semicolon-space]
+[fixture: treeview/lex-indent-comment-ls-semicolon-space]
+[fixture: treeview/lex-indent-comment-ps-selected-semicolon]
 
 先に始まった名前・引用値・description-annotation・accessibility block は、
 その内側の percent らしいテキストを所有する。
@@ -382,6 +389,19 @@ bare 名・文字列の内側・共通値・description 本文は text/string �
 [fixture: treeview/box-physical-directive-inline]
 [fixture: treeview/box-physical-directive-line]
 [fixture: treeview/box-physical-ls] [fixture: treeview/box-physical-ps]
+[fixture: treeview/box-block-tail-decoration-directive-inline]
+[fixture: treeview/box-block-tail-decoration-directive-line]
+[fixture: treeview/box-block-tail-decoration-directive-at-start]
+[fixture: treeview/box-block-tail-decoration-selected-semicolon]
+[fixture: treeview/box-block-tail-decoration-unselected-semicolon]
+[fixture: treeview/box-block-tail-decoration-comment-line]
+[fixture: treeview/box-block-tail-decoration-comment-after]
+[fixture: treeview/box-block-tail-decoration-ls]
+[fixture: treeview/box-block-tail-decoration-ps]
+[fixture: treeview/box-block-tail-decoration-comment-ls]
+[fixture: treeview/box-block-tail-decoration-comment-ps]
+[fixture: treeview/box-block-tail-decoration-crlf]
+[fixture: treeview/box-block-tail-decoration-cr]
 
 モードの判定では、空白だけの行、common の空白の後で `%%` で始まる行、
 metadata 形の行、common の空白と縦線 `│`・`┃` だけの行を除く。
@@ -458,6 +478,41 @@ branch 行の残る内容中の tab も全て 4 空白として読み、
 [fixture: treeview/box-block-decoration-plain]
 [fixture: treeview/box-quoted-indent-error]
 [fixture: treeview/box-block-indent-error]
+[fixture: treeview/box-block-tail-decoration-light-vertical]
+[fixture: treeview/box-block-tail-decoration-heavy-vertical]
+[fixture: treeview/box-block-tail-decoration-light-dash]
+[fixture: treeview/box-block-tail-decoration-heavy-dash]
+[fixture: treeview/box-block-tail-decoration-vertical-whitespace]
+[fixture: treeview/box-block-tail-decoration-close-same-line]
+[fixture: treeview/box-block-tail-decoration-dash-close-same-line]
+[fixture: treeview/box-block-tail-decoration-multiple-lines]
+[fixture: treeview/box-block-tail-branch-content]
+[fixture: treeview/box-block-tail-branch-closer]
+[fixture: treeview/box-block-tail-decoration-inactive]
+[fixture: treeview/box-block-tail-decoration-indent-control]
+[fixture: treeview/box-block-tail-decoration-only-interior]
+[fixture: treeview/box-block-tail-decoration-empty-control]
+[fixture: treeview/box-block-tail-decoration-opener-line]
+[fixture: treeview/box-block-tail-decoration-ascii-dash-control]
+[fixture: treeview/box-block-tail-decoration-single-dash]
+[fixture: treeview/box-block-tail-decoration-spaces-after]
+[fixture: treeview/box-block-tail-decoration-spaces-before]
+[fixture: treeview/box-block-tail-decoration-blank-after]
+[fixture: treeview/box-block-tail-decoration-two-vertical-lines]
+[fixture: treeview/box-block-tail-decoration-blank-before]
+[fixture: treeview/box-block-tail-decoration-empty-block-before]
+[fixture: treeview/box-block-tail-decoration-closer-indent]
+[fixture: treeview/box-block-tail-decoration-branch-empty]
+[fixture: treeview/box-quoted-tail-decoration-light-vertical]
+[fixture: treeview/box-quoted-tail-decoration-light-dash]
+[fixture: treeview/box-quoted-tail-branch-content]
+[fixture: treeview/box-quoted-tail-decoration-single-quoted]
+[fixture: treeview/box-quoted-tail-decoration-heavy-vertical]
+[fixture: treeview/box-quoted-tail-decoration-heavy-dash]
+[fixture: treeview/box-quoted-tail-branch-heavy]
+[fixture: treeview/box-quoted-tail-decoration-two-lines]
+[fixture: treeview/box-quoted-tail-branch-then-decoration]
+[fixture: treeview/box-quoted-tail-decoration-then-branch]
 
 | 場合                             | 直接の読み                                 |
 | -------------------------------- | ------------------------------------------ |
@@ -623,8 +678,8 @@ node の無い注釈、繰り返す見出し、余分の字下げは拒否する
 
 ### 字下げと親子
 
-node は平らな記述順のまま、各 node に字下げを一度だけ割り当てる。
-親子の解釈では、まだ開いている前の node を順に持つ。
+次の規則が TreeviewNode.children の入れ子と TreeviewDiagram.body の根を決める。
+各 node に字下げを一度だけ割り当て、まだ開いている前の node を記述順に持つ。
 新しい node の字下げ以上の node を開いている列の末尾から外す。
 最後に残る node が親であり、残らなければ別の根となる。
 現在の node を開いている列へ加える。共通文と装飾は参加しない。
@@ -635,10 +690,29 @@ node は平らな記述順のまま、各 node に字下げを一度だけ割り
 file と directory らしい名前のどちらも親になれる。最初の node の字下げ、
 複数の根、任意の字下げの増減、重複名、空の引用名を許す。
 通常の字下げと branch が表す字下げを同じ比較に使う。
-書かれたものとしての人工の根、parent 欄、children list は作らない。
+根はそれぞれ図の body に保ち、人工の根、親への参照、導出した深さは加えない。
 [fixture: treeview/db-file-parent] [fixture: treeview/db-first-indented]
 [fixture: treeview/db-duplicate-names] [fixture: treeview/db-empty-names]
 [fixture: treeview/box-indented-box-text] [fixture: treeview/box-round-below]
+
+共有 trivia と空行は親を増やさない。
+行の内側と単独行の directive をまたいで割り当てた字下げを保ち、
+二つ目の未使用の連続があれば引き続き拒否する。
+LS・PS は名前やコメントの内容としての字句の読みを保ち、
+階層の行区切りを増やさない。
+node の後の空の description block も、gap の要素にはせず拒否する。
+[fixture: treeview/nested-child-directive-unindented]
+[fixture: treeview/nested-child-directive-line]
+[fixture: treeview/box-tail-decoration-directive-inline]
+[fixture: treeview/nested-child-comment-line]
+[fixture: treeview/nested-child-empty-line]
+[fixture: treeview/nested-child-selected-semicolon]
+[fixture: treeview/box-tail-decoration-unselected-semicolon]
+[fixture: treeview/gram-nesting-ls-before-child]
+[fixture: treeview/gram-nesting-ps-before-child]
+[fixture: treeview/gram-nesting-comment-ls-before-child]
+[fixture: treeview/gram-nesting-comment-ps-before-child]
+[fixture: treeview/nested-child-empty-block]
 
 accessibility block の中の空の description らしい行も、
 最初の閉じ brace までは本文であり、その brace が包む block を閉じる。

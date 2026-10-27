@@ -44,6 +44,7 @@
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -78,7 +79,8 @@
             "line": 5,
             "column": 4
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

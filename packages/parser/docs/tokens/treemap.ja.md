@@ -92,3 +92,11 @@ Keyword、Identifier、Numeric、Punctuator の原子内の分割は拒否する
 [fixture: treemap/div-retained-before-bare-unicode-line]
 [fixture: treemap/div-bare-retained-ascii-header]
 [fixture: treemap/detect-second-scan-single-line-comment]
+
+statementsBefore が所有する文も、元の項目とトークン境界をすべて保つ。
+section の children はトークンを追加しない。
+スタイルに含まれる内容は一つの literal に残り、別の gap 項目にはならない。
+[fixture: treemap/gram-written-tree]
+[fixture: treemap/gram-nesting-statement-before-section]
+[fixture: treemap/lex-class-style-crosses-blank-line]
+[fixture: treemap/gram-nesting-statements-directive-inline]

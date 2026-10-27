@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": {
           "type": "TreeviewBranchPrefix",
           "value": "├──",
@@ -48,249 +49,256 @@
         "annotations": [],
         "range": [
           14,
-          22
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 8
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 8,
-        "prefix": {
-          "type": "TreeviewBranchPrefix",
-          "value": "│   ├──",
-          "marker": "├",
-          "range": [
-            23,
-            30
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 0
-            },
-            "end": {
-              "line": 3,
-              "column": 7
-            }
-          }
-        },
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": "App.tsx",
-          "range": [
-            31,
-            38
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 8
-            },
-            "end": {
-              "line": 3,
-              "column": 15
-            }
-          }
-        },
-        "annotations": [
-          {
-            "type": "TreeviewClassAnnotation",
-            "textBefore": [],
-            "prefix": null,
-            "name": {
-              "type": "Identifier",
-              "name": "highlight",
-              "range": [
-                42,
-                51
-              ],
-              "loc": {
-                "start": {
-                  "line": 3,
-                  "column": 19
-                },
-                "end": {
-                  "line": 3,
-                  "column": 28
-                }
-              }
-            },
-            "range": [
-              39,
-              51
-            ],
-            "loc": {
-              "start": {
-                "line": 3,
-                "column": 16
-              },
-              "end": {
-                "line": 3,
-                "column": 28
-              }
-            }
-          },
-          {
-            "type": "TreeviewDescriptionAnnotation",
-            "textBefore": [],
-            "prefix": null,
-            "value": {
-              "type": "TreeviewLiteral",
-              "value": " main component",
-              "range": [
-                54,
-                69
-              ],
-              "loc": {
-                "start": {
-                  "line": 3,
-                  "column": 31
-                },
-                "end": {
-                  "line": 3,
-                  "column": 46
-                }
-              }
-            },
-            "range": [
-              52,
-              69
-            ],
-            "loc": {
-              "start": {
-                "line": 3,
-                "column": 29
-              },
-              "end": {
-                "line": 3,
-                "column": 46
-              }
-            }
-          }
-        ],
-        "range": [
-          23,
-          69
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 0
-          },
-          "end": {
-            "line": 3,
-            "column": 46
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 8,
-        "prefix": {
-          "type": "TreeviewBranchPrefix",
-          "value": "│   └──",
-          "marker": "└",
-          "range": [
-            70,
-            77
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 0
-            },
-            "end": {
-              "line": 4,
-              "column": 7
-            }
-          }
-        },
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": "index.js",
-          "range": [
-            78,
-            86
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 8
-            },
-            "end": {
-              "line": 4,
-              "column": 16
-            }
-          }
-        },
-        "annotations": [
-          {
-            "type": "TreeviewDescriptionAnnotation",
-            "textBefore": [],
-            "prefix": null,
-            "value": {
-              "type": "TreeviewLiteral",
-              "value": " entry point",
-              "range": [
-                89,
-                101
-              ],
-              "loc": {
-                "start": {
-                  "line": 4,
-                  "column": 19
-                },
-                "end": {
-                  "line": 4,
-                  "column": 31
-                }
-              }
-            },
-            "range": [
-              87,
-              101
-            ],
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 17
-              },
-              "end": {
-                "line": 4,
-                "column": 31
-              }
-            }
-          }
-        ],
-        "range": [
-          70,
           101
         ],
         "loc": {
           "start": {
-            "line": 4,
+            "line": 2,
             "column": 0
           },
           "end": {
             "line": 4,
             "column": 31
           }
-        }
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 8,
+            "textBefore": [],
+            "prefix": {
+              "type": "TreeviewBranchPrefix",
+              "value": "│   ├──",
+              "marker": "├",
+              "range": [
+                23,
+                30
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 0
+                },
+                "end": {
+                  "line": 3,
+                  "column": 7
+                }
+              }
+            },
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "App.tsx",
+              "range": [
+                31,
+                38
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 8
+                },
+                "end": {
+                  "line": 3,
+                  "column": 15
+                }
+              }
+            },
+            "annotations": [
+              {
+                "type": "TreeviewClassAnnotation",
+                "textBefore": [],
+                "prefix": null,
+                "name": {
+                  "type": "Identifier",
+                  "name": "highlight",
+                  "range": [
+                    42,
+                    51
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 19
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 28
+                    }
+                  }
+                },
+                "range": [
+                  39,
+                  51
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 16
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 28
+                  }
+                }
+              },
+              {
+                "type": "TreeviewDescriptionAnnotation",
+                "textBefore": [],
+                "prefix": null,
+                "value": {
+                  "type": "TreeviewLiteral",
+                  "value": " main component",
+                  "range": [
+                    54,
+                    69
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 3,
+                      "column": 31
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 46
+                    }
+                  }
+                },
+                "range": [
+                  52,
+                  69
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 29
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 46
+                  }
+                }
+              }
+            ],
+            "range": [
+              23,
+              69
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 46
+              }
+            },
+            "children": []
+          },
+          {
+            "type": "TreeviewNode",
+            "indent": 8,
+            "textBefore": [],
+            "prefix": {
+              "type": "TreeviewBranchPrefix",
+              "value": "│   └──",
+              "marker": "└",
+              "range": [
+                70,
+                77
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 0
+                },
+                "end": {
+                  "line": 4,
+                  "column": 7
+                }
+              }
+            },
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "index.js",
+              "range": [
+                78,
+                86
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 8
+                },
+                "end": {
+                  "line": 4,
+                  "column": 16
+                }
+              }
+            },
+            "annotations": [
+              {
+                "type": "TreeviewDescriptionAnnotation",
+                "textBefore": [],
+                "prefix": null,
+                "value": {
+                  "type": "TreeviewLiteral",
+                  "value": " entry point",
+                  "range": [
+                    89,
+                    101
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 19
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 31
+                    }
+                  }
+                },
+                "range": [
+                  87,
+                  101
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 17
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 31
+                  }
+                }
+              }
+            ],
+            "range": [
+              70,
+              101
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 31
+              }
+            },
+            "children": []
+          }
+        ]
       },
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": {
           "type": "TreeviewBranchPrefix",
           "value": "└──",
@@ -343,7 +351,8 @@
             "line": 5,
             "column": 16
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

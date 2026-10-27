@@ -19,6 +19,7 @@ import {
   setField,
   recordedTree,
 } from "./check-tree-recorded.ts"
+import { withChildren } from "./nesting-built.ts"
 import { readFieldTables, readFieldMeanings } from "./spec-field-tables.ts"
 
 /** A hand-specified source; no parser or recorded kanban tree is used. */
@@ -99,6 +100,7 @@ function row(
     shape,
     data: suffix,
     decorations,
+    children: [],
   })
 }
 
@@ -107,20 +109,56 @@ function everyKind(): Built {
   return build(
     ' S["`Todo`")@{ticket: X,}@{assigned: Ada}\n ::icon( star )\n ::: hot \n   A[Work]',
     (kit) => [
-      row(
+      withChildren(
         kit,
-        1,
-        "S",
-        ["[", '"`Todo`"', "markdown", ")"],
-        ["ticket: X,", "assigned: Ada"],
-        () => [
-          decoration(kit, true, " star "),
-          decoration(kit, false, " hot "),
-        ],
+        row(
+          kit,
+          1,
+          "S",
+          ["[", '"`Todo`"', "markdown", ")"],
+          ["ticket: X,", "assigned: Ada"],
+          () => [
+            decoration(kit, true, " star "),
+            decoration(kit, false, " hot "),
+          ],
+        ),
+        [row(kit, 3, "A", ["[", "Work", "text", "]"])],
       ),
-      row(kit, 3, "A", ["[", "Work", "text", "]"]),
     ],
   )
+}
+
+/** lex-indent-comment-ps-semicolon-space: the comment tail is outside indentation. */
+function commentTail(): Built {
+  return build(" S[x]%% c; \u2029T;x\n   A;b", (kit) => {
+    const first = row(kit, 1, "S", ["[", "x", "text", "]"])
+    kit.comment("%%", "%% c; ")
+    const second = row(kit, 1, "T;x")
+    return [first, withChildren(kit, second, [row(kit, 3, "A;b")])]
+  })
+}
+
+/** lex-indent-comment-ls-selected-semicolon-touching: a shared cut precedes the comment's LS. */
+function selectedCommentEnd(): Built {
+  return build(" S[x]%% style:#x;\u2028T;x\n   A;b", (kit) => {
+    const first = row(kit, 1, "S", ["[", "x", "text", "]"])
+    kit.comment("%%", "%% style:#x")
+    kit.token("IgnoredSemicolon", ";")
+    const second = row(kit, 1, "T;x")
+    return [first, withChildren(kit, second, [row(kit, 3, "A;b")])]
+  })
+}
+
+/** lex-indent-comment-ps-selected-semicolon-indent-directive: only PS and its right-hand space indent T. */
+function commentEndDirective(): Built {
+  return build("  S[x]%% style:#x;\u2029%%{init: {}}%% T;x\n    A;b", (kit) => {
+    const first = row(kit, 2, "S", ["[", "x", "text", "]"])
+    kit.comment("%%", "%% style:#x")
+    kit.token("IgnoredSemicolon", ";")
+    kit.directive("%%{init: {}}%%")
+    const second = row(kit, 2, "T;x")
+    return [first, withChildren(kit, second, [row(kit, 4, "A;b")])]
+  })
 }
 
 /** A fixed quoted label with two explicit fragments and an optional common cut. */
@@ -154,6 +192,7 @@ function cutLabel(
         shape,
         data: [],
         decorations: [],
+        children: [],
       }),
     ]
   })
@@ -185,6 +224,7 @@ function cutData(): Built {
         shape: null,
         data: [block],
         decorations: [],
+        children: [],
       }),
     ]
   })
@@ -512,16 +552,6 @@ const BAD_LAYOUTS: readonly {
     expected: "the written closer",
   },
   {
-    name: "a node after a shallower item",
-    built: () =>
-      build("    S\n  A\n    B", (kit) => [
-        row(kit, 4, "S"),
-        row(kit, 2, "A"),
-        row(kit, 4, "B"),
-      ]),
-    expected: "a shallower item is followed",
-  },
-  {
     name: "a header followed by a word without a boundary",
     built: () =>
       buildTree(
@@ -639,6 +669,7 @@ const BAD_LAYOUTS: readonly {
             shape: null,
             data: [],
             decorations: [],
+            children: [],
           }),
         ]
       }),
@@ -659,10 +690,11 @@ describe("checkTree of kanban trees made by hand", () => {
     const { source, tree } = build(
       ' S\n   [" "]@{}\n ::icon( )\n ::: ',
       (kit) => [
-        row(kit, 1, "S"),
-        row(kit, 3, null, ["[", '" "', "string", "]"], [""], () => [
-          decoration(kit, true, " "),
-          decoration(kit, false, " "),
+        withChildren(kit, row(kit, 1, "S"), [
+          row(kit, 3, null, ["[", '" "', "string", "]"], [""], () => [
+            decoration(kit, true, " "),
+            decoration(kit, false, " "),
+          ]),
         ]),
       ],
     )
@@ -727,7 +759,7 @@ describe("checkTree of kanban trees made by hand", () => {
     const { source, tree } = build(" S[x]%%\u2028  A", (kit) => {
       const first = row(kit, 1, "S", ["[", "x", "text", "]"])
       kit.comment("%%", "%%")
-      return [first, row(kit, 3, "A")]
+      return [withChildren(kit, first, [row(kit, 3, "A")])]
     })
     expect(checkTree(source, tree)).toEqual([])
     const comment = tree.comments[0]
@@ -804,6 +836,56 @@ describe("checkTree of kanban trees made by hand", () => {
           ].map((match) => match[1]),
         )
       }
+  })
+})
+
+describe("kanban comment boundaries", () => {
+  for (const [name, make] of [
+    ["the escaped PS input with trailing comment whitespace", commentTail],
+    ["LS after a selected semicolon", selectedCommentEnd],
+    [
+      "PS after a selected semicolon and before an indentation directive",
+      commentEndDirective,
+    ],
+  ] as const)
+    it(`accepts ${name}`, () => {
+      const { source, tree } = make()
+      expect(checkTree(source, tree)).toEqual([])
+    })
+
+  it("rejects comment-tail whitespace counted as the next column's indent", () => {
+    const { source, tree } = commentTail()
+    expect(source).toBe("kanban\n S[x]%% c; \u2029T;x\n   A;b\n")
+    const second = (tree.body.body as CheckedNode[])[1]
+    if (second === undefined) throw new Error("no second column")
+    setField(second, "indent", 2)
+    expect(checkTree(source, tree)).toContainEqual({
+      where: `KanbanNode at ${second.range[0]}-${second.range[1]}`,
+      message:
+        "the indent, which is the number of whitespace characters before the node on its line: 2, not 1",
+    })
+  })
+
+  it("keeps an ordinary PS inside node text", () => {
+    const { source, tree } = build(" S\n   a\u2029b", (kit) => [
+      withChildren(kit, row(kit, 1, "S"), [row(kit, 3, "a\u2029b")]),
+    ])
+    expect(checkTree(source, tree)).toEqual([])
+  })
+
+  it("does not accept an ordinary PS as a line end between invented nodes", () => {
+    // lex-ps-bare-value writes one a/PS/b value; splitting it must not create a newline.
+    const { source, tree } = build(" S\n   a\u2029b", (kit) => [
+      withChildren(kit, row(kit, 1, "S"), [row(kit, 3, "a")]),
+      row(kit, 1, "b"),
+    ])
+    expect(
+      checkTree(source, tree).some(
+        (problem) =>
+          problem.message ===
+          "the statements are not separated by whitespace and a line end",
+      ),
+    ).toBe(true)
   })
 })
 
@@ -978,7 +1060,7 @@ const RECORDED_CASES: readonly MutationCase[] = [
     name: "adjacent data blocks in reverse order",
     fixture: "db-metadata-two-items",
     mutate: (root) => {
-      const item = (root.body.body as CheckedNode[])[1]
+      const item = (firstNode(root, "KanbanNode").children as CheckedNode[])[0]
       if (item === undefined) throw new Error("no item with data")
       setField(item, "data", [...(item.data as CheckedNode[])].reverse())
     },

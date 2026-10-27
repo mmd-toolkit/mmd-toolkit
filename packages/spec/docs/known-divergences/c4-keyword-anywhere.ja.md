@@ -17,7 +17,8 @@ C4Container
   Container(a, "A")
 ```
 
-[fixture: common/detect-minimal-c4]
+この例は `C4Container` で始まります。
+[fixture: common/detect-minimal-c4-container]
 
 mermaid.js の C4 の検出器は、`C4Context` をテキストの先頭に、
 他の 4 つのキーワードを、検出に残るテキストのどこにでも探します。
@@ -184,20 +185,22 @@ mermaid.js は C4 を選んで拒否しますが、
      A --> B
    ```
 
-| 例                                                     | mermaid.js                        | この仕様                                       |
-| ------------------------------------------------------ | --------------------------------- | ---------------------------------------------- |
-| 1                                                      | C4 のパーサーに渡され、拒否       | メッセージ `C4Container` を持つ sequence 図    |
-| 2                                                      | C4 のパーサーに渡され、拒否       | ラベル `C4Component` の頂点 A を持つ flowchart |
-| 3                                                      | C4 のパーサーに渡され、拒否       | クラス `C4Dynamic` を持つ class 図             |
-| 4                                                      | C4 のパーサーに渡され、拒否       | 状態 `C4Deployment` を持つ state 図            |
-| 5                                                      | 頂点 `C4Context` を持つ flowchart | 同じ                                           |
-| 6                                                      | 頂点 A と B を持つ flowchart      | 同じ                                           |
-| [fixture: common/detect-c4-anywhere]                   |
-| [fixture: flowchart/div-c4-keyword-in-label]           |
-| [fixture: class/div-c4-keyword-as-class-name]          |
-| [fixture: state/div-c4-keyword-as-state-id]            |
-| [fixture: common/detect-c4context-only-at-start]       |
-| [fixture: flowchart/detect-c4-keyword-on-comment-line] |
+| 例  | mermaid.js                        | この仕様                                       |
+| --- | --------------------------------- | ---------------------------------------------- |
+| 1   | C4 のパーサーに渡され、拒否       | メッセージ `C4Container` を持つ sequence 図    |
+| 2   | C4 のパーサーに渡され、拒否       | ラベル `C4Component` の頂点 A を持つ flowchart |
+| 3   | C4 のパーサーに渡され、拒否       | クラス `C4Dynamic` を持つ class 図             |
+| 4   | C4 のパーサーに渡され、拒否       | 状態 `C4Deployment` を持つ state 図            |
+| 5   | 頂点 `C4Context` を持つ flowchart | 同じ                                           |
+| 6   | 頂点 A と B を持つ flowchart      | 同じ                                           |
+
+表で比較した読みを次の fixture が記録します。
+[fixture: common/detect-c4-anywhere]
+[fixture: flowchart/div-c4-keyword-in-label]
+[fixture: class/div-c4-keyword-as-class-name]
+[fixture: state/div-c4-keyword-as-state-id]
+[fixture: common/detect-c4context-only-at-start]
+[fixture: flowchart/detect-c4-keyword-on-comment-line]
 
 差異は一方向です。
 この仕様は、mermaid.js が拒否するテキストをヘッダーの図として受理します。

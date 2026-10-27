@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest"
+import { nodesOf } from "../src/check-tree/walk.ts"
 import { checkTree } from "../src/check-tree/index.ts"
 import type { CheckedNode } from "../src/check-tree/types.ts"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
@@ -10,6 +11,7 @@ import {
 } from "../src/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
 import type { Kit } from "./check-tree-built.ts"
+import { withBefore, withChildren } from "./nesting-built.ts"
 import { setField } from "./check-tree-recorded.ts"
 import { frontmatterOf, tokenOf } from "./check-tree-trees.ts"
 import {
@@ -33,6 +35,14 @@ function summary(
 ) {
   const built = buildTreeview(source, make)
   expect(checkTree(source, built.tree)).toEqual([])
+  for (const node of nodesOf(built.tree).filter(
+    (candidate) => candidate.type === "TreeviewNode",
+  ))
+    Object.defineProperty(node, "indent", {
+      get() {
+        throw new Error("read indent")
+      },
+    })
   return dbFromTree(
     source,
     built.tree as unknown as DbTreeRoot,
@@ -52,16 +62,18 @@ describe("treeview Db from hand-built trees", () => {
     ).toEqual({ accTitle: "", accDescr: "", nodes: [] })
   })
 
-  it("pops ancestors at equal or shallower indentation, including file parents and duplicate names", () => {
+  it("projects nested file parents, siblings and duplicate names", () => {
     expect(
       summary(
         'treeView-beta\n  file\n\t\t\tchild/\n    "same"\n    "same"\n   sibling\n end//\n""',
         (kit) => [
-          row(kit, 2, "file"),
-          row(kit, 3, "child/"),
-          row(kit, 4, '"same"'),
-          row(kit, 4, '"same"'),
-          row(kit, 3, "sibling"),
+          withChildren(kit, row(kit, 2, "file"), [
+            withChildren(kit, row(kit, 3, "child/"), [
+              row(kit, 4, '"same"'),
+              row(kit, 4, '"same"'),
+            ]),
+            row(kit, 3, "sibling"),
+          ]),
           row(kit, 1, "end//"),
           row(kit, 0, '""'),
         ],
@@ -147,10 +159,18 @@ describe("treeview Db from hand-built trees", () => {
   it("reads prefix depth and enclosed decoration without changing authored leaves", () => {
     expect(
       summary('treeView-beta\nroot/\n├── "a\n│\nb"\n│\n└── child', (kit) => [
-        row(kit, 0, "root/"),
-        row(kit, 4, '"a\n│\nb"', undefined, prefix(kit, "├──")),
-        decoration(kit),
-        row(kit, 4, "child", undefined, prefix(kit, "└──", "└")),
+        withChildren(kit, row(kit, 0, "root/"), [
+          row(kit, 4, '"a\n│\nb"', undefined, prefix(kit, "├──")),
+          (() => {
+            const before = decoration(kit)
+            return withBefore(
+              kit,
+              row(kit, 4, "child", undefined, prefix(kit, "└──", "└")),
+              "textBefore",
+              [before],
+            )
+          })(),
+        ]),
       ]).nodes,
     ).toEqual([
       {

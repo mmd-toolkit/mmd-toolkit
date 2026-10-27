@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -32,7 +33,7 @@
         "annotations": [],
         "range": [
           234,
-          244
+          297
         ],
         "loc": {
           "start": {
@@ -40,133 +41,142 @@
             "column": 4
           },
           "end": {
-            "line": 13,
-            "column": 14
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 8,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "StringLiteral",
-          "value": "mermaid",
-          "raw": "\"mermaid\"",
-          "closed": true,
-          "range": [
-            253,
-            262
-          ],
-          "loc": {
-            "start": {
-              "line": 14,
-              "column": 8
-            },
-            "end": {
-              "line": 14,
-              "column": 17
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          253,
-          262
-        ],
-        "loc": {
-          "start": {
-            "line": 14,
-            "column": 8
-          },
-          "end": {
-            "line": 14,
-            "column": 17
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 12,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "StringLiteral",
-          "value": "src",
-          "raw": "\"src\"",
-          "closed": true,
-          "range": [
-            275,
-            280
-          ],
-          "loc": {
-            "start": {
-              "line": 15,
-              "column": 12
-            },
-            "end": {
-              "line": 15,
-              "column": 17
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          275,
-          280
-        ],
-        "loc": {
-          "start": {
-            "line": 15,
-            "column": 12
-          },
-          "end": {
-            "line": 15,
-            "column": 17
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 8,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "StringLiteral",
-          "value": "parser",
-          "raw": "\"parser\"",
-          "closed": true,
-          "range": [
-            289,
-            297
-          ],
-          "loc": {
-            "start": {
-              "line": 16,
-              "column": 8
-            },
-            "end": {
-              "line": 16,
-              "column": 16
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          289,
-          297
-        ],
-        "loc": {
-          "start": {
-            "line": 16,
-            "column": 8
-          },
-          "end": {
             "line": 16,
             "column": 16
           }
-        }
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 8,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "mermaid",
+              "raw": "\"mermaid\"",
+              "closed": true,
+              "range": [
+                253,
+                262
+              ],
+              "loc": {
+                "start": {
+                  "line": 14,
+                  "column": 8
+                },
+                "end": {
+                  "line": 14,
+                  "column": 17
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              253,
+              280
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 8
+              },
+              "end": {
+                "line": 15,
+                "column": 17
+              }
+            },
+            "children": [
+              {
+                "type": "TreeviewNode",
+                "indent": 12,
+                "textBefore": [],
+                "prefix": null,
+                "textBeforeName": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "src",
+                  "raw": "\"src\"",
+                  "closed": true,
+                  "range": [
+                    275,
+                    280
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 15,
+                      "column": 12
+                    },
+                    "end": {
+                      "line": 15,
+                      "column": 17
+                    }
+                  }
+                },
+                "annotations": [],
+                "range": [
+                  275,
+                  280
+                ],
+                "loc": {
+                  "start": {
+                    "line": 15,
+                    "column": 12
+                  },
+                  "end": {
+                    "line": 15,
+                    "column": 17
+                  }
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "TreeviewNode",
+            "indent": 8,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "parser",
+              "raw": "\"parser\"",
+              "closed": true,
+              "range": [
+                289,
+                297
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 8
+                },
+                "end": {
+                  "line": 16,
+                  "column": 16
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              289,
+              297
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 8
+              },
+              "end": {
+                "line": 16,
+                "column": 16
+              }
+            },
+            "children": []
+          }
+        ]
       }
     ],
     "range": [

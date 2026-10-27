@@ -6,7 +6,7 @@ import type {
 } from "../ast.ts"
 
 /**
- * ast/treemap.md, TreemapDiagram: a flat, source-ordered body.
+ * ast/treemap.md, TreemapDiagram: roots and independent outer statements.
  *
  * ```text
  * treemap
@@ -20,7 +20,7 @@ export interface TreemapDiagram extends NodeBase {
   readonly body: readonly TreemapBodyItem[]
 }
 
-/** ast/treemap.md, TreemapDiagram: every authored statement, without comments. */
+/** ast/treemap.md, TreemapDiagram: roots and independent outer statements. */
 export type TreemapBodyItem =
   | TreemapSection
   | TreemapLeaf
@@ -32,32 +32,58 @@ export type TreemapBodyItem =
 
 /**
  * ast/treemap.md, TreemapSection: a quoted name and optional class selector.
- * Indentation counts source spaces/tabs and lies outside the node range.
+ * Its range starts at statementsBefore when present and ends at its last descendant.
+ * Indentation retains its assigned source space/tab count.
  *
  * ```text
- * "Root":::aa
+ * "A"
+ * ^^^
+ *     "B"
+ * ^^^^^^^
+ *       "C":1
  * ^^^^^^^^^^^
+ *   "D":2
+ * ^^^^^^^
+ * "E":3
  * ```
  */
 export interface TreemapSection extends NodeBase {
   readonly type: "TreemapSection"
   readonly indent: number
+  readonly statementsBefore: readonly (
+    | TreemapClassDefStatement
+    | TreemapTitleStatement
+    | TreemapAccTitleStatement
+    | TreemapAccDescrStatement
+    | TreemapAccDescrBlockStatement
+  )[]
   readonly name: StringLiteral
   readonly classSelector: Identifier | null
+  readonly children: readonly (TreemapSection | TreemapLeaf)[]
 }
 
 /**
  * ast/treemap.md, TreemapLeaf: a quoted name, number and optional selector.
- * Indentation is retained without synthesizing parents or children.
+ * Its range starts at statementsBefore when present; a leaf cannot have children.
  *
  * ```text
- *   "Left":1,234.5
- *   ^^^^^^^^^^^^^^
+ * "A"
+ * accTitle: Map
+ * ^^^^^^^^^^^^^
+ *   "B":1
+ * ^^^^^^^
  * ```
  */
 export interface TreemapLeaf extends NodeBase {
   readonly type: "TreemapLeaf"
   readonly indent: number
+  readonly statementsBefore: readonly (
+    | TreemapClassDefStatement
+    | TreemapTitleStatement
+    | TreemapAccTitleStatement
+    | TreemapAccDescrStatement
+    | TreemapAccDescrBlockStatement
+  )[]
   readonly name: StringLiteral
   readonly value: NumericLiteral
   readonly classSelector: Identifier | null

@@ -65,242 +65,247 @@
         },
         "data": [],
         "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 4,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "Child",
+              "range": [
+                24,
+                29
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 9
+                }
+              }
+            },
+            "shape": {
+              "type": "KanbanShape",
+              "opener": "(",
+              "closer": ")",
+              "label": {
+                "type": "KanbanLabel",
+                "kind": "text",
+                "value": "Child",
+                "range": [
+                  30,
+                  35
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 10
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 15
+                  }
+                }
+              },
+              "range": [
+                29,
+                36
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 9
+                },
+                "end": {
+                  "line": 3,
+                  "column": 16
+                }
+              }
+            },
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              24,
+              36
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 3,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "KanbanNode",
+            "indent": 6,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "a",
+              "range": [
+                43,
+                44
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 6
+                },
+                "end": {
+                  "line": 4,
+                  "column": 7
+                }
+              }
+            },
+            "shape": {
+              "type": "KanbanShape",
+              "opener": "(",
+              "closer": ")",
+              "label": {
+                "type": "KanbanLabel",
+                "kind": "text",
+                "value": "a",
+                "range": [
+                  45,
+                  46
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 9
+                  }
+                }
+              },
+              "range": [
+                44,
+                47
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 7
+                },
+                "end": {
+                  "line": 4,
+                  "column": 10
+                }
+              }
+            },
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              43,
+              47
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 6
+              },
+              "end": {
+                "line": 4,
+                "column": 10
+              }
+            }
+          },
+          {
+            "type": "KanbanNode",
+            "indent": 6,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "b",
+              "range": [
+                82,
+                83
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 6
+                },
+                "end": {
+                  "line": 7,
+                  "column": 7
+                }
+              }
+            },
+            "shape": {
+              "type": "KanbanShape",
+              "opener": "[",
+              "closer": "]",
+              "label": {
+                "type": "KanbanLabel",
+                "kind": "text",
+                "value": "New Stuff",
+                "range": [
+                  84,
+                  93
+                ],
+                "loc": {
+                  "start": {
+                    "line": 7,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 17
+                  }
+                }
+              },
+              "range": [
+                83,
+                94
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 7
+                },
+                "end": {
+                  "line": 7,
+                  "column": 18
+                }
+              }
+            },
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              82,
+              94
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 6
+              },
+              "end": {
+                "line": 7,
+                "column": 18
+              }
+            }
+          }
+        ],
         "range": [
           9,
-          19
+          94
         ],
         "loc": {
           "start": {
             "line": 2,
             "column": 2
-          },
-          "end": {
-            "line": 2,
-            "column": 12
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 4,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "Child",
-          "range": [
-            24,
-            29
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 4
-            },
-            "end": {
-              "line": 3,
-              "column": 9
-            }
-          }
-        },
-        "shape": {
-          "type": "KanbanShape",
-          "opener": "(",
-          "closer": ")",
-          "label": {
-            "type": "KanbanLabel",
-            "kind": "text",
-            "value": "Child",
-            "range": [
-              30,
-              35
-            ],
-            "loc": {
-              "start": {
-                "line": 3,
-                "column": 10
-              },
-              "end": {
-                "line": 3,
-                "column": 15
-              }
-            }
-          },
-          "range": [
-            29,
-            36
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 9
-            },
-            "end": {
-              "line": 3,
-              "column": 16
-            }
-          }
-        },
-        "data": [],
-        "decorations": [],
-        "range": [
-          24,
-          36
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 4
-          },
-          "end": {
-            "line": 3,
-            "column": 16
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 6,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "a",
-          "range": [
-            43,
-            44
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 6
-            },
-            "end": {
-              "line": 4,
-              "column": 7
-            }
-          }
-        },
-        "shape": {
-          "type": "KanbanShape",
-          "opener": "(",
-          "closer": ")",
-          "label": {
-            "type": "KanbanLabel",
-            "kind": "text",
-            "value": "a",
-            "range": [
-              45,
-              46
-            ],
-            "loc": {
-              "start": {
-                "line": 4,
-                "column": 8
-              },
-              "end": {
-                "line": 4,
-                "column": 9
-              }
-            }
-          },
-          "range": [
-            44,
-            47
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 7
-            },
-            "end": {
-              "line": 4,
-              "column": 10
-            }
-          }
-        },
-        "data": [],
-        "decorations": [],
-        "range": [
-          43,
-          47
-        ],
-        "loc": {
-          "start": {
-            "line": 4,
-            "column": 6
-          },
-          "end": {
-            "line": 4,
-            "column": 10
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 6,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "b",
-          "range": [
-            82,
-            83
-          ],
-          "loc": {
-            "start": {
-              "line": 7,
-              "column": 6
-            },
-            "end": {
-              "line": 7,
-              "column": 7
-            }
-          }
-        },
-        "shape": {
-          "type": "KanbanShape",
-          "opener": "[",
-          "closer": "]",
-          "label": {
-            "type": "KanbanLabel",
-            "kind": "text",
-            "value": "New Stuff",
-            "range": [
-              84,
-              93
-            ],
-            "loc": {
-              "start": {
-                "line": 7,
-                "column": 8
-              },
-              "end": {
-                "line": 7,
-                "column": 17
-              }
-            }
-          },
-          "range": [
-            83,
-            94
-          ],
-          "loc": {
-            "start": {
-              "line": 7,
-              "column": 7
-            },
-            "end": {
-              "line": 7,
-              "column": 18
-            }
-          }
-        },
-        "data": [],
-        "decorations": [],
-        "range": [
-          82,
-          94
-        ],
-        "loc": {
-          "start": {
-            "line": 7,
-            "column": 6
           },
           "end": {
             "line": 7,

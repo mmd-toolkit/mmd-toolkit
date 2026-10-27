@@ -107,18 +107,20 @@ frontmatter のタグがなければ、両者とも `b="c">d` を変えずに受
      A ->> B: b="c">d
    ```
 
-| 例                                                             | mermaid.js                           | この仕様                             |
-| -------------------------------------------------------------- | ------------------------------------ | ------------------------------------ |
-| 1                                                              | ラベル `b='c'>d` を持つ頂点 A        | 拒否                                 |
-| 2                                                              | 拒否                                 | ラベル `<b x='y'>t` を持つ頂点 A     |
-| 3                                                              | アクセシビリティのタイトル `b='c'>d` | アクセシビリティのタイトル `b="c">d` |
-| 4                                                              | メッセージ `b='c'>d`                 | メッセージ `b="c">d`                 |
-| 5                                                              | メッセージ `b="c">d`                 | 同じ                                 |
-| [fixture: flowchart/html-tag-starts-in-frontmatter]            |
-| [fixture: flowchart/html-tag-starts-in-frontmatter-value]      |
-| [fixture: flowchart/html-tag-starts-in-frontmatter-acc-title]  |
-| [fixture: sequence/div-html-tag-starts-in-frontmatter-message] |
-| [fixture: sequence/lex-html-tag-frontmatter-arrow-ends-tag]    |
+| 例  | mermaid.js                           | この仕様                             |
+| --- | ------------------------------------ | ------------------------------------ |
+| 1   | ラベル `b='c'>d` を持つ頂点 A        | 拒否                                 |
+| 2   | 拒否                                 | ラベル `<b x='y'>t` を持つ頂点 A     |
+| 3   | アクセシビリティのタイトル `b='c'>d` | アクセシビリティのタイトル `b="c">d` |
+| 4   | メッセージ `b='c'>d`                 | メッセージ `b="c">d`                 |
+| 5   | メッセージ `b="c">d`                 | 同じ                                 |
+
+表で比較した読みを次の fixture が記録します。
+[fixture: flowchart/html-tag-starts-in-frontmatter]
+[fixture: flowchart/html-tag-starts-in-frontmatter-value]
+[fixture: flowchart/html-tag-starts-in-frontmatter-acc-title]
+[fixture: sequence/div-html-tag-starts-in-frontmatter-message]
+[fixture: sequence/lex-html-tag-frontmatter-arrow-ends-tag]
 
 つまり mermaid.js では、フロントマターで始まるタグは、
 その後の最初の `>` まで続き、その `>` はテキストの中にあり得ます。

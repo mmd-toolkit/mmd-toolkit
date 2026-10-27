@@ -227,6 +227,7 @@ Ishikawa にも同じ直接の規則を適用します（「
 | 4   | 拒否       | 子 a と b を持つ根 |
 | 5   | 拒否       | 根                 |
 
+表で比較した読みを次の fixture が記録します。
 [fixture: mindmap/db-blank-line-after-header] [fixture:
 mindmap/div-header-two-comments-then-blank] [fixture:
 mindmap/div-comment-then-blank-between-nodes] [fixture:

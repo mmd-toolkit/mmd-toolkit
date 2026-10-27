@@ -727,20 +727,22 @@ showData は pie の次の可視の単位として、1 回だけ置けます。
 
 ### 規則と節点
 
-| 規則                                                   | 節点                           |
-| ------------------------------------------------------ | ------------------------------ |
-| diagram                                                | PieDiagram                     |
-| section-statement                                      | PieSectionStatement            |
-| title-statement                                        | PieTitleStatement              |
-| acc-title-statement                                    | PieAccTitleStatement           |
-| acc-descr-statement                                    | PieAccDescrStatement           |
-| acc-descr-block-statement                              | PieAccDescrBlockStatement      |
-| string / pie-number                                    | StringLiteral / NumericLiteral |
-| 書かれた共通の値                                       | PieLiteral                     |
-| 保持する隠れた形                                       | PieIgnoredText                 |
-| [fixture: pie/db-all-fields]                           |
-| [fixture: pie/frontmatter-between-section-parts]       |
-| [fixture: pie/review-hidden-directive-before-showdata] |
+| 規則                      | 節点                           |
+| ------------------------- | ------------------------------ |
+| diagram                   | PieDiagram                     |
+| section-statement         | PieSectionStatement            |
+| title-statement           | PieTitleStatement              |
+| acc-title-statement       | PieAccTitleStatement           |
+| acc-descr-statement       | PieAccDescrStatement           |
+| acc-descr-block-statement | PieAccDescrBlockStatement      |
+| string / pie-number       | StringLiteral / NumericLiteral |
+| 書かれた共通の値          | PieLiteral                     |
+| 保持する隠れた形          | PieIgnoredText                 |
+
+表の文と値の形を次の fixture が示します。
+[fixture: pie/db-all-fields]
+[fixture: pie/frontmatter-between-section-parts]
+[fixture: pie/review-hidden-directive-before-showdata]
 
 ### 文法の外での拒否
 

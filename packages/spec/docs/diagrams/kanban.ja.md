@@ -260,6 +260,31 @@ U+0085 は空白ではありません。
 その区切り文字から字下げが始まります。
 [fixture: kanban/lex-node-comment-ls]
 [fixture: kanban/div-header-comment-ps-node]
+[fixture: kanban/lex-indent-comment-ps-semicolon-space]
+[fixture: kanban/lex-indent-comment-ls-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ls-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-no-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-no-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-semicolon-wide-tail]
+[fixture: kanban/lex-indent-comment-ps-space-after-card]
+[fixture: kanban/lex-indent-comment-ps-space-after-column]
+[fixture: kanban/lex-indent-comment-ls-space-after-column]
+[fixture: kanban/lex-indent-comment-ps-two-spaces-after-card]
+[fixture: kanban/lex-indent-comment-ps-after-card-then-column]
+[fixture: kanban/lex-indent-comment-ps-zero-baseline]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-unselected-semicolon-node]
+[fixture: kanban/lex-indent-comment-lf-semicolon-space]
+[fixture: kanban/lex-indent-comment-crlf-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-common-line]
+[fixture: kanban/lex-indent-comment-ps-indent-directive]
+[fixture: kanban/lex-indent-comment-ps-tail-directive]
+[fixture: kanban/lex-indent-comment-ps-empty-line-before]
+[fixture: kanban/lex-indent-comment-ls-selected-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-tail-directive-touching]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-indent-directive]
 
 ### 単位の中のディレクティブ
 
@@ -791,6 +816,12 @@ class 本文を読むと class の文脈を出ます。
 [fixture: kanban/div-header-comment-ls-node]
 [fixture: kanban/div-header-comment-ps-node]
 [fixture: kanban/lex-between-comment-ls-node]
+[fixture: kanban/lex-indent-comment-ps-semicolon-space]
+[fixture: kanban/lex-indent-comment-ls-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ls-selected-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-tail-directive-touching]
 
 通常の `#` と単独の `%` はノード本文です。
 [fixture: kanban/lex-comment-hash]
@@ -808,6 +839,7 @@ class 本文を読むと class の文脈を出ます。
 同じ行の U+2028 と U+2029 の後の本文も含めます。
 [fixture: kanban/lex-between-comments-ls-node]
 [fixture: kanban/lex-comment-quoted-line]
+[fixture: kanban/lex-indent-comment-ps-common-line]
 
 図のコメントの終わりは U+2028 と U+2029 でも `newline` の単位です。
 その後の字下げは新しいノードの行を始めます。
@@ -818,6 +850,11 @@ class 本文を読むと class の文脈を出ます。
 [fixture: kanban/lex-node-comment-ls]
 [fixture: kanban/lex-icon-comment-ls]
 [fixture: kanban/db-metadata-comment-ls]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ls-selected-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-indent-directive]
+[fixture: kanban/lex-indent-comment-ps-space-after-card]
+[fixture: kanban/lex-indent-comment-ps-space-after-column]
 
 ## 文法
 
@@ -1001,8 +1038,8 @@ class はソースの終わりで終えられます。
 [fixture: kanban/spec-kanban-46081dfb]
 [fixture: kanban/spec-kanban-3ef59952]
 
-図の本体は絶対的な字下げを持つノードの平坦なリストです。
-深いノードも入れ子の子にはなりません。
+図の本体は[字下げと親子](#字下げと親子)による列とそのカードを持ちます。
+ノードの絶対的な字下げも保ちます。
 [fixture: kanban/db-indent-unindented]
 [fixture: kanban/db-indent-tabs]
 [fixture: kanban/db-indent-deeper]
@@ -1013,7 +1050,7 @@ class はソースの終わりで終えられます。
 [fixture: kanban/spec-kanban-9d61a67e]
 [fixture: kanban/docs-syntax-kanban-64d47195]
 [fixture: kanban/docs-syntax-kanban-1463e787]
-列と項目への割り当ては
+値の変換と公開は
 [tests パッケージ](../../../tests/docs/db-summaries.ja.md#kanban) が定めます。
 
 id が重複したノードもソースの順に別々に保ちます。
@@ -1221,6 +1258,64 @@ icon と class の行は字下げによらず最後に書いたノードを飾�
 [fixture: kanban/div-between-real-comments-ls-node]
 [fixture: kanban/div-between-real-comments-ps-node]
 [fixture: kanban/div-header-space-node]
+
+### 字下げと親子
+
+最初のノードは列です。
+後続のノードの字下げが最初のノードと同じなら別の列とし、
+それ以外は直前の列のカードとします。
+列は KanbanDiagram.body、
+カードはその列の KanbanNode.children にソース順で置きます。
+後のカードがより深く字下げされても、カードは親になりません。
+最初の字下げは 0 でも 0 より大きくてもよく、
+複数の列と、その基準より大きい字下げの任意の増減を許します。
+[fixture: kanban/db-indent-unindented]
+[fixture: kanban/db-indent-tabs]
+[fixture: kanban/db-sections-items]
+[fixture: kanban/spec-kanban-d05521ff]
+[fixture: kanban/db-indent-deeper]
+[fixture: kanban/lex-indent-comment-ps-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-space-after-card]
+[fixture: kanban/lex-indent-comment-ps-space-after-column]
+[fixture: kanban/lex-indent-comment-ls-space-after-column]
+[fixture: kanban/lex-indent-comment-ps-two-spaces-after-card]
+[fixture: kanban/lex-indent-comment-ps-after-card-then-column]
+[fixture: kanban/lex-indent-comment-ps-zero-baseline]
+
+最初の列より浅い最後のノードも、直前の列のカードです。
+下記の拒否条件により、その後に別のノードは続けられません。
+装飾と空行は別のノードには数えません。
+id の重複で列やカードを統合しません。
+[fixture: kanban/db-indent-shallower-last]
+[fixture: kanban/gram-indent-shallower-followed]
+[fixture: kanban/gram-shallower-then-decoration]
+[fixture: kanban/gram-shallower-then-empty]
+[fixture: kanban/db-section-three-definitions]
+[fixture: kanban/db-section-item-same-id]
+
+icon と class の行は字下げに関係なく最後に書いたノードを飾ります。
+カードにはならず、次のカードの列も変えません。
+共有 directive・コメント・空行・選択された無視するセミコロンは
+階層ノードを増やしません。
+コメントを終える LS・PS も含め、字句上の字下げの文字数を保ちます。
+選ばれないセミコロンは本文のままで、カードを区切りません。
+title や classDef に見える本文はノードのままとし、
+空の description block を共通の文にはしません。
+[fixture: kanban/gram-decoration-then-child]
+[fixture: kanban/gram-nesting-item-decoration-before-deeper-item]
+[fixture: kanban/lex-indent-directive]
+[fixture: kanban/lex-keyword-gap-title-directive-line]
+[fixture: kanban/lex-comment-line]
+[fixture: kanban/lex-keyword-gap-title-blank-line]
+[fixture: kanban/lex-id-style-rule]
+[fixture: kanban/lex-after-bare-semicolon-spaced]
+[fixture: kanban/lex-node-comment-ls]
+[fixture: kanban/gram-nesting-card-after-comment-ps]
+[fixture: kanban/gram-nesting-card-ls-ordinary-indent]
+[fixture: kanban/gram-nesting-card-ps-ordinary-indent]
+[fixture: kanban/gram-nesting-common-looking-title-is-card]
+[fixture: kanban/gram-nesting-classdef-looking-text-is-card]
+[fixture: kanban/gram-empty-description-block-after-value]
 
 ### 文法外の拒否
 

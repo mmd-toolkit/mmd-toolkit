@@ -79,3 +79,10 @@ treemap/hidden-comment-eof] [fixture: treemap/detect-retained-bare-lf-control]
 [fixture: treemap/div-retained-before-bare-unicode-line] [fixture:
 treemap/div-bare-retained-ascii-header] [fixture:
 treemap/detect-second-scan-single-line-comment]
+
+A statement owned by statementsBefore keeps all its original items and token
+boundaries. Section children add no tokens; enclosed style content remains one
+literal rather than another gap entry. [fixture: treemap/gram-written-tree]
+[fixture: treemap/gram-nesting-statement-before-section] [fixture:
+treemap/lex-class-style-crosses-blank-line] [fixture:
+treemap/gram-nesting-statements-directive-inline]

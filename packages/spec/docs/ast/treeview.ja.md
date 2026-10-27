@@ -25,6 +25,16 @@ closed は true である。
 [fixture: treeview/db-quote-conversion]
 [fixture: treeview/directive-double-middle]
 [fixture: treeview/comment-line-in-quotes] [fixture: treeview/text-double-crlf]
+[fixture: treeview/box-quoted-tail-decoration-light-vertical]
+[fixture: treeview/box-quoted-tail-decoration-light-dash]
+[fixture: treeview/box-quoted-tail-branch-content]
+[fixture: treeview/box-quoted-tail-decoration-single-quoted]
+[fixture: treeview/box-quoted-tail-decoration-heavy-vertical]
+[fixture: treeview/box-quoted-tail-decoration-heavy-dash]
+[fixture: treeview/box-quoted-tail-branch-heavy]
+[fixture: treeview/box-quoted-tail-decoration-two-lines]
+[fixture: treeview/box-quoted-tail-branch-then-decoration]
+[fixture: treeview/box-quoted-tail-decoration-then-branch]
 
 値は書かれた tab、slash、引用符、文字参照の綴り、所有する空白を保つ。
 値の中の罫線 prefix と装飾も、字句上は字下げや内容無しと読む場合まで、
@@ -37,54 +47,108 @@ closed は true である。
 [fixture: treeview/box-quoted-decoration]
 [fixture: treeview/box-trim-string-closing-quote]
 [fixture: treeview/box-multiline-name-tail-trim]
+[fixture: treeview/box-block-tail-decoration-light-vertical]
+[fixture: treeview/box-block-tail-branch-content]
+[fixture: treeview/box-block-tail-decoration-crlf]
+[fixture: treeview/box-quoted-tail-decoration-light-vertical]
+[fixture: treeview/box-quoted-tail-decoration-light-dash]
+[fixture: treeview/box-quoted-tail-branch-content]
+[fixture: treeview/box-quoted-tail-decoration-single-quoted]
+[fixture: treeview/box-quoted-tail-decoration-heavy-vertical]
+[fixture: treeview/box-quoted-tail-decoration-heavy-dash]
+[fixture: treeview/box-quoted-tail-branch-heavy]
+[fixture: treeview/box-quoted-tail-decoration-two-lines]
+[fixture: treeview/box-quoted-tail-branch-then-decoration]
+[fixture: treeview/box-quoted-tail-decoration-then-branch]
 
 ## gap の所有
 
 TreeviewIgnoredText は box-decoration だけを持ち、
 共有 Comment・Directive・空白・native YAML を持たない。
 native な hidden YAML と directive の node は無い。
-保持する形の owner は一つだけとし、次の規則を原文の順で適用する。
-[fixture: treeview/box-written-tree] [fixture: treeview/gram-body-yaml]
+保持する形の owner は一つだけとし、次の規則を順に適用する。
+[fixture: treeview/box-written-tree]
+[fixture: treeview/gram-body-yaml]
 [fixture: treeview/detect-secondscan-singleline]
 
-見出しの後、完成した top-level item の間、
-最後の item の後の装飾は Diagram.body に属する。
-共通文の preamble を終わらせない。字下げを読んだ後で名前がまだ必須なら、
-間の装飾は Node.textBeforeName に属する。その字下げを与えた prefix は、
-名前の前に native comment が割り込んでも Node.prefix に属する。
-[fixture: treeview/box-written-tree]
-[fixture: treeview/box-decoration-preamble-body]
-[fixture: treeview/box-decoration-trailing-body]
+既に開いた葉の内側の罫線の形は、その葉に保ち、gap node に取り出さない。
+字下げを読んだ後で名前がまだ必須なら、間の外側の装飾は
+Node.textBeforeName に属する。
+その字下げを与える prefix は、名前の前に native comment が入っても
+Node.prefix に属する。
+[fixture: treeview/ast-decoration-internal-and-body]
+[fixture: treeview/box-physical-directive-inline]
 [fixture: treeview/box-decoration-pending-name-gap]
 [fixture: treeview/box-comment-indent-carry]
+[fixture: treeview/box-block-tail-decoration-opener-gap-selector]
+[fixture: treeview/box-quoted-tail-decoration-light-vertical]
+[fixture: treeview/box-quoted-tail-decoration-light-dash]
+[fixture: treeview/box-quoted-tail-branch-content]
+[fixture: treeview/box-quoted-tail-decoration-single-quoted]
+[fixture: treeview/box-quoted-tail-decoration-heavy-vertical]
+[fixture: treeview/box-quoted-tail-decoration-heavy-dash]
+[fixture: treeview/box-quoted-tail-branch-heavy]
+[fixture: treeview/box-quoted-tail-decoration-two-lines]
+[fixture: treeview/box-quoted-tail-branch-then-decoration]
+[fixture: treeview/box-quoted-tail-decoration-then-branch]
 
-後に注釈が続くなら、その前の装飾は注釈の textBefore に属する。
-注釈が続かなければ top-level の body へ戻る。
-注釈を始める branch はその注釈の prefix に属し、node の indent を変えない。
-accDescr と block の開きの間の装飾と prefix は textBeforeOpen に属する。
+注釈が続くなら、その前の装飾は注釈の textBefore に属する。
+注釈を始める branch は注釈の prefix に属し、node の indent を変えない。
+accDescr と必須の block の開きの間の装飾と prefix は textBeforeOpen に属する。
+これらの owner は node の textBefore より優先する。
 [fixture: treeview/box-decoration-before-annotation]
 [fixture: treeview/ast-annotation-prefixes]
-[fixture: treeview/box-decoration-trailing-body]
 [fixture: treeview/box-branch-before-block-open]
 [fixture: treeview/box-decoration-before-block-open]
 [fixture: treeview/box-prefix-common-block-two-prefixes]
 
-既に開いた葉の内側では、包まれた罫線の形を gap node に取り出さず、その葉に保つ。
-読みから外れる装飾の行末は装飾 node の外の原文の trivia のままとし、
-論理的に足す LF を書かれた構文にしない。
-共有コメントと directive は独立した共有の所有に従う。
-[fixture: treeview/ast-decoration-internal-and-body]
-[fixture: treeview/box-physical-directive-inline]
+完成した階層 node の間に残る装飾は、
+次の TreeviewNode.textBefore にソース順で属する。
+次の node が子、祖先の別の子、別の根のいずれでも同じ規則を使う。
+後続の注釈が無い装飾は、前の node に戻らずこの規則へ進む。
+最初の階層 node より前と最後より後の独立した装飾は Diagram.body に残し、
+共通文の preamble を終わらせない。
+装飾だけの図は階層 node を持たない。
+[fixture: treeview/box-written-tree]
+[fixture: treeview/gram-nesting-decoration-before-parent]
+[fixture: treeview/gram-nesting-decoration-before-ancestor-child]
+[fixture: treeview/spec-box-drawing-preprocessor-e9d19370]
+[fixture: treeview/box-decoration-preamble-body]
+[fixture: treeview/box-decoration-trailing-body]
+[fixture: treeview/gram-nesting-decoration-after-subtree]
+[fixture: treeview/box-mode-dash-only]
+
+共有コメントと directive は共有の所有を保ち、空行は gap node を作らない。
+これらは階層の親を決めず、装飾の owner にもならない。
+割り当てる字下げへの字句上の効果は変えない。
+装飾の読みから外れる行末は装飾 node の外の原文の trivia のままとし、
+付加 LF を書かれた構文にしない。
+選ばれた無視するセミコロンは共有 trivia のままとし、
+選ばれないセミコロンは字句の読みを保つ。
+[fixture: treeview/box-tail-decoration-directive-inline]
+[fixture: treeview/box-tail-decoration-directive-line]
+[fixture: treeview/box-tail-decoration-comment-line]
+[fixture: treeview/box-tail-decoration-empty-line]
+[fixture: treeview/box-tail-decoration-selected-semicolon]
+[fixture: treeview/box-tail-decoration-unselected-semicolon]
+[fixture: treeview/box-tail-decoration-ls]
+[fixture: treeview/box-tail-decoration-ps]
 [fixture: treeview/block-physical-comment-line]
 [fixture: treeview/gram-body-hidden-eof]
+[fixture: treeview/gram-nesting-decoration-directive-inline]
+[fixture: treeview/gram-nesting-decoration-directive-line]
+[fixture: treeview/gram-nesting-decoration-comment-line]
+[fixture: treeview/gram-nesting-decoration-empty-line]
+[fixture: treeview/gram-nesting-decoration-selected-semicolon]
+[fixture: treeview/gram-nesting-decoration-unselected-semicolon]
 
 ## node
 
 ### TreeviewDiagram
 
-| 欄     | 型                       | 意味                   |
-| ------ | ------------------------ | ---------------------- |
-| `body` | TreeviewBodyItem の list | 全ての文と外側の装飾。 |
+| 欄     | 型                       | 意味                     |
+| ------ | ------------------------ | ------------------------ |
+| `body` | TreeviewBodyItem の list | 根と独立した外側の要素。 |
 
 子の欄: body。範囲: 見出しの開始から最後の書かれた body item まで。
 body が空なら見出しの終端まで。外側の空白、その後の共有 Comment、
@@ -96,8 +160,11 @@ body が空なら見出しの終端まで。外側の空白、その後の共有
 TreeviewBodyItem は TreeviewNode、TreeviewIgnoredText、TreeviewTitleStatement、
 TreeviewAccTitleStatement、TreeviewAccDescrStatement、
 TreeviewAccDescrBlockStatement のいずれか。共通文は node の前に置く。
-どちらの並びにも装飾が入りうる。body は平らに全出現を記録し、
-parent/children 欄や人工の根を作らない。
+body に直接置く TreeviewNode は根だけとし、子は
+[親子の規則](../diagrams/treeview.ja.md#字下げと親子)に従う。
+最初の階層 node より前と最後より後の独立した装飾は、
+gap の所有に従い body に残す。
+全出現を保ち、人工の根や親への参照は作らない。
 空行と共有 Comment は body item を作らない。
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/box-decoration-preamble-body]
@@ -108,20 +175,41 @@ parent/children 欄や人工の根を作らない。
 | 欄               | 型                                      | 意味                                |
 | ---------------- | --------------------------------------- | ----------------------------------- |
 | `indent`         | 非負整数                                | 割り当てられた字下げ単位。          |
+| `textBefore`     | TreeviewIgnoredText の list             | 完成した node の間の前置の装飾。    |
 | `prefix`         | TreeviewBranchPrefix または null        | この node の字下げを与える prefix。 |
 | `textBeforeName` | TreeviewIgnoredText の list             | 名前を待つ間の装飾。                |
 | `name`           | TreeviewIdentifier または StringLiteral | 書かれた node の名前。              |
 | `annotations`    | TreeviewAnnotation の list              | 記述順の全注釈。                    |
+| `children`       | TreeviewNode の list                    | ソース順の直接の子。                |
 
-子の欄: prefix、textBeforeName、name、annotations。
-範囲: prefix・textBeforeName・name の最も早い開始から最後の注釈まで。
-注釈が無ければ name の終端まで。前置の通常の字下げと、
-後の別 node に属する空白は含めない。name は null にならず、
-空の引用名は空の value を持つ StringLiteral である。
+子の欄: textBefore、prefix、textBeforeName、name、annotations、children。
+範囲の開始は、textBefore があればその最初の装飾、
+無ければ prefix・textBeforeName・name の最も早い開始とする。
+末尾は最後の子孫まで、子が無ければ自身の最後の注釈か name の終端まで。
+node の範囲の開始は名前の開始とは限らない。
+範囲は連続し、兄弟は重ならない。
+前置の通常の字下げや、無関係な後続の trivia で範囲を延ばさない。
+name は null にならず、空の引用名は空の value を持つ StringLiteral である。
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/box-comment-indent-carry]
 [fixture: treeview/box-decoration-pending-name-gap]
 [fixture: treeview/db-empty-names]
+[fixture: treeview/gram-nesting-decoration-before-parent]
+[fixture: treeview/gram-nesting-decoration-after-subtree]
+[fixture: treeview/gram-nesting-decoration-directive-inline]
+[fixture: treeview/gram-nesting-decoration-directive-line]
+[fixture: treeview/gram-nesting-decoration-comment-line]
+[fixture: treeview/gram-nesting-decoration-empty-line]
+[fixture: treeview/gram-nesting-decoration-selected-semicolon]
+[fixture: treeview/gram-nesting-decoration-unselected-semicolon]
+
+textBefore と children は、無ければ空の list とする。
+children は階層 node だけを持ち、導出した深さや親の欄は作らない。
+file の名前、字下げの飛び、複数の根も親子の規則に従って入れ子にする。
+[fixture: treeview/db-file-parent]
+[fixture: treeview/db-indent-pop]
+[fixture: treeview/db-first-indented]
+[fixture: treeview/gram-nesting-decoration-before-ancestor-child]
 
 indent は割り当てられた通常の ASCII space/tab を各 1 と数え、
 prefix は[直接規則](../diagrams/treeview.ja.md)の深さの 4 倍を与える。
@@ -138,7 +226,7 @@ prefix は[直接規則](../diagrams/treeview.ja.md)の深さの 4 倍を与え�
 TreeviewAnnotation は TreeviewClassAnnotation、TreeviewIconAnnotation、
 TreeviewDescriptionAnnotation のいずれか。書かれていなければ list を空とし、
 書かれていれば上書き前の class/icon、空の description も含め全出現を保つ。
-name の元の slash を残し、nodeType 欄と階層の欄は持たない。
+name の元の slash を残し、nodeType 欄は持たない。
 [fixture: treeview/gram-written-tree] [fixture: treeview/db-repeat-class]
 [fixture: treeview/db-repeat-icon]
 [fixture: treeview/annotation-description-repeat-empty]
@@ -324,6 +412,43 @@ prefix が無ければ null、
 [fixture: treeview/common-block-whitespace-raw]
 [fixture: treeview/common-block-escaped-close]
 [fixture: treeview/box-block-decoration]
+[fixture: treeview/box-block-tail-decoration-light-vertical]
+[fixture: treeview/box-block-tail-decoration-heavy-vertical]
+[fixture: treeview/box-block-tail-decoration-light-dash]
+[fixture: treeview/box-block-tail-decoration-heavy-dash]
+[fixture: treeview/box-block-tail-decoration-vertical-whitespace]
+[fixture: treeview/box-block-tail-decoration-close-same-line]
+[fixture: treeview/box-block-tail-decoration-dash-close-same-line]
+[fixture: treeview/box-block-tail-decoration-multiple-lines]
+[fixture: treeview/box-block-tail-branch-content]
+[fixture: treeview/box-block-tail-branch-closer]
+[fixture: treeview/box-block-tail-decoration-inactive]
+[fixture: treeview/box-block-tail-decoration-indent-control]
+[fixture: treeview/box-block-tail-decoration-only-interior]
+[fixture: treeview/box-block-tail-decoration-empty-control]
+[fixture: treeview/box-block-tail-decoration-opener-line]
+[fixture: treeview/box-block-tail-decoration-ascii-dash-control]
+[fixture: treeview/box-block-tail-decoration-single-dash]
+[fixture: treeview/box-block-tail-decoration-spaces-after]
+[fixture: treeview/box-block-tail-decoration-spaces-before]
+[fixture: treeview/box-block-tail-decoration-blank-after]
+[fixture: treeview/box-block-tail-decoration-two-vertical-lines]
+[fixture: treeview/box-block-tail-decoration-directive-inline]
+[fixture: treeview/box-block-tail-decoration-directive-line]
+[fixture: treeview/box-block-tail-decoration-directive-at-start]
+[fixture: treeview/box-block-tail-decoration-selected-semicolon]
+[fixture: treeview/box-block-tail-decoration-unselected-semicolon]
+[fixture: treeview/box-block-tail-decoration-comment-line]
+[fixture: treeview/box-block-tail-decoration-comment-after]
+[fixture: treeview/box-block-tail-decoration-blank-before]
+[fixture: treeview/box-block-tail-decoration-ls]
+[fixture: treeview/box-block-tail-decoration-ps]
+[fixture: treeview/box-block-tail-decoration-comment-ls]
+[fixture: treeview/box-block-tail-decoration-comment-ps]
+[fixture: treeview/box-block-tail-decoration-empty-block-before]
+[fixture: treeview/box-block-tail-decoration-crlf]
+[fixture: treeview/box-block-tail-decoration-cr]
+[fixture: treeview/box-block-tail-decoration-opener-gap-selector]
 
 ### TreeviewIdentifier
 
@@ -423,7 +548,7 @@ native な percent の形はこの型ではなく共有 Comment のままであ�
 ## 例
 
 この例は整形の方針を選ぶのではなく、書かれた字下げと綴りを示す。
-平らな body に共通の 4 種の文、その後に 3 個の node がある。
+body は共通の四種の文の後に二つの根を持ち、最初の根は子を持つ。
 最初の node は二つの class、二つの icon、description を保ち、
 子は引用名の末尾の空白を、最後の node は一重引用符の空名を保つ。
 [fixture: treeview/gram-written-tree]
@@ -441,9 +566,11 @@ root/ :::first icon(pack:file) :::last icon() ##  detail
 ```
 
 罫線の例でも root/ と branch の各行は記述順のままである。
-src/ と子の間の縦の装飾は別の body item であり、
-src/ は class・icon・description を保つ。原文の階層を合成せず、
-元の列から prefix の深さを解釈する。 [fixture: treeview/box-written-tree]
+src/ と子の間の縦の装飾は子の textBefore に属する。
+root/.children は src/ と other、src/.children は my file を持つ。
+src/ は class・icon・description を保つ。
+割り当てられた字下げと prefix の綴りも、入れ子とともに保つ。
+[fixture: treeview/box-written-tree]
 
 ```mmd
 treeView-beta

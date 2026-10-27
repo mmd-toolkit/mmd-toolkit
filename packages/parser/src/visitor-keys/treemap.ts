@@ -5,8 +5,8 @@ export const treemapVisitorKeys: Readonly<
   Record<TreemapNode["type"], readonly string[]>
 > = {
   TreemapDiagram: ["body"],
-  TreemapSection: ["name", "classSelector"],
-  TreemapLeaf: ["name", "value", "classSelector"],
+  TreemapSection: ["statementsBefore", "name", "classSelector", "children"],
+  TreemapLeaf: ["statementsBefore", "name", "value", "classSelector"],
   TreemapClassDefStatement: ["name", "style"],
   TreemapTitleStatement: ["value"],
   TreemapAccTitleStatement: ["value"],

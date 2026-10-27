@@ -7,6 +7,7 @@
       {
         "type": "TreemapSection",
         "indent": 0,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "Budget",
@@ -28,382 +29,395 @@
           }
         },
         "classSelector": null,
+        "children": [
+          {
+            "type": "TreemapSection",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Operations",
+              "raw": "\"Operations\"",
+              "closed": true,
+              "range": [
+                77,
+                89
+              ],
+              "loc": {
+                "start": {
+                  "line": 8,
+                  "column": 4
+                },
+                "end": {
+                  "line": 8,
+                  "column": 16
+                }
+              }
+            },
+            "classSelector": null,
+            "children": [
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Salaries",
+                  "raw": "\"Salaries\"",
+                  "closed": true,
+                  "range": [
+                    98,
+                    108
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 18
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 700000,
+                  "raw": "700000",
+                  "range": [
+                    110,
+                    116
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 20
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 26
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  98,
+                  116
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 26
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Equipment",
+                  "raw": "\"Equipment\"",
+                  "closed": true,
+                  "range": [
+                    125,
+                    136
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 19
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 200000,
+                  "raw": "200000",
+                  "range": [
+                    138,
+                    144
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 21
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 27
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  125,
+                  144
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 27
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Supplies",
+                  "raw": "\"Supplies\"",
+                  "closed": true,
+                  "range": [
+                    153,
+                    163
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 18
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 100000,
+                  "raw": "100000",
+                  "range": [
+                    165,
+                    171
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 11,
+                      "column": 20
+                    },
+                    "end": {
+                      "line": 11,
+                      "column": 26
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  153,
+                  171
+                ],
+                "loc": {
+                  "start": {
+                    "line": 11,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 11,
+                    "column": 26
+                  }
+                }
+              }
+            ],
+            "range": [
+              77,
+              171
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 4
+              },
+              "end": {
+                "line": 11,
+                "column": 26
+              }
+            }
+          },
+          {
+            "type": "TreemapSection",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Marketing",
+              "raw": "\"Marketing\"",
+              "closed": true,
+              "range": [
+                176,
+                187
+              ],
+              "loc": {
+                "start": {
+                  "line": 12,
+                  "column": 4
+                },
+                "end": {
+                  "line": 12,
+                  "column": 15
+                }
+              }
+            },
+            "classSelector": null,
+            "children": [
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Advertising",
+                  "raw": "\"Advertising\"",
+                  "closed": true,
+                  "range": [
+                    196,
+                    209
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 21
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 400000,
+                  "raw": "400000",
+                  "range": [
+                    211,
+                    217
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 23
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 29
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  196,
+                  217
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 29
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Events",
+                  "raw": "\"Events\"",
+                  "closed": true,
+                  "range": [
+                    226,
+                    234
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 16
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 100000,
+                  "raw": "100000",
+                  "range": [
+                    236,
+                    242
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 24
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  226,
+                  242
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 24
+                  }
+                }
+              }
+            ],
+            "range": [
+              176,
+              242
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 4
+              },
+              "end": {
+                "line": 14,
+                "column": 24
+              }
+            }
+          }
+        ],
         "range": [
           64,
-          72
+          242
         ],
         "loc": {
           "start": {
             "line": 7,
             "column": 0
-          },
-          "end": {
-            "line": 7,
-            "column": 8
-          }
-        }
-      },
-      {
-        "type": "TreemapSection",
-        "indent": 4,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Operations",
-          "raw": "\"Operations\"",
-          "closed": true,
-          "range": [
-            77,
-            89
-          ],
-          "loc": {
-            "start": {
-              "line": 8,
-              "column": 4
-            },
-            "end": {
-              "line": 8,
-              "column": 16
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          77,
-          89
-        ],
-        "loc": {
-          "start": {
-            "line": 8,
-            "column": 4
-          },
-          "end": {
-            "line": 8,
-            "column": 16
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Salaries",
-          "raw": "\"Salaries\"",
-          "closed": true,
-          "range": [
-            98,
-            108
-          ],
-          "loc": {
-            "start": {
-              "line": 9,
-              "column": 8
-            },
-            "end": {
-              "line": 9,
-              "column": 18
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 700000,
-          "raw": "700000",
-          "range": [
-            110,
-            116
-          ],
-          "loc": {
-            "start": {
-              "line": 9,
-              "column": 20
-            },
-            "end": {
-              "line": 9,
-              "column": 26
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          98,
-          116
-        ],
-        "loc": {
-          "start": {
-            "line": 9,
-            "column": 8
-          },
-          "end": {
-            "line": 9,
-            "column": 26
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Equipment",
-          "raw": "\"Equipment\"",
-          "closed": true,
-          "range": [
-            125,
-            136
-          ],
-          "loc": {
-            "start": {
-              "line": 10,
-              "column": 8
-            },
-            "end": {
-              "line": 10,
-              "column": 19
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 200000,
-          "raw": "200000",
-          "range": [
-            138,
-            144
-          ],
-          "loc": {
-            "start": {
-              "line": 10,
-              "column": 21
-            },
-            "end": {
-              "line": 10,
-              "column": 27
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          125,
-          144
-        ],
-        "loc": {
-          "start": {
-            "line": 10,
-            "column": 8
-          },
-          "end": {
-            "line": 10,
-            "column": 27
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Supplies",
-          "raw": "\"Supplies\"",
-          "closed": true,
-          "range": [
-            153,
-            163
-          ],
-          "loc": {
-            "start": {
-              "line": 11,
-              "column": 8
-            },
-            "end": {
-              "line": 11,
-              "column": 18
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 100000,
-          "raw": "100000",
-          "range": [
-            165,
-            171
-          ],
-          "loc": {
-            "start": {
-              "line": 11,
-              "column": 20
-            },
-            "end": {
-              "line": 11,
-              "column": 26
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          153,
-          171
-        ],
-        "loc": {
-          "start": {
-            "line": 11,
-            "column": 8
-          },
-          "end": {
-            "line": 11,
-            "column": 26
-          }
-        }
-      },
-      {
-        "type": "TreemapSection",
-        "indent": 4,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Marketing",
-          "raw": "\"Marketing\"",
-          "closed": true,
-          "range": [
-            176,
-            187
-          ],
-          "loc": {
-            "start": {
-              "line": 12,
-              "column": 4
-            },
-            "end": {
-              "line": 12,
-              "column": 15
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          176,
-          187
-        ],
-        "loc": {
-          "start": {
-            "line": 12,
-            "column": 4
-          },
-          "end": {
-            "line": 12,
-            "column": 15
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Advertising",
-          "raw": "\"Advertising\"",
-          "closed": true,
-          "range": [
-            196,
-            209
-          ],
-          "loc": {
-            "start": {
-              "line": 13,
-              "column": 8
-            },
-            "end": {
-              "line": 13,
-              "column": 21
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 400000,
-          "raw": "400000",
-          "range": [
-            211,
-            217
-          ],
-          "loc": {
-            "start": {
-              "line": 13,
-              "column": 23
-            },
-            "end": {
-              "line": 13,
-              "column": 29
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          196,
-          217
-        ],
-        "loc": {
-          "start": {
-            "line": 13,
-            "column": 8
-          },
-          "end": {
-            "line": 13,
-            "column": 29
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Events",
-          "raw": "\"Events\"",
-          "closed": true,
-          "range": [
-            226,
-            234
-          ],
-          "loc": {
-            "start": {
-              "line": 14,
-              "column": 8
-            },
-            "end": {
-              "line": 14,
-              "column": 16
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 100000,
-          "raw": "100000",
-          "range": [
-            236,
-            242
-          ],
-          "loc": {
-            "start": {
-              "line": 14,
-              "column": 18
-            },
-            "end": {
-              "line": 14,
-              "column": 24
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          226,
-          242
-        ],
-        "loc": {
-          "start": {
-            "line": 14,
-            "column": 8
           },
           "end": {
             "line": 14,

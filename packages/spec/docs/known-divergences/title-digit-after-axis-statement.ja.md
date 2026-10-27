@@ -101,6 +101,7 @@ CRLF と単独の CR は 1 つの改行文字として、空行の改行文字�
 | 4   | 拒否       | x 軸 `A` とタイトル `Q1`             |
 | 5   | 拒否       | x 軸 `A`、2 つの line、タイトル `Q1` |
 
+表で比較した読みを次の fixture が記録します。
 [fixture: xychart/div-title-digit-after-axis-semicolon]
 [fixture: xychart/div-title-digit-after-axis-band-same-line]
 [fixture: xychart/div-title-digit-next-line-after-axis-and-plot]

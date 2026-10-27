@@ -13,9 +13,13 @@ import { placeLeadingDirectives } from "./indentation-lines.ts"
 import { printAsWritten, significantIndentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
-import { layoutTreemapStatement, treemapLines } from "./treemap-layout.ts"
+import {
+  layoutTreemapStatement,
+  treemapLines,
+  treemapStatementRange,
+} from "./treemap-layout.ts"
 
-/** Prints the flat source body at the depths of its ordered section forest. */
+/** Prints the nested section forest and named gaps in source order. */
 export function printTreemap(
   path: AstPath<MermaidAst>,
   options: ParserOptions<MermaidAst>,
@@ -38,18 +42,19 @@ export function printTreemap(
   // indentation. Preserve the body together, rather than fixing some rows and
   // moving others (docs/treemap.md, Semicolons; diagrams/treemap.md,
   // Headers and indentation). This is a source constraint, not output reparsing.
-  const protectedRows = diagram.body.some(
+  const items = lines.flatMap((line) => line.statements)
+  const protectedRows = items.some(
     (item) =>
       (item.type === "TreemapSection" || item.type === "TreemapLeaf") &&
-      diagram.body.some(
+      items.some(
         (other) =>
           other !== item &&
-          (lineStartOf(source, other.range[0]) ===
-            lineStartOf(source, item.range[0]) ||
-            lineStartOf(source, other.range[1] - 1) ===
-              lineStartOf(source, item.range[0])) &&
-          (joined.has(lineStartOf(source, item.range[0])) ||
-            verbatim.has(lineStartOf(source, item.range[0]))),
+          (lineStartOf(source, treemapStatementRange(other)[0]) ===
+            lineStartOf(source, treemapStatementRange(item)[0]) ||
+            lineStartOf(source, treemapStatementRange(other)[1] - 1) ===
+              lineStartOf(source, treemapStatementRange(item)[0])) &&
+          (joined.has(lineStartOf(source, treemapStatementRange(item)[0])) ||
+            verbatim.has(lineStartOf(source, treemapStatementRange(item)[0]))),
       ),
   )
   if (protectedRows)
@@ -82,8 +87,8 @@ export function printTreemap(
           ? ""
           : printAsWritten(
               source,
-              line.statements[index - 1].range[1],
-              statement.range[0],
+              treemapStatementRange(line.statements[index - 1])[1],
+              treemapStatementRange(statement)[0],
             ),
         printAtoms(
           source,

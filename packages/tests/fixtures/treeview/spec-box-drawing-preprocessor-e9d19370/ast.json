@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": {
           "type": "TreeviewBranchPrefix",
           "value": "├──",
@@ -59,30 +60,33 @@
             "line": 2,
             "column": 9
           }
-        }
-      },
-      {
-        "type": "TreeviewIgnoredText",
-        "kind": "box-decoration",
-        "value": "│",
-        "range": [
-          24,
-          25
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 0
-          },
-          "end": {
-            "line": 3,
-            "column": 1
-          }
-        }
+        },
+        "children": []
       },
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [
+          {
+            "type": "TreeviewIgnoredText",
+            "kind": "box-decoration",
+            "value": "│",
+            "range": [
+              24,
+              25
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 1
+              }
+            }
+          }
+        ],
         "prefix": {
           "type": "TreeviewBranchPrefix",
           "value": "└──",
@@ -123,19 +127,20 @@
         },
         "annotations": [],
         "range": [
-          26,
+          24,
           35
         ],
         "loc": {
           "start": {
-            "line": 4,
+            "line": 3,
             "column": 0
           },
           "end": {
             "line": 4,
             "column": 9
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

@@ -149,6 +149,28 @@ Code:
 ---
 
 
+Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/nested-statement-gaps-empty-block
+Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/nested-statement-gaps-empty-block-input.mmd
+
+Code:
+  1 | treemap
+  2 | accDescr: First
+  3 | "Root"
+  4 | accDescr { Second }
+  5 |   "Branch"
+  6 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  7 | classDef aa fill:red;
+  8 |     "Leaf":1
+  9 | accDescr: Third
+ 10 |   "Sibling":2
+ 11 | accDescr { Fourth }
+ 12 |
+
+[1] mermaid.js sets an empty description from this empty `accDescr` block, replacing any earlier description.
+---
+
+
 Test: treemap-no-empty-description-block >> invalid >>> invalid/treemap/number-empty-block
 Filename: tests/fixtures/rules/treemap-no-empty-description-block/invalid/treemap/number-empty-block-input.mmd
 

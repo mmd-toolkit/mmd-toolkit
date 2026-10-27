@@ -23,6 +23,7 @@ gantt
   b : 2d
 ```
 
+この例はタスクの間に `%%{ }%%` のコメントを置きます。
 [fixture: gantt/lex-percent-brace-line-after-task]
 
 この文書は、mermaid.js が直接たどり着く
@@ -98,6 +99,7 @@ gantt
 | 6   | 拒否       | 文のないチャート          |
 | 7   | 同じ       | タイトル T を持つチャート |
 
+表で比較した読みを次の fixture が記録します。
 [fixture: gantt/div-percent-brace-glued-after-header] [fixture:
 gantt/div-percent-brace-glued-after-keyword] [fixture:
 gantt/div-percent-brace-glued-after-string] [fixture:

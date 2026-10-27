@@ -26,6 +26,7 @@ flowchart LR
   A@{ shape: rect }
 ```
 
+この例はフロントマター、ディレクティブの引数、データブロックを含みます。
 [fixture: flowchart/frontmatter-title]
 [fixture: common/config-font-family-string]
 [fixture: flowchart/gram-data-shape-known]
@@ -155,18 +156,20 @@ Ishikawa の `@{...}` にデータブロックの構文はなく、通常の節�
      A@{ label: 12 }
    ```
 
-| 例                                            | mermaid.js              | この仕様 |
-| --------------------------------------------- | ----------------------- | -------- |
-| 1                                             | 拒否、`YAMLException`   | 受理     |
-| 2                                             | 拒否、`YAMLException`   | 受理     |
-| 3                                             | 拒否、`TypeError`       | 受理     |
-| 4                                             | 拒否、「No such shape」 | 受理     |
-| 5                                             | ラベル 12 を持つ頂点 A  | 同じ     |
-| [fixture: flowchart/frontmatter-invalid-yaml] |
-| [fixture: common/frontmatter-duplicate-key]   |
-| [fixture: common/config-css-key-not-string]   |
-| [fixture: flowchart/div-data-unknown-shape]   |
-| [fixture: flowchart/db-data-label-number]     |
+| 例  | mermaid.js              | この仕様 |
+| --- | ----------------------- | -------- |
+| 1   | 拒否、`YAMLException`   | 受理     |
+| 2   | 拒否、`YAMLException`   | 受理     |
+| 3   | 拒否、`TypeError`       | 受理     |
+| 4   | 拒否、「No such shape」 | 受理     |
+| 5   | ラベル 12 を持つ頂点 A  | 同じ     |
+
+表で比較した読みを次の fixture が記録します。
+[fixture: flowchart/frontmatter-invalid-yaml]
+[fixture: common/frontmatter-duplicate-key]
+[fixture: common/config-css-key-not-string]
+[fixture: flowchart/div-data-unknown-shape]
+[fixture: flowchart/db-data-label-number]
 
 つまり mermaid.js は、埋め込まれたデータを解析できないときや、
 その結果が知らない形のときに、入力を拒否します。

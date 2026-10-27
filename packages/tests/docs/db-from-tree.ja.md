@@ -183,7 +183,7 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   [fixture: c4/db-all-fields]
 - **kanban の行**: id、ラベル、アイコンは、
   ノードの範囲と書かれた値だけから読みます。
-  平坦な body が所属を定め、
+  body の列とその children が所属を定め、
   隣接するデータ接尾辞ごとに埋め込み効果を一つ消費します。
   手順は [db-from-tree/kanban.md](./db-from-tree/kanban.ja.md) にあります。
   [fixture: kanban/db-sections-items] [fixture: kanban/db-metadata-two-items]
@@ -533,7 +533,7 @@ HTML ラベルが有効で、`securityLevel` が
 
 ## 確かめ
 
-Treeview は平らな node、書かれた注釈、罫線の直接の読みから構築する。
+Treeview は入れ子の node、書かれた注釈、罫線の直接の読みから構築する。
 手順は [treeview.ja.md](./db-from-tree/treeview.ja.md) にある。
 [fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 [fixture: treeview/config-security-level-other]
@@ -568,7 +568,7 @@ Railroad の 4 方言は、一つの authored tree から組み立てます。
 [fixture: railroad/peg-gram-written-tree]
 
 Treemap の組み立ては [treemap.ja.md](./db-from-tree/treemap.ja.md) に定めます。
-平坦な字下げ付きの行、classDef と共通値から組み立てます。
+入れ子の section と leaf、前置 gap の文と外側の共通値から組み立てます。
 [fixture: treemap/gram-written-tree] [fixture: treemap/db-indent-pop]
 
 Radar の組み立ては [radar.ja.md](./db-from-tree/radar.ja.md) に定めます。

@@ -39,9 +39,10 @@ text; when it matches, PieIgnoredText holds the block and its title and
 configuration do not apply. Gitgraph also retains a matching hidden block; the
 cited other diagram types reject the retained block. [fixture:
 pie/frontmatter-nonleading-comment] [fixture: gitgraph/lex-yaml-after-comment]
-[fixture: pie/lex-yaml-after-leading-lf] [fixture:
-pie/lex-yaml-bom-opening-only] [fixture: pie/lex-yaml-after-directive-line]
-[fixture: pie/lex-yaml-after-directive-glued] [fixture:
+[fixture: pie/lex-yaml-leading-config-not-applied] [fixture:
+pie/lex-yaml-after-leading-lf] [fixture: pie/lex-yaml-bom-opening-only]
+[fixture: pie/lex-yaml-after-directive-line] [fixture:
+pie/lex-yaml-after-directive-glued] [fixture:
 common/directive-before-frontmatter] [fixture:
 common/frontmatter-leading-newline] [fixture:
 common/frontmatter-nonleading-sequence] [fixture:
@@ -382,7 +383,6 @@ precede the header, lie before/after showData, occupy a section gap, or follow a
 value before EOL. Between two numbers it leaves two numbers; before a digit it
 cannot repair an unreadable minus. [fixture: pie/frontmatter-nonleading-comment]
 [fixture: gitgraph/lex-yaml-after-comment] [fixture:
-pie/lex-yaml-leading-config-not-applied] [fixture:
 pie/review-yaml-before-showdata] [fixture:
 pie/lex-yaml-after-showdata-before-first-section] [fixture:
 pie/review-yaml-between-label-colon] [fixture:
@@ -593,8 +593,9 @@ pie/lex-yaml-after-showdata-eof]
 | written common value      | PieLiteral                     |
 | retained hidden form      | PieIgnoredText                 |
 
-[fixture: pie/db-all-fields] [fixture: pie/frontmatter-between-section-parts]
-[fixture: pie/review-hidden-directive-before-showdata]
+The fixtures illustrate the statement and value forms in the table. [fixture:
+pie/db-all-fields] [fixture: pie/frontmatter-between-section-parts] [fixture:
+pie/review-hidden-directive-before-showdata]
 
 ### Rejection outside the grammar
 

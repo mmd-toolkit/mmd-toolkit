@@ -95,20 +95,22 @@ sequence 図の参加者の id、クラスの名前、
      A[style:#x ; y]
    ```
 
-| 例                                                            | mermaid.js                                     | この仕様 |
-| ------------------------------------------------------------- | ---------------------------------------------- | -------- |
-| 1                                                             | A から頂点 `Bb` への辺                         | 拒否     |
-| 2                                                             | 10 から始まるメッセージの番号                  | 拒否     |
-| 3                                                             | subgraph S                                     | 拒否     |
-| 4                                                             | `A --> B` と同じ、A から B への辺              | 拒否     |
-| 5                                                             | クラス c を持つ頂点 A                          | 拒否     |
-| 6                                                             | ラベル `style:#x`、空白 2 つ、`y` を持つ頂点 A | 同じ     |
-| [fixture: flowchart/div-ignored-semicolon-in-id]              |
-| [fixture: sequence/div-ignored-semicolon-in-autonumber-start] |
-| [fixture: flowchart/div-ignored-semicolon-in-keyword]         |
-| [fixture: flowchart/div-ignored-semicolon-in-arrow]           |
-| [fixture: flowchart/div-ignored-semicolon-in-triple-colon]    |
-| [fixture: flowchart/tokens-ignored-semicolon-label-spaces]    |
+| 例  | mermaid.js                                     | この仕様 |
+| --- | ---------------------------------------------- | -------- |
+| 1   | A から頂点 `Bb` への辺                         | 拒否     |
+| 2   | 10 から始まるメッセージの番号                  | 拒否     |
+| 3   | subgraph S                                     | 拒否     |
+| 4   | `A --> B` と同じ、A から B への辺              | 拒否     |
+| 5   | クラス c を持つ頂点 A                          | 拒否     |
+| 6   | ラベル `style:#x`、空白 2 つ、`y` を持つ頂点 A | 同じ     |
+
+表で比較した読みを次の fixture が記録します。
+[fixture: flowchart/div-ignored-semicolon-in-id]
+[fixture: sequence/div-ignored-semicolon-in-autonumber-start]
+[fixture: flowchart/div-ignored-semicolon-in-keyword]
+[fixture: flowchart/div-ignored-semicolon-in-arrow]
+[fixture: flowchart/div-ignored-semicolon-in-triple-colon]
+[fixture: flowchart/tokens-ignored-semicolon-label-spaces]
 
 つまり mermaid.js は、そのような入力を、どれも `;` のない行として読みます。
 この仕様もそうしますが、

@@ -7,6 +7,7 @@
       {
         "type": "TreemapSection",
         "indent": 0,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "Technology Stack",
@@ -28,653 +29,673 @@
           }
         },
         "classSelector": null,
+        "children": [
+          {
+            "type": "TreemapSection",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Frontend",
+              "raw": "\"Frontend\"",
+              "closed": true,
+              "range": [
+                31,
+                41
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 4
+                },
+                "end": {
+                  "line": 3,
+                  "column": 14
+                }
+              }
+            },
+            "classSelector": null,
+            "children": [
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "React",
+                  "raw": "\"React\"",
+                  "closed": true,
+                  "range": [
+                    50,
+                    57
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 15
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 35,
+                  "raw": "35",
+                  "range": [
+                    59,
+                    61
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 17
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 19
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  50,
+                  61
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 19
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "CSS",
+                  "raw": "\"CSS\"",
+                  "closed": true,
+                  "range": [
+                    70,
+                    75
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 13
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 15,
+                  "raw": "15",
+                  "range": [
+                    77,
+                    79
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 15
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 17
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  70,
+                  79
+                ],
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 5,
+                    "column": 17
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "HTML",
+                  "raw": "\"HTML\"",
+                  "closed": true,
+                  "range": [
+                    88,
+                    94
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 6,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 14
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 10,
+                  "raw": "10",
+                  "range": [
+                    96,
+                    98
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 6,
+                      "column": 16
+                    },
+                    "end": {
+                      "line": 6,
+                      "column": 18
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  88,
+                  98
+                ],
+                "loc": {
+                  "start": {
+                    "line": 6,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 6,
+                    "column": 18
+                  }
+                }
+              }
+            ],
+            "range": [
+              31,
+              98
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 4
+              },
+              "end": {
+                "line": 6,
+                "column": 18
+              }
+            }
+          },
+          {
+            "type": "TreemapSection",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "Backend",
+              "raw": "\"Backend\"",
+              "closed": true,
+              "range": [
+                103,
+                112
+              ],
+              "loc": {
+                "start": {
+                  "line": 7,
+                  "column": 4
+                },
+                "end": {
+                  "line": 7,
+                  "column": 13
+                }
+              }
+            },
+            "classSelector": null,
+            "children": [
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Node.js",
+                  "raw": "\"Node.js\"",
+                  "closed": true,
+                  "range": [
+                    121,
+                    130
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 17
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 25,
+                  "raw": "25",
+                  "range": [
+                    132,
+                    134
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 8,
+                      "column": 19
+                    },
+                    "end": {
+                      "line": 8,
+                      "column": 21
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  121,
+                  134
+                ],
+                "loc": {
+                  "start": {
+                    "line": 8,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 8,
+                    "column": 21
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Express",
+                  "raw": "\"Express\"",
+                  "closed": true,
+                  "range": [
+                    143,
+                    152
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 17
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 10,
+                  "raw": "10",
+                  "range": [
+                    154,
+                    156
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 9,
+                      "column": 19
+                    },
+                    "end": {
+                      "line": 9,
+                      "column": 21
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  143,
+                  156
+                ],
+                "loc": {
+                  "start": {
+                    "line": 9,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 9,
+                    "column": 21
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "MongoDB",
+                  "raw": "\"MongoDB\"",
+                  "closed": true,
+                  "range": [
+                    165,
+                    174
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 17
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 15,
+                  "raw": "15",
+                  "range": [
+                    176,
+                    178
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 10,
+                      "column": 19
+                    },
+                    "end": {
+                      "line": 10,
+                      "column": 21
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  165,
+                  178
+                ],
+                "loc": {
+                  "start": {
+                    "line": 10,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 10,
+                    "column": 21
+                  }
+                }
+              }
+            ],
+            "range": [
+              103,
+              178
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 4
+              },
+              "end": {
+                "line": 10,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "TreemapSection",
+            "indent": 4,
+            "statementsBefore": [],
+            "name": {
+              "type": "StringLiteral",
+              "value": "DevOps",
+              "raw": "\"DevOps\"",
+              "closed": true,
+              "range": [
+                183,
+                191
+              ],
+              "loc": {
+                "start": {
+                  "line": 11,
+                  "column": 4
+                },
+                "end": {
+                  "line": 11,
+                  "column": 12
+                }
+              }
+            },
+            "classSelector": null,
+            "children": [
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Docker",
+                  "raw": "\"Docker\"",
+                  "closed": true,
+                  "range": [
+                    200,
+                    208
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 16
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 10,
+                  "raw": "10",
+                  "range": [
+                    210,
+                    212
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 12,
+                      "column": 18
+                    },
+                    "end": {
+                      "line": 12,
+                      "column": 20
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  200,
+                  212
+                ],
+                "loc": {
+                  "start": {
+                    "line": 12,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 12,
+                    "column": 20
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "Kubernetes",
+                  "raw": "\"Kubernetes\"",
+                  "closed": true,
+                  "range": [
+                    221,
+                    233
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 20
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 15,
+                  "raw": "15",
+                  "range": [
+                    235,
+                    237
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 13,
+                      "column": 22
+                    },
+                    "end": {
+                      "line": 13,
+                      "column": 24
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  221,
+                  237
+                ],
+                "loc": {
+                  "start": {
+                    "line": 13,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 13,
+                    "column": 24
+                  }
+                }
+              },
+              {
+                "type": "TreemapLeaf",
+                "indent": 8,
+                "statementsBefore": [],
+                "name": {
+                  "type": "StringLiteral",
+                  "value": "CI/CD",
+                  "raw": "\"CI/CD\"",
+                  "closed": true,
+                  "range": [
+                    246,
+                    253
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 15
+                    }
+                  }
+                },
+                "value": {
+                  "type": "NumericLiteral",
+                  "value": 5,
+                  "raw": "5",
+                  "range": [
+                    255,
+                    256
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 14,
+                      "column": 17
+                    },
+                    "end": {
+                      "line": 14,
+                      "column": 18
+                    }
+                  }
+                },
+                "classSelector": null,
+                "range": [
+                  246,
+                  256
+                ],
+                "loc": {
+                  "start": {
+                    "line": 14,
+                    "column": 8
+                  },
+                  "end": {
+                    "line": 14,
+                    "column": 18
+                  }
+                }
+              }
+            ],
+            "range": [
+              183,
+              256
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 4
+              },
+              "end": {
+                "line": 14,
+                "column": 18
+              }
+            }
+          }
+        ],
         "range": [
           8,
-          26
+          256
         ],
         "loc": {
           "start": {
             "line": 2,
             "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 18
-          }
-        }
-      },
-      {
-        "type": "TreemapSection",
-        "indent": 4,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Frontend",
-          "raw": "\"Frontend\"",
-          "closed": true,
-          "range": [
-            31,
-            41
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 4
-            },
-            "end": {
-              "line": 3,
-              "column": 14
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          31,
-          41
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 4
-          },
-          "end": {
-            "line": 3,
-            "column": 14
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "React",
-          "raw": "\"React\"",
-          "closed": true,
-          "range": [
-            50,
-            57
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 8
-            },
-            "end": {
-              "line": 4,
-              "column": 15
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 35,
-          "raw": "35",
-          "range": [
-            59,
-            61
-          ],
-          "loc": {
-            "start": {
-              "line": 4,
-              "column": 17
-            },
-            "end": {
-              "line": 4,
-              "column": 19
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          50,
-          61
-        ],
-        "loc": {
-          "start": {
-            "line": 4,
-            "column": 8
-          },
-          "end": {
-            "line": 4,
-            "column": 19
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "CSS",
-          "raw": "\"CSS\"",
-          "closed": true,
-          "range": [
-            70,
-            75
-          ],
-          "loc": {
-            "start": {
-              "line": 5,
-              "column": 8
-            },
-            "end": {
-              "line": 5,
-              "column": 13
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 15,
-          "raw": "15",
-          "range": [
-            77,
-            79
-          ],
-          "loc": {
-            "start": {
-              "line": 5,
-              "column": 15
-            },
-            "end": {
-              "line": 5,
-              "column": 17
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          70,
-          79
-        ],
-        "loc": {
-          "start": {
-            "line": 5,
-            "column": 8
-          },
-          "end": {
-            "line": 5,
-            "column": 17
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "HTML",
-          "raw": "\"HTML\"",
-          "closed": true,
-          "range": [
-            88,
-            94
-          ],
-          "loc": {
-            "start": {
-              "line": 6,
-              "column": 8
-            },
-            "end": {
-              "line": 6,
-              "column": 14
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 10,
-          "raw": "10",
-          "range": [
-            96,
-            98
-          ],
-          "loc": {
-            "start": {
-              "line": 6,
-              "column": 16
-            },
-            "end": {
-              "line": 6,
-              "column": 18
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          88,
-          98
-        ],
-        "loc": {
-          "start": {
-            "line": 6,
-            "column": 8
-          },
-          "end": {
-            "line": 6,
-            "column": 18
-          }
-        }
-      },
-      {
-        "type": "TreemapSection",
-        "indent": 4,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Backend",
-          "raw": "\"Backend\"",
-          "closed": true,
-          "range": [
-            103,
-            112
-          ],
-          "loc": {
-            "start": {
-              "line": 7,
-              "column": 4
-            },
-            "end": {
-              "line": 7,
-              "column": 13
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          103,
-          112
-        ],
-        "loc": {
-          "start": {
-            "line": 7,
-            "column": 4
-          },
-          "end": {
-            "line": 7,
-            "column": 13
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Node.js",
-          "raw": "\"Node.js\"",
-          "closed": true,
-          "range": [
-            121,
-            130
-          ],
-          "loc": {
-            "start": {
-              "line": 8,
-              "column": 8
-            },
-            "end": {
-              "line": 8,
-              "column": 17
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 25,
-          "raw": "25",
-          "range": [
-            132,
-            134
-          ],
-          "loc": {
-            "start": {
-              "line": 8,
-              "column": 19
-            },
-            "end": {
-              "line": 8,
-              "column": 21
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          121,
-          134
-        ],
-        "loc": {
-          "start": {
-            "line": 8,
-            "column": 8
-          },
-          "end": {
-            "line": 8,
-            "column": 21
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Express",
-          "raw": "\"Express\"",
-          "closed": true,
-          "range": [
-            143,
-            152
-          ],
-          "loc": {
-            "start": {
-              "line": 9,
-              "column": 8
-            },
-            "end": {
-              "line": 9,
-              "column": 17
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 10,
-          "raw": "10",
-          "range": [
-            154,
-            156
-          ],
-          "loc": {
-            "start": {
-              "line": 9,
-              "column": 19
-            },
-            "end": {
-              "line": 9,
-              "column": 21
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          143,
-          156
-        ],
-        "loc": {
-          "start": {
-            "line": 9,
-            "column": 8
-          },
-          "end": {
-            "line": 9,
-            "column": 21
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "MongoDB",
-          "raw": "\"MongoDB\"",
-          "closed": true,
-          "range": [
-            165,
-            174
-          ],
-          "loc": {
-            "start": {
-              "line": 10,
-              "column": 8
-            },
-            "end": {
-              "line": 10,
-              "column": 17
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 15,
-          "raw": "15",
-          "range": [
-            176,
-            178
-          ],
-          "loc": {
-            "start": {
-              "line": 10,
-              "column": 19
-            },
-            "end": {
-              "line": 10,
-              "column": 21
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          165,
-          178
-        ],
-        "loc": {
-          "start": {
-            "line": 10,
-            "column": 8
-          },
-          "end": {
-            "line": 10,
-            "column": 21
-          }
-        }
-      },
-      {
-        "type": "TreemapSection",
-        "indent": 4,
-        "name": {
-          "type": "StringLiteral",
-          "value": "DevOps",
-          "raw": "\"DevOps\"",
-          "closed": true,
-          "range": [
-            183,
-            191
-          ],
-          "loc": {
-            "start": {
-              "line": 11,
-              "column": 4
-            },
-            "end": {
-              "line": 11,
-              "column": 12
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          183,
-          191
-        ],
-        "loc": {
-          "start": {
-            "line": 11,
-            "column": 4
-          },
-          "end": {
-            "line": 11,
-            "column": 12
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Docker",
-          "raw": "\"Docker\"",
-          "closed": true,
-          "range": [
-            200,
-            208
-          ],
-          "loc": {
-            "start": {
-              "line": 12,
-              "column": 8
-            },
-            "end": {
-              "line": 12,
-              "column": 16
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 10,
-          "raw": "10",
-          "range": [
-            210,
-            212
-          ],
-          "loc": {
-            "start": {
-              "line": 12,
-              "column": 18
-            },
-            "end": {
-              "line": 12,
-              "column": 20
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          200,
-          212
-        ],
-        "loc": {
-          "start": {
-            "line": 12,
-            "column": 8
-          },
-          "end": {
-            "line": 12,
-            "column": 20
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "Kubernetes",
-          "raw": "\"Kubernetes\"",
-          "closed": true,
-          "range": [
-            221,
-            233
-          ],
-          "loc": {
-            "start": {
-              "line": 13,
-              "column": 8
-            },
-            "end": {
-              "line": 13,
-              "column": 20
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 15,
-          "raw": "15",
-          "range": [
-            235,
-            237
-          ],
-          "loc": {
-            "start": {
-              "line": 13,
-              "column": 22
-            },
-            "end": {
-              "line": 13,
-              "column": 24
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          221,
-          237
-        ],
-        "loc": {
-          "start": {
-            "line": 13,
-            "column": 8
-          },
-          "end": {
-            "line": 13,
-            "column": 24
-          }
-        }
-      },
-      {
-        "type": "TreemapLeaf",
-        "indent": 8,
-        "name": {
-          "type": "StringLiteral",
-          "value": "CI/CD",
-          "raw": "\"CI/CD\"",
-          "closed": true,
-          "range": [
-            246,
-            253
-          ],
-          "loc": {
-            "start": {
-              "line": 14,
-              "column": 8
-            },
-            "end": {
-              "line": 14,
-              "column": 15
-            }
-          }
-        },
-        "value": {
-          "type": "NumericLiteral",
-          "value": 5,
-          "raw": "5",
-          "range": [
-            255,
-            256
-          ],
-          "loc": {
-            "start": {
-              "line": 14,
-              "column": 17
-            },
-            "end": {
-              "line": 14,
-              "column": 18
-            }
-          }
-        },
-        "classSelector": null,
-        "range": [
-          246,
-          256
-        ],
-        "loc": {
-          "start": {
-            "line": 14,
-            "column": 8
           },
           "end": {
             "line": 14,

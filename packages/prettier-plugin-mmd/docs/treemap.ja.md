@@ -41,13 +41,10 @@ treemap
 
 ### Indentation
 
-元の AST の indent から、書かれた順に親を読みます。
-今の行以上の indent を持つ開いた section を閉じ、
-最後に残った section を親にします。
-開いた一覧には section だけを加えます。
-leaf も section を閉じますが、親にはなりません。
-leaf の後の深い行が別の根になることもあります。
-common 文と classDef は親の判定に参加しません。
+AST の children から、書かれた順に親を読みます。
+子を持つのは section だけで、leaf の後の深い行が別の根になることもあります。
+statementsBefore の common 文と classDef は原文の位置を保ち、
+親の判定に参加しません。
 普通の根は設定の 1 段、子は親より 1 段深く置きます。
 common 文と classDef は本文の 1 段に置きます。
 同じ読みを持つ幅から、一貫した深さを選ぶためです。
@@ -97,7 +94,7 @@ treemap
 
 ### Carried indentation
 
-外側の空白を消す前に AST の indent を使います。
+外側の空白を消す前に、割り当て済みの indent を反映した AST の親子を使います。
 見出し、section、leaf、classDef の終端、説明の閉じ括弧の後や、
 空白だけの行の run が、LF を越えて次行の字下げになりえます。
 その情報を次行の予定の列へ一度だけ移します。
@@ -662,7 +659,7 @@ native の bare や非 word コメント前に、
 inline コメント前の空白が次行の indent なら、次行へ移します。
 その結果コメントが直前の token に接しても、親子を保ちます。
 common コメント領域とともに消えた空白を復元せず、
-AST の indent を使います。
+AST の親子を使います。
 native コメント内の LS と PS は内容として保ちます。
 
 [fixture: treemap/comments/standalone]

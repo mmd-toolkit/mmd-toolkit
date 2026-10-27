@@ -7,6 +7,7 @@
       {
         "type": "TreemapSection",
         "indent": 1,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "A",
@@ -28,6 +29,7 @@
           }
         },
         "classSelector": null,
+        "children": [],
         "range": [
           9,
           12
@@ -46,6 +48,7 @@
       {
         "type": "TreemapLeaf",
         "indent": 0,
+        "statementsBefore": [],
         "name": {
           "type": "StringLiteral",
           "value": "b",

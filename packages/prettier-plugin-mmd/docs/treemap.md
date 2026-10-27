@@ -38,17 +38,16 @@ treemap
 
 ### Indentation
 
-Read parents from original AST indents in source order: pop open sections while
-their indent is greater than or equal to the current row, then use the last
-remaining section as parent. Push only sections. Leaves close sections but never
-become parents; a later deep row can be another root. Common statements and
-class definitions do not participate. Print ordinary roots one configured step
-in and children one step deeper than their parent; common statements and class
-definitions use one body step. This chooses consistent depths from equivalent
-widths. Use at least one character per step at tabWidth zero because indentation
-determines parentage. A styleless, unterminated class definition touching a row
-keeps that contact; in such a diagram every root uses baseline zero, so later
-roots cannot become children accidentally.
+Read parents from AST children in source order. Only sections have children; a
+later deep row after a leaf can be another root. Common statements and class
+definitions in statementsBefore keep their source position and do not determine
+parents. Print ordinary roots one configured step in and children one step
+deeper than their parent; common statements and class definitions use one body
+step. This chooses consistent depths from equivalent widths. Use at least one
+character per step at tabWidth zero because indentation determines parentage. A
+styleless, unterminated class definition touching a row keeps that contact; in
+such a diagram every root uses baseline zero, so later roots cannot become
+children accidentally.
 
 [fixture: treemap/indentation/irregular]
 
@@ -91,11 +90,12 @@ treemap
 
 ### Carried indentation
 
-Use the AST indent before removing exterior padding. A run after a header,
-section, leaf, class terminator or description closer, or on a whitespace-only
-line, can indent the next row across LF. Move its information once to that row’s
-planned column. Do not measure only physical leading whitespace or add a second
-indentation run. Common removals have already decided which runs count.
+Use the AST hierarchy, which already accounts for assigned indentation, before
+removing exterior padding. A run after a header, section, leaf, class terminator
+or description closer, or on a whitespace-only line, can indent the next row
+across LF. Move its information once to that row’s planned column. Do not
+measure only physical leading whitespace or add a second indentation run. Common
+removals have already decided which runs count.
 
 [fixture: treemap/carried-indentation/header-space]
 
@@ -622,9 +622,9 @@ Put ordinary standalone comment marks at column one; keep inline comments on
 their line and preserve content, marks, tails, order and ownership. This avoids
 introducing an indentation unit before native bare or nonword comments. When
 whitespace before an inline comment supplied the next row’s indent, move it to
-that row even if the comment then touches the preceding token. Use AST indents,
-not whitespace already removed with common comment regions. Native comments
-retain LS/PS as content.
+that row even if the comment then touches the preceding token. Use the AST
+hierarchy rather than whitespace already removed with common comment regions.
+Native comments retain LS/PS as content.
 
 [fixture: treemap/comments/standalone]
 

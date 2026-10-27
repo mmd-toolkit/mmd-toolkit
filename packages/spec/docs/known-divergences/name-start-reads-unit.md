@@ -88,7 +88,8 @@ Each example is a whole class diagram.
 | 5       | a relation from A, cardinality `1` | a relation from A, with the type `"1"` |
 | 6       | a note `x`                         | rejected                               |
 
-[fixture: class/div-backquote-keyword-escaped] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+class/div-backquote-keyword-escaped] [fixture:
 class/div-backquote-starts-with-quote] [fixture:
 class/div-generic-starts-with-keyword] [fixture:
 class/div-backquote-around-string] [fixture: class/div-generic-around-string]

@@ -1,4 +1,5 @@
 import type { Doc } from "prettier"
+import type { Range } from "@mmd-toolkit/parser"
 import { builders } from "prettier/doc"
 import { endsWithSpaceOrTab, readGap } from "./gap.ts"
 import { isInsideStyleRuleStretch } from "./kept-lines.ts"
@@ -41,6 +42,8 @@ export type LineBreakRule = "kept" | "joined"
 
 /** The atoms of a statement in source order, and the rules for their gaps. */
 export interface AtomLayout {
+  /** Structural forms replaced by the caller's planned drawing, never values. */
+  readonly omittedRanges?: readonly Range[]
   readonly atoms: readonly Atom[]
   /** Rules by the start of the atom after the gap. */
   readonly rules: ReadonlyMap<number, GapRule>
@@ -168,7 +171,9 @@ export function printAtoms(
         previous = atom
         continue
       }
-      const gap = readGap(source, previous.end, atom.start, true)
+      const gap = readGap(source, previous.end, atom.start, true, {
+        omitted: layout.omittedRanges,
+      })
       if (
         gap.breaksLine &&
         (layout.lineBreaks === "joined" ||

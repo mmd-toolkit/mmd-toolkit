@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -41,11 +42,13 @@
             "line": 2,
             "column": 13
           }
-        }
+        },
+        "children": []
       },
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -80,7 +83,8 @@
             "line": 3,
             "column": 4
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

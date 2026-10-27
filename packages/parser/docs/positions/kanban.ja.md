@@ -20,14 +20,21 @@
 
 ### KanbanNode
 
-ノードは本文か形の開始から、あれば最後のデータブロックか最後の装飾までです。
-インデントは範囲の外で、ノード本文の末尾の空白は内側です。
-後のノードは、インデントによらず別の兄弟のままです。
+ノードは本文か形の開始から始まります。
+列は最後のカードまで、子がなければ自身の最後の装飾、
+データブロック、形、本文のうち最後のものまでです。
+カードの children は常に空で、自身の最後の構成要素までです。
+範囲は連続し、兄弟同士は重なりません。
+先頭の字下げと無関係な後続 trivia は範囲外で、本文末尾の空白は内側です。
+カードの後の深いカードも、列の下の兄弟になります。
 [fixture: kanban/db-name-trailing-space] [fixture: kanban/db-name-no-id]
 [fixture: kanban/db-name-space-before-shape] [fixture: kanban/db-metadata-all]
 [fixture: kanban/db-metadata-two-items]
 [fixture: kanban/gram-decoration-then-child]
 [fixture: kanban/db-indent-deeper]
+[fixture: kanban/gram-nesting-item-decoration-before-deeper-item]
+[fixture: kanban/db-indent-shallower-last]
+[fixture: kanban/gram-shallower-then-decoration]
 
 ### KanbanShape、KanbanIconStatement、KanbanClassStatement
 

@@ -43,6 +43,7 @@
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": {
           "type": "TreeviewBranchPrefix",
           "value": "├──",
@@ -95,7 +96,8 @@
             "line": 3,
             "column": 12
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

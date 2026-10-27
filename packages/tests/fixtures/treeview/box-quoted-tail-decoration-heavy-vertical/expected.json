@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading; ast/treeview.md Authored values and Gap ownership: Heavy vertical decoration at the end of a double-quoted name has the same retained source owner. Mermaid accepts; the raw and value retain the authored quoted interior while box reading gives the recorded Db."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a\n",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "root",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

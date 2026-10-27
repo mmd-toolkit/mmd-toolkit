@@ -24,6 +24,8 @@ interface Row {
 interface Case {
   readonly fixture: string
   readonly rows: readonly Row[]
+  /** Explicit column occurrences; every remaining row is a card of the last one. */
+  readonly columns?: readonly number[]
   /** Written values after the cuts, supplied explicitly for the case. */
   readonly values?: Readonly<Record<string, string>>
 }
@@ -175,6 +177,7 @@ const CASES: readonly Case[] = [
   { fixture: "db-empty-board-comment", rows: [] },
   {
     fixture: "db-sections-items",
+    columns: [0, 3],
     rows: [
       r(1, "S", "Todo"),
       r(3, "A", "First"),
@@ -214,6 +217,7 @@ const CASES: readonly Case[] = [
   { fixture: "db-indent-tabs", rows: [r(1, "S"), r(2, "A"), r(2, "T")] },
   {
     fixture: "db-indent-unindented",
+    columns: [0, 2],
     rows: [r(0, "S"), r(1, "A"), r(0, "T"), r(1, "B")],
   },
   {
@@ -223,6 +227,7 @@ const CASES: readonly Case[] = [
   { fixture: "db-indent-shallower-last", rows: [r(4, "S"), r(2, "A")] },
   {
     fixture: "db-section-three-definitions",
+    columns: [0, 2, 4, 6],
     rows: [
       r(1, "S", "First"),
       r(3, "A", "One"),
@@ -236,6 +241,7 @@ const CASES: readonly Case[] = [
   },
   {
     fixture: "db-item-three-definitions",
+    columns: [0, 2],
     rows: [
       r(1, "S"),
       r(3, "A", "First"),
@@ -247,6 +253,7 @@ const CASES: readonly Case[] = [
   },
   {
     fixture: "db-section-item-same-id",
+    columns: [0, 2],
     rows: [r(1, "S"), r(3, "S", "Item"), r(1, "T"), r(3, "S", "Other item")],
   },
   {
@@ -260,6 +267,7 @@ const CASES: readonly Case[] = [
   { fixture: "db-name-case", rows: [r(1, "S"), r(3, "a"), r(3, "A")] },
   {
     fixture: "db-object-prototype-ids",
+    columns: [0, 3],
     rows: [
       r(1, "__proto__"),
       r(3, "constructor"),
@@ -498,6 +506,7 @@ const CASES: readonly Case[] = [
   { fixture: "db-title-not-statement", rows: [r(1, "title Board")] },
   {
     fixture: "db-acc-title-not-statement",
+    columns: [0, 1],
     rows: [r(1, "accTitle: First"), r(1, "accTitle: Second")],
   },
   { fixture: "db-acc-descr-not-statement", rows: [r(1, "accDescr: First")] },
@@ -532,7 +541,7 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
     })
   }
 
-  const body = testCase.rows.map((row) => {
+  const occurrences = testCase.rows.map((row) => {
     const id = row.id === null ? null : literal(row.id)
     let shape: CheckedNode | null = null
     if (row.shape !== undefined) {
@@ -571,8 +580,23 @@ function treeOf(input: string, testCase: Case): DbTreeRoot {
       shape,
       data,
       decorations,
+      children: [],
     })
   })
+  const body: CheckedNode[] = []
+  for (const [index, occurrence] of occurrences.entries()) {
+    if ((testCase.columns ?? [0]).includes(index)) body.push(occurrence)
+    else {
+      const column = body.at(-1)
+      if (column === undefined)
+        throw new Error("a hand-built card has no column")
+      ;(column.children as CheckedNode[]).push(occurrence)
+      Object.assign(column, {
+        range: [column.range[0], occurrence.range[1]],
+        loc: locationOf(input, [column.range[0], occurrence.range[1]]),
+      })
+    }
+  }
   return node("Root", [0, input.length], {
     diagramType: "kanban",
     body: node("KanbanDiagram", [input.indexOf("kanban"), cursor], { body }),
@@ -637,12 +661,20 @@ describe("dbFromTree of kanban trees made by hand", async () => {
       const embedded = embeddedValuesOf(fixture, fixture.expected)
       if (embedded === undefined) throw new Error("no embedded values")
       const tree = treeOf(fixture.input, testCase)
+      const plain = JSON.parse(JSON.stringify(tree)) as DbTreeRoot
+      for (const node of nodesOf(tree as unknown as CheckedRoot).filter(
+        (candidate) => candidate.type === "KanbanNode",
+      ))
+        Object.defineProperty(node, "indent", {
+          get() {
+            throw new Error("read indent")
+          },
+        })
       expect(
         dbFromTree(fixture.input, tree, embedded, cssSupportsColor),
       ).toEqual(fixture.expected.db)
       // The same fixed fixture text, with reads confined to value ranges and
       // token access forbidden. A JSON round-trip excludes identity-based state.
-      const plain = JSON.parse(JSON.stringify(tree)) as DbTreeRoot
       Object.defineProperty(plain, "tokens", {
         get() {
           throw new Error("read tokens")

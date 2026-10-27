@@ -64,53 +64,56 @@
             }
           }
         ],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 4,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "A",
+              "range": [
+                28,
+                29
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 18
+                },
+                "end": {
+                  "line": 3,
+                  "column": 19
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              28,
+              29
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 18
+              },
+              "end": {
+                "line": 3,
+                "column": 19
+              }
+            }
+          }
+        ],
         "range": [
           8,
-          20
+          29
         ],
         "loc": {
           "start": {
             "line": 2,
             "column": 1
-          },
-          "end": {
-            "line": 3,
-            "column": 10
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 4,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "A",
-          "range": [
-            28,
-            29
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 18
-            },
-            "end": {
-              "line": 3,
-              "column": 19
-            }
-          }
-        },
-        "shape": null,
-        "data": [],
-        "decorations": [],
-        "range": [
-          28,
-          29
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 18
           },
           "end": {
             "line": 3,

@@ -17,17 +17,45 @@ treemap/gram-written-tree] [fixture: treemap/hidden-comment-eof] [fixture:
 treemap/detect-second-scan-single-line-comment] [fixture:
 common/detect-minimal-treemap]
 
-Section and leaf ranges start at their opening name quote, excluding row
-indentation even when its run lies on the preceding line or crosses a directive.
-A section ends at its closing quote or selector; a leaf ends at its number or
-selector. Component gaps remain within the range without becoming children. The
-body remains flat. [fixture: treemap/gram-written-tree] [fixture:
-treemap/gram-adjacent-sections] [fixture: treemap/db-empty-names] [fixture:
-treemap/db-section-tail-space] [fixture: treemap/db-leaf-tail-tab] [fixture:
-treemap/gram-indent-from-whitespace-line] [fixture:
-treemap/gram-indent-around-global-directive] [fixture:
+Section and leaf ranges start at their first statementsBefore entry, or their
+opening name quote without that gap. A section ends at its last descendant, or
+its closing quote or selector without children. A leaf ends at its number or
+selector and has no children. These continuous ranges need not start at the
+name; siblings do not overlap. Indentation before the first owned syntax and
+unrelated trailing trivia do not extend the range. Assigned indentation retains
+its lexical count, including a run on a preceding line or across a directive.
+Component gaps remain within the range without becoming children. [fixture:
+treemap/gram-written-tree] [fixture: treemap/gram-adjacent-sections] [fixture:
+treemap/db-empty-names] [fixture: treemap/db-section-tail-space] [fixture:
+treemap/db-leaf-tail-tab] [fixture: treemap/gram-indent-from-whitespace-line]
+[fixture: treemap/gram-indent-around-global-directive] [fixture:
 treemap/gram-leaf-newlines-around-separator] [fixture:
-treemap/comment-value-selector-gap]
+treemap/comment-value-selector-gap] [fixture:
+treemap/gram-nesting-statement-before-section] [fixture:
+treemap/gram-nesting-statement-before-ancestor-child] [fixture:
+treemap/gram-nesting-statement-after-last-child]
+
+After keeping content inside an already-open leaf, independent class definitions
+and common statements between hierarchy nodes belong to the next section or
+leaf's statementsBefore, in source order. This includes empty blocks and
+repeated statements. Before the first hierarchy node and after the last,
+independent statements stay in body. Ownership does not limit their diagram-wide
+meaning. Shared comments, directives, selected semicolons and empty lines create
+no gap entries. [fixture: treemap/lex-class-style-crosses-blank-line] [fixture:
+treemap/gram-written-tree] [fixture: treemap/gram-nesting-title-before-child]
+[fixture: treemap/gram-nesting-acctitle-before-child] [fixture:
+treemap/gram-nesting-description-before-child] [fixture:
+treemap/gram-nesting-block-before-child] [fixture:
+treemap/gram-nesting-empty-class-before-child] [fixture:
+treemap/gram-nesting-global-class-before-child] [fixture:
+treemap/gram-nesting-statement-after-last-child] [fixture:
+treemap/common-repeat-empty] [fixture:
+treemap/gram-nesting-statements-directive-inline] [fixture:
+treemap/gram-nesting-statements-directive-line] [fixture:
+treemap/gram-nesting-statements-comment-line] [fixture:
+treemap/gram-nesting-statements-empty-line] [fixture:
+treemap/gram-nesting-statements-comment-ls] [fixture:
+treemap/gram-nesting-statements-comment-ps]
 
 Class definitions start at classDef and end at a written terminating semicolon,
 otherwise at the last style character or the name for null style. Separating

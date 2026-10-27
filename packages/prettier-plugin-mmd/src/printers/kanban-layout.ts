@@ -47,12 +47,10 @@ export interface KanbanLine {
 }
 
 /**
- * Flattens the source list and its decorations without inferring an item tree
- * (ast/kanban.md, KanbanDiagram; docs/kanban.md, Nodes one per line). Node
- * ranges include decorations, so their printed ends use the last data block,
- * shape, or id instead. A node is a section when it stands at the
- * indentation of the first node and an item otherwise, as in the Db; a
- * decoration stands where its node does.
+ * Reads columns from body and cards from children, preserving decorations in
+ * source order (ast/kanban.md, KanbanDiagram; docs/kanban.md, Nodes one per
+ * line). Node ranges include descendants and decorations, so printed ends use
+ * the last data block, shape, or id instead. A decoration uses its node's depth.
  */
 export function kanbanLines(
   source: Source,
@@ -60,16 +58,19 @@ export function kanbanLines(
   headerEnd: number,
 ): KanbanLine[] {
   const commentEnds = findCommentEnds(source)
-  const sectionIndent = diagram.body[0]?.indent
   const lines: KanbanLine[] = []
   for (const node of diagram.body) {
-    const depth = node.indent === sectionIndent ? 1 : 2
-    lines.push(lineOf(node, depth))
-    for (const decoration of node.decorations) {
-      lines.push(lineOf(decoration, depth))
-    }
+    addNode(node, 1)
+    for (const card of node.children) addNode(card, 2)
   }
   return lines
+
+  /** A node's decorations precede its cards and retain the node's role. */
+  function addNode(node: KanbanNode, depth: 1 | 2): void {
+    lines.push(lineOf(node, depth))
+    for (const decoration of node.decorations)
+      lines.push(lineOf(decoration, depth))
+  }
 
   /**
    * Keeps an inline-directive line whole, from its first directive or node

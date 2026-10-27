@@ -1,6 +1,6 @@
 import type { TreeNode } from "./tree.ts"
 
-/** ast/kanban.md: the flat written rows, before section membership is read. */
+/** ast/kanban.md: the columns and their written cards. */
 export interface KanbanDiagram extends TreeNode {
   readonly type: "KanbanDiagram"
   readonly body: readonly KanbanNode[]
@@ -9,7 +9,7 @@ export interface KanbanDiagram extends TreeNode {
 /** ast/kanban.md: a row, its adjacent data suffix, and its decoration lines. */
 export interface KanbanNode extends TreeNode {
   readonly type: "KanbanNode"
-  readonly indent: number
+  readonly children: readonly KanbanNode[]
   readonly id: KanbanLiteral | null
   readonly shape: KanbanShape | null
   readonly data: readonly KanbanDataBlock[]

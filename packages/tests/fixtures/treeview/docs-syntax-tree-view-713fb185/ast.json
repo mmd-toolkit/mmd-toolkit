@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -30,7 +31,7 @@
         "annotations": [],
         "range": [
           231,
-          235
+          268
         ],
         "loc": {
           "start": {
@@ -38,92 +39,99 @@
             "column": 4
           },
           "end": {
-            "line": 14,
-            "column": 8
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 8,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": "App.tsx",
-          "range": [
-            244,
-            251
-          ],
-          "loc": {
-            "start": {
-              "line": 15,
-              "column": 8
-            },
-            "end": {
-              "line": 15,
-              "column": 15
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          244,
-          251
-        ],
-        "loc": {
-          "start": {
-            "line": 15,
-            "column": 8
-          },
-          "end": {
-            "line": 15,
-            "column": 15
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 8,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": "utils.ts",
-          "range": [
-            260,
-            268
-          ],
-          "loc": {
-            "start": {
-              "line": 16,
-              "column": 8
-            },
-            "end": {
-              "line": 16,
-              "column": 16
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          260,
-          268
-        ],
-        "loc": {
-          "start": {
-            "line": 16,
-            "column": 8
-          },
-          "end": {
             "line": 16,
             "column": 16
           }
-        }
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 8,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "App.tsx",
+              "range": [
+                244,
+                251
+              ],
+              "loc": {
+                "start": {
+                  "line": 15,
+                  "column": 8
+                },
+                "end": {
+                  "line": 15,
+                  "column": 15
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              244,
+              251
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 8
+              },
+              "end": {
+                "line": 15,
+                "column": 15
+              }
+            },
+            "children": []
+          },
+          {
+            "type": "TreeviewNode",
+            "indent": 8,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": "utils.ts",
+              "range": [
+                260,
+                268
+              ],
+              "loc": {
+                "start": {
+                  "line": 16,
+                  "column": 8
+                },
+                "end": {
+                  "line": 16,
+                  "column": 16
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              260,
+              268
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 8
+              },
+              "end": {
+                "line": 16,
+                "column": 16
+              }
+            },
+            "children": []
+          }
+        ]
       },
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -158,11 +166,13 @@
             "line": 17,
             "column": 14
           }
-        }
+        },
+        "children": []
       },
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -197,11 +207,13 @@
             "line": 18,
             "column": 13
           }
-        }
+        },
+        "children": []
       },
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -236,7 +248,8 @@
             "line": 19,
             "column": 13
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

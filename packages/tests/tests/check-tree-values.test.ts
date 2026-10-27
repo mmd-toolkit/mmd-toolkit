@@ -1143,10 +1143,6 @@ const VALUE_CASES: readonly ValueCase[] = [
     side: "end",
     problems: [
       {
-        where: "KanbanNode at 8-11",
-        message: "does not run from the start of a token to the end of a token",
-      },
-      {
         where: "KanbanLiteral at 8-11",
         message: "does not run from the start of a token to the end of a token",
       },

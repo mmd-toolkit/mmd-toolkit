@@ -109,9 +109,9 @@ parser after the grammar: `subgraph-members.ts` for the flowchart, and
 diagram; the Gantt grammar makes its two where it reads the statement, since a
 `topAxis` statement makes no node, the mindmap grammar its two where it reads
 the line, as it places each node in the tree by its indentation when it reads
-it, the kanban grammar its two while keeping a flat list of node lines, and the
-timeline grammar its one where it reads the event statement. The class lexer
-divides each member line into its parts with the steps of
+it, the kanban grammar its two while reading node lines before grouping columns
+and cards, and the timeline grammar its one where it reads the event statement.
+The class lexer divides each member line into its parts with the steps of
 [Member lines](../../spec/docs/diagrams/class.md#member-lines)
 (`src/diagrams/class/member-lines.ts`), both in a class body and in the label of
 a member statement, and rejects a method line that cannot be divided.
@@ -266,11 +266,13 @@ The treemap lexer follows its
 [ordered rules](../../spec/docs/diagrams/treemap.md#ordered-rules). It reuses
 composite common-form character rules without importing their EOL grammar;
 indentation, class definitions, identifiers, numbers and quoted names follow its
-own terminals. The body stays flat, keeping each row's indentation, including
-preceding trailing whitespace. Detection retains its reached position so passed
-bare-line trivia is excluded around retained native comments. Public acceptance
-adds no root-count, numeric-finiteness or configuration gate. [fixture:
-treemap/gram-written-tree] [fixture: treemap/db-header-tail-space] [fixture:
+own terminals. Sections own their children and intervening independent
+statements belong to the next hierarchy node's statementsBefore, keeping each
+row's indentation, including preceding trailing whitespace. Detection retains
+its reached position so passed bare-line trivia is excluded around retained
+native comments. Public acceptance adds no root-count, numeric-finiteness or
+configuration gate. [fixture: treemap/gram-written-tree] [fixture:
+treemap/db-header-tail-space] [fixture:
 treemap/div-retained-before-bare-unicode-line] [fixture: treemap/db-empty-names]
 [fixture: treemap/db-number-nan] [fixture: treemap/config-drawing-only]
 

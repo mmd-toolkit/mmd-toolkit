@@ -3,6 +3,7 @@ import type {
   Range,
   TreemapBodyItem,
   TreemapDiagram,
+  TreemapLeaf,
   TreemapSection,
 } from "@mmd-toolkit/parser"
 import type { AtomLayout, GapRule } from "./atoms.ts"
@@ -35,26 +36,21 @@ export interface TreemapLine {
   readonly leading: LeadingDirectives | null
 }
 
-/**
- * Implements diagrams/treemap.md, Indentation and parents: "Before each node,
- * remove the last open section while its indentation is greater than or equal
- * to the node's." Only sections enter the open list; leaves also close it.
- * Common statements and class definitions do not participate. This duplicates
- * dbFromTree's rule because the tests and printer packages cannot share that
- * implementation (docs/treemap.md, Indentation).
- */
-function rowDepths(
-  diagram: TreemapDiagram,
-): ReadonlyMap<TreemapBodyItem, number> {
-  const depths = new Map<TreemapBodyItem, number>()
-  const open: TreemapSection[] = []
-  for (const item of diagram.body) {
-    if (item.type !== "TreemapSection" && item.type !== "TreemapLeaf") continue
-    while (open.length > 0 && open.at(-1)!.indent >= item.indent) open.pop()
-    depths.set(item, open.length)
-    if (item.type === "TreemapSection") open.push(item)
-  }
-  return depths
+/** Own row syntax in source order, always including the required name. */
+function treemapRowParts(row: TreemapSection | TreemapLeaf): readonly Node[] {
+  return [
+    row.name,
+    ...(row.type === "TreemapLeaf" ? [row.value] : []),
+    ...(row.classSelector === null ? [] : [row.classSelector]),
+  ]
+}
+
+/** The row's own components exclude its leading statements and descendants. */
+export function treemapStatementRange(item: TreemapBodyItem): Range {
+  if (item.type !== "TreemapSection" && item.type !== "TreemapLeaf")
+    return item.range
+  const parts = treemapRowParts(item)
+  return [parts[0].range[0], parts.at(-1)!.range[1]]
 }
 
 /**
@@ -75,12 +71,13 @@ function touchesEmptyClass(
   )
     return false
   let position = item.range[1]
-  for (const trivia of findTriviaBetween(source, position, next.range[0])) {
+  const nextStart = treemapStatementRange(next)[0]
+  for (const trivia of findTriviaBetween(source, position, nextStart)) {
     if (trivia.type !== "Directive" || trivia.range[0] !== position)
       return false
     position = trivia.range[1]
   }
-  return position === next.range[0]
+  return position === nextStart
 }
 
 /**
@@ -93,20 +90,22 @@ export function treemapLines(
   diagram: TreemapDiagram,
   headerEnd: number,
 ): TreemapLine[] {
-  const depths = rowDepths(diagram)
-  const zeroRoots = diagram.body.some((item, index) =>
-    touchesEmptyClass(source, item, diagram.body[index + 1]),
+  const items: TreemapBodyItem[] = []
+  const depths = new Map<TreemapBodyItem, number>()
+  visit(diagram.body, 0)
+  const zeroRoots = items.some((item, index) =>
+    touchesEmptyClass(source, item, items[index + 1]),
   )
   const lines: TreemapLine[] = []
   let previousEnd = headerEnd
-  for (let index = 0; index < diagram.body.length; index++) {
-    const item = diagram.body[index]
-    const next = diagram.body[index + 1]
+  for (let index = 0; index < items.length; index++) {
+    const item = items[index]
+    const next = items[index + 1]
     const statements = touchesEmptyClass(source, item, next)
       ? [item, next]
       : [item]
     if (statements.length === 2) index++
-    const start = item.range[0]
+    const start = treemapStatementRange(item)[0]
     let from = start
     // Only a same-unit suffix of spaces/tabs and directives can lead a row.
     // A physical newline outside a directive ends that suffix; trailing runs
@@ -134,15 +133,26 @@ export function treemapLines(
     lines.push({
       range: [
         leading?.directives[0]?.[0] ?? start,
-        statements.at(-1)!.range[1],
+        treemapStatementRange(statements.at(-1)!)[1],
       ],
       statements,
       depth: depths.has(item) ? depths.get(item)! + (zeroRoots ? 0 : 1) : 1,
       leading,
     })
-    previousEnd = statements.at(-1)!.range[1]
+    previousEnd = treemapStatementRange(statements.at(-1)!)[1]
   }
   return lines
+
+  /** Named gaps keep source order and body depth regardless of their owner. */
+  function visit(body: readonly TreemapBodyItem[], depth: number): void {
+    for (const item of body) {
+      if (item.type === "TreemapSection" || item.type === "TreemapLeaf") {
+        items.push(...item.statementsBefore, item)
+        depths.set(item, depth)
+        if (item.type === "TreemapSection") visit(item.children, depth + 1)
+      } else items.push(item)
+    }
+  }
 }
 
 /**
@@ -178,7 +188,7 @@ export function layoutTreemapStatement(
   statement: TreemapBodyItem,
   column: string,
 ): AtomLayout {
-  const [start, end] = statement.range
+  const [start, end] = treemapStatementRange(statement)
   let layout: AtomLayout
   switch (statement.type) {
     case "TreemapTitleStatement":
@@ -200,7 +210,13 @@ export function layoutTreemapStatement(
         source,
         start,
         end,
-        collectValueNodes(statement, treemapValueNodeTypes),
+        statement.type === "TreemapClassDefStatement"
+          ? collectValueNodes(statement, treemapValueNodeTypes)
+          : treemapRowParts(statement).flatMap((part) =>
+              treemapValueNodeTypes.has(part.type)
+                ? [part]
+                : collectValueNodes(part, treemapValueNodeTypes),
+            ),
         [],
       )
       const rules = new Map<number, GapRule>()

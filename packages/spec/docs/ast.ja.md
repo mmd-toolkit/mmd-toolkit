@@ -555,8 +555,7 @@ mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText
 - [Info](./ast/info.ja.md): 図種 `info`。 [fixture: info/header-lf]
 
 - [Packet](./ast/packet.ja.md): 図種 `packet`。
-
-[fixture: packet/gram-mixed]
+  [fixture: packet/gram-mixed]
 
 - [Architecture](./ast/architecture.ja.md): 図種 `architecture`。
   [fixture: architecture/header-beta]

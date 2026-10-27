@@ -56,6 +56,48 @@ treeview/box-trim-unicode-tail] [fixture: treeview/box-multiline-name-tail-trim]
 [fixture: treeview/box-quoted-decoration] [fixture:
 treeview/box-block-decoration] [fixture: treeview/box-unicode-decoration]
 
+An accDescr block's RawText item spans its complete authored interior up to the
+effective closing brace. A final decoration's line ending and a branch prefix
+introducing that closer remain in this item. Only shared removals shorten its
+outer boundaries or cut it into tokens; no separate box item overlaps it.
+[fixture: treeview/box-block-tail-decoration-light-vertical] [fixture:
+treeview/box-block-tail-decoration-heavy-vertical] [fixture:
+treeview/box-block-tail-decoration-light-dash] [fixture:
+treeview/box-block-tail-decoration-heavy-dash] [fixture:
+treeview/box-block-tail-decoration-vertical-whitespace] [fixture:
+treeview/box-block-tail-decoration-close-same-line] [fixture:
+treeview/box-block-tail-decoration-dash-close-same-line] [fixture:
+treeview/box-block-tail-decoration-multiple-lines] [fixture:
+treeview/box-block-tail-branch-content] [fixture:
+treeview/box-block-tail-branch-closer] [fixture:
+treeview/box-block-tail-decoration-inactive] [fixture:
+treeview/box-block-tail-decoration-indent-control] [fixture:
+treeview/box-block-tail-decoration-only-interior] [fixture:
+treeview/box-block-tail-decoration-empty-control] [fixture:
+treeview/box-block-tail-decoration-opener-line] [fixture:
+treeview/box-block-tail-decoration-ascii-dash-control] [fixture:
+treeview/box-block-tail-decoration-single-dash] [fixture:
+treeview/box-block-tail-decoration-spaces-after] [fixture:
+treeview/box-block-tail-decoration-spaces-before] [fixture:
+treeview/box-block-tail-decoration-blank-after] [fixture:
+treeview/box-block-tail-decoration-two-vertical-lines] [fixture:
+treeview/box-block-tail-decoration-directive-inline] [fixture:
+treeview/box-block-tail-decoration-directive-line] [fixture:
+treeview/box-block-tail-decoration-directive-at-start] [fixture:
+treeview/box-block-tail-decoration-selected-semicolon] [fixture:
+treeview/box-block-tail-decoration-unselected-semicolon] [fixture:
+treeview/box-block-tail-decoration-comment-line] [fixture:
+treeview/box-block-tail-decoration-comment-after] [fixture:
+treeview/box-block-tail-decoration-blank-before] [fixture:
+treeview/box-block-tail-decoration-ls] [fixture:
+treeview/box-block-tail-decoration-ps] [fixture:
+treeview/box-block-tail-decoration-comment-ls] [fixture:
+treeview/box-block-tail-decoration-comment-ps] [fixture:
+treeview/box-block-tail-decoration-empty-block-before] [fixture:
+treeview/box-block-tail-decoration-crlf] [fixture:
+treeview/box-block-tail-decoration-cr] [fixture:
+treeview/box-block-tail-decoration-opener-gap-selector]
+
 Shared directives, comment regions and selected semicolons cut RawText and
 String items; String pieces become StringFragment. Cuts inside header/common
 keywords, `icon`, class names, whole icon references, `:::` or `##` reject.
@@ -94,3 +136,12 @@ treeview/gram-body-hidden-eof] [fixture: treeview/bare-line-space] [fixture:
 treeview/detect-secondscan-bare-unicode] [fixture:
 treeview/detect-bare-before-secondscan] [fixture:
 treeview/comment-native-mark-directive]
+
+The named gaps keep the same RawText decoration items: textBefore owns remaining
+decorations between complete hierarchy nodes, after the existing leaf,
+textBeforeName, annotation and block-opener owners take precedence. Children add
+no tokens. [fixture: treeview/box-written-tree] [fixture:
+treeview/box-decoration-pending-name-gap] [fixture:
+treeview/box-decoration-before-annotation] [fixture:
+treeview/box-prefix-common-block-two-prefixes] [fixture:
+treeview/gram-nesting-decoration-before-parent]

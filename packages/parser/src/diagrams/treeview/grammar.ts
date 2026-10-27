@@ -20,10 +20,16 @@ import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
 import type { Unit, UnitName } from "./units.ts"
 
-/** The flat source body and tokens, before the shared atomic-boundary check. */
+/** The nested source body and tokens, before the shared atomic-boundary check. */
 export interface TreeviewSyntax {
   readonly body: readonly TreeviewBodyItem[]
   readonly tokens: readonly PendingToken[]
+}
+
+/** An open hierarchy node whose children are completed in source order. */
+interface OpenNode {
+  readonly node: Omit<TreeviewNode, "children">
+  readonly children: TreeviewNode[]
 }
 
 /** diagrams/treeview.md, Grammar and ast/treeview.md, Gap ownership. */
@@ -36,10 +42,14 @@ export class TreeviewGrammar extends UnitGrammar<UnitName, Unit> {
   public parseDiagram(): TreeviewSyntax {
     this.addItem("Keyword", [this.take("treeView-beta")])
     const body: TreeviewBodyItem[] = []
+    const open: OpenNode[] = []
+    let textBefore: TreeviewIgnoredText[] = []
     let hasNode = false
     while (this.peek() !== null) {
       if (this.peek()?.name === "box-decoration") {
-        body.push(this.parseDecoration())
+        const decoration = this.parseDecoration()
+        if (hasNode) textBefore.push(decoration)
+        else body.push(decoration)
         continue
       }
       const start = this.next
@@ -54,11 +64,39 @@ export class TreeviewGrammar extends UnitGrammar<UnitName, Unit> {
       )
         body.push(this.parseCommonStatement(start, keyword, prefix))
       else {
-        body.push(this.parseNode(start, prefixUnit, prefix))
+        const node = this.parseNode(start, prefixUnit, prefix, textBefore)
+        textBefore = []
+        // Indentation and parents: only hierarchy nodes enter the open list.
+        while ((open.at(-1)?.node.indent ?? -1) >= node.indent)
+          this.finishNode(open, body)
+        open.push({ node, children: [] })
         hasNode = true
       }
     }
+    while (open.length > 0) this.finishNode(open, body)
+    body.push(...textBefore)
     return { body, tokens: this.tokensInOrder() }
+  }
+
+  /** ast/treeview.md, Node ranges: finish descendants before their parent. */
+  private finishNode(open: OpenNode[], body: TreeviewBodyItem[]): void {
+    const entry = open.pop()
+    if (entry === undefined)
+      throw new Error("mmd-toolkit parser bug: no open treeview node")
+    const { node, children } = entry
+    const range: TreeviewNode["range"] = [
+      node.range[0],
+      children.at(-1)?.range[1] ?? node.range[1],
+    ]
+    const completed: TreeviewNode = {
+      ...node,
+      children,
+      range,
+      loc: this.lines.location(range),
+    }
+    const parent = open.at(-1)
+    if (parent === undefined) body.push(completed)
+    else parent.children.push(completed)
   }
 
   /** Empty names/annotations remain syntax; there is no treeview semantic validator. */
@@ -71,7 +109,8 @@ export class TreeviewGrammar extends UnitGrammar<UnitName, Unit> {
     start: number,
     prefixUnit: Unit | null,
     prefix: TreeviewBranchPrefix | null,
-  ): TreeviewNode {
+    textBefore: readonly TreeviewIgnoredText[],
+  ): Omit<TreeviewNode, "children"> {
     const indentation = prefixUnit === null ? this.takeIf("indentation") : null
     const indent = prefixUnit?.prefix?.indent ?? indentation?.text.length ?? 0
     const textBeforeName =
@@ -82,14 +121,21 @@ export class TreeviewGrammar extends UnitGrammar<UnitName, Unit> {
         : this.identifierOfName(this.take("bare-name"))
     const annotations: TreeviewAnnotation[] = []
     while (this.annotationAhead()) annotations.push(this.parseAnnotation())
+    const place = this.placeFrom(start)
+    const range: TreeviewNode["range"] = [
+      textBefore[0]?.range[0] ?? place.range[0],
+      place.range[1],
+    ]
     return {
       type: "TreeviewNode",
       indent,
+      textBefore,
       prefix,
       textBeforeName,
       name,
       annotations,
-      ...this.placeFrom(start),
+      range,
+      loc: this.lines.location(range),
     }
   }
 

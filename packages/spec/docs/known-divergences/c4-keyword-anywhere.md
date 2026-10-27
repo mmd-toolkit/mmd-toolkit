@@ -17,7 +17,8 @@ C4Container
   Container(a, "A")
 ```
 
-[fixture: common/detect-minimal-c4]
+The example starts with `C4Container`. [fixture:
+common/detect-minimal-c4-container]
 
 In mermaid.js the detector of C4 looks for `C4Context` at the start of the text
 and for the other four keywords anywhere in the text remaining for detection.
@@ -161,9 +162,10 @@ Each example is a whole diagram.
 | 5       | a flowchart with the vertex `C4Context` | the same                                             |
 | 6       | a flowchart with the vertices A and B   | the same                                             |
 
-[fixture: common/detect-c4-anywhere] [fixture:
-flowchart/div-c4-keyword-in-label] [fixture: class/div-c4-keyword-as-class-name]
-[fixture: state/div-c4-keyword-as-state-id] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+common/detect-c4-anywhere] [fixture: flowchart/div-c4-keyword-in-label]
+[fixture: class/div-c4-keyword-as-class-name] [fixture:
+state/div-c4-keyword-as-state-id] [fixture:
 common/detect-c4context-only-at-start] [fixture:
 flowchart/detect-c4-keyword-on-comment-line]
 

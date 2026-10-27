@@ -101,7 +101,10 @@ type CommonStatement = (
   | TreemapAccTitleStatement
   | TreemapAccDescrStatement
   | TreemapAccDescrBlockStatement
-) & { readonly textAfter?: readonly Node[] }
+) & {
+  readonly textAfter?: readonly Node[]
+  readonly textBeforeOpen?: readonly Node[]
+}
 
 /**
  * Shared compact line forms never read the next physical line (docs/pie.md,
@@ -207,16 +210,20 @@ export function layoutCommonDescription(
     range: [start, blockEnd] as [number, number],
     textAfter: [],
   }
+  const opener = expectToken(findStructuralToken(source, start), "accDescr")
+  const brace = expectToken(
+    findStructuralToken(
+      source,
+      statement.textBeforeOpen?.at(-1)?.range[1] ?? opener.range[1],
+    ),
+    "the description opener",
+  )
   let layout = layoutDescriptionBlock(source, block, blockEnd, valueTypes, {
     keepsTrailingTrivia: true,
     formatsEmptyTrivia: true,
     trimValueEdges: true,
+    opening: brace.range[0],
   })
-  const opener = expectToken(findStructuralToken(source, start), "accDescr")
-  const brace = expectToken(
-    findStructuralToken(source, opener.range[1]),
-    "the description opener",
-  )
   const gapHasTrivia =
     findTriviaBetween(source, opener.range[1], brace.range[0]).length > 0
   // Plain whitespace before the opener is consumed by the block terminal;

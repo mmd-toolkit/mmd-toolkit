@@ -62,3 +62,9 @@ kanban/db-grid-directive-metadata-key] [fixture: kanban/lex-comment-quoted-line]
 [fixture: kanban/div-directive-data-marker] [fixture:
 kanban/div-directive-opener] [fixture: kanban/div-semicolon-closer] [fixture:
 kanban/lex-after-shape-comment]
+
+Nesting cards in a column's children adds no tokens or indentation text. A
+card's decoration tokens still belong to that card before a later deeper card
+begins. [fixture: kanban/lex-indent-directive] [fixture:
+kanban/db-indent-deeper] [fixture:
+kanban/gram-nesting-item-decoration-before-deeper-item]

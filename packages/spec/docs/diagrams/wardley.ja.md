@@ -126,6 +126,7 @@ validator を加えない。回復した model があっても、
 | 7   | integer、string、id-name、newline                                           |
 | 8   | hidden-yaml、hidden-directive、native-comment                               |
 
+表の unit の優先順位を次の fixture が示します。
 [fixture: wardley/keywords-all-glued] [fixture: wardley/db-link-forms]
 [fixture: wardley/hidden-yaml-component-gaps]
 [fixture: wardley/lex-name-priority] [fixture: wardley/common-repeat]
@@ -585,6 +586,7 @@ eol = newline+ | end-of-text
 | title-line / acc-title-line          | WardleyTitleStatement / WardleyAccTitleStatement                 |
 | acc-descr-line / acc-descr-block     | WardleyAccDescrStatement / WardleyAccDescrBlockStatement         |
 
+表の文と値の形を次の fixture が示します。
 [fixture: wardley/db-all-fields] [fixture: wardley/db-inertia-forms]
 [fixture: wardley/db-link-forms] [fixture: wardley/common-repeat]
 

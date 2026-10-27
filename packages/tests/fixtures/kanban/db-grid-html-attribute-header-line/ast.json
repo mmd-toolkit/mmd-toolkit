@@ -28,53 +28,56 @@
         "shape": null,
         "data": [],
         "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 1,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "S",
+              "range": [
+                20,
+                21
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 1
+                },
+                "end": {
+                  "line": 2,
+                  "column": 2
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              20,
+              21
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 1
+              },
+              "end": {
+                "line": 2,
+                "column": 2
+              }
+            }
+          }
+        ],
         "range": [
           6,
-          18
+          21
         ],
         "loc": {
           "start": {
             "line": 1,
             "column": 6
-          },
-          "end": {
-            "line": 1,
-            "column": 18
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 1,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "S",
-          "range": [
-            20,
-            21
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 1
-            },
-            "end": {
-              "line": 2,
-              "column": 2
-            }
-          }
-        },
-        "shape": null,
-        "data": [],
-        "decorations": [],
-        "range": [
-          20,
-          21
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 1
           },
           "end": {
             "line": 2,

@@ -116,7 +116,8 @@ wardley/error-after-prefix] [fixture: wardley/error-recovered]
 | 7        | integer, string, id-name, newline                                           |
 | 8        | hidden-yaml, hidden-directive, native-comment                               |
 
-[fixture: wardley/keywords-all-glued] [fixture: wardley/db-link-forms] [fixture:
+The fixtures illustrate the unit priorities in the table. [fixture:
+wardley/keywords-all-glued] [fixture: wardley/db-link-forms] [fixture:
 wardley/hidden-yaml-component-gaps] [fixture: wardley/lex-name-priority]
 [fixture: wardley/common-repeat]
 
@@ -541,7 +542,8 @@ wardley/common-description-empty-gap]
 | title-line / acc-title-line          | WardleyTitleStatement / WardleyAccTitleStatement                 |
 | acc-descr-line / acc-descr-block     | WardleyAccDescrStatement / WardleyAccDescrBlockStatement         |
 
-[fixture: wardley/db-all-fields] [fixture: wardley/db-inertia-forms] [fixture:
+The fixtures illustrate the statement and value forms in the table. [fixture:
+wardley/db-all-fields] [fixture: wardley/db-inertia-forms] [fixture:
 wardley/db-link-forms] [fixture: wardley/common-repeat]
 
 A component has at most one label offset, one source strategy and one inertia

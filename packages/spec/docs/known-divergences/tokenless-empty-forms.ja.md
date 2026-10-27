@@ -106,6 +106,7 @@ flowchart LR
   A
 ```
 
+この例は空の説明ブロックを文として保ちます。
 [fixture: flowchart/gram-acc-descr-block-empty]
 
 この文書は、この仕様の木にそれらの場所がないところ、
@@ -212,6 +213,7 @@ kanban では mindmap と同様、
 | 7   | A から B への関係                      | 拒否                               |
 | 8   | A から B への関係                      | A の側に空の多重度を持つ関係       |
 
+表で比較した読みを次の fixture が記録します。
 [fixture: flowchart/tokens-empty-string-in-label] [fixture:
 flowchart/gram-click-empty-call-before-callback] [fixture:
 flowchart/gram-label-empty-string] [fixture:
@@ -722,9 +724,9 @@ requirement/div-empty-description-block-before-arrow] [fixture:
 requirement/div-empty-description-block-after-arrow] [fixture:
 requirement/div-empty-description-block-in-backward-relationship] [fixture:
 requirement/div-empty-description-block-after-string-source]
+[fixture: requirement/div-empty-description-block-after-shorthand-separator]
 [fixture: requirement/div-empty-description-block-before-shorthand-separator]
 [fixture:
-requirement/div-empty-description-block-after-shorthand-separator] [fixture:
 requirement/div-empty-string-line] [fixture:
 requirement/div-empty-string-before-statement] [fixture:
 requirement/div-empty-string-after-header] [fixture:

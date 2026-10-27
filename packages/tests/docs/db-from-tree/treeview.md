@@ -2,12 +2,10 @@
 
 Japanese version: [treeview.ja.md](./treeview.ja.md)
 
-`treeviewDbOf` reads the accepted flat body defined by
-[ast/treeview.md](../../../spec/docs/ast/treeview.md), using the
-[direct parent rule](../../../spec/docs/diagrams/treeview.md#indentation-and-parents)
-and the [published summary](../db-summaries.md#treeview). It does not decide
-acceptance. [fixture: treeview/gram-written-tree] [fixture:
-treeview/box-written-tree]
+`treeviewDbOf` reads the accepted nested tree defined by
+[ast/treeview.md](../../../spec/docs/ast/treeview.md) and the
+[published summary](../db-summaries.md#treeview). It does not decide acceptance.
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
 
 ## Building the summary
 
@@ -47,18 +45,16 @@ treeview/box-written-tree]
    treeview/common-block-whitespace-raw] [fixture: treeview/db-all-fields]
    [fixture: treeview/frontmatter-title] [fixture:
    treeview/config-security-level-other]
-3. Visit every TreeviewNode in body order. Pop open ancestors whose indent is
-   greater than or equal to the new node's indent; append to the last remaining
-   ancestor's children, or the outer forest, then push the new node. Files and
-   directories both enter the stack. Use the assigned indent without deriving it
-   again from line starts: it already accounts for ordinary tabs, trailing runs
-   and branch depth. Common statements and decorations leave the stack
-   unchanged. Keep initial indentation, duplicate names, empty names and every
-   root. Every node has `children`, including an empty list. [fixture:
-   treeview/db-indent-pop] [fixture: treeview/db-file-parent] [fixture:
-   treeview/db-first-indented] [fixture: treeview/db-duplicate-names] [fixture:
-   treeview/db-empty-names] [fixture: treeview/db-tabs-one-unit] [fixture:
-   treeview/db-quoted-tail-tab] [fixture: treeview/box-round-below] [fixture:
+3. Read roots from Diagram.body and recursively project each TreeviewNode's
+   children in source order. Files and directories can both own children. Do not
+   read indent or reconstruct parents: the parser builds the nesting and
+   checkTree independently checks it. Keep duplicate names, empty names, every
+   root and empty children lists. The node's textBefore and the other owned
+   decorations contribute no Db node. [fixture: treeview/db-indent-pop]
+   [fixture: treeview/db-file-parent] [fixture: treeview/db-first-indented]
+   [fixture: treeview/db-duplicate-names] [fixture: treeview/db-empty-names]
+   [fixture: treeview/db-tabs-one-unit] [fixture: treeview/db-quoted-tail-tab]
+   [fixture: treeview/box-round-below] [fixture:
    treeview/box-decoration-trailing-body]
 4. A quoted name is its converted interior with one delimiter removed at each
    end and no escape decoding. A bare name loses only trailing ASCII spaces and

@@ -28,6 +28,7 @@ sequenceDiagram
   A ->> B: x
 ```
 
+この例は、見出しの前に裸の `%%` の行を置きます。
 [fixture: sequence/header-after-bare-percent-line]
 
 mermaid.js は同じ入力を違って読みます。
@@ -145,47 +146,50 @@ mermaid.js が入力を拒否し、この仕様は受理します。
       A
     ```
 
-| 例                                                                        | mermaid.js                                              | この仕様                            |
-| ------------------------------------------------------------------------- | ------------------------------------------------------- | ----------------------------------- |
-| 1                                                                         | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
-| 2                                                                         | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
-| 3                                                                         | 拒否。`%%` は無視されるテキストで、`{` は何にも合わない | A への遷移を持つ state 図           |
-| 4                                                                         | 拒否。空白の行は `newline` の単位                       | クラス A を持つ class 図            |
-| 5                                                                         | 拒否。空白の行は `newline` の単位                       | クラス A を持つ class 図            |
-| 6                                                                         | 拒否。字句解析器に `%` の規則がない                     | 関係を持つ ER 図                    |
-| 7                                                                         | 拒否。字句解析器に `%` の規則がない                     | 実体 A を持つ ER 図                 |
-| 8                                                                         | 拒否。改行は `newline` の単位                           | タイトル T を持つガントチャート     |
-| 9                                                                         | 拒否。改行は `newline` の単位                           | タスク A を持つユーザージャーニー図 |
-| 10                                                                        | 拒否。改行は `newline` の単位                           | 要求 r を持つ要求図                 |
-| 11                                                                        | 拒否。改行は `newline` の単位                           | period a を持つ timeline            |
-| 12                                                                        | 拒否。`%%` はヘッダーの前の欄                           | a から b へのリンクを持つ sankey 図 |
-| 13                                                                        | 拒否。`%%` はヘッダーの前の id                          | ブロック A を持つ block 図          |
-| [fixture: flowchart/header-after-bare-percent-line]                       |
-| [fixture: flowchart/header-after-empty-braces-line]                       |
-| [fixture: state/header-after-empty-braces-line]                           |
-| [fixture: class/header-after-bare-percent-then-whitespace-line]           |
-| [fixture: class/header-after-empty-braces-then-whitespace-line]           |
-| [fixture: er/header-after-bare-percent-line]                              |
-| [fixture: er/header-after-empty-braces-line]                              |
-| [fixture: er/header-after-bare-percent-line-and-whitespace-line]          |
-| [fixture: gantt/header-after-bare-percent-line]                           |
-| [fixture: gantt/header-after-empty-braces-line]                           |
-| [fixture: gantt/header-after-bare-percent-line-and-whitespace-line]       |
-| [fixture: journey/header-after-bare-percent-line]                         |
-| [fixture: journey/header-after-empty-braces-line]                         |
-| [fixture: journey/header-after-bare-percent-line-and-whitespace-line]     |
-| [fixture: requirement/header-after-bare-percent-line]                     |
-| [fixture: requirement/header-after-empty-braces-line]                     |
-| [fixture: requirement/header-after-bare-percent-line-and-whitespace-line] |
-| [fixture: timeline/header-after-bare-percent-line]                        |
-| [fixture: timeline/header-after-empty-braces-line]                        |
-| [fixture: timeline/header-after-bare-percent-line-and-whitespace-line]    |
-| [fixture: sankey/header-after-bare-percent-line]                          |
-| [fixture: sankey/header-after-empty-braces-line]                          |
-| [fixture: sankey/header-after-bare-percent-line-and-whitespace-line]      |
-| [fixture: block/div-after-bare-percent-line]                              |
-| [fixture: block/div-after-empty-braces-line]                              |
-| [fixture: block/div-after-bare-percent-line-and-whitespace-line]          |
+| 例  | mermaid.js                                              | この仕様                            |
+| --- | ------------------------------------------------------- | ----------------------------------- |
+| 1   | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
+| 2   | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
+| 3   | 拒否。`%%` は無視されるテキストで、`{` は何にも合わない | A への遷移を持つ state 図           |
+| 4   | 拒否。空白の行は `newline` の単位                       | クラス A を持つ class 図            |
+| 5   | 拒否。空白の行は `newline` の単位                       | クラス A を持つ class 図            |
+| 6   | 拒否。字句解析器に `%` の規則がない                     | 関係を持つ ER 図                    |
+| 7   | 拒否。字句解析器に `%` の規則がない                     | 実体 A を持つ ER 図                 |
+| 8   | 拒否。改行は `newline` の単位                           | タイトル T を持つガントチャート     |
+| 9   | 拒否。改行は `newline` の単位                           | タスク A を持つユーザージャーニー図 |
+| 10  | 拒否。改行は `newline` の単位                           | 要求 r を持つ要求図                 |
+| 11  | 拒否。改行は `newline` の単位                           | period a を持つ timeline            |
+| 12  | 拒否。`%%` はヘッダーの前の欄                           | a から b へのリンクを持つ sankey 図 |
+| 13  | 拒否。`%%` はヘッダーの前の id                          | ブロック A を持つ block 図          |
+
+表で比較した読みを次の fixture が記録します。
+[fixture: flowchart/header-after-bare-percent-line]
+[fixture: flowchart/header-after-empty-braces-line]
+[fixture: state/header-after-empty-braces-line]
+[fixture: class/header-after-bare-percent-then-whitespace-line]
+[fixture: class/header-after-empty-braces-then-whitespace-line]
+[fixture: er/header-after-bare-percent-line]
+[fixture: er/header-after-bare-percent-line-relationship]
+[fixture: er/header-after-empty-braces-line]
+[fixture: er/header-after-bare-percent-line-and-whitespace-line]
+[fixture: gantt/header-after-bare-percent-line]
+[fixture: gantt/header-after-empty-braces-line]
+[fixture: gantt/header-after-bare-percent-line-and-whitespace-line]
+[fixture: journey/header-after-bare-percent-line]
+[fixture: journey/header-after-empty-braces-line]
+[fixture: journey/header-after-bare-percent-line-and-whitespace-line]
+[fixture: requirement/header-after-bare-percent-line]
+[fixture: requirement/header-after-empty-braces-line]
+[fixture: requirement/header-after-bare-percent-line-and-whitespace-line]
+[fixture: timeline/header-after-bare-percent-line]
+[fixture: timeline/header-after-empty-braces-line]
+[fixture: timeline/header-after-bare-percent-line-and-whitespace-line]
+[fixture: sankey/header-after-bare-percent-line]
+[fixture: sankey/header-after-empty-braces-line]
+[fixture: sankey/header-after-bare-percent-line-and-whitespace-line]
+[fixture: block/div-after-bare-percent-line]
+[fixture: block/div-after-empty-braces-line]
+[fixture: block/div-after-bare-percent-line-and-whitespace-line]
 
 隣の形も同じに読まれます。
 flowchart と state では、ディレクティブの始まらない `%%{-x}%%` や `%%{}` の行は

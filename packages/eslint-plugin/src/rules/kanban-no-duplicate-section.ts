@@ -5,9 +5,9 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
 /**
  * The rule `kanban-no-duplicate-section`, described in
  * `docs/rules/kanban-no-duplicate-section.md`: each section after the first
- * with the same id, when any item of the board belongs to that id. The first
- * node sets the section indentation; nodes at any other indentation are items
- * of the most recent section. Collect all items before reporting duplicates.
+ * with the same id, when any item of the board belongs to that id. The body
+ * holds columns, and each column's children are its cards. Collect every
+ * column with cards before reporting duplicates.
  */
 export const kanbanNoDuplicateSection: MermaidRuleDefinition<{
   RuleOptions: []
@@ -32,23 +32,28 @@ export const kanbanNoDuplicateSection: MermaidRuleDefinition<{
       KanbanDiagram(diagram) {
         const sections = new Map<string, KanbanNode[]>()
         const withItems = new Set<string>()
-        const sectionIndent = diagram.body[0]?.indent
-        let currentId = ""
         for (const node of diagram.body) {
-          if (node.indent === sectionIndent) {
-            // A node without an id always has a shape.
-            currentId = node.id?.value ?? node.shape!.label.value
-            const earlier = sections.get(currentId)
-            if (earlier === undefined) sections.set(currentId, [node])
-            else earlier.push(node)
-          } else {
-            withItems.add(currentId)
-          }
+          // A node without an id always has a shape.
+          const id = node.id?.value ?? node.shape!.label.value
+          const earlier = sections.get(id)
+          if (earlier === undefined) sections.set(id, [node])
+          else earlier.push(node)
+          if (node.children.length > 0) withItems.add(id)
         }
         for (const [name, nodes] of sections) {
           if (!withItems.has(name)) continue
           for (const node of nodes.slice(1)) {
-            context.report({ node, messageId: "duplicate", data: { name } })
+            // The column's range includes its cards; report only its own syntax.
+            const last =
+              node.decorations.at(-1) ??
+              node.data.at(-1) ??
+              node.shape ??
+              node.id!
+            context.report({
+              loc: { start: node.loc.start, end: last.loc.end },
+              messageId: "duplicate",
+              data: { name },
+            })
           }
         }
       },

@@ -652,14 +652,22 @@ const problems: TreeProblem[] = checkTree(text, tree)
     treeview/ast-icon-removal-only] [fixture: treeview/ast-numeric-name]
 
     Every external branch prefix and box-decoration line has exactly one owner
-    in source order: body, Node.prefix/textBeforeName, annotation
-    prefix/textBefore or block textBeforeOpen. Enclosed forms stay inside their
+    in source order. Existing pending-name, annotation and block gaps take
+    priority: Node.prefix/textBeforeName, annotation prefix/textBefore and block
+    textBeforeOpen. Remaining decorations between complete hierarchy nodes
+    belong to the next node's textBefore, whether a child, an ancestor's next
+    child or another root. Independent outer decorations stay in body before the
+    first or after the last hierarchy node. Enclosed forms stay inside their
     leaf, without an overlapping child. Prefix and decoration ranges exclude
     outer whitespace; decoration ranges also exclude the following LF. A node's
     indent agrees with its assigned ordinary space/tab run or branch depth,
     including a pending run across decoration or native comments. The checker
-    adds no parent, identity, installed-icon or semantic acceptance gate.
-    [fixture: treeview/box-written-tree] [fixture:
+    independently checks parents from written order and assigned indent: pop
+    open nodes with indent greater than or equal to the current one, then use
+    the last remaining node or body. Files can be parents. Ranges cover the
+    first owned syntax through the last descendant, with nonoverlapping
+    siblings. The checker adds no identity, installed-icon or semantic
+    acceptance gate. [fixture: treeview/box-written-tree] [fixture:
     treeview/box-decoration-pending-name-gap] [fixture:
     treeview/box-decoration-before-annotation] [fixture:
     treeview/ast-annotation-prefixes] [fixture:
@@ -667,6 +675,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
     treeview/ast-decoration-internal-and-body] [fixture:
     treeview/box-comment-indent-carry] [fixture: treeview/db-quoted-tail-tab]
     [fixture: treeview/db-file-parent] [fixture: treeview/db-duplicate-names]
+    [fixture: treeview/db-indent-pop] [fixture:
+    treeview/gram-nesting-decoration-before-parent] [fixture:
+    treeview/gram-nesting-decoration-before-ancestor-child] [fixture:
+    treeview/gram-nesting-decoration-after-subtree]
 
     Native percent Comments cannot start inside an earlier name or payload.
     Detection-passed bare lines and accompanying Unicode trivia are not read
@@ -995,19 +1007,36 @@ const problems: TreeProblem[] = checkTree(text, tree)
     railroad/ir-config-frontmatter-fontfamily-number]
 
   - treemap: all nine node types and their child order follow
-    [ast/treemap.md](../../spec/docs/ast/treemap.md). The body is flat: section,
-    leaf and classDef indent equals the ASCII space/tab unit before that row,
-    even on a preceding line or across common source removals. Ranges exclude
-    indentation. Two separate runs cannot stand for one indent, and an unused
-    trailing run is reported. Common composites consume their own padding; null
-    title consumes its one separator, and null class style consumes its maximal
-    separator whitespace. [fixture: treemap/gram-written-tree] [fixture:
-    treemap/db-section-tail-space] [fixture: treemap/db-leaf-tail-tab] [fixture:
+    [ast/treemap.md](../../spec/docs/ast/treemap.md). Body holds roots and outer
+    statements; sections hold section/leaf children, and leaves have no children
+    field. Check parents independently in written order: pop open sections with
+    indent greater than or equal to the current row, then attach to the last
+    remaining section or body; push only sections. A leaf can close a section
+    and never becomes a parent. Independent class definitions and common
+    statements between hierarchy nodes belong exactly once to the next node's
+    statementsBefore, including a different child of an ancestor or another
+    root. Before the first and after the last hierarchy node they stay in body.
+    Enclosing names, numbers and literals retain their content first. These
+    source owners do not change diagram-wide scope. Ranges cover the first owned
+    statement or name through the last descendant; siblings do not overlap.
+    Section, leaf and classDef indent equals the ASCII space/tab unit before its
+    own syntax, even on a preceding line or across common source removals.
+    Ranges exclude leading indentation. Two separate runs cannot stand for one
+    indent, and an unused trailing run is reported. Common composites consume
+    their own padding; null title consumes its one separator, and null class
+    style consumes its maximal separator whitespace. [fixture:
+    treemap/gram-written-tree] [fixture: treemap/db-section-tail-space]
+    [fixture: treemap/db-leaf-tail-tab] [fixture:
     treemap/gram-indent-around-global-directive] [fixture:
     treemap/gram-two-indent-runs] [fixture:
     treemap/gram-header-trailing-indent-eof] [fixture:
     treemap/common-title-one-space] [fixture:
-    treemap/gram-class-whitespace-style-null]
+    treemap/gram-class-whitespace-style-null] [fixture:
+    treemap/db-leaf-not-parent] [fixture: treemap/db-leaf-closes-open-sections]
+    [fixture: treemap/gram-nesting-statement-before-section] [fixture:
+    treemap/gram-nesting-statement-before-ancestor-child] [fixture:
+    treemap/gram-nesting-statement-after-last-child] [fixture:
+    treemap/common-block-empty-interleaved]
 
     Check complete headers without a suffix boundary, whole numeric spellings
     with treemap's comma-removing parseFloat value, first-closing-quote strings
@@ -1910,16 +1939,19 @@ const problems: TreeProblem[] = checkTree(text, tree)
     include every recorded C4 tree and the common detection fixtures for all
     five diagram kinds; C4 has no recorded-tree exclusion.
   - kanban: child types and value words follow the tables of ast/kanban.md; the
-    body is flat and may be empty, as may data and decoration lists. A node has
-    a text, a shape, or both, with nonnegative integer indentation matching its
-    written whitespace. Text keeps trailing whitespace; a shape holds one
-    nonempty label of kind text, string, or markdown, and independent written
-    delimiters. Adjacent data blocks touch their node and one another and keep
-    opaque interiors, including empty ones; no YAML validation is performed.
-    Nonempty icon and class text keep their whitespace, and decoration lines
-    stay with the preceding row. Layout, touching, and ranges use
-    statement-checks.ts; comments use `%%` and end at a line segment. Token
-    kinds and keyword and punctuation tables follow
+    body holds columns, their children hold cards, and cards have empty
+    children. Check the two levels independently from written order and indent:
+    the first node's indent identifies columns; every other node belongs to the
+    latest column, including a final shallower card. The body, children, data
+    and decoration lists may be empty. A node has a text, a shape, or both, with
+    nonnegative integer indentation matching its written whitespace. Text keeps
+    trailing whitespace; a shape holds one nonempty label of kind text, string,
+    or markdown, and independent written delimiters. Adjacent data blocks touch
+    their node and one another and keep opaque interiors, including empty ones;
+    no YAML validation is performed. Nonempty icon and class text keep their
+    whitespace, and decoration lines stay with the preceding row. Layout,
+    touching, and ranges use statement-checks.ts; comments use `%%` and end at a
+    line segment. Token kinds and keyword and punctuation tables follow
     `parser/docs/tokens/kanban.md`: node text, bare labels, icon and class text,
     and whole data interiors use `RawText`; quoted labels use one `String` or
     `StringFragment` tokens when cut by directives, comment regions, or ignored
@@ -1928,7 +1960,34 @@ const problems: TreeProblem[] = checkTree(text, tree)
     children (`parser/docs/positions/kanban.md`). `check-tree-kanban.test.ts`
     checks hand-made trees and breaks the recorded trees of named fixtures. The
     corpus checks include every recorded kanban tree and the common detection
-    fixture; kanban has no recorded-tree exclusion.
+    fixture; kanban has no recorded-tree exclusion. Ranges cover each node's own
+    syntax and its last descendant, with nonoverlapping siblings; decorations
+    belong exactly once to the last written node, irrespective of indentation.
+    Acceptance is checked through parser result records, not reimplemented here.
+    [fixture: kanban/db-indent-deeper] [fixture:
+    kanban/db-indent-shallower-last] [fixture:
+    kanban/gram-decoration-then-child] [fixture:
+    kanban/gram-nesting-item-decoration-before-deeper-item]
+
+    Indentation stops at retained native comment text: a comment-ending LS/PS
+    and the following indentation count, but whitespace inside the comment does
+    not. Shared directives, comment regions and selected ignored semicolons stay
+    transparent. Recognize a comment-ending LS/PS at the next written character
+    after the comment range, through those shared removals. Ordinary LS/PS in a
+    value or whitespace gap do not supply a newline. These checks are specific
+    to kanban; treemap and treeview native comments still continue through LS/PS
+    to LF. [fixture: kanban/lex-indent-comment-ps-semicolon-space] [fixture:
+    kanban/lex-indent-comment-ls-semicolon-space] [fixture:
+    kanban/lex-indent-comment-ps-semicolon-wide-tail] [fixture:
+    kanban/lex-indent-comment-ps-space-after-card] [fixture:
+    kanban/lex-indent-comment-ps-space-after-column] [fixture:
+    kanban/lex-indent-comment-ls-selected-semicolon-touching] [fixture:
+    kanban/lex-indent-comment-ps-selected-semicolon-indent-directive] [fixture:
+    kanban/lex-indent-comment-ps-common-line] [fixture:
+    kanban/lex-ps-bare-value] [fixture: kanban/lex-ls-bare-value] [fixture:
+    treemap/lex-indent-comment-ps-semicolon-space] [fixture:
+    treeview/lex-indent-comment-ps-semicolon-space]
+
   - block: child types follow `BLOCK_CHILD_TYPES`, checked against ast/block.md;
     diagram and composite bodies, class ids, and style slot lists are nonempty,
     and a body cannot consist only of empty description blocks. The fields that
@@ -2109,11 +2168,17 @@ axis, the arrow, the kind of a label, the value of a title, and the ranges.
 `check-tree-kanban.test.ts` also breaks named recorded trees for token kinds,
 cut string and data fragments, indentation, a missing text or shape, shape
 closers, label kinds, retained whitespace, the order of adjacent data blocks,
-and node ranges. `check-tree-string-tokens.test.ts` changes the kind of a token
-of the first string of the recorded tree of a named fixture of the flowchart,
-class, state, ER, and sankey diagrams, and requires the check of the tokens of a
-string to report it. The tests that require a recorded tree for every node type
-or every field leave out the node types whose names start with a prefix of
+and node ranges. `check-tree-nesting.test.ts` builds nested treeview, treemap
+and kanban trees by hand and breaks parents, child order, leaf children,
+kanban's two levels, leading gap ownership, sibling overlap and ranges that omit
+owned syntax or the last descendant. Controls retain outer statements and
+decorations in body; the diagram test files also retain the checks of existing
+pending-name, annotation and block-gap priorities.
+`check-tree-string-tokens.test.ts` changes the kind of a token of the first
+string of the recorded tree of a named fixture of the flowchart, class, state,
+ER, and sankey diagrams, and requires the check of the tokens of a string to
+report it. The tests that require a recorded tree for every node type or every
+field leave out the node types whose names start with a prefix of
 `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` (`tests/check-tree-recorded.ts`),
 the new diagram types whose trees are not recorded yet; the prefix is removed
 when the trees are recorded, and the list stays empty between two diagram types.

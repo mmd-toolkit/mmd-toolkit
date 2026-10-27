@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Common forms and Box-drawing reading; ast/treeview.md TreeviewAccDescrBlockStatement: An empty branch inside a block is rejected by the box line rule, rather than read as decoration. Mermaid rejects: Error."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Line 3: Empty node — expected a filename or directory name after the box-drawing prefix"
+  }
+}

@@ -8,7 +8,7 @@ export const kanbanVisitorKeys: Readonly<
   Record<KanbanTreeNode["type"], readonly string[]>
 > = {
   KanbanDiagram: ["body"],
-  KanbanNode: ["id", "shape", "data", "decorations"],
+  KanbanNode: ["id", "shape", "data", "decorations", "children"],
   KanbanShape: ["label"],
   KanbanLabel: [],
   KanbanIconStatement: ["icon"],

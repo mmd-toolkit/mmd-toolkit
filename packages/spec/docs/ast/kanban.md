@@ -15,32 +15,41 @@ data content keep their interior whitespace, including line terminators.
 kanban/lex-class-trailing-spaces] [fixture: kanban/db-metadata-spaces] [fixture:
 kanban/lex-string-crlf]
 
-How mermaid.js reads section membership, final ids and labels, shape types, and
-metadata effects is in the
-[tests package summary](../../../tests/docs/db-summaries.md#kanban).
+How mermaid.js reads final ids and labels, shape types, and metadata effects is
+in the [tests package summary](../../../tests/docs/db-summaries.md#kanban).
 
 ## Nodes
 
 ### KanbanDiagram
 
-| Field  | Type               | Meaning                                           |
-| ------ | ------------------ | ------------------------------------------------- |
-| `body` | list of KanbanNode | The written nodes, in source order; may be empty. |
+| Field  | Type               | Meaning                                     |
+| ------ | ------------------ | ------------------------------------------- |
+| `body` | list of KanbanNode | The columns, in source order; may be empty. |
 
-Child fields: `body`. The header keyword is not a field. Indentation does not
-nest nodes. Deeper rows stay in the flat list. [fixture:
+Child fields: `body`. The header keyword is not a field. Only column nodes
+appear directly in body; each column's children are its cards under
+[Indentation and parents](../diagrams/kanban.md#indentation-and-parents). The
+same KanbanNode type represents both roles; a card's children are always empty.
+Do not add an artificial root, parent reference or derived depth. [fixture:
 kanban/db-indent-unindented] [fixture: kanban/db-indent-tabs] [fixture:
 kanban/db-indent-deeper] [fixture: kanban/db-indent-shallower-last] [fixture:
 kanban/db-sections-items] [fixture: kanban/spec-kanban-d05521ff] Repeated ids
-also stay in the list. [fixture: kanban/db-section-three-definitions] [fixture:
-kanban/db-item-three-definitions] [fixture: kanban/db-section-item-same-id]
-[fixture: kanban/db-metadata-repeated-id] [fixture:
-kanban/db-object-prototype-ids] [fixture: kanban/db-name-case]
+also stay as separate occurrences in these lists. [fixture:
+kanban/db-section-three-definitions] [fixture: kanban/db-item-three-definitions]
+[fixture: kanban/db-section-item-same-id] [fixture:
+kanban/db-metadata-repeated-id] [fixture: kanban/db-object-prototype-ids]
+[fixture: kanban/db-name-case]
 
 A board without nodes has an empty body, also with whitespace and comments after
 the header. [fixture: kanban/header-only-lf] [fixture:
 kanban/db-empty-board-comment] [fixture: kanban/db-empty-board-whitespace]
 [fixture: kanban/header-header-space-only]
+
+The diagram range covers its header through the last column and its descendants;
+an empty diagram ends at the header. Unrelated trailing comments, directives and
+whitespace do not extend it. [fixture: kanban/header-only-lf] [fixture:
+kanban/db-empty-board-comment] [fixture: kanban/db-sections-items] [fixture:
+kanban/gram-shallower-then-decoration]
 
 ### KanbanNode
 
@@ -57,9 +66,10 @@ it. [fixture: kanban/db-metadata-all] [fixture: kanban/db-decoration-icon-item]
 | `shape`       | KanbanShape or null                                   | The shape; null for bare node text.                         |
 | `data`        | list of KanbanDataBlock                               | The written blocks, in source order; may be empty.          |
 | `decorations` | list of (KanbanIconStatement or KanbanClassStatement) | The decoration lines before the next node, in source order. |
+| `children`    | list of KanbanNode                                    | The column's cards; always empty on a card.                 |
 
-Child fields: `id`, `shape`, `data`, `decorations`. `id` and `shape` are not
-both null. A shape alone has `id` null. [fixture: kanban/db-name-no-id]
+Child fields: `id`, `shape`, `data`, `decorations`, `children`. `id` and `shape`
+are not both null. A shape alone has `id` null. [fixture: kanban/db-name-no-id]
 [fixture: kanban/spec-kanban-46081dfb] A bare node has `shape` null. [fixture:
 kanban/db-name-two-words] A node text with a shape has both fields set.
 [fixture: kanban/db-shape-square] [fixture: kanban/db-name-space-before-shape]
@@ -76,6 +86,31 @@ kanban/header-statement-on-header-line] [fixture:
 kanban/header-statement-on-header-line-tab] After a comment-ending U+2028 or
 U+2029, it counts that separator and the following whitespace. [fixture:
 kanban/lex-node-comment-ls] [fixture: kanban/div-header-comment-ps-node]
+[fixture: kanban/lex-indent-comment-ps-semicolon-space] [fixture:
+kanban/lex-indent-comment-ls-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ls-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-no-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-no-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-semicolon-wide-tail] [fixture:
+kanban/lex-indent-comment-ps-space-after-card] [fixture:
+kanban/lex-indent-comment-ps-space-after-column] [fixture:
+kanban/lex-indent-comment-ls-space-after-column] [fixture:
+kanban/lex-indent-comment-ps-two-spaces-after-card] [fixture:
+kanban/lex-indent-comment-ps-after-card-then-column] [fixture:
+kanban/lex-indent-comment-ps-zero-baseline] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-unselected-semicolon-node] [fixture:
+kanban/lex-indent-comment-lf-semicolon-space] [fixture:
+kanban/lex-indent-comment-crlf-semicolon-space] [fixture:
+kanban/lex-indent-comment-ps-common-line] [fixture:
+kanban/lex-indent-comment-ps-indent-directive] [fixture:
+kanban/lex-indent-comment-ps-tail-directive] [fixture:
+kanban/lex-indent-comment-ps-empty-line-before] [fixture:
+kanban/lex-indent-comment-ls-selected-semicolon-touching] [fixture:
+kanban/lex-indent-comment-ps-tail-directive-touching] [fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-indent-directive]
 
 The id keeps its trailing whitespace: `A [text]` has the id `A `. [fixture:
 kanban/db-name-space-before-shape] [fixture: kanban/db-name-trailing-space] It
@@ -98,6 +133,24 @@ kanban/gram-shallower-then-decoration] Repeated decorations remain separate.
 [fixture: kanban/db-decoration-icon-twice] [fixture:
 kanban/db-decoration-class-twice] Classes that the Db does not expose also
 remain in the list. [fixture: kanban/db-decoration-class-item]
+
+Children are in source order and empty when no cards are written. A deeper card
+after a card remains another child of the column, including a final card
+shallower than the first column. Keep every repeated column and card once in the
+tree; the Db's repeated publication for duplicate column ids does not create
+extra AST occurrences. [fixture: kanban/db-indent-deeper] [fixture:
+kanban/db-indent-shallower-last] [fixture: kanban/db-section-three-definitions]
+[fixture: kanban/db-section-item-same-id]
+
+A node range starts at its node text or shape opener. It ends at its last
+descendant, or, without children, at its last decoration, data block, shape or
+node text in that order. It is continuous and siblings do not overlap. Leading
+indentation and unrelated trailing trivia do not extend the range; whitespace
+read as node text remains inside the id leaf. [fixture:
+kanban/db-name-trailing-space] [fixture: kanban/db-metadata-all] [fixture:
+kanban/gram-decoration-then-child] [fixture:
+kanban/gram-nesting-item-decoration-before-deeper-item] [fixture:
+kanban/gram-shallower-then-decoration]
 
 ### KanbanShape
 
@@ -203,3 +256,17 @@ kanban/db-name-two-words] [fixture: kanban/lex-icon-spaces] [fixture:
 kanban/lex-class-trailing-spaces] It keeps all whitespace its unit reads,
 including trailing whitespace in node text. [fixture:
 kanban/db-name-space-before-shape] [fixture: kanban/db-name-trailing-space]
+
+## Example
+
+This authored example keeps its uneven indentation to show the two-level tree.
+Diagram.body contains S; S.children contains A, B and C. All three cards have
+empty children. B is not a child of A. [fixture: kanban/db-indent-deeper]
+
+```mmd
+kanban
+ S
+   A
+     B
+   C
+```

@@ -61,7 +61,15 @@ export function row(
       name,
       ...members,
     ]),
-    { indent, prefix: branch, textBeforeName, name, annotations: members },
+    {
+      indent,
+      textBefore: [],
+      prefix: branch,
+      textBeforeName,
+      name,
+      annotations: members,
+      children: [],
+    },
   )
 }
 

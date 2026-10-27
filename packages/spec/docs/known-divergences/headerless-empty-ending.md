@@ -84,7 +84,8 @@ Each example is a whole text.
 | 5       | an empty diagram                 | rejected           |
 | 6       | an empty diagram                 | rejected           |
 
-[fixture: class/div-headerless-relation-empty-title] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+class/div-headerless-relation-empty-title] [fixture:
 class/header-word-relation-title] [fixture:
 class/lex-acc-title-at-end-after-relation] [fixture:
 class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]

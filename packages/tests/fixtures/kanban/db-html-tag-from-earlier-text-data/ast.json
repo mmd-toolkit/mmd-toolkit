@@ -65,6 +65,7 @@
         },
         "data": [],
         "decorations": [],
+        "children": [],
         "range": [
           9,
           14
@@ -123,6 +124,7 @@
           }
         ],
         "decorations": [],
+        "children": [],
         "range": [
           17,
           40

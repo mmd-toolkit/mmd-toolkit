@@ -58,7 +58,13 @@ export function row(
   return kit.node(
     number === null ? "TreemapSection" : "TreemapLeaf",
     hull(pieces),
-    { indent, name, ...(value === null ? {} : { value }), classSelector },
+    {
+      indent,
+      statementsBefore: [],
+      name,
+      ...(value === null ? { children: [] } : { value }),
+      classSelector,
+    },
   )
 }
 

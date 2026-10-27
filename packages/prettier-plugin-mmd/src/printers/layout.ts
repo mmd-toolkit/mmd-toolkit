@@ -297,6 +297,8 @@ export function layoutDescriptionBlock(
     readonly formatsEmptyTrivia?: boolean
     /** Common converters trim literal edges even when the AST owns them. */
     readonly trimValueEdges?: boolean
+    /** Authored opener after structural forms that the caller replaces. */
+    readonly opening?: number
   } = {},
 ): AtomLayout {
   const start = statement.range[0]
@@ -344,6 +346,7 @@ export function layoutDescriptionBlock(
     range: statement.range,
     value: statement.value,
     closed: statement.closed ?? true,
+    ...(options.opening === undefined ? {} : { opening: options.opening }),
   }
   const closing = findAccDescrBlockClosing(source, block)
   return {
@@ -392,6 +395,8 @@ export interface AccDescrBlock {
   readonly range: Range
   readonly value: Node | null
   readonly closed: boolean
+  /** Explicit opener when authored structural forms precede it. */
+  readonly opening?: number
 }
 
 /**
@@ -413,11 +418,15 @@ export function findAccDescrBlockStretches(
   keepsTrailingTrivia = false,
 ): Atom[] {
   const brace = expectToken(
-    findStructuralToken(
-      source,
-      expectToken(findTokenStartingAt(source, statement.range[0]), "`accDescr`")
-        .range[1],
-    ),
+    statement.opening === undefined
+      ? findStructuralToken(
+          source,
+          expectToken(
+            findTokenStartingAt(source, statement.range[0]),
+            "`accDescr`",
+          ).range[1],
+        )
+      : findTokenStartingAt(source, statement.opening),
     "the `{` of an accDescr block",
   )
   expectValue(brace, "{")

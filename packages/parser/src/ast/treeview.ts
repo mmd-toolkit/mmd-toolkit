@@ -1,7 +1,7 @@
 import type { Identifier, NodeBase, StringLiteral } from "../ast.ts"
 
 /**
- * ast/treeview.md, TreeviewDiagram: the header and flat authored body.
+ * ast/treeview.md, TreeviewDiagram: the header, roots and independent outer items.
  * Fixture: treeview/header-only.
  *
  * ```text
@@ -24,21 +24,28 @@ export type TreeviewBodyItem =
   | TreeviewAccDescrBlockStatement
 
 /**
- * ast/treeview.md, TreeviewNode: one assigned indentation and an authored name.
- * Fixture: treeview/annotation-class-digit.
+ * ast/treeview.md, TreeviewNode: its owned syntax through its last descendant.
+ * The range can start before the name, at the first textBefore decoration.
+ * Fixture: treeview/db-file-parent.
  *
  * ```text
- * node :::a1
- * ^^^^^^^^^^
+ * file.txt
+ * ^^^^^^^^
+ *  child
+ * ^^^^^^^
+ *   grandchild
+ * ^^^^^^^^^^^^
  * ```
  */
 export interface TreeviewNode extends NodeBase {
   readonly type: "TreeviewNode"
   readonly indent: number
+  readonly textBefore: readonly TreeviewIgnoredText[]
   readonly prefix: TreeviewBranchPrefix | null
   readonly textBeforeName: readonly TreeviewIgnoredText[]
   readonly name: TreeviewIdentifier | StringLiteral
   readonly annotations: readonly TreeviewAnnotation[]
+  readonly children: readonly TreeviewNode[]
 }
 
 /** ast/treeview.md, TreeviewNode: all annotation occurrences in written order. */

@@ -11,7 +11,12 @@ import {
   locationOf,
   tokenOf,
 } from "./check-tree-trees.ts"
-import { readChildFields } from "./spec-field-tables.ts"
+import { withBefore, withChildren } from "./nesting-built.ts"
+import {
+  readChildFields,
+  readChildTypeNames,
+  readFieldTables,
+} from "./spec-field-tables.ts"
 import {
   annotation,
   buildTreeview,
@@ -21,7 +26,7 @@ import {
   row,
 } from "./treeview-built.ts"
 
-/** All thirteen treeview types, with source spelling and the flat body intact. */
+/** All thirteen treeview types, with source spelling and nested children intact. */
 function allFields(): Built {
   return buildTreeview(
     'treeView-beta\ntitle Tree\naccTitle: A\naccDescr: D\naccDescr { B\n C }\nroot/\n├── "child" :::hot icon(pack:file) ## detail\n│\n└── other',
@@ -30,20 +35,28 @@ function allFields(): Built {
       common(kit, "AccTitle", " A"),
       common(kit, "AccDescr", " D"),
       common(kit, "AccDescrBlock", " B\n C "),
-      row(kit, 0, "root/"),
-      row(
-        kit,
-        4,
-        '"child"',
-        () => [
-          annotation(kit, "Class", "hot"),
-          annotation(kit, "Icon", "pack:file"),
-          annotation(kit, "Description", " detail"),
-        ],
-        prefix(kit, "├──"),
-      ),
-      decoration(kit),
-      row(kit, 4, "other", undefined, prefix(kit, "└──", "└")),
+      withChildren(kit, row(kit, 0, "root/"), [
+        row(
+          kit,
+          4,
+          '"child"',
+          () => [
+            annotation(kit, "Class", "hot"),
+            annotation(kit, "Icon", "pack:file"),
+            annotation(kit, "Description", " detail"),
+          ],
+          prefix(kit, "├──"),
+        ),
+        (() => {
+          const before = decoration(kit)
+          return withBefore(
+            kit,
+            row(kit, 4, "other", undefined, prefix(kit, "└──", "└")),
+            "textBefore",
+            [before],
+          )
+        })(),
+      ]),
     ],
   )
 }
@@ -121,8 +134,9 @@ function annotationGap(): Built {
 /** A pending ordinary run survives an intervening box decoration. */
 function nameGap(): Built {
   return buildTreeview('treeView-beta\n"root" \n│\nchild─', (kit) => [
-    row(kit, 0, '"root"'),
-    row(kit, 1, "child─", undefined, null, [decoration(kit)]),
+    withChildren(kit, row(kit, 0, '"root"'), [
+      row(kit, 1, "child─", undefined, null, [decoration(kit)]),
+    ]),
   ])
 }
 
@@ -175,8 +189,7 @@ const VALID: readonly { name: string; built: () => Built }[] = [
     name: "quoted trailing tab supplies next indentation",
     built: () =>
       buildTreeview('treeView-beta\n"a"\t\n"b"', (kit) => [
-        row(kit, 0, '"a"'),
-        row(kit, 1, '"b"'),
+        withChildren(kit, row(kit, 0, '"a"'), [row(kit, 1, '"b"')]),
       ]),
   },
   {
@@ -192,8 +205,9 @@ const VALID: readonly { name: string; built: () => Built }[] = [
     name: "decoration in an open quote remains inside its leaf",
     built: () =>
       buildTreeview('treeView-beta\n"a\n│\nb"\n├── child', (kit) => [
-        row(kit, 0, '"a\n│\nb"'),
-        row(kit, 4, "child", undefined, prefix(kit, "├──")),
+        withChildren(kit, row(kit, 0, '"a\n│\nb"'), [
+          row(kit, 4, "child", undefined, prefix(kit, "├──")),
+        ]),
       ]),
   },
   {
@@ -362,6 +376,12 @@ describe("treeview tree conditions", () => {
     const fields = readChildFields()
     for (const [type, children] of Object.entries(TREEVIEW_CHILD_TYPES))
       expect(Object.keys(children), type).toEqual(fields.get(type))
+    const tables = readFieldTables()
+    for (const [type, children] of Object.entries(TREEVIEW_CHILD_TYPES))
+      for (const [field, allowed] of Object.entries(children))
+        expect(allowed, `${type}.${field}`).toEqual(
+          readChildTypeNames("treeview", tables.get(type)?.get(field) ?? ""),
+        )
     expect(
       new Set(
         nodesOf(allFields().tree)
@@ -401,15 +421,17 @@ describe("treeview tree conditions", () => {
       expected: "only ignored kind is box-decoration",
     },
     {
-      name: "lost body decoration",
+      name: "lost inter-node decoration",
       built: allFields,
       mutate: (tree) =>
         setField(
-          tree.body,
-          "body",
-          (tree.body.body as unknown[]).filter(
-            (node) => node !== nodeWith(tree, "TreeviewIgnoredText"),
-          ),
+          nodesOf(tree).find(
+            (node) =>
+              node.type === "TreeviewNode" &&
+              (node.textBefore as unknown[]).length > 0,
+          )!,
+          "textBefore",
+          [],
         ),
       expected: "each box prefix or decoration must have exactly one owner",
     },

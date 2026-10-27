@@ -1,10 +1,18 @@
 import { describe, expect, it } from "vitest"
 import type { DbTreeRoot, Fixture } from "@mmd-toolkit/tests"
 import { loadFixtures, dbFromTree, embeddedValuesOf } from "@mmd-toolkit/tests"
-import type { Node, TreeviewDiagram, Root } from "../src/index.ts"
+import type {
+  Node,
+  Range,
+  TreeviewDiagram,
+  TreeviewLiteral,
+  TreeviewNode,
+  Root,
+} from "../src/index.ts"
 import { parse, ParseError, traverseNodes, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
 import { treeviewLexingOf } from "./helpers/reference-inputs.ts"
+import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 /** Losslessness, source spelling, token boundaries, child containment, and source order. */
 function expectCoverage(text: string, root: Root): void {
@@ -95,6 +103,244 @@ function expectDb(fixture: Fixture, root: Root): void {
   ).toEqual(reading.db)
 }
 
+/** ast/treeview.md: fixed authored block interiors, including tails skipped by box reading. */
+const blockTailPayloads: Readonly<
+  Record<
+    string,
+    readonly {
+      readonly range: Range | null
+      readonly value: string | null
+    }[]
+  >
+> = {
+  "box-block-tail-decoration-light-vertical": [
+    {
+      range: [24, 28],
+      value: "a\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-heavy-vertical": [
+    {
+      range: [24, 28],
+      value: "a\n\u2503\n",
+    },
+  ],
+  "box-block-tail-decoration-light-dash": [
+    {
+      range: [24, 29],
+      value: "a\n\u2500\u2500\n",
+    },
+  ],
+  "box-block-tail-decoration-heavy-dash": [
+    {
+      range: [24, 29],
+      value: "a\n\u2501\u2501\n",
+    },
+  ],
+  "box-block-tail-decoration-vertical-whitespace": [
+    {
+      range: [24, 33],
+      value: "a\n \u2502 \t\u2503 \n",
+    },
+  ],
+  "box-block-tail-decoration-close-same-line": [
+    {
+      range: [24, 27],
+      value: "a\n\u2502",
+    },
+  ],
+  "box-block-tail-decoration-dash-close-same-line": [
+    {
+      range: [24, 28],
+      value: "a\n\u2500\u2500",
+    },
+  ],
+  "box-block-tail-decoration-multiple-lines": [
+    {
+      range: [24, 33],
+      value: "a\n\u2502\n\u2503\n\u2500\u2500\n",
+    },
+  ],
+  "box-block-tail-branch-content": [
+    {
+      range: [24, 35],
+      value: "a\n\u251c\u2500\u2500 text\n",
+    },
+  ],
+  "box-block-tail-branch-closer": [
+    {
+      range: [24, 30],
+      value: "a\n\u251c\u2500\u2500 ",
+    },
+  ],
+  "box-block-tail-decoration-inactive": [
+    {
+      range: [24, 28],
+      value: "a\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-indent-control": [
+    {
+      range: [24, 29],
+      value: "a\n  \n",
+    },
+  ],
+  "box-block-tail-decoration-only-interior": [
+    {
+      range: [24, 27],
+      value: "\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-empty-control": [
+    {
+      range: null,
+      value: null,
+    },
+  ],
+  "box-block-tail-decoration-opener-line": [
+    {
+      range: [24, 26],
+      value: "\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-ascii-dash-control": [
+    {
+      range: [24, 29],
+      value: "a\n--\n",
+    },
+  ],
+  "box-block-tail-decoration-single-dash": [
+    {
+      range: [24, 28],
+      value: "a\n\u2500\n",
+    },
+  ],
+  "box-block-tail-decoration-spaces-after": [
+    {
+      range: [24, 30],
+      value: "a\n\u2502  \n",
+    },
+  ],
+  "box-block-tail-decoration-spaces-before": [
+    {
+      range: [24, 30],
+      value: "a\n  \u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-blank-after": [
+    {
+      range: [24, 29],
+      value: "a\n\u2502\n\n",
+    },
+  ],
+  "box-block-tail-decoration-two-vertical-lines": [
+    {
+      range: [24, 30],
+      value: "a\n\u2502\n\u2503\n",
+    },
+  ],
+  "box-block-tail-decoration-directive-inline": [
+    {
+      range: [24, 42],
+      value: "a\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-directive-line": [
+    {
+      range: [24, 43],
+      value: "a\n\u2502\n\n",
+    },
+  ],
+  "box-block-tail-decoration-directive-at-start": [
+    {
+      range: [38, 41],
+      value: "\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-selected-semicolon": [
+    {
+      range: [24, 36],
+      value: "style:#x\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-unselected-semicolon": [
+    {
+      range: [24, 29],
+      value: "a\n\u2502;\n",
+    },
+  ],
+  "box-block-tail-decoration-comment-line": [
+    {
+      range: [24, 33],
+      value: "a\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-comment-after": [
+    {
+      range: [24, 28],
+      value: "a\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-blank-before": [
+    {
+      range: [24, 29],
+      value: "a\n\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-ls": [
+    {
+      range: [24, 29],
+      value: "a\n\u2502\u2028\n",
+    },
+  ],
+  "box-block-tail-decoration-ps": [
+    {
+      range: [24, 29],
+      value: "a\n\u2502\u2029\n",
+    },
+  ],
+  "box-block-tail-decoration-comment-ls": [
+    {
+      range: [24, 26],
+      value: "a\n",
+    },
+  ],
+  "box-block-tail-decoration-comment-ps": [
+    {
+      range: [24, 26],
+      value: "a\n",
+    },
+  ],
+  "box-block-tail-decoration-empty-block-before": [
+    {
+      range: null,
+      value: null,
+    },
+    {
+      range: [36, 40],
+      value: "a\n\u2502\n",
+    },
+  ],
+  "box-block-tail-decoration-crlf": [
+    {
+      range: [25, 31],
+      value: "a\r\n\u2502\r\n",
+    },
+  ],
+  "box-block-tail-decoration-cr": [
+    {
+      range: [24, 28],
+      value: "a\r\u2502\r",
+    },
+  ],
+  "box-block-tail-decoration-opener-gap-selector": [
+    {
+      range: [26, 38],
+      value: "title\n    \u2502\n",
+    },
+  ],
+}
+
 describe("treeview fixtures", async () => {
   const fixtures = [
     ...(await loadFixtures("treeview")),
@@ -118,6 +364,74 @@ describe("treeview fixtures", async () => {
     return body
   }
 
+  /** Hierarchy occurrences in visitor order, for checks of their authored indentation. */
+  function nodesOf(name: string): TreeviewNode[] {
+    const nodes: TreeviewNode[] = []
+    traverseNodes(parse(fixtureOf(name).input), {
+      enterNode(node) {
+        if (node.type === "TreeviewNode") nodes.push(node)
+      },
+      leaveNode() {
+        /* Collected on entry. */
+      },
+    })
+    return nodes
+  }
+
+  for (const [name, payloads] of Object.entries(blockTailPayloads)) {
+    it(`retains the complete authored block payload: ${name}`, () => {
+      const fixture = fixtureOf(name)
+      const root = parse(fixture.input)
+      expect(problemsOfTree(fixture.input, root)).toEqual([])
+      const values: (TreeviewLiteral | null)[] = []
+      traverseNodes(root, {
+        enterNode(node) {
+          if (node.type === "TreeviewAccDescrBlockStatement")
+            values.push(node.value)
+        },
+        leaveNode() {
+          /* Payloads are collected on entry. */
+        },
+      })
+      expect(
+        values.map((value) =>
+          value === null
+            ? { range: null, value: null }
+            : { range: value.range, value: value.value },
+        ),
+      ).toEqual(payloads)
+      const units = treeviewLexingOf(fixture.input)!.units.filter(
+        (unit) => unit.name === "block-text",
+      )
+      expect(units.map((unit) => unit.significantRange)).toEqual(
+        payloads
+          .filter((payload) => payload.range !== null)
+          .map((payload) => payload.range),
+      )
+      for (const value of values) {
+        if (value === null) continue
+        const tokens = root.tokens.filter(
+          (token) =>
+            token.type === "RawText" &&
+            token.range[0] >= value.range[0] &&
+            token.range[1] <= value.range[1],
+        )
+        expect([tokens[0]?.range[0], tokens.at(-1)?.range[1]]).toEqual(
+          value.range,
+        )
+      }
+    })
+  }
+
+  for (const name of [
+    "box-block-tail-decoration-closer-indent",
+    "box-block-tail-decoration-branch-empty",
+  ]) {
+    it(`keeps box rejection as ParseError: ${name}`, () => {
+      expect(() => parse(fixtureOf(name).input)).toThrow(ParseError)
+    })
+  }
+
   it("keeps all common forms, repeated annotations, empty names and authored values", () => {
     const body = diagramOf("gram-written-tree").body
     expect(body.map((item) => item.type)).toEqual([
@@ -125,7 +439,6 @@ describe("treeview fixtures", async () => {
       "TreeviewAccTitleStatement",
       "TreeviewAccDescrStatement",
       "TreeviewAccDescrBlockStatement",
-      "TreeviewNode",
       "TreeviewNode",
       "TreeviewNode",
     ])
@@ -155,8 +468,10 @@ describe("treeview fixtures", async () => {
         },
       ],
     })
-    expect(body[5]).toMatchObject({ indent: 2, name: { value: "child/ " } })
-    expect(body[6]).toMatchObject({
+    expect(body[4]).toMatchObject({
+      children: [{ indent: 2, name: { value: "child/ " }, children: [] }],
+    })
+    expect(body[5]).toMatchObject({
       indent: 0,
       name: { value: "", raw: "''", closed: true },
     })
@@ -186,48 +501,51 @@ describe("treeview fixtures", async () => {
     })
   })
 
-  it("assigns prefix indentation while keeping flat body order and source prefixes", () => {
+  it("nests assigned indentation while preserving source prefixes and gap ownership", () => {
     expect(diagramOf("box-written-tree").body).toMatchObject([
       {
         type: "TreeviewNode",
         indent: 0,
         prefix: null,
         name: { name: "root/" },
-      },
-      {
-        type: "TreeviewNode",
-        indent: 4,
-        prefix: { value: "\u251c\u2500\u2500", marker: "\u251c" },
-        name: { name: "src/" },
-      },
-      { type: "TreeviewIgnoredText", kind: "box-decoration", value: "\u2502" },
-      {
-        type: "TreeviewNode",
-        indent: 8,
-        prefix: { value: "\u2502   \u2514\u2500\u2500" },
-        name: { value: "my file" },
-      },
-      {
-        type: "TreeviewNode",
-        indent: 4,
-        prefix: { value: "\u2514\u2500\u2500" },
-        name: { name: "other" },
+        children: [
+          {
+            indent: 4,
+            prefix: { value: "\u251c\u2500\u2500", marker: "\u251c" },
+            name: { name: "src/" },
+            children: [
+              {
+                indent: 8,
+                textBefore: [{ kind: "box-decoration", value: "\u2502" }],
+                prefix: { value: "\u2502   \u2514\u2500\u2500" },
+                name: { value: "my file" },
+                children: [],
+              },
+            ],
+          },
+          {
+            indent: 4,
+            prefix: { value: "\u2514\u2500\u2500" },
+            name: { name: "other" },
+            children: [],
+          },
+        ],
       },
     ])
-    expect(diagramOf("db-tabs-one-unit").body).toMatchObject([
+    expect(nodesOf("db-tabs-one-unit")).toMatchObject([
       { indent: 0 },
       { indent: 1 },
       { indent: 1 },
       { indent: 2 },
       { indent: 2 },
     ])
-    expect(diagramOf("box-column-nonbmp-discriminating").body).toMatchObject([
+    expect(nodesOf("box-column-nonbmp-discriminating")).toMatchObject([
       { indent: 4 },
       { indent: 8 },
       { indent: 8 },
     ])
     const root = parse(fixtureOf("box-written-tree").input)
-    const nested = diagramOf("box-written-tree").body[3]
+    const nested = nodesOf("box-written-tree")[2]
     if (nested.type !== "TreeviewNode" || nested.prefix === null)
       throw new Error("Expected the nested branch prefix")
     const prefix = nested.prefix
@@ -260,7 +578,7 @@ describe("treeview fixtures", async () => {
       textBeforeName: [{ value: "\u2502" }],
       name: { name: "other" },
     })
-    expect(diagramOf("box-comment-indent-carry").body[1]).toMatchObject({
+    expect(nodesOf("box-comment-indent-carry")[1]).toMatchObject({
       indent: 4,
       prefix: { value: "\u251c\u2500\u2500" },
       textBeforeName: [{ value: "\u2502" }],
@@ -309,19 +627,65 @@ describe("treeview fixtures", async () => {
       value: { value: "a\n\u2502\nb" },
     })
     expect(
-      diagramOf("ast-decoration-internal-and-body").body.map((n) => n.type),
-    ).toEqual([
-      "TreeviewNode",
-      "TreeviewNode",
-      "TreeviewIgnoredText",
-      "TreeviewNode",
-    ])
+      nodesOf("ast-decoration-internal-and-body").map((n) => n.name.type),
+    ).toEqual(["TreeviewIdentifier", "StringLiteral", "TreeviewIdentifier"])
+    expect(nodesOf("ast-decoration-internal-and-body")[2]).toMatchObject({
+      textBefore: [{ value: "\u2502" }],
+      children: [],
+    })
     expect(diagramOf("box-trim-string-closing-quote").body[0]).toMatchObject({
       name: { type: "StringLiteral", closed: true },
     })
     expect(diagramOf("box-trim-block-closing-brace").body[0]).toMatchObject({
       type: "TreeviewAccDescrBlockStatement",
     })
+  })
+
+  it("starts a node at its complete-node decoration gap and ends at its last descendant", () => {
+    const parent = nodesOf("gram-nesting-decoration-before-parent")[1]
+    expect(parent).toMatchObject({
+      range: [19, 45],
+      textBefore: [{ range: [19, 20] }],
+      children: [{ range: [32, 45] }],
+    })
+    expect(parent.loc).toEqual({
+      start: { line: 3, column: 0 },
+      end: { line: 5, column: 13 },
+    })
+    const siblings = nodesOf("gram-nesting-decoration-before-ancestor-child")
+    expect(siblings[1].range).toEqual([20, 44])
+    expect(siblings[3]).toMatchObject({
+      range: [45, 58],
+      textBefore: [{ range: [45, 46] }],
+      children: [],
+    })
+    for (const name of [
+      "gram-nesting-decoration-directive-inline",
+      "gram-nesting-decoration-directive-line",
+      "gram-nesting-decoration-comment-line",
+      "gram-nesting-decoration-empty-line",
+      "gram-nesting-decoration-selected-semicolon",
+      "gram-nesting-decoration-unselected-semicolon",
+    ]) {
+      const child = nodesOf(name).at(-1)!
+      expect(child.textBefore).toHaveLength(1)
+      expect(child.range[0]).toBe(child.textBefore[0].range[0])
+      expect(child.range[1]).toBe(child.name.range[1])
+    }
+    expect(
+      diagramOf("gram-nesting-decoration-after-subtree").body,
+    ).toMatchObject([
+      { range: [14, 28], children: [{ range: [19, 28] }] },
+      { type: "TreeviewIgnoredText", range: [29, 30] },
+    ])
+    expect(visitorKeys.TreeviewNode).toEqual([
+      "textBefore",
+      "prefix",
+      "textBeforeName",
+      "name",
+      "annotations",
+      "children",
+    ])
   })
 
   it("reports box and lexical errors at their original source positions after decorations", () => {

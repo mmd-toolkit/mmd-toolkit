@@ -28,6 +28,7 @@
         "shape": null,
         "data": [],
         "decorations": [],
+        "children": [],
         "range": [
           7,
           10
@@ -67,6 +68,7 @@
         "shape": null,
         "data": [],
         "decorations": [],
+        "children": [],
         "range": [
           11,
           23
@@ -106,53 +108,56 @@
         "shape": null,
         "data": [],
         "decorations": [],
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 1,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "S",
+              "range": [
+                29,
+                30
+              ],
+              "loc": {
+                "start": {
+                  "line": 5,
+                  "column": 1
+                },
+                "end": {
+                  "line": 5,
+                  "column": 2
+                }
+              }
+            },
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              29,
+              30
+            ],
+            "loc": {
+              "start": {
+                "line": 5,
+                "column": 1
+              },
+              "end": {
+                "line": 5,
+                "column": 2
+              }
+            }
+          }
+        ],
         "range": [
           24,
-          27
+          30
         ],
         "loc": {
           "start": {
             "line": 4,
             "column": 0
-          },
-          "end": {
-            "line": 4,
-            "column": 3
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 1,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "S",
-          "range": [
-            29,
-            30
-          ],
-          "loc": {
-            "start": {
-              "line": 5,
-              "column": 1
-            },
-            "end": {
-              "line": 5,
-              "column": 2
-            }
-          }
-        },
-        "shape": null,
-        "data": [],
-        "decorations": [],
-        "range": [
-          29,
-          30
-        ],
-        "loc": {
-          "start": {
-            "line": 5,
-            "column": 1
           },
           "end": {
             "line": 5,

@@ -65,53 +65,56 @@
         },
         "data": [],
         "decorations": [],
-        "range": [
-          8,
-          12
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 1
-          },
-          "end": {
-            "line": 2,
-            "column": 5
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 4,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "A",
-          "range": [
-            21,
-            22
-          ],
-          "loc": {
-            "start": {
-              "line": 2,
-              "column": 14
+        "children": [
+          {
+            "type": "KanbanNode",
+            "indent": 4,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "A",
+              "range": [
+                21,
+                22
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 14
+                },
+                "end": {
+                  "line": 2,
+                  "column": 15
+                }
+              }
             },
-            "end": {
-              "line": 2,
-              "column": 15
+            "shape": null,
+            "data": [],
+            "decorations": [],
+            "children": [],
+            "range": [
+              21,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 14
+              },
+              "end": {
+                "line": 2,
+                "column": 15
+              }
             }
           }
-        },
-        "shape": null,
-        "data": [],
-        "decorations": [],
+        ],
         "range": [
-          21,
+          8,
           22
         ],
         "loc": {
           "start": {
             "line": 2,
-            "column": 14
+            "column": 1
           },
           "end": {
             "line": 2,

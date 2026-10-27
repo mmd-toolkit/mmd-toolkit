@@ -239,3 +239,30 @@ export function readTokenKindRow(file: string, kind: string): string {
   if (row === undefined) throw new Error(`no token kind ${kind} in ${file}`)
   return row
 }
+
+/** Resolve a field's named union from the diagram's own AST prose, without parsing Mermaid. */
+export function readChildTypeNames(diagram: string, cell: string): string[] {
+  const prose = readFileSync(
+    path.join(SPEC_DOCS, "ast", `${diagram}.md`),
+    "utf8",
+  )
+  const flat = prose
+    .split("\n")
+    .map((line) => line.trim())
+    .join(" ")
+  const aliases: Readonly<Record<string, string>> = {
+    TreeviewBodyItem: "TreeviewBodyItem is ",
+    TreeviewAnnotation: "TreeviewAnnotation is ",
+    TreemapBodyItem: "TreemapBodyItem is ",
+    "non-hierarchy statements": "The non-hierarchy statements are ",
+  }
+  let expanded = cell
+  for (const [name, prefix] of Object.entries(aliases)) {
+    if (!expanded.includes(name)) continue
+    const start = flat.indexOf(prefix)
+    if (start < 0) throw new Error(`no ${name} definition in ast/${diagram}.md`)
+    const rest = flat.slice(start + prefix.length)
+    expanded = expanded.replaceAll(name, rest.slice(0, rest.indexOf(".")))
+  }
+  return typeNamesIn(expanded)
+}

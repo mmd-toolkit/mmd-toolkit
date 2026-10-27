@@ -13,19 +13,17 @@ import { expectToken, findLayoutEnd, layoutKeywordHeader } from "./layout.ts"
 import { placeLeadingDirectives } from "./indentation-lines.ts"
 import { printAsWritten, significantIndentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
+import { findTokenStartingAt } from "./source.ts"
+import { planTreeviewBox } from "./treeview-box.ts"
+import type { TreeviewLine } from "./treeview-layout.ts"
 import {
-  findTokenStartingAt,
-  findTriviaBetween,
-  isCommentLine,
-} from "./source.ts"
-import {
-  isTreeviewCommonStatement,
   layoutTreeviewStatement,
   treeviewBoxMode,
   treeviewLines,
+  treeviewStatementRange,
 } from "./treeview-layout.ts"
 
-/** Prints the authored flat forest using the selected mode's column plan. */
+/** Prints the authored forest from its mode's column and safety plan. */
 export function printTreeview(
   path: AstPath<MermaidAst>,
   options: ParserOptions<MermaidAst>,
@@ -42,51 +40,82 @@ export function printTreeview(
     "the treeview header",
   )
   const boxMode = treeviewBoxMode(source, keyword.range[1])
-  const joined = findLinesWithOwnSemicolons(source)
+  const ownSemicolons = findLinesWithOwnSemicolons(source)
   const verbatim = findLinesEndedBySemicolon(source)
-  // Fixed row boundaries inside protected lines constrain the forest. Retain
-  // the body together before choosing columns (docs/treeview.md, Semicolons;
-  // diagrams/treeview.md, Indentation and parents).
-  const nodes = diagram.body.filter((item) => item.type === "TreeviewNode")
+  const originalLines = treeviewLines(
+    source,
+    diagram,
+    keyword.range[1],
+    boxMode,
+  )
+  const items = originalLines.map((line) => line.item)
+  const nodes = items.filter((item) => item.type === "TreeviewNode")
   const singleRootLine = nodes.every(
     (node) =>
       node.indent === 0 &&
-      lineStartOf(source, node.range[0]) ===
-        lineStartOf(source, nodes[0].range[0]),
+      lineStartOf(source, treeviewStatementRange(node)[0]) ===
+        lineStartOf(source, treeviewStatementRange(nodes[0])[0]),
   )
   const protectedRows =
     !singleRootLine &&
-    diagram.body.some(
+    items.some(
       (item) =>
         item.type === "TreeviewNode" &&
-        diagram.body.some(
+        items.some(
           (other) =>
             other !== item &&
-            (lineStartOf(source, other.range[0]) ===
-              lineStartOf(source, item.range[0]) ||
-              lineStartOf(source, other.range[1] - 1) ===
-                lineStartOf(source, item.range[0])) &&
-            (joined.has(lineStartOf(source, item.range[0])) ||
-              verbatim.has(lineStartOf(source, item.range[0]))),
+            (lineStartOf(source, treeviewStatementRange(other)[0]) ===
+              lineStartOf(source, treeviewStatementRange(item)[0]) ||
+              lineStartOf(source, treeviewStatementRange(other)[1] - 1) ===
+                lineStartOf(source, treeviewStatementRange(item)[0])) &&
+            (ownSemicolons.has(
+              lineStartOf(source, treeviewStatementRange(item)[0]),
+            ) ||
+              verbatim.has(
+                lineStartOf(source, treeviewStatementRange(item)[0]),
+              )),
         ),
     )
-  if (protectedRows)
+  const plan = boxMode
+    ? planTreeviewBox(
+        source,
+        diagram,
+        originalLines,
+        keyword.range[1],
+        protectedRows,
+      )
+    : undefined
+  if (plan?.kind === "written" || (!boxMode && protectedRows))
     return printAsWritten(source, diagram.range[0], source.text.length)
-  const lines = treeviewLines(source, diagram, keyword.range[1], boxMode)
-  const placements = new Map(
-    lines.map((line) => {
-      if (boxMode) {
-        const start = lineStartOf(source, line.range[0])
-        const common =
-          isTreeviewCommonStatement(line.item) && line.item.prefix === null
+  const drawing = plan?.kind === "drawn" ? plan : undefined
+  const lines = drawing?.lines ?? originalLines
+  const placements = new Map<
+    TreeviewLine,
+    { readonly indentation: string; readonly head: Doc }
+  >(
+    lines.map((line, index) => {
+      const previous = lines[index - 1]
+      if (boxMode)
         return [
           line,
           {
-            indentation: common ? "" : source.text.slice(start, line.range[0]),
-            head: "",
+            indentation: "",
+            head:
+              line.leading === null
+                ? ""
+                : [
+                    placeLeadingDirectives(source, line.leading, 0, " ").head,
+                    // A moved directive must not shift or cross a new branch
+                    // (docs/treeview.md, Statements one per line).
+                    line.item.type === "TreeviewNode" &&
+                    previous?.item.type === "TreeviewNode" &&
+                    lineStartOf(source, line.leading.directives[0][0]) ===
+                      lineStartOf(source, previous.range[1] - 1)
+                      ? builders.literalline
+                      : "",
+                  ],
           },
         ]
-      }
       const column = significantIndentationOf(options, line.depth)
       return [
         line,
@@ -101,32 +130,52 @@ export function printTreeview(
       ]
     }),
   )
-  const relocatedWhitespace: Range[] = boxMode
-    ? []
-    : lines.map((line, index) => [
-        lines[index - 1]?.range[1] ?? keyword.range[1],
-        line.range[0],
-      ])
+  const relocatedWhitespace: Range[] = lines.map((line, index) => [
+    lines[index - 1]?.range[1] ?? keyword.range[1],
+    line.range[0],
+  ])
   const layouts = new Map(
     lines.map((line) => [
       line,
-      layoutTreeviewStatement(
-        source,
-        line.item,
-        boxMode ? "" : significantIndentationOf(options, line.depth),
-        boxMode,
-      ),
+      line.item.type === "TreeviewIgnoredText" && drawing !== undefined
+        ? undefined
+        : layoutTreeviewStatement(
+            source,
+            line.item,
+            boxMode ? "" : significantIndentationOf(options, line.depth),
+            boxMode,
+            drawing,
+          ),
     ]),
   )
   const block = printBlock(
-    lines.map((line) => [
-      placements.get(line)!.head,
-      printAtoms(source, layouts.get(line)!, {
-        statement: boxMode ? "" : significantIndentationOf(options, line.depth),
-        continuation: "",
-        trivia: "",
-      }).doc,
-    ]),
+    lines.map((line) => {
+      if (line.item.type === "TreeviewIgnoredText" && drawing !== undefined)
+        return drawing.decorations.get(line.item)!
+      const head =
+        line.item.type === "TreeviewNode"
+          ? (drawing?.heads.get(line.item) ?? "")
+          : ""
+      const after =
+        line.item.type === "TreeviewNode"
+          ? (drawing?.trailingDecorations.get(line.item) ?? [])
+          : []
+      return [
+        placements.get(line)!.head,
+        head,
+        printAtoms(source, layouts.get(line)!, {
+          statement: boxMode
+            ? ""
+            : significantIndentationOf(options, line.depth),
+          continuation: "",
+          trivia: "",
+        }).doc,
+        ...after.flatMap((decoration) => {
+          const guide = drawing!.decorations.get(decoration)!
+          return guide === "" ? [] : [builders.literalline, guide]
+        }),
+      ]
+    }),
     source,
     {
       statements: lines,
@@ -136,15 +185,29 @@ export function printTreeview(
     },
     {
       kept: {
-        joined,
-        verbatim,
+        // Content prefixes still use shared semicolon protection. Its source
+        // columns are now replaced by the planned head, not a verbatim old head.
+        joined: boxMode
+          ? new Set([...ownSemicolons, ...verbatim])
+          : ownSemicolons,
+        verbatim: boxMode ? new Set() : verbatim,
         writtenIndentation: new Set(
           lines.map((line) => lineStartOf(source, line.range[0])),
         ),
       },
-      relocatedWhitespace,
+      omittedRanges: drawing?.omitted,
+      blankAfterStatement: (line) =>
+        line.item.type === "TreeviewNode" &&
+        drawing?.trailingDecorations
+          .get(line.item)
+          ?.some((decoration) => drawing.decorations.get(decoration) === "") ===
+          true,
+      relocatedWhitespace: boxMode ? [] : relocatedWhitespace,
       joiningRegionsInValues: true,
-      printedEnd: (line) => findLayoutEnd(layouts.get(line)!),
+      printedEnd: (line) =>
+        layouts.get(line) === undefined
+          ? line.range[1]
+          : findLayoutEnd(layouts.get(line)!),
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,
       keepsWhitespaceLineAfterComment: false,
@@ -152,55 +215,6 @@ export function printTreeview(
       keepsTrailingWhitespaceInKeptTrivia: true,
       writtenIndentationOf: (line) => placements.get(line)!.indentation,
       keptIndentationOf: (line) => placements.get(line)!.indentation,
-      ...(boxMode
-        ? {
-            keptGapEnd: (start: number, end: number, before: boolean) => {
-              const previous = lines.find(
-                (line) => findLayoutEnd(layouts.get(line)!) === start,
-              )
-              const trivia = findTriviaBetween(source, start, end)
-              if (
-                trivia.some(
-                  (item) =>
-                    item.type === "Comment" &&
-                    isCommentLine(source.text, source.root, item),
-                ) &&
-                !trivia.some((item) => item.type === "Directive")
-              )
-                return undefined
-              if (
-                previous !== undefined &&
-                isTreeviewCommonStatement(previous.item)
-              )
-                return undefined
-              return before ? Math.max(start, lineStartOf(source, end)) : end
-            },
-            triviaLineBreak: (start: number, end: number) => {
-              const previous = lines.find(
-                (line) => findLayoutEnd(layouts.get(line)!) === start,
-              )
-              const common =
-                previous !== undefined &&
-                isTreeviewCommonStatement(previous.item)
-              const lineStart = lineStartOf(source, end)
-              if (!common && lineStart > start)
-                // Retain an earlier pending run without retaining a standalone
-                // comment's indentation (docs/treeview.md, Comments).
-                return printAsWritten(source, start, lineStart)
-              const breaks = [...source.text.slice(start, end)].filter(
-                (character) => character === "\n",
-              )
-              return breaks.length === 0
-                ? undefined
-                : breaks.map(() => builders.literalline)
-            },
-            writtenGapBefore: (line: (typeof lines)[number]) =>
-              lineStartOf(source, line.range[0]) < line.range[0] &&
-              source.text
-                .slice(lineStartOf(source, line.range[0]), line.range[0])
-                .trim() !== "",
-          }
-        : {}),
     },
   )
   return printDiagramBlock(

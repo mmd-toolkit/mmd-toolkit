@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
 import type { KanbanDiagram, Root } from "../src/index.ts"
-import { ParseError, parse } from "../src/index.ts"
+import { ParseError, parse, visitorKeys } from "../src/index.ts"
 import { isWhitespace } from "../src/character-classes.ts"
 
 /** Project invariant 3: exact token text, no overlaps, and no lost nontrivia characters. */
@@ -42,28 +42,76 @@ describe("kanban fixtures", async () => {
     return root.body
   }
 
-  it("keeps indentation without building nested nodes", () => {
+  it("puts cards directly under columns while retaining assigned indentation and descendant ranges", () => {
     const body = diagramOf("lex-indent-directive").body
-    expect(body.map((node) => [node.indent, node.id?.value])).toEqual([
-      [1, "S"],
-      [3, "A"],
+    expect(body).toMatchObject([
+      {
+        indent: 1,
+        id: { value: "S" },
+        range: [8, 28],
+        children: [
+          { indent: 3, id: { value: "A" }, range: [27, 28], children: [] },
+        ],
+      },
     ])
-    expect(body.map((node) => node.range)).toEqual([
-      [8, 9],
-      [27, 28],
+    expect(diagramOf("db-indent-deeper").body).toMatchObject([
+      {
+        indent: 1,
+        id: { value: "S" },
+        children: [
+          { indent: 3, id: { value: "A" }, children: [] },
+          { indent: 5, id: { value: "B" }, children: [] },
+          { indent: 3, id: { value: "C" }, children: [] },
+        ],
+      },
+    ])
+    expect(diagramOf("db-indent-shallower-last").body).toMatchObject([
+      {
+        indent: 4,
+        range: [11, 16],
+        children: [{ indent: 2, range: [15, 16], children: [] }],
+      },
+    ])
+    expect(
+      diagramOf("gram-nesting-item-decoration-before-deeper-item").body,
+    ).toMatchObject([
+      {
+        range: [8, 32],
+        children: [
+          {
+            id: { value: "A" },
+            range: [13, 25],
+            decorations: [{ icon: { value: "x" } }],
+            children: [],
+          },
+          {
+            id: { value: "B" },
+            range: [31, 32],
+            decorations: [],
+            children: [],
+          },
+        ],
+      },
+    ])
+    expect(visitorKeys.KanbanNode).toEqual([
+      "id",
+      "shape",
+      "data",
+      "decorations",
+      "children",
     ])
   })
 
   it("keeps each adjacent data block and its written value", () => {
-    const node = diagramOf("db-metadata-two-items").body[1]
+    const node = diagramOf("db-metadata-two-items").body[0].children[0]
     expect(node.data.map((data) => [data.value, data.range])).toEqual([
       ["ticket: X,", [14, 27]],
       ["assigned: Ada", [27, 43]],
     ])
     expect(node.range).toEqual([13, 43])
-    expect(diagramOf("db-metadata-directive").body[1].data[0].value).toBe(
-      "assigned: Ada",
-    )
+    expect(
+      diagramOf("db-metadata-directive").body[0].children[0].data[0].value,
+    ).toBe("assigned: Ada")
   })
 
   it("keeps written CRLF inside a quoted label and its delimiters in its range", () => {
@@ -102,9 +150,9 @@ describe("kanban fixtures", async () => {
       ["StringFragment", 'yb"'],
       ["Punctuator", "]"],
     ])
-    expect(diagramOf("lex-label-style-rule").body[1].shape?.label.value).toBe(
-      "astyle:#xyb",
-    )
+    expect(
+      diagramOf("lex-label-style-rule").body[0].children[0].shape?.label.value,
+    ).toBe("astyle:#xyb")
   })
 
   it.each([

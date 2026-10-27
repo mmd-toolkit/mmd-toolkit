@@ -26,7 +26,7 @@ import {
 import type { Reading } from "./statement-checks.ts"
 import { checkTokensInValueNodes } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
-import { walkNodes } from "./walk.ts"
+import { nodesOf, walkNodes } from "./walk.ts"
 
 const COMMON = [
   "TreemapTitleStatement",
@@ -34,13 +34,21 @@ const COMMON = [
   "TreemapAccDescrStatement",
   "TreemapAccDescrBlockStatement",
 ]
-const ROWS = ["TreemapSection", "TreemapLeaf", "TreemapClassDefStatement"]
+const HIERARCHY = ["TreemapSection", "TreemapLeaf"]
+const STATEMENTS = ["TreemapClassDefStatement", ...COMMON]
+const ROWS = [...HIERARCHY, "TreemapClassDefStatement"]
 
-/** ast/treemap.md: all child fields, in visitor order; the body stays flat. */
+/** ast/treemap.md: all child fields, in visitor order. */
 export const TREEMAP_CHILD_TYPES: FieldTable<readonly string[]> = {
   TreemapDiagram: { body: [...ROWS, ...COMMON] },
-  TreemapSection: { name: ["StringLiteral"], classSelector: ["Identifier"] },
+  TreemapSection: {
+    statementsBefore: STATEMENTS,
+    name: ["StringLiteral"],
+    classSelector: ["Identifier"],
+    children: HIERARCHY,
+  },
   TreemapLeaf: {
+    statementsBefore: STATEMENTS,
     name: ["StringLiteral"],
     value: ["NumericLiteral"],
     classSelector: ["Identifier"],
@@ -345,7 +353,80 @@ function afterConsumed(
   return value
 }
 
-/** Flat body gaps keep consumed composite whitespace out of indentation. */
+/** Own row syntax ends before its descendants, regardless of a preceding gap. */
+function ownEnd(node: CheckedNode): number {
+  if (!HIERARCHY.includes(node.type)) return node.range[1]
+  return (
+    (
+      childOf(node, "classSelector") ??
+      childOf(node, "value") ??
+      childOf(node, "name")
+    )?.range[1] ?? node.range[1]
+  )
+}
+
+/** Check roots and direct children independently; leaves close sections but never open one. */
+function checkParents(reading: Reading, ordered: readonly CheckedNode[]): void {
+  const expected = new Map<CheckedNode, CheckedNode[]>()
+  const roots: CheckedNode[] = []
+  const open: CheckedNode[] = []
+  for (const node of ordered) {
+    while (
+      open.length > 0 &&
+      Number(open.at(-1)?.indent) >= Number(node.indent)
+    )
+      open.pop()
+    const parent = open.at(-1)
+    if (parent === undefined) roots.push(node)
+    else expected.set(parent, [...(expected.get(parent) ?? []), node])
+    if (node.type === "TreemapSection") open.push(node)
+  }
+  for (const node of [
+    reading.root.body,
+    ...ordered.filter((candidate) => candidate.type === "TreemapSection"),
+  ]) {
+    const actual = entriesOf(
+      node,
+      node === reading.root.body ? "body" : "children",
+    ).filter((child) => child !== null && HIERARCHY.includes(child.type))
+    reading.problems.expectEqual(
+      actual.map((child) => child?.range),
+      (node === reading.root.body ? roots : (expected.get(node) ?? [])).map(
+        (child) => child.range,
+      ),
+      label(node),
+      "the children do not follow the treemap section-only nearest-smaller-indent parent rule",
+    )
+  }
+}
+
+/** Independent statements belong to the next hierarchy node only between complete nodes. */
+function checkStatementOwners(
+  reading: Reading,
+  ordered: readonly CheckedNode[],
+): void {
+  const nodes = nodesOf(reading.root)
+  for (const statement of nodes.filter((node) =>
+    STATEMENTS.includes(node.type),
+  )) {
+    const next = ordered.find(
+      (node) => (childOf(node, "name")?.range[0] ?? 0) >= statement.range[1],
+    )
+    const betweenNodes = ordered.some(
+      (node) => ownEnd(node) <= statement.range[0],
+    )
+    const owner = betweenNodes && next !== undefined ? next : reading.root.body
+    const field = owner === reading.root.body ? "body" : "statementsBefore"
+    reading.problems.expect(
+      entriesOf(owner, field).filter((entry) => entry === statement).length ===
+        1,
+      label(statement),
+      `the independent statement belongs to ${owner.type}.${field} exactly once`,
+    )
+  }
+}
+
+/** Source-ordered own syntax keeps consumed composite whitespace out of indentation. */
 function checkDiagram(reading: Reading, node: CheckedNode): void {
   const own = ownOf(reading.root, node)
   const header = own.tokens[0]
@@ -385,10 +466,28 @@ function checkDiagram(reading: Reading, node: CheckedNode): void {
     )
   let end = header.range[1]
   let previous: CheckedNode | null = null
-  for (const item of entriesOf(node, "body")) {
-    if (item === null) continue
+  const statements = nodesOf(reading.root)
+    .filter((item) => ROWS.includes(item.type) || COMMON.includes(item.type))
+    .sort(
+      (a, b) =>
+        (HIERARCHY.includes(a.type)
+          ? (childOf(a, "name")?.range[0] ?? 0)
+          : a.range[0]) -
+        (HIERARCHY.includes(b.type)
+          ? (childOf(b, "name")?.range[0] ?? 0)
+          : b.range[0]),
+    )
+  for (const item of statements) {
     if (ROWS.includes(item.type)) {
-      const value = checkGap(reading, item, end, item.range[0], true)
+      const value = checkGap(
+        reading,
+        item,
+        end,
+        HIERARCHY.includes(item.type)
+          ? (childOf(item, "name")?.range[0] ?? item.range[0])
+          : item.range[0],
+        true,
+      )
       const indent = indentationCount(
         reading,
         item,
@@ -414,7 +513,7 @@ function checkDiagram(reading: Reading, node: CheckedNode): void {
         "a common statement cannot consume an earlier indentation unit",
       )
     }
-    end = item.range[1]
+    end = ownEnd(item)
     previous = item
   }
   const trailing = afterConsumed(
@@ -445,6 +544,15 @@ export function checkTreemapTree(
     }
   })
   checkComments(reading)
+  const hierarchy = nodesOf(root)
+    .filter((node) => HIERARCHY.includes(node.type))
+    .sort(
+      (a, b) =>
+        (childOf(a, "name")?.range[0] ?? 0) -
+        (childOf(b, "name")?.range[0] ?? 0),
+    )
+  checkParents(reading, hierarchy)
+  checkStatementOwners(reading, hierarchy)
   walkNodes(root, (node) => {
     checkChildTypes(reading, node, TREEMAP_CHILD_TYPES)
     checkLeaf(reading, node, classNames)

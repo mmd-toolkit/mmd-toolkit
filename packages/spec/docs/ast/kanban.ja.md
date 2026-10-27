@@ -20,7 +20,7 @@
 [fixture: kanban/db-metadata-spaces]
 [fixture: kanban/lex-string-crlf]
 
-mermaid.js が列への所属、最終の id とラベル、形の型、
+mermaid.js が最終の id とラベル、形の型、
 メタデータの効果をどう読むかは、
 [tests パッケージの要約](../../../tests/docs/db-summaries.ja.md#kanban)
 にあります。
@@ -29,21 +29,23 @@ mermaid.js が列への所属、最終の id とラベル、形の型、
 
 ### KanbanDiagram
 
-| 欄     | 型                  | 意味                                     |
-| ------ | ------------------- | ---------------------------------------- |
-| `body` | KanbanNode のリスト | 書かれたノード。ソースの順。空でもよい。 |
+| 欄     | 型                  | 意味                         |
+| ------ | ------------------- | ---------------------------- |
+| `body` | KanbanNode のリスト | 列。ソースの順。空でもよい。 |
 
 子の欄: `body`。
 ヘッダー語は欄ではありません。
-字下げはノードを入れ子にしません。
-深い行も平坦なリストに保ちます。
+body に直接置くのは列のノードだけとし、各列の children は
+[字下げと親子](../diagrams/kanban.ja.md#字下げと親子)によるカードです。
+両方の役割に同じ KanbanNode 型を使い、カードの children は常に空にします。
+人工の根、親への参照、導出した深さは加えません。
 [fixture: kanban/db-indent-unindented]
 [fixture: kanban/db-indent-tabs]
 [fixture: kanban/db-indent-deeper]
 [fixture: kanban/db-indent-shallower-last]
 [fixture: kanban/db-sections-items]
 [fixture: kanban/spec-kanban-d05521ff]
-重複した id もリストに保ちます。
+重複した id も、これらのリストに別々の出現として保ちます。
 [fixture: kanban/db-section-three-definitions]
 [fixture: kanban/db-item-three-definitions]
 [fixture: kanban/db-section-item-same-id]
@@ -57,6 +59,14 @@ mermaid.js が列への所属、最終の id とラベル、形の型、
 [fixture: kanban/db-empty-board-comment]
 [fixture: kanban/db-empty-board-whitespace]
 [fixture: kanban/header-header-space-only]
+
+図の範囲はヘッダーから最後の列とその子孫までとし、
+空の図ではヘッダーで終わります。
+無関係な末尾のコメント・ディレクティブ・空白で範囲を延ばしません。
+[fixture: kanban/header-only-lf]
+[fixture: kanban/db-empty-board-comment]
+[fixture: kanban/db-sections-items]
+[fixture: kanban/gram-shallower-then-decoration]
 
 ### KanbanNode
 
@@ -77,8 +87,9 @@ mermaid.js が列への所属、最終の id とラベル、形の型、
 | `shape`       | KanbanShape か null                                     | 形。裸のノード本文なら null。              |
 | `data`        | KanbanDataBlock のリスト                                | 書かれたブロック。ソースの順。空でもよい。 |
 | `decorations` | （KanbanIconStatement か KanbanClassStatement）のリスト | 次のノードまでの装飾の行。ソースの順。     |
+| `children`    | KanbanNode のリスト                                     | 列のカード。カードでは常に空。             |
 
-子の欄: `id`、`shape`、`data`、`decorations`。
+子の欄: `id`、`shape`、`data`、`decorations`、`children`。
 `id` と `shape` が両方 null にはなりません。
 形だけなら `id` は null です。
 [fixture: kanban/db-name-no-id]
@@ -109,6 +120,31 @@ mermaid.js が列への所属、最終の id とラベル、形の型、
 その区切りと後続の空白を数えます。
 [fixture: kanban/lex-node-comment-ls]
 [fixture: kanban/div-header-comment-ps-node]
+[fixture: kanban/lex-indent-comment-ps-semicolon-space]
+[fixture: kanban/lex-indent-comment-ls-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ls-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-no-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-no-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-semicolon-wide-tail]
+[fixture: kanban/lex-indent-comment-ps-space-after-card]
+[fixture: kanban/lex-indent-comment-ps-space-after-column]
+[fixture: kanban/lex-indent-comment-ls-space-after-column]
+[fixture: kanban/lex-indent-comment-ps-two-spaces-after-card]
+[fixture: kanban/lex-indent-comment-ps-after-card-then-column]
+[fixture: kanban/lex-indent-comment-ps-zero-baseline]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-unselected-semicolon-node]
+[fixture: kanban/lex-indent-comment-lf-semicolon-space]
+[fixture: kanban/lex-indent-comment-crlf-semicolon-space]
+[fixture: kanban/lex-indent-comment-ps-common-line]
+[fixture: kanban/lex-indent-comment-ps-indent-directive]
+[fixture: kanban/lex-indent-comment-ps-tail-directive]
+[fixture: kanban/lex-indent-comment-ps-empty-line-before]
+[fixture: kanban/lex-indent-comment-ls-selected-semicolon-touching]
+[fixture: kanban/lex-indent-comment-ps-tail-directive-touching]
+[fixture: kanban/lex-indent-comment-ps-selected-semicolon-indent-directive]
 
 id は末尾の空白を保ち、
 `A [text]` の id は `A ` です。
@@ -142,6 +178,28 @@ id は末尾の空白を保ち、
 [fixture: kanban/db-decoration-class-twice]
 Db が公開しない class もリストに保ちます。
 [fixture: kanban/db-decoration-class-item]
+
+children はソース順とし、カードが無ければ空にします。
+カードの後のより深いカードも列の別の子です。
+最初の列より浅い最後のカードも同じです。
+重複した列やカードも木に一度ずつ残し、
+同じ列 id による Db の繰り返す公開を AST の出現の複製にはしません。
+[fixture: kanban/db-indent-deeper]
+[fixture: kanban/db-indent-shallower-last]
+[fixture: kanban/db-section-three-definitions]
+[fixture: kanban/db-section-item-same-id]
+
+ノードの範囲はノード本文か形の開きから始めます。
+末尾は最後の子孫までとし、子が無ければ自身の最後の装飾、データブロック、
+形、ノード本文の順で、存在するものの末尾までにします。
+範囲は連続し、兄弟は重なりません。
+前置の字下げや無関係な末尾の trivia で範囲を延ばしません。
+ノード本文として読む空白は id の葉の内側に残します。
+[fixture: kanban/db-name-trailing-space]
+[fixture: kanban/db-metadata-all]
+[fixture: kanban/gram-decoration-then-child]
+[fixture: kanban/gram-nesting-item-decoration-before-deeper-item]
+[fixture: kanban/gram-shallower-then-decoration]
 
 ### KanbanShape
 
@@ -286,3 +344,18 @@ Identifier ではなく KanbanLiteral です。
 その単位が読む空白をすべて保ちます。
 [fixture: kanban/db-name-space-before-shape]
 [fixture: kanban/db-name-trailing-space]
+
+## 例
+
+この記述例は、二段の木を示すため不揃いな字下げを保っています。
+Diagram.body は S、S.children は A・B・C を持ちます。
+三つのカードの children は空で、B は A の子ではありません。
+[fixture: kanban/db-indent-deeper]
+
+```mmd
+kanban
+ S
+   A
+     B
+   C
+```

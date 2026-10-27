@@ -28,73 +28,76 @@
         "shape": null,
         "data": [],
         "decorations": [],
-        "range": [
-          11,
-          12
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 4
-          },
-          "end": {
-            "line": 2,
-            "column": 5
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 2,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "A",
-          "range": [
-            15,
-            16
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 2
-            },
-            "end": {
-              "line": 3,
-              "column": 3
-            }
-          }
-        },
-        "shape": null,
-        "data": [],
-        "decorations": [
+        "children": [
           {
-            "type": "KanbanIconStatement",
-            "icon": {
+            "type": "KanbanNode",
+            "indent": 2,
+            "id": {
               "type": "KanbanLiteral",
-              "value": "x",
+              "value": "A",
               "range": [
-                25,
-                26
+                15,
+                16
               ],
               "loc": {
                 "start": {
-                  "line": 4,
-                  "column": 8
+                  "line": 3,
+                  "column": 2
                 },
                 "end": {
-                  "line": 4,
-                  "column": 9
+                  "line": 3,
+                  "column": 3
                 }
               }
             },
+            "shape": null,
+            "data": [],
+            "decorations": [
+              {
+                "type": "KanbanIconStatement",
+                "icon": {
+                  "type": "KanbanLiteral",
+                  "value": "x",
+                  "range": [
+                    25,
+                    26
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 4,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 4,
+                      "column": 9
+                    }
+                  }
+                },
+                "range": [
+                  18,
+                  27
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 1
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 10
+                  }
+                }
+              }
+            ],
+            "children": [],
             "range": [
-              18,
+              15,
               27
             ],
             "loc": {
               "start": {
-                "line": 4,
-                "column": 1
+                "line": 3,
+                "column": 2
               },
               "end": {
                 "line": 4,
@@ -104,13 +107,13 @@
           }
         ],
         "range": [
-          15,
+          11,
           27
         ],
         "loc": {
           "start": {
-            "line": 3,
-            "column": 2
+            "line": 2,
+            "column": 4
           },
           "end": {
             "line": 4,

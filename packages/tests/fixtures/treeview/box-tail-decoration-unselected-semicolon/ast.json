@@ -7,6 +7,7 @@
       {
         "type": "TreeviewNode",
         "indent": 4,
+        "textBefore": [],
         "prefix": {
           "type": "TreeviewBranchPrefix",
           "value": "├──",
@@ -59,11 +60,13 @@
             "line": 2,
             "column": 5
           }
-        }
+        },
+        "children": []
       },
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -89,80 +92,86 @@
         "annotations": [],
         "range": [
           20,
-          23
-        ],
-        "loc": {
-          "start": {
-            "line": 3,
-            "column": 0
-          },
-          "end": {
-            "line": 3,
-            "column": 3
-          }
-        }
-      },
-      {
-        "type": "TreeviewNode",
-        "indent": 2,
-        "prefix": null,
-        "textBeforeName": [],
-        "name": {
-          "type": "TreeviewIdentifier",
-          "name": ";",
-          "range": [
-            25,
-            26
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 5
-            },
-            "end": {
-              "line": 3,
-              "column": 6
-            }
-          }
-        },
-        "annotations": [],
-        "range": [
-          25,
           26
         ],
         "loc": {
           "start": {
             "line": 3,
-            "column": 5
+            "column": 0
           },
           "end": {
             "line": 3,
             "column": 6
           }
-        }
-      },
-      {
-        "type": "TreeviewIgnoredText",
-        "kind": "box-decoration",
-        "value": "│",
-        "range": [
-          27,
-          28
-        ],
-        "loc": {
-          "start": {
-            "line": 4,
-            "column": 0
-          },
-          "end": {
-            "line": 4,
-            "column": 1
+        },
+        "children": [
+          {
+            "type": "TreeviewNode",
+            "indent": 2,
+            "textBefore": [],
+            "prefix": null,
+            "textBeforeName": [],
+            "name": {
+              "type": "TreeviewIdentifier",
+              "name": ";",
+              "range": [
+                25,
+                26
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 5
+                },
+                "end": {
+                  "line": 3,
+                  "column": 6
+                }
+              }
+            },
+            "annotations": [],
+            "range": [
+              25,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 5
+              },
+              "end": {
+                "line": 3,
+                "column": 6
+              }
+            },
+            "children": []
           }
-        }
+        ]
       },
       {
         "type": "TreeviewNode",
         "indent": 0,
+        "textBefore": [
+          {
+            "type": "TreeviewIgnoredText",
+            "kind": "box-decoration",
+            "value": "│",
+            "range": [
+              27,
+              28
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 1
+              }
+            }
+          }
+        ],
         "prefix": null,
         "textBeforeName": [],
         "name": {
@@ -185,19 +194,20 @@
         },
         "annotations": [],
         "range": [
-          29,
+          27,
           30
         ],
         "loc": {
           "start": {
-            "line": 5,
+            "line": 4,
             "column": 0
           },
           "end": {
             "line": 5,
             "column": 1
           }
-        }
+        },
+        "children": []
       }
     ],
     "range": [

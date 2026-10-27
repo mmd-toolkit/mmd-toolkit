@@ -6,17 +6,23 @@ import { itFailsEach, nodeWith, tokenWith } from "./check-tree-built.ts"
 import type { Built } from "./check-tree-built.ts"
 import { copyOf, setField } from "./check-tree-recorded.ts"
 import { commentOf, directiveOf, tokenOf } from "./check-tree-trees.ts"
-import { readChildFields } from "./spec-field-tables.ts"
+import { withChildren } from "./nesting-built.ts"
+import {
+  readChildFields,
+  readChildTypeNames,
+  readFieldTables,
+} from "./spec-field-tables.ts"
 import { buildTreemap, classDef, common, row } from "./treemap-built.ts"
 
-/** All nine node types and every optional child, written in a flat body. */
+/** All nine node types and every optional child, with nested section children. */
 export function allFields(): Built {
   return buildTreemap(
     'treemap-beta\ntitle  T \n"A":::hot\n  "b" : 1,234.5:::hot\nclassDef hot fill:red, color:blue;\naccTitle: A\naccDescr: D\naccDescr { B\n C }',
     (kit) => [
       common(kit, "Title", " T "),
-      row(kit, 0, '"A"', null, "hot"),
-      row(kit, 2, '"b"', "1,234.5", "hot"),
+      withChildren(kit, row(kit, 0, '"A"', null, "hot"), [
+        row(kit, 2, '"b"', "1,234.5", "hot"),
+      ]),
       classDef(kit, 0, "hot", "fill:red, color:blue"),
       common(kit, "AccTitle", " A"),
       common(kit, "AccDescr", " D"),
@@ -155,8 +161,7 @@ const VALID: readonly { name: string; built: () => Built }[] = [
     name: "trailing section indentation",
     built: () =>
       buildTreemap('treemap\n"A" \n"b":1', (kit) => [
-        row(kit, 0, '"A"'),
-        row(kit, 1, '"b"', "1"),
+        withChildren(kit, row(kit, 0, '"A"'), [row(kit, 1, '"b"', "1")]),
       ]),
   },
   {
@@ -298,6 +303,12 @@ describe("treemap tree conditions", () => {
     const fields = readChildFields()
     for (const [type, children] of Object.entries(TREEMAP_CHILD_TYPES))
       expect(Object.keys(children), type).toEqual(fields.get(type))
+    const tables = readFieldTables()
+    for (const [type, children] of Object.entries(TREEMAP_CHILD_TYPES))
+      for (const [field, allowed] of Object.entries(children))
+        expect(allowed, `${type}.${field}`).toEqual(
+          readChildTypeNames("treemap", tables.get(type)?.get(field) ?? ""),
+        )
     expect(
       new Set(
         nodesOf(allFields().tree)

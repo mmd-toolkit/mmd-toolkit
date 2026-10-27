@@ -5,7 +5,14 @@ export const treeviewVisitorKeys: Readonly<
   Record<TreeviewTreeNode["type"], readonly string[]>
 > = {
   TreeviewDiagram: ["body"],
-  TreeviewNode: ["prefix", "textBeforeName", "name", "annotations"],
+  TreeviewNode: [
+    "textBefore",
+    "prefix",
+    "textBeforeName",
+    "name",
+    "annotations",
+    "children",
+  ],
   TreeviewClassAnnotation: ["textBefore", "prefix", "name"],
   TreeviewIconAnnotation: ["textBefore", "prefix", "name"],
   TreeviewDescriptionAnnotation: ["textBefore", "prefix", "value"],

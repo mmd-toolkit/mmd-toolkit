@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/treeview.md Gap ownership: decoration before ancestor child; retain the authored occurrences and nesting without changing acceptance or the Db."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "root",
+        "nodeType": "directory",
+        "children": [
+          {
+            "name": "parent",
+            "nodeType": "file",
+            "children": [
+              {
+                "name": "child",
+                "nodeType": "file",
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "sibling",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

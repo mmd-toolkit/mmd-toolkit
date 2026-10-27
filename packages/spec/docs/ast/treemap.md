@@ -10,13 +10,14 @@ preserve source order, and child fields specify visitor order. [fixture:
 treemap/gram-written-tree] [fixture: treemap/db-empty-names] [fixture:
 treemap/common-repeat-empty]
 
-The body stays flat: source indentation is kept once on each section, leaf and
-class definition, without synthesizing parents, depths or children. Common
-statements and class definitions can stand between a parent section and a later
-child. The [parent rule](../diagrams/treemap.md#indentation-and-parents) defines
-their interpretation; the
-[tests summary](../../../tests/docs/db-summaries.md#treemap) defines the derived
-forest. [fixture: treemap/gram-written-tree] [fixture:
+The body contains roots and independent outer statements. Sections contain their
+direct children under the
+[parent rule](../diagrams/treemap.md#indentation-and-parents); leaves cannot be
+parents. Source indentation remains on every section, leaf and class definition.
+Common statements and class definitions between hierarchy nodes have the owner
+defined under Gap ownership. The
+[tests summary](../../../tests/docs/db-summaries.md#treemap) defines value
+conversion and publication. [fixture: treemap/gram-written-tree] [fixture:
 treemap/common-block-empty-interleaved] [fixture: treemap/db-class-indented]
 [fixture: treemap/db-leaf-closes-open-sections]
 
@@ -34,13 +35,69 @@ treemap/db-number-underscore] [fixture: treemap/db-number-multiple-dots]
 [fixture: treemap/db-number-nan] [fixture: treemap/db-number-rounded] [fixture:
 treemap/db-number-overflow] [fixture: treemap/gram-selector-underscore]
 
+## Gap ownership
+
+A hierarchy node is a TreemapSection or TreemapLeaf. The non-hierarchy
+statements are TreemapClassDefStatement, TreemapTitleStatement,
+TreemapAccTitleStatement, TreemapAccDescrStatement and
+TreemapAccDescrBlockStatement. These statements never decide a hierarchy parent.
+[fixture: treemap/db-class-indented] [fixture:
+treemap/common-block-empty-interleaved] [fixture:
+treemap/gram-nesting-title-before-child] [fixture:
+treemap/gram-nesting-acctitle-before-child] [fixture:
+treemap/gram-nesting-description-before-child] [fixture:
+treemap/gram-nesting-block-before-child]
+
+First keep text already read inside a name, number or literal in that leaf; a
+style that crosses a line does not create another statement. Then place
+independent non-hierarchy statements between complete hierarchy nodes in the
+next hierarchy node's statementsBefore, in source order. The next node may be a
+child, a different child of an ancestor, or another root. A preceding leaf does
+not own the gap. Preserve empty blocks and repeated statements separately.
+[fixture: treemap/lex-class-style-crosses-blank-line] [fixture:
+treemap/gram-written-tree] [fixture:
+treemap/gram-nesting-statement-before-section] [fixture:
+treemap/gram-nesting-statement-before-ancestor-child] [fixture:
+treemap/db-acctitle-tail-stays-content] [fixture:
+treemap/db-class-tail-no-space] [fixture:
+treemap/common-block-empty-interleaved]
+
+Independent statements before the first hierarchy node and after the last stay
+in Diagram.body; with no hierarchy nodes all statements stay there. Ownership is
+a source position, not a section-local scope: class definitions and common
+statements still apply to the whole diagram. [fixture:
+treemap/gram-written-tree] [fixture:
+treemap/gram-nesting-statement-after-last-child] [fixture:
+treemap/common-repeat-empty] [fixture:
+treemap/gram-nesting-global-class-before-child]
+
+Shared Comments, Directives, selected ignored semicolons, whitespace and empty
+lines keep their existing ownership and make no statementsBefore entries. They
+do not end a section or remove a non-hierarchy statement. Keep each unit's
+lexical boundaries and assigned indentation, including the indentation after a
+class terminator. An empty description block is instead a retained statement.
+[fixture: treemap/gram-indent-around-global-directive] [fixture:
+treemap/gram-nesting-child-after-directive-line] [fixture:
+treemap/gram-nesting-child-after-comment] [fixture:
+treemap/gram-nesting-child-after-empty-line] [fixture:
+treemap/gram-nesting-child-after-comment-ls] [fixture:
+treemap/gram-nesting-child-after-comment-ps] [fixture:
+treemap/gram-nesting-empty-class-before-child] [fixture:
+treemap/db-class-tail-space] [fixture: treemap/common-block-empty-interleaved]
+[fixture: treemap/gram-nesting-statements-directive-inline] [fixture:
+treemap/gram-nesting-statements-directive-line] [fixture:
+treemap/gram-nesting-statements-comment-line] [fixture:
+treemap/gram-nesting-statements-empty-line] [fixture:
+treemap/gram-nesting-statements-comment-ls] [fixture:
+treemap/gram-nesting-statements-comment-ps]
+
 ## Nodes
 
 ### TreemapDiagram
 
-| Field  | Type                    | Meaning                                   |
-| ------ | ----------------------- | ----------------------------------------- |
-| `body` | list of TreemapBodyItem | Every written statement, in source order. |
+| Field  | Type                    | Meaning                                 |
+| ------ | ----------------------- | --------------------------------------- |
+| `body` | list of TreemapBodyItem | Roots and independent outer statements. |
 
 Child fields: body. Range: the header start through the last written body
 statement, or the header end when body is empty; exclude outer padding, native
@@ -53,9 +110,12 @@ treemap/spec-treemap-test-ts-892fa294] [fixture: treemap/gram-written-tree]
 TreemapBodyItem is TreemapSection, TreemapLeaf, TreemapClassDefStatement,
 TreemapTitleStatement, TreemapAccTitleStatement, TreemapAccDescrStatement or
 TreemapAccDescrBlockStatement. Preserve repetitions and empty common forms
-individually, rather than only their final publication values. Empty lines and
-Comments create no body items. The body may be empty. Native comments use shared
-Comment records; there is no TreemapIgnoredText or hidden-gap field. [fixture:
+individually, rather than only their final publication values. Only root
+sections and leaves appear directly in body; independent non-hierarchy
+statements remain there only before the first hierarchy node or after the last.
+Use statementsBefore for intervening statements under Gap ownership. Empty lines
+and Comments create no body items. The body may be empty. Native comments use
+shared Comment records; there is no TreemapIgnoredText. [fixture:
 treemap/gram-written-tree] [fixture: treemap/common-repeat] [fixture:
 treemap/common-repeat-empty] [fixture: treemap/common-block-empty-interleaved]
 [fixture: treemap/comment-bare] [fixture: treemap/spec-treemap-test-ts-892fa294]
@@ -64,54 +124,69 @@ treemap/comment-second-scan-shaped-body]
 
 ### TreemapSection
 
-| Field           | Type                | Meaning                                    |
-| --------------- | ------------------- | ------------------------------------------ |
-| `indent`        | nonnegative integer | The row-leading ASCII space/tab count.     |
-| `name`          | StringLiteral       | The quoted name, including an empty name.  |
-| `classSelector` | Identifier or null  | The name after `:::`, or null when absent. |
+| Field              | Type                                    | Meaning                                    |
+| ------------------ | --------------------------------------- | ------------------------------------------ |
+| `indent`           | nonnegative integer                     | The row-leading ASCII space/tab count.     |
+| `statementsBefore` | list of non-hierarchy statements        | Independent statements before the name.    |
+| `name`             | StringLiteral                           | The quoted name, including an empty name.  |
+| `classSelector`    | Identifier or null                      | The name after `:::`, or null when absent. |
+| `children`         | list of (TreemapSection or TreemapLeaf) | Its direct children, in source order.      |
 
-Child fields: name, classSelector. Range: the opening name quote through its
-closing quote, or through the selector when present. Do not include preceding
-row indentation. A section has no numeric value or children field, even when the
-derived forest has children or no children. [fixture: treemap/gram-written-tree]
-[fixture: treemap/db-empty-names] [fixture: treemap/db-indent-pop] [fixture:
-treemap/gram-adjacent-sections]
+Child fields: statementsBefore, name, classSelector, children. The range starts
+at the first statementsBefore entry, or at the name's opening quote when that
+list is empty. It ends at the last descendant, or at this section's selector or
+closing name quote when it has no children. The continuous range need not start
+at the name; siblings do not overlap. Outer indentation and unrelated trailing
+trivia do not extend it. A section has no numeric value. statementsBefore and
+children are empty lists when absent; children follow the parent rule. [fixture:
+treemap/gram-written-tree] [fixture: treemap/db-empty-names] [fixture:
+treemap/db-indent-pop] [fixture: treemap/gram-adjacent-sections] [fixture:
+treemap/gram-nesting-statement-before-section] [fixture:
+treemap/gram-nesting-statement-after-last-child]
 
 indent counts each ASCII space/tab once after common removals. It is not a
 depth. The run may be on the preceding line or a whitespace-only line, and
 source tabs are not expanded. A directive inside the run joins the parts for
-counting; the original whitespace spelling remains source text outside this
-node's range. [fixture: treemap/db-tabs-count] [fixture:
-treemap/db-section-tail-space] [fixture: treemap/db-leaf-tail-tab] [fixture:
-treemap/gram-indent-from-whitespace-line] [fixture:
-treemap/gram-indent-around-global-directive]
+counting; indent retains the assigned run, not the node's tree depth. Its
+whitespace remains source text rather than a leaf value, even when
+statementsBefore makes the node's range begin before that run. [fixture:
+treemap/db-tabs-count] [fixture: treemap/db-section-tail-space] [fixture:
+treemap/db-leaf-tail-tab] [fixture: treemap/gram-indent-from-whitespace-line]
+[fixture: treemap/gram-indent-around-global-directive]
 
 ### TreemapLeaf
 
-| Field           | Type                | Meaning                                    |
-| --------------- | ------------------- | ------------------------------------------ |
-| `indent`        | nonnegative integer | The row-leading ASCII space/tab count.     |
-| `name`          | StringLiteral       | The quoted name, including an empty name.  |
-| `value`         | NumericLiteral      | The written leaf number.                   |
-| `classSelector` | Identifier or null  | The name after `:::`, or null when absent. |
+| Field              | Type                             | Meaning                                    |
+| ------------------ | -------------------------------- | ------------------------------------------ |
+| `indent`           | nonnegative integer              | The row-leading ASCII space/tab count.     |
+| `statementsBefore` | list of non-hierarchy statements | Independent statements before the name.    |
+| `name`             | StringLiteral                    | The quoted name, including an empty name.  |
+| `value`            | NumericLiteral                   | The written leaf number.                   |
+| `classSelector`    | Identifier or null               | The name after `:::`, or null when absent. |
 
-Child fields: name, value, classSelector. Range: the opening name quote through
-the number, or through the selector when present. Do not include the preceding
-row indentation. The colon/comma separator remains punctuation, not a field;
-both forms use this type. Keep numeric spelling and any source gap between
-components without turning them into children. [fixture:
-treemap/gram-written-tree] [fixture: treemap/gram-comma-separator] [fixture:
-treemap/gram-spaced-leaf] [fixture: treemap/gram-leaf-newlines-around-separator]
-[fixture: treemap/comment-value-selector-gap] [fixture: treemap/db-number-comma]
+Child fields: statementsBefore, name, value, classSelector. The range starts at
+the first statementsBefore entry, or at the name's opening quote when that list
+is empty. It ends at the number or selector. It is continuous and need not start
+at the name; siblings do not overlap. Outer indentation and unrelated trailing
+trivia do not extend it. A leaf has no children field; a later deeper row is not
+its child. statementsBefore is empty when absent. The colon/comma separator
+remains punctuation, not a field; both forms use this type. Keep numeric
+spelling and any source gap between components without turning them into
+children. [fixture: treemap/gram-written-tree] [fixture:
+treemap/gram-comma-separator] [fixture: treemap/gram-spaced-leaf] [fixture:
+treemap/gram-leaf-newlines-around-separator] [fixture:
+treemap/comment-value-selector-gap] [fixture: treemap/db-number-comma] [fixture:
+treemap/common-block-empty-interleaved] [fixture: treemap/db-leaf-not-parent]
 
 indent counts each ASCII space/tab once after common removals. It is not a
 depth. The run may be on the preceding line or a whitespace-only line, and
 source tabs are not expanded. A directive inside the run joins the parts for
-counting; the original whitespace spelling remains source text outside this
-node's range. [fixture: treemap/db-tabs-count] [fixture:
-treemap/db-section-tail-space] [fixture: treemap/db-leaf-tail-tab] [fixture:
-treemap/gram-indent-from-whitespace-line] [fixture:
-treemap/gram-indent-around-global-directive]
+counting; indent retains the assigned run, not the node's tree depth. Its
+whitespace remains source text rather than a leaf value, even when
+statementsBefore makes the node's range begin before that run. [fixture:
+treemap/db-tabs-count] [fixture: treemap/db-section-tail-space] [fixture:
+treemap/db-leaf-tail-tab] [fixture: treemap/gram-indent-from-whitespace-line]
+[fixture: treemap/gram-indent-around-global-directive]
 
 ### TreemapClassDefStatement
 
@@ -147,8 +222,9 @@ treemap/db-style-whitespace] [fixture: treemap/db-class-repeat]
 A style may start on a later line and enclose what looks like another node or
 class definition. Those characters remain this literal; do not synthesize an
 additional statement. A following row after a completed class definition instead
-remains a separate body item, including a row whose indentation came after the
-semicolon. [fixture: treemap/lex-class-style-takes-next-class] [fixture:
+remains a separate hierarchy node, including a row whose indentation came after
+the semicolon. Gap ownership decides where the class definition is held.
+[fixture: treemap/lex-class-style-takes-next-class] [fixture:
 treemap/lex-class-style-crosses-blank-line] [fixture:
 treemap/comment-region-in-class-style-gap] [fixture:
 treemap/gram-class-semicolon-glued-node] [fixture: treemap/db-class-tail-space]
@@ -295,10 +371,11 @@ accDescr: Short
 accDescr { Details }
 ```
 
-TreemapDiagram.body contains nine statements in this order: title, section,
-leaf, class definition, empty description block, leaf, accessibility title, line
-description and nonempty description block. The two leaf indents and the class
-definition indent are two; the section indent is zero. The first leaf retains
-raw `1,234.5` and a colon; the second retains raw `2`, a comma, single quotes
-and selector aa. Common statements and the class definition are not moved inside
-the section. [fixture: treemap/gram-written-tree]
+TreemapDiagram.body contains title, the root section, accessibility title, line
+description and nonempty description block. The section's children are Left and
+Right. Right.statementsBefore contains the class definition and the empty block,
+in that order. The two leaf indents and the class definition indent are two; the
+section indent is zero. The first leaf retains raw `1,234.5` and a colon; the
+second retains raw `2`, a comma, single quotes and selector aa. The class
+definition and common statements keep their diagram-wide meaning despite their
+source owner. [fixture: treemap/gram-written-tree]

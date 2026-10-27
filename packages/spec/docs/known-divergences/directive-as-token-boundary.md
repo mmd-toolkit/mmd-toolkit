@@ -20,7 +20,8 @@ flowchart LR
   A --> B
 ```
 
-[fixture: common/directive-init-theme]
+The example places an `init` directive before the header. [fixture:
+common/directive-init-theme]
 
 mermaid.js removes every directive from the text before it reads the diagram,
 wherever the directive is, and joins the text before and after it. This
@@ -195,7 +196,8 @@ Each example is a whole diagram.
 | 6       | the vertex A with the label `a`, two spaces, and `b` | the same           |
 | 7       | the vertex A with the label `xy`                     | the same           |
 
-[fixture: sequence/div-directive-in-keyword] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+sequence/div-directive-in-keyword] [fixture:
 flowchart/div-directive-in-style-separator] [fixture:
 flowchart/div-directive-in-id] [fixture:
 flowchart/div-directive-in-arrow-length] [fixture:

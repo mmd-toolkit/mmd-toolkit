@@ -91,7 +91,8 @@ flowchart LR
   A
 ```
 
-[fixture: flowchart/gram-acc-descr-block-empty]
+The example keeps the empty description block as a statement. [fixture:
+flowchart/gram-acc-descr-block-empty]
 
 This document is about these forms where the tree of this specification has no
 place for them: inside a statement, or next to other text in a value.
@@ -190,7 +191,8 @@ Each example is a whole diagram.
 | 7       | the relation from A to B           | rejected                                     |
 | 8       | the relation from A to B           | the relation, with an empty cardinality at A |
 
-[fixture: flowchart/tokens-empty-string-in-label] [fixture:
+The fixtures record the readings compared in the table. [fixture:
+flowchart/tokens-empty-string-in-label] [fixture:
 flowchart/gram-click-empty-call-before-callback] [fixture:
 flowchart/gram-label-empty-string] [fixture:
 sequence/gram-empty-description-block-after-arrow] [fixture:

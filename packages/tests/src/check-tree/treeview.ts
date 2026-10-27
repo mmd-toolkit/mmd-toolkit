@@ -49,10 +49,12 @@ const DECORATION = ["TreeviewIgnoredText"]
 export const TREEVIEW_CHILD_TYPES: FieldTable<readonly string[]> = {
   TreeviewDiagram: { body: ["TreeviewNode", ...DECORATION, ...COMMON] },
   TreeviewNode: {
+    textBefore: DECORATION,
     prefix: PREFIX,
     textBeforeName: DECORATION,
     name: ["TreeviewIdentifier", "StringLiteral"],
     annotations: ANNOTATIONS,
+    children: ["TreeviewNode"],
   },
   TreeviewClassAnnotation: {
     textBefore: DECORATION,
@@ -161,9 +163,15 @@ function checkNamedOwners(
   reading: Reading,
   nodes: readonly CheckedNode[],
 ): void {
-  const body = entriesOf(reading.root.body, "body").filter(
-    (node): node is CheckedNode =>
-      node !== null && node.type !== "TreeviewIgnoredText",
+  const hierarchy = nodes
+    .filter((node) => node.type === "TreeviewNode")
+    .sort(
+      (a, b) =>
+        (childOf(a, "name")?.range[0] ?? 0) -
+        (childOf(b, "name")?.range[0] ?? 0),
+    )
+  const statements = nodes.filter(
+    (node) => node.type === "TreeviewNode" || COMMON.includes(node.type),
   )
   const headerEnd =
     ownOf(reading.root, reading.root.body).tokens[0]?.range[1] ?? 0
@@ -196,12 +204,13 @@ function checkNamedOwners(
       if (node.type === "TreeviewNode") {
         const name = childOf(node, "name")
         if (name === null) continue
-        const previous = body
-          .filter((item) => item !== node && item.range[1] <= form.range[0])
+        const previous = statements
+          .filter((item) => item !== node && ownEnd(item) <= form.range[0])
+          .sort((a, b) => ownEnd(a) - ownEnd(b))
           .at(-1)
         const before = gap(
           reading,
-          previous?.range[1] ?? headerEnd,
+          previous === undefined ? headerEnd : ownEnd(previous),
           form.range[0],
         )
         if (
@@ -228,8 +237,17 @@ function checkNamedOwners(
           ),
       )
       .sort((a, b) => a.start - b.start)[0]
-    const owner = expected?.node ?? reading.root.body
-    const field = expected?.field ?? "body"
+    // Existing pending-name, annotation and block gaps take precedence. Only
+    // remaining decorations between complete hierarchy nodes go to textBefore.
+    const next = hierarchy.find(
+      (node) => (childOf(node, "name")?.range[0] ?? 0) >= form.range[1],
+    )
+    const betweenNodes = hierarchy.some((node) => ownEnd(node) <= form.range[0])
+    const owner =
+      expected?.node ??
+      (betweenNodes && next !== undefined ? next : reading.root.body)
+    const field =
+      expected?.field ?? (owner === reading.root.body ? "body" : "textBefore")
     const held = owner[field]
     reading.problems.expect(
       Array.isArray(held) ? held.includes(form) : held === form,
@@ -428,6 +446,48 @@ function checkAnnotation(
   }
 }
 
+/** The end of this occurrence's syntax, excluding its descendants. */
+function ownEnd(node: CheckedNode): number {
+  if (node.type !== "TreeviewNode") return node.range[1]
+  return (
+    entriesOf(node, "annotations").at(-1)?.range[1] ??
+    childOf(node, "name")?.range[1] ??
+    node.range[1]
+  )
+}
+
+/** Independently check the nearest still-open smaller-indent parent, including files. */
+function checkParents(reading: Reading, ordered: readonly CheckedNode[]): void {
+  const expected = new Map<CheckedNode, CheckedNode[]>()
+  const roots: CheckedNode[] = []
+  const open: CheckedNode[] = []
+  for (const node of ordered) {
+    while (
+      open.length > 0 &&
+      Number(open.at(-1)?.indent) >= Number(node.indent)
+    )
+      open.pop()
+    const parent = open.at(-1)
+    if (parent === undefined) roots.push(node)
+    else expected.set(parent, [...(expected.get(parent) ?? []), node])
+    open.push(node)
+  }
+  for (const node of [reading.root.body, ...ordered]) {
+    const actual = entriesOf(
+      node,
+      node === reading.root.body ? "body" : "children",
+    ).filter((child) => child?.type === "TreeviewNode")
+    reading.problems.expectEqual(
+      actual.map((child) => child?.range),
+      (node === reading.root.body ? roots : (expected.get(node) ?? [])).map(
+        (child) => child.range,
+      ),
+      label(node),
+      "the children do not follow the treeview nearest-smaller-indent parent rule",
+    )
+  }
+}
+
 /** Body gaps assign one indentation run; decorations leave that pending run intact. */
 function checkBody(reading: Reading, direct: TreeviewText): void {
   const diagram = reading.root.body
@@ -464,8 +524,16 @@ function checkBody(reading: Reading, direct: TreeviewText): void {
     )
   let end = header.range[1]
   let previous: CheckedNode | null = null
-  for (const item of entriesOf(diagram, "body")) {
-    if (item === null || item.type === "TreeviewIgnoredText") continue
+  const statements = nodesOf(reading.root)
+    .filter(
+      (node) => node.type === "TreeviewNode" || COMMON.includes(node.type),
+    )
+    .sort(
+      (a, b) =>
+        (childOf(a, "name")?.range[0] ?? a.range[0]) -
+        (childOf(b, "name")?.range[0] ?? b.range[0]),
+    )
+  for (const item of statements) {
     let spacing = checkGap(
       reading,
       item,
@@ -522,7 +590,7 @@ function checkBody(reading: Reading, direct: TreeviewText): void {
         at = annotation.range[1]
       }
     }
-    end = item.range[1]
+    end = ownEnd(item)
     previous = item
   }
   let trailing = gap(reading, end, reading.text.length)
@@ -597,4 +665,14 @@ export function checkTreeviewTree(
     if (COMMON.includes(node.type)) checkCommon(reading, node)
   }
   checkBody(reading, direct)
+  checkParents(
+    reading,
+    nodes
+      .filter((node) => node.type === "TreeviewNode")
+      .sort(
+        (a, b) =>
+          (childOf(a, "name")?.range[0] ?? 0) -
+          (childOf(b, "name")?.range[0] ?? 0),
+      ),
+  )
 }

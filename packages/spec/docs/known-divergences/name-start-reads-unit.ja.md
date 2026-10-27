@@ -90,6 +90,7 @@ class/lex-backquote-keyword-prefix]
 | 5   | 多重度 `1` の A からの関係 | 型 `"1"` を持つ A からの関係 |
 | 6   | ノート `x`                 | 拒否                         |
 
+表で比較した読みを次の fixture が記録します。
 [fixture: class/div-backquote-keyword-escaped] [fixture:
 class/div-backquote-starts-with-quote] [fixture:
 class/div-generic-starts-with-keyword] [fixture:

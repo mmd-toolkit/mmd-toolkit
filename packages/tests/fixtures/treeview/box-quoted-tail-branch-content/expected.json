@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "treeview.md Box-drawing reading; ast/treeview.md Authored values and Gap ownership: A double-quoted name closes after a branch line with content; the authored branch remains in the shared leaf. Mermaid accepts; the raw and value retain the authored quoted interior while box reading gives the recorded Db."
+  },
+  "accepted": true,
+  "diagramType": "treeView",
+  "db": {
+    "accTitle": "",
+    "accDescr": "",
+    "nodes": [
+      {
+        "name": "a\n    b\n",
+        "nodeType": "file",
+        "children": [
+          {
+            "name": "root",
+            "nodeType": "file",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

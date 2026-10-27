@@ -7,8 +7,8 @@ Japanese version: [kanban.ja.md](./kanban.ja.md)
 [db-summaries.md, kanban](../db-summaries.md#kanban) and
 [embedded-data.md](../embedded-data.md#datablockeffects).
 `tests/db-from-tree-kanban.test.ts` supplies each row by hand and compares its
-summary with the cited fixture's recorded Db, also after a JSON round trip;
-kanban has no recorded parser trees yet.
+summary with the cited fixture's recorded Db, also after a JSON round trip. The
+corpus tests also check recorded kanban trees and common detection fixtures.
 
 ## Building the summary from the tree
 
@@ -41,14 +41,15 @@ kanban has no recorded parser trees yet.
    kanban/db-name-no-id] [fixture: kanban/db-name-two-words] [fixture:
    kanban/db-name-space-before-shape] [fixture: kanban/db-name-trailing-space]
    [fixture: kanban/config-security-level-other]
-3. **Membership.** Read the flat body in source order, without keeping the
-   indentation: the first row establishes the section indentation, equal
-   indentation starts a section with `isGroup: true`, and every other
-   indentation gives an item with `isGroup: false` and the most recent section's
-   id as `parentId`, including a final shallower row. [fixture:
-   kanban/db-sections-items] [fixture: kanban/db-indent-unindented] [fixture:
-   kanban/db-indent-tabs] [fixture: kanban/db-indent-deeper] [fixture:
-   kanban/db-indent-shallower-last] [fixture: kanban/db-section-item-same-id]
+3. **Membership.** Read Diagram.body as columns with `isGroup: true` and each
+   column's children as cards with `isGroup: false`, using the enclosing
+   column's converted id as `parentId`. Visit a column before its cards, in
+   source order. Do not read indent or reconstruct membership; the parser builds
+   the two-level nesting and checkTree independently checks it, including the
+   final shallower card. [fixture: kanban/db-sections-items] [fixture:
+   kanban/db-indent-unindented] [fixture: kanban/db-indent-tabs] [fixture:
+   kanban/db-indent-deeper] [fixture: kanban/db-indent-shallower-last] [fixture:
+   kanban/db-section-item-same-id]
 4. **Repeated ids.** Keep every section and item definition separately, treating
    prototype names and different letter cases as ordinary distinct ids, then
    emit each section in declaration order followed by all items whose `parentId`

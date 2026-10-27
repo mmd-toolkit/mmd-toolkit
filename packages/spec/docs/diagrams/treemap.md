@@ -355,7 +355,10 @@ excludes the mark. [fixture: treemap/comment-native-crlf-ending] [fixture:
 treemap/comment-ls] [fixture: treemap/comment-ps] [fixture:
 treemap/hidden-comment-closer] [fixture: treemap/hidden-comment-no-lf] [fixture:
 treemap/hidden-comment-sole-lf] [fixture: treemap/hidden-comment-spare-lf]
-[fixture: treemap/hidden-comment-eof]
+[fixture: treemap/hidden-comment-eof] [fixture:
+treemap/lex-indent-comment-ps-semicolon-space] [fixture:
+treemap/lex-indent-comment-ls-semicolon-space] [fixture:
+treemap/lex-indent-comment-ps-selected-semicolon]
 
 Earlier enclosing strings, class styles and description blocks own their
 percent-looking text. Line common forms instead stop before the first percent
@@ -458,15 +461,16 @@ treemap/spec-treemap-test-ts-e40d6eee]
 
 ### Indentation and parents
 
-The source tree keeps a flat body, while indentation determines parentage by the
-following direct rule, corresponding to [buildHierarchy][hierarchy]. Process
-sections and leaves in written order; common statements and class definitions do
-not participate. Keep a list of open sections. Before each node, remove the last
-open section while its indentation is greater than or equal to the node's. The
-last remaining open section is the parent; if none remains, the node is another
-root. Add the current node to the open list only when it is a section. A leaf
-closes sections by the same comparison but never becomes a parent. [fixture:
-treemap/db-indent-pop] [fixture: treemap/db-leaf-not-parent] [fixture:
+The following direct rule, corresponding to [buildHierarchy][hierarchy],
+determines the nesting of TreemapSection.children and the roots in
+TreemapDiagram.body. Process sections and leaves in written order; common
+statements and class definitions do not participate. Keep a list of open
+sections. Before each node, remove the last open section while its indentation
+is greater than or equal to the node's. The last remaining open section is the
+parent; if none remains, the node is another root. Add the current node to the
+open list only when it is a section. A leaf closes sections by the same
+comparison but never becomes a parent. [fixture: treemap/db-indent-pop]
+[fixture: treemap/db-leaf-not-parent] [fixture:
 treemap/db-leaf-closes-open-sections] [fixture: treemap/db-class-indented]
 [fixture: treemap/common-block-empty-interleaved] [fixture:
 treemap/gram-written-tree]
@@ -481,6 +485,20 @@ treemap/db-tabs-count] [fixture: treemap/db-leaf-not-parent] [fixture:
 treemap/db-leaf-closes-open-sections] [fixture: treemap/db-section-tail-space]
 [fixture: treemap/db-leaf-tail-space] [fixture: treemap/db-header-tail-space]
 [fixture: treemap/db-class-tail-space]
+
+Directives, comments, empty lines and selected ignored semicolons add no
+hierarchy nodes. Their lexical effect on indentation is unchanged. An empty
+description block is a common statement and does not close an open section.
+LS/PS outside a unit still reject; inside a native comment they remain comment
+content through LF, so apparent nodes there are not children. [fixture:
+treemap/gram-indent-around-global-directive] [fixture:
+treemap/gram-nesting-child-after-directive-line] [fixture:
+treemap/gram-nesting-child-after-comment] [fixture:
+treemap/gram-nesting-child-after-empty-line] [fixture:
+treemap/db-class-tail-space] [fixture: treemap/common-block-empty-interleaved]
+[fixture: treemap/line-ls-between] [fixture: treemap/line-ps-between] [fixture:
+treemap/gram-nesting-child-after-comment-ls] [fixture:
+treemap/gram-nesting-child-after-comment-ps]
 
 ### Semantic acceptance conditions
 

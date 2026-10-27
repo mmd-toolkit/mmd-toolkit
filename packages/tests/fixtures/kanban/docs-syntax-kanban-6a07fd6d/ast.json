@@ -65,92 +65,96 @@
         },
         "data": [],
         "decorations": [],
-        "range": [
-          7,
-          17
-        ],
-        "loc": {
-          "start": {
-            "line": 2,
-            "column": 0
-          },
-          "end": {
-            "line": 2,
-            "column": 10
-          }
-        }
-      },
-      {
-        "type": "KanbanNode",
-        "indent": 2,
-        "id": {
-          "type": "KanbanLiteral",
-          "value": "id3",
-          "range": [
-            20,
-            23
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 2
-            },
-            "end": {
-              "line": 3,
-              "column": 5
-            }
-          }
-        },
-        "shape": {
-          "type": "KanbanShape",
-          "opener": "[",
-          "closer": "]",
-          "label": {
-            "type": "KanbanLabel",
-            "kind": "text",
-            "value": "Update Database Function",
-            "range": [
-              24,
-              48
-            ],
-            "loc": {
-              "start": {
-                "line": 3,
-                "column": 6
-              },
-              "end": {
-                "line": 3,
-                "column": 30
-              }
-            }
-          },
-          "range": [
-            23,
-            49
-          ],
-          "loc": {
-            "start": {
-              "line": 3,
-              "column": 5
-            },
-            "end": {
-              "line": 3,
-              "column": 31
-            }
-          }
-        },
-        "data": [
+        "children": [
           {
-            "type": "KanbanDataBlock",
-            "value": " ticket: MC-2037, assigned: 'knsv', priority: 'High' ",
+            "type": "KanbanNode",
+            "indent": 2,
+            "id": {
+              "type": "KanbanLiteral",
+              "value": "id3",
+              "range": [
+                20,
+                23
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 2
+                },
+                "end": {
+                  "line": 3,
+                  "column": 5
+                }
+              }
+            },
+            "shape": {
+              "type": "KanbanShape",
+              "opener": "[",
+              "closer": "]",
+              "label": {
+                "type": "KanbanLabel",
+                "kind": "text",
+                "value": "Update Database Function",
+                "range": [
+                  24,
+                  48
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 6
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 30
+                  }
+                }
+              },
+              "range": [
+                23,
+                49
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 5
+                },
+                "end": {
+                  "line": 3,
+                  "column": 31
+                }
+              }
+            },
+            "data": [
+              {
+                "type": "KanbanDataBlock",
+                "value": " ticket: MC-2037, assigned: 'knsv', priority: 'High' ",
+                "range": [
+                  49,
+                  105
+                ],
+                "loc": {
+                  "start": {
+                    "line": 3,
+                    "column": 31
+                  },
+                  "end": {
+                    "line": 3,
+                    "column": 87
+                  }
+                }
+              }
+            ],
+            "decorations": [],
+            "children": [],
             "range": [
-              49,
+              20,
               105
             ],
             "loc": {
               "start": {
                 "line": 3,
-                "column": 31
+                "column": 2
               },
               "end": {
                 "line": 3,
@@ -159,15 +163,14 @@
             }
           }
         ],
-        "decorations": [],
         "range": [
-          20,
+          7,
           105
         ],
         "loc": {
           "start": {
-            "line": 3,
-            "column": 2
+            "line": 2,
+            "column": 0
           },
           "end": {
             "line": 3,
