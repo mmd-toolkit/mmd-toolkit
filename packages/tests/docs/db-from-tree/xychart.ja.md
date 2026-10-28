@@ -3,9 +3,11 @@
 English version: [xychart.md](./xychart.md)
 
 xychart の図の木から Db の要約を作る手順です。
-`src/db-from-tree/xychart.ts` がこれを実装します（[db-from-tree.md](../db-from-tree.md) を参照）。
+`src/db-from-tree/xychart.ts`
+がこれを実装します（[db-from-tree.md](../db-from-tree.md) を参照）。
 構文と木は、
-仕様の [diagrams/xychart.md](../../../spec/docs/diagrams/xychart.md) と [ast/xychart.md](../../../spec/docs/ast/xychart.md) が定めます。
+仕様の [diagrams/xychart.md](../../../spec/docs/diagrams/xychart.md) と
+[ast/xychart.md](../../../spec/docs/ast/xychart.md) が定めます。
 要約の欄は [db-summaries.md](../db-summaries.md#xychart) にあります。
 
 mermaid.js は、構文解析のあいだに Db を作ります。
@@ -22,7 +24,8 @@ Db が持つものが要約になります。
 ## 木から要約を作る
 
 **変換後の形。**
-テキストはそれぞれ [変換後の形](../../../spec/docs/common.md#reading-a-source)で読みます。
+テキストはそれぞれ
+[変換後の形](../../../spec/docs/common.md#reading-a-source)で読みます。
 文字列とアクセシビリティのテキストの中の各行終端（`\r\n` と単独の `\r` も）は、
 `\n` に、各属性の引用符は `'` に、各実体はそのプレースホルダーになります。
 実体は、文字列とアクセシビリティのテキストが持てます。
@@ -47,8 +50,8 @@ Db が持つものが要約になります。
   テキストの単位の間の空白はどのトークンにもないので、値の一部ではなく、
   2 つの単位の間のディレクティブは、2 つをつなぎます。
   `title Two words` のテキストは `Twowords` で、
-  `[a%%{x}%%b]` のカテゴリーは `ab` です。 [fixture: xychart/db-title-bare-words]
-  [fixture: xychart/db-x-axis-band-words]
+  `[a%%{x}%%b]` のカテゴリーは `ab` です。
+  [fixture: xychart/db-title-bare-words] [fixture: xychart/db-x-axis-band-words]
   [fixture: xychart/db-x-axis-title-words]
   [fixture: xychart/db-x-axis-band-directive-in-word]
 - アクセシビリティの文の XychartLiteral は、範囲の変換後の形を、
@@ -74,7 +77,8 @@ Db が持つものが要約になります。
   両端の空白を除いてから、文字の置き換え（下記）をして持ちます。
   `accTitle` のテキストも同じように持ちます。
   `accDescr` のテキストは両端の空白を除き、各改行だけは、
-  続く空白と一緒に 1 つの改行にして持ちます。 [fixture: xychart/db-title-quoted-spaces-trimmed]
+  続く空白と一緒に 1 つの改行にして持ちます。
+  [fixture: xychart/db-title-quoted-spaces-trimmed]
   [fixture: xychart/db-plot-title-trimmed]
   [fixture: xychart/db-label-spaces-trimmed]
   [fixture: xychart/db-acc-title-spaces-trimmed]
@@ -95,7 +99,8 @@ Db が持つものが要約になります。
 どの大文字小文字でも `vertical` にします。
 向きのないヘッダーは向きを変えないので、向きを持つヘッダーは設定より優先し、
 向きのない 2 つ目のヘッダーは、
-1 つ目が決めたものを変えません。 [fixture: xychart/config-orientation-setting-horizontal]
+1 つ目が決めたものを変えません。
+[fixture: xychart/config-orientation-setting-horizontal]
 [fixture: xychart/config-orientation-directive]
 [fixture: xychart/config-orientation-frontmatter]
 [fixture: xychart/config-orientation-header-wins]
@@ -114,8 +119,7 @@ Db が持つものが要約になります。
 最後の `title` 文がタイトルになります。 [fixture: xychart/db-title-frontmatter]
 [fixture: xychart/db-title-frontmatter-spaces]
 [fixture: xychart/db-title-frontmatter-and-statement]
-[fixture: xychart/db-title-twice]
-[fixture: xychart/db-title-at-end-of-text]
+[fixture: xychart/db-title-twice] [fixture: xychart/db-title-at-end-of-text]
 
 **x 軸。**
 x 軸は、カテゴリーもタイトルもない band です。
@@ -125,9 +129,9 @@ x 軸は、カテゴリーもタイトルもない band です。
 文のタイトルが軸のタイトルで、文にタイトルがなければ空のテキストです。
 そのため `x-axis [b]` は、`x-axis T [a]` が決めたタイトルをなくします。
 タイトルだけの文は、タイトルだけを決め、カテゴリーや範囲はそのままです。
-あとの文が、前の文を置き換えます。 [fixture: xychart/db-x-axis-band-title]
-[fixture: xychart/db-x-axis-range]
-[fixture: xychart/db-x-axis-range-title]
+あとの文が、
+前の文を置き換えます。 [fixture: xychart/db-x-axis-band-title]
+[fixture: xychart/db-x-axis-range] [fixture: xychart/db-x-axis-range-title]
 [fixture: xychart/db-x-axis-title-bare-word]
 [fixture: xychart/db-x-axis-title-then-glued-range]
 [fixture: xychart/db-x-axis-twice]
@@ -144,18 +148,15 @@ y 軸は、タイトルのない linear の軸で、
 その前に加えたプロットが広げた範囲は、文の範囲に置き換わります。
 タイトルは x 軸と同じに決まります。 [fixture: xychart/db-y-axis-range-title]
 [fixture: xychart/db-y-axis-title-only-then-range]
-[fixture: xychart/db-y-axis-twice]
-[fixture: xychart/db-y-axis-no-range-no-plot]
-[fixture: xychart/db-y-axis-before-plot]
-[fixture: xychart/db-y-axis-after-plot]
+[fixture: xychart/db-y-axis-twice] [fixture: xychart/db-y-axis-no-range-no-plot]
+[fixture: xychart/db-y-axis-before-plot] [fixture: xychart/db-y-axis-after-plot]
 
 **プロット。**
 プロットの文は、種類、タイトル（なければ空のテキスト）、
 下のペアを持つプロットを加えます。
 ペアは文を実行したときに、そのときの軸から作るので、プロットは、
 あとに来る軸で変わりません。 [fixture: xychart/db-line-values]
-[fixture: xychart/db-bar-values]
-[fixture: xychart/db-data-band-after-plot]
+[fixture: xychart/db-bar-values] [fixture: xychart/db-data-band-after-plot]
 [fixture: xychart/db-data-band-after-plot-longer]
 [fixture: xychart/db-data-range-after-plot]
 
@@ -173,7 +174,8 @@ y 軸は、タイトルのない linear の軸で、
    [fixture: xychart/db-data-y-range-band-truncation]
 3. y 軸に範囲が与えられるまで、y 軸の範囲は、残った値を含むように広がります。
    最小は、これまでの最小と残った値の最小のうちの小さいほう、最大は、
-   これまでの最大と残った値の最大のうちの大きいほうです。 [fixture: xychart/db-data-y-range-from-plots]
+   これまでの最大と残った値の最大のうちの大きいほうです。
+   [fixture: xychart/db-data-y-range-from-plots]
    [fixture: xychart/db-data-y-range-single-value]
    [fixture: xychart/db-data-y-range-negative-zero]
    [fixture: xychart/db-data-band-two-plots]
@@ -198,8 +200,7 @@ line は、読んだあとのラベルの 1 つでも空でなければ、
 ラベルは、band の軸がペアから切り捨てる値も含め、すべての値から取ります。
 ラベルのない line、空のラベルだけの line、bar は、
 ラベルを持ちません。 [fixture: xychart/db-label-one]
-[fixture: xychart/db-label-all]
-[fixture: xychart/db-label-on-bar]
+[fixture: xychart/db-label-all] [fixture: xychart/db-label-on-bar]
 [fixture: xychart/db-label-empty-string]
 [fixture: xychart/db-label-beyond-categories]
 
@@ -218,12 +219,10 @@ line は、読んだあとのラベルの 1 つでも空でなければ、
 [fixture: xychart/db-acc-descr-unclosed-empty-block-after-line]
 [fixture: xychart/db-acc-descr-unclosed-empty-block-spaces]
 [fixture: xychart/db-acc-descr-unclosed-empty-block-line-feeds]
-[fixture: xychart/db-acc-title]
-[fixture: xychart/db-acc-title-empty]
+[fixture: xychart/db-acc-title] [fixture: xychart/db-acc-title-empty]
 [fixture: xychart/db-acc-title-empty-at-end-after-value]
 [fixture: xychart/db-acc-descr-empty-at-end-after-value]
-[fixture: xychart/db-acc-descr]
-[fixture: xychart/db-acc-descr-block]
+[fixture: xychart/db-acc-descr] [fixture: xychart/db-acc-descr-block]
 [fixture: xychart/db-acc-descr-block-empty]
 [fixture: xychart/db-acc-descr-line-then-empty-block]
 [fixture: xychart/db-acc-descr-block-then-empty-block]
@@ -242,10 +241,12 @@ Db は、次のテキストを `sanitizeText` に通します。
 タイトル（フロントマターと `title` 文）、アクセシビリティのタイトルと説明、
 軸のタイトル、カテゴリー、プロットのタイトル、 line が持つ値のラベルです。
 `xychartDbOf()` は、これらのテキストにだけ、
-[db-from-tree.md](../db-from-tree.md#the-replacement-of-characters) の置き換え `textReplacementOf(embedded.config)` を適用します。
+[db-from-tree.md](../db-from-tree.md#the-replacement-of-characters) の置き換え
+`textReplacementOf(embedded.config)` を適用します。
 向きと数には届きません。
 テキストは、
-上のとおり読んでから置き換えます。 [fixture: xychart/config-security-level-other-all]
+上のとおり読んでから置き換えます。
+[fixture: xychart/config-security-level-other-all]
 [fixture: xychart/config-security-level-other-orientation-horizontal]
 [fixture: xychart/config-security-level-other-html-labels-false]
 [fixture: xychart/config-security-level-other-flowchart-html-labels-false]

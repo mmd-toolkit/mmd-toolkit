@@ -102,7 +102,7 @@ mermaid.js がその空白を値の一部として読むところは除きます
 - 空の説明ブロックの単位は、文の `textBeforeBody` の中でも種類を保ちます。
   `Keyword` のトークン `accDescr` と、`Punctuator` のトークン `{` と `}` で、
   StateIgnoredText の範囲の中にあります。 [fixture: state/gram-empty-description-block-after-empty-string-before-body]
-  （[StateIgnoredText](../../../spec/docs/ast/state.ja.md#stateignoredtext) を参照）。
+  [StateIgnoredText](../../../spec/docs/ast/state.ja.md#stateignoredtext) を参照。
 - 行の規則が無視する `;` は `IgnoredSemicolon` のトークンで、
   中にある `RawText` か `String` のトークンを切ります（[トークン](../tokens.ja.md#トークン) を参照）。
   `classDef c fill:#f00;` では、スタイルは `fill:#f00` で、

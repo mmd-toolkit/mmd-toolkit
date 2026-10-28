@@ -157,7 +157,8 @@ pin した mermaid.js の更新を扱う。
   `tools/collect.ts` は、`--out` をリポジトリの外に向けて動かし、
   書いたファイルを読む。
 
-  1 つのファイルは `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。
+  1 つのファイルは
+  `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。
   `fixtures.test.ts` は 2 つの README を読む（既知の差異ごとに項目がある）ので、
   README を変えたときにも回す。
   このパッケージには大きくする量がない。
@@ -233,13 +234,14 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    hidden を含め、到達可能な terminal だけを結果の順序で列挙する。
    import 先に宣言があるだけでは到達しない。
    terminal の構成規則も、独立した字句単位になるとは限らない。
-   clone に生成ファイルがなければ、インストールされた pin の bundle の source
-   map を読み、生成 module・文法と書かれた service の配線を照合する。
+   clone に生成ファイルがなければ、
+   インストールされた pin の bundle の source map を読み、
+   生成 module・文法と書かれた service の配線を照合する。
 2. keyword のパターンも読む。
    独自の境界を持つもの、既定の順序を使うもの、
    明示的な `longer_alt` の選択肢を持つものを列挙する。
-   [共有の token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31) は指定された keyword だけに、
-   空白・EOF・percent ペアの先読み境界を加える。
+   [共有の token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
+   は指定された keyword だけに、空白・EOF・percent ペアの先読み境界を加える。
    一般的な最長一致ではなく、最初に合う規則を取る。
    keyword 境界と明示的な選択肢も単位を決める。
    接着した接尾辞、keyword の接頭辞、keyword に接した記号、
@@ -247,8 +249,9 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    検出には、それ自身の境界がある。
 3. hidden terminal が字句規則として消費するテキストを調べる。
    全体の除去とは区別する。
-   import した [YAML・DIRECTIVE terminal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34) は直後の LF を消費し、
-   ほかの空白境界は先読みだけする。
+   import した
+   [YAML・DIRECTIVE terminal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
+   は直後の LF を消費し、ほかの空白境界は先読みだけする。
    各単位の隙間と各文の EOL・EOF を probe する。
    唯一の LF が消えると次の文は拒否されるが、
    共通の付加 LF が消えた場合は EOF で EOL を満たせる。
@@ -259,16 +262,19 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    検出から parser への受渡しを、その図種で独立に probe する。
 4. 実際の terminal 規則名から、注入された converter と fallback をたどる。
    恒等・文字列・整数・double の変換は、到達するものだけを調べる。
-   [共通の converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70) は、
-   行とブロックの共通の値で空白の読みが異なる。
-   たとえば pie の [独自分岐](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16) は PIE_SECTION_LABEL を名指すが、
-   [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20) は STRING を呼び、
-   既定の escape 変換に進む。
+   [共通の converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
+   は、行とブロックの共通の値で空白の読みが異なる。
+   たとえば pie の
+   [独自分岐](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
+   は PIE_SECTION_LABEL を名指すが、
+   [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
+   は STRING を呼び、既定の escape 変換に進む。
    到達する単位について、両方の引用符、未知の escape、精度、 overflow、
    underflow を集める。
    前の図種の単位に到達しない所は、拒否の対照を置き、理由を記す。
 5. 回復した AST だけでなく公開の受理の門を読む。
-   [公開 parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150) は字句・構文エラーが 1 つでもあれば拒否する。
+   [公開 parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
+   は字句・構文エラーが 1 つでもあれば拒否する。
    次に、その図種の AST から Db への公開をたどる。
    保存する値、条件付き・省略する代入、値を代入しない文法の literal、
    adapter が捨てる文を区別する。
@@ -276,8 +282,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    何も公開せず、要約が空になる図種もある。
    先頭・回復した文の内部・正しい接頭辞の後のエラーを、
    到達可能な Db の拒否それぞれとは別に調べる。
-6. parse を await する spec を記録できるよう、 collector の parse
-   stub は非同期にする。
+6. parse を await する spec を記録できるよう、
+   collector の parse stub は非同期にする。
    `Promise.resolve(record(text))` で呼出しを記録する。
    Langium を実行せず、受理を模倣しない。
    共有の recorder で spec を実行し、
@@ -322,7 +328,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      sequence の `actorCnt` と `rectData`）。
    - ほかの欄から一意に導ける値（`textStyles`、
      sequence のメッセージの `id` とノートの一覧）。
-   - サイト設定でだけ変わる値（`securityLevel: loose` のときだけ付く `haveCallback`）。
+   - サイト設定でだけ変わる値（`securityLevel: loose` のときだけ付く
+     `haveCallback`）。
      構文が決める欄で、サイト設定でも変わるものは含め、
      Db のパッチがほかの設定のときの値を記録する class のリンクの target は、
      `securityLevel: sandbox` のときに `_top` になる。
@@ -383,8 +390,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    データブロックを持つ）を確かめ、
    要るなら同じファイルに書いて `dbPatches` に登録する。
    登録には、mermaid が受理し、
-   その図種 ID として検出するテキストを添える（`classDiagram` だけでは拒否されるので、
-   class の見本は class を 1 つ持つ）。
+   その図種 ID として検出するテキストを添える（`classDiagram`
+   だけでは拒否されるので、 class の見本は class を 1 つ持つ）。
    `runMermaid()` は、どの入力を解析するよりも前に、
    すべての Db クラスにパッチを当てる。
    Db のメソッドが、Node にないブラウザの関数（`window`、`document`、
@@ -428,11 +435,12 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    その図種を載せたもの（`db: null` が要約になる）だけのはず。
    それ以外が変われば、理由を調べる。
    それらの fixture は要約を持ち、木を持たない。
-   `tests/db-from-tree.test.ts` の `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES` にその図種を足し、
-   parser が木を記録したら外して、 builder を記録した木で走らせるよう、
-   同じファイルの `DIAGRAMS` に足す。
+   `tests/db-from-tree.test.ts` の `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES`
+   にその図種を足し、 parser が木を記録したら外して、
+   builder を記録した木で走らせるよう、同じファイルの `DIAGRAMS` に足す。
    その図種のノードの型の接頭辞（`Requirement`）も、
-   `tests/check-tree-recorded.ts` の `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` に足す。
+   `tests/check-tree-recorded.ts` の `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
+   に足す。
    ノードの型ごとに記録した木を求めるテストはこの接頭辞の型を除く。
    これも同じときに外す。
    外すときは、その図種の値の欄の行（`VALUE_FIELD_REPORTS` ほか、
@@ -497,7 +505,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    ブラウザで実際のページと照らすと、
    確かめられる（flowchart では demos を localhost で配って照合した）。
 5. 収集した入力には `config` を付けない。
-   名前は `<出どころ>-<ファイル>-<入力の SHA-256 の先頭 8 桁>` （`docs/maintaining-fixtures.md`）。
+   名前は `<出どころ>-<ファイル>-<入力の SHA-256 の先頭 8 桁>`
+   （`docs/maintaining-fixtures.md`）。
 6. `fixtures:add-many <図種> <ファイル> --dry-run` で試し、
    出力を読んでから本番を実行する。
 7. `add-many` が出す「rejected by mermaid」の一覧を 1 件ずつ見る。
@@ -540,8 +549,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      空行（timeline の review 435 の軽 1）。
      また、行にテキストのないキーワードが、
      後の行を値に取る場合（アクセシビリティのテキスト）は、取られる行そのもの。
-     図の文の行であっても、そのまま値になる（xychart の review
-     448。 `accTitle:` の次に `line [1]`）。
+     図の文の行であっても、
+     そのまま値になる（xychart の review 448。 `accTitle:` の次に `line [1]`）。
    - キーワードの別の大文字小文字と、その後ろにくっついた文字、語の文字、`-`、
      ASCII の外の文字。
      ヘッダーにも、各文のキーワードにも。
@@ -561,8 +570,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      また文字参照の `#` はコメントを始めないこと。
    - ディレクティブで切れる値。
      値の中、その先頭と末尾、引用符の中、ヘッダーの行、キーワードに続けて、
-     閉じないもの（次の行の先頭の語か、テキストの残りを取る）（sankey の review
-     441）。
+     閉じないもの（次の行の先頭の語か、
+     テキストの残りを取る）（sankey の review 441）。
    - 閉じない文脈の中でテキストが終わる場合。
      `accTitle:` で終わる、終わりのないブロック、閉じない引用符。
    - 各文の形の後ろの行末。
@@ -573,8 +582,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    - 複数の行にまたがる値の途中にあるコメント行とディレクティブの行。
    - Db がテキストから読む数。
      符号、`-0`（Db は -0 で、JSON は 0 と書く）、 `NaN`、`Infinity`、
-     倍精度に収まらない大きな数、数の後ろのテキスト（journey と sankey の review
-     441）。
+     倍精度に収まらない大きな数、
+     数の後ろのテキスト（journey と sankey の review 441）。
    - Db が読む埋め込み設定の値（packet の review pk12-1）。
    - `html-tag-in-frontmatter` の受理の両方向と値だけの違い（review ra3-1、
      tm3-1、rr12-3）。
@@ -611,9 +620,11 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      空白を含められない class 名や icon の値）の中と、
      作者が書いた部品の間にある global な directive と選ばれたセミコロン。
      atom の中を割り、mermaid.js が受理する場合は、
-     `directive-as-token-boundary` または `ignored-semicolon-as-token-boundary` の印を付ける。
-     pie3-7 のように末尾に接する場合と、 atom 自体を割る場合を区別する（review
-     cy12-1、tv12-2。 railroad の工程 1・2 と、
+     `directive-as-token-boundary` または `ignored-semicolon-as-token-boundary`
+     の印を付ける。
+     pie3-7 のように末尾に接する場合と、
+     atom 自体を割る場合を区別する（review cy12-1、
+     tv12-2。 railroad の工程 1・2 と、
      wardley の工程 1・2 および 3 の review でも確認）。
 
    review がこの一覧にない種類を見つけたら、review の番号とともにここに足す。
@@ -627,8 +638,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 
 §5 に従い、その図種の挙動を抽出して固定 fixture を集める。
 保持する形や不透明な埋め込みデータの指定読みを生成する前に、§7.1 に従う。
-構文と AST の定義後は、その契約から、次の手順で Db
-builder と checker を実装する。
+構文と AST の定義後は、その契約から、
+次の手順で Db builder と checker を実装する。
 以下のパスは `packages/tests` からの相対パスである。
 
 `checkTree` が見るのは、木の欄、範囲、token、字句の不変条件だけである。
@@ -688,8 +699,8 @@ builder と checker を実装する。
    消費した LF を範囲に含める、残る EOL を消す、書かれた構成要素を変える、
    先行 terminal を Comment に偽装する場合も含める。
    包む値の内側の hidden に見えるテキスト、余分の LF、EOF の受理対照も書く。
-   保持する各接頭部の後に、検出が通した裸行と Unicode
-   trivia がある固定例を書く。
+   保持する各接頭部の後に、
+   検出が通した裸行と Unicode trivia がある固定例を書く。
    保持した形式同士の間に、通過した trivia がある場合も書く。
    通過した行がない対照も含める。
    本文の通常の隙間が厳密なままであることも確かめる。
@@ -718,8 +729,8 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    収集の道具が、`docs/maintaining-fixtures.md` に書いたとおりに動くようにする。
    道具の使い方は、その文書にある。
    使い方を変えたら、その文書（英日）を同じ変更で直す。
-2. 仕様の Known
-   divergences （`packages/spec/docs/known-divergences.md`）が変わったら、
+2. 仕様の Known divergences
+   （`packages/spec/docs/known-divergences.md`）が変わったら、
    識別子の一覧（`src/index.ts` の `KNOWN_DIVERGENCES`、
    README の一覧）を合わせる。
    `src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES` には、
@@ -727,8 +738,8 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    利用側は fixture の受理に `fixtureAccepts()` を使う。
    印の形の検査は [parser のスキル](../parser/SKILL.ja.md) の §6 に従う。
    読み込みは一覧にない識別子を拒否するので、識別子を改名するときは、
-   (1) 新しい識別子を一覧に足す（古いものは残す）、 (2)
-   `fixtures:set-divergence` で fixture を新しい識別子に付け替える、
+   (1) 新しい識別子を一覧に足す（古いものは残す）、
+   (2) `fixtures:set-divergence` で fixture を新しい識別子に付け替える、
    (3) 古い識別子を一覧から外す、の順にする。
    識別子を取りやめるときは、印を外してから一覧から外す。
    README の一覧は、
@@ -772,20 +783,23 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    新しい接頭部ごとに、
    関係する差異の除去それぞれと接する固定の marked 入力を書く。
    通過した裸行と trivia の前・間に接頭部がある場合も含める。
-   既存の `tools/src/specified-reading.ts` の `specifiedRunOf` と、 fixture
-   CLI の dry-run の経路で実行する。
+   既存の `tools/src/specified-reading.ts` の `specifiedRunOf` と、
+   fixture CLI の dry-run の経路で実行する。
    参照テキスト、受理、Db、埋め込みの title・設定・data block effects を調べる。
    仕様が意図する読みと照合する。
    保持する原文と、共有の frontmatter・設定の読みを保つ。
 2. `embedded-data-opaque` の向きと指定読みの要否は、
-   `packages/tests/src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES` のその識別子の行を参照し、
-   [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db) の読みを実装する。
-   `tools/src/specified-reading.ts` の `opaqueReferenceInput` と `specifiedRunOf` を、
-   既存の CLI の経路で実行する。
+   `packages/tests/src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES`
+   のその識別子の行を参照し、
+   [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
+   の読みを実装する。
+   `tools/src/specified-reading.ts` の `opaqueReferenceInput` と
+   `specifiedRunOf` を、既存の CLI の経路で実行する。
    固定の frontmatter・directive の場合で、その行の向きを確かめる。
    参照テキスト、
-   `packages/tests/src/mermaid.ts` の `readMermaidConfiguration` が返す設定とタイトル、
-   生成した受理・Db・埋め込み値を調べ、その定義と照合する。
+   `packages/tests/src/mermaid.ts` の `readMermaidConfiguration`
+   が返す設定とタイトル、生成した受理・Db・埋め込み値を調べ、
+   その定義と照合する。
    `OPAQUE_ACCEPTANCE_KEYS` を仕様が名指す鍵と照合する。
    受理条件の鍵と共存する保持タイトル、
    拒否されたブロックと共存する正しい Db 設定も含める。
@@ -837,8 +851,8 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
 
 3. パッチと前提が新しい版でも成り立つかを確かめる。
    - DOMPurify を恒等にする差し替え: テストが確かめる。
-   - Db のパッチ（flowchart では `setLink` と `addVertex`）:
-     2 つのタグの間で Db クラスを比べる。
+   - Db のパッチ（flowchart では `setLink` と `addVertex`）: 2 つのタグの間で Db
+     クラスを比べる。
    - データブロックの記録の 2 つの検査と、
      `runMermaid()` の手順（`docs/expected-results.md`）: テストは確かめない。
      4 の全件の実行で確かめる。
@@ -869,9 +883,9 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    - `summary fields`: Db の内部の変化。
      ただし、キーが著者の書いたものなら、そうではない。
      正規化関数を直すか、落とす欄にするかを、5.2 の表と同じ形で決める。
-   - `detection`、図種が増えたか、なくなったもの:
-     `diagramIds` と、
-     仕様の `packages/spec/docs/detection.md` に関わる（detection.md は spec の SKILL の手順で直す）。
+   - `detection`、図種が増えたか、なくなったもの: `diagramIds` と、
+     仕様の `packages/spec/docs/detection.md` に関わる（detection.md は spec の
+     SKILL の手順で直す）。
    - `error name`: 新しい名前も入力が原因であることを確かめる（生成器は、
      標準の拒否のほかの名前を一覧に出す）。
    - `error message only`: 何もしない。
@@ -882,8 +896,8 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    - `specified.json added`、`removed`、
      変更: 読み方を変える印のある fixture への、仕様どおりの読み。
      `acceptance` や `Db values` と同じに扱う。
-   - `MermaidEnvironmentError` で作れない fixture:
-     `mermaid.parse()` と `getDiagramFromText()` が食い違うか、
+   - `MermaidEnvironmentError` で作れない fixture: `mermaid.parse()` と
+     `getDiagramFromText()` が食い違うか、
      Node にない機能を mermaid.js が使っている。
      `runMermaid()` の手順が成り立たない。
      そのような入力をどう記録するかは、 `docs/expected-results.md` の定義と、
@@ -900,7 +914,8 @@ tests の生成器（`fixtures:add-many` など）で足す（方針と手順は
    テストファイルがスタブのないモジュールを import して収集器が止まったら、
    `tools/src/spec-recorder.ts` にスタブを足して、
    収集し直す（`tools/README.md`）。
-6. CI の fixtures ジョブが通る状態にする（`fixtures:generate` の後で差分があれば失敗する）。
+6. CI の fixtures ジョブが通る状態にする（`fixtures:generate`
+   の後で差分があれば失敗する）。
    `MermaidEnvironmentError` が残っている間は通らない。
 7. 結果として、分類した差分の一覧（fixture の名前と、何が変わったか）を、
    関わるパッケージごとにまとめて示す。

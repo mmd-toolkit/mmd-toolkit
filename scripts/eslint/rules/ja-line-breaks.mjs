@@ -5,9 +5,9 @@ import {
   isWide,
   widthOf,
   collect,
-  inside,
   breakAllowed,
   NO_LINE_START,
+  isOverlongWordLine,
 } from "../utils/japanese-prose.mjs"
 
 const OPEN = new Map([
@@ -18,12 +18,12 @@ const OPEN = new Map([
   ["〔", "〕"],
   ["〈", "〉"],
   ["《", "》"],
+  ["(", ")"],
 ])
-const CLOSE = new Set(OPEN.values())
 
 /** The paragraph's source characters and original container prefixes. */
-function paragraphTokens(text, entry, info) {
-  const { node } = entry
+function paragraphTokens(entry) {
+  const { text, node } = entry
   const start = node.position.start.offset
   const end = node.position.end.offset
   const lineStart = text.lastIndexOf("\n", start - 1) + 1
@@ -54,7 +54,7 @@ function paragraphTokens(text, entry, info) {
         raw: text.slice(from, at),
         hard:
           / {2,}$/u.test(before) ||
-          info.hardBreaks.some(([a, b]) => from >= a && from < b),
+          entry.hardBreaks.some(([a, b]) => from >= a && from < b),
       })
     } else {
       const value = String.fromCodePoint(text.codePointAt(at))
@@ -62,11 +62,18 @@ function paragraphTokens(text, entry, info) {
       at += value.length
     }
   }
+  let protectedIndex = 0
+  for (const token of tokens) {
+    while (entry.spans[protectedIndex]?.[1] <= token.from) protectedIndex++
+    const span = entry.spans[protectedIndex]
+    if (span && span[0] <= token.from && token.to <= span[1])
+      token.protectedSpan = span
+  }
   return { tokens, firstPrefix, continuation, start, end }
 }
 
-/** Joins only soft breaks with at least one wide neighbor. */
-function joinLines(tokens, info) {
+/** Joins soft breaks, preserving protected ranges and Markdown hard breaks. */
+function joinLines(tokens) {
   const result = []
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
@@ -79,18 +86,15 @@ function joinLines(tokens, info) {
       token.hard ||
       !left ||
       !right ||
-      inside(info.spans, token.from)
+      token.protectedSpan
     ) {
-      result.push(token)
-      continue
-    }
-    if (!isWide(left.value) && !isWide(right.value)) {
       result.push(token)
       continue
     }
     const bothWide = isWide(left.value) && isWide(right.value)
     let from = token.from
-    while (result.at(-1)?.value === " ") from = result.pop().from
+    while (result.at(-1)?.value === " " && !result.at(-1).protectedSpan)
+      from = result.pop().from
     result.push({
       value: bothWide ? "" : " ",
       from,
@@ -107,52 +111,75 @@ function whitespace(token) {
   return token && !token.hard && /^[\t\n ]*$/u.test(token.value)
 }
 
-/** Sentence ranges, with closing emphasis and following citations attached. */
+/** The bracket pairs that close within the same hard-break segment. */
+function matchedBrackets(tokens) {
+  const pending = new Map()
+  const opens = new Set()
+  const closes = new Set()
+  for (const [index, token] of tokens.entries()) {
+    if (token.hard) {
+      pending.clear()
+      continue
+    }
+    if (token.protectedSpan) continue
+    const closing = OPEN.get(token.value)
+    if (closing) {
+      if (!pending.has(closing)) pending.set(closing, [])
+      pending.get(closing).push(index)
+    } else {
+      const opening = pending.get(token.value)?.pop()
+      if (opening !== undefined) {
+        opens.add(opening)
+        closes.add(index)
+      }
+    }
+  }
+  return { opens, closes }
+}
+
+/** Sentence ranges, including closing emphasis and every following citation. */
 function sentences(tokens, info) {
   const ranges = []
-  const brackets = []
+  const pairs = matchedBrackets(tokens)
+  const emphasisEnds = new Map(
+    info.emphasis.map((span) => [span.closingStart, span.end]),
+  )
+  const citations = new Map(info.citations.map(([from, to]) => [from, to]))
+  let depth = 0
   let start = 0
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
     if (token.hard) {
       ranges.push({ start, end: i, next: i + 1, separator: token.raw })
       start = i + 1
-      brackets.length = 0
+      depth = 0
       continue
     }
-    if (inside(info.spans, token.from)) continue
-    if (OPEN.has(token.value)) brackets.push(OPEN.get(token.value))
-    else if (CLOSE.has(token.value) && brackets.at(-1) === token.value)
-      brackets.pop()
-    if (token.value !== "。" || brackets.length) continue
+    if (token.protectedSpan) continue
+    if (pairs.opens.has(i)) depth++
+    if (pairs.closes.has(i)) depth--
+    if (token.value !== "。" || depth > 0) continue
     let end = i + 1
-    for (;;) {
-      const from = tokens[end]?.from
-      const closer = info.emphasis.find((s) => s.closingStart === from)
-      if (!closer) break
-      while (end < tokens.length && tokens[end].from < closer.end) end++
+    while (emphasisEnds.has(tokens[end]?.from)) {
+      const closingEnd = emphasisEnds.get(tokens[end].from)
+      while (end < tokens.length && tokens[end].from < closingEnd) end++
     }
-    // Only a complete bracketed citation, not the label of a Markdown link.
+    let firstCitation = true
+    let citationSpaceAt = null
     for (;;) {
       let at = end
       while (whitespace(tokens[at])) at++
-      if (at === end) break
-      const citation = info.citations.find(
-        ([a, b]) =>
-          a === tokens[at]?.from &&
-          !info.spans.some(
-            ([x, y, type]) => type !== "citation" && x <= a && y >= b,
-          ),
-      )
-      if (!citation) break
-      while (at < tokens.length && tokens[at].from < citation[1]) at++
+      const citationEnd = citations.get(tokens[at]?.from)
+      if (citationEnd === undefined) break
+      if (firstCitation && at === end) citationSpaceAt = at
+      firstCitation = false
+      while (at < tokens.length && tokens[at].from < citationEnd) at++
       end = at
     }
     let next = end
     while (whitespace(tokens[next])) next++
-    if (tokens[next]?.hard) continue
-    if (NO_LINE_START.has(tokens[next]?.value)) continue
-    ranges.push({ start, end, next })
+    if (tokens[next]?.hard || NO_LINE_START.has(tokens[next]?.value)) continue
+    ranges.push({ start, end, next, citationSpaceAt })
     start = next
     i = next - 1
   }
@@ -188,10 +215,10 @@ function continuesParagraph(tokens, start, info) {
     !info.emphasis.some((span) => span.start === tokens[start].from)
   )
     return false
-  const source = tokens
-    .slice(start)
-    .map((token) => token.value)
-    .join("")
+  const characters = []
+  for (let i = start; i < tokens.length && tokens[i].value !== "\n"; i++)
+    characters.push(tokens[i].value)
+  const source = characters.join("")
   const tree = paragraphTree(`prose\n${source}`, "")
   return tree?.children.length === 1 && tree.children[0].type === "paragraph"
 }
@@ -201,13 +228,13 @@ function textOf(tokens) {
   return tokens.map((t) => t.value).join("")
 }
 
-/** A break at the halfwidth space `i` between halfwidth neighbors, or null. */
+/** A break at the space run starting at `i`, or null. */
 function spaceBreak(tokens, i, info) {
   let next = i + 1
   while (tokens[next]?.value === " ") next++
   const left = tokens[i - 1]
   const right = tokens[next]
-  if (!left || !right || isWide(left.value) || isWide(right.value)) return null
+  if (!left || !right) return null
   if (!allowed(left, right, tokens[i].from, info)) return null
   if (!continuesParagraph(tokens, next, info)) return null
   return { end: i, next }
@@ -225,16 +252,17 @@ function commaBreak(tokens, i, info) {
 /** The last allowed break whose line fits within the limit, or null. */
 function lastBreakWithin(tokens, prefix, info) {
   let width = widthOf(prefix)
-  let best = null
+  let comma = null
+  let space = null
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
     if (token.value === " " && tokens[i - 1]?.value !== " ")
-      best = spaceBreak(tokens, i, info) ?? best
+      space = spaceBreak(tokens, i, info) ?? space
     width += widthOf(token.value)
     if (width > LIMIT) break
-    if (token.value === "、") best = commaBreak(tokens, i, info) ?? best
+    if (token.value === "、") comma = commaBreak(tokens, i, info) ?? comma
   }
-  return best
+  return comma ?? space
 }
 
 /** The first allowed break of the line, or null. */
@@ -252,20 +280,9 @@ function firstBreak(tokens, info) {
   return null
 }
 
-/** Whether a line exceeds the limit only because of one unbreakable span. */
-function widerOnlyBySpan(prefix, tokens, info) {
-  let widest = 0
-  for (const [from, to] of info.spans) {
-    const span = tokens.filter((t) => t.from >= from && t.to <= to)
-    if (span.length > 0) widest = Math.max(widest, widthOf(textOf(span)))
-  }
-  return widest > 0 && widthOf(prefix + textOf(tokens)) - widest <= LIMIT
-}
-
 /**
- * Greedily wraps a soft line. A line that is too wide only because of an
- * unbreakable span is kept as it is; any other line that cannot be made to fit
- * returns null, without partially wrapping the soft line.
+ * Greedily wraps a soft line. Only a protected word that exceeds the limit by
+ * itself may remain too wide; otherwise failure leaves the whole sentence unchanged.
  */
 function wrapLine(tokens, firstPrefix, continuation, info) {
   const lines = []
@@ -279,7 +296,7 @@ function wrapLine(tokens, firstPrefix, continuation, info) {
     const within = lastBreakWithin(remaining, prefix, info)
     const found = within ?? firstBreak(remaining, info)
     const line = found === null ? remaining : remaining.slice(0, found.end)
-    if (within === null && !widerOnlyBySpan(prefix, line, info)) return null
+    if (within === null && !isOverlongWordLine(prefix, line)) return null
     lines.push(textOf(line))
     remaining = found === null ? [] : remaining.slice(found.next)
     prefix = continuation
@@ -287,7 +304,7 @@ function wrapLine(tokens, firstPrefix, continuation, info) {
   return lines.join(`\n${continuation}`)
 }
 
-/** Wraps a complete sentence; retained halfwidth and hard breaks stay fixed. */
+/** Wraps a sentence while retaining protected and hard line breaks. */
 function wrapSentence(tokens, firstPrefix, continuation, info) {
   const lines = []
   let start = 0
@@ -330,21 +347,27 @@ function paragraphTree(source, continuation) {
 }
 
 /** Computes one paragraph's normal form and records sentences left untouched. */
-function paragraphNormalForm(text, entry, info) {
-  const original = paragraphTokens(text, entry, info)
-  const joined = joinLines(original.tokens, info)
-  const ranges = sentences(joined, info)
+function paragraphNormalForm(entry) {
+  const { text } = entry
+  const original = paragraphTokens(entry)
+  const joined = joinLines(original.tokens)
+  const ranges = sentences(joined, entry)
   const pieces = []
   const unfixable = []
   for (const [index, range] of ranges.entries()) {
     const tokens = joined.slice(range.start, range.end)
+    if (range.citationSpaceAt !== null && range.citationSpaceAt !== undefined) {
+      const at = range.citationSpaceAt - range.start
+      const offset = tokens[at].from
+      tokens.splice(at, 0, { value: " ", from: offset, to: offset, raw: "" })
+    }
     const firstPrefix =
       index === 0 ? original.firstPrefix : original.continuation
     const wrapped = wrapSentence(
       tokens,
       firstPrefix,
       original.continuation,
-      info,
+      entry,
     )
     if (wrapped === null) {
       const from = tokens[0].from
@@ -360,7 +383,7 @@ function paragraphNormalForm(text, entry, info) {
         reason: "No complete layout within 80 columns",
       })
     } else pieces.push(wrapped)
-    if (index < ranges.length - 1)
+    if (range.separator !== undefined || index < ranges.length - 1)
       pieces.push(range.separator ?? `\n${original.continuation}`)
   }
   const output = pieces.join("")
@@ -410,7 +433,7 @@ export const jaLineBreaks = {
         const info = collect(root, text)
         for (const entry of info.paragraphs) {
           const { node } = entry
-          const result = paragraphNormalForm(text, entry, entry)
+          const result = paragraphNormalForm(entry)
           const range = [node.position.start.offset, node.position.end.offset]
           for (const sentence of result.unfixable) {
             context.report({

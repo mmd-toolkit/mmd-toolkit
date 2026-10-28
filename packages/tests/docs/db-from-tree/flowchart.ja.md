@@ -3,15 +3,18 @@
 英語版: [flowchart.md](./flowchart.md)
 
 flowchart 図の木から Db の要約を作る手順です。
-`src/db-from-tree/flowchart.ts` がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
+`src/db-from-tree/flowchart.ts`
+がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
 構文と木は、
-仕様の [diagrams/flowchart.ja.md](../../../spec/docs/diagrams/flowchart.ja.md) と、
-[ast/flowchart.ja.md](../../../spec/docs/ast/flowchart.ja.md) が定めます。
+仕様の [diagrams/flowchart.ja.md](../../../spec/docs/diagrams/flowchart.ja.md)
+と、 [ast/flowchart.ja.md](../../../spec/docs/ast/flowchart.ja.md) が定めます。
 
 フロントマターから来る図のタイトルと、設定に依存する Db の値は、
 木からは得られません。
 Db の値を確かめる側が、
-mermaid.js 自身の関数でそれらを求めます（[設定（参考）](../configuration.ja.md#設定参考) を参照）。
+mermaid.js
+自身の関数でそれらを求めます（[設定（参考）](../configuration.ja.md#設定参考)
+を参照）。
 
 ## 木から要約を作る
 
@@ -26,8 +29,11 @@ subgraph も頂点 `S` も見つけません。
 [fixture: flowchart/db-subgraph-body-data-block-own-id]
 各手順は、
 値を [変換した形](../../../spec/docs/common.ja.md#ソースの読み方) で読み、
-`}` の後の空白は [`}` の後の空白](../../../spec/docs/diagrams/flowchart.ja.md#-の後の空白) のとおりに読みます。
-データブロックの値は読みません。 [fixture: flowchart/db-converted-line-terminators-in-labels]
+`}` の後の空白は
+[`}` の後の空白](../../../spec/docs/diagrams/flowchart.ja.md#-の後の空白)
+のとおりに読みます。
+データブロックの値は読みません。
+[fixture: flowchart/db-converted-line-terminators-in-labels]
 [fixture: flowchart/db-converted-line-terminators-in-click-strings]
 [fixture: flowchart/db-converted-entity-in-click-strings]
 [fixture: flowchart/db-converted-attribute-quote-in-tooltip]
@@ -40,7 +46,8 @@ trim した後のテキストが 2 文字以上で、両端が二重引用符な
 `A[/ "x /]` は `"x`、`A[/ " /]` は `"` です）。
 リンクのテキストも、同じに作ります。
 `A["x"]` の後の `A["x "]` は、
-テキストを `x` のままにします。 [fixture: flowchart/db-vertex-label-string-trailing-space-redefined]
+テキストを `x` のままにします。
+[fixture: flowchart/db-vertex-label-string-trailing-space-redefined]
 [fixture: flowchart/db-label-slanted-quote-only]
 [fixture: flowchart/db-label-slanted-quote-at-end-only]
 [fixture: flowchart/db-label-slanted-quotes-inner-spaces]
@@ -49,12 +56,12 @@ trim した後のテキストが 2 文字以上で、両端が二重引用符な
 [fixture: flowchart/db-label-line-separator-trimmed]
 値が両端に空白を持つのは、先頭の文字列の区切りの内側か、
 ラベルがすべて空白のときだけです。
-ほかの値は [共通の葉のノード](../../../spec/docs/ast.ja.md#共通の葉のノード) の値で、
-Identifier の `name` と、StringLiteral、NumericLiteral、
+ほかの値は [共通の葉のノード](../../../spec/docs/ast.ja.md#共通の葉のノード)
+の値で、 Identifier の `name` と、StringLiteral、NumericLiteral、
 FlowchartLiteral の `value` です。
 id、クラス名、スタイルのリストの null の要素は、
-空のテキストを表します（**スタイルの文**を参照）。 [fixture: flowchart/db-linkstyle-whitespace-only-style]
-[fixture:
+空のテキストを表します（**スタイルの文**を参照）。
+[fixture: flowchart/db-linkstyle-whitespace-only-style] [fixture:
 flowchart/db-classdef-whitespace-only-style]
 [fixture: flowchart/db-linkstyle-default-whitespace-only-style]
 [fixture: flowchart/db-class-ids-empty-subgraph-id]
@@ -63,7 +70,8 @@ flowchart/db-classdef-whitespace-only-style]
 クリックの文の `callback` は、
 Identifier の `name` か FlowchartLiteral の `value`、
 `arguments` は FlowchartLiteral の `value` で、
-書かれたままです（下の**クリックの文**を参照）。 [fixture: flowchart/db-converted-line-terminators-in-callback]
+書かれたままです（下の**クリックの文**を参照）。
+[fixture: flowchart/db-converted-line-terminators-in-callback]
 
 **方向。**
 ヘッダーの方向です。
@@ -104,13 +112,14 @@ id と、省略可能なラベル、形、スタイル、プロパティを取�
    テキストを持つ頂点は、空のテキストも含め、
    そのテキストとラベルの種類を保ちます。
    `A[Start]-->B` の後の `A-->C` も `C-->A[Start]` も、
-   A のラベルを `Start` のままにします。 [fixture: flowchart/db-vertex-label-kept-without-label]
-   [fixture:
+   A のラベルを `Start` のままにします。
+   [fixture: flowchart/db-vertex-label-kept-without-label] [fixture:
    flowchart/db-vertex-label-redefined-same]
    [fixture: flowchart/db-vertex-label-type-kept-without-label]
    [fixture: flowchart/db-vertex-label-whitespace-only-kept]
 4. 形があれば、
-   その形の Db の type （[形](../../../spec/docs/diagrams/flowchart.ja.md#形) を参照）が頂点の type になります。
+   その形の Db の type （[形](../../../spec/docs/diagrams/flowchart.ja.md#形)
+   を参照）が頂点の type になります。
    スタイルがあれば、
    頂点のスタイルに加えます。 [fixture: flowchart/db-vertex-shape-replaced]
    [fixture: flowchart/db-style-appended-twice]
@@ -131,8 +140,8 @@ id と、省略可能なラベル、形、スタイル、プロパティを取�
    一方、`class` の文は頂点を加えず `props` を作らないので、
    その後の `A[|__proto__:x|text]` が `__proto__` を持つ `props` を作ります。
    mermaid.js は、
-   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L229-L233) で、
-   既存の `props` にプロパティを、素のオブジェクトへの代入で加えます。
+   [`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L229-L233)
+   で、既存の `props` にプロパティを、素のオブジェクトへの代入で加えます。
    そこでは `__proto__` はキーになりません。 [fixture: flowchart/db-props-merge]
    [fixture:
    flowchart/db-props-existing-vertex] [fixture: flowchart/db-props-replaced]
@@ -171,29 +180,35 @@ flowchart/db-class-before-vertex]
 クラスでクラスの手順を（そのため `A,B:::c` は、
 頂点 `A` と `B` があればそれらにクラスを与え、
 頂点 `A,B` には与えません。 `e1:::c` は辺 `e1` に与えます）、
-次にグループの中でその前の頂点がデータブロックを持てばそれらを適用します。 [fixture: flowchart/db-class-vertex-id-with-comma-existing]
+次にグループの中でその前の頂点がデータブロックを持てばそれらを適用します。
+[fixture: flowchart/db-class-vertex-id-with-comma-existing]
 [fixture: flowchart/db-class-vertex-class-on-edge-id]
 グループの最後の頂点の後に、その頂点のデータブロックが来ます。
-`A@{ label: x } --> A[y]` の `A` のラベルは `y` です。 [fixture: flowchart/db-data-before-target-group]
+`A@{ label: x } --> A[y]` の `A` のラベルは `y` です。
+[fixture: flowchart/db-data-before-target-group]
 各リンクの行き先のグループの後に、そのリンクの辺が来ます。
-`A e1@--> e1` では、頂点 `e1` が加わり、 `A` からそこへの辺が id
-`e1` を取ります。 [fixture: flowchart/db-link-edges-after-target-group]
+`A e1@--> e1` では、頂点 `e1` が加わり、
+`A` からそこへの辺が id `e1` を取ります。
+[fixture: flowchart/db-link-edges-after-target-group]
 そのため、`&` が後に続く頂点のデータブロックは、次の頂点の後に適用されます。
-`A@{ label: x } & A[y]` の `A` のラベルは `x` です。 [fixture: flowchart/db-data-after-next-vertex]
+`A@{ label: x } & A[y]` の `A` のラベルは `x` です。
+[fixture: flowchart/db-data-after-next-vertex]
 頂点の文のメンバーは、
-[文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否) の **subgraph のメンバー** が定めます。
+[文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否)
+の **subgraph のメンバー** が定めます。
 
 **リンク。**
 リンクは、その前のグループから行き先のグループへ、
-[文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否) の **linkStyle の番号** が数える辺を作ります。
+[文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否)
+の **linkStyle の番号** が数える辺を作ります。
 最初のグループの各頂点について、順に、
 行き先のグループの各頂点への辺を順に 1 本ずつ作ります。
 各辺は、始点と終点の id、矢印の type、stroke、length（下を参照、
 10 を超える length は 10）、
 ラベルのテキストとラベルの種類（ラベルがなければ空のテキストと `text`）、
 クラスなし、その時点で設定されていれば、
-`linkStyle default` の既定の interpolate を持ちます。 [fixture: flowchart/db-arrow-length-cap]
-[fixture:
+`linkStyle default` の既定の interpolate を持ちます。
+[fixture: flowchart/db-arrow-length-cap] [fixture:
 flowchart/db-default-interpolate-later-edge]
 [fixture: flowchart/db-arrow-length-cap-lines]
 その id は次のとおりです。
@@ -203,8 +218,8 @@ flowchart/db-default-interpolate-later-edge]
   ただし、それより前の辺がその id を持っていれば使いません。
   Db の id は、辺の id が `@` を含まなければそのままです。
   含めば、その最初の `@` を除き、末尾に `@` を足したものです。
-  そのような辺の `isUserDefinedId` は true です。 [fixture: flowchart/db-edge-id-group]
-  [fixture: flowchart/db-edge-id-reused]
+  そのような辺の `isUserDefinedId` は true です。
+  [fixture: flowchart/db-edge-id-group] [fixture: flowchart/db-edge-id-reused]
   [fixture: flowchart/db-edge-id-at-sign]
   [fixture: flowchart/db-edge-id-generated-id-taken]
   [fixture: flowchart/db-edge-id-group-duplicate-vertex]
@@ -213,7 +228,8 @@ flowchart/db-default-interpolate-later-edge]
   あればその数に 1 を足したものです。
   数える辺の id は問いません。
   3 つ目の `A-->B` は `L_A_B_3` になり、
-  `A e1@-->B` の後の `A-->B` は `L_A_B_2` になります。 [fixture: flowchart/db-edge-id-counter]
+  `A e1@-->B` の後の `A-->B` は `L_A_B_2` になります。
+  [fixture: flowchart/db-edge-id-counter]
   [fixture: flowchart/db-edge-id-counter-after-user-id]
 
 辺が、
@@ -221,7 +237,8 @@ flowchart/db-default-interpolate-later-edge]
 辺は、そこが数えるのと同じに数えます。
 リンクは、最初のグループの頂点と行き先のグループの頂点の組ごとに 1 本と数え、
 subgraph の本体のリンクも数えます。
-ちょうど `maxEdges` 本の入力は受理されます。 [fixture: flowchart/config-max-edges-equal]
+ちょうど `maxEdges` 本の入力は受理されます。
+[fixture: flowchart/config-max-edges-equal]
 [fixture: flowchart/config-max-edges-group-exceeded]
 [fixture: flowchart/config-max-edges-group-equal]
 [fixture: flowchart/config-max-edges-in-subgraph-exceeded]
@@ -247,21 +264,22 @@ length は、点線なら矢印の `length` です。
 `---` と `-->` の length は 1 です。
 `A x-->B` は type `arrow_point`、stroke `normal`、length 2 で、
 `A x==>B` の stroke は `normal` です。
-`<-->` の type は `double_arrow_point`、 `A x---B` は type `arrow_open`、length
-2 です。
-`~~~` は stroke `invisible`、length 1、 `-..->` は stroke `dotted`、length
-2 です。 [fixture: flowchart/db-arrow-single-forms] [fixture:
+`<-->` の type は `double_arrow_point`、 `A x---B` は type `arrow_open`、
+length 2 です。
+`~~~` は stroke `invisible`、length 1、 `-..->` は stroke `dotted`、
+length 2 です。 [fixture: flowchart/db-arrow-single-forms] [fixture:
 flowchart/lex-link-text-head-letter]
 [fixture: flowchart/db-arrow-dotted-start-marker-unmatched]
 [fixture: flowchart/db-arrow-thick-start-marker-end-none]
 `A o--> B` のように、対応しない始まりの記号が記号として描かれず、
 辺が長くなることは、
-[issue #1665](https://github.com/mermaid-js/mermaid/issues/1665) が不具合として報告していて、
-2026-10-01 の時点で未解決で、不具合として承認されています。
+[issue #1665](https://github.com/mermaid-js/mermaid/issues/1665)
+が不具合として報告していて、 2026-10-01 の時点で未解決で、
+不具合として承認されています。
 そのコメントは、`A o-- test1 --> B` のように、
 そのような 2 つの矢印の間にテキストを持つリンクが、
-矢じりを描かないことも報告していて、これは下の type
-`INVALID` です。 [fixture: flowchart/db-arrow-mixed-markers]
+矢じりを描かないことも報告していて、
+これは下の type `INVALID` です。 [fixture: flowchart/db-arrow-mixed-markers]
 
 開く矢印を持つリンクでは、FlowchartOpeningArrow が、始まりの記号から type を、
 線から stroke を与えます。
@@ -282,8 +300,8 @@ length はありません。
 stroke は両者に共通のもので、length は閉じる矢印のものです。
 `A x-- t --xB` の type は `double_arrow_cross` です。
 `A x-- t -->B` と `A x-- t x--x B` は `INVALID` で、
-後者は `arrow_cross` が `double_arrow_cross` でないからです。 [fixture: flowchart/db-arrow-double]
-[fixture: flowchart/db-arrow-invalid]
+後者は `arrow_cross` が `double_arrow_cross` でないからです。
+[fixture: flowchart/db-arrow-double] [fixture: flowchart/db-arrow-invalid]
 [fixture: flowchart/db-arrow-thick-head-invalid] [fixture:
 flowchart/db-arrow-dash-head-length] [fixture:
 flowchart/db-arrow-closing-double-in-link-text] [fixture:
@@ -295,7 +313,8 @@ flowchart/db-arrow-dotted-closing-start-marker]
 subgraph の文は、その本体の文の後に subgraph を加えます。
 そのため、入れ子の subgraph は、それを囲む subgraph より先に来ます。
 そのメンバーは、
-[文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否) の **subgraph のメンバー** が定めるもので、
+[文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否)
+の **subgraph のメンバー** が定めるもので、
 アクセシビリティの文の値はそのままです（説明の改行はここでは畳まない）。
 subgraph の外の空の文は、
 何も変えません。 [fixture: flowchart/gram-empty-statement-top-level]
@@ -305,8 +324,8 @@ subgraph の外の空の文は、
 mermaid.js は見たメンバーを素のオブジェクトのキーとして持ち、
 `__proto__` はそのキーにならないからです。
 その後、先に加えた subgraph が既に持つメンバーは、
-`__proto__` も含めて除きます。 [fixture: flowchart/db-subgraph-member-empty-statement]
-[fixture:
+`__proto__` も含めて除きます。
+[fixture: flowchart/db-subgraph-member-empty-statement] [fixture:
 flowchart/db-subgraph-member-empty-statement-end] [fixture:
 flowchart/db-subgraph-member-acc-title] [fixture:
 flowchart/db-subgraph-member-acc-descr-block] [fixture:
@@ -320,11 +339,13 @@ flowchart/db-subgraph-member-constructor-to-string]
 [fixture: flowchart/db-subgraph-member-empty-id]
 [fixture: flowchart/db-subgraph-member-has-own-property-then-empty-id]
 メンバー `hasOwnProperty` の後にほかのメンバーが続く subgraph は、拒否されます。
-[文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否) を参照。
+[文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否)
+を参照。
 subgraph は次のものを持ちます。
 
 - `id`:
-  [文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否) の **subgraph のメンバー** が定める id で、
+  [文法の外での拒否](../../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否)
+  の **subgraph のメンバー** が定める id で、
   そこで定める名前のテキストから作ります。
   生成した id は、`subGraph` に、
   それより前に加えた subgraph の数を続けたものです。
@@ -332,23 +353,25 @@ subgraph は次のものを持ちます。
   外側の番号のほうが大きくなります。 [fixture: flowchart/db-subgraph-counter]
   [fixture: flowchart/db-subgraph-counter-nested]
 - `title`: タイトルの値を変換した形を trim したもの、
-  タイトルがなければ名前のテキストを trim したもの。 [fixture: flowchart/db-subgraph-title-trimmed]
+  タイトルがなければ名前のテキストを trim したもの。
+  [fixture: flowchart/db-subgraph-title-trimmed]
 - `labelType`: タイトルの種類。
   タイトルがなければ、
-  名前の種類が `markdown`（つまり名前が markdown 文字列で始まる）なら `markdown`、
-  それ以外は、
+  名前の種類が `markdown`（つまり名前が markdown 文字列で始まる）なら
+  `markdown`、それ以外は、
   文字列で始まる名前でも `text`。 [fixture: flowchart/db-subgraph-quoted-name]
   [fixture:
   flowchart/db-subgraph-markdown-name] [fixture:
   flowchart/gram-subgraph-name-markdown-then-text]
   [fixture: flowchart/db-subgraph-title-markdown]
   [fixture: flowchart/db-subgraph-title-overrides-markdown-name]
-- `dir`: 本体の最後の方向の文の方向（入れ子の subgraph の本体のものは数えません）。
+- `dir`: 本体の最後の方向の文の方向（入れ子の subgraph
+  の本体のものは数えません）。
   なければ、
-  [有効な設定](../configuration.ja.md#有効な設定) の `flowchart.inheritDir` が mermaid.js の判定で真とみなされるとき、
-  つまり `false`、ゼロ、NaN、空の文字列、 null のどれでもないときは、
-  図の方向（上の**方向**が与えるもので、囲む subgraph の方向ではない）、
-  それ以外ではなし。
+  [有効な設定](../configuration.ja.md#有効な設定) の `flowchart.inheritDir` が
+  mermaid.js の判定で真とみなされるとき、つまり `false`、ゼロ、NaN、空の文字列、
+  null のどれでもないときは、図の方向（上の**方向**が与えるもので、
+  囲む subgraph の方向ではない）、それ以外ではなし。
   `true`、`1`、`yes`、文字列の `false` と `0` では subgraph は図の方向を取り、
   `false`、`0`、空の文字列では取らない。
   フロントマターやディレクティブに書いたリストやマッピングは、
@@ -384,7 +407,8 @@ mermaid.js が読むそこの空白を含めて始まり、文の空の説明ブ
 `linkStyle default stroke:red accDescr {}` の最後のスタイルは、`fill:red`、
 `stroke:red`、`stroke:red` で、
 `linkStyle 0 interpolate basis accDescr {} ;` の、
-すべて空白のスタイルは null です。 [fixture: flowchart/gram-empty-description-block-after-style-before-semicolon]
+すべて空白のスタイルは null です。
+[fixture: flowchart/gram-empty-description-block-after-style-before-semicolon]
 [fixture: flowchart/gram-empty-description-block-after-classdef] [fixture:
 flowchart/gram-empty-description-block-after-classdef-before-semicolon]
 [fixture: flowchart/gram-empty-description-block-after-linkstyle] [fixture:
@@ -395,12 +419,13 @@ flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
 `style` は、カンマで分けない id と、そのスタイルで、頂点の手順を適用します。
 そのため、まだどの文も作っていない頂点を加えます。
 `A-->B` の後の `style C fill:red` は、
-スタイル `fill:red` を持つ C を加えます。 [fixture: flowchart/db-style-unknown-vertex]
+スタイル `fill:red` を持つ C を加えます。
+[fixture: flowchart/db-style-unknown-vertex]
 頂点のほかの文より前の `style` の文も、その頂点にスタイルを与えます。
 `A-->B` の前の `style A fill:red` がそうです。
 頂点の手順は subgraph を見ないので、`subgraph S` の後の `style S fill:red` は、
-subgraph とは別に頂点 `S` を加えます。 [fixture: flowchart/db-style-before-vertex]
-[fixture:
+subgraph とは別に頂点 `S` を加えます。
+[fixture: flowchart/db-style-before-vertex] [fixture:
 flowchart/db-style-subgraph-id]
 `classDef` は、そのスタイルの各 `\,` を `,` として読みます。
 各クラス名について、その名前のクラスがなければ末尾に加え、
@@ -409,8 +434,8 @@ flowchart/db-style-subgraph-id]
 `classDef c fill:a\,  stroke:b` のスタイルは `fill:a,`、空白 2 つ、
 `stroke:b` の 1 つです（[style、class、linkStyle の文](../../../spec/docs/diagrams/flowchart.ja.md#styleclasslinkstyle-の文) を参照）。
 `class` は、
-その id とクラス名でクラスの手順を適用します。 [fixture: flowchart/db-class-def-escaped-comma]
-[fixture:
+その id とクラス名でクラスの手順を適用します。
+[fixture: flowchart/db-class-def-escaped-comma] [fixture:
 flowchart/db-classdef-escape-space-before-comma] [fixture:
 flowchart/db-classdef-escape-space-after-comma]
 [fixture: flowchart/db-classdef-appended-twice]
@@ -424,8 +449,8 @@ flowchart/db-classdef-escape-space-after-comma]
 `fill:none` を 1 回加えます。
 この判定は始まりの空白を含めたスタイルを見るので、
 空白の後に書いたスタイルは `fill` で始まりません。
-`linkStyle 0 stroke:#f00 , fill:red` は `fill:none` を得ます。 [fixture: flowchart/db-linkstyle-shared-fill]
-[fixture:
+`linkStyle 0 stroke:#f00 , fill:red` は `fill:none` を得ます。
+[fixture: flowchart/db-linkstyle-shared-fill] [fixture:
 flowchart/db-linkstyle-leading-space-fill]
 [fixture: flowchart/db-linkstyle-leading-line-separator]
 [fixture: flowchart/db-linkstyle-later-style-starts-with-fill]
@@ -434,16 +459,16 @@ flowchart/db-linkstyle-leading-space-fill]
 [fixture: flowchart/db-linkstyle-numbered-edges-only]
 `interpolate` を持ちスタイルを持たない文は、スタイルを変えません。
 辺は前の文が与えたスタイルを保ち、
-`fill:none` も加えません。 [fixture: flowchart/db-linkstyle-interpolate-keeps-style]
-[fixture:
+`fill:none` も加えません。
+[fixture: flowchart/db-linkstyle-interpolate-keeps-style] [fixture:
 flowchart/db-linkstyle-interpolate-only]
 `linkStyle default` は、後で加える辺が取る既定の interpolate と、
 スタイルを持つときは `edgeDefaults` の `style` を設定します。
 `style` はそのスタイルで、前の文のものを置き換え、`fill:none` は加えず、
 どの辺もそれを得ません。
 スタイルを持たないときは、その `style` をそのままにします。
-どの文も設定していなければ null です。 [fixture: flowchart/db-default-linkstyle-interpolate-keeps-style]
-[fixture:
+どの文も設定していなければ null です。
+[fixture: flowchart/db-default-linkstyle-interpolate-keeps-style] [fixture:
 flowchart/db-default-interpolate-later-edge] [fixture:
 flowchart/db-linkstyle-default-no-fill]
 [fixture: flowchart/db-linkstyle-default-styles-replaced]
@@ -454,19 +479,21 @@ flowchart/db-linkstyle-default-no-fill]
 `id`、`name`（コールバック）、
 `args`（`arguments` の `value`。なければ null で、`f(  )` もそうです）です。
 要約は、
-呼び出しがあるときだけ `clickCalls` を持ちます。 [fixture: flowchart/gram-click-call]
+呼び出しがあるときだけ `clickCalls` を持ちます。
+[fixture: flowchart/gram-click-call]
 [fixture: flowchart/tokens-callback-name-trailing-space]
 [fixture: flowchart/tokens-callback-arguments-spaces-at-ends]
 [fixture: flowchart/db-click-callback-whitespace-arguments]
 そのあと、
-クリックの id とクラス `clickable` でクラスの手順を適用します。 [fixture: flowchart/db-click-class-subgraph]
+クリックの id とクラス `clickable` でクラスの手順を適用します。
+[fixture: flowchart/db-click-class-subgraph]
 URL を持つクリックは、id がクリックの id のどれかである各頂点に、
 trim し無害化していない URL を `link`（空ならなし）として、
 リンク先を `linkTarget`（クリックにリンク先がなければなし）として与え、
 次に同じクラスの手順を適用します。
 後のクリックは、その両方を置き換えます。
-`click A href "u" _blank` の後の `click A href "v"` は、 A に `link`
-`v` を与え、`linkTarget` は残しません。
+`click A href "u" _blank` の後の `click A href "v"` は、
+A に `link` `v` を与え、`linkTarget` は残しません。
 `click A href "u"` の後の `click A href " "` は、
 A の `link` を残しません。 [fixture: flowchart/db-click-url-replaces-target]
 [fixture: flowchart/db-click-url-empty-removes-link]
@@ -529,8 +556,8 @@ flowchart/db-acc-descr-unclosed-text-next-line]
 `accDescr: x` の後にテキストの終わりの `accDescr:` が続くと説明は空になり、
 `accDescr { x }` の後に続いても同じです。
 一方、`accDescr: x` の後の `accDescr {  }` は `x` を保ち、
-`accDescr { x }` の後の `accDescr {}` も同じです。 [fixture: flowchart/db-acc-title-empty-replaces]
-[fixture:
+`accDescr { x }` の後の `accDescr {}` も同じです。
+[fixture: flowchart/db-acc-title-empty-replaces] [fixture:
 flowchart/db-acc-descr-empty-replaces] [fixture:
 flowchart/db-acc-descr-block-then-empty-line] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
@@ -542,14 +569,16 @@ flowchart/db-acc-descr-empty-block-after-block]
 `@mmd-toolkit/tests` の `dataBlockEffects` から取ります。
 データブロックを持つ頂点 1 つにつき 1 件で、
 続けて書いたブロックは 1 件と数えます。
-ソースの順です（[`dataBlockEffects`](../embedded-data.ja.md#datablockeffects) を参照）。
+ソースの順です（[`dataBlockEffects`](../embedded-data.ja.md#datablockeffects)
+を参照）。
 `A@{ label: a } & B@{ label: b } --> C@{ label: c } & D@{ label: d }` の件は、
 `A`、`B`、`C`、`D` の件で、
 この順です。 [fixture: flowchart/db-data-block-entries-source-order]
 上に挙げた位置で、次の 1 件を適用します。
 その欄を、頂点の id で最後に加えた subgraph があればそれに、
 なければその id を持つ最初の辺があればそれに、
-なければ頂点の手順が既に加えたその id の頂点に設定します。 [fixture: flowchart/gram-data-consecutive-blocks]
+なければ頂点の手順が既に加えたその id の頂点に設定します。
+[fixture: flowchart/gram-data-consecutive-blocks]
 [fixture: flowchart/db-data-block-subgraph-over-edge]
 [fixture: flowchart/db-data-block-last-subgraph-with-id]
 [fixture: flowchart/db-data-block-edge-over-vertex]

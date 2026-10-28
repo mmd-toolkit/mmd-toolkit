@@ -63,7 +63,8 @@ fixture の読み方は [README](../README.ja.md) にあります。
 正しいテキスト内設定から、仕様が名指しする受理条件の鍵だけを除きます。
 ほかの導出値は保ちます。
 Mermaid の frontmatter タイトルや、
-`wrap` など Db に効く設定も保ちます。 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+`wrap` など Db に効く設定も保ちます。
+[fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
 比較 Db がないことを明示し、Db を作り出したり、
 mermaid.js の拒否を仕様の拒否と扱ったりしません。
@@ -140,22 +141,25 @@ NumericLiteral の `value` がそうで、ほかの欄はそのような数を�
 実装をテストするためのものではありません。
 
 - `@mmd-toolkit/tests`:
-  - `allowsUnsummarizedDb(diagram)`: その区分で `db` が `null` でよいか（`common` だけ）。
+  - `allowsUnsummarizedDb(diagram)`: その区分で `db` が `null`
+    でよいか（`common` だけ）。
   - `parseExpectedFile(json, label)`、`serializeExpectedFile(file)`、
     `fixtureSourceProblem(source)`: `expected.json` を正準形で読み、書き、
     検査する。
 - `@mmd-toolkit/tests/mermaid`:
-  - `detectDiagramType(text, { config })`:
-    mermaid.js の検出器がテキストに与える図種 ID の promise を返す。
+  - `detectDiagramType(text, { config })`: mermaid.js
+    の検出器がテキストに与える図種 ID の promise を返す。
     どれにも当たらなければ `undefined` の promise。
     テキストは解析しないので、mermaid.js が拒否するテキストの図種も分かる。
   - `mermaidVersion`: pin した mermaid.js の版。
-  - `extractFrontmatterTitle(text)`:
-    mermaid.js と同じ方法で取り出したフロントマターの title （[expected-results.ja.md](./expected-results.ja.md) を参照）。
+  - `extractFrontmatterTitle(text)`: mermaid.js
+    と同じ方法で取り出したフロントマターの title
+    （[expected-results.ja.md](./expected-results.ja.md) を参照）。
 
 ## コマンド
 
-`packages/tests` で実行します（または `pnpm --filter @mmd-toolkit/tests run ...`）。
+`packages/tests` で実行します（または
+`pnpm --filter @mmd-toolkit/tests run ...`）。
 
 ```sh
 # pin した mermaid から、全 expected.json、specified.json、
@@ -192,8 +196,8 @@ pnpm run fixtures:set-note notes.json --dry-run
   `expected.json` が変わる fixture を 1 件ずつ、どう変わったかと、
   fixture の `knownDivergence`（あるとき）とともに出す。
   いくつも変わったときは、次のうち最初のものを出す。
-  - `acceptance`:
-    mermaid.js が受理していた入力を拒否するようになったか、その逆。
+  - `acceptance`: mermaid.js が受理していた入力を拒否するようになったか、
+    その逆。
     両側の図種 ID かエラーの名前を添える。
   - `detection`: 受理のまま、別の図種 ID になった。
   - `summary fields`: 要約に、一方にないキーがある。
@@ -281,7 +285,8 @@ mermaid.js が変わった後に集め直しても、新しい入力だけが足
 手で名前を付けます。
 
 チェックアウトの準備と収集の実行方法、
-mermaid.js が拒否する入力の確かめ方は [tools/README.ja.md](../../../tools/README.ja.md) にあります。
+mermaid.js が拒否する入力の確かめ方は
+[tools/README.ja.md](../../../tools/README.ja.md) にあります。
 
 ## 形で入力を選ぶ
 

@@ -166,8 +166,8 @@ flowchart では、文法が 1 つの行として読む `;` だけが空の文�
 `style:#f;x` は `RawText` のトークン `style:#f` と `x` と、
 その間の `IgnoredSemicolon` のトークンです。 [fixture: common/error-style-semicolon-trailing]
 [fixture:
-[ErrorDiagram](../../spec/docs/ast.ja.md#errordiagram) を参照。
 common/error-style-semicolon-inside]
+[ErrorDiagram](../../spec/docs/ast.ja.md#errordiagram) を参照。
 
 ## 根の一覧
 
@@ -372,8 +372,8 @@ mermaid.js はそれも設定のために読みます。 [fixture: common/direct
 ディレクティブを含む、
 印の後のソースのテキストです。 [fixture: sequence/lex-diagram-comment-directive-between-marks]
 [fixture:
-[sequence](../../spec/docs/diagrams/sequence.ja.md#単位と文脈) を参照。
 sequence/lex-diagram-comment-directive-after-single-mark]
+[sequence](../../spec/docs/diagrams/sequence.ja.md#単位と文脈) を参照。
 どの図のコメントでも、印の後のディレクティブはコメントの範囲の中にあり、
 `Directive` のトークンを持ちません。
 sequence の `A->>B: x #c %%{init: {}}%%` の終わりでは、

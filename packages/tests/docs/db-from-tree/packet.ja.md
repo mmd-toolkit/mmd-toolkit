@@ -5,7 +5,9 @@
 `src/db-from-tree/packet.ts` は、
 [ast/packet.md](../../../spec/docs/ast/packet.ja.md) から、
 [要約](../db-summaries.ja.md#packet)を作ります。
-木は [構文と意味上の条件](../../../spec/docs/diagrams/packet.ja.md#意味上の受理条件) で受理済みです。
+木は
+[構文と意味上の条件](../../../spec/docs/diagrams/packet.ja.md#意味上の受理条件)
+で受理済みです。
 builder は parser の拒否検査を繰り返しません。
 
 ## 木から要約を作る手順
@@ -19,8 +21,8 @@ builder は parser の拒否検査を繰り返しません。
    ほかはバックスラッシュだけを除き、十六進・Unicode の escape は復号しません。
    label の空白と空文字は残し、
    文字置換を適用しません。 [fixture: packet/db-label-escapes]
-   [fixture: packet/db-label-single-escapes]
-   [fixture: packet/db-label-space] [fixture: packet/db-label-empty-double]
+   [fixture: packet/db-label-single-escapes] [fixture: packet/db-label-space]
+   [fixture: packet/db-label-empty-double]
    [fixture: packet/db-label-empty-single] [fixture: packet/line-crlf-label]
    [fixture: packet/html-all-fields] [fixture: packet/entity-all-text]
    [fixture: packet/directive-label-middle] [fixture: packet/hidden-yaml-body]
@@ -35,8 +37,8 @@ builder は parser の拒否検査を繰り返しません。
    空の title は共通の embedded title を残し、
    空の accessibility は空の初期値を残します。
    共通の欄に `textReplacementOf(embedded.config)` を適用し、
-   description はその前に `descriptionOf` を通します。 [fixture: packet/common-whitespace]
-   [fixture: packet/accdescr-block-lines]
+   description はその前に `descriptionOf` を通します。
+   [fixture: packet/common-whitespace] [fixture: packet/accdescr-block-lines]
    [fixture: packet/title-repeat] [fixture: packet/title-repeat-empty]
    [fixture: packet/acctitle-repeat-empty]
    [fixture: packet/accdescr-block-repeat]
@@ -46,13 +48,15 @@ builder は parser の拒否検査を繰り返しません。
 3. **設定。**
    渡された embedded/site 設定の `packet.bitsPerRow` を読み、
    欠落と null は 32 にします。
-   `embeddedValuesOf` が記録した `{ "nonFinite": value }` のタグを builder が読む前に数値へ戻します。
+   `embeddedValuesOf` が記録した `{ "nonFinite": value }` のタグを builder
+   が読む前に数値へ戻します。
    value は `"Infinity"`、`"-Infinity"`、`"NaN"` のいずれかです。
    文字列は文字列のままです。
    行境界の乗算は幅を数に変えますが、
    ループ条件の 1 の加算では文字列を連結します。
    幅 `"8"` の条件の上限は `"81"`、数の 8 は 9 です。
-   両方の演算の前に幅を一度だけ数へ変えてはいけません。 [fixture: packet/config-frontmatter-row-negative-fraction]
+   両方の演算の前に幅を一度だけ数へ変えてはいけません。
+   [fixture: packet/config-frontmatter-row-negative-fraction]
    [fixture: packet/config-frontmatter-row-negative-fraction-string]
    [fixture: packet/config-init-row-integer]
    [fixture: packet/config-frontmatter-row-null]
@@ -73,8 +77,8 @@ builder は parser の拒否検査を繰り返しません。
    演算順と double の丸めを保ちます。
    分割前に最後の論理端点をこの end に更新します。
    公開しないブロックや公開上限後も同じです。 [fixture: packet/gram-mixed]
-   [fixture: packet/gram-zero-range]
-   [fixture: packet/db-precision-rounded] [fixture: packet/db-overflow-wide]
+   [fixture: packet/gram-zero-range] [fixture: packet/db-precision-rounded]
+   [fixture: packet/db-overflow-wide]
    [fixture: packet/db-explicit-end-rounded-continuity]
    [fixture: packet/db-cap-later-logical-end]
 5. **公開行。**
@@ -91,8 +95,7 @@ builder は parser の拒否検査を繰り返しません。
    最後には空でない作業行だけを公開します。
    行・ブロック順と重複を残し、各公開端点に `numberOrText` を適用します。
    補助の bit 数は残しません。 [fixture: packet/db-row-split]
-   [fixture: packet/db-row-exact]
-   [fixture: packet/db-same-label]
+   [fixture: packet/db-row-exact] [fixture: packet/db-same-label]
    [fixture: packet/db-cap-following-block-unpublished]
    [fixture: packet/db-frontmatter-infinite-endpoint]
 6. **特殊な幅。**
@@ -128,8 +131,9 @@ builder は parser の拒否検査を繰り返しません。
 error 記録だけの場合は印の読みが拒否するときだけ Db 比較を省きます。
 欠落記録は報告し、比較 Db がない場合も明示します。
 opaque embedded data、HTML frontmatter、C4 検出、
-通過した裸行は既存の共通の読みで扱い、 packet 専用の specified
-reading は作りません。 [fixture: packet/config-frontmatter-fraction]
+通過した裸行は既存の共通の読みで扱い、
+packet 専用の specified reading は作りません。
+[fixture: packet/config-frontmatter-fraction]
 [fixture: packet/config-directive-fraction]
 [fixture: packet/config-frontmatter-overrides-site]
 [fixture: packet/config-directive-overrides-site]
@@ -143,7 +147,8 @@ reading は作りません。 [fixture: packet/config-frontmatter-fraction]
 parser の記録は既定の設定を使います。
 記録した木がサイト設定の比較読みでは拒否になる場合も、木の条件を検査し、
 その拒否の読みとは Db を比べません。
-parser のテストが外部で保持するサイトの幅を適用して受理を検査します。 [fixture: packet/config-fraction-reject]
+parser のテストが外部で保持するサイトの幅を適用して受理を検査します。
+[fixture: packet/config-fraction-reject]
 [fixture: packet/config-directive-overrides-site]
 [fixture: packet/config-frontmatter-overrides-site]
 [fixture: packet/error-rounded-following-wide]

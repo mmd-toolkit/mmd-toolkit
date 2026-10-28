@@ -3,9 +3,11 @@
 英語版: [gantt.md](./gantt.md)
 
 gantt 図の木から Db の要約を作る手順です。
-`src/db-from-tree/gantt.ts` がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
+`src/db-from-tree/gantt.ts`
+がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
 構文と木は、
-仕様の [diagrams/gantt.ja.md](../../../spec/docs/diagrams/gantt.ja.md) と [ast/gantt.ja.md](../../../spec/docs/ast/gantt.ja.md) が定めます。
+仕様の [diagrams/gantt.ja.md](../../../spec/docs/diagrams/gantt.ja.md) と
+[ast/gantt.ja.md](../../../spec/docs/ast/gantt.ja.md) が定めます。
 要約の欄は [db-summaries.ja.md](../db-summaries.ja.md#gantt) にあります。
 
 mermaid.js は、構文解析の間に Db を作ります。
@@ -38,7 +40,8 @@ Db は、
 各属性の引用符は `'` として読みます。
 これはタイトル、URL、コールバック引数の中でのことです。
 URL の文字列は、
-属性の引用符である引用符では終わりません。 [fixture: gantt/entity-placeholder-in-task-text]
+属性の引用符である引用符では終わりません。
+[fixture: gantt/entity-placeholder-in-task-text]
 [fixture: gantt/entity-placeholder-in-task-data]
 [fixture: gantt/entity-placeholder-in-section]
 [fixture: gantt/entity-placeholder-in-title]
@@ -76,7 +79,8 @@ URL の文字列は、
   変換した形にはないので、テキストにもありません。
   `a%%{init: {}}%%b : 1d` はタスク `ab ` で、
   `click id1 href "u%%{init: {}}%%v"` の URL は `uv` です。
-  テキストの単位や文字列の単位の中のコメント行も同じです。 [fixture: gantt/lex-directive-in-task-text]
+  テキストの単位や文字列の単位の中のコメント行も同じです。
+  [fixture: gantt/lex-directive-in-task-text]
   [fixture: gantt/lex-directive-in-task-data]
   [fixture: gantt/lex-directive-in-title-text]
   [fixture: gantt/lex-directive-in-section-text]
@@ -94,8 +98,8 @@ URL の文字列は、
   コールバック引数、URL、アクセシビリティのテキストは、
   それを除いたテキストを持ちます。
   `todayMarker` のテキストもそうで、`;` はそうでなければそれを終えます。
-  click の id やリスト項目では、`;` がその単位を切り、入力は拒否されます。
-  [既知の差異](../../../spec/docs/diagrams/gantt.ja.md#既知の差異)を参照。 [fixture: gantt/tokens-ignored-semicolon-in-title-text]
+  click の id やリスト項目では、`;` がその単位を切り、
+  入力は拒否されます。 [fixture: gantt/tokens-ignored-semicolon-in-title-text]
   [fixture: gantt/tokens-ignored-semicolon-in-section-text]
   [fixture: gantt/tokens-ignored-semicolon-in-task-data]
   [fixture: gantt/tokens-ignored-semicolon-in-task-text]
@@ -107,6 +111,7 @@ URL の文字列は、
   [fixture: gantt/tokens-ignored-semicolon-todaymarker]
   [fixture: gantt/div-ignored-semicolon-in-click-id]
   [fixture: gantt/div-ignored-semicolon-in-list-item]
+  [既知の差異](../../../spec/docs/diagrams/gantt.ja.md#既知の差異)を参照。
 - テキストの両端の空白は、木が持つとおりに残ります。
   説明のテキストはコロンの前の空白を保ちます。
   設定の値、タイトル、section の名前は両端の空白を保ちます。
@@ -142,7 +147,8 @@ URL の文字列は、
 空の description ブロック、つまりテキストのない GanttAccDescrBlockStatement は、
 何も変えません。
 そのまわりの文は、
-それがないものとして実行されます。 [fixture: gantt/gram-acc-descr-block-empty-then-title]
+それがないものとして実行されます。
+[fixture: gantt/gram-acc-descr-block-empty-then-title]
 [fixture: gantt/gram-acc-descr-block-whitespace-only]
 [fixture: gantt/gram-empty-description-block-after-click-statement]
 [fixture: gantt/db-acc-descr-then-empty-block]
@@ -162,10 +168,10 @@ section もタスクもリンクもなく、
   その種類の最後の文の値のテキストで、書かれたとおり、両端の空白を含みます。
   欄 `tickInterval` があるのは、
   `tickInterval` の文があるときだけです。 [fixture: gantt/db-date-format]
-  [fixture: gantt/db-date-format-last-wins]
-  [fixture: gantt/db-axis-format] [fixture: gantt/db-axis-format-last-wins]
-  [fixture: gantt/db-tick-interval] [fixture: gantt/db-tick-interval-last-wins]
-  [fixture: gantt/db-today-marker] [fixture: gantt/db-today-marker-off]
+  [fixture: gantt/db-date-format-last-wins] [fixture: gantt/db-axis-format]
+  [fixture: gantt/db-axis-format-last-wins] [fixture: gantt/db-tick-interval]
+  [fixture: gantt/db-tick-interval-last-wins] [fixture: gantt/db-today-marker]
+  [fixture: gantt/db-today-marker-off]
   [fixture: gantt/db-today-marker-last-wins]
   [fixture: gantt/lex-todaymarker-hash]
 - `includes` と `excludes` は、その種類の文のトークンを、小文字にして、
@@ -178,8 +184,7 @@ section もタスクもリンクもなく、
   語の終わりでは語末のシグマになり、2 つの項目の間にある U+FEFF は、
   書式文字なので、
   シグマにとって語を終えません。 [fixture: gantt/db-includes-tokens]
-  [fixture: gantt/db-excludes-tokens]
-  [fixture: gantt/db-excludes-merged-lines]
+  [fixture: gantt/db-excludes-tokens] [fixture: gantt/db-excludes-merged-lines]
   [fixture: gantt/db-excludes-duplicates]
   [fixture: gantt/lex-excludes-upper-case-items]
   [fixture: gantt/lex-excludes-commas-and-spaces]
@@ -190,10 +195,11 @@ section もタスクもリンクもなく、
   [fixture: gantt/db-includes-sigma-after-bom]
   [fixture: gantt/db-excludes-final-sigma]
 - `inclusiveEndDates` は、
-  `inclusiveEndDates` の文を実行すると `true` になります。 [fixture: gantt/db-inclusive-end-dates]
+  `inclusiveEndDates` の文を実行すると `true` になります。
+  [fixture: gantt/db-inclusive-end-dates]
 - `weekday` と `weekend` は、その種類の最後の文の `day` で、
-  テキストでの大文字小文字によらず小文字です。 [fixture: gantt/db-weekday-last-wins]
-  [fixture: gantt/lex-day-mixed-case]
+  テキストでの大文字小文字によらず小文字です。
+  [fixture: gantt/db-weekday-last-wins] [fixture: gantt/lex-day-mixed-case]
   [fixture: gantt/db-weekend-friday] [fixture: gantt/db-weekend-saturday]
   [fixture: gantt/lex-weekend-upper-case]
 
@@ -226,12 +232,11 @@ section もタスクもリンクもなく、
   タグでない項目は、フラグを立てません。
   `CRIT` や、
   ほかの項目の後ろの `done` がそうです。 [fixture: gantt/gram-task-active]
-  [fixture: gantt/gram-task-tag-then-item]
-  [fixture: gantt/gram-task-crit] [fixture: gantt/gram-task-milestone]
-  [fixture: gantt/gram-task-vert] [fixture: gantt/db-task-tags]
-  [fixture: gantt/db-task-tag-repeated] [fixture: gantt/gram-task-two-tags]
-  [fixture: gantt/db-task-tag-case] [fixture: gantt/gram-task-tag-after-item]
-  [fixture: gantt/gram-task]
+  [fixture: gantt/gram-task-tag-then-item] [fixture: gantt/gram-task-crit]
+  [fixture: gantt/gram-task-milestone] [fixture: gantt/gram-task-vert]
+  [fixture: gantt/db-task-tags] [fixture: gantt/db-task-tag-repeated]
+  [fixture: gantt/gram-task-two-tags] [fixture: gantt/db-task-tag-case]
+  [fixture: gantt/gram-task-tag-after-item] [fixture: gantt/gram-task]
 - それ以外の項目が何を与えるかは、その数で決まります。
   項目が 1 つなら、それが終わりです。
   `raw.endTime` は項目のテキストを持つ `{ data }` で、 `raw.startTime` は、
@@ -247,8 +252,8 @@ section もタスクもリンクもなく、
   ほかの項目と同じ項目です。
   項目が 4 つ以上なら、読みません。
   タスクは `id` を持たず、
-  `raw` は `startTime` も `endTime` も持ちません。 [fixture: gantt/gram-task-one-item]
-  [fixture: gantt/db-task-forms]
+  `raw` は `startTime` も `endTime` も持ちません。
+  [fixture: gantt/gram-task-one-item] [fixture: gantt/db-task-forms]
   [fixture: gantt/db-task-id-numbered]
   [fixture: gantt/db-task-one-item-after-four-items]
   [fixture: gantt/db-task-one-item-after-empty-id]
@@ -261,14 +266,13 @@ section もタスクもリンクもなく、
 - 項目が 1 つか 2 つのタスクの `id` は `task1`、`task2`、…で、
   この方法で id を与えられたタスクの中で、ソースの順に 1 から数えます。
   そのため、項目が 3 つのタスクは書かれた id を持って番号を取らず、
-  項目が 4 つ以上のタスクも番号を取りません。 [fixture: gantt/gram-task-numbered-ids]
-  [fixture: gantt/db-task-id-numbered]
+  項目が 4 つ以上のタスクも番号を取りません。
+  [fixture: gantt/gram-task-numbered-ids] [fixture: gantt/db-task-id-numbered]
   [fixture: gantt/db-task-four-items-no-number]
 - `order` は、それより前のタスクのうち order を持つものの数で、0 から数えます。
   フラグ `vert` のタスクの order は -1 で、
   数えません。 [fixture: gantt/db-task-vert]
-  [fixture: gantt/docs-syntax-gantt-9bf761ee]
-  [fixture: gantt/db-task-forms]
+  [fixture: gantt/docs-syntax-gantt-9bf761ee] [fixture: gantt/db-task-forms]
 
 **click の文。**
 click の文は、id でタスクを参照し、呼び出し部分があればそれを、
@@ -290,8 +294,8 @@ click の文は、id でタスクを参照し、呼び出し部分があれば�
   空のテキストも id です。
   リストの空の id は、id が空のタスクを見つけ、
   なければ何も見つけません。 [fixture: gantt/db-click-before-task]
-  [fixture: gantt/db-click-unknown-id]
-  [fixture: gantt/gram-click-unknown-id] [fixture: gantt/db-task-duplicate-id]
+  [fixture: gantt/db-click-unknown-id] [fixture: gantt/gram-click-unknown-id]
+  [fixture: gantt/db-task-duplicate-id]
   [fixture: gantt/gram-task-duplicate-id-click]
   [fixture: gantt/db-click-between-duplicate-ids]
   [fixture: gantt/spec-gantt-ea3e239d] [fixture: gantt/db-click-task-without-id]
@@ -301,8 +305,7 @@ click の文は、id でタスクを参照し、呼び出し部分があれば�
   これは id が書かれた回数だけ与えます。
   そのため、両方の部分がある文は 2 回与え、
   別の文が同じタスクを参照すればさらに加えます。 [fixture: gantt/db-click-href]
-  [fixture: gantt/db-click-call]
-  [fixture: gantt/db-click-call-then-href]
+  [fixture: gantt/db-click-call] [fixture: gantt/db-click-call-then-href]
   [fixture: gantt/db-click-href-then-call] [fixture: gantt/db-click-ids-list]
   [fixture: gantt/db-click-id-repeated]
   [fixture: gantt/gram-click-two-statements-same-id]
@@ -323,9 +326,8 @@ click の文は、id でタスクを参照し、呼び出し部分があれば�
   引数がないときや、括弧の間が空白だけのときは `null` です。
   欄 `clickCalls` があるのは、
   呼び出しがあるときだけです。 [fixture: gantt/db-click-call]
-  [fixture: gantt/db-click-call-args]
-  [fixture: gantt/db-click-unknown-id] [fixture: gantt/db-click-ids-list]
-  [fixture: gantt/db-click-call-ids-empty-id]
+  [fixture: gantt/db-click-call-args] [fixture: gantt/db-click-unknown-id]
+  [fixture: gantt/db-click-ids-list] [fixture: gantt/db-click-call-ids-empty-id]
   [fixture: gantt/gram-click-call-blank-arguments]
   [fixture: gantt/gram-click-call-name-space-before-parenthesis]
   [fixture: gantt/gram-click-call-arguments-line-feed]
@@ -333,7 +335,8 @@ click の文は、id でタスクを参照し、呼び出し部分があれば�
   [fixture: gantt/config-security-level-loose-click-call]
   [fixture: gantt/config-security-level-antiscript-click-call]
 - URL は、
-  どの `securityLevel` でも書かれたとおりのテキストです。 [fixture: gantt/config-security-level-strict-click-href]
+  どの `securityLevel` でも書かれたとおりのテキストです。
+  [fixture: gantt/config-security-level-strict-click-href]
   [fixture: gantt/config-security-level-sandbox-click-href]
 
 **アクセシビリティ。**
@@ -347,8 +350,7 @@ click の文は、id でタスクを参照し、呼び出し部分があれば�
 テキストは後の行から始まってもかまいません。
 `accTitle:` の次の行が `A` なら、
 タイトルは `A` です。 [fixture: gantt/gram-acc-title]
-[fixture: gantt/db-acc-title]
-[fixture: gantt/db-acc-title-twice]
+[fixture: gantt/db-acc-title] [fixture: gantt/db-acc-title-twice]
 [fixture: gantt/gram-acc-title-line-feed-then-text]
 [fixture: gantt/gram-acc-title-blank-lines-then-text]
 [fixture: gantt/gram-acc-descr] [fixture: gantt/db-acc-descr]
@@ -371,13 +373,14 @@ click の文は、id でタスクを参照し、呼び出し部分があれば�
 Db が `sanitizeText` に通すテキストは 3 つで、タイトル、`accTitle`、
 `accDescr` です。
 `ganttDbOf()` は、
-[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え `textReplacementOf(embedded.config)` を、
-これらのテキストにだけ適用します。
+[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え
+`textReplacementOf(embedded.config)` を、これらのテキストにだけ適用します。
 説明、section、項目、設定の値、トークン、id、URL、コールバックは、
 書かれたとおりです。
 タイトルは、フロントマターのものでも `title` の文のものでも置き換えます。
 `accDescr` は、
-行をつないだあとで置き換えます。 [fixture: gantt/config-security-level-other-title]
+行をつないだあとで置き換えます。
+[fixture: gantt/config-security-level-other-title]
 [fixture: gantt/config-security-level-other-diagram-title]
 [fixture: gantt/config-security-level-other-acc-title]
 [fixture: gantt/config-security-level-other-acc-descr]

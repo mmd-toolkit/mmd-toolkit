@@ -3,7 +3,8 @@
 英語版: [mindmap.md](./mindmap.md)
 
 mindmap 図の木から Db の要約を作る手順です。
-`src/db-from-tree/mindmap.ts` がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
+`src/db-from-tree/mindmap.ts`
+がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
 構文と木は、
 仕様の [diagrams/mindmap.ja.md](../../../spec/docs/diagrams/mindmap.ja.md) と、
 [ast/mindmap.ja.md](../../../spec/docs/ast/mindmap.ja.md) が定めます。
@@ -25,7 +26,8 @@ builder は探しません（**親**を参照）。
 ノードは、Db が足す順に訪ねます。
 ノードは、その下のノードより先です。
 値は、空白を含めて Db が持つとおりに保ちます。
-要約は `getMindmap()` が返す木（[db-summaries.ja.md](../db-summaries.ja.md#mindmap) を参照）なので、
+要約は `getMindmap()`
+が返す木（[db-summaries.ja.md](../db-summaries.ja.md#mindmap) を参照）なので、
 木の各ノードは、要約のノードを 1 つずつ作ります。
 
 ## 木から要約を作る
@@ -45,11 +47,9 @@ class の中でのことです。 [fixture: mindmap/entity-placeholder-in-node-t
 [fixture: mindmap/entity-placeholder-in-description]
 [fixture: mindmap/entity-placeholder-in-icon]
 [fixture: mindmap/entity-placeholder-in-class]
-[fixture: mindmap/lex-string-crlf]
-[fixture: mindmap/lex-string-lone-cr]
+[fixture: mindmap/lex-string-crlf] [fixture: mindmap/lex-string-lone-cr]
 [fixture: mindmap/lex-shape-text-crlf]
-[fixture: mindmap/lex-markdown-string-crlf]
-[fixture: mindmap/lex-icon-crlf]
+[fixture: mindmap/lex-markdown-string-crlf] [fixture: mindmap/lex-icon-crlf]
 [fixture: mindmap/lex-html-attribute-quote-in-description]
 [fixture: mindmap/lex-html-attribute-quote-in-node-text]
 [fixture: mindmap/lex-html-attribute-quote-in-icon]
@@ -104,7 +104,8 @@ class の中でのことです。 [fixture: mindmap/entity-placeholder-in-node-t
   [fixture: mindmap/db-directive-after-node-text]
 - 行規則が無視する `;` も、テキストの中では変換した形にありません。
   `style:#x;y` はノード `style:#xy` で、
-  `a[style:#x;y]` のテキストは `style:#xy` です。 [fixture: mindmap/tokens-ignored-semicolon-in-node-text]
+  `a[style:#x;y]` のテキストは `style:#xy` です。
+  [fixture: mindmap/tokens-ignored-semicolon-in-node-text]
   [fixture: mindmap/tokens-ignored-semicolon-in-shape-text]
 
 **根。**
@@ -141,7 +142,8 @@ builder は、ノードの子を level を比べずに木から、出現順に�
 タブも U+3000 も 1 文字です。
 子は、親より何文字多く字下げしてもかまいません。
 子の level は、
-その文字数に親の level を足したものです。 [fixture: mindmap/db-first-node-unindented]
+その文字数に親の level を足したものです。
+[fixture: mindmap/db-first-node-unindented]
 [fixture: mindmap/db-indent-root-offset]
 [fixture: mindmap/db-first-node-on-header-line]
 [fixture: mindmap/db-first-node-on-header-line-wide-gap]
@@ -158,8 +160,7 @@ builder は、ノードの子を level を比べずに木から、出現順に�
 ラベルのテキストを `descr` に持ちます。
 形だけのノードは、
 ラベルのテキストを両方に持ちます。 [fixture: mindmap/db-first-node-unindented]
-[fixture: mindmap/db-shape-rect]
-[fixture: mindmap/db-shape-without-id]
+[fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-without-id]
 [fixture: mindmap/db-shape-without-id-circle]
 [fixture: mindmap/gram-shape-dash-opener-without-id]
 
@@ -170,10 +171,9 @@ builder は、ノードの子を level を比べずに木から、出現順に�
 `(` は closer からも決まり、`)` なら 1、それ以外の closer なら 4 です。
 ほかの opener では closer は何も決めないので、 `[text)` は 2、
 `((x)` は 3 です。 [fixture: mindmap/db-shape-rect]
-[fixture: mindmap/db-shape-rounded]
-[fixture: mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud]
-[fixture: mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon]
-[fixture: mindmap/db-shape-cloud-dash-form]
+[fixture: mindmap/db-shape-rounded] [fixture: mindmap/db-shape-circle]
+[fixture: mindmap/db-shape-cloud] [fixture: mindmap/db-shape-bang]
+[fixture: mindmap/db-shape-hexagon] [fixture: mindmap/db-shape-cloud-dash-form]
 [fixture: mindmap/db-shape-explode-dash-form]
 [fixture: mindmap/db-shape-mismatched-end]
 [fixture: mindmap/gram-shape-round-other-closer]
@@ -198,9 +198,8 @@ Db は、それらを最後に足したノードに渡します。
 そのような行のないノードは、要約に `icon` も `class` も持ちません。
 icon の行と class の行は互いに独立で、
 単語 `icon` の大文字小文字は関係ありません。 [fixture: mindmap/db-icon-line]
-[fixture: mindmap/db-class-line]
-[fixture: mindmap/db-icon-twice] [fixture: mindmap/db-class-twice]
-[fixture: mindmap/db-icon-and-class-on-child]
+[fixture: mindmap/db-class-line] [fixture: mindmap/db-icon-twice]
+[fixture: mindmap/db-class-twice] [fixture: mindmap/db-icon-and-class-on-child]
 [fixture: mindmap/db-icon-indent-ignored]
 [fixture: mindmap/gram-icon-then-child]
 [fixture: mindmap/db-icon-case-insensitive]
@@ -216,10 +215,11 @@ icon の行と class の行は互いに独立で、
 Db が `sanitizeText` に通すノードのテキストは 4 つで、 id、説明、icon、
 class です。
 `mindmapDbOf()` は、
-[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え `textReplacementOf(embedded.config)` を、
-これらのテキストに適用します。
+[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え
+`textReplacementOf(embedded.config)` を、これらのテキストに適用します。
 要約のテキストは、これですべてです。
 形のないノードと形だけのノードは、`nodeId` と `descr` に同じテキストを持ち、
-それぞれに 1 回ずつ置き換えます。 [fixture: mindmap/config-security-level-other-texts]
+それぞれに 1 回ずつ置き換えます。
+[fixture: mindmap/config-security-level-other-texts]
 [fixture: mindmap/config-security-level-other-html-labels-false]
 [fixture: mindmap/config-security-level-other-shape-only]

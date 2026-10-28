@@ -18,7 +18,8 @@ title はフロントマターの `title` に左右され、
 
 ## 値のある場所
 
-`expected.json` の受理の結果（と `specified.json`。 [expected-results.ja.md](./expected-results.ja.md) を参照）は、
+`expected.json` の受理の結果（と `specified.json`。
+[expected-results.ja.md](./expected-results.ja.md) を参照）は、
 欄 `embedded`（`{ config?, title?, dataBlockEffects? }`）を持つことがあります。
 入力がその値を与えないときは、その欄を置かず、
 どれも与えないときは `embedded` を置きません。
@@ -27,7 +28,8 @@ title はフロントマターの `title` に左右され、
 残りは埋め込まれたデータから何も要りません。
 specified の読みは、自分の `embedded` を持つことがあります。
 mermaid.js が入力を拒否するとき、その読みが、
-ディレクティブの設定やデータブロックの効果を持つ場合です。 [fixture: class/div-comment-then-directive-line-sets-config]
+ディレクティブの設定やデータブロックの効果を持つ場合です。
+[fixture: class/div-comment-then-directive-line-sets-config]
 [fixture: sequence/div-comment-after-number-with-data-block]
 
 - `title` と `dataBlockEffects` は、下に書く値です。
@@ -36,7 +38,8 @@ mermaid.js が入力を拒否するとき、その読みが、
   何も変えないテキストに対する mermaid.js の設定を、
   fixture 自身の `config` で読んだものとの差です。
   実装は、キーを `embedded.config`、fixture の `config`、
-  [`fixtures/default-config.json`](../fixtures/default-config.json) の既定値（`getDefaultConfig()`）の順に探します。
+  [`fixtures/default-config.json`](../fixtures/default-config.json)
+  の既定値（`getDefaultConfig()`）の順に探します。
   オブジェクトはキーごとに重ね、配列とその他の値は置き換えます。
 
 記録する設定の中では、非有限の数を、
@@ -48,7 +51,8 @@ mermaid.js が入力を拒否するとき、その読みが、
 印のある値は重ねる前に数へ戻すので、普通のオブジェクトとして結合せず、
 値を置き換えます。
 `getDefaultConfig()` と `embeddedValuesOf()` は、
-`dbFromTree()` に数の値を渡します。 [fixture: packet/config-frontmatter-row-infinity]
+`dbFromTree()` に数の値を渡します。
+[fixture: packet/config-frontmatter-row-infinity]
 [fixture: packet/config-frontmatter-row-negative-infinity]
 [fixture: packet/config-frontmatter-row-nan]
 [fixture: packet/config-frontmatter-row-infinity-string]
@@ -67,7 +71,8 @@ Db の値は、それらのキーに左右されません。
 `@mmd-toolkit/tests/mermaid` の関数は、設定の全体を含む値を、
 どのテキストにも返します。
 
-- `resolveEmbeddedData(text, { config })` は `{ config, title, dataBlockEffects }` を返す。
+- `resolveEmbeddedData(text, { config })` は
+  `{ config, title, dataBlockEffects }` を返す。
   mermaid.js がテキストを拒否したときは、
   比べる mermaid.js の Db がないので `undefined` を返す。
 - `runMermaidWithEmbeddedData(text, { config })` は、
@@ -86,7 +91,8 @@ Db の値は、それらのキーに左右されません。
   実行時に返す設定では、非有限の数もメモリ上の数として保ち、
   生成器が設定を JSON に記録するときだけ印を付けます。
 - `title` は、
-  `render()` が Db に渡すのと同じフロントマターの title です（[expected-results.ja.md](./expected-results.ja.md) を参照）。
+  `render()` が Db に渡すのと同じフロントマターの title
+  です（[expected-results.ja.md](./expected-results.ja.md) を参照）。
 
 ## `dataBlockEffects`
 
@@ -102,11 +108,11 @@ flowchart では、`A@{ ... }@{ ... }` のように間を空けずに続くブ�
 
 kanban の 1 つのノードに隣り合う `@{ ... }` ブロックは、
 中身を連結した 1 つの接尾部として読み、
-そのグループに 1 つの効果を記録します。 [fixture: kanban/db-metadata-adjacent-comma]
+そのグループに 1 つの効果を記録します。
+[fixture: kanban/db-metadata-adjacent-comma]
 [fixture: kanban/db-metadata-adjacent-empty]
 [fixture: kanban/db-metadata-two-items]
-[fixture: kanban/gram-metadata-two-blocks]
-[fixture: kanban/db-metadata-all]
+[fixture: kanban/gram-metadata-two-blocks] [fixture: kanban/db-metadata-all]
 
 要素は `{ id, set }` です。
 
@@ -134,7 +140,8 @@ JSON の内部を読み直しません。
 ### 記録のしかた
 
 flowchart の Db のパッチが、
-[`FlowDB.addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L127-L277) を包んで記録します。
+[`FlowDB.addVertex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L127-L277)
+を包んで記録します。
 文法はブロックを、
 要素を作る呼び出し（[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L464-L465)）の後に、
 それだけの `addVertex` の呼び出しで渡します（[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L403-L421)）。
@@ -142,7 +149,8 @@ flowchart の Db のパッチが、
 ブロックの中身も、それについての mermaid.js の規則も読みません。
 
 sequence の Db のパッチは、
-[`SequenceDB.addActor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L155-L231) を包んで記録します。
+[`SequenceDB.addActor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L155-L231)
+を包んで記録します。
 文法は参加者のブロックを、
 その参加者を足すのと同じ呼び出しで渡します（[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L358-L367)、
 [`SequenceDB.apply`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L578-L580)）。
@@ -152,15 +160,16 @@ sequence の Db のパッチは、
 2 回の実行で違う欄が、ブロックの効果です。
 ブロックの中身も、それについての mermaid.js の規則も読みません。
 
-kanban の Db のパッチは [`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165) を包みます。
+kanban の Db のパッチは
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
+を包みます。
 文法はノードを追加する同じ呼び出しにブロックを渡します（[`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L126-L133)）。
 その呼び出しをブロックなしとありで実行した後のノードの要約を比べます。
 共有 Db の状態はモジュール変数にあるため、 Db を消去し、
 元のノード追加と装飾の呼び出しでそれまでの状態を復元します。
-次の解析の前に Db の `clear()` とともに記録した効果と問題も消します。 [fixture: kanban/db-metadata-all]
-[fixture: kanban/db-metadata-repeated-id]
-[fixture: kanban/db-decoration-icon-twice]
-[fixture: kanban/header-only-lf]
+次の解析の前に Db の `clear()` とともに記録した効果と問題も消します。
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-repeated-id]
+[fixture: kanban/db-decoration-icon-twice] [fixture: kanban/header-only-lf]
 
 ブロックが要素を作ったり消したり、2 つ以上の要素を変えたりしたとき、
 またブロックなしでは参加者や kanban のノードを足せないときは、

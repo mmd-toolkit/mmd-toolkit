@@ -2,10 +2,13 @@
 
 英語版: [eventmodeling.md](./eventmodeling.md)
 
-`eventmodelingDbOf` は受理済みの [書かれた木](../../../spec/docs/ast/eventmodeling.ja.md)を読み、
+`eventmodelingDbOf` は受理済みの
+[書かれた木](../../../spec/docs/ast/eventmodeling.ja.md)を読み、
 [eventmodeling の要約](../db-summaries.ja.md#eventmodeling)を返す。
-受理は[構文](../../../spec/docs/diagrams/eventmodeling.ja.md#意味上の受理条件)と parser の結果の記録が決める。
-ここでは参照の解決や validator の検査をしない。 [fixture: eventmodeling/gram-written-tree]
+受理は[構文](../../../spec/docs/diagrams/eventmodeling.ja.md#意味上の受理条件)と
+parser の結果の記録が決める。
+ここでは参照の解決や validator の検査をしない。
+[fixture: eventmodeling/gram-written-tree]
 [fixture: eventmodeling/db-source-missing]
 [fixture: eventmodeling/validator-command-invalid]
 
@@ -19,8 +22,8 @@
    実際の frontmatter より後の原文全体で HTML 属性の引用符を変換し、
    entity の placeholder を保つ。
    名前の segment は別々に読み、修飾名を dot でつなぐ。
-   native の無視された本文を設定として評価しない。 [fixture: eventmodeling/entity-texts]
-   [fixture: eventmodeling/entity-common]
+   native の無視された本文を設定として評価しない。
+   [fixture: eventmodeling/entity-texts] [fixture: eventmodeling/entity-common]
    [fixture: eventmodeling/html-common]
    [fixture: eventmodeling/line-block-values]
    [fixture: eventmodeling/space-qualified-name]
@@ -29,8 +32,8 @@
 2. **共通 terminal 全体。**
    木の共通文の値の欄は本文だけを持つ。
    [値の定義](../../../spec/docs/ast/eventmodeling.ja.md#共通の文の値)のとおり、
-   keyword と区切りを含む文の範囲全体と、直前に残る ASCII
-   space/tab の連なりを読む。
+   keyword と区切りを含む文の範囲全体と、
+   直前に残る ASCII space/tab の連なりを読む。
    共通の除去をすべて施した後に数え、
    除いた directive や選ばれた semicolon の両側の空白をつなぐ。
    たとえば選ばれた semicolon は、
@@ -38,13 +41,15 @@
    comment region 自身の字下げと終わりの LF は除く。
    閉じた共通 directive だけの除去、空行、選ばれた semicolon は LF を残す。
    LF、LS、PS は水平の連なりの外にある。
-   受理済みの木は [字下げ](../../../spec/docs/diagrams/eventmodeling.ja.md#共通の文)を満たす。
-   LF の消費は除去後に判断し、semicolon の除去で native
-   directive の closer と LF が直結する場合も含む。
+   受理済みの木は
+   [字下げ](../../../spec/docs/diagrams/eventmodeling.ja.md#共通の文)を満たす。
+   LF の消費は除去後に判断し、
+   semicolon の除去で native directive の closer と LF が直結する場合も含む。
    選ばれない semicolon は構文として、空の説明ブロックは文の境目として残る。
    どちらも除かれたかのように prefix をつながない。
    共通 converter の trim、空白の畳み込み、
-   escape の復号を施さない。 [fixture: eventmodeling/gram-common-leading-directive-both-sides]
+   escape の復号を施さない。
+   [fixture: eventmodeling/gram-common-leading-directive-both-sides]
    [fixture: eventmodeling/gram-common-leading-directive-before-padding]
    [fixture: eventmodeling/gram-common-leading-directive-after-padding]
    [fixture: eventmodeling/gram-common-leading-directive-after-header]
@@ -79,7 +84,8 @@
    description は各 LF と、その後の空白やさらに続く LF を一つの LF に変える。
    それ以外の先頭・末尾の空白は保つ。
    data と名前には security による文字列の置換を施さない。
-   書かれた図全体の title と `embedded.title` は要約に入らない。 [fixture: eventmodeling/common-repeat]
+   書かれた図全体の title と `embedded.title` は要約に入らない。
+   [fixture: eventmodeling/common-repeat]
    [fixture: eventmodeling/common-repeat-empty]
    [fixture: eventmodeling/common-description-repeat]
    [fixture: eventmodeling/common-whitespace]
@@ -111,7 +117,8 @@
    block の直後の変換後の LF は含め、EOF に足す論理 LF も含む。
    閉じの lookahead だけになる space、LS、PS は含めない。
    受理済みの node が持つ、本文ありを優先した閉じの選択を保つ。
-   kind が `inline` または `block` の `{kind, value}` を公開する。 [fixture: eventmodeling/db-data-first]
+   kind が `inline` または `block` の `{kind, value}` を公開する。
+   [fixture: eventmodeling/db-data-first]
    [fixture: eventmodeling/db-data-empty-first]
    [fixture: eventmodeling/db-data-reference-inline]
    [fixture: eventmodeling/db-data-unresolved-inline]
@@ -128,7 +135,8 @@
 
 要約は model entity、note、GWT、未使用の data、型タグ、native の無視された形、
 描画時の計算を除く。
-書かれた node は木と checker の対象として残る。 [fixture: eventmodeling/db-entities-notes-gwt]
+書かれた node は木と checker の対象として残る。
+[fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/db-data-unused]
 [fixture: eventmodeling/gram-written-tree]
 
@@ -136,8 +144,8 @@
 
 `specified.json` があればそれを使い、なければ `expected.json` を使う。
 設定は `embeddedValuesOf` から得る。
-eventmodeling のすべての木と、 eventmodeling と検出される common
-fixture を含める。
+eventmodeling のすべての木と、
+eventmodeling と検出される common fixture を含める。
 site security の fixture は site 設定を使い、
 frontmatter の HTML による値の違いは指定の読みで比較する。
 受理の木が欠けていれば入力とともに報告し、違いも入力とともに報告する。

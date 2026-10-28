@@ -3,9 +3,11 @@
 英語版: [er.md](./er.md)
 
 ER 図の木から Db の要約を作る手順です。
-`src/db-from-tree/er.ts` がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
+`src/db-from-tree/er.ts`
+がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
 構文と木は、
-仕様の [diagrams/er.ja.md](../../../spec/docs/diagrams/er.ja.md) と [ast/er.ja.md](../../../spec/docs/ast/er.ja.md) が定めます。
+仕様の [diagrams/er.ja.md](../../../spec/docs/diagrams/er.ja.md) と
+[ast/er.ja.md](../../../spec/docs/ast/er.ja.md) が定めます。
 要約の欄は [db-summaries.ja.md](../db-summaries.ja.md#er) にあります。
 
 mermaid.js は、構文解析の間に Db を作ります。
@@ -94,8 +96,7 @@ U+2028 は行終端ではなく、
   そのため、引用符付きの名前、別名、コメント、ロール、 subgraph の title は、
   それを除いたテキストを持ちます。
   名前、数、キー、属性ブロックの語では、`;` がその単位を切り、
-  入力は拒否されます。
-  [既知の差異](../../../spec/docs/diagrams/er.ja.md#既知の差異)を参照。 [fixture: er/db-entity-name-quoted-ignored-semicolon]
+  入力は拒否されます。 [fixture: er/db-entity-name-quoted-ignored-semicolon]
   [fixture: er/db-alias-ignored-semicolon]
   [fixture: er/db-subgraph-title-ignored-semicolon]
   [fixture: er/db-attribute-comment-ignored-semicolon]
@@ -104,15 +105,17 @@ U+2028 は行終端ではなく、
   [fixture: er/div-ignored-semicolon-in-name]
   [fixture: er/div-ignored-semicolon-in-key]
   [fixture: er/div-ignored-semicolon-in-attribute-word]
+  [既知の差異](../../../spec/docs/diagrams/er.ja.md#既知の差異)を参照。
 - style の値は、
   その ErLiteral の中にあるトークンの変換した形をつないだものです。
   style の単位の間の空白はトークンではないので、値には含まれません。
   `classDef a fill : #f9f` は `fill:#f9f` を定義し、
-  `classDef a fill:red stroke:blue` は 1 つの style
-  `fill:redstroke:blue` を定義します。
+  `classDef a fill:red stroke:blue` は 1 つの style `fill:redstroke:blue`
+  を定義します。
   一方、U+2028 のように単位に属する空白文字は残ります。
   style の中のエンティティはそのプレースホルダで、
-  行規則が無視する `;` は値にありません。 [fixture: er/lex-classdef-style-spaces]
+  行規則が無視する `;` は値にありません。
+  [fixture: er/lex-classdef-style-spaces]
   [fixture: er/lex-classdef-styles-joined] [fixture: er/lex-style-styles-joined]
   [fixture: er/db-class-def-line-separator]
   [fixture: er/db-style-line-separator]
@@ -141,8 +144,8 @@ direction 文と、テキストのない description ブロックは、何も返
 文の間のコメント行、ディレクティブ行、空行、空白だけの行は、文ではありません。
 2 つのエンティティの間の空の description ブロックがあっても、
 両方とも実行されます。 [fixture: er/db-comment-line]
-[fixture: er/db-directive-line]
-[fixture: er/db-empty-line] [fixture: er/db-whitespace-line]
+[fixture: er/db-directive-line] [fixture: er/db-empty-line]
+[fixture: er/db-whitespace-line]
 [fixture: er/gram-empty-description-block-between-names]
 [fixture: er/header-empty-description-block]
 
@@ -195,8 +198,8 @@ direction 文と、テキストのない description ブロックは、何も返
 ブロックの中のコメント行、ディレクティブ行、空行、
 空白だけの行はテキストではなく、
 ブロックの中の `direction RL` は属性です。 [fixture: er/db-attribute-order]
-[fixture: er/db-attribute-blocks-add-up]
-[fixture: er/db-block-twice] [fixture: er/db-attribute-block-empty]
+[fixture: er/db-attribute-blocks-add-up] [fixture: er/db-block-twice]
+[fixture: er/db-attribute-block-empty]
 [fixture: er/db-attribute-block-empty-after-attributes]
 [fixture: er/db-attribute-block-entity-from-relationship]
 [fixture: er/db-attribute-block-one-line]
@@ -234,11 +237,11 @@ direction 文と、テキストのない description ブロックは、何も返
 - `keys` はキーのテキストを、順に、書かれたままで並べたものです。
   繰り返したキーは 2 回現れ、
   キーがなければ空のリストです。 [fixture: er/db-attribute-keys]
-  [fixture: er/db-attribute-keys-case]
-  [fixture: er/db-attribute-defaults]
+  [fixture: er/db-attribute-keys-case] [fixture: er/db-attribute-defaults]
 - `comment` は引用符の間のコメントのテキストで、空白を含みます。
   コメントが空なら空のテキストで、
-  コメントがなくても空のテキストです。 [fixture: er/db-attribute-comment-with-keys]
+  コメントがなくても空のテキストです。
+  [fixture: er/db-attribute-comment-with-keys]
   [fixture: er/db-attribute-comment-spaces]
   [fixture: er/db-attribute-comment-empty] [fixture: er/db-attribute-defaults]
 
@@ -277,10 +280,9 @@ subgraph の id は、trim したテキストです（**Subgraphs** を参照）
   [fixture: er/db-class-subgraph]
 - `style` 文は、その style を、順に、各名前の対象の `cssStyles` に加えます。
   複数の文の style は足し合わされます。 [fixture: er/db-style-statement]
-  [fixture: er/db-style-twice]
-  [fixture: er/db-style-id-list-spaces] [fixture: er/db-style-undefined-entity]
-  [fixture: er/db-style-before-entity] [fixture: er/db-style-non-ascii]
-  [fixture: er/db-style-semicolon-separator]
+  [fixture: er/db-style-twice] [fixture: er/db-style-id-list-spaces]
+  [fixture: er/db-style-undefined-entity] [fixture: er/db-style-before-entity]
+  [fixture: er/db-style-non-ascii] [fixture: er/db-style-semicolon-separator]
   [fixture: er/db-style-ignored-semicolon]
   [fixture: er/db-style-ignored-semicolon-two-statements]
   [fixture: er/db-style-subgraph] [fixture: er/db-subgraph-style-statement]
@@ -298,7 +300,8 @@ subgraph の id は、trim したテキストです（**Subgraphs** を参照）
   エンティティはどちらにしても作られます。
   名前は trim しません。
   `" S "` は subgraph `S` ではありません。
-  ノードのない subgraph も数えます。 [fixture: er/db-relationship-to-subgraph-after]
+  ノードのない subgraph も数えます。
+  [fixture: er/db-relationship-to-subgraph-after]
   [fixture: er/db-relationship-to-subgraph-before]
   [fixture: er/db-subgraph-relationship-after]
   [fixture: er/db-subgraph-relationship-before]
@@ -311,9 +314,9 @@ subgraph の id は、trim したテキストです（**Subgraphs** を参照）
 - `roleA` はロールのテキストです。
   名前、引用符付きの名前、または文字列で、
   文字列は空でもかまいません。 [fixture: er/db-role-word]
-  [fixture: er/db-role-quoted]
-  [fixture: er/db-role-quoted-empty] [fixture: er/db-role-quoted-percent]
-  [fixture: er/db-role-non-ascii] [fixture: er/db-role-line-separator]
+  [fixture: er/db-role-quoted] [fixture: er/db-role-quoted-empty]
+  [fixture: er/db-role-quoted-percent] [fixture: er/db-role-non-ascii]
+  [fixture: er/db-role-line-separator]
   [fixture: er/db-role-quoted-line-separator]
 - `cardA` はリレーションシップの `rightCardinality` の名前、
   `cardB` は `leftCardinality` の名前です。
@@ -350,11 +353,10 @@ subgraph の id は、trim したテキストです（**Subgraphs** を参照）
 どのエンティティも使わない定義も残り、名前 `default` もほかの名前と同じです。
 style は文の style のテキストで、
 `color` を含むものも含みます。 [fixture: er/db-class-def-styles]
-[fixture: er/db-class-def-several-styles]
-[fixture: er/db-class-def-twice] [fixture: er/db-class-def-twice-empty-line]
-[fixture: er/db-class-def-ids] [fixture: er/db-class-def-unused]
-[fixture: er/db-class-def-default] [fixture: er/db-classdef-twice]
-[fixture: er/db-classdef-color-style]
+[fixture: er/db-class-def-several-styles] [fixture: er/db-class-def-twice]
+[fixture: er/db-class-def-twice-empty-line] [fixture: er/db-class-def-ids]
+[fixture: er/db-class-def-unused] [fixture: er/db-class-def-default]
+[fixture: er/db-classdef-twice] [fixture: er/db-classdef-color-style]
 [fixture: er/db-class-def-semicolon-separator]
 
 **Subgraphs。**
@@ -365,8 +367,8 @@ subgraph は次の値を持ちます。
 - `id` は id のテキストから両端の空白を除いたもので、
   その空白には U+2028 を含みます。
   引用符付きの id は中の空白を保ちます。
-  2 つの subgraph が同じ id を持ってもかまいません。 [fixture: er/db-subgraph-id-quoted]
-  [fixture: er/db-subgraph-id-trimmed]
+  2 つの subgraph が同じ id を持ってもかまいません。
+  [fixture: er/db-subgraph-id-quoted] [fixture: er/db-subgraph-id-trimmed]
   [fixture: er/db-subgraph-string-id-trimmed]
   [fixture: er/db-subgraph-id-line-separator]
   [fixture: er/db-subgraph-same-id-twice]
@@ -376,8 +378,9 @@ subgraph は次の値を持ちます。
   それに文字の置き換え（下を参照）をして、両端の空白を除きます。
   テキストの中の HTML のタグは書かれたとおりに残ります。
   title を変えるのは文字の置き換えだけで、
-  タグはあとで renderer が sanitize します。 [fixture: er/db-subgraph-title-html]
-  [fixture: er/db-subgraph-title-words] [fixture: er/db-subgraph-title-quoted]
+  タグはあとで renderer が sanitize します。
+  [fixture: er/db-subgraph-title-html] [fixture: er/db-subgraph-title-words]
+  [fixture: er/db-subgraph-title-quoted]
   [fixture: er/db-subgraph-title-spaces-collapse]
   [fixture: er/db-subgraph-title-quoted-and-bare]
   [fixture: er/db-subgraph-title-trimmed]
@@ -391,8 +394,7 @@ subgraph は次の値を持ちます。
   空の subgraph は何も持ちません。
   入れ子の subgraph は先に終わるので、それが並べた名前は、
   まわりの subgraph のノードではありません。 [fixture: er/db-subgraph-empty]
-  [fixture: er/db-subgraph-nested]
-  [fixture: er/db-subgraph-nodes-relationship]
+  [fixture: er/db-subgraph-nested] [fixture: er/db-subgraph-nodes-relationship]
   [fixture: er/db-subgraph-nodes-block] [fixture: er/db-subgraph-nodes-alias]
   [fixture: er/db-subgraph-nodes-class-separator]
   [fixture: er/db-subgraph-nodes-untrimmed]
@@ -430,7 +432,8 @@ subgraph は次の値を持ちます。
 - direction 文はノードを与えません。
   空の description ブロックも何も与えず、何も変えません。
   本体の中でも、
-  ヘッダーの後の本体の先頭でも同じです。 [fixture: er/db-subgraph-direction-only]
+  ヘッダーの後の本体の先頭でも同じです。
+  [fixture: er/db-subgraph-direction-only]
   [fixture: er/db-subgraph-nodes-empty-description-block]
   [fixture: er/gram-empty-description-block-first-in-subgraph]
   [fixture: er/gram-subgraph-header-blocks]
@@ -453,8 +456,8 @@ subgraph の中のものは数えません。
 なければ `TB` です。
 title はフロントマターのもので、文字の置き換えをします。
 行 `title T` は 2 つのエンティティです。 [fixture: er/db-direction-values]
-[fixture: er/db-direction-case]
-[fixture: er/db-direction-twice] [fixture: er/db-subgraph-direction-top-level]
+[fixture: er/db-direction-case] [fixture: er/db-direction-twice]
+[fixture: er/db-subgraph-direction-top-level]
 [fixture: er/db-direction-line-text-before]
 [fixture: er/db-direction-line-text-after] [fixture: er/db-title-frontmatter]
 [fixture: er/db-title-frontmatter-quoted]
@@ -472,8 +475,8 @@ title はフロントマターのもので、文字の置き換えをします�
 `accTitle:` の次の行が `A` なら、title は `A` です。
 `accTitle: style:#x;y;` では、最後の `;` が無視され、
 `#x;` はエンティティです。 [fixture: er/db-acc-title-line]
-[fixture: er/db-acc-title-spaces]
-[fixture: er/db-acc-title-replaces] [fixture: er/db-acc-title-twice]
+[fixture: er/db-acc-title-spaces] [fixture: er/db-acc-title-replaces]
+[fixture: er/db-acc-title-twice]
 [fixture: er/db-acc-title-empty-takes-next-line]
 [fixture: er/db-acc-title-directive-in-text]
 [fixture: er/db-acc-title-ignored-semicolon] [fixture: er/db-acc-descr-line]
@@ -495,8 +498,8 @@ title はフロントマターのもので、文字の置き換えをします�
 Db が `sanitizeText` に通すテキストは 4 つで、 title、`accTitle`、`accDescr`、
 subgraph の title です。
 `erDbOf()` は、
-[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え) の置き換え `textReplacementOf(embedded.config)` を、
-この 4 つに対してだけ行います。
+[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え) の置き換え
+`textReplacementOf(embedded.config)` を、この 4 つに対してだけ行います。
 名前、別名、属性、ロール、id、ノード、クラス、style は、書かれたままです。
 subgraph の title は、語をつないだ後、trim する前に置き換えます。
 角括弧がなければ id のテキストです。
@@ -504,7 +507,8 @@ subgraph のノードは置き換えません。
 本体の中の `accTitle` は、図に置き換えた title を与え、
 subgraph にはノードとして書かれたままのテキストを与えます。
 `accDescr` は、
-行をつないだ後に置き換えます。 [fixture: er/config-security-level-other-diagram-title]
+行をつないだ後に置き換えます。
+[fixture: er/config-security-level-other-diagram-title]
 [fixture: er/config-security-level-other-acc-title]
 [fixture: er/config-security-level-other-acc-descr]
 [fixture: er/config-security-level-other-acc-descr-block]

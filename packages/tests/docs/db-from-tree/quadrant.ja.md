@@ -3,9 +3,11 @@
 English version: [quadrant.md](./quadrant.md)
 
 quadrant chart の図の木から Db の要約を作る手順です。
-`src/db-from-tree/quadrant.ts` がこれを実装します（[db-from-tree.md](../db-from-tree.md) を参照）。
+`src/db-from-tree/quadrant.ts`
+がこれを実装します（[db-from-tree.md](../db-from-tree.md) を参照）。
 構文と木は、
-仕様の [diagrams/quadrant.md](../../../spec/docs/diagrams/quadrant.md) と [ast/quadrant.md](../../../spec/docs/ast/quadrant.md) が定めます。
+仕様の [diagrams/quadrant.md](../../../spec/docs/diagrams/quadrant.md) と
+[ast/quadrant.md](../../../spec/docs/ast/quadrant.md) が定めます。
 要約の欄は [db-summaries.md](../db-summaries.md#quadrant) にあります。
 
 mermaid.js は、構文解析のあいだに Db を作ります。
@@ -22,9 +24,10 @@ Db が持つものが要約になります。
 ## 木から要約を作る
 
 **変換後の形。**
-テキストはそれぞれ [変換後の形](../../../spec/docs/common.md#reading-a-source)で読みます。
-文字列とアクセシビリティのテキストの中の各行終端（`\r\n` と単独の `\r` も）は `\n`、
-各属性の引用符は `'`、各エンティティはその代替の文字列です。
+テキストはそれぞれ
+[変換後の形](../../../spec/docs/common.md#reading-a-source)で読みます。
+文字列とアクセシビリティのテキストの中の各行終端（`\r\n` と単独の `\r` も）は
+`\n`、各属性の引用符は `'`、各エンティティはその代替の文字列です。
 ディレクティブ、コメント行、
 無視される `;` は含まれません。 [fixture: quadrant/db-grid-crlf-x-axis-quoted]
 [fixture: quadrant/db-grid-html-x-axis-quoted]
@@ -61,7 +64,8 @@ Db が持つものが要約になります。
   文字の置き換え（後述）をして保たれるので、空白だけの文字列は空のテキストです。
   タイトルも同じように保たれ、`accTitle` のテキストもそうです。
   `accDescr` のテキストは、両端の空白を除き、各改行を、
-  それに続く空白とともに 1 つの改行にして保たれます。 [fixture: quadrant/db-x-axis-spaces-only-string]
+  それに続く空白とともに 1 つの改行にして保たれます。
+  [fixture: quadrant/db-x-axis-spaces-only-string]
   [fixture: quadrant/db-quadrant-twice-empty-spaces]
   [fixture: quadrant/db-acc-descr-trimmed]
   [fixture: quadrant/db-acc-descr-block-blank-lines]
@@ -78,8 +82,7 @@ Db が持つものが要約になります。
 最後のものがタイトルです。 [fixture: quadrant/db-title-frontmatter]
 [fixture: quadrant/db-title-frontmatter-and-statement]
 [fixture: quadrant/db-title-frontmatter-after-statement]
-[fixture: quadrant/db-title-twice]
-[fixture: quadrant/db-title-keyword-alone]
+[fixture: quadrant/db-title-twice] [fixture: quadrant/db-title-keyword-alone]
 
 **アクセシビリティ。**
 `accTitle:` がアクセシビリティのタイトルを設定し、
@@ -92,8 +95,7 @@ Db が持つものが要約になります。
 リテラルが述べるとおりに読みます。 [fixture: quadrant/db-acc-title-plain]
 [fixture: quadrant/db-acc-title-twice]
 [fixture: quadrant/db-acc-title-next-line]
-[fixture: quadrant/db-acc-descr-plain]
-[fixture: quadrant/db-acc-descr-block]
+[fixture: quadrant/db-acc-descr-plain] [fixture: quadrant/db-acc-descr-block]
 [fixture: quadrant/db-acc-descr-block-lines]
 [fixture: quadrant/db-acc-descr-block-empty]
 [fixture: quadrant/db-acc-descr-empty-block-keeps-line-braces]
@@ -103,10 +105,10 @@ Db が持つものが要約になります。
 **象限。**
 要約は 4 つのテキストを、文の順にかかわらず、象限の順に並べます。
 `quadrant-N` の文が象限 N のテキストを設定し、
-象限ごとに最後のものがそのテキストです。 [fixture: quadrant/db-quadrant-all-four]
+象限ごとに最後のものがそのテキストです。
+[fixture: quadrant/db-quadrant-all-four]
 [fixture: quadrant/db-quadrant-reverse-order]
-[fixture: quadrant/db-quadrant-3-alone]
-[fixture: quadrant/db-quadrant-twice]
+[fixture: quadrant/db-quadrant-3-alone] [fixture: quadrant/db-quadrant-twice]
 [fixture: quadrant/db-quadrant-ten]
 
 **軸。**
@@ -126,8 +128,7 @@ Db が持つものが要約になります。
 [fixture: quadrant/db-x-axis-twice-arrow-then-both]
 [fixture: quadrant/db-x-axis-twice-arrow-without-right]
 [fixture: quadrant/db-x-axis-right-only-after-left]
-[fixture: quadrant/db-x-axis-quoted-both]
-[fixture: quadrant/db-y-axis-both]
+[fixture: quadrant/db-x-axis-quoted-both] [fixture: quadrant/db-y-axis-both]
 [fixture: quadrant/db-y-axis-bottom-only]
 
 **点。**
@@ -140,8 +141,7 @@ Db が持つものが要約になります。
 [fixture: quadrant/db-points-same-name]
 [fixture: quadrant/db-point-long-fraction]
 [fixture: quadrant/db-point-coordinate-any-char-x]
-[fixture: quadrant/db-name-markdown]
-[fixture: quadrant/db-class-plain]
+[fixture: quadrant/db-name-markdown] [fixture: quadrant/db-class-plain]
 [fixture: quadrant/db-class-undefined]
 
 **スタイル。**
@@ -160,13 +160,11 @@ Db が持つものが要約になります。
 [fixture: quadrant/db-radius-above-safe-integer]
 [fixture: quadrant/db-style-color]
 [fixture: quadrant/db-style-stroke-width-leading-zero]
-[fixture: quadrant/db-style-two]
-[fixture: quadrant/db-style-two-reversed]
+[fixture: quadrant/db-style-two] [fixture: quadrant/db-style-two-reversed]
 [fixture: quadrant/db-style-same-twice]
 [fixture: quadrant/db-style-radius-colon-after]
 [fixture: quadrant/db-style-color-colon-space-after]
-[fixture: quadrant/db-style-space-around]
-[fixture: quadrant/db-style-four]
+[fixture: quadrant/db-style-space-around] [fixture: quadrant/db-style-four]
 
 **クラス。**
 `classDef` の文は、名前のクラスのスタイルを、
@@ -180,8 +178,7 @@ Db が持つものが要約になります。
 [fixture: quadrant/db-classdef-redefine-order]
 [fixture: quadrant/db-classdef-three-times-partner]
 [fixture: quadrant/db-classdef-point-style-and-class]
-[fixture: quadrant/db-classdef-unused]
-[fixture: quadrant/db-classdef-dash-name]
+[fixture: quadrant/db-classdef-unused] [fixture: quadrant/db-classdef-dash-name]
 [fixture: quadrant/db-grid-nbsp-classdef-name]
 [fixture: quadrant/db-classdef-prototype-used]
 
@@ -196,8 +193,9 @@ Db は、テキストを `sanitizeText` に通します。
 タイトル（フロントマターのものと `title` の文のもの）、
 アクセシビリティのタイトルと説明、軸と象限のテキスト、点の名前です。
 `quadrantDbOf()` は、
-[db-from-tree.md](../db-from-tree.md#the-replacement-of-characters) の置き換え `textReplacementOf(embedded.config)` を、
-これらのテキストにだけ適用します。
+[db-from-tree.md](../db-from-tree.md#the-replacement-of-characters) の置き換え
+`textReplacementOf(embedded.config)` を、これらのテキストにだけ適用します。
 クラス名、座標、スタイルには及びません。
 テキストは、
-上のように読んだ後に置き換えます。 [fixture: quadrant/config-security-level-other-all]
+上のように読んだ後に置き換えます。
+[fixture: quadrant/config-security-level-other-all]

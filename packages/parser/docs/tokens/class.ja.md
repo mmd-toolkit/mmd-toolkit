@@ -143,8 +143,8 @@ mermaid.js がその空白を値の一部として読むところは除きます
   `note%%{init: {}}%% for A "t"` は、
   mermaid.js と同じく A の note です。 [fixture: class/lex-directive-between-note-and-for]
 - 閉じていないバッククォートの名前は、終わりの空白と改行を含めて、
-  mermaid.js が名前に読む最後の文字までの 1 つの `String` のトークンです。
-  [StringLiteral](../../../spec/docs/ast.ja.md#stringliteral) を参照。
+  mermaid.js が名前に読む最後の文字までの、
+  1 つの `String` のトークンです（[StringLiteral](../../../spec/docs/ast.ja.md#stringliteral) を参照）。
   その文字の後のディレクティブは、その外にあります。
   その中のディレクティブは、閉じた文字列と同じく、
   それを `StringFragment` のトークンに切ります。

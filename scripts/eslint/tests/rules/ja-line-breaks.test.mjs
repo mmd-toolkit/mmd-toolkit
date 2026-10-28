@@ -21,8 +21,8 @@ const valid = [
   },
   { name: "hard break is a boundary", code: "先の文  \n次の文。" },
   {
-    name: "halfwidth neighbors retain a break",
-    code: "English words\nstay separate",
+    name: "halfwidth neighbors are joined with a space",
+    code: "English words stay separate",
   },
   {
     name: "period inside fullwidth brackets",
@@ -39,8 +39,8 @@ const valid = [
     code: "この規則は、\n括弧の間に何も持たないか空白だけを持つ `accDescr` のブロックを報告する。",
   },
   {
-    name: "citations retain a halfwidth break",
-    code: "[fixture: first-example]\n[fixture: second-example]",
+    name: "short citation rows are joined with a space",
+    code: "[fixture: first-example] [fixture: second-example]",
   },
   {
     name: "wide-adjacent spaces stay inside a line",
@@ -51,12 +51,12 @@ const valid = [
     code: "`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`",
   },
   {
-    name: "a line too wide only because of a link stays",
-    code: "[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself) は、\n次の説明に続く。",
+    name: "an overlong link occupies its own line",
+    code: "[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself)\nは、次の説明に続く。",
   },
   {
-    name: "a code span with its particle stays when the rest fits",
-    code: "`a-code-span-that-is-wider-than-seventy-columns-and-cannot-be-broken-xxxx` を使う。",
+    name: "a short code span is separated from its particle to fit",
+    code: "`a-code-span-that-is-wider-than-seventy-columns-and-cannot-be-broken-xxxx`\nを使う。",
   },
   { name: "inline code period", code: "`内側。内側、内側` の説明です。" },
   {
@@ -80,24 +80,24 @@ const valid = [
 ]
 const invalid = [
   {
-    name: "wrap after the comma that follows a line kept for its link",
+    name: "put the overlong link alone before the remaining prose",
     code: "[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself) は、次の説明に続く。",
     output:
-      "[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself) は、\n次の説明に続く。",
+      "[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself)\nは、次の説明に続く。",
     errors: [{ messageId: "normalize" }],
   },
   {
-    name: "a kept line follows a wrapped line and precedes another",
+    name: "isolate an overlong link between two prose lines",
     code: "最初の説明は、[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself) に、次の説明に続く。",
     output:
-      "最初の説明は、\n[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself) に、\n次の説明に続く。",
+      "最初の説明は、\n[長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself)\nに、次の説明に続く。",
     errors: [{ messageId: "normalize" }],
   },
   {
-    name: "keep a line too wide for its link inside a list item",
+    name: "isolate the overlong link at the list content column",
     code: "- [長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself) は、次の説明に続く。",
     output:
-      "- [長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself) は、\n  次の説明に続く。",
+      "- [長いリンクの文字列](https://example.com/docs/a-path-that-is-long-enough-to-pass-the-limit-by-itself)\n  は、次の説明に続く。",
     errors: [{ messageId: "normalize" }],
   },
   {
@@ -159,9 +159,9 @@ const invalid = [
     errors: [{ messageId: "normalize" }],
   },
   {
-    name: "retain halfwidth breaks while splitting sentences",
+    name: "join halfwidth breaks before splitting sentences",
     code: "English words\nstay separate。次。",
-    output: "English words\nstay separate。\n次。",
+    output: "English words stay separate。\n次。",
     errors: [{ messageId: "normalize" }],
   },
   {
@@ -210,7 +210,7 @@ const invalid = [
     errors: [{ messageId: "normalize" }],
   },
   {
-    name: "a wide-adjacent space is not a candidate",
+    name: "one space cannot split the remaining overlong prose word",
     code: "parser の説明には空白がありますがこの文には読点がないので長い説明をそのまま残して書き手に文を分けてもらいます。",
     output: null,
     errors: [{ messageId: "cannotFit" }],
@@ -275,114 +275,287 @@ const invalid = [
 new RuleTester(config).run("ja-line-breaks", jaLineBreaks, { valid, invalid })
 
 const linter = new Linter()
+const boundaryCases = {
+  valid: [
+    {
+      name: "a mixed-width space keeps the operator inside prose",
+      code: "最初は RailroadExceptionExpression 全体を operator + で包む\nRailroadPostfixExpression。",
+    },
+    {
+      name: "matching nested citation brackets",
+      code: "説明です。 [fixture: outer[inner。]、残り]",
+    },
+    {
+      name: "multiline inline code is protected",
+      code: "`英語\n日本語。` の説明。",
+    },
+    {
+      name: "image content is protected",
+      code: "説明![内側。内側](image.png)です。",
+    },
+    {
+      name: "inline HTML is protected",
+      code: '説明<span title="内側。内側">文字</span>です。',
+    },
+    {
+      name: "single emphasis closes with the sentence",
+      code: "*最初。*\n次。",
+    },
+    {
+      name: "underscore emphasis closes with the sentence",
+      code: "_最初。_\n次。",
+    },
+    {
+      name: "nested list paragraph columns",
+      code: "- 外側。\n  - 内側。\n\n    最初。\n    次。",
+    },
+    {
+      name: "a comma never begins a line",
+      code: "説明の続き、後の説明です。",
+    },
+  ],
+  invalid: [
+    {
+      name: "retain nested citation content",
+      code: "説明です。 [fixture: outer[inner。]、残り]次。",
+      output: "説明です。 [fixture: outer[inner。]、残り]\n次。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "retain a protected soft break",
+      code: "`英語\n日本語。` の説明。次。",
+      output: "`英語\n日本語。` の説明。\n次。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "retain image content",
+      code: "説明![内側。内側](image.png)です。次。",
+      output: "説明![内側。内側](image.png)です。\n次。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "retain inline HTML",
+      code: '説明<span title="内側。内側">文字</span>です。次。',
+      output: '説明<span title="内側。内側">文字</span>です。\n次。',
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "include closing single emphasis",
+      code: "*最初。* 次。",
+      output: "*最初。*\n次。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "include closing underscore emphasis",
+      code: "_最初。_ 次。",
+      output: "_最初。_\n次。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "normalize a nested list continuation paragraph",
+      code: "- 外側。\n  - 内側。\n\n    最初。次。",
+      output: "- 外側。\n  - 内側。\n\n    最初。\n    次。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "join before a comma instead of starting with it",
+      code: "説明の続き\n、後の説明です。",
+      output: "説明の続き、後の説明です。",
+      errors: [{ messageId: "normalize" }],
+    },
+  ],
+}
 new RuleTester(config).run(
   "ja-line-breaks/protected-and-container-boundaries",
   jaLineBreaks,
-  {
-    valid: [
-      {
-        name: "matching nested citation brackets",
-        code: "説明です。 [fixture: outer[inner。]、残り]",
-      },
-      {
-        name: "multiline inline code is protected",
-        code: "`英語\n日本語。` の説明。",
-      },
-      {
-        name: "image content is protected",
-        code: "説明![内側。内側](image.png)です。",
-      },
-      {
-        name: "inline HTML is protected",
-        code: '説明<span title="内側。内側">文字</span>です。',
-      },
-      {
-        name: "single emphasis closes with the sentence",
-        code: "*最初。*\n次。",
-      },
-      {
-        name: "underscore emphasis closes with the sentence",
-        code: "_最初。_\n次。",
-      },
-      {
-        name: "nested list paragraph columns",
-        code: "- 外側。\n  - 内側。\n\n    最初。\n    次。",
-      },
-      {
-        name: "a comma never begins a line",
-        code: "説明の続き、後の説明です。",
-      },
-    ],
-    invalid: [
-      {
-        name: "retain nested citation content",
-        code: "説明です。 [fixture: outer[inner。]、残り]次。",
-        output: "説明です。 [fixture: outer[inner。]、残り]\n次。",
-        errors: [{ messageId: "normalize" }],
-      },
-      {
-        name: "retain a protected soft break",
-        code: "`英語\n日本語。` の説明。次。",
-        output: "`英語\n日本語。` の説明。\n次。",
-        errors: [{ messageId: "normalize" }],
-      },
-      {
-        name: "retain image content",
-        code: "説明![内側。内側](image.png)です。次。",
-        output: "説明![内側。内側](image.png)です。\n次。",
-        errors: [{ messageId: "normalize" }],
-      },
-      {
-        name: "retain inline HTML",
-        code: '説明<span title="内側。内側">文字</span>です。次。',
-        output: '説明<span title="内側。内側">文字</span>です。\n次。',
-        errors: [{ messageId: "normalize" }],
-      },
-      {
-        name: "include closing single emphasis",
-        code: "*最初。* 次。",
-        output: "*最初。*\n次。",
-        errors: [{ messageId: "normalize" }],
-      },
-      {
-        name: "include closing underscore emphasis",
-        code: "_最初。_ 次。",
-        output: "_最初。_\n次。",
-        errors: [{ messageId: "normalize" }],
-      },
-      {
-        name: "normalize a nested list continuation paragraph",
-        code: "- 外側。\n  - 内側。\n\n    最初。次。",
-        output: "- 外側。\n  - 内側。\n\n    最初。\n    次。",
-        errors: [{ messageId: "normalize" }],
-      },
-      {
-        name: "join before a comma instead of starting with it",
-        code: "説明の続き\n、後の説明です。",
-        output: "説明の続き、後の説明です。",
-        errors: [{ messageId: "normalize" }],
-      },
-      {
-        name: "do not turn an operator into a list marker",
-        code: "最初は RailroadExceptionExpression 全体を operator + で包む\nRailroadPostfixExpression。",
-        output: null,
-        errors: [{ messageId: "cannotFit" }],
-      },
-    ],
-  },
+  boundaryCases,
 )
 
-it("ESLint reaches the same normal form for a citation without a separator", () => {
+const reviewCases = {
+  valid: [
+    {
+      name: "ASCII parentheses contain a period",
+      code: "設定 (例。値) を読む。",
+    },
+    {
+      name: "only matched openers affect later sentences",
+      code: "閉じのない（説明です。\n次の文です。",
+    },
+    {
+      name: "inseparable punctuation stays with an overlong code word",
+      code: "（`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`）。",
+    },
+    {
+      name: "adjacent references stay adjacent",
+      code: "最初の文。 [fixture: case/u2028][fixture: b]\n次の文。",
+    },
+  ],
+  invalid: [
+    {
+      name: "prefer the last comma over a later space within 80",
+      code: "この規則は、あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ `ab` を報告する。",
+      output:
+        "この規則は、\nあいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほ `ab` を報告する。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "use a mixed-width space when no comma fits",
+      code: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよら `ab`。",
+      output:
+        "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよら\n`ab`。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "use a halfwidth space when no comma fits",
+      code: "first English phrase with ordinary words and a deliberately long explanation second English phrase",
+      output:
+        "first English phrase with ordinary words and a deliberately long explanation\nsecond English phrase",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "isolate an overlong word at the beginning",
+      code: "`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it` を説明する。",
+      output:
+        "`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`\nを説明する。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "isolate an overlong word in the middle",
+      code: "前に説明を置く `a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it` 後の説明を置く。",
+      output:
+        "前に説明を置く\n`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`\n後の説明を置く。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "isolate an overlong final word with its period",
+      code: "最後の説明は `a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`。",
+      output:
+        "最後の説明は\n`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "isolate an overlong word inside a list",
+      code: "- `a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it` を説明する。",
+      output:
+        "- `a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`\n  を説明する。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "keep the comma inseparable from an overlong word",
+      code: "`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`、続く説明。",
+      output:
+        "`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`、\n続く説明。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "a four-column code span does not exempt an 84-column line",
+      code: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよら`ab`。",
+      output: null,
+      errors: [{ messageId: "cannotFit" }],
+    },
+    {
+      name: "an eight-column code span does not exempt a 90-column sentence",
+      code: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらり`abcdef`。",
+      output: null,
+      errors: [{ messageId: "cannotFit" }],
+    },
+    {
+      name: "a space lets the sentence with an eight-column span fit",
+      code: "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらり `abcdef`。",
+      output:
+        "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらり\n`abcdef`。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "reflow an already short-line sentence at its mixed-width space",
+      code: "あいうえおかきくけこさしすせそたちつてと\nなにぬねのはひふへほまみむめもやゆよら `ab`。",
+      output:
+        "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよら\n`ab`。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "attach a citation without a separator in one fix",
+      code: "最初の文。[fixture: a/b] 次の文。",
+      output: "最初の文。 [fixture: a/b]\n次の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "keep adjacent references without inserting a space between them",
+      code: "最初の文。[fixture: case/u2028][fixture: b] 次の文。",
+      output: "最初の文。 [fixture: case/u2028][fixture: b]\n次の文。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "join the break between two inline code spans",
+      code: "これは `foo`\n`bar` を使う。",
+      output: "これは `foo` `bar` を使う。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "an unmatched fullwidth opener does not hide sentence ends",
+      code: "閉じのない（説明です。次の文です。",
+      output: "閉じのない（説明です。\n次の文です。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "join a soft break after a period inside ASCII parentheses",
+      code: "設定 (例。\n値) を読む。",
+      output: "設定 (例。値) を読む。",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "keep a final hard break while splitting an earlier sentence",
+      code: "最初。次  \n",
+      output: "最初。\n次  \n",
+      errors: [{ messageId: "normalize" }],
+    },
+    {
+      name: "an overlong span does not exempt adjacent ordinary prose",
+      code: "前に`a-single-protected-name-that-is-longer-than-eighty-columns-and-has-no-break-opportunity-inside-it`後に。",
+      output: null,
+      errors: [{ messageId: "cannotFit" }],
+    },
+  ],
+}
+new RuleTester(config).run(
+  "ja-line-breaks/review-jlb2",
+  jaLineBreaks,
+  reviewCases,
+)
+
+it("fixes another sentence while preserving and reporting an unwrappable one", () => {
   const configured = [{ ...config, rules: { "local/ja-line-breaks": "error" } }]
-  const first = linter.verifyAndFix("説明です。[fixture: a]", configured)
-  expect(first.output).toBe("説明です。 [fixture: a]")
-  expect(first.messages).toEqual([])
-  const second = linter.verifyAndFix(first.output, configured)
-  expect(second.fixed).toBe(false)
-  expect(second.output).toBe(first.output)
+  const messages = linter.verify(
+    "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよら`ab`。\n別の文。次の文。",
+    configured,
+  )
+  expect(messages.map((message) => message.messageId)).toEqual([
+    "cannotFit",
+    "normalize",
+  ])
+  expect(messages[1].fix.text).toBe(
+    "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよら`ab`。\n別の文。\n次の文。",
+  )
+  expect(
+    linter
+      .verify(messages[1].fix.text, configured)
+      .map((message) => message.messageId),
+  ).toEqual(["cannotFit"])
 })
 
-for (const example of invalid) {
+it("one fix reaches the normal form for a citation without a separator", () => {
+  const configured = [{ ...config, rules: { "local/ja-line-breaks": "error" } }]
+  const messages = linter.verify("説明です。[fixture: a]", configured)
+  expect(messages).toHaveLength(1)
+  expect(messages[0].fix.text).toBe("説明です。 [fixture: a]")
+  expect(linter.verify(messages[0].fix.text, configured)).toEqual([])
+})
+
+for (const example of [
+  ...invalid,
+  ...boundaryCases.invalid,
+  ...reviewCases.invalid,
+]) {
   if (example.output === null) continue
   it(`normal form is idempotent: ${example.name}`, () => {
     const messages = linter.verify(example.output, [

@@ -63,8 +63,8 @@ parser が変わったら、
   `tests/fixtures/markdown/` の `mermaid` と `mmd` のコードブロックを、
   `@eslint/markdown` のプロセッサーを通して検査する。
   報告は Markdown のファイルの位置になる。
-- `tests/diagram-rules.test.ts`: 各規則が登録するセレクターを調べ、
-  すべてが規則の図種のノードの型であることを確かめる。
+- `tests/diagram-rules.test.ts`: 図種の規則それぞれが登録するセレクターを調べ、
+  すべてがその図種のノードの型であることを確かめる。
 - `tests/subgraph-ids.test.ts`: `src/utils/subgraph-ids.ts` の `subgraphIdsOf`、
   つまり木から求めた各 subgraph の Db の id を、
   id についての主張を持つコーパスの fixture（テストが名前で挙げる）で、

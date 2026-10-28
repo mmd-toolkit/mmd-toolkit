@@ -58,8 +58,8 @@ parser from its build in `lib/`: rebuild it with
 - `tests/markdown.test.ts`: The `mermaid` and `mmd` code blocks of
   `tests/fixtures/markdown/`, linted through the processor of
   `@eslint/markdown`: the reports are at the places of the Markdown file.
-- `tests/diagram-rules.test.ts`: The selectors that each rule registers, all of
-  which must be node types of the diagram type of the rule.
+- `tests/diagram-rules.test.ts`: The selectors that each rule of a diagram type
+  registers, all of which must be node types of that diagram type.
 - `tests/subgraph-ids.test.ts`: `subgraphIdsOf` of `src/utils/subgraph-ids.ts`,
   the Db id of each subgraph derived from the tree, against the Db that
   mermaid.js gave for the corpus fixtures that hold the claims about the id (the

@@ -3,7 +3,8 @@
 英語版: [journey.md](./journey.md)
 
 journey 図の木から Db の要約を作る手順です。
-`src/db-from-tree/journey.ts` がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
+`src/db-from-tree/journey.ts`
+がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
 構文と木は、
 仕様の [diagrams/journey.ja.md](../../../spec/docs/diagrams/journey.ja.md) と、
 [ast/journey.ja.md](../../../spec/docs/ast/journey.ja.md) が定めます。
@@ -36,7 +37,8 @@ Db は、
 どれであってもテキストの一部ではありません。
 `title T` の後ろが CRLF でも単独の `\r` でも、タイトルは `T` です。
 各属性の引用符は `'` として読みます。
-これはタイトルと説明の中でのことです。 [fixture: journey/entity-placeholder-in-task-text]
+これはタイトルと説明の中でのことです。
+[fixture: journey/entity-placeholder-in-task-text]
 [fixture: journey/entity-placeholder-in-title]
 [fixture: journey/entity-placeholder-in-section]
 [fixture: journey/entity-placeholder-in-person]
@@ -62,7 +64,8 @@ Db は、
   `a%%{init: {}}%%b: 5` はタスク `ab` で、
   `title a%%{init: {}}%%b` のタイトルは `ab`、
   `A: 1%%{init: {}}%%0` のスコアは `10` です。
-  description ブロックの中のコメント行も同じです。 [fixture: journey/lex-directive-in-task-text]
+  description ブロックの中のコメント行も同じです。
+  [fixture: journey/lex-directive-in-task-text]
   [fixture: journey/lex-directive-in-score]
   [fixture: journey/lex-directive-in-person]
   [fixture: journey/lex-directive-in-title-text]
@@ -73,7 +76,8 @@ Db は、
 - 行規則が無視する `;` も、テキストの中では変換した形にありません。
   そのため、説明、スコア、人、タイトル、section の名前、
   アクセシビリティのテキストは、
-  それを除いたテキストを持ちます。 [fixture: journey/tokens-ignored-semicolon-in-task-text]
+  それを除いたテキストを持ちます。
+  [fixture: journey/tokens-ignored-semicolon-in-task-text]
   [fixture: journey/tokens-ignored-semicolon-in-score]
   [fixture: journey/tokens-ignored-semicolon-in-person]
   [fixture: journey/tokens-ignored-semicolon-in-title-text]
@@ -84,7 +88,8 @@ Db は、
 - テキストの両端の空白は、木が持つとおりに残ります。
   説明のテキストはコロンの前の空白を保ちます。
   タイトルと section の名前は両端の空白を保ち、空白だけの名前もそのままです。
-  行を終えるディレクティブが続く場合も同じです。 [fixture: journey/db-task-description-spaces]
+  行を終えるディレクティブが続く場合も同じです。
+  [fixture: journey/db-task-description-spaces]
   [fixture: journey/lex-whitespace-ideographic-space-around-task]
   [fixture: journey/lex-title-two-spaces]
   [fixture: journey/lex-title-trailing-spaces]
@@ -96,7 +101,8 @@ Db は、
 - 人とアクセシビリティのテキストは、その範囲の変換した形から、
   両端の空白を除いたものです。
   mermaid.js がそう trim します。
-  ディレクティブがその空白の隣にあっても同じです。 [fixture: journey/gram-task-people-nbsp-trimmed]
+  ディレクティブがその空白の隣にあっても同じです。
+  [fixture: journey/gram-task-people-nbsp-trimmed]
   [fixture: journey/lex-directive-after-person]
   [fixture: journey/gram-acc-title-trailing-spaces]
   [fixture: journey/lex-acc-title-spaces-around-colon]
@@ -167,7 +173,8 @@ section もタスクもありません。 [fixture: journey/header-only]
   [fixture: journey/gram-task-data-whitespace-only]
 - `people` は、文の `people` の要素ごとに名前を 1 つ持ちます。
   人のテキストか、null の要素なら空のテキストです。
-  2 つ目のコロンのない文は、人を持ちません。 [fixture: journey/db-task-people]
+  2 つ目のコロンのない文は、
+  人を持ちません。 [fixture: journey/db-task-people]
   [fixture: journey/db-task-people-empty-item]
   [fixture: journey/db-task-people-blank]
   [fixture: journey/gram-task-second-colon-at-end]
@@ -209,12 +216,13 @@ section もタスクもありません。 [fixture: journey/header-only]
 Db が `sanitizeText` に通すテキストは 3 つで、タイトル、`accTitle`、
 `accDescr` です。
 `journeyDbOf()` は、
-[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え `textReplacementOf(embedded.config)` を、
-これらのテキストにだけ適用します。
+[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え
+`textReplacementOf(embedded.config)` を、これらのテキストにだけ適用します。
 説明、スコア、人、section の名前は、書かれたとおりです。
 タイトルは、フロントマターのものでも `title` の文のものでも置き換えます。
 `accDescr` は、行をつないだあとで置き換え、
-ブロックも行と同じように置き換えます。 [fixture: journey/config-security-level-other-title]
+ブロックも行と同じように置き換えます。
+[fixture: journey/config-security-level-other-title]
 [fixture: journey/config-security-level-other-diagram-title]
 [fixture: journey/config-security-level-other-acc-title]
 [fixture: journey/config-security-level-other-acc-descr]

@@ -5,7 +5,9 @@
 `src/db-from-tree/gitgraph.ts` は、
 [ast/gitgraph.md](../../../spec/docs/ast/gitgraph.md) から、
 [概要](../db-summaries.md#gitgraph) を組み立てる。
-木は [意味の受理条件](../../../spec/docs/diagrams/gitgraph.md#semantic-acceptance-conditions) を満たしている。
+木は
+[意味の受理条件](../../../spec/docs/diagrams/gitgraph.md#semantic-acceptance-conditions)
+を満たしている。
 builder は parser の受理検査を繰り返さない。
 
 ## 木から概要を組み立てる
@@ -33,8 +35,8 @@ builder は parser の受理検査を繰り返さない。
    空でも最後の代入が勝ち、その変換値が非空のときだけ公開する。
    最後の title が空なら共有の変換済み frontmatter title を保つ。
    最後の accessibility 値が空ならクリア済みの初期値を保つ。
-   description はさらに `descriptionOf` に通す。 [fixture: gitgraph/config-main-branch]
-   [fixture:
+   description はさらに `descriptionOf` に通す。
+   [fixture: gitgraph/config-main-branch] [fixture:
    gitgraph/config-main-empty-name] [fixture: gitgraph/config-main-html]
    [fixture: gitgraph/html-all-texts] [fixture:
    gitgraph/config-gitgraph-html-false] [fixture:

@@ -7,14 +7,14 @@
 [info の空の概要](../db-summaries.md#info) を組み立てる。
 受理した木には常に `{}` を返す。
 showInfo、共通の 4 形式、hidden text は Db の欄に寄与しない。
-書かれた出現は木に保ち、version・effective
-title は合成しない。 [fixture: info/header-lf]
+書かれた出現は木に保ち、
+version・effective title は合成しない。 [fixture: info/header-lf]
 [fixture: info/header-inline-flag] [fixture:
 info/common-all] [fixture: info/common-flag-all]
 [fixture: info/hidden-yaml-body]
 
-frontmatter・directive は共有の埋め込み値を与えるが、 info
-adapter はそのどれも Db に公開しない。 [fixture: info/frontmatter-title]
+frontmatter・directive は共有の埋め込み値を与えるが、
+info adapter はそのどれも Db に公開しない。 [fixture: info/frontmatter-title]
 [fixture: info/frontmatter-config] [fixture:
 info/directive-config]
 

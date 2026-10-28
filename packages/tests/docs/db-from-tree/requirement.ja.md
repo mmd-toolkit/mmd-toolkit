@@ -3,9 +3,11 @@
 英語版: [requirement.md](./requirement.md)
 
 requirement 図の木から Db の要約を作る手順です。
-`src/db-from-tree/requirement.ts` がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
+`src/db-from-tree/requirement.ts`
+がこれを実装します（[db-from-tree.ja.md](../db-from-tree.ja.md) を参照）。
 構文と木は、
-仕様の [diagrams/requirement.ja.md](../../../spec/docs/diagrams/requirement.ja.md) と、
+仕様の
+[diagrams/requirement.ja.md](../../../spec/docs/diagrams/requirement.ja.md) と、
 [ast/requirement.ja.md](../../../spec/docs/ast/requirement.ja.md) が定めます。
 要約の欄は [db-summaries.ja.md](../db-summaries.ja.md#requirement) にあります。
 
@@ -28,7 +30,8 @@ Db は、
 要約も同じように作ります。
 文を出現順に実行し、Db が持つ列がそのまま要約です。
 レイアウトのデータではなく、
-Db 自身の列から取ります（[db-summaries.ja.md](../db-summaries.ja.md#requirement) を参照）。
+Db 自身の列から取ります（[db-summaries.ja.md](../db-summaries.ja.md#requirement)
+を参照）。
 Db が出現順に実行しないものは、
 requirement と element の本体だけです（**Requirements** を参照）。
 値は、空白を含めて Db が持つとおりに保ちます。
@@ -44,7 +47,8 @@ requirement と element の本体だけです（**Requirements** を参照）。
 同じ形では、各行終端（`\r\n` と単独の `\r` も）を `\n` として読みます。
 これは文字列と description ブロックの中でのことです。
 各属性の引用符は `'` として読みます。
-これはアクセシビリティのテキストの中でのことです。 [fixture: requirement/entity-placeholder-in-unquoted-name]
+これはアクセシビリティのテキストの中でのことです。
+[fixture: requirement/entity-placeholder-in-unquoted-name]
 [fixture: requirement/entity-placeholder-in-unquoted-value]
 [fixture: requirement/entity-placeholder-in-requirement-fields]
 [fixture: requirement/entity-placeholder-in-element-fields]
@@ -56,8 +60,7 @@ requirement と element の本体だけです（**Requirements** を参照）。
 [fixture: requirement/header-crlf] [fixture: requirement/header-cr-only]
 [fixture: requirement/db-acc-descr-block-crlf]
 [fixture: requirement/db-acc-descr-block-lone-cr]
-[fixture: requirement/lex-string-crlf]
-[fixture: requirement/lex-string-lone-cr]
+[fixture: requirement/lex-string-crlf] [fixture: requirement/lex-string-lone-cr]
 [fixture: requirement/lex-html-attribute-quote-in-acc-title]
 [fixture: requirement/lex-html-attribute-quote-in-acc-descr]
 [fixture: requirement/lex-html-attribute-quote-in-acc-descr-block]
@@ -98,7 +101,8 @@ requirement と element の本体だけです（**Requirements** を参照）。
   `r:::c%%{init: {}}%%d` のクラスは `cd` です。
   ディレクティブの前の空白はテキストに残り、
   `text: a %%{init: {}}%%b` の text は `a b` です。
-  description ブロックの中のコメント行も同じです。 [fixture: requirement/lex-directive-in-name]
+  description ブロックの中のコメント行も同じです。
+  [fixture: requirement/lex-directive-in-name]
   [fixture: requirement/lex-directive-in-target]
   [fixture: requirement/lex-directive-in-shorthand-class]
   [fixture: requirement/lex-directive-in-value]
@@ -118,7 +122,8 @@ requirement と element の本体だけです（**Requirements** を参照）。
   `"style:#x" - satisfies -> b;c` の端は `bc` です。
   `style` の行でない行の `;` は、テキストの文字です。
   `id: 1;` の id は `1;`、
-  `style r fill:red;` の style は `fill:red;` です。 [fixture: requirement/tokens-ignored-semicolon-in-style]
+  `style r fill:red;` の style は `fill:red;` です。
+  [fixture: requirement/tokens-ignored-semicolon-in-style]
   [fixture: requirement/tokens-ignored-semicolon-in-acc-title]
   [fixture: requirement/tokens-ignored-semicolon-in-acc-descr]
   [fixture: requirement/tokens-ignored-semicolon-in-acc-descr-block]
@@ -155,7 +160,8 @@ requirement と element の本体だけです（**Requirements** を参照）。
 つまりテキストのない RequirementAccDescrBlockStatement は、何も変えません。
 そのまわりの文は、それがないものとして実行されます。
 文が始まりうる場所ならどこでも同じで、
-ヘッダーの後ろでも `}` の後ろでもそうです。 [fixture: requirement/db-class-statement-before-def]
+ヘッダーの後ろでも `}` の後ろでもそうです。
+[fixture: requirement/db-class-statement-before-def]
 [fixture: requirement/lex-bare-percent-line-after-statement]
 [fixture: requirement/lex-percent-brace-line]
 [fixture: requirement/lex-whitespace-line-separator-between-statements]
@@ -285,7 +291,8 @@ requirement は名前で保ち、文が初めてその名前を挙げた順に�
   その requirement の欄を、本体も含めて何も変えません。
   requirement と element は同じ名前を持てます。
   名前はどんな名前でもよく、
-  `__proto__` や `constructor` も同じです。 [fixture: requirement/db-requirement-name-repeated]
+  `__proto__` や `constructor` も同じです。
+  [fixture: requirement/db-requirement-name-repeated]
   [fixture: requirement/db-requirement-and-element-same-name]
   [fixture: requirement/spec-requirement-diagram-7e4de658]
   [fixture: requirement/spec-requirement-diagram-dec8a0d9]
@@ -293,7 +300,8 @@ requirement は名前で保ち、文が初めてその名前を挙げた順に�
 - `requirementId` と `text` は、
   最初の `id` の欄と最初の `text` の欄の値のテキストです。
   引用符付きの値は空白も含め、
-  引用符なしの値は両端の空白を除いたものです。 [fixture: requirement/db-requirement-quoted-values]
+  引用符なしの値は両端の空白を除いたものです。
+  [fixture: requirement/db-requirement-quoted-values]
   [fixture: requirement/db-requirement-value-spaces]
 
 **Elements。**
@@ -304,7 +312,8 @@ element は、
 最初の `type` の欄と最初の `docref` の欄の `type` と `docRef` を持ちます。
 これらはどんなテキストでもよく、本体が設定しなければ空のテキストです。
 すでにある名前は、本体も含めて element の欄を何も変えません。
-本体は requirement の本体と同じように読みます。 [fixture: requirement/db-element-fields]
+本体は requirement の本体と同じように読みます。
+[fixture: requirement/db-element-fields]
 [fixture: requirement/db-element-defaults]
 [fixture: requirement/db-element-fields-repeated]
 [fixture: requirement/db-element-name-repeated]
@@ -388,15 +397,16 @@ requirement と element は、どれも最初にクラス `default` を持ちま
 - `classDef` の文は、各名前の定義に文の style を順に加えます。
   定義がなければ、一覧の最後に作ります。
   そのあと、
-  その時点でそのクラスを持つすべての requirement と element の `cssStyles` にも、
-  同じ style を加えます。
+  その時点でそのクラスを持つすべての requirement と element の `cssStyles`
+  にも、同じ style を加えます。
   クラス `default` もそうです。
   そのため、クラスが style を渡す機会は 2 つあります。
   メンバーがクラスに加わるとき、そのクラスがそれまでに定義されていれば、
   そしてクラスが定義されるとき、そのときのメンバーに対してです。
   同じ名前の 2 つ目の `classDef` は、最初の定義に style を足し、
   位置は動かしません。
-  どの requirement も element も使わない定義も残ります。 [fixture: requirement/db-class-def]
+  どの requirement も element も使わない定義も残ります。
+  [fixture: requirement/db-class-def]
   [fixture: requirement/db-class-def-default-all]
   [fixture: requirement/db-class-statement-before-def]
   [fixture: requirement/db-class-styles-order]
@@ -417,13 +427,14 @@ requirement と element は、どれも最初にクラス `default` を持ちま
 Db が `sanitizeText` に通すテキストは 3 つで、タイトル、`accTitle`、
 `accDescr` です。
 `requirementDbOf()` は、
-[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え `textReplacementOf(embedded.config)` を、
-これらのテキストにだけ適用します。
+[db-from-tree.ja.md](../db-from-tree.ja.md#文字の置き換え)の置き換え
+`textReplacementOf(embedded.config)` を、これらのテキストにだけ適用します。
 名前、id、text、type、参照、リレーションシップの名前、クラス、style は、
 書かれたとおりです。
 フロントマターのタイトルは置き換えます。
 `accDescr` は、行をつないだあとで置き換え、
-ブロックも行と同じように置き換えます。 [fixture: requirement/config-security-level-other-title]
+ブロックも行と同じように置き換えます。
+[fixture: requirement/config-security-level-other-title]
 [fixture: requirement/config-security-level-other-acc-title]
 [fixture: requirement/config-security-level-other-acc-descr]
 [fixture: requirement/config-security-level-other-acc-descr-block]
