@@ -115,6 +115,7 @@ function collectCitations(entry) {
 /** Paragraph-local source ranges and containers, collected from the Markdown tree. */
 function collect(root, text) {
   const paragraphs = []
+
   /** Visits prose containers without traversing non-prose blocks. */
   function visit(node, ancestors = []) {
     if (node.type === "paragraph") {
@@ -137,6 +138,7 @@ function collect(root, text) {
       return
     for (const child of node.children ?? []) visit(child, [...ancestors, node])
   }
+
   visit(root)
   return { paragraphs }
 }

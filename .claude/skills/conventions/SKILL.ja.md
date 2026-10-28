@@ -50,18 +50,21 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   V8 は引数がおよそ 125,000 を超えると `RangeError` を投げる。
   入力はこの数に届く。
   パッケージの helper（`appendItems`、`minOf`、`maxOf`）かループを使う。
-  `pnpm run lint` がこの展開を拒否する（`eslint.config.mjs` の `no-restricted-syntax`）。
+  `pnpm run lint` がこの展開を拒否する（`eslint.config.mjs` の
+  `no-restricted-syntax`）。
   この失敗は fixture ではなくこの規則が守る。
   この大きさの入力はコーパスに記録できないからである。
-- このリポジトリでの図種の名前（fixture のディレクトリ `packages/tests/fixtures/<図種>/`、
-  文書 `<図種>.md`、モジュール、リンターの規則名の接頭辞 `<図種>-`、
-  fixture の `diagram`）は、小文字の ASCII の英数字を 1 語に続けたものにする。
+- このリポジトリでの図種の名前（fixture のディレクトリ
+  `packages/tests/fixtures/<図種>/`、文書 `<図種>.md`、モジュール、
+  リンターの規則名の接頭辞 `<図種>-`、 fixture の `diagram`）は、
+  小文字の ASCII の英数字を 1 語に続けたものにする。
   mermaid.js の `gitGraph` は `gitgraph`、`treeView` は `treeview`、
   `quadrantChart` は `quadrant`。
   ノード型名はその先頭を大文字にした形（`GitgraphDiagram`）。
-  mermaid.js 自身の綴りは、mermaid.js の本文や値を持つ場所に残す:
-  Mermaid の本文（入力や例の見出し語 `gitGraph`、トークンの文字列）、
-  木と Db の `diagramType`、設定の鍵、mermaid.js のソースのパスとリンク。
+  mermaid.js 自身の綴りは、
+  mermaid.js の本文や値を持つ場所に残す: Mermaid の本文（入力や例の見出し語
+  `gitGraph`、トークンの文字列）、木と Db の `diagramType`、設定の鍵、
+  mermaid.js のソースのパスとリンク。
 - 不可視文字（U+2028、U+2029、U+00A0、U+FEFF、制御文字）を、
   ソースや文書に実際の文字として書かない。
   エスケープで書き、書き込み後にバイト列で確かめる。
@@ -75,7 +78,8 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
 
 - 文書で mermaid.js のソースコードに言及するときは、
   pin した版のコミットハッシュ付きの GitHub のパーマリンクで該当行を指す。
-  形は `https://github.com/mermaid-js/mermaid/blob/<コミット>/packages/mermaid/src/<パス>#L<開始>-L<終了>`。
+  形は
+  `https://github.com/mermaid-js/mermaid/blob/<コミット>/packages/mermaid/src/<パス>#L<開始>-L<終了>`。
   リンクの文字列は関数名かファイル名にする。
   リンクのないファイル名や関数名だけの言及は不可。
   pin したコミットは `packages/spec/docs/index.md` に 1 か所で記録する。
@@ -97,14 +101,21 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   文章の行がどこで折れるかに依存する検査やテストを書かない。
   表とコードブロックは折り返されないので、表のセルは短く保ち、
   長い説明は表の下に書く。
-  Prettier は、空白のない日本語の文を折り返さない。
-  そのため、日本語の文書では Prettier は改行を書かれたまま保ち、
-  改行は書き手が書く（`*.ja.md` は `proseWrap: "preserve"`）。
-  1 文を 1 行に書き、長い文は意味の切れ目の `、` の後で改行して、
+  Prettier は空白のない日本語を折り返さないので、
+  日本語の文書では改行を書かれたまま保ち（`*.ja.md` は
+  `proseWrap: "preserve"`）、改行は `pnpm run lint:ja --fix` が書く。
+  1 文を 1 行に置き、長い文は `、` の後で、
+  `、` で収まらないときはコード・リンク・英単語のそばの空白で折って、
   文章のどの行も 80 桁（全角は 2 桁と数える）を超えないようにする。
-  分割できない 1 語（リンク、コード、
-  角括弧の参照）のためだけに 80 桁を超える行は、そのままにする。
-  日本語の改行の決まりは `pnpm run lint:ja` が検査し、`--fix` で直す。
+  リンク、コード、角括弧の参照の 1 語がそれだけで 80 桁を超える行は、
+  そのままにする。
+  この形に並べられない文は書かれたまま残して報告し、
+  書き手が文を分けるか `、` を足す。
+  括弧の中の `。` では文を分けず、文末の強調の閉じと、
+  文に続く `[fixture: …]` の引用はその文の行に置き、
+  全角と半角の境の改行を取った所には空白 1 つを置く。
+  これらは `pnpm run lint:ja` が検査する。
+
 - Mermaid のテキストを入れるコードブロックの info string は `mmd` にする。
   `mermaid` や `text` にしない。
   GitHub は色付けをし、図として描画しようとしない。
@@ -133,7 +144,8 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   例外は、変えた文書を読むテストである。
   どのテストが文書を読むかは、パッケージの SKILL に書く。
 - コードの変更で、
-  作業の途中: その変更が影響しうるテストのファイルを回す（`vitest run <ファイル>`）。
+  作業の途中:
+  その変更が影響しうるテストのファイルを回す（`vitest run <ファイル>`）。
   コードのどの部分にどのテストのファイルが対応するかは、
   パッケージの SKILL に書く。
 - 作業の完了を報告する前: パッケージのテストの全体を 1 回回し、
