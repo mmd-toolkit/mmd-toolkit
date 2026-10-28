@@ -53,10 +53,10 @@
 [fixture: state/lex-directive-in-ignored-text]
 
 コメント領域かディレクティブが切る `String` のトークンは、
-`StringFragment` のトークンになります。
-[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
-[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照。 [fixture: state/tokens-comment-region-in-alias-string]
+`StringFragment` のトークンになります。 [fixture: state/tokens-comment-region-in-alias-string]
 [fixture: state/lex-directive-in-state-string]
+[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
+[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照。
 
 **トークン**は、同じ項目で同じ種類の単位が、
 間に何も挟まずに続く最長の並び（`RawText` の項目では、空白を挟んでもよい）です。
@@ -73,15 +73,15 @@ mermaid.js がその空白を値の一部として読むところは除きます
 そのような並びの中のディレクティブ、コメント領域、無視される `;` は、
 並びが `RawText` か `String` のトークンなら、
 並びを断片に切ります（[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照）。
-ほかの種類の並びの中では、ディレクティブや無視される `;` は入力を拒否させます。
-[単位の中のディレクティブ](../../../spec/docs/diagrams/state.ja.md#単位の中のディレクティブ) を参照。 [fixture: state/lex-directive-in-second-description]
+ほかの種類の並びの中では、
+ディレクティブや無視される `;` は入力を拒否させます。 [fixture: state/lex-directive-in-second-description]
 [fixture: state/tokens-comment-region-in-note-block]
 [fixture: state/tokens-description-ignored-semicolon-inside]
-[fixture: state/div-directive-in-id]
-[fixture: state/div-directive-in-keyword]
+[fixture: state/div-directive-in-id] [fixture: state/div-directive-in-keyword]
 [fixture: state/div-directive-in-arrow]
 [fixture: state/div-ignored-semicolon-in-state-name]
 [fixture: state/div-ignored-semicolon-in-state-name-without-body]
+[単位の中のディレクティブ](../../../spec/docs/diagrams/state.ja.md#単位の中のディレクティブ) を参照。
 
 - キーワード `left of`、`right of`、`end note`、`hide empty description` は、
   語ごとに 1 つの `Keyword` のトークンです。
@@ -101,10 +101,8 @@ mermaid.js がその空白を値の一部として読むところは除きます
   1 つはその後にあります。 [fixture: state/lex-floating-note-extra-quote-before-text]
 - 空の説明ブロックの単位は、文の `textBeforeBody` の中でも種類を保ちます。
   `Keyword` のトークン `accDescr` と、`Punctuator` のトークン `{` と `}` で、
-  StateIgnoredText の範囲の中にあります
-  （[StateIgnoredText](../../../spec/docs/ast/state.ja.md#stateignoredtext)
-  を参照）。
-  [fixture: state/gram-empty-description-block-after-empty-string-before-body]
+  StateIgnoredText の範囲の中にあります。 [fixture: state/gram-empty-description-block-after-empty-string-before-body]
+  （[StateIgnoredText](../../../spec/docs/ast/state.ja.md#stateignoredtext) を参照）。
 - 行の規則が無視する `;` は `IgnoredSemicolon` のトークンで、
   中にある `RawText` か `String` のトークンを切ります（[トークン](../tokens.ja.md#トークン) を参照）。
   `classDef c fill:#f00;` では、スタイルは `fill:#f00` で、

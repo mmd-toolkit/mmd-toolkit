@@ -299,11 +299,11 @@ sequence/lex-acc-title-at-end] [fixture: sequence/lex-acc-title-hash]
 文が始まるところと、文の最後の単位の後、`newline` の前で文になります。
 文が始まるところであるキーワード `sequenceDiagram` のすぐ後では、
 図の `body` の最初の文です（[sequence.ja.md](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック) を参照）。
-ほかの場所では入力は拒否されます。
-[sequence.ja.md](../diagrams/sequence.ja.md#既知の差異) を参照してください。 [fixture: sequence/db-acc-descr-spaces-block-keeps]
+ほかの場所では入力は拒否されます。 [fixture: sequence/db-acc-descr-spaces-block-keeps]
 [fixture: sequence/gram-acc-descr-block-empty-then-statement]
 [fixture: sequence/gram-box-empty-description-block-line]
 [fixture: sequence/header-empty-description-block]
+[sequence.ja.md](../diagrams/sequence.ja.md#既知の差異) を参照してください。
 
 ### SequenceLoopStatement、SequenceOptStatement、SequenceBreakStatement
 

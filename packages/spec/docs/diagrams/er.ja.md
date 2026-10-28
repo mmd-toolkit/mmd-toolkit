@@ -217,8 +217,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   `accDescr { a%%{init: {}}%%b }` の説明も同じです。
   `direction LR x%%{init: {}}%%y` は方向を設定し、
   `classDef a fi%%{init: {}}%%ll:red` はスタイル `fill:red` を定義します。
-  mermaid.js と同じで、スタイルは単位のテキストをつないだものだからです。
-  [ErLiteral](../ast/er.ja.md#erliteral) を参照してください。 [fixture: er/lex-directive-in-role-string]
+  mermaid.js と同じで、
+  スタイルは単位のテキストをつないだものだからです。 [fixture: er/lex-directive-in-role-string]
   [fixture: er/lex-directive-in-quoted-name]
   [fixture: er/lex-directive-in-comment-string]
   [fixture: er/lex-directive-in-backquoted-word]
@@ -227,6 +227,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: er/lex-directive-in-acc-descr-block]
   [fixture: er/lex-directive-in-direction-text]
   [fixture: er/lex-directive-in-style-text]
+  [ErLiteral](../ast/er.ja.md#erliteral) を参照してください。
 - 2 つの単位の間のディレクティブは、単位の種類によらず許されます。
   `A %%{init: {}}%%||--o{ B : x`、`A ||%%{init: {}}%%--o{ B : x`、
   属性の前の `A %%{init: {}}%%{`、`p[%%{init: {}}%%P]`、
@@ -249,8 +250,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   `direction L%%{init: {}}%%R`、`one or %%{init: {}}%%more`、
   `1%%{init: {}}%%+`、`many(%%{init: {}}%%0)`、`|%%{init: {}}%%|`、
   `::%%{init: {}}%%:` では、キーワード、濃度、区切り記号の中にあります。
-  入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
-  [既知の差異](#既知の差異) を参照してください。 [fixture: er/div-directive-in-name]
+  入力は拒否され、
+  mermaid.js は 2 つの部分を 1 つとして読んで受理します。 [fixture: er/div-directive-in-name]
   [fixture: er/div-directive-in-number-name]
   [fixture: er/div-directive-in-decimal-name]
   [fixture: er/div-directive-in-role-name]
@@ -272,6 +273,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: er/div-directive-in-cardinality-many]
   [fixture: er/div-directive-in-cardinality-symbol]
   [fixture: er/div-directive-in-class-separator]
+  [既知の差異](#既知の差異) を参照してください。
 
 **単位の間のトリビア。**
 [common.ja.md](../common.ja.md) のトリビアは、
@@ -1033,10 +1035,11 @@ er/lex-acc-descr-block-unclosed]
 [fixture: er/lex-acc-descr-block-unclosed-lines]
 
 これらの文脈に入る規則は文の文脈の規則だけです。
-属性ブロックと style の文脈では、`accTitle` と `accDescr` は語です。
-[属性ブロックの文脈](#属性ブロックの文脈) と、
-[style の文脈](#style-の文脈) を参照してください。 [fixture: er/lex-block-acc-descr]
+属性ブロックと style の文脈では、
+`accTitle` と `accDescr` は語です。 [fixture: er/lex-block-acc-descr]
 [fixture: er/lex-classdef-empty-description-block]
+[属性ブロックの文脈](#属性ブロックの文脈) と、
+[style の文脈](#style-の文脈) を参照してください。
 
 ### コメント
 

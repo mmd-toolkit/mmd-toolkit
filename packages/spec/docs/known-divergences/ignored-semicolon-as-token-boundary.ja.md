@@ -220,9 +220,9 @@ mermaid.js は `style:#x{;{b}}` と `style:#x{{b};}` を、
 [fixture: kanban/lex-metadata-style-rule]
 
 次の行のセミコロンは選びません。
-`style:#x` の行の後の `::ic;on` はノード本文です。
-[単位の中のディレクティブ](../diagrams/kanban.ja.md#単位の中のディレクティブ) を参照してください。 [fixture: kanban/lex-label-style-rule-other-line]
+`style:#x` の行の後の `::ic;on` はノード本文です。 [fixture: kanban/lex-label-style-rule-other-line]
 [fixture: kanban/lex-semicolon-icon-marker]
+[単位の中のディレクティブ](../diagrams/kanban.ja.md#単位の中のディレクティブ) を参照してください。
 
 C4 の `accDescr { style:#x }Pers;on(a,"A")` は、
 選択された `;` が呼び出し語の内部にあるためここでは拒否し、

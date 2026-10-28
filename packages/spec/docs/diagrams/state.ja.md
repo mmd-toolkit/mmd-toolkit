@@ -30,11 +30,11 @@ mermaid.js は、
 ヘッダーの後の空白は、改行でもそうでなくてもかまいません。
 文はヘッダーと同じ行に続けられ、ヘッダーだけでも受理されます。
 その後に改行がなくても受理されます。
-字句解析器は最後の文字の後に改行を読むからです。
-[テキストの終わり](../common.ja.md#テキストの終わり) を参照してください。 [fixture: state/header-v2-upper-case]
+字句解析器は最後の文字の後に改行を読むからです。 [fixture: state/header-v2-upper-case]
 [fixture: state/header-word-after-keyword]
 [fixture: state/header-other-suffix] [fixture: state/header-statement-same-line]
 [fixture: state/header-only] [fixture: state/header-only-without-line-feed]
+[テキストの終わり](../common.ja.md#テキストの終わり) を参照してください。
 
 ヘッダーの前の `%%` だけの行や、
 ディレクティブではない `%%{ }%%` の行は `%%` だけの行で、
@@ -271,9 +271,9 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
     `ignored-text` の単位、またはほかの `ignored-state` の単位のときは、
     代わりに `ignored-state` の単位です。
     mermaid.js は `state` にトークンを読まないので、
-    その `{` はその前の文の本体を始めます。
-    [合成状態、別名、疑似状態](#合成状態別名疑似状態) を参照してください。 [fixture: state/lex-state-without-body]
+    その `{` はその前の文の本体を始めます。 [fixture: state/lex-state-without-body]
     [fixture: state/gram-ignored-state-before-body-next-line]
+    [合成状態、別名、疑似状態](#合成状態別名疑似状態) を参照してください。
 18. `{`。
     `{` の単位。
     合成状態の本体の文脈に入ります。 [fixture: state/db-parent-set-by-later-composite]
@@ -910,11 +910,12 @@ mermaid.js は、ここで `"` にはトークンを返さず、
 `note "x" as N`、`note ""x" as N`、`note "x"" as N`、
 `note """x""" as N` のテキストは `x` で、
 `note "" x" as N` のテキストも `x` です。
-テキストは、`floating-note-text` の単位から両端の空白を除いたものです。
-[StateFloatingNoteStatement](../ast/state.ja.md#statefloatingnotestatement) を参照してください。 [fixture: state/lex-floating-note-extra-quote-before-text]
+テキストは、
+`floating-note-text` の単位から両端の空白を除いたものです。 [fixture: state/lex-floating-note-extra-quote-before-text]
 [fixture: state/lex-floating-note-extra-quote-after-text]
 [fixture: state/lex-floating-note-extra-quotes-around-text]
 [fixture: state/lex-floating-note-text-after-quotes-and-space]
+[StateFloatingNoteStatement](../ast/state.ja.md#statefloatingnotestatement) を参照してください。
 テキストは、 `note " " as N` や、改行 1 つだけのテキストのように、
 すべて空白でもよく、
 改行を持てます。 [fixture: state/lex-floating-note-whitespace-text] [fixture:
@@ -1111,9 +1112,9 @@ issue は閉じられています。
 空白 2 つ以上の後では、
 1 行のノートの `:` の単位とその後の `note-text` の単位は、
 合わせて 1 つのテキストです。
-`note left of A  :hi` の StateLiteral は `:hi` です。
-[StateNoteStatement](../ast/state.ja.md#statenotestatement) を参照してください。 [fixture: state/lex-note-two-spaces-before-colon]
+`note left of A  :hi` の StateLiteral は `:hi` です。 [fixture: state/lex-note-two-spaces-before-colon]
 [fixture: state/lex-note-three-spaces-before-colon]
+[StateNoteStatement](../ast/state.ja.md#statenotestatement) を参照してください。
 
 ### 図と文
 
@@ -1609,8 +1610,8 @@ state/div-empty-description-block-after-arrow]
   テキストのない説明のブロックの文で、何も変えません。
   `A --> B accDescr {}` は受理されます。
   名前の後の行の、本体の `{` の前のブロックは、
-  その文の `textBeforeBody` の一部で、これも受理されます。
-  [合成状態、別名、疑似状態](#合成状態別名疑似状態) を参照してください。 [fixture: state/div-empty-description-block-in-transition]
+  その文の `textBeforeBody` の一部で、
+  これも受理されます。 [fixture: state/div-empty-description-block-in-transition]
   [fixture: state/div-empty-description-block-after-arrow]
   [fixture: state/div-empty-description-block-before-description]
   [fixture: state/div-empty-description-block-before-class]
@@ -1618,6 +1619,7 @@ state/div-empty-description-block-after-arrow]
   [fixture: state/div-empty-description-block-before-target-class]
   [fixture: state/gram-empty-description-block-statement]
   [fixture: state/gram-empty-description-block-after-transition]
+  [合成状態、別名、疑似状態](#合成状態別名疑似状態) を参照してください。
   `:::` とクラスの間、遷移の中の `[*]` の隣、
   そして `click A "u" accDescr {} "t"` のような click の文の中のブロックも同じです（規則とほかの例は、
   [tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md) を参照）。 [fixture: state/div-empty-description-block-after-class-separator]

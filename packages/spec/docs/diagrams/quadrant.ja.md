@@ -152,10 +152,10 @@ U+FEFF は ASCII 外の文字で、語の文字です。
 テキスト、名前、タイトル、アクセシビリティのテキストの中に立ち、
 テキストと名前では端にも立って、端のものは Db が取り除きます。
 一方、タイトル、アクセシビリティのテキスト、説明ブロックのテキストは、
-ほかの空白とともに端のものを除きます。
-[ast/quadrant.ja.md](../ast/quadrant.ja.md#quadrantliteral) を参照してください。 [fixture: quadrant/db-ends-title-nbsp-end]
+ほかの空白とともに端のものを除きます。 [fixture: quadrant/db-ends-title-nbsp-end]
 [fixture: quadrant/db-ends-acc-title-nbsp-end]
 [fixture: quadrant/db-acc-descr-block-nbsp-before-brace-close]
+[ast/quadrant.ja.md](../ast/quadrant.ja.md#quadrantliteral) を参照してください。
 文が始まるところではテキストを始めるので、
 `x-axis` や `title` の前の U+00A0 は入力を拒否させ、
 点の名前の前の U+00A0 は名前の一部です。

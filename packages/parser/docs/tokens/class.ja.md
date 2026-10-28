@@ -53,10 +53,10 @@
 [fixture: class/lex-member-attribute-dollar-classifier]
 
 コメント領域かディレクティブが切る `String` のトークンは、
-`StringFragment` のトークンになります。
-[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
-[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照。 [fixture: class/tokens-comment-region-in-click-string]
+`StringFragment` のトークンになります。 [fixture: class/tokens-comment-region-in-click-string]
 [fixture: class/lex-backquote-unclosed-directive-inside]
+[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
+[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照。
 
 **トークン**は、同じ項目で同じ種類の単位が、間に何も挟まずに続く最長の並びから、
 両端の空白を除いたものです。
@@ -84,14 +84,13 @@ mermaid.js がその空白を値の一部として読むところは除きます
 並びが `RawText` か `String` のトークンなら、
 並びを断片に切ります（[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照）。
 ほかの種類の並びの中では、2 つの単位の間でも、
-ディレクティブや無視される `;` は入力を拒否させます。
-[単位の中のディレクティブ](../../../spec/docs/diagrams/class.ja.md#単位の中のディレクティブ) を参照。 [fixture: class/lex-directive-in-dotted-name]
+ディレクティブや無視される `;` は入力を拒否させます。 [fixture: class/lex-directive-in-dotted-name]
 [fixture: class/tokens-comment-region-in-backquoted-name]
 [fixture: class/tokens-style-ignored-semicolon-after-space]
-[fixture: class/div-directive-in-keyword]
-[fixture: class/div-directive-in-line]
+[fixture: class/div-directive-in-keyword] [fixture: class/div-directive-in-line]
 [fixture: class/div-directive-in-triple-colon]
 [fixture: class/div-ignored-semicolon-in-relation-line]
+[単位の中のディレクティブ](../../../spec/docs/diagrams/class.ja.md#単位の中のディレクティブ) を参照。
 
 - 名前の部分からなるクラスの名前や名前空間の名前は、
   間に空白のない並びごとに 1 つの `RawText` のトークンです。

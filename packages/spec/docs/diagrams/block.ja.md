@@ -319,8 +319,7 @@ mermaid.js は部分をつなぎます。
 `A%%{init: {}}%%` に `:2`、`-->B`、改行が続くもの、
 `space:` にそれと `2` が続くもの、
 形やブロック矢印の文字列と開き・閉じの間のものがそうです。
-閉じないディレクティブはテキストの終わりまで続きます。
-[ディレクティブの位置](../common.ja.md#ディレクティブの位置) を参照してください。 [fixture: block/div-directive-in-id]
+閉じないディレクティブはテキストの終わりまで続きます。 [fixture: block/div-directive-in-id]
 [fixture: block/div-directive-inside-direction]
 [fixture: block/div-directive-inside-class-keyword]
 [fixture: block/div-directive-inside-end]
@@ -375,6 +374,7 @@ mermaid.js は部分をつなぎます。
 [fixture: block/db-tail-class-def-directive-unclosed]
 [fixture: block/db-tail-composite-end-directive]
 [fixture: block/db-tail-composite-end-keyword-directive]
+[ディレクティブの位置](../common.ja.md#ディレクティブの位置) を参照してください。
 
 ### 文の文脈
 
@@ -649,8 +649,7 @@ ASCII 外の文字です。
 文字列にエスケープはなく、閉じない文字列は入力を拒否させます。
 引用符と逆引用符は markdown 文字列で、文法のどの規則もそれを取らず、
 ``A["`x`"]`` は拒否されます。
-空の文字列 `""` と空の markdown 文字列は単位を読みません。
-[空の文字列](#空の文字列) を参照してください。 [fixture: block/db-label-plain]
+空の文字列 `""` と空の markdown 文字列は単位を読みません。 [fixture: block/db-label-plain]
 [fixture: block/gram-label-empty]
 [fixture: block/db-label-spaces] [fixture: block/db-label-padded]
 [fixture: block/gram-label-single-quote] [fixture: block/gram-label-unquoted]
@@ -911,6 +910,7 @@ ASCII 外の文字です。
 [fixture: block/db-grid-classdef-rule-block-arrow-label]
 [fixture: block/db-grid-classdef-rule-edge-label]
 [fixture: block/db-grid-classdef-rule-composite-label]
+[空の文字列](#空の文字列) を参照してください。
 
 ### 形
 

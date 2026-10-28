@@ -297,11 +297,12 @@ class/lex-direction-line-value-then-text]
 空の説明ブロックが文になるのは、文の始まりにあり、
 同じ行に別の文が続くとき（[空の説明ブロック](../diagrams/class.ja.md#空の説明ブロック) を参照）と、
 文の最後の単位の後、改行の前にあるときです。
-ヘッダーの後、その改行の前では、図の `body` の最初の文です。
-[区切りの前の空の説明ブロック](../diagrams/class.ja.md#区切りの前の空の説明ブロック) を参照してください。 [fixture: class/spec-class-diagram-0926d7aa]
+ヘッダーの後、その改行の前では、
+図の `body` の最初の文です。 [fixture: class/spec-class-diagram-0926d7aa]
 [fixture: class/gram-empty-description-block-then-statement]
 [fixture: class/gram-empty-description-block-after-note]
 [fixture: class/header-empty-description-block]
+[区切りの前の空の説明ブロック](../diagrams/class.ja.md#区切りの前の空の説明ブロック) を参照してください。
 
 ### ClassName
 
@@ -337,8 +338,9 @@ class/docs-syntax-class-diagram-01f18827] [fixture:
 class/gram-name-prefix-backquoted] [fixture: class/gram-generic-empty-at-end]
 [fixture: class/db-generic-type]
 クラスの id は、どの欄でもありません。
-閉じていないバッククォートの名前は、閉じの引用符のない StringLiteral です。
-[StringLiteral](../ast.ja.md#stringliteral) を参照してください。 [fixture: class/lex-backquote-unclosed]
+閉じていないバッククォートの名前は、
+閉じの引用符のない StringLiteral です。 [fixture: class/lex-backquote-unclosed]
+[StringLiteral](../ast.ja.md#stringliteral) を参照してください。
 
 ### ClassMethod
 
@@ -364,9 +366,9 @@ class/gram-name-prefix-backquoted] [fixture: class/gram-generic-empty-at-end]
 [fixture: class/lex-member-classifiers]
 [fixture: class/lex-member-method-nested-parentheses]
 読まれないテキストがあるのは、行が U+2028 か U+2029 を持つときだけで、
-そこが空白だけなら null です。
-[メンバーの行](../diagrams/class.ja.md#メンバーの行) を参照してください。 [fixture: class/lex-member-method-line-separator-before]
+そこが空白だけなら null です。 [fixture: class/lex-member-method-line-separator-before]
 [fixture: class/lex-member-method-line-separator-after]
+[メンバーの行](../diagrams/class.ja.md#メンバーの行) を参照してください。
 
 mermaid.js はこれらの値の端で 2 つの空白の並びを読むので、
 それらは `name` と `returnType` の中にあります（[メンバーの行](../diagrams/class.ja.md#メンバーの行) を参照）。

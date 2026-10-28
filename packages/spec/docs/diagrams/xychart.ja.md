@@ -1475,12 +1475,12 @@ mermaid.js の Db は、テキストを読む間、
 
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
   キーワード、数、矢印の中のディレクティブは、ここでは入力を拒否させ、
-  mermaid.js は前後をつなぎます。
-  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。 [fixture: xychart/div-directive-in-keyword]
+  mermaid.js は前後をつなぎます。 [fixture: xychart/div-directive-in-keyword]
   [fixture: xychart/div-directive-in-axis-keyword]
   [fixture: xychart/div-directive-in-range-number]
   [fixture: xychart/db-plot-directive-in-number]
   [fixture: xychart/db-directive-in-arrow]
+  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `"style:#a"` を持つ行のように `style` 行の行の規則が当たる行で、
   値やキーワードの中の無視される `;` は、ここでは入力を拒否させ、
@@ -1504,12 +1504,12 @@ mermaid.js の Db は、テキストを読む間、
   [fixture: xychart/div-title-digit-next-line-after-axis-and-plot]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
   文法が取らないところの空の文字列と空の説明ブロックは、ここでは拒否され、
-  mermaid.js はそれらがないものとして受理します。
-  [空の説明ブロック](#空の説明ブロック) と、
-  [空の文字列](#空の文字列) を参照してください。 [fixture: xychart/div-empty-string-line]
+  mermaid.js はそれらがないものとして受理します。 [fixture: xychart/div-empty-string-line]
   [fixture: xychart/div-empty-string-before-title-word]
   [fixture: xychart/div-empty-description-block-inside-title-text]
   [fixture: xychart/div-empty-description-block-in-categories]
+  [空の説明ブロック](#空の説明ブロック) と、
+  [空の文字列](#空の文字列) を参照してください。
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
   ヘッダーの後のどこかの、
   文字列やアクセシビリティのテキストの中の `C4Container`、`C4Component`、

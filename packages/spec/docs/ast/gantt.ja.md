@@ -68,8 +68,9 @@ GanttAccDescrBlockStatement のいずれかです。
 タグは 1 つの `data-item` の単位、つまりテキストの単位なので、
 その中にディレクティブがあってもよく、
 名前はディレクティブを除いた書かれたテキストです。
-`do%%{init: {}}%%ne` は、mermaid.js と同じくタグ `done` です。
-[単位の中のディレクティブ](../diagrams/gantt.ja.md#単位の中のディレクティブ) を参照してください。 [fixture: gantt/gram-task-tag-cut-by-directive]
+`do%%{init: {}}%%ne` は、
+mermaid.js と同じくタグ `done` です。 [fixture: gantt/gram-task-tag-cut-by-directive]
+[単位の中のディレクティブ](../diagrams/gantt.ja.md#単位の中のディレクティブ) を参照してください。
 `a : 1d` は説明 `a ` と 1 つの項目 `1d` を持ち、
 `a : done, 1d` はタグ `done` と項目 `1d`、`a : , ,` は 3 つの null の項目、
 `a : id1,, 1d` は項目 `id1`、null、`1d`、
@@ -329,13 +330,13 @@ GanttAccTitleStatement と同じく、
 子の欄: `value`。
 `accDescr {}`、`accDescr { }`、空行のブロックは値 null を持ち、何も変えません。
 そのようなブロックが文であるのは文の始まる位置だけで、
-click の文の中のブロックは入力を拒否させます。
-[空の説明ブロック](../diagrams/gantt.ja.md#空の説明ブロック) を参照してください。 [fixture: gantt/gram-acc-descr-block]
+click の文の中のブロックは入力を拒否させます。 [fixture: gantt/gram-acc-descr-block]
 [fixture: gantt/gram-acc-descr-block-multiline]
 [fixture: gantt/gram-acc-descr-block-empty]
 [fixture: gantt/gram-acc-descr-block-whitespace-only]
 [fixture: gantt/div-empty-description-block-between-click-id-and-href]
 [fixture: gantt/lex-acc-descr-block-unclosed]
+[空の説明ブロック](../diagrams/gantt.ja.md#空の説明ブロック) を参照してください。
 
 ### GanttLiteral
 

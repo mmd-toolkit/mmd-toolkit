@@ -71,11 +71,11 @@ kanban も同じ空行の規則と上の 4 つの場合に従います。
 [fixture: kanban/div-comment-blank-before-icon]
 [fixture: kanban/div-comment-blank-before-class]
 次の文の前で U+2028 と U+2029 に終わるコメントは受理します。
-mermaid.js はこれらの入力を拒否します。
-[空行](../diagrams/kanban.ja.md#空行) を参照してください。 [fixture: kanban/div-header-comment-ls-node]
+mermaid.js はこれらの入力を拒否します。 [fixture: kanban/div-header-comment-ls-node]
 [fixture: kanban/div-header-comment-ps-node]
 [fixture: kanban/div-between-real-comments-ls-node]
 [fixture: kanban/div-between-real-comments-ps-node]
+[空行](../diagrams/kanban.ja.md#空行) を参照してください。
 
 kanban ではヘッダー後の 1 つの図のコメントは両者で受理します。 [fixture: kanban/header-header-comment-blank]
 ノード間の 2 つの図のコメントは両者で受理します。 [fixture: kanban/gram-between-comments-blank]

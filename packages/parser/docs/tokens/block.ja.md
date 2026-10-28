@@ -75,11 +75,11 @@
 `,` を含む 1 つの `Identifier` トークンです。
 `style A, B` の id は 1 つのトークン `A, B` になるはずですが、
 受理される入力にはありません。
-空白を含む id のブロックはないからです。
-[文法の外の拒否](../../../spec/docs/diagrams/block.ja.md#文法の外の拒否) を参照。 [fixture: block/db-class-apply-list-spaces]
+空白を含む id のブロックはないからです。 [fixture: block/db-class-apply-list-spaces]
 [fixture: block/db-class-apply-line-feed-after-comma]
 [fixture: block/db-grid-comma-style-id]
 [fixture: block/div-grid-directive-class-apply-id]
+[文法の外の拒否](../../../spec/docs/diagrams/block.ja.md#文法の外の拒否) を参照。
 
 スタイルは、その値の全体にわたる 1 つの `RawText` トークンです。
 値は 2 つの `,` の間の部分で、

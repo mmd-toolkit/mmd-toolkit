@@ -292,9 +292,9 @@ flowchart と同じく、id はコンマも含む 1 つの id で、Db は、
 欄もありません。
 block diagram には説明がありません。
 テキストを持つブロックは拒否され、
-文の中の空のブロックは既知の差異 `tokenless-empty-forms` です。
-[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) を参照してください。 [fixture: block/db-empty-block-line]
+文の中の空のブロックは既知の差異 `tokenless-empty-forms` です。 [fixture: block/db-empty-block-line]
 [fixture: block/div-empty-block-in-edge]
+[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) を参照してください。
 
 ### BlockLiteral
 

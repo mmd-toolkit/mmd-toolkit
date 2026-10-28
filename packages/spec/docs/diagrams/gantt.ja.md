@@ -89,8 +89,8 @@ gantt/lex-click-keywords-upper-case] [fixture: gantt/lex-day-mixed-case]
 規則がそう言うところでは空白が続くものです。
 `gantt2` はヘッダーを持たず、`inclusiveEndDatesx`、`topAxisx`、
 `weekday mondayx` はタスクのテキストで、`titles`、`title-x`、`clickx`、`hrefx`、
-`callx` も、語の後に空白が続かないのでタスクのテキストです。
-[キーワードとその後に続くもの](#文の文脈) を参照してください。 [fixture: gantt/header-digit-suffix]
+`callx` も、
+語の後に空白が続かないのでタスクのテキストです。 [fixture: gantt/header-digit-suffix]
 [fixture: gantt/lex-inclusive-word-suffix-task]
 [fixture: gantt/lex-topaxis-word-suffix-task]
 [fixture: gantt/lex-weekday-word-suffix-task]
@@ -98,6 +98,7 @@ gantt/lex-click-keywords-upper-case] [fixture: gantt/lex-day-mixed-case]
 [fixture: gantt/lex-click-word-suffix-task]
 [fixture: gantt/lex-href-word-suffix-task]
 [fixture: gantt/lex-call-word-suffix-task]
+[キーワードとその後に続くもの](#文の文脈) を参照してください。
 
 ### 単位と文脈
 
@@ -254,8 +255,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   `cli%%{init: {}}%%ck`、`hr%%{init: {}}%%ef`、`ca%%{init: {}}%%ll`、
   `acc%%{init: {}}%%Title:`、
   `acc%%{init: {}}%%Descr {` ではキーワードの中にあります。
-  入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
-  [既知の差異](#既知の差異) を参照してください。 [fixture: gantt/div-directive-in-click-id]
+  入力は拒否され、
+  mermaid.js は 2 つの部分を 1 つとして読んで受理します。 [fixture: gantt/div-directive-in-click-id]
   [fixture: gantt/div-directive-in-list-item]
   [fixture: gantt/div-directive-in-header-keyword]
   [fixture: gantt/div-directive-in-title-keyword]
@@ -269,6 +270,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   [fixture: gantt/div-directive-in-call-keyword]
   [fixture: gantt/div-directive-in-acc-title-keyword]
   [fixture: gantt/div-directive-in-acc-descr-keyword]
+  [既知の差異](#既知の差異) を参照してください。
 
 **単位の間のトリビア。**
 [common.ja.md](../common.ja.md) のトリビアは、
@@ -1528,8 +1530,7 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   `weekday mon;day`、`inclusiveEnd;Dates`、`date;Format X`、`ti;tle T`、
   `excludes week;ends` は `;` のない文として読まれます。
   テキストの単位か文字列の単位の中、および 2 つの単位の間では、
-  mermaid.js の読みが保たれます。
-  [単位の間のトリビア](#単位の中のディレクティブ) を参照してください。 [fixture: gantt/div-ignored-semicolon-in-click-id]
+  mermaid.js の読みが保たれます。 [fixture: gantt/div-ignored-semicolon-in-click-id]
   [fixture: gantt/div-ignored-semicolon-in-call-keyword]
   [fixture: gantt/div-ignored-semicolon-in-href-keyword]
   [fixture: gantt/div-ignored-semicolon-in-click-keyword]
@@ -1541,6 +1542,7 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   [fixture: gantt/tokens-ignored-semicolon-in-title-text]
   [fixture: gantt/tokens-ignored-semicolon-in-href-string]
   [fixture: gantt/tokens-ignored-semicolon-between-keyword-and-text]
+  [単位の間のトリビア](#単位の中のディレクティブ) を参照してください。
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があるとき、
   `click id1 href "u="v">w"` は mermaid.js では URL `u='v'>w` を持ち、
@@ -1633,7 +1635,8 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   ヘッダーの前の、`%%` だけの行、ディレクティブではない `%%{ }%%` の行、
   その後の空白だけの行は、ここではコメントか何もないもので、
   mermaid.js は入力を拒否します。
-  その字句解析器が `%%` の後の改行をヘッダーの前の `newline` の単位として読むからです。
-  [検出](#検出) を参照してください。 [fixture: gantt/header-after-bare-percent-line]
+  その字句解析器が、`%%` の後の改行を、
+  ヘッダーの前の `newline` の単位として読むからです。 [fixture: gantt/header-after-bare-percent-line]
   [fixture: gantt/header-after-empty-braces-line]
   [fixture: gantt/header-after-bare-percent-line-and-whitespace-line]
+  [検出](#検出) を参照してください。

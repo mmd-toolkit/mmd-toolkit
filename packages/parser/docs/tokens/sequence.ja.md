@@ -64,10 +64,10 @@ U+2028 か U+2029 を持つ箱の `text` の単位（[SequenceTitleStatement](..
 mermaid.js がその空白を値の一部として読むところは除きます（[トークン](../tokens.ja.md#トークン) を参照）。
 `title` か `title:` の文の `title-text` の単位のトークンは単位の全体で、
 `accTitle:` のものは、mermaid.js が削る両端の空白を除いたものです。
-箱のテキストでは U+2028 と U+2029 を空白に数えません。
-[SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext) を参照。 [fixture: sequence/db-title-spaces]
+箱のテキストでは U+2028 と U+2029 を空白に数えません。 [fixture: sequence/db-title-spaces]
 [fixture: sequence/db-acc-title-whitespace-ends]
 [fixture: sequence/db-box-colour-then-spaces-and-line-separator]
+[SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext) を参照。
 箱のテキストで、色の候補と残りの間の空白は、 SequenceBoxText の値に入り、
 そのどちらの部分にも入りません。
 この空白は、SequenceBoxText が持つ、それ自体の `RawText` のトークンです。

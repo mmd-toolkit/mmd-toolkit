@@ -69,8 +69,7 @@ RequirementAccDescrStatement、RequirementAccDescrBlockStatement のいずれか
 名前は、`unquoted-text` の単位では RequirementIdentifier、
 `string` の単位では StringLiteral で、各クラスも同じです。
 `body` の RequirementIgnoredText は、本体の行にある空の説明ブロックで、
-mermaid.js は読みません。
-[空の説明ブロック](../diagrams/requirement.ja.md#空の説明ブロック) を参照してください。 [fixture: requirement/db-requirement-all-fields]
+mermaid.js は読みません。 [fixture: requirement/db-requirement-all-fields]
 [fixture: requirement/spec-requirement-diagram-d1dc0373]
 [fixture: requirement/spec-requirement-diagram-17e0a905]
 [fixture: requirement/spec-requirement-diagram-f221edee]
@@ -85,6 +84,7 @@ mermaid.js は読みません。
 [fixture: requirement/gram-empty-description-block-in-body]
 [fixture: requirement/db-requirement-second-definition-classes]
 [fixture: requirement/db-requirement-name-repeated]
+[空の説明ブロック](../diagrams/requirement.ja.md#空の説明ブロック) を参照してください。
 
 ### RequirementValueField
 
@@ -273,10 +273,10 @@ requirement/lex-classdef-without-style]
 `style-word` か `unquoted-text` の単位では RequirementIdentifier、
 `string` の単位では StringLiteral です。
 `unquoted-text` の単位がそこに来るのは、
-文がその行を終える改行の後に続くときです。
-[style の文脈](../diagrams/requirement.ja.md#style-の文脈) を参照してください。 [fixture: requirement/db-class-statement]
+文がその行を終える改行の後に続くときです。 [fixture: requirement/db-class-statement]
 [fixture: requirement/gram-class-string-class]
 [fixture: requirement/lex-class-list-next-line]
+[style の文脈](../diagrams/requirement.ja.md#style-の文脈) を参照してください。
 
 ### RequirementClassShorthandStatement
 
@@ -341,13 +341,13 @@ requirement/lex-acc-descr-at-end]
 `accDescr {}` と、ディレクティブだけを持つブロックは、値 null を持ち、
 何も変えません。
 そのようなブロックは、文が始まるところでは文で、本体の行では本体の項目です。
-文の中のブロックは入力を拒否させます。
-[空の説明ブロック](../diagrams/requirement.ja.md#空の説明ブロック) を参照してください。 [fixture: requirement/db-acc-descr-block]
+文の中のブロックは入力を拒否させます。 [fixture: requirement/db-acc-descr-block]
 [fixture: requirement/gram-acc-descr-block-empty]
 [fixture: requirement/gram-acc-descr-block-directive-only]
 [fixture: requirement/gram-empty-description-block-after-close-brace]
 [fixture: requirement/div-empty-description-block-in-relationship]
 [fixture: requirement/lex-acc-descr-block-unclosed]
+[空の説明ブロック](../diagrams/requirement.ja.md#空の説明ブロック) を参照してください。
 
 ### RequirementIdentifier
 

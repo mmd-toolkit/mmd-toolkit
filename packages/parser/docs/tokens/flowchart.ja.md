@@ -54,10 +54,10 @@
 [fixture: flowchart/gram-click-comma-only-href]
 
 コメント領域かディレクティブが切る `String` のトークンは、
-`StringFragment` のトークンになります。
-[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
-[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照。 [fixture: flowchart/tokens-string-literal-comment-line]
+`StringFragment` のトークンになります。 [fixture: flowchart/tokens-string-literal-comment-line]
 [fixture: flowchart/lex-directive-in-click-href-string]
+[トークンの中のコメント領域](../tokens.ja.md#トークンの中のコメント領域) と、
+[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照。
 
 **トークン**は、同じ項目で同じ種類の単位が、
 その項目の空白の単位だけを挟んで続く最長の並びから、両端の空白を除いたものです。
@@ -86,13 +86,13 @@
 並びが `RawText` か `String` のトークンなら、
 並びを断片に切ります（[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) を参照）。
 ほかの種類の並びの中では、2 つの単位の間でも、
-ディレクティブや無視される `;` は入力を拒否させます。
-[単位の中のディレクティブ](../../../spec/docs/diagrams/flowchart.ja.md#単位の中のディレクティブ) を参照。 [fixture: flowchart/tokens-directive-label-space-after]
+ディレクティブや無視される `;` は入力を拒否させます。 [fixture: flowchart/tokens-directive-label-space-after]
 [fixture: flowchart/tokens-comment-region-in-edge-text]
 [fixture: common/entity-css-in-string-label]
 [fixture: flowchart/div-directive-in-id]
 [fixture: flowchart/div-ignored-semicolon-in-id]
 [fixture: flowchart/div-directive-in-circle-opening]
+[単位の中のディレクティブ](../../../spec/docs/diagrams/flowchart.ja.md#単位の中のディレクティブ) を参照。
 各単位は 1 つの項目に属し 1 つの種類を持つので、
 この規則ですべてのトークンが決まり、
 空白でないどの文字もトークンかコメントに含まれます。

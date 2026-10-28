@@ -43,9 +43,9 @@
 範囲はそのトークンで、
 単位が前後に持つ空白を除いた矢印です。 [fixture: flowchart/lex-directive-after-arrow]
 矢印の中のディレクティブや無視される `;` は入力を拒否させるので、
-2 つ以上のトークンを持つ矢印はありません。
-[トークン](../tokens.ja.md#トークン) を参照。 [fixture: flowchart/div-ignored-semicolon-in-arrow]
+2 つ以上のトークンを持つ矢印はありません。 [fixture: flowchart/div-ignored-semicolon-in-arrow]
 [fixture: flowchart/div-directive-in-arrow-length]
+[トークン](../tokens.ja.md#トークン) を参照。
 
 ### FlowchartOpeningArrow
 
@@ -64,9 +64,10 @@
 ### FlowchartLiteral
 
 そのトークンは `RawText` のトークンです。
-1 つで、単位の間のディレクティブがテキストを切るときはそれより多くなります。
-[common.ja.md](../../../spec/docs/common.ja.md#ディレクティブはトークンの境界) を参照。 [fixture: flowchart/lex-acc-title-space-before-colon]
+1 つで、
+単位の間のディレクティブがテキストを切るときはそれより多くなります。 [fixture: flowchart/lex-acc-title-space-before-colon]
 [fixture: flowchart/lex-directive-in-title]
+[common.ja.md](../../../spec/docs/common.ja.md#ディレクティブはトークンの境界) を参照。
 
 リテラルは必ずトークンを持ちます。
 

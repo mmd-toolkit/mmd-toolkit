@@ -144,13 +144,13 @@ U+3000 だけのブロックは値 null を持ち、何も変えません。
 `accDescr: D` に `accDescr {`、U+3000、`}` が続くと、
 説明 `D` を保ちます。 [fixture: quadrant/db-acc-descr-ideographic-block-keeps-line]
 空の説明ブロックは、文が始まるところと文の最後の単位の後でだけ文で、
-文の中では入力を拒否させます。
-[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) を参照してください。 [fixture: quadrant/db-acc-descr-block-lines]
+文の中では入力を拒否させます。 [fixture: quadrant/db-acc-descr-block-lines]
 [fixture: quadrant/db-acc-descr-block-empty-braces]
 [fixture: quadrant/db-acc-descr-block-empty]
 [fixture: quadrant/gram-acc-descr-block-unclosed]
 [fixture: quadrant/db-empty-block-after-point]
 [fixture: quadrant/div-empty-block-between-point-and-styles]
+[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) を参照してください。
 
 ### QuadrantAxisStatement
 

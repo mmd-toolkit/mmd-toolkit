@@ -916,16 +916,15 @@ class と裸のノード本文は末尾の本文を保ちます。 [fixture: kan
 [fixture: kanban/lex-after-class-bom]
 [fixture: kanban/lex-after-class-comment-glued]
 
-最後のノードはソースの末尾の改行を要しません。
-[テキストの終わり](../common.ja.md#テキストの終わり) を参照してください。 [fixture: kanban/db-no-final-line-feed]
+最後のノードはソースの末尾の改行を要しません。 [fixture: kanban/db-no-final-line-feed]
 [fixture: kanban/lex-after-shape-end-of-text]
 [fixture: kanban/lex-after-quoted-end-of-text]
 [fixture: kanban/lex-after-markdown-end-of-text]
 [fixture: kanban/lex-after-metadata-end-of-text]
 [fixture: kanban/lex-after-icon-end-of-text]
 [fixture: kanban/lex-after-class-end-of-text]
-[fixture: kanban/spec-kanban-0cd8856c]
-[fixture: kanban/spec-kanban-764a099a]
+[fixture: kanban/spec-kanban-0cd8856c] [fixture: kanban/spec-kanban-764a099a]
+[テキストの終わり](../common.ja.md#テキストの終わり) を参照してください。
 形、文字列、markdown 文字列、
 icon は閉じる必要があります。 [fixture: kanban/gram-unclosed-shape]
 [fixture: kanban/gram-unclosed-quote]

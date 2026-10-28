@@ -94,11 +94,11 @@ journey/lex-acc-descr-block-upper-case]
 規則がそう言うところでは語の文字が続かないもの（[表記](../common.ja.md#表記) を参照）、
 規則がそう言うところでは空白が続くものです。
 `journey2` はヘッダーを持たず、`titles`、`title-x`、`sectionx` は、
-語の後に空白が続かないのでタスクのテキストです。
-[キーワードとその後に続くもの](#文の文脈) を参照してください。 [fixture: journey/header-digit-suffix]
+語の後に空白が続かないのでタスクのテキストです。 [fixture: journey/header-digit-suffix]
 [fixture: journey/lex-title-word-suffix-task]
 [fixture: journey/lex-title-dash-task]
 [fixture: journey/lex-section-word-suffix-task]
+[キーワードとその後に続くもの](#文の文脈) を参照してください。
 
 ### 単位と文脈
 
@@ -237,13 +237,14 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
   `acc%%{init: {}}%%Title: T`、 `acc%%{init: {}}%%Descr: d`、
   `acc%%{init: {}}%%Descr { d }` では、
   ディレクティブがキーワードの中にあります。
-  入力は拒否され、mermaid.js は 2 つの部分を 1 つとして読んで受理します。
-  [既知の差異](#既知の差異) を参照してください。 [fixture: journey/div-directive-in-header-keyword]
+  入力は拒否され、
+  mermaid.js は 2 つの部分を 1 つとして読んで受理します。 [fixture: journey/div-directive-in-header-keyword]
   [fixture: journey/div-directive-in-title-keyword]
   [fixture: journey/div-directive-in-section-keyword]
   [fixture: journey/div-directive-in-acc-title-keyword]
   [fixture: journey/div-directive-in-acc-descr-keyword]
   [fixture: journey/div-directive-in-acc-descr-block-keyword]
+  [既知の差異](#既知の差異) を参照してください。
 
 **単位の間のトリビア。**
 [common.ja.md](../common.ja.md) のトリビアは、
@@ -914,13 +915,14 @@ mermaid.js の Db は、その文法が受理するどの入力にも例外を�
   規則が探す `style`、`:`、`#` は、同じ行の文の前の説明ブロックにあります。
   同じ行の `accDescr { style:#x }` の後の `ti;tle T`、`sec;tion S`、
   `accTi;tle: T`、`accDe;scr: d` は、 `;` のない文として読まれます。
-  テキストの単位の中と、2 つの単位の間では、mermaid.js の読みが保たれます。
-  [単位の間のトリビア](#単位の中のディレクティブ) を参照してください。 [fixture: journey/div-ignored-semicolon-in-title-keyword]
+  テキストの単位の中と、2 つの単位の間では、
+  mermaid.js の読みが保たれます。 [fixture: journey/div-ignored-semicolon-in-title-keyword]
   [fixture: journey/div-ignored-semicolon-in-section-keyword]
   [fixture: journey/div-ignored-semicolon-in-acc-title-keyword]
   [fixture: journey/div-ignored-semicolon-in-acc-descr-keyword]
   [fixture: journey/tokens-ignored-semicolon-in-task-text]
   [fixture: journey/tokens-ignored-semicolon-between-keyword-and-whitespace]
+  [単位の間のトリビア](#単位の中のディレクティブ) を参照してください。
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   frontmatter に `title: <a` があると、
   mermaid.js ではタスク `A b="c">d` は説明 `A b='c'>d` を持ち、

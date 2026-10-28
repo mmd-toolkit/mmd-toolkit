@@ -405,8 +405,8 @@ mermaid.js は `direction-text` の単位を読みません。
 3. キーワード `href`: `href` の単位。 [fixture: class/db-click-href]
 4. `~`: `~` の単位。
    ジェネリクスの文脈に入る。 [fixture: class/lex-generic-multi-line]
-5. `` ` ``: バッククォートの名前。
-   [文字列、バッククォートの名前、ジェネリクスの型](#文字列バッククォートの名前ジェネリクスの型) を参照してください。 [fixture: class/gram-name-word-then-backquoted]
+5. `` ` ``: バッククォートの名前。 [fixture: class/gram-name-word-then-backquoted]
+   [文字列、バッククォートの名前、ジェネリクスの型](#文字列バッククォートの名前ジェネリクスの型) を参照してください。
 6. キーワード `_self`、`_blank`、`_parent`、`_top`:
    `link-target` の単位。 [fixture: class/lex-keyword-link-target-as-name]
    [fixture: class/spec-class-diagram-ab0cb6e2]
@@ -1212,10 +1212,10 @@ class 図に当てはまり、次のように表れます。
   区切り記号、矢印の中のディレクティブは、ここでは入力を拒否にし、
   mermaid.js はそれを受理します。
   `cla%%{init: {}}%%ss A`、`A -%%{init: {}}%%-> B`、
-  `class A:%%{init: {}}%%::c` です。
-  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。 [fixture: class/div-directive-in-keyword]
+  `class A:%%{init: {}}%%::c` です。 [fixture: class/div-directive-in-keyword]
   [fixture: class/div-directive-in-line]
   [fixture: class/div-directive-in-triple-colon]
+  [単位の中のディレクティブ](#単位の中のディレクティブ) を参照してください。
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   多重度 `"style:#x"` の後では行が `style` の規則に当たり、
   関係の線か端の中の無視される `;` は、ここでは入力を拒否させ、

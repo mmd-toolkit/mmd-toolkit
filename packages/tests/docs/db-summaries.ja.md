@@ -3543,9 +3543,9 @@ Db は、すべての quadrant 図が共有する 1 つのオブジェクトで�
 自分のメソッドだけが触れる `QuadrantBuilder` にあり、
 [`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L147-L150) が構文解析のたびに初期化します。
 テキストが与えたものを読む方法は、
-図を配置する [`getQuadrantData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L120-L145)、
-（ [`build()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L604-L623)）だけなので、
-要約は、そこに配置が残すもの（象限、軸、
+図を配置する [`getQuadrantData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L120-L145) だけです。
+配置そのものは [`build()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L604-L623) が行います。
+そのため要約は、そこに配置が残すもの（象限、軸、
 点のテキスト）を Db が持つとおりに取ります。
 配置は、点のクラス名、書いたとおりの座標、書いたとおりのスタイル、
 クラスを残さないので、 Db のパッチ（`patchQuadrantDb()`）が、

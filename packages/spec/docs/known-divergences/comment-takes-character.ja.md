@@ -156,8 +156,7 @@ URL 文字列の後の `"%c` も同じなので、これらの入力は拒否さ
 一方 `a :%c` は終わり `%c` を持つタスク `a ` で、mermaid.js は拒否します。
 gantt では差異は両方向です。
 `ab% : 1d` と `}%c : 1d` はどちらでもタスクで、
-`%` の前の空白はどちらでもコメントにします。
-[コメント](../diagrams/gantt.ja.md#コメント) を参照してください。 [fixture: gantt/lex-colon-then-percent]
+`%` の前の空白はどちらでもコメントにします。 [fixture: gantt/lex-colon-then-percent]
 [fixture: gantt/div-comment-after-task-text-start]
 [fixture: gantt/div-comment-after-keyword-start]
 [fixture: gantt/div-comment-after-semicolon-after-data]
@@ -165,6 +164,7 @@ gantt では差異は両方向です。
 [fixture: gantt/lex-comment-after-two-characters]
 [fixture: gantt/lex-brace-before-percent]
 [fixture: gantt/lex-space-then-percent-after-unit]
+[コメント](../diagrams/gantt.ja.md#コメント) を参照してください。
 
 ユーザージャーニー図では、mermaid.js の字句解析器は `%%` に同じ規則を持ちます。
 単位の始まる位置の `%%` のすぐ前に `}` でも空白でもない文字があるところでは、
@@ -180,8 +180,7 @@ section の後の `:%% c` はタスクのないデータなので、これらの
 journey では差異は両方向です。
 `a%: 5` のように文字の後の単独の `%` は、どちらでもタスクのテキストの文字で、
 `}%% c` はどちらでもデータのないタスクのテキストで、
-`%%` の前の `#` はどちらにもコメントを読ませます。
-[コメント](../diagrams/journey.ja.md#コメント) を参照してください。 [fixture: journey/div-comment-after-task-text-start]
+`%%` の前の `#` はどちらにもコメントを読ませます。 [fixture: journey/div-comment-after-task-text-start]
 [fixture: journey/div-comment-after-semicolon-after-data]
 [fixture: journey/div-comment-after-semicolon-after-title]
 [fixture: journey/div-comment-after-colon-after-section]
@@ -189,6 +188,7 @@ journey では差異は両方向です。
 [fixture: journey/lex-single-percent-after-character]
 [fixture: journey/lex-brace-before-percent]
 [fixture: journey/lex-hash-before-percent]
+[コメント](../diagrams/journey.ja.md#コメント) を参照してください。
 
 timeline では、
 mermaid.js の字句解析器はユーザージャーニー図と同じ `%%` の規則を持ちます。
@@ -199,8 +199,7 @@ period が始まるところの `a%% c`、`;%% c`、`é%% c`、ヘッダー直�
 コロンの後に空白がないのでここでは拒否されます。
 timeline でも差異は両方向です。
 `}%% c` はどちらでも period で、
-`%%` の前の `#` はどちらにもコメントを読ませます。
-[コメント](../diagrams/timeline.ja.md#コメント) を参照してください。 [fixture: timeline/div-comment-after-period-start]
+`%%` の前の `#` はどちらにもコメントを読ませます。 [fixture: timeline/div-comment-after-period-start]
 [fixture: timeline/div-comment-after-semicolon]
 [fixture: timeline/div-comment-after-non-ascii-letter]
 [fixture: timeline/div-comment-after-semicolon-after-header]
@@ -208,6 +207,7 @@ timeline でも差異は両方向です。
 [fixture: timeline/div-comment-after-colon]
 [fixture: timeline/db-comment-percent-after-closing-brace]
 [fixture: timeline/lex-hash-before-percent]
+[コメント](../diagrams/timeline.ja.md#コメント) を参照してください。
 
 XY chart では、mermaid.js の字句解析器は、
 ユーザージャーニー図と同じ `%%` の規則を持ち、文字の並び、数字の並び、
@@ -266,8 +266,7 @@ mermaid.js では矢印を持つ左のテキストを持って右のテキスト
 mermaid.js ではテキスト `ab` と `a` を、ここでは `ab,` と `a b` を持ちます。
 `quadrant-1 ab12%% c`、`%%` の前の ASCII 外の文字の並び、`x-axis L;%% c`、
 点の `]` のすぐ後の `%%`、ブロックの `}` のすぐ後の `%%` は、
-両方が同じに読みます。
-[コメント](../diagrams/quadrant.ja.md#コメント) を参照してください。 [fixture: quadrant/div-after-x-axis-glued-comment]
+両方が同じに読みます。 [fixture: quadrant/div-after-x-axis-glued-comment]
 [fixture: quadrant/div-after-y-axis-glued-comment]
 [fixture: quadrant/div-comment-unit-letter-then-non-ascii]
 [fixture: quadrant/div-comment-unit-letters-then-digit]
@@ -307,6 +306,7 @@ mermaid.js ではテキスト `ab` と `a` を、ここでは `ab,` と `a b` �
 [fixture: quadrant/db-comment-glued-after-semicolon]
 [fixture: quadrant/db-point-comment-glued]
 [fixture: quadrant/db-comment-after-statement-brace]
+[コメント](../diagrams/quadrant.ja.md#コメント) を参照してください。
 
 ## 書き手にとっての結果
 

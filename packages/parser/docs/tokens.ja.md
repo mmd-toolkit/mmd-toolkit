@@ -137,12 +137,12 @@ mermaid.js が値として読むテキストを位置ごとに述べるのは、
 ほかの種類のトークン、つまり名前、数、キーワード、矢印、
 ほかの区切り記号の内側では、
 `;` は入力を拒否させ（[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行) を参照）、
-エラーはその `;` にあります。
-[既知の差異](./error-positions.ja.md#既知の差異) を参照。 [fixture: flowchart/div-ignored-semicolon-in-id]
+エラーはその `;` にあります。 [fixture: flowchart/div-ignored-semicolon-in-id]
 [fixture: sequence/div-ignored-semicolon-in-autonumber-start]
 [fixture: flowchart/div-ignored-semicolon-in-keyword]
 [fixture: flowchart/div-ignored-semicolon-in-arrow]
 [fixture: flowchart/div-ignored-semicolon-in-triple-colon]
+[既知の差異](./error-positions.ja.md#既知の差異) を参照。
 flowchart の `A["<span style='color:#f00;font-weight:bold;'>x</span>"]` では、
 行の規則が `bold` の後の `;` を無視し、
 ラベルは `StringFragment` のトークン `"<span style='color:#f00;font-weight:bold` と `'>x</span>"` を持ち、
@@ -164,9 +164,9 @@ flowchart では、文法が 1 つの行として読む `;` だけが空の文�
 行末の `style:#f;` は `RawText` のトークン `style:#f` と、
 それに続く `IgnoredSemicolon` のトークン `;` で、
 `style:#f;x` は `RawText` のトークン `style:#f` と `x` と、
-その間の `IgnoredSemicolon` のトークンです。
-[ErrorDiagram](../../spec/docs/ast.ja.md#errordiagram) を参照。 [fixture: common/error-style-semicolon-trailing]
+その間の `IgnoredSemicolon` のトークンです。 [fixture: common/error-style-semicolon-trailing]
 [fixture:
+[ErrorDiagram](../../spec/docs/ast.ja.md#errordiagram) を参照。
 common/error-style-semicolon-inside]
 
 ## 根の一覧
@@ -289,8 +289,8 @@ common/comment-directive-closed-then-spaces]
 sequence の `A->>B: x #style:#x;` の終わりでは、コメントは `#style:#x` で、
 その後の `;` は `IgnoredSemicolon` のトークンです。
 agentflow 以外の図では、行の規則がコメント領域を行の区間から除くので、
-コメント行がそのような `;` を持つことはありません。
-[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行) を参照。 [fixture: sequence/tokens-comment-then-ignored-semicolon]
+コメント行がそのような `;` を持つことはありません。 [fixture: sequence/tokens-comment-then-ignored-semicolon]
+[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行) を参照。
 Db が [`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L66-L76) を設定している図（pin した mermaid.js では agentflow）は、
 パーサーの入力でコメント行を受け取ります。
 それを木でどう表すかは、その図の文書で述べます。
@@ -303,11 +303,12 @@ Db が [`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blo
 [fixture: class/lex-bare-percent-line-between-statements]
 ヘッダーの前では、そうした行は `%%` だけの行で、検出が読んで通り過ぎ、
 図の字句解析器は読み直しません。
-どの図種でも、印 `%%` の図のコメントで、 `%%` から行の終わりまでです。
-[図種の検出](../../spec/docs/common.ja.md#図種の検出) を参照。 [fixture: sequence/header-after-bare-percent-line]
+どの図種でも、印 `%%` の図のコメントで、
+`%%` から行の終わりまでです。 [fixture: sequence/header-after-bare-percent-line]
 [fixture: class/header-after-empty-braces-line]
 [fixture: state/header-after-bare-percent-line]
 [fixture: flowchart/header-after-bare-percent-line]
+[図種の検出](../../spec/docs/common.ja.md#図種の検出) を参照。
 
 コメント領域は、行の終わりまで続く図のコメントの中にあることもあります。
 その行の U+2028 か U+2029 の後のコメント行は、
@@ -357,8 +358,8 @@ state/tokens-ignored-semicolon-after-space-in-comment-before-comment-line]
 [fixture: state/tokens-ignored-semicolon-in-comment-before-spaces]
 
 コメント行の `%%` より後にあるディレクティブは、コメントの範囲の中にあり、
-mermaid.js はそれも設定のために読みます。
-[設定の走査](../../tests/docs/configuration.ja.md#設定の走査) を参照。 [fixture: common/directive-in-comment]
+mermaid.js はそれも設定のために読みます。 [fixture: common/directive-in-comment]
+[設定の走査](../../tests/docs/configuration.ja.md#設定の走査) を参照。
 `%%{init: {}}%% %% note` のように、
 コメントの `%%` より前にあるディレクティブは、コメントの外にあります。
 コメントはその `%%` から始まるからです。 [fixture: common/comment-after-directive]
@@ -368,9 +369,10 @@ mermaid.js はそれも設定のために読みます。
 印が `%%` の図のコメントも同じです。
 その印はディレクティブを除いたテキストの上で見つけ、
 その 2 つの `%` の間にディレクティブがあってもよく、 `value` は、
-ディレクティブを含む、印の後のソースのテキストです。
-[sequence](../../spec/docs/diagrams/sequence.ja.md#単位と文脈) を参照。 [fixture: sequence/lex-diagram-comment-directive-between-marks]
+ディレクティブを含む、
+印の後のソースのテキストです。 [fixture: sequence/lex-diagram-comment-directive-between-marks]
 [fixture:
+[sequence](../../spec/docs/diagrams/sequence.ja.md#単位と文脈) を参照。
 sequence/lex-diagram-comment-directive-after-single-mark]
 どの図のコメントでも、印の後のディレクティブはコメントの範囲の中にあり、
 `Directive` のトークンを持ちません。
@@ -684,10 +686,10 @@ Identifier のトークンは 1 つの `Identifier` のトークンで、
   単位の中にディレクティブを持つトークン、複数の単位からなり、
   そのうち 2 つの間にディレクティブがあるトークン、
   閉じていない class のバッククォートの名前のように、
-  ディレクティブを越えて値の終わりの空白まで続くトークンです。
-  [文字列、バッククォートの名前、ジェネリクスの型](../../spec/docs/diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型) を参照。 [fixture: common/directive-in-string]
+  ディレクティブを越えて値の終わりの空白まで続くトークンです。 [fixture: common/directive-in-string]
   [fixture: class/lex-directive-in-dotted-name]
   [fixture: class/lex-backquote-unclosed-directive-after-line-break]
+  [文字列、バッククォートの名前、ジェネリクスの型](../../spec/docs/diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型) を参照。
   切ってよいのは `RawText` と `String` のトークンだけで、
   ほかの種類のトークンの内側のディレクティブは、
   入力を拒否させます（[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界) を参照）。

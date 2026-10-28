@@ -72,8 +72,8 @@ quadrant では 3 つです。
 閉じた空の説明ブロック、空の文字列 `""`、空の markdown 文字列です。
 2 つの文字列は、
 どこにあってもこの差異に入ります（[空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照）。
-block でも同じ 3 つで、2 つの文字列はどこにあってもこの差異に入ります。
-[空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。 [fixture: block/div-empty-string-line]
+block でも同じ 3 つで、
+2 つの文字列はどこにあってもこの差異に入ります。 [fixture: block/div-empty-string-line]
 [fixture: block/div-empty-markdown-line]
 [fixture: block/div-empty-block-in-edge]
 [fixture: quadrant/div-empty-string-alone]
@@ -93,6 +93,7 @@ block でも同じ 3 つで、2 つの文字列はどこにあってもこの差
 [fixture: mindmap/div-empty-markdown-string-in-shape]
 [fixture: xychart/div-empty-string-line]
 [fixture: xychart/div-empty-description-block-in-categories]
+[空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。
 
 それだけの行の空の説明ブロックは、そのふつうの書き方で、
 何も変えない説明ブロックの文です。
@@ -119,13 +120,14 @@ kanban では mindmap と同様、空の icon
 [fixture: kanban/div-class-end-empty]
 [fixture: kanban/div-empty-icon-after-shape]
 [fixture: kanban/div-empty-class-after-shape]
-形の中の空の文字列と markdown 文字列も、空でないラベルの前後を含めて拒否します。
-[空の形](../diagrams/kanban.ja.md#空の形) を参照してください。 [fixture: kanban/div-empty-string-before-label]
+形の中の空の文字列と markdown 文字列も、
+空でないラベルの前後を含めて拒否します。 [fixture: kanban/div-empty-string-before-label]
 [fixture: kanban/div-empty-markdown-before-label]
 [fixture: kanban/div-empty-string-after-label]
 [fixture: kanban/div-empty-markdown-after-label]
 [fixture: kanban/div-string-before-string]
 [fixture: kanban/div-empty-markdown-before-string]
+[空の形](../diagrams/kanban.ja.md#空の形) を参照してください。
 
 形の外の裸の `""` と空の markdown 文字列はノード本文です。 [fixture: kanban/db-empty-string-node]
 [fixture: kanban/db-empty-markdown-node]
@@ -800,9 +802,8 @@ xychart では、文が始まらないところの閉じた空の説明ブロッ
 flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を、
 木は文として持たないからです。
 タイトル全体やラベル全体では、空の文字列は空の値の StringLiteral で、
-class と同じく、Db はそれをタイトルなし、ラベルなしと読みます。
-[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック) と、
-[空の文字列](../diagrams/xychart.ja.md#空の文字列) を参照してください。 [fixture: xychart/div-empty-description-block-inside-title-text]
+class と同じく、Db はそれをタイトルなし、
+ラベルなしと読みます。 [fixture: xychart/div-empty-description-block-inside-title-text]
 [fixture: xychart/div-empty-description-block-inside-axis]
 [fixture: xychart/div-empty-description-block-inside-plot]
 [fixture: xychart/div-empty-description-block-inside-values]
@@ -828,6 +829,8 @@ class と同じく、Db はそれをタイトルなし、ラベルなしと読�
 [fixture: xychart/db-grid-empty-plot-title-quoted]
 [fixture: xychart/db-empty-string-as-x-axis-title-before-band]
 [fixture: xychart/db-label-empty-string]
+[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック) と、
+[空の文字列](../diagrams/xychart.ja.md#空の文字列) を参照してください。
 
 quadrant では、文の中の閉じた空の説明ブロックです。
 テキストや名前の中、点の `]` とそのスタイルの間、
@@ -842,9 +845,7 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 どのテキストもそれを値全体として持ちません。
 `quadrant-1 ""` は両方が拒否し、mermaid.js は `x-axis L --> ""` を、
 矢印を持ち 2 つ目のテキストのない軸の文と読み、
-空の値の 2 つ目のテキストではそうなりません。
-[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) と、
-[空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照してください。 [fixture: quadrant/div-empty-block-in-classdef]
+空の値の 2 つ目のテキストではそうなりません。 [fixture: quadrant/div-empty-block-in-classdef]
 [fixture: quadrant/div-empty-block-in-name]
 [fixture: quadrant/div-empty-block-in-quadrant-text]
 [fixture: quadrant/div-empty-block-in-x-axis-text]
@@ -871,6 +872,8 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 [fixture: quadrant/db-empty-string-in-title]
 [fixture: quadrant/db-empty-block-after-point]
 [fixture: quadrant/db-empty-block-before-statement]
+[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) と、
+[空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照してください。
 
 アクセシビリティの文のない block では、文の中の閉じた空の説明ブロックです。
 矢印とそれが行き着くノードの間などで、どの欄も持てません（理由 a と b）。
@@ -882,9 +885,7 @@ flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を�
 木は文として持たないからです。
 どのラベルもそれを値全体として持たず、
 `A[""]` と `A -- "" --> B` は両方が拒否し、
-id にくっついた `""` は id の一部です。
-[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) と、
-[空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。 [fixture: block/div-empty-block-in-edge]
+id にくっついた `""` は id の一部です。 [fixture: block/div-empty-block-in-edge]
 [fixture: block/div-empty-markdown-between]
 [fixture: block/div-empty-markdown-line]
 [fixture: block/div-empty-string-after-edge]
@@ -902,6 +903,8 @@ id にくっついた `""` は id の一部です。
 [fixture: block/db-empty-block-line] [fixture: block/db-empty-block-between]
 [fixture: block/db-empty-string-glued-to-id]
 [fixture: block/gram-empty-block-only]
+[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) と、
+[空の文字列](../diagrams/block.ja.md#空の文字列) を参照してください。
 
 文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。
