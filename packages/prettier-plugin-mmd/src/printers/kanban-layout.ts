@@ -9,6 +9,7 @@ import type {
 import { findCommentEnds, findLeadingDirectives } from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import type { AtomLayout } from "./atoms.ts"
+import { minOf, maxOf } from "./collections.ts"
 import { keptAsWritten } from "./layout.ts"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
@@ -88,12 +89,12 @@ export function kanbanLines(
     const start = Math.max(
       headerEnd,
       lineStartOf(source, node.range[0]),
-      ...commentEnds.filter((offset) => offset <= node.range[0]),
+      maxOf(commentEnds.filter((offset) => offset <= node.range[0])),
     )
     const separatorWidth = commentEnds.includes(start) ? 1 : 0
     const lineEnd = Math.min(
       lineEndOf(source, end),
-      ...commentEnds.filter((offset) => offset >= end),
+      minOf(commentEnds.filter((offset) => offset >= end)),
     )
     const directives = findTriviaBetween(source, start, lineEnd).filter(
       (item) => item.type === "Directive",

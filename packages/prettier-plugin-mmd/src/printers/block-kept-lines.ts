@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type { BlockStatement } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
 import {
@@ -52,7 +53,7 @@ function findPercentStatements(
   const offsets: number[] = []
   for (const statement of statements) {
     if (statement.type === "BlockCompositeStatement") {
-      offsets.push(...findPercentStatements(statement.body))
+      appendItems(offsets, findPercentStatements(statement.body))
     } else if (
       statement.type === "BlockNodeStatement" &&
       statement.node.id.name.startsWith("%%")

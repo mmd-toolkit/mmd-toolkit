@@ -276,6 +276,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   Db と埋め込みデータを保つ）。
   直した失敗は、その fixture が守る。
   コーパスの fixture は `@mmd-toolkit/tests` で作る。
+  `pnpm run lint` が締め出す失敗（`conventions` の SKILL にある、
+  呼び出しの引数への配列の展開）は、代わりにその規則が守る。
 - fixture は文に答える。
   規則の文書（`docs/<図種>.md`、`docs/compatibility.md`）の
   振る舞いを定める文ごとに、その文が分ける場合のそれぞれと、

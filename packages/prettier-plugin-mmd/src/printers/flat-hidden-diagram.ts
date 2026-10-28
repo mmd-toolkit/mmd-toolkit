@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type { AstPath, Doc, ParserOptions } from "prettier"
 import type { Node } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
@@ -151,11 +152,9 @@ export function createFlatHiddenDiagramPrinter<
     /** Only authored body boundaries join lines; inner component gaps do not. */
     function collectBodyHidden(body: readonly Statement[]): void {
       for (const item of body) {
-        allHidden.push(
-          ...(layouts.prefixes?.(item) ?? []),
-          ...(item.type === layouts.ignoredType ? [item] : []),
-          ...(layouts.suffixes?.(item) ?? item.textAfter ?? []),
-        )
+        appendItems(allHidden, layouts.prefixes?.(item) ?? [])
+        if (item.type === layouts.ignoredType) allHidden.push(item)
+        appendItems(allHidden, layouts.suffixes?.(item) ?? item.textAfter ?? [])
         const selected = layouts.statement(source, item)
         if ("body" in selected) collectBodyHidden(selected.body)
       }
@@ -226,7 +225,7 @@ export function createFlatHiddenDiagramPrinter<
         }
         if ("body" in selected) nested.set(item, selected)
         const suffixes = layouts.suffixes?.(item) ?? item.textAfter ?? []
-        hidden.push(...suffixes)
+        appendItems(hidden, suffixes)
         // A protected segment can span a suffix boundary. Keep that layout
         // whole rather than cutting an indivisible atom.
         const firstSuffix = suffixes.at(0)

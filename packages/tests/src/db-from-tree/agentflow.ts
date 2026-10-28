@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import {
   classDefStyleOf,
   dbTypeOf,
@@ -300,7 +301,7 @@ class AgentflowDbBuilder {
           const name = this.nameOf(cssClass)
           const classDef = this.classDefs.get(name) ?? { id: name, styles: [] }
           this.classDefs.set(name, classDef)
-          classDef.styles.push(...styles)
+          appendItems(classDef.styles, styles)
         }
         return []
       }
@@ -399,7 +400,7 @@ class AgentflowDbBuilder {
       vertex.text ??= id
     }
     if (shapeType !== null) vertex.type = shapeType
-    if (styles !== null) vertex.styles.push(...styles)
+    if (styles !== null) appendItems(vertex.styles, styles)
     // Vertex step 5: a vertex without `props` gets them, with the property
     // or empty. A vertex with `props` gets the property added or its value
     // replaced, except that a later `__proto__` only replaces a `__proto__`
@@ -681,7 +682,7 @@ class AgentflowDbBuilder {
       }
       this.subgraphs.push(flow)
     } else {
-      flow.nodes.push(...nodes)
+      appendItems(flow.nodes, nodes)
       if (title !== "") flow.title = title
     }
     const lastDirection = statement.body

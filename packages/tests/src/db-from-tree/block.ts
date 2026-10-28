@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import { numberOrText } from "../summary-number.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
@@ -173,7 +174,7 @@ class BlockDbBuilder {
             trimmed(style.replace(";", "")),
           )
           const previous = this.classes.get(id) ?? []
-          previous.push(...styles)
+          appendItems(previous, styles)
           this.classes.set(id, previous)
           break
         }

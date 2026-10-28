@@ -8,6 +8,7 @@
  * docs/expected-results.md).
  */
 import mermaid from "mermaid"
+import { appendItems } from "./collections.ts"
 
 /**
  * A known divergence (see `KNOWN_DIVERGENCES`) that mermaid.js can be run
@@ -628,7 +629,7 @@ export function findRewrites(
       const leaving = leaveStateSwaps(lexer, removal.diagramType, change, call)
       if (typeof leaving === "string") return leaving
       readsLexerCall = true
-      swaps.push(...leaving)
+      appendItems(swaps, leaving)
       continue
     }
     const found = lexer.rules.flatMap((rule, index) =>

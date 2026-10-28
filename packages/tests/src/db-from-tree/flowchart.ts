@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import {
   classDefStyleOf,
   dbTypeOf,
@@ -411,7 +412,7 @@ class FlowchartDbBuilder {
           const name = this.nameOf(cssClass)
           const classDef = this.classDefs.get(name) ?? { id: name, styles: [] }
           this.classDefs.set(name, classDef)
-          classDef.styles.push(...styles)
+          appendItems(classDef.styles, styles)
         }
         return []
       }
@@ -510,7 +511,7 @@ class FlowchartDbBuilder {
       vertex.text ??= id
     }
     if (shapeType !== null) vertex.type = shapeType
-    if (styles !== null) vertex.styles.push(...styles)
+    if (styles !== null) appendItems(vertex.styles, styles)
     // Vertex step 5: a vertex without `props` gets them, with the property
     // or empty. A vertex with `props` gets the property added or its value
     // replaced, except that a later `__proto__` only replaces a `__proto__`
@@ -807,7 +808,7 @@ class FlowchartDbBuilder {
   ): string {
     const members: string[] = []
     for (const inner of statement.body)
-      members.push(...this.applyStatement(inner))
+      appendItems(members, this.applyStatement(inner))
     const nodes: string[] = []
     for (const member of members) {
       if (isBlank(member)) continue

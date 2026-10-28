@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type {
   AgentflowFlowStatement,
   AgentflowGlobalStatement,
@@ -314,7 +315,7 @@ export function layoutStatement(
     case "AgentflowEmptyStatement":
       return keptAsWritten(start, end)
     case "AgentflowAccDescrBlockStatement":
-      kept.push(...findAccDescrBlockStretches(source, statement))
+      appendItems(kept, findAccDescrBlockStretches(source, statement))
       if (!statement.closed) return keptAsWritten(start, end)
       break
     case "AgentflowVertexStatement":

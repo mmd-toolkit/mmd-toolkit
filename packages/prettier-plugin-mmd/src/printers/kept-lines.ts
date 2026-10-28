@@ -1,4 +1,5 @@
 import type { Range } from "@mmd-toolkit/parser"
+import { minOf, maxOf } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
@@ -666,13 +667,17 @@ export function semicolonSegmentEnd(source: Source, offset: number): number {
     }
     return at === -1 ? end : at
   })
-  let stop = Math.min(end, ...separators)
+  let stop = Math.min(end, minOf(separators))
   const protectedEnd = Math.max(
     offset,
-    ...findTokensBetween(source, offset, stop).map((token) => token.range[1]),
-    ...source.trivia
-      .filter((item) => offset <= item.range[0] && item.range[0] < stop)
-      .map((item) => item.range[1]),
+    maxOf(
+      findTokensBetween(source, offset, stop).map((token) => token.range[1]),
+    ),
+    maxOf(
+      source.trivia
+        .filter((item) => offset <= item.range[0] && item.range[0] < stop)
+        .map((item) => item.range[1]),
+    ),
   )
   while (stop > protectedEnd && isWhitespace(source.text[stop - 1])) stop--
   return stop

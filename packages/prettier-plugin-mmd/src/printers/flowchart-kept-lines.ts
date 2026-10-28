@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type {
   FlowchartAccDescrBlockStatement,
   FlowchartStatement,
@@ -135,12 +136,13 @@ function findLinesOfSubgraphBlocks(
   const lines: number[] = []
   for (const statement of statements) {
     if (statement.type !== "FlowchartSubgraphStatement") continue
-    lines.push(...findLinesOfSubgraphBlocks(source, statement.body))
+    appendItems(lines, findLinesOfSubgraphBlocks(source, statement.body))
     const blocks = findHeaderBlocks(source, statement)
     if (blocks.length === 0) continue
-    lines.push(
-      lineStartOf(source, statement.range[0]),
-      ...blocks.map((block) => lineStartOf(source, block.range[1] - 1)),
+    lines.push(lineStartOf(source, statement.range[0]))
+    appendItems(
+      lines,
+      blocks.map((block) => lineStartOf(source, block.range[1] - 1)),
     )
   }
   return lines

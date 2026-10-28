@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type { NumericLiteral, Range } from "../../ast.ts"
 import type {
   SequenceAccDescrBlockStatement,
@@ -119,7 +120,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
       } else if (unit.name === "invalid") {
         statements.push(this.parseIgnoredStatement())
       } else {
-        statements.push(...this.parseStatement(unit))
+        appendItems(statements, this.parseStatement(unit))
       }
     }
   }
@@ -313,8 +314,9 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
       if (unit?.name === "newline") {
         this.takeNewline()
       } else if (unit !== null && PARTICIPANT_KEYWORDS.includes(unit.name)) {
-        body.push(
-          ...this.withStatementEnd(
+        appendItems(
+          body,
+          this.withStatementEnd(
             this.parseParticipantStatement(this.next, false),
           ),
         )

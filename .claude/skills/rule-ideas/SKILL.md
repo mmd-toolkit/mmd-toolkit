@@ -324,6 +324,14 @@ Dropped:
 | In a tree view, `titlex` (an empty title and the node `x`), and `title`, which is not drawn                                                                                                                    | `titlex` comes from not knowing the syntax; not drawing a correct title is a defect of mermaid.js (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | In a tree view, an `accDescr {` block that a `}` written later in a name closes                                                                                                                                | No ordinary writing, as in a Gantt chart above: a name of a file rarely holds a `}` (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | In a tree view, a YAML block after a comment or in the body, and an empty or a punctuation-only directive                                                                                                      | As in a pie chart above                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| In every diagram type, an init directive whose argument is a word, a JSON string, an array, or nothing (`%%{init: dark}%%`)                                                                                    | Comes from not knowing the syntax: the documentation gives the argument of init as a JSON object, and these give no settings without an error (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In every diagram type, a directive in a comment line (`%% old %%{init: {"theme": "dark"}}%%`), which still applies                                                                                             | Comes from not knowing the syntax: the specification removes directives before comments, so a directive applies wherever it stands (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| In every diagram type, a key of the settings that mermaid.js does not know (`theem`) or does not take from a directive (`securityLevel`)                                                                       | A key unknown to the schema can be meant: `themeVariables` and diagrams added from outside take keys of their own, and the keys not taken from a directive are documented (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In every diagram type, a directive whose name neither ends with `init` or `initialize` nor is `wrap`                                                                                                           | Nothing is shown lost: mermaid.js accepts any name, and a directive that sets nothing may be written on purpose (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| In every diagram type, a directive at all, which the documentation replaces with the frontmatter                                                                                                               | Style: a directive still works as written (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In every diagram type, JSON valid as written that turning `'` into `"` breaks (`{"fontFamily": "O'Brien"}`)                                                                                                    | A defect of mermaid.js: the author writes valid JSON, and mermaid.js drops the settings (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| In every diagram type, a valid init directive after `%%}%%` on its line, which gives no settings                                                                                                               | No ordinary writing: no author writes `%%}%%` before a directive; mermaid.js removes such a line before it reads the settings (run)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In every diagram type, `title`, `accTitle`, and `accDescr` written twice, and an empty `accDescr` block, as common rules                                                                                       | Not common: kanban reads `accTitle` as a column, ishikawa as a node, info publishes none of them, and an empty block keeps the description in some diagram types and clears it in others (run); they stay rules of each diagram type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### Questions for unclear cases
 
@@ -718,195 +726,196 @@ type.
 
 Decisions (made on 2026-10-15, with mermaid 12.0.0):
 
-| Rule                                        | Enabled          | Reason when not enabled                                                      |
-| ------------------------------------------- | ---------------- | ---------------------------------------------------------------------------- |
-| flowchart-no-ignored-text                   | yes              |                                                                              |
-| flowchart-no-unclosed-description-block     | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| flowchart-no-empty-description-block        | yes              |                                                                              |
-| flowchart-no-duplicate-description          | yes              |                                                                              |
-| flowchart-no-duplicate-title                | yes              |                                                                              |
-| flowchart-no-redefined-vertex               | yes              |                                                                              |
-| flowchart-no-undef                          | yes              |                                                                              |
-| flowchart-no-duplicate-direction            | yes              |                                                                              |
-| no-unclosed-directive                       | no (provisional) | Their documents cover four diagram types only                                |
-| no-invalid-init-directive                   | no (provisional) | Their documents cover four diagram types only                                |
-| sequence-no-create-destroy                  | yes              |                                                                              |
-| sequence-no-duplicate-description           | yes              |                                                                              |
-| sequence-no-duplicate-title                 | yes              |                                                                              |
-| sequence-no-empty-description-block         | yes              |                                                                              |
-| sequence-no-ignored-text                    | yes              |                                                                              |
-| sequence-no-invalid-json                    | yes              |                                                                              |
-| sequence-no-link-without-separator          | yes              |                                                                              |
-| sequence-no-unclosed-description-block      | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| class-no-bare-class-name                    | yes              |                                                                              |
-| class-no-duplicate-description              | yes              |                                                                              |
-| class-no-duplicate-title                    | yes              |                                                                              |
-| class-no-ignored-text                       | yes              |                                                                              |
-| class-no-inline-comment                     | no               | Criteria 1 and 3                                                             |
-| class-no-redefined-class                    | yes              |                                                                              |
-| class-no-unclosed-backquote                 | yes              |                                                                              |
-| class-no-undef                              | yes              |                                                                              |
-| state-no-duplicate-description              | yes              |                                                                              |
-| state-no-duplicate-title                    | yes              |                                                                              |
-| state-no-empty-description-block            | yes              |                                                                              |
-| state-no-ignored-text                       | yes              |                                                                              |
-| state-no-unclosed-description-block         | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| state-no-undef                              | yes              |                                                                              |
-| er-no-duplicate-description                 | yes              |                                                                              |
-| er-no-duplicate-title                       | yes              |                                                                              |
-| er-no-empty-description-block               | yes              |                                                                              |
-| er-no-ignored-text                          | no               | Criterion 3: [#8364](https://github.com/mermaid-js/mermaid/pull/8364) (open) |
-| er-no-redefined-entity                      | yes              |                                                                              |
-| er-no-unclosed-description-block            | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| er-no-undef                                 | yes              |                                                                              |
-| gantt-no-duplicate-description              | yes              |                                                                              |
-| gantt-no-duplicate-id                       | yes              |                                                                              |
-| gantt-no-duplicate-setting                  | yes              |                                                                              |
-| gantt-no-duplicate-title                    | yes              |                                                                              |
-| gantt-no-empty-description-block            | yes              |                                                                              |
-| gantt-no-undef                              | yes              |                                                                              |
-| gantt-no-unknown-exclude                    | yes              |                                                                              |
-| gantt-no-invalid-tag                        | yes              |                                                                              |
-| journey-no-duplicate-description            | yes              |                                                                              |
-| journey-no-duplicate-title                  | yes              |                                                                              |
-| journey-no-empty-description-block          | yes              |                                                                              |
-| journey-no-empty-person                     | yes              |                                                                              |
-| journey-no-ignored-text                     | yes              |                                                                              |
-| journey-no-invalid-score                    | yes              |                                                                              |
-| requirement-no-duplicate-description        | yes              |                                                                              |
-| requirement-no-duplicate-field              | yes              |                                                                              |
-| requirement-no-duplicate-name               | yes              |                                                                              |
-| requirement-no-duplicate-title              | yes              |                                                                              |
-| requirement-no-empty-description-block      | yes              |                                                                              |
-| requirement-no-ignored-text                 | yes              |                                                                              |
-| requirement-no-unclosed-description-block   | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| requirement-no-undef                        | yes              |                                                                              |
-| mindmap-no-duplicate-decoration             | yes              |                                                                              |
-| mindmap-no-mismatched-shape                 | yes              |                                                                              |
-| timeline-no-duplicate-title                 | yes              |                                                                              |
-| timeline-no-duplicate-description           | yes              |                                                                              |
-| timeline-no-empty-description-block         | yes              |                                                                              |
-| sankey-no-invalid-value                     | yes              |                                                                              |
-| sankey-no-empty-node                        | yes              |                                                                              |
-| xychart-no-duplicate-title                  | yes              |                                                                              |
-| xychart-no-duplicate-description            | yes              |                                                                              |
-| xychart-no-empty-description-block          | yes              |                                                                              |
-| xychart-no-unclosed-description-block       | yes              |                                                                              |
-| xychart-no-invalid-orientation              | yes              |                                                                              |
-| xychart-no-redefined-axis                   | yes              |                                                                              |
-| xychart-no-extra-value                      | yes              |                                                                              |
-| quadrant-no-duplicate-title                 | yes              |                                                                              |
-| quadrant-no-duplicate-description           | yes              |                                                                              |
-| quadrant-no-empty-description-block         | yes              |                                                                              |
-| quadrant-no-redefined-axis                  | yes              |                                                                              |
-| quadrant-no-redefined-quadrant              | yes              |                                                                              |
-| quadrant-no-redefined-class                 | yes              |                                                                              |
-| quadrant-no-undef                           | yes              |                                                                              |
-| quadrant-no-duplicate-style                 | yes              |                                                                              |
-| quadrant-no-invalid-coordinate              | yes              |                                                                              |
-| block-no-edge-chain                         | yes              |                                                                              |
-| block-no-edge-in-composite-head             | yes              |                                                                              |
-| block-no-duplicate-block                    | yes              |                                                                              |
-| block-no-spaced-class-id                    | yes              |                                                                              |
-| block-no-undef                              | yes              |                                                                              |
-| block-no-duplicate-columns                  | yes              |                                                                              |
-| block-no-redefined-style                    | yes              |                                                                              |
-| block-no-mismatched-shape                   | yes              |                                                                              |
-| block-no-mismatched-edge                    | yes              |                                                                              |
-| block-no-useless-width                      | yes              |                                                                              |
-| block-no-invalid-direction                  | yes              |                                                                              |
-| kanban-no-invalid-metadata-key              | held             |                                                                              |
-| kanban-no-invalid-priority                  | held             |                                                                              |
-| kanban-no-duplicate-section                 | yes              |                                                                              |
-| c4-no-undef                                 | yes              |                                                                              |
-| c4-no-invalid-attribute-key                 | yes              |                                                                              |
-| c4-no-useless-argument                      | yes              |                                                                              |
-| c4-no-duplicate-title                       | yes              |                                                                              |
-| c4-no-duplicate-description                 | yes              |                                                                              |
-| c4-no-redefined-element                     | yes              |                                                                              |
-| c4-no-duplicate-style                       | yes              |                                                                              |
-| venn-no-duplicate-title                     | yes              |                                                                              |
-| venn-no-duplicate-subset                    | yes              |                                                                              |
-| venn-no-duplicate-style                     | yes              |                                                                              |
-| venn-no-invalid-style-key                   | yes              |                                                                              |
-| venn-no-undef                               | yes              |                                                                              |
-| venn-no-ignored-text                        | yes              |                                                                              |
-| agentflow-no-duplicate-title                | yes              |                                                                              |
-| agentflow-no-duplicate-description          | yes              |                                                                              |
-| agentflow-no-empty-description-block        | yes              |                                                                              |
-| agentflow-no-unclosed-description-block     | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| agentflow-no-ignored-text                   | yes              |                                                                              |
-| agentflow-no-redefined-vertex               | yes              |                                                                              |
-| agentflow-no-redefined-connector            | yes              |                                                                              |
-| agentflow-no-redefined-flow                 | yes              |                                                                              |
-| agentflow-no-duplicate-direction            | yes              |                                                                              |
-| agentflow-no-undef                          | yes              |                                                                              |
-| usecase-no-duplicate-title                  | yes              |                                                                              |
-| usecase-no-duplicate-description            | yes              |                                                                              |
-| usecase-no-empty-description-block          | yes              |                                                                              |
-| usecase-no-unclosed-description-block       | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| usecase-no-duplicate-direction              | yes              |                                                                              |
-| usecase-no-duplicate-metadata               | yes              |                                                                              |
-| usecase-no-redefined-class                  | yes              |                                                                              |
-| pie-no-duplicate-label                      | yes              |                                                                              |
-| pie-no-duplicate-title                      | yes              |                                                                              |
-| pie-no-duplicate-description                | yes              |                                                                              |
-| pie-no-empty-description-block              | yes              |                                                                              |
-| gitgraph-no-duplicate-option                | yes              |                                                                              |
-| gitgraph-no-redefined-commit                | yes              |                                                                              |
-| gitgraph-no-duplicate-title                 | yes              |                                                                              |
-| gitgraph-no-duplicate-description           | yes              |                                                                              |
-| gitgraph-no-empty-description-block         | yes              |                                                                              |
-| packet-no-duplicate-title                   | yes              |                                                                              |
-| packet-no-duplicate-description             | yes              |                                                                              |
-| packet-no-empty-description-block           | yes              |                                                                              |
-| architecture-no-duplicate-title             | yes              |                                                                              |
-| architecture-no-duplicate-description       | yes              |                                                                              |
-| architecture-no-empty-description-block     | yes              |                                                                              |
-| architecture-no-reversed-marker             | yes              |                                                                              |
-| architecture-no-ungrouped-modifier          | yes              |                                                                              |
-| radar-no-undef                              | yes              |                                                                              |
-| radar-no-duplicate-entry                    | yes              |                                                                              |
-| radar-no-mismatched-entry-count             | yes              |                                                                              |
-| radar-no-duplicate-option                   | yes              |                                                                              |
-| radar-no-reversed-range                     | yes              |                                                                              |
-| radar-no-duplicate-title                    | yes              |                                                                              |
-| radar-no-duplicate-description              | yes              |                                                                              |
-| radar-no-empty-description-block            | yes              |                                                                              |
-| radar-no-unclosed-description-block         | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| treemap-no-invalid-value                    | yes              |                                                                              |
-| treemap-no-duplicate-title                  | yes              |                                                                              |
-| treemap-no-duplicate-description            | yes              |                                                                              |
-| treemap-no-empty-description-block          | yes              |                                                                              |
-| railroad-no-duplicate-title                 | yes              |                                                                              |
-| railroad-no-duplicate-description           | yes              |                                                                              |
-| railroad-no-empty-description-block         | yes              |                                                                              |
-| cynefin-no-redefined-domain                 | yes              |                                                                              |
-| cynefin-no-duplicate-title                  | yes              |                                                                              |
-| cynefin-no-duplicate-description            | yes              |                                                                              |
-| cynefin-no-empty-description-block          | yes              |                                                                              |
-| wardley-no-duplicate-title                  | yes              |                                                                              |
-| wardley-no-duplicate-description            | yes              |                                                                              |
-| wardley-no-empty-description-block          | yes              |                                                                              |
-| wardley-no-undef                            | yes              |                                                                              |
-| wardley-no-redefined-node                   | yes              |                                                                              |
-| wardley-no-duplicate-evolve                 | yes              |                                                                              |
-| wardley-no-duplicate-pipeline               | yes              |                                                                              |
-| wardley-no-duplicate-size                   | yes              |                                                                              |
-| wardley-no-duplicate-evolution              | yes              |                                                                              |
-| wardley-no-duplicate-annotations            | yes              |                                                                              |
-| wardley-no-ignored-link-label               | yes              |                                                                              |
-| eventmodeling-no-undef                      | yes              |                                                                              |
-| eventmodeling-no-redefined-data             | yes              |                                                                              |
-| eventmodeling-no-duplicate-title            | yes              |                                                                              |
-| eventmodeling-no-duplicate-description      | yes              |                                                                              |
-| eventmodeling-no-empty-description-block    | yes              |                                                                              |
-| eventmodeling-no-unclosed-description-block | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
-| treeview-no-duplicate-annotation            | yes              |                                                                              |
-| treeview-no-duplicate-title                 | yes              |                                                                              |
-| treeview-no-duplicate-description           | yes              |                                                                              |
-| treeview-no-empty-description-block         | yes              |                                                                              |
-| treeview-no-unclosed-description-block      | yes              |                                                                              |
+| Rule                                        | Enabled | Reason when not enabled                                                      |
+| ------------------------------------------- | ------- | ---------------------------------------------------------------------------- |
+| flowchart-no-ignored-text                   | yes     |                                                                              |
+| flowchart-no-unclosed-description-block     | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| flowchart-no-empty-description-block        | yes     |                                                                              |
+| flowchart-no-duplicate-description          | yes     |                                                                              |
+| flowchart-no-duplicate-title                | yes     |                                                                              |
+| flowchart-no-redefined-vertex               | yes     |                                                                              |
+| flowchart-no-undef                          | yes     |                                                                              |
+| flowchart-no-duplicate-direction            | yes     |                                                                              |
+| no-unclosed-directive                       | yes     |                                                                              |
+| no-invalid-init-directive                   | yes     |                                                                              |
+| no-duplicate-init-key                       | yes     |                                                                              |
+| sequence-no-create-destroy                  | yes     |                                                                              |
+| sequence-no-duplicate-description           | yes     |                                                                              |
+| sequence-no-duplicate-title                 | yes     |                                                                              |
+| sequence-no-empty-description-block         | yes     |                                                                              |
+| sequence-no-ignored-text                    | yes     |                                                                              |
+| sequence-no-invalid-json                    | yes     |                                                                              |
+| sequence-no-link-without-separator          | yes     |                                                                              |
+| sequence-no-unclosed-description-block      | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| class-no-bare-class-name                    | yes     |                                                                              |
+| class-no-duplicate-description              | yes     |                                                                              |
+| class-no-duplicate-title                    | yes     |                                                                              |
+| class-no-ignored-text                       | yes     |                                                                              |
+| class-no-inline-comment                     | no      | Criteria 1 and 3                                                             |
+| class-no-redefined-class                    | yes     |                                                                              |
+| class-no-unclosed-backquote                 | yes     |                                                                              |
+| class-no-undef                              | yes     |                                                                              |
+| state-no-duplicate-description              | yes     |                                                                              |
+| state-no-duplicate-title                    | yes     |                                                                              |
+| state-no-empty-description-block            | yes     |                                                                              |
+| state-no-ignored-text                       | yes     |                                                                              |
+| state-no-unclosed-description-block         | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| state-no-undef                              | yes     |                                                                              |
+| er-no-duplicate-description                 | yes     |                                                                              |
+| er-no-duplicate-title                       | yes     |                                                                              |
+| er-no-empty-description-block               | yes     |                                                                              |
+| er-no-ignored-text                          | no      | Criterion 3: [#8364](https://github.com/mermaid-js/mermaid/pull/8364) (open) |
+| er-no-redefined-entity                      | yes     |                                                                              |
+| er-no-unclosed-description-block            | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| er-no-undef                                 | yes     |                                                                              |
+| gantt-no-duplicate-description              | yes     |                                                                              |
+| gantt-no-duplicate-id                       | yes     |                                                                              |
+| gantt-no-duplicate-setting                  | yes     |                                                                              |
+| gantt-no-duplicate-title                    | yes     |                                                                              |
+| gantt-no-empty-description-block            | yes     |                                                                              |
+| gantt-no-undef                              | yes     |                                                                              |
+| gantt-no-unknown-exclude                    | yes     |                                                                              |
+| gantt-no-invalid-tag                        | yes     |                                                                              |
+| journey-no-duplicate-description            | yes     |                                                                              |
+| journey-no-duplicate-title                  | yes     |                                                                              |
+| journey-no-empty-description-block          | yes     |                                                                              |
+| journey-no-empty-person                     | yes     |                                                                              |
+| journey-no-ignored-text                     | yes     |                                                                              |
+| journey-no-invalid-score                    | yes     |                                                                              |
+| requirement-no-duplicate-description        | yes     |                                                                              |
+| requirement-no-duplicate-field              | yes     |                                                                              |
+| requirement-no-duplicate-name               | yes     |                                                                              |
+| requirement-no-duplicate-title              | yes     |                                                                              |
+| requirement-no-empty-description-block      | yes     |                                                                              |
+| requirement-no-ignored-text                 | yes     |                                                                              |
+| requirement-no-unclosed-description-block   | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| requirement-no-undef                        | yes     |                                                                              |
+| mindmap-no-duplicate-decoration             | yes     |                                                                              |
+| mindmap-no-mismatched-shape                 | yes     |                                                                              |
+| timeline-no-duplicate-title                 | yes     |                                                                              |
+| timeline-no-duplicate-description           | yes     |                                                                              |
+| timeline-no-empty-description-block         | yes     |                                                                              |
+| sankey-no-invalid-value                     | yes     |                                                                              |
+| sankey-no-empty-node                        | yes     |                                                                              |
+| xychart-no-duplicate-title                  | yes     |                                                                              |
+| xychart-no-duplicate-description            | yes     |                                                                              |
+| xychart-no-empty-description-block          | yes     |                                                                              |
+| xychart-no-unclosed-description-block       | yes     |                                                                              |
+| xychart-no-invalid-orientation              | yes     |                                                                              |
+| xychart-no-redefined-axis                   | yes     |                                                                              |
+| xychart-no-extra-value                      | yes     |                                                                              |
+| quadrant-no-duplicate-title                 | yes     |                                                                              |
+| quadrant-no-duplicate-description           | yes     |                                                                              |
+| quadrant-no-empty-description-block         | yes     |                                                                              |
+| quadrant-no-redefined-axis                  | yes     |                                                                              |
+| quadrant-no-redefined-quadrant              | yes     |                                                                              |
+| quadrant-no-redefined-class                 | yes     |                                                                              |
+| quadrant-no-undef                           | yes     |                                                                              |
+| quadrant-no-duplicate-style                 | yes     |                                                                              |
+| quadrant-no-invalid-coordinate              | yes     |                                                                              |
+| block-no-edge-chain                         | yes     |                                                                              |
+| block-no-edge-in-composite-head             | yes     |                                                                              |
+| block-no-duplicate-block                    | yes     |                                                                              |
+| block-no-spaced-class-id                    | yes     |                                                                              |
+| block-no-undef                              | yes     |                                                                              |
+| block-no-duplicate-columns                  | yes     |                                                                              |
+| block-no-redefined-style                    | yes     |                                                                              |
+| block-no-mismatched-shape                   | yes     |                                                                              |
+| block-no-mismatched-edge                    | yes     |                                                                              |
+| block-no-useless-width                      | yes     |                                                                              |
+| block-no-invalid-direction                  | yes     |                                                                              |
+| kanban-no-invalid-metadata-key              | held    |                                                                              |
+| kanban-no-invalid-priority                  | held    |                                                                              |
+| kanban-no-duplicate-section                 | yes     |                                                                              |
+| c4-no-undef                                 | yes     |                                                                              |
+| c4-no-invalid-attribute-key                 | yes     |                                                                              |
+| c4-no-useless-argument                      | yes     |                                                                              |
+| c4-no-duplicate-title                       | yes     |                                                                              |
+| c4-no-duplicate-description                 | yes     |                                                                              |
+| c4-no-redefined-element                     | yes     |                                                                              |
+| c4-no-duplicate-style                       | yes     |                                                                              |
+| venn-no-duplicate-title                     | yes     |                                                                              |
+| venn-no-duplicate-subset                    | yes     |                                                                              |
+| venn-no-duplicate-style                     | yes     |                                                                              |
+| venn-no-invalid-style-key                   | yes     |                                                                              |
+| venn-no-undef                               | yes     |                                                                              |
+| venn-no-ignored-text                        | yes     |                                                                              |
+| agentflow-no-duplicate-title                | yes     |                                                                              |
+| agentflow-no-duplicate-description          | yes     |                                                                              |
+| agentflow-no-empty-description-block        | yes     |                                                                              |
+| agentflow-no-unclosed-description-block     | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| agentflow-no-ignored-text                   | yes     |                                                                              |
+| agentflow-no-redefined-vertex               | yes     |                                                                              |
+| agentflow-no-redefined-connector            | yes     |                                                                              |
+| agentflow-no-redefined-flow                 | yes     |                                                                              |
+| agentflow-no-duplicate-direction            | yes     |                                                                              |
+| agentflow-no-undef                          | yes     |                                                                              |
+| usecase-no-duplicate-title                  | yes     |                                                                              |
+| usecase-no-duplicate-description            | yes     |                                                                              |
+| usecase-no-empty-description-block          | yes     |                                                                              |
+| usecase-no-unclosed-description-block       | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| usecase-no-duplicate-direction              | yes     |                                                                              |
+| usecase-no-duplicate-metadata               | yes     |                                                                              |
+| usecase-no-redefined-class                  | yes     |                                                                              |
+| pie-no-duplicate-label                      | yes     |                                                                              |
+| pie-no-duplicate-title                      | yes     |                                                                              |
+| pie-no-duplicate-description                | yes     |                                                                              |
+| pie-no-empty-description-block              | yes     |                                                                              |
+| gitgraph-no-duplicate-option                | yes     |                                                                              |
+| gitgraph-no-redefined-commit                | yes     |                                                                              |
+| gitgraph-no-duplicate-title                 | yes     |                                                                              |
+| gitgraph-no-duplicate-description           | yes     |                                                                              |
+| gitgraph-no-empty-description-block         | yes     |                                                                              |
+| packet-no-duplicate-title                   | yes     |                                                                              |
+| packet-no-duplicate-description             | yes     |                                                                              |
+| packet-no-empty-description-block           | yes     |                                                                              |
+| architecture-no-duplicate-title             | yes     |                                                                              |
+| architecture-no-duplicate-description       | yes     |                                                                              |
+| architecture-no-empty-description-block     | yes     |                                                                              |
+| architecture-no-reversed-marker             | yes     |                                                                              |
+| architecture-no-ungrouped-modifier          | yes     |                                                                              |
+| radar-no-undef                              | yes     |                                                                              |
+| radar-no-duplicate-entry                    | yes     |                                                                              |
+| radar-no-mismatched-entry-count             | yes     |                                                                              |
+| radar-no-duplicate-option                   | yes     |                                                                              |
+| radar-no-reversed-range                     | yes     |                                                                              |
+| radar-no-duplicate-title                    | yes     |                                                                              |
+| radar-no-duplicate-description              | yes     |                                                                              |
+| radar-no-empty-description-block            | yes     |                                                                              |
+| radar-no-unclosed-description-block         | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| treemap-no-invalid-value                    | yes     |                                                                              |
+| treemap-no-duplicate-title                  | yes     |                                                                              |
+| treemap-no-duplicate-description            | yes     |                                                                              |
+| treemap-no-empty-description-block          | yes     |                                                                              |
+| railroad-no-duplicate-title                 | yes     |                                                                              |
+| railroad-no-duplicate-description           | yes     |                                                                              |
+| railroad-no-empty-description-block         | yes     |                                                                              |
+| cynefin-no-redefined-domain                 | yes     |                                                                              |
+| cynefin-no-duplicate-title                  | yes     |                                                                              |
+| cynefin-no-duplicate-description            | yes     |                                                                              |
+| cynefin-no-empty-description-block          | yes     |                                                                              |
+| wardley-no-duplicate-title                  | yes     |                                                                              |
+| wardley-no-duplicate-description            | yes     |                                                                              |
+| wardley-no-empty-description-block          | yes     |                                                                              |
+| wardley-no-undef                            | yes     |                                                                              |
+| wardley-no-redefined-node                   | yes     |                                                                              |
+| wardley-no-duplicate-evolve                 | yes     |                                                                              |
+| wardley-no-duplicate-pipeline               | yes     |                                                                              |
+| wardley-no-duplicate-size                   | yes     |                                                                              |
+| wardley-no-duplicate-evolution              | yes     |                                                                              |
+| wardley-no-duplicate-annotations            | yes     |                                                                              |
+| wardley-no-ignored-link-label               | yes     |                                                                              |
+| eventmodeling-no-undef                      | yes     |                                                                              |
+| eventmodeling-no-redefined-data             | yes     |                                                                              |
+| eventmodeling-no-duplicate-title            | yes     |                                                                              |
+| eventmodeling-no-duplicate-description      | yes     |                                                                              |
+| eventmodeling-no-empty-description-block    | yes     |                                                                              |
+| eventmodeling-no-unclosed-description-block | no      | Criterion 1: a description that ends with its own `}` after a `{`            |
+| treeview-no-duplicate-annotation            | yes     |                                                                              |
+| treeview-no-duplicate-title                 | yes     |                                                                              |
+| treeview-no-duplicate-description           | yes     |                                                                              |
+| treeview-no-empty-description-block         | yes     |                                                                              |
+| treeview-no-unclosed-description-block      | yes     |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -1068,23 +1077,45 @@ label redefine"; (4) use another name, or write the label once.
 er-no-redefined-entity: (1) the later alias is ignored; (2) none; (3) "entity
 alias", "alias erDiagram"; (4) use another name, or write the alias once.
 
-no-unclosed-directive (provisional): (1) the text after the directive is lost,
-or the word after `%%{wrap`; (2) none: a comment that starts with `%%{` is read
-as a directive, which is the mistake reported; (3) "directive not closed",
-"unclosed directive", "directive": the items concern settings, and the
-documentation of mermaid.js replaces directives with the frontmatter
+no-unclosed-directive: (1) the statements on the lines that the directive takes,
+or the word after `%%{wrap`, are lost (run in every diagram type); (2) none: the
+name and the JSON object or array of the argument may run over several lines,
+and a directive at the end of the text or ended by U+2028 or U+2029 takes
+nothing and is not reported, since it gives the Db and the settings of the
+closed directive (run); a directive closed by the `}%%` of a later directive is
+reported too, which the earlier condition, a directive not closed, missed
+(decided on 2026-10-27); (3) "directive not closed", "unclosed directive",
+"directive": the items concern settings, and the documentation of mermaid.js
+replaces directives with the frontmatter
 ([#7989](https://github.com/mermaid-js/mermaid/pull/7989), merged), which keeps
-the reading; (4) close the directive with `}%%`.
+the reading; (4) close the directive with `}%%`. The rule is common: the shared
+preprocessing removes the directive before the lexer of any diagram type reads
+the text, and a diagram type that rejects what is left gives no report (run in
+the 44 headers of the detection table).
 
-no-invalid-init-directive (provisional): (1) every init directive of the text is
-ignored; (2) none; (3) "init trailing comma", "init directive ignored",
-"directive case sensitive", "init json", "json5", "trailing comma init"; (4)
-remove the comma, or write the name in lower case. The name follows the words of
-the rules of ESLint itself: a form written incorrectly, so that it does not work
-as meant, is invalid there, as in no-invalid-regexp and valid-typeof (a
-misspelled type name that silently matches nothing); both reported forms, a JSON
-argument with a trailing comma and a name in another case, are such forms, and
-the fix is to write them correctly.
+no-invalid-init-directive: (1) the settings of every init directive are dropped,
+or, for a name in another case, the settings of that directive (run in every
+diagram type); (2) none: JSON that is valid as written and that turning `'` into
+`"` breaks is a defect of mermaid.js and not reported
+([#3640](https://github.com/mermaid-js/mermaid/issues/3640) (open) concerns the
+quotes), a word argument or none comes from not knowing the syntax, and a
+directive after `%%}%%` on its line drops only its own settings when text
+follows the line and those of every init directive on the last line, which the
+document states (decided on 2026-10-27); (3) "init trailing comma", "init
+directive ignored", "directive case sensitive", "init json", "json5", "trailing
+comma init"; (4) correct the JSON, or write the name in lower case. The name
+follows the words of the rules of ESLint itself: a form written incorrectly, so
+that it does not work as meant, is invalid there, as in no-invalid-regexp and
+valid-typeof (a misspelled type name that silently matches nothing); both
+reported forms, JSON that is not valid and a name in another case, are such
+forms, and the fix is to write them correctly.
+
+no-duplicate-init-key: (1) the earlier value of a key that one object of the
+JSON holds twice is lost (run in every diagram type); (2) none: a key written
+again with an equal value, and the keys of two init directives, which the
+documentation combines with the last value of each key, are not reported, and
+only JSON that mermaid.js reads is checked (decided on 2026-10-27); (3) "init
+duplicate key", "init json": nothing; (4) keep one of the two members.
 
 class-no-inline-comment: see the paragraph after these notes.
 
@@ -1969,6 +2000,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | wardley-* (all 11 rules)                | None for now (2026-10-26; see the end of this section)         |
 | eventmodeling-* (all 6 rules)           | None for now (2026-10-27; see the end of this section)         |
 | treeview-* (all 5 rules)                | None for now (2026-10-27; see the end of this section)         |
+| no-unclosed-directive                   | None for now (2026-10-27; see the end of this section)         |
+| no-invalid-init-directive               | None for now (2026-10-27; see the end of this section)         |
+| no-duplicate-init-key                   | None for now (2026-10-27; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -2070,7 +2104,8 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 flowchart-no-duplicate-direction (2026-10-22), and `usecase-*`, `pie-*`, and
 `gitgraph-*` (2026-10-23), and `packet-*`, `architecture-*`, and `radar-*`
 (2026-10-25), and `treemap-*`, `railroad-*`, `cynefin-*`, and `wardley-*`
-(2026-10-26), and `eventmodeling-*` and `treeview-*` (2026-10-27): the rules are
+(2026-10-26), and `eventmodeling-*`, `treeview-*`, no-unclosed-directive,
+no-invalid-init-directive, and no-duplicate-init-key (2026-10-27): the rules are
 implemented without suggestions for now. No suggestion had been decided for them
 or described in their documents, and the one planned for the empty block of a
 sequence diagram rested on generated inputs. Whether they get suggestions is

@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { isWordCharacter } from "./characters.ts"
@@ -502,10 +503,11 @@ class UsecaseModel {
             if (!classes.includes(name)) classes.push(name)
         }
       } else if (statement.type === "UsecaseStyleStatement") {
-        ;(
-          this.require(this.text(statement.target), statement.target).data
-            .styles as string[]
-        ).push(...this.styles(statement.styles))
+        const styles = this.require(
+          this.text(statement.target),
+          statement.target,
+        ).data.styles as string[]
+        appendItems(styles, this.styles(statement.styles))
       } else if (statement.type === "UsecaseClassDefStatement") {
         for (const name of statement.classes) {
           const id = this.text(name)

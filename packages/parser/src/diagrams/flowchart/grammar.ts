@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import { GraphGrammar } from "../../graph-grammar.ts"
 import type { NodePlace } from "../../unit-grammar.ts"
 import type { ClosedArrowParts, OpeningArrowParts } from "./arrows.ts"
@@ -232,7 +233,7 @@ export class FlowchartGrammar extends GraphGrammar<
       } else if (unit.name === ";") {
         statements.push(this.parseEmptyStatement())
       } else {
-        statements.push(...this.parseStatement(unit))
+        appendItems(statements, this.parseStatement(unit))
       }
     }
   }
@@ -322,6 +323,8 @@ export class FlowchartGrammar extends GraphGrammar<
     ) {
       separator = this.positionAfter(separator)
     }
+    // The scan runs backwards; append each block and reverse once to avoid
+    // repeatedly moving the blocks already collected.
     const blocks: (readonly Unit[])[] = []
     let unit = this.unreadUnitBefore(separator)
     while (unit !== null) {
@@ -332,9 +335,10 @@ export class FlowchartGrammar extends GraphGrammar<
         form?.kind === "empty-description-block" &&
         form.units.at(-1) === unit
       ) {
-        blocks.unshift(form.units)
+        blocks.push(form.units)
         unit = this.unreadUnitBefore(form.units[0].index)
       } else {
+        blocks.reverse()
         this.takeOut(blocks.flat())
         return blocks
       }
@@ -460,7 +464,7 @@ export class FlowchartGrammar extends GraphGrammar<
       // which is its value (docs/tokens.md, Tokens).
       this.addWhitespaceToken("RawText", [firstPiece.start, lastPiece.end])
     }
-    units.push(...pieces)
+    appendItems(units, pieces)
     return { kind, units, delimiters }
   }
 
@@ -705,7 +709,8 @@ export class FlowchartGrammar extends GraphGrammar<
       const pieces = this.takeStylePieces()
       if (inClassDef) {
         while (this.escapedCommaFollows(pieces)) {
-          pieces.push(this.take(","), ...this.takeStylePieces())
+          pieces.push(this.take(","))
+          appendItems(pieces, this.takeStylePieces())
         }
       }
       const allWhitespace = pieces.every(

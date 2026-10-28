@@ -1,0 +1,791 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: no-duplicate-init-key >> invalid >>> docs/rules/no-duplicate-init-key.md incorrect 1
+Filename: no-duplicate-init-key-incorrect-1.mmd
+
+Code:
+  1 | %%{init: {"theme": "dark", "theme": "forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/agentflow/agentflow-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/agentflow/agentflow-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | agentflow-beta
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/architecture/architecture-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/architecture/architecture-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | architecture-beta
+  3 | service a(server)[A]
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/block/block-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/block/block-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | block
+  3 | A
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/c4/C4Component-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/c4/C4Component-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | C4Component
+  3 | Component(a, "A")
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/c4/C4Container-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/c4/C4Container-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | C4Container
+  3 | Container(a, "A")
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/c4/C4Context-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/c4/C4Context-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | C4Context
+  3 | Person(a, "A")
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/c4/C4Deployment-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/c4/C4Deployment-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | C4Deployment
+  3 | Container(a, "A")
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/c4/C4Dynamic-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/c4/C4Dynamic-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | C4Dynamic
+  3 | Container(a, "A")
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/class/classDiagram-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/class/classDiagram-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | classDiagram
+  3 | class A
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/common/error-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/common/error-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | error
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/cynefin/cynefin-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/cynefin/cynefin-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | cynefin-beta
+  3 | clear "A"
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/er/erDiagram-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/er/erDiagram-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | erDiagram
+  3 | A ||--o{ B : has
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/eventmodeling/eventmodeling-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/eventmodeling/eventmodeling-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | eventmodeling
+  3 | entity Shop.Buy
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-array-nested-object-keys
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-array-nested-object-keys-input.mmd
+
+Code:
+  1 | %%{init: {"custom":[{"x":1,"x":2},{"x":3,"x":4}]}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [2]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "x" in this init directive.
+[2] mermaid.js keeps only the later value of key "x" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-array-order-distinct
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-array-order-distinct-input.mmd
+
+Code:
+  1 | %%{init: {"custom":[1,2],"custom":[2,1]}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "custom" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-boolean-number-distinct
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-boolean-number-distinct-input.mmd
+
+Code:
+  1 | %%{init: {"custom":true,"custom":1}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "custom" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-empty-key-conflict
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-empty-key-conflict-input.mmd
+
+Code:
+  1 | %%{init: {"":"first","":"second"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-multiline-object-duplicate
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-multiline-object-duplicate-input.mmd
+
+Code:
+  1 | %%{init: {
+    | ^~~~~~~~~~\ [1]
+  2 | "theme":"dark",
+    | ~~~~~~~~~~~~~~~\ [1]
+  3 | "theme":"forest"
+    | ~~~~~~~~~~~~~~~~\ [1]
+  4 | }}%%
+    | ~~~~ [1]
+  5 | flowchart LR
+  6 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-multiple-keys-and-previous-value
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-multiple-keys-and-previous-value-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest","theme":"dark","fontSize":12,"fontSize":14}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [3]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+[2] mermaid.js keeps only the later value of key "theme" in this init directive.
+[3] mermaid.js keeps only the later value of key "fontSize" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-nested-duplicate-equal-final-objects
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-nested-duplicate-equal-final-objects-input.mmd
+
+Code:
+  1 | %%{init: {"themeVariables":{"a":1,"a":2},"themeVariables":{"a":2}}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "a" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-null-object-distinct
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-null-object-distinct-input.mmd
+
+Code:
+  1 | %%{init: {"themeVariables":null,"themeVariables":{}}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "themeVariables" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/boundary-prototype-key-conflict
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/boundary-prototype-key-conflict-input.mmd
+
+Code:
+  1 | %%{init: {"__proto__":{"x":1},"__proto__":{"x":2}}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "__proto__" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/docs-no-duplicate-init-key-incorrect-1
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/docs-no-duplicate-init-key-incorrect-1-input.mmd
+
+Code:
+  1 | %%{init: {"theme": "dark", "theme": "forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/flowchart-duplicate-json-key-escaped
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/flowchart-duplicate-json-key-escaped-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","\u0074heme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "\u0074heme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/flowchart-duplicate-json-key-infinite-null
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/flowchart-duplicate-json-key-infinite-null-input.mmd
+
+Code:
+  1 | %%{init: {"x": 1e400, "x": null}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js keeps only the later value of key "x" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/flowchart-duplicate-json-key-infinite-signs
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/flowchart-duplicate-json-key-infinite-signs-input.mmd
+
+Code:
+  1 | %%{init: {"x": 1e400, "x": -1e400}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+  4 |
+
+[1] mermaid.js keeps only the later value of key "x" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/flowchart-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/flowchart-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/flowchart-duplicate-json-key-nested
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/flowchart-duplicate-json-key-nested-input.mmd
+
+Code:
+  1 | %%{init: {"flowchart":{"inheritDir":true,"inheritDir":false}}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "inheritDir" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/flowchart-duplicate-json-key-single-quotes
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/flowchart-duplicate-json-key-single-quotes-input.mmd
+
+Code:
+  1 | %%{init: {'theme':'dark','theme':'forest'}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/flowchart-elk-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/flowchart-elk-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart-elk LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/graph-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/graph-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | graph LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/flowchart/swimlane-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/flowchart/swimlane-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | swimlane-beta LR
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/gantt/gantt-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/gantt/gantt-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | gantt
+  3 | section S
+  4 | Task :a1, 2024-01-01, 1d
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/gitgraph/gitGraph-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/gitgraph/gitGraph-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | gitGraph
+  3 | commit
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/info/info-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/info/info-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | info
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/ishikawa/ishikawa-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/ishikawa/ishikawa-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | ishikawa
+  3 | Problem
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/journey/journey-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/journey/journey-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | journey
+  3 | section S
+  4 | Task: 5: Me
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/kanban/kanban-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/kanban/kanban-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | kanban
+  3 | todo
+  4 |   a
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/mindmap/mindmap-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/mindmap/mindmap-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | mindmap
+  3 | root
+  4 |   A
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/packet/packet-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/packet/packet-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | packet
+  3 | 0-15: "A"
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/pie/pie-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/pie/pie-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | pie
+  3 | "A" : 1
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/quadrant/quadrantChart-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/quadrant/quadrantChart-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | quadrantChart
+  3 | A: [0.2, 0.3]
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/radar/radar-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/radar/radar-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | radar-beta
+  3 | axis a, b, c
+  4 | curve c1{1,2,3}
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/railroad/railroad-abnf-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/railroad/railroad-abnf-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | railroad-abnf-beta
+  3 | r = "a";
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/railroad/railroad-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/railroad/railroad-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | railroad-beta
+  3 | r = terminal("a");
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/railroad/railroad-ebnf-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/railroad/railroad-ebnf-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | railroad-ebnf-beta
+  3 | r = "a";
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/railroad/railroad-peg-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/railroad/railroad-peg-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | railroad-peg-beta
+  3 | r <- "a";
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/requirement/requirement-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/requirement/requirement-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | requirementDiagram
+  3 | requirement r {
+  4 | id: 1
+  5 | }
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/sankey/sankey-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/sankey/sankey-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | sankey
+  3 | A,B,1
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/sequence/sequenceDiagram-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/sequence/sequenceDiagram-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | sequenceDiagram
+  3 | A->>B: hi
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/state/stateDiagram-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/state/stateDiagram-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | stateDiagram
+  3 | A --> B
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/timeline/timeline-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/timeline/timeline-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | timeline
+  3 | 2020 : A
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/treemap/treemap-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/treemap/treemap-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | treemap
+  3 | "A"
+  4 |   "B": 1
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/treeview/treeView-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/treeview/treeView-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | treeView-beta
+  3 | root
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/usecase/usecase-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/usecase/usecase-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | usecase-beta
+  3 | actor A
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/venn/venn-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/venn/venn-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | venn-beta
+  3 | set A
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/wardley/wardley-beta-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/wardley/wardley-beta-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | wardley-beta
+  3 | component A [0.5, 0.5]
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---
+
+
+Test: no-duplicate-init-key >> invalid >>> invalid/xychart/xychart-duplicate-json-key
+Filename: tests/fixtures/rules/no-duplicate-init-key/invalid/xychart/xychart-duplicate-json-key-input.mmd
+
+Code:
+  1 | %%{init: {"theme":"dark","theme":"forest"}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | xychart
+  3 | x-axis [a, b]
+  4 | bar [1, 2]
+
+[1] mermaid.js keeps only the later value of key "theme" in this init directive.
+---

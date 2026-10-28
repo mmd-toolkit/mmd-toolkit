@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type { Range } from "../../ast.ts"
 import type {
   FlowchartStatement,
@@ -93,7 +94,7 @@ export function subgraphMembersOf(
   for (const statement of body) {
     switch (statement.type) {
       case "FlowchartVertexStatement":
-        members.push(...vertexStatementMembers(statement))
+        appendItems(members, vertexStatementMembers(statement))
         break
       case "FlowchartSubgraphStatement": {
         const member = nestedMember(statement)

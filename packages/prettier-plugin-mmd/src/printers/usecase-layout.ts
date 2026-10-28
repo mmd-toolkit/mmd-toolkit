@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type {
   Node,
   Range,
@@ -372,7 +373,7 @@ function layoutUsecaseAccessibility(
         "prettier-plugin-mmd: an unclosed usecase description block",
       )
     const stretches = findAccDescrBlockStretches(source, block, valueRange)
-    if (stretches.length > 0) atoms.push(...stretches)
+    if (stretches.length > 0) appendItems(atoms, stretches)
     else {
       atoms.push({ start: separator.range[0], end: separator.range[1] })
       if (valueRange !== null) {

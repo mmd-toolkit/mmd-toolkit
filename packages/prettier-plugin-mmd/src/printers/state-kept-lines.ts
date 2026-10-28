@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type { Range, StateStatement } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
 import {
@@ -161,7 +162,7 @@ function findStateContextLines(
         statement.type === "StateAliasDefinitionStatement") &&
       statement.body !== null
     ) {
-      lines.push(...findStateContextLines(source, statement.body))
+      appendItems(lines, findStateContextLines(source, statement.body))
     }
     if (isReadOnInStateContext(source, statement)) {
       lines.push(lineStartOf(source, statement.range[0]))

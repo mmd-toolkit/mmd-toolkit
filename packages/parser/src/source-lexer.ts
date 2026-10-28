@@ -1,3 +1,4 @@
+import { appendItems } from "./append-items.ts"
 import type {
   Comment,
   DiagramTokenKind,
@@ -730,7 +731,7 @@ export class SourceLexer {
     const entries = this.preserveComments
       ? lookAheadLineSegments(this.text, start)
       : lookAheadFromCommentStart(this.text, start)
-    this.entries.push(...entries)
+    appendItems(this.entries, entries)
     this.nextEntryStart = nextCommentStart(this.text, entries)
     return true
   }

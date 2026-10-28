@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type { SequenceStatement } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
 import {
@@ -140,15 +141,17 @@ function findStatementsThatEndWithUnitsThatReadNoWhitespace(
   for (const statement of statements) {
     const classified = classifySequenceStatement(statement)
     if (classified.kind === "body") {
-      found.push(
-        ...findStatementsThatEndWithUnitsThatReadNoWhitespace(
+      appendItems(
+        found,
+        findStatementsThatEndWithUnitsThatReadNoWhitespace(
           classified.statement.body,
         ),
       )
     } else if (classified.kind === "sections") {
       for (const section of classified.statement.sections) {
-        found.push(
-          ...findStatementsThatEndWithUnitsThatReadNoWhitespace(section.body),
+        appendItems(
+          found,
+          findStatementsThatEndWithUnitsThatReadNoWhitespace(section.body),
         )
       }
     } else if (endsWithUnitThatReadsNoWhitespace(classified.statement)) {

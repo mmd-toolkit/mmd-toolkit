@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type { DiagramTokenKind, StringLiteral } from "../../ast.ts"
 import type {
   RequirementAccDescrBlockStatement,
@@ -259,7 +260,7 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
     const items: (Field | RequirementIgnoredText)[] = this.parseIgnoredBlocks()
     this.take("newline")
     for (;;) {
-      items.push(...this.parseIgnoredBlocks())
+      appendItems(items, this.parseIgnoredBlocks())
       const unit = this.peek()
       if (unit?.name === "}") break
       if (unit?.name === "newline") {
@@ -267,7 +268,7 @@ export class RequirementGrammar extends UnitGrammar<UnitName, Unit> {
         continue
       }
       items.push(parseField())
-      items.push(...this.parseIgnoredBlocks())
+      appendItems(items, this.parseIgnoredBlocks())
       this.take("newline")
     }
     this.addItem("Punctuator", [this.take("}")])

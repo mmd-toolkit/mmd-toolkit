@@ -334,6 +334,14 @@ description:
 | ツリービューで、`titlex`（空のタイトルとノード `x`）と、描かれない `title`                                                                                                                | `titlex` は構文を知らないことによる。正しいタイトルを描かないのは mermaid.js の不具合である（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | ツリービューで、後で名前に書いた `}` が閉じる `accDescr {` のブロック                                                                                                                     | 上の gantt と同じく普通の書き方ではない。ファイルの名前が `}` を持つことはまれである（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ツリービューで、コメントの後や本体の中の YAML のブロックと、空か記号だけの指示子                                                                                                          | 上の pie と同じ                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| すべての図種で、引数が語、JSON の文字列、配列、なしの init の指令（`%%{init: dark}%%`）                                                                                                   | 構文を知らないことによる。文書は init の引数を JSON のオブジェクトとし、これらはエラーなしに設定を与えない（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| すべての図種で、コメント行の中の指令（`%% old %%{init: {"theme": "dark"}}%%`）で、なお当たるもの                                                                                          | 構文を知らないことによる。仕様は指令をコメントより先に取り除くので、指令はどこにあっても当たる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| すべての図種で、mermaid.js が知らない設定のキー（`theem`）や、指令から取らないキー（`securityLevel`）                                                                                     | スキーマにないキーも意図されうる。`themeVariables` と外から足した図種は自分のキーを取り、指令から取らないキーは文書にある（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| すべての図種で、`init` か `initialize` で終わらず、`wrap` でもない名前の指令                                                                                                              | 失われるものが示せない。mermaid.js はどの名前も受理し、何も設定しない指令を意図して書くこともある（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| すべての図種で、指令そのもの（文書はフロントマターに置き換える）                                                                                                                          | 体裁である。指令は書いたとおりに働く（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| すべての図種で、書いたとおりで正しく、`'` を `"` に変えると壊れる JSON（`{"fontFamily": "O'Brien"}`）                                                                                     | mermaid.js の不具合である。書き手は正しい JSON を書き、mermaid.js が設定を捨てる（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| すべての図種で、その行の `%%}%%` の後にある正しい init の指令で、設定を与えないもの                                                                                                       | 普通の書き方ではない。指令の前に `%%}%%` を書く書き手はいない。mermaid.js は設定を読む前にそのような行を取り除く（実行）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| すべての図種で、2 度書いた `title`、`accTitle`、`accDescr` と空の `accDescr` のブロックを共通の規則にすること                                                                             | 共通ではない。kanban は `accTitle` を列として、ishikawa はノードとして読み、info はどれも公開せず、空のブロックは図種により説明を保つか空にする（実行）。各図種の規則のままにする                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ### 迷ったときの問い
 
@@ -726,195 +734,196 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 
 判定（2026-10-15 の判定。mermaid 12.0.0）:
 
-| 規則                                        | 入れるか             | 入れない理由                                                             |
-| ------------------------------------------- | -------------------- | ------------------------------------------------------------------------ |
-| flowchart-no-ignored-text                   | 入れる               |                                                                          |
-| flowchart-no-unclosed-description-block     | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
-| flowchart-no-empty-description-block        | 入れる               |                                                                          |
-| flowchart-no-duplicate-description          | 入れる               |                                                                          |
-| flowchart-no-duplicate-title                | 入れる               |                                                                          |
-| flowchart-no-redefined-vertex               | 入れる               |                                                                          |
-| flowchart-no-undef                          | 入れる               |                                                                          |
-| flowchart-no-duplicate-direction            | 入れる               |                                                                          |
-| no-unclosed-directive                       | 入れない（いったん） | 文書が 4 図種しか書いていない                                            |
-| no-invalid-init-directive                   | 入れない（いったん） | 文書が 4 図種しか書いていない                                            |
-| sequence-no-create-destroy                  | 入れる               |                                                                          |
-| sequence-no-duplicate-description           | 入れる               |                                                                          |
-| sequence-no-duplicate-title                 | 入れる               |                                                                          |
-| sequence-no-empty-description-block         | 入れる               |                                                                          |
-| sequence-no-ignored-text                    | 入れる               |                                                                          |
-| sequence-no-invalid-json                    | 入れる               |                                                                          |
-| sequence-no-link-without-separator          | 入れる               |                                                                          |
-| sequence-no-unclosed-description-block      | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
-| class-no-bare-class-name                    | 入れる               |                                                                          |
-| class-no-duplicate-description              | 入れる               |                                                                          |
-| class-no-duplicate-title                    | 入れる               |                                                                          |
-| class-no-ignored-text                       | 入れる               |                                                                          |
-| class-no-inline-comment                     | 入れない             | 基準 1 と 3                                                              |
-| class-no-redefined-class                    | 入れる               |                                                                          |
-| class-no-unclosed-backquote                 | 入れる               |                                                                          |
-| class-no-undef                              | 入れる               |                                                                          |
-| state-no-duplicate-description              | 入れる               |                                                                          |
-| state-no-duplicate-title                    | 入れる               |                                                                          |
-| state-no-empty-description-block            | 入れる               |                                                                          |
-| state-no-ignored-text                       | 入れる               |                                                                          |
-| state-no-unclosed-description-block         | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
-| state-no-undef                              | 入れる               |                                                                          |
-| er-no-duplicate-description                 | 入れる               |                                                                          |
-| er-no-duplicate-title                       | 入れる               |                                                                          |
-| er-no-empty-description-block               | 入れる               |                                                                          |
-| er-no-ignored-text                          | 入れない             | 基準 3: [#8364](https://github.com/mermaid-js/mermaid/pull/8364)（open） |
-| er-no-redefined-entity                      | 入れる               |                                                                          |
-| er-no-unclosed-description-block            | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
-| er-no-undef                                 | 入れる               |                                                                          |
-| gantt-no-duplicate-description              | 入れる               |                                                                          |
-| gantt-no-duplicate-id                       | 入れる               |                                                                          |
-| gantt-no-duplicate-setting                  | 入れる               |                                                                          |
-| gantt-no-duplicate-title                    | 入れる               |                                                                          |
-| gantt-no-empty-description-block            | 入れる               |                                                                          |
-| gantt-no-undef                              | 入れる               |                                                                          |
-| gantt-no-unknown-exclude                    | 入れる               |                                                                          |
-| gantt-no-invalid-tag                        | 入れる               |                                                                          |
-| journey-no-duplicate-description            | 入れる               |                                                                          |
-| journey-no-duplicate-title                  | 入れる               |                                                                          |
-| journey-no-empty-description-block          | 入れる               |                                                                          |
-| journey-no-empty-person                     | 入れる               |                                                                          |
-| journey-no-ignored-text                     | 入れる               |                                                                          |
-| journey-no-invalid-score                    | 入れる               |                                                                          |
-| requirement-no-duplicate-description        | 入れる               |                                                                          |
-| requirement-no-duplicate-field              | 入れる               |                                                                          |
-| requirement-no-duplicate-name               | 入れる               |                                                                          |
-| requirement-no-duplicate-title              | 入れる               |                                                                          |
-| requirement-no-empty-description-block      | 入れる               |                                                                          |
-| requirement-no-ignored-text                 | 入れる               |                                                                          |
-| requirement-no-unclosed-description-block   | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
-| requirement-no-undef                        | 入れる               |                                                                          |
-| mindmap-no-duplicate-decoration             | 入れる               |                                                                          |
-| mindmap-no-mismatched-shape                 | 入れる               |                                                                          |
-| timeline-no-duplicate-title                 | 入れる               |                                                                          |
-| timeline-no-duplicate-description           | 入れる               |                                                                          |
-| timeline-no-empty-description-block         | 入れる               |                                                                          |
-| sankey-no-invalid-value                     | 入れる               |                                                                          |
-| sankey-no-empty-node                        | 入れる               |                                                                          |
-| xychart-no-duplicate-title                  | 入れる               |                                                                          |
-| xychart-no-duplicate-description            | 入れる               |                                                                          |
-| xychart-no-empty-description-block          | 入れる               |                                                                          |
-| xychart-no-unclosed-description-block       | 入れる               |                                                                          |
-| xychart-no-invalid-orientation              | 入れる               |                                                                          |
-| xychart-no-redefined-axis                   | 入れる               |                                                                          |
-| xychart-no-extra-value                      | 入れる               |                                                                          |
-| quadrant-no-duplicate-title                 | 入れる               |                                                                          |
-| quadrant-no-duplicate-description           | 入れる               |                                                                          |
-| quadrant-no-empty-description-block         | 入れる               |                                                                          |
-| quadrant-no-redefined-axis                  | 入れる               |                                                                          |
-| quadrant-no-redefined-quadrant              | 入れる               |                                                                          |
-| quadrant-no-redefined-class                 | 入れる               |                                                                          |
-| quadrant-no-undef                           | 入れる               |                                                                          |
-| quadrant-no-duplicate-style                 | 入れる               |                                                                          |
-| quadrant-no-invalid-coordinate              | 入れる               |                                                                          |
-| block-no-edge-chain                         | 入れる               |                                                                          |
-| block-no-edge-in-composite-head             | 入れる               |                                                                          |
-| block-no-duplicate-block                    | 入れる               |                                                                          |
-| block-no-spaced-class-id                    | 入れる               |                                                                          |
-| block-no-undef                              | 入れる               |                                                                          |
-| block-no-duplicate-columns                  | 入れる               |                                                                          |
-| block-no-redefined-style                    | 入れる               |                                                                          |
-| block-no-mismatched-shape                   | 入れる               |                                                                          |
-| block-no-mismatched-edge                    | 入れる               |                                                                          |
-| block-no-useless-width                      | 入れる               |                                                                          |
-| block-no-invalid-direction                  | 入れる               |                                                                          |
-| kanban-no-invalid-metadata-key              | 保留                 |                                                                          |
-| kanban-no-invalid-priority                  | 保留                 |                                                                          |
-| kanban-no-duplicate-section                 | 入れる               |                                                                          |
-| c4-no-undef                                 | 入れる               |                                                                          |
-| c4-no-invalid-attribute-key                 | 入れる               |                                                                          |
-| c4-no-useless-argument                      | 入れる               |                                                                          |
-| c4-no-duplicate-title                       | 入れる               |                                                                          |
-| c4-no-duplicate-description                 | 入れる               |                                                                          |
-| c4-no-redefined-element                     | 入れる               |                                                                          |
-| c4-no-duplicate-style                       | 入れる               |                                                                          |
-| venn-no-duplicate-title                     | 入れる               |                                                                          |
-| venn-no-duplicate-subset                    | 入れる               |                                                                          |
-| venn-no-duplicate-style                     | 入れる               |                                                                          |
-| venn-no-invalid-style-key                   | 入れる               |                                                                          |
-| venn-no-undef                               | 入れる               |                                                                          |
-| venn-no-ignored-text                        | 入れる               |                                                                          |
-| agentflow-no-duplicate-title                | 入れる               |                                                                          |
-| agentflow-no-duplicate-description          | 入れる               |                                                                          |
-| agentflow-no-empty-description-block        | 入れる               |                                                                          |
-| agentflow-no-unclosed-description-block     | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
-| agentflow-no-ignored-text                   | 入れる               |                                                                          |
-| agentflow-no-redefined-vertex               | 入れる               |                                                                          |
-| agentflow-no-redefined-connector            | 入れる               |                                                                          |
-| agentflow-no-redefined-flow                 | 入れる               |                                                                          |
-| agentflow-no-duplicate-direction            | 入れる               |                                                                          |
-| agentflow-no-undef                          | 入れる               |                                                                          |
-| usecase-no-duplicate-title                  | 入れる               |                                                                          |
-| usecase-no-duplicate-description            | 入れる               |                                                                          |
-| usecase-no-empty-description-block          | 入れる               |                                                                          |
-| usecase-no-unclosed-description-block       | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
-| usecase-no-duplicate-direction              | 入れる               |                                                                          |
-| usecase-no-duplicate-metadata               | 入れる               |                                                                          |
-| usecase-no-redefined-class                  | 入れる               |                                                                          |
-| pie-no-duplicate-label                      | 入れる               |                                                                          |
-| pie-no-duplicate-title                      | 入れる               |                                                                          |
-| pie-no-duplicate-description                | 入れる               |                                                                          |
-| pie-no-empty-description-block              | 入れる               |                                                                          |
-| gitgraph-no-duplicate-option                | 入れる               |                                                                          |
-| gitgraph-no-redefined-commit                | 入れる               |                                                                          |
-| gitgraph-no-duplicate-title                 | 入れる               |                                                                          |
-| gitgraph-no-duplicate-description           | 入れる               |                                                                          |
-| gitgraph-no-empty-description-block         | 入れる               |                                                                          |
-| packet-no-duplicate-title                   | 入れる               |                                                                          |
-| packet-no-duplicate-description             | 入れる               |                                                                          |
-| packet-no-empty-description-block           | 入れる               |                                                                          |
-| architecture-no-duplicate-title             | 入れる               |                                                                          |
-| architecture-no-duplicate-description       | 入れる               |                                                                          |
-| architecture-no-empty-description-block     | 入れる               |                                                                          |
-| architecture-no-reversed-marker             | 入れる               |                                                                          |
-| architecture-no-ungrouped-modifier          | 入れる               |                                                                          |
-| radar-no-undef                              | 入れる               |                                                                          |
-| radar-no-duplicate-entry                    | 入れる               |                                                                          |
-| radar-no-mismatched-entry-count             | 入れる               |                                                                          |
-| radar-no-duplicate-option                   | 入れる               |                                                                          |
-| radar-no-reversed-range                     | 入れる               |                                                                          |
-| radar-no-duplicate-title                    | 入れる               |                                                                          |
-| radar-no-duplicate-description              | 入れる               |                                                                          |
-| radar-no-empty-description-block            | 入れる               |                                                                          |
-| radar-no-unclosed-description-block         | 入れない             | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
-| treemap-no-invalid-value                    | 入れる               |                                                                          |
-| treemap-no-duplicate-title                  | 入れる               |                                                                          |
-| treemap-no-duplicate-description            | 入れる               |                                                                          |
-| treemap-no-empty-description-block          | 入れる               |                                                                          |
-| railroad-no-duplicate-title                 | 入れる               |                                                                          |
-| railroad-no-duplicate-description           | 入れる               |                                                                          |
-| railroad-no-empty-description-block         | 入れる               |                                                                          |
-| cynefin-no-redefined-domain                 | 入れる               |                                                                          |
-| cynefin-no-duplicate-title                  | 入れる               |                                                                          |
-| cynefin-no-duplicate-description            | 入れる               |                                                                          |
-| cynefin-no-empty-description-block          | 入れる               |                                                                          |
-| wardley-no-duplicate-title                  | 入れる               |                                                                          |
-| wardley-no-duplicate-description            | 入れる               |                                                                          |
-| wardley-no-empty-description-block          | 入れる               |                                                                          |
-| wardley-no-undef                            | 入れる               |                                                                          |
-| wardley-no-redefined-node                   | 入れる               |                                                                          |
-| wardley-no-duplicate-evolve                 | 入れる               |                                                                          |
-| wardley-no-duplicate-pipeline               | 入れる               |                                                                          |
-| wardley-no-duplicate-size                   | 入れる               |                                                                          |
-| wardley-no-duplicate-evolution              | 入れる               |                                                                          |
-| wardley-no-duplicate-annotations            | 入れる               |                                                                          |
-| wardley-no-ignored-link-label               | 入れる               |                                                                          |
-| eventmodeling-no-undef                      | 入れる               |                                                                          |
-| eventmodeling-no-redefined-data             | 入れる               |                                                                          |
-| eventmodeling-no-duplicate-title            | 入れる               |                                                                          |
-| eventmodeling-no-duplicate-description      | 入れる               |                                                                          |
-| eventmodeling-no-empty-description-block    | 入れる               |                                                                          |
-| eventmodeling-no-unclosed-description-block | 入れない             | 基準 1：`{` の後に自分の `}` で終わる説明                                |
-| treeview-no-duplicate-annotation            | 入れる               |                                                                          |
-| treeview-no-duplicate-title                 | 入れる               |                                                                          |
-| treeview-no-duplicate-description           | 入れる               |                                                                          |
-| treeview-no-empty-description-block         | 入れる               |                                                                          |
-| treeview-no-unclosed-description-block      | 入れる               |                                                                          |
+| 規則                                        | 入れるか | 入れない理由                                                             |
+| ------------------------------------------- | -------- | ------------------------------------------------------------------------ |
+| flowchart-no-ignored-text                   | 入れる   |                                                                          |
+| flowchart-no-unclosed-description-block     | 入れない | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| flowchart-no-empty-description-block        | 入れる   |                                                                          |
+| flowchart-no-duplicate-description          | 入れる   |                                                                          |
+| flowchart-no-duplicate-title                | 入れる   |                                                                          |
+| flowchart-no-redefined-vertex               | 入れる   |                                                                          |
+| flowchart-no-undef                          | 入れる   |                                                                          |
+| flowchart-no-duplicate-direction            | 入れる   |                                                                          |
+| no-unclosed-directive                       | 入れる   |                                                                          |
+| no-invalid-init-directive                   | 入れる   |                                                                          |
+| no-duplicate-init-key                       | 入れる   |                                                                          |
+| sequence-no-create-destroy                  | 入れる   |                                                                          |
+| sequence-no-duplicate-description           | 入れる   |                                                                          |
+| sequence-no-duplicate-title                 | 入れる   |                                                                          |
+| sequence-no-empty-description-block         | 入れる   |                                                                          |
+| sequence-no-ignored-text                    | 入れる   |                                                                          |
+| sequence-no-invalid-json                    | 入れる   |                                                                          |
+| sequence-no-link-without-separator          | 入れる   |                                                                          |
+| sequence-no-unclosed-description-block      | 入れない | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| class-no-bare-class-name                    | 入れる   |                                                                          |
+| class-no-duplicate-description              | 入れる   |                                                                          |
+| class-no-duplicate-title                    | 入れる   |                                                                          |
+| class-no-ignored-text                       | 入れる   |                                                                          |
+| class-no-inline-comment                     | 入れない | 基準 1 と 3                                                              |
+| class-no-redefined-class                    | 入れる   |                                                                          |
+| class-no-unclosed-backquote                 | 入れる   |                                                                          |
+| class-no-undef                              | 入れる   |                                                                          |
+| state-no-duplicate-description              | 入れる   |                                                                          |
+| state-no-duplicate-title                    | 入れる   |                                                                          |
+| state-no-empty-description-block            | 入れる   |                                                                          |
+| state-no-ignored-text                       | 入れる   |                                                                          |
+| state-no-unclosed-description-block         | 入れない | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| state-no-undef                              | 入れる   |                                                                          |
+| er-no-duplicate-description                 | 入れる   |                                                                          |
+| er-no-duplicate-title                       | 入れる   |                                                                          |
+| er-no-empty-description-block               | 入れる   |                                                                          |
+| er-no-ignored-text                          | 入れない | 基準 3: [#8364](https://github.com/mermaid-js/mermaid/pull/8364)（open） |
+| er-no-redefined-entity                      | 入れる   |                                                                          |
+| er-no-unclosed-description-block            | 入れない | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| er-no-undef                                 | 入れる   |                                                                          |
+| gantt-no-duplicate-description              | 入れる   |                                                                          |
+| gantt-no-duplicate-id                       | 入れる   |                                                                          |
+| gantt-no-duplicate-setting                  | 入れる   |                                                                          |
+| gantt-no-duplicate-title                    | 入れる   |                                                                          |
+| gantt-no-empty-description-block            | 入れる   |                                                                          |
+| gantt-no-undef                              | 入れる   |                                                                          |
+| gantt-no-unknown-exclude                    | 入れる   |                                                                          |
+| gantt-no-invalid-tag                        | 入れる   |                                                                          |
+| journey-no-duplicate-description            | 入れる   |                                                                          |
+| journey-no-duplicate-title                  | 入れる   |                                                                          |
+| journey-no-empty-description-block          | 入れる   |                                                                          |
+| journey-no-empty-person                     | 入れる   |                                                                          |
+| journey-no-ignored-text                     | 入れる   |                                                                          |
+| journey-no-invalid-score                    | 入れる   |                                                                          |
+| requirement-no-duplicate-description        | 入れる   |                                                                          |
+| requirement-no-duplicate-field              | 入れる   |                                                                          |
+| requirement-no-duplicate-name               | 入れる   |                                                                          |
+| requirement-no-duplicate-title              | 入れる   |                                                                          |
+| requirement-no-empty-description-block      | 入れる   |                                                                          |
+| requirement-no-ignored-text                 | 入れる   |                                                                          |
+| requirement-no-unclosed-description-block   | 入れない | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| requirement-no-undef                        | 入れる   |                                                                          |
+| mindmap-no-duplicate-decoration             | 入れる   |                                                                          |
+| mindmap-no-mismatched-shape                 | 入れる   |                                                                          |
+| timeline-no-duplicate-title                 | 入れる   |                                                                          |
+| timeline-no-duplicate-description           | 入れる   |                                                                          |
+| timeline-no-empty-description-block         | 入れる   |                                                                          |
+| sankey-no-invalid-value                     | 入れる   |                                                                          |
+| sankey-no-empty-node                        | 入れる   |                                                                          |
+| xychart-no-duplicate-title                  | 入れる   |                                                                          |
+| xychart-no-duplicate-description            | 入れる   |                                                                          |
+| xychart-no-empty-description-block          | 入れる   |                                                                          |
+| xychart-no-unclosed-description-block       | 入れる   |                                                                          |
+| xychart-no-invalid-orientation              | 入れる   |                                                                          |
+| xychart-no-redefined-axis                   | 入れる   |                                                                          |
+| xychart-no-extra-value                      | 入れる   |                                                                          |
+| quadrant-no-duplicate-title                 | 入れる   |                                                                          |
+| quadrant-no-duplicate-description           | 入れる   |                                                                          |
+| quadrant-no-empty-description-block         | 入れる   |                                                                          |
+| quadrant-no-redefined-axis                  | 入れる   |                                                                          |
+| quadrant-no-redefined-quadrant              | 入れる   |                                                                          |
+| quadrant-no-redefined-class                 | 入れる   |                                                                          |
+| quadrant-no-undef                           | 入れる   |                                                                          |
+| quadrant-no-duplicate-style                 | 入れる   |                                                                          |
+| quadrant-no-invalid-coordinate              | 入れる   |                                                                          |
+| block-no-edge-chain                         | 入れる   |                                                                          |
+| block-no-edge-in-composite-head             | 入れる   |                                                                          |
+| block-no-duplicate-block                    | 入れる   |                                                                          |
+| block-no-spaced-class-id                    | 入れる   |                                                                          |
+| block-no-undef                              | 入れる   |                                                                          |
+| block-no-duplicate-columns                  | 入れる   |                                                                          |
+| block-no-redefined-style                    | 入れる   |                                                                          |
+| block-no-mismatched-shape                   | 入れる   |                                                                          |
+| block-no-mismatched-edge                    | 入れる   |                                                                          |
+| block-no-useless-width                      | 入れる   |                                                                          |
+| block-no-invalid-direction                  | 入れる   |                                                                          |
+| kanban-no-invalid-metadata-key              | 保留     |                                                                          |
+| kanban-no-invalid-priority                  | 保留     |                                                                          |
+| kanban-no-duplicate-section                 | 入れる   |                                                                          |
+| c4-no-undef                                 | 入れる   |                                                                          |
+| c4-no-invalid-attribute-key                 | 入れる   |                                                                          |
+| c4-no-useless-argument                      | 入れる   |                                                                          |
+| c4-no-duplicate-title                       | 入れる   |                                                                          |
+| c4-no-duplicate-description                 | 入れる   |                                                                          |
+| c4-no-redefined-element                     | 入れる   |                                                                          |
+| c4-no-duplicate-style                       | 入れる   |                                                                          |
+| venn-no-duplicate-title                     | 入れる   |                                                                          |
+| venn-no-duplicate-subset                    | 入れる   |                                                                          |
+| venn-no-duplicate-style                     | 入れる   |                                                                          |
+| venn-no-invalid-style-key                   | 入れる   |                                                                          |
+| venn-no-undef                               | 入れる   |                                                                          |
+| venn-no-ignored-text                        | 入れる   |                                                                          |
+| agentflow-no-duplicate-title                | 入れる   |                                                                          |
+| agentflow-no-duplicate-description          | 入れる   |                                                                          |
+| agentflow-no-empty-description-block        | 入れる   |                                                                          |
+| agentflow-no-unclosed-description-block     | 入れない | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| agentflow-no-ignored-text                   | 入れる   |                                                                          |
+| agentflow-no-redefined-vertex               | 入れる   |                                                                          |
+| agentflow-no-redefined-connector            | 入れる   |                                                                          |
+| agentflow-no-redefined-flow                 | 入れる   |                                                                          |
+| agentflow-no-duplicate-direction            | 入れる   |                                                                          |
+| agentflow-no-undef                          | 入れる   |                                                                          |
+| usecase-no-duplicate-title                  | 入れる   |                                                                          |
+| usecase-no-duplicate-description            | 入れる   |                                                                          |
+| usecase-no-empty-description-block          | 入れる   |                                                                          |
+| usecase-no-unclosed-description-block       | 入れない | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| usecase-no-duplicate-direction              | 入れる   |                                                                          |
+| usecase-no-duplicate-metadata               | 入れる   |                                                                          |
+| usecase-no-redefined-class                  | 入れる   |                                                                          |
+| pie-no-duplicate-label                      | 入れる   |                                                                          |
+| pie-no-duplicate-title                      | 入れる   |                                                                          |
+| pie-no-duplicate-description                | 入れる   |                                                                          |
+| pie-no-empty-description-block              | 入れる   |                                                                          |
+| gitgraph-no-duplicate-option                | 入れる   |                                                                          |
+| gitgraph-no-redefined-commit                | 入れる   |                                                                          |
+| gitgraph-no-duplicate-title                 | 入れる   |                                                                          |
+| gitgraph-no-duplicate-description           | 入れる   |                                                                          |
+| gitgraph-no-empty-description-block         | 入れる   |                                                                          |
+| packet-no-duplicate-title                   | 入れる   |                                                                          |
+| packet-no-duplicate-description             | 入れる   |                                                                          |
+| packet-no-empty-description-block           | 入れる   |                                                                          |
+| architecture-no-duplicate-title             | 入れる   |                                                                          |
+| architecture-no-duplicate-description       | 入れる   |                                                                          |
+| architecture-no-empty-description-block     | 入れる   |                                                                          |
+| architecture-no-reversed-marker             | 入れる   |                                                                          |
+| architecture-no-ungrouped-modifier          | 入れる   |                                                                          |
+| radar-no-undef                              | 入れる   |                                                                          |
+| radar-no-duplicate-entry                    | 入れる   |                                                                          |
+| radar-no-mismatched-entry-count             | 入れる   |                                                                          |
+| radar-no-duplicate-option                   | 入れる   |                                                                          |
+| radar-no-reversed-range                     | 入れる   |                                                                          |
+| radar-no-duplicate-title                    | 入れる   |                                                                          |
+| radar-no-duplicate-description              | 入れる   |                                                                          |
+| radar-no-empty-description-block            | 入れる   |                                                                          |
+| radar-no-unclosed-description-block         | 入れない | 基準 1: `{` の後に、自分の `}` で終わる説明                              |
+| treemap-no-invalid-value                    | 入れる   |                                                                          |
+| treemap-no-duplicate-title                  | 入れる   |                                                                          |
+| treemap-no-duplicate-description            | 入れる   |                                                                          |
+| treemap-no-empty-description-block          | 入れる   |                                                                          |
+| railroad-no-duplicate-title                 | 入れる   |                                                                          |
+| railroad-no-duplicate-description           | 入れる   |                                                                          |
+| railroad-no-empty-description-block         | 入れる   |                                                                          |
+| cynefin-no-redefined-domain                 | 入れる   |                                                                          |
+| cynefin-no-duplicate-title                  | 入れる   |                                                                          |
+| cynefin-no-duplicate-description            | 入れる   |                                                                          |
+| cynefin-no-empty-description-block          | 入れる   |                                                                          |
+| wardley-no-duplicate-title                  | 入れる   |                                                                          |
+| wardley-no-duplicate-description            | 入れる   |                                                                          |
+| wardley-no-empty-description-block          | 入れる   |                                                                          |
+| wardley-no-undef                            | 入れる   |                                                                          |
+| wardley-no-redefined-node                   | 入れる   |                                                                          |
+| wardley-no-duplicate-evolve                 | 入れる   |                                                                          |
+| wardley-no-duplicate-pipeline               | 入れる   |                                                                          |
+| wardley-no-duplicate-size                   | 入れる   |                                                                          |
+| wardley-no-duplicate-evolution              | 入れる   |                                                                          |
+| wardley-no-duplicate-annotations            | 入れる   |                                                                          |
+| wardley-no-ignored-link-label               | 入れる   |                                                                          |
+| eventmodeling-no-undef                      | 入れる   |                                                                          |
+| eventmodeling-no-redefined-data             | 入れる   |                                                                          |
+| eventmodeling-no-duplicate-title            | 入れる   |                                                                          |
+| eventmodeling-no-duplicate-description      | 入れる   |                                                                          |
+| eventmodeling-no-empty-description-block    | 入れる   |                                                                          |
+| eventmodeling-no-unclosed-description-block | 入れない | 基準 1：`{` の後に自分の `}` で終わる説明                                |
+| treeview-no-duplicate-annotation            | 入れる   |                                                                          |
+| treeview-no-duplicate-title                 | 入れる   |                                                                          |
+| treeview-no-duplicate-description           | 入れる   |                                                                          |
+| treeview-no-empty-description-block         | 入れる   |                                                                          |
+| treeview-no-unclosed-description-block      | 入れる   |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1133,30 +1142,55 @@ er-no-redefined-entity:
 (3) 「entity alias」「alias erDiagram」。
 (4) 別の名前を使うか、別名を 1 度だけ書く。
 
-no-unclosed-directive（いったん）:
-(1) 指令の後のテキスト、または `%%{wrap` の後の語が失われる。
-(2) なし。
-`%%{` で始まるコメントは指令として読まれ、それが報告する誤りである。
+no-unclosed-directive:
+(1) 指令が取る行の文、または `%%{wrap` の後の語が失われる
+（すべての図種で実行）。
+(2) なし。名前と引数の JSON のオブジェクトや配列は複数の行にわたってよく、
+テキストの終わりにある指令や U+2028 か U+2029 で終わる指令は何も取らず、
+閉じた指令と同じ Db と設定を与えるので報告しない（実行）。
+後の指令の `}%%` に閉じられた指令も報告し、
+これは前の条件、閉じていない指令が見落としていたものである
+（2026-10-27 に決めた）。
 (3) 「directive not closed」「unclosed directive」「directive」。
 見つかったものは設定についてのもので、
 mermaid.js の文書は指令をフロントマターに置き換えている
 （[#7989](https://github.com/mermaid-js/mermaid/pull/7989)、merged）が、
 読み方は変わらない。
 (4) 指令を `}%%` で閉じる。
+規則は共通である。
+共通の前処理がどの図種の字句解析よりも前に指令を取り除き、
+残りを受理しない図種は報告を与えない（検出の表の 44 のヘッダーで実行）。
 
-no-invalid-init-directive（いったん）:
-(1) テキストのどの init の指令も無視される。
-(2) なし。
+no-invalid-init-directive:
+(1) どの init の指令の設定も捨てられるか、
+大文字小文字の違う名前ではその指令の設定が捨てられる（すべての図種で実行）。
+(2) なし。書いたとおりで正しく、`'` を `"` に変えると壊れる JSON は
+mermaid.js の不具合で、報告しない
+（[#3640](https://github.com/mermaid-js/mermaid/issues/3640)（open）は
+引用符に関する）。
+語の引数やなしは構文を知らないことによる。
+その行の `%%}%%` の後の指令は、後に文字があれば自分の設定だけを捨て、
+最後の行ではすべての init の指令の設定を捨て、文書がそれを述べる
+（2026-10-27 に決めた）。
 (3) 「init trailing comma」「init directive ignored」
 「directive case sensitive」
 「init json」「json5」「trailing comma init」。
-(4) コンマを除くか、名前を小文字で書く。
+(4) JSON を直すか、名前を小文字で書く。
 名前は ESLint 自身の規則の語に合わせる。
 そこでは、正しく書かれておらず意図どおりに働かない形を invalid と呼ぶ。
 no-invalid-regexp と、綴り違いの型の名前が黙って何にも一致しない valid-typeof が
 そうである。
-報告する 2 つの形、末尾にコンマのある JSON の引数と大文字小文字の違う名前は
+報告する 2 つの形、正しくない JSON と大文字小文字の違う名前は
 そうした形であり、直しは正しく書くことである。
+
+no-duplicate-init-key:
+(1) JSON の 1 つのオブジェクトが 2 度持つキーの前の値が失われる
+（すべての図種で実行）。
+(2) なし。同じ値でもう一度書いたキーと、
+文書が各キーの最後の値で合わせる 2 つの init の指令のキーは報告せず、
+mermaid.js が読む JSON だけを調べる（2026-10-27 に決めた）。
+(3) 「init duplicate key」「init json」。何もなかった。
+(4) 2 つのメンバーの 1 つを残す。
 
 class-no-inline-comment: これらの注の後の段落を参照。
 
@@ -2213,6 +2247,9 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | wardley-*（11 件すべて）                | いまはなし（2026-10-26。この節の終わりを見る）   |
 | eventmodeling-*（6 件すべて）           | いまはなし（2026-10-27。この節の終わりを見る）   |
 | treeview-*（5 件すべて）                | いまはなし（2026-10-27。この節の終わりを見る）   |
+| no-unclosed-directive                   | いまはなし（2026-10-27。この節の終わりを見る）   |
+| no-invalid-init-directive               | いまはなし（2026-10-27。この節の終わりを見る）   |
+| no-duplicate-init-key                   | いまはなし（2026-10-27。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -2342,7 +2379,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 `usecase-*` と `pie-*` と `gitgraph-*`（2026-10-23）と
 `packet-*` と `architecture-*` と `radar-*`（2026-10-25）と
 `treemap-*` と `railroad-*` と `cynefin-*` と `wardley-*`（2026-10-26）と
-`eventmodeling-*` と `treeview-*`（2026-10-27）:
+`eventmodeling-*` と `treeview-*` と no-unclosed-directive と
+no-invalid-init-directive と no-duplicate-init-key（2026-10-27）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

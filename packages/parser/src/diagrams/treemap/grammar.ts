@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type { Identifier, NumericLiteral } from "../../ast.ts"
 import type {
   TreemapAccDescrBlockStatement,
@@ -82,7 +83,7 @@ export class TreemapGrammar extends UnitGrammar<UnitName, Unit> {
       hasNode = true
     }
     while (open.length > 0) this.finishSection(open, body)
-    body.push(...statementsBefore)
+    appendItems(body, statementsBefore)
     return { body, tokens: this.tokensInOrder() }
   }
 

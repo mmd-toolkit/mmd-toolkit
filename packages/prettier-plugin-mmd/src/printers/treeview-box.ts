@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type {
   Node,
   Range,
@@ -227,7 +228,7 @@ export function planTreeviewBox(
         )
           reasons.add("joining annotation changes value tabs")
         joinedAnnotations.add(marker.range[0])
-        after.push(...annotation.textBefore)
+        appendItems(after, annotation.textBefore)
       }
       description ||= annotation.type === "TreeviewDescriptionAnnotation"
       previousEnd = annotation.range[1]

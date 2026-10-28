@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type { ErStatement } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
 import {
@@ -90,7 +91,7 @@ function findSubgraphHeaderLines(
     if (statement.body.some((inner) => inner.range[0] < headerEnd)) {
       lines.push(lineStartOf(source, statement.range[0]))
     }
-    lines.push(...findSubgraphHeaderLines(source, statement.body))
+    appendItems(lines, findSubgraphHeaderLines(source, statement.body))
   }
   return lines
 }
@@ -126,7 +127,7 @@ function findLinesReadByTheirPlace(
       lines.push(lineStartOf(source, statement.range[0]))
     }
     if (statement.type === "ErSubgraphStatement") {
-      lines.push(...findLinesReadByTheirPlace(source, statement.body))
+      appendItems(lines, findLinesReadByTheirPlace(source, statement.body))
     }
   }
   return lines
@@ -178,7 +179,7 @@ function findAccessibilityLines(
   const lines: number[] = []
   for (const statement of statements) {
     if (statement.type === "ErSubgraphStatement") {
-      lines.push(...findAccessibilityLines(source, statement.body))
+      appendItems(lines, findAccessibilityLines(source, statement.body))
     } else if (
       (statement.type === "ErAccTitleStatement" ||
         statement.type === "ErAccDescrStatement" ||

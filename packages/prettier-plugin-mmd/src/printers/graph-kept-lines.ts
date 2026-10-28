@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type {
   FlowchartStyleStatement,
   AgentflowStyleStatement,
@@ -87,7 +88,10 @@ export function findStyleLinesWithLineSeparators(
   const lines: number[] = []
   for (const statement of statements) {
     if (holdsStatements(statement)) {
-      lines.push(...findStyleLinesWithLineSeparators(source, statement.body))
+      appendItems(
+        lines,
+        findStyleLinesWithLineSeparators(source, statement.body),
+      )
       continue
     }
     if (!isStyleStatement(statement)) continue
@@ -237,7 +241,7 @@ function collectLineRanges(statements: readonly GraphStatement[]): Range[] {
         statement.name !== null
       )
         ranges.push(statement.name.range)
-      ranges.push(...collectLineRanges(statement.body))
+      appendItems(ranges, collectLineRanges(statement.body))
     } else if (
       statement.type !== "FlowchartEmptyStatement" &&
       statement.type !== "AgentflowEmptyStatement"
@@ -270,7 +274,7 @@ export function findLinesAfterEmptyStyle(
   const lines: number[] = []
   for (const [index, statement] of statements.entries()) {
     if (holdsStatements(statement)) {
-      lines.push(...findLinesAfterEmptyStyle(source, statement.body))
+      appendItems(lines, findLinesAfterEmptyStyle(source, statement.body))
       continue
     }
     if (!isStyleStatement(statement) || statement.styles.at(-1) !== null) {
@@ -291,7 +295,7 @@ export function findLinesAfterEmptyStyle(
       previousLine = lineStartOf(source, next.range[1] - 1)
       chainLines.push(previousLine)
     }
-    if (chainLines.length > 1) lines.push(...chainLines)
+    if (chainLines.length > 1) appendItems(lines, chainLines)
   }
   return lines
 }
@@ -358,7 +362,7 @@ function collectDirectionStatementRanges(
   const ranges: Range[] = []
   for (const statement of statements) {
     if (holdsStatements(statement)) {
-      ranges.push(...collectDirectionStatementRanges(statement.body))
+      appendItems(ranges, collectDirectionStatementRanges(statement.body))
     } else if (
       statement.type === "FlowchartDirectionStatement" ||
       statement.type === "AgentflowDirectionStatement"

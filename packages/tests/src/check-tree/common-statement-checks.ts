@@ -116,20 +116,20 @@ export function following(reading: Reading, end: number): string {
   return reading.converted.of([end, reading.text.length + 1])
 }
 
-/** The written CR/CRLF/LF consumed by a hidden form, if it immediately follows in converted text. */
+/** The written CR/CRLF/LF consumed by a hidden form when it immediately follows in converted text; null when none does. */
 export function consumedLineFeed(
   reading: Reading,
   node: CheckedNode,
-): TreeRange[] {
-  if (!following(reading, node.range[1]).startsWith("\n")) return []
+): TreeRange | null {
+  if (!following(reading, node.range[1]).startsWith("\n")) return null
   for (let at = node.range[1]; at < reading.text.length; at++) {
     if (reading.written.isLeftOut(at)) continue
     if (reading.text.charAt(at) === "\r")
-      return [[at, at + (reading.text.charAt(at + 1) === "\n" ? 2 : 1)]]
-    if (reading.text.charAt(at) === "\n") return [[at, at + 1]]
+      return [at, at + (reading.text.charAt(at + 1) === "\n" ? 2 : 1)]
+    if (reading.text.charAt(at) === "\n") return [at, at + 1]
     break
   }
-  return []
+  return null
 }
 
 /** ASCII trivia between units, leaving out actual comments and a hidden form's consumed LF. */
@@ -158,8 +158,10 @@ export function gap(
     }
     return [comment.range[0], end]
   })
-  if (preceding?.type.endsWith("IgnoredText"))
-    omitted.push(...consumedLineFeed(reading, preceding))
+  if (preceding?.type.endsWith("IgnoredText")) {
+    const lineFeed = consumedLineFeed(reading, preceding)
+    if (lineFeed !== null) omitted.push(lineFeed)
+  }
   return reading.converted.of([from, to], omitted)
 }
 

@@ -3,6 +3,7 @@ import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import { hasLeadingWhitespace } from "../utils/block-class-ids.ts"
 import { declaredNodesOf } from "../utils/block-declarations.ts"
+import { appendItems } from "../utils/collections.ts"
 
 /**
  * Collect declarations before checking class ids, including declarations after
@@ -35,7 +36,7 @@ export const blockNoUndef: MermaidRuleDefinition<{
         }
       },
       BlockClassStatement(node) {
-        references.push(...node.ids)
+        appendItems(references, node.ids)
       },
       "BlockDiagram:exit"() {
         for (const id of references) {

@@ -30,6 +30,25 @@ The procedures of a package are in the skill of that package.
   `eslint --fix`. Known dangerous autofix: `regexp/no-missing-g-flag` rewrites
   `new RegExp(re)` to `new RegExp(re, "g")` and drops the original flags
   (`new RegExp(re.source, re.flags)` is not reported).
+- A performance fix (of a report under `tmp/review`, in the parser, the printer
+  or elsewhere) keeps readability first: a fast shape that only its author
+  understands is not the proper form. Write the reason for a structure that
+  exists for speed in one comment at its place. Make the decision to skip or
+  walk in one place (the entry that advances units), not as an unwritten promise
+  on callers. Name things by their role, and do not scatter index arithmetic or
+  state flags. Reread the result as a reader who does not know the speed reason.
+  The report names the form chosen for readability and the faster form rejected,
+  shows that the behavior did not change (the parser's acceptance, records and
+  token ranges; the printer's output), and gives the result of running the
+  finding's standalone reproduction again.
+- In the `src` and `tools` of a package and in `tools/`, never spread an array
+  into the arguments of `push`, `unshift`, `splice`, `Math.max`, `Math.min`,
+  `String.fromCodePoint` or `String.fromCharCode`. Each element becomes one
+  argument, and V8 throws a `RangeError` past about 125,000 arguments, which an
+  input reaches. Use the helpers of the package (`appendItems`, `minOf`,
+  `maxOf`) or a loop. `pnpm run lint` rejects the spread (`no-restricted-syntax`
+  in `eslint.config.mjs`). This rule, not a fixture, guards these failures: an
+  input of that size cannot be recorded in the corpus.
 - The name of a diagram type in this repository (the fixture directory
   `packages/tests/fixtures/<diagram>/`, the documents `<diagram>.md`, the
   modules, the prefix `<diagram>-` of the linter's rule names, the `diagram` of

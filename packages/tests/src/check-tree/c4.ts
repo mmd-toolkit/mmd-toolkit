@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import {
   checkChildTypes,
   checkFieldWords,
@@ -431,13 +432,18 @@ function checkCall(reading: Reading, node: CheckedNode, own: Own): void {
     ...parts.map((part) => part.text),
     ")",
   ]
-  if (boundary)
-    expected.push(
-      ...entriesOf(node, "beforeBody").map(() => CHILD),
-      "{",
-      ...entriesOf(node, "body").map(() => CHILD),
-      "}",
+  if (boundary) {
+    appendItems(
+      expected,
+      entriesOf(node, "beforeBody").map(() => CHILD),
     )
+    expected.push("{")
+    appendItems(
+      expected,
+      entriesOf(node, "body").map(() => CHILD),
+    )
+    expected.push("}")
+  }
   checkLayout(reading, node, own, expected, (token) => token.value)
 }
 

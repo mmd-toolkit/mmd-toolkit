@@ -10,6 +10,7 @@ import type {
   Token,
 } from "@mmd-toolkit/parser"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { maxOf } from "./collections.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -148,7 +149,7 @@ export function c4BoundaryBraces(
   const lastBeforeBody = statement.beforeBody.at(-1)
   const afterArguments = Math.max(
     statement.range[0],
-    ...statement.arguments.map((argument) => argument?.range[1] ?? 0),
+    maxOf(statement.arguments.map((argument) => argument?.range[1] ?? 0)),
   )
   const opening = expectToken(
     findTokensBetween(

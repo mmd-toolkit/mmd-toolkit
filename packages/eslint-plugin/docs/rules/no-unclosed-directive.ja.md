@@ -2,56 +2,62 @@
 
 英語版: [no-unclosed-directive.md](./no-unclosed-directive.md)
 
-閉じる `}%%` のないディレクティブを禁止する。
+閉じる `}%%` がなく、後の行を取るディレクティブを禁止する。
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
+ディレクティブは `%%{` からその `}%%` まで続く。
 `%%{init: {"theme": "dark"}}%%` の `{` のように、
-引数が語の文字でない文字で始まるディレクティブは、`}%%` まで続く。
-`}%%` がなければ、テキストの終わりまで、
-その前に U+2028 か U+2029 があればそこまで続き、
-そこまでの文がディレクティブの一部になる。
-残ったものが正しい図であれば mermaid.js は受理するので、
-それらの文はエラーなしに消える。
+語の文字でない文字で引数が始まるディレクティブは、
+その後の最初の `}%%` まで続く。
+自分の `}%%` がないと、後に書いた `}%%`、テキストの終わり、
+最初の U+2028 か U+2029 まで続き、
+mermaid.js はそこまでの行をエラーなしにディレクティブに読み込む。
+その行の文は図から消える。
 
 ## 規則の詳細
 
-この規則は、`}%%` で閉じていないディレクティブを報告する。
-すべての図種が対象である。
+この規則は、その `%%{` より後の行の文字を持つディレクティブを報告する。
+ただし、名前と、引数が始まる JSON のオブジェクトか配列は除く。
+対象はすべての図種である。
 
-引数が語の文字で始まるディレクティブは、その 1 語だけを引数とし、
-その語と後の空白で終わるが、
-引数の前の空白は改行をまたぐ。
-行の終わりの `%%{wrap` は、次の行の最初の語を引数として取り、その語は消える。
-ほかのテキストの後の `}%%` も、こうしたディレクティブを閉じない。
-`%%{init: dark foo}%%` では、ディレクティブは `dark` の後で終わり、
-`foo}%%` はテキストとして読まれる。
-規則は、これらのディレクティブも報告する。
+`A --> B` の後で、最後の `%%` のない `%%{init: {"theme": "dark"}}` と
+`C --> D` の行は、`A` から `B` へのリンクだけの flowchart を与える。
+`C --> D` はディレクティブの中にある。
+後に書いた `}%%` はディレクティブを閉じる。
+`C --> D` の後に `%%{wrap}%%` があると、
+最初のディレクティブは 2 つ目のディレクティブの `}%%` まで続き、
+`C --> D` と `wrap` のディレクティブの両方が消える。
+この規則は、`}%%` がない場合も、後の `}%%` に閉じられた場合も、
+そのディレクティブを報告する。
 
-### 図種ごとの現れ方
+語の文字で引数が始まるディレクティブはその語を引数として取り、
+語の前の空白は改行をまたぐ。
+行の終わりの `%%{wrap` は次の行の最初の語を取り、その語は消える。
+この規則はそれを報告する。
 
-何が消えるかは、図種によって違う。
+引数の JSON のオブジェクトや配列は、複数の行にわたってよい。
+それは最初の括弧を閉じる括弧で終わり、それが覆う行は報告しない。
+閉じないオブジェクトはディレクティブの残りを覆う。
+そのため、テキストの終わりにあるディレクティブは、`}%%` がなくても文を取らず、
+報告しない。
+最後の行の、`}%%` のない `%%{init: {"theme": "dark"}` も
+テーマを設定する。
+U+2028 や U+2029 は `}%%` のないディレクティブを終え、
+その後の文字は書いたとおりに読まれる。
 
-- flowchart: `flowchart LR`、最後の `%%` のない `%%{init: {"theme": "dark"}}`、
-  `A-->B` は、頂点もリンクもない flowchart になる。
-  `A-->B`、`}%%` のない `%%{wrap`、`C-->D` は頂点 `C` を失い、
-  `-->D` が前のリンクに続く。
-  リンクは `A` から `B` と、`B` から `D` になる。
-- sequence: `sequenceDiagram`、`A->>B: one`、
-  最後の `%%` のない `%%{init: {"theme": "dark"}}`、`B->>A: two` には、
-  メッセージ `one` しかない。
-- class: `classDiagram`、`class A`、
-  最後の `%%` のない `%%{init: {"theme": "dark"}}`、`class B` には、
-  クラス `A` しかない。
-- state: `stateDiagram-v2`、`A --> B`、
-  最後の `%%` のない `%%{init: {"theme": "dark"}}`、`B --> C` には、
-  状態 `A` と `B`、`A` から `B` への遷移しかない。
+残りが正しい図でないと、mermaid.js はテキストを受理せず、
+この規則はそれを見ない。
+ヘッダーの前で `}%%` のないままのディレクティブはヘッダーを取る。
+ディレクティブが取った文字が init のディレクティブの JSON を壊すと、
+[no-invalid-init-directive](./no-invalid-init-directive.ja.md)
+もそれを報告する。
 
-例は flowchart である。
+ディレクティブを `}%%` で閉じる。
 
 この規則に**反する**コードの例:
 
@@ -59,24 +65,18 @@
 %% eslint @mmd-toolkit/no-unclosed-directive: error
 flowchart LR
   A --> B
-  %%{init: {"x": 1}
-C-->D
-```
-
-```mmd
-%% eslint @mmd-toolkit/no-unclosed-directive: error
-flowchart LR
   %%{init: {"theme": "dark"}}
-A-->B
+  C --> D
 ```
 
 この規則に**従う**コードの例:
 
 ```mmd
 %% eslint @mmd-toolkit/no-unclosed-directive: error
-%%{init: {"theme": "dark"}}%%
 flowchart LR
   A --> B
+  %%{init: {"theme": "dark"}}%%
+  C --> D
 ```
 
 ## オプション
@@ -86,6 +86,14 @@ flowchart LR
 ## 関連する規則
 
 - [no-invalid-init-directive](./no-invalid-init-directive.ja.md)
+
+## 背景
+
+[ディレクティブのパターン](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10)
+は、語の引数か、最初の `}%%`、U+2028、U+2029、テキストの終わりまでの
+自由な文字の引数を取り、
+[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)
+は、図を読む前に、それが合うものを取り除く。
 
 <!-- begin auto-generated rule resources -->
 

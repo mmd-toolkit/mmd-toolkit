@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import { isWhitespace } from "../../character-classes.ts"
 import {
   ASTERISK,
@@ -201,7 +202,7 @@ class MemberLineDivision {
       const spans: NamedSpan[] = []
       const before = this.trimmed({ start: text.start, end: segment.start })
       if (before !== null) spans.push({ name: "ignored-text", ...before })
-      spans.push(...division.parts)
+      appendItems(spans, division.parts)
       const after = this.trimmed({ start: division.end, end: text.end })
       if (after !== null) spans.push({ name: "ignored-text", ...after })
       return spans

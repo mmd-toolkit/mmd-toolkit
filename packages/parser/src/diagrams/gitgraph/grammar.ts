@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type { Identifier, StringLiteral } from "../../ast.ts"
 import type {
   GitgraphBodyItem,
@@ -69,7 +70,7 @@ export class GitgraphGrammar extends UnitGrammar<UnitName, Unit> {
       } else if (next?.name === ":") {
         textBeforeColon = gap
         this.punctuator(":")
-      } else body.push(...gap)
+      } else appendItems(body, gap)
     }
     while (this.peek() !== null) {
       if (this.takeIf("newline") !== null) continue

@@ -1,3 +1,4 @@
+import { maxOf } from "../collections.ts"
 import { AttributeQuotes } from "../db-from-tree/converted-text.ts"
 import { WrittenText } from "./written-text.ts"
 import { isDigit, isWordCharacter } from "../db-from-tree/characters.ts"
@@ -822,9 +823,11 @@ function structure(
         const headerEnd = Math.max(
           own.tokens.filter((token) => token.value !== "end").at(-1)
             ?.range[1] ?? node.range[0],
-          ...children
-            .filter((n) => !entriesOf(node, "body").includes(n))
-            .map((n) => n.range[1]),
+          maxOf(
+            children
+              .filter((n) => !entriesOf(node, "body").includes(n))
+              .map((n) => n.range[1]),
+          ),
         )
         body(
           reading,

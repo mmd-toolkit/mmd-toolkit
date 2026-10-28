@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type {
   Node,
   Range,
@@ -147,7 +148,8 @@ export function treemapLines(
   function visit(body: readonly TreemapBodyItem[], depth: number): void {
     for (const item of body) {
       if (item.type === "TreemapSection" || item.type === "TreemapLeaf") {
-        items.push(...item.statementsBefore, item)
+        appendItems(items, item.statementsBefore)
+        items.push(item)
         depths.set(item, depth)
         if (item.type === "TreemapSection") visit(item.children, depth + 1)
       } else items.push(item)

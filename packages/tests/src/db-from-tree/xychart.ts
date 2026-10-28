@@ -1,3 +1,4 @@
+import { minOf, maxOf } from "../collections.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import { numberOrText } from "../summary-number.ts"
 import type { DbSummary, JsonObject, JsonValue } from "../types.ts"
@@ -241,8 +242,8 @@ class XychartDbBuilder {
         ? values.slice(0, axis.categories.length)
         : values
     if (!this.yAxisSet) {
-      this.yAxis.min = Math.min(this.yAxis.min, Math.min(...kept))
-      this.yAxis.max = Math.max(this.yAxis.max, Math.max(...kept))
+      this.yAxis.min = Math.min(this.yAxis.min, minOf(kept))
+      this.yAxis.max = Math.max(this.yAxis.max, maxOf(kept))
     }
     if (axis.kind === "band") {
       return axis.categories.map((category, index) => [category, kept[index]])

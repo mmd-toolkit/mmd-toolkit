@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type { DiagramTokenKind, Identifier, StringLiteral } from "../../ast.ts"
 import type {
   ErAccDescrBlockStatement,
@@ -498,7 +499,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     const body: ErStatement[] = []
     while (this.next < separator) body.push(this.parseAccDescrBlockStatement())
     this.take("newline")
-    body.push(...this.parseLines(true))
+    appendItems(body, this.parseLines(true))
     this.addItem("Keyword", [this.take("end")])
     return {
       type: "ErSubgraphStatement",

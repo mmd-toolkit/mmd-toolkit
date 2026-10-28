@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import { numberOrText } from "../summary-number.ts"
 import type { DbSummary, JsonObject, JsonValue } from "../types.ts"
@@ -62,8 +63,9 @@ export function treemapDbOf(
       case "TreemapClassDefStatement": {
         const id = text.of(statement.name.range)
         const styles = classes.get(id) ?? []
-        styles.push(
-          ...stylesOf(
+        appendItems(
+          styles,
+          stylesOf(
             statement.style === null ? "" : text.of(statement.style.range),
           ),
         )

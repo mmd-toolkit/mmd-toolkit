@@ -89,6 +89,7 @@ import { journeyNoInvalidScore } from "./journey-no-invalid-score.ts"
 import { kanbanNoDuplicateSection } from "./kanban-no-duplicate-section.ts"
 import { mindmapNoDuplicateDecoration } from "./mindmap-no-duplicate-decoration.ts"
 import { mindmapNoMismatchedShape } from "./mindmap-no-mismatched-shape.ts"
+import { noDuplicateInitKey } from "./no-duplicate-init-key.ts"
 import { noInvalidInitDirective } from "./no-invalid-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
 import { packetNoDuplicateDescription } from "./packet-no-duplicate-description.ts"
@@ -287,6 +288,7 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "kanban-no-duplicate-section": kanbanNoDuplicateSection,
   "mindmap-no-duplicate-decoration": mindmapNoDuplicateDecoration,
   "mindmap-no-mismatched-shape": mindmapNoMismatchedShape,
+  "no-duplicate-init-key": noDuplicateInitKey,
   "no-invalid-init-directive": noInvalidInitDirective,
   "no-unclosed-directive": noUnclosedDirective,
   "packet-no-duplicate-description": packetNoDuplicateDescription,

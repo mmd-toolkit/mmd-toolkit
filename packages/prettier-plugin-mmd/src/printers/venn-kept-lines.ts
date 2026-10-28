@@ -1,4 +1,5 @@
 import type { KeptLines } from "./kept-lines.ts"
+import { maxOf } from "./collections.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
@@ -66,10 +67,14 @@ export function vennDiagramLineEnd(source: Source, offset: number): number {
   let end = lineEndOf(source, offset, true)
   const protectedEnd = Math.max(
     offset,
-    ...findTokensBetween(source, offset, end).map((token) => token.range[1]),
-    ...source.trivia
-      .filter((item) => offset <= item.range[0] && item.range[0] < end)
-      .map((item) => item.range[1]),
+    maxOf(
+      findTokensBetween(source, offset, end).map((token) => token.range[1]),
+    ),
+    maxOf(
+      source.trivia
+        .filter((item) => offset <= item.range[0] && item.range[0] < end)
+        .map((item) => item.range[1]),
+    ),
   )
   while (
     end > protectedEnd &&

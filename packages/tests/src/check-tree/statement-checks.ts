@@ -1,3 +1,4 @@
+import { minOf, maxOf } from "../collections.ts"
 import {
   isLineTerminatorCode,
   isWhitespace,
@@ -237,8 +238,8 @@ export function checkRangeIsHull(
   reading.problems.expectEqual(
     node.range,
     [
-      Math.min(...parts.map((range) => range[0])),
-      Math.max(...parts.map((range) => range[1])),
+      minOf(parts.map((range) => range[0])),
+      maxOf(parts.map((range) => range[1])),
     ],
     label(node),
     "the range, which runs from the first of its tokens and child nodes to the last",

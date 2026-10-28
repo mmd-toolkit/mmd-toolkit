@@ -62,6 +62,7 @@ export function isMermaidRunStoreOn(): boolean {
  * do not change a result, so changing them keeps the stored results.
  */
 export const RESULT_FILES: readonly string[] = [
+  "collections.ts",
   "configuration.ts",
   "divergence-removals.ts",
   "mermaid-environment-error.ts",

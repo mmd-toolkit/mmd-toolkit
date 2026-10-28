@@ -32,6 +32,27 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
   既知の危険な自動修正: `regexp/no-missing-g-flag` は、
   `new RegExp(re)` を `new RegExp(re, "g")` に書き換えて、元のフラグを落とす。
   `new RegExp(re.source, re.flags)` と書けば報告されない。
+- 性能の直し（`tmp/review` の報告の直し。parser でも printer でも）も、
+  読みやすさを先にする。
+  書いた人にしか分からない速い形は、あるべき形ではない。
+  速さのための構造には、その理由を 1 つのコメントでその場に書く。
+  飛ばすかたどるかの判断は 1 か所（単位を進める入口）に置き、
+  呼ぶ側の書かれていない約束にしない。
+  名前は役割を表し、添字の計算や状態のフラグを散らさない。
+  速さの理由を知らない読み手として、結果を読み直す。
+  報告には、読みやすさのために選んだ形と退けた速い形、
+  振る舞いが変わらないこと（parser は受理と記録とトークンの範囲、
+  printer は出力）、指摘の単独の再現を流し直した結果を書く。
+- パッケージの `src` と `tools`、および `tools/` では、
+  `push`・`unshift`・`splice`・`Math.max`・`Math.min`・
+  `String.fromCodePoint`・`String.fromCharCode` の引数に配列を展開しない。
+  要素の 1 つずつが 1 つの引数になり、V8 は引数がおよそ 125,000 を超えると
+  `RangeError` を投げる。入力はこの数に届く。
+  パッケージの helper（`appendItems`、`minOf`、`maxOf`）かループを使う。
+  `pnpm run lint` がこの展開を拒否する
+  （`eslint.config.mjs` の `no-restricted-syntax`）。
+  この失敗は fixture ではなくこの規則が守る。
+  この大きさの入力はコーパスに記録できないからである。
 - このリポジトリでの図種の名前（fixture のディレクトリ
   `packages/tests/fixtures/<図種>/`、文書 `<図種>.md`、モジュール、
   リンターの規則名の接頭辞 `<図種>-`、fixture の `diagram`）は、

@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type {
   BlockClassDefStatement,
   BlockClassStatement,
@@ -164,7 +165,7 @@ export function layoutBlockRow(
   const atoms: Atom[] = []
   for (const [index, statement] of statements.entries()) {
     const layout = layoutBlockStatement(source, statement)
-    atoms.push(...layout.atoms)
+    appendItems(atoms, layout.atoms)
     for (const [offset, rule] of layout.rules) rules.set(offset, rule)
     if (index > 0) rules.set(statement.range[0], "space")
   }

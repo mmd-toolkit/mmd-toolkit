@@ -51,6 +51,7 @@ import { readUnit, significantRangeOf } from "../../diagram-units.ts"
 import type { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
 import {
+  isBefore,
   isCodePointAt,
   matchWholeWordIgnoringCase,
   matchWord,
@@ -115,6 +116,36 @@ type Context =
   | "markdown-string"
   | "class-name"
   | "point"
+
+/** The ends of the whitespace prefixes and of the whitespace after a candidate point colon. */
+interface StatementWhitespace {
+  /**
+   * The position after zero or more U+0020 characters from the current
+   * statement-context position; null at the end of the text.
+   */
+  readonly afterSpaces: DiagramPosition
+  /**
+   * The position after whitespace of Notation, including LF and U+00A0,
+   * from the current statement-context position; null at the end of the text.
+   */
+  readonly afterWhitespace: DiagramPosition
+  /**
+   * When `afterWhitespace` is `:`, the position after the whitespace of
+   * Notation following that colon, including LF and U+00A0; otherwise null.
+   * Also null at the end of the text.
+   */
+  readonly afterColonWhitespace: DiagramPosition
+}
+
+/** The suffix endpoints used by the ordered statement-context rules. */
+interface StatementLookahead {
+  readonly whitespace: StatementWhitespace
+  /**
+   * The position after zero or more `-` characters starting at
+   * `whitespace.afterSpaces`; null at the end of the text.
+   */
+  readonly afterDashes: DiagramPosition
+}
 
 /**
  * Units and contexts: for each context, null when the text may end in it,
@@ -234,6 +265,8 @@ function isDigitAt(position: DiagramPosition): boolean {
 export class QuadrantUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
 
+  private statementLookahead: StatementLookahead | null = null
+
   public constructor(reader: DiagramText, lines: LineIndex) {
     super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
   }
@@ -333,14 +366,44 @@ export class QuadrantUnitLexer extends UnitLexer<Context, UnitName, Unit> {
 
   /** diagrams/quadrant.md, The statement context: rules 1 to 10, in order. */
   private readInStatementContext(at: DiagramCharacter): void {
+    if (this.readComment(at) || this.readLineFeeds(at)) return
+
+    // Reuse suffix endpoints instead of rescanning as one-character space
+    // units advance. Whitespace can cross LF; the U+0020 prefix cannot.
+    // Dash units likewise reuse the end of the dash run after that prefix.
+    const previous = this.statementLookahead
+    let whitespace = previous?.whitespace ?? null
+    if (whitespace === null || !isBefore(at, whitespace.afterWhitespace)) {
+      const afterWhitespace = skipWhitespace(this.reader, at)
+      whitespace = {
+        afterSpaces: this.afterSpaces(at),
+        afterWhitespace,
+        afterColonWhitespace: isCodePointAt(afterWhitespace, COLON)
+          ? skipWhitespace(this.reader, this.reader.after(afterWhitespace))
+          : null,
+      }
+    } else if (!isBefore(at, whitespace.afterSpaces)) {
+      whitespace = { ...whitespace, afterSpaces: this.afterSpaces(at) }
+    }
+    const lookahead: StatementLookahead = {
+      whitespace,
+      afterDashes:
+        previous !== null && isBefore(at, previous.afterDashes)
+          ? previous.afterDashes
+          : skipWhile(
+              this.reader,
+              whitespace.afterSpaces,
+              (character) => character.codePoint === HYPHEN_MINUS,
+            ),
+    }
+    this.statementLookahead = lookahead
+
     if (
-      this.readComment(at) ||
-      this.readLineFeeds(at) ||
-      this.readKeyword(at) ||
+      this.readKeyword(at, lookahead) ||
       this.readOpeningQuote(at) ||
       this.readClassMarker(at) ||
-      this.readPointOpening(at) ||
-      this.readHeader(at) ||
+      this.readPointOpening(whitespace) ||
+      this.readHeader(at, whitespace) ||
       this.readWord(at) ||
       this.readCharacter(at) ||
       this.readSpace(at)
@@ -387,7 +450,10 @@ export class QuadrantUnitLexer extends UnitLexer<Context, UnitName, Unit> {
    * keyword of {@link SPACED_KEYWORDS} or the arrow, with the spaces around
    * it; or `classDef`.
    */
-  private readKeyword(at: DiagramCharacter): boolean {
+  private readKeyword(
+    at: DiagramCharacter,
+    lookahead: StatementLookahead,
+  ): boolean {
     return (
       this.readTitle(at) ||
       this.readAccessibilityKeyword(at, "accTitle", COLON, "acc-title") ||
@@ -398,8 +464,8 @@ export class QuadrantUnitLexer extends UnitLexer<Context, UnitName, Unit> {
         LEFT_CURLY_BRACKET,
         "description-block",
       ) ||
-      this.readSpacedKeyword(at) ||
-      this.readArrow(at) ||
+      this.readSpacedKeyword(at, lookahead.whitespace) ||
+      this.readArrow(at, lookahead) ||
       this.readClassDef(at)
     )
   }
@@ -441,10 +507,16 @@ export class QuadrantUnitLexer extends UnitLexer<Context, UnitName, Unit> {
    * with the spaces (U+0020) before and after it, followed by anything: the
    * unit named by the keyword.
    */
-  private readSpacedKeyword(at: DiagramCharacter): boolean {
-    const start = this.afterSpaces(at)
+  private readSpacedKeyword(
+    at: DiagramCharacter,
+    whitespace: StatementWhitespace,
+  ): boolean {
     for (const keyword of SPACED_KEYWORDS) {
-      const match = matchWordIgnoringCase(this.reader, start, keyword)
+      const match = matchWordIgnoringCase(
+        this.reader,
+        whitespace.afterSpaces,
+        keyword,
+      )
       if (match !== null) {
         this.read(keyword, at, this.afterSpaces(match.end))
         return true
@@ -457,18 +529,21 @@ export class QuadrantUnitLexer extends UnitLexer<Context, UnitName, Unit> {
    * The statement context, rule 3: two or more `-` and `>`, with the spaces
    * before and after them: an `arrow` unit.
    */
-  private readArrow(at: DiagramCharacter): boolean {
-    const start = this.afterSpaces(at)
-    if (start === null || start.codePoint !== HYPHEN_MINUS) return false
-    const second = this.reader.after(start)
+  private readArrow(
+    at: DiagramCharacter,
+    lookahead: StatementLookahead,
+  ): boolean {
+    const { afterSpaces } = lookahead.whitespace
+    if (afterSpaces === null || afterSpaces.codePoint !== HYPHEN_MINUS) {
+      return false
+    }
+    const second = this.reader.after(afterSpaces)
     if (second === null || second.codePoint !== HYPHEN_MINUS) return false
-    const head = skipWhile(
-      this.reader,
-      second,
-      (character) => character.codePoint === HYPHEN_MINUS,
-    )
-    if (head === null || head.codePoint !== GREATER_THAN_SIGN) return false
-    this.read("arrow", at, this.afterSpaces(this.reader.after(head)))
+    const { afterDashes } = lookahead
+    if (afterDashes === null || afterDashes.codePoint !== GREATER_THAN_SIGN) {
+      return false
+    }
+    this.read("arrow", at, this.afterSpaces(this.reader.after(afterDashes)))
     return true
   }
 
@@ -509,24 +584,35 @@ export class QuadrantUnitLexer extends UnitLexer<Context, UnitName, Unit> {
    * Notation, and `[`: a `:` unit and a `[` unit, which enter the point
    * context.
    */
-  private readPointOpening(at: DiagramCharacter): boolean {
-    const colon = skipWhitespace(this.reader, at)
-    if (colon === null || colon.codePoint !== COLON) return false
-    const bracket = skipWhitespace(this.reader, this.reader.after(colon))
-    if (bracket === null || bracket.codePoint !== LEFT_SQUARE_BRACKET) {
+  private readPointOpening(whitespace: StatementWhitespace): boolean {
+    const { afterWhitespace, afterColonWhitespace } = whitespace
+    if (afterWhitespace === null || afterWhitespace.codePoint !== COLON) {
       return false
     }
-    this.addUnit(":", colon, this.reader.after(colon))
-    const unit = this.read("[", bracket, this.reader.after(bracket))
+    if (
+      afterColonWhitespace === null ||
+      afterColonWhitespace.codePoint !== LEFT_SQUARE_BRACKET
+    ) {
+      return false
+    }
+    this.addUnit(":", afterWhitespace, this.reader.after(afterWhitespace))
+    const unit = this.read(
+      "[",
+      afterColonWhitespace,
+      this.reader.after(afterColonWhitespace),
+    )
     this.enter("point", significantRangeOf(unit))
     return true
   }
 
   /** The statement context, rule 7: `quadrantChart`, with the spaces before and after it, the header. */
-  private readHeader(at: DiagramCharacter): boolean {
+  private readHeader(
+    at: DiagramCharacter,
+    whitespace: StatementWhitespace,
+  ): boolean {
     const match = matchWordIgnoringCase(
       this.reader,
-      this.afterSpaces(at),
+      whitespace.afterSpaces,
       "quadrantChart",
     )
     if (match === null) return false

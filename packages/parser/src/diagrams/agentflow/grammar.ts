@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import { GraphGrammar } from "../../graph-grammar.ts"
 import type { NodePlace } from "../../unit-grammar.ts"
 import type { ClosedArrowParts, OpeningArrowParts } from "./arrows.ts"
@@ -229,7 +230,7 @@ export class AgentflowGrammar extends GraphGrammar<
       } else if (unit.name === ";") {
         statements.push(this.parseEmptyStatement())
       } else {
-        statements.push(...this.parseStatement(unit))
+        appendItems(statements, this.parseStatement(unit))
       }
     }
   }
@@ -478,7 +479,7 @@ export class AgentflowGrammar extends GraphGrammar<
       // which is its value (docs/tokens.md, Tokens).
       this.addWhitespaceToken("RawText", [firstPiece.start, lastPiece.end])
     }
-    units.push(...pieces)
+    appendItems(units, pieces)
     return { kind, units, delimiters }
   }
 
@@ -723,7 +724,7 @@ export class AgentflowGrammar extends GraphGrammar<
         this.advance()
       }
       this.addItem("RawText", pieces)
-      units.push(...pieces)
+      appendItems(units, pieces)
       if (units.length === 0) break
       parts.push(this.labelOf({ kind, units, delimiters }))
       initial = false
@@ -873,7 +874,8 @@ export class AgentflowGrammar extends GraphGrammar<
       const pieces = this.takeStylePieces()
       if (inClassDef) {
         while (this.escapedCommaFollows(pieces)) {
-          pieces.push(this.take(","), ...this.takeStylePieces())
+          pieces.push(this.take(","))
+          appendItems(pieces, this.takeStylePieces())
         }
       }
       const allWhitespace = pieces.every(
@@ -933,7 +935,7 @@ export class AgentflowGrammar extends GraphGrammar<
     const href = this.takeIf("href")
     if (href !== null) {
       this.addItem("Keyword", [href])
-      textBeforeUrl.push(...this.parseRetainedPrefixes())
+      appendItems(textBeforeUrl, this.parseRetainedPrefixes())
     }
     if (
       this.peek()?.name === "string" ||

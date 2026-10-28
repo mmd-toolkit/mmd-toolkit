@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type { NodeBase, Range } from "../../ast.ts"
 import type {
   RailroadBodyItem,
@@ -36,7 +37,7 @@ export abstract class RailroadGrammar extends UnitGrammar<UnitName, Unit> {
     const body: RailroadBodyItem[] = []
     let hasRule = false
     while (this.peek() !== null) {
-      body.push(...this.parseHidden())
+      appendItems(body, this.parseHidden())
       if (this.peek() === null) break
       const name = this.peek()!.name
       if (

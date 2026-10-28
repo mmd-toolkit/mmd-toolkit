@@ -1,4 +1,5 @@
 import type { KeptLines } from "./kept-lines.ts"
+import { minOf } from "./collections.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
@@ -48,6 +49,6 @@ export function findIshikawaKeptLines(
 export function ishikawaDiagramLineEnd(source: Source, offset: number): number {
   return Math.min(
     lineEndOf(source, offset),
-    ...findCommentEnds(source).filter((ending) => ending >= offset),
+    minOf(findCommentEnds(source).filter((ending) => ending >= offset)),
   )
 }

@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type {
   MindmapClassStatement,
   MindmapDiagram,
@@ -40,7 +41,8 @@ export function flattenMindmap(diagram: MindmapDiagram): MindmapLine[] {
 
   /** Adds a node, its decorations, and the nodes below it. */
   function addNode(node: MindmapNode): void {
-    lines.push(node, ...node.decorations)
+    lines.push(node)
+    appendItems(lines, node.decorations)
     for (const child of node.children) addNode(child)
   }
 

@@ -5,6 +5,7 @@ import type {
   Range,
 } from "@mmd-toolkit/parser"
 import type { AtomLayout } from "./atoms.ts"
+import { maxOf } from "./collections.ts"
 import { findCommentEnds, findLeadingDirectives } from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import { lineStartOf } from "./kept-lines.ts"
@@ -46,7 +47,7 @@ export function ishikawaLines(
     const start = Math.max(
       headerEnd,
       lineStartOf(source, textStart),
-      ...commentEnds.filter((end) => end <= textStart),
+      maxOf(commentEnds.filter((end) => end <= textStart)),
     )
     let content = start
     while (content < textStart && isWhitespace(source.text[content])) content++

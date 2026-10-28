@@ -28,8 +28,9 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 
 | Rule                                                        | Description                                                                                                     | ✅  | 💡  | 🚧  |
 | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --- | --- | --- |
-| [no-invalid-init-directive](./no-invalid-init-directive.md) | Disallow a directive meant to configure the diagram that is not written validly, so that mermaid.js ignores it. |     |     | 🚧  |
-| [no-unclosed-directive](./no-unclosed-directive.md)         | Disallow a directive without its closing `}%%`.                                                                 |     |     |     |
+| [no-duplicate-init-key](./no-duplicate-init-key.md)         | Disallow a key written twice in one object of the JSON of an init directive.                                    | ✅  |     |     |
+| [no-invalid-init-directive](./no-invalid-init-directive.md) | Disallow a directive meant to configure the diagram that is not written validly, so that mermaid.js ignores it. | ✅  |     |     |
+| [no-unclosed-directive](./no-unclosed-directive.md)         | Disallow a directive without its closing `}%%` that takes the lines after it.                                   | ✅  |     |     |
 
 ## flowchart
 

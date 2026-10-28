@@ -4,6 +4,26 @@ import myPlugin from "@ota-meshi/eslint-plugin"
 const PARSER_TESTS_RUN_NO_MERMAID =
   "The tests of the parser compare with what the fixtures record and run no mermaid.js; what mermaid.js does with an input is recorded as a fixture by the tests package."
 
+/** Why an array is not spread into the arguments of these calls. */
+const ARGUMENT_SPREAD_LIMIT =
+  "Each spread element is one argument, and V8 throws a RangeError past about 125,000 arguments; use the helper of the package (appendItems, minOf, maxOf) or a loop."
+
+/**
+ * The selector of a spread argument of a call to one of `methods`, on any
+ * object or on `object` only. It matches a method named as `a.push` or as
+ * `a["push"]`; `dot-notation` turns `` a[`push`] `` into `a.push`, and `a[push]`
+ * names whatever the variable `push` holds.
+ */
+function spreadIntoCallOf(methods, object) {
+  const named = methods.flatMap((method) => [
+    `[callee.computed=false][callee.property.name='${method}']`,
+    `[callee.computed=true][callee.property.value='${method}']`,
+  ])
+  const receiver =
+    object === undefined ? "" : `[callee.object.name='${object}']`
+  return `CallExpression${receiver}:matches(${named.join(", ")}) > SpreadElement`
+}
+
 export default [
   {
     ignores: [
@@ -149,6 +169,39 @@ export default [
               message: PARSER_TESTS_RUN_NO_MERMAID,
             },
           ],
+        },
+      ],
+    },
+  },
+  {
+    // An array spread into the arguments of a call passes one argument per
+    // element, and V8 throws a RangeError past about 125,000 arguments, which
+    // an input reaches. The code that reads inputs appends and takes the
+    // smallest or the largest value with the helpers of its package instead
+    // (`appendItems`, `minOf`, `maxOf`). This rule, not a fixture, guards these
+    // failures: an input of that size cannot be recorded in the corpus.
+    files: [
+      "packages/*/src/**/*.{js,ts,mjs,mts,cjs,cts,jsx,tsx,vue}",
+      "packages/*/tools/**/*.{js,ts,mjs,mts,cjs,cts,jsx,tsx,vue}",
+      "tools/**/*.{js,ts,mjs,mts,cjs,cts,jsx,tsx,vue}",
+    ],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: spreadIntoCallOf(["push", "unshift", "splice"]),
+          message: ARGUMENT_SPREAD_LIMIT,
+        },
+        {
+          selector: spreadIntoCallOf(["max", "min"], "Math"),
+          message: ARGUMENT_SPREAD_LIMIT,
+        },
+        {
+          selector: spreadIntoCallOf(
+            ["fromCodePoint", "fromCharCode"],
+            "String",
+          ),
+          message: ARGUMENT_SPREAD_LIMIT,
         },
       ],
     },

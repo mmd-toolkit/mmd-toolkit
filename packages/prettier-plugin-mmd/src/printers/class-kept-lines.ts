@@ -1,3 +1,4 @@
+import { appendItems } from "./collections.ts"
 import type { ClassStatement } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
 import {
@@ -83,7 +84,7 @@ function findPercentMemberLines(
   const lines: number[] = []
   for (const statement of statements) {
     if (statement.type === "ClassNamespaceStatement") {
-      lines.push(...findPercentMemberLines(source, statement.body))
+      appendItems(lines, findPercentMemberLines(source, statement.body))
       continue
     }
     if (statement.type !== "ClassDeclaration") continue

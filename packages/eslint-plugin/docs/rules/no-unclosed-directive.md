@@ -2,51 +2,54 @@
 
 Japanese version: [no-unclosed-directive.ja.md](./no-unclosed-directive.ja.md)
 
-Disallow a directive without its closing `}%%`.
+Disallow a directive without its closing `}%%` that takes the lines after it.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
-A directive whose argument starts with a character that is not a word character,
-as the `{` of `%%{init: {"theme": "dark"}}%%`, runs to its `}%%`. Without the
-`}%%`, it runs to the end of the text, or to the first U+2028 or U+2029 before
-it, and the statements up to there become part of the directive. mermaid.js
-still accepts the text when what is left is a valid diagram, so those statements
-disappear without an error.
+A directive runs from `%%{` to its `}%%`. A directive whose argument starts with
+a character that is not a word character, as the `{` of
+`%%{init: {"theme": "dark"}}%%`, runs to the first `}%%` after it. Without its
+own `}%%`, it runs to a `}%%` written later, to the end of the text, or to the
+first U+2028 or U+2029, and mermaid.js reads the lines up to there into the
+directive without an error: the statements on them disappear from the diagram.
 
 ## Rule Details
 
-This rule reports a directive that is not closed by `}%%`. It applies to every
-diagram type.
+This rule reports a directive that holds text of a later line than its `%%{`,
+other than its name and the JSON object or array with which its argument starts.
+It applies to every diagram type.
 
-A directive whose argument starts with a word character takes that word alone as
-its argument and ends after it and the whitespace after it, and the whitespace
-before the argument crosses line breaks: `%%{wrap` at the end of a line takes
-the first word of the next line as its argument, and that word disappears. A
-`}%%` after other text does not close such a directive either: in
-`%%{init: dark foo}%%`, the directive ends after `dark`, and `foo}%%` is read as
-text. The rule reports these directives too.
+After `A --> B`, the lines `%%{init: {"theme": "dark"}}`, without the final
+`%%`, and `C --> D` give a flowchart with the link from `A` to `B` only:
+`C --> D` is in the directive. A `}%%` written later closes the directive: with
+`%%{wrap}%%` after `C --> D`, the first directive runs to the `}%%` of the
+second, and both `C --> D` and the `wrap` directive disappear. The rule reports
+the directive in both cases, without a `}%%` and closed by a later `}%%`.
 
-### In each diagram type
+A directive whose argument starts with a word character takes that word as its
+argument, and the whitespace before the word crosses line breaks: `%%{wrap` at
+the end of a line takes the first word of the next line, and that word
+disappears. The rule reports it.
 
-What disappears depends on the diagram type.
+The JSON object or array of an argument may run over several lines. It ends at
+the bracket that closes its first bracket, and the lines that it covers are not
+reported; an object that never closes covers the rest of the directive. So a
+directive at the end of the text takes no statement, also without its `}%%`, and
+is not reported: `%%{init: {"theme": "dark"}` without `}%%` as the last line
+still sets the theme. A U+2028 or U+2029 ends a directive that has no `}%%`, and
+the text after it is read as written.
 
-- flowchart: `flowchart LR`, `%%{init: {"theme": "dark"}}` without the final
-  `%%`, and `A-->B` is a flowchart without vertices or links. `A-->B`, `%%{wrap`
-  without `}%%`, and `C-->D` lose the vertex `C`, and `-->D` continues the link
-  before it: the links are from `A` to `B` and from `B` to `D`.
-- sequence: `sequenceDiagram`, `A->>B: one`, `%%{init: {"theme": "dark"}}`
-  without the final `%%`, and `B->>A: two` has only the message `one`.
-- class: `classDiagram`, `class A`, `%%{init: {"theme": "dark"}}` without the
-  final `%%`, and `class B` has only the class `A`.
-- state: `stateDiagram-v2`, `A --> B`, `%%{init: {"theme": "dark"}}` without the
-  final `%%`, and `B --> C` has only the states `A` and `B` and the transition
-  from `A` to `B`.
+Where what is left is no valid diagram, mermaid.js rejects the text, and the
+rule does not see it: a directive left without its `}%%` before the header takes
+the header. When the text that the directive takes breaks the JSON argument of
+an init directive, [no-invalid-init-directive](./no-invalid-init-directive.md)
+reports it too.
 
-The examples are flowcharts.
+Close the directive with `}%%`.
 
 Examples of **incorrect** code for this rule:
 
@@ -54,24 +57,18 @@ Examples of **incorrect** code for this rule:
 %% eslint @mmd-toolkit/no-unclosed-directive: error
 flowchart LR
   A --> B
-  %%{init: {"x": 1}
-C-->D
-```
-
-```mmd
-%% eslint @mmd-toolkit/no-unclosed-directive: error
-flowchart LR
   %%{init: {"theme": "dark"}}
-A-->B
+  C --> D
 ```
 
 Examples of **correct** code for this rule:
 
 ```mmd
 %% eslint @mmd-toolkit/no-unclosed-directive: error
-%%{init: {"theme": "dark"}}%%
 flowchart LR
   A --> B
+  %%{init: {"theme": "dark"}}%%
+  C --> D
 ```
 
 ## Options
@@ -81,6 +78,15 @@ This rule has no options.
 ## Related Rules
 
 - [no-invalid-init-directive](./no-invalid-init-directive.md)
+
+## Background
+
+The
+[pattern of a directive](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10)
+takes a word argument, or a free-text argument up to the first `}%%`, a U+2028,
+a U+2029, or the end of the text, and
+[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)
+removes what it matches before the diagram is read.
 
 <!-- begin auto-generated rule resources -->
 

@@ -4,6 +4,7 @@
  * known divergence that changes how it reads the input taken out. It is
  * recorded in `specified.json` (see `docs/expected-results.md`).
  */
+import { appendItems } from "../../packages/tests/src/collections.ts"
 import type { MermaidConfig } from "../../packages/tests/src/index.ts"
 import { scanSource } from "../../packages/tests/src/source-scan.ts"
 import { configurationFrontmatter } from "../../packages/tests/src/configuration.ts"
@@ -507,9 +508,9 @@ export function withoutBlankLinesAfterHeader(text: string): string {
           "a line to take out stands inside the text of a node that is not closed yet; the specified reading cannot be made by taking lines out",
         )
       }
-      moved.push(...directivesOf(cursor, end.content))
+      appendItems(moved, directivesOf(cursor, end.content))
     } else {
-      moved.push(...directivesOf(cursor, end.content))
+      appendItems(moved, directivesOf(cursor, end.content))
       kept +=
         lineBreakAfterCommentSeparators(visible) +
         text.slice(end.content, end.next)

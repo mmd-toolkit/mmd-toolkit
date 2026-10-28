@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { ConvertedText, readConvertedCharacters } from "./converted-text.ts"
@@ -148,7 +149,7 @@ class ErDbBuilder {
         for (const cssClass of statement.cssClasses) {
           const id = this.textOf(cssClass)
           const definition = this.classes.get(id) ?? []
-          definition.push(...styles)
+          appendItems(definition, styles)
           this.classes.set(id, definition)
         }
         return [this.keywordOf(statement)]
@@ -272,16 +273,20 @@ class ErDbBuilder {
    */
   private addClasses(names: readonly string[], classNames: string[]): void {
     for (const name of names) {
-      this.entities.get(name)?.classes.push(...classNames)
-      this.subGraphsById.get(name)?.classes.push(...classNames)
+      const entity = this.entities.get(name)
+      const subGraph = this.subGraphsById.get(name)
+      if (entity !== undefined) appendItems(entity.classes, classNames)
+      if (subGraph !== undefined) appendItems(subGraph.classes, classNames)
     }
   }
 
   /** Classes and styles: adds the styles `styles` to each of `names` that is an entity or a subgraph at this point. */
   private addStyles(names: readonly string[], styles: string[]): void {
     for (const name of names) {
-      this.entities.get(name)?.cssStyles.push(...styles)
-      this.subGraphsById.get(name)?.cssStyles.push(...styles)
+      const entity = this.entities.get(name)
+      const subGraph = this.subGraphsById.get(name)
+      if (entity !== undefined) appendItems(entity.cssStyles, styles)
+      if (subGraph !== undefined) appendItems(subGraph.cssStyles, styles)
     }
   }
 

@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type {
   RadarAccDescrBlockStatement,
   RadarAccDescrStatement,
@@ -239,7 +240,7 @@ export class RadarGrammar extends UnitGrammar<UnitName, Unit> {
   private parseEntrySuffix(): RadarIgnoredText[] {
     const forms = this.parseHiddenForms()
     if (this.peek()?.name === "newline") {
-      forms.push(...this.parseHiddenForms(true))
+      appendItems(forms, this.parseHiddenForms(true))
       if (this.peek()?.name !== "}") throw this.unexpected(this.peek())
     }
     return forms

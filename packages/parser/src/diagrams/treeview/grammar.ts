@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type {
   TreeviewAccDescrBlockStatement,
   TreeviewAccDescrStatement,
@@ -74,7 +75,7 @@ export class TreeviewGrammar extends UnitGrammar<UnitName, Unit> {
       }
     }
     while (open.length > 0) this.finishNode(open, body)
-    body.push(...textBefore)
+    appendItems(body, textBefore)
     return { body, tokens: this.tokensInOrder() }
   }
 

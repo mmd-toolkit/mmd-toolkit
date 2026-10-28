@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { ConvertedText, readConvertedCharacters } from "./converted-text.ts"
@@ -468,7 +469,7 @@ class StateDbBuilder {
     if (visit.descriptions.length > 0) {
       const descriptions = visit.descriptions.map((text) => this.replace(text))
       if (state.described) {
-        state.descriptions.push(...descriptions)
+        appendItems(state.descriptions, descriptions)
       } else if (state.descriptions[0] === id) {
         state.descriptions = descriptions
       } else {

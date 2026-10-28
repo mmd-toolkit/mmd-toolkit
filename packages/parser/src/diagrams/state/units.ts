@@ -31,6 +31,7 @@ import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
 import type { Match } from "../../scanning.ts"
 import {
+  isBefore,
   isCodePointAt,
   matchSpacedWords,
   matchWholeWordIgnoringCase,
@@ -158,6 +159,19 @@ type Context =
   | "description"
   | "description-block"
 
+/** The line segment from a state-context position, before LF, U+2028, or U+2029. */
+interface StateLineSegment {
+  readonly characters: readonly DiagramCharacter[]
+  /** The first line-segment separator, or null at the end of the text. */
+  readonly end: DiagramPosition
+}
+
+/** The line-segment search after two words in the state context. */
+interface TwoNameBraceLookahead {
+  /** The first `{` or line-segment separator after the second word; null at the end of the text. */
+  readonly braceOrSegmentEnd: DiagramPosition
+}
+
 /**
  * Units and contexts: for each context, null when the text may end in it,
  * because its rules may read nothing, as in the statement context and the
@@ -213,6 +227,10 @@ export interface StateLexing {
  */
 export class StateUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
+
+  private pseudostateFreeSegment: StateLineSegment | null = null
+
+  private twoNameBraceLookahead: TwoNameBraceLookahead | null = null
 
   /** The state string context: the `"` that opened the string. */
   private stringStart: DiagramCharacter | null = null
@@ -444,15 +462,47 @@ export class StateUnitLexer extends UnitLexer<Context, UnitName, Unit> {
     if (
       this.skipWhitespaceOf(at, isLineWhitespaceOrSeparator) ||
       this.readHashComment(at) ||
-      this.readPercentComment(at) ||
-      this.readPseudostate(at) ||
-      this.readStateStringStart(at) ||
-      this.readAs(at) ||
-      this.rejectTwoNames(at) ||
-      this.readStateName(at)
+      this.readPercentComment(at)
     ) {
       return
     }
+
+    // An absent mark stays absent in every remaining suffix of this
+    // segment, so bodyless names reuse its end instead of searching again.
+    let segment = this.pseudostateFreeSegment
+    if (segment === null || !isBefore(at, segment.end)) {
+      segment = this.stateLineFrom(at)
+      if (this.readPseudostate(segment)) return
+      this.pseudostateFreeSegment = segment
+    }
+
+    if (this.readStateStringStart(at) || this.readAs(at)) {
+      return
+    }
+
+    // The brace search starts after the second word, which may be on a
+    // later line. Reuse only that searched suffix as names advance.
+    const secondEnd = this.afterSecondWord(at)
+    if (secondEnd !== null) {
+      let lookahead = this.twoNameBraceLookahead
+      if (
+        lookahead === null ||
+        !isBefore(secondEnd, lookahead.braceOrSegmentEnd)
+      ) {
+        lookahead = {
+          braceOrSegmentEnd: skipWhile(
+            this.reader,
+            secondEnd,
+            (character) =>
+              !endsLineSegment(character.codePoint) &&
+              character.codePoint !== LEFT_CURLY_BRACKET,
+          ),
+        }
+        this.twoNameBraceLookahead = lookahead
+      }
+      this.rejectTwoNames(at, lookahead)
+    }
+    if (this.readStateName(at)) return
     if (at.codePoint === LINE_FEED) {
       // Rule 9: a line feed leaves the state context.
       this.position = this.reader.after(at)
@@ -791,23 +841,27 @@ export class StateUnitLexer extends UnitLexer<Context, UnitName, Unit> {
     return true
   }
 
-  /**
-   * The state context, rule 4: a pseudostate mark before the next line feed,
-   * U+2028, or U+2029. The marks are tried in their order; for the first that
-   * occurs there, the rule reads up to its last occurrence. The characters
-   * before it, without the whitespace at their ends, are a `pseudostate-name`
-   * unit when they are not empty, and the mark is a unit named by its text;
-   * leaves the state context.
-   */
-  private readPseudostate(at: DiagramCharacter): boolean {
-    const line: DiagramCharacter[] = []
-    for (
-      let position: DiagramPosition = at;
-      position !== null && !endsLineSegment(position.codePoint);
-      position = this.reader.after(position)
-    ) {
-      line.push(position)
+  /** The characters from `at` to the end of its line segment, without consuming units. */
+  private stateLineFrom(at: DiagramCharacter): StateLineSegment {
+    const characters: DiagramCharacter[] = []
+    let end: DiagramPosition = at
+    while (end !== null && !endsLineSegment(end.codePoint)) {
+      characters.push(end)
+      end = this.reader.after(end)
     }
+    return { characters, end }
+  }
+
+  /**
+   * The state context, rule 4: a pseudostate mark in `segment`. The marks
+   * are tried in their order; for the first that occurs there, the rule
+   * reads up to its last occurrence. The characters before it, without the
+   * whitespace at their ends, are a `pseudostate-name` unit when they are
+   * not empty, and the mark is a unit named by its text; leaves the state
+   * context.
+   */
+  private readPseudostate(segment: StateLineSegment): boolean {
+    const line = segment.characters
     for (const mark of PSEUDOSTATE_MARKS) {
       let last: Match | null = null
       let lastStart: DiagramCharacter | null = null
@@ -882,32 +936,33 @@ export class StateUnitLexer extends UnitLexer<Context, UnitName, Unit> {
     return true
   }
 
+  /** The position after a word, whitespace, and another word from `at`; null when that prefix does not match or ends the text. */
+  private afterSecondWord(at: DiagramCharacter): DiagramPosition {
+    const firstEnd = skipWhile(this.reader, at, (character) =>
+      isWordCharacter(character.codePoint),
+    )
+    if (samePosition(firstEnd, at) || !isWhitespaceCharacter(firstEnd)) {
+      return null
+    }
+    const second = skipWhitespace(this.reader, firstEnd)
+    if (second === null || !isWordCharacter(second.codePoint)) return null
+    return skipWhile(this.reader, second, (character) =>
+      isWordCharacter(character.codePoint),
+    )
+  }
+
   /**
    * The state context, rule 7: a word, one or more whitespace characters,
    * line feeds included, another word, and characters other than line
    * feed, U+2028, and U+2029 up to the first `{`: rejected.
    */
-  private rejectTwoNames(at: DiagramCharacter): boolean {
-    const firstEnd = skipWhile(this.reader, at, (character) =>
-      isWordCharacter(character.codePoint),
-    )
-    if (samePosition(firstEnd, at) || !isWhitespaceCharacter(firstEnd)) {
-      return false
-    }
-    const second = skipWhitespace(this.reader, firstEnd)
-    if (second === null || !isWordCharacter(second.codePoint)) return false
-    const secondEnd = skipWhile(this.reader, second, (character) =>
-      isWordCharacter(character.codePoint),
-    )
-    const brace = skipWhile(
-      this.reader,
-      secondEnd,
-      (character) =>
-        !endsLineSegment(character.codePoint) &&
-        character.codePoint !== LEFT_CURLY_BRACKET,
-    )
-    if (!isCodePointAt(brace, LEFT_CURLY_BRACKET)) return false
-    const range: Range = [at.start, brace?.end ?? at.end]
+  private rejectTwoNames(
+    at: DiagramCharacter,
+    lookahead: TwoNameBraceLookahead,
+  ): void {
+    const { braceOrSegmentEnd } = lookahead
+    if (!isCodePointAt(braceOrSegmentEnd, LEFT_CURLY_BRACKET)) return
+    const range: Range = [at.start, braceOrSegmentEnd.end]
     throw new ParseError(
       "A state name before { must be a single word",
       range,

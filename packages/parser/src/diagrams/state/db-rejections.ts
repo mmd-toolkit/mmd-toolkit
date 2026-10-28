@@ -39,11 +39,6 @@ class RandomId {
  */
 type StateId = string | RandomId
 
-/** The id of the start state of the state whose id is `parent`. */
-function startIdOf(parent: StateId): StateId {
-  return typeof parent === "string" ? `${parent}_start` : parent.startId()
-}
-
 /**
  * diagrams/state.md, Rejections outside the grammar: the inputs that the
  * grammar accepts and mermaid.js rejects while it builds the Db. The
@@ -75,6 +70,8 @@ export class StateDbRejections {
 
   /** The states seen so far, by id. */
   private readonly states = new Map<StateId, StateRecord>()
+
+  private readonly startIdsByParent = new Map<string, string>()
 
   /** The number of each divider among all dividers of the text, in source order, from 1. */
   private readonly dividerNumbers = new Map<StateDividerStatement, number>()
@@ -238,23 +235,36 @@ export class StateDbRejections {
   }
 
   /**
+   * The start-state id of `parent`. Reuse each string parent's derived id
+   * so repeated terminals do not rebuild and hash its long spelling.
+   */
+  private startIdOf(parent: StateId): StateId {
+    if (typeof parent !== "string") return parent.startId()
+    const existing = this.startIdsByParent.get(parent)
+    if (existing !== undefined) return existing
+    const id = `${parent}_start`
+    this.startIdsByParent.set(parent, id)
+    return id
+  }
+
+  /**
    * The id of the state that `name` names where it stands before the arrow
    * of a transition or alone, in the composite state or region whose id is
    * `parent`: a StateTerminal, and a state named `[*]`, have the id of the
-   * start state of `parent` ({@link startIdOf}).
+   * start state of `parent` ({@link StateDbRejections.startIdOf}).
    */
   private idOf(
     name: Identifier | StateLiteral | StateTerminal,
     parent: StateId,
   ): StateId {
-    if (name.type === "StateTerminal") return startIdOf(parent)
+    if (name.type === "StateTerminal") return this.startIdOf(parent)
     const id = this.stateIds.get(name)
     if (id === undefined) {
       throw new Error(
         `mmd-toolkit parser bug: the state at ${name.range[0]} has no id`,
       )
     }
-    return id === "[*]" ? startIdOf(parent) : id
+    return id === "[*]" ? this.startIdOf(parent) : id
   }
 
   /**

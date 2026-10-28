@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { ConvertedText, readConvertedCharacters } from "./converted-text.ts"
@@ -249,7 +250,8 @@ class ClassDbBuilder {
         return
       case "ClassStyleStatement": {
         const entry = this.classes.get(this.identifierTextOf(statement.id))
-        entry?.styles.push(...this.styleValuesOf(statement.styles))
+        if (entry !== undefined)
+          appendItems(entry.styles, this.styleValuesOf(statement.styles))
         return
       }
       case "ClassClassDefStatement": {
@@ -257,7 +259,8 @@ class ClassDbBuilder {
         for (const cssClass of statement.cssClasses) {
           const name = this.identifierTextOf(cssClass)
           for (const entry of this.classes.values()) {
-            if (entry.cssClasses.includes(name)) entry.styles.push(...values)
+            if (entry.cssClasses.includes(name))
+              appendItems(entry.styles, values)
           }
         }
         return

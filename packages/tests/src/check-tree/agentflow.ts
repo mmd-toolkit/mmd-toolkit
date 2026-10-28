@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import {
   agentflowPreservesComments,
   readAgentflowCharacters,
@@ -710,8 +711,9 @@ function checkStructure(
       for (const statement of entriesOf(node, "body"))
         if (statement !== null) {
           const segmentStart = previousEnd
-          expected.push(
-            ...own.tokens
+          appendItems(
+            expected,
+            own.tokens
               .filter(
                 (token) =>
                   token.value === ";" &&
@@ -719,19 +721,21 @@ function checkStructure(
                   token.range[1] <= statement.range[0],
               )
               .map(() => ";"),
-            CHILD,
           )
+          expected.push(CHILD)
           previousEnd = statement.range[1]
         }
-      if (isFlow || isGlobal)
-        expected.push(
-          ...own.tokens
+      if (isFlow || isGlobal) {
+        appendItems(
+          expected,
+          own.tokens
             .filter(
               (token) => token.value === ";" && previousEnd <= token.range[0],
             )
             .map(() => ";"),
-          "end",
         )
+        expected.push("end")
+      }
       simple(expected)
       if (name === null)
         reading.problems.expect(
@@ -994,11 +998,10 @@ function checkStylesAndLists(reading: Reading, node: CheckedNode): void {
     ...(isDefault ? ["default"] : slotsOf(ids)),
   ]
   if (isClass) expected.push(CHILD)
-  else
-    expected.push(
-      ...(interpolation === null ? [] : ["interpolate", CHILD]),
-      ...slotsOf(styles),
-    )
+  else {
+    if (interpolation !== null) expected.push("interpolate", CHILD)
+    appendItems(expected, slotsOf(styles))
+  }
   checkLayout(reading, node, own, expected)
   if (isClass) {
     if (idEnd !== undefined && cssClass !== null)
@@ -1226,7 +1229,11 @@ function checkClick(reading: Reading, node: CheckedNode): void {
         .map((part) => ({ range: part.range, text: CHILD })),
       ...hrefs.map((token) => ({ range: token.range, text: "href" })),
     ].sort((a, b) => a.range[0] - b.range[0])
-    expected.push(...beforeUrl.map((part) => part.text), CHILD)
+    appendItems(
+      expected,
+      beforeUrl.map((part) => part.text),
+    )
+    expected.push(CHILD)
     const href = hrefs[0]
     if (href !== undefined) {
       const next =
@@ -1295,7 +1302,8 @@ function checkClick(reading: Reading, node: CheckedNode): void {
         )
         expected.push(")", "call", "(")
       }
-      expected.push(...(args === null ? [] : [CHILD]), ")")
+      if (args !== null) expected.push(CHILD)
+      expected.push(")")
       const call = calls[0]
       if (call !== undefined) {
         const before = reading.converted.of([call.range[1], callback.range[0]])
@@ -1314,10 +1322,11 @@ function checkClick(reading: Reading, node: CheckedNode): void {
         )
     }
   }
-  expected.push(
-    ...entriesOf(node, "textBeforeTooltip").map(() => CHILD),
-    ...(tooltip === null ? [] : [CHILD]),
+  appendItems(
+    expected,
+    entriesOf(node, "textBeforeTooltip").map(() => CHILD),
   )
+  if (tooltip !== null) expected.push(CHILD)
   if (url !== null && node.target !== null) expected.push(String(node.target))
   checkLayout(reading, node, own, expected)
   if (tooltip !== null) {

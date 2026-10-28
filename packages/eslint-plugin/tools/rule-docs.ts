@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url"
 import type { RuleDefinition } from "@eslint/core"
 import { format, resolveConfig } from "prettier"
 import { rules } from "../src/rules/index.ts"
+import { appendItems } from "../src/utils/collections.ts"
 
 /** The namespace of the plugin, which the rule ids start with. */
 const NAMESPACE = "@mmd-toolkit"
@@ -506,7 +507,7 @@ function documentsUnder(
   const documents: { name: string; language: DocumentLanguage }[] = []
   for (const entry of readdirSync(`${docsDir}${directory}`)) {
     if (statSync(`${docsDir}${directory}${entry}`).isDirectory()) {
-      documents.push(...documentsUnder(docsDir, `${directory}${entry}/`))
+      appendItems(documents, documentsUnder(docsDir, `${directory}${entry}/`))
       continue
     }
     const language: DocumentLanguage | null = entry.endsWith(SUFFIX.ja)

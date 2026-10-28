@@ -161,6 +161,12 @@ Every review has a section on proper form, also when the behavior is right:
   states a direct rule?
 - Readability: types inferred from values, generalizations with one user,
   indirection without a reader, empty JSDoc, autofix stubs, commented-out code.
+- For a performance fix: the reason for a structure that exists for speed is a
+  comment at its place; the decision to skip or walk is in one place, with no
+  unwritten promise left to callers; names say the role; index arithmetic and
+  state flags are not scattered; no place reads worse than before, even if it is
+  faster. The fixer's report names the form chosen for readability and the
+  faster form rejected.
 - The plainest form: before reading, know the environment the project targets
   (the `engines` of package.json, the `target` and `lib` of tsconfig.json, the
   versions of the dependencies), and read each changed line asking whether a

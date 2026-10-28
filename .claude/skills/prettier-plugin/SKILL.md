@@ -259,7 +259,9 @@ built is in `docs/development.md`.
   which the corpus test formats on every run (formatting does not throw, is
   idempotent, and keeps the Db and the embedded data). A failure that is fixed
   is guarded by its fixture; the fixtures of the corpus are made in
-  `@mmd-toolkit/tests`.
+  `@mmd-toolkit/tests`. A failure that `pnpm run lint` rules out (an array
+  spread into the arguments of a call, in the `conventions` skill) is guarded by
+  that rule instead.
 - Fixtures answer sentences. Every sentence of the rules documents
   (`docs/<diagram>.md`, `docs/compatibility.md`) that defines a behavior has a
   formatting fixture for each case it distinguishes, and for each other rule

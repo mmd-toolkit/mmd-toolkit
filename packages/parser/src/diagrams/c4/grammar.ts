@@ -1,3 +1,4 @@
+import { appendItems } from "../../append-items.ts"
 import type { StringLiteral } from "../../ast.ts"
 import type {
   C4AccDescrBlockStatement,
@@ -245,7 +246,7 @@ export class C4Grammar extends UnitGrammar<UnitName, Unit> {
   ): C4BoundaryStatement {
     const beforeBody = this.parseEmptyBlocks()
     const newline = this.takeIf("newline")
-    if (newline !== null) beforeBody.push(...this.parseEmptyBlocks())
+    if (newline !== null) appendItems(beforeBody, this.parseEmptyBlocks())
     this.addItem("Punctuator", [this.take("{")])
     if (newline === null) this.take("newline")
     else this.takeIf("newline")

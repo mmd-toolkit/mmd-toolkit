@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest"
+import type { Fixture } from "@mmd-toolkit/tests"
+import { embeddedValuesOf, loadFixtures } from "@mmd-toolkit/tests"
 import type { Range, Root } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
+import { dbOfTree } from "./helpers/db-of-tree.ts"
 
 // Expectations come from diagrams/state.md (the lexer, the grammar, and the
 // rejections outside the grammar) and ast/state.md (the nodes and the
@@ -769,4 +772,119 @@ describe("the errors of the state diagram", () => {
     )
     expect(error.range).toEqual(inText([2, 13]))
   })
+})
+
+describe("state lookahead and terminal identity fixtures", async () => {
+  const fixtures = await loadFixtures("state")
+
+  /** The fixed corpus input named `name`. */
+  function fixtureOf(name: string): Fixture {
+    const fixture = fixtures.find((candidate) => candidate.name === name)
+    if (fixture === undefined) throw new Error(`no fixture ${name}`)
+    return fixture
+  }
+
+  /** The tree of a fixed corpus input, including its source invariants. */
+  function rootOf(name: string): Root {
+    const fixture = fixtureOf(name)
+    const root = parse(fixture.input)
+    expect(problemsOfTree(fixture.input, root)).toEqual([])
+    return root
+  }
+
+  it("keeps every bodyless name on a brace-free line", () => {
+    expect(bodyOf(rootOf("lex-state-two-names"))).toMatchObject([
+      { type: "StateCompositeStatement", id: { name: "a" }, body: null },
+      { type: "StateCompositeStatement", id: { name: "b" }, body: null },
+    ])
+  })
+
+  it("keeps the first pseudostate mark kind ahead of an earlier mark of another kind", () => {
+    expect(bodyOf(rootOf("lex-pseudostate-first-mark-kind"))).toMatchObject([
+      {
+        type: "StatePseudostateDefinitionStatement",
+        id: { value: "a <<join>> b" },
+        kind: "fork",
+      },
+    ])
+  })
+
+  it("searches the next segment after a bodyless name before U+2028", () => {
+    expect(
+      bodyOf(rootOf("lex-pseudostate-mark-after-line-separator")),
+    ).toMatchObject([
+      { type: "StateCompositeStatement", id: { name: "a" }, body: null },
+      {
+        type: "StatePseudostateDefinitionStatement",
+        id: { value: "b" },
+        kind: "fork",
+      },
+    ])
+  })
+
+  it("keeps directive cuts and source ranges in a pseudostate name", () => {
+    const root = rootOf("lex-directive-in-pseudostate-name")
+    expect(bodyOf(root)).toMatchObject([{ id: { value: "fk" } }])
+    expect(
+      root.tokens
+        .filter((token) => token.type !== "Keyword")
+        .map((token) => [token.type, token.value, token.range]),
+    ).toEqual([
+      ["RawText", "f", [24, 25]],
+      ["Directive", "%%{init: {}}%%", [25, 39]],
+      ["RawText", "k", [39, 40]],
+    ])
+  })
+
+  it.each([
+    ["lex-state-two-names-body-next-line", [24, 31]],
+    ["lex-state-two-names-brace-next-line", [26, 33]],
+    ["lex-state-two-names-tab", [24, 29]],
+    ["lex-state-three-names-body", [24, 31]],
+  ] as const)(
+    "%s: rejects at the words whose second word's line has a brace",
+    (name, range) => {
+      expect(() => parse(fixtureOf(name).input)).toThrowError(
+        expect.objectContaining({
+          message: "A state name before { must be a single word",
+          range,
+        }),
+      )
+    },
+  )
+
+  it.each([
+    "gram-terminal-alone",
+    "db-composite-id-terminal-nested",
+    "db-region-terminal-composite-one-description",
+    "db-last-region-terminal-composite",
+    "db-undivided-body-terminal-composite",
+    "db-last-region-alias-with-spaces",
+  ])("%s: preserves terminal and region identity", (name) => {
+    const fixture = fixtureOf(name)
+    const reading = fixture.specified ?? fixture.expected
+    if (!reading.accepted || reading.db === null) {
+      throw new Error(`no accepted Db for ${name}`)
+    }
+    const embedded = embeddedValuesOf(fixture, reading)
+    if (embedded === undefined) {
+      throw new Error(`no embedded values for ${name}`)
+    }
+    expect(dbOfTree(fixture.input, rootOf(name), embedded)).toEqual(reading.db)
+  })
+
+  it.each([
+    ["gram-composite-terminal-two-descriptions", [18, 37]],
+    ["gram-region-terminal-composite-two-descriptions", [32, 57]],
+  ] as const)(
+    "%s: keeps written and derived IDs equal when rejecting descriptions",
+    (name, range) => {
+      expect(() => parse(fixtureOf(name).input)).toThrowError(
+        expect.objectContaining({
+          message: "A composite state can have only one description",
+          range,
+        }),
+      )
+    },
+  )
 })

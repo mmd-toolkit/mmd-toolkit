@@ -1,3 +1,4 @@
+import { appendItems } from "../collections.ts"
 import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { ConvertedText, readConvertedCharacters } from "./converted-text.ts"
@@ -312,7 +313,7 @@ class RequirementDbBuilder {
     for (const name of this.namesOf(statement.names)) {
       const entry = this.entryOf(name)
       if (entry === undefined) return
-      entry.cssStyles.push(...styles)
+      appendItems(entry.cssStyles, styles)
     }
   }
 
@@ -330,12 +331,12 @@ class RequirementDbBuilder {
         definition = { id, styles: [] }
         this.classes.set(id, definition)
       }
-      definition.styles.push(...styles)
+      appendItems(definition.styles, styles)
       for (const entry of [
         ...this.requirements.values(),
         ...this.elements.values(),
       ]) {
-        if (entry.classes.includes(id)) entry.cssStyles.push(...styles)
+        if (entry.classes.includes(id)) appendItems(entry.cssStyles, styles)
       }
     }
   }
@@ -373,7 +374,7 @@ class RequirementDbBuilder {
       if (entry === undefined) continue
       for (const className of classNames) {
         entry.classes.push(className)
-        entry.cssStyles.push(...(this.classes.get(className)?.styles ?? []))
+        appendItems(entry.cssStyles, this.classes.get(className)?.styles ?? [])
       }
     }
   }
