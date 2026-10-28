@@ -13,8 +13,8 @@ MultiMarkdown や MikuMikuDance ではありません。
 ## Playground
 
 ブラウザーで、このプラグインによる整形結果を確認できます。
-**Formatted**タブは編集に合わせて更新され、
-**Indent**と**Use tabs**で字下げを設定できます。
+**Formatted**タブは編集に合わせて更新され、 **Indent**と**Use
+tabs**で字下げを設定できます。
 **Apply to source**で、入力を整形結果に置き換えられます。
 
 公開予定URL:
@@ -51,8 +51,7 @@ npx prettier --write "**/*.{mmd,mermaid,md}"
 
 ## 例
 
-入力
-([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
+入力 ([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -60,8 +59,7 @@ flowchart LR
   subgraph S; E; F; end
 ```
 
-出力
-([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
+出力 ([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
 
 ```mmd
 flowchart LR
@@ -93,20 +91,16 @@ flowchart LR
   例とともに [docs/sequence.ja.md](./docs/sequence.ja.md) にあります。
 - class 図。
   `classDiagram` か `classDiagram-v2` で始まる図です。
-  整形の規則は、
-  例とともに [docs/class.ja.md](./docs/class.ja.md) にあります。
+  整形の規則は、例とともに [docs/class.ja.md](./docs/class.ja.md) にあります。
 - state 図。
   `stateDiagram` か `stateDiagram-v2` で始まる図です。
-  整形の規則は、
-  例とともに [docs/state.ja.md](./docs/state.ja.md) にあります。
+  整形の規則は、例とともに [docs/state.ja.md](./docs/state.ja.md) にあります。
 - ER 図。
   `erDiagram` で始まる図です。
-  整形の規則は、
-  例とともに [docs/er.ja.md](./docs/er.ja.md) にあります。
+  整形の規則は、例とともに [docs/er.ja.md](./docs/er.ja.md) にあります。
 - Gantt 図。
   `gantt` で始まる図です。
-  整形の規則は、
-  例とともに [docs/gantt.ja.md](./docs/gantt.ja.md) にあります。
+  整形の規則は、例とともに [docs/gantt.ja.md](./docs/gantt.ja.md) にあります。
 - journey 図。
   `journey` で始まる図です。
   整形の規則は、
@@ -125,8 +119,7 @@ flowchart LR
   例とともに [docs/timeline.ja.md](./docs/timeline.ja.md) にあります。
 - sankey 図。
   `sankey` か `sankey-beta` で始まる図です。
-  整形の規則は、
-  例とともに [docs/sankey.ja.md](./docs/sankey.ja.md) にあります。
+  整形の規則は、例とともに [docs/sankey.ja.md](./docs/sankey.ja.md) にあります。
 - XY チャート。
   `xychart` か `xychart-beta` で始まる図です。
   整形の規則は、
@@ -171,8 +164,8 @@ flowchart LR
   整形の規則は [docs/radar.ja.md](./docs/radar.ja.md) にあります。
 - Wardley 図: `wardley-beta` で始まる図です。
   整形の規則は [docs/wardley.ja.md](./docs/wardley.ja.md) にあります。
-- railroad 図: `railroad-beta`、`railroad-ebnf-beta`、
-  `railroad-abnf-beta`、`railroad-peg-beta` で始まる図です。
+- railroad 図: `railroad-beta`、`railroad-ebnf-beta`、 `railroad-abnf-beta`、
+  `railroad-peg-beta` で始まる図です。
   整形の規則は [docs/railroad.ja.md](./docs/railroad.ja.md) にあります。
 - cynefin 図: `cynefin-beta` と `cynefin-beta:` で始まる図です。
   整形の規則は [docs/cynefin.ja.md](./docs/cynefin.ja.md) にあります。
@@ -182,8 +175,7 @@ flowchart LR
   整形の規則は [docs/packet.ja.md](./docs/packet.ja.md) にあります。
 - ブロック図。
   `block-beta` か `block` で始まる図です。
-  整形の規則は、
-  例とともに [docs/block.ja.md](./docs/block.ja.md) にあります。
+  整形の規則は、例とともに [docs/block.ja.md](./docs/block.ja.md) にあります。
 - これらの図の YAML のフロントマター。
   Prettier の YAML 整形で整形します。
 
@@ -212,9 +204,9 @@ flowchart LR
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
 - flowchart、agentflow、sequence、class、state、ER、Gantt、journey、
-  requirement、mindmap、timeline、sankey、XY チャート、象限チャート、
-  kanban、C4、Venn、Ishikawa、usecase、pie、info、gitgraph、
-  architecture、treemap、treeview、radar、wardley、railroad、cynefin、eventmodeling、packet、
+  requirement、mindmap、timeline、sankey、XY チャート、象限チャート、 kanban、
+  C4、Venn、Ishikawa、usecase、pie、info、gitgraph、 architecture、treemap、
+  treeview、radar、wardley、railroad、cynefin、 eventmodeling、packet、
   ブロック図以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。

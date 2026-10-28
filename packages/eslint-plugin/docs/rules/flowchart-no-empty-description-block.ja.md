@@ -9,15 +9,13 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
-💡
-[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
-を選んで適用できる。
+💡 [エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions) を選んで適用できる。
 
 <!-- end auto-generated rule notice -->
 
 説明のブロックは、図に説明を与えるために書く。
-ブロックが何も持たないか、空白だけを持つとき、
-mermaid.js はそれを受理するが、そこから説明を取らない。
+ブロックが何も持たないか、空白だけを持つとき、 mermaid.js はそれを受理するが、
+そこから説明を取らない。
 
 ## 規則の詳細
 
@@ -53,8 +51,8 @@ mermaid.js は、そのディレクティブの設定を適用する。
 空白を持つ名前の subgraph は、名前でなく、
 `subGraph0` のような自動で作った id になる。
 名前そのものは空白を持たないのに、`subgraph S accDescr {}` のように、
-こうして subgraph が自動で作った id になると、
-`style S` や `S` へのリンクは、その subgraph に届かなくなる。
+こうして subgraph が自動で作った id になると、 `style S` や `S` へのリンクは、
+その subgraph に届かなくなる。
 名前とその行の終わりか `;` の間にある空のブロックには、
 規則のメッセージがそのことを言う。
 

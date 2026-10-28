@@ -59,7 +59,12 @@ some of those fields. Each node type states its **child fields**: the fields
 whose values are child nodes, in the order in which a tool that walks the tree
 visits them, as ESLint does with its visitor keys. A tool follows the child
 fields only. Each diagram document that adds a node type states its child fields
-in the same way.
+in the same way. The section of each node type states them in one of two
+sentences: `Child fields:` followed by the names of the child fields in code
+spans, separated by `, ` and ended by a period, as in
+``Child fields: `id`, `label`.``; or, when the node type has none,
+`No child fields.` The sentences after it may explain the child fields, but no
+other sentence states them.
 
 The child nodes do not overlap. A list in a child field is in source order, and
 the child fields of a node are usually in source order too. They are not where
@@ -200,8 +205,7 @@ not dedented, and the tree does not parse the YAML.
 | `frontmatter` | Frontmatter or null | The frontmatter, if the source has one.                               |
 | `directives`  | list of Directive   | Every directive, in source order.                                     |
 
-Its only child field is `body`; `frontmatter` and `directives` are not child
-fields.
+Child fields: `body`. `frontmatter` and `directives` are not child fields.
 
 `diagramType` is the id that
 [`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
@@ -272,7 +276,7 @@ architecture/header-beta] [fixture: architecture/db-mixed]
 
 ## ErrorDiagram
 
-`type` is `ErrorDiagram`. A node with no other fields and no child fields.
+`type` is `ErrorDiagram`. No child fields. It has no other fields.
 
 The body of the `error` pseudo-diagram (see
 [common.md](./common.md#diagram-detection)); `diagramType` is `error`.
@@ -311,11 +315,11 @@ The first three have the same form in every diagram type, so they are defined
 here and their names have no diagram prefix. How a text without quotes, a name
 with whitespace, or a label is read, for example whether it keeps the whitespace
 at its ends, differs from one diagram type to another, so each diagram document
-defines its own literal, name node, and label. None of the three nodes defined
-here has child fields. Words from a fixed set, such as a direction, a shape
-name, or the marker at an end of an arrow, stay strings in the fields of the
-diagram's nodes, as the `kind` of ESTree's nodes does. An arrow is a node of the
-diagram, such as [FlowchartArrow](./ast/flowchart.md#flowchartarrow) and
+defines its own literal, name node, and label. Words from a fixed set, such as a
+direction, a shape name, or the marker at an end of an arrow, stay strings in
+the fields of the diagram's nodes, as the `kind` of ESTree's nodes does. An
+arrow is a node of the diagram, such as
+[FlowchartArrow](./ast/flowchart.md#flowchartarrow) and
 [SequenceArrow](./ast/sequence.md#sequencearrow), whose `value` is its text and
 whose markers and line are such words, so that a tool reads them without reading
 the characters of the arrow again; the diagrams use the same field names and the
@@ -349,6 +353,8 @@ to anything, as the key of an object and the `prop` of `obj.prop` do not.
 | ------ | ------ | ---------------------------------------------------- |
 | `name` | string | The texts of its units, joined in order (see below). |
 
+No child fields.
+
 Its `name` is made from the units of the diagram's lexer that it consists of
 (units are defined by each diagram document): the written text of each unit (see
 [Nodes](#nodes)), joined in order. No whitespace lies inside or between these
@@ -368,6 +374,8 @@ usecase/lex-native-string-backslashes]
 | `value`  | string  | Its content: what the diagram's string rules read between its delimiters, as its written text. With one pair of quotes, it is its written text without them; where a diagram nests delimiters, all of them are left out (for flowchart, see [Strings](./diagrams/flowchart.md#strings)). |
 | `raw`    | string  | The source text of the string from its opening quote to its closing quote, or to its last character when it is not closed, with nothing left out and nothing converted: its quotes, and a directive, a comment region, or an ignored `;` inside it, are part of it.                      |
 | `closed` | boolean | Whether the string ends with its closing quote.                                                                                                                                                                                                                                          |
+
+No child fields.
 
 `click A href "u"` has the URL with the value `u` and the `raw` `"u"`; in
 `click A "u" "one`, a line break, `%% c`, a line break, and `two"`, the tooltip
@@ -412,6 +420,8 @@ A number.
 | ------- | ------ | ----------------------------------------------------- |
 | `value` | number | The number that its written text writes, as a double. |
 | `raw`   | string | The number as written, with nothing left out.         |
+
+No child fields.
 
 In `linkStyle 0,1 stroke:red`, the first number has the value zero and the `raw`
 `0`. [fixture: flowchart/db-linkstyle-shared-fill] Which forms a number may take

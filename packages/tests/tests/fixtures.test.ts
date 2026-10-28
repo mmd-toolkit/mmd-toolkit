@@ -10,6 +10,7 @@ import {
   fixtureAccepts,
   getDefaultConfig,
   getFixturesRoot,
+  loadFixture,
   loadFixtures,
   parseExpectedFile,
   serializeExpectedFile,
@@ -79,6 +80,66 @@ beforeAll(async () => {
 }, READS_EVERY_FIXTURE)
 
 describe("fixtures", () => {
+  it("loads one fixture by its name as loadFixtures has it", async () => {
+    // One fixture of each diagram type, and one of each kind that a fixture
+    // can be: with a configuration, with a known divergence, with a specified
+    // reading, and rejected.
+    /** The first fixture for which `test` holds. */
+    function firstWhere(
+      what: string,
+      test: (fixture: Fixture) => boolean,
+    ): Fixture {
+      const found = allFixtures.find(test)
+      if (found === undefined) throw new Error(`no fixture ${what}`)
+      return found
+    }
+
+    const chosen = new Set<Fixture>([
+      ...DIAGRAMS.map((diagram) => {
+        const first = fixturesOf(diagram)[0]
+        if (first === undefined) throw new Error(`no fixture of ${diagram}`)
+        return first
+      }),
+      firstWhere("with a configuration", (f) => f.config !== undefined),
+      firstWhere(
+        "with a known divergence",
+        (f) => f.knownDivergence !== undefined,
+      ),
+      firstWhere("with a specified reading", (f) => f.specified !== undefined),
+      firstWhere("that is rejected", (f) => !f.expected.accepted),
+    ])
+    for (const fixture of chosen) {
+      expect(await loadFixture(fixture.diagram, fixture.name)).toEqual(fixture)
+    }
+  })
+
+  it("does not load a fixture that the diagram type does not have", async () => {
+    const fixture = fixturesOf("flowchart")[0]
+    if (fixture === undefined) throw new Error("no flowchart fixture")
+    await expect(loadFixture("pie", fixture.name)).rejects.toThrow(
+      `no fixture pie/${fixture.name}`,
+    )
+    await expect(loadFixture("flowchart", "no-such-fixture")).rejects.toThrow(
+      "no fixture flowchart/no-such-fixture",
+    )
+  })
+
+  it("does not load a name that is not spelled as the name of a fixture directory", async () => {
+    const fixture = fixturesOf("flowchart")[0]
+    if (fixture === undefined) throw new Error("no flowchart fixture")
+    for (const name of [
+      "",
+      ".",
+      "..",
+      `../flowchart/${fixture.name}`,
+      fixture.name.toUpperCase(),
+    ]) {
+      await expect(loadFixture("flowchart", name)).rejects.toThrow(
+        `no fixture flowchart/${name}`,
+      )
+    }
+  })
+
   it("loads treeview fixtures under Mermaid's treeView id", () => {
     const fixtures = fixturesOf("treeview")
     expect(fixtures.length).toBeGreaterThan(0)

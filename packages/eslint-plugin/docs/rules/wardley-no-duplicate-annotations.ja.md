@@ -17,16 +17,16 @@ mermaid.js はエラーなしに後の `annotations` を除くので、
 
 ## 規則の詳細
 
-この規則は、枠が示す文字を持つ注釈がマップにあるとき、
-最初と違う位置を与える、最初より後の `annotations` を報告する。
+この規則は、枠が示す文字を持つ注釈がマップにあるとき、最初と違う位置を与える、
+最初より後の `annotations` を報告する。
 対象の図種は `wardley` である。
 
 `annotations [0.1, 0.2]` と `annotations [0.3, 0.4]` の後では、
 枠は最初の位置にある。
 後のそれぞれの `annotations` は、その前のものではなく最初のものと比べる。
 
-最初の位置を与える `annotations` は報告せず、
-枠を描かない、注釈の文字のないマップのものも報告しない。
+最初の位置を与える `annotations` は報告せず、枠を描かない、
+注釈の文字のないマップのものも報告しない。
 位置は百分率として比べ、`0.1` と `10` は 1 つの位置である。
 mermaid.js はマップの端を越える枠を内側に動かすので、
 端の近くの 2 つの位置は 1 つの枠を与えることがあり、
@@ -59,8 +59,8 @@ wardley-beta
 
 ## 背景
 
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L199-L204)
-は、最初の `annotations` だけから枠の位置を取る。
+[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L199-L204) は、
+最初の `annotations` だけから枠の位置を取る。
 
 <!-- begin auto-generated rule resources -->
 

@@ -32,7 +32,7 @@ export function findJourneyKeptLines(source: Source): KeptLines {
       ...findLinesEndedBySemicolon(source),
       ...findLinesReadByTheirWhitespace(source),
     ]),
-    writtenIndentation: new Set(),
+    ownIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)
   return kept

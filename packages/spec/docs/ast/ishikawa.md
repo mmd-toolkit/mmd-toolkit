@@ -46,10 +46,10 @@ ishikawa/header-same-line-root]
 | `text`     | IshikawaLiteral      | The nonempty written node text.                     |
 | `children` | list of IshikawaNode | Its children, in source order.                      |
 
-Child fields: `text`, `children`, in that order. `children` is empty when the
-node has no children. The node range covers its text through its last
-descendant, or just its text when there are none; its leading indentation is
-whitespace, not a text value. [fixture: ishikawa/gram-root-lf] [fixture:
+Child fields: `text`, `children`. `children` is empty when the node has no
+children. The node range covers its text through its last descendant, or just
+its text when there are none; its leading indentation is whitespace, not a text
+value. [fixture: ishikawa/gram-root-lf] [fixture:
 ishikawa/db-indent-first-cause] [fixture: ishikawa/db-indent-pop-several]
 
 `indent` counts every line whitespace character as one, including tab, U+00A0,

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
-import { embeddedValuesOf, loadFixtures } from "../src/index.ts"
+import { embeddedValuesOf, loadFixture } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
 import type { Built } from "./check-tree-built.ts"
 import {
@@ -161,11 +161,9 @@ function dbOf(
 describe("usecase Db from written occurrences", () => {
   for (const [name, make] of CASES)
     it(`matches ${name}`, async () => {
-      const fixture = (await loadFixtures("usecase")).find(
-        (entry) => entry.name === name,
-      )
-      if (fixture === undefined || !fixture.expected.accepted)
-        throw new Error(`missing accepted fixture ${name}`)
+      const fixture = await loadFixture("usecase", name)
+      if (!fixture.expected.accepted)
+        throw new Error(`rejected fixture ${name}`)
       const test = make()
       const embedded = embeddedValuesOf(fixture)
       if (embedded === undefined) throw new Error("missing embedded values")

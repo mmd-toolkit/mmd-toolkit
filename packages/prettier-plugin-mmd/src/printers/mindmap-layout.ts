@@ -8,9 +8,12 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { AtomLayout } from "./atoms.ts"
 import { keptAsWritten } from "./layout.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import {
+  findLeadingDirectives,
+  findNodeLineTextStart,
+} from "./indentation-lines.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween, isWhitespace } from "./source.ts"
+import { isWhitespace } from "./source.ts"
 
 /**
  * The node types of a mindmap whose text is a value, printed as written: the
@@ -98,40 +101,72 @@ export function layoutMindmapLine(line: MindmapLine): AtomLayout {
 }
 
 /**
- * The number of whitespace characters between the first directive and the
- * text of a line that starts with a directive: only whitespace and
- * directives lie before its text on its line. The indentation of a node is
- * all the whitespace before its text in the text without its directives, the
- * whitespace after the directive too (diagrams/mindmap.md, Whitespace and
- * lines), so such a line is printed as written from its first directive, and
- * only the whitespace before the directive is the printer's. Null for any
- * other line.
+ * The directives that start the line of a node, and the whitespace after them.
+ * The indentation of a node is all the whitespace before its text in the text
+ * without its directives, the whitespace after a directive too
+ * (diagrams/mindmap.md, Whitespace and lines).
  */
-export function countWhitespaceAfterLeadingDirective(
+export interface LeadingDirectiveRun {
+  /** Where the first directive starts: the printed line starts there. */
+  readonly start: number
+  /**
+   * The number of whitespace characters between the first directive and the
+   * text, which are indentation; the directives are not counted.
+   */
+  readonly whitespaceAfter: number
+}
+
+const leadingDirectiveRunsBySource = new WeakMap<
+  Source,
+  ReadonlyMap<MindmapLine, LeadingDirectiveRun>
+>()
+
+/**
+ * The lines of a mindmap that start with a directive: only whitespace and
+ * directives lie before their text on their line, which starts at a line feed
+ * or at a U+2028 or U+2029 that ends a diagram comment (see
+ * `findNodeLineStart`; docs/mindmap.md, Line separators). Such a line is
+ * printed as written from its first directive, and only the whitespace before
+ * the directive is the printer's. Found once per source.
+ */
+export function findLeadingDirectiveRuns(
+  source: Source,
+): ReadonlyMap<MindmapLine, LeadingDirectiveRun> {
+  const cached = leadingDirectiveRunsBySource.get(source)
+  if (cached !== undefined) return cached
+  const runs = new Map<MindmapLine, LeadingDirectiveRun>()
+  for (const line of flattenMindmap(mindmapOf(source))) {
+    const run = findLeadingDirectiveRun(source, line)
+    if (run !== null) runs.set(line, run)
+  }
+  leadingDirectiveRunsBySource.set(source, runs)
+  return runs
+}
+
+/** The directives that start the line of a node, or null for any other line. */
+function findLeadingDirectiveRun(
   source: Source,
   line: MindmapLine,
-): number | null {
-  const lineStart = lineStartOf(source, line.range[0])
-  const trivia = findTriviaBetween(source, lineStart, line.range[0])
-  if (trivia.length === 0 || trivia.some((item) => item.type !== "Directive")) {
-    return null
+): LeadingDirectiveRun | null {
+  let content = findNodeLineTextStart(source, line.range[0])
+  while (content < line.range[0] && isWhitespace(source.text[content])) {
+    content++
   }
-  const firstDirective = trivia[0].range[0]
-  let count = 0
-  let offset = lineStart
-  while (offset < line.range[0]) {
-    const here = offset
-    const directive = trivia.find((item) => item.range[0] === here)
-    if (directive !== undefined) {
-      offset = directive.range[1]
-    } else if (isWhitespace(source.text[offset])) {
-      if (offset > firstDirective) count++
-      offset++
-    } else {
-      return null
+  const { directives, gaps } = findLeadingDirectives(
+    source,
+    content,
+    line.range[0],
+  )
+  if (directives.length === 0 || directives[0][0] !== content) return null
+  let whitespaceAfter = 0
+  for (const [index, directive] of directives.entries()) {
+    const gapEnd = directive[1] + gaps[index]
+    for (let offset = directive[1]; offset < gapEnd; offset++) {
+      if (!isWhitespace(source.text[offset])) return null
     }
+    whitespaceAfter += gaps[index]
   }
-  return count
+  return { start: content, whitespaceAfter }
 }
 
 /** Whether a source is a mindmap, for the checks of the kept lines. */

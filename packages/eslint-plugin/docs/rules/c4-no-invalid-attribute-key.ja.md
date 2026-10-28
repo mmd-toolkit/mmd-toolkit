@@ -31,8 +31,8 @@ alias を読む前にほかの文字に変えるので、それだけが違う a
 mermaid.js とこの規則が別の対象を見つけることがある。
 
 ほかの見慣れないキーは報告しない。
-mermaid.js は名前付きの属性をどれも保存し、文書にない `alias`、`from`、`to`
-などのキーは、後の文が照合するものを変える。
+mermaid.js は名前付きの属性をどれも保存し、文書にない `alias`、`from`、
+`to` などのキーは、後の文が照合するものを変える。
 必須位置、余分な引数、現時点の対象がない更新は、この規則では調べない。
 `UpdateLayoutConfig` も、名前や大文字小文字によらず、
 位置でカウンターを選ぶので除く。
@@ -76,11 +76,9 @@ C4Context
 
 ## 背景
 
-要素の adapter は
-[`bgColor`、`borderColor`、`fontColor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4ShapeAdapter.ts#L140-L156)
-を正確な名前で読む。
-関係の描画も、正確な名前の
-[色と offset のフィールド](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/svgDraw.ts#L26-L36) を読む。
+要素の adapter は [`bgColor`、`borderColor`、`fontColor`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4ShapeAdapter.ts#L140-L156) を正確な名前で読む。
+関係の描画も、
+正確な名前の [色と offset のフィールド](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/svgDraw.ts#L26-L36) を読む。
 対象は無視される属性名であり、色の値が正しい CSS かどうかではない。
 
 <!-- begin auto-generated rule resources -->

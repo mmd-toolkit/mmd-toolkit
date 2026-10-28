@@ -60,8 +60,8 @@ radar-beta
 
 ## 背景
 
-[`computeCurveEntries`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L75-L91)
-は、宣言した軸ごとにそれを名指す最初の値を取る。
+[`computeCurveEntries`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L75-L91) は、
+宣言した軸ごとにそれを名指す最初の値を取る。
 
 <!-- begin auto-generated rule resources -->
 

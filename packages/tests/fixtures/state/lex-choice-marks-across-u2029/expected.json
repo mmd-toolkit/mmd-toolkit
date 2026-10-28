@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context, rule 4: The same kind of mark on both sides of U+2029 defines two choices rather than one longer name."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "a",
+        "shape": "choice",
+        "label": "a",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "b",
+        "shape": "choice",
+        "label": "b",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

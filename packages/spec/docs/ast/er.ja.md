@@ -3,21 +3,18 @@
 英語版: [er.md](./er.md)
 
 この文書は、図種 `er` の木のノードを定めます。
-木の共通部分は [ast.ja.md](../ast.ja.md) で定め、
-ソースの読み方と、どの文法の規則がどのノードを作るかは
-[diagrams/er.ja.md](../diagrams/er.ja.md) で定めます。
+木の共通部分は [ast.ja.md](../ast.ja.md) で定め、ソースの読み方と、
+どの文法の規則がどのノードを作るかは [diagrams/er.ja.md](../diagrams/er.ja.md) で定めます。
 
 この図種の本体は [ErDiagram](#erdiagram) です。
 欄の値は、
 [ast.ja.md](../ast.ja.md#ノード)が値の書かれたテキストを定めるとおり、
 書き手が書いたものを保ち、
 [common.ja.md](../common.ja.md#ソースの読み方) の変換後の形ではありません。
-値が空白で始まったり終わったりするのは、
-mermaid.js が読むとおりに、その単位が空白を自分の文字として持つところだけです
-（[ノード](../ast.ja.md#ノード) を参照）。
-この図種では、名前の文字である U+00A0 のような ASCII
-の外の空白文字で終わる名前やロールがそうです
-（[空白](../diagrams/er.ja.md#単位と文脈) を参照）。
+値が空白で始まったり終わったりするのは、 mermaid.js が読むとおりに、
+その単位が空白を自分の文字として持つところだけです（[ノード](../ast.ja.md#ノード) を参照）。
+この図種では、名前の文字である U+00A0 のような、
+ASCII の外の空白文字で終わる名前やロールがそうです（[空白](../diagrams/er.ja.md#単位と文脈) を参照）。
 それ以外では、値の両端の空白は値の外です。
 
 **実体**は図の箱で、名前で名付けられます。
@@ -26,11 +23,11 @@ mermaid.js が読むとおりに、その単位が空白を自分の文字とし
 この図種の StringLiteral は常に閉じています。
 空になるのは、`A ||--o{ B : ""` のようなロールと、属性のコメントのときだけです。
 実体の名前としての空の文字列は入力を拒否させ、
-空のバッククォートは StringLiteral ではありません
-（[属性](../diagrams/er.ja.md#属性) を参照）。
-[fixture: er/gram-role-string-empty] [fixture: er/gram-comment-empty] [fixture:
-er/spec-er-diagram-f4c59d78] [fixture:
-er/gram-empty-backquotes-between-attributes]
+空のバッククォートは StringLiteral ではありません。
+[属性](../diagrams/er.ja.md#属性) を参照してください。 [fixture: er/gram-role-string-empty]
+[fixture: er/gram-comment-empty]
+[fixture: er/spec-er-diagram-f4c59d78]
+[fixture: er/gram-empty-backquotes-between-attributes]
 
 ## ノード
 
@@ -40,7 +37,8 @@ er/gram-empty-backquotes-between-attributes]
 | ------ | -------------------- | -------------------- |
 | `body` | ErStatement のリスト | 文。ソースの順です。 |
 
-子の欄: `body`。ヘッダーのキーワードは欄ではありません。
+子の欄: `body`。
+ヘッダーのキーワードは欄ではありません。
 
 **ErStatement** は、ErEntityStatement、ErRelationshipStatement、
 ErSubgraphStatement、ErDirectionStatement、ErClassDefStatement、
@@ -48,8 +46,7 @@ ErClassStatement、ErStyleStatement、ErAccTitleStatement、ErAccDescrStatement�
 ErAccDescrBlockStatement のいずれかです。
 
 改行はどの文にも属さず、空行はノードを作りません。
-以下のどのノードの子の欄も
-ソースの順です（[ノード](../ast.ja.md#ノード) を参照）。
+以下のどのノードの子の欄もソースの順です（[ノード](../ast.ja.md#ノード) を参照）。
 
 ### ErEntityStatement
 
@@ -64,14 +61,14 @@ ErAccDescrBlockStatement のいずれかです。
 | `attributes` | （ErAttribute か ErIgnoredText）のリスト、または null | `{` と `}` の間の属性ブロックの項目。ソースの順。項目のないブロックでは空、ブロックがないときは null。 |
 
 子の欄: `name`、`alias`、`cssClasses`、`attributes`。
-名前は、`name` か `number` の単位では ErIdentifier で、その `name` は `12` や
-`2.5` を含めて単位のテキストです。
+名前は、`name` か `number` の単位では ErIdentifier で、
+その `name` は `12` や `2.5` を含めて単位のテキストです。
 `quoted-name` の単位では StringLiteral です。
 別名も同じです（[実体](../diagrams/er.ja.md#実体) を参照）。
 `attributes` の ErIgnoredText は、2 つの属性の間、最初の属性の前、
-または最後の属性の後の `empty-backquotes` の単位で、mermaid.js は読みません
-（[属性](../diagrams/er.ja.md#属性) を参照）。
-[fixture: er/lex-name-unicode-characters] [fixture: er/lex-name-number]
+または最後の属性の後の `empty-backquotes` の単位で、
+mermaid.js は読みません（[属性](../diagrams/er.ja.md#属性) を参照）。 [fixture: er/lex-name-unicode-characters]
+[fixture: er/lex-name-number]
 [fixture: er/lex-quoted-name] [fixture: er/gram-alias] [fixture:
 er/gram-alias-string] [fixture: er/gram-entity-classes] [fixture:
 er/gram-attribute] [fixture: er/gram-block-empty] [fixture:
@@ -81,8 +78,8 @@ er/gram-empty-backquotes-alone]
 
 ### ErAttribute
 
-実体の属性 1 つです。`string name`、`string? middleName`、
-`int id PK, FK "the key"`。
+実体の属性 1 つです。
+`string name`、`string? middleName`、 `int id PK, FK "the key"`。
 
 | 欄         | 型                            | 意味                                                                                                                                          |
 | ---------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -94,13 +91,13 @@ er/gram-empty-backquotes-alone]
 
 子の欄: `dataType`、`name`、`keys`、`comment`。
 属性の語は、`word` か `tilde-word` の単位では ErIdentifier で、
-`backquoted-word` の単位では StringLiteral で、その
-`value` はバッククォートの間のテキストです。
+`backquoted-word` の単位では StringLiteral で、
+その `value` はバッククォートの間のテキストです。
 `?` は単位でノードではありません。
-キーは Identifier で、その `name` は `pk` や `PK`
-のように書かれたとおりのキーです。
-コメントは空でもよく、その値は空の文字列です。
-[fixture: er/gram-attribute] [fixture: er/gram-optional-type] [fixture:
+キーは Identifier で、
+その `name` は `pk` や `PK` のように書かれたとおりのキーです。
+コメントは空でもよく、その値は空の文字列です。 [fixture: er/gram-attribute]
+[fixture: er/gram-optional-type] [fixture:
 er/lex-tilde-word] [fixture: er/lex-backquote-word] [fixture:
 er/gram-keys-comma-space] [fixture: er/lex-key-lower-case] [fixture:
 er/gram-comment] [fixture: er/gram-comment-empty] [fixture:
@@ -120,30 +117,32 @@ er/gram-attributes-keys-comment]
 子の欄: `left`、`relationship`、`right`、`role`。
 ロールは、`string` か `quoted-name` の単位では StringLiteral、
 `name` の単位では ErIdentifier です。
-`string` は空でもよく、その値は空の文字列です。
-[fixture: er/gram-relationship-symbols] [fixture: er/gram-role-string]
+`string` は空でもよく、
+その値は空の文字列です。 [fixture: er/gram-relationship-symbols]
+[fixture: er/gram-role-string]
 [fixture: er/gram-role-string-empty] [fixture: er/lex-role-unicode] [fixture:
 er/gram-relationship-both-classes]
 
 ### ErEntityReference
 
-関係の端です。実体の名前と、そのクラス（ないこともあります）です。
+関係の端です。
+実体の名前と、そのクラス（ないこともあります）です。
 
 | 欄           | 型                            | 意味                                                                         |
 | ------------ | ----------------------------- | ---------------------------------------------------------------------------- |
 | `name`       | ErIdentifier か StringLiteral | 実体の名前。ErEntityStatement と同じです。                                   |
 | `cssClasses` | ErIdentifier のリスト         | `:::` の後の、`,` の単位で区切ったクラス。ソースの順。`:::` がないときは空。 |
 
-子の欄: `name`、`cssClasses`。
-[fixture: er/gram-relationship-left-classes] [fixture:
+子の欄: `name`、`cssClasses`。 [fixture: er/gram-relationship-left-classes]
+[fixture:
 er/gram-relationship-right-classes] [fixture:
 er/gram-relationship-string-names] [fixture:
 er/gram-relationship-number-names]
 
 ### ErRelationship
 
-関係の 2 つの実体の間の 3 つの単位です。`||--o{`、
-`one or more to zero or one`、`}|..|{`、`u--o{`。
+関係の 2 つの実体の間の 3 つの単位です。
+`||--o{`、 `one or more to zero or one`、`}|..|{`、`u--o{`。
 
 | 欄                 | 型     | 意味                                 |
 | ------------------ | ------ | ------------------------------------ |
@@ -153,15 +152,14 @@ er/gram-relationship-number-names]
 
 子の欄はありません。
 濃度の語は `zero-or-one`、`zero-or-more`、`one-or-more`、`only-one`、
-`md-parent` で、
-[文の文脈](../diagrams/er.ja.md#文の文脈) の単位の名前です。
+`md-parent` で、 [文の文脈](../diagrams/er.ja.md#文の文脈) の単位の名前です。
 単位のつづりによりません。
 `|o`、`one or zero`、`zero or one` はどれも `zero-or-one` で、
 `--` と `to` はどちらも `identifying` です。
 このノードに `value` はありません。
 単位の間には mermaid.js が読まない空白を置け、
-単位のテキストはトークンにあります。
-[fixture: er/gram-relationship-symbols] [fixture: er/lex-cardinality-words]
+単位のテキストはトークンにあります。 [fixture: er/gram-relationship-symbols]
+[fixture: er/lex-cardinality-words]
 [fixture: er/lex-cardinality-only-one-optionally-to] [fixture:
 er/lex-md-parent] [fixture: er/lex-relationship-spaces-in-spec] [fixture:
 er/spec-er-diagram-7b5988ee]
@@ -180,8 +178,8 @@ er/spec-er-diagram-7b5988ee]
 タイトルがリストなのは、文法がそこで 1 つ以上の実体の名前を、
 間に空白があってもなくても読み、
 mermaid.js がそのテキストを 1つの空白文字でつなぐからです。
-間の空白は値ではありません（[subgraph](../diagrams/er.ja.md#subgraph) を参照）。
-[fixture: er/gram-subgraph] [fixture: er/gram-subgraph-title] [fixture:
+間の空白は値ではありません（[subgraph](../diagrams/er.ja.md#subgraph) を参照）。 [fixture: er/gram-subgraph]
+[fixture: er/gram-subgraph-title] [fixture:
 er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id]
 [fixture: er/gram-subgraph-header-blocks] [fixture: er/gram-subgraph-nested]
 
@@ -197,8 +195,9 @@ er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id]
 テキストは両端の空白を除いたもので、空白しかないところでは null です。
 `  direction LR` には `textBefore` がなく、
 `A ||--o{ B : x direction LR` の `textBefore` は `A ||--o{ B : x` です。
-方向は値を大文字にしたものです。`direction lr` は `LR` です。
-[fixture: er/gram-direction] [fixture: er/lex-direction-lower-case] [fixture:
+方向は値を大文字にしたものです。
+`direction lr` は `LR` です。 [fixture: er/gram-direction]
+[fixture: er/lex-direction-lower-case] [fixture:
 er/lex-direction-leading-space] [fixture:
 er/lex-direction-line-after-relationship] [fixture:
 er/lex-direction-line-text-after] [fixture: er/lex-direction-value-glued]
@@ -215,9 +214,9 @@ er/lex-direction-line-text-after] [fixture: er/lex-direction-value-glued]
 子の欄: `cssClasses`、`styles`。
 クラス名は ErIdentifier で、その `name` は `style-text` の単位のテキストです。
 スタイルは単位のテキストをつないだものです（[ErLiteral](#erliteral) を参照）。
-スタイルのリストが空になることはありません。スタイルのない
-`classDef` は拒否されます。
-[fixture: er/gram-classdef] [fixture: er/gram-classdef-two-names] [fixture:
+スタイルのリストが空になることはありません。
+スタイルのない `classDef` は拒否されます。 [fixture: er/gram-classdef]
+[fixture: er/gram-classdef-two-names] [fixture:
 er/lex-classdef-style-spaces] [fixture: er/gram-classdef-without-styles]
 
 ### ErClassStatement
@@ -231,8 +230,8 @@ er/lex-classdef-style-spaces] [fixture: er/gram-classdef-without-styles]
 
 子の欄: `entities`、`cssClasses`。
 それぞれは `name` の単位の ErIdentifier なので、
-どちらのリストも数や引用符付きの名前を持ちません。
-[fixture: er/gram-class] [fixture: er/gram-class-two-lists] [fixture:
+どちらのリストも数や引用符付きの名前を持ちません。 [fixture: er/gram-class]
+[fixture: er/gram-class-two-lists] [fixture:
 er/db-class-subgraph]
 
 ### ErStyleStatement
@@ -245,8 +244,9 @@ er/db-class-subgraph]
 | `styles`   | ErLiteral のリスト    | スタイル。ErClassDefStatement と同じです。                               |
 
 子の欄: `entities`、`styles`。
-名前は ErIdentifier で、その `name` は `style-text` の単位のテキストです。
-[fixture: er/gram-style] [fixture: er/gram-style-two-names] [fixture:
+名前は ErIdentifier で、
+その `name` は `style-text` の単位のテキストです。 [fixture: er/gram-style]
+[fixture: er/gram-style-two-names] [fixture:
 er/db-style-subgraph]
 
 ### ErAccTitleStatement
@@ -259,10 +259,10 @@ er/db-style-subgraph]
 
 子の欄: `value`。
 `:` の後の空白は改行を含めて一緒に読まれるので、
-テキストはそれのある最初の行で始まり、
-値が null になることはありません。後ろに何もない `accTitle:` は拒否されます。
-値は両端の空白を除いたテキストです。
-[fixture: er/gram-acc-title] [fixture: er/lex-acc-title-blank-line-then-name]
+テキストはそれのある最初の行で始まり、値が null になることはありません。
+後ろに何もない `accTitle:` は拒否されます。
+値は両端の空白を除いたテキストです。 [fixture: er/gram-acc-title]
+[fixture: er/lex-acc-title-blank-line-then-name]
 [fixture: er/lex-acc-title-at-end] [fixture: er/db-acc-title-trailing-space]
 
 ### ErAccDescrStatement
@@ -273,15 +273,17 @@ er/db-style-subgraph]
 | ------- | --------- | ------------------------------------------------ |
 | `value` | ErLiteral | `accDescr:` の後、その行の終わりまでのテキスト。 |
 
-子の欄: `value`。ErAccTitleStatement と同じく、
-値が nullになることはありません。
-[fixture: er/gram-acc-descr] [fixture: er/lex-acc-descr-at-end]
+子の欄: `value`。
+ErAccTitleStatement と同じく、
+値が nullになることはありません。 [fixture: er/gram-acc-descr]
+[fixture: er/lex-acc-descr-at-end]
 
 ### ErAccDescrBlockStatement
 
 `accDescr { … }` の文とそのテキスト、またはテキストのないもの、
 つまり何も変えない空の説明ブロックです。
-ブロックはつねに閉じています。テキストはその中で終われません。
+ブロックはつねに閉じています。
+テキストはその中で終われません。
 
 | 欄      | 型                | 意味                                                                                  |
 | ------- | ----------------- | ------------------------------------------------------------------------------------- |
@@ -290,21 +292,21 @@ er/db-style-subgraph]
 子の欄: `value`。
 `accDescr {}`、`accDescr { }`、空行のブロックは値 null で、何も変えません。
 そのようなブロックが文になるのは文が始まるところだけで、
-文の中のブロックは入力を拒否させます
-（[空の説明ブロック](../diagrams/er.ja.md#空の説明ブロック) を参照）。
-[fixture: er/gram-acc-descr-block] [fixture: er/gram-acc-descr-block-multiline]
-[fixture: er/gram-acc-descr-block-empty] [fixture:
-er/db-acc-descr-block-whitespace-only] [fixture:
-er/gram-empty-description-block-between-names] [fixture:
-er/div-empty-description-block-in-relationship] [fixture:
-er/lex-acc-descr-block-unclosed]
+文の中のブロックは入力を拒否させます。
+[空の説明ブロック](../diagrams/er.ja.md#空の説明ブロック) を参照してください。 [fixture: er/gram-acc-descr-block]
+[fixture: er/gram-acc-descr-block-multiline]
+[fixture: er/gram-acc-descr-block-empty]
+[fixture: er/db-acc-descr-block-whitespace-only]
+[fixture: er/gram-empty-description-block-between-names]
+[fixture: er/div-empty-description-block-in-relationship]
+[fixture: er/lex-acc-descr-block-unclosed]
 
 ### ErIdentifier
 
 引用符なしで書いた名前です。
 実体の名前と別名、ロール、クラス名、`style` や `classDef` の後の名前、
-属性の型と名前で、
-`name`、`number`、`style-text`、`word`、`tilde-word` の単位です。
+属性の型と名前で、 `name`、`number`、`style-text`、`word`、
+`tilde-word` の単位です。
 
 | 欄     | 型     | 意味                                                                       |
 | ------ | ------ | -------------------------------------------------------------------------- |
@@ -313,23 +315,22 @@ er/lex-acc-descr-block-unclosed]
 子の欄はありません。
 [Identifier](../ast.ja.md#identifier) ではなく図の名前のノードなのは、
 これらの位置が名前の中に空白を許すからです。
-`name` と `style-text` は U+00A0 や U+2028 のような ASCII の外の空白文字を持て
-（[空白](../diagrams/er.ja.md#単位と文脈) を参照）、
+`name` と `style-text` は、
+U+00A0 や U+2028 のような ASCII の外の空白文字を持て（[空白](../diagrams/er.ja.md#単位と文脈) を参照）、
 チルダの語はどの空白も持てます。
 `A`、U+00A0、`B` は 1 つの実体で、`List~a b~ c` の型は `List~a b~`、
 `12` は `name` が `12` の実体です。
 `word` は ASCII の空白と U+00A0 を持ちませんが、
-それ以外の ASCII の外の空白文字を最初の文字の後に持てます
-（[属性ブロックの文脈](../diagrams/er.ja.md#属性ブロックの文脈) を参照）。
-`string name` の型は `string` です。
-[fixture: er/lex-name-nbsp] [fixture: er/lex-name-line-separator] [fixture:
+それ以外の ASCII の外の空白文字を最初の文字の後に持てます（[属性ブロックの文脈](../diagrams/er.ja.md#属性ブロックの文脈) を参照）。
+`string name` の型は `string` です。 [fixture: er/lex-name-nbsp]
+[fixture: er/lex-name-line-separator] [fixture:
 er/lex-tilde-space-inside] [fixture: er/lex-name-number] [fixture:
 er/gram-attribute] [fixture: er/lex-tilde-run-two-words]
 
 ### ErLiteral
 
-空白を含みうる引用符なしのテキストです。スタイルと、
-アクセシビリティのテキストです。
+空白を含みうる引用符なしのテキストです。
+スタイルと、アクセシビリティのテキストです。
 
 | 欄      | 型     | 意味                                                                                                               |
 | ------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
@@ -340,28 +341,26 @@ er/gram-attribute] [fixture: er/lex-tilde-run-two-words]
 単位の書かれたテキストを順につないだものです。
 mermaid.js はスタイルの単位の間の空白を落とすので、
 `classDef a fill : #f9f` はスタイル `fill:#f9f` を持ち、
-`classDef a fill:red stroke:blue` は 1 つのスタイル
-`fill:redstroke:blue` を持ちます。
+`classDef a fill:red stroke:blue` は 1 つのスタイル `fill:redstroke:blue` を持ちます。
 アクセシビリティのテキストは、mermaid.js が取り除く両端の空白なしで読まれ、
-空白だけになることはありません。
-[fixture: er/lex-classdef-style-spaces] [fixture: er/lex-classdef-styles-joined]
+空白だけになることはありません。 [fixture: er/lex-classdef-style-spaces]
+[fixture: er/lex-classdef-styles-joined]
 [fixture: er/gram-acc-title] [fixture: er/db-acc-title-trailing-space]
 [fixture: er/lex-acc-descr-block-trailing-spaces]
 
 ### ErIgnoredText
 
 書き手が書いたが mermaid.js が読まないテキストです。
-方向の行の `direction` より前と値より後のテキスト、
-および 2 つの属性の間、最初の属性の前、最後の属性の後にある属性ブロックの
-`empty-backquotes` の単位です。
+方向の行の `direction` より前と値より後のテキスト、および 2 つの属性の間、
+最初の属性の前、
+最後の属性の後にある属性ブロックの `empty-backquotes` の単位です。
 間に空白しかない `empty-backquotes` の単位の並びは 1 つのノードです。
 
 | 欄      | 型     | 意味                                                          |
 | ------- | ------ | ------------------------------------------------------------- |
 | `value` | string | 書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
 
-子の欄はありません。
-[fixture: er/lex-direction-line-text-before] [fixture:
+子の欄はありません。 [fixture: er/lex-direction-line-text-before] [fixture:
 er/lex-direction-line-text-after] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
 er/gram-empty-backquotes-twice]

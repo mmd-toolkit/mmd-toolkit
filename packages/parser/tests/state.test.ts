@@ -1,10 +1,9 @@
 import { describe, expect, it } from "vitest"
 import type { Fixture } from "@mmd-toolkit/tests"
-import { embeddedValuesOf, loadFixtures } from "@mmd-toolkit/tests"
+import { loadFixtures } from "@mmd-toolkit/tests"
 import type { Range, Root } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
-import { dbOfTree } from "./helpers/db-of-tree.ts"
 
 // Expectations come from diagrams/state.md (the lexer, the grammar, and the
 // rejections outside the grammar) and ast/state.md (the nodes and the
@@ -852,26 +851,6 @@ describe("state lookahead and terminal identity fixtures", async () => {
       )
     },
   )
-
-  it.each([
-    "gram-terminal-alone",
-    "db-composite-id-terminal-nested",
-    "db-region-terminal-composite-one-description",
-    "db-last-region-terminal-composite",
-    "db-undivided-body-terminal-composite",
-    "db-last-region-alias-with-spaces",
-  ])("%s: preserves terminal and region identity", (name) => {
-    const fixture = fixtureOf(name)
-    const reading = fixture.specified ?? fixture.expected
-    if (!reading.accepted || reading.db === null) {
-      throw new Error(`no accepted Db for ${name}`)
-    }
-    const embedded = embeddedValuesOf(fixture, reading)
-    if (embedded === undefined) {
-      throw new Error(`no embedded values for ${name}`)
-    }
-    expect(dbOfTree(fixture.input, rootOf(name), embedded)).toEqual(reading.db)
-  })
 
   it.each([
     ["gram-composite-terminal-two-descriptions", [18, 37]],

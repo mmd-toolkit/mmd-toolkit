@@ -1,7 +1,7 @@
 # リンター
 
-`@mmd-toolkit/eslint-plugin`は、ESLintでMermaidの図の構文エラーと書き間違いを
-検出するプラグインです。
+`@mmd-toolkit/eslint-plugin`は、
+ESLintでMermaidの図の構文エラーと書き間違いを検出するプラグインです。
 
 ## インストールと設定
 
@@ -21,13 +21,12 @@ import mmdToolkit from "@mmd-toolkit/eslint-plugin"
 export default [...markdown.configs.processor, mmdToolkit.configs.recommended]
 ```
 
-`@eslint/markdown`は、ESLintでチェックするコードブロックを
-Markdownから取り出します。
+`@eslint/markdown`は、
+ESLintでチェックするコードブロックを Markdownから取り出します。
 `mmdToolkit.configs.recommended`は、プラグインを登録し、
 `.mmd`・`.mermaid`ファイルにMermaidの言語を指定します。
 プラグインの推奨ルールも、エラーとして有効にします。
-Markdownのprocessorが取り出した`mmd`・`mermaid`コードブロックも
-対象になります。
+Markdownのprocessorが取り出した`mmd`・`mermaid`コードブロックも対象になります。
 
 この設定はコードブロックだけをチェックし、Markdown本文は対象外です。
 1回のESLint実行で両方をチェックできない制限は、
@@ -36,8 +35,8 @@ Markdownのprocessorが取り出した`mmd`・`mermaid`コードブロックも
 ## 最初の図をlintする
 
 次の図を、`diagram.md`の`mermaid`コードブロック内に保存します。
-`%% eslint`コメントで、この図の
-[`@mmd-toolkit/flowchart-no-undef`][no-undef]を明示的に有効にしています。
+`%% eslint`コメントで、
+この図の [`@mmd-toolkit/flowchart-no-undef`][no-undef]を明示的に有効にしています。
 
 ```mmd
 %% eslint @mmd-toolkit/flowchart-no-undef: error
@@ -89,8 +88,8 @@ flowchart LR
   ほかのESLint設定との併用。
 - [Markdown](./markdown.ja.md): Markdown内のMermaidコードブロックのlint。
 - [設定コメント](./comments.ja.md): `%%`コメントによる図の中でのルール設定。
-- [ルール一覧](../../../eslint-plugin/docs/rules/index.ja.md):
-  各ルールの説明、対象、診断例。
+- [ルール一覧](../../../eslint-plugin/docs/rules/index.ja.md): 各ルールの説明、
+  対象、診断例。
 
 [eslint-config]: https://eslint.org/docs/latest/use/configure/configuration-files
 [no-undef]: ../../../eslint-plugin/docs/rules/flowchart-no-undef.ja.md

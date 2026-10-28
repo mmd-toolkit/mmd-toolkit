@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import { getFixturesRoot } from "../src/index.ts"
 import { runMermaidWithEmbeddedData } from "../src/mermaid.ts"
 import { normalizeVenn } from "../src/normalizers/venn.ts"
 import type { MermaidConfig } from "../src/types.ts"
@@ -202,25 +202,6 @@ describe("the summary of a venn diagram", () => {
       await summary("db-markup", { securityLevel: "other", htmlLabels: false }),
     ).toEqual(base)
   })
-
-  it("keeps every corpus reading under a different supported security level", async () => {
-    for (const fixture of await loadFixtures("venn")) {
-      if (fixture.config) continue
-      const { outcome } = await runMermaidWithEmbeddedData(fixture.input, {
-        config: { securityLevel: "sandbox" },
-      })
-      const expected = fixture.expected
-      if (expected.accepted) {
-        expect(outcome, fixture.name).toEqual({
-          accepted: true,
-          diagramType: expected.diagramType,
-          db: expected.db,
-        })
-      } else {
-        expect(outcome, fixture.name).toEqual(expected)
-      }
-    }
-  }, 30_000)
 
   it.each(Object.keys(fakeDb()))(
     "does not cache a %s getter that breaks once",

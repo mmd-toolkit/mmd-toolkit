@@ -7,7 +7,7 @@ import {
   runMermaid,
 } from "../src/mermaid.ts"
 import type { RunMermaidOptions } from "../src/mermaid.ts"
-import { loadFixtures } from "../src/index.ts"
+import { loadFixture } from "../src/index.ts"
 import type { DiagramType } from "../src/index.ts"
 import type { RUN_MERMAID_OPTION_KEYS } from "../src/run-mermaid-options.ts"
 import type { MermaidConfig } from "../src/types.ts"
@@ -255,9 +255,7 @@ describe("runMermaid", () => {
   })
 
   it("summarizes the final detector type, treeView", async () => {
-    const fixture = (await loadFixtures("common")).find(
-      (item) => item.name === "detect-minimal-tree-view",
-    )!
+    const fixture = await loadFixture("common", "detect-minimal-tree-view")
     expect(await runMermaid(fixture.input)).toEqual({
       accepted: true,
       diagramType: "treeView",
@@ -1336,10 +1334,7 @@ describe("withoutDivergences: c4", () => {
 
   /** The input of the fixture `diagram`/`name`. */
   async function inputOf(diagram: DiagramType, name: string): Promise<string> {
-    const fixture = (await loadFixtures(diagram)).find(
-      (candidate) => candidate.name === name,
-    )
-    if (fixture === undefined) throw new Error(`no fixture ${diagram}/${name}`)
+    const fixture = await loadFixture(diagram, name)
     return fixture.input
   }
 

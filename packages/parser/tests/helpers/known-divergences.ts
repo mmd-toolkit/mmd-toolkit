@@ -51,28 +51,55 @@ export type Outcome =
       readonly at: Range | null
     }
 
+/** What `parse()` under its defaults gives for a text: its tree, or the error that it throws. */
+export type Parsed =
+  | { readonly kind: "tree"; readonly root: Root }
+  | { readonly kind: "error"; readonly error: ParseError }
+  | { readonly kind: "unsupported"; readonly error: UnsupportedDiagramError }
+
+/** What `parse()` under its defaults gives for `text`. */
+export function parsedOf(text: string): Parsed {
+  try {
+    return { kind: "tree", root: parse(text) }
+  } catch (error) {
+    if (error instanceof ParseError) return { kind: "error", error }
+    if (error instanceof UnsupportedDiagramError) {
+      return { kind: "unsupported", error }
+    }
+    throw error
+  }
+}
+
 /**
  * What parse() does under its defaults, with external maxEdges, packet and gitgraph
  * acceptance settings applied by their holder. A configured gitgraph can
  * reject a default tree or accept a history rejected under the default name
  * and escaping settings; neither direction adds configuration to parse().
+ * `parsed` is what `parse()` gives for `text`, when the caller has it already.
  */
-export function outcomeOf(text: string, config?: MermaidConfig): Outcome {
+export function outcomeOf(
+  text: string,
+  config?: MermaidConfig,
+  parsed?: Parsed,
+): Outcome {
   const packet = configuredPacketOutcome(text, config)
   if (packet !== null) return packet
   const gitgraph = configuredGitgraphOutcome(text, config)
   if (gitgraph !== null) return gitgraph
-  try {
-    const root = parse(text)
-    return exceedsMaxEdges(root, config)
-      ? { kind: "reject", at: null }
-      : { kind: "tree", text, root }
-  } catch (error) {
-    if (error instanceof UnsupportedDiagramError) {
-      return { kind: "unsupported", diagramType: error.diagramType }
-    }
-    if (error instanceof ParseError) return { kind: "reject", at: error.range }
-    throw error
+  const result = parsed ?? parsedOf(text)
+  switch (result.kind) {
+    case "tree":
+      return exceedsMaxEdges(result.root, config)
+        ? { kind: "reject", at: null }
+        : { kind: "tree", text, root: result.root }
+    case "error":
+      return { kind: "reject", at: result.error.range }
+    case "unsupported":
+      return { kind: "unsupported", diagramType: result.error.diagramType }
+    default:
+      throw new Error(
+        `unknown parse result ${JSON.stringify(result satisfies never)}`,
+      )
   }
 }
 

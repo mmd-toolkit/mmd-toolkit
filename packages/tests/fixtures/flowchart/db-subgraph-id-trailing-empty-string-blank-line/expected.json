@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/tokenless-empty-forms.md, The difference: mermaid.js reads nothing for the empty string at the end of the subgraph name, which this specification rejects; its reference input, without the empty string, keeps the empty line and is read as the units of the input other than the empty string, and mermaid.js gives it the same Db."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "A"
+        ],
+        "title": "a",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

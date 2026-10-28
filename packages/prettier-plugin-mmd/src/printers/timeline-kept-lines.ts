@@ -34,7 +34,7 @@ export function findTimelineKeptLines(source: Source): KeptLines {
       ...findLinesEndingInTextWhitespace(source),
     ]),
     verbatim: findLinesEndedBySemicolon(source),
-    writtenIndentation: new Set(),
+    ownIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)
   return kept

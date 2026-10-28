@@ -64,9 +64,7 @@ describe("eventmodeling escaped cases", () => {
 })
 
 describe("eventmodeling authored owners", async () => {
-  const fixtures = (await loadFormatFixtures()).filter((fixture) =>
-    fixture.id.startsWith("eventmodeling/"),
-  )
+  const fixtures = await loadFormatFixtures("eventmodeling")
   it.each(fixtures)("$id", (fixture) => {
     expect(hiddenOwners(fixture.output!)).toEqual(hiddenOwners(fixture.input))
     expect(treeProblemsOfText(fixture.output!)).toEqual([])

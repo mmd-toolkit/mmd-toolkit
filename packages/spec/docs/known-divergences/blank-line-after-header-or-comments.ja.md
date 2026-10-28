@@ -9,49 +9,42 @@
 ## 対象の構文
 
 マインドマップでは、空行、空白だけの行、コメント行、図のコメントは、
-ヘッダーの後のどこにあっても何も変えません
-（[空行](../diagrams/mindmap.ja.md#空行) を参照）。
-以下で**空行**とは、ディレクティブを除くと空か空白だけを持つ行で、
-空の行、空白文字かタブの行、ディレクティブだけを持つ行です。
-**図のコメント**とは、図の字句解析器が読むコメントです
-（[コメント](../diagrams/mindmap.ja.md#コメント) を参照）。
-`%%` だけの行、ディレクティブではない `%%{ }%%` の行、
-ヘッダーの後、形の後、icon の後の、行区間の残りを持つ `%%` です。
+ヘッダーの後のどこにあっても何も変えません（[空行](../diagrams/mindmap.ja.md#空行) を参照）。
+以下で**空行**とは、ディレクティブを除くと空か空白だけを持つ行で、空の行、
+空白文字かタブの行、ディレクティブだけを持つ行です。
+**図のコメント**とは、
+図の字句解析器が読むコメントです（[コメント](../diagrams/mindmap.ja.md#コメント) を参照）。
+`%%` だけの行、ディレクティブではない `%%{ }%%` の行、ヘッダーの後、形の後、
+icon の後の、行区間の残りを持つ `%%` です。
 `%%` の後にテキストを持つコメント行は、
 字句解析器がテキストを読む前にその改行ごと取り除かれ、
 図のコメントではありません。
 
 以下で**文**とは、ノードの行、icon の行、class の行です。
-ヘッダーか文と、次の文との間には、
-図のコメント、空行、コメント行を置けます。
+ヘッダーか文と、次の文との間には、図のコメント、空行、コメント行を置けます。
 そこにある図のコメントを、ヘッダーの行か前の文の行にあるものも含めて数えます。
 mermaid.js は次の場合に入力を拒否し、この仕様は受理します。
 
 1. ヘッダーの後、最初のノードの前で、数が 0 を含む偶数で、
    最後のコメントの後に空行が続くとき。
    コメントがなければ、ヘッダーの行が空白で終わるか、その後に空行が続くとき。
-2. ヘッダーの後で、数が奇数で、
-   最初のノードが最後のコメントにその行で続くとき。
+2. ヘッダーの後で、数が奇数で、最初のノードが最後のコメントにその行で続くとき。
    コメントを終える U+2028 か U+2029 の後です。
-3. 2 つの文の間で、数が奇数で、
-   次の文の前、最後のコメントの後に空行が続くとき。
-4. 2 つの文の間で、数が 0 でない偶数で、
-   次の文が最後のコメントにその行で、U+2028 か U+2029 の後に続くとき。
+3. 2 つの文の間で、数が奇数で、次の文の前、最後のコメントの後に空行が続くとき。
+4. 2 つの文の間で、数が 0 でない偶数で、次の文が最後のコメントにその行で、
+   U+2028 か U+2029 の後に続くとき。
 
 図のコメントを終える U+2028 か U+2029 はその行を終えるので、
 その後から改行までの空白は空行です。
 コメントの前の空行は数に入らず、何も変えません。
 それ以外では、どちらも空行とコメントを何もないものとして読みます。
-コメントのない 2 つの文の間の空行、
-ヘッダーの後の奇数の数とそれに続く空行、
-2 つの文の間の偶数の数とそれに続く空行、
-テキストの終わりの空行です。
+コメントのない 2 つの文の間の空行、ヘッダーの後の奇数の数とそれに続く空行、
+2 つの文の間の偶数の数とそれに続く空行、テキストの終わりの空行です。
 
 kanban も同じ空行の規則と上の 4 つの場合に従います。
 ノード、icon、class の行が文です。
 データ接尾部はノードの行に属します。
-最初のノードの前のヘッダー末尾の空白と空行は受理します。
-[fixture: kanban/gram-grid-comment-line-header-line]
+最初のノードの前のヘッダー末尾の空白と空行は受理します。 [fixture: kanban/gram-grid-comment-line-header-line]
 [fixture: kanban/gram-grid-directive-line-header-line]
 [fixture: kanban/gram-grid-lf-header-line]
 [fixture: kanban/gram-grid-spaces-header-line]
@@ -73,40 +66,30 @@ kanban も同じ空行の規則と上の 4 つの場合に従います。
 [fixture: kanban/lex-ps-whitespace-first]
 [fixture: kanban/lex-tab-whitespace-first]
 [fixture: kanban/div-header-space-node]
-ノードや装飾の前のコメントとその後の空行は受理します。
-[fixture: kanban/div-header-comments-blank]
+ノードや装飾の前のコメントとその後の空行は受理します。 [fixture: kanban/div-header-comments-blank]
 [fixture: kanban/div-between-comment-blank]
 [fixture: kanban/div-comment-blank-before-icon]
 [fixture: kanban/div-comment-blank-before-class]
 次の文の前で U+2028 と U+2029 に終わるコメントは受理します。
-mermaid.js はこれらの入力を拒否します
-（[空行](../diagrams/kanban.ja.md#空行) を参照）。
-[fixture: kanban/div-header-comment-ls-node]
+mermaid.js はこれらの入力を拒否します。
+[空行](../diagrams/kanban.ja.md#空行) を参照してください。 [fixture: kanban/div-header-comment-ls-node]
 [fixture: kanban/div-header-comment-ps-node]
 [fixture: kanban/div-between-real-comments-ls-node]
 [fixture: kanban/div-between-real-comments-ps-node]
 
-kanban ではヘッダー後の 1 つの図のコメントは両者で受理します。
-[fixture: kanban/header-header-comment-blank]
-ノード間の 2 つの図のコメントは両者で受理します。
-[fixture: kanban/gram-between-comments-blank]
-icon 前の空行は両者で受理します。
-[fixture: kanban/gram-blank-before-icon]
-末尾の空行は両者で受理します。
-[fixture: kanban/gram-shallower-then-empty]
+kanban ではヘッダー後の 1 つの図のコメントは両者で受理します。 [fixture: kanban/header-header-comment-blank]
+ノード間の 2 つの図のコメントは両者で受理します。 [fixture: kanban/gram-between-comments-blank]
+icon 前の空行は両者で受理します。 [fixture: kanban/gram-blank-before-icon]
+末尾の空行は両者で受理します。 [fixture: kanban/gram-shallower-then-empty]
 
-Ishikawa にも同じ直接の規則を適用します（「
-[空行](../diagrams/ishikawa.ja.md#空行)」）。
-ここでの文は節点の行であり、
-アイコン文やクラス文はありません。
-同じ 4 つの場合を、
-この仕様は受理し mermaid.js は拒否します。
+Ishikawa にも同じ直接の規則を適用します（「 [空行](../diagrams/ishikawa.ja.md#空行)」）。
+ここでの文は節点の行であり、アイコン文やクラス文はありません。
+同じ 4 つの場合を、この仕様は受理し mermaid.js は拒否します。
 
 1. 見出しの後の図のコメントが 0 個を含む偶数個で、
    その後に空行を挟んで最初の節点が続く形を受理します。
    コメントが 0 個なら、
-   見出し末尾の空白や空行だけでも該当します。
-   [fixture: ishikawa/div-header-two-comments-blank-node]
+   見出し末尾の空白や空行だけでも該当します。 [fixture: ishikawa/div-header-two-comments-blank-node]
    [fixture: ishikawa/div-header-blank-node]
    [fixture: ishikawa/div-header-blank-indented-node]
    [fixture: ishikawa/div-header-whitespace-indented-node]
@@ -127,8 +110,7 @@ Ishikawa にも同じ直接の規則を適用します（「
 
 2. 見出しの後の図のコメントが奇数個で、
    最後のコメントを終える U+2028 または U+2029 の後に、
-   同じ物理行の節点が続く形を受理します。
-   [fixture: ishikawa/div-header-comment-ls-node]
+   同じ物理行の節点が続く形を受理します。 [fixture: ishikawa/div-header-comment-ls-node]
    [fixture: ishikawa/div-header-comment-ps-node]
    [fixture: ishikawa/div-header-inline-comment-ls-node]
    [fixture: ishikawa/div-header-inline-comment-ps-node]
@@ -137,8 +119,7 @@ Ishikawa にも同じ直接の規則を適用します（「
 
 3. 節点間の図のコメントが奇数個で、
    その後に空行を挟んで次の節点が続く形を受理します。
-   コメント末尾の区切りの後に LF が続く形も含みます。
-   [fixture: ishikawa/div-between-comment-blank-node]
+   コメント末尾の区切りの後に LF が続く形も含みます。 [fixture: ishikawa/div-between-comment-blank-node]
    [fixture: ishikawa/div-between-comment-ls-blank-node]
    [fixture: ishikawa/div-between-comment-ps-blank-node]
    [fixture: ishikawa/div-between-comment-blank-cr]
@@ -148,15 +129,13 @@ Ishikawa にも同じ直接の規則を適用します（「
 
 4. 節点間の図のコメントが 0 個ではない偶数個で、
    最後のコメントを終える U+2028 または U+2029 の後に、
-   同じ物理行の節点が続く形を受理します。
-   [fixture: ishikawa/div-between-two-comments-ls-node]
+   同じ物理行の節点が続く形を受理します。 [fixture: ishikawa/div-between-two-comments-ls-node]
    [fixture: ishikawa/div-between-two-comments-ps-node]
 
 両者が受理する対照例の木は保ちます。
-見出し後の奇数個のコメントと空行、
-節点間の偶数個のコメントと空行、見出し後の 2 個のコメントと区切りと節点、
-コメントの前や末尾の空行です。
-[fixture: ishikawa/gram-header-comment-blank-node]
+見出し後の奇数個のコメントと空行、節点間の偶数個のコメントと空行、
+見出し後の 2 個のコメントと区切りと節点、
+コメントの前や末尾の空行です。 [fixture: ishikawa/gram-header-comment-blank-node]
 [fixture: ishikawa/gram-between-two-comments-blank-node]
 [fixture: ishikawa/gram-header-comment-spaces-node]
 [fixture: ishikawa/gram-header-two-comments-ls-node]
@@ -165,10 +144,10 @@ Ishikawa にも同じ直接の規則を適用します（「
 [fixture: ishikawa/gram-last-comment-blank-line]
 [fixture: ishikawa/gram-header-two-comments-ps-node]
 
-ソースの末尾が見出しだけで、
-書かれた改行も他の内容も続かない形は引き続き拒否し、この差異には含めません。
-除かれる directive と追加される LF では内容を補えません。
-[fixture: ishikawa/header-only] [fixture: ishikawa/header-beta-only]
+ソースの末尾が見出しだけで、書かれた改行も他の内容も続かない形は引き続き拒否し、
+この差異には含めません。
+除かれる directive と追加される LF では内容を補えません。 [fixture: ishikawa/header-only]
+[fixture: ishikawa/header-beta-only]
 [fixture: ishikawa/header-directive-only-eof]
 [fixture: ishikawa/header-only-lf]
 
@@ -227,8 +206,8 @@ Ishikawa にも同じ直接の規則を適用します（「
 | 4   | 拒否       | 子 a と b を持つ根 |
 | 5   | 拒否       | 根                 |
 
-表で比較した読みを次の fixture が記録します。
-[fixture: mindmap/db-blank-line-after-header] [fixture:
+表で比較した読みを次の fixture が記録します。 [fixture: mindmap/db-blank-line-after-header]
+[fixture:
 mindmap/div-header-two-comments-then-blank] [fixture:
 mindmap/div-comment-then-blank-between-nodes] [fixture:
 mindmap/div-shape-comment-then-blank] [fixture:
@@ -236,14 +215,13 @@ mindmap/div-header-trailing-spaces-then-node]
 
 上の一覧の場合と、その隣の、どちらも同じに読む入力です。
 
-- 場合 1:
-  空白の行、タブの行、ディレクティブの行、
+- 場合 1: 空白の行、タブの行、ディレクティブの行、
   ヘッダーの行の終わりの空白文字とディレクティブ、
-  ヘッダーの行と次の行の 2 つの図のコメント、
-  改行ごと取り除かれるコメント行を、空の行の前に置いたもの。
-  一方、1 つか 3 つのコメントと空の行、コメントの前の空の行、
-  コメント行だけは、どちらも受理します。
-  [fixture: mindmap/db-whitespace-line-after-header] [fixture:
+  ヘッダーの行と次の行の 2 つの図のコメント、改行ごと取り除かれるコメント行を、
+  空の行の前に置いたもの。
+  一方、1 つか 3 つのコメントと空の行、コメントの前の空の行、コメント行だけは、
+  どちらも受理します。 [fixture: mindmap/db-whitespace-line-after-header]
+  [fixture:
   mindmap/div-tab-line-after-header] [fixture:
   mindmap/db-directive-between-header-and-first-node] [fixture:
   mindmap/div-header-space-directive-then-node] [fixture:
@@ -255,8 +233,7 @@ mindmap/div-header-trailing-spaces-then-node]
   mindmap/gram-header-blank-then-comment] [fixture:
   mindmap/db-comment-line-after-header]
 - 場合 2: `mindmap %% c`、U+2028、`root`。
-  一方、そうしたノードの前の 2 つのコメントは、どちらも受理します。
-  [fixture:
+  一方、そうしたノードの前の 2 つのコメントは、どちらも受理します。 [fixture:
   mindmap/div-header-comment-line-separator-node] [fixture:
   mindmap/gram-header-two-comments-line-separator-node]
 - 場合 3:
@@ -265,8 +242,7 @@ mindmap/div-header-trailing-spaces-then-node]
   空行の前に置いたもの。
   また、コメントの後の、icon の行か class の行の前の空行。
   一方、2 つのコメント、コメント行、2 つのコメントの間の空行は、
-  どちらも受理します。
-  [fixture:
+  どちらも受理します。 [fixture:
   mindmap/div-three-comments-then-blank-between-nodes] [fixture:
   mindmap/div-icon-comment-then-blank] [fixture:
   mindmap/div-percent-brace-then-blank-between-nodes] [fixture:
@@ -283,8 +259,7 @@ mindmap/div-header-trailing-spaces-then-node]
   mindmap/gram-comment-then-blank-at-end] [fixture:
   mindmap/gram-blank-then-icon]
 - 場合 4: 形の後のコメント、`%%{ }%%` の行、U+2028、次のノード。
-  一方、そうしたノードの前の 1 つのコメントは、どちらも受理します。
-  [fixture:
+  一方、そうしたノードの前の 1 つのコメントは、どちらも受理します。 [fixture:
   mindmap/div-two-comments-line-separator-between-nodes] [fixture:
   mindmap/lex-comment-ends-at-line-separator]
 
@@ -302,28 +277,21 @@ mindmap/div-header-trailing-spaces-then-node]
 
 ## mermaid.js がそう読む理由
 
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L21-L30)
-の字句解析器は、`\s*%%.*`、つまり前の空白と改行を含むコメントを
-1 つのトークンとして、
+[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L21-L30) の字句解析器は、
+`\s*%%.*`、つまり前の空白と改行を含むコメントを 1 つのトークンとして、
 `[\s]+[\n]`、つまり最後の改行までの空白の並びを、
 同じトークン `SPACELINE` として読みます。
-その文法
-（
-[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L82-L108)）
-は `SPACELINE` を、それだけの文として、または前の文の終わりとして取り、
+その文法（ [`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L82-L108)）は `SPACELINE` を、
+それだけの文として、または前の文の終わりとして取り、
 終わりの後には改行しか続けられません。
 そのため、文の後のトークンは、終わりと文として交互に組になり、
 文として残った `SPACELINE` は次のノードの前に終わりを要しますが、
 次の行のノードはそれを与えません。
 ヘッダーの後には文が続くので、そこでは組み方が逆から始まります。
 
-kanban の字句規則と文法も空白と文を同じように組にします
-（
-[`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138)
-を参照）。
+kanban の字句規則と文法も空白と文を同じように組にします（ [`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138) を参照）。
 その組分けは木が持つものを変えません。
-同じ直接の規則を適用します。
-[fixture: kanban/gram-grid-comment-line-header-line]
+同じ直接の規則を適用します。 [fixture: kanban/gram-grid-comment-line-header-line]
 [fixture: kanban/gram-grid-directive-line-header-line]
 [fixture: kanban/gram-grid-lf-header-line]
 [fixture: kanban/gram-grid-spaces-header-line]
@@ -354,17 +322,14 @@ kanban の字句規則と文法も空白と文を同じように組にします
 [fixture: kanban/div-between-real-comments-ls-node]
 [fixture: kanban/div-between-real-comments-ps-node]
 
-Ishikawa も
-[`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L6-L55)
-で同じ組を作ります。
-空白と図のコメントをどちらも `SPACELINE` とし、
-文と文の終わりの両方に使います。
-空白と行終端は空白類で、
-コメントは既にコメントとして保持するため、どちらも節点ではありません。
+Ishikawa も [`ishikawa.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/ishikawa/parser/ishikawa.jison#L6-L55) で同じ組を作ります。
+空白と図のコメントをどちらも `SPACELINE` とし、文と文の終わりの両方に使います。
+空白と行終端は空白類で、コメントは既にコメントとして保持するため、
+どちらも節点ではありません。
 その組だけに依存する受理条件を保つ節点はありません。
 直接の規則は書かれた節点のテキストと字下げをすべて保ちます。
-この理由で受理する入力は増えますが、mermaid.js が受理する入力を拒否しません。
-[fixture: ishikawa/div-header-blank-node]
+この理由で受理する入力は増えますが、
+mermaid.js が受理する入力を拒否しません。 [fixture: ishikawa/div-header-blank-node]
 [fixture: ishikawa/div-between-comment-blank-node]
 [fixture: ishikawa/gram-header-comment-blank-node]
 [fixture: ishikawa/gram-between-two-comments-blank-node]
@@ -376,8 +341,7 @@ Ishikawa も
 mermaid.js がそれを受理するかどうかは、
 その字句解析器が空白をどうトークンに切り、その文法がそれをどう組にするか、
 つまりその字句解析器の段階の順番しだいで、仕様が述べることではありません。
-既知の差異の理由の 2 つ目です
-（[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
+既知の差異の理由の 2 つ目です（[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
 代わりに、空行とコメントは何も変えないという 1 つの規則を述べ、
 mermaid.js がこの理由で拒否する入力を差異とします。
 受理される入力は、同じ入力を次のように変えた入力の Db を持ちます。
@@ -386,31 +350,31 @@ mermaid.js はその入力を受理し、どのノードの字下げも変わり
 ヘッダーの行の終わりの空白を除きます。
 図のコメントを終える U+2028 か U+2029 は、
 改行までその後に空白しかないときはその空白ごと除き、
-その行で文が続くときはその前に改行を入れます。
-[fixture: mindmap/db-directive-between-header-and-first-node] [fixture:
+その行で文が続くときはその前に改行を入れます。 [fixture: mindmap/db-directive-between-header-and-first-node]
+[fixture:
 mindmap/div-header-trailing-spaces-then-node] [fixture:
 mindmap/div-shape-comment-line-separator-then-blank] [fixture:
 mindmap/div-two-comments-line-separator-between-nodes]
 
 ## mermaid.js の文書と issue
 
-- [マインドマップの構文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md)
-  は、マインドマップの行の間の空の行やコメントについて何も述べていません。
-- それについての issue と pull request は見つかりませんでした
-  （2026-10-15 に `mindmap empty line`、`mindmap blank line`、
-  `mindmap comment`、`mindmap newline`、
+- [マインドマップの構文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/mindmap.md) は、
+  マインドマップの行の間の空の行やコメントについて何も述べていません。
+- それについての issue と pull
+  request は見つかりませんでした（2026-10-15 に `mindmap empty line`、
+  `mindmap blank line`、 `mindmap comment`、`mindmap newline`、
   `mindmap parse`、`mindmap error` で検索）。
-- [kanban の構文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/kanban.md)
-  は、kanban の図の行の間の空の行やコメントについて何も述べず、
+- [kanban の構文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/kanban.md) は、
+  kanban の図の行の間の空の行やコメントについて何も述べず、
   字下げが大切だと述べるだけです。
-- それについての issue と pull request は見つかりませんでした
-  （2026-10-21 に `kanban comment`、`kanban blank line`、`kanban empty line`、
-  `kanban newline`、`kanban parse`、`kanban error`、`kanban` で検索）。
+- それについての issue と pull
+  request は見つかりませんでした（2026-10-21 に `kanban comment`、
+  `kanban blank line`、`kanban empty line`、 `kanban newline`、`kanban parse`、
+  `kanban error`、`kanban` で検索）。
   見つかった issue と pull request は、`style` の文（#8118）、
   `:::` のクラス（#8119）、`accTitle`（#8120）など、別の件についてのものです。
-- ピン留めした
-  [Ishikawa syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L1-L41)
-  は字下げを説明しますが、空行やコメントの組の規則は述べません。
-  2026-10-21 に issue と pull request を `ishikawa blank`、
-  `ishikawa comment`、`ishikawa header` で検索し、
+- ピン留めした [Ishikawa syntax](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/ishikawa.md#L1-L41) は字下げを説明しますが、
+  空行やコメントの組の規則は述べません。
+  2026-10-21 に issue と pull request を `ishikawa blank`、 `ishikawa comment`、
+  `ishikawa header` で検索し、
   これらの 4 つの場合についての報告は見つかりませんでした。

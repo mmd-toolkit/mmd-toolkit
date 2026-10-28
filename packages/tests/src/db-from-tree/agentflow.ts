@@ -682,7 +682,9 @@ class AgentflowDbBuilder {
       }
       this.subgraphs.push(flow)
     } else {
-      appendItems(flow.nodes, nodes)
+      for (const node of nodes) {
+        if (!flow.nodes.includes(node)) flow.nodes.push(node)
+      }
       if (title !== "") flow.title = title
     }
     const lastDirection = statement.body

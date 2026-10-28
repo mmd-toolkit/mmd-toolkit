@@ -131,11 +131,11 @@ arrow, and the node it leads to.
 | `label`   | StringLiteral or null     | The label between the two arrows; null when there is none. |
 | `target`  | BlockNode                 | The node the link leads to.                                |
 
-Child fields: `opening`, `label`, `arrow`, `target`, in source order. The two
-arrows of a link with a label may have different lines: `A -- "text" ==> B` has
-the opening line `solid` and the line `thick`, and mermaid.js reads the edge
-from the second arrow only. [fixture: block/db-edge-label] [fixture:
-block/db-edge-label-mismatched]
+Child fields: `opening`, `label`, `arrow`, `target`. They are in source order.
+The two arrows of a link with a label may have different lines:
+`A -- "text" ==> B` has the opening line `solid` and the line `thick`, and
+mermaid.js reads the edge from the second arrow only. [fixture:
+block/db-edge-label] [fixture: block/db-edge-label-mismatched]
 
 ### BlockArrow
 
@@ -269,7 +269,7 @@ commas, and the Db looks it up as one text (see
 
 An empty description block where a statement starts: `accDescr {}`.
 
-No fields and no child fields. The block diagram has no description: a block
+No child fields. It has no fields. The block diagram has no description: a block
 with text is rejected, and an empty block inside a statement is the known
 divergence `tokenless-empty-forms` (see
 [Empty description blocks](../diagrams/block.md#empty-description-blocks)).

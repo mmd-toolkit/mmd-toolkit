@@ -22,8 +22,8 @@ mermaid.js は、init のディレクティブの JSON を、
 
 `%%{init: {"theme": "dark", "theme": "forest"}}%%` の後では、
 テーマは `forest` である。
-`{"flowchart": {"inheritDir": true, "inheritDir": false}}` の
-`flowchart` のオブジェクトのように、どの深さのオブジェクトも調べる。
+`{"flowchart": {"inheritDir": true, "inheritDir": false}}` の `flowchart` のオブジェクトのように、
+どの深さのオブジェクトも調べる。
 キーは、mermaid.js と同じくすべての `'` を `"` として、
 JSON が読むとおりに比べる。
 同じ値でもう一度書いたキーは報告せず、
@@ -65,10 +65,10 @@ flowchart LR
 
 ## 背景
 
-[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L159-L198)
-は各 JSON の引数を `JSON.parse` で読み、それはキーの最後の値を保つ。
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md#L88-L96)
-は、テキストの init のディレクティブを、各キーに与えた最後の値で合わせる。
+[`detectDirective`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L159-L198) は各 JSON の引数を `JSON.parse` で読み、
+それはキーの最後の値を保つ。
+[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/config/directives.md#L88-L96) は、
+テキストの init のディレクティブを、各キーに与えた最後の値で合わせる。
 
 <!-- begin auto-generated rule resources -->
 

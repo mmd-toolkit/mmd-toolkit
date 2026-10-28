@@ -5,7 +5,7 @@ import type { EmbeddedValues } from "../src/mermaid.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
-  loadFixtures,
+  loadFixture,
 } from "../src/index.ts"
 import type { Built, Kit } from "./check-tree-built.ts"
 import type { CheckedNode } from "../src/check-tree/types.ts"
@@ -261,11 +261,11 @@ describe("eventmodeling Db from hand-built trees", () => {
   })
 
   it("applies the security fixture's site configuration only to common accessibility texts", async () => {
-    const fixture = (await loadFixtures("eventmodeling")).find(
-      (item) => item.name === "config-security-level-other",
+    const fixture = await loadFixture(
+      "eventmodeling",
+      "config-security-level-other",
     )
-    if (fixture === undefined || !fixture.expected.accepted)
-      throw new Error("missing security fixture")
+    if (!fixture.expected.accepted) throw new Error("rejected security fixture")
     const embedded = embeddedValuesOf(fixture, fixture.expected)
     if (embedded === undefined)
       throw new Error("missing embedded configuration")
@@ -284,11 +284,12 @@ describe("eventmodeling Db from hand-built trees", () => {
   })
 
   it("uses the shared specified reading for the frontmatter HTML value case", async () => {
-    const fixture = (await loadFixtures("eventmodeling")).find(
-      (item) => item.name === "div-html-frontmatter-value",
+    const fixture = await loadFixture(
+      "eventmodeling",
+      "div-html-frontmatter-value",
     )
-    const result = fixture?.specified
-    if (fixture === undefined || result === undefined || !result.accepted)
+    const result = fixture.specified
+    if (result === undefined || !result.accepted)
       throw new Error("missing HTML specified reading")
     const embedded = embeddedValuesOf(fixture, result)
     if (embedded === undefined) throw new Error("missing embedded title")

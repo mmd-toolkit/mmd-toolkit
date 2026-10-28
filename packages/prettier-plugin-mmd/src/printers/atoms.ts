@@ -42,8 +42,16 @@ export type LineBreakRule = "kept" | "joined"
 
 /** The atoms of a statement in source order, and the rules for their gaps. */
 export interface AtomLayout {
-  /** Structural forms replaced by the caller's planned drawing, never values. */
+  /**
+   * Structural forms replaced by the caller's planned drawing, never values.
+   * They are disjoint and in source order: `readGap` searches them (see its
+   * `omitted` option).
+   */
   readonly omittedRanges?: readonly Range[]
+  /**
+   * The atoms, in the order of their starts: `hasExactAtom` and
+   * `protectHiddenGaps` search them by start.
+   */
   readonly atoms: readonly Atom[]
   /** Rules by the start of the atom after the gap. */
   readonly rules: ReadonlyMap<number, GapRule>

@@ -16,13 +16,13 @@ mermaid.js は、前の文が宣言する領域の文も含めて、
 2 度宣言した集合は、1 つの場所に、それぞれの色の 2 つの円として描かれ、
 その後の集合は、その後の色を取る。
 後の空でないラベルは前のラベルを置き換え、
-後の `set` の大きさは前の大きさを置き換え、
-1 つの和の 2 つの大きさは、その間の重なりとして描かれる。
+後の `set` の大きさは前の大きさを置き換え、 1 つの和の 2 つの大きさは、
+その間の重なりとして描かれる。
 
 ## 規則の詳細
 
-この規則は、前の `set` 文か `union` 文がすでに持つ名前を持つ
-`set` 文と `union` 文を報告する。
+この規則は、
+前の `set` 文か `union` 文がすでに持つ名前を持つ `set` 文と `union` 文を報告する。
 対象の図種は `venn` である。
 
 描画は、空でない最後のラベルを保つ。
@@ -40,13 +40,11 @@ mermaid.js は、前の文が宣言する領域の文も含めて、
 名前は、大文字小文字を区別し、引用符の有無を問わず、書いたとおりに比べる。
 `set "A"` は `set A` をもう一度宣言し、`set " A "` は別の集合である。
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-名前を読む前にほかの文字に変えるので、
-それだけが違う 2 つの名前は、
+名前を読む前にほかの文字に変えるので、それだけが違う 2 つの名前は、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
 字下げした `text` は、すぐ前の集合か和に属する。
-図の後のほうで集合に文字のノードを足すには、
-集合をもう一度宣言する代わりに、
+図の後のほうで集合に文字のノードを足すには、集合をもう一度宣言する代わりに、
 `text A A3` のように、行の初めに集合の名前とともに `text` を書く。
 
 集合と和は、それぞれ 1 度だけ宣言する。
@@ -105,17 +103,14 @@ text A A3["Vue"]
 
 ## 背景
 
-[`addSubsetData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L23-L36)
-は文をそれぞれ足し、
-[`draw`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L52-L61)
-はそのすべてを @upsetjs/venn.js 2.0.0 に渡す。
-それは
-[それぞれに領域を描き](https://github.com/upsetjs/venn.js/blob/350c835aab4a92a7570963c28f725cf9f6e5f258/src/diagram.js#L164-L176)、
+[`addSubsetData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennDB.ts#L23-L36) は文をそれぞれ足し、
+[`draw`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L52-L61) はそのすべてを @upsetjs/venn.js
+2.0.0 に渡す。
+それは [それぞれに領域を描き](https://github.com/upsetjs/venn.js/blob/350c835aab4a92a7570963c28f725cf9f6e5f258/src/diagram.js#L164-L176)、
 [領域の空でない最後のラベルを保ち](https://github.com/upsetjs/venn.js/blob/350c835aab4a92a7570963c28f725cf9f6e5f258/src/diagram.js#L102-L107)、
 [集合の大きさをその最後の文から取る](https://github.com/upsetjs/venn.js/blob/350c835aab4a92a7570963c28f725cf9f6e5f258/src/layout.js#L330-L340)。
-mermaid.js は、円のそれぞれに
-[その位置の色](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L121-L130)
-を与える。
+mermaid.js は、
+円のそれぞれに [その位置の色](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/vennRenderer.ts#L121-L130) を与える。
 
 <!-- begin auto-generated rule resources -->
 

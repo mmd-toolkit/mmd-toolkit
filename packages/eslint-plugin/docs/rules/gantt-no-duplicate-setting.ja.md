@@ -12,21 +12,20 @@
 
 `dateFormat`、`axisFormat`、`tickInterval`、`todayMarker`、`weekday`、
 `weekend` は、それぞれチャート全体に 1 つの値を設定する。
-mermaid.js はそうした文をすべて受理し、
-それぞれが前に設定した値を、その前に書いたタスクの分も、黙って置き換える。
+mermaid.js はそうした文をすべて受理し、それぞれが前に設定した値を、
+その前に書いたタスクの分も、黙って置き換える。
 2 つ目の文は、たいてい、一部分を 2 回貼り付けた残りか、
 後のタスクの設定を変えるつもりで書いたものである。
 
 ## 規則の詳細
 
-この規則は、これら 6 つの設定の文のうち、
-同じ設定の最初のものより後のものを、
+この規則は、これら 6 つの設定の文のうち、同じ設定の最初のものより後のものを、
 前と違う値を設定するときに報告する。
 対象の図種は `gantt` である。
 
 `dateFormat DD-MM-YYYY`、`Design :01-02-2024, 3d`、`dateFormat YYYY-MM-DD`、
-`Build :2024-02-05, 5d` の後、mermaid.js は両方のタスクの日付を
-`YYYY-MM-DD` で読む。
+`Build :2024-02-05, 5d` の後、
+mermaid.js は両方のタスクの日付を `YYYY-MM-DD` で読む。
 `01-02-2024` はその形の日付でなく、
 mermaid.js はそれを JavaScript の `Date` に渡し、
 Node.js ではそれを 2 月 1 日でなく 2024 年 1 月 2 日と読む。
@@ -38,8 +37,7 @@ Node.js ではそれを 2 月 1 日でなく 2024 年 1 月 2 日と読む。
 キーワードとその後の空白 1 つより後のテキストを、空白も含めて比べ、
 `weekday` と `weekend` は小文字にして比べる。
 そのため、`weekday monday` の後の `weekday Monday` は、同じ値を設定する。
-`dateFormat YYYY-MM-DD` と `dateFormat DD-MM-YYYY` の後の
-3 つ目の `dateFormat YYYY-MM-DD` は、
+`dateFormat YYYY-MM-DD` と `dateFormat DD-MM-YYYY` の後の 3 つ目の `dateFormat YYYY-MM-DD` は、
 `DD-MM-YYYY` を置き換えるので報告する。
 
 `excludes` と `includes` は報告しない。

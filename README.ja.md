@@ -12,10 +12,10 @@ mermaid-js とは無関係です。
 `mmd` は Mermaid の図のテキストに使われる拡張子 `.mmd` を指します。
 同じ略称を使う MultiMarkdown や MikuMikuDance とは関係ありません。
 
-いま対応している図種は
-flowchart、sequence、class、state、ER、Gantt、journey、requirement、mindmap、
-timeline、sankey、xychart、quadrant、block、kanban、C4、Venn、Ishikawa、
-agentflow、pie、usecase、gitgraph、info で、ほかの図種は順に対応します。
+いま対応している図種は flowchart、sequence、class、state、ER、Gantt、journey、
+requirement、mindmap、 timeline、sankey、xychart、quadrant、block、kanban、C4、
+Venn、Ishikawa、 agentflow、pie、usecase、gitgraph、info で、
+ほかの図種は順に対応します。
 フォーマッター、リンター、パーサーは、まだ npm に公開していません。
 mermaid.js のすべての図種に対応してから公開します。
 仕様とテストは、このリポジトリの中で使うもので、公開しません。
@@ -30,8 +30,8 @@ Prettierによる整形結果を確認できます。
 
 **Examples**でサンプルを選ぶか、**Source**にテキストを貼り付けます。
 編集に合わせて、**AST**と**Formatted**の表示が更新されます。
-**Share**を開き、**Copy Link**で、入力と字下げ設定を復元できるURLを
-コピーできます。
+**Share**を開き、**Copy Link**で、
+入力と字下げ設定を復元できるURLをコピーできます。
 
 ツリーの操作、整形の設定、整形結果の適用については、
 [Playgroundの使い方](./packages/playground/README.ja.md)を参照してください。
@@ -58,16 +58,14 @@ Prettierによる整形結果を確認できます。
 - 2 回整形した結果は、1 回整形した結果と同じです。
   整形で図は変わりません。
   少数の例外は、
-  フォーマッターの
-  [README](./packages/prettier-plugin-mmd/README.ja.md#保証と制限)
-  に挙げています。
+  フォーマッターの [README](./packages/prettier-plugin-mmd/README.ja.md#保証と制限) に挙げています。
 
 パーサーは、いくつかの種類の入力で、意図して mermaid.js と違う読み方をします。
 たとえば、キーワードの中のディレクティブ（`%%{ ... }%%`）は、
 ここでは構文エラーです。
 click の文の外にある語 `click` も同じです。
-それぞれの定義と理由は、仕様の
-[既知の差異](./packages/spec/docs/known-divergences.ja.md)にあります。
+それぞれの定義と理由は、
+仕様の [既知の差異](./packages/spec/docs/known-divergences.ja.md)にあります。
 
 もう 1 つの違いは、構文ではなく、パーサーに渡されるものから来ます。
 パーサーは mermaid.js のサイト設定を知らないので、
@@ -76,8 +74,8 @@ mermaid.js は拒否しますが、ここでは受理し、整形します。
 
 ## 別の実装を書く
 
-仕様と適合性のコーパスをパーサーから分けてあるのは、
-それだけを見て、別の言語でパーサーを書けるようにするためです。
+仕様と適合性のコーパスをパーサーから分けてあるのは、それだけを見て、
+別の言語でパーサーを書けるようにするためです。
 実装は、次の文書に従います。
 
 | 実装がすること                   | 文書                                                                                                                                                                                                                                                                                                                                                                 |
@@ -90,8 +88,7 @@ mermaid.js は拒否しますが、ここでは受理し、整形します。
 
 ## 開発に参加する
 
-リポジトリのビルドとテストのしかたは [CONTRIBUTING.ja.md](./CONTRIBUTING.ja.md)
-にあります。
+リポジトリのビルドとテストのしかたは [CONTRIBUTING.ja.md](./CONTRIBUTING.ja.md) にあります。
 
 ## ライセンス
 

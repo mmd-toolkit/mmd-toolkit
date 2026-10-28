@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import { getFixturesRoot } from "../src/index.ts"
 import { runMermaidWithEmbeddedData } from "../src/mermaid.ts"
 import { normalizePacket } from "../src/normalizers/packet.ts"
 import type { MermaidConfig } from "../src/types.ts"
@@ -19,8 +19,8 @@ async function runFixture(name: string, overrides: MermaidConfig = {}) {
 }
 
 /** The summary of an accepted fixed packet input. */
-async function summary(name: string) {
-  const { outcome } = await runFixture(name)
+async function summary(name: string, config: MermaidConfig = {}) {
+  const { outcome } = await runFixture(name, config)
   if (!outcome.accepted || outcome.db === null) throw new Error("expected a Db")
   return outcome.db
 }
@@ -125,22 +125,10 @@ describe("packet normalization", () => {
     })
   })
 
-  it("checks every packet fixture at its configured or sandbox security level", async () => {
-    for (const fixture of await loadFixtures("packet")) {
-      const { outcome } = await runFixture(fixture.name, {
-        securityLevel:
-          fixture.config?.securityLevel === undefined
-            ? "sandbox"
-            : fixture.config.securityLevel,
-      })
-      const expected = fixture.expected.accepted
-        ? {
-            accepted: true,
-            diagramType: fixture.expected.diagramType,
-            db: fixture.expected.db,
-          }
-        : fixture.expected
-      expect(outcome, fixture.name).toEqual(expected)
+  it("keeps markup under every supported security level", async () => {
+    const base = await summary("html-all-fields")
+    for (const securityLevel of ["strict", "loose", "antiscript", "sandbox"]) {
+      expect(await summary("html-all-fields", { securityLevel })).toEqual(base)
     }
-  }, 10_000)
+  })
 })

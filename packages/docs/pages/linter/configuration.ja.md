@@ -27,13 +27,12 @@ export default [
 
 `mmdToolkit.configs.recommended`は、プラグインとMermaid言語を登録し、
 `.mmd`・`.mermaid`ファイルを対象に、推奨ルールをエラーとして有効にします。
-Markdownのprocessorは、`mmd`・`mermaid`コードブロックを
-対応する拡張子のファイルとして取り出します。
+Markdownのprocessorは、
+`mmd`・`mermaid`コードブロックを対応する拡張子のファイルとして取り出します。
 
 最後の設定オブジェクトは、Mermaidの図のルール設定を上書きします。
 この例では、`@mmd-toolkit/flowchart-no-undef`を警告に変更し、
-推奨設定に含まれない`@mmd-toolkit/flowchart-no-unclosed-description-block`を
-有効にします。
+推奨設定に含まれない`@mmd-toolkit/flowchart-no-unclosed-description-block`を有効にします。
 ルールを無効にするには`"off"`を指定します。
 後にある、対象ファイルに一致した設定オブジェクトが、
 前のルール設定を上書きします。
@@ -72,7 +71,8 @@ Mermaid言語に、プラグイン独自の`languageOptions`はありません�
 
 ルールIDには、次の2つの形式があります。
 
-- 共通ルールは`@mmd-toolkit/<name>`。例: `@mmd-toolkit/no-unclosed-directive`。
+- 共通ルールは`@mmd-toolkit/<name>`。
+  例: `@mmd-toolkit/no-unclosed-directive`。
 - 図種ごとのルールは`@mmd-toolkit/<diagram>-<name>`。
   例: `@mmd-toolkit/flowchart-no-undef`。
 
@@ -85,8 +85,8 @@ Mermaid言語に、プラグイン独自の`languageOptions`はありません�
 ## 他言語の設定と組み合わせる
 
 他言語のルールは、その言語のファイルに対象を絞ります。
-例えば、次の設定オブジェクトでJavaScriptファイルと`js`コードブロックを
-チェックできます。
+例えば、
+次の設定オブジェクトでJavaScriptファイルと`js`コードブロックをチェックできます。
 
 ```js
 const javascriptRules = {

@@ -18,9 +18,9 @@ mermaid.js はそこにどんな語も受理し、どれでもない語は、
 
 ## 規則の詳細
 
-この規則は、`excludes` の文の項目のうち、
-数字を持たず、大文字小文字を問わず `weekends` でも曜日の名前
-（`monday` から `sunday`）でもないものを報告する。
+この規則は、`excludes` の文の項目のうち、数字を持たず、
+大文字小文字を問わず `weekends` でも、
+曜日の名前（`monday` から `sunday`）でもないものを報告する。
 対象の図種は `gantt` である。
 
 `excludes weekend` の後、タスク `Design :2024-01-05, 3d` は、
@@ -82,11 +82,10 @@ gantt
 
 mermaid.js は `excludes` の項目を小文字にし、一覧が `weekends` を持ち、
 その日が週末にあるとき、その日の英語の名前を持つとき、
-`dateFormat` の形か `YYYY-MM-DD` で書いたその日の日付を持つときに、その日を除く
-（[`isInvalidDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L183-L201)）。
-その文書
-（[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L131)）
-は、`excludes` が `YYYY-MM-DD` の日付、曜日、`weekends` を取り、
+`dateFormat` の形か `YYYY-MM-DD` で書いたその日の日付を持つときに、
+その日を除く（[`isInvalidDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L183-L201)）。
+その文書（[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L131)）は、
+`excludes` が `YYYY-MM-DD` の日付、曜日、`weekends` を取り、
 語 `weekdays` は取らないと言う。
 
 <!-- begin auto-generated rule resources -->

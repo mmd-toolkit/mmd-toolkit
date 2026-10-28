@@ -25,8 +25,9 @@ mermaid.js はそこまでの行をエラーなしにディレクティブに読
 ただし、名前と、引数が始まる JSON のオブジェクトか配列は除く。
 対象はすべての図種である。
 
-`A --> B` の後で、最後の `%%` のない `%%{init: {"theme": "dark"}}` と
-`C --> D` の行は、`A` から `B` へのリンクだけの flowchart を与える。
+`A --> B` の後で、
+最後の `%%` のない `%%{init: {"theme": "dark"}}` と `C --> D` の行は、
+`A` から `B` へのリンクだけの flowchart を与える。
 `C --> D` はディレクティブの中にある。
 後に書いた `}%%` はディレクティブを閉じる。
 `C --> D` の後に `%%{wrap}%%` があると、
@@ -45,8 +46,7 @@ mermaid.js はそこまでの行をエラーなしにディレクティブに読
 閉じないオブジェクトはディレクティブの残りを覆う。
 そのため、テキストの終わりにあるディレクティブは、`}%%` がなくても文を取らず、
 報告しない。
-最後の行の、`}%%` のない `%%{init: {"theme": "dark"}` も
-テーマを設定する。
+最後の行の、`}%%` のない `%%{init: {"theme": "dark"}` もテーマを設定する。
 U+2028 や U+2029 は `}%%` のないディレクティブを終え、
 その後の文字は書いたとおりに読まれる。
 
@@ -54,8 +54,7 @@ U+2028 や U+2029 は `}%%` のないディレクティブを終え、
 この規則はそれを見ない。
 ヘッダーの前で `}%%` のないままのディレクティブはヘッダーを取る。
 ディレクティブが取った文字が init のディレクティブの JSON を壊すと、
-[no-invalid-init-directive](./no-invalid-init-directive.ja.md)
-もそれを報告する。
+[no-invalid-init-directive](./no-invalid-init-directive.ja.md) もそれを報告する。
 
 ディレクティブを `}%%` で閉じる。
 
@@ -89,11 +88,11 @@ flowchart LR
 
 ## 背景
 
-[ディレクティブのパターン](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10)
-は、語の引数か、最初の `}%%`、U+2028、U+2029、テキストの終わりまでの
-自由な文字の引数を取り、
-[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)
-は、図を読む前に、それが合うものを取り除く。
+[ディレクティブのパターン](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L9-L10) は、
+語の引数か、最初の `}%%`、U+2028、U+2029、
+テキストの終わりまでの自由な文字の引数を取り、
+[`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202) は、
+図を読む前に、それが合うものを取り除く。
 
 <!-- begin auto-generated rule resources -->
 

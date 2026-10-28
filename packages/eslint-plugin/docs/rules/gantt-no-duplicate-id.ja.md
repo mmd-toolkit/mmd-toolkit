@@ -26,8 +26,8 @@ id の使い回しは、たいてい、タスクの行を写した残りであ�
 `click des1 href "…"` は `Build` だけをリンクにする。
 データが 1 つの項目を持つタスクは、その前のタスクの終わりに始まり、
 mermaid.js はその前のタスクも id で探す。
-`a : x, 2024-01-01, 1d` の後のタスク `b : 1d` は、
-`a` の終わりでなく、後に書いた `c : x, 2024-03-01, 1d` の終わりに始まる。
+`a : x, 2024-01-01, 1d` の後のタスク `b : 1d` は、 `a` の終わりでなく、
+後に書いた `c : x, 2024-03-01, 1d` の終わりに始まる。
 
 比べる id は、タグの後の 3 つの項目の最初に書いたものである。
 mermaid.js が id のないタスクに与える `task1`、`task2` のような id は比べない。
@@ -67,12 +67,10 @@ gantt
 
 ## 背景
 
-mermaid.js は id ごとに 1 つのタスクを持ち、
-それぞれのタスクは、同じ id で前に持っていたタスクを置き換える
-（[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L588-L590)）。
+mermaid.js は id ごとに 1 つのタスクを持ち、それぞれのタスクは、
+同じ id で前に持っていたタスクを置き換える（[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L588-L590)）。
 データが 1 つの項目を持つタスクは、その前のタスクの id を持ち、
-チャートを描くときにその id を探す
-（[`compileTasks`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L624-L625)）。
+チャートを描くときにその id を探す（[`compileTasks`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L624-L625)）。
 
 <!-- begin auto-generated rule resources -->
 

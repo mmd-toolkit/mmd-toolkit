@@ -18,7 +18,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween, isWhitespace } from "./source.ts"
+import { findFirstIndex, findTriviaBetween, isWhitespace } from "./source.ts"
 
 type GraphStatement = FlowchartStatement | AgentflowStatement
 
@@ -211,15 +211,15 @@ export function findLinesAfterWords(
   for (const range of collectLineRanges(statements)) {
     if (!endsWithWordReadWithLineBreaks(textUpToLastWord(source, range), words))
       continue
-    const index = tokens.findIndex((token) => token.range[1] === range[1])
-    const separator = tokens
-      .slice(index + 1)
-      .find(
-        (token) =>
-          token.type !== "String" &&
-          token.type !== "StringFragment" &&
-          token.type !== "Directive",
-      )
+    const last = findFirstIndex(tokens, (token) => token.range[1] >= range[1])
+    let after = tokens[last]?.range[1] === range[1] ? last + 1 : 0
+    while (
+      tokens[after]?.type === "String" ||
+      tokens[after]?.type === "StringFragment" ||
+      tokens[after]?.type === "Directive"
+    )
+      after++
+    const separator = tokens[after]
     if (separator?.value === ";") {
       lines.add(lineStartOf(source, separator.range[0]))
     }
@@ -323,12 +323,23 @@ export function findDirectionTextLines(
   const excluded: Range[] = [
     ...collectDirectionStatementRanges(statements),
     ...source.trivia.map((item) => item.range),
-  ]
+  ].sort((a, b) => a[0] - b[0])
   const lines = new Set<number>()
+  let nextExcluded = 0
+  let excludedEnd = -Infinity
   let index = text.indexOf(DIRECTION)
+  // Keyword hits and excluded ranges advance together, visiting each range
+  // once instead of testing all direction statements for every keyword.
   while (index !== -1) {
+    while (
+      nextExcluded < excluded.length &&
+      excluded[nextExcluded][0] <= index
+    ) {
+      excludedEnd = Math.max(excludedEnd, excluded[nextExcluded][1])
+      nextExcluded++
+    }
     const valueStart = findDirectionValueStart(text, index + DIRECTION.length)
-    if (valueStart !== -1 && !isInside(excluded, index)) {
+    if (valueStart !== -1 && index >= excludedEnd) {
       lines.add(lineStartOf(source, index))
       lines.add(lineStartOf(source, valueStart))
     }
@@ -348,11 +359,6 @@ function findDirectionValueStart(text: string, offset: number): number {
   return DIRECTION_VALUES.some((value) => text.startsWith(value, position))
     ? position
     : -1
-}
-
-/** Whether an offset lies in one of the ranges. */
-function isInside(ranges: readonly Range[], offset: number): boolean {
-  return ranges.some(([start, end]) => start <= offset && offset < end)
 }
 
 /** The ranges of the direction statements, at every depth. */

@@ -68,7 +68,7 @@ export function findAgentflowKeptLines(source: Source): KeptLines {
       ...findStyleLinesWithLineSeparators(source, statements),
       ...findLinesEndedBySemicolon(source),
     ]),
-    writtenIndentation: directionText,
+    ownIndentation: directionText,
   }
   keptLinesBySource.set(source, kept)
   return kept

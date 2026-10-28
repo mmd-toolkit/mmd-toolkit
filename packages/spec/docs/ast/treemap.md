@@ -99,7 +99,7 @@ treemap/gram-nesting-statements-comment-ps]
 | ------ | ----------------------- | --------------------------------------- |
 | `body` | list of TreemapBodyItem | Roots and independent outer statements. |
 
-Child fields: body. Range: the header start through the last written body
+Child fields: `body`. Range: the header start through the last written body
 statement, or the header end when body is empty; exclude outer padding, native
 comments and appended LF beyond that endpoint. Root.diagramType is `treemap`.
 Header aliases stay in their keyword tokens; there is no alias field or header
@@ -132,15 +132,16 @@ treemap/comment-second-scan-shaped-body]
 | `classSelector`    | Identifier or null                      | The name after `:::`, or null when absent. |
 | `children`         | list of (TreemapSection or TreemapLeaf) | Its direct children, in source order.      |
 
-Child fields: statementsBefore, name, classSelector, children. The range starts
-at the first statementsBefore entry, or at the name's opening quote when that
-list is empty. It ends at the last descendant, or at this section's selector or
-closing name quote when it has no children. The continuous range need not start
-at the name; siblings do not overlap. Outer indentation and unrelated trailing
-trivia do not extend it. A section has no numeric value. statementsBefore and
-children are empty lists when absent; children follow the parent rule. [fixture:
-treemap/gram-written-tree] [fixture: treemap/db-empty-names] [fixture:
-treemap/db-indent-pop] [fixture: treemap/gram-adjacent-sections] [fixture:
+Child fields: `statementsBefore`, `name`, `classSelector`, `children`. The range
+starts at the first statementsBefore entry, or at the name's opening quote when
+that list is empty. It ends at the last descendant, or at this section's
+selector or closing name quote when it has no children. The continuous range
+need not start at the name; siblings do not overlap. Outer indentation and
+unrelated trailing trivia do not extend it. A section has no numeric value.
+statementsBefore and children are empty lists when absent; children follow the
+parent rule. [fixture: treemap/gram-written-tree] [fixture:
+treemap/db-empty-names] [fixture: treemap/db-indent-pop] [fixture:
+treemap/gram-adjacent-sections] [fixture:
 treemap/gram-nesting-statement-before-section] [fixture:
 treemap/gram-nesting-statement-after-last-child]
 
@@ -164,14 +165,14 @@ treemap/db-leaf-tail-tab] [fixture: treemap/gram-indent-from-whitespace-line]
 | `value`            | NumericLiteral                   | The written leaf number.                   |
 | `classSelector`    | Identifier or null               | The name after `:::`, or null when absent. |
 
-Child fields: statementsBefore, name, value, classSelector. The range starts at
-the first statementsBefore entry, or at the name's opening quote when that list
-is empty. It ends at the number or selector. It is continuous and need not start
-at the name; siblings do not overlap. Outer indentation and unrelated trailing
-trivia do not extend it. A leaf has no children field; a later deeper row is not
-its child. statementsBefore is empty when absent. The colon/comma separator
-remains punctuation, not a field; both forms use this type. Keep numeric
-spelling and any source gap between components without turning them into
+Child fields: `statementsBefore`, `name`, `value`, `classSelector`. The range
+starts at the first statementsBefore entry, or at the name's opening quote when
+that list is empty. It ends at the number or selector. It is continuous and need
+not start at the name; siblings do not overlap. Outer indentation and unrelated
+trailing trivia do not extend it. A leaf has no children field; a later deeper
+row is not its child. statementsBefore is empty when absent. The colon/comma
+separator remains punctuation, not a field; both forms use this type. Keep
+numeric spelling and any source gap between components without turning them into
 children. [fixture: treemap/gram-written-tree] [fixture:
 treemap/gram-comma-separator] [fixture: treemap/gram-spaced-leaf] [fixture:
 treemap/gram-leaf-newlines-around-separator] [fixture:
@@ -196,7 +197,7 @@ treemap/db-leaf-tail-tab] [fixture: treemap/gram-indent-from-whitespace-line]
 | `name`   | Identifier             | The class definition name.             |
 | `style`  | TreemapLiteral or null | Whole authored style text, or null.    |
 
-Child fields: name, style. Range: classDef through its terminating semicolon
+Child fields: `name`, `style`. Range: classDef through its terminating semicolon
 when that unit is present, otherwise through the style's last character, or the
 class name when style is null. Exclude row-leading indentation and separating
 whitespace beyond the last written component. A semicolon ignored by the common
@@ -243,7 +244,7 @@ treemap/common-title-one-tab] [fixture: treemap/common-title-two-spaces]
 [fixture: treemap/common-title-directive-only] [fixture:
 treemap/gram-title-empty-before-glued-node]
 
-Child fields: value. Range: title through the last value character, or through
+Child fields: `value`. Range: title through the last value character, or through
 title when null. Exclude preceding keyword padding, outside trivia and
 statement-ending line breaks. Keep every occurrence independently, including
 empty or overwritten occurrences. Comments are shared records and no hidden
@@ -267,7 +268,7 @@ treemap/common-acctitle-whitespace-only] [fixture:
 treemap/common-line-whitespace] [fixture:
 treemap/common-acctitle-next-statement]
 
-Child fields: value. Range: accTitle through its colon when null, otherwise
+Child fields: `value`. Range: accTitle through its colon when null, otherwise
 through the last value character. Exclude preceding keyword padding, outside
 trivia and statement-ending line breaks. Keep every occurrence independently,
 including empty or overwritten occurrences. Comments are shared records and no
@@ -291,7 +292,7 @@ treemap/common-description-whitespace-only] [fixture:
 treemap/common-accdescr-colon-block-priority] [fixture:
 treemap/common-line-whitespace]
 
-Child fields: value. Range: accDescr through its colon when null, otherwise
+Child fields: `value`. Range: accDescr through its colon when null, otherwise
 through the last value character. Exclude preceding keyword padding, outside
 trivia and statement-ending line breaks. Keep every occurrence independently,
 including empty or overwritten occurrences. Comments are shared records and no
@@ -319,13 +320,14 @@ treemap/common-block-directive-only] [fixture:
 treemap/common-block-comment-only] [fixture: treemap/common-block-open]
 [fixture: treemap/common-block-escaped-close]
 
-Child fields: value. Range: accDescr through the first closing brace, including
-both delimiters even for null. Exclude preceding keyword padding, outside trivia
-and statement-ending line breaks. Keep every occurrence independently, including
-empty or overwritten occurrences. Comments are shared records and no hidden
-suffix field is added. [fixture: treemap/common-block-whitespace] [fixture:
-treemap/line-block-values] [fixture: treemap/common-block-whitespace-only]
-[fixture: treemap/common-block-empty-interleaved] [fixture:
+Child fields: `value`. Range: accDescr through the first closing brace,
+including both delimiters even for null. Exclude preceding keyword padding,
+outside trivia and statement-ending line breaks. Keep every occurrence
+independently, including empty or overwritten occurrences. Comments are shared
+records and no hidden suffix field is added. [fixture:
+treemap/common-block-whitespace] [fixture: treemap/line-block-values] [fixture:
+treemap/common-block-whitespace-only] [fixture:
+treemap/common-block-empty-interleaved] [fixture:
 treemap/common-block-directive-only] [fixture:
 treemap/common-block-comment-only] [fixture: treemap/common-block-open]
 [fixture: treemap/common-block-escaped-close] [fixture:

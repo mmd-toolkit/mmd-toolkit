@@ -2,12 +2,11 @@
 
 英語版: [railroad.md](./railroad.md)
 
-4 方言は、元の UTF-16 オフセットで
-[railroad ソース木](../../../spec/docs/ast/railroad.ja.md)
-の範囲と子の順序に従います。
+4 方言は、
+元の UTF-16 オフセットで [railroad ソース木](../../../spec/docs/ast/railroad.ja.md) の範囲と子の順序に従います。
 Root はソース全体を覆います。
-共通変換はソースの改行、引用符、エスケープ、数値の raw を書き換えません。
-[fixture: railroad/ir-gram-written-tree]
+共通変換はソースの改行、引用符、エスケープ、
+数値の raw を書き換えません。 [fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ebnf-gram-written-tree]
 [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/peg-gram-written-tree]
@@ -34,15 +33,12 @@ Root はソース全体を覆います。
 | 述語 / any                                     | 接頭記号から完全な suffix オペランドまで / 1 文字のドット。                                 | [fixture: railroad/peg-gram-written-tree] [fixture: railroad/peg-native-ownership]                                                                                                                                                         |
 | 共通の葉                                       | 名前、両方の文字列引用符、書かれた十進数字すべて。                                          | [fixture: railroad/ir-db-empty-strings] [fixture: railroad/abnf-gram-written-tree] [fixture: railroad/abnf-db-repeat-overflow]                                                                                                             |
 
-隠れた形式は木の
-[名前付き gap の所有規則](../../../spec/docs/ast/railroad.ja.md#gap-の所有)
-に従います。
+隠れた形式は木の [名前付き gap の所有規則](../../../spec/docs/ast/railroad.ja.md#gap-の所有) に従います。
 式の核は、親が所有する外側の形式を含めません。
 リストのメンバーは区切りの各側の gap を持ち、
 隣接する場合は次のメンバーが gap 全体を持ちます。
 コメント、外側の空白、検出が通過した trivia、
-追加された LF はノードを延長しません。
-[fixture: railroad/ir-native-ownership]
+追加された LF はノードを延長しません。 [fixture: railroad/ir-native-ownership]
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership]

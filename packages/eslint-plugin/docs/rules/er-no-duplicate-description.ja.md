@@ -11,8 +11,8 @@
 <!-- end auto-generated rule notice -->
 
 図の説明は 1 つである。
-mermaid.js はどの `accDescr` の文も受理し、
-説明を設定する文は、それより前に設定した説明を黙って置き換える。
+mermaid.js はどの `accDescr` の文も受理し、説明を設定する文は、
+それより前に設定した説明を黙って置き換える。
 2 つ目の説明は、たいてい、テキストを書き直した残りか、
 同じ部分を 2 回貼り付けたものである。
 
@@ -32,13 +32,12 @@ mermaid.js は、そのテキストを subgraph の要素にも加える。
 
 説明を持たないブロックは、数えない。
 それは、
-[er-no-empty-description-block](./er-no-empty-description-block.ja.md)
-が報告する。
+[er-no-empty-description-block](./er-no-empty-description-block.ja.md) が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。
-説明は、mermaid.js が持つとおりに、
-両端の空白と、各改行の後の空白を除いて比べる。
+説明は、mermaid.js が持つとおりに、両端の空白と、
+各改行の後の空白を除いて比べる。
 そのため、ブロックの行の字下げと、その中の空行は数えない。
 改行は、LF、CRLF、CR のどれも LF として読む。
 そのため、CRLF で書いたブロックは、LF で書いたブロックと同じ説明を設定する。

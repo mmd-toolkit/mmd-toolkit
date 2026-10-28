@@ -143,7 +143,7 @@ An element with its body: `element e {`, the fields on their lines, and `}`.
 | `cssClasses` | list of (RequirementIdentifier or StringLiteral)            | The classes after `:::`, separated by `,` units, in source order; empty when there is no `:::`. |
 | `body`       | list of (RequirementElementField or RequirementIgnoredText) | The items between `{` and `}`, in source order; empty for a body without items.                 |
 
-Child fields: `name`, `cssClasses`, `body`, as in
+Child fields: `name`, `cssClasses`, `body`. They are those of
 RequirementRequirementStatement. [fixture: requirement/db-element-fields]
 [fixture: requirement/db-element-defaults] [fixture:
 requirement/db-class-in-definition] [fixture:

@@ -318,4 +318,46 @@ export const ishikawaCases: readonly IshikawaCase[] = [
     options: {},
     rejected: false,
   },
+  {
+    rule: "line-separators",
+    name: "ishikawa: kept-comment-ls-before",
+    input: "ishikawa\nRoot\n A\n%%{}%%;\u2028  Child\n",
+    output: "ishikawa\n  Root\n    A\n      %%{}%%;\u2028     Child\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "line-separators",
+    name: "ishikawa: kept-comment-ps-after",
+    input: "ishikawa\nRoot\n A\n%%{}%%\u2029  Child;y\n",
+    output: "ishikawa\n  Root\n    A\n      %%{}%%\u2029     Child;y\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "line-separators",
+    name: "ishikawa: selected-comment-ls-both",
+    input: "ishikawa\nRoot\n A\n%%{}%%style:#fill;\u2028  Child;y\n",
+    output:
+      "ishikawa\n  Root\n    A\n      %%{}%%style:#fill;\u2028     Child;y\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "line-separators",
+    name: "ishikawa: kept-comment-ps-wide",
+    input: "ishikawa\nRoot\n A\n%%{}%%;\u2029     Child;y\n",
+    output: "ishikawa\n  Root\n    A\n      %%{}%%;\u2029     Child;y\n",
+    options: {},
+    rejected: false,
+  },
+  {
+    rule: "line-separators",
+    name: "ishikawa: selected-comment-ps-shallow",
+    input: "ishikawa\nRoot\n A\n%%{}%%classDef:#fill;\u2029Child;y\n",
+    output:
+      "ishikawa\n  Root\n    A\n    %%{}%%classDef:#fill;\u2029   Child;y\n",
+    options: {},
+    rejected: false,
+  },
 ]

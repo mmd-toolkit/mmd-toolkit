@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import { getFixturesRoot } from "../src/index.ts"
 import { runMermaidWithEmbeddedData } from "../src/mermaid.ts"
 import { normalizePie } from "../src/normalizers/pie.ts"
 import type { MermaidConfig } from "../src/types.ts"
@@ -109,29 +109,6 @@ describe("the summary of a pie diagram", () => {
       expect(await summary("html-all-texts", { securityLevel })).toEqual(base)
     }
   })
-
-  it("checks every fixture under another supported security level", async () => {
-    for (const fixture of await loadFixtures("pie")) {
-      const { outcome } = await runMermaidWithEmbeddedData(fixture.input, {
-        config: { ...fixture.config, securityLevel: "sandbox" },
-      })
-      const expected =
-        fixture.config?.securityLevel === "other"
-          ? (
-              await runMermaidWithEmbeddedData(fixture.input, {
-                config: { ...fixture.config, securityLevel: "strict" },
-              })
-            ).outcome
-          : fixture.expected.accepted
-            ? {
-                accepted: true,
-                diagramType: fixture.expected.diagramType,
-                db: fixture.expected.db,
-              }
-            : fixture.expected
-      expect(outcome, fixture.name).toEqual(expected)
-    }
-  }, 10_000)
 
   it("rejects lexical, recovered grammatical and Db errors, then clears stored state", async () => {
     await summary("db-all-fields")

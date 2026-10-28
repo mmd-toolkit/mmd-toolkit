@@ -27,13 +27,12 @@
 
 矢印の中のラベルと同じ `;` の後のラベル、空白だけの `;` の後のラベル、
 1 つのラベルを持つリンクは報告しない。
-端がどのノードも名指さないか、pipeline の子をその親につなぐので
-何も描かないリンクは報告しない。
+端がどのノードも名指さないか、
+pipeline の子をその親につなぐので何も描かないリンクは報告しない。
 ラベルの中のすべての改行（LF、CRLF、CR）は LF として読む。
 ラベルはそのほかは書いたとおりに比べる。
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-ラベルを読む前にほかの文字に変えるので、
-それだけが違う 2 つのラベルは、
+ラベルを読む前にほかの文字に変えるので、それだけが違う 2 つのラベルは、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
 リンクごとにラベルを 1 つ書く。
@@ -68,9 +67,8 @@ wardley-beta
 
 ## 背景
 
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L178-L186)
-は、矢印の中のラベルを取り、
-`;` の後のラベルは矢印がラベルを持たないときだけ取る。
+[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L178-L186) は、
+矢印の中のラベルを取り、 `;` の後のラベルは矢印がラベルを持たないときだけ取る。
 
 <!-- begin auto-generated rule resources -->
 

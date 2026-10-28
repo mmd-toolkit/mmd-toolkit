@@ -13,12 +13,13 @@ JSON 往復後も、トークンを参照できず、
 
 ## 木から要約を組み立てる
 
-1. **変換済みテキスト。** 葉の書かれた値と変換済みの範囲を読み、
-   ディレクティブ、共通のコメント領域、選択された無視するセミコロンを除きます。
+1. **変換済みテキスト。**
+   葉の書かれた値と変換済みの範囲を読み、ディレクティブ、共通のコメント領域、
+   選択された無視するセミコロンを除きます。
    CR と CRLF は LF、HTML 属性の引用符は単一引用符、
    文字参照は仮の文字列にします。
-   タグが値の外から始まる場合も、ソース全体の HTML タグの文脈を当てます。
-   [fixture: venn/lex-identifier-directive-middle]
+   タグが値の外から始まる場合も、
+   ソース全体の HTML タグの文脈を当てます。 [fixture: venn/lex-identifier-directive-middle]
    [fixture: venn/lex-label-directive-middle]
    [fixture: venn/lex-identifier-comment-line]
    [fixture: venn/lex-label-comment-line]
@@ -52,17 +53,18 @@ JSON 往復後も、トークンを参照できず、
    [fixture: venn/db-html-tag-from-title-style]
    [fixture: venn/db-html-tag-from-comment-name]
    [fixture: venn/db-html-tag-across-names]
-2. **初期要約。** 埋め込みデータのタイトルか空のタイトル、
+2. **初期要約。**
+   埋め込みデータのタイトルか空のタイトル、
    空のアクセシビリティ文字列と subsets、texts、styles から始めます。
-   frontmatter のアクセシビリティ欄と描画設定は欄を追加しません。
-   [fixture: venn/header-only]
+   frontmatter のアクセシビリティ欄と描画設定は欄を追加しません。 [fixture: venn/header-only]
    [fixture: venn/db-frontmatter-title]
    [fixture: venn/db-frontmatter-accessibility]
    [fixture: venn/db-markup]
-3. **名前と id。** 大文字小文字、重複、空の引用文字列、引用内の空白を保ち、
+3. **名前と id。**
+   大文字小文字、重複、空の引用文字列、引用内の空白を保ち、
    引用の外側を trim して外側の引用符を一組除きます。
-   数値の text id は数値でなく綴りを保ちます。
-   [fixture: venn/db-empty-identifiers]
+   数値の text
+   id は数値でなく綴りを保ちます。 [fixture: venn/db-empty-identifiers]
    [fixture: venn/db-quoted-padding]
    [fixture: venn/db-text-leading-zeros]
    [fixture: venn/db-form-text-id]
@@ -70,11 +72,10 @@ JSON 往復後も、トークンを参照できず、
    [fixture: venn/db-form-text-number]
    [fixture: venn/gram-repeated-target-lists]
    [fixture: venn/db-case-distinct-ids]
-4. **部分集合とサイズ。** set と union を宣言順に追加し、
-   名前を重複を保って整列し、
+4. **部分集合とサイズ。**
+   set と union を宣言順に追加し、名前を重複を保って整列し、
    サイズは `parseFloat()`、省略時は `10 / arity²` とします。
-   非有限値は文字列、負のゼロはゼロにします。
-   [fixture: venn/db-all-fields]
+   非有限値は文字列、負のゼロはゼロにします。 [fixture: venn/db-all-fields]
    [fixture: venn/db-three-definitions]
    [fixture: venn/db-union-three-definitions]
    [fixture: venn/db-union-repeated-member]
@@ -87,10 +88,10 @@ JSON 往復後も、トークンを参照できず、
    [fixture: venn/db-size-negative-zero]
    [fixture: venn/db-size-overflow]
    [fixture: venn/db-size-negative-overflow]
-5. **ラベル。** 括弧と引用符を除き、裸のラベルを Db に渡す前に trim します。
+5. **ラベル。**
+   括弧と引用符を除き、裸のラベルを Db に渡す前に trim します。
    字句の値が空なら省略し、残りを再び trim して外側の引用符を一組除きます。
-   引用された空白が二度目の trim に達した場合は空文字列を保ちます。
-   [fixture: venn/db-label-empty]
+   引用された空白が二度目の trim に達した場合は空文字列を保ちます。 [fixture: venn/db-label-empty]
    [fixture: venn/db-label-spaces]
    [fixture: venn/db-label-double-normalization]
    [fixture: venn/lex-label-bare-padding]
@@ -100,20 +101,19 @@ JSON 往復後も、トークンを参照できず、
    [fixture: venn/lex-label-quoted-ignored-semicolon-only]
    [fixture: venn/lex-label-bare-comment-only]
    [fixture: venn/lex-label-quoted-comment-only]
-6. **text の対象。** 明示の対象を整列して宣言順に追加し、
-   未定義の対象と重複も保ちます。
+6. **text の対象。**
+   明示の対象を整列して宣言順に追加し、未定義の対象と重複も保ちます。
    null の対象は最後の部分集合の整列済みの名前です。
    `checkTree` は有効な字下げ付き暗黙の印だけに null を許します。
-   部分集合がモードを有効にし、改行後の通常の文頭が終わらせ、
-   同じ行の文、空行、除去されたコメント、共通のディレクティブは保ちます。
+   部分集合がモードを有効にし、改行後の通常の文頭が終わらせ、同じ行の文、空行、
+   除去されたコメント、共通のディレクティブは保ちます。
    空行の後に字下げなしの `%%{ }%%` が来るとモードは終わります。
    宣言の直後の同じコメント、ASCII 空白かタブをちょうど一つ前置したもの、
    裸の `%%` の行はモードを保ちます。
    空白かタブだけの空でない行が間にあってもモードは保たれます。
    先頭の空白かタブが二つ以上なら一つの並びとして読み飛ばします。
    規則 2 がコメントの前の別の一文字を飲み込まなければ、
-   規則 7 が `%%{` でモードを終わらせます。
-   [fixture: venn/db-text-three-definitions]
+   規則 7 が `%%{` でモードを終わらせます。 [fixture: venn/db-text-three-definitions]
    [fixture: venn/db-text-comma-list]
    [fixture: venn/gram-repeated-target-lists]
    [fixture: venn/db-form-indent-id]
@@ -148,21 +148,21 @@ JSON 往復後も、トークンを参照できず、
    [fixture: venn/gram-indent-space-tab-empty-braces-explicit]
    [fixture: venn/gram-indent-space-tab-empty-braces-after-blank-explicit]
    [fixture: venn/lex-indent-ignored-prefix-empty-braces-after-blank]
-7. **スタイルの項目。** 整列済みの対象と、
+7. **スタイルの項目。**
+   整列済みの対象と、
    任意の大文字小文字を区別するプロパティを持つ別々の項目を追加します。
    同じ項目では最後の同名キーが勝ち、`__proto__` への文字列代入は除き、
-   他のプロトタイプ関連名は自身のプロパティとして保ちます。
-   [fixture: venn/db-style-three-definitions-same-target]
+   他のプロトタイプ関連名は自身のプロパティとして保ちます。 [fixture: venn/db-style-three-definitions-same-target]
    [fixture: venn/db-style-case-and-order]
    [fixture: venn/db-style-duplicate-key]
    [fixture: venn/db-style-prototype-keys]
    [fixture: venn/gram-repeated-target-lists]
-8. **スタイルの値。** 引用内の空白と空文字列を保ちます。
-   裸の VennLiteral の変換済みテキストを、
-   識別子、十進数、hex、rgb、rgba の単位に分け、
-   綴りが接していても空白一つで結びます。
-   色の大文字小文字、成分の綴り、内部の空白を保ちます。
-   [fixture: venn/db-empty-identifiers]
+8. **スタイルの値。**
+   引用内の空白と空文字列を保ちます。
+   裸の VennLiteral の変換済みテキストを、識別子、十進数、hex、rgb、
+   rgba の単位に分け、綴りが接していても空白一つで結びます。
+   色の大文字小文字、成分の綴り、
+   内部の空白を保ちます。 [fixture: venn/db-empty-identifiers]
    [fixture: venn/db-quoted-padding]
    [fixture: venn/db-form-style-tokens]
    [fixture: venn/lex-style-adjacent-units]
@@ -183,15 +183,15 @@ JSON 往復後も、トークンを参照できず、
    [fixture: venn/lex-style-hex-ignored-semicolon]
    [fixture: venn/lex-style-rgb-ignored-semicolon]
    [fixture: venn/div-c4-bare-style-value]
-9. **無視された断片。** VennIgnoredText は Db を変えず、
-   直前の完全な宣言を保ちます。
-   [fixture: venn/lex-style-extra-id-eaten]
+9. **無視された断片。**
+   VennIgnoredText は Db を変えず、
+   直前の完全な宣言を保ちます。 [fixture: venn/lex-style-extra-id-eaten]
    [fixture: venn/lex-set-colon-eaten]
-10. **タイトルと設定。** 最初の区切りの後の引用符と空白を含めた全内容を保ち、
+10. **タイトルと設定。**
+    最初の区切りの後の引用符と空白を含めた全内容を保ち、
     最後のタイトルが frontmatter の初期タイトルを置き換えます。
-    文字の置換はタイトルだけに適用し、HTML ラベルのルート設定を
-    flowchart の設定より優先します。
-    [fixture: venn/db-title-padding]
+    文字の置換はタイトルだけに適用し、
+    HTML ラベルのルート設定を flowchart の設定より優先します。 [fixture: venn/db-title-padding]
     [fixture: venn/db-title-only-whitespace]
     [fixture: venn/db-title-value-next-line]
     [fixture: venn/db-title-quotes]

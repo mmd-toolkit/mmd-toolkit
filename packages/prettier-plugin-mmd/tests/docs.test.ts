@@ -631,10 +631,12 @@ describe("the citations in the documents", async () => {
     return title.split(" ").filter(Boolean).join(" ")
   }
 
+  const flatTitles = new Set(titles.map(flat))
+
   it.each([...new Set(citations)].map((citation) => [citation] as const))(
     "cites a case that exists: %s",
     (citation) => {
-      expect(titles.map(flat)).toContain(flat(citation))
+      expect(flatTitles.has(flat(citation))).toBe(true)
     },
   )
 })

@@ -1,4 +1,5 @@
 import { appendItems } from "../collections.ts"
+import { RangeIndex } from "../range-index.ts"
 import {
   classDefStyleOf,
   dbTypeOf,
@@ -601,9 +602,9 @@ class FlowchartDbBuilder {
     name: FlowchartLabel,
     blocks: readonly TreeRange[],
   ): number {
-    for (const { start, codePoint } of this.characters) {
-      if (start < name.range[1]) continue
-      if (blocks.some(([from, to]) => from <= start && start < to)) continue
+    const excluded = new RangeIndex(blocks.map((range) => ({ range })))
+    for (const { start, codePoint } of this.text.from(name.range[1])) {
+      if (excluded.hasContaining([start, start + 1])) continue
       if (
         codePoint === OPENING_BRACKET ||
         codePoint === SEMICOLON ||

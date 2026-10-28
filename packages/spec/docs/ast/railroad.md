@@ -48,7 +48,7 @@ railroad/peg-gram-written-tree]
 | `textBeforeHeader` | list of RailroadIgnoredText | Retained native pre-header forms.             |
 | `body`             | list of RailroadBodyItem    | All written statements and body hidden forms. |
 
-Child fields: textBeforeHeader, body. Range: the first retained pre-header
+Child fields: `textBeforeHeader`, `body`. Range: the first retained pre-header
 opener, or the header start if absent, through the last body item, or the header
 end if the body is empty. Exclude unrelated padding, Comments and appended LF
 beyond those endpoints. [fixture: railroad/ir-header-only] [fixture:
@@ -80,10 +80,10 @@ railroad/peg-metadata-after-rule-acctitle]
 | `definition`           | RailroadExpression          | The complete authored expression.   |
 | `textBeforeTerminator` | list of RailroadIgnoredText | Forms before the visible semicolon. |
 
-Child fields: name, textBeforeOperator, textBeforeDefinition, definition,
-textBeforeTerminator. Range: the name start through the required visible
-semicolon. The assignment spelling (`=`, `::=` or `<-`) stays in tokens. Hidden
-forms after that semicolon belong to body, not this rule. [fixture:
+Child fields: `name`, `textBeforeOperator`, `textBeforeDefinition`,
+`definition`, `textBeforeTerminator`. Range: the name start through the required
+visible semicolon. The assignment spelling (`=`, `::=` or `<-`) stays in tokens.
+Hidden forms after that semicolon belong to body, not this rule. [fixture:
 railroad/ir-native-ownership] [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-native-ownership] [fixture:
 railroad/peg-native-ownership] [fixture:
@@ -95,7 +95,7 @@ railroad/abnf-comment-terminator-control]
 | ------- | ----------------------- | --------------------------- |
 | `value` | RailroadLiteral or null | Authored common-value text. |
 
-Child fields: value. Range: title through the last value character, or through
+Child fields: `value`. Range: title through the last value character, or through
 the keyword when value is null. One ASCII space/tab separator is outside value.
 Exclude statement-ending line breaks and outside padding; a following native
 form is a separate body item. [fixture: railroad/ir-common-whitespace-shapes]
@@ -121,7 +121,7 @@ railroad/ir-title-value-comment-only] [fixture: railroad/ir-common-repeat-empty]
 | ------- | ----------------------- | --------------------------- |
 | `value` | RailroadLiteral or null | Authored common-value text. |
 
-Child fields: value. Range: accTitle through its colon when null, otherwise
+Child fields: `value`. Range: accTitle through its colon when null, otherwise
 through the last line-value character. Exclude statement-ending line breaks and
 outside padding; a following native form is a separate body item. [fixture:
 railroad/ir-common-whitespace-shapes] [fixture:
@@ -147,7 +147,7 @@ railroad/ir-common-repeat-empty]
 | ------- | ----------------------- | --------------------------- |
 | `value` | RailroadLiteral or null | Authored common-value text. |
 
-Child fields: value. Range: accDescr through its colon when null, otherwise
+Child fields: `value`. Range: accDescr through its colon when null, otherwise
 through the last line-value character. Exclude statement-ending line breaks and
 outside padding; a following native form is a separate body item. [fixture:
 railroad/ir-common-whitespace-shapes] [fixture:
@@ -174,7 +174,7 @@ railroad/ir-common-repeat-empty]
 | ------- | ----------------------- | --------------------------- |
 | `value` | RailroadLiteral or null | Authored common-value text. |
 
-Child fields: value. Range: accDescr through the required first closing brace,
+Child fields: `value`. Range: accDescr through the required first closing brace,
 including both braces even when value is null. Exclude statement-ending line
 breaks and outside padding; a following native form is a separate body item.
 [fixture: railroad/ir-common-whitespace-shapes] [fixture:
@@ -202,7 +202,7 @@ railroad/ir-common-repeat-empty]
 | ------- | ------ | ---------------------- |
 | `value` | string | Written metadata text. |
 
-Child fields: none. Range: the first through last source character owned by that
+No child fields. Range: the first through last source character owned by that
 metadata value, spanning internal common trivia. Exclude common directives,
 comment regions and selected semicolons from value, but preserve every other
 authored character. Quotes do not turn it into StringLiteral, and unfinished
@@ -222,7 +222,7 @@ railroad/ir-common-block-directive] [fixture: railroad/ir-common-block-comment]
 | `kind`  | string | yaml-block or directive.                 |
 | `value` | string | Nonempty authored form including fences. |
 
-Child fields: none. Range: the recognized `---` or `%%{` opener through its
+No child fields. Range: the recognized `---` or `%%{` opener through its
 selected closer. Exclude preceding padding and any consumed following LF;
 appended LF is never source content. Keep source line endings and interior
 padding. value leaves out internal common directives, comment regions and
@@ -255,7 +255,7 @@ railroad/peg-enclosing-string-hidden]
 | `expression` | RailroadExpression          | The authored member expression.               |
 | `textAfter`  | list of RailroadIgnoredText | Forms after this expression within its list.  |
 
-Child fields: textBefore, expression, textAfter. Range: the first owned
+Child fields: `textBefore`, `expression`, `textAfter`. Range: the first owned
 textBefore form, or the expression start, through the last owned textAfter form,
 or the expression end. Exclude the list separator. Ownership follows Gap
 ownership below; it does not create a second expression layer or a punctuation
@@ -270,7 +270,7 @@ railroad/ebnf-native-ownership] [fixture: railroad/abnf-native-ownership]
 | `textBeforeOpen` | list of RailroadIgnoredText      | Forms between constructor and opening parenthesis. |
 | `arguments`      | list of RailroadExpressionMember | One or more authored IR arguments.                 |
 
-Child fields: textBeforeOpen, arguments. Range: sequence through its closing
+Child fields: `textBeforeOpen`, `arguments`. Range: sequence through its closing
 parenthesis. Keep this call even with one argument; commas remain punctuation.
 Argument members own forms inside the opening and closing delimiters. [fixture:
 railroad/ir-gram-written-tree] [fixture: railroad/ir-db-singletons] [fixture:
@@ -286,7 +286,7 @@ complete sequence call. [fixture: railroad/ir-error-prefix]
 | `textBeforeOpen` | list of RailroadIgnoredText      | Forms between constructor and opening parenthesis. |
 | `arguments`      | list of RailroadExpressionMember | One or more authored IR arguments.                 |
 
-Child fields: textBeforeOpen, arguments. Range: choice through its closing
+Child fields: `textBeforeOpen`, `arguments`. Range: choice through its closing
 parenthesis. Keep this call even with one argument; commas remain punctuation.
 Argument members own forms inside the opening and closing delimiters. [fixture:
 railroad/ir-gram-written-tree] [fixture: railroad/ir-db-singletons] [fixture:
@@ -304,11 +304,11 @@ complete choice call. [fixture: railroad/ir-choice-trailing-comma]
 | `element`           | RailroadExpression          | The single authored IR operand.       |
 | `textBeforeClose`   | list of RailroadIgnoredText | Forms before the closing parenthesis. |
 
-Child fields: textBeforeOpen, textBeforeElement, element, textBeforeClose.
-Range: optional through its required closing parenthesis. Both parentheses are
-tokens, and the operand is exactly one IR expression. This call is distinct from
-postfix and bracket/brace forms. [fixture: railroad/ir-gram-written-tree]
-[fixture: railroad/ir-native-ownership] [fixture:
+Child fields: `textBeforeOpen`, `textBeforeElement`, `element`,
+`textBeforeClose`. Range: optional through its required closing parenthesis.
+Both parentheses are tokens, and the operand is exactly one IR expression. This
+call is distinct from postfix and bracket/brace forms. [fixture:
+railroad/ir-gram-written-tree] [fixture: railroad/ir-native-ownership] [fixture:
 railroad/ir-error-empty-optional] [fixture: railroad/ir-error-extra-optional]
 
 ### RailroadOneOrMoreCall
@@ -320,12 +320,12 @@ railroad/ir-error-empty-optional] [fixture: railroad/ir-error-extra-optional]
 | `element`           | RailroadExpression          | The single authored IR operand.       |
 | `textBeforeClose`   | list of RailroadIgnoredText | Forms before the closing parenthesis. |
 
-Child fields: textBeforeOpen, textBeforeElement, element, textBeforeClose.
-Range: oneOrMore through its required closing parenthesis. Both parentheses are
-tokens, and the operand is exactly one IR expression. This call is distinct from
-postfix and bracket/brace forms. [fixture: railroad/ir-gram-written-tree]
-[fixture: railroad/ir-error-empty-oneormore] [fixture:
-railroad/ir-error-extra-oneormore]
+Child fields: `textBeforeOpen`, `textBeforeElement`, `element`,
+`textBeforeClose`. Range: oneOrMore through its required closing parenthesis.
+Both parentheses are tokens, and the operand is exactly one IR expression. This
+call is distinct from postfix and bracket/brace forms. [fixture:
+railroad/ir-gram-written-tree] [fixture: railroad/ir-error-empty-oneormore]
+[fixture: railroad/ir-error-extra-oneormore]
 
 ### RailroadZeroOrMoreCall
 
@@ -336,12 +336,12 @@ railroad/ir-error-extra-oneormore]
 | `element`           | RailroadExpression          | The single authored IR operand.       |
 | `textBeforeClose`   | list of RailroadIgnoredText | Forms before the closing parenthesis. |
 
-Child fields: textBeforeOpen, textBeforeElement, element, textBeforeClose.
-Range: zeroOrMore through its required closing parenthesis. Both parentheses are
-tokens, and the operand is exactly one IR expression. This call is distinct from
-postfix and bracket/brace forms. [fixture: railroad/ir-gram-written-tree]
-[fixture: railroad/ir-error-empty-zeroormore] [fixture:
-railroad/ir-error-extra-zeroormore]
+Child fields: `textBeforeOpen`, `textBeforeElement`, `element`,
+`textBeforeClose`. Range: zeroOrMore through its required closing parenthesis.
+Both parentheses are tokens, and the operand is exactly one IR expression. This
+call is distinct from postfix and bracket/brace forms. [fixture:
+railroad/ir-gram-written-tree] [fixture: railroad/ir-error-empty-zeroormore]
+[fixture: railroad/ir-error-extra-zeroormore]
 
 ### RailroadTerminalCall
 
@@ -352,12 +352,12 @@ railroad/ir-error-extra-zeroormore]
 | `value`           | StringLiteral               | The single quoted argument, including an empty string. |
 | `textBeforeClose` | list of RailroadIgnoredText | Forms before the closing parenthesis.                  |
 
-Child fields: textBeforeOpen, textBeforeValue, value, textBeforeClose. Range:
-terminal through its required closing parenthesis. The StringLiteral range
-includes its original quotes; do not replace the call with an Identifier, a bare
-string or a normalized terminal node. [fixture: railroad/ir-gram-written-tree]
-[fixture: railroad/ir-db-empty-strings] [fixture: railroad/ir-native-ownership]
-[fixture: railroad/ir-lex-string-conversion]
+Child fields: `textBeforeOpen`, `textBeforeValue`, `value`, `textBeforeClose`.
+Range: terminal through its required closing parenthesis. The StringLiteral
+range includes its original quotes; do not replace the call with an Identifier,
+a bare string or a normalized terminal node. [fixture:
+railroad/ir-gram-written-tree] [fixture: railroad/ir-db-empty-strings] [fixture:
+railroad/ir-native-ownership] [fixture: railroad/ir-lex-string-conversion]
 
 ### RailroadNonterminalCall
 
@@ -368,13 +368,13 @@ string or a normalized terminal node. [fixture: railroad/ir-gram-written-tree]
 | `name`            | StringLiteral               | The single quoted argument, including an empty string. |
 | `textBeforeClose` | list of RailroadIgnoredText | Forms before the closing parenthesis.                  |
 
-Child fields: textBeforeOpen, textBeforeName, name, textBeforeClose. Range:
-nonterminal through its required closing parenthesis. The StringLiteral range
-includes its original quotes; do not replace the call with an Identifier, a bare
-string or a normalized terminal node. [fixture: railroad/ir-gram-written-tree]
-[fixture: railroad/ir-db-empty-strings] [fixture: railroad/ir-native-ownership]
-[fixture: railroad/ir-lex-string-conversion] [fixture:
-railroad/ir-error-extra-nonterminal]
+Child fields: `textBeforeOpen`, `textBeforeName`, `name`, `textBeforeClose`.
+Range: nonterminal through its required closing parenthesis. The StringLiteral
+range includes its original quotes; do not replace the call with an Identifier,
+a bare string or a normalized terminal node. [fixture:
+railroad/ir-gram-written-tree] [fixture: railroad/ir-db-empty-strings] [fixture:
+railroad/ir-native-ownership] [fixture: railroad/ir-lex-string-conversion]
+[fixture: railroad/ir-error-extra-nonterminal]
 
 ### RailroadSpecialCall
 
@@ -385,8 +385,8 @@ railroad/ir-error-extra-nonterminal]
 | `text`            | StringLiteral               | The single quoted argument, including an empty string. |
 | `textBeforeClose` | list of RailroadIgnoredText | Forms before the closing parenthesis.                  |
 
-Child fields: textBeforeOpen, textBeforeText, text, textBeforeClose. Range:
-special through its required closing parenthesis. The StringLiteral range
+Child fields: `textBeforeOpen`, `textBeforeText`, `text`, `textBeforeClose`.
+Range: special through its required closing parenthesis. The StringLiteral range
 includes its original quotes; do not replace the call with an Identifier, a bare
 string or a normalized terminal node. [fixture: railroad/ir-gram-written-tree]
 [fixture: railroad/ir-db-empty-strings] [fixture:
@@ -398,7 +398,7 @@ railroad/ir-lex-string-conversion] [fixture: railroad/ir-error-extra-special]
 | -------------- | -------------------------------- | ---------------------------------- |
 | `alternatives` | list of RailroadExpressionMember | Two or more authored alternatives. |
 
-Child fields: alternatives. Range: the first expression start through the last
+Child fields: `alternatives`. Range: the first expression start through the last
 expression end. Preserve EBNF vertical bars or ABNF/PEG slashes in tokens and
 all alternative order. A single alternative is its expression without this
 wrapper; IR choice calls have their own type. [fixture:
@@ -414,7 +414,7 @@ railroad/abnf-native-ownership] [fixture: railroad/peg-native-ownership]
 | ---------- | -------------------------------- | --------------------------------------- |
 | `elements` | list of RailroadExpressionMember | Two or more authored sequence elements. |
 
-Child fields: elements. Range: the first expression start through the last
+Child fields: `elements`. Range: the first expression start through the last
 expression end. Preserve EBNF optional commas as punctuation; adjacency is not
 converted to synthetic commas. A single element is its expression without this
 wrapper; an IR sequence call remains distinct. [fixture:
@@ -432,8 +432,8 @@ railroad/abnf-native-ownership] [fixture: railroad/peg-native-ownership]
 | `element`           | RailroadExpression          | The complete nonempty inner expression. |
 | `textBeforeClose`   | list of RailroadIgnoredText | Forms before the closer.                |
 
-Child fields: textBeforeElement, element, textBeforeClose. Range: `(` through
-the required `)`. This authored form belongs to EBNF, ABNF and PEG. The
+Child fields: `textBeforeElement`, `element`, `textBeforeClose`. Range: `(`
+through the required `)`. This authored form belongs to EBNF, ABNF and PEG. The
 delimiters remain tokens, and this node remains even when its inner expression
 is one leaf. No empty inner expression or missing closer is admitted. [fixture:
 railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
@@ -450,10 +450,10 @@ railroad/abnf-native-ownership] [fixture: railroad/peg-native-ownership]
 | `element`           | RailroadExpression          | The complete nonempty inner expression. |
 | `textBeforeClose`   | list of RailroadIgnoredText | Forms before the closer.                |
 
-Child fields: textBeforeElement, element, textBeforeClose. Range: `[` through
-the required `]`. This authored form belongs to EBNF and ABNF. The delimiters
-remain tokens, and this node remains even when its inner expression is one leaf.
-No empty inner expression or missing closer is admitted. [fixture:
+Child fields: `textBeforeElement`, `element`, `textBeforeClose`. Range: `[`
+through the required `]`. This authored form belongs to EBNF and ABNF. The
+delimiters remain tokens, and this node remains even when its inner expression
+is one leaf. No empty inner expression or missing closer is admitted. [fixture:
 railroad/ebnf-gram-written-tree] [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/ebnf-native-ownership] [fixture:
 railroad/abnf-native-ownership]
@@ -466,10 +466,10 @@ railroad/abnf-native-ownership]
 | `element`           | RailroadExpression          | The complete nonempty inner expression. |
 | `textBeforeClose`   | list of RailroadIgnoredText | Forms before the closer.                |
 
-Child fields: textBeforeElement, element, textBeforeClose. Range: `{` through
-the required `}`. This authored form belongs to EBNF. The delimiters remain
-tokens, and this node remains even when its inner expression is one leaf. No
-empty inner expression or missing closer is admitted. [fixture:
+Child fields: `textBeforeElement`, `element`, `textBeforeClose`. Range: `{`
+through the required `}`. This authored form belongs to EBNF. The delimiters
+remain tokens, and this node remains even when its inner expression is one leaf.
+No empty inner expression or missing closer is admitted. [fixture:
 railroad/ebnf-gram-written-tree] [fixture: railroad/ebnf-native-ownership]
 
 ### RailroadPostfixExpression
@@ -480,8 +480,8 @@ railroad/ebnf-gram-written-tree] [fixture: railroad/ebnf-native-ownership]
 | `textBeforeOperator` | list of RailroadIgnoredText | Forms before the postfix symbol. |
 | `operator`           | string                      | One of ?, * or +.                |
 
-Child fields: element, textBeforeOperator. Range: the operand start through the
-postfix symbol. EBNF postfixes build successive left-nested nodes in written
+Child fields: `element`, `textBeforeOperator`. Range: the operand start through
+the postfix symbol. EBNF postfixes build successive left-nested nodes in written
 order; PEG permits one suffix at this level. The symbol stays in tokens as well
 as operator. This is distinct from IR calls, optional groups and brace
 repetition. [fixture: railroad/ebnf-gram-written-tree] [fixture:
@@ -499,11 +499,11 @@ railroad/peg-gram-double-suffix] [fixture: railroad/ebnf-native-ownership]
 | `textBeforeRight`    | list of RailroadIgnoredText | Forms after the minus.              |
 | `right`              | RailroadExpression          | An EBNF primary only.               |
 
-Child fields: left, textBeforeOperator, textBeforeRight, right. Range: left’s
-start through right’s end, including the minus token. Preserve the authored
-exception, not a synthesized sequence containing a literal dash. Further
-postfixes and exceptions wrap this expression in written order; hyphens already
-inside a name remain part of that Identifier. [fixture:
+Child fields: `left`, `textBeforeOperator`, `textBeforeRight`, `right`. Range:
+left’s start through right’s end, including the minus token. Preserve the
+authored exception, not a synthesized sequence containing a literal dash.
+Further postfixes and exceptions wrap this expression in written order; hyphens
+already inside a name remain part of that Identifier. [fixture:
 railroad/ebnf-gram-written-tree] [fixture: railroad/ebnf-exception-dash-name]
 [fixture: railroad/ebnf-exception-leftfold] [fixture:
 railroad/ebnf-db-postfix-order] [fixture: railroad/ebnf-native-ownership]
@@ -514,14 +514,14 @@ railroad/ebnf-db-postfix-order] [fixture: railroad/ebnf-native-ownership]
 | ------- | ------ | ------------------------------------------------- |
 | `value` | string | Authored interior without the two question marks. |
 
-Child fields: none. Range: the opening question mark through its required
-closing question mark. value removes only those delimiters and common trivia;
-keep outer and inner whitespace, source line endings, quotes and backslashes
-without trimming or decoding. The lexical rule requires nonwhitespace content,
-so no empty-value node occurs. [fixture: railroad/ebnf-special-whitespace]
-[fixture: railroad/ebnf-special-empty] [fixture:
-railroad/ebnf-special-whitespace-only] [fixture: railroad/ebnf-special-adjacent]
-[fixture: railroad/ebnf-hidden-directive-special] [fixture:
+No child fields. Range: the opening question mark through its required closing
+question mark. value removes only those delimiters and common trivia; keep outer
+and inner whitespace, source line endings, quotes and backslashes without
+trimming or decoding. The lexical rule requires nonwhitespace content, so no
+empty-value node occurs. [fixture: railroad/ebnf-special-whitespace] [fixture:
+railroad/ebnf-special-empty] [fixture: railroad/ebnf-special-whitespace-only]
+[fixture: railroad/ebnf-special-adjacent] [fixture:
+railroad/ebnf-hidden-directive-special] [fixture:
 railroad/ebnf-directive-string]
 
 ### RailroadRepeatExpression
@@ -532,8 +532,8 @@ railroad/ebnf-directive-string]
 | `textBeforeElement` | list of RailroadIgnoredText           | Forms after the complete repeat.          |
 | `element`           | RailroadExpression                    | One ABNF primary.                         |
 
-Child fields: repeat, textBeforeElement, element. Range: the written count or
-star start through its primary’s end. Keep this form even when its bounds
+Child fields: `repeat`, `textBeforeElement`, `element`. Range: the written count
+or star start through its primary’s end. Keep this form even when its bounds
 describe zero or one occurrence; do not turn it into an optional-group or a
 generic normalized repetition. Its primary cannot itself have another ungrouped
 repeat prefix. [fixture: railroad/abnf-gram-written-tree] [fixture:
@@ -550,7 +550,7 @@ railroad/abnf-native-ownership]
 | `minimum` | NumericLiteral or null | The written lower count, null when omitted. |
 | `maximum` | NumericLiteral or null | The written upper count, null when omitted. |
 
-Child fields: minimum, maximum. Range: the lower count’s first digit, or the
+Child fields: `minimum`, `maximum`. Range: the lower count’s first digit, or the
 star when it is absent, through the upper count’s last digit, or the star when
 it is absent. The star remains punctuation. `*`, `0*`, `*1`, `00*01` and exact
 `1` remain distinguishable; exact counts do not use this node. Native whitespace
@@ -571,7 +571,7 @@ railroad/abnf-semicolon-repeat-after-star]
 | ------- | ------ | ----------------------------------------- |
 | `value` | string | The complete authored percent-value text. |
 
-Child fields: none. Range: the percent sign through the final hexadecimal digit,
+No child fields. Range: the percent sign through the final hexadecimal digit,
 spanning internal common trivia. value retains base-letter case, every digit,
 dot and hyphen; exclude only common directives, comment regions and selected
 semicolons. It is a dedicated text leaf, not a NumericLiteral or a list of
@@ -589,8 +589,8 @@ railroad/abnf-semicolon-numval-text]
 | `textBeforeElement` | list of RailroadIgnoredText | Forms after the prefix symbol. |
 | `element`           | RailroadExpression          | The full PEG suffix operand.   |
 
-Child fields: textBeforeElement, element. Range: the prefix symbol through its
-suffix operand’s end. Keep groups, postfixes and every interior operand node
+Child fields: `textBeforeElement`, `element`. Range: the prefix symbol through
+its suffix operand’s end. Keep groups, postfixes and every interior operand node
 even when the comparison Db exposes only a label. A second direct prefix is not
 allowed; another predicate can occur inside an authored group. [fixture:
 railroad/peg-gram-written-tree] [fixture: railroad/peg-db-predicates] [fixture:
@@ -600,7 +600,7 @@ railroad/peg-db-predicate-predicate] [fixture: railroad/peg-gram-double-prefix]
 
 ### RailroadAnyExpression
 
-No fields and no child fields. [fixture: railroad/peg-gram-written-tree]
+No child fields. It has no fields. [fixture: railroad/peg-gram-written-tree]
 [fixture: railroad/peg-db-all-fields]
 
 Range: the single dot character. This PEG primary is not a StringLiteral or

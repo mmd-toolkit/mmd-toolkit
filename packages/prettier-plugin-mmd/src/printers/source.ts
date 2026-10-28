@@ -74,11 +74,15 @@ export interface Source {
    */
   readonly removedLineFeeds: ReadonlySet<number>
   /**
-   * Whether a diagram comment ends at a U+2028 or a U+2029, so that the text
-   * after it is a new line: the lexers of mindmap and ishikawa end it at the
-   * end of its line segment (diagrams/mindmap.md and diagrams/ishikawa.md,
-   * Comments). In other diagram types it runs to the line feed, and a
-   * U+2028 or U+2029 after it is whitespace to be printed as such.
+   * Whether the gap reader takes a U+2028 or a U+2029 that ends a diagram
+   * comment as the break of a line (see `readGapElement`): the lexers of
+   * mindmap and ishikawa end the comment at the end of its line segment, and
+   * the text after it is a new line (diagrams/mindmap.md and
+   * diagrams/ishikawa.md, Comments). A kanban board ends its comments there
+   * too, but its printer keeps the separator as written in the gaps it keeps
+   * (`BlockRules.keptGapEnd`), so the flag is false. In the other diagram
+   * types the comment runs to the line feed, and a U+2028 or U+2029 after it is
+   * whitespace to be printed as such.
    */
   readonly commentsEndAtLineSeparators: boolean
 }
@@ -140,7 +144,11 @@ function toTriviaComment(comment: Comment): TriviaComment {
  * diagram. The comments from the first one before a U+2028 or U+2029 up to
  * a comment with no mark become one comment, which is printed as written.
  */
-function joinCommentFragments(text: string, root: Root): TriviaComment[] {
+function joinCommentFragments(
+  text: string,
+  root: Root,
+  directiveRanges: readonly Range[],
+): TriviaComment[] {
   const { comments } = root
 
   /** The text between the comment before `index` and the comment at `index`. */
@@ -165,7 +173,7 @@ function joinCommentFragments(text: string, root: Root): TriviaComment[] {
     // comment before the first U+2028 or U+2029 that no comment line
     // follows after another one.
     let first = Math.max(index - 1, 0)
-    while (first > 0 && isBlank(text, root, ...gapBefore(first))) {
+    while (first > 0 && isBlank(text, directiveRanges, ...gapBefore(first))) {
       const separated = hasSeparatorBefore(first)
       first--
       if (separated && !(first > 0 && hasSeparatorBefore(first))) break
@@ -187,21 +195,23 @@ function joinCommentFragments(text: string, root: Root): TriviaComment[] {
   return joined
 }
 
-/** Whether the text from `start` to `end` holds nothing but whitespace and directives. */
+/**
+ * Whether the text from `start` to `end` holds nothing but whitespace and
+ * directives, which are `directiveRanges`.
+ */
 function isBlank(
   text: string,
-  root: Root,
+  directiveRanges: readonly Range[],
   start: number,
   end: number,
 ): boolean {
   for (let offset = start; offset < end; offset++) {
-    const covered = root.tokens.some(
-      (token) =>
-        token.type === "Directive" &&
-        token.range[0] <= offset &&
-        offset < token.range[1],
-    )
-    if (!covered && !isWhitespace(text[offset])) return false
+    if (
+      findCoveringRange(directiveRanges, offset) === undefined &&
+      !isWhitespace(text[offset])
+    ) {
+      return false
+    }
   }
   return true
 }
@@ -241,20 +251,28 @@ function extendDirective(
   directive: Token,
   directives: readonly Directive[],
 ): TriviaDirective {
-  const record = directives.find(
-    (candidate) => candidate.range[0] === directive.range[0],
+  // The records are in source order, as the tokens are.
+  const record =
+    directives[
+      findFirstIndex(
+        directives,
+        (candidate) => candidate.range[0] >= directive.range[0],
+      )
+    ]
+  const taken =
+    record?.range[0] === directive.range[0]
+      ? findTakenWhitespace(text, record)
+      : undefined
+  if (taken === undefined) return { type: "Directive", range: directive.range }
+  // Only the whitespace that the directive takes is searched: a search of the
+  // whole text would read it once for each directive.
+  const whitespace = text.slice(taken.start, taken.end)
+  const stop = Math.max(
+    whitespace.lastIndexOf("\u2028"),
+    whitespace.lastIndexOf("\u2029"),
   )
-  const taken = record && findTakenWhitespace(text, record)
-  const lastStop =
-    taken === undefined
-      ? -1
-      : Math.max(
-          text.lastIndexOf("\u2028", taken.end - 1),
-          text.lastIndexOf("\u2029", taken.end - 1),
-        )
-  if (taken === undefined || lastStop < taken.start) {
-    return { type: "Directive", range: directive.range }
-  }
+  if (stop < 0) return { type: "Directive", range: directive.range }
+  const lastStop = taken.start + stop
   return {
     type: "Directive",
     range: [directive.range[0], taken.runsToEnd ? lastStop + 1 : taken.end],
@@ -279,8 +297,19 @@ export function isCommentLine(
   const [start, end] = comment.range
   let withoutDirectives = ""
   let position = start
-  for (const directive of root.directives) {
-    if (directive.range[0] < start || end < directive.range[1]) continue
+  // The directives are in source order, so those inside the comment are found
+  // from the first one that starts in it, not by reading the whole list.
+  const { directives } = root
+  for (
+    let index = findFirstIndex(
+      directives,
+      (directive) => directive.range[0] >= start,
+    );
+    index < directives.length && directives[index].range[0] < end;
+    index++
+  ) {
+    const directive = directives[index]
+    if (end < directive.range[1]) continue
     withoutDirectives += text.slice(position, directive.range[0])
     position = directive.range[1]
   }
@@ -301,20 +330,18 @@ export function isCommentLine(
 function findJoiningRegions(
   text: string,
   root: Root,
+  directiveRanges: readonly Range[],
 ): readonly JoiningRegion[] {
-  const directives = root.tokens.filter((token) => token.type === "Directive")
   const directiveStartByEnd = new Map(
-    directives.map((token) => [token.range[1], token.range[0]]),
+    directiveRanges.map((range) => [range[1], range[0]]),
   )
   const directiveEndByStart = new Map(
-    directives.map((token) => [token.range[0], token.range[1]]),
+    directiveRanges.map((range) => [range[0], range[1]]),
   )
 
   /** Whether the character at `offset` lies in a directive. */
   function isInDirective(offset: number): boolean {
-    return directives.some(
-      (token) => token.range[0] <= offset && offset < token.range[1],
-    )
+    return findCoveringRange(directiveRanges, offset) !== undefined
   }
 
   /** Whether a comment may start at `offset`. */
@@ -350,6 +377,10 @@ function findJoiningRegions(
     return undefined
   }
 
+  // Where the text ends once the whitespace at its end is left out: a region
+  // has text after it when it ends before that.
+  const contentEnd = text.trimEnd().length
+
   const regions: JoiningRegion[] = []
   let previousEnd = -1
   for (const comment of root.comments) {
@@ -368,7 +399,7 @@ function findJoiningRegions(
       comment,
       start,
       end,
-      hasTextAfter: text.slice(end).trim() !== "",
+      hasTextAfter: end < contentEnd,
     })
   }
   return regions
@@ -413,17 +444,23 @@ export function createSource(
   root: Root,
   keepsCommentLines = false,
 ): Source {
-  const comments = joinCommentFragments(text, root)
-  const joiningRegions = keepsCommentLines ? [] : findJoiningRegions(text, root)
-  const directives = root.tokens
+  const directiveTokens = root.tokens.filter(
+    (token) => token.type === "Directive",
+  )
+  // The tokens, the comments, and the records of the directives are in source
+  // order and do not overlap, so they are searched with `findFirstIndex` and
+  // `findCoveringRange`, not scanned for each directive and comment.
+  const directiveRanges = directiveTokens.map((token) => token.range)
+  const comments = joinCommentFragments(text, root, directiveRanges)
+  const commentRanges = comments.map((comment) => comment.range)
+  const joiningRegions = keepsCommentLines
+    ? []
+    : findJoiningRegions(text, root, directiveRanges)
+  const directives = directiveTokens
     .filter(
       (token) =>
-        token.type === "Directive" &&
-        !comments.some(
-          (comment) =>
-            comment.range[0] <= token.range[0] &&
-            token.range[1] <= comment.range[1],
-        ),
+        findCoveringRange(commentRanges, token.range[0], token.range[1]) ===
+        undefined,
     )
     .map((token) => extendDirective(text, token, root.directives))
   const trivia = [...comments, ...directives].sort(
@@ -568,14 +605,59 @@ export function findTriviaBetween(
   return source.trivia.slice(first, afterLast)
 }
 
-/** The comment that ends at `offset`, if there is one. */
+/**
+ * The offset after the run of `;` that the line rule ignores and that begins at
+ * `offset`: `offset` itself where none does. Such a `;` is a token of its own,
+ * so it does not hide the line separator that follows a comment
+ * (docs/mindmap.md and docs/ishikawa.md, Line separators); this is the one
+ * place that skips it.
+ */
+export function skipIgnoredSemicolons(source: Source, offset: number): number {
+  let end = offset
+  while (source.ignoredSemicolons.has(end)) end++
+  return end
+}
+
+/** A diagram comment, and the offset where its line ends. */
+interface CommentLineEnd {
+  readonly offset: number
+  readonly comment: TriviaComment
+}
+
+const commentLineEndsBySource = new WeakMap<Source, readonly CommentLineEnd[]>()
+
+/**
+ * Where the line of each comment ends, in source order: after its text and the
+ * `;` that the line rule ignores right after it (see `skipIgnoredSemicolons`).
+ * Found once per source, since the printers ask for it at every statement.
+ */
+export function findCommentLineEnds(source: Source): readonly CommentLineEnd[] {
+  const cached = commentLineEndsBySource.get(source)
+  if (cached !== undefined) return cached
+  const ends: CommentLineEnd[] = []
+  for (const item of source.trivia) {
+    if (item.type === "Comment") {
+      ends.push({
+        offset: skipIgnoredSemicolons(source, item.range[1]),
+        comment: item,
+      })
+    }
+  }
+  commentLineEndsBySource.set(source, ends)
+  return ends
+}
+
+/**
+ * The comment whose line ends at `offset` (see `findCommentLineEnds`), if
+ * there is one.
+ */
 export function findCommentEndingAt(
   source: Source,
   offset: number,
-): Trivia | undefined {
-  return source.trivia.find(
-    (item) => item.type === "Comment" && item.range[1] === offset,
-  )
+): TriviaComment | undefined {
+  const ends = findCommentLineEnds(source)
+  const found = ends[findFirstIndex(ends, (end) => end.offset >= offset)]
+  return found?.offset === offset ? found.comment : undefined
 }
 
 /** The directive that ends at `offset`, if there is one. */
@@ -583,17 +665,52 @@ export function findDirectiveEndingAt(
   source: Source,
   offset: number,
 ): Trivia | undefined {
-  return source.trivia.find(
-    (item) => item.type === "Directive" && item.range[1] === offset,
-  )
+  return findTriviaEndingAt(source, offset, "Directive")
+}
+
+/** The trivia item containing `offset`, including its start but not its end. */
+export function findTriviaAt(
+  source: Source,
+  offset: number,
+): Trivia | undefined {
+  const index = findFirstIndex(source.trivia, (item) => item.range[1] > offset)
+  const item = source.trivia[index]
+  return item !== undefined && item.range[0] <= offset ? item : undefined
+}
+
+/** The first item of the requested kind ending at `offset`. */
+function findTriviaEndingAt(
+  source: Source,
+  offset: number,
+  type: Trivia["type"],
+): Trivia | undefined {
+  const first = findFirstIndex(source.trivia, (item) => item.range[1] >= offset)
+  for (let index = first; index < source.trivia.length; index++) {
+    const item = source.trivia[index]
+    if (item.range[1] !== offset) break
+    if (item.type === type) return item
+  }
+  return undefined
+}
+
+/** A range containing `[start, end)`, from disjoint ranges in source order. */
+export function findCoveringRange(
+  ranges: readonly Range[],
+  start: number,
+  end: number = start + 1,
+): Range | undefined {
+  const first = findFirstIndex(ranges, (range) => range[1] >= end)
+  const range = ranges[first]
+  return range !== undefined && range[0] <= start ? range : undefined
 }
 
 /**
  * Binary search over a list sorted so that `isAtOrAfter` is false for a
  * prefix and true for the rest: returns the index of the first element for
- * which it is true, or the length of the list.
+ * which it is true, or the length of the list. Range lookups recur for each
+ * printed item; searching their ordered boundaries avoids whole-list scans.
  */
-function findFirstIndex<T>(
+export function findFirstIndex<T>(
   list: readonly T[],
   isAtOrAfter: (element: T) => boolean,
 ): number {

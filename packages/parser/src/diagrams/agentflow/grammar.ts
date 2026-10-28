@@ -1,3 +1,4 @@
+import { firstIndexWhere } from "../../ordered-search.ts"
 import { appendItems } from "../../append-items.ts"
 import { GraphGrammar } from "../../graph-grammar.ts"
 import type { NodePlace } from "../../unit-grammar.ts"
@@ -334,9 +335,12 @@ export class AgentflowGrammar extends GraphGrammar<
         form?.kind === "empty-description-block" &&
         form.units.at(-1) === unit
       ) {
-        blocks.unshift(form.units)
+        blocks.push(form.units)
         unit = this.unreadUnitBefore(form.units[0].index)
       } else {
+        // The backward walk appends, then reverses once; prepending each
+        // block repeatedly moves the suffix already collected.
+        blocks.reverse()
         this.takeOut(blocks.flat())
         return blocks
       }
@@ -495,13 +499,7 @@ export class AgentflowGrammar extends GraphGrammar<
       kind,
       value: this.textOf(place.range, [
         ...delimiters,
-        ...this.lexing.comments
-          .filter(
-            (comment) =>
-              comment.range[0] >= place.range[0] &&
-              comment.range[1] <= place.range[1],
-          )
-          .map((comment) => comment.range),
+        ...this.diagramCommentsInside(place.range),
       ]),
       ...place,
     }
@@ -747,9 +745,14 @@ export class AgentflowGrammar extends GraphGrammar<
 
   /** One whitespace character that leaves the click context splits Name fragments. */
   private clickExitBetween(start: number, end: number): boolean {
-    return this.lexing.clickContextExits.some(
-      (range) => range[0] >= start && range[1] <= end,
+    // The exits are ordered and disjoint; only the first at or after the
+    // gap can lie inside it, avoiding a full scan for every name piece.
+    const index = firstIndexWhere(
+      this.lexing.clickContextExits,
+      (range) => range[0] >= start,
     )
+    const exit = this.lexing.clickContextExits[index]
+    return exit !== undefined && exit[1] <= end
   }
 
   /** Retained erased forms are RawText, including their delimiters and internal spaces. */
@@ -1133,10 +1136,7 @@ export class AgentflowGrammar extends GraphGrammar<
   ): boolean {
     return (
       super.breaksRun(kind, previous, unit) ||
-      this.lexing.comments.some(
-        (comment) =>
-          comment.range[0] >= previous.end && comment.range[1] <= unit.start,
-      )
+      this.diagramCommentsInside([previous.end, unit.start]).length > 0
     )
   }
 

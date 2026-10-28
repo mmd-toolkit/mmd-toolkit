@@ -149,16 +149,17 @@ defines it, that is not the empty text. A visit sets:
   state/db-description-id-after-description] [fixture:
   state/db-description-twice-same] [fixture: state/db-description-three-visits]
 - `shape`: the first visit sets `stateStart` or `stateEnd` for a StateTerminal,
-  `fork`, `join`, or `choice` for a pseudostate, `divider` for a region or a
-  divider statement, nothing for a note statement, and `rect` otherwise; no
-  later visit does so again. A visit with a description then sets
-  `rectWithTitle` when the state has more than one description, and otherwise
-  `roundedWithTitle` when an earlier visit had a body, or `rect`; so a start, a
-  fork, or a divider statement with a description has the shape `rect`, and
-  `state A {` with a body followed by `A : x` gives A the shape
-  `roundedWithTitle`. The first visit with a body then sets `roundedWithTitle`,
-  or `divider` for a region. [fixture: state/db-terminal-description] [fixture:
-  state/db-fork-description] [fixture: state/db-fork-two-descriptions] [fixture:
+  `stateStart` for an alias definition whose id is written as `[*]`, `fork`,
+  `join`, or `choice` for a pseudostate, `divider` for a region or a divider
+  statement, nothing for a note statement, and `rect` otherwise; no later visit
+  does so again. A visit with a description then sets `rectWithTitle` when the
+  state has more than one description, and otherwise `roundedWithTitle` when an
+  earlier visit had a body, or `rect`; so a start, a fork, or a divider
+  statement with a description has the shape `rect`, and `state A {` with a body
+  followed by `A : x` gives A the shape `roundedWithTitle`. The first visit with
+  a body then sets `roundedWithTitle`, or `divider` for a region. [fixture:
+  state/db-terminal-description] [fixture: state/db-fork-description] [fixture:
+  state/db-fork-two-descriptions] [fixture:
   state/db-divider-state-one-description] [fixture:
   state/db-body-then-description] So a state that a note statement visits first
   has no shape until a visit with a description or a body: after
@@ -170,7 +171,32 @@ defines it, that is not the empty text. A visit sets:
   [fixture: state/db-note-first-then-state] [fixture:
   state/db-note-first-then-fork] [fixture: state/db-note-first-then-description]
   [fixture: state/db-note-first-then-body] [fixture:
-  state/db-note-after-state-shape] [fixture: state/db-note-in-composite]
+  state/db-note-after-state-shape] [fixture: state/db-note-in-composite] An
+  alias for `[*]` visits the start of its parent, or `root_start` at the top
+  level, even after a transition has visited the end. When its string trims to
+  empty and it has neither a body nor a `:`, it leaves that initial shape, or
+  the existing shape on a later visit, unchanged. An alias whose written id is
+  `root_start` or `root_end` instead has the initial shape `rect`, like any
+  ordinary id; a later terminal visit does not replace it. These follow
+  [`StateDB.docTranslator`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L331-L345)
+  and the first-visit and description steps of
+  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L271-L338).
+  [fixture: state/db-alias-blank-terminal-first] [fixture:
+  state/db-alias-blank-terminal-nested] [fixture:
+  state/db-alias-blank-terminal-after-end] [fixture:
+  state/db-alias-blank-terminal-before-transition] [fixture:
+  state/db-alias-blank-terminal-after-transition] [fixture:
+  state/db-alias-blank-terminal-after-description] [fixture:
+  state/db-alias-blank-terminal-then-description] [fixture:
+  state/db-alias-blank-terminal-nested-description] [fixture:
+  state/db-alias-blank-terminal-twice] [fixture:
+  state/db-alias-blank-terminal-nested-revisit] [fixture:
+  state/db-alias-blank-end-id-before-transition] [fixture:
+  state/db-alias-blank-end-id-after-transition] [fixture:
+  state/db-alias-blank-start-id] [fixture: state/db-alias-blank-terminal-colon]
+  [fixture: state/db-alias-blank-terminal-body] [fixture:
+  state/db-alias-blank-terminal-after-note] [fixture:
+  state/db-alias-id-terminal]
 - `dir`: the first visit with a body sets the direction of the last direction
   statement in that body, or `TB`, also when the body is empty; a later body
   does not change it. A direction statement in a nested body belongs to that

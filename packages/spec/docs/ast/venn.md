@@ -60,8 +60,8 @@ venn/db-indent-width]
 | `label` | VennLabel or null                     | The optional bracket label.        |
 | `size`  | NumericLiteral or null                | The optional size after the colon. |
 
-Child fields: `sets`, `label`, `size`, in that order. [fixture:
-venn/db-form-set-label-size] [fixture: venn/db-form-union-label-size]
+Child fields: `sets`, `label`, `size`. [fixture: venn/db-form-set-label-size]
+[fixture: venn/db-form-union-label-size]
 
 `kind` is the keyword in lower case. [fixture: venn/lex-keyword-set-upper]
 [fixture: venn/lex-keyword-union-upper] [fixture: venn/db-form-set] [fixture:
@@ -101,8 +101,8 @@ venn/db-size-negative-overflow] [fixture: venn/db-size-leading-zeros]
 | `id`      | Identifier, StringLiteral, or NumericLiteral  | The written text id.                      |
 | `label`   | VennLabel or null                             | The optional bracket label.               |
 
-Child fields: `targets`, `id`, `label`, in that order. [fixture:
-venn/db-form-text-id-label] [fixture: venn/db-form-indent-id-label]
+Child fields: `targets`, `id`, `label`. [fixture: venn/db-form-text-id-label]
+[fixture: venn/db-form-indent-id-label]
 
 Explicit targets are a nonempty written list that keeps spelling, order, and
 duplicates. [fixture: venn/db-text-comma-list] [fixture:
@@ -131,13 +131,13 @@ venn/gram-size-numeric-label]
 | `targets`    | list of (Identifier or StringLiteral) | The written targets.    |
 | `properties` | list of VennStyleProperty             | All written properties. |
 
-Child fields: `targets`, `properties`, in that order. [fixture:
+Child fields: `targets`, `properties`. [fixture: venn/db-form-style-multiple]
+[fixture: venn/db-style-duplicate-key] [fixture: venn/db-style-case-and-order]
+[fixture: venn/db-style-unknown] [fixture: venn/gram-repeated-target-lists] Both
+lists are nonempty and keep written order and repetitions. [fixture:
 venn/db-form-style-multiple] [fixture: venn/db-style-duplicate-key] [fixture:
 venn/db-style-case-and-order] [fixture: venn/db-style-unknown] [fixture:
-venn/gram-repeated-target-lists] Both lists are nonempty and keep written order
-and repetitions. [fixture: venn/db-form-style-multiple] [fixture:
-venn/db-style-duplicate-key] [fixture: venn/db-style-case-and-order] [fixture:
-venn/db-style-unknown] [fixture: venn/gram-repeated-target-lists]
+venn/gram-repeated-target-lists]
 
 ### VennStyleProperty
 
@@ -146,8 +146,8 @@ venn/db-style-unknown] [fixture: venn/gram-repeated-target-lists]
 | `key`   | Identifier                   | The bare property key.      |
 | `value` | StringLiteral or VennLiteral | The written property value. |
 
-Child fields: `key`, `value`, in that order. [fixture:
-venn/db-style-duplicate-key] [fixture: venn/db-style-prototype-keys] [fixture:
+Child fields: `key`, `value`. [fixture: venn/db-style-duplicate-key] [fixture:
+venn/db-style-prototype-keys] [fixture:
 venn/db-form-style-documented-properties] Any nonreserved key is retained,
 including repeated and prototype-related keys. [fixture:
 venn/db-style-duplicate-key] [fixture: venn/db-style-prototype-keys] [fixture:

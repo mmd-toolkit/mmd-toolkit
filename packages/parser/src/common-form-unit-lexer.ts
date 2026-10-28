@@ -31,6 +31,7 @@ import { readUnit } from "./diagram-units.ts"
 import type { LineIndex } from "./positions.ts"
 import type { Match } from "./scanning.ts"
 import {
+  isBefore,
   isCodePointAt,
   matchWord,
   samePosition,
@@ -84,8 +85,18 @@ export abstract class CommonFormUnitLexer<
 > {
   protected readonly comments: DiagramComment[] = []
 
+  /**
+   * The end of the last failed closer search, initially the text's start.
+   * Later native comments must not search the same suffix again. A failed
+   * search went on to the end of the text, and whether a `}%%` closes a
+   * directive depends only on where it is, not on the opening, so no
+   * opening after the failed one finds a closer either.
+   */
+  private noDirectiveBefore: DiagramPosition
+
   public constructor(reader: DiagramText, lines: LineIndex) {
     super(reader, lines, "default", { default: null })
+    this.noDirectiveBefore = reader.first()
   }
 
   /** Lexical structure: scan the complete text before grammar decisions, without recovery. */
@@ -362,6 +373,7 @@ export abstract class CommonFormUnitLexer<
 
   /** Hidden DIRECTIVE: earliest qualifying closer, including empty or punctuation bodies. */
   protected readDirective(at: DiagramCharacter): boolean {
+    if (isBefore(at, this.noDirectiveBefore)) return false
     const opening = matchWord(this.reader, at, "%%{")
     if (opening === null) return false
     let cursor = opening.end
@@ -369,6 +381,7 @@ export abstract class CommonFormUnitLexer<
       if (this.readHiddenCloser(at, cursor, "}%%", "directive")) return true
       cursor = this.reader.after(cursor)
     }
+    this.noDirectiveBefore = cursor
     return false
   }
 

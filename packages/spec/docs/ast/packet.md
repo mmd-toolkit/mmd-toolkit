@@ -19,11 +19,11 @@ packet/title-repeat-empty] [fixture: packet/accdescr-block-repeat]
 | `textBeforeHeader` | list of PacketIgnoredText | Retained forms before the header.     |
 | `body`             | list of PacketBodyItem    | Authored statements and hidden forms. |
 
-Child fields: textBeforeHeader, body. Range: the first retained pre-header form,
-or the header if none, through the last written header/body form, excluding
-unrelated outside padding. The two header spellings remain keyword tokens,
-without an alias field or separate header node. Root.diagramType is `packet` for
-either spelling. [fixture: packet/spec-packet-7426afc4] [fixture:
+Child fields: `textBeforeHeader`, `body`. Range: the first retained pre-header
+form, or the header if none, through the last written header/body form,
+excluding unrelated outside padding. The two header spellings remain keyword
+tokens, without an alias field or separate header node. Root.diagramType is
+`packet` for either spelling. [fixture: packet/spec-packet-7426afc4] [fixture:
 packet/spec-packet-c4580507] [fixture: packet/detect-one-block] [fixture:
 packet/detect-yaml-properties-ignored] [fixture:
 packet/detect-second-scan-directive]
@@ -68,13 +68,13 @@ packet/db-cap-later-logical-end] [fixture: packet/gram-block-blank-lines]
 | `label`           | StringLiteral             | Authored quoted label.            |
 | `textAfter`       | list of PacketIgnoredText | Hidden suffix before visible EOL. |
 
-Child fields: start, textBeforeDash, textBeforeEnd, end, textBeforeColon,
-textBeforeLabel, label, textAfter. Range: the first start digit through the
-closing label quote, extended through the last textAfter form. It excludes
-outside padding and EOL. This node is only the authored `start-end: label` form;
-equal written endpoints still use this node. [fixture: packet/gram-mixed]
-[fixture: packet/gram-zero-range] [fixture: packet/gram-hidden-range-gap-spaced]
-[fixture: packet/gram-yaml-around-range]
+Child fields: `start`, `textBeforeDash`, `textBeforeEnd`, `end`,
+`textBeforeColon`, `textBeforeLabel`, `label`, `textAfter`. Range: the first
+start digit through the closing label quote, extended through the last textAfter
+form. It excludes outside padding and EOL. This node is only the authored
+`start-end: label` form; equal written endpoints still use this node. [fixture:
+packet/gram-mixed] [fixture: packet/gram-zero-range] [fixture:
+packet/gram-hidden-range-gap-spaced] [fixture: packet/gram-yaml-around-range]
 
 The four interior lists own whole hidden forms only in their named gaps. The
 start/end leaves remain the written numbers, even when publication splits the
@@ -96,13 +96,13 @@ packet/directive-label-middle]
 | `label`           | StringLiteral             | Authored quoted label.            |
 | `textAfter`       | list of PacketIgnoredText | Hidden suffix before visible EOL. |
 
-Child fields: start, textBeforeColon, textBeforeLabel, label, textAfter. Range:
-the first start digit through the closing label quote, extended through the last
-textAfter form, excluding outside padding and EOL. This is only `start: label`:
-do not add an end or count field. textBeforeColon owns forms after start;
-textBeforeLabel owns forms after colon. The required label may be empty or use
-either quote. [fixture: packet/gram-single-zero] [fixture:
-packet/gram-single-hidden-gaps] [fixture: packet/gram-mixed] [fixture:
+Child fields: `start`, `textBeforeColon`, `textBeforeLabel`, `label`,
+`textAfter`. Range: the first start digit through the closing label quote,
+extended through the last textAfter form, excluding outside padding and EOL.
+This is only `start: label`: do not add an end or count field. textBeforeColon
+owns forms after start; textBeforeLabel owns forms after colon. The required
+label may be empty or use either quote. [fixture: packet/gram-single-zero]
+[fixture: packet/gram-single-hidden-gaps] [fixture: packet/gram-mixed] [fixture:
 packet/db-label-empty-double] [fixture: packet/db-label-empty-single] [fixture:
 packet/hidden-directive-block-eof]
 
@@ -117,13 +117,13 @@ packet/hidden-directive-block-eof]
 | `label`           | StringLiteral             | Authored quoted label.            |
 | `textAfter`       | list of PacketIgnoredText | Hidden suffix before visible EOL. |
 
-Child fields: textBeforeCount, count, textBeforeColon, textBeforeLabel, label,
-textAfter. Range: the authored plus through the closing label quote, extended
-through the last textAfter form, excluding outside padding and EOL. This is only
-`+count: label`; plus is punctuation outside count.raw. Do not synthesize
-start/end fields. Interior lists own forms in the named gaps, including YAML
-between plus and count. The required label may be empty or use either quote.
-[fixture: packet/gram-mixed] [fixture: packet/gram-gaps] [fixture:
+Child fields: `textBeforeCount`, `count`, `textBeforeColon`, `textBeforeLabel`,
+`label`, `textAfter`. Range: the authored plus through the closing label quote,
+extended through the last textAfter form, excluding outside padding and EOL.
+This is only `+count: label`; plus is punctuation outside count.raw. Do not
+synthesize start/end fields. Interior lists own forms in the named gaps,
+including YAML between plus and count. The required label may be empty or use
+either quote. [fixture: packet/gram-mixed] [fixture: packet/gram-gaps] [fixture:
 packet/gram-hidden-gap] [fixture: packet/gram-hidden-yaml-gap] [fixture:
 packet/gram-relative-hidden-colon] [fixture: packet/db-precision-rounded]
 
@@ -155,15 +155,15 @@ packet/lex-title-one-space] [fixture: packet/lex-title-one-tab] [fixture:
 packet/lex-title-two-spaces] [fixture: packet/lex-title-directive-only]
 [fixture: packet/hidden-directive-title-eof]
 
-Child fields: value, textAfter. Range: title through its last value character,
-or the keyword when null, extended through the last textAfter form, excluding
-EOL and unrelated outside padding. Hidden forms before the first visible EOL
-belong to textAfter; after that EOL they belong to body. Keep repeated and empty
-occurrences separately. Native comments are shared Comments, never hidden suffix
-elements. [fixture: packet/title-empty] [fixture: packet/lex-title-one-space]
-[fixture: packet/lex-title-one-tab] [fixture: packet/lex-title-two-spaces]
-[fixture: packet/lex-title-directive-only] [fixture:
-packet/hidden-directive-title-eof] [fixture:
+Child fields: `value`, `textAfter`. Range: title through its last value
+character, or the keyword when null, extended through the last textAfter form,
+excluding EOL and unrelated outside padding. Hidden forms before the first
+visible EOL belong to textAfter; after that EOL they belong to body. Keep
+repeated and empty occurrences separately. Native comments are shared Comments,
+never hidden suffix elements. [fixture: packet/title-empty] [fixture:
+packet/lex-title-one-space] [fixture: packet/lex-title-one-tab] [fixture:
+packet/lex-title-two-spaces] [fixture: packet/lex-title-directive-only]
+[fixture: packet/hidden-directive-title-eof] [fixture:
 packet/lex-hidden-after-visible-eol] [fixture: packet/comment-block-description]
 
 ### PacketAccTitleStatement
@@ -179,14 +179,14 @@ whitespace-only text is a literal. [fixture: packet/acctitle-empty] [fixture:
 packet/acctitle-repeat-empty] [fixture: packet/lex-acctitle-directive-only]
 [fixture: packet/hidden-directive-acctitle-eof]
 
-Child fields: value, textAfter. Range: accTitle through its colon or last value
-character, extended through the last textAfter form, excluding EOL and unrelated
-outside padding. Hidden forms before the first visible EOL belong to textAfter;
-after that EOL they belong to body. Keep repeated and empty occurrences
-separately. Native comments are shared Comments, never hidden suffix elements.
-[fixture: packet/acctitle-empty] [fixture: packet/acctitle-repeat-empty]
-[fixture: packet/lex-acctitle-directive-only] [fixture:
-packet/hidden-directive-acctitle-eof] [fixture:
+Child fields: `value`, `textAfter`. Range: accTitle through its colon or last
+value character, extended through the last textAfter form, excluding EOL and
+unrelated outside padding. Hidden forms before the first visible EOL belong to
+textAfter; after that EOL they belong to body. Keep repeated and empty
+occurrences separately. Native comments are shared Comments, never hidden suffix
+elements. [fixture: packet/acctitle-empty] [fixture:
+packet/acctitle-repeat-empty] [fixture: packet/lex-acctitle-directive-only]
+[fixture: packet/hidden-directive-acctitle-eof] [fixture:
 packet/lex-hidden-after-visible-eol] [fixture: packet/comment-block-description]
 
 ### PacketAccDescrStatement
@@ -205,12 +205,12 @@ packet/lex-accdescr-directive-only] [fixture:
 packet/lex-description-colon-first] [fixture:
 packet/hidden-directive-accdescr-eof]
 
-Child fields: value, textAfter. Range: accDescr through its colon or last value
-character, extended through the last textAfter form, excluding EOL and unrelated
-outside padding. Hidden forms before the first visible EOL belong to textAfter;
-after that EOL they belong to body. Keep repeated and empty occurrences
-separately. Native comments are shared Comments, never hidden suffix elements.
-[fixture: packet/accdescr-line-empty] [fixture:
+Child fields: `value`, `textAfter`. Range: accDescr through its colon or last
+value character, extended through the last textAfter form, excluding EOL and
+unrelated outside padding. Hidden forms before the first visible EOL belong to
+textAfter; after that EOL they belong to body. Keep repeated and empty
+occurrences separately. Native comments are shared Comments, never hidden suffix
+elements. [fixture: packet/accdescr-line-empty] [fixture:
 packet/lex-accdescr-whitespace-only] [fixture:
 packet/lex-accdescr-directive-only] [fixture:
 packet/lex-description-colon-first] [fixture:
@@ -236,13 +236,13 @@ packet/lex-description-comment-only] [fixture: packet/common-block-bare]
 [fixture: packet/accdescr-block-open] [fixture:
 packet/hidden-directive-description-eof]
 
-Child fields: value, textAfter. Range: accDescr through its first closing brace,
-extended through the last textAfter form, excluding EOL and unrelated outside
-padding. Hidden forms before the first visible EOL belong to textAfter; after
-that EOL they belong to body. Keep repeated and empty occurrences separately.
-Native comments are shared Comments, never hidden suffix elements. [fixture:
-packet/gram-empty-description] [fixture: packet/accdescr-block-lines] [fixture:
-packet/lex-description-whitespace-only] [fixture:
+Child fields: `value`, `textAfter`. Range: accDescr through its first closing
+brace, extended through the last textAfter form, excluding EOL and unrelated
+outside padding. Hidden forms before the first visible EOL belong to textAfter;
+after that EOL they belong to body. Keep repeated and empty occurrences
+separately. Native comments are shared Comments, never hidden suffix elements.
+[fixture: packet/gram-empty-description] [fixture: packet/accdescr-block-lines]
+[fixture: packet/lex-description-whitespace-only] [fixture:
 packet/lex-description-directive-only] [fixture:
 packet/lex-description-comment-only] [fixture: packet/common-block-bare]
 [fixture: packet/accdescr-block-open] [fixture:

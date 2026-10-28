@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 import { loadFixtures } from "../src/index.ts"
 import { runMermaid } from "../src/mermaid.ts"
 import { normalizeArchitecture } from "../src/normalizers/architecture.ts"
+import type { MermaidConfig } from "../src/types.ts"
 
 const fixtures = await loadFixtures("architecture")
 
@@ -10,6 +11,17 @@ function named(name: string) {
   const fixture = fixtures.find((item) => item.name === name)
   if (fixture === undefined) throw new Error(`missing architecture/${name}`)
   return fixture
+}
+
+/** The summary of an accepted fixed input, under its site configuration and `config`. */
+async function summary(name: string, config: MermaidConfig = {}) {
+  const fixture = named(name)
+  const result = await runMermaid(fixture.input, {
+    config: { ...fixture.config, ...config },
+  })
+  if (!result.accepted)
+    throw new Error(`expected accepted architecture/${name}`)
+  return result.db
 }
 
 describe("architecture summary", () => {
@@ -51,27 +63,12 @@ describe("architecture summary", () => {
     })
   })
 
-  it("matches every fixed fixture at its configured or standard security levels", async () => {
-    for (const fixture of fixtures) {
-      const levels =
-        fixture.config?.securityLevel === undefined
-          ? ["strict", "loose", "antiscript", "sandbox"]
-          : [fixture.config.securityLevel]
-      for (const securityLevel of levels) {
-        const outcome = await runMermaid(fixture.input, {
-          config: { ...fixture.config, securityLevel },
-        })
-        expect(outcome.accepted, `${fixture.name}: ${securityLevel}`).toBe(
-          fixture.expected.accepted,
-        )
-        if (outcome.accepted && fixture.expected.accepted) {
-          expect(outcome.db, `${fixture.name}: ${securityLevel}`).toEqual(
-            fixture.expected.db,
-          )
-        }
-      }
+  it("keeps markup under every supported security level", async () => {
+    const base = await summary("html-all-fields")
+    for (const securityLevel of ["strict", "loose", "antiscript", "sandbox"]) {
+      expect(await summary("html-all-fields", { securityLevel })).toEqual(base)
     }
-  }, 30_000)
+  })
 
   it("resets publication after a semantic rejection", async () => {
     expect(

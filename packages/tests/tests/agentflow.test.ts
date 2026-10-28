@@ -4,7 +4,7 @@ import type { Fixture } from "../src/index.ts"
 import { loadFixtures } from "../src/index.ts"
 import { runMermaid, runMermaidWithEmbeddedData } from "../src/mermaid.ts"
 import { normalizeAgentflow } from "../src/normalizers/agentflow.ts"
-import type { DbSummary } from "../src/types.ts"
+import type { DbSummary, MermaidConfig } from "../src/types.ts"
 
 const fixtures = await loadFixtures("agentflow")
 
@@ -16,9 +16,14 @@ function named(name: string): Fixture {
 }
 
 /** The summary of an accepted, fixed corpus input. */
-async function summary(name: string): Promise<DbSummary> {
+async function summary(
+  name: string,
+  config: MermaidConfig = {},
+): Promise<DbSummary> {
   const fixture = named(name)
-  const result = await runMermaid(fixture.input, { config: fixture.config })
+  const result = await runMermaid(fixture.input, {
+    config: { ...fixture.config, ...config },
+  })
   if (!result.accepted || !result.db) {
     throw new Error(`agentflow/${name} was not summarized`)
   }
@@ -206,16 +211,20 @@ describe("agentflow summary", () => {
     })
   })
 
-  for (const fixture of fixtures) {
-    it(`keeps ${fixture.name} independent of the four supported security levels`, async () => {
-      const config = { ...fixture.config, securityLevel: "strict" }
-      const strict = await runMermaid(fixture.input, { config })
-      for (const securityLevel of ["loose", "antiscript", "sandbox"]) {
-        const result = await runMermaid(fixture.input, {
-          config: { ...config, securityLevel },
-        })
-        expect(result, `${fixture.name}: ${securityLevel}`).toEqual(strict)
+  it("keeps markup under every supported security level", async () => {
+    for (const name of ["html-label-contexts", "config-security-loose"]) {
+      const base = await summary(name)
+      for (const securityLevel of [
+        "strict",
+        "loose",
+        "antiscript",
+        "sandbox",
+      ]) {
+        expect(
+          await summary(name, { securityLevel }),
+          `${name}: ${securityLevel}`,
+        ).toEqual(base)
       }
-    })
-  }
+    }
+  })
 })

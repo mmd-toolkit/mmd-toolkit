@@ -7,7 +7,12 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findTokensBetween, isCommentLine, isWhitespace } from "./source.ts"
+import {
+  findFirstIndex,
+  findTokensBetween,
+  isCommentLine,
+  isWhitespace,
+} from "./source.ts"
 
 /** The kept lines of each source, found once per source. */
 const keptLinesBySource = new WeakMap<Source, KeptLines>()
@@ -46,23 +51,26 @@ export function findC4KeptLines(source: Source): KeptLines {
 
   visit(diagram.body)
   const verbatim = new Set(findLinesEndedBySemicolon(source))
+  const nonDirectiveTokens = source.root.tokens.filter(
+    (token) => token.type !== "Directive",
+  )
   for (const directive of source.trivia.filter(
     (item) => item.type === "Directive",
   )) {
     if (directive.range[0] < diagram.range[0]) continue
     const line = lineStartOf(source, directive.range[0])
     const end = lineEndOf(source, directive.range[1])
-    if (
-      findTokensBetween(source, line, end).some(
-        (token) => token.type !== "Directive",
-      )
+    const first = findFirstIndex(
+      nonDirectiveTokens,
+      (token) => token.range[0] >= line,
     )
-      verbatim.add(line)
+    const next = nonDirectiveTokens[first]
+    if (next !== undefined && next.range[0] < end) verbatim.add(line)
   }
   const kept: KeptLines = {
     joined,
     verbatim,
-    writtenIndentation: new Set(),
+    ownIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)
   return kept

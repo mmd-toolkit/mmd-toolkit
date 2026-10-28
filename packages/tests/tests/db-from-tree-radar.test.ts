@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
-import { cssSupportsColor, loadFixtures } from "../src/index.ts"
+import { cssSupportsColor, loadFixture } from "../src/index.ts"
 import type { CheckedNode } from "../src/check-tree/types.ts"
 import type { Kit } from "./check-tree-built.ts"
 import { axis, buildRadar, curve, entry, group, option } from "./radar-built.ts"
@@ -241,11 +241,9 @@ describe("radar Db from hand-built trees", () => {
   })
 
   it("records non-finite entries through the shared number convention", async () => {
-    const fixture = (await loadFixtures("radar")).find(
-      (item) => item.name === "db-number-overflow",
-    )
-    if (fixture === undefined || !fixture.expected.accepted)
-      throw new Error("missing accepted fixed overflow fixture")
+    const fixture = await loadFixture("radar", "db-number-overflow")
+    if (!fixture.expected.accepted)
+      throw new Error("rejected fixed overflow fixture")
     const raw = fixture.input.slice(
       fixture.input.indexOf("{") + 1,
       fixture.input.indexOf("}"),

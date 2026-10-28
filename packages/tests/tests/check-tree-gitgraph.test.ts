@@ -1,7 +1,7 @@
 import { commentOf } from "./check-tree-trees.ts"
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
-import { loadFixtures } from "../src/index.ts"
+import { loadFixture } from "../src/index.ts"
 import {
   GITGRAPH_CHILD_TYPES,
   GITGRAPH_FIELD_WORDS,
@@ -416,10 +416,7 @@ describe("gitgraph hand-built trees", () => {
     },
   ] as const)
     it(`rejects the hidden form recorded as Comment in ${row.name}`, async () => {
-      const fixture = (await loadFixtures("gitgraph")).find(
-        (entry) => entry.name === row.name,
-      )
-      if (fixture === undefined) throw new Error(`missing gitgraph/${row.name}`)
+      const fixture = await loadFixture("gitgraph", row.name)
       expect(fixture.expected.accepted).toBe(false)
       const { source, tree } = buildGitgraph(fixture.input, (kit) => {
         const first = common(kit, "Gitgraph", row.kind, row.value)

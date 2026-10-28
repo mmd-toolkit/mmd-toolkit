@@ -13,7 +13,7 @@ import {
 import { printAsWritten } from "./lines.ts"
 import { readGap } from "./gap.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween } from "./source.ts"
+import { findFirstIndex, findTriviaBetween } from "./source.ts"
 
 const { literalline } = builders
 
@@ -36,7 +36,7 @@ export function findHiddenKeptLines(
       ...findLinesEndedBySemicolon(source),
       ...findVerbatimStyleLines(source),
     ]),
-    writtenIndentation: new Set(),
+    ownIndentation: new Set(),
   }
 }
 
@@ -87,7 +87,7 @@ export function hiddenBlockRules<Statement extends Node>(
   return {
     kept,
     printedEnd,
-    joiningRegionsInValues: true,
+    joiningRegionsPrintedAsWritten: true,
     holdsStatements: () => false,
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
@@ -151,7 +151,10 @@ export function protectHiddenGaps(
   const writtenGapsBefore = new Set<number>()
   for (const item of hidden) {
     rules.delete(item.range[0])
-    const next = layout.atoms.find((atom) => atom.start >= item.range[1])
+    const next =
+      layout.atoms[
+        findFirstIndex(layout.atoms, (atom) => atom.start >= item.range[1])
+      ]
     if (next !== undefined) writtenGapsBefore.add(next.start)
   }
   return { ...layout, rules, writtenGapsBefore }

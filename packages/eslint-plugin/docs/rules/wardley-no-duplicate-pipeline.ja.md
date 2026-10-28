@@ -25,8 +25,7 @@ mermaid.js はエラーなしにそれを置き換え、前の pipeline の子�
 pipeline の枠は `Cloud` だけを持つ。
 
 別の順でも同じ子を持つ pipeline は報告しない。
-そこで別の位置を与えた子は
-[wardley-no-redefined-node](./wardley-no-redefined-node.ja.md) が報告する。
+そこで別の位置を与えた子は [wardley-no-redefined-node](./wardley-no-redefined-node.ja.md) が報告する。
 pipeline の後に宣言した親も数える。
 名前は [wardley-no-undef](./wardley-no-undef.ja.md) が比べるとおりに比べる。
 
@@ -69,8 +68,8 @@ wardley-beta
 
 ## 背景
 
-[`startPipeline`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L120)
-は、親の子を新しく始める。
+[`startPipeline`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L112-L120) は、
+親の子を新しく始める。
 
 <!-- begin auto-generated rule resources -->
 

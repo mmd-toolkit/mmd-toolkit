@@ -403,13 +403,37 @@ function overlay(base: JsonValue, over: JsonValue | undefined): JsonValue {
  */
 // eslint-disable-next-line @typescript-eslint/require-await -- the signature stays asynchronous for the packages that call it
 export async function loadFixtures(diagram: DiagramType): Promise<Fixture[]> {
-  const dir = path.join(fixturesRoot, diagram)
-  const fixtures = fixtureDirectories(dir).map((name) =>
-    readFixture(diagram, name, path.join(dir, name)),
+  return fixtureNames(diagram).map((name) =>
+    readFixture(diagram, name, path.join(fixturesRoot, diagram, name)),
   )
-  return fixtures.sort((a, b) =>
-    a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
+}
+
+/**
+ * The names of the fixtures of the given diagram type, sorted: the names of
+ * the directories under `fixtures/<diagram>/`, which `loadFixtures()` and
+ * `loadFixture()` take as the fixtures. No file is read.
+ */
+export function fixtureNames(diagram: DiagramType): string[] {
+  return fixtureDirectories(path.join(fixturesRoot, diagram)).sort((a, b) =>
+    a < b ? -1 : a > b ? 1 : 0,
   )
+}
+
+/**
+ * Loads the fixture `name` of the given diagram type: the `Fixture` that
+ * `loadFixtures(diagram)` has under that name, reading only the files of its
+ * directory. Throws when the diagram type has no fixture of that name, where
+ * the names are those of the fixture directories as spelled.
+ */
+// eslint-disable-next-line @typescript-eslint/require-await -- the signature stays asynchronous like that of `loadFixtures`
+export async function loadFixture(
+  diagram: DiagramType,
+  name: string,
+): Promise<Fixture> {
+  if (!fixtureNames(diagram).includes(name)) {
+    throw new Error(`no fixture ${diagram}/${name}`)
+  }
+  return readFixture(diagram, name, path.join(fixturesRoot, diagram, name))
 }
 
 /**

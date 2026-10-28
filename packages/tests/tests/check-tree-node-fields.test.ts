@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { fieldSpecOf } from "../src/check-tree/field-spec.ts"
-import { NODE_FIELDS } from "../src/check-tree/node-fields.ts"
+import { NODE_FIELDS, childFieldsOf } from "../src/check-tree/node-fields.ts"
 import {
   STRUCTURE_NODE_TYPES,
   VALUE_NODE_TYPES,
@@ -52,16 +52,26 @@ describe("the fields of the node types of the check of a tree", () => {
     expect(differing).toEqual([])
   })
 
-  it("list the fields that are nodes in the order of the child fields that the specification states", () => {
+  it("list the child fields in the order that the specification states, for every node type", () => {
+    const stated = readChildFields()
     const differing: string[] = []
-    for (const [type, children] of readChildFields()) {
-      const own = Object.entries(NODE_FIELDS[type] ?? {})
-        .filter(([, spec]) => spec.shape !== "value")
-        .map(([field]) => field)
-      if (JSON.stringify(own) !== JSON.stringify(children)) {
+    // A record is no node type, and no section states its child fields.
+    const nodeTypes = [...VALUE_NODE_TYPES, ...STRUCTURE_NODE_TYPES]
+    for (const type of nodeTypes) {
+      const children = stated.get(type)
+      if (children === undefined) {
+        differing.push(`${type}: the specification states no child fields`)
+      } else if (
+        JSON.stringify(childFieldsOf(type)) !== JSON.stringify(children)
+      ) {
         differing.push(
-          `${type}: ${JSON.stringify(own)} for ${JSON.stringify(children)}`,
+          `${type}: ${JSON.stringify(childFieldsOf(type))} for ${JSON.stringify(children)}`,
         )
+      }
+    }
+    for (const type of stated.keys()) {
+      if (!nodeTypes.includes(type)) {
+        differing.push(`${type}: states child fields but is no node type`)
       }
     }
     expect(differing).toEqual([])

@@ -51,7 +51,7 @@ export function findClassKeptLines(source: Source): KeptLines {
       ...findPercentMemberLines(source, body),
     ]),
     verbatim: findLinesEndedBySemicolon(source),
-    writtenIndentation: new Set(),
+    ownIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)
   return kept

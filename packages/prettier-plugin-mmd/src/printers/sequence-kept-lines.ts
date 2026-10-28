@@ -8,6 +8,7 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
+import { findFirstIndex } from "./source.ts"
 import type { SequenceSimpleStatement } from "./sequence-layout.ts"
 import { classifySequenceStatement } from "./sequence-layout.ts"
 
@@ -70,7 +71,7 @@ export function findSequenceKeptLines(source: Source): KeptLines {
       ...linesAfterUnits.filter((line) => verbatimLines.has(line)),
     ]),
     verbatim: verbatimLines,
-    writtenIndentation: new Set(),
+    ownIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)
   extendedEndsBySource.set(source, extendedEnds)
@@ -100,8 +101,10 @@ export function printedEndAfterSemicolons(
  */
 function findEndOfSemicolonsAfter(source: Source, offset: number): number {
   let end = offset
-  for (const token of source.root.tokens) {
-    if (token.range[0] < offset) continue
+  const { tokens } = source.root
+  const first = findFirstIndex(tokens, (token) => token.range[0] >= offset)
+  for (let index = first; index < tokens.length; index++) {
+    const token = tokens[index]
     if (token.type === "Directive") continue
     if (token.value !== ";") break
     end = token.range[1]
@@ -185,11 +188,9 @@ function isFollowedByDirectiveAndSemicolon(
   source: Source,
   offset: number,
 ): boolean {
-  const following = source.root.tokens.filter(
-    (token) => token.range[0] >= offset,
-  )
-  const afterDirectives = following.findIndex(
-    (token) => token.type !== "Directive",
-  )
-  return afterDirectives > 0 && following[afterDirectives].value === ";"
+  const { tokens } = source.root
+  const first = findFirstIndex(tokens, (token) => token.range[0] >= offset)
+  let after = first
+  while (tokens[after]?.type === "Directive") after++
+  return after > first && tokens[after]?.value === ";"
 }

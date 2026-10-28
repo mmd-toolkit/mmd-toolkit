@@ -742,6 +742,60 @@ after a comment on the header line] [test: U+2028 after a comment after a shape]
 between nodes] [test: U+2028 inside a node text] [test: U+2029 inside a shape
 text] [test: U+2028 inside an icon] [test: U+2028 after the header]
 
+A `;` beside the separator changes none of this. The `;` that the line rule
+ignores stays at the end of the comment, and a `;` in the text of the node after
+the separator is a character of that text, also after an icon. A wide
+indentation after the separator is written again at the width of its step, and
+with a tab width of 0 or with tabs the line is indented as any other. [test:
+mindmap: selected-comment-ls-kept] [test: mindmap: comment-ps-semicolon-after]
+[test: mindmap: comment-ls-semicolon-both] [test: mindmap: icon-comment-ps-kept]
+[test: mindmap: selected-comment-ps-wide] [test: mindmap:
+selected-comment-ls-zero] [test: mindmap: icon-comment-ls-tabs]
+
+A directive at the start of the line after the separator is the directive of a
+line like any other (see [Directives](#directives)): the line is printed as
+written from the directive, and the printer decides the whitespace before it.
+The separator and the whitespace after the directive are characters of the
+indentation of the node, and the directive is not, so the whitespace before the
+directive makes up what the step requires beyond the whitespace after it, and
+the separator itself is written as the line break. `R[x] %% c`, U+2028, and
+`%%{init: {}}%% C` print `C` with 4 characters of indentation, 3 before the
+directive and 1 after it, since `R` has 2 and the step is 2. It makes no
+difference whether whitespace stands between the separator and the directive or
+between the directive and the text, whether the text touches the directive,
+whether a second directive, an icon, a class, or a `;` that the line rule
+ignores is there, how deep the line is, and which options are set. A separator
+after the comment of such a node starts the next line in the same way, and the
+lines after it are indented as before. [test: U+2028 before a directive that
+starts the line] [test: U+2029 before a directive that touches the text] [test:
+U+2028 and whitespace before and after a directive] [test: U+2028 before two
+directives] [test: U+2028 before a directive and an icon] [test: U+2028 before a
+directive and a class] [test: U+2028 before a directive in a deeper line] [test:
+U+2028 after a selected semicolon before a directive] [test: U+2028 before a
+directive with a tab width of 0] [test: U+2028 before a directive with tabs]
+[test: U+2028 and U+2029 before two directives in two lines] [test: U+2028
+before a directive and a sibling]
+
+mermaid.js removes a comment line that follows the separator, with the
+whitespace and the directives before it, and the line of the node goes on after
+it (common.md, Comment), so what the comment line holds is no part of the
+indentation of the node. A directive after the comment line starts the line of
+the node, as above, and the comment line, with the directives before it, stands
+on a line of its own at the level of the node (see [Comments](#comments)).
+[test: U+2028 before a comment line and a directive] [test: U+2028 before a
+comment line and an indented directive] [test: U+2028 before a directive, a
+comment line, and a directive] [test: U+2028 before two comment lines and a
+directive]
+
+A directive line of its own, or an empty line, after the separator is a blank
+line that follows a comment, and it stands as such lines do elsewhere: the
+directive at the level of the line after it (see [Directives](#directives)) and
+the empty line as one empty line (see [Blank lines](#blank-lines)). mermaid.js
+rejects both placings (known divergence
+[`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md)),
+and the printer does not repair that. [test: U+2028 before a directive line of
+its own] [test: U+2028 before an empty line]
+
 ### Whitespace characters
 
 U+00A0, U+3000, and U+FEFF are whitespace to the lexer. Before a node each is

@@ -35,7 +35,7 @@ parser from its build in `lib/`: rebuild it with
 | `tests/token-store.test.ts`   | Token methods of the source code          |
 | `tests/inline-config.test.ts` | Comments that configure ESLint            |
 | `tests/markdown.test.ts`      | Code blocks in Markdown                   |
-| `tests/diagram-rules.test.ts` | Rules on other diagram types              |
+| `tests/diagram-rules.test.ts` | Selectors of the rules                    |
 | `tests/subgraph-ids.test.ts`  | Subgraph ids from the tree                |
 | `tests/text-nodes.test.ts`    | Text node types of the rules              |
 | `tests/rule-cases.test.ts`    | Examples of the rule documents            |
@@ -58,13 +58,12 @@ parser from its build in `lib/`: rebuild it with
 - `tests/markdown.test.ts`: The `mermaid` and `mmd` code blocks of
   `tests/fixtures/markdown/`, linted through the processor of
   `@eslint/markdown`: the reports are at the places of the Markdown file.
-- `tests/diagram-rules.test.ts`: The rules of each diagram type, on the inputs
-  of `tests/language-inputs.ts` that the parser accepts, whose diagram is of
-  another type: they report nothing.
+- `tests/diagram-rules.test.ts`: The selectors that each rule registers, all of
+  which must be node types of the diagram type of the rule.
 - `tests/subgraph-ids.test.ts`: `subgraphIdsOf` of `src/utils/subgraph-ids.ts`,
   the Db id of each subgraph derived from the tree, against the Db that
-  mermaid.js gave for the corpus fixtures about subgraphs (every fixture whose
-  Db has subgraphs).
+  mermaid.js gave for the corpus fixtures that hold the claims about the id (the
+  test names each).
 - `tests/text-nodes.test.ts`: `TEXT_NODE_TYPES` of `src/utils/text-nodes.ts`,
   the node types whose text can hold a line of only `%%`. Every leaf node type
   of the flowchart in the parser is in the list, an arrow, or without a text,

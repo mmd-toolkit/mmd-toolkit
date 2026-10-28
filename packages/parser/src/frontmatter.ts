@@ -90,9 +90,13 @@ function delimiterEnd(
 ): number | null {
   if (!line.hasTerminator) return null
   let at = line.start
-  for (const expected of [...indent, ...FRONTMATTER_DELIMITER]) {
-    if (text.codePointAt(at) !== expected) return null
-    at = text.after(at)
+  // Walk the two parts directly: copying a long indent for every candidate
+  // line would multiply its length by the number of body lines.
+  for (const part of [indent, FRONTMATTER_DELIMITER]) {
+    for (const expected of part) {
+      if (text.codePointAt(at) !== expected) return null
+      at = text.after(at)
+    }
   }
   return afterWhile(text, at, isLineWhitespace) === line.contentEnd ? at : null
 }

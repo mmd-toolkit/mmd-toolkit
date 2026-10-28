@@ -2,11 +2,10 @@
 
 英語版: [radar.md](./radar.md)
 
-決定された 29 項目に従い、[radar の木](../../spec/docs/ast/radar.ja.md)と
-共有の平坦な本文レイアウトを使います。
+決定された 29 項目に従い、
+[radar の木](../../spec/docs/ast/radar.ja.md)と共有の平坦な本文レイアウトを使います。
 各規則で選択の理由を説明します。
-保持する文字と mermaid.js との差は
-[compatibility.ja.md](./compatibility.ja.md)に記します。
+保持する文字と mermaid.js との差は [compatibility.ja.md](./compatibility.ja.md)に記します。
 
 ## Rules
 
@@ -15,8 +14,7 @@
 `radar-beta` を第 1 列に置き、普通の最初の文を次の行へ移します。
 見出しを見つけやすくするためです。
 作者が書いたコロンの有無を保ちます。
-別置コロン前の普通の空白は意味を持たないため、
-`radar-beta:` に詰めます。
+別置コロン前の普通の空白は意味を持たないため、 `radar-beta:` に詰めます。
 gitgraph の [Header](./gitgraph.ja.md#header) と同じ選択です。
 hidden form、global trivia、semicolon の保護区間では境界を保ちます。
 空の本文は空のままです。
@@ -58,8 +56,7 @@ hidden form、global trivia、semicolon の保護区間では境界を保ちま�
 入力（escape 表記）:
 `"radar-beta : curve trial{4}\n"`.
 
-出力
-([header/join-separated-inline-alternative-output.mmd](../tests/fixtures/radar/header/join-separated-inline-alternative-output.mmd)):
+出力 ([header/join-separated-inline-alternative-output.mmd](../tests/fixtures/radar/header/join-separated-inline-alternative-output.mmd)):
 
 ```mmd
 radar-beta:
@@ -91,8 +88,7 @@ entry の継続行は 2 段です。
 
 設定: `{"tabWidth": 4}`.
 
-出力
-([indentation/indent-four-output.mmd](../tests/fixtures/radar/indentation/indent-four-output.mmd)):
+出力 ([indentation/indent-four-output.mmd](../tests/fixtures/radar/indentation/indent-four-output.mmd)):
 
 ```mmd
 radar-beta
@@ -123,8 +119,7 @@ radar-beta
 入力（escape 表記）:
 `"radar-beta axis North axis South curve one{1}curve two{2}ticks 7 max 9 min 2 showLegend false graticule polygon\n"`.
 
-出力
-([statements-one-per-line/all-inline-kinds-output.mmd](../tests/fixtures/radar/statements-one-per-line/all-inline-kinds-output.mmd)):
+出力 ([statements-one-per-line/all-inline-kinds-output.mmd](../tests/fixtures/radar/statements-one-per-line/all-inline-kinds-output.mmd)):
 
 ```mmd
 radar-beta
@@ -167,8 +162,7 @@ trivia のある間隙は書かれた接触と分離を保ちます。
 入力（escape 表記）:
 `"radar-beta\naxis North [\"N\"] ,\tSouth , East\n"`.
 
-出力
-([groups-and-commas/axis-comma-output.mmd](../tests/fixtures/radar/groups-and-commas/axis-comma-output.mmd)):
+出力 ([groups-and-commas/axis-comma-output.mmd](../tests/fixtures/radar/groups-and-commas/axis-comma-output.mmd)):
 
 ```mmd
 radar-beta
@@ -192,8 +186,7 @@ radar-beta
 入力（escape 表記）:
 `"radar-beta\naxis North \t[ \t\"North label\"\t ]\n"`.
 
-出力
-([labels/axis-double-brackets-output.mmd](../tests/fixtures/radar/labels/axis-double-brackets-output.mmd)):
+出力 ([labels/axis-double-brackets-output.mmd](../tests/fixtures/radar/labels/axis-double-brackets-output.mmd)):
 
 ```mmd
 radar-beta
@@ -215,8 +208,7 @@ radar-beta
 入力（escape 表記）:
 `"radar-beta\ncurve trial \t{ \t4, 5 \t}\n"`.
 
-出力
-([curve-braces/brace-tight-output.mmd](../tests/fixtures/radar/curve-braces/brace-tight-output.mmd)):
+出力 ([curve-braces/brace-tight-output.mmd](../tests/fixtures/radar/curve-braces/brace-tight-output.mmd)):
 
 ```mmd
 radar-beta
@@ -291,8 +283,7 @@ hidden の境界、値の行、semicolon の保護区間は継続列を含め保
 入力（escape 表記）:
 `"radar-beta\ncurve trial{4,\n%% entry note\n5\n}\n"`.
 
-出力
-([multi-line-statements/entry-comment-after-comma-output.mmd](../tests/fixtures/radar/multi-line-statements/entry-comment-after-comma-output.mmd)):
+出力 ([multi-line-statements/entry-comment-after-comma-output.mmd](../tests/fixtures/radar/multi-line-statements/entry-comment-after-comma-output.mmd)):
 
 ```mmd
 radar-beta
@@ -321,8 +312,7 @@ radar-beta
 入力（escape 表記）:
 `"radar-beta\naxis North,South\ncurve trial{North 4,South:5}\n"`.
 
-出力
-([named-entries/mixed-colon-spelling-output.mmd](../tests/fixtures/radar/named-entries/mixed-colon-spelling-output.mmd)):
+出力 ([named-entries/mixed-colon-spelling-output.mmd](../tests/fixtures/radar/named-entries/mixed-colon-spelling-output.mmd)):
 
 ```mmd
 radar-beta
@@ -333,8 +323,8 @@ radar-beta
 ### Numbers
 
 entry と ticks・max・min の数は NumericLiteral の source span を印字します。
-整数、小数の先行・末尾ゼロ、丸められる精度、subnormal、
-underflow、overflow の綴りを保ちます。
+整数、小数の先行・末尾ゼロ、丸められる精度、subnormal、 underflow、
+overflow の綴りを保ちます。
 double 値からの再出力は綴りを失います。
 radar が拒否する指数表記や Infinity を出すこともあるためです。
 
@@ -355,8 +345,7 @@ radar が拒否する指数表記や Infinity を出すこともあるためで�
 入力（escape 表記）:
 `"radar-beta\ncurve trial{0004.5000,9007199254740993,0.12345678901234567890,0}\n"`.
 
-出力
-([numbers/raw-number-forms-output.mmd](../tests/fixtures/radar/numbers/raw-number-forms-output.mmd)):
+出力 ([numbers/raw-number-forms-output.mmd](../tests/fixtures/radar/numbers/raw-number-forms-output.mmd)):
 
 ```mmd
 radar-beta
@@ -390,8 +379,7 @@ radar の描画設定から文の値を補いません。
 入力（escape 表記）:
 `"radar-beta\nshowLegend\t false,ticks\t7,max  8,min\t2,graticule\tpolygon\n"`.
 
-出力
-([options/option-gaps-output.mmd](../tests/fixtures/radar/options/option-gaps-output.mmd)):
+出力 ([options/option-gaps-output.mmd](../tests/fixtures/radar/options/option-gaps-output.mmd)):
 
 ```mmd
 radar-beta
@@ -401,8 +389,8 @@ radar-beta
 ### Quotes
 
 ラベルの StringLiteral は完全な source span を保ちます。
-一重・二重・反対側の引用符、空・空白だけの文字列、escape、HTML、
-entity、内部の空白、hidden に見える文字を含みます。
+一重・二重・反対側の引用符、空・空白だけの文字列、escape、HTML、 entity、
+内部の空白、hidden に見える文字を含みます。
 singleQuote でも再引用しません。
 空ラベルの削除は ID への fallback を変えます。
 内側の空白を畳んでも Db が変わりうるためです。
@@ -424,8 +412,7 @@ singleQuote でも再引用しません。
 
 設定: `{"singleQuote": true}`.
 
-出力
-([quotes/quotes-and-empty-output.mmd](../tests/fixtures/radar/quotes/quotes-and-empty-output.mmd)):
+出力 ([quotes/quotes-and-empty-output.mmd](../tests/fixtures/radar/quotes/quotes-and-empty-output.mmd)):
 
 ```mmd
 radar-beta
@@ -455,8 +442,7 @@ trivia のある値と保護区間は原文の間隙を保ちます。
 入力（escape 表記）:
 `"radar-beta\ntitle\t  Topic  words\t \n"`.
 
-出力
-([title/title-edge-trim-output.mmd](../tests/fixtures/radar/title/title-edge-trim-output.mmd)):
+出力 ([title/title-edge-trim-output.mmd](../tests/fixtures/radar/title/title-edge-trim-output.mmd)):
 
 ```mmd
 radar-beta
@@ -483,8 +469,7 @@ trivia・hidden・semicolon の保護を優先します。
 入力（escape 表記）:
 `"radar-beta\naccTitle \t:   Access  words\t\naccDescr\t:   Detail  words \n"`.
 
-出力
-([accessibility-lines/a11y-lines-fixed-output.mmd](../tests/fixtures/radar/accessibility-lines/a11y-lines-fixed-output.mmd)):
+出力 ([accessibility-lines/a11y-lines-fixed-output.mmd](../tests/fixtures/radar/accessibility-lines/a11y-lines-fixed-output.mmd)):
 
 ```mmd
 radar-beta
@@ -525,8 +510,7 @@ opener 前の普通の空白は結合し、実際の trivia のある改行は�
 入力（escape 表記）:
 `"radar-beta\naccDescr{Word}\naccDescr { Word }\naccDescr{Left }\naccDescr { Right}\n"`.
 
-出力
-([description-blocks/block-touching-fixed-output.mmd](../tests/fixtures/radar/description-blocks/block-touching-fixed-output.mmd)):
+出力 ([description-blocks/block-touching-fixed-output.mmd](../tests/fixtures/radar/description-blocks/block-touching-fixed-output.mmd)):
 
 ```mmd
 radar-beta
@@ -553,8 +537,7 @@ printWidth で折り返しません。
 入力（escape 表記）:
 `"radar-beta\naxis North[\"first\n   second\n\nlast\"]\ncurve trial['other\n  continuation']{4}\n"`.
 
-出力
-([multiline-values/physical-value-columns-output.mmd](../tests/fixtures/radar/multiline-values/physical-value-columns-output.mmd)):
+出力 ([multiline-values/physical-value-columns-output.mmd](../tests/fixtures/radar/multiline-values/physical-value-columns-output.mmd)):
 
 ```mmd
 radar-beta
@@ -588,8 +571,7 @@ prototype に似た名前、空の共通代入を残します。
 入力（escape 表記）:
 `"radar-beta\ncurve trial{South:5,North:4,Extra:9,North:6}\naxis North,South,North\ncurve trial{7}\n"`.
 
-出力
-([source-order/declaration-order-kept-output.mmd](../tests/fixtures/radar/source-order/declaration-order-kept-output.mmd)):
+出力 ([source-order/declaration-order-kept-output.mmd](../tests/fixtures/radar/source-order/declaration-order-kept-output.mmd)):
 
 ```mmd
 radar-beta
@@ -627,8 +609,7 @@ native コメントは物理 EOL で終わり、LS・PS は内容のままです
 入力（escape 表記）:
 `"radar-beta\naxis North[\"N%%literal\"]\naccDescr {a%%literal}\n"`.
 
-出力
-([comments/value-percent-owned-output.mmd](../tests/fixtures/radar/comments/value-percent-owned-output.mmd)):
+出力 ([comments/value-percent-owned-output.mmd](../tests/fixtures/radar/comments/value-percent-owned-output.mmd)):
 
 ```mmd
 radar-beta
@@ -673,8 +654,7 @@ native の RadarIgnoredText directive は別の原文ノードです。
 入力（escape 表記）:
 `"radar-beta\naxis North%%{wrap}%%[%%{wrap}%%\"N\"%%{wrap}%%]\ncurve trial%%{wrap}%%{4}\n"`.
 
-出力
-([global-directives/global-components-output.mmd](../tests/fixtures/radar/global-directives/global-components-output.mmd)):
+出力 ([global-directives/global-components-output.mmd](../tests/fixtures/radar/global-directives/global-components-output.mmd)):
 
 ```mmd
 radar-beta
@@ -751,8 +731,7 @@ native form の照合に失敗したコメントはコメントのままです�
 入力（escape 表記）:
 `"radar-beta\naxis North%%{!open}%%\n[%%{!value}%%\n\"N\"%%{!close}%%\n]\n"`.
 
-出力
-([hidden-forms/axis-hidden-label-gaps-output.mmd](../tests/fixtures/radar/hidden-forms/axis-hidden-label-gaps-output.mmd)):
+出力 ([hidden-forms/axis-hidden-label-gaps-output.mmd](../tests/fixtures/radar/hidden-forms/axis-hidden-label-gaps-output.mmd)):
 
 ```mmd
 radar-beta
@@ -810,8 +789,7 @@ EOL が不要な axis・curve・options でも、書かれた境界を保ちま�
 入力（escape 表記）:
 `"radar-beta%%{}%% axis A%%{}%%\n\ncurve c{1}"`.
 
-出力
-([hidden-boundaries/header-axis-suffix-output.mmd](../tests/fixtures/radar/hidden-boundaries/header-axis-suffix-output.mmd)):
+出力 ([hidden-boundaries/header-axis-suffix-output.mmd](../tests/fixtures/radar/hidden-boundaries/header-axis-suffix-output.mmd)):
 
 ```mmd
 radar-beta%%{}%% axis A%%{}%%
@@ -843,8 +821,7 @@ title と設定が変わりうるためです。
 入力（escape 表記）:
 `"\n---\ntitle: Ignored title\n---\nradar-beta\naxis North\n"`.
 
-出力
-([retained-prefix/retained-leading-lf-output.mmd](../tests/fixtures/radar/retained-prefix/retained-leading-lf-output.mmd)):
+出力 ([retained-prefix/retained-leading-lf-output.mmd](../tests/fixtures/radar/retained-prefix/retained-leading-lf-output.mmd)):
 
 ```mmd
 
@@ -891,8 +868,7 @@ radar に普通の semicolon 区切りはありません。
 入力（escape 表記）:
 `"radar-beta\ntitle style:#red;;\naxis North[\"classDef:#blue;;\"]\n"`.
 
-出力
-([semicolons/semicolon-selected-kept-output.mmd](../tests/fixtures/radar/semicolons/semicolon-selected-kept-output.mmd)):
+出力 ([semicolons/semicolon-selected-kept-output.mmd](../tests/fixtures/radar/semicolons/semicolon-selected-kept-output.mmd)):
 
 ```mmd
 radar-beta
@@ -922,8 +898,7 @@ radar-beta
 入力（escape 表記）:
 `"\n\nradar-beta\n\n\naxis North\n \t\n\ncurve trial{4}\n\n"`.
 
-出力
-([blank-lines/blanks-ordinary-output.mmd](../tests/fixtures/radar/blank-lines/blanks-ordinary-output.mmd)):
+出力 ([blank-lines/blanks-ordinary-output.mmd](../tests/fixtures/radar/blank-lines/blanks-ordinary-output.mmd)):
 
 ```mmd
 radar-beta
@@ -936,8 +911,8 @@ radar-beta
 
 見出し、完了した axis・curve・options、説明 closer 後の無害な空白を除きます。
 共通の行値の外端は共有の trim に従います。
-コメント末尾、値の物理継続行、directive・hidden の内部、
-保護区間、保持する prefix は残します。
+コメント末尾、値の物理継続行、directive・hidden の内部、保護区間、
+保持する prefix は残します。
 hidden closer 後の空白は EOF でも残します。
 受理を左右しうるためです。
 
@@ -952,8 +927,7 @@ hidden closer 後の空白は EOF でも残します。
 入力（escape 表記）:
 `"radar-beta \t\naxis North \t\ncurve trial{4} \t\nticks 7 \t\naccDescr {Detail} \t\n"`.
 
-出力
-([trailing-whitespace/trailing-safe-output.mmd](../tests/fixtures/radar/trailing-whitespace/trailing-safe-output.mmd)):
+出力 ([trailing-whitespace/trailing-safe-output.mmd](../tests/fixtures/radar/trailing-whitespace/trailing-safe-output.mmd)):
 
 ```mmd
 radar-beta
@@ -993,8 +967,7 @@ frontmatter への fallback を戻す空の本文 title も削除しません。
 入力（escape 表記）:
 `"---\ntitle:   Radar topic\nconfig: {theme: dark, radar: {width: 250}}\n---\nradar-beta\naxis North\n"`.
 
-出力
-([frontmatter-yaml/frontmatter-safe-output.mmd](../tests/fixtures/radar/frontmatter-yaml/frontmatter-safe-output.mmd)):
+出力 ([frontmatter-yaml/frontmatter-safe-output.mmd](../tests/fixtures/radar/frontmatter-yaml/frontmatter-safe-output.mmd)):
 
 ```mmd
 ---
@@ -1076,8 +1049,7 @@ EOF に届く global directive の末尾と必要な hidden・prefix の境界�
 入力（escape 表記）:
 `"radar-beta\naccDescr {Detail}%%{!suffix}%%"`.
 
-出力
-([final-newline/final-hidden-closed-output.mmd](../tests/fixtures/radar/final-newline/final-hidden-closed-output.mmd)):
+出力 ([final-newline/final-hidden-closed-output.mmd](../tests/fixtures/radar/final-newline/final-hidden-closed-output.mmd)):
 
 ```mmd
 radar-beta
@@ -1096,8 +1068,7 @@ raw の拒否には raw Db がありません。
 空ラベル、空説明、全体の hidden form はノードであり、新しい差異ではありません。
 standalone の失敗は修復した出力を返さず構文エラーにします。
 Markdown は埋め込みを辞退します。
-[互換性](./compatibility.ja.md#radar-の原文の群と-hidden-境界)も
-参照してください。
+[互換性](./compatibility.ja.md#radar-の原文の群と-hidden-境界)も参照してください。
 
 [corpus fixture: radar/directive-header-middle]
 

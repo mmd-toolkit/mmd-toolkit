@@ -91,7 +91,10 @@ describe("treeview escaped cases", () => {
 
 it("treeview split directives remain redrawable", async () => {
   const fixtures = new Map(
-    (await loadFormatFixtures()).map((fixture) => [fixture.id, fixture.output]),
+    (await loadFormatFixtures("treeview")).map((fixture) => [
+      fixture.id,
+      fixture.output,
+    ]),
   )
   for (const fixture of treeviewCases)
     fixtures.set(fixture.name, fixture.output)

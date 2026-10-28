@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
-import { embeddedValuesOf, loadFixtures } from "../src/index.ts"
+import { embeddedValuesOf, loadFixture } from "../src/index.ts"
 import { cssSupportsColor } from "../src/normalizers/browser-stand-ins.ts"
 import type { CheckedNode } from "../src/check-tree/types.ts"
 import type { Kit } from "./check-tree-built.ts"
@@ -163,10 +163,7 @@ const CASES: readonly {
 describe("the pie Db from hand-built corpus trees", () => {
   for (const row of CASES)
     it(row.name, async () => {
-      const fixture = (await loadFixtures("pie")).find(
-        (candidate) => candidate.name === row.name,
-      )
-      if (fixture === undefined) throw new Error(`missing pie/${row.name}`)
+      const fixture = await loadFixture("pie", row.name)
       const { input } = fixture
       const { tree } = buildPie(input, row.make, row.showData)
       if (row.frontmatter)

@@ -51,7 +51,7 @@ export function findStateKeptLines(source: Source): KeptLines {
       ...findLineSeparatorLines(source),
       ...findLinesEndedBySemicolon(source),
     ]),
-    writtenIndentation: findLinesStartingWithSeparator(source),
+    ownIndentation: findLinesStartingWithSeparator(source),
   }
   keptLinesBySource.set(source, kept)
   return kept

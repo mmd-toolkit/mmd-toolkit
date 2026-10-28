@@ -147,6 +147,14 @@ function layoutComponents(
       .map((offset) => ({ start: offset, end: offset + 1 })),
   )
   const rules = new Map<number, GapRule>()
+  // Reuse authored title ends instead of searching all values at each edge.
+  const titleEnds = new Set(
+    values
+      .filter(
+        (node) => node.type === "WardleyIdentifier" && node.name === "title",
+      )
+      .map((node) => node.range[1]),
+  )
   for (const [index, atom] of atoms.entries()) {
     const previous = atoms[index - 1]
     if (previous === undefined) continue
@@ -167,15 +175,7 @@ function layoutComponents(
     // A bare title followed by whitespace starts metadata instead of a name.
     // Preserve its authored boundary, including before ports, @ and slash
     // (diagrams/wardley.md, Keyword and name boundaries; Name boundaries).
-    if (
-      values.some(
-        (node) =>
-          node.type === "WardleyIdentifier" &&
-          node.name === "title" &&
-          node.range[1] === previous.end,
-      )
-    )
-      rules.delete(atom.start)
+    if (titleEnds.has(previous.end)) rules.delete(atom.start)
     if (
       statement.type === "WardleyLinkStatement" &&
       statement.arrow !== null &&

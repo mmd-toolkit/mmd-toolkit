@@ -5,9 +5,16 @@ import {
   isWhitespaceAt,
 } from "../db-from-tree/characters.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
-import type { ScannedCommentLine, SourceScan } from "../source-scan.ts"
+import type {
+  ScannedCommentLine,
+  ScannedDirective,
+  SourceScan,
+} from "../source-scan.ts"
 import { scanSource } from "../source-scan.ts"
-import { DATA_BLOCK_NODE_TYPES, VALUE_NODE_TYPES } from "./node-types.ts"
+import { indexAtOrAfter, RangeIndex } from "../range-index.ts"
+import { tokenIndexOf } from "./token-index.ts"
+import { tokensIn, valueHoldersOf } from "./tokens.ts"
+import { DATA_BLOCK_NODE_TYPES } from "./node-types.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import type {
@@ -29,23 +36,16 @@ import { childNodesOf, nodesOf, walkNodes } from "./walk.ts"
 // tree, so that a comment or a directive that the tree lacks is found.
 
 /** Line and column of `offset`, counting `\r\n`, `\r`, and `\n` as one line terminator each. */
-function positionOf(text: string, offset: number): Position {
-  let line = 1
-  let lineStart = 0
-  for (let index = 0; index < offset; index++) {
-    const character = text[index]
-    if (
-      character === "\n" ||
-      (character === "\r" && text[index + 1] !== "\n")
-    ) {
-      line++
-      lineStart = index + 1
-    }
-  }
-  return { line, column: offset - lineStart }
+function positionOf(lineStarts: readonly number[], offset: number): Position {
+  const line = indexAtOrAfter(lineStarts, offset + 1)
+  return { line, column: offset - (lineStarts[line - 1] ?? 0) }
 }
 
-/** Whether the two ranges share a character. */
+/**
+ * Whether each of the two ranges starts before the other ends: they share a
+ * character, or one is empty and lies strictly inside the other, not at an end
+ * of it.
+ */
 function overlap(a: TreeRange, b: TreeRange): boolean {
   return a[0] < b[1] && b[0] < a[1]
 }
@@ -62,13 +62,18 @@ export function contains(outer: TreeRange, inner: TreeRange): boolean {
  * range of the frontmatter.
  */
 export function diagramTokensOf(root: CheckedRoot): CheckedToken[] {
+  return root.tokens.filter(diagramTokenTestOf(root))
+}
+
+/** The test of {@link diagramTokensOf} for one token of `root`, for a search that stops at the first token of the diagram. */
+export function diagramTokenTestOf(
+  root: CheckedRoot,
+): (token: CheckedToken) => boolean {
   const frontmatterEnd = root.frontmatter?.range[1] ?? 0
-  return root.tokens.filter(
-    (token) =>
-      token.type !== "Directive" &&
-      token.type !== "IgnoredSemicolon" &&
-      token.range[0] >= frontmatterEnd,
-  )
+  return (token) =>
+    token.type !== "Directive" &&
+    token.type !== "IgnoredSemicolon" &&
+    token.range[0] >= frontmatterEnd
 }
 
 /** Reports the entries of `list` that are empty, overlap the one before, or come before it. */
@@ -100,12 +105,12 @@ function checkInOrderWithoutOverlap(
 function regionFollowsOnLine(
   text: string,
   offset: number,
-  regions: readonly TreeRange[],
+  starts: ReadonlySet<number>,
 ): boolean {
   let current = offset
   for (;;) {
     const position = current
-    if (regions.some(([start]) => start === position)) return true
+    if (starts.has(position)) return true
     if (current >= text.length) return false
     const code = text.charCodeAt(current)
     if (!isWhitespace(code) || isLineTerminatorCode(code)) return false
@@ -121,12 +126,12 @@ function regionFollowsOnLine(
 function followsRegion(
   text: string,
   offset: number,
-  regions: readonly TreeRange[],
+  ends: ReadonlySet<number>,
 ): boolean {
   let current = offset
   for (;;) {
     const position = current
-    if (regions.some(([, end]) => end === position)) return true
+    if (ends.has(position)) return true
     if (current === 0) return false
     const code = text.charCodeAt(current - 1)
     if (!isWhitespace(code) || isLineTerminatorCode(code)) return false
@@ -135,15 +140,49 @@ function followsRegion(
 }
 
 /** The offset after the directives that start at `offset`, one after another, each with what its scan takes after it. */
-function afterDirectivesAt(scan: SourceScan, offset: number): number {
+function afterDirectivesAt(index: CommentIndex, offset: number): number {
   let current = offset
   for (;;) {
     const position = current
-    const directive = scan.directives.find(
-      (candidate) => candidate.range[0] === position,
-    )
+    const directive = index.directiveEnds.get(position)
     if (directive === undefined) return current
-    current = directive.scanEnd
+    current = directive
+  }
+}
+
+/** Source-scan lookups shared by all comments of one check. */
+export class CommentIndex {
+  public readonly regionStarts: ReadonlySet<number>
+
+  public readonly regionEnds: ReadonlySet<number>
+
+  public readonly directiveEnds: ReadonlyMap<number, number>
+
+  public readonly directives: RangeIndex<ScannedDirective>
+
+  public readonly scans: RangeIndex<{ readonly range: TreeRange }>
+
+  public constructor(scan: SourceScan, regions: readonly TreeRange[]) {
+    // Comment boundaries repeatedly consult the same source regions and directives.
+    this.regionStarts = new Set(regions.map(([start]) => start))
+    this.regionEnds = new Set(regions.map(([, end]) => end))
+    this.directiveEnds = new Map(
+      scan.directives.map((directive) => [
+        directive.range[0],
+        directive.scanEnd,
+      ]),
+    )
+    this.directives = new RangeIndex(scan.directives)
+    this.scans = new RangeIndex(
+      scan.directives.map((directive) => ({
+        range: [directive.range[0], directive.scanEnd] as TreeRange,
+      })),
+    )
+  }
+
+  /** Whether the scan of a directive holds the character at `offset` and the one before it, so that a directive takes the line terminator there. */
+  public directiveScanTakes(offset: number): boolean {
+    return this.scans.overlapping([offset, offset]).length > 0
   }
 }
 
@@ -216,11 +255,11 @@ const MARKS_BEFORE_THE_HEADER: Readonly<Record<string, readonly string[]>> = {
 function diagramCommentMarkEnd(
   text: string,
   comment: CheckedComment,
-  scan: SourceScan,
+  index: CommentIndex,
 ): number {
   const start = comment.range[0]
   if (text[start] === "#") return start + 1
-  const second = afterDirectivesAt(scan, start + 1)
+  const second = afterDirectivesAt(index, start + 1)
   return second < comment.range[1] && text[second] === "%"
     ? second + 1
     : start + 1
@@ -260,11 +299,10 @@ function isLineSegmentEndCode(code: number): boolean {
 export function checkDiagramCommentEnd(
   text: string,
   comment: CheckedComment,
-  scan: SourceScan,
-  regions: readonly TreeRange[],
   ignoredSemicolonStarts: ReadonlySet<number>,
   endsComment: (code: number) => boolean,
   problems: Problems,
+  index: CommentIndex,
 ): void {
   const where = label(comment)
   const end = comment.range[1]
@@ -273,9 +311,7 @@ export function checkDiagramCommentEnd(
     where,
     "ends with a line terminator",
   )
-  const inComment = scan.directives.filter((directive) =>
-    contains(comment.range, directive.range),
-  )
+  const inComment = index.directives.in(comment.range)
   for (let offset = comment.range[0]; offset < end; offset++) {
     if (!endsComment(text.charCodeAt(offset))) continue
     problems.expect(
@@ -296,7 +332,7 @@ export function checkDiagramCommentEnd(
     )
     return
   }
-  if (regionFollowsOnLine(text, end, regions)) {
+  if (regionFollowsOnLine(text, end, index.regionStarts)) {
     problems.expect(
       !isWhitespaceAt(text, end - 1),
       where,
@@ -310,9 +346,7 @@ export function checkDiagramCommentEnd(
   // common.md, Comment lines: the line terminator it ends at is the next one
   // that is not part of a directive, that no directive scan takes.
   problems.expect(
-    !scan.directives.some(
-      (directive) => directive.range[0] < after && after < directive.scanEnd,
-    ),
+    !index.directiveScanTakes(after),
     where,
     "ends at a line terminator that a directive takes",
   )
@@ -324,6 +358,13 @@ function checkPositions(
   placedList: readonly Placed[],
   problems: Problems,
 ): void {
+  // Positions arrive in tree order; index lines once instead of rereading
+  // the source prefix for each node, token and record.
+  const lineStarts = [0]
+  for (let at = 0; at < text.length; at++) {
+    if (text[at] === "\n" || (text[at] === "\r" && text[at + 1] !== "\n"))
+      lineStarts.push(at + 1)
+  }
   for (const placed of placedList) {
     const [start, end] = placed.range
     const where = label(placed)
@@ -334,7 +375,10 @@ function checkPositions(
     )
     problems.expectEqual(
       placed.loc,
-      { start: positionOf(text, start), end: positionOf(text, end) },
+      {
+        start: positionOf(lineStarts, start),
+        end: positionOf(lineStarts, end),
+      },
       where,
       "loc",
     )
@@ -378,6 +422,10 @@ function checkComments(
   problems: Problems,
 ): void {
   const regions = scan.commentLines.map((line) => line.region)
+  const index = new CommentIndex(scan, regions)
+  const commentStarts = new Set(
+    root.comments.map((comment) => comment.range[0]),
+  )
   const ignoredSemicolonStarts = new Set(
     root.tokens
       .filter((token) => token.type === "IgnoredSemicolon")
@@ -407,7 +455,7 @@ function checkComments(
       )
       // The second `%` of the `%%`, which the scan found, comes after the
       // directives that may lie between the two.
-      const secondPercent = afterDirectivesAt(scan, comment.range[0] + 1)
+      const secondPercent = afterDirectivesAt(index, comment.range[0] + 1)
       problems.expectEqual(
         comment.value,
         text.slice(secondPercent + 1, comment.range[1]),
@@ -427,7 +475,7 @@ function checkComments(
       const mark = comment.mark ?? ""
       if (comment.mark === null)
         problems.expect(
-          followsRegion(text, comment.range[0], regions) &&
+          followsRegion(text, comment.range[0], index.regionEnds) &&
             !isWhitespaceAt(text, comment.range[0]),
           where,
           "an unmarked native comment fragment must follow a common region",
@@ -436,13 +484,12 @@ function checkComments(
         checkDiagramCommentEnd(
           text,
           comment,
-          scan,
-          regions,
           ignoredSemicolonStarts,
           endsComment,
           problems,
+          index,
         )
-      else if (regionFollowsOnLine(text, comment.range[1], regions))
+      else if (regionFollowsOnLine(text, comment.range[1], index.regionStarts))
         problems.expect(
           !isWhitespaceAt(text, comment.range[1] - 1),
           where,
@@ -450,7 +497,7 @@ function checkComments(
         )
     } else if (comment.mark === null) {
       problems.expect(
-        followsRegion(text, comment.range[0], regions),
+        followsRegion(text, comment.range[0], index.regionEnds),
         where,
         "has no mark and follows no comment region",
       )
@@ -468,11 +515,10 @@ function checkComments(
       checkDiagramCommentEnd(
         text,
         comment,
-        scan,
-        regions,
         ignoredSemicolonStarts,
         endsComment,
         problems,
+        index,
       )
     } else {
       // The header is the first token of the diagram, where the body starts;
@@ -485,7 +531,7 @@ function checkComments(
         where,
         `the mark ${comment.mark} is no mark of the comments of a ${body}`,
       )
-      const markEnd = diagramCommentMarkEnd(text, comment, scan)
+      const markEnd = diagramCommentMarkEnd(text, comment, index)
       problems.expectEqual(
         comment.mark,
         text[comment.range[0]] === "#"
@@ -505,18 +551,17 @@ function checkComments(
       checkDiagramCommentEnd(
         text,
         comment,
-        scan,
-        regions,
         ignoredSemicolonStarts,
         endsComment,
         problems,
+        index,
       )
     }
   }
   // Every comment line of the source is a comment of the tree.
   for (const line of scan.commentLines) {
     problems.expect(
-      root.comments.some((comment) => comment.range[0] === line.commentStart),
+      commentStarts.has(line.commentStart),
       `comment line at ${line.commentStart}-${line.commentEnd}`,
       "is no comment of the tree",
     )
@@ -586,9 +631,8 @@ function valueStartOf(node: CheckedNode, root: CheckedRoot): number {
     node.type === "EventmodelingDataBlock"
   )
     return (
-      root.tokens.find(
-        (token) => token.value === "{" && contains(node.range, token.range),
-      )?.range[1] ?? node.range[0]
+      tokensIn(root, node.range).find((token) => token.value === "{")
+        ?.range[1] ?? node.range[0]
     )
   if (node.type === "VennLabel" || node.type === "ArchitectureLabel")
     return node.range[0] + 1
@@ -630,7 +674,8 @@ function checkWhitespaceAtTokenEnds(
   scan: SourceScan,
   problems: Problems,
 ): void {
-  const valueNodes = nodes.filter((node) => VALUE_NODE_TYPES.has(node.type))
+  const valueHolders = valueHoldersOf(root, nodes)
+  const tokenIndex = tokenIndexOf(root)
   const cuts: TreeRange[] = [
     ...scan.directives.map((directive): TreeRange => [
       directive.range[0],
@@ -654,9 +699,7 @@ function checkWhitespaceAtTokenEnds(
     const allWhitespace = [...token.value].every((character) =>
       isWhitespace(character.codePointAt(0) ?? 0),
     )
-    const holders = valueNodes.filter((node) =>
-      contains(node.range, token.range),
-    )
+    const holders = valueHolders.get(token) ?? []
     const atValueStart = holders.some(
       (node) => valueStartOf(node, root) === start,
     )
@@ -664,9 +707,9 @@ function checkWhitespaceAtTokenEnds(
     const afterCut = holders.length > 0 && cutEnds.has(start)
     const beforeCut = holders.length > 0 && cutStarts.has(end)
     const goesOn = holders.some((node) =>
-      root.tokens.some(
-        (other) => other.range[1] === start && node.range[0] <= other.range[0],
-      ),
+      tokenIndex
+        .endingAt(start)
+        .some((other) => node.range[0] <= other.range[0]),
     )
     if (startsWithWhitespace) {
       problems.expect(
@@ -679,9 +722,9 @@ function checkWhitespaceAtTokenEnds(
       )
     }
     const continues = holders.some((node) =>
-      root.tokens.some(
-        (other) => other.range[0] === end && other.range[1] <= node.range[1],
-      ),
+      tokenIndex
+        .startingAt(end)
+        .some((other) => other.range[1] <= node.range[1]),
     )
     if (endsWithWhitespace) {
       problems.expect(
@@ -703,22 +746,19 @@ function checkWhitespaceAtTokenEnds(
  * directive's.
  */
 function checkDirectiveTokens(root: CheckedRoot, problems: Problems): void {
-  const otherTokens = root.tokens.filter((token) => token.type !== "Directive")
+  const otherTokens = new RangeIndex(
+    root.tokens.filter((token) => token.type !== "Directive"),
+  )
+  const comments = new RangeIndex(root.comments)
   const directiveTokens = root.tokens.filter(
     (token) => token.type === "Directive",
   )
   const directivesOutside: CheckedDirective[] = []
   for (const directive of root.directives) {
-    for (const token of otherTokens) {
-      problems.expect(
-        !overlap(directive.range, token.range),
-        label(directive),
-        `lies inside ${label(token)}`,
-      )
+    for (const token of otherTokens.overlapping(directive.range)) {
+      problems.report(label(directive), `lies inside ${label(token)}`)
     }
-    const insideComment = root.comments.some((comment) =>
-      overlap(comment.range, directive.range),
-    )
+    const insideComment = comments.overlapping(directive.range).length > 0
     if (!insideComment) directivesOutside.push(directive)
   }
   problems.expectEqual(
@@ -1012,12 +1052,8 @@ export function checkInvariants(
   checkWhitespaceAtTokenEnds(text, root, nodes, scan, problems)
   // Invariant 5: a comment lies outside all tokens.
   for (const comment of root.comments) {
-    for (const token of root.tokens) {
-      problems.expect(
-        !overlap(comment.range, token.range),
-        label(comment),
-        `lies inside ${label(token)}`,
-      )
+    for (const token of tokenIndexOf(root).overlapping(comment.range)) {
+      problems.report(label(comment), `lies inside ${label(token)}`)
     }
   }
   // Invariant 6.

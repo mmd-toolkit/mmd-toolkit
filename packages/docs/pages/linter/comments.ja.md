@@ -84,8 +84,8 @@ flowchart LR
 ラベル、説明、引用文字列の中のテキストは、ESLintの設定コメントではありません。
 
 Markdown内の図では、Mermaidコードブロックの中にコメントを書きます。
-ブロックの外の`<!-- eslint @mmd-toolkit/flowchart-no-undef: error -->`などの
-HTMLコメントは、Mermaidの設定コメントとしては機能しません。
+ブロックの外の`<!-- eslint @mmd-toolkit/flowchart-no-undef: error -->`などの HTMLコメントは、
+Mermaidの設定コメントとしては機能しません。
 
 `%% eslint-disable-line`は、同じ物理行の報告を抑制します。
 独立したコメント行に書くと、次の文には作用しません。

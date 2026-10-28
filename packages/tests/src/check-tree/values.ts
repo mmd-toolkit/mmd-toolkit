@@ -7,6 +7,7 @@ import type { CheckedNode, CheckedRoot } from "./types.ts"
 import { contains } from "./invariants.ts"
 import { nodesOf } from "./walk.ts"
 import { WrittenText } from "./written-text.ts"
+import { tokensIn, nodeTokensIn } from "./tokens.ts"
 import { QUADRANT_TRIMMED_TEXT_STATEMENTS } from "./quadrant.ts"
 import { XYCHART_ACCESSIBILITY_STATEMENTS } from "./xychart.ts"
 
@@ -701,11 +702,8 @@ function delimitersOf(
   root: CheckedRoot,
 ): TreeRange[] {
   if (node.type === "UsecaseJsonDataBlock") {
-    const opening = root.tokens.find(
-      (token) =>
-        token.type === "Punctuator" &&
-        token.value === "{" &&
-        contains(node.range, token.range),
+    const opening = tokensIn(root, node.range).find(
+      (token) => token.type === "Punctuator" && token.value === "{",
     )
     return [
       [node.range[0], opening?.range[1] ?? node.range[0] + 2],
@@ -728,15 +726,7 @@ function joinedTokenTextOf(
   leftOut: readonly TreeRange[],
 ): string {
   let joined = ""
-  for (const token of root.tokens) {
-    if (
-      token.type === "Directive" ||
-      token.type === "IgnoredSemicolon" ||
-      token.range[0] < range[0] ||
-      range[1] < token.range[1]
-    ) {
-      continue
-    }
+  for (const token of nodeTokensIn(root, range)) {
     for (let offset = token.range[0]; offset < token.range[1]; offset++) {
       if (leftOut.some(([from, to]) => from <= offset && offset < to)) continue
       joined += text[offset]
@@ -769,14 +759,7 @@ function checkRunsKeepWhitespaceNextToCuts(
   written: WrittenText,
   problems: Problems,
 ): void {
-  const [start, end] = node.range
-  const tokens = root.tokens.filter(
-    (token) =>
-      token.type !== "Directive" &&
-      token.type !== "IgnoredSemicolon" &&
-      start <= token.range[0] &&
-      token.range[1] <= end,
-  )
+  const tokens = nodeTokensIn(root, node.range)
   for (const [index, token] of tokens.entries()) {
     const next = tokens[index + 1]
     if (
@@ -847,12 +830,7 @@ function checkHasOneToken(
   node: CheckedNode,
   problems: Problems,
 ): void {
-  const count = root.tokens.filter(
-    (token) =>
-      token.type !== "Directive" &&
-      token.type !== "IgnoredSemicolon" &&
-      contains(node.range, token.range),
-  ).length
+  const count = nodeTokensIn(root, node.range).length
   problems.expect(
     count === 1,
     label(node),

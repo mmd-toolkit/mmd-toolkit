@@ -32,8 +32,7 @@
 `Second` を置き換えるので報告する。
 タイトルは書いたとおりに比べる。
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-タイトルを読む前にほかの文字に変えるので、
-それだけが違う 2 つのタイトルは、
+タイトルを読む前にほかの文字に変えるので、それだけが違う 2 つのタイトルは、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
 `title` 文は、フロントマターのタイトルもエラーなしに置き換える。
@@ -67,10 +66,9 @@ set A
 
 ## 背景
 
-[`title` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L72-L72)
-は
-[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30)
-を呼び、それは前に設定されたタイトルを置き換える。
+[`title` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/venn/parser/venn.jison#L72-L72) は、
+[`setDiagramTitle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L28-L30) を呼び、
+それは前に設定されたタイトルを置き換える。
 
 <!-- begin auto-generated rule resources -->
 

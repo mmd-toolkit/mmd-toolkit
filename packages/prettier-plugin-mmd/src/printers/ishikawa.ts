@@ -4,13 +4,10 @@ import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
-import {
-  findIshikawaKeptLines,
-  ishikawaDiagramLineEnd,
-} from "./ishikawa-kept-lines.ts"
+import { findIshikawaKeptLines } from "./ishikawa-kept-lines.ts"
 import type { IshikawaLine } from "./ishikawa-layout.ts"
 import { ishikawaLines, layoutIshikawaLine } from "./ishikawa-layout.ts"
-import { placeLeadingDirectives } from "./indentation-lines.ts"
+import { findNodeLineEnd, placeLeadingDirectives } from "./indentation-lines.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import {
   indentationOf,
@@ -18,7 +15,12 @@ import {
   significantIndentationOf,
 } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { findTokenStartingAt, isCommentLine } from "./source.ts"
+import {
+  findCommentEndingAt,
+  findTokenStartingAt,
+  isCommentLine,
+  skipIgnoredSemicolons,
+} from "./source.ts"
 
 /** Prints Ishikawa's nested tree with one configured step per depth. */
 export function printIshikawa(
@@ -92,18 +94,20 @@ export function printIshikawa(
       placement(line).column.slice(indentationOf(options, 1).length),
     writtenIndentationOf: (line) => placement(line).indentation,
     keptIndentationOf: (line) => placement(line).indentation,
-    diagramLineEnd: (offset) => ishikawaDiagramLineEnd(source, offset),
-    keptInlineGapEnd: (start) => ishikawaDiagramLineEnd(source, start),
+    // Only actual diagram-comment endings cut kept stretches, never value
+    // LS/PS.
+    diagramLineEnd: (offset) => findNodeLineEnd(source, offset),
+    keptInlineGapEnd: (start) => findNodeLineEnd(source, start),
     triviaLineBreak: (start, end, terminal) => {
-      const comment = source.trivia.find(
-        (item) => item.type === "Comment" && item.range[1] === start,
-      )
-      if (comment === undefined || comment.type !== "Comment") return undefined
-      const separator = source.text[start]
+      const separatorStart = skipIgnoredSemicolons(source, start)
+      const comment = findCommentEndingAt(source, separatorStart)
+      if (comment === undefined) return undefined
+      const separator = source.text[separatorStart]
       if (terminal && !isCommentLine(source.text, source.root, comment))
-        return printAsWritten(source, start, end)
+        return printAsWritten(source, separatorStart, end)
       if (separator !== "\u2028" && separator !== "\u2029") return undefined
-      const breaks = source.text.slice(start, end).split("\n").length - 1
+      const breaks =
+        source.text.slice(separatorStart, end).split("\n").length - 1
       return [
         separator,
         breaks > 0 ? builders.literalline : "",

@@ -27,14 +27,13 @@
 リンクはノードを、id か pipeline の子のラベルで名指す。
 pipeline `Database` の子 `SQL` は id `Database_SQL` を持ち、
 リンクはそれを `Database_SQL` とも `SQL` とも名指せる。
-`evolve` はノードを id だけで名指すので、そこでは `evolve SQL 0.9` は
-どのノードも名指さない。
-名前は大文字小文字と空白を区別して比べ、
-名前の中のすべての改行（LF、CRLF、CR）は LF として読む。
+`evolve` はノードを id だけで名指すので、
+そこでは `evolve SQL 0.9` はどのノードも名指さない。
+名前は大文字小文字と空白を区別して比べ、名前の中のすべての改行（LF、CRLF、
+CR）は LF として読む。
 名前はそのほかは書いたとおりに比べる。
 mermaid.js は、`\q` のようなエスケープを解き、HTML の属性の引用符を、
-名前を読む前にほかの文字に変えるので、
-それだけが違う 2 つの名前は、
+名前を読む前にほかの文字に変えるので、それだけが違う 2 つの名前は、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 親がどのノードでもない pipeline は、mermaid.js が受理しない。
 
@@ -66,12 +65,10 @@ wardley-beta
 
 ## 背景
 
-[`resolveNodeId`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L175-L185)
-は、リンクのノードを id で、次にラベルで探し、
+[`resolveNodeId`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L175-L185) は、
+リンクのノードを id で、次にラベルで探し、
 どのノードも名指さない名前はそのまま残し、描画はそれを除く。
-どのノードの id でもない名前の
-[`evolve`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197)
-は矢印を足さない。
+どのノードの id でもない名前の [`evolve`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L189-L197) は矢印を足さない。
 
 <!-- begin auto-generated rule resources -->
 

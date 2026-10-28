@@ -134,7 +134,7 @@ export function normalizeQuadrant(dbValue: unknown): DbSummary {
     )
   }
   // `addPoints()` puts the new points first.
-  const recorded = [...recording.points].reverse()
+  const recorded = recording.points.toReversed()
   if (recorded.length !== built.points.length) {
     throw new TypeError(
       `normalizeQuadrant: ${String(recorded.length)} points were recorded and the Db holds ${String(built.points.length)}`,

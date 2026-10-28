@@ -37,8 +37,8 @@ cynefin/hidden-domain-item-members] [fixture: cynefin/hidden-directive-cr]
 | `textBeforeHeader` | list of CynefinIgnoredText | Retained native forms before the header.    |
 | `body`             | list of CynefinBodyItem    | Every statement and body-owned hidden form. |
 
-Child fields: textBeforeHeader, body. Range: the first retained pre-header form,
-or the header when none, through the last written header/body form.
+Child fields: `textBeforeHeader`, `body`. Range: the first retained pre-header
+form, or the header when none, through the last written header/body form.
 Root.diagramType is cynefin; neither header spelling introduces a separate
 header or alias node. Both lists can be empty. [fixture: cynefin/header-only]
 [fixture: cynefin/header-colon] [fixture:
@@ -75,8 +75,8 @@ cynefin/hidden-common-after-visible-eol]
 | `textAfterName` | list of CynefinIgnoredText | Native forms immediately after the name.           |
 | `items`         | list of CynefinDomainItem  | Every written item in this block.                  |
 
-Child fields: textAfterName, items; name is not a child. Range: the domain word
-through the last item, or through the last textAfterName form when items is
+Child fields: `textAfterName`, `items`. `name` is not a child. Range: the domain
+word through the last item, or through the last textAfterName form when items is
 empty, or just the domain word when both lists are empty. Items may start on the
 same line or after visible newlines. An empty block is still a statement; each
 repeated declaration keeps its own list, including duplicates. [fixture:
@@ -102,11 +102,11 @@ cynefin/hidden-after-domain]
 | `label`      | StringLiteral              | Required authored quoted label.                           |
 | `textAfter`  | list of CynefinIgnoredText | Forms after the label before visible LF or the next unit. |
 
-Child fields: textBefore, label, textAfter. Range: the first textBefore form, or
-the string opener without one, through the last textAfter form, or the string
-closer without one. label is never null, including an empty string; raw and the
-shared closed field preserve its quoted form. The two lists can be empty.
-Adjacent strings remain separate items. [fixture:
+Child fields: `textBefore`, `label`, `textAfter`. Range: the first textBefore
+form, or the string opener without one, through the last textAfter form, or the
+string closer without one. label is never null, including an empty string; raw
+and the shared closed field preserve its quoted form. The two lists can be
+empty. Adjacent strings remain separate items. [fixture:
 cynefin/hidden-domain-item-members] [fixture:
 cynefin/hidden-item-after-visible-eol] [fixture:
 cynefin/hidden-before-first-item-after-eol] [fixture:
@@ -138,11 +138,11 @@ cynefin/gram-items-comment-line] [fixture: cynefin/gram-items-blank-line]
 | `label`           | StringLiteral or null      | Written label, including empty, or absent.                  |
 | `textAfter`       | list of CynefinIgnoredText | Forms after the last visible component, before visible EOL. |
 
-Child fields: textBeforeArrow, arrow, textBeforeTo, textBeforeColon,
-textBeforeLabel, label, textAfter. from and to are each complex, complicated,
-clear, chaotic or confusion and are not children. Range: from through the last
-textAfter form, otherwise through the label’s closer or, without a label,
-through to. The required EOL is outside the range. [fixture:
+Child fields: `textBeforeArrow`, `arrow`, `textBeforeTo`, `textBeforeColon`,
+`textBeforeLabel`, `label`, `textAfter`. from and to are each complex,
+complicated, clear, chaotic or confusion and are not children. Range: from
+through the last textAfter form, otherwise through the label’s closer or,
+without a label, through to. The required EOL is outside the range. [fixture:
 cynefin/db-all-fields] [fixture: cynefin/hidden-all-unit-gaps] [fixture:
 cynefin/hidden-unlabeled-transition-gaps] [fixture:
 cynefin/hidden-two-transition-suffixes]
@@ -166,7 +166,7 @@ cynefin/gram-transition-first] [fixture: cynefin/db-transition-duplicates]
 | `line`        | string | solid.                            |
 | `endMarker`   | string | arrow.                            |
 
-Child fields: none. Range: the first dash through >. The four fields are always
+No child fields. Range: the first dash through >. The four fields are always
 present with these fixed values; no kind field or nullable marker is added.
 Hidden forms before and after the whole arrow belong to its transition, not the
 arrow. [fixture: cynefin/db-all-fields] [fixture: cynefin/hidden-all-unit-gaps]
@@ -179,12 +179,12 @@ arrow. [fixture: cynefin/db-all-fields] [fixture: cynefin/hidden-all-unit-gaps]
 | `value`     | CynefinLiteral or null     | Authored title value, or empty.         |
 | `textAfter` | list of CynefinIgnoredText | Native suffix forms before visible EOL. |
 
-Child fields: value, textAfter. Range: title through its last value character,
-or keyword when null, extended through textAfter. When value is null and
-textAfter is empty, a single separator space/tab is ordinary whitespace outside
-the range. The required EOL is outside the range. textAfter can be empty; a form
-after visible EOL belongs to Diagram.body. Every repeated occurrence remains a
-statement. [fixture: cynefin/hidden-title-suffix] [fixture:
+Child fields: `value`, `textAfter`. Range: title through its last value
+character, or keyword when null, extended through textAfter. When value is null
+and textAfter is empty, a single separator space/tab is ordinary whitespace
+outside the range. The required EOL is outside the range. textAfter can be
+empty; a form after visible EOL belongs to Diagram.body. Every repeated
+occurrence remains a statement. [fixture: cynefin/hidden-title-suffix] [fixture:
 cynefin/hidden-common-after-visible-eol] [fixture:
 cynefin/common-title-comment-only] [fixture:
 cynefin/common-title-directive-only] [fixture: cynefin/lex-title-one-space]
@@ -205,7 +205,7 @@ cynefin/common-line-whitespace]
 | `value`     | CynefinLiteral or null     | Authored accTitle: value, or empty.     |
 | `textAfter` | list of CynefinIgnoredText | Native suffix forms before visible EOL. |
 
-Child fields: value, textAfter. Range: the accTitle keyword through the last
+Child fields: `value`, `textAfter`. Range: the accTitle keyword through the last
 value character, or through the required colon when value is null, extended
 through the last textAfter form when present. The required EOL is outside the
 range. textAfter can be empty; a form after visible EOL belongs to Diagram.body.
@@ -227,7 +227,7 @@ cynefin/common-quoted-values]
 | `value`     | CynefinLiteral or null     | Authored accDescr: value, or empty.     |
 | `textAfter` | list of CynefinIgnoredText | Native suffix forms before visible EOL. |
 
-Child fields: value, textAfter. Range: the accDescr keyword through the last
+Child fields: `value`, `textAfter`. Range: the accDescr keyword through the last
 value character, or through the required colon when value is null, extended
 through the last textAfter form when present. The required EOL is outside the
 range. textAfter can be empty; a form after visible EOL belongs to Diagram.body.
@@ -249,12 +249,12 @@ cynefin/common-colon-block-priority]
 | `value`     | CynefinLiteral or null     | Authored accDescr {…} value, or empty.  |
 | `textAfter` | list of CynefinIgnoredText | Native suffix forms before visible EOL. |
 
-Child fields: value, textAfter. Range: the accDescr keyword through the closing
-brace, extended through the last textAfter form when present. The required EOL
-is outside the range. textAfter can be empty; a form after visible EOL belongs
-to Diagram.body. Every repeated occurrence remains a statement. [fixture:
-cynefin/hidden-block-suffix] [fixture: cynefin/common-empty-interleaved]
-[fixture: cynefin/common-block-whitespace]
+Child fields: `value`, `textAfter`. Range: the accDescr keyword through the
+closing brace, extended through the last textAfter form when present. The
+required EOL is outside the range. textAfter can be empty; a form after visible
+EOL belongs to Diagram.body. Every repeated occurrence remains a statement.
+[fixture: cynefin/hidden-block-suffix] [fixture:
+cynefin/common-empty-interleaved] [fixture: cynefin/common-block-whitespace]
 
 value is the authored text inside the braces with common whitespace trimmed only
 at its outer ends. Empty, whitespace-only, or common-removal-only bodies give
@@ -271,7 +271,7 @@ cynefin/line-block-values]
 | ------- | ------ | ---------------------------------------------------------- |
 | `value` | string | Unconverted authored common value outside common removals. |
 
-Child fields: none. Range: exactly the retained authored common value, including
+No child fields. Range: exactly the retained authored common value, including
 line padding after the title separator or accessibility colon; for a block, from
 its first through last non-common-whitespace character. Preserve interior
 spacing, indentation, source line endings, quotes, backslashes and entity
@@ -291,18 +291,18 @@ cynefin/common-line-whitespace] [fixture: cynefin/common-block-whitespace]
 | `kind`  | string | yaml-block or directive.                             |
 | `value` | string | Authored whole native match outside common removals. |
 
-Child fields: none. Range: the opening three dashes or %%{ through its
-qualifying closing fence, excluding opener padding and an immediately consumed
-following CR/LF sequence. value preserves the same authored delimiters and
-internal source line endings, excluding common removals. Both forms must close;
-there is no closed field or nullable value. Several apparent fences can be one
-native match and one node; two nonempty YAML blocks can be separate nodes.
-[fixture: cynefin/hidden-directive-adjacent] [fixture:
-cynefin/hidden-yaml-adjacent-later] [fixture: cynefin/hidden-yaml-two-nonempty]
-[fixture: cynefin/hidden-yaml-opener-padding] [fixture:
-cynefin/hidden-directive-cr] [fixture: cynefin/hidden-directive-crlf] [fixture:
-cynefin/hidden-yaml-bare-cr] [fixture: cynefin/hidden-yaml-common-directive]
-[fixture: cynefin/hidden-yaml-comment-region] [fixture:
+No child fields. Range: the opening three dashes or %%{ through its qualifying
+closing fence, excluding opener padding and an immediately consumed following
+CR/LF sequence. value preserves the same authored delimiters and internal source
+line endings, excluding common removals. Both forms must close; there is no
+closed field or nullable value. Several apparent fences can be one native match
+and one node; two nonempty YAML blocks can be separate nodes. [fixture:
+cynefin/hidden-directive-adjacent] [fixture: cynefin/hidden-yaml-adjacent-later]
+[fixture: cynefin/hidden-yaml-two-nonempty] [fixture:
+cynefin/hidden-yaml-opener-padding] [fixture: cynefin/hidden-directive-cr]
+[fixture: cynefin/hidden-directive-crlf] [fixture: cynefin/hidden-yaml-bare-cr]
+[fixture: cynefin/hidden-yaml-common-directive] [fixture:
+cynefin/hidden-yaml-comment-region] [fixture:
 cynefin/hidden-native-directive-opener-raw]
 
 Only successful native-yaml and native-directive matches make this node. They

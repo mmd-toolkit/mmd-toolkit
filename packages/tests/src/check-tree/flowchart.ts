@@ -5,10 +5,11 @@ import {
 import { StringDelimiters } from "../db-from-tree/graph.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
 import { GRAPH_SHAPES } from "./graph-shapes.ts"
-import { diagramTokensOf } from "./invariants.ts"
+import { diagramTokenTestOf, diagramTokensOf } from "./invariants.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import { checkTokensInValueNodes, nodeTokensIn, tokensIn } from "./tokens.ts"
+import { tokenIndexOf } from "./token-index.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
 import type { StringDelimitersOf } from "./values.ts"
 import { isNode, nodesOf } from "./walk.ts"
@@ -399,8 +400,9 @@ function checkSubgraphName(
     )
     return
   }
-  const next = diagramTokensOf(root).find(
-    (token) => token.range[0] >= name.range[1],
+  const next = tokenIndexOf(root).firstFrom(
+    name.range[1],
+    diagramTokenTestOf(root),
   )
   const after = written.of([name.range[1], next?.range[0] ?? text.length])
   let lineEnd = 0

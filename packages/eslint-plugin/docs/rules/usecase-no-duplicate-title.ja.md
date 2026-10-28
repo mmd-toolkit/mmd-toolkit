@@ -16,8 +16,8 @@
 
 ## 規則の詳細
 
-この規則は、前の `accTitle` が設定した空でないタイトルを変える
-`accTitle` 文を報告する。
+この規則は、
+前の `accTitle` が設定した空でないタイトルを変える `accTitle` 文を報告する。
 対象の図種は `usecase` である。
 
 `accTitle: first` と `accTitle: second` の後では、タイトルは `second` である。
@@ -33,8 +33,7 @@
 `b` を置き換えるので報告する。
 タイトルはそのほかは書いたとおりに比べる。
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-タイトルを読む前にほかの文字に変えるので、
-それだけが違う 2 つのタイトルは、
+タイトルを読む前にほかの文字に変えるので、それだけが違う 2 つのタイトルは、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
 `accTitle` 文は 1 つにする。
@@ -68,10 +67,8 @@ usecase-beta
 
 ## 背景
 
-[`accTitle` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L127-L131)
-は両端の空白を除いたタイトルを与え、
-[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L240-L242)
-は最後のものだけを保つ。
+[`accTitle` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L127-L131) は両端の空白を除いたタイトルを与え、
+[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L240-L242) は最後のものだけを保つ。
 
 <!-- begin auto-generated rule resources -->
 

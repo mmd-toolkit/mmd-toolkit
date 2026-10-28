@@ -6,8 +6,7 @@ mermaid.js の正となるソース：
 
 - [`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison)
 - [`quadrantDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts)
-- [`quadrant-chart/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart)
-  の中のテスト（`*.spec.ts`）
+- [`quadrant-chart/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart) の中のテスト（`*.spec.ts`）
 
 この文書は図種 `quadrantChart` を扱います。
 木のノードは [ast/quadrant.ja.md](../ast/quadrant.ja.md) で定めます。
@@ -16,24 +15,22 @@ mermaid.js の正となるソース：
 
 [detection.ja.md](../detection.ja.md) の項目 22 がこの文法を選びます。
 テキストが、空白の後、
-ちょうどこの大文字小文字の `quadrantChart` で始まるときです
-（[`quadrantDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)）。
-`QUADRANTCHART`、`quadrantchart`、`QuadrantChart` はどの検出器にも合いません。
-[fixture: quadrant/header-upper-case]
+ちょうどこの大文字小文字の `quadrantChart` で始まるときです（[`quadrantDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)）。
+`QUADRANTCHART`、`quadrantchart`、
+`QuadrantChart` はどの検出器にも合いません。 [fixture: quadrant/header-upper-case]
 [fixture: quadrant/header-lower-case]
 [fixture: quadrant/header-capitalized]
 
 字句解析器は次にヘッダーを読みます。
 キーワード `quadrantChart` で、前後のスペースを含み、
-大文字小文字を区別せずに比べ、後に何が来てもかまいません
-（[文の文脈](#文の文脈) を参照）。
+大文字小文字を区別せずに比べ、
+後に何が来てもかまいません（[文の文脈](#文の文脈) を参照）。
 2 つ目のヘッダーは、それだけの行にあっても、
 最初のヘッダーの行にあっても拒否され、
 単位が始まるどこにある語 `quadrantChart` も同じです。
 `A quadrantChart: [0.3, 0.6]` は拒否され、
 `"quadrantChart": [0.3, 0.6]` は点です。
-ヘッダーだけのテキストも受理されます。
-[fixture: quadrant/spec-quadrant-jison-fe2d2340]
+ヘッダーだけのテキストも受理されます。 [fixture: quadrant/spec-quadrant-jison-fe2d2340]
 [fixture: quadrant/header-word-suffix]
 [fixture: quadrant/header-spaced-word-suffix]
 [fixture: quadrant/header-dash-suffix]
@@ -53,11 +50,10 @@ mermaid.js の正となるソース：
 [fixture: quadrant/header-underscore-suffix]
 
 ヘッダーの前の空白、空行、コメント行、`%%` だけの行、ディレクティブの行、
-`%%{ }%%` の行、フロントマターは何も変えません
-（[先頭の空白](../common.ja.md#先頭の空白) を参照）。
+`%%{ }%%` の行、
+フロントマターは何も変えません（[先頭の空白](../common.ja.md#先頭の空白) を参照）。
 ヘッダーの前の `#` か `;` で始まる行、文、コメント行だけのテキストは、
-どの図種としても検出されません。
-[fixture: quadrant/header-indented]
+どの図種としても検出されません。 [fixture: quadrant/header-indented]
 [fixture: quadrant/header-tab-indented]
 [fixture: quadrant/header-after-bare-percent-line]
 [fixture: quadrant/header-after-blank-lines]
@@ -83,10 +79,10 @@ mermaid.js の正となるソース：
 `quadrantChart title T`、`quadrantChart;title T`、
 `quadrantChartA: [0.3, 0.6]` は受理されます。
 その後の、文を始めないテキストは入力を拒否させます。
-ヘッダーにくっついた語、ダッシュと語、数字、ASCII 外の文字と、
-その後の U+00A0、U+2028、U+2029、U+0085 がそうです。
-一方、その後の垂直タブと改ページは空白です。
-[fixture: quadrant/header-comment-on-header-line]
+ヘッダーにくっついた語、ダッシュと語、数字、ASCII 外の文字と、その後の U+00A0、
+U+2028、U+2029、U+0085 がそうです。
+一方、
+その後の垂直タブと改ページは空白です。 [fixture: quadrant/header-comment-on-header-line]
 [fixture: quadrant/header-comment-glued]
 [fixture: quadrant/header-directive-glued]
 [fixture: quadrant/header-bare-percent-line-after-header]
@@ -111,7 +107,8 @@ mermaid.js の正となるソース：
 
 ### 単位と文脈
 
-字句解析器は図のテキストを**単位**に分けます。文法は単位の上で書かれます。
+字句解析器は図のテキストを**単位**に分けます。
+文法は単位の上で書かれます。
 各単位は、文法が使う名前と、**テキスト**を持ちます。
 テキストは、その単位が読んだ文字を変換した形にしたものです。
 
@@ -128,8 +125,8 @@ mermaid.js の正となるソース：
 `x-axis "L`、``quadrant-1 "`a``、`accDescr {` と行 `D`、`A: [0.3,`、`A:::c1`、
 `accTitle:` がテキストの終わりにあると拒否されます。
 一方、テキストの終わりの `title` と `x-axis L -->` は、
-テキストのないタイトルと、矢印を持つ軸の文です。
-[fixture: quadrant/db-unclosed-axis-arrow-at-end]
+テキストのないタイトルと、
+矢印を持つ軸の文です。 [fixture: quadrant/db-unclosed-axis-arrow-at-end]
 [fixture: quadrant/db-unclosed-directive-at-end]
 [fixture: quadrant/db-unclosed-title-keyword-at-end]
 [fixture: quadrant/gram-unclosed-acc-block-after-text]
@@ -146,39 +143,36 @@ mermaid.js の正となるソース：
 [fixture: quadrant/gram-acc-title-spaces-at-end]
 
 **空白。**
-この図種では、単位の間の空白は、下に挙げるところを除き、
-スペース、タブ、垂直タブ、改ページです。
-文法がそれを数えるところでは、これらの文字のそれぞれが `space` の単位です
-（[文の文脈](#文の文脈) を参照）。
-[表記](../common.ja.md#表記) のほかの空白文字、
-U+00A0、U+2028、U+2029、U+3000、U+FEFF は ASCII 外の文字で、語の文字です。
+この図種では、単位の間の空白は、下に挙げるところを除き、スペース、タブ、
+垂直タブ、改ページです。
+文法がそれを数えるところでは、
+これらの文字のそれぞれが `space` の単位です（[文の文脈](#文の文脈) を参照）。
+[表記](../common.ja.md#表記) のほかの空白文字、 U+00A0、U+2028、U+2029、U+3000、
+U+FEFF は ASCII 外の文字で、語の文字です。
 テキスト、名前、タイトル、アクセシビリティのテキストの中に立ち、
 テキストと名前では端にも立って、端のものは Db が取り除きます。
 一方、タイトル、アクセシビリティのテキスト、説明ブロックのテキストは、
-ほかの空白とともに端のものを除きます
-（[ast/quadrant.ja.md](../ast/quadrant.ja.md#quadrantliteral) を参照）。
-[fixture: quadrant/db-ends-title-nbsp-end]
+ほかの空白とともに端のものを除きます。
+[ast/quadrant.ja.md](../ast/quadrant.ja.md#quadrantliteral) を参照してください。 [fixture: quadrant/db-ends-title-nbsp-end]
 [fixture: quadrant/db-ends-acc-title-nbsp-end]
 [fixture: quadrant/db-acc-descr-block-nbsp-before-brace-close]
 文が始まるところではテキストを始めるので、
 `x-axis` や `title` の前の U+00A0 は入力を拒否させ、
 点の名前の前の U+00A0 は名前の一部です。
 規則が空白の並びを読むところ、
-つまり `accTitle` か `accDescr` とその `:` か `{` の間、
-その `:` か `{` の後、
-点の文脈（点を始める `:` と `[` のまわりと角括弧の中）では、
-空白は、改行も含めて [表記](../common.ja.md#表記) のすべての空白文字です
-（[アクセシビリティの値](#アクセシビリティの値) と
+つまり `accTitle` か `accDescr` とその `:` か `{` の間、その `:` か `{` の後、
+点の文脈（点を始める `:` と `[` のまわりと角括弧の中）では、空白は、
+改行も含めて、
+[表記](../common.ja.md#表記) のすべての空白文字です（[アクセシビリティの値](#アクセシビリティの値) と、
 [点の文脈](#点の文脈) を参照）。
 それ以外、つまり `space` の単位、キーワードと矢印のまわり、点の `]` の後では、
-スペース、タブ、垂直タブ、改ページで、`]` の後ではスペースだけがその一部です。
-[fixture: quadrant/db-point-nbsp-before-colon]
+スペース、タブ、垂直タブ、改ページで、
+`]` の後ではスペースだけがその一部です。 [fixture: quadrant/db-point-nbsp-before-colon]
 [fixture: quadrant/db-point-nbsp-inside-brackets]
 [fixture: quadrant/gram-ends-point-nbsp-end]
 スペースとタブだけの行はどこにあってもかまいません。
 一方、U+00A0、U+3000、U+FEFF、U+2028 の行は文を始めないテキストで、
-拒否されます。
-[fixture: quadrant/db-grid-tab-acc-descr]
+拒否されます。 [fixture: quadrant/db-grid-tab-acc-descr]
 [fixture: quadrant/db-grid-tab-acc-descr-block]
 [fixture: quadrant/db-grid-tab-acc-title]
 [fixture: quadrant/db-grid-tab-point-bare]
@@ -457,8 +451,7 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF は ASCII 外の文字で、語の文
 [fixture: quadrant/db-name-after-nbsp]
 
 **改行。**
-ソースの改行は図のテキストの改行文字です
-（[ソースの読み方](../common.ja.md#ソースの読み方) を参照）。
+ソースの改行は図のテキストの改行文字です（[ソースの読み方](../common.ja.md#ソースの読み方) を参照）。
 そのため、CRLF と単独の CR は、改行文字と同じく行を終えます。
 文の文脈で単位が始まるところの改行文字は `newline` の単位で、文を終えます。
 テキストが次の行にあるキーワード（`x-axis` に行 `L` が続くもの）は拒否され、
@@ -468,8 +461,7 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF は ASCII 外の文字で、語の文
 `accTitle:` と `accDescr:` の `:` のまわりでは空白です。
 点の `:` の前では、空白文字の後でだけ空白です。
 [点の文脈](#点の文脈) で述べます。
-U+2028 と U+2029 は改行ではありません。
-[fixture: quadrant/gram-keyword-blank-line-classdef]
+U+2028 と U+2029 は改行ではありません。 [fixture: quadrant/gram-keyword-blank-line-classdef]
 [fixture: quadrant/gram-keyword-blank-line-quadrant]
 [fixture: quadrant/gram-keyword-blank-line-x-axis]
 [fixture: quadrant/gram-keyword-blank-line-y-axis]
@@ -544,22 +536,18 @@ U+2028 と U+2029 は改行ではありません。
 [fixture: quadrant/gram-x-axis-line-feed-before-arrow]
 
 **エンティティ、HTML 属性の引用符、`style` 行。**
-エンティティはそのプレースホルダーとして読まれます
-（[エンティティ](../common.ja.md#エンティティ) を参照）。
-プレースホルダーは ASCII 外の文字からなるので、
-どのテキスト、名前、タイトル、アクセシビリティのテキストの文字でもあり、
+エンティティはそのプレースホルダーとして読まれます（[エンティティ](../common.ja.md#エンティティ) を参照）。
+プレースホルダーは ASCII 外の文字からなるので、どのテキスト、名前、タイトル、
+アクセシビリティのテキストの文字でもあり、
 `classDef` のクラスの名前の文字でもあります。
 一方、点のクラス名とスタイルはプレースホルダーを持てません。
 スタイルの `#f00;` はエンティティなので、
 `A: [0.3, 0.6] color: #f00;` は拒否され、
 `A: [0.3, 0.6] color: #f00 ;` は色 `#f00` を持ちます。
-HTML のタグの属性の引用符は `'` として読まれます
-（[HTML 属性の引用符](../common.ja.md#html-属性の引用符) を参照）。
-`style` 行と `classDef` 行の行の規則が無視する `;`
-（[`style` 行と `classDef` 行](../common.ja.md#style-行と-classdef-行)
-を参照）は、
-テキスト、タイトル、アクセシビリティのテキストから除かれます。
-[fixture: quadrant/db-grid-style-acc-descr]
+HTML のタグの属性の引用符は `'` として読まれます（[HTML 属性の引用符](../common.ja.md#html-属性の引用符) を参照）。
+`style` 行と `classDef` 行の行の規則が無視する `;` （[`style` 行と `classDef` 行](../common.ja.md#style-行と-classdef-行) を参照）は、
+テキスト、タイトル、
+アクセシビリティのテキストから除かれます。 [fixture: quadrant/db-grid-style-acc-descr]
 [fixture: quadrant/db-grid-style-acc-descr-block]
 [fixture: quadrant/db-grid-style-acc-title]
 [fixture: quadrant/db-grid-style-point-quoted]
@@ -650,18 +638,17 @@ HTML のタグの属性の引用符は `'` として読まれます
 
 字句解析器は、ディレクティブを持たない図のテキストを、
 mermaid.js がディレクティブを除いた後のテキストを読むとおりに読みます。
-そして
-[ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界)
-の規則が単位に当たります。
+そして [ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界) の規則が単位に当たります。
 テキストの単位や文字列の中のディレクティブは mermaid.js の読みを保ち、
 ほかの単位の中のディレクティブは入力を拒否させます。
 **テキストの単位**は、`word`、`title-text`、`acc-title-text`、
-`acc-description-text`、`description-block-text`、`string`、
-`markdown-string`、`coordinate` です。
-ただし、`classDef` のクラスの名前の中の `word` は名前なので
-（[クラス](#クラス) を参照）、テキストの単位ではありません。
-ほかの単位、つまりヘッダー、キーワード、矢印、`:::`、`class-name`、
-`-`、`:`、`;`、角括弧は、テキストの単位ではありません。
+`acc-description-text`、`description-block-text`、`string`、 `markdown-string`、
+`coordinate` です。
+ただし、
+`classDef` のクラスの名前の中の `word` は名前なので（[クラス](#クラス) を参照）、
+テキストの単位ではありません。
+ほかの単位、つまりヘッダー、キーワード、矢印、`:::`、`class-name`、 `-`、`:`、
+`;`、角括弧は、テキストの単位ではありません。
 
 - テキスト、名前、タイトル、アクセシビリティのテキスト、文字列、座標、
   スタイルの中のディレクティブは、mermaid.js と同じく、
@@ -669,8 +656,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   `quadrant-1 a%%{init: {}}%%b` はテキスト `ab` を、
   `A: [0.%%{init: {}}%%3, 0.6]` は座標 `0.3` を持ちます。
   複数の行にわたる値の中のコメント行とディレクティブの行は、
-  その行ごと除かれます。
-  [fixture: quadrant/db-grid-directive-acc-descr]
+  その行ごと除かれます。 [fixture: quadrant/db-grid-directive-acc-descr]
   [fixture: quadrant/db-grid-directive-acc-descr-block]
   [fixture: quadrant/db-grid-directive-acc-title]
   [fixture: quadrant/db-grid-directive-point-bare]
@@ -699,8 +685,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 - 2 つの単位の間のディレクティブはかまいません。
   それだけの行、その行の文の前後、キーワードとそのテキストの間、
   `accTitle` とその `:` の間、点の `:` と `[` の間、
-  `;` で分けた 2 つの文の間です。
-  [fixture: quadrant/db-directive-after-statement]
+  `;` で分けた 2 つの文の間です。 [fixture: quadrant/db-directive-after-statement]
   [fixture: quadrant/db-directive-before-statement-same-line]
   [fixture: quadrant/db-directive-between-statements]
   [fixture: quadrant/db-directive-config-width]
@@ -728,10 +713,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   `L --%%{init: {}}%%> R`、`A::%%{init: {}}%%:c1: [0.3, 0.6]`、
   `A:::c%%{init: {}}%%1: [0.3, 0.6]`、
   `classDef c%%{init: {}}%%1 color: #f00` です。
-  これは既知の差異
-  [`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)
-  です。
-  [fixture: quadrant/div-acc-title-keyword-inside-directive]
+  これに当たる既知の差異は、
+  [`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md) です。 [fixture: quadrant/div-acc-title-keyword-inside-directive]
   [fixture: quadrant/div-class-directive-inside]
   [fixture: quadrant/div-directive-in-class-name]
   [fixture: quadrant/div-directive-in-keyword-classdef]
@@ -746,10 +729,9 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
   [fixture: quadrant/div-directive-in-class-marker]
   [fixture: quadrant/div-directive-inside]
 - 閉じないディレクティブはテキストの終わりまで続き、
-  その引数は次の行で始まることがあります
-  （[ディレクティブの位置](../common.ja.md#ディレクティブの位置) を参照）。
-  行の終わりの `%%{init` は、次の行の頭の語を取ります。
-  [fixture: quadrant/gram-directive-word-unclosed-takes-keyword]
+  その引数は次の行で始まることがあります（[ディレクティブの位置](../common.ja.md#ディレクティブの位置) を参照）。
+  行の終わりの `%%{init` は、
+  次の行の頭の語を取ります。 [fixture: quadrant/gram-directive-word-unclosed-takes-keyword]
   [fixture: quadrant/gram-directive-colon-unclosed-takes-keyword]
   [fixture: quadrant/db-directive-argument-word-unclosed]
   [fixture: quadrant/db-directive-name-only-closed]
@@ -769,7 +751,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 
 1. `%%` とその行の残り: コメント（[コメント](#コメント) を参照）。
 2. 1 つ以上の改行文字: `newline` の単位。
-3. **キーワード**。大文字小文字を区別せずに比べます。
+3. **キーワード**。
+   大文字小文字を区別せずに比べます。
    - `title` で、後に語の文字（英字、数字、`_`）が続かないもの:
      `title` の単位で、タイトルの文脈に入ります。
    - `accTitle` か `accDescr`、改行も含む空白、`:`:
@@ -778,27 +761,27 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
    - `accDescr`、改行も含む空白、`{`:
      `accDescr` の単位と `{` の単位で、説明ブロックの文脈に入ります。
    - `x-axis`、`y-axis`、`quadrant-1`〜`quadrant-4` で、
-     前後のスペース（U+0020）を含み、後に何が来てもかまわないもの:
-     そのキーワードの名前の単位。
+     前後のスペース（U+0020）を含み、
+     後に何が来てもかまわないもの: そのキーワードの名前の単位。
    - 2 つ以上の `-` と `>` で、前後のスペースを含むもの: `arrow` の単位。
    - `classDef` で、後に語の文字が続かないもの: `classDef` の単位。
 4. `"` と逆引用符: markdown 文字列の文脈に入ります。
    `"`: 文字列の文脈に入ります（[文字列](#文字列) を参照）。
 5. `:::`: `:::` の単位で、クラス名の文脈に入ります。
 6. 改行も含む空白、`:`、改行も含む空白、`[`:
-   `:` の単位と `[` の単位で、点の文脈に入ります
-   （[点の文脈](#点の文脈) を参照）。
+   `:` の単位と `[` の単位で、
+   点の文脈に入ります（[点の文脈](#点の文脈) を参照）。
 7. 前後のスペースを含む `quadrantChart`: ヘッダー。
-8. **語**: 1 つ以上の ASCII の英字、1 つ以上の ASCII 外の文字、
-   1 つ以上の数字、または `!`、`$`、`%`、`&`、`'`、`*`、`+`、`,`、
-   `.`、`/`、`=`、`?`、`\`、`_`、`#`、逆引用符のどれか 1 つ: `word` の単位。
+8. **語**: 1 つ以上の ASCII の英字、1 つ以上の ASCII 外の文字、 1 つ以上の数字、
+   または `!`、`$`、`%`、`&`、`'`、`*`、`+`、`,`、 `.`、`/`、`=`、`?`、`\`、
+   `_`、`#`、逆引用符のどれか 1 つ: `word` の単位。
 9. `-`、`:`、`;`: その文字の単位。
 10. 改行文字以外の 1 つの空白文字: `space` の単位。
 
 単位が始まるどの位置でも、キーワードを語より先に試し、
 英字の語は続く英字をすべて読みます。
-そのため、キーワードは英字の並びの頭で読まれ、
-テキストの中の数字、`_`、`-`、`.` の後でもそうです。
+そのため、キーワードは英字の並びの頭で読まれ、テキストの中の数字、`_`、`-`、
+`.` の後でもそうです。
 `quadrant-1 a.title`、`quadrant-1 a-title`、`quadrant-1 a1title`、
 `quadrant-1 a_title`、`quadrant-1 a.x-axis`、`A.title: [0.3, 0.6]`、
 `a.classDef: [0.3, 0.6]` はキーワードを持ち、拒否されます。
@@ -819,8 +802,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 `ACCDESCR:` は文を始めます。
 `:` か `{` のない `accTitle` と `accDescr` は語の英字で、
 キーワードと `:` の間の空白以外の文字は入力を拒否させます。
-`accTitlex:`、`accTitle-x:`、`accTitle1:`、`accTitleé:` がそうです。
-[fixture: quadrant/db-keyword-suffix-quadrant-digit]
+`accTitlex:`、`accTitle-x:`、`accTitle1:`、
+`accTitleé:` がそうです。 [fixture: quadrant/db-keyword-suffix-quadrant-digit]
 [fixture: quadrant/db-keyword-suffix-quadrant-non-ascii]
 [fixture: quadrant/db-keyword-suffix-quadrant-underscore]
 [fixture: quadrant/db-keyword-suffix-title-dash]
@@ -888,8 +871,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 `quadrant-1 a-->b` は拒否されます。
 引用符の中、タイトル、アクセシビリティのテキスト、説明ブロックの中では、
 キーワードはテキストです。
-`__proto__`、`constructor`、`hasOwnProperty` はほかと同じ語です。
-[fixture: quadrant/db-grid-nonascii-acc-descr]
+`__proto__`、`constructor`、
+`hasOwnProperty` はほかと同じ語です。 [fixture: quadrant/db-grid-nonascii-acc-descr]
 [fixture: quadrant/db-grid-nonascii-acc-descr-block]
 [fixture: quadrant/db-grid-nonascii-acc-title]
 [fixture: quadrant/db-grid-nonascii-point-quoted]
@@ -1115,8 +1098,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 `;`、`#`、`%%` とその後、引用符、コロン、キーワード、
 点のように見えるテキストもそうです。
 そのため、`title T; quadrant-1 A` はタイトル `T; quadrant-1 A` で、
-`title: [0.3, 0.6]` はタイトルです。
-[fixture: quadrant/db-title-keyword-trailing-space]
+`title: [0.3, 0.6]` はタイトルです。 [fixture: quadrant/db-title-keyword-trailing-space]
 [fixture: quadrant/db-title-twice]
 [fixture: quadrant/db-title-indented]
 [fixture: quadrant/db-title-tab-indented]
@@ -1166,8 +1148,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 `accTitle` と `:` はアクセシビリティのタイトルの文脈に、
 `accDescr` と `:` はアクセシビリティの説明の文脈に入ります。
 どちらも、`:` の後の空白を改行も含めて読み、
-それから行の残りを
-`acc-title-text` か `acc-description-text` の単位として読んで、
+それから行の残りを `acc-title-text` か `acc-description-text` の単位として読んで、
 文脈を出ます。
 そのため、テキストはキーワードの後で空白以外の文字を持つ最初の行で始まり、
 その行が文であっても、行全体を取ります。
@@ -1176,8 +1157,8 @@ mermaid.js がディレクティブを除いた後のテキストを読むとお
 その間のコメント行とディレクティブの行は、テキストの行ではありません。
 `:` の前には改行も含めて空白を置け、
 その間にコメント行やディレクティブの行があってもかまいません。
-U+00A0、U+2028、U+2029、U+3000、U+FEFF も `:` の前後の空白です。
-[fixture: quadrant/db-acc-title-nbsp-before-colon]
+U+00A0、U+2028、U+2029、U+3000、
+U+FEFF も `:` の前後の空白です。 [fixture: quadrant/db-acc-title-nbsp-before-colon]
 [fixture: quadrant/db-acc-title-ideographic-before-colon]
 [fixture: quadrant/db-acc-title-bom-before-colon]
 [fixture: quadrant/db-acc-title-ls-before-colon]
@@ -1197,8 +1178,8 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF も `:` の前後の空白です。
 [fixture: quadrant/db-acc-title-directive-line-before-colon]
 `:` の後、テキストの終わりまで空白しかないとき、入力は拒否されます。
 前にアクセシビリティの文があっても同じです。
-`:`、`;`、`#`、`%%`、引用符と、文の文脈の文字は、テキストの文字です。
-[fixture: quadrant/db-acc-title-plain]
+`:`、`;`、`#`、`%%`、引用符と、文の文脈の文字は、
+テキストの文字です。 [fixture: quadrant/db-acc-title-plain]
 [fixture: quadrant/db-acc-title-glued-colon]
 [fixture: quadrant/db-acc-title-space-before-colon]
 [fixture: quadrant/db-acc-title-tab-before-colon]
@@ -1248,24 +1229,24 @@ U+00A0、U+2028、U+2029、U+3000、U+FEFF も `:` の前後の空白です。
 [fixture: quadrant/db-acc-title-line-feed-before-colon]
 
 `accDescr`、空白、`{` は説明ブロックの文脈に入ります。
-この文脈は、`{` の後の空白を読み、それから次の `}` までのすべての文字を
-`description-block-text` の単位として読み、`}` を `}` の単位として読んで、
-文脈を出ます。`}` の前の空白はテキストの一部です。
+この文脈は、`{` の後の空白を読み、
+それから次の `}` までのすべての文字を `description-block-text` の単位として読み、
+`}` を `}` の単位として読んで、文脈を出ます。
+`}` の前の空白はテキストの一部です。
 `{` と `}` の間が空白だけのとき、`description-block-text` の単位はありません。
 テキストは改行、`#`、`;`、引用符、キーワード、`%%` を持てます。
 その中の CRLF と単独の CR は改行文字です。
 `{` の前には改行も含めて空白を置け、
 その間にコメント行やディレクティブの行があってもかまいません。
-U+00A0 など、表記のほかの空白文字もそこに置けます。
-[fixture: quadrant/db-acc-descr-nbsp-before-brace]
+U+00A0 など、
+表記のほかの空白文字もそこに置けます。 [fixture: quadrant/db-acc-descr-nbsp-before-brace]
 [fixture: quadrant/db-acc-descr-ideographic-before-brace]
 [fixture: quadrant/db-acc-descr-bom-before-brace]
 [fixture: quadrant/db-acc-descr-ls-before-brace]
 [fixture: quadrant/db-acc-descr-ps-before-brace]
 [fixture: quadrant/db-acc-descr-comment-line-before-brace]
 [fixture: quadrant/db-acc-descr-directive-line-before-brace]
-`}` のないブロックは入力を拒否させます。
-[fixture: quadrant/db-acc-descr-block]
+`}` のないブロックは入力を拒否させます。 [fixture: quadrant/db-acc-descr-block]
 [fixture: quadrant/db-acc-descr-block-glued-brace]
 [fixture: quadrant/db-acc-descr-block-lines]
 [fixture: quadrant/db-acc-descr-block-indented-lines]
@@ -1293,12 +1274,13 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 
 `"` は文字列の文脈に入ります。
 この文脈は次の `"` までのすべての文字を `string` の単位として読み、
-その `"` で文脈を出ます。単位のテキストは引用符の間にあるものです。
+その `"` で文脈を出ます。
+単位のテキストは引用符の間にあるものです。
 テキストは改行も含めて `"` 以外のどの文字も持てます。
 端のスペース、句読点、キーワード、矢印、角括弧、逆引用符、
 スペースの後や語にくっついた `%%`、ASCII 外の文字です。
-文字列にエスケープはなく、閉じない文字列は入力を拒否させます。
-[fixture: quadrant/db-quoted-comment-glued-kept]
+文字列にエスケープはなく、
+閉じない文字列は入力を拒否させます。 [fixture: quadrant/db-quoted-comment-glued-kept]
 [fixture: quadrant/db-quoted-comment-mark-kept-axis]
 [fixture: quadrant/db-quoted-comment-mark-kept-point]
 [fixture: quadrant/db-quoted-comment-mark-kept-quadrant]
@@ -1309,8 +1291,7 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 この文脈は次の逆引用符までの文字を `markdown-string` の単位として読み、
 その逆引用符とその後の引用符で文脈を出ます。
 テキストは逆引用符と引用符を持てず、``quadrant-1 "`a"b`"`` は拒否されます。
-閉じない markdown 文字列は入力を拒否させます。
-[fixture: quadrant/db-name-markdown]
+閉じない markdown 文字列は入力を拒否させます。 [fixture: quadrant/db-name-markdown]
 [fixture: quadrant/db-quadrant-markdown]
 [fixture: quadrant/db-quadrant-markdown-newline]
 [fixture: quadrant/db-quadrant-markdown-then-bare]
@@ -1325,18 +1306,18 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 [fixture: quadrant/gram-y-axis-markdown-unclosed]
 
 空の文字列 `""` と空の markdown 文字列は、
-空のテキストを持つ `string` の単位と `markdown-string` の単位です
-（[空の文字列](#空の文字列) を参照）。
+空のテキストを持つ `string` の単位と `markdown-string` の単位です（[空の文字列](#空の文字列) を参照）。
 
 ### クラス名の文脈
 
 `:::` はクラス名の文脈に入ります。
-この文脈は 1 つ以上の ASCII の語の文字（英字、数字、`_`）を
-`class-name` の単位として読み、文脈を出ます。その後には点の `:` が続きます。
+この文脈は 1 つ以上の ASCII の語の文字（英字、数字、
+`_`）を `class-name` の単位として読み、文脈を出ます。
+その後には点の `:` が続きます。
 `:::` のすぐ後の空白、空の名前、名前の中のダッシュ、ASCII 外の文字、
-エンティティのプレースホルダー、2 つ目の `:::`、
-後に `:` のないクラス名、前に名前のない `:::` は、入力を拒否させます。
-[fixture: quadrant/db-class-constructor]
+エンティティのプレースホルダー、2 つ目の `:::`、後に `:` のないクラス名、
+前に名前のない `:::` は、
+入力を拒否させます。 [fixture: quadrant/db-class-constructor]
 [fixture: quadrant/db-class-digits]
 [fixture: quadrant/db-class-has-own-property]
 [fixture: quadrant/db-class-marker-in-bare-name]
@@ -1361,11 +1342,10 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 ### 点の文脈
 
 まわりに空白を持つ `:` と `[` は、点の文脈に入ります（文の文脈の規則 6）。
-この空白は [表記](../common.ja.md#表記) のどの空白文字でもよく、
-改行文字、U+00A0、U+2028、U+2029、U+3000、U+FEFF も含みます。
+この空白は [表記](../common.ja.md#表記) のどの空白文字でもよく、改行文字、
+U+00A0、U+2028、U+2029、U+3000、U+FEFF も含みます。
 そのため、`A`、U+00A0、`: [0.3, 0.6]` と、`A:`、U+3000、
-`[0.3, 0.6]` は点 `A` です。
-[fixture: quadrant/db-point-nbsp-before-colon]
+`[0.3, 0.6]` は点 `A` です。 [fixture: quadrant/db-point-nbsp-before-colon]
 [fixture: quadrant/db-point-ideographic-before-colon]
 [fixture: quadrant/db-point-bom-before-colon]
 [fixture: quadrant/db-point-ls-before-colon]
@@ -1378,14 +1358,13 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 [fixture: quadrant/db-class-nbsp-before-colon]
 `:` の前の空白は、改行文字以外の空白文字で始まるときだけ、改行を持てます。
 点の名前やクラス名のすぐ後の改行文字は `newline` の単位です。
-そのため、`A`、改行、`: [0.3, 0.6]` は拒否され、
-`A`、スペース、改行、`: [0.3, 0.6]` は点です。
+そのため、`A`、改行、`: [0.3, 0.6]` は拒否され、 `A`、スペース、改行、
+`: [0.3, 0.6]` は点です。
 `A:`、改行、`[0.3, 0.6]` も点です。
 クラス名の後でも、`A:::c`、スペース、改行、`: [0.3, 0.6]` は点で、
 スペースがないと拒否されます。
 `:` の前のタブも空白で、`:` の前の改行の間には、コメント行、ディレクティブの行、
-空行を置けます。
-[fixture: quadrant/db-point-tab-and-line-feed-before-colon]
+空行を置けます。 [fixture: quadrant/db-point-tab-and-line-feed-before-colon]
 [fixture: quadrant/db-point-comment-line-before-colon]
 [fixture: quadrant/db-point-directive-line-before-colon]
 [fixture: quadrant/db-point-empty-line-before-colon]
@@ -1402,23 +1381,21 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 [fixture: quadrant/db-point-newline-before-comma]
 
 点の文脈では、**座標**は `coordinate` の単位です。
-`1` か、`0` の後に、改行文字、U+2028、U+2029 以外の 1 文字と
-1 つ以上の数字が続くもの（省略可）です。
-そのため、`0`、`1`、`0.3`、`0.30` は座標で、
-`0x5`、`0 3`、`0,3`、`0;3`、`0#3`、
+`1` か、`0` の後に、改行文字、U+2028、
+U+2029 以外の 1 文字と 1 つ以上の数字が続くもの（省略可）です。
+そのため、`0`、`1`、`0.3`、`0.30` は座標で、 `0x5`、`0 3`、`0,3`、`0;3`、`0#3`、
 数字の前に引用符、ASCII 外の文字、U+00A0、U+3000、U+FEFF を持つ `0` も座標です。
-一方、`1.5`、`2`、`10`、`00`、`01`、`.3`、`-0.3`、`+0.3`、`0.`、
-`0..5`、`0.6e1`、語、数字の前に改行文字、U+2028、U+2029 を持つ `0` は
-拒否されます。
-[fixture: quadrant/db-point-coordinate-nbsp]
+一方、`1.5`、`2`、`10`、`00`、`01`、`.3`、`-0.3`、`+0.3`、`0.`、 `0..5`、
+`0.6e1`、語、数字の前に改行文字、U+2028、
+U+2029 を持つ `0` は拒否されます。 [fixture: quadrant/db-point-coordinate-nbsp]
 [fixture: quadrant/db-point-coordinate-ideographic]
 [fixture: quadrant/db-point-coordinate-bom]
 [fixture: quadrant/gram-point-coordinate-line-separator]
 [fixture: quadrant/gram-point-coordinate-ps]
 最初の座標の後の `,` は、まわりの空白（どの種類でも）とともに `,` の単位で、
 `]` はその後のスペースとともに `]` の単位で、文脈を出ます。
-`[` の後と `]` の前には、どの種類の空白もかまいません。
-[fixture: quadrant/db-point-nbsp-after-bracket]
+`[` の後と `]` の前には、
+どの種類の空白もかまいません。 [fixture: quadrant/db-point-nbsp-after-bracket]
 [fixture: quadrant/db-point-ideographic-after-bracket]
 [fixture: quadrant/db-point-bom-after-bracket]
 [fixture: quadrant/db-point-ls-after-bracket]
@@ -1438,11 +1415,11 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 [fixture: quadrant/db-point-bom-before-close]
 [fixture: quadrant/db-point-ls-before-close]
 [fixture: quadrant/db-point-ps-before-close]
-`0` の後の文字はコンマでもよいので、
-`A:[0,1]` は座標 `0,1` を持ち、2 つ目の座標がなく、拒否されます。
+`0` の後の文字はコンマでもよいので、 `A:[0,1]` は座標 `0,1` を持ち、
+2 つ目の座標がなく、拒否されます。
 一方、`A: [0, 1]` は点です。
-角括弧の中の `%%` はコメントではなく、入力を拒否させます。
-[fixture: quadrant/db-point-plain]
+角括弧の中の `%%` はコメントではなく、
+入力を拒否させます。 [fixture: quadrant/db-point-plain]
 [fixture: quadrant/db-point-glued]
 [fixture: quadrant/db-point-spaces-everywhere]
 [fixture: quadrant/db-point-tab-around-colon]
@@ -1497,20 +1474,18 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 
 `]` の後のスペースは `]` の一部です。
 そこでは U+00A0、U+2028、U+2029、U+3000、U+FEFF は語の文字で、
-どのスタイルもそれを取らないので、入力は拒否されます。
-[fixture: quadrant/gram-ends-point-nbsp-end]
+どのスタイルもそれを取らないので、
+入力は拒否されます。 [fixture: quadrant/gram-ends-point-nbsp-end]
 [fixture: quadrant/gram-ends-point-ideographic-end]
 [fixture: quadrant/gram-ends-point-bom-end]
 [fixture: quadrant/gram-point-ls-after-close]
 [fixture: quadrant/gram-point-ps-after-close]
 ほかの空白文字は `space` の単位です。
 それがスタイルを始めます。
-`]` の後のタブは名前のないスタイルです
-（[文法の外の拒否](#文法の外の拒否) を参照）。
-その後の語もスタイルなので、
-`A: [0.3, 0.6] x` と、その行の 2 つ目の点は拒否されます。
-2 つ目の `]` は拒否されます。
-[fixture: quadrant/db-point-trailing-space]
+`]` の後のタブは名前のないスタイルです（[文法の外の拒否](#文法の外の拒否) を参照）。
+その後の語もスタイルなので、 `A: [0.3, 0.6] x` と、
+その行の 2 つ目の点は拒否されます。
+2 つ目の `]` は拒否されます。 [fixture: quadrant/db-point-trailing-space]
 [fixture: quadrant/db-point-semicolon]
 [fixture: quadrant/db-point-semicolon-spaced-next]
 [fixture: quadrant/db-point-semicolon-twice]
@@ -1529,18 +1504,18 @@ U+00A0 など、表記のほかの空白文字もそこに置けます。
 ### コメント
 
 コメントは、文の文脈で単位が始まるところの `%%` から始まり、
-その行の終わりまで続きます。改行文字は含みません。
+その行の終わりまで続きます。
+改行文字は含みません。
 コメントはどの単位にも属しません。
 コメント行、文の後のコメント（スペースの後でも、くっついていても）、
 ヘッダーの後のコメント、テキストの終わりのコメントは何も変えません。
 コメントはその前の何も取りません。
 `quadrant-1 ab%% c` はテキスト `ab` を、
 `x-axis L --> R%% c` はテキスト `L` と `R` を持ちます。
-タイトル、アクセシビリティのテキスト、説明ブロック、文字列の中の `%%` は
-その文字で、点の角括弧の中では入力を拒否させます。
+タイトル、アクセシビリティのテキスト、説明ブロック、
+文字列の中の `%%` はその文字で、点の角括弧の中では入力を拒否させます。
 `%%` だけの行と、`%%{ }%%` の行のようにディレクティブが始まらない `%%{` は、
-コメントです。
-[fixture: quadrant/db-comment-line]
+コメントです。 [fixture: quadrant/db-comment-line]
 [fixture: quadrant/db-comment-line-last]
 [fixture: quadrant/db-comment-line-no-line-feed]
 [fixture: quadrant/db-comment-line-indented]
@@ -1604,18 +1579,13 @@ mermaid.js は、1 文字の単位にくっついたコメントを、その文�
 `quadrant-1 ab,%% c` はテキスト `ab`、`quadrant-1 a b%% c` はテキスト `a` です。
 空白文字も、文法がそれを数えるところでは 1 文字の単位です。
 `accDescr {x}`、スペースかタブ、`%% c` と、
-`}` の後に空のブロックやディレクティブを挟んだ同じ形と、
-`A: [0.3, 0.6]`、タブ、`%% c` は mermaid.js では受理され、
-ここでは空白が残って拒否されます
-（[タイトルとアクセシビリティの文](#タイトルとアクセシビリティの文) と
-[点の文脈](#点の文脈) を参照）。
+`}` の後に空のブロックやディレクティブを挟んだ同じ形と、 `A: [0.3, 0.6]`、タブ、
+`%% c` は mermaid.js では受理され、
+ここでは空白が残って拒否されます（[タイトルとアクセシビリティの文](#タイトルとアクセシビリティの文) と [点の文脈](#点の文脈) を参照）。
 空白文字が 2 つなら、どちらも拒否します。
 `;` の後、点の `]` の後、2 文字以上の並びの後、ブロックの `}` の後のコメントは、
 どちらでも読みを変えるものを何も取りません。
-これは既知の差異
-[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)
-です。
-[fixture: quadrant/div-after-x-axis-glued-comment]
+これは既知の差異 [`comment-takes-character`](../known-divergences/comment-takes-character.ja.md) です。 [fixture: quadrant/div-after-x-axis-glued-comment]
 [fixture: quadrant/div-after-y-axis-glued-comment]
 [fixture: quadrant/div-comment-unit-letter-then-non-ascii]
 [fixture: quadrant/div-comment-unit-letters-then-digit]
@@ -1660,9 +1630,8 @@ mermaid.js は、1 文字の単位にくっついたコメントを、その文�
 `word` のような単位の名前は、その名前の単位 1 つを表し、
 二重引用符の中のテキストは、`"title"` や `","` のように、
 そのテキストを名前とする単位を表します。
-この文法は
-[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189)
-の文法を言い直したもので、既知の差異を除いて、同じ単位の並びを受理します。
+この文法は [`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189) の文法を言い直したもので、
+既知の差異を除いて、同じ単位の並びを受理します。
 
 下の各規則は、
 [ast/quadrant.ja.md](../ast/quadrant.ja.md) で定める木のノードを作ります。
@@ -1700,15 +1669,13 @@ statement = title-statement | acc-title-statement | acc-description-statement
 図はヘッダーと、その後の、改行と `;` で分けた行です。
 最初の行はヘッダーのすぐ後で始まります。
 行は文を 1 つ持つか、持ちません。
-その前後には空白と空の説明ブロックを置けます
-（[空の説明ブロック](#空の説明ブロック) を参照）。
+その前後には空白と空の説明ブロックを置けます（[空の説明ブロック](#空の説明ブロック) を参照）。
 テキストを持つ説明ブロックの後には、空白なしで空の説明ブロックだけを置けます。
 そのため、`;` で分けない限り、1 つの行の 2 つの文は拒否されます。
 同じ行で `x-axis L` に `quadrant-1 A` が続くもの、点に 2 つ目の点が続くもの、
 点の後の語（スタイルとして読まれる）は拒否されます。
 空行、スペースとタブの行、2 つの `;` の間の空の文は何も変えません。
-mermaid.js の文書の例は受理されます。
-[fixture: quadrant/db-after-acc-descr-cr]
+mermaid.js の文書の例は受理されます。 [fixture: quadrant/db-after-acc-descr-cr]
 [fixture: quadrant/db-after-acc-descr-crlf]
 [fixture: quadrant/db-after-acc-descr-directive]
 [fixture: quadrant/db-after-acc-descr-directive-glued]
@@ -1947,15 +1914,15 @@ text-rest = ( word | "-" | space )+
 ```
 
 **テキスト**は、軸のテキスト、象限のテキスト、点の名前です。
-語で始まる、引用符なしの語、ダッシュ、空白か、
-文字列か markdown 文字列で、その後に引用符なしのテキストが続けられます。
+語で始まる、引用符なしの語、ダッシュ、空白か、文字列か markdown 文字列で、
+その後に引用符なしのテキストが続けられます。
 くっついていても、空白の後でもかまいません。
 `"A" B` はテキスト `A B`、`"A"B` はテキスト `AB` です。
 引用符なしのテキストの後の文字列、2 つの文字列、
 markdown 文字列の後の文字列は拒否されます。
 テキストの端の空白はその一部ではありません。
-3 つの形のどれでテキストが始まるかが、そのノードの種類です。
-[fixture: quadrant/db-x-axis-quoted-both]
+3 つの形のどれでテキストが始まるかが、
+そのノードの種類です。 [fixture: quadrant/db-x-axis-quoted-both]
 [fixture: quadrant/db-y-axis-quoted-both]
 [fixture: quadrant/db-x-axis-quoted-left-only]
 [fixture: quadrant/db-y-axis-quoted-bottom-only]
@@ -2089,20 +2056,19 @@ description-block-statement = "accDescr" "{" description-block-text "}"
 empty-description-block     = "accDescr" "{" "}"
 ```
 
-タイトルは空でもかまいません。`title` だけはテキストのないタイトルです。
-アクセシビリティのタイトルと説明は空になりません
-（[アクセシビリティの値](#アクセシビリティの値) を参照）。
-後の同じ種類の文は最初の文と同じ文で、
-行の説明もブロックも、どちらも説明です。
-[fixture: quadrant/db-title-keyword-alone]
+タイトルは空でもかまいません。
+`title` だけはテキストのないタイトルです。
+アクセシビリティのタイトルと説明は空になりません（[アクセシビリティの値](#アクセシビリティの値) を参照）。
+後の同じ種類の文は最初の文と同じ文で、行の説明もブロックも、
+どちらも説明です。 [fixture: quadrant/db-title-keyword-alone]
 [fixture: quadrant/db-title-twice-empty-last]
 [fixture: quadrant/db-acc-title-twice]
 [fixture: quadrant/db-acc-descr-twice]
 [fixture: quadrant/db-acc-descr-line-then-block]
 [fixture: quadrant/db-acc-descr-block-then-line]
 
-テキストを持つ説明ブロックの後には、区切りまでの間に、
-コメントと、`}` のすぐ後の空の説明ブロックしか置けません。
+テキストを持つ説明ブロックの後には、区切りまでの間に、コメントと、
+`}` のすぐ後の空の説明ブロックしか置けません。
 `accDescr {x}` に、行の終わりのスペース、スペースと `;`、
 スペースとコメントかディレクティブ、テキスト、
 スペースと空の説明ブロックが続くものは拒否されます。
@@ -2110,8 +2076,7 @@ empty-description-block     = "accDescr" "{" "}"
 `accDescr {x}accDescr {}` は受理されます。
 `accDescr {x}accDescr {}accDescr {}`、`accDescr {x}accDescr {};title T`、
 `}` にディレクティブがくっついた `accDescr {x}` も受理され、
-`accDescr {x}accDescr {}` にスペースが続くものは拒否されます。
-[fixture: quadrant/db-acc-descr-block-then-two-empty-blocks]
+`accDescr {x}accDescr {}` にスペースが続くものは拒否されます。 [fixture: quadrant/db-acc-descr-block-then-two-empty-blocks]
 [fixture: quadrant/db-acc-descr-block-empty-block-then-semicolon]
 [fixture: quadrant/db-acc-descr-block-then-directive]
 [fixture: quadrant/gram-acc-descr-block-empty-block-then-space]
@@ -2119,9 +2084,7 @@ empty-description-block     = "accDescr" "{" "}"
 [fixture: quadrant/div-acc-descr-block-directive-space-and-comment]
 
 mermaid.js は、ブロックの後に、空のブロックやディレクティブを挟んでも、
-空白文字 1 つとコメントが続くものを受理します
-（[コメント](#コメント) を参照）。
-[fixture: quadrant/db-acc-descr-block-closing-brace-same-line]
+空白文字 1 つとコメントが続くものを受理します（[コメント](#コメント) を参照）。 [fixture: quadrant/db-acc-descr-block-closing-brace-same-line]
 [fixture: quadrant/gram-acc-descr-block-braces-inside]
 [fixture: quadrant/gram-acc-descr-block-unclosed]
 [fixture: quadrant/gram-acc-descr-block-unclosed-no-line-feed]
@@ -2144,17 +2107,16 @@ mermaid.js は、ブロックの後に、空のブロックやディレクティ
 axis-statement = ( "x-axis" | "y-axis" ) text ( arrow text? )?
 ```
 
-`x-axis` と `y-axis` は、1 つのテキスト、
-テキストと矢印と 2 つ目のテキスト、テキストと矢印だけ、のどれかを取ります。
+`x-axis` と `y-axis` は、1 つのテキスト、テキストと矢印と 2 つ目のテキスト、
+テキストと矢印だけ、のどれかを取ります。
 矢印は 2 つ以上のダッシュと `>` で、
 まわりにスペースがあってもなくてもかまいません。
 `L-->R` と `L ---> R` はテキスト `L` と `R` を持ちます。
 一方、`L -> R`、`L -- > R`、2 つ目の矢印、前にテキストのない矢印、
-キーワードだけは拒否され、
-キーワードとテキストの間のタブ、矢印のまわりのタブ（`space` の単位）も同じです。
+キーワードだけは拒否され、キーワードとテキストの間のタブ、
+矢印のまわりのタブ（`space` の単位）も同じです。
 x 軸と y 軸は別の文で、どちらの順でもかまいません。
-後の軸の文は最初の文と同じ文です。
-[fixture: quadrant/db-x-axis-both]
+後の軸の文は最初の文と同じ文です。 [fixture: quadrant/db-x-axis-both]
 [fixture: quadrant/db-y-axis-both]
 [fixture: quadrant/db-x-axis-left-only]
 [fixture: quadrant/db-y-axis-bottom-only]
@@ -2231,8 +2193,8 @@ quadrant-statement = ( "quadrant-1" | "quadrant-2" | "quadrant-3" | "quadrant-4"
 
 象限の文はキーワードとテキストです。
 `quadrant-0`、`quadrant-5`、キーワードだけは拒否されます。
-4 つの象限はどの順でも設定でき、後の象限の文は最初の文と同じ文です。
-[fixture: quadrant/db-quadrant-all-four]
+4 つの象限はどの順でも設定でき、
+後の象限の文は最初の文と同じ文です。 [fixture: quadrant/db-quadrant-all-four]
 [fixture: quadrant/db-quadrant-reverse-order]
 [fixture: quadrant/db-quadrant-1-alone]
 [fixture: quadrant/db-quadrant-2-alone]
@@ -2269,19 +2231,18 @@ styles          = style ( "," style )*
 style           = ( style-word | space )+
 ```
 
-点は、名前、`:::` の後のクラス名（なくてもよい）、
-角括弧の中の 2 つの座標と、`]` の後のスタイル（なくてもよい）です。
+点は、名前、`:::` の後のクラス名（なくてもよい）、角括弧の中の 2 つの座標と、
+`]` の後のスタイル（なくてもよい）です。
 `style-word` は、スタイルをなす単位の 1 つで、文の文脈で読まれます。
 英字か数字の語、`:`、`#`、`-` です。
-そのため、スタイルは英字、数字、`:`、`#`、`-`、空白を持ち、
-`.`、`_`、`%`、ASCII 外の文字、エンティティのプレースホルダーを持ちません。
+そのため、スタイルは英字、数字、`:`、`#`、`-`、空白を持ち、 `.`、`_`、`%`、
+ASCII 外の文字、エンティティのプレースホルダーを持ちません。
 `radius: 1.5` と `color: rgb(1,2,3)` は拒否されます。
 スタイルは `,` で分け、そのまわりに空白があってもなくてもかまいません。
 スタイルは `]` に空白なしで続けられます。
 名前、角括弧、コロン、コンマのない点、座標が 1 つか 3 つの点、
 コンマの代わりに `;` を持つ点は拒否されます。
-同じ名前や位置の 2 つの点は 2 つの点です。
-[fixture: quadrant/db-points-three]
+同じ名前や位置の 2 つの点は 2 つの点です。 [fixture: quadrant/db-points-three]
 [fixture: quadrant/db-points-same-name]
 [fixture: quadrant/db-points-same-position]
 [fixture: quadrant/db-points-identical]
@@ -2339,8 +2300,8 @@ class-def-name      = ( word-of-name | "-" | "," | ":" )+
 
 クラスの定義は、`classDef`、1 つの空白文字、名前、1 つの空白文字、
 点のスタイルです。
-`word-of-name` は、英字、数字、ASCII 外の文字の語か、
-`&`、`#`、`*` のどれかです。
+`word-of-name` は、英字、数字、ASCII 外の文字の語か、 `&`、`#`、
+`*` のどれかです。
 名前は `_`、`.`、ほかの句読点を持たず、そのコロン、コンマ、
 ダッシュは名前の一部です。
 そのため、`classDef a:b color: #fff` はクラス `a:b` です。
@@ -2349,8 +2310,8 @@ class-def-name      = ( word-of-name | "-" | "," | ":" )+
 スタイルのない `classDef`、名前のない `classDef`、
 名前が引用符の中にある `classDef` は拒否されます。
 後のクラスの定義は最初の文と同じ文です。
-クラスは、それを使う点の前でも後でも定義でき、使わなくてもかまいません。
-[fixture: quadrant/db-classdef-color]
+クラスは、それを使う点の前でも後でも定義でき、
+使わなくてもかまいません。 [fixture: quadrant/db-classdef-color]
 [fixture: quadrant/db-classdef-two-styles]
 [fixture: quadrant/db-classdef-all-four]
 [fixture: quadrant/db-classdef-twice-replaces]
@@ -2419,16 +2380,13 @@ mermaid.js は、どこにあってもそのトークンを読みません。
 `quadrant-1 A accDescr {}` は、
 ブロックの後に空白があってもなくても受理されます。
 それ以外、つまり文の中では、文法はそれをどこにも取らず、入力は拒否されます。
-テキストの中、点の `]` とそのスタイルの間、
-クラスの名前とそのスタイルの間、軸のキーワードのすぐ後です。
+テキストの中、点の `]` とそのスタイルの間、クラスの名前とそのスタイルの間、
+軸のキーワードのすぐ後です。
 mermaid.js は、ブロックがないものとしてそのような入力を受理します。
 ただし、軸のキーワードのすぐ後では、
 テキストの前の空白が mermaid.js でも `space` の単位なので、
 mermaid.js も拒否します。
-これは既知の差異
-[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)
-です。
-[fixture: quadrant/div-empty-block-in-classdef]
+これは既知の差異 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md) です。 [fixture: quadrant/div-empty-block-in-classdef]
 [fixture: quadrant/div-empty-block-in-name]
 [fixture: quadrant/div-empty-block-in-quadrant-text]
 [fixture: quadrant/div-empty-block-in-x-axis-text]
@@ -2468,12 +2426,9 @@ mermaid.js がそれをないものとして受理する入力は、ここでは
 それだけの行、文の前、テキストや名前の語の前後、
 矢印の後（mermaid.js は矢印だけで 2 つ目のテキストのない軸の文と読みます）、
 点のスタイルの間、`classDef` の行です。
-これは既知の差異
-[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)
-です。
+これは既知の差異 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md) です。
 タイトル、アクセシビリティのテキスト、説明ブロックの中では、
-`""` はテキストの 2 つの文字です。
-[fixture: quadrant/div-empty-string-after-name]
+`""` はテキストの 2 つの文字です。 [fixture: quadrant/div-empty-string-after-name]
 [fixture: quadrant/div-empty-string-before-name]
 [fixture: quadrant/div-empty-string-before-quadrant-text]
 [fixture: quadrant/div-empty-string-before-statement]
@@ -2509,18 +2464,15 @@ mermaid.js の Db は、テキストを読む間に点とクラスのスタイ�
 受け取らないスタイルで例外を投げます。
 スタイルは、名前、`:`、値で、`:` のまわりに空白があってもなくてもかまいません。
 値の後の 2 つ目の `:` とその後はかまいません。
-名前は小文字だけで、
-数字を値とする `radius`、
-`#` があってもなくてもよい 3 桁か 6 桁の 16 進を値とする
-`color` と `stroke-color`、
+名前は小文字だけで、数字を値とする `radius`、
+`#` があってもなくてもよい 3 桁か 6 桁の 16 進を値とする `color` と `stroke-color`、
 数字と `px` を値とする `stroke-width` です。
 ほかの名前、空のスタイル、`:` や値のないスタイル、ほかの形の値は、
 入力を拒否させます。
 `radius: -5`、`radius: 1e3`、`color: red`、`stroke-width: 3`、
 `stroke-width: 3 px`、`stroke-width: 3PX`、`stroke-width: 1.5px`、
 `RADIUS: 10`、点の `]` の後のタブがそうです。
-桁の多い `radius` は受理されます。
-[fixture: quadrant/db-radius-above-safe-integer]
+桁の多い `radius` は受理されます。 [fixture: quadrant/db-radius-above-safe-integer]
 [fixture: quadrant/db-radius-first-infinite]
 [fixture: quadrant/db-radius-largest-finite]
 [fixture: quadrant/gram-radius-arabic-digit]
@@ -2577,51 +2529,48 @@ mermaid.js の Db は、テキストを読む間に点とクラスのスタイ�
 ## 既知の差異
 
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
-  ヘッダー、キーワード、矢印、`:::`、クラス名、`classDef` のクラスの名前の中の
-  ディレクティブは、ここでは入力を拒否させ、mermaid.js は部分をつなぎます
-  （[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
+  ヘッダー、キーワード、矢印、`:::`、クラス名、
+  `classDef` のクラスの名前の中のディレクティブは、ここでは入力を拒否させ、
+  mermaid.js は部分をつなぎます（[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
   `classDef` のクラスの名前の中の、行の規則が無視する `;` は、
   ここでは入力を拒否させ、mermaid.js は部分をつなぎます。
-  `classDef style:#x;y color: #f00` は、mermaid.js ではクラス `style:#xy` です。
-  [fixture: quadrant/div-grid-style-classdef-name]
+  `classDef style:#x;y color: #f00` は、
+  mermaid.js ではクラス `style:#xy` です。 [fixture: quadrant/div-grid-style-classdef-name]
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)。**
-  1 文字の単位にくっついた `%%` は、mermaid.js ではその文字を取ります
-  （[コメント](#コメント) を参照）。
+  1 文字の単位にくっついた `%%` は、
+  mermaid.js ではその文字を取ります（[コメント](#コメント) を参照）。
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
   空の文字列、空の markdown 文字列、文の中の空の説明ブロックは、
-  ここでは拒否され、mermaid.js はないものとして受理します
-  （[空の説明ブロック](#空の説明ブロック) と
-  [空の文字列](#空の文字列) を参照）。
+  ここでは拒否され、mermaid.js はないものとして受理します。
+  [空の説明ブロック](#空の説明ブロック) と、
+  [空の文字列](#空の文字列) を参照してください。
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
   ヘッダーの後のどこかの、タイトル、アクセシビリティのテキスト、テキスト、
   文字列、クラス名の中の `C4Container`、`C4Component`、`C4Dynamic`、
   `C4Deployment` は、mermaid.js にテキストを C4 のパーサーへ渡させ、
-  それが拒否します。ここではテキストは quadrant chart です。
-  `C4Context` はどちらでもテキストの先頭でだけ数えるので、点の名前です。
-  [fixture: quadrant/db-c4-context-in-name]
+  それが拒否します。
+  ここではテキストは quadrant chart です。
+  `C4Context` はどちらでもテキストの先頭でだけ数えるので、
+  点の名前です。 [fixture: quadrant/db-c4-context-in-name]
   [fixture: quadrant/div-c4-keyword-in-acc-title]
   [fixture: quadrant/div-c4-keyword-in-class-name]
   [fixture: quadrant/div-c4-keyword-in-quadrant-text]
   [fixture: quadrant/div-c4-keyword-in-quoted-name]
   [fixture: quadrant/div-c4-keyword-in-title]
-- **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)**
-  と
-  **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)**
-  は、どの図種とも同じく当たります。
+- **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)** と、
+  **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)** は、
+  どの図種とも同じく当たります。
   フロントマターに `title: <a` があると、
-  `accTitle: b="c">d` は mermaid.js では
-  アクセシビリティのタイトル `b='c'>d` を持ち、
+  `accTitle: b="c">d` は mermaid.js ではアクセシビリティのタイトル `b='c'>d` を持ち、
   正しい YAML でないフロントマターは、mermaid.js では拒否され、
-  ここでは受理されます。
-  [fixture: quadrant/div-frontmatter-html-tag-starts-in-field]
+  ここでは受理されます。 [fixture: quadrant/div-frontmatter-html-tag-starts-in-field]
   [fixture: quadrant/div-frontmatter-invalid-yaml]
 
-既知の差異
-[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.ja.md)、
+既知の差異 [`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.ja.md)、
 [`comment-takes-line-break`](../known-divergences/comment-takes-line-break.ja.md)、
-[`percent-brace-after-unit`](../known-divergences/percent-brace-after-unit.ja.md)
-は、この図種には当たりません。
+[`percent-brace-after-unit`](../known-divergences/percent-brace-after-unit.ja.md) は、
+この図種には当たりません。
 mermaid.js は、ヘッダーの前の `%%` だけの行をコメントとして読み、
 そのコメントの規則が `%%` の前で取る改行文字は、
 その後の改行文字がしないことを何も変えず、

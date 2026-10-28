@@ -7,7 +7,7 @@ import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
-  loadFixtures,
+  loadFixture,
 } from "../src/index.ts"
 import type { EmbeddedValues } from "../src/mermaid.ts"
 import type { Kit } from "./check-tree-built.ts"
@@ -193,9 +193,7 @@ describe("treeview Db from hand-built trees", () => {
   })
 
   it("uses the site sanitizer only on accessibility and description text", async () => {
-    const fixture = (await loadFixtures("treeview")).find(
-      (entry) => entry.name === "config-security-level-other",
-    )!
+    const fixture = await loadFixture("treeview", "config-security-level-other")
     const embedded = embeddedValuesOf(fixture, fixture.expected)!
     const built = buildTreeview(fixture.input, (kit) => [
       common(kit, "AccTitle", " <b>A</b>"),
@@ -216,9 +214,7 @@ describe("treeview Db from hand-built trees", () => {
   })
 
   it("uses the shared specified reading for the frontmatter HTML value difference", async () => {
-    const fixture = (await loadFixtures("treeview")).find(
-      (entry) => entry.name === "div-html-frontmatter-value",
-    )!
+    const fixture = await loadFixture("treeview", "div-html-frontmatter-value")
     const result = fixture.specified!
     expect(result.accepted).toBe(true)
     const built = buildTreeview(fixture.input, (kit) => [

@@ -26,8 +26,7 @@ hidden の境界と保護された見出し・本文の組を優先します。
 入力 (escaped):
 `" \tpacket \t\n0:\"Head\"\n"`.
 
-出力
-([header/header-packet-output.mmd](../tests/fixtures/packet/header/header-packet-output.mmd)):
+出力 ([header/header-packet-output.mmd](../tests/fixtures/packet/header/header-packet-output.mmd)):
 
 ```mmd
 packet
@@ -56,8 +55,7 @@ YAML は共有の正の最小幅を使います。
 入力 (escaped):
 `"packet\n0:\"Indent\"\n       1:\"Next\"\n"`.
 
-出力
-([indentation/indent-default-output.mmd](../tests/fixtures/packet/indentation/indent-default-output.mmd)):
+出力 ([indentation/indent-default-output.mmd](../tests/fixtures/packet/indentation/indent-default-output.mmd)):
 
 ```mmd
 packet
@@ -93,8 +91,7 @@ packet
 入力 (escaped):
 `"packet title Inline topic"`.
 
-出力
-([statements-one-per-line/inline-title-output.mmd](../tests/fixtures/packet/statements-one-per-line/inline-title-output.mmd)):
+出力 ([statements-one-per-line/inline-title-output.mmd](../tests/fixtures/packet/statements-one-per-line/inline-title-output.mmd)):
 
 ```mmd
 packet
@@ -120,8 +117,7 @@ Db から文を再構成したり併合したりしません。
 入力 (escaped):
 `"packet\n+2:\"relative\"\n2:\"single\"\n3-3:\"equal range\"\n"`.
 
-出力
-([block-forms-and-order/block-three-forms-output.mmd](../tests/fixtures/packet/block-forms-and-order/block-three-forms-output.mmd)):
+出力 ([block-forms-and-order/block-three-forms-output.mmd](../tests/fixtures/packet/block-forms-and-order/block-three-forms-output.mmd)):
 
 ```mmd
 packet
@@ -147,8 +143,7 @@ global trivia と hidden の境界は詰めずに保ちます。
 入力 (escaped):
 `"packet\n0 \t- 2 : \"Dash\"\n"`.
 
-出力
-([range-dash/dash-tight-output.mmd](../tests/fixtures/packet/range-dash/dash-tight-output.mmd)):
+出力 ([range-dash/dash-tight-output.mmd](../tests/fixtures/packet/range-dash/dash-tight-output.mmd)):
 
 ```mmd
 packet
@@ -170,8 +165,7 @@ global trivia と hidden form の接触状態と消費 LF は保ちます。
 入力 (escaped):
 `"packet\n+ \t3 :\"Plus\"\n"`.
 
-出力
-([relative-plus/plus-tight-output.mmd](../tests/fixtures/packet/relative-plus/plus-tight-output.mmd)):
+出力 ([relative-plus/plus-tight-output.mmd](../tests/fixtures/packet/relative-plus/plus-tight-output.mmd)):
 
 ```mmd
 packet
@@ -195,8 +189,7 @@ trivia がある隙間は境界を保ちます。
 入力 (escaped):
 `"packet\n0 - 2 \t:  \"Range\"\n3 \t:\t'Single'\n+ 2 :\"Relative\"\n"`.
 
-出力
-([block-colons/colon-compact-output.mmd](../tests/fixtures/packet/block-colons/colon-compact-output.mmd)):
+出力 ([block-colons/colon-compact-output.mmd](../tests/fixtures/packet/block-colons/colon-compact-output.mmd)):
 
 ```mmd
 packet
@@ -220,8 +213,7 @@ StringLiteral の範囲全体を保ちます。
 入力 (escaped):
 `"packet\n0:'single \"quote\"'\n1:\"double 'quote'\"\n2:''\n3:\"\"\n"`.
 
-出力
-([quotes/quotes-authored-output.mmd](../tests/fixtures/packet/quotes/quotes-authored-output.mmd)):
+出力 ([quotes/quotes-authored-output.mmd](../tests/fixtures/packet/quotes/quotes-authored-output.mmd)):
 
 ```mmd
 packet
@@ -249,8 +241,7 @@ trim、圧縮、decode は Db を変え得るためです。
 入力 (escaped):
 `"packet\n0:\"  A  B\t C  \"\n1:\" \t \"\n"`.
 
-出力
-([label-content/label-padding-output.mmd](../tests/fixtures/packet/label-content/label-padding-output.mmd)):
+出力 ([label-content/label-padding-output.mmd](../tests/fixtures/packet/label-content/label-padding-output.mmd)):
 
 ```mmd
 packet
@@ -284,8 +275,7 @@ double は原綴を失い、拒否される指数や Infinity の構文にもな
 入力 (escaped):
 `"packet\n0-0:\"Zero\"\n"`.
 
-出力
-([numbers/number-zero-output.mmd](../tests/fixtures/packet/numbers/number-zero-output.mmd)):
+出力 ([numbers/number-zero-output.mmd](../tests/fixtures/packet/numbers/number-zero-output.mmd)):
 
 ```mmd
 packet
@@ -314,8 +304,7 @@ null または空白だけの値は裸の `title` にします。
 入力 (escaped):
 `"packet\ntitle\t  Topic  words \t\n"`.
 
-出力
-([title/title-trim-output.mmd](../tests/fixtures/packet/title/title-trim-output.mmd)):
+出力 ([title/title-trim-output.mmd](../tests/fixtures/packet/title/title-trim-output.mmd)):
 
 ```mmd
 packet
@@ -342,8 +331,7 @@ colon 後の brace は行値です。
 入力 (escaped):
 `"packet\naccTitle \t:  Access  words \t\naccDescr\t:  Details  words \t\n"`.
 
-出力
-([accessibility-lines/a11y-lines-output.mmd](../tests/fixtures/packet/accessibility-lines/a11y-lines-output.mmd)):
+出力 ([accessibility-lines/a11y-lines-output.mmd](../tests/fixtures/packet/accessibility-lines/a11y-lines-output.mmd)):
 
 ```mmd
 packet
@@ -389,8 +377,7 @@ keyword と opener、内側の接触は保ち、存在する空白列は1個に�
 入力 (escaped):
 `"packet\naccDescr{A}\naccDescr   {  B  }\naccDescr {C }\naccDescr{ D}\n"`.
 
-出力
-([description-blocks/description-gaps-output.mmd](../tests/fixtures/packet/description-blocks/description-gaps-output.mmd)):
+出力 ([description-blocks/description-gaps-output.mmd](../tests/fixtures/packet/description-blocks/description-gaps-output.mmd)):
 
 ```mmd
 packet
@@ -416,8 +403,7 @@ block component 間の可視 LF は拒否され、label の改行変更は Db �
 
 Options: `{"printWidth": 20}`.
 
-出力
-([multiline-values/long-no-wrap-output.mmd](../tests/fixtures/packet/multiline-values/long-no-wrap-output.mmd)):
+出力 ([multiline-values/long-no-wrap-output.mmd](../tests/fixtures/packet/multiline-values/long-no-wrap-output.mmd)):
 
 ```mmd
 packet
@@ -445,8 +431,7 @@ native comment は物理 LF・CR までで、LS・PS は内容です。
 入力 (escaped):
 `"packet\n0:\"A%%B\"\naccDescr { A%%B }\ntitle Text%%comment\n"`.
 
-出力
-([comments/comments-value-output.mmd](../tests/fixtures/packet/comments/comments-value-output.mmd)):
+出力 ([comments/comments-value-output.mmd](../tests/fixtures/packet/comments/comments-value-output.mmd)):
 
 ```mmd
 packet
@@ -485,8 +470,7 @@ native hidden DIRECTIVE は別の所有ノードのままです。
 入力 (escaped):
 `"packet\n0%%{wrap}%%:\t\"Global\"\naccTitle%%{wrap}%%: Access\naccDescr%%{wrap}%%{ Detail }\n"`.
 
-出力
-([global-directives/global-positions-output.mmd](../tests/fixtures/packet/global-directives/global-positions-output.mmd)):
+出力 ([global-directives/global-positions-output.mmd](../tests/fixtures/packet/global-directives/global-positions-output.mmd)):
 
 ```mmd
 packet
@@ -497,8 +481,8 @@ packet
 
 ### Hidden yaml
 
-yaml-block の PacketIgnoredText を、textBeforeHeader、body、
-名前付きの隙間、textAfter の所有位置に1回だけ、範囲全体として保ちます。
+yaml-block の PacketIgnoredText を、textBeforeHeader、body、名前付きの隙間、
+textAfter の所有位置に1回だけ、範囲全体として保ちます。
 範囲外の消費 LF と、EOF を含む閉じの padding を保ちます。
 必須の境界の移動や trim は後続文を拒否させ得るためです。
 範囲外の余分な LF と端の空行は [Blank lines](#blank-lines) に従います。
@@ -550,8 +534,7 @@ opaque な本文は YAML 整形せず、直前に LF を追加しません。
 入力 (escaped):
 `"packet\n+---\nopaque count\n---\n2:\"Ycount\"\n"`.
 
-出力
-([hidden-yaml/yaml-gap-count-output.mmd](../tests/fixtures/packet/hidden-yaml/yaml-gap-count-output.mmd)):
+出力 ([hidden-yaml/yaml-gap-count-output.mmd](../tests/fixtures/packet/hidden-yaml/yaml-gap-count-output.mmd)):
 
 ```mmd
 packet
@@ -563,8 +546,8 @@ opaque count
 
 ### Hidden directives
 
-directive の PacketIgnoredText にも共有の source・境界保持を適用し、
-Root directive と区別します。
+directive の PacketIgnoredText にも共有の source・境界保持を適用し、 Root
+directive と区別します。
 range・single・relative の内部の全隙間、7種類の文の suffix、
 見出しとの接触と可視 EOL 後の body form を保ちます。
 任意・複数行の本文、遅い有効な閉じ、複数 form、global cut も保ちます。
@@ -610,8 +593,7 @@ range・single・relative の内部の全隙間、7種類の文の suffix、
 入力 (escaped):
 `"packet\n0%%{!d}%% -%%{!e}%% 1%%{!c}%% :%%{!l}%% \"Dgaps\"\n"`.
 
-出力
-([hidden-directives/hidden-all-range-gaps-output.mmd](../tests/fixtures/packet/hidden-directives/hidden-all-range-gaps-output.mmd)):
+出力 ([hidden-directives/hidden-all-range-gaps-output.mmd](../tests/fixtures/packet/hidden-directives/hidden-all-range-gaps-output.mmd)):
 
 ```mmd
 packet
@@ -621,8 +603,8 @@ packet
 ### Retained prefix
 
 textBeforeHeader に hidden form があれば、prefix 全体を保ちます。
-先頭 LF、コメントの列、通過した bare line の trivia、
-第2 scan の form と real・hidden の順序も含みます。
+先頭 LF、コメントの列、通過した bare line の trivia、第2
+scan の form と real・hidden の順序も含みます。
 先頭 LF の削除は、無視された YAML を有効な title・設定、
 または不正な frontmatter へ昇格させ得るためです。
 通常の通過コメントだけの prefix は、共有の root 整理を使います。
@@ -638,8 +620,7 @@ textBeforeHeader に hidden form があれば、prefix 全体を保ちます。
 入力 (escaped):
 `"\n---\ntitle: Ignored title\nconfig: {packet: {bitsPerRow: 8}}\n---\npacket\n0-9:\"Prefix\"\n"`.
 
-出力
-([retained-prefix/prefix-retain-output.mmd](../tests/fixtures/packet/retained-prefix/prefix-retain-output.mmd)):
+出力 ([retained-prefix/prefix-retain-output.mmd](../tests/fixtures/packet/retained-prefix/prefix-retain-output.mmd)):
 
 ```mmd
 
@@ -654,8 +635,8 @@ packet
 ### Semicolons
 
 全セミコロンを残し、共有の文字列 segment 保護を使います。
-最初の非空白から最後のセミコロンまで、交差する値・コメント・
-directive 全体へ延ばして保護します。
+最初の非空白から最後のセミコロンまで、
+交差する値・コメント・ directive 全体へ延ばして保護します。
 保護された見出しと最初の文は分離せず、安全な外側と suffix のみ整えます。
 style・classDef の両 pass、大文字小文字、colon・hash の空白、反復、
 Unicode の境界と directive で再結合する trigger を保ちます。
@@ -683,8 +664,7 @@ atomic cut は失敗のままです。
 入力 (escaped):
 `"packet\ntitle Text;;\naccTitle: Access;\naccDescr: Detail;;\n0:\"Label;\"\n"`.
 
-出力
-([semicolons/semicolons-text-output.mmd](../tests/fixtures/packet/semicolons/semicolons-text-output.mmd)):
+出力 ([semicolons/semicolons-text-output.mmd](../tests/fixtures/packet/semicolons/semicolons-text-output.mmd)):
 
 ```mmd
 packet
@@ -699,18 +679,18 @@ packet
 過剰な空白を減らして区切りを見せるため、通常の内部 ASCII 空行列は1空行、
 文書と本文の通常の端の空行は削除します。
 コメント周辺も同じです。
-値、block、directive、hidden の内部、共通領域の結合、
-保持する prefix の空行は、内容や原文の役割に属するため保ちます。
-hidden form が LF を消費した後は、
-次の文に必要なときだけ予備の LF 1 つを保ちます。
+値、block、directive、hidden の内部、共通領域の結合、保持する prefix の空行は、
+内容や原文の役割に属するため保ちます。
+hidden form が LF を消費した後は、次の文に必要なときだけ予備の LF
+1 つを保ちます。
 文書の終わりは設定の終端改行1つにし、見出しの直後の空行は削除します。
 見出しと最初の文の間に EOL は必要ありません。
-それ以外は予備の LF の後に通常の空行の規則を適用し、
-連続空行を1行、空白だけの行を空行にします。
+それ以外は予備の LF の後に通常の空行の規則を適用し、連続空行を1行、
+空白だけの行を空行にします。
 予備の LF は文法の要件で、それ以降はコメントの後と同じ作者の区切りです。
 
-hidden の境界や semicolon の保護で文が見出しの行に残っても、
-その文の後置 hidden form の後は文と文の間として扱います。
+hidden の境界や semicolon の保護で文が見出しの行に残っても、その文の後置 hidden
+form の後は文と文の間として扱います。
 
 [fixture: packet/blank-lines/hidden-following-blanks]
 
@@ -739,8 +719,7 @@ hidden の境界や semicolon の保護で文が見出しの行に残っても�
 入力 (escaped):
 `"\n\npacket\n\n\n0:\"Blank\"\n \t\n\n1:\"Group\"\n\n"`.
 
-出力
-([blank-lines/blanks-collapse-output.mmd](../tests/fixtures/packet/blank-lines/blanks-collapse-output.mmd)):
+出力 ([blank-lines/blanks-collapse-output.mmd](../tests/fixtures/packet/blank-lines/blanks-collapse-output.mmd)):
 
 ```mmd
 packet
@@ -751,8 +730,8 @@ packet
 
 ### Trailing whitespace
 
-通常の行末を揃えるため、見出し、完成した block と説明の閉じの後の
-無害な外側 ASCII padding を除きます。
+通常の行末を揃えるため、見出し、
+完成した block と説明の閉じの後の無害な外側 ASCII padding を除きます。
 共通の行値は共有の compact 配置に従います。
 値の継続行、コメント、directive、hidden の内部と保護 segment を保ちます。
 範囲外の空白も必要な EOL を可視に保てるため、
@@ -767,8 +746,7 @@ hidden の閉じの padding は EOF でも残します。
 入力 (escaped):
 `"packet \t\n0:\"Exterior\" \t\naccDescr { Detail } \t\n"`.
 
-出力
-([trailing-whitespace/trailing-safe-output.mmd](../tests/fixtures/packet/trailing-whitespace/trailing-safe-output.mmd)):
+出力 ([trailing-whitespace/trailing-safe-output.mmd](../tests/fixtures/packet/trailing-whitespace/trailing-safe-output.mmd)):
 
 ```mmd
 packet
@@ -800,8 +778,7 @@ hidden YAML と保持する prefix はこの整形へ渡しません。
 入力 (escaped):
 `"---\ntitle: \"<a b=\\\"c\\\">\"\n---\npacket\n0:\"Html guard\"\n"`.
 
-出力
-([frontmatter-yaml/frontmatter-html-guard-output.mmd](../tests/fixtures/packet/frontmatter-yaml/frontmatter-html-guard-output.mmd)):
+出力 ([frontmatter-yaml/frontmatter-html-guard-output.mmd](../tests/fixtures/packet/frontmatter-yaml/frontmatter-html-guard-output.mmd)):
 
 ```mmd
 ---
@@ -819,8 +796,8 @@ label、block、hidden と frontmatter の内部も同じです。
 LS・PS・NBSP・BOM は内容としての字句上の役割を保ちます。
 共通の行値の外端は trim し、通常の block opener 空白は結合できます。
 不正な native Unicode gap は拒否のままです。
-Prettier は先頭 BOM を除去・復元するため、開始 fence の BOM は
-YAML を昇格させ、閉じにもある BOM は失敗させ得ます。
+Prettier は先頭 BOM を除去・復元するため、開始 fence の BOM は YAML を昇格させ、
+閉じにもある BOM は失敗させ得ます。
 byte の同一性は保証しません。
 
 [corpus fixture: packet/line-ls-between]
@@ -884,8 +861,7 @@ EOF に達する global の末尾、hidden の閉じ padding、
 入力 (escaped):
 `"packet\n0:\"Final\"\n\n"`.
 
-出力
-([final-newline/final-statement-output.mmd](../tests/fixtures/packet/final-newline/final-statement-output.mmd)):
+出力 ([final-newline/final-statement-output.mmd](../tests/fixtures/packet/final-newline/final-statement-output.mmd)):
 
 ```mmd
 packet
@@ -894,13 +870,12 @@ packet
 
 ### Specified readings
 
-[6つの既知の差異](../../spec/docs/diagrams/packet.md#known-divergences)
-に従います。
+[6つの既知の差異](../../spec/docs/diagrams/packet.md#known-divergences) に従います。
 directive・選択セミコロンの atomic cut は失敗のままです。
 frontmatter HTML は本文だけの変換、opaque な埋め込みデータ、
 C4 検出と見出し前の bare percent trivia は指定読みを使います。
-受理を変える本文の bitsPerRow は指定の比較経路だけで外し、
-site 設定、title と他の設定を残します。
+受理を変える本文の bitsPerRow は指定の比較経路だけで外し、 site 設定、
+title と他の設定を残します。
 raw 拒否には raw Db がありません。
 hidden form、空 label と空説明は新たな差異ではありません。
 standalone の失敗は出力せず構文エラーを報告します。

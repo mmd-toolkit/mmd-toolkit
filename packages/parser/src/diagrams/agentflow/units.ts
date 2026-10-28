@@ -30,7 +30,11 @@ import type {
   OpeningArrowParts,
 } from "./arrows.ts"
 import { matchArrow, matchClosedArrow } from "./arrows.ts"
-import type { DiagramCharacter, DiagramText } from "../../diagram-text.ts"
+import type {
+  DiagramCharacter,
+  DiagramPosition,
+  DiagramText,
+} from "../../diagram-text.ts"
 
 import {
   isCodePointAt,
@@ -425,9 +429,12 @@ export class AgentflowUnitLexer extends GraphUnitLexer<
    * 26 in order, a `newline` unit for each maximal run of line feeds and a
    * `space` unit for each other whitespace character. Every place of
    * the run is followed by the same end of the run, where no arrow is, so
-   * rule 18 is not tried again at the start of the next unit; rules 1 to 17
-   * are, as at the start of any unit, and the first that matches there
-   * reads on from it.
+   * rule 18 is not tried again at the start of the next unit. Rules 1 to 17
+   * are tried at the start of each unit of the run except the later `space`
+   * units of a run of ASCII spaces and tabs: of them only rule 14, the
+   * direction line, can start at whitespace, and it looks at the rest of the
+   * line, so what it does not find at the start of such a run it does not
+   * find at a later place of the same line.
    */
   private readWhitespaceRun(at: DiagramCharacter): void {
     const arrow = matchArrow(this.reader, this.afterWhitespace(at))
@@ -445,10 +452,25 @@ export class AgentflowUnitLexer extends GraphUnitLexer<
             start,
             (character) => character.codePoint === LINE_FEED,
           )
-        : this.reader.after(start)
-      this.read(lineFeeds ? "newline" : "space", start, end)
-      if (!isWhitespaceAt(end) || this.readRulesBeforeArrow(end)) return
-      start = end
+        : skipWhile(this.reader, start, isAsciiPadding)
+      if (lineFeeds) {
+        this.read("newline", start, end)
+      } else {
+        // The failed comment lookahead covers this ASCII padding run. Keep
+        // each space unit while walking once instead of searching the same
+        // suffix again.
+        const after = samePosition(start, end) ? this.reader.after(start) : end
+        let space: DiagramPosition = start
+        while (space !== null && !samePosition(space, after)) {
+          const next = this.reader.after(space)
+          this.addUnit("space", space, next)
+          space = next
+        }
+        this.position = after
+      }
+      const next = this.position
+      if (!isWhitespaceAt(next) || this.readRulesBeforeArrow(next)) return
+      start = next
     }
   }
 

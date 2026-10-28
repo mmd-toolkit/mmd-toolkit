@@ -26,12 +26,10 @@ mermaid.js は、何もない閉じた `accDescr { }` のブロックをエラ�
 前に説明がなければ説明は空のままで、ブロックは何も変えない。
 
 コメント行だけを持つブロックは報告しない。
-後で埋めるブロックは、
-`accDescr {`、`%% TODO`、`}` のようにコメントを入れて書き、
-最初に書くと何も変えない。
+後で埋めるブロックは、 `accDescr {`、`%% TODO`、
+`}` のようにコメントを入れて書き、最初に書くと何も変えない。
 説明の後では、そのようなブロックもそれを取り除き、
-[usecase-no-duplicate-description](./usecase-no-duplicate-description.ja.md)
-が報告する。
+[usecase-no-duplicate-description](./usecase-no-duplicate-description.ja.md) が報告する。
 
 説明を書くか、ブロックを取り除く。
 
@@ -66,10 +64,9 @@ usecase-beta
 
 ## 背景
 
-[`accDescr` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L132-L140)
-はブロックに括弧の間の文字を与え、空のブロックではそれは空であり、
-[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L243-L245)
-はそれを説明として保つ。
+[`accDescr` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.visitor.ts#L132-L140) はブロックに括弧の間の文字を与え、
+空のブロックではそれは空であり、
+[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L243-L245) はそれを説明として保つ。
 
 <!-- begin auto-generated rule resources -->
 

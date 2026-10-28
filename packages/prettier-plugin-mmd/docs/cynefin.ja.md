@@ -3,8 +3,7 @@
 English version: [cynefin.md](./cynefin.md)
 
 cynefin-beta と cynefin-beta: の整形規則です。
-[構文](../../spec/docs/diagrams/cynefin.ja.md)と
-[木](../../spec/docs/ast/cynefin.ja.md)に従い、
+[構文](../../spec/docs/diagrams/cynefin.ja.md)と [木](../../spec/docs/ast/cynefin.ja.md)に従い、
 [互換性](./compatibility.ja.md)の共有の制限を適用します。
 
 ## Rules
@@ -85,8 +84,7 @@ cynefin-beta
 
 本文の文は設定の 1 段、領域の項目は 2 段にします。
 親は列ではなく、木の項目リストで決まるためです。
-tabWidth が 0 なら空白は加えず、
-useTabs は幅が 0 でも 1 段に 1 tab を使います。
+tabWidth が 0 なら空白は加えず、 useTabs は幅が 0 でも 1 段に 1 tab を使います。
 値の継続行と保護された内部は元の列を保ちます。
 
 [fixture: cynefin/indentation/indent-two]
@@ -114,8 +112,7 @@ cynefin-beta
 
 ### Domains and items
 
-領域の語は単独行、各項目はその 1 段下の行にして、
-書かれた親子関係を見せます。
+領域の語は単独行、各項目はその 1 段下の行にして、書かれた親子関係を見せます。
 領域と項目、隣接する文字列、隣接する領域の間に文法上 EOL は不要なので、
 分割しても Db は同じです。
 空文字列、重複項目、複数行文字列を残します。
@@ -170,8 +167,7 @@ cynefin-beta
 
 ### Component spacing
 
-同じ行に残る普通の領域と項目の部品は 1 space で分け、
-部品を見分けやすくします。
+同じ行に残る普通の領域と項目の部品は 1 space で分け、部品を見分けやすくします。
 同じ印字行の中の global trivia は両側の接触を保ちます。
 行に分ける所の配置は [Global directives](#global-directives) に従います。
 hidden closer の padding と semicolon の prefix は保護されたままにします。
@@ -255,8 +251,8 @@ cynefin-beta
 
 ### Label colon
 
-ラベルを端点から分けるため、to : "label" の colon の前後を普通の
-1 space にします。
+ラベルを端点から分けるため、to : "label" の colon の前後を普通の 1
+space にします。
 ラベルなし、引用符の中が空、空白だけのラベルは別々の形として残します。
 hidden と global trivia の隙間を普通の空白より優先します。
 
@@ -288,8 +284,8 @@ cynefin-beta
 ### Strings
 
 項目と遷移ラベルの StringLiteral は source span のまま印字します。
-引用符、escape、空の値、内部の padding、HTML・entity、
-native form に見える文字を保ち、singleQuote でも引用符は変えません。
+引用符、escape、空の値、内部の padding、HTML・entity、 native
+form に見える文字を保ち、singleQuote でも引用符は変えません。
 Db が等しい引用符の変更も書かれた形を失い、
 trim や escape の decode は値を変え得るためです。
 共有の semicolon 保護を先に適用します。
@@ -359,8 +355,7 @@ cynefin-beta
 
 各領域ブロックと項目を source 順で残し、
 重複項目も confusion の全項目も保ちます。
-後の宣言は前を置き換えるため、
-統合すると読みが変わります。
+後の宣言は前を置き換えるため、統合すると読みが変わります。
 Db の公開順や描画上限を理由に、並べ替え・削除・打ち切りはしません。
 
 [fixture: cynefin/redeclarations/domain-repeat-order]
@@ -410,8 +405,8 @@ cynefin-beta
 
 ### Title
 
-共有の共通行 layout で普通の外端空白を trim し、
-非空値の前を 1 space にして、内部の文字は保ちます。
+共有の共通行 layout で普通の外端空白を trim し、非空値の前を 1 space にして、
+内部の文字は保ちます。
 空または空白だけの値は title だけにし、次行を値にしません。
 引用符を文字列の区切りと解釈せず、Db が等しい簡潔な外端を選びます。
 空の代入によるリセットと trivia の接触を残します。
@@ -493,8 +488,8 @@ accDescr ブロックは共有の説明 layout を通します。
 普通の opener 前の空白は結合し、非空値の継続列を保ち、
 独立した closer は文の段にそろえます。
 空ブロック内のコメント・directive は共有の配置を保ちます。
-中身のない内部を padding で囲む必要はなく、
-値内の native form に見える文字も値のままにするためです。
+中身のない内部を padding で囲む必要はなく、値内の native
+form に見える文字も値のままにするためです。
 
 [fixture: cynefin/description-blocks/description-empty]
 
@@ -612,8 +607,8 @@ cynefin-beta
 
 ### Hidden boundaries
 
-範囲外の消費 LF、同一行の接触、closer の space・tab は EOF も含めて
-共有の hidden-gap・block 規則で保ちます。
+範囲外の消費 LF、同一行の接触、
+closer の space・tab は EOF も含めて共有の hidden-gap・block 規則で保ちます。
 遷移と共通文の suffix が LF を消費するときは予備の可視 LF が要り、
 closer の padding が LF を可視のまま残す場合もあります。
 領域と項目には可視 EOL は要りません。
@@ -621,14 +616,14 @@ closer の padding が LF を可視のまま残す場合もあります。
 見出し行の最初の文の suffix はその文のものとして扱います。
 複数 suffix と可視 EOL 後の本文 form も保ちます。
 
-見出し、領域の開き、項目間に同じ行保持の判断を適用し、
-項目末尾の native DIRECTIVE・YAML もその判断に含めます。
+見出し、領域の開き、項目間に同じ行保持の判断を適用し、項目末尾の native
+DIRECTIVE・YAML もその判断に含めます。
 その行の開きと子を同じ行に保ちます。
 子だけを移すと見出し行の保護が失われ、次の整形が変わるためです。
 form を所有する node は変えず、行の配置を保ちます。
 
-native の suffix が同じ行を保つ場合も、semicolon で保護した prefix は
-一度だけ印字します。
+native の suffix が同じ行を保つ場合も、
+semicolon で保護した prefix は一度だけ印字します。
 suffix の owner は保ち、項目の重複で Db を変えません。
 
 [fixture: cynefin/hidden-boundaries/semicolon-hidden-header-directive]
@@ -738,10 +733,10 @@ cynefin-beta
 
 textBeforeHeader があれば共有の keepsPrefix で、
 見出し keyword の直前まで prefix 全体を保ちます。
-先頭 LF、passed trivia、second-scan directive、
-real・retained YAML の順を保ちます。
-掃除すると無視された YAML が有効な frontmatter になり、
-title、設定、受理を変え得るためです。
+先頭 LF、passed trivia、second-scan directive、 real・retained
+YAML の順を保ちます。
+掃除すると無視された YAML が有効な frontmatter になり、 title、設定、
+受理を変え得るためです。
 
 [fixture: cynefin/retained-prefix/prefix-retained-yaml]
 
@@ -813,8 +808,7 @@ cynefin-beta
 
 ### Comments
 
-普通の独立コメントは所属本文の段、項目間は項目の段、
-prefix は第 1 列にします。
+普通の独立コメントは所属本文の段、項目間は項目の段、 prefix は第 1 列にします。
 inline コメントは行と接触を保ち、元から離れていれば 1 space にします。
 印、内容、末尾の padding を残します。
 native comment は CR・LF で終わり、LS・PS は内容です。
@@ -886,8 +880,8 @@ cynefin-beta
 
 ### Trailing whitespace
 
-見出し、領域の語、完成した項目・遷移、説明 closer の後の、
-害のない外側の ASCII padding を削ります。
+見出し、領域の語、完成した項目・遷移、説明 closer の後の、害のない外側の ASCII
+padding を削ります。
 値の継続行、コメント、directive・hidden 内部、必要な closer padding、
 保護区間は保ちます。
 全物理行の trim は値や受理を変え得るので、owner ごとに決めます。
@@ -917,8 +911,8 @@ cynefin-beta
 ### Semicolons
 
 共有の textual-prefix 保護で全 semicolon を残します。
-segment の先頭から最後の semicolon までと、
-交差する値・trivia 全体を保ち、安全な suffix の隙間だけを整形します。
+segment の先頭から最後の semicolon までと、交差する値・trivia 全体を保ち、
+安全な suffix の隙間だけを整形します。
 保護した最初の行は所属本文の段にし、項目なら項目の段にします。
 中身と後続行の列は保ちます。
 segment は directive と comment-region の結合を含め、
@@ -1016,8 +1010,8 @@ cynefin-beta
 ### Multiline values
 
 printWidth では折り返しません。
-領域・項目の分割を除き、文字列、遷移ラベル、説明の物理的な内容、
-継続列、内部空行を保ちます。
+領域・項目の分割を除き、文字列、遷移ラベル、説明の物理的な内容、継続列、
+内部空行を保ちます。
 reflow や字下げの変更は Db を変え、遷移部品の折り返しは拒否を招き得ます。
 独立した説明 closer は共有規則でそろえます。
 
@@ -1154,8 +1148,8 @@ cynefin-beta
 普通の受理ファイルは設定の改行 1 個で終えます。
 空領域、最後のコメント、閉じた hidden form も同じです。
 ファイルの終わりをそろえるため、普通の末尾空行は削ります。
-未完の global directive、retained prefix の境界、
-hidden に要る padding、保護された終わりを優先します。
+未完の global directive、retained prefix の境界、 hidden に要る padding、
+保護された終わりを優先します。
 
 [fixture: cynefin/final-newline/final-newline-domain]
 
@@ -1190,10 +1184,10 @@ directive-as-token-boundary、ignored-semicolon-as-token-boundary、
 html-tag-in-frontmatter、embedded-data-opaque、
 bare-percent-line-before-header、c4-keyword-anywhere です。
 cynefin 固有の acceptance-setting key や差異は加えません。
-raw 拒否には raw Db がないので、
-利用できる指定読みと embedded effect を使います。
-単独の parse 失敗は出力せず構文エラーとし、
-Markdown は embedding を辞退して、拒否 payload を host に任せます。
+raw 拒否には raw Db がないので、利用できる指定読みと embedded
+effect を使います。
+単独の parse 失敗は出力せず構文エラーとし、 Markdown は embedding を辞退して、
+拒否 payload を host に任せます。
 
 [test: cynefin/specified-readings/divergence-opaque-yaml]
 
@@ -1212,8 +1206,8 @@ Markdown は embedding を辞退して、拒否 payload を host に任せます
 ### Markdown fences
 
 共有の Markdown 接続で、dedent した payload に同じ規則を適用します。
-host が fence・list・quote の字下げを決め、
-最終 code line の padding を削ります。
+host が fence・list・quote の字下げを決め、最終 code
+line の padding を削ります。
 内部の hidden に要る padding は保護します。
 末尾 hidden の padding は host が削っても単独整形では保ちます。
 実際の host 出力と 3 回の冪等を、単独 payload の Db 一致と別に検査します。

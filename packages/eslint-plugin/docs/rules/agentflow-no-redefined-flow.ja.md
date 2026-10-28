@@ -42,8 +42,7 @@ flow の id は、両端の空白と mermaid.js が消す部分を除いたそ�
 2 つの宣言の間にあっても比べない。
 タイトルは、mermaid.js が取り除く両端の空白を除き、ほかは書いたとおりに比べる。
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-タイトルを読む前にほかの文字に変えるので、
-それだけが違う 2 つのタイトルは、
+タイトルを読む前にほかの文字に変えるので、それだけが違う 2 つのタイトルは、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
 flow ごとに自分の id を与え、そのタイトルは 1 度だけ書く。
@@ -84,11 +83,10 @@ agentflow-beta TB
 
 ## 背景
 
-[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284)
-は、flow をその id の前の flow に合わせ、
+[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1175-L1284) は、
+flow をその id の前の flow に合わせ、
 空でない後のタイトルでタイトルを置き換える。
-[flow の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L406-L415)
-は `end` の後でそれを呼ぶ。
+[flow の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L406-L415) は `end` の後でそれを呼ぶ。
 
 <!-- begin auto-generated rule resources -->
 

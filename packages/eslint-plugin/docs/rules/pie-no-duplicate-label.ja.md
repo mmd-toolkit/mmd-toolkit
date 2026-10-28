@@ -11,8 +11,8 @@
 <!-- end auto-generated rule notice -->
 
 円グラフはラベルごとに 1 つの扇形を持つ。
-後の区分がラベルに別の値を与えると、mermaid.js はエラーなしに
-そのラベルの最初の区分の値を保ち、後の値は失われる。
+後の区分がラベルに別の値を与えると、
+mermaid.js はエラーなしにそのラベルの最初の区分の値を保ち、後の値は失われる。
 
 ## 規則の詳細
 
@@ -32,8 +32,7 @@
 ラベルの中のすべての改行（LF、CRLF、CR）は LF として読む。
 ラベルはそのほかは書いたとおりに比べる。
 mermaid.js は、`\n` のようなエスケープを解き、HTML の属性の引用符を、
-ラベルを読む前にほかの文字に変えるので、
-それだけが違う 2 つのラベルは、
+ラベルを読む前にほかの文字に変えるので、それだけが違う 2 つのラベルは、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 ラベルの文字参照は書いたまま残るので、
 `"#35;"` と `"#"` は mermaid.js にも 2 つのラベルである。
@@ -64,8 +63,8 @@ pie
 
 ## 背景
 
-[`addSection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L46)
-は、そのラベルの区分がないときだけ区分を足す。
+[`addSection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDb.ts#L36-L46) は、
+そのラベルの区分がないときだけ区分を足す。
 
 <!-- begin auto-generated rule resources -->
 

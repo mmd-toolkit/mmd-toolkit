@@ -23,6 +23,6 @@ export function findUsecaseKeptLines(source: Source): KeptLines {
         ),
       ),
     ),
-    writtenIndentation: new Set(),
+    ownIndentation: new Set(),
   }
 }

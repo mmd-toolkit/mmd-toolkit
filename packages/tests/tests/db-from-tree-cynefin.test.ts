@@ -5,7 +5,7 @@ import type { EmbeddedValues } from "../src/mermaid.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
-  loadFixtures,
+  loadFixture,
 } from "../src/index.ts"
 import type { CheckedNode } from "../src/check-tree/types.ts"
 import type { Kit } from "./check-tree-built.ts"
@@ -178,11 +178,8 @@ describe("cynefin Db from hand-built trees", () => {
   })
 
   it("uses the security fixture's site configuration for common texts only", async () => {
-    const fixture = (await loadFixtures("cynefin")).find(
-      (f) => f.name === "config-security-level-other",
-    )
-    if (fixture === undefined || !fixture.expected.accepted)
-      throw new Error("missing security fixture")
+    const fixture = await loadFixture("cynefin", "config-security-level-other")
+    if (!fixture.expected.accepted) throw new Error("rejected security fixture")
     const embedded = embeddedValuesOf(fixture, fixture.expected)
     if (embedded === undefined)
       throw new Error("missing embedded configuration")
@@ -202,11 +199,9 @@ describe("cynefin Db from hand-built trees", () => {
   })
 
   it("uses the shared specified reading of frontmatter HTML value changes", async () => {
-    const fixture = (await loadFixtures("cynefin")).find(
-      (f) => f.name === "div-html-frontmatter-value",
-    )
-    const result = fixture?.specified
-    if (fixture === undefined || result === undefined || !result.accepted)
+    const fixture = await loadFixture("cynefin", "div-html-frontmatter-value")
+    const result = fixture.specified
+    if (result === undefined || !result.accepted)
       throw new Error("missing HTML specified reading")
     const embedded = embeddedValuesOf(fixture, result)
     if (embedded === undefined) throw new Error("missing embedded title")

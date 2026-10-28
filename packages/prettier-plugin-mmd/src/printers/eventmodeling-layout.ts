@@ -210,6 +210,12 @@ function layoutComponents(
   const joinedBefore = new Set<number>()
   const writtenGapsBefore = new Set<number>()
   const canJoin = !spansLinesThatCannotJoin(source, start, end)
+  // Reuse authored title starts instead of searching all values at each edge.
+  const titleStarts = new Set(
+    values
+      .filter((node) => node.type === "Identifier" && node.name === "title")
+      .map((node) => node.range[0]),
+  )
   let inTag = false
   for (const [index, atom] of atoms.entries()) {
     const token = findTokenStartingAt(source, atom.start)
@@ -226,14 +232,7 @@ function layoutComponents(
       inTag
     if (previous !== undefined) {
       rules.set(atom.start, touches ? "none" : "space")
-      const titleBoundary =
-        !touches &&
-        values.some(
-          (node) =>
-            node.type === "Identifier" &&
-            node.range[0] === atom.start &&
-            node.name === "title",
-        )
+      const titleBoundary = !touches && titleStarts.has(atom.start)
       if (
         titleBoundary &&
         !source.text.slice(previous.end, atom.start).includes("\n")

@@ -590,11 +590,13 @@ separator, counting it once toward the next node's chosen depth and supplying
 only the remaining characters. An LF comment ending instead starts a new line
 without contributing an indentation character. [fixture:
 ishikawa/line-separators/lf-comment-boundary] [test: ishikawa:
-ls-comment-boundary] [test: ishikawa: ps-comment-boundary] [test: ishikawa:
-ls-comment-depth-unsafe] [test: ishikawa: ls-comment-shallower-depth] [test:
-ishikawa: ls-comment-to-lf-alternative] [test: ishikawa:
-ls-comment-leading-directives] [test: ishikawa:
-ps-comment-leading-directive-kept-zero] [test: ishikawa:
+ls-comment-boundary] [test: ishikawa: kept-comment-ls-before] [test: ishikawa:
+kept-comment-ps-after] [test: ishikawa: selected-comment-ls-both] [test:
+ishikawa: kept-comment-ps-wide] [test: ishikawa: selected-comment-ps-shallow]
+[test: ishikawa: ps-comment-boundary] [test: ishikawa: ls-comment-depth-unsafe]
+[test: ishikawa: ls-comment-shallower-depth] [test: ishikawa:
+ls-comment-to-lf-alternative] [test: ishikawa: ls-comment-leading-directives]
+[test: ishikawa: ps-comment-leading-directive-kept-zero] [test: ishikawa:
 unicode-comment-clamped] [test: ishikawa: unicode-comment-zero] [test: ishikawa:
 unicode-comment-tabs] [test: ishikawa: unicode-comment-crlf] [test: ishikawa:
 unicode-comment-blank-cr] [corpus fixture:

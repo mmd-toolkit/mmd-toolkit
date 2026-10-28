@@ -12,8 +12,8 @@
 <!-- end auto-generated rule notice -->
 
 `link` の文は、参加者にリンクを与える。
-そのテキストは、`link A: Dashboard @ https://x.example` のように、
-ラベル、`@`、URL である。
+そのテキストは、`link A: Dashboard @ https://x.example` のように、ラベル、`@`、
+URL である。
 `@` を書き忘れても、mermaid.js は文を受理し、
 書いたものと違うラベルと URL のリンクを設定する。
 
@@ -25,9 +25,8 @@
 `@` がないと、ラベルはテキストから最後の 2 文字を除いたもの、
 URL はテキスト全体になり、どちらも両端の空白を除く。
 `link A: Dashboard https://x.example` は、
-ラベル `Dashboard https://x.examp` と、
-URL `Dashboard https://x.example` を与え、
-`link A: no at` はラベル `no` を与える。
+ラベル `Dashboard https://x.examp` と、 URL
+`Dashboard https://x.example` を与え、 `link A: no at` はラベル `no` を与える。
 
 テキストのない `link` の文も報告する。
 `link A:` は、ラベルも URL も空のリンクを参加者に与える。

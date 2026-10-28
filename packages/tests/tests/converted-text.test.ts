@@ -7,7 +7,7 @@ import {
   agentflowPreservesComments,
   readAgentflowCharacters,
 } from "../src/db-from-tree/converted-text.ts"
-import { loadFixtures } from "../src/index.ts"
+import { loadFixture } from "../src/index.ts"
 import type { TreeRoot, TreeToken } from "../src/db-from-tree/tree.ts"
 
 /** A tree of `text` with only the given parts. */
@@ -143,6 +143,35 @@ describe("readWhitespaceAfterBraceAsLineFeed", () => {
 })
 
 describe("ConvertedText.of", () => {
+  it("can revisit ranges and includes every placeholder character at a boundary", () => {
+    const converted = new ConvertedText([
+      { start: 1, codePoint: 0x61 },
+      { start: 1, codePoint: 0x62 },
+      { start: 4, codePoint: 0x63 },
+      { start: 6, codePoint: 0x64 },
+    ])
+    expect(converted.of([4, 7])).toBe("cd")
+    expect(converted.of([1, 4])).toBe("ab")
+    expect(converted.of([1, 1])).toBe("")
+    expect(
+      converted.of(
+        [1, 7],
+        [
+          [1, 2],
+          [6, 7],
+        ],
+      ),
+    ).toBe("c")
+    const tokens: TreeToken[] = [
+      { type: "RawText", value: "a", range: [1, 2] },
+      { type: "RawText", value: "c", range: [4, 5] },
+      { type: "RawText", value: "d", range: [6, 7] },
+    ]
+    expect(converted.ofTokensIn([4, 7], tokens)).toBe("cd")
+    expect(converted.ofTokensIn([1, 4], tokens)).toBe("ab")
+    expect(converted.ofTokensIn([1, 7], [tokens[2], tokens[0]])).toBe("dab")
+  })
+
   it("gives the characters read from inside the range, without the left out ranges", () => {
     const text = '"ab"'
     const converted = new ConvertedText(
@@ -174,10 +203,7 @@ describe("Agentflow conversion", () => {
   ] as const
   for (const [name, preserved] of sizes)
     it(`measures ${name} before comment removal`, async () => {
-      const fixture = (await loadFixtures("agentflow")).find(
-        (candidate) => candidate.name === name,
-      )
-      if (fixture === undefined) throw new Error(name)
+      const fixture = await loadFixture("agentflow", name)
       const base = rootOf(fixture.input)
       const root: TreeRoot = {
         ...base,

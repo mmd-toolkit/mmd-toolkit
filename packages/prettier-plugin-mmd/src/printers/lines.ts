@@ -214,6 +214,10 @@ export function endsInsideOpenText(source: Source): boolean {
   return endsInsideOpenDirective(source) || findOpenString(source) !== null
 }
 
+// The tree does not change while printing. Find its open string once rather
+// than walking the whole diagram again for every statement's printed end.
+const openStringsBySource = new WeakMap<Source, StringLiteral | null>()
+
 /**
  * The string that is not closed, or null: a StringLiteral whose `closed` is
  * false (ast.md, StringLiteral). A class backquoted name can be one;
@@ -227,11 +231,15 @@ export function endsInsideOpenText(source: Source): boolean {
  * after it.
  */
 export function findOpenString(source: Source): StringLiteral | null {
+  const cached = openStringsBySource.get(source)
+  if (cached !== undefined) return cached
   const open: StringLiteral[] = []
   walk(source.root.body, (node) => {
     if (node.type === "StringLiteral" && !node.closed) open.push(node)
   })
-  return open.at(0) ?? null
+  const first = open.at(0) ?? null
+  openStringsBySource.set(source, first)
+  return first
 }
 
 /**

@@ -13,6 +13,7 @@ import { KANBAN_PUNCTUATORS } from "./kanban.ts"
 import { MINDMAP_PUNCTUATORS } from "./mindmap.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
+import { RangeIndex } from "../range-index.ts"
 import { diagramTokensOf } from "./invariants.ts"
 import type { CheckedRoot } from "./types.ts"
 import { TIMELINE_PUNCTUATORS } from "./timeline.ts"
@@ -190,15 +191,18 @@ export function checkPunctuatorsAreWhole(
       : root.body.type === "UsecaseDiagram"
         ? (text: string) => (/^-{2,}$/u.test(text) ? "--" : text)
         : (text: string) => text
-  const arrows = nodesOf(root).filter((node) => ARROW_NODE_TYPES.has(node.type))
+  const nodes = nodesOf(root)
+  const arrows = new RangeIndex(
+    nodes.filter((node) => ARROW_NODE_TYPES.has(node.type)),
+  )
+  const identifiers = new RangeIndex(
+    nodes.filter((node) => node.type === "UsecaseIdentifier"),
+  )
   const punctuators = diagramTokensOf(root).filter(
     (token) =>
       token.type === "Punctuator" &&
       !(root.body.type === "QuadrantDiagram" && isArrowText(token.value)) &&
-      !arrows.some(
-        (arrow) =>
-          arrow.range[0] <= token.range[0] && token.range[1] <= arrow.range[1],
-      ),
+      !arrows.hasContaining(token.range),
   )
   for (const token of punctuators) {
     problems.expect(
@@ -206,30 +210,20 @@ export function checkPunctuatorsAreWhole(
         !(
           root.body.type === "UsecaseDiagram" &&
           /^-{2,}$/u.test(token.value) &&
-          !nodesOf(root).some(
-            (node) =>
-              node.type === "UsecaseIdentifier" &&
-              node.range[0] <= token.range[0] &&
-              token.range[1] <= node.range[1],
-          )
+          !identifiers.hasContaining(token.range)
         ),
       label(token),
       `the Punctuator text ${JSON.stringify(token.value)} is none of those of a ${root.body.type}`,
     )
   }
-  const jsonBlocks =
+  const jsonBlocks = new RangeIndex(
     root.body.type === "UsecaseDiagram"
-      ? nodesOf(root).filter((node) => node.type === "UsecaseJsonDataBlock")
-      : []
+      ? nodes.filter((node) => node.type === "UsecaseJsonDataBlock")
+      : [],
+  )
   reportCutEntries(
     root,
-    punctuators.filter(
-      (token) =>
-        !jsonBlocks.some(
-          (node) =>
-            node.range[0] <= token.range[0] && token.range[1] <= node.range[1],
-        ),
-    ),
+    punctuators.filter((token) => !jsonBlocks.hasContaining(token.range)),
     (joined) => texts.includes(textOfPunctuator(joined)),
     problems,
   )

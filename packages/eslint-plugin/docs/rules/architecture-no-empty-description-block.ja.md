@@ -17,8 +17,8 @@ mermaid.js は、何もない `accDescr { }` のブロックをエラーなし�
 
 ## 規則の詳細
 
-この規則は、括弧の間に何も持たないか空白だけを持つ `accDescr` のブロックを
-報告する。
+この規則は、
+括弧の間に何も持たないか空白だけを持つ `accDescr` のブロックを報告する。
 対象の図種は `architecture` である。
 ブロックの中の指示子は文字ではない。
 指示子だけを持つブロックも報告し、mermaid.js はその設定を当てる。
@@ -27,14 +27,12 @@ mermaid.js は、何もない `accDescr { }` のブロックをエラーなし�
 前に説明がなければ説明は空のままで、ブロックは何も変えない。
 
 括弧の間にコメント行を持つブロックは報告しない。
-後で埋めるブロックは、
-`accDescr {`、`%% TODO`、`}` のようにコメントを入れて書き、
-最初に書くと何も変えない。
+後で埋めるブロックは、 `accDescr {`、`%% TODO`、
+`}` のようにコメントを入れて書き、最初に書くと何も変えない。
 説明の後では、そのようなブロックもそれを取り除き、
-[architecture-no-duplicate-description](./architecture-no-duplicate-description.ja.md)
-が報告する。
-`accDescr {} %% later` のように `{` の前や `}` の後にあるコメントは
-ブロックの中になく、そのブロックは報告する。
+[architecture-no-duplicate-description](./architecture-no-duplicate-description.ja.md) が報告する。
+`accDescr {} %% later` のように `{` の前や `}` の後にあるコメントはブロックの中になく、
+そのブロックは報告する。
 
 説明を書くか、ブロックを取り除く。
 
@@ -68,11 +66,11 @@ architecture-beta
 
 ## 背景
 
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L61-L68)
-は、空のブロックに空の説明を与える。
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L61-L68) は、
+空のブロックに空の説明を与える。
 パーサーは最後の説明を保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
-は空でない説明だけを設定するので、最後に書いた空のブロックは説明を空にする。
+[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14) は空でない説明だけを設定するので、
+最後に書いた空のブロックは説明を空にする。
 
 <!-- begin auto-generated rule resources -->
 

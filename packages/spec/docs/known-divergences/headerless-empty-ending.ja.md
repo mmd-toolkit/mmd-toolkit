@@ -3,14 +3,13 @@
 英語版: [headerless-empty-ending.md](./headerless-empty-ending.md)
 
 図種: class。
-これは、この仕様の mermaid.js との
-[既知の差異](../known-divergences.ja.md) の 1 つです。
+これは、
+この仕様の mermaid.js との [既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 構文
 
 class 図は、それだけの行のヘッダー、
-`classDiagram` か `classDiagram-v2` で始まり、
-その文が次の行から続きます。
+`classDiagram` か `classDiagram-v2` で始まり、その文が次の行から続きます。
 
 ```mmd
 classDiagram
@@ -18,12 +17,11 @@ classDiagram
   accTitle: farm
 ```
 
-ヘッダーは、後に語の文字が続かない語 `classDiagram` です
-（[検出](../diagrams/class.ja.md#検出) を参照）。
-`classDiagramX`、`classDiagram2`、`classDiagramclassDiagram`
-で始まるテキストは、
-class 図として検出されますが、ヘッダーを持ちません。
-[fixture: class/header-word-after-keyword]
+ヘッダーは、
+後に語の文字が続かない語 `classDiagram` です（[検出](../diagrams/class.ja.md#検出) を参照）。
+`classDiagramX`、`classDiagram2`、
+`classDiagramclassDiagram` で始まるテキストは、 class 図として検出されますが、
+ヘッダーを持ちません。 [fixture: class/header-word-after-keyword]
 [fixture: class/header-digit-after-keyword]
 [fixture: class/header-keyword-twice]
 この文書は、そのようなテキストが空の値で終わるときについてのものです。
@@ -86,8 +84,8 @@ class 図として検出されますが、ヘッダーを持ちません。
 | 5   | 空の図                    | 拒否     |
 | 6   | 空の図                    | 拒否     |
 
-表で比較した読みを次の fixture が記録します。
-[fixture: class/div-headerless-relation-empty-title] [fixture:
+表で比較した読みを次の fixture が記録します。 [fixture: class/div-headerless-relation-empty-title]
+[fixture:
 class/header-word-relation-title] [fixture:
 class/lex-acc-title-at-end-after-relation] [fixture:
 class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]
@@ -95,14 +93,15 @@ class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]
 
 つまり mermaid.js は、ヘッダーのないテキストを拒否しますが、
 テキストが 7 つの空の形のどれかで終わるときは別です。
-後に空白しかない `accTitle:`、`accDescr:`、`accDescr {`、
-`click A call`、そして `callback A "`、`link A "`、`click A href "` の、
+後に空白しかない `accTitle:`、`accDescr:`、`accDescr {`、 `click A call`、
+そして `callback A "`、`link A "`、`click A href "` の、
 終わりで開いた文字列です。
-そのとき mermaid.js はテキストを受理してその文を読み、
-ヘッダーの場所の語を、何も足さない文として読みます。
+そのとき mermaid.js はテキストを受理してその文を読み、ヘッダーの場所の語を、
+何も足さない文として読みます。
 正しいヘッダーの後の同じ終わりは、どちらも拒否します。
-この仕様は、ヘッダーのないテキストをすべて拒否します。
-[fixture: class/div-headerless-empty-title] [fixture:
+この仕様は、
+ヘッダーのないテキストをすべて拒否します。 [fixture: class/div-headerless-empty-title]
+[fixture:
 class/header-word-after-keyword-title]
 [fixture: class/div-headerless-empty-description-block]
 [fixture: class/div-headerless-link-string-opened]
@@ -123,24 +122,19 @@ mermaid.js もそれを拒否しますが、
 ## mermaid.js がそう読む理由
 
 mermaid.js の字句解析器は、`classDiagram` と `classDiagram-v2` を、
-後に語の文字が続かないところでだけヘッダーとして読みます
-（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L41-L42)）。
+後に語の文字が続かないところでだけヘッダーとして読みます（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L41-L42)）。
 そのため `classDiagramX` をクラスの名前として読み、
-クラスの名前だけの文は何も変えません
-（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L332-L333)）。
+クラスの名前だけの文は何も変えません（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L332-L333)）。
 
-mermaid.js の文法には 2 つの開始があります
-（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L232)）。
+mermaid.js の文法には 2 つの開始があります（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L221-L232)）。
 ヘッダー、その文、`EOF` のトークンと続くものと、
 ヘッダーも `EOF` のトークンもない、文だけのものです。
-字句解析器はどのテキストも `EOF` のトークンで終えるので
-（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L209-L209)）、
+字句解析器はどのテキストも `EOF` のトークンで終えるので（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L209-L209)）、
 2 つ目の開始がテキストの全体を取ることはありません。
 例外が 1 つあります。
 字句解析器のいくつかの規則は、空文字列にもマッチします。
 `accTitle:` と `accDescr:` の値、`accDescr {` の値、`call` の後の名前、
-文字列の中身です
-（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L30-L61)）。
+文字列の中身です（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L30-L61)）。
 そのどれかがテキストの終わりで空文字列にマッチすると、
 字句解析器はすでに終わりに着いた印を付けていて、
 `EOF` のトークンの代わりに入力の終わりを知らせます。
@@ -151,8 +145,8 @@ mermaid.js の文法には 2 つの開始があります
 
 ## この仕様の規則と、その理由
 
-この仕様では、class 図はそのヘッダーで始まり
-（[検出](../diagrams/class.ja.md#検出) を参照）、
+この仕様では、
+class 図はそのヘッダーで始まり（[検出](../diagrams/class.ja.md#検出) を参照）、
 それのないテキストは、どう終わっても拒否されます。
 
 mermaid.js が、最後の規則が空文字列にマッチしたときだけ、
@@ -160,5 +154,4 @@ mermaid.js が、最後の規則が空文字列にマッチしたときだけ、
 `EOF` のトークンを知らせるかどうかは、
 終わりに着いた印をいつ付けるかで決まります。
 仕様が構文の規則として述べるものではありません。
-これは既知の差異の 2 つ目の理由に当たります
-（[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
+これは既知の差異の 2 つ目の理由に当たります（[known-divergences.ja.md](../known-divergences.ja.md) を参照）。

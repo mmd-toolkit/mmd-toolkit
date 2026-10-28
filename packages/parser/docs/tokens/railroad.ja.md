@@ -2,12 +2,9 @@
 
 英語版: [railroad.md](./railroad.md)
 
-4 方言はそれぞれの
-[先勝ちの字句順序](../../../spec/docs/diagrams/railroad.ja.md#字句構造)
-に従います。
+4 方言はそれぞれの [先勝ちの字句順序](../../../spec/docs/diagrams/railroad.ja.md#字句構造) に従います。
 メタデータと隠れた形式の文字規則を共有しますが、
-共通の EOL 文法は取り込みません。
-[fixture: railroad/ir-native-ownership]
+共通の EOL 文法は取り込みません。 [fixture: railroad/ir-native-ownership]
 [fixture: railroad/ebnf-native-ownership]
 [fixture: railroad/abnf-native-ownership]
 [fixture: railroad/peg-native-ownership]
@@ -27,8 +24,7 @@
 ABNF の星付き反復は、書かれた最小値、星、最大値に分かれます。
 省略されたカウントにトークンはありません。
 数値形式はカウントではなくテキストで、
-基数文字と区切りを含む 1 項目になります。
-[fixture: railroad/ebnf-div-directive-assignment]
+基数文字と区切りを含む 1 項目になります。 [fixture: railroad/ebnf-div-directive-assignment]
 [fixture: railroad/peg-directive-operator]
 [fixture: railroad/abnf-gram-written-tree]
 [fixture: railroad/abnf-db-repeat-implicit-zero]
@@ -38,8 +34,8 @@ ABNF の星付き反復は、書かれた最小値、星、最大値に分かれ
 行メタデータは title の ASCII 区切り 1 文字、
 またはアクセシビリティのコロンの後の空白を保持します。
 ブロック値は両端の Notation 空白だけを除きます。
-空の値にはトークンがなく、空白だけの行値には RawText があります。
-[fixture: railroad/ir-common-whitespace-shapes]
+空の値にはトークンがなく、
+空白だけの行値には RawText があります。 [fixture: railroad/ir-common-whitespace-shapes]
 [fixture: railroad/ebnf-common-whitespace-shapes]
 [fixture: railroad/abnf-common-whitespace-shapes]
 [fixture: railroad/peg-common-whitespace-shapes]
@@ -48,10 +44,9 @@ ABNF の星付き反復は、書かれた最小値、星、最大値に分かれ
 
 共通ディレクティブと選択されたセミコロンは String と RawText を切り、
 切られた文字列は StringFragment になります。
-ヘッダー、コンストラクター、メタデータのキーワード、名前、
-十進カウント、複合代入の内部を切ると拒否します。
-メタデータと反復の各成分は独立に検査します。
-[fixture: railroad/ir-directive-string-middle]
+ヘッダー、コンストラクター、メタデータのキーワード、名前、十進カウント、
+複合代入の内部を切ると拒否します。
+メタデータと反復の各成分は独立に検査します。 [fixture: railroad/ir-directive-string-middle]
 [fixture: railroad/ebnf-directive-string]
 [fixture: railroad/abnf-directive-numval-digits]
 [fixture: railroad/abnf-semicolon-numval-text]
@@ -66,13 +61,12 @@ ABNF の星付き反復は、書かれた最小値、星、最大値に分かれ
 
 ## コメントと trivia
 
-native percent コメントの mark は `%%`、PEG hash は `#`、
-ABNF semicolon は `;` です。
+native percent コメントの mark は `%%`、PEG hash は `#`、 ABNF
+semicolon は `;` です。
 範囲に物理改行は含めず、LS/PS は内容に含めます。
 IR/EBNF C コメントの mark は `/*`、EBNF ISO は `(*` で、
 最初の必須の閉じで終わります。
-範囲と値は[共有の Comment の定義](../tokens.ja.md#comment)に従います。
-[fixture: railroad/ir-comment-percent-ls]
+範囲と値は[共有の Comment の定義](../tokens.ja.md#comment)に従います。 [fixture: railroad/ir-comment-percent-ls]
 [fixture: railroad/peg-comment-hash-ps]
 [fixture: railroad/abnf-comment-semicolon-ls]
 [fixture: railroad/ir-tail-comment]
@@ -83,8 +77,8 @@ IR/EBNF C コメントの mark は `/*`、EBNF ISO は `(*` で、
 native の ASCII space/tab/CR/LF 空白にトークンやノードはありません。
 検出が通過した bare 行は共通 Comment で、付随する trivia は再読しません。
 隠れた YAML と native directive は RailroadIgnoredText が所有する RawText で、
-消費された直後の LF はその項目の外です。
-[fixture: railroad/ir-space-tabs] [fixture: railroad/ir-line-crlf]
+消費された直後の LF はその項目の外です。 [fixture: railroad/ir-space-tabs]
+[fixture: railroad/ir-line-crlf]
 [fixture: railroad/ir-retained-bare-secondscan-unicode]
 [fixture: railroad/ir-hidden-yaml-sole-lf]
 [fixture: railroad/ir-hidden-directive-closing-space]

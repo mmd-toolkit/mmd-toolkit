@@ -11,8 +11,8 @@
 
 <!-- end auto-generated rule notice -->
 
-点と `classDef` のスタイルは、`radius`、`color`、`stroke-color`、`stroke-width`
-をコンマで区切った並びである。
+点と `classDef` のスタイルは、`radius`、`color`、`stroke-color`、
+`stroke-width` をコンマで区切った並びである。
 mermaid.js は、並びが 2 度与えるスタイルを受理し、
 後の値が前の値を黙って置き換える。
 `radius: 5, radius: 9` は半径 9 を与える。
@@ -21,8 +21,7 @@ mermaid.js は、並びが 2 度与えるスタイルを受理し、
 ## 規則の詳細
 
 この規則は、点か `classDef` のスタイルのうち、
-並びの中で同じ名前の最初のものより後のものを、
-前と違う値を与えるときに報告する。
+並びの中で同じ名前の最初のものより後のものを、前と違う値を与えるときに報告する。
 対象の図種は `quadrantChart` である。
 
 `color: #f00, radius: 5` の後の、同じ並びの `color: #00f` は、

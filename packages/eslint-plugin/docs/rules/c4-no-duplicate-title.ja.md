@@ -78,8 +78,7 @@ C4Context
 
 [issue #8040](https://github.com/mermaid-js/mermaid/issues/8040) は、
 `accTitle:` の不具合を記録する。
-設定先を直す
-[PR #8041](https://github.com/mermaid-js/mermaid/pull/8041)（open）がある。
+設定先を直す [PR #8041](https://github.com/mermaid-js/mermaid/pull/8041)（open）がある。
 普通の `title` 同士の報告は、その不具合に依存しない。
 
 <!-- begin auto-generated rule resources -->

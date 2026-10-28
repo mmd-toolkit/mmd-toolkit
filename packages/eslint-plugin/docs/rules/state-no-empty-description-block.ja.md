@@ -44,9 +44,7 @@ mermaid.js は、そのディレクティブの設定を適用する。
 `stateDiagram-v2 accDescr {}` のようにヘッダーの後に置くこともできる。
 そこでも説明を設定せず、規則は同じように報告する。
 後の行の本体の `{` の前にある空のブロックは、どの文にも属さない。
-それは、
-[state-no-ignored-text](./state-no-ignored-text.ja.md)
-が報告する。
+それは、 [state-no-ignored-text](./state-no-ignored-text.ja.md) が報告する。
 
 この規則に**反する**コードの例:
 

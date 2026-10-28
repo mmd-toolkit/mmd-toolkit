@@ -1,19 +1,28 @@
 import type {
   KanbanClassStatement,
-  KanbanDiagram,
   KanbanIconStatement,
   KanbanNode,
   Node,
   Range,
 } from "@mmd-toolkit/parser"
-import { findCommentEnds, findLeadingDirectives } from "./indentation-lines.ts"
+import {
+  findLeadingDirectives,
+  findNodeLineEnd,
+  findNodeLineStart,
+  findNodeLineTextStart,
+  isCommentEnd,
+} from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
 import type { AtomLayout } from "./atoms.ts"
-import { minOf, maxOf } from "./collections.ts"
-import { keptAsWritten } from "./layout.ts"
-import { lineEndOf, lineStartOf } from "./kept-lines.ts"
+import { expectToken, keptAsWritten } from "./layout.ts"
 import type { Source } from "./source.ts"
-import { findTriviaBetween, isCommentLine, isWhitespace } from "./source.ts"
+import {
+  findFirstIndex,
+  findTokenStartingAt,
+  findTriviaBetween,
+  isCommentLine,
+  isWhitespace,
+} from "./source.ts"
 
 /** The leaves printed as written (docs/kanban.md, Labels and Data blocks). */
 export const kanbanValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
@@ -41,11 +50,15 @@ export interface KanbanLine {
   readonly separatorWidth: 0 | 1
   /**
    * For an inline-directive line, the directives that stand before its text
-   * and the whitespace after each of them, which is indentation too; null for
-   * any other line.
+   * on its line, after any comment region that mermaid.js removes before it
+   * (see `findNodeLineTextStart`), and the whitespace after each of them,
+   * which is indentation too; null for any other line.
    */
   readonly leading: LeadingDirectives | null
 }
+
+/** The lines of each board, found once per source. */
+const linesBySource = new WeakMap<Source, readonly KanbanLine[]>()
 
 /**
  * Reads columns from body and cards from children, preserving decorations in
@@ -53,17 +66,23 @@ export interface KanbanLine {
  * line). Node ranges include descendants and decorations, so printed ends use
  * the last data block, shape, or id instead. A decoration uses its node's depth.
  */
-export function kanbanLines(
-  source: Source,
-  diagram: KanbanDiagram,
-  headerEnd: number,
-): KanbanLine[] {
-  const commentEnds = findCommentEnds(source)
+export function kanbanLines(source: Source): readonly KanbanLine[] {
+  const cached = linesBySource.get(source)
+  if (cached !== undefined) return cached
+  const { body: diagram } = source.root
+  if (diagram.type !== "KanbanDiagram") {
+    throw new Error("prettier-plugin-mmd: a kanban printer for another diagram")
+  }
+  const headerEnd = expectToken(
+    findTokenStartingAt(source, diagram.range[0]),
+    "the header keyword",
+  ).range[1]
   const lines: KanbanLine[] = []
   for (const node of diagram.body) {
     addNode(node, 1)
     for (const card of node.children) addNode(card, 2)
   }
+  linesBySource.set(source, lines)
   return lines
 
   /** A node's decorations precede its cards and retain the node's role. */
@@ -86,17 +105,11 @@ export function kanbanLines(
       node.type === "KanbanNode"
         ? (node.data.at(-1) ?? node.shape ?? node.id ?? node).range[1]
         : node.range[1]
-    const start = Math.max(
-      headerEnd,
-      lineStartOf(source, node.range[0]),
-      maxOf(commentEnds.filter((offset) => offset <= node.range[0])),
-    )
-    const separatorWidth = commentEnds.includes(start) ? 1 : 0
-    const lineEnd = Math.min(
-      lineEndOf(source, end),
-      minOf(commentEnds.filter((offset) => offset >= end)),
-    )
-    const directives = findTriviaBetween(source, start, lineEnd).filter(
+    const start = Math.max(headerEnd, findNodeLineStart(source, node.range[0]))
+    const separatorWidth = isCommentEnd(source, start) ? 1 : 0
+    const lineEnd = findNodeLineEnd(source, end)
+    const textStart = findNodeLineTextStart(source, node.range[0])
+    const directives = findTriviaBetween(source, textStart, lineEnd).filter(
       (item) => item.type === "Directive",
     )
     if (directives.length === 0) {
@@ -107,7 +120,7 @@ export function kanbanLines(
         leading: null,
       }
     }
-    let content = start
+    let content = textStart
     while (content < node.range[0] && isWhitespace(source.text[content]))
       content++
     return {
@@ -146,32 +159,34 @@ export function findKeptGapEnd(
   let offset = end
   while (offset > start && isWhitespace(source.text[offset - 1])) {
     const character = source.text[offset - 1]
-    if (character === "\n" || endsDiagramComment(source, offset - 1)) break
+    if (character === "\n" || isCommentEnd(source, offset - 1)) break
     offset--
   }
   return offset
 }
 
-/** Whether the U+2028 or U+2029 at `offset` ends a diagram comment. */
-function endsDiagramComment(source: Source, offset: number): boolean {
-  return (
-    (source.text[offset] === "\u2028" || source.text[offset] === "\u2029") &&
-    source.root.comments.some((comment) => comment.range[1] === offset)
-  )
+/** Whether a character is a line feed, a U+2028, or a U+2029. */
+function isLineBreak(character: string): boolean {
+  return character === "\n" || character === "\u2028" || character === "\u2029"
 }
 
 /** Whether the gap holds a diagram comment that makes it a kept gap. */
 function holdsKeptGap(source: Source, start: number, end: number): boolean {
-  const comments = source.root.comments.filter(
-    (comment) => start <= comment.range[1] && comment.range[1] <= end,
+  // A kept stretch may already have printed the comment's final selected
+  // semicolon. Its separator still belongs to this gap (docs/kanban.md,
+  // Blank lines and Whitespace characters).
+  if (isCommentEnd(source, start)) return true
+  const all = source.root.comments
+  const comments = all.slice(
+    findFirstIndex(all, (comment) => comment.range[1] >= start),
+    findFirstIndex(all, (comment) => comment.range[1] > end),
   )
   for (const comment of comments) {
-    const boundary =
-      Math.max(
-        source.text.lastIndexOf("\n", comment.range[0] - 1),
-        source.text.lastIndexOf("\u2028", comment.range[0] - 1),
-        source.text.lastIndexOf("\u2029", comment.range[0] - 1),
-      ) + 1
+    // Looking back for the line break one character at a time stays on the
+    // line of the comment, where a search for each of the three characters
+    // would run to the start of the text for one that is not there.
+    let boundary = comment.range[0]
+    while (boundary > 0 && !isLineBreak(source.text[boundary - 1])) boundary--
     const directives = findTriviaBetween(
       source,
       boundary,

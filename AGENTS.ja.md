@@ -19,21 +19,19 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 正しさの基準は pin した mermaid.js 本体。
 
 1. 受理・拒否が mermaid.js と一致する。
-   例外は、仕様が Known divergences
-   （`packages/spec/docs/known-divergences.md`）に定義する入力で、
+   例外は、仕様が Known
+   divergences （`packages/spec/docs/known-divergences.md`）に定義する入力で、
    それぞれが識別子を持ち、関わる fixture にその識別子の印が付く。
 
    入力を差にするのは、次の 2 つの問いに、この順で答えた後だけである。
    差を提案する者は、両方の答えを書く。
    1 つ目の答えのない提案は、決めない。
 
-   1. 木が、書かれたものを持てて、
-      入力を mermaid.js と同じに読めるか。
+   1. 木が、書かれたものを持てて、入力を mermaid.js と同じに読めるか。
       mermaid.js が読まない、捨てる、
       または書かれたものと違う意味で読むテキストは、
-      ノードにできるところではノードにする
-      （`FlowchartIgnoredText`、文を始める空の説明ブロック、
-      `create destroy A`）。
+      ノードにできるところではノードにする（`FlowchartIgnoredText`、
+      文を始める空の説明ブロック、 `create destroy A`）。
       そのとき入力は受理し、書かれたとおりに木に示し、
       読み違いは lint の規則に任せる。
       この問いは、挙動の原因が何であっても、
@@ -43,38 +41,36 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
       唯一の例外は、文字列、リンク、呼び出しとして、
       それ自体の意味を持って書かれていて、mermaid.js が丸ごと捨てる形。
       flowchart と agentflow で文の始まるところにある空の文字列と空の call、
-      class で文の始まるところにある空の文字列、
-      どこにあっても、gantt の空の href と空の call、
-      どこにあっても、requirement の空の文字列、
+      class で文の始まるところにある空の文字列、どこにあっても、
+      gantt の空の href と空の call、どこにあっても、requirement の空の文字列、
       mindmap と kanban の空の icon、空の class の行、形の中の空の文字列、
       軸やプロットのタイトルの全体でも値のラベルの全体でもない、
-      xychart の空の文字列、
-      そして、どこにあっても、quadrant と block の空の文字列と
-      空の markdown 文字列。
+      xychart の空の文字列、そして、どこにあっても、
+      quadrant と block の空の文字列と空の markdown 文字列。
       こうした形は何も変えない文としては持たず、
       入力は差 `tokenless-empty-forms` として拒否する。
-      mermaid.js が読む文の後ろにある、読まない断片（state の `state ""`）は
-      この形ではなく、ノードのまま。
+      mermaid.js が読む文の後ろにある、
+      読まない断片（state の `state ""`）はこの形ではなく、ノードのまま。
    2. ノードにできないときに限り、mermaid.js が受理する入力を、
       差として拒否するか、違う読み方にする。
       理由は次のどれかに限る。
       - mermaid.js が読まないテキストが、木の中に自分の置き場所を持たない。
       - mermaid.js の挙動が、そのパイプラインの手順の順番から生じたもので、
-        仕様として述べるものでないとき、仕様は直接の規則を述べる
-        （キーワードの中のディレクティブ、直前の文字を取るコメント）。
+        仕様として述べるものでないとき、
+        仕様は直接の規則を述べる（キーワードの中のディレクティブ、
+        直前の文字を取るコメント）。
         そのために読み方が違う入力が、差になる。
-      - mermaid.js のメンテナーが、その挙動を不具合として扱っている
-        （予約語の `click`）。
+      - mermaid.js のメンテナーが、
+        その挙動を不具合として扱っている（予約語の `click`）。
 
    不具合に見える挙動について差を提案する前に、
-   mermaid.js の文書がその構文について何と書いているかを読み、
-   issue と pull request を探し、見つけたものを事実として引く。
+   mermaid.js の文書がその構文について何と書いているかを読み、 issue と pull
+   request を探し、見つけたものを事実として引く。
 
 2. 受理した入力の Db が mermaid.js と一致する。
    ただし、Known divergences が読み方の違いを定義する入力を除く。
 3. AST は入力を何も失わない。
-   入力のすべての文字は、トークンかコメントに含まれるか、
-   空白か行終端子である。
+   入力のすべての文字は、トークンかコメントに含まれるか、空白か行終端子である。
    トークンとコメントのテキストは、その範囲の入力と一致する。
    空白と行終端子はノードにしない。
    ソースの文字列と範囲があれば、入力をバイト単位で再現できる。
@@ -91,11 +87,10 @@ flowchart、sequence、class、state が済んでいる。
 パッケージの作業の前に、その SKILL を読む。
 
 - `packages/tests`（CLI は `tools/`）: mermaid.js を pin し、
-  その Db を取り出し、fixture の形式を定め、
-  適合コーパスと、それを作って確かめる道具を持つ。
+  その Db を取り出し、fixture の形式を定め、適合コーパスと、
+  それを作って確かめる道具を持つ。
   コーパスが記録する木の確かめも持つ。
-  記録した木から Db を作って mermaid.js の Db と比べ、
-  木の不変条件を確かめる。
+  記録した木から Db を作って mermaid.js の Db と比べ、木の不変条件を確かめる。
   SKILL は `tests`。
 - `packages/spec`: 構文と、抽象構文木の形（ノードの型、欄、値）を定義する。
   入力を受理するかどうかを決めるものは、すべてここで定める。
@@ -106,20 +101,19 @@ flowchart、sequence、class、state が済んでいる。
   木のトークンと位置の仕様（`docs/tokens.md`、`docs/positions.md`）を持つ。
   実装する挙動は、すべて仕様と fixture から取り、
   mermaid.js のソースからは取らない。
-  parser は、仕様とこれらの文書とコーパスから、
-  別の言語でも書けるものにする。
+  parser は、仕様とこれらの文書とコーパスから、別の言語でも書けるものにする。
   そのため、parser のテストは、結果を fixture の記録と比べ、
   mermaid.js も生成した入力も動かさない。
   SKILL は `parser`。
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。
   SKILL は `prettier-plugin`。
-- `packages/eslint-plugin`: リンター。ESLint の言語プラグインである。
+- `packages/eslint-plugin`: リンター。
+  ESLint の言語プラグインである。
   規則が報告するのは、書き手の誤りのうち、mermaid.js が黙って受理し、
   意図と違うものとして読むものである。
-  どの規則を持つかは SKILL `rule-ideas` で決め、
-  規則の文書は SKILL `eslint-plugin` に、
-  規則の実装は SKILL `eslint-plugin-rules` に従う。
+  どの規則を持つかは SKILL `rule-ideas` で決め、規則の文書は SKILL
+  `eslint-plugin` に、規則の実装は SKILL `eslint-plugin-rules` に従う。
 
 ## 共有するインターフェース
 
@@ -164,8 +158,8 @@ flowchart、sequence、class、state が済んでいる。
   - 不可視文字を実際の文字として書かない（`pnpm run lint:chars`）。
     例外は、適合コーパスの fixture だけ。
   - Markdown 文書は英語で書き、`.ja.md` の対を同じ変更で直す。
-    mermaid.js のソースへのリンクは、pin したコミットのパーマリンクにする
-    （`pnpm run lint:docs`）。
+    mermaid.js のソースへのリンクは、
+    pin したコミットのパーマリンクにする（`pnpm run lint:docs`）。
   - 文章は 80 桁で折り返す。
     英語は Prettier が折り返す（`pnpm run format:check`）。
     日本語は書き手が折り返し、`pnpm run lint:ja` が確かめる。
@@ -174,13 +168,14 @@ flowchart、sequence、class、state が済んでいる。
     例外は、書き方そのものを示すための例である。
   - テストは、変更が影響しうるものを回す。
     パッケージの全体は、作業の完了を報告する前に 1 回回す。
-    パッケージのテストは固定の入力だけを回す。コーパスの fixture、
-    パッケージの fixture、過去の失敗の入力である。入力を生成するテストは
-    持たず、生成するコマンドも持たない。
-    振る舞いを定める文（仕様、parser のトークンと位置の文書、`dbFromTree` の
-    文書、整形の規則）は、その文が分ける場合ごとに fixture を持ち、
-    その文が名指す場所でほかの規則が接する場合（ディレクティブ、無視される
-    `;`、コメント行、空行、行区切り、空の説明ブロック）にも fixture を持つ。
+    パッケージのテストは固定の入力だけを回す。
+    コーパスの fixture、パッケージの fixture、過去の失敗の入力である。
+    入力を生成するテストは持たず、生成するコマンドも持たない。
+    振る舞いを定める文（仕様、parser のトークンと位置の文書、
+    `dbFromTree` の文書、整形の規則）は、
+    その文が分ける場合ごとに fixture を持ち、
+    その文が名指す場所でほかの規則が接する場合（ディレクティブ、無視される `;`、
+    コメント行、空行、行区切り、空の説明ブロック）にも fixture を持つ。
     fixture は文と一緒に書き、mermaid.js で 1 回確かめる。
     review は文ごとに、欠けている場合がないかを見る。
     乱数や数（seed、count）で入力を選ばない。

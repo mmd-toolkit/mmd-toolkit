@@ -191,7 +191,7 @@ export function printTreeview(
           ? new Set([...ownSemicolons, ...verbatim])
           : ownSemicolons,
         verbatim: boxMode ? new Set() : verbatim,
-        writtenIndentation: new Set(
+        ownIndentation: new Set(
           lines.map((line) => lineStartOf(source, line.range[0])),
         ),
       },
@@ -203,7 +203,7 @@ export function printTreeview(
           ?.some((decoration) => drawing.decorations.get(decoration) === "") ===
           true,
       relocatedWhitespace: boxMode ? [] : relocatedWhitespace,
-      joiningRegionsInValues: true,
+      joiningRegionsPrintedAsWritten: true,
       printedEnd: (line) =>
         layouts.get(line) === undefined
           ? line.range[1]

@@ -72,8 +72,8 @@ FlowchartAccDescrBlockStatement.
 
 A `;` that the grammar reads as a statement of its own, not as the separator of
 the statement before it (see
-[diagrams/flowchart.md](../diagrams/flowchart.md#diagram-and-statements)). It
-has no fields and no child fields.
+[diagrams/flowchart.md](../diagrams/flowchart.md#diagram-and-statements)). No
+child fields. It has no fields.
 
 ### FlowchartVertexStatement
 
@@ -120,8 +120,8 @@ flowchart/gram-vertex-id-comma] [fixture: flowchart/gram-vertex-class-comma]
 | `property` | FlowchartShapeProperty or null | The property of a rectangle written with `[\|`; null for every other shape.                                    |
 | `label`    | FlowchartLabel                 | The label inside the shape.                                                                                    |
 
-Child fields: `property`, `label`, in source order: the property comes before
-the label. `property` is not null exactly when the shape is written as
+Child fields: `property`, `label`. They are in source order: the property comes
+before the label. `property` is not null exactly when the shape is written as
 `[|name:value|…]`; its name is `rectangle`, as that of `[…]` is (see
 [Shapes](../diagrams/flowchart.md#shapes)).
 

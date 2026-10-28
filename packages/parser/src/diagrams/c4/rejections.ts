@@ -1,3 +1,5 @@
+import type { TargetIdentity } from "./declaration-index.ts"
+import { DeclarationIndex } from "./declaration-index.ts"
 import type { StringLiteral } from "../../ast.ts"
 import type {
   C4Argument,
@@ -10,18 +12,17 @@ import type {
 } from "../../ast/c4.ts"
 import { ParseError } from "../../errors.ts"
 
-/** A target's identity, with named arguments compared by object identity. */
-type Target = string | number | C4NamedAttribute | undefined
-
 /** Only the identity needed to find an element-style target is retained. */
 interface ElementTarget {
-  alias: Target
+  readonly order: number
+  alias: TargetIdentity
 }
 
 /** Only the ordered endpoints needed to find a relationship-style target are retained. */
 interface RelationshipTarget {
-  from: Target
-  to: Target
+  readonly order: number
+  from: TargetIdentity
+  to: TargetIdentity
 }
 
 /** Person/system consumed positions, counted from one. */
@@ -63,16 +64,27 @@ const REL_STYLE_POSITIONS: readonly number[] = [3, 4, 5, 6]
 export class C4Rejections {
   private readonly converted: ReadonlyMap<C4Literal | StringLiteral, string>
 
-  private readonly shapes: ElementTarget[] = []
+  private readonly shapes = new DeclarationIndex<ElementTarget>((entry) => [
+    entry.alias,
+    undefined,
+  ])
 
-  private readonly boundaries: ElementTarget[] = [{ alias: "global" }]
+  private readonly boundaries = new DeclarationIndex<ElementTarget>((entry) => [
+    entry.alias,
+    undefined,
+  ])
 
-  private readonly relationships: RelationshipTarget[] = []
+  private readonly relationships = new DeclarationIndex<RelationshipTarget>(
+    (entry) => [entry.from, entry.to],
+  )
+
+  private nextDeclarationOrder = 1
 
   public constructor(
     converted: ReadonlyMap<C4Literal | StringLiteral, string>,
   ) {
     this.converted = converted
+    this.boundaries.add({ alias: "global", order: 0 })
   }
 
   /** Person/system consume 3-6, container/component consume 3-7. */
@@ -113,12 +125,10 @@ export class C4Rejections {
     this.rejectProto(args, positions)
     const from = this.targetOf(args[offset])
     const to = this.targetOf(args[offset + 1])
-    let target = this.relationships.find(
-      (entry) => entry.from === from && entry.to === to,
-    )
+    let target = this.relationships.first(from, to)
     if (target === undefined) {
-      target = { from, to }
-      this.relationships.push(target)
+      target = { from, to, order: this.nextDeclarationOrder++ }
+      this.relationships.add(target)
     }
     this.updateEndpoints(target, args, positions, false)
   }
@@ -128,19 +138,17 @@ export class C4Rejections {
     if (keyword === "UpdateLayoutConfig") return
     if (keyword === "UpdateElementStyle") {
       const alias = this.targetOf(args[0])
-      const target =
-        this.shapes.find((entry) => entry.alias === alias) ??
-        this.boundaries.find((entry) => entry.alias === alias)
+      const shape = this.shapes.first(alias)
+      const entries = shape === undefined ? this.boundaries : this.shapes
+      const target = shape ?? entries.first(alias)
       if (target === undefined) return
       this.rejectProto(args, ELEMENT_STYLE_POSITIONS)
-      this.updateAlias(target, args, ELEMENT_STYLE_POSITIONS)
+      this.updateAlias(entries, target, args, ELEMENT_STYLE_POSITIONS)
       return
     }
     const from = this.targetOf(args[0])
     const to = this.targetOf(args[1])
-    const target = this.relationships.find(
-      (entry) => entry.from === from && entry.to === to,
-    )
+    const target = this.relationships.first(from, to)
     if (target === undefined) return
     this.rejectProto(args, REL_STYLE_POSITIONS)
     this.updateEndpoints(target, args, REL_STYLE_POSITIONS, true)
@@ -148,31 +156,34 @@ export class C4Rejections {
 
   /** Rejections outside the grammar: a redefinition selects the first current alias before its new assignments. */
   private declareElement(
-    entries: ElementTarget[],
+    entries: DeclarationIndex<ElementTarget>,
     args: readonly C4Argument[],
     positions: readonly number[],
   ): void {
     const alias = this.targetOf(args[0])
-    let target = entries.find((entry) => entry.alias === alias)
+    let target = entries.first(alias)
     if (target === undefined) {
-      target = { alias }
-      entries.push(target)
+      target = { alias, order: this.nextDeclarationOrder++ }
+      entries.add(target)
     }
-    this.updateAlias(target, args, positions)
+    this.updateAlias(entries, target, args, positions)
   }
 
   /** Rejections outside the grammar: a consumed named alias replaces the current comparison alias. */
   private updateAlias(
+    entries: DeclarationIndex<ElementTarget>,
     target: ElementTarget,
     args: readonly C4Argument[],
     positions: readonly number[],
   ): void {
-    for (const position of positions) {
-      const arg = args[position - 1]
-      if (arg?.type === "C4NamedAttribute" && this.keyOf(arg) === "alias") {
-        target.alias = this.textOf(arg.value)
+    entries.update(target, () => {
+      for (const position of positions) {
+        const arg = args[position - 1]
+        if (arg?.type === "C4NamedAttribute" && this.keyOf(arg) === "alias") {
+          target.alias = this.textOf(arg.value)
+        }
       }
-    }
+    })
   }
 
   /**
@@ -186,13 +197,16 @@ export class C4Rejections {
     positions: readonly number[],
     style: boolean,
   ): void {
-    for (const position of positions) {
-      const arg = args[position - 1]
-      if (arg?.type !== "C4NamedAttribute") continue
-      const key = this.keyOf(arg)
-      if (key !== "from" && key !== "to") continue
-      target[key] = style && position >= 5 ? Number.NaN : this.textOf(arg.value)
-    }
+    this.relationships.update(target, () => {
+      for (const position of positions) {
+        const arg = args[position - 1]
+        if (arg?.type !== "C4NamedAttribute") continue
+        const key = this.keyOf(arg)
+        if (key !== "from" && key !== "to") continue
+        target[key] =
+          style && position >= 5 ? Number.NaN : this.textOf(arg.value)
+      }
+    })
   }
 
   /** A trimmed __proto__ key in a consumed position is reported at the key. */
@@ -217,7 +231,7 @@ export class C4Rejections {
   }
 
   /** Required positions keep named objects distinct and read empty entries as empty text. */
-  private targetOf(arg: C4Argument | undefined): Target {
+  private targetOf(arg: C4Argument | undefined): TargetIdentity {
     if (arg === undefined) return undefined
     if (arg === null) return ""
     return arg.type === "C4NamedAttribute" ? arg : this.textOf(arg)

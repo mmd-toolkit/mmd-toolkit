@@ -101,7 +101,16 @@ makes up the rest. [fixture: directives/leading-directive-indentation-decided]
 [fixture: directives/wide-whitespace-after-directive] [fixture:
 directives/leading-directive-gap-shortened] [fixture:
 line-rule-and-kept-lines/kept-line-indentation-decided] [fixture:
-blank-lines/div-between-comment-blank]
+blank-lines/div-between-comment-blank] [test: kanban: selected-ls-column-short]
+[test: kanban: selected-ps-column-wide] [test: kanban: selected-ls-card-short]
+[test: kanban: selected-ps-card-wide] [test: kanban: selected-icon-ls-column]
+[test: kanban: selected-icon-ps-card] [test: kanban: selected-data-ls-column]
+[test: kanban: selected-data-ps-card] [test: kanban: selected-column-zero]
+[test: kanban: selected-card-tabs] [test: kanban: selected-column-directive]
+[corpus fixture: kanban/lex-indent-comment-ls-selected-semicolon-touching]
+[corpus fixture: kanban/lex-indent-comment-ps-selected-semicolon-touching]
+[corpus fixture:
+kanban/lex-indent-comment-ps-selected-semicolon-indent-directive]
 
 Input
 ([indentation/sections-and-items-input.mmd](../tests/fixtures/kanban/indentation/sections-and-items-input.mmd)):
@@ -482,7 +491,8 @@ blank-lines/div-comment-blank-before-class] [fixture:
 blank-lines/blank-comment-accepted] [fixture:
 blank-lines/comment-blank-trailing] [fixture:
 blank-lines/blank-comment-text-accepted] [fixture:
-blank-lines/common-comment-after-directive]
+blank-lines/common-comment-after-directive] [test: kanban:
+selected-before-blank-line] [test: kanban: selected-terminal-separator]
 
 Directly after the header, mermaid.js rejects an empty line after `kanban`, and
 whitespace at the end of the header line, while the specification accepts them.
@@ -739,7 +749,11 @@ line-rule-and-kept-lines/kept-line-after-kept-gap] [fixture:
 line-rule-and-kept-lines/kept-line-ignored-semicolon] [fixture:
 line-rule-and-kept-lines/kept-line-unclosed-directive] [fixture:
 line-rule-and-kept-lines/kept-line-use-tabs] [test: kanban:
-semicolon-line-crlf-trailing-whitespace]
+semicolon-line-crlf-trailing-whitespace] [test: kanban: after-shape-ls-column]
+[test: kanban: after-icon-ps-card] [test: kanban: after-data-ls-card] [test:
+kanban: before-shape-ps-column] [test: kanban: before-data-ls-column] [test:
+kanban: both-data-ps-column] [test: kanban: selected-before-blank-line] [test:
+kanban: selected-terminal-separator]
 
 Input
 ([line-rule-and-kept-lines/style-segment-input.mmd](../tests/fixtures/kanban/line-rule-and-kept-lines/style-segment-input.mmd)):
@@ -828,6 +842,25 @@ semicolon-line-icon-comment-ls-then-item] [test: kanban:
 semicolon-line-comment-ls-between-items] [test: kanban:
 comment-ps-then-section-on-semicolon-line] [test: kanban:
 semicolon-in-a-comment-with-text-after-it]
+
+mermaid.js removes a comment line that follows the separator, with the
+whitespace and the directives before it, and the line of the node goes on after
+it (common.md, Comment). So the indentation of the node is the separator and the
+whitespace after the comment line, and a directive after the comment line starts
+the line of the node, as in [Directives](#directives). The printer keeps the
+separator, the comment line, and what stands before it as written, and prints
+the line of the node with the indentation of its role, less the separator. In a
+section, the gap after the directive is shortened when it does not fit, down to
+nothing with `useTabs`: `%%{x}%%C`. A directive and a comment on the line of the
+separator, with the node on the next line, are such a comment line too. [test:
+kanban: comment-line-then-directive-item] [test: kanban:
+comment-line-then-indented-directive-item] [test: kanban:
+directive-and-comment-line-then-item] [test: kanban:
+directive-comment-line-directive-item] [test: kanban:
+selected-comment-line-then-directive-item] [test: kanban:
+comment-line-then-directive-section] [test: kanban:
+comment-line-then-directive-section-tabs] [test: kanban:
+comment-line-then-directive-section-zero]
 
 ### Semicolons
 

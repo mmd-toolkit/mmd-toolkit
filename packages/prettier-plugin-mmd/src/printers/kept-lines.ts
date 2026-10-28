@@ -3,6 +3,8 @@ import { minOf, maxOf } from "./collections.ts"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
+  findFirstIndex,
+  findTriviaAt,
   findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
@@ -16,16 +18,38 @@ import {
  */
 export interface KeptLines {
   /**
-   * Lines whose statements stay together, with the `;` that separate them,
-   * but are formatted otherwise (see `findLinesWithOwnSemicolons`).
+   * Lines whose statements stay together, with the `;` that they hold, but are
+   * formatted otherwise (see `findLinesWithOwnSemicolons`). In a diagram where
+   * no `;` separates statements, such as a mindmap or a kanban board, a line
+   * holds one statement, and its `;` are characters of its text or ones that
+   * the line rule ignores.
    */
   readonly joined: ReadonlySet<number>
   /**
-   * Lines printed as written, from their first statement to their end.
+   * Lines printed as written, from their first statement, or the directives
+   * that start it, to their end.
    */
   readonly verbatim: ReadonlySet<number>
-  /** The verbatim lines that keep their written indentation. */
-  readonly writtenIndentation: ReadonlySet<number>
+  /**
+   * The lines whose first stretch stands at an indentation of its own: where a
+   * stretch of a kept line starts such a line, `printBlock` places it at the
+   * indentation that `BlockRules.keptIndentationOf` gives, or at the
+   * whitespace written before it where the hook gives none, and not at the
+   * indentation of the block. A line of this set that is not kept changes
+   * nothing. What each printer puts in it:
+   *
+   * - no line: block, C4, class, Gantt, journey, quadrant, sankey, sequence,
+   *   timeline, use case, XY chart, and the hidden forms.
+   * - the lines of the direction text: flowchart and agentflow.
+   * - the lines of accessibility statements: ER and requirement.
+   * - the lines that start with a U+2028 or U+2029 in their whitespace:
+   *   state.
+   * - the `joined` and `verbatim` lines: Ishikawa and Venn; and kanban, with
+   *   the lines of the nodes that start with a directive.
+   * - the lines of the nodes that start with a directive: mindmap.
+   * - the line of every statement: treemap and treeview.
+   */
+  readonly ownIndentation: ReadonlySet<number>
 }
 
 /** Grammatical punctuation and whether statement semicolons are optional. */
@@ -363,11 +387,11 @@ export function isDroppedSemicolon(source: Source, offset: number): boolean {
  * reads as one line, which may run over several lines of the source.
  */
 export function lineStartOf(source: Source, offset: number): number {
-  let lineFeed = source.text.lastIndexOf("\n", offset - 1)
-  while (lineFeed !== -1 && isNotALineBreak(source, lineFeed)) {
-    lineFeed = source.text.lastIndexOf("\n", lineFeed - 1)
-  }
-  return lineFeed + 1
+  const { lineFeeds } = lineBreaksOf(source)
+  // The line feeds before `offset` end the lines before it; for an offset of 0
+  // the line feed at position 0 counts too, so the search starts at 1.
+  const after = findFirstIndex(lineFeeds, (at) => at >= Math.max(1, offset))
+  return after === 0 ? 0 : lineFeeds[after - 1] + 1
 }
 
 /**
@@ -384,31 +408,53 @@ export function lineEndOf(
   offset: number,
   unicodeSeparators = false,
 ): number {
-  let lineFeed = source.text.indexOf("\n", offset)
-  while (lineFeed !== -1 && isNotALineBreak(source, lineFeed)) {
-    lineFeed = source.text.indexOf("\n", lineFeed + 1)
-  }
-  const end = lineFeed === -1 ? source.text.length : lineFeed
+  const { lineFeeds, separators } = lineBreaksOf(source)
+  const lineFeed = findFirstIndex(lineFeeds, (at) => at >= offset)
+  const end = lineFeeds[lineFeed] ?? source.text.length
   if (!unicodeSeparators) return end
-  for (let position = offset; position < end; position++) {
-    if (
-      (source.text[position] === "\u2028" ||
-        source.text[position] === "\u2029") &&
-      !isNotALineBreak(source, position)
-    )
-      return position
-  }
-  return end
+  const separator = findFirstIndex(separators, (at) => at >= offset)
+  return Math.min(end, separators[separator] ?? end)
 }
 
-/** Whether a potential boundary is inside trivia or a region removes it. */
-function isNotALineBreak(source: Source, offset: number): boolean {
-  return (
-    source.removedLineFeeds.has(offset) ||
-    source.trivia.some(
-      (item) => item.range[0] < offset && offset < item.range[1],
-    )
-  )
+interface LineBreaks {
+  readonly lineFeeds: readonly number[]
+  readonly separators: readonly number[]
+}
+
+const lineBreaksBySource = new WeakMap<Source, LineBreaks>()
+
+/**
+ * Find logical boundaries once: repeatedly searching a long line from each
+ * atom or directive would reread the same text. Trivia stays indivisible and
+ * removed line feeds stay absent, as in the line-start and line-end rules.
+ */
+function lineBreaksOf(source: Source): LineBreaks {
+  const cached = lineBreaksBySource.get(source)
+  if (cached !== undefined) return cached
+  const lineFeeds: number[] = []
+  const separators: number[] = []
+  let nextTrivia = 0
+  for (let offset = 0; offset < source.text.length; offset++) {
+    while (
+      nextTrivia < source.trivia.length &&
+      source.trivia[nextTrivia].range[1] <= offset
+    ) {
+      nextTrivia++
+    }
+    const item = source.trivia[nextTrivia]
+    if (item !== undefined && item.range[0] < offset) {
+      offset = item.range[1] - 1
+      continue
+    }
+    const character = source.text[offset]
+    if (character === "\n" && !source.removedLineFeeds.has(offset))
+      lineFeeds.push(offset)
+    else if (character === "\u2028" || character === "\u2029")
+      separators.push(offset)
+  }
+  const found = { lineFeeds, separators }
+  lineBreaksBySource.set(source, found)
+  return found
 }
 
 /**
@@ -432,7 +478,9 @@ export function holdsJoiningRegion(
 /**
  * The kept lines with the lines that hold a removed line feed added as
  * verbatim lines: a line that mermaid.js reads over several lines of the
- * source is printed as written, from its first line to its end.
+ * source is printed as written, from its first line to its end. A layout that
+ * prints its joining regions itself skips this (see
+ * `BlockRules.joiningRegionsPrintedAsWritten`).
  */
 export function withJoinedLines(source: Source, kept: KeptLines): KeptLines {
   const joinedLines = [...source.removedLineFeeds].map((lineFeed) =>
@@ -652,20 +700,20 @@ export function printedEndOf(
  */
 export function semicolonSegmentEnd(source: Source, offset: number): number {
   const end = lineEndOf(source, offset)
+  // Search only this segment: an absent separator must not scan the remaining
+  // diagram again for every line (the same bounds apply to its semicolons).
+  const text = source.text.slice(offset, end)
   const separators = ["\u2028", "\u2029"].map((character) => {
-    let at = source.text.indexOf(character, offset)
+    let index = text.indexOf(character)
     // As in kanban's comment-end decision, trivia ranges are indivisible:
     // a separator inside a comment or directive does not end that item.
-    while (at !== -1 && at < end) {
-      const inside = at
-      const item = source.trivia.find(
-        (candidate) =>
-          candidate.range[0] < inside && inside < candidate.range[1],
-      )
-      if (item === undefined) break
-      at = source.text.indexOf(character, item.range[1])
+    while (index !== -1) {
+      const at = offset + index
+      const item = findTriviaAt(source, at)
+      if (item === undefined || item.range[0] === at) break
+      index = text.indexOf(character, item.range[1] - offset)
     }
-    return at === -1 ? end : at
+    return index === -1 ? end : offset + index
   })
   let stop = Math.min(end, minOf(separators))
   const protectedEnd = Math.max(
@@ -673,11 +721,7 @@ export function semicolonSegmentEnd(source: Source, offset: number): number {
     maxOf(
       findTokensBetween(source, offset, stop).map((token) => token.range[1]),
     ),
-    maxOf(
-      source.trivia
-        .filter((item) => offset <= item.range[0] && item.range[0] < stop)
-        .map((item) => item.range[1]),
-    ),
+    maxOf(findTriviaBetween(source, offset, stop).map((item) => item.range[1])),
   )
   while (stop > protectedEnd && isWhitespace(source.text[stop - 1])) stop--
   return stop

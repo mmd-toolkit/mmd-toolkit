@@ -348,11 +348,7 @@ class ErDbBuilder {
 
   /** The keyword at the start of a `class`, `classDef`, or `style` statement, as written. */
   private keywordOf(statement: ErStatement): string {
-    const keyword = this.root.tokens.find(
-      (token) =>
-        statement.range[0] <= token.range[0] &&
-        token.range[1] <= statement.range[1],
-    )
+    const keyword = this.text.tokensIn(statement.range, this.root.tokens)[0]
     if (keyword === undefined) {
       throw new TreeError("er", statement.type, "a statement has no keyword")
     }

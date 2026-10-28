@@ -495,4 +495,22 @@ export const treeviewCases: readonly TreeviewCase[] = [
       'treeView-beta\nroot\n├── "a"\n%%{x}%%%%{y}%%\n└── \u2029 "b"\n    └── c\n',
     options: {},
   },
+  {
+    name: "treeview/comments/comment-ls-semicolon-before",
+    input: 'treeView-beta\nRoot\n "A"%% c;\u2028 "B"\n Other\n',
+    output: 'treeView-beta\n  Root\n    "A"%% c;\u2028 "B"\n    Other\n',
+    options: {},
+  },
+  {
+    name: "treeview/comments/comment-ps-semicolon-after",
+    input: 'treeView-beta\nRoot\n "A"%% c\u2029 "B;y"\n Other\n',
+    output: 'treeView-beta\n  Root\n    "A"%% c\u2029 "B;y"\n    Other\n',
+    options: {},
+  },
+  {
+    name: "treeview/comments/comment-ls-semicolon-both",
+    input: 'treeView-beta\nRoot\n "A"%% c;\u2028 "B;y"\n Other\n',
+    output: 'treeView-beta\n  Root\n    "A"%% c;\u2028 "B;y"\n    Other\n',
+    options: {},
+  },
 ]

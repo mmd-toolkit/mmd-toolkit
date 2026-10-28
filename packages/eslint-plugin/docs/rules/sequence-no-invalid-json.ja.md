@@ -13,14 +13,13 @@
 `links` と `properties` は、
 `links A: {"Dashboard": "https://x.example"}` のように、
 JSON のオブジェクトから、参加者にリンクやプロパティを与える。
-テキストが JSON でないと、
-mermaid.js は文を受理し、エラーなしに何もしない。
+テキストが JSON でないと、 mermaid.js は文を受理し、エラーなしに何もしない。
 最後の項目の後にカンマを付けただけでも、そうなる。
 
 ## 規則の詳細
 
-この規則は、テキストが JSON のオブジェクトでない
-`links` か `properties` の文を報告する。
+この規則は、
+テキストが JSON のオブジェクトでない `links` か `properties` の文を報告する。
 対象の図種は `sequence` である。
 
 JSON でないテキストは何も変えない。
@@ -30,17 +29,14 @@ JSON でないテキストは何も変えない。
 mermaid.js は、それを書き手の意図どおりには読まないからである。
 文字列は、その各文字を位置をキーにして与え、
 `links A: "ab"` はリンク `0` と `1` を与える。
-配列は各要素を位置をキーにして与え、
-数、`true`、`false`、`null` は何も与えない。
+配列は各要素を位置をキーにして与え、数、`true`、`false`、`null` は何も与えない。
 
 `#` は文のテキストを終わらせ、mermaid.js はその前のテキストを読む。
 `#` とその後を含めて JSON のオブジェクトであるテキストは、報告しない。
-フラグメントのある URL を持つ
-`links A: {"Docs": "https://x.example/#top"}` は、
+フラグメントのある URL を持つ `links A: {"Docs": "https://x.example/#top"}` は、
 正しい JSON のオブジェクトである。
 mermaid.js が参加者にリンクを与えないのは、テキストを `#` で切るからにすぎず、
-これは mermaid.js の不具合に見える
-（[#5419](https://github.com/mermaid-js/mermaid/issues/5419) は open で、
+これは mermaid.js の不具合に見える（[#5419](https://github.com/mermaid-js/mermaid/issues/5419) は open で、
 `#` が sequence 図のテキストを空にすると報告している）。
 `links A: {"Docs": "https://x.example/"} # note` のように、
 `#` の前が JSON のオブジェクトであるテキストはリンクを与え、これも報告しない。

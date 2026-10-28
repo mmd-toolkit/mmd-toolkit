@@ -28,11 +28,9 @@ mermaid.js には、`Animal` からクラス `DuckAnimal` への関係が 1 つ�
 mermaid.js はテキストを拒否し、
 `classDiagram %% c` のようにヘッダーの行に置いたコメントでも同じである。
 mmd-toolkit のパーサーはそのテキストを受理し、フォーマッターは整形するが、
-mermaid.js はそれを描けないので、
-この規則はそれらのコメントも報告する。
-これは、仕様の既知の差異
-[`comment-takes-line-break`](../../../spec/docs/known-divergences/comment-takes-line-break.ja.md)
-である。
+mermaid.js はそれを描けないので、この規則はそれらのコメントも報告する。
+これは、
+仕様の既知の差異 [`comment-takes-line-break`](../../../spec/docs/known-divergences/comment-takes-line-break.ja.md) である。
 
 テキストの最後の行のコメントは報告しない。
 mermaid.js も、書き手の意図どおりに読む。
@@ -41,10 +39,7 @@ mermaid.js も、書き手の意図どおりに読む。
 コメントと次の行の間に空白だけの行があり、
 mermaid.js がそれを取り除かないときである。
 mermaid.js は、`%%` の後にテキストのあるコメント行を、
-その直前の空白だけの行と一緒に取り除く
-（
-[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
-）。
+その直前の空白だけの行と一緒に取り除く（ [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8) ）。
 そのため、空白だけの行は、次の行を別に読ませる。
 ただし、空白だけの行だけを挟んで、そうしたコメント行が後に来るときは除く。
 `%%` だけの行は取り除かれないので、別に読ませることを妨げない。

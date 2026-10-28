@@ -45,7 +45,11 @@ describe("ESLint diagnostic rendering", () => {
     async (extension) => {
       const html = await markdown.renderAsync(guide("index", extension))
       expect(markedText(html)).toEqual(["C"])
-      expect(html).toContain("mermaid.js adds a new vertex <code>C</code>")
+      expect(html).toContain(
+        extension === ".md"
+          ? "adds a new vertex named <code>C</code>"
+          : "<code>C</code>という新しい頂点を追加します",
+      )
       expect(html).toContain("@mmd-toolkit/flowchart-no-undef</a>")
     },
   )

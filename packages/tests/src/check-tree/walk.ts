@@ -1,4 +1,4 @@
-import { NODE_FIELDS } from "./node-fields.ts"
+import { childFieldsOf } from "./node-fields.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
 
 /** Whether `value` is a node: an object with a string `type` and a range of two offsets. */
@@ -15,18 +15,13 @@ export function isNode(value: unknown): value is CheckedNode {
 }
 
 /**
- * The child nodes of `node`: the fields that its type describes as a node, a
- * node or null, or a list of nodes. The one child field of `Root` is `body`
- * (ast.md, Root); its other fields are records and lists of records, which are
- * placed in the source as nodes are but are not child nodes. The tree is of the
- * form that {@link checkShape} requires.
+ * The child nodes of `node`: the values of its child fields
+ * ({@link childFieldsOf}), a node or null, or a list of nodes. The tree is of
+ * the form that {@link checkShape} requires.
  */
 export function childNodesOf(node: CheckedNode): CheckedNode[] {
-  if (node.type === "Root") return isNode(node.body) ? [node.body] : []
-  const fields = NODE_FIELDS[node.type] ?? {}
   const children: CheckedNode[] = []
-  for (const [field, spec] of Object.entries(fields)) {
-    if (spec.shape === "value") continue
+  for (const field of childFieldsOf(node.type)) {
     const value = node[field]
     if (isNode(value)) {
       children.push(value)

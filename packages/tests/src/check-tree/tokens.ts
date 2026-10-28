@@ -1,6 +1,8 @@
 import { lowercaseAscii } from "../db-from-tree/characters.ts"
+import { RangeIndex } from "../range-index.ts"
+import { tokenIndexOf } from "./token-index.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
-import { contains, diagramTokensOf } from "./invariants.ts"
+import { diagramTokensOf } from "./invariants.ts"
 import {
   DATA_BLOCK_NODE_TYPES,
   NODE_TYPES_WITH_TOKENS_OF_ANY_KIND,
@@ -14,7 +16,7 @@ import { childNodesOf, isNode, nodesOf } from "./walk.ts"
 
 /** The tokens of `root` that lie in `range`. */
 export function tokensIn(root: CheckedRoot, range: TreeRange): CheckedToken[] {
-  return root.tokens.filter((token) => contains(range, token.range))
+  return tokenIndexOf(root).in(range)
 }
 
 /** The tokens of `root` in `range`, other than the `Directive` and `IgnoredSemicolon` tokens: the tokens of the node that has the range. */
@@ -32,10 +34,28 @@ export function ownTokensOf(
   root: CheckedRoot,
   node: CheckedNode,
 ): readonly CheckedToken[] {
-  const children = childNodesOf(node)
+  const children = new RangeIndex(childNodesOf(node))
   return nodeTokensIn(root, node.range).filter(
-    (token) => !children.some((child) => contains(child.range, token.range)),
+    (token) => !children.hasContaining(token.range),
   )
+}
+
+/** Value holders in visit order, found by reading each value's token range once. */
+export function valueHoldersOf(
+  root: CheckedRoot,
+  nodes: readonly CheckedNode[],
+): ReadonlyMap<CheckedToken, readonly CheckedNode[]> {
+  // Invert the range reads once instead of searching every value for each token.
+  const holders = new Map<CheckedToken, CheckedNode[]>()
+  for (const node of nodes) {
+    if (!VALUE_NODE_TYPES.has(node.type)) continue
+    for (const token of new Set(tokensIn(root, node.range))) {
+      const list = holders.get(token) ?? []
+      list.push(node)
+      holders.set(token, list)
+    }
+  }
+  return holders
 }
 
 /** The values of the tokens of `root` in `range` of the kind `kind`, in lower case, for the fixed words that the lexers read case-insensitively. */
@@ -84,12 +104,10 @@ export function checkTokensInValueNodes(
   problems: Problems,
 ): void {
   const nodes = nodesOf(root)
-  const valueNodes = nodes.filter((node) => VALUE_NODE_TYPES.has(node.type))
-  const fromColon = textsFromColon(root, nodes)
+  const valueHolders = valueHoldersOf(root, nodes)
+  const fromColon = new Set(textsFromColon(root, nodes))
   for (const token of diagramTokensOf(root)) {
-    const holders = valueNodes.filter((node) =>
-      contains(node.range, token.range),
-    )
+    const holders = valueHolders.get(token) ?? []
     const where = `${label(token)} of ${JSON.stringify(token.value)}`
     const isValue =
       token.type === "Identifier" ||
@@ -105,7 +123,7 @@ export function checkTokensInValueNodes(
           NODE_TYPES_WITH_TOKENS_OF_ANY_KIND.has(node.type) ||
           (token.type === "Punctuator" &&
             DATA_BLOCK_NODE_TYPES.has(node.type)) ||
-          (fromColon.includes(node) && token.range[0] === node.range[0]),
+          (fromColon.has(node) && token.range[0] === node.range[0]),
       )
       problems.expect(
         allowed,
@@ -253,7 +271,7 @@ export function gluedByCuts(
 ): boolean {
   let end = a.range[1]
   let cuts = 0
-  for (const token of root.tokens) {
+  for (const token of tokenIndexOf(root).from(end)) {
     if (token.range[0] < end) continue
     if (token.range[0] >= b.range[0]) break
     if (
@@ -283,6 +301,7 @@ export function checkStringsAreWhole(
   problems: Problems,
 ): void {
   const tokens = diagramTokensOf(root)
+  const tokenIndex = new RangeIndex(tokens)
   for (const token of root.tokens) {
     if (token.type !== "String") continue
     const first = token.value.charAt(0)
@@ -306,7 +325,7 @@ export function checkStringsAreWhole(
       label(token),
       `a String token does not start with a quote: ${JSON.stringify(token.value)}`,
     )
-    const next = tokens.find((other) => other.range[0] >= token.range[1])
+    const next = tokenIndex.firstFrom(token.range[1])
     if (
       next === undefined ||
       (next.type !== "String" && next.type !== "StringFragment") ||

@@ -12,8 +12,9 @@ import type { Rule } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
 import type { Node } from "@mmd-toolkit/parser"
 import type { DiagramType } from "@mmd-toolkit/tests"
+import { loadFixture } from "@mmd-toolkit/tests"
 import type { MermaidRuleDefinition } from "../src/index.ts"
-import { LANGUAGE_CONFIG, loadCorpus } from "./helpers.ts"
+import { LANGUAGE_CONFIG } from "./helpers.ts"
 
 /** The fixtures whose inputs are shown, with what each one is chosen for. */
 const SHOWN_FIXTURES: readonly {
@@ -53,20 +54,14 @@ const SHOWN_FIXTURES: readonly {
   { diagram: "class", name: "lex-member-percent" },
 ]
 
-const fixtures = new Map(
-  (await loadCorpus()).map((fixture) => [
-    `${fixture.diagram}/${fixture.name}`,
-    fixture,
-  ]),
-)
-
 /** The test cases: each shown fixture, by its input. */
-const cases = SHOWN_FIXTURES.map(({ diagram, name }) => {
-  const id = `${diagram}/${name}`
-  const fixture = fixtures.get(id)
-  if (fixture === undefined) throw new Error(`No fixture ${id}`)
-  return { name: id, filename: `${id}.mmd`, code: fixture.input }
-})
+const cases = await Promise.all(
+  SHOWN_FIXTURES.map(async ({ diagram, name }) => {
+    const id = `${diagram}/${name}`
+    const fixture = await loadFixture(diagram, name)
+    return { name: id, filename: `${id}.mmd`, code: fixture.input }
+  }),
+)
 
 /** Reports every node when ESLint enters it. */
 const nodes: MermaidRuleDefinition = {

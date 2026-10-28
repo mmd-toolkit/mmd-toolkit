@@ -21,8 +21,7 @@ mermaid.js はその語を日付として読むが、それは日付でなく、
 
 ## 規則の詳細
 
-この規則は、タスクのデータの項目のうち、
-タスクの開始か終わりであり、
+この規則は、タスクのデータの項目のうち、タスクの開始か終わりであり、
 最初の語が大文字小文字を問わずタグであるものを報告する。
 対象の図種は `gantt` である。
 
@@ -31,16 +30,15 @@ mermaid.js はその語を日付として読むが、それは日付でなく、
 `b : DONE, 1d` の開始は `DONE` であり、
 `b : done crit, 1d` の開始は `done crit` である。
 mermaid.js はその開始を読めず、チャートを描かない。
-`a : 2024-01-01, done` の終わりは `done` で、
-タスクは始まったところで終わり、長さを持たない。
+`a : 2024-01-01, done` の終わりは `done` で、タスクは始まったところで終わり、
+長さを持たない。
 項目が 1 つの `b : Done` では、その項目が終わりで、同じである。
 
 id は調べない。
 `Design :Done, 2024-01-06, 3d` は id が `Done` のタスクであり、
 `Design :done crit, 2024-01-06, 3d` は id が `done crit` のタスクである。
-どちらも書いたとおりの開始と終わりを持ち、
-mermaid.js は最初の項目を、どんな語でもよい id として読むので、
-規則は報告しない。
+どちらも書いたとおりの開始と終わりを持ち、 mermaid.js は最初の項目を、
+どんな語でもよい id として読むので、規則は報告しない。
 
 4 つ以上の項目のデータは調べない。
 mermaid.js はその項目をどれも読まず、チャートを描けない。
@@ -106,11 +104,9 @@ gantt
 ## 背景
 
 mermaid.js は、端の空白を除いた最初の項目が小文字のそれらの語のどれかである間、
-データの先頭からタグを取る
-（[`getTaskTags`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)）。
-その文書
-（[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L69)）
-は、タグ `active`、`done`、`crit`、`milestone` を小文字で挙げ、
+データの先頭からタグを取る（[`getTaskTags`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)）。
+その文書（[syntax/gantt.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/gantt.md#L69)）は、
+タグ `active`、`done`、`crit`、`milestone` を小文字で挙げ、
 タグを最初に書くと言う。
 
 <!-- begin auto-generated rule resources -->

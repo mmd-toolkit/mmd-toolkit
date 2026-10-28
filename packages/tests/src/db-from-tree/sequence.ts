@@ -400,13 +400,12 @@ class SequenceDbBuilder {
     // The statement has a description when it has `as`, which is the empty
     // text when nothing follows `as`; the tree then has no `alias` node, and
     // the `as` shows in the tokens only.
-    const hasAs = this.root.tokens.some(
-      (token) =>
-        token.type === "Keyword" &&
-        token.value.toLowerCase() === "as" &&
-        statement.range[0] <= token.range[0] &&
-        token.range[1] <= statement.range[1],
-    )
+    const hasAs = this.text
+      .tokensIn(statement.range, this.root.tokens)
+      .some(
+        (token) =>
+          token.type === "Keyword" && token.value.toLowerCase() === "as",
+      )
     const description = hasAs ? this.textOf(statement.alias) : null
     const wrap = this.wrapOf(statement.alias)
     this.addParticipant(id, description, wrap, statement.kind, box)

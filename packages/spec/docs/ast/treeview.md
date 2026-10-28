@@ -146,7 +146,7 @@ treeview/gram-nesting-decoration-unselected-semicolon]
 | ------ | ------------------------ | ---------------------------------- |
 | `body` | list of TreeviewBodyItem | Roots and independent outer items. |
 
-Child fields: body. Range: the header start through the final authored body
+Child fields: `body`. Range: the header start through the final authored body
 item, or the header end when body is empty. Exclude outer padding, later shared
 Comments and the appended LF. Root.diagramType is `treeView`; the header stays
 in its keyword unit without a separate header node. [fixture:
@@ -177,15 +177,15 @@ treeview/box-decoration-preamble-body] [fixture: treeview/common-repeat-empty]
 | `annotations`    | list of TreeviewAnnotation          | All annotations in source order.                     |
 | `children`       | list of TreeviewNode                | Its direct children, in source order.                |
 
-Child fields: textBefore, prefix, textBeforeName, name, annotations, children.
-The range starts at the first textBefore decoration when present, otherwise at
-the earliest prefix, textBeforeName decoration or name. It ends at the last
-descendant, or at this node's final annotation or name when it has no children.
-Thus the node's range need not start at its name. Each range is continuous;
-siblings do not overlap. Preceding ordinary indentation and unrelated later
-trivia do not extend it. name is never null; an empty quoted name is a
-StringLiteral with an empty value. [fixture: treeview/gram-written-tree]
-[fixture: treeview/box-written-tree] [fixture:
+Child fields: `textBefore`, `prefix`, `textBeforeName`, `name`, `annotations`,
+`children`. The range starts at the first textBefore decoration when present,
+otherwise at the earliest prefix, textBeforeName decoration or name. It ends at
+the last descendant, or at this node's final annotation or name when it has no
+children. Thus the node's range need not start at its name. Each range is
+continuous; siblings do not overlap. Preceding ordinary indentation and
+unrelated later trivia do not extend it. name is never null; an empty quoted
+name is a StringLiteral with an empty value. [fixture:
+treeview/gram-written-tree] [fixture: treeview/box-written-tree] [fixture:
 treeview/box-comment-indent-carry] [fixture:
 treeview/box-decoration-pending-name-gap] [fixture: treeview/db-empty-names]
 [fixture: treeview/gram-nesting-decoration-before-parent] [fixture:
@@ -232,8 +232,8 @@ treeview/db-directory-trailing-space] [fixture: treeview/db-file-parent]
 | `prefix`     | TreeviewBranchPrefix or null | A prefix introducing this annotation. |
 | `name`       | Identifier                   | The authored class name.              |
 
-Child fields: textBefore, prefix, name. Range: the first owned decoration or
-prefix, otherwise `:::`, through the class name end. Exclude separating
+Child fields: `textBefore`, `prefix`, `name`. Range: the first owned decoration
+or prefix, otherwise `:::`, through the class name end. Exclude separating
 whitespace before `:::` when it owns no preceding form. name is nonempty and
 never null. Its range excludes optional padding after `:::`. [fixture:
 treeview/gram-written-tree] [fixture: treeview/annotation-class-space] [fixture:
@@ -256,12 +256,13 @@ treeview/gram-written-tree] [fixture: treeview/annotation-class-uppercase]
 | `prefix`     | TreeviewBranchPrefix or null | A prefix introducing this annotation.    |
 | `name`       | Identifier or null           | Whole authored icon reference, or empty. |
 
-Child fields: textBefore, prefix, name. Range: the first owned decoration or
-prefix, otherwise `icon`, through the closing `)`. name is null exactly for an
-empty reference after shared removals. `icon()` still creates this annotation;
-`icon(none)` has a name Identifier. No annotation means no list member.
-[fixture: treeview/gram-written-tree] [fixture: treeview/db-icon-none] [fixture:
-treeview/ast-icon-removal-only] [fixture: treeview/ast-annotation-prefixes]
+Child fields: `textBefore`, `prefix`, `name`. Range: the first owned decoration
+or prefix, otherwise `icon`, through the closing `)`. name is null exactly for
+an empty reference after shared removals. `icon()` still creates this
+annotation; `icon(none)` has a name Identifier. No annotation means no list
+member. [fixture: treeview/gram-written-tree] [fixture: treeview/db-icon-none]
+[fixture: treeview/ast-icon-removal-only] [fixture:
+treeview/ast-annotation-prefixes]
 
 The complete `pack:file` or `:file` spelling is one Identifier, including the
 colon; do not resolve packs or split a second reference model into the tree.
@@ -278,8 +279,8 @@ treeview/db-repeat-icon] [fixture: treeview/ast-annotation-prefixes]
 | `prefix`     | TreeviewBranchPrefix or null | A prefix introducing this annotation. |
 | `value`      | TreeviewLiteral or null      | Whole authored text after `##`.       |
 
-Child fields: textBefore, prefix, value. Range: the first owned decoration or
-prefix, otherwise `##`, through the final value character, or the marker end
+Child fields: `textBefore`, `prefix`, `value`. Range: the first owned decoration
+or prefix, otherwise `##`, through the final value character, or the marker end
 when value is null. value begins immediately after `##`, retaining all padding
 through before the line terminator. Empty or shared-removal-only content gives
 null; whitespace-only content is a literal. [fixture:
@@ -312,7 +313,7 @@ treeview/common-title-quoted-next] [fixture:
 treeview/ast-common-whitespace-values] [fixture:
 treeview/ast-common-removal-only-values]
 
-Child fields: prefix, value. Range: prefix when present, otherwise `title`,
+Child fields: `prefix`, `value`. Range: prefix when present, otherwise `title`,
 through the final payload character, or through the keyword when value is null.
 Exclude preceding padding and the ending line break. prefix is null when no
 branch introduces this statement. Keep empty and overwritten occurrences
@@ -336,10 +337,10 @@ treeview/gram-written-tree] [fixture: treeview/common-acctitle-eof] [fixture:
 treeview/ast-common-whitespace-values] [fixture:
 treeview/ast-common-removal-only-values]
 
-Child fields: prefix, value. Range: prefix when present, otherwise `accTitle`,
-through the final payload character, or through the colon when value is null.
-Exclude preceding padding and the ending line break. prefix is null when no
-branch introduces this statement. Keep empty and overwritten occurrences
+Child fields: `prefix`, `value`. Range: prefix when present, otherwise
+`accTitle`, through the final payload character, or through the colon when value
+is null. Exclude preceding padding and the ending line break. prefix is null
+when no branch introduces this statement. Keep empty and overwritten occurrences
 individually. [fixture: treeview/gram-written-tree] [fixture:
 treeview/common-acctitle-eof] [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values] [fixture:
@@ -359,10 +360,10 @@ treeview/gram-written-tree] [fixture: treeview/common-accline-eof] [fixture:
 treeview/ast-common-whitespace-values] [fixture:
 treeview/ast-common-removal-only-values]
 
-Child fields: prefix, value. Range: prefix when present, otherwise `accDescr`,
-through the final payload character, or through the colon when value is null.
-Exclude preceding padding and the ending line break. prefix is null when no
-branch introduces this statement. Keep empty and overwritten occurrences
+Child fields: `prefix`, `value`. Range: prefix when present, otherwise
+`accDescr`, through the final payload character, or through the colon when value
+is null. Exclude preceding padding and the ending line break. prefix is null
+when no branch introduces this statement. Keep empty and overwritten occurrences
 individually. [fixture: treeview/gram-written-tree] [fixture:
 treeview/common-accline-eof] [fixture: treeview/ast-common-whitespace-values]
 [fixture: treeview/ast-common-removal-only-values] [fixture:
@@ -376,7 +377,7 @@ treeview/common-repeat-empty] [fixture: treeview/box-common-prefix]
 | `textBeforeOpen` | list of (TreeviewBranchPrefix or TreeviewIgnoredText) | Owned forms before `{`.    |
 | `value`          | TreeviewLiteral or null                               | Authored brace interior.   |
 
-Child fields: prefix, textBeforeOpen, value. Range: prefix when present,
+Child fields: `prefix`, `textBeforeOpen`, `value`. Range: prefix when present,
 otherwise `accDescr`, through its first effective closing `}` under the lexical
 rules. Both delimiters remain even with a null value. Exclude preceding padding
 and later trivia. prefix is null when absent, and textBeforeOpen is empty when

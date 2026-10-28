@@ -31,7 +31,7 @@ import {
   vi,
 } from "vitest"
 import type { DiagramType } from "../src/index.ts"
-import { loadFixtures } from "../src/index.ts"
+import { loadFixture } from "../src/index.ts"
 import type { MermaidConfig, MermaidRun } from "../src/mermaid.ts"
 import type { RunMermaidOptions } from "../src/run-mermaid-options.ts"
 import {
@@ -1036,11 +1036,7 @@ describe("stored results of mermaid.js", () => {
   it("are the same as the results made again, for each shape of result", async () => {
     const store = new MermaidRunStore(directory, "code")
     for (const { diagram, name, question, shows } of SHAPES) {
-      const fixture = (await loadFixtures(diagram)).find(
-        (candidate) => candidate.name === name,
-      )
-      if (fixture === undefined)
-        throw new Error(`no fixture ${diagram}/${name}`)
+      const fixture = await loadFixture(diagram, name)
       const { input, config } = fixture
       const options = config === undefined ? {} : { config }
       const run = await runMermaidWithEmbeddedData(input, options)

@@ -210,6 +210,94 @@ reads as one token, such as an arrow or a number, as in `A --""> B` and
 `linkStyle 0""0 stroke:red`. [fixture: flowchart/lex-empty-string-in-arrow]
 [fixture: flowchart/gram-linkstyle-number-empty-string]
 
+Where the input without its comment regions
+([Reading a source](../common.md#reading-a-source)) and without these forms is
+read as the units of the input other than those of the forms, the same units in
+the same order, this specification gives that input the Db that mermaid.js gives
+the input. `subgraph a ""`, a line `A`, and a line `end` read as the same lines
+without the empty string, also with a comment line, which is left out too, or an
+empty line, which is kept, after the first line; `A[""x]` reads as `A[x]`, also
+before a U+2028 or a U+2029; and in a Gantt chart, an empty href with a
+directive between its quotes is left out with the directive. [fixture:
+flowchart/db-subgraph-id-trailing-empty-string] [fixture:
+flowchart/db-subgraph-id-trailing-empty-string-comment-line] [fixture:
+flowchart/db-subgraph-id-trailing-empty-string-blank-line] [fixture:
+flowchart/tokens-empty-string-in-label] [fixture:
+flowchart/db-label-leading-empty-string-line-separator] [fixture:
+flowchart/db-label-leading-empty-string-paragraph-separator] [fixture:
+gantt/div-empty-href-directive-between-quotes-before-call] An empty description
+block that the document of its diagram type reads as a statement, once the forms
+before it are left out, is not one of these forms and stays: one where a
+statement starts, and one after the last unit of a statement that only other
+empty description blocks and then the separator of the statement follow. In
+flowchart, a statement also starts right after another description block, and
+the blocks before a separator are described in
+[Empty description blocks before a separator](../diagrams/flowchart.md#empty-description-blocks-before-a-separator).
+So blocks written one after another, with only whitespace between them, are
+decided together, by what follows the last of them. In `""accDescr {}` followed
+by a line break and `A`, the block starts a statement once the empty string is
+left out, and so do two or three blocks there, with a space, a tab, or nothing
+between them, also with `A` after them on the same line. [fixture:
+flowchart/lex-empty-string-before-empty-description-block] [fixture:
+flowchart/div-empty-string-before-empty-description-blocks] [fixture:
+flowchart/div-empty-string-before-three-empty-description-blocks] [fixture:
+flowchart/div-empty-string-before-glued-empty-description-blocks] [fixture:
+flowchart/div-empty-string-before-tab-empty-description-blocks] [fixture:
+flowchart/div-empty-string-before-empty-description-blocks-then-vertex] In
+`A[""x]` followed by two or three blocks and a line feed, a `;`, or the end of
+the text, the blocks stay too, and so they do with a comment line, an empty
+line, or a directive between two blocks, before a `;` that the line rule ignores
+after the blocks of a style statement, and with a U+2028 or a U+2029 before the
+line feed. mermaid.js gives each of these inputs without the empty string the Db
+of the input. [fixture:
+flowchart/div-empty-string-then-empty-description-blocks-before-line-feed]
+[fixture:
+flowchart/div-empty-string-then-three-empty-description-blocks-before-line-feed]
+[fixture:
+flowchart/div-empty-string-then-glued-empty-description-blocks-before-line-feed]
+[fixture:
+flowchart/div-empty-string-then-tab-empty-description-blocks-before-line-feed]
+[fixture:
+flowchart/div-empty-string-then-empty-description-blocks-before-semicolon]
+[fixture: flowchart/div-empty-string-then-empty-description-blocks-before-end]
+[fixture:
+flowchart/div-empty-string-then-empty-description-blocks-around-comment-line]
+[fixture:
+flowchart/div-empty-string-then-empty-description-blocks-around-blank-line]
+[fixture:
+flowchart/div-empty-string-then-empty-description-blocks-around-directive]
+[fixture:
+flowchart/div-empty-string-then-empty-description-blocks-before-ignored-semicolon]
+[fixture:
+flowchart/div-empty-string-then-empty-description-blocks-before-line-separator]
+[fixture:
+flowchart/div-empty-string-then-empty-description-blocks-before-paragraph-separator]
+In `A`, two or three blocks, and `--> B`, more of the statement follows the last
+block, so all of them are left out, the whitespace on their two sides joins into
+one run, and nothing follows for the input without them. [fixture:
+flowchart/div-empty-description-blocks-before-link] [fixture:
+flowchart/div-three-empty-description-blocks-before-link] [fixture:
+flowchart/div-glued-empty-description-blocks-before-link] [fixture:
+flowchart/div-tab-empty-description-blocks-before-link] Where leaving the forms
+out joins the text on their two sides into other units, nothing follows for the
+input without them, and mermaid.js may read it otherwise. `1""2-->B` without the
+empty string has the one unit `12`. `style A "" ;fill:red` has two spaces after
+`A`, which mermaid.js rejects. In `style A "" fill:#f00;`, whose last `;` the
+line rule ignores, the two spaces join, and mermaid.js gives the input the style
+` fill:#f00` and the input without the empty string `fill:#f00`. In
+`subgraph a ""` followed by a U+2028 or a U+2029, the space before the empty
+string and the U+2028 or U+2029 after it become one run of whitespace, and so do
+the space before the empty string and the space after the directive in
+`subgraph ""%%{init: {}}%% a`. In class, `direction accDescr {} LR` without the
+block is a direction line, while mermaid.js reads the input otherwise (see
+below). [fixture: flowchart/tokens-id-empty-string-between] [fixture:
+flowchart/db-style-empty-string-separator] [fixture:
+flowchart/db-style-empty-string-ignored-semicolon] [fixture:
+flowchart/db-subgraph-id-trailing-empty-string-line-separator] [fixture:
+flowchart/db-subgraph-id-trailing-empty-string-paragraph-separator] [fixture:
+flowchart/db-subgraph-id-empty-string-directive-space] [fixture:
+class/div-empty-description-block-between-direction-and-value]
+
 One form of class is read otherwise. mermaid.js reads a direction line of class
 with one rule over `direction`, the whitespace, and the value, so an empty
 description block between them keeps that rule from matching, and mermaid.js

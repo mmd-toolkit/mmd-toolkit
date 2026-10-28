@@ -4,6 +4,7 @@ import { utils } from "prettier/doc"
 import { isDroppedSemicolon } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
+  findCoveringRange,
   findCommentEndingAt,
   findDirectiveEndingAt,
   isCommentLine,
@@ -185,7 +186,9 @@ export function readGap(
     readonly endsText?: boolean
     readonly keepsInlineDirectivesWithPrevious?: boolean
     readonly dropsSeparatorsBeforeComments?: boolean
+    /** Disjoint source-ordered ranges supplied by the planned indentation. */
     readonly relocatedWhitespace?: readonly Range[]
+    /** Disjoint source-ordered ranges replaced by the statement docs. */
     readonly omitted?: readonly Range[]
   } = {},
 ): Gap {
@@ -488,9 +491,7 @@ function scanLines(
 
   while (offset < end) {
     const position = offset
-    const omitted = omittedRanges.find(
-      ([from, to]) => from <= position && position < to,
-    )
+    const omitted = findCoveringRange(omittedRanges, position)
     if (omitted !== undefined) {
       offset = Math.min(end, omitted[1])
       continue
@@ -527,11 +528,7 @@ function scanLines(
         // A meaningful indentation run can have moved to the next row's
         // printed column. Keep trivia here without printing that run twice
         // (docs/treemap.md, Carried indentation and Comments).
-        else if (
-          !relocatedWhitespace.some(
-            ([from, to]) => from <= position && position < to,
-          )
-        )
+        else if (findCoveringRange(relocatedWhitespace, position) === undefined)
           spacePending = true
         break
       default:

@@ -1,21 +1,8 @@
+import { readFileSync, readdirSync } from "node:fs"
 import { describe, expect, expectTypeOf, it } from "vitest"
-import { loadFixtures } from "@mmd-toolkit/tests"
-import type {
-  GanttClickStatement,
-  Node,
-  Root,
-  Visitor,
-  VisitorKeys,
-} from "../src/index.ts"
-import {
-  ParseError,
-  UnsupportedDiagramError,
-  parse,
-  traverseNodes,
-  visitorKeys,
-} from "../src/index.ts"
+import type { Node, Visitor, VisitorKeys } from "../src/index.ts"
+import { parse, traverseNodes, visitorKeys } from "../src/index.ts"
 import { allNodeTypes, holdsNode } from "./helpers/node-types.ts"
-import { RECORDED_DIAGRAMS } from "./helpers/recorded-diagrams.ts"
 
 // Expectations come from ast.md, Nodes: the child fields of each node type,
 // and what a tool that walks the tree visits.
@@ -38,79 +25,106 @@ function walk(node: Node): [string, string, string | null][] {
   return calls
 }
 
-/**
- * ast.md, Nodes: the child nodes of `parent`, `children` in the order of
- * its child fields, put in source order. That is the order of the child
- * fields, except in the nodes that a document names: ast/flowchart.md,
- * FlowchartLink, whose `label`, written between `opening` and `arrow`, is
- * visited after `arrow`; and ast/gantt.md, GanttClickStatement, whose
- * `href` may be written before its `call`.
- */
-function inSourceOrder(parent: Node, children: readonly Node[]): Node[] {
-  if (parent.type === "GanttClickStatement") {
-    const { call, href }: GanttClickStatement = parent
-    if (call === null || href === null || call.range[0] < href.range[0]) {
-      return [...children]
-    }
-    return children.map((child) => {
-      if (child === call) return href
-      if (child === href) return call
-      return child
-    })
-  }
-  if (parent.type !== "FlowchartLink" && parent.type !== "AgentflowLink")
-    return [...children]
-  const { opening, arrow, label } = parent
-  if (opening === null || label === null) return [...children]
-  return children.map((child) => {
-    if (child === arrow) return label
-    if (child === label) return arrow
-    return child
-  })
+/** The start of the sentence that names the child fields of a node type. */
+const CHILD_FIELDS = "Child fields: "
+
+/** The sentence of a node type without child fields. */
+const NO_CHILD_FIELDS = "No child fields."
+
+/** The documents that define the node types: ast.md and those of the diagram types, in English. */
+function nodeTypeDocuments(): string[] {
+  const directory = new URL("../../spec/docs/ast/", import.meta.url)
+  const diagrams = readdirSync(directory)
+    .filter((name) => name.endsWith(".md") && !name.endsWith(".ja.md"))
+    .map((name) => readFileSync(new URL(name, directory), "utf8"))
+  return [
+    readFileSync(new URL("../../spec/docs/ast.md", import.meta.url), "utf8"),
+    ...diagrams,
+  ]
+}
+
+/** The node types that a heading names, as `A`, `A and B`, or `A, B, and C`. */
+function nodeTypesOfHeading(heading: string): string[] {
+  return heading
+    .split(", ")
+    .flatMap((part) => part.split(" and "))
+    .map((part) => (part.startsWith("and ") ? part.slice("and ".length) : part))
+    .filter((name) => Object.hasOwn(visitorKeys, name))
 }
 
 /**
- * The child nodes of `root` that overlap the child node of the same parent
- * before them in source order ({@link inSourceOrder}), or come before it,
- * each as its type and range.
+ * ast.md, Nodes: the child fields that a sentence states, given the text of
+ * a section from the start of the sentence on: `Child fields:` and the
+ * names in code spans, separated by `, ` and ended by a period, or
+ * `No child fields.`; null when the sentence has another form.
  */
-function childrenOutOfOrder(root: Root): string[] {
-  const childrenOf = new Map<Node, Node[]>()
-  traverseNodes(root, {
-    enterNode(node, parent) {
-      if (parent === null) return
-      childrenOf.set(parent, [...(childrenOf.get(parent) ?? []), node])
-    },
-    leaveNode() {
-      // Nothing to do on the way back.
-    },
-  })
-  const outOfOrder: string[] = []
-  for (const [parent, children] of childrenOf) {
-    let lastEnd = parent.range[0]
-    for (const child of inSourceOrder(parent, children)) {
-      if (child.range[0] < lastEnd) {
-        outOfOrder.push(`${child.type} at ${child.range.join("-")}`)
+function childFieldsOf(statement: string): string[] | null {
+  if (statement.startsWith(NO_CHILD_FIELDS)) return []
+  let rest = statement.slice(CHILD_FIELDS.length)
+  const fields: string[] = []
+  for (;;) {
+    if (!rest.startsWith("`")) return null
+    const end = rest.indexOf("`", 1)
+    if (end === -1) return null
+    fields.push(rest.slice(1, end))
+    rest = rest.slice(end + 1)
+    if (rest.startsWith(".")) return fields
+    if (!rest.startsWith(", ")) return null
+    rest = rest.slice(", ".length)
+  }
+}
+
+/**
+ * ast.md, Nodes: the child fields that the section of each node type
+ * states, by node type, and what keeps a section from stating them once:
+ * no sentence or two, a sentence of another form, or a node type that two
+ * sections name. A section runs from its heading to the next heading, and
+ * its lines are read as one text.
+ */
+function statedChildFields(): {
+  readonly fields: Map<string, string[]>
+  readonly problems: string[]
+} {
+  const fields = new Map<string, string[]>()
+  const problems: string[] = []
+  for (const document of nodeTypeDocuments()) {
+    const sections = document.split("\n#")
+    for (const section of sections) {
+      const headingEnd = section.indexOf("\n")
+      const heading = section.slice(0, headingEnd)
+      const types = nodeTypesOfHeading(heading.slice(heading.indexOf(" ") + 1))
+      if (types.length === 0) continue
+      const body = section
+        .slice(headingEnd + 1)
+        .split("\n")
+        .join(" ")
+      const starts = [CHILD_FIELDS, NO_CHILD_FIELDS].flatMap((sentence) => {
+        const found: number[] = []
+        for (let at = body.indexOf(sentence); at !== -1;) {
+          found.push(at)
+          at = body.indexOf(sentence, at + sentence.length)
+        }
+        return found
+      })
+      if (starts.length !== 1) {
+        for (const type of types) {
+          problems.push(`${type}: ${starts.length} sentences of child fields`)
+        }
+        continue
       }
-      lastEnd = child.range[1]
+      const stated = childFieldsOf(body.slice(starts[0]))
+      for (const type of types) {
+        if (stated === null) {
+          problems.push(`${type}: a sentence of child fields of another form`)
+        } else if (fields.has(type)) {
+          problems.push(`${type}: named by two sections`)
+        } else {
+          fields.set(type, stated)
+        }
+      }
     }
   }
-  return outOfOrder
-}
-
-/** The tree of `source`, or null when `parse()` rejects it or does not support its diagram type. */
-function treeOf(source: string): Root | null {
-  try {
-    return parse(source)
-  } catch (error) {
-    if (
-      error instanceof ParseError ||
-      error instanceof UnsupportedDiagramError
-    ) {
-      return null
-    }
-    throw error
-  }
+  return { fields, problems }
 }
 
 describe("visitorKeys", () => {
@@ -140,42 +154,14 @@ describe("visitorKeys", () => {
     }
   })
 
-  // ast.md, Nodes: a tool that walks the child fields in the order of
-  // `visitorKeys` meets the child nodes in source order, but in the node that
-  // a document names (see `inSourceOrder`). One test for each tree of the
-  // fixtures.
-  describe("lists the child fields in source order, in every tree of the fixtures", async () => {
-    let trees = 0
-    for (const diagram of RECORDED_DIAGRAMS) {
-      for (const fixture of await loadFixtures(diagram)) {
-        const root = treeOf(fixture.input)
-        if (root === null) continue
-        trees += 1
-        it(`${diagram}/${fixture.name}`, () => {
-          expect(childrenOutOfOrder(root)).toEqual([])
-        })
-      }
-    }
-
-    it("has trees", () => {
-      // Guards against the check passing vacuously.
-      expect(trees).toBeGreaterThan(0)
-    })
-  })
-
-  it("finds child nodes out of source order", () => {
-    const root = parse("flowchart LR\nA-->B-->C")
-    if (root.body.type !== "FlowchartDiagram") throw new Error("no flowchart")
-    const [statement] = root.body.body
-    if (statement.type !== "FlowchartVertexStatement") {
-      throw new Error("no vertex statement")
-    }
-    const reversed = { ...statement, links: [...statement.links].reverse() }
-    const broken: Root = {
-      ...root,
-      body: { ...root.body, body: [reversed] },
-    }
-    expect(childrenOutOfOrder(broken)).toEqual(["FlowchartLink at 14-18"])
+  // ast.md, Nodes: the section of each node type states its child fields in
+  // the order of the visit. That the child nodes meet in source order, in
+  // that order, is checked on every recorded tree by `@mmd-toolkit/tests`
+  // (`check-tree-corpus.test.ts`).
+  it("lists the child fields that the section of each node type states, in its order", () => {
+    const { fields, problems } = statedChildFields()
+    expect(problems).toEqual([])
+    expect(Object.fromEntries(fields)).toEqual({ ...visitorKeys })
   })
 })
 

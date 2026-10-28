@@ -37,7 +37,7 @@ export function findBlockKeptLines(source: Source): KeptLines {
   const kept: KeptLines = {
     joined,
     verbatim: findLinesEndedBySemicolon(source),
-    writtenIndentation: new Set(),
+    ownIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)
   return kept

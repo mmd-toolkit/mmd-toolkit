@@ -18,6 +18,7 @@ import { createMarkdownRenderer, disposeMdItInstance } from "vitepress"
 import {
   collectDiagrams,
   collectDocuments,
+  diagramOrder,
   configureDocumentMarkdown,
   documentAnchor,
   documentLink,
@@ -434,31 +435,38 @@ describe("rule sidebar", () => {
 })
 
 describe("additional diagram types", () => {
+  it("names the specified diagrams by their specification file names", () => {
+    const specified = new Set(
+      collectDiagrams(repositoryRoot).map(({ name }) => name),
+    )
+    // Mermaid's ids stay only for the families this repository does not
+    // specify; a specified family listed under another spelling would appear
+    // here and fall to the end of the sidebar.
+    expect(diagramOrder.filter((name) => !specified.has(name))).toEqual([
+      "swimlane",
+      "zenuml",
+    ])
+  })
+
   it("keeps unlisted diagrams after Mermaid's documented types in name order", () => {
-    const { root } = referenceRepository()
+    const { root } = temporaryRepository()
     for (const name of [
-      "treeView",
+      "zzz-new",
+      "treeview",
       "architecture",
       "gitgraph",
-      "quadrantChart",
+      "quadrant",
       "pie",
       "aaa-new",
-      "zzz-new",
     ]) {
       write(root, `packages/spec/docs/diagrams/${name}.md`, `# ${name}\n`)
     }
     expect(collectDiagrams(root).map(({ name }) => name)).toEqual([
-      "flowchart",
-      "sequence",
-      "class",
-      "state",
-      "er",
-      "gantt",
       "pie",
-      "quadrantChart",
+      "quadrant",
       "gitgraph",
       "architecture",
-      "treeView",
+      "treeview",
       "aaa-new",
       "zzz-new",
     ])

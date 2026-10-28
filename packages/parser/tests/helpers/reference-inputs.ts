@@ -833,10 +833,9 @@ export function removedEmptyFormsIn(text: string): EmptyForm<AnyUnit>[] | null {
  * mermaid.js reads nothing for: each empty string, each empty call from its
  * `call` to its `)`, and each empty description block that is no
  * statement, because it lies inside a statement, neither where a statement
- * starts nor before its separator, from its `accDescr` to its `}`, with
- * the whitespace around a block between `direction` and its value in class
- * ({@link classRemovedRangeOf}). This is the reference input for
- * `tokenless-empty-forms`; null where {@link removedEmptyFormsIn} is.
+ * starts nor before its separator, from its `accDescr` to its `}`. This is
+ * the reference input for `tokenless-empty-forms`; null where
+ * {@link removedEmptyFormsIn} is.
  */
 export function withoutEmptyForms(text: string): string | null {
   const diagram = diagramUnitsOf(text)
@@ -1072,7 +1071,7 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       statementStartsAt: (before) => classStatementStartsAfter(before),
       separators: ["newline"],
       endOfTextSeparates: true,
-      removedRangeOf: (form) => classRemovedRangeOf(classLexing.units, form),
+      removedRangeOf: (form) => form.range,
     }
   }
   const state = stateLexingOf(text)
@@ -1182,6 +1181,20 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       statementStartsAt: () => false,
       separators: [],
       endOfTextSeparates: false,
+      removedRangeOf: (form) => form.range,
+    }
+  }
+  const agentflow = agentflowLexingOf(text)
+  if (agentflow !== null) {
+    return {
+      units: agentflow.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.agentflow,
+      statementStartsAt: (before) => agentflowStatementStartsAfter(before),
+      // diagrams/agentflow.md, Empty description blocks and erased forms:
+      // flowchart's terminal empty-description rules for separated
+      // statements.
+      separators: ["newline", ";"],
+      endOfTextSeparates: true,
       removedRangeOf: (form) => form.range,
     }
   }
@@ -2037,47 +2050,6 @@ function stateStatementStartsAt(
   }
 }
 
-/** diagrams/class.md, The direction line: the values of a direction. */
-const CLASS_DIRECTIONS: readonly string[] = ["TB", "BT", "RL", "LR"]
-
-/**
- * `docs/testing.md`, Known divergences, `tokenless-empty-forms`: the range
- * that the reference input of a class diagram, whose units are `units`,
- * leaves out for the removed empty form `form`: the form, and for each of
- * the empty description blocks between `direction` and its value on one
- * line, also the whitespace around it, so that the two form one word, as
- * mermaid.js joins the two name parts
- * (`direction accDescr {} LR` and `direction accDescr {}accDescr {}LR`
- * become `directionLR`).
- */
-function classRemovedRangeOf(
-  units: readonly AnyUnit[],
-  form: EmptyForm<AnyUnit>,
-): Range {
-  if (form.kind !== "empty-description-block") return form.range
-  const first = form.units[0].index
-  const last = form.units.at(-1)?.index ?? first
-  let before = first - 1
-  while (startsEmptyDescriptionBlock(units, before, -1)) before -= 3
-  let after = last + 1
-  while (startsEmptyDescriptionBlock(units, after, 1)) after += 3
-  const word = units.at(before)
-  const value = units.at(after)
-  const previous = units.at(first - 1)
-  const next = units.at(last + 1)
-  if (
-    word?.name === "word" &&
-    word.text === "direction" &&
-    value?.name === "word" &&
-    CLASS_DIRECTIONS.includes(value.text) &&
-    previous !== undefined &&
-    next !== undefined
-  ) {
-    return [previous.end, next.start]
-  }
-  return form.range
-}
-
 /**
  * diagrams/class.md, Diagram and statements, and Empty description blocks:
  * whether a statement starts after `before`, the units before the place,
@@ -2147,6 +2119,24 @@ function flowchartStatementStartsAfter(before: readonly AnyUnit[]): boolean {
     default:
       return false
   }
+}
+
+/**
+ * diagrams/agentflow.md, Empty description blocks and erased forms: whether a
+ * statement starts after `before`, the units before an empty description
+ * block: where one starts in a flowchart, after the header direction, after a
+ * global heading, and after the bracket title of a flow or connector heading.
+ */
+function agentflowStatementStartsAfter(before: readonly AnyUnit[]): boolean {
+  if (flowchartStatementStartsAfter(before)) return true
+  const last = before.at(-1)?.name
+  if (last === "header-direction" || last === "global") return true
+  if (last !== "]") return false
+  const lineStart = before.findLastIndex(
+    (unit) => unit.name === "newline" || unit.name === ";",
+  )
+  const first = before.at(lineStart + 1)?.name
+  return first === "flow" || first === "connector"
 }
 
 /** The specification's agentflow units, including retained forms and preserved comments. */

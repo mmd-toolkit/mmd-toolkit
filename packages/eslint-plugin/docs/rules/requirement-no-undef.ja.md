@@ -2,8 +2,8 @@
 
 英語版: [requirement-no-undef.md](./requirement-no-undef.md)
 
-どの requirement も element も名指さない、
-`style`、`class`、`:::`、関係の名前を禁止する。
+どの requirement も element も名指さない、 `style`、`class`、`:::`、
+関係の名前を禁止する。
 
 <!-- begin auto-generated rule notice -->
 
@@ -92,11 +92,10 @@ requirementDiagram
 ## 背景
 
 mermaid.js は、`style`、`class`、`:::` の名前をテキストを読む間に探し、
-`style` は見つからない最初の名前で戻る
-（[`setCssStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L226-L240) と
+`style` は見つからない最初の名前で戻る（[`setCssStyle`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L226-L240) と、
 [`setClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L242-L255)）。
-関係の端は、図を描くときに探す
-（[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L325)）。
+関係の端は、
+図を描くときに探す（[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L325)）。
 
 <!-- begin auto-generated rule resources -->
 

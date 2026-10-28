@@ -25,6 +25,7 @@ import {
 import { lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
+  findCoveringRange,
   findStructuralToken,
   findTriviaBetween,
   isWhitespace,
@@ -474,8 +475,7 @@ export function layoutTreeviewStatement(
   }
   const omitted = drawing?.omitted ?? []
   const atoms = layout.atoms.filter(
-    (atom) =>
-      !omitted.some(([from, to]) => from <= atom.start && atom.end <= to),
+    (atom) => findCoveringRange(omitted, atom.start, atom.end) === undefined,
   )
   const joinedBefore = new Set([
     ...(layout.joinedBefore ?? []),

@@ -30,8 +30,8 @@
 id は大文字小文字を区別し、末尾の空白も残して比べる。
 id のない形は、ラベルを id にする。
 メタデータによるタイトルの変更は id を変えない。
-項目の id の重複、列と同じ id の項目、
-その id に属する項目がない空の列の重複は、項目の再掲を加えず、報告しない。
+項目の id の重複、列と同じ id の項目、その id に属する項目がない空の列の重複は、
+項目の再掲を加えず、報告しない。
 
 `Todo` と `Ready` のように、列にそれぞれ自分の id を与える。
 id が異なる 2 つの列に、意図して同じ表示タイトルを与えることはできる。
@@ -78,8 +78,8 @@ kanban
 
 ## 背景
 
-[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L61-L94)
-は、列ごとに列の id で項目を選ぶので、重複した id は同じ項目をもう一度選ぶ。
+[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L61-L94) は、
+列ごとに列の id で項目を選ぶので、重複した id は同じ項目をもう一度選ぶ。
 
 <!-- begin auto-generated rule resources -->
 

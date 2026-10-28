@@ -4,7 +4,8 @@ import type { DiagramComment, DiagramInput } from "../../diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"
 import type { DiagramTextReader } from "../../diagram-text.ts"
 import { TreeviewGrammar } from "./grammar.ts"
-import { TreeviewSource, TreeviewText } from "./treeview-text.ts"
+import { DiagramTextWithoutPassedLines } from "../../passed-bare-lines.ts"
+import { TreeviewText } from "./treeview-text.ts"
 import type { Unit, UnitName } from "./units.ts"
 import { TreeviewUnitLexer } from "./units.ts"
 
@@ -17,7 +18,7 @@ export interface TreeviewUnits extends CommonFormLexing<UnitName> {
 /** Direct box rules and ordered units; no native YAML, hidden directives or common EOL. */
 export function lexTreeview(input: DiagramInput): TreeviewUnits {
   const text = openDiagramText(input)
-  const source = new TreeviewSource(text, input.passed)
+  const source = new DiagramTextWithoutPassedLines(text, input.passed)
   const reader = new TreeviewText(source, input.lexer.lines)
   const passedTriviaEnd = input.passed.some(
     (part) => part.kind === "bare-percent-line",

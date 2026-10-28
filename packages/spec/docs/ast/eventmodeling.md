@@ -107,7 +107,7 @@ eventmodeling/gram-common-leading-empty-description-boundary]
 | `textBeforeHeader` | list of EventmodelingIgnoredText | Retained pre-header forms.                     |
 | `body`             | list of EventmodelingBodyItem    | All authored statements and body hidden forms. |
 
-Child fields: textBeforeHeader, body. Range: the first retained form, or the
+Child fields: `textBeforeHeader`, `body`. Range: the first retained form, or the
 header if none, through the final body item, or the header end for an empty
 body. Root.diagramType is eventmodeling. Exclude outside padding, native
 comments and closing LF beyond that endpoint. There is no header node or alias
@@ -133,15 +133,15 @@ eventmodeling/lex-native-directive-object-eof]
 | `dataReference`              | EventmodelingDataReference or null   | Explicit data reference.            |
 | `data`                       | EventmodelingInlineData or null      | Explicit inline data.               |
 
-Child fields: textBeforeName, name, textBeforeModelEntityType,
-textBeforeEntityIdentifier, entityIdentifier, sourceFrames, dataReference, data.
-Range: tf or timeframe through the last present data, dataReference, source
-reference or qualified-name component. modelEntityType is one of rmo, readmodel,
-ui, cmd, command, evt, event, pcr or processor, without alias normalization.
-sourceFrames may be empty. dataReference and data are null only when their whole
-written forms are absent; preserve inline data even when a data reference is
-present. Keep short and long frame keywords in syntax, without an alias field.
-[fixture: eventmodeling/gram-written-tree] [fixture:
+Child fields: `textBeforeName`, `name`, `textBeforeModelEntityType`,
+`textBeforeEntityIdentifier`, `entityIdentifier`, `sourceFrames`,
+`dataReference`, `data`. Range: tf or timeframe through the last present data,
+dataReference, source reference or qualified-name component. modelEntityType is
+one of rmo, readmodel, ui, cmd, command, evt, event, pcr or processor, without
+alias normalization. sourceFrames may be empty. dataReference and data are null
+only when their whole written forms are absent; preserve inline data even when a
+data reference is present. Keep short and long frame keywords in syntax, without
+an alias field. [fixture: eventmodeling/gram-written-tree] [fixture:
 eventmodeling/lex-hidden-frame-type-gap] [fixture:
 eventmodeling/lex-hidden-frame-entity-gap] [fixture:
 eventmodeling/lex-hidden-frame-optional-gaps] [fixture:
@@ -162,15 +162,15 @@ eventmodeling/db-source-order] [fixture: eventmodeling/db-data-reference-inline]
 | `dataReference`              | EventmodelingDataReference or null   | Explicit data reference.            |
 | `data`                       | EventmodelingInlineData or null      | Explicit inline data.               |
 
-Child fields: textBeforeName, name, textBeforeModelEntityType,
-textBeforeEntityIdentifier, entityIdentifier, sourceFrames, dataReference, data.
-Range: rf or resetframe through the last present data, dataReference, source
-reference or qualified-name component. modelEntityType is one of rmo, readmodel,
-ui, cmd, command, evt, event, pcr or processor, without alias normalization.
-sourceFrames may be empty. dataReference and data are null only when their whole
-written forms are absent; preserve inline data even when a data reference is
-present. Keep short and long frame keywords in syntax, without an alias field.
-[fixture: eventmodeling/gram-written-tree] [fixture:
+Child fields: `textBeforeName`, `name`, `textBeforeModelEntityType`,
+`textBeforeEntityIdentifier`, `entityIdentifier`, `sourceFrames`,
+`dataReference`, `data`. Range: rf or resetframe through the last present data,
+dataReference, source reference or qualified-name component. modelEntityType is
+one of rmo, readmodel, ui, cmd, command, evt, event, pcr or processor, without
+alias normalization. sourceFrames may be empty. dataReference and data are null
+only when their whole written forms are absent; preserve inline data even when a
+data reference is present. Keep short and long frame keywords in syntax, without
+an alias field. [fixture: eventmodeling/gram-written-tree] [fixture:
 eventmodeling/db-all-aliases] [fixture: eventmodeling/validator-reset-invalid]
 [fixture: eventmodeling/spec-eventmodeling-test-ts-8573a603]
 
@@ -181,7 +181,7 @@ eventmodeling/db-all-aliases] [fixture: eventmodeling/validator-reset-invalid]
 | `head` | Identifier                             | First segment.                    |
 | `tail` | list of EventmodelingQualifiedNamePart | Dot/name members in source order. |
 
-Child fields: head, tail. Range: the first segment start through the final
+Child fields: `head`, `tail`. Range: the first segment start through the final
 segment end. A one-segment name still uses this node with empty tail. Keep
 spacing and hidden forms between components in source and their owned gaps. Do
 not put the whole whitespace-permitting name in a shared Identifier, synthesize
@@ -198,7 +198,7 @@ eventmodeling/gram-written-tree]
 | `textBeforeName` | list of EventmodelingIgnoredText | Forms after dot, before name. |
 | `name`           | Identifier                       | Following segment.            |
 
-Child fields: textBeforeDot, textBeforeName, name. Range: the first owned
+Child fields: `textBeforeDot`, `textBeforeName`, `name`. Range: the first owned
 textBeforeDot form, otherwise the dot, through the name end. Dot is punctuation.
 Pair each name with its own gaps instead of parallel arrays; name is always
 present and neither gap contains ordinary whitespace or comments. [fixture:
@@ -215,11 +215,11 @@ eventmodeling/gram-written-tree]
 | `textBeforeFrame` | list of EventmodelingIgnoredText | Forms between arrow and name.  |
 | `frame`           | Identifier                       | Authored frame reference name. |
 
-Child fields: textBefore, arrow, textBeforeFrame, frame. Range: the first
-textBefore form, otherwise the arrow, through the frame name end. Preserve every
-member and its position, including duplicates and unresolved, forward or self
-names. frame holds the written one-to-three-digit identity and never a pointer
-to a target node. [fixture: eventmodeling/db-source-order] [fixture:
+Child fields: `textBefore`, `arrow`, `textBeforeFrame`, `frame`. Range: the
+first textBefore form, otherwise the arrow, through the frame name end. Preserve
+every member and its position, including duplicates and unresolved, forward or
+self names. frame holds the written one-to-three-digit identity and never a
+pointer to a target node. [fixture: eventmodeling/db-source-order] [fixture:
 eventmodeling/db-source-missing] [fixture: eventmodeling/db-source-forward]
 [fixture: eventmodeling/db-source-self] [fixture:
 eventmodeling/lex-hidden-source-frame-gap] [fixture:
@@ -249,12 +249,13 @@ eventmodeling/gram-written-tree]
 | `name`            | Identifier                       | Single authored data name. |
 | `textBeforeClose` | list of EventmodelingIgnoredText | Forms before closer.       |
 
-Child fields: textBefore, textBeforeName, name, textBeforeClose. Range: the
-first textBefore form, otherwise [[, through ]]. name is a single identifier and
-is always present. Unresolved references remain this node, not null; only the
-parent field is null when the whole bracketed form is absent. Both two-character
-delimiters stay punctuation. [fixture: eventmodeling/db-data-unresolved]
-[fixture: eventmodeling/lex-hidden-reference-name-close] [fixture:
+Child fields: `textBefore`, `textBeforeName`, `name`, `textBeforeClose`. Range:
+the first textBefore form, otherwise [[, through ]]. name is a single identifier
+and is always present. Unresolved references remain this node, not null; only
+the parent field is null when the whole bracketed form is absent. Both
+two-character delimiters stay punctuation. [fixture:
+eventmodeling/db-data-unresolved] [fixture:
+eventmodeling/lex-hidden-reference-name-close] [fixture:
 eventmodeling/gram-written-tree]
 
 ### EventmodelingInlineData
@@ -268,15 +269,15 @@ eventmodeling/gram-written-tree]
 | `textBeforeValue`     | list of EventmodelingIgnoredText              | Forms after closing backtick.    |
 | `value`               | StringLiteral or EventmodelingLiteral or null | Quoted or brace interior.        |
 
-Child fields: textBefore, textBeforeDataType, textBeforeTypeClose,
-textBeforeValue, value. Range: the first textBefore form, otherwise the opening
-backtick, quote or brace, through the body closing quote or brace. dataType is
-json, jsobj, figma, salt, uri, md, html or text, or null without a tag. Without
-a tag the three internal gap lists are empty. Quote bodies use StringLiteral,
-including empty strings; brace bodies use EventmodelingLiteral, or null only
-when their interior is empty after common removals. Whitespace-only brace
-content is not null. Braces and tag backticks stay punctuation, not payload
-characters. [fixture: eventmodeling/lex-inline-empty] [fixture:
+Child fields: `textBefore`, `textBeforeDataType`, `textBeforeTypeClose`,
+`textBeforeValue`, `value`. Range: the first textBefore form, otherwise the
+opening backtick, quote or brace, through the body closing quote or brace.
+dataType is json, jsobj, figma, salt, uri, md, html or text, or null without a
+tag. Without a tag the three internal gap lists are empty. Quote bodies use
+StringLiteral, including empty strings; brace bodies use EventmodelingLiteral,
+or null only when their interior is empty after common removals. Whitespace-only
+brace content is not null. Braces and tag backticks stay punctuation, not
+payload characters. [fixture: eventmodeling/lex-inline-empty] [fixture:
 eventmodeling/space-data-values] [fixture: eventmodeling/data-all-types]
 [fixture: eventmodeling/lex-hidden-type-tag] [fixture:
 eventmodeling/gram-written-tree] [fixture:
@@ -293,15 +294,15 @@ eventmodeling/gram-empty-payload-after-removals]
 | `textBeforeValue`     | list of EventmodelingIgnoredText | Forms after closing backtick.    |
 | `value`               | EventmodelingLiteral             | Entire brace interior.           |
 
-Child fields: textBefore, textBeforeDataType, textBeforeTypeClose,
-textBeforeValue, value. Range: the first textBefore form, otherwise the opening
-backtick or brace, through the closing brace. dataType is json, jsobj, figma,
-salt, uri, md, html or text, or null without a tag; the three internal gaps are
-then empty. value is never null: even an empty block has its opening-line
-padding and LF inside its braces. Preserve all interior spacing, authored line
-endings, earlier closing-looking lines and statement-looking text. The consumed
-closing LF and logical appended LF are outside this node; Db derivation reads
-that boundary from source, as explained by the
+Child fields: `textBefore`, `textBeforeDataType`, `textBeforeTypeClose`,
+`textBeforeValue`, `value`. Range: the first textBefore form, otherwise the
+opening backtick or brace, through the closing brace. dataType is json, jsobj,
+figma, salt, uri, md, html or text, or null without a tag; the three internal
+gaps are then empty. value is never null: even an empty block has its
+opening-line padding and LF inside its braces. Preserve all interior spacing,
+authored line endings, earlier closing-looking lines and statement-looking text.
+The consumed closing LF and logical appended LF are outside this node; Db
+derivation reads that boundary from source, as explained by the
 [tests summary](../../../tests/docs/db-summaries.md#eventmodeling). [fixture:
 eventmodeling/data-block-empty] [fixture:
 eventmodeling/lex-block-empty-whitespace] [fixture:
@@ -319,7 +320,7 @@ eventmodeling/lex-block-close-ps-boundary]
 | `textBeforeName` | list of EventmodelingIgnoredText | Forms after entity.        |
 | `name`           | EventmodelingQualifiedName       | Authored declaration name. |
 
-Child fields: textBeforeName, name. Range: entity through the final name
+Child fields: `textBeforeName`, `name`. Range: entity through the final name
 segment. Keep duplicate and unused declarations independently; no implicit frame
 or resolved parent is synthesized. [fixture:
 eventmodeling/db-entities-notes-gwt] [fixture:
@@ -335,8 +336,8 @@ eventmodeling/gram-written-tree]
 | `name`           | Identifier                       | Single authored declaration name. |
 | `data`           | EventmodelingDataBlock           | Required block and optional tag.  |
 
-Child fields: textBeforeName, name, data. Range: data keyword through the data
-block closing brace. Neither name nor data is null. Keep unused and later
+Child fields: `textBeforeName`, `name`, `data`. Range: data keyword through the
+data block closing brace. Neither name nor data is null. Keep unused and later
 same-name declarations as separate statements instead of selecting only an
 effective declaration. [fixture: eventmodeling/db-data-first] [fixture:
 eventmodeling/db-data-unused] [fixture: eventmodeling/lex-hidden-data-name-gap]
@@ -351,10 +352,10 @@ eventmodeling/gram-written-tree]
 | `sourceFrame`           | Identifier                       | Written frame reference.         |
 | `data`                  | EventmodelingDataBlock           | Required block and optional tag. |
 
-Child fields: textBeforeSourceFrame, sourceFrame, data. Range: note through the
-block closing brace. Both reference and block are required. Retain empty blocks
-and unresolved or forward reference names; do not infer a rendered note node.
-[fixture: eventmodeling/gram-note-empty] [fixture:
+Child fields: `textBeforeSourceFrame`, `sourceFrame`, `data`. Range: note
+through the block closing brace. Both reference and block are required. Retain
+empty blocks and unresolved or forward reference names; do not infer a rendered
+note node. [fixture: eventmodeling/gram-note-empty] [fixture:
 eventmodeling/link-note-forward] [fixture: eventmodeling/db-entities-notes-gwt]
 [fixture: eventmodeling/lex-hidden-note-frame-gap] [fixture:
 eventmodeling/data-block-types] [fixture: eventmodeling/gram-written-tree]
@@ -369,13 +370,13 @@ eventmodeling/data-block-types] [fixture: eventmodeling/gram-written-tree]
 | `when`                  | EventmodelingGwtClause or null   | Written when clause.     |
 | `then`                  | EventmodelingGwtClause           | Required then clause.    |
 
-Child fields: textBeforeSourceFrame, sourceFrame, given, when, then. Range: gwt
-through the final then item name. given.kind is given, then.kind is then and a
-present when.kind is when. when is null only without that entire clause. Do not
-resolve sourceFrame or replace these clauses by publication lists. The following
-complete top-level statement lies outside this node. [fixture:
-eventmodeling/gwt-complete] [fixture: eventmodeling/gwt-without-when] [fixture:
-eventmodeling/lex-hidden-gwt-required-gaps] [fixture:
+Child fields: `textBeforeSourceFrame`, `sourceFrame`, `given`, `when`, `then`.
+Range: gwt through the final then item name. given.kind is given, then.kind is
+then and a present when.kind is when. when is null only without that entire
+clause. Do not resolve sourceFrame or replace these clauses by publication
+lists. The following complete top-level statement lies outside this node.
+[fixture: eventmodeling/gwt-complete] [fixture: eventmodeling/gwt-without-when]
+[fixture: eventmodeling/lex-hidden-gwt-required-gaps] [fixture:
 eventmodeling/gram-gwt-next-top-level] [fixture:
 eventmodeling/gram-written-tree]
 
@@ -387,8 +388,8 @@ eventmodeling/gram-written-tree]
 | `kind`       | string                           | given, when or then.         |
 | `body`       | list of EventmodelingGwtItem     | One or more authored items.  |
 
-Child fields: textBefore, body. Range: the first textBefore form, otherwise the
-clause keyword, through the final item name. kind is the written fixed word.
+Child fields: `textBefore`, `body`. Range: the first textBefore form, otherwise
+the clause keyword, through the final item name. kind is the written fixed word.
 body is never empty; preserve item order and repetitions. Leading forms before
 the next clause belong to that next clause, not this body. [fixture:
 eventmodeling/gwt-complete] [fixture: eventmodeling/gram-gwt-unassigned-type]
@@ -405,13 +406,13 @@ eventmodeling/gram-written-tree]
 | `textBeforeEntityIdentifier` | list of EventmodelingIgnoredText | Forms before entity name.         |
 | `entityIdentifier`           | Identifier                       | Single authored entity reference. |
 
-Child fields: textBefore, textBeforeEntityIdentifier, entityIdentifier. Range:
-the first textBefore form, otherwise the entity-type word, through the reference
-name. modelEntityType is rmo, readmodel, ui, cmd, command, evt, event, pcr or
-processor. Keep that word even though the upstream model omits its unassigned
-occurrence. entityIdentifier is a written single identifier, not a qualified
-name or a resolved declaration. Never synthesize items or deduplicate them.
-[fixture: eventmodeling/gwt-complete] [fixture:
+Child fields: `textBefore`, `textBeforeEntityIdentifier`, `entityIdentifier`.
+Range: the first textBefore form, otherwise the entity-type word, through the
+reference name. modelEntityType is rmo, readmodel, ui, cmd, command, evt, event,
+pcr or processor. Keep that word even though the upstream model omits its
+unassigned occurrence. entityIdentifier is a written single identifier, not a
+qualified name or a resolved declaration. Never synthesize items or deduplicate
+them. [fixture: eventmodeling/gwt-complete] [fixture:
 eventmodeling/gram-gwt-unassigned-type] [fixture:
 eventmodeling/lex-hidden-gwt-item-gap] [fixture:
 eventmodeling/lex-hidden-gwt-items] [fixture:
@@ -424,7 +425,7 @@ eventmodeling/gram-written-tree]
 | ------- | ---------------------------- | ----------------- |
 | `value` | EventmodelingLiteral or null | Authored payload. |
 
-Child fields: value. Range: title through the last payload character, or title
+Child fields: `value`. Range: title through the last payload character, or title
 end when null; exclude preceding padding and the statement-ending LF. value
 starts after title and exactly one ASCII space/tab, retaining any further
 padding. It is null without that separator or when nothing remains after it and
@@ -442,7 +443,7 @@ eventmodeling/gram-written-tree]
 | ------- | ---------------------------- | ----------------- |
 | `value` | EventmodelingLiteral or null | Authored payload. |
 
-Child fields: value. Range: accTitle through the final payload character, or
+Child fields: `value`. Range: accTitle through the final payload character, or
 colon end when null, excluding preceding padding and LF. value starts
 immediately after colon with all authored padding. It is null only when no
 content remains after common removals; whitespace-only content is a literal.
@@ -460,7 +461,7 @@ eventmodeling/gram-written-tree]
 | ------- | ---------------------------- | ----------------- |
 | `value` | EventmodelingLiteral or null | Authored payload. |
 
-Child fields: value. Range: accDescr through the final payload character, or
+Child fields: `value`. Range: accDescr through the final payload character, or
 colon end when null, excluding preceding padding and LF. value begins
 immediately after colon, retaining all padding and brace-looking text. It is
 null only when no content remains after common removals; whitespace-only content
@@ -478,11 +479,11 @@ eventmodeling/gram-written-tree]
 | ------- | ---------------------------- | ----------------- |
 | `value` | EventmodelingLiteral or null | Authored payload. |
 
-Child fields: value. Range: accDescr through its first closing brace, including
-delimiters even for null. Keep the brace interior without trimming. Empty or
-common-removal-only content gives null; whitespace-only content is a literal. A
-closer is required, so there is no closed field. Keep each empty or overwritten
-block as its own statement. See
+Child fields: `value`. Range: accDescr through its first closing brace,
+including delimiters even for null. Keep the brace interior without trimming.
+Empty or common-removal-only content gives null; whitespace-only content is a
+literal. A closer is required, so there is no closed field. Keep each empty or
+overwritten block as its own statement. See
 [Common statement values](#common-statement-values) for source-based Db
 derivation. [fixture: eventmodeling/common-description-repeat] [fixture:
 eventmodeling/common-whitespace] [fixture:

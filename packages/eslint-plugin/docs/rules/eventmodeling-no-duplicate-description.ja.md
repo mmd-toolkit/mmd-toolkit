@@ -11,10 +11,9 @@
 
 <!-- end auto-generated rule notice -->
 
-Event Modeling の図は、`accDescr` が行かブロックで設定する
-アクセシブルな説明を 1 つ持つ。
-後の `accDescr` は、前に設定した説明をエラーなしに置き換え、
-前の説明は失われる。
+Event Modeling の図は、
+`accDescr` が行かブロックで設定するアクセシブルな説明を 1 つ持つ。
+後の `accDescr` は、前に設定した説明をエラーなしに置き換え、前の説明は失われる。
 
 ## 規則の詳細
 
@@ -28,23 +27,21 @@ mermaid.js は、`accDescr` とその `:` や括弧を含めた文全体を説�
 説明の後では、文字のない `accDescr:` や空白だけのものを報告し、
 コメント行だけを持つブロックも、mermaid.js がコメントを取り除くので報告する。
 ほかに何も持たないブロックは、
-[eventmodeling-no-empty-description-block](./eventmodeling-no-empty-description-block.ja.md)
-が報告する。
+[eventmodeling-no-empty-description-block](./eventmodeling-no-empty-description-block.ja.md) が報告する。
 文字のない文の後の文は文字を失わず、報告しない。
 
 文字は語で比べる。
 各行の始めと終わりの空白と空の行を除き、
 2 つ以上の空白やタブの連なりを 1 つの空白として比べる。
-すべての改行（LF、CRLF、CR）は LF として読み、
-U+2028 と U+2029 も、どちらの形でも行を終える。
+すべての改行（LF、CRLF、CR）は LF として読み、 U+2028 と U+2029 も、
+どちらの形でも行を終える。
 そのため `accDescr: d` とブロック `accDescr { d }` は同じ語を与え、報告しない。
 mermaid.js は、一方には `:` を、他方には括弧を保つが、それは比べない。
 `accDescr: a` と `accDescr: b` の後の 3 つ目の `accDescr: a` は、
 `b` を置き換えるので報告する。
 文字はそのほかは書いたとおりに比べる。
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-説明を読む前にほかの文字に変えるので、
-それだけが違う 2 つの文字は、
+説明を読む前にほかの文字に変えるので、それだけが違う 2 つの文字は、
 mermaid.js には 1 つの説明で、この規則には 2 つのことがある。
 
 `accDescr` 文は 1 つにする。
@@ -76,14 +73,12 @@ eventmodeling accDescr: Second
 
 ## 背景
 
-`accDescr` の
-[終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L60)
-は文全体を取り、
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41)
-は、その名前が知っている名前でないので、それを変換しない。
+`accDescr` の [終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/eventmodeling/event-modeling.langium#L60-L60) は文全体を取り、
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L6-L41) は、
+その名前が知っている名前でないので、それを変換しない。
 パーサーは最後の説明を保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
-は、それが空になることはないので、それを設定する。
+[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14) は、
+それが空になることはないので、それを設定する。
 
 <!-- begin auto-generated rule resources -->
 

@@ -26,6 +26,7 @@ import {
 } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
+  findFirstIndex,
   findTokenEndingBefore,
   findTokenStartingAt,
   findTokensBetween,
@@ -52,22 +53,36 @@ export interface Positioned {
  * is the statement type of the diagram type.
  */
 export interface BlockRules<Statement extends Positioned> {
-  /** Source structure replaced by the supplied statement docs, excluding trivia. */
+  /**
+   * Disjoint source-ordered structure ranges replaced by the docs, excluding
+   * trivia.
+   */
   readonly omittedRanges?: readonly Range[]
   /** Attach a unit with its complete source gap instead of choosing a new line. */
   readonly writtenGapBefore?: (statement: Statement) => boolean
-  /** A leading owned form can print separately before the unit's first atom. */
+  /**
+   * Where the printed statement starts, when that is before its range: a
+   * leading owned form that the layout prints separately before the first atom
+   * of a unit (the hidden forms), or the directives that start the line of a
+   * node, which stay with it and whose gaps count as its indentation (a
+   * mindmap; docs/mindmap.md, Directives).
+   */
   readonly printedStart?: (statement: Statement) => number
   /** Ordinary gaps between joined statements, after protected/trivia gaps. */
   readonly inlineGapBefore?: (statement: Statement) => GapRule | undefined
-  /** Whitespace already supplied by a statement's planned indentation. */
+  /**
+   * Disjoint source-ordered whitespace ranges supplied by planned
+   * indentation.
+   */
   readonly relocatedWhitespace?: readonly Range[]
   /**
-   * Joining regions already belong to complete value atoms in this layout:
-   * skip whole-line joining and verbatim fallback for those regions, so gaps
-   * outside the atoms can still format. Kept-line rules otherwise apply.
+   * Joining regions are already printed as written by this layout, inside a
+   * complete value atom, or in a gap that `keptGapEnd` keeps: skip whole-line
+   * joining and verbatim fallback for those regions, so the gaps and the
+   * indentation outside them can still format. Kept-line rules otherwise
+   * apply.
    */
-  readonly joiningRegionsInValues?: boolean
+  readonly joiningRegionsPrintedAsWritten?: boolean
   /** The lines whose statements stay together (see `KeptLines`). */
   readonly kept: KeptLines
   /** Overrides ordinary blank placement before a statement, when supplied. */
@@ -127,12 +142,31 @@ export interface BlockRules<Statement extends Positioned> {
    */
   readonly keepsTrailingWhitespaceInKeptTrivia?: boolean
   /**
-   * Where the line of the diagram that holds `offset` ends, when that is
-   * before the line feed that ends the line of the source, or undefined: at
-   * the U+2028 or U+2029 that ends a diagram comment in a kanban board
-   * (docs/kanban.md, Whitespace characters). The statements of a kept line stay
-   * together only up to this offset, and a statement after it starts a line
-   * of its own.
+   * Where the line of the diagram that holds `offset` ends. The statements of
+   * a kept line stay together only up to this offset, and a statement after
+   * it starts a line of its own. Where the hook is absent, or returns
+   * undefined, the line of the diagram ends at the line feed of the source.
+   * What each printer returns:
+   *
+   * - kanban and mindmap: the first U+2028 or U+2029 that ends a diagram
+   *   comment, from `offset` to the line feed, and otherwise undefined
+   *   (`findCommentEndInLine`; docs/kanban.md, Whitespace characters;
+   *   docs/mindmap.md, Line separators).
+   * - Ishikawa: that separator, and otherwise the line feed, never undefined
+   *   (`findNodeLineEnd`; docs/ishikawa.md, Line separators).
+   * - C4 and use case: the first U+2028 or U+2029 outside comments and
+   *   directives, or the line feed, less the whitespace before it, back to the
+   *   end of the last token, comment, or directive that starts between
+   *   `offset` and it, never undefined (`semicolonSegmentEnd`; docs/c4.md,
+   *   Line terminators).
+   * - Venn: the first U+2028 or U+2029 outside comments and directives, or the
+   *   line feed, less the spaces and tabs before it, back to the end of the
+   *   last token, comment, or directive that starts between `offset` and it,
+   *   never undefined (`vennDiagramLineEnd`; docs/venn.md, Line rule and kept
+   *   lines).
+   * - the hidden forms: `offset` itself when it is the end of a hidden form and
+   *   only whitespace follows on its line, and otherwise undefined
+   *   (docs/pie.md, Comments).
    */
   readonly diagramLineEnd?: (offset: number) => number | undefined
   /**
@@ -222,14 +256,16 @@ export interface BlockRules<Statement extends Positioned> {
    */
   readonly oneCharacterIndentation?: string
   /**
-   * The indentation that a kept line starts with, where it keeps its
-   * indentation (see `KeptLines.writtenIndentation`), when that is not the
+   * The indentation that a kept line starts with, where it has an indentation
+   * of its own (see `KeptLines.ownIndentation`), when that is not the
    * whitespace written before the line. In a mindmap the whitespace that
    * counts as the indentation of a node is all the whitespace before its
    * text, the whitespace after a directive on its line included, and the
    * lines' levels come from how many characters it holds (diagrams/mindmap.md,
    * Indentation and parents), so the printer decides the whitespace before the
-   * directive.
+   * directive. A kanban board, an Ishikawa diagram, a treemap, a tree view,
+   * and a Venn diagram decide it from the role of the node in the same way
+   * (docs/kanban.md, Indentation).
    */
   readonly keptIndentationOf?: (statement: Statement) => string
   /**
@@ -343,7 +379,7 @@ export function printBlock<Statement extends Positioned>(
 ): PrintedBlock {
   const { statements } = bounds
   const kept =
-    rules.joiningRegionsInValues === true
+    rules.joiningRegionsPrintedAsWritten === true
       ? rules.kept
       : withJoinedLines(source, rules.kept)
   const lines: Line[] = []
@@ -467,10 +503,12 @@ export function printBlock<Statement extends Positioned>(
 
   /** A break after the last trivia item in this gap, if the diagram retains it. */
   function triviaBreakBefore(end: number, terminal = false): Doc | undefined {
-    const previous = source.trivia.findLast(
-      (item) => offset <= item.range[1] && item.range[1] <= end,
-    )
-    return rules.triviaLineBreak?.(previous?.range[1] ?? offset, end, terminal)
+    if (rules.triviaLineBreak === undefined) return undefined
+    const after = findFirstIndex(source.trivia, (item) => item.range[1] > end)
+    const item = source.trivia[after - 1]
+    const previous =
+      item !== undefined && offset <= item.range[1] ? item : undefined
+    return rules.triviaLineBreak(previous?.range[1] ?? offset, end, terminal)
   }
 
   /**
@@ -530,7 +568,11 @@ export function printBlock<Statement extends Positioned>(
   function endsWithComment(end: number): boolean {
     let trimmed = end
     while (trimmed > 0 && isWhitespace(source.text[trimmed - 1])) trimmed--
-    return source.root.comments.some((comment) => comment.range[1] === trimmed)
+    const index = findFirstIndex(
+      source.root.comments,
+      (comment) => comment.range[1] >= trimmed,
+    )
+    return source.root.comments[index]?.range[1] === trimmed
   }
 
   /** Whether the line that holds `position` keeps its statements together. */
@@ -611,7 +653,7 @@ export function printBlock<Statement extends Positioned>(
     if (
       (holdsVerbatimLine(source, kept, stretch.start, stretch.end) &&
         !isEdgeLinesOfBlock(stretch, covered)) ||
-      (rules.joiningRegionsInValues !== true &&
+      (rules.joiningRegionsPrintedAsWritten !== true &&
         holdsJoiningRegion(source, stretch.start, stretch.end))
     ) {
       return {
@@ -814,11 +856,13 @@ export function printBlock<Statement extends Positioned>(
     const stretch = findStretch(start, index, index + 1, end)
     const line = printStretch(stretch)
     const lineStart = lineStartOf(source, start)
-    // A verbatim line that keeps its indentation keeps it when it starts the
-    // stretch and nothing of it was printed before.
+    // A kept line takes its indentation when it starts the stretch, including
+    // a new diagram line after a comment-ending separator on the same LF line
+    // (docs/kanban.md, Indentation; docs/mindmap.md and docs/ishikawa.md, Line
+    // separators).
     const keepsIndentation =
-      kept.writtenIndentation.has(lineStart) &&
-      offset <= lineStart &&
+      kept.ownIndentation.has(lineStart) &&
+      (offset <= lineStart || rules.diagramLineEnd?.(offset) === offset) &&
       gap.leading === null
     pushLine({
       ...line,

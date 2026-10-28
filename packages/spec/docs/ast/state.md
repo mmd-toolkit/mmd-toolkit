@@ -94,9 +94,9 @@ state/gram-terminal-style-separator]
 
 ### StateTerminal
 
-`[*]`. No fields. Whether it is the start or the end follows from where it is:
-before the arrow of a transition, or alone, it is a start, and after the arrow,
-an end. [fixture: state/gram-terminal-alone]
+`[*]`. No child fields. It has no fields. Whether it is the start or the end
+follows from where it is: before the arrow of a transition, or alone, it is a
+start, and after the arrow, an end. [fixture: state/gram-terminal-alone]
 
 ### StateCompositeStatement
 
@@ -206,8 +206,8 @@ state/lex-join-empty-id] [fixture: state/lex-choice-square-brackets]
 
 ### StateDividerStatement
 
-`--` in the body of a composite state, which divides it into regions. No fields.
-[fixture: state/lex-composite-divider]
+`--` in the body of a composite state, which divides it into regions. No child
+fields. It has no fields. [fixture: state/lex-composite-divider]
 
 ### StateNoteStatement
 
@@ -413,7 +413,7 @@ Child fields: `width`. [fixture: state/gram-scale]
 
 ### StateHideEmptyDescriptionStatement
 
-`hide empty description`. No fields. [fixture:
+`hide empty description`. No child fields. It has no fields. [fixture:
 state/gram-hide-empty-description]
 
 ### StateIgnoredStatement

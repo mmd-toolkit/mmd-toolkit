@@ -116,7 +116,7 @@ export function printTreemap(
       kept: {
         joined,
         verbatim,
-        writtenIndentation: new Set(
+        ownIndentation: new Set(
           lines.map((line) => lineStartOf(source, line.range[0])),
         ),
       },
@@ -124,7 +124,7 @@ export function printTreemap(
       printedEnd: (line) => line.range[1],
       holdsStatements: () => false,
       isDroppedAtTopLevel: () => false,
-      joiningRegionsInValues: true,
+      joiningRegionsPrintedAsWritten: true,
       keepsWhitespaceLineAfterComment: false,
       keepsDirectiveLinesUnindented: false,
       keepsInlineDirectivesWithPrevious: true,

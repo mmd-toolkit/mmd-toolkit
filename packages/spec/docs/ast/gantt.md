@@ -208,8 +208,8 @@ gantt/db-excludes-merged-lines]
 
 ### GanttInclusiveEndDatesStatement
 
-An `inclusiveEndDates` statement. A node with no other fields and no child
-fields. [fixture: gantt/db-inclusive-end-dates]
+An `inclusiveEndDates` statement. No child fields. It has no other fields.
+[fixture: gantt/db-inclusive-end-dates]
 
 ### GanttWeekdayStatement
 

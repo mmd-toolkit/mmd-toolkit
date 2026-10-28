@@ -148,6 +148,14 @@ Reads the fixtures. It does not load mermaid.js.
   `{ accepted: true, diagramType, db }` or `{ accepted: false, error }`. It
   reads the files one at a time, so that test files loading the fixtures in
   parallel workers stay within the system's limit of open files.
+- `loadFixture(diagram, name)`: the one fixture `name` of the diagram type
+  `diagram`, the same object that `loadFixtures(diagram)` has under that name.
+  It reads only the files of that fixture's directory, so a test that needs a
+  few fixtures by name does not read the thousands of the diagram type. It
+  throws when the diagram type has no fixture of that name.
+- `fixtureNames(diagram)`: the names of the fixtures of the diagram type,
+  sorted. They are the names of the directories under `fixtures/<diagram>/`,
+  which `loadFixtures` and `loadFixture` take as the fixtures; no file is read.
 - `KNOWN_DIVERGENCES`: the identifiers a fixture's `knownDivergence` can have.
   Each is defined in the specification:
   - `directive-as-token-boundary`: see

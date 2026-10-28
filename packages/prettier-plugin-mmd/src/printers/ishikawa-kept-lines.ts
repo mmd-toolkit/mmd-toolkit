@@ -1,12 +1,9 @@
 import type { KeptLines } from "./kept-lines.ts"
-import { minOf } from "./collections.ts"
 import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
-  lineEndOf,
   lineStartOf,
 } from "./kept-lines.ts"
-import { findCommentEnds } from "./indentation-lines.ts"
 import type { IshikawaLine } from "./ishikawa-layout.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
@@ -41,14 +38,6 @@ export function findIshikawaKeptLines(
   return {
     joined,
     verbatim,
-    writtenIndentation: new Set([...joined, ...verbatim]),
+    ownIndentation: new Set([...joined, ...verbatim]),
   }
-}
-
-/** Only actual diagram-comment endings cut kept stretches, never value LS/PS. */
-export function ishikawaDiagramLineEnd(source: Source, offset: number): number {
-  return Math.min(
-    lineEndOf(source, offset),
-    minOf(findCommentEnds(source).filter((ending) => ending >= offset)),
-  )
 }

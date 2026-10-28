@@ -22,7 +22,7 @@ pnpm vitest run --project prettier-plugin-mmd
 そのため、ビルドは要りません。
 plugin のソースを import して Node で動かすスクリプトは、
 それらのパッケージを `lib/` のビルドから読みます。
-そのため、動かす前に `pnpm --filter @mmd-toolkit/parser run build` と
+そのため、動かす前に `pnpm --filter @mmd-toolkit/parser run build` と、
 `pnpm --filter @mmd-toolkit/tests run build` で作り直してください。
 
 ## テスト
@@ -69,24 +69,24 @@ plugin のソースを import して Node で動かすスクリプトは、
 Db は mermaid.js から読みません。
 `tests/db-reading.ts` の `dbOfText` が、テキストの木から、
 `@mmd-toolkit/tests` の `dbFromTree` で作ります。
-入力の埋め込みデータ（フロントマター、ディレクティブ、データブロック）から
-mermaid.js が導く値を使います。
+入力の埋め込みデータ（フロントマター、ディレクティブ、
+データブロック）から mermaid.js が導く値を使います。
 コーパスは、fixture ごとにその値（`embeddedValuesOf`）と、
-入力の Db（`expected.json`。仕様が違う読み方をするものは `specified.json`）を
-記録しているので、コーパスのテストは、整形後のテキストの Db を、
-記録された Db と比べます。
-ほかのテストには記録がないので、整形後のテキストの Db を、
-入力の Db と、既定の値で比べます。
+入力の Db（`expected.json`。仕様が違う読み方をするものは `specified.json`）を記録しているので、
+コーパスのテストは、整形後のテキストの Db を、記録された Db と比べます。
+ほかのテストには記録がないので、整形後のテキストの Db を、入力の Db と、
+既定の値で比べます。
 
 埋め込みデータの値は入力のものを使うので、
 整形が埋め込みデータを書かれたまま残すことも確かめます。
 `writtenEmbeddedTexts` が、ディレクティブとデータブロックの書かれたテキストを、
-出現順に並べ、その並びが整形の前と後で同じこと
-（行終端はすべて改行として読みます）を確かめます。
+出現順に並べ、その並びが、
+整形の前と後で同じこと（行終端はすべて改行として読みます）を確かめます。
 フロントマターは例外です。
 printer は、安全なら、その YAML を Prettier の YAML 整形で整形するので、
 `describeFrontmatterChange` は、書かれたままか、その整形の出力かを受理し、
-YAML の値を保つことはその整形に頼ります。テストは値を読みません。
+YAML の値を保つことはその整形に頼ります。
+テストは値を読みません。
 データブロックを持つテキストで効果が与えられていないときは、
 `dbOfText` は Db を返しません。
 データブロックが Db にすることは mermaid.js が導くもので、
@@ -110,44 +110,38 @@ YAML の値を保つことはその整形に頼ります。テストは値を読
   文を区切る `;`、空行、ブロックを閉じる行を印字します。
   `atoms.ts` と `layout.ts` は、文を原子とその間の隙間として組み立てます。
   ほかに `gap.ts`、`lines.ts` があります。
-  ER 図と requirement 図が共有する隙間の規則
-  （クラスと名前のリスト、direction の行、アクセシビリティの文）は
-  `statement-rules.ts` に、
+  ER 図と requirement 図が共有する隙間の規則（クラスと名前のリスト、
+  direction の行、アクセシビリティの文）は `statement-rules.ts` に、
   1 桁目を保つ `accTitle` の判定は `accessibility-lines.ts` にあります。
-  Prettier の path を、printer がいるノードの型に絞る関数は
-  `paths.ts` にあります。
+  Prettier の path を、
+  printer がいるノードの型に絞る関数は `paths.ts` にあります。
   図種ごとに、次のファイルがあり、`blocks.ts` に `BlockRules` を渡します。
-  printer は `flowchart.ts`、`agentflow.ts`、`sequence.ts`、
-  `class.ts`、`state.ts`、
-  `er.ts`、`gantt.ts`、`journey.ts`、`requirement.ts`、`mindmap.ts`、
-  `timeline.ts`、`sankey.ts`、`xychart.ts`、`quadrant.ts`、
+  printer は `flowchart.ts`、`agentflow.ts`、`sequence.ts`、 `class.ts`、
+  `state.ts`、 `er.ts`、`gantt.ts`、`journey.ts`、`requirement.ts`、
+  `mindmap.ts`、 `timeline.ts`、`sankey.ts`、`xychart.ts`、`quadrant.ts`、
   `block.ts`、`kanban.ts`、`c4.ts`、`venn.ts`、`ishikawa.ts`、
   `usecase.ts` です。
   文の配置は `flowchart-layout.ts`、`agentflow-layout.ts`、
-  `sequence-layout.ts`、
-  `class-layout.ts`、`state-layout.ts`、`er-layout.ts`、`gantt-layout.ts`、
-  `journey-layout.ts`、`requirement-layout.ts`、`mindmap-layout.ts`、
-  `timeline-layout.ts`、`sankey-layout.ts`、`xychart-layout.ts`、
-  `quadrant-layout.ts`、`block-layout.ts`、`kanban-layout.ts`、
-  `c4-layout.ts`、`venn-layout.ts`、`ishikawa-layout.ts`、
+  `sequence-layout.ts`、 `class-layout.ts`、`state-layout.ts`、`er-layout.ts`、
+  `gantt-layout.ts`、 `journey-layout.ts`、`requirement-layout.ts`、
+  `mindmap-layout.ts`、 `timeline-layout.ts`、`sankey-layout.ts`、
+  `xychart-layout.ts`、 `quadrant-layout.ts`、`block-layout.ts`、
+  `kanban-layout.ts`、 `c4-layout.ts`、`venn-layout.ts`、`ishikawa-layout.ts`、
   `usecase-layout.ts` です。
   保つ行は `flowchart-kept-lines.ts`、`agentflow-kept-lines.ts`、
-  `sequence-kept-lines.ts`、
-  `class-kept-lines.ts`、`state-kept-lines.ts`、`er-kept-lines.ts`、
-  `gantt-kept-lines.ts`、`journey-kept-lines.ts`、
+  `sequence-kept-lines.ts`、 `class-kept-lines.ts`、`state-kept-lines.ts`、
+  `er-kept-lines.ts`、 `gantt-kept-lines.ts`、`journey-kept-lines.ts`、
   `requirement-kept-lines.ts`、`mindmap-kept-lines.ts`、
-  `timeline-kept-lines.ts`、`sankey-kept-lines.ts`、
-  `xychart-kept-lines.ts`、`quadrant-kept-lines.ts`、
-  `block-kept-lines.ts`、`kanban-kept-lines.ts`、`c4-kept-lines.ts`、
-  `venn-kept-lines.ts`、`ishikawa-kept-lines.ts`、
+  `timeline-kept-lines.ts`、`sankey-kept-lines.ts`、 `xychart-kept-lines.ts`、
+  `quadrant-kept-lines.ts`、 `block-kept-lines.ts`、`kanban-kept-lines.ts`、
+  `c4-kept-lines.ts`、 `venn-kept-lines.ts`、`ishikawa-kept-lines.ts`、
   `usecase-kept-lines.ts` です。
   保つ行の共通の部分は `kept-lines.ts` にあります。
   `BlockRules` は、保つ行、文の印字の終わり、文を持つ文、
-  トップレベルで落とす文と、
-  コメントの後の空白だけの行を残すかどうかを伝えます。
+  トップレベルで落とす文と、コメントの後の空白だけの行を残すかどうかを伝えます。
   ブロック図は、文ではなく単位を渡します。
-  1 行に続く node と `space` は 1 つの単位で、その行に残ります
-  （`block-layout.ts` の `groupBlockUnits`）。
+  1 行に続く node と `space` は 1 つの単位で、
+  その行に残ります（`block-layout.ts` の `groupBlockUnits`）。
 - 規則は木から決めます。
   木に現れない字句の事実には明示の規則を置き、それぞれ仕様の節を指します。
   printer は、実行のときに結果を parser で読み直して確かめることはしません。
@@ -177,8 +171,8 @@ U+2028 や U+2029 のような不可視文字を含むテキストは、
 ここでは fixture にしません。
 エディターは、その文字を含むファイルを開くたびに、取り除くかどうかを尋ねるので、
 テストのコード（`tests/line-separators.test.ts`）に、エスケープで書きます。
-その文字をそのまま持つのは、適合コーパスの fixture
-（`packages/tests/fixtures/`）だけです。
+その文字をそのまま持つのは、
+適合コーパスの fixture （`packages/tests/fixtures/`）だけです。
 
 例を足すときは、入力を書き、出力を書き出します。
 
@@ -188,20 +182,18 @@ pnpm --filter prettier-plugin-mmd run test:update
 
 このコマンドはパーサーをビルドし、整形した入力と違う出力をすべて書き出します。
 変わった出力は、残す前に差分として読んでください。
-テストが確かめるのは、出力が安定していることと、
-Db を変えないことで、整形が意図したとおりであることではありません。
+テストが確かめるのは、出力が安定していることと、 Db を変えないことで、
+整形が意図したとおりであることではありません。
 
 ## 文書と fixture
 
 規則の文書の例は fixture の写しで、`tests/format.test.ts` は、
 プラグインがそれぞれの出力を印字することと、
-Db と埋め込みデータを保つことの両方を確かめます
-（[テストが保つもの](#テストが保つもの)を参照）。
+Db と埋め込みデータを保つことの両方を確かめます（[テストが保つもの](#テストが保つもの)を参照）。
 英語版の規則の文書は、[docs/flowchart.md](./flowchart.md)、
-[docs/agentflow.md](./agentflow.md)、
-[docs/sequence.md](./sequence.md)、[docs/class.md](./class.md)、
-[docs/state.md](./state.md)、[docs/er.md](./er.md)、
-[docs/gantt.md](./gantt.md)、
+[docs/agentflow.md](./agentflow.md)、 [docs/sequence.md](./sequence.md)、
+[docs/class.md](./class.md)、 [docs/state.md](./state.md)、
+[docs/er.md](./er.md)、 [docs/gantt.md](./gantt.md)、
 [docs/journey.md](./journey.md)、[docs/requirement.md](./requirement.md)、
 [docs/mindmap.md](./mindmap.md)、[docs/timeline.md](./timeline.md)、
 [docs/sankey.md](./sankey.md)、[docs/xychart.md](./xychart.md)、
@@ -209,8 +201,7 @@ Db と埋め込みデータを保つことの両方を確かめます
 [docs/kanban.md](./kanban.md)、[docs/c4.md](./c4.md)、
 [docs/venn.md](./venn.md)、[docs/ishikawa.md](./ishikawa.md)、
 [docs/usecase.md](./usecase.md) です。
-それらでは、
-`###` の見出しが規則で、その fixture のフォルダーは、
+それらでは、 `###` の見出しが規則で、その fixture のフォルダーは、
 図種のフォルダーの下の、見出しを小文字にし、空白を `-` にしたものです。
 「Arrow spacing」は `arrow-spacing` です。
 文書の中の例は、fixture のファイルへのリンクと `:` で終わる行、空行、
@@ -233,14 +224,13 @@ Unicode と制御文字は `line-separators.test.ts` にエスケープした文
 拒否されるボードの入力は、ほかの図種と同じく `corpus.test.ts` が確かめます。
 
 kanban は共通のブロック印字を本体の深さ 0 で使い、
-各行の字下げ（セクションは 1 段、項目は 2 段）を
-`extraIndentationOf` で渡します。
+各行の字下げ（セクションは 1 段、
+項目は 2 段）を `extraIndentationOf` で渡します。
 `writtenIndentationOf` と `keptIndentationOf` は、
 インラインディレクティブの行と `;` を持つ行の字下げを渡し、
 それらの行のテキストは書かれたまま印字します。
 隙間の項目は、引き続きノードの列に揃えます。
-`keptGapEnd` は `Line.writtenBreakBefore` と
-`PrintedBlock.writtenEnd` を通じて、
+`keptGapEnd` は `Line.writtenBreakBefore` と `PrintedBlock.writtenEnd` を通じて、
 保護するコメントの隙間全体を、次の行の字下げの前まで保ちます。
 これらは任意の規則で、他図種は既存の経路を通ります。
 共通の `isDroppedSemicolon` は、既に kanban のセミコロンを残す判定です。
@@ -249,12 +239,12 @@ kanban は共通のブロック印字を本体の深さ 0 で使い、
 
 [Ishikawa の規則](./ishikawa.ja.md)は、規則ごとの固定ケースを引用します。
 `format.test.ts` は受理するファイルの fixture を共通の経路で検査します。
-`ishikawa-cases.ts` は Unicode、制御文字、CR の入力を
-エスケープして持ち、`ishikawa.test.ts` が検査します。
+`ishikawa-cases.ts` は Unicode、制御文字、CR の入力をエスケープして持ち、
+`ishikawa.test.ts` が検査します。
 `ishikawa.test.ts` は parser の木の不変条件も検査します。
 拒否する入力は、共通の corpus と failure のテストで検査します。
-`corpus.test.ts` は全 Ishikawa 入力を読み、
-仕様の Db、および parser の拒否を検査します。
+`corpus.test.ts` は全 Ishikawa 入力を読み、仕様の Db、
+および parser の拒否を検査します。
 `markdown-ishikawa.test.ts` は固定した最上位、リスト、引用のホストと、
 字下げを除いた図の本文を分けて検査します。
 
@@ -262,8 +252,8 @@ kanban は共通のブロック印字を本体の深さ 0 で使い、
 別の親子のモデルは推測しません。
 `indentation-lines.ts` は kanban の先頭 directive の隙間配分と、
 実際の Unicode コメント境界を共有します。
-任意の `blankBeforeStatement` hook は、
-先頭の普通の空行と、図コメントを区切る空行を区別します。
+任意の `blankBeforeStatement` hook は、先頭の普通の空行と、
+図コメントを区切る空行を区別します。
 `triviaLineBreak` はコメントの後の改行だけを保ち、
 共有のブロック印字でコメントを揃えながら、末尾の隙間を保ちます。
 保持区間は開始位置にも終了位置にも `diagramLineEnd` を使うため、
@@ -282,8 +272,8 @@ Unicode で終わる手前のコメントにある semicolon が、
 `corpus.test.ts`は仕様の拒否も含む全入力を読み、
 出力の木と記録済みのDbを確認します。
 
-`graph-layout.ts`と`graph-kept-lines.ts`で、
-flowchartの隙間、nullのstyleの末尾、セミコロン選択、方向の優先順位を共有します。
+`graph-layout.ts`と`graph-kept-lines.ts`で、 flowchartの隙間、
+nullのstyleの末尾、セミコロン選択、方向の優先順位を共有します。
 agentflowの値と文法の違いは専用のモジュールに理由を書きます。
 `RootTextPlan`は配置を適用する前に計画を測ります。
 書かれたfrontmatterとdirectiveの範囲を使い、50000単位のコメント分岐を保ちます。
@@ -311,8 +301,8 @@ printer は Mermaid を import せず、出力を再解析しません。
 余白を含む usecase の Literal でも本文の列と閉じ括弧の配置を再利用します。
 
 `AtomLayout.keptBreaksBefore` は、
-metadata の atom と trivia の間の LF をすべて保ち、
-既存の atom printer がプロパティと閉じ波括弧を揃えます。
+metadata の atom と trivia の間の LF をすべて保ち、既存の atom
+printer がプロパティと閉じ波括弧を揃えます。
 他のレイアウトは指定せず、既存の空行の方針を保ちます。
 `semicolonSegmentEnd` と `keptSemicolonPrefixEnd` は、
 C4 の既存の区間境界を共有します。
@@ -325,22 +315,21 @@ atom 全体を含む保持部分の処理を Venn と共有します。
 [pie の規則](./pie.ja.md)は固定した整形 fixture、
 `pie-cases.ts` の escape で表した Unicode・CR の例、
 `markdown-pie.test.ts` の実際の Markdown host を引用します。
-`format.test.ts` と `pie.test.ts` は正確な出力、冪等性、
-Db の一致、embedded の原文を確認します。
+`format.test.ts` と `pie.test.ts` は正確な出力、冪等性、 Db の一致、
+embedded の原文を確認します。
 escape 表記の例では木の不変条件も確認します。
 `corpus.test.ts` は、印付きの指定の読みと解析失敗も含む全 pie 入力を読みます。
 fixture の出力全体で、保持する隠れた原文を確認します。
-`describeFrontmatterChange` は ignored YAML が frontmatter に変わらないかを
-確かめます。
+`describeFrontmatterChange` は ignored
+YAML が frontmatter に変わらないかを確かめます。
 dispatch と値 node の行にも pie を加えています。
 
-printer は共有の accessibility のコロン規則と
-`layoutDescriptionBlock` を呼びます。
+printer は共有の accessibility のコロン規則と `layoutDescriptionBlock` を呼びます。
 pie の行形式は次行の値を結合しません。
 `AtomLayout.writtenGapsBefore` は hidden node 外で消費する LF と、
 閉じ境界の空白を保ちます。
-`BlockRules.joiningRegionsInValues` は共通の結合を値 atom 全体に任せ、
-安全な後続部分を整えます。
+`BlockRules.joiningRegionsPrintedAsWritten` は共通の結合を、値 atom の中か、
+layout が保つギャップの中で、書かれたまま印字させ、安全な後続部分を整えます。
 他の printer は従来の行全体の経路を使います。
 既存の `triviaLineBreak` は直前に trivia がない場合も印字境界を受け、
 hidden の LF を保ちつつ独立した trivia を揃えます。

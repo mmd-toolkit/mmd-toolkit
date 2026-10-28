@@ -18,19 +18,19 @@ id を書き誤ると、意図した頂点はそのままになる。
 
 ## 規則の詳細
 
-この規則は、`style`、`class`、`click` の文の id のうち、
-図のどの頂点、subgraph、リンクの id でもないものを報告する。
+この規則は、`style`、`class`、`click` の文の id のうち、図のどの頂点、subgraph、
+リンクの id でもないものを報告する。
 対象の図種は `flowchart-v2`、`flowchart-elk`、`swimlane` である。
 
 `A --> B` の後の `style C fill:red` は、スタイル `fill:red` の頂点 `C` を足す。
-`class C foo` は、どの頂点にもクラス `foo` を付けず、
-`click C href "…"` は、どの頂点もリンクにしない。
+`class C foo` は、どの頂点にもクラス `foo` を付けず、 `click C href "…"` は、
+どの頂点もリンクにしない。
 並べた id は 1 つずつ調べる。
 `class A,C foo` は `A` にクラスを付け、`C` を報告する。
 
 図の id は、頂点と subgraph の id と、
 `A e1@--> B` の `e1` のようにリンクに付けた id で、書いた場所を問わない。
-id なしで書いたリンクに mermaid.js が自分で与える `L_A_B_0` のような id も
+id なしで書いたリンクに mermaid.js が自分で与える、`L_A_B_0` のような id も、
 図の id であり、`class L_A_B_0 hot` はリンクにクラスを与えるので、報告しない。
 `style` の文は、指す頂点より前に書いても、その頂点にスタイルを適用する。
 指す頂点より前に書いた `class` の文は、mermaid.js では何もしない。

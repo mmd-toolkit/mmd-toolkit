@@ -7,22 +7,18 @@
 common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めています。
 ここでも同じ 2 つの言葉を使います。
 **検出点**は、先頭のトリビアでないテキストの最初の位置、
-**たどり着いた位置**は、検出点から、検出が飛ばす 1 つのフロントマター形の
-ブロック、`%%` だけの行、ディレクティブの先へ進んだ位置です。
+**たどり着いた位置**は、検出点から、
+検出が飛ばす 1 つのフロントマター形のブロック、`%%` だけの行、
+ディレクティブの先へ進んだ位置です。
 検出器はたどり着いた位置からの図のテキストを見ます。
 ただし `error` 疑似図種の検出器の条件は、検出点から述べます。
 条件が最初に成り立った検出器が図種を選び、
-その id が木の `diagramType` にもなります
-（[ast.ja.md](./ast.ja.md#root) を参照）。
-どの条件も成り立たなければ、入力は `UnknownDiagramError` で拒否されます。
-[fixture: common/empty]
+その id が木の `diagramType` にもなります（[ast.ja.md](./ast.ja.md#root) を参照）。
+どの条件も成り立たなければ、
+入力は `UnknownDiagramError` で拒否されます。 [fixture: common/empty]
 
-登録の順は
-[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126)
-にあり、
-各検出器は
-[`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams)
-の下の各図のディレクトリにあります。
+登録の順は [`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L44-L126) にあり、
+各検出器は [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams) の下の各図のディレクトリにあります。
 
 ## 一覧の読み方
 
@@ -30,13 +26,13 @@ common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めて�
 
 - **位置**は、キーワードがどこになければならないかです。
   - **先頭**: たどり着いた位置からの図のテキストが、キーワードで始まる。
-  - **テキスト全体**: [図種の検出](./common.ja.md#図種の検出) にある `error`
-    疑似図種の条件。
-    検出点からの図のテキストからその条件が除くものを除いたものが
+  - **テキスト全体**:
+    [図種の検出](./common.ja.md#図種の検出) にある `error` 疑似図種の条件。
+    検出点からの図のテキストから、その条件が除くものを除いたものが、
     キーワードであり（大文字小文字を区別しない）、テキストの終わりまで、
     空白と行終端しか続かない。
-- **大文字小文字**は、キーワードをどう比べるかです。**区別する**か、
-  [表記](./common.ja.md#表記) の意味で**区別しない**かです。
+- **大文字小文字**は、キーワードをどう比べるかです。
+  **区別する**か、 [表記](./common.ja.md#表記) の意味で**区別しない**かです。
 - **キーワードの後**は、キーワードの直後に何が来てよいかです。
   - **何が続いてもよい**: 検出器は、キーワードの後の文字に条件を付けません。
     たとえば `flowchartLR` は `flowchart` で始まります。
@@ -94,8 +90,7 @@ common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めて�
 項目 2 を除く各項目には、
 mermaid.js がその id として受理する最小の入力があります。
 図の文法が見出しの行だけを受理する場合はその行だけ、
-そうでなければ見出しの行と最小の 1 文です。
-[fixture: common/error-pseudo-diagram]
+そうでなければ見出しの行と最小の 1 文です。 [fixture: common/error-pseudo-diagram]
 [fixture: common/detect-minimal-flowchart-elk]
 [fixture: common/detect-minimal-mindmap]
 [fixture: common/detect-minimal-architecture]
@@ -139,8 +134,7 @@ mermaid.js がその id として受理する最小の入力があります。
 大文字小文字の違うキーワードは、比較が完全一致なので何も選びません。
 後に語の文字が続くキーワードは、何が続いてもよいので `c4` として検出され、
 その後 C4 の文法が拒否します。
-別の語の後のキーワードは先頭にありません。
-[fixture: common/detect-minimal-c4-container]
+別の語の後のキーワードは先頭にありません。 [fixture: common/detect-minimal-c4-container]
 [fixture: common/detect-minimal-c4-component]
 [fixture: common/detect-minimal-c4-dynamic]
 [fixture: common/detect-minimal-c4-deployment]
@@ -148,16 +142,13 @@ mermaid.js がその id として受理する最小の入力があります。
 [fixture: common/detect-c4-word-after]
 [fixture: common/detect-c4-keyword-after-word]
 
-第 6 項の
-[`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11)
-は、
+第 6 項の [`afDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/afDetector.ts#L7-L11) は、
 小文字を区別する `agentflow-beta` の検出器であり、C4 より先です。
 直後の ASCII の文字、数字、アンダースコアは検出を妨げます。
 ハイフンと非 ASCII の文字は検出を通りますが、
 agentflow の文法はこれらの接尾部の形を拒否します。
 安定版の `agentflow` のヘッダーや大文字小文字の同一視はありません。
-本文の C4 の語も検出を上書きしません。
-[fixture: agentflow/header-only]
+本文の C4 の語も検出を上書きしません。 [fixture: agentflow/header-only]
 [fixture: agentflow/header-without-beta]
 [fixture: agentflow/header-upper]
 [fixture: agentflow/detect-letter-suffix]
@@ -167,33 +158,29 @@ agentflow の文法はこれらの接尾部の形を拒否します。
 [fixture: agentflow/detect-non-ascii-suffix]
 [fixture: agentflow/lex-detect-c4-component-id]
 
-項目 12 の
-[infoDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11)
-は、接尾の境界なしで正確な小文字の接頭辞 `info` を選びます。`information` は
-検出後に字句で拒否し、`Info` と `INFO` は選びません。
-[fixture: info/header-lf] [fixture: info/detect-lower-suffix]
+項目 12 の [infoDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/info/infoDetector.ts#L7-L11) は、
+接尾の境界なしで正確な小文字の接頭辞 `info` を選びます。
+`information` は検出後に字句で拒否し、
+`Info` と `INFO` は選びません。 [fixture: info/header-lf]
+[fixture: info/detect-lower-suffix]
 [fixture: info/detect-titlecase] [fixture: info/detect-uppercase]
 
-項目 13 の
-[`pieDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDetector.ts#L9-L11)
-は、正確な小文字の接頭部 `pie` だけを要求します。
+項目 13 の [`pieDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/pie/pieDetector.ts#L9-L11) は、
+正確な小文字の接頭部 `pie` だけを要求します。
 `pieChart` は pie を選んだ後、字句規則に失敗します。
-`Pie` と `PIE` は pie を選びません。
-[fixture: pie/header-only]
+`Pie` と `PIE` は pie を選びません。 [fixture: pie/header-only]
 [fixture: pie/header-letter-suffix]
 [fixture: pie/header-capitalized]
 [fixture: pie/header-uppercase]
 
 検出点で通過させたフロントマター形のブロックは、図のテキストのままです。
-コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び
-、
+コメント行の後に `---`、`title: Hidden`、`---`、`pie` と続く入力は pie を選び、
 隠れた YAML の規則がタイトルを適用せずにブロックを読み飛ばします。
-gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin・eventmodeling も、
-一致する隠れたブロックを保ちます。
+gitgraph、info、packet、architecture、radar、railroad、wardley、cynefin、
+eventmodeling も、一致する隠れたブロックを保ちます。
 以下で引用するほかの図種の入力は、字句規則か文法で拒否します。
 隣り合う区切りの空ブロック、閉じない区切り、ブロックの前の裸の `%%` の行では、
-代わりに拒否する `---` 疑似図種が選ばれます。
-[fixture: pie/frontmatter-nonleading-comment]
+代わりに拒否する `---` 疑似図種が選ばれます。 [fixture: pie/frontmatter-nonleading-comment]
 [fixture: gitgraph/lex-yaml-after-comment]
 [fixture: info/frontmatter-nonleading-comment]
 [fixture: packet/detect-one-block]
@@ -217,13 +204,12 @@ gitgraph・info・packet・architecture・radar・railroad・wardley・cynefin�
 [fixture: cynefin/detect-block-after-directive]
 [fixture: eventmodeling/detect-real-retained-secondscan]
 
-項目 39 の
-[`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14)
-は、正確な小文字の `usecase-beta` の後に空白かテキストの終わりを要求します。
+項目 39 の [`usecaseDetector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDetector.ts#L1-L14) は、
+正確な小文字の `usecase-beta` の後に空白かテキストの終わりを要求します。
 コロン、ハイフン、英字、数字、underscore は検出を妨げます。
 Unicode 空白は検出を通っても usecase 文法に失敗する場合があります。
-C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
-[fixture: usecase/header-lf]
+C4 より後なので、
+本体に `c4-keyword-anywhere` を適用します。 [fixture: usecase/header-lf]
 [fixture: usecase/header-uppercase]
 [fixture: usecase/header-letter-suffix]
 [fixture: usecase/header-unicode-suffix]
@@ -232,14 +218,11 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 [fixture: usecase/lex-header-emspace-eof]
 [fixture: usecase/div-detect-c4-label]
 
-項目 19 の
-[gitGraphDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphDetector.ts)
-は、
+項目 19 の [gitGraphDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphDetector.ts) は、
 末尾の境界なしで正確な `gitGraph` を選びます。
-[gitgraph の構文](./diagrams/gitgraph.ja.md#検出) は、
-通常の見出し、接着・分離したコロン、LR・TB・BT の形を区別します。
-接尾辞は検出を通っても構文で拒否される場合があります。
-[fixture: gitgraph/header-only]
+[gitgraph の構文](./diagrams/gitgraph.ja.md#検出) は、通常の見出し、
+接着・分離したコロン、LR・TB・BT の形を区別します。
+接尾辞は検出を通っても構文で拒否される場合があります。 [fixture: gitgraph/header-only]
 [fixture: gitgraph/header-colon]
 [fixture: gitgraph/header-spaced-colon]
 [fixture: gitgraph/header-lr]
@@ -247,28 +230,22 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 [fixture: gitgraph/header-bt]
 [fixture: gitgraph/detect-letter-suffix]
 
-24 番は
-[packet の detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15)
-により、小文字の接頭辞 `packet` を接尾辞境界なしで選びます。
+24 番は [packet の detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/packet/detector.ts#L7-L15) により、
+小文字の接頭辞 `packet` を接尾辞境界なしで選びます。
 `packet-beta` も含み、どちらも id は `packet` です。
-見出しの境界と受理は [packet の構文](./diagrams/packet.ja.md#検出)で定めます。
-[fixture: packet/spec-packet-7426afc4]
+見出しの境界と受理は [packet の構文](./diagrams/packet.ja.md#検出)で定めます。 [fixture: packet/spec-packet-7426afc4]
 [fixture: packet/spec-packet-c4580507]
 [fixture: packet/header-letter-suffix]
 
-31 番の
-[treemap detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/detector.ts#L7-L11)
-は、小文字の `treemap` を接尾辞の境界なしに選びます。
+31 番の [treemap detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treemap/detector.ts#L7-L11) は、
+小文字の `treemap` を接尾辞の境界なしに選びます。
 受理する見出し `treemap`・`treemap-beta` の id は共に `treemap` です。
-受理と検出で残る接頭部の読みは
-[treemap の構文](./diagrams/treemap.md#detection)で定めます。
-[fixture: treemap/header-beta]
+受理と検出で残る接頭部の読みは [treemap の構文](./diagrams/treemap.md#detection)で定めます。 [fixture: treemap/header-beta]
 [fixture: treemap/spec-treemap-test-ts-892fa294]
 [fixture: treemap/header-letter-suffix]
 [fixture: treemap/detect-retained-body-yaml-no-native]
 
-項目 32〜35（
-[IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDetector.ts#L1-L32)、
+項目 32〜35（ [IR](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/railroadDetector.ts#L1-L32)、
 [EBNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/ebnfDetector.ts#L1-L22)、
 [ABNF](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/abnfDetector.ts#L1-L22)、
 [PEG](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/railroad/pegDetector.ts#L1-L22)）は、
@@ -276,8 +253,7 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 それぞれ異なる id で IR、EBNF、ABNF、PEG を選びます。
 検出だけでは受理は決まりません。
 [railroad の文法](./diagrams/railroad.ja.md#検出)は、
-方言ごとに正確な小文字の見出しとその境界を要求します。
-[fixture: railroad/ir-header-upper]
+方言ごとに正確な小文字の見出しとその境界を要求します。 [fixture: railroad/ir-header-upper]
 [fixture: railroad/ebnf-header-upper]
 [fixture: railroad/abnf-header-upper]
 [fixture: railroad/peg-header-upper]
@@ -286,30 +262,49 @@ C4 より後なので、本体に `c4-keyword-anywhere` を適用します。
 [fixture: railroad/abnf-header-inline]
 [fixture: railroad/peg-header-inline]
 
-項目 37 の
-[wardleyDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyDetector.ts#L7-L11)
-は、後続の境界なしで wardley-beta を大文字小文字を区別せず選びます。
-受理する見出しは小文字で後続 EOL が不要なため、
-文を直接つなげられます。Wardley は C4 より後で
-す。[構文](./diagrams/wardley.ja.md#検出)が残存 YAML/第 2 scan の prefix の受理
-と C4 の差異を定めます。
-[fixture: wardley/header-upper] [fixture: wardley/header-glued-statement]
+項目 37 の [wardleyDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyDetector.ts#L7-L11) は、
+後続の境界なしで wardley-beta を大文字小文字を区別せず選びます。
+受理する見出しは小文字で後続 EOL が不要なため、文を直接つなげられます。
+Wardley は C4 より後です。
+[構文](./diagrams/wardley.ja.md#検出)が残存 YAML/第 2
+scan の prefix の受理と C4 の差異を定めます。 [fixture: wardley/header-upper]
+[fixture: wardley/header-glued-statement]
 [fixture: wardley/detect-real-before-retained-secondscan]
 [fixture: wardley/c4-component-component]
 
-38 番の
-[cynefinDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDetector.ts#L7-L11) は正確に小文字の cynefin-beta と、その後の共通空白、colon、テキスト末尾を要求します。文法の見出しは cynefin-beta と cynefin-beta: で、どちらにも後続の EOL は要りません。colon の無い見出しに接する %% では、検出用のコメント除去に、検出対象のソースの後続の LF が必要で、それが無ければ %% は検出の境目になりません。[構文](./diagrams/cynefin.ja.md#検出)と[木](./ast/cynefin.ja.md)が retained な接頭とその所有者を定めます。 [fixture: cynefin/header-uppercase] [fixture: cynefin/header-colon-inline] [fixture: cynefin/header-inline] [fixture: cynefin/header-native-no-eol] [fixture: cynefin/header-native-glued-line-feed] [fixture: cynefin/header-native-comment-glued-eof] [fixture: cynefin/detect-real-before-retained-secondscan]
+38 番の [cynefinDetector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/cynefin/cynefinDetector.ts#L7-L11) は正確に小文字の cynefin-beta と、
+その後の共通空白、colon、テキスト末尾を要求します。
+文法の見出しは cynefin-beta と cynefin-beta: で、
+どちらにも後続の EOL は要りません。
+colon の無い見出しに接する %% では、検出用のコメント除去に、
+検出対象のソースの後続の LF が必要で、
+それが無ければ %% は検出の境目になりません。
+[構文](./diagrams/cynefin.ja.md#検出) と、[木](./ast/cynefin.ja.md) が、
+retained な接頭とその所有者を定めます。 [fixture: cynefin/header-uppercase]
+[fixture: cynefin/header-colon-inline] [fixture: cynefin/header-inline]
+[fixture: cynefin/header-native-no-eol]
+[fixture: cynefin/header-native-glued-line-feed]
+[fixture: cynefin/header-native-comment-glued-eof]
+[fixture: cynefin/detect-real-before-retained-secondscan]
 
-項目 27 の
-[detector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8) は、小文字そのままの prefix eventmodeling を後ろの境目を見ず選びます。受理する文法の見出しは別に空白、二つの percent、text の終わりの境目を持ち、suffix 付きの入力は検出されても拒否されえます。[構文](./diagrams/eventmodeling.ja.md#検出)と[木](./ast/eventmodeling.ja.md#gap-の所有)が retained form と通過する裸の行を定めます。 [fixture: eventmodeling/header-letter] [fixture: eventmodeling/header-inline] [fixture: eventmodeling/header-percent-comment] [fixture: eventmodeling/detect-real-retained-secondscan] [fixture: eventmodeling/detect-retained-bare-ls-line]
+項目 27 の [detector.ts](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/eventmodeling/detector.ts#L4-L8) は、
+小文字そのままの prefix eventmodeling を後ろの境目を見ず選びます。
+受理する文法の見出しは別に空白、二つの percent、text の終わりの境目を持ち、
+suffix 付きの入力は検出されても拒否されえます。
+[構文](./diagrams/eventmodeling.ja.md#検出)と[木](./ast/eventmodeling.ja.md#gap-の所有)が retained
+form と通過する裸の行を定めます。 [fixture: eventmodeling/header-letter]
+[fixture: eventmodeling/header-inline]
+[fixture: eventmodeling/header-percent-comment]
+[fixture: eventmodeling/detect-real-retained-secondscan]
+[fixture: eventmodeling/detect-retained-bare-ls-line]
 
-項目 28 の
-[treeview の検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)は、
+項目 28 の [treeview の検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/treeView/detector.ts#L4-L8)は、
 大文字小文字を区別する `treeView-beta` を接尾の境目無しで選びます。
 [構文](./diagrams/treeview.ja.md)が keyword の lookahead と長い bare の代案、
 保持される prefix、通過する裸の行の trivia を区別します。
-native YAML の規則は無く、検出が通過した block も見出しの前では読めません。
-[fixture: treeview/header-only] [fixture: treeview/header-lower]
+native YAML の規則は無く、
+検出が通過した block も見出しの前では読めません。 [fixture: treeview/header-only]
+[fixture: treeview/header-lower]
 [fixture: treeview/header-letter]
 [fixture: treeview/header-nbsp-custom-boundary]
 [fixture: treeview/detect-block-after-directive]
@@ -318,8 +313,7 @@ native YAML の規則は無く、検出が通過した block も見出しの前�
 ## 注記
 
 - **疑似図種**: 項目 1 と 2 は、
-  すべての実際の図より前に登録されます
-  （[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L51-L83)）。
+  すべての実際の図より前に登録されます（[`addDiagrams()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L51-L83)）。
   `error` は受理され、Db の内容を持ちません。
   `---` は必ず拒否されるので、DiagramType ではありません。
   どちらも [common.ja.md](./common.ja.md#図種の検出) を参照してください。
@@ -327,17 +321,13 @@ native YAML の規則は無く、検出が通過した block も見出しの前�
   テキスト全体を Unicode の完全な小文字化の対応で小文字にします。
   ASCII の外の文字で、小文字が ASCII の英字になるのは U+212A だけで、
   これは `k` になります。
-  `error` には `k` がないので、
-  結果は [表記](./common.ja.md#表記)
-  の意味で大文字小文字を区別しない比較と同じです。
-  [fixture: common/error-pseudo-diagram]
+  `error` には `k` がないので、結果は、
+  [表記](./common.ja.md#表記) の意味で大文字小文字を区別しない比較と同じです。 [fixture: common/error-pseudo-diagram]
   [fixture: common/error-uppercase]
 
-- **大きな機能のときだけ登録される項目**: 項目 3〜5 は、
-  mermaid.js が
+- **大きな機能のときだけ登録される項目**: 項目 3〜5 は、 mermaid.js が
 
-[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87)
-を付けてビルドされたときだけ登録されます。
+[`includeLargeFeatures`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/diagram-orchestration.ts#L85-L87) を付けてビルドされたときだけ登録されます。
 npm パッケージの既定の入口はそのようにビルドされているので、
 この仕様はこれらを含め、この位置に置きます。
 疑似図種の後で、他のすべての検出器より前です。
@@ -346,10 +336,9 @@ npm パッケージの既定の入口はそのようにビルドされている�
 - **順序が効く**: 項目 3 は項目 17 より前にあるので、
   `flowchart-elk` は `flowchart` でも始まりますが、`flowchart-elk` を選びます。
   これ以外に条件が重なる組はありません。
-- **mermaid.js の項目 7**: mermaid.js は項目 7 の条件を 5
-  つの選択肢として書いていて、
-  テキストの先頭に固定されているのは最初の `C4Context` だけです
-  （[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10)）。
+- **mermaid.js の項目 7**:
+  mermaid.js は項目 7 の条件を 5 つの選択肢として書いていて、
+  テキストの先頭に固定されているのは最初の `C4Context` だけです（[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10)）。
   そこでは、`C4Container`、`C4Component`、`C4Dynamic`、
   `C4Deployment` をどこかに含むテキストは、
   ノードの ID やメッセージの本文に含む場合も、
@@ -358,18 +347,14 @@ npm パッケージの既定の入口はそのようにビルドされている�
   拒否されます。
   この仕様はたどり着いた位置だけを見るので、
   そのようなテキストをヘッダーの図として読みます。
-  既知の差異
-  [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md)
-  です。
-  `C4Context` は両者とも先頭にあるときだけ数えます。
-  [fixture: common/detect-c4-anywhere]
+  既知の差異 [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md) です。
+  `C4Context` は両者とも先頭にあるときだけ数えます。 [fixture: common/detect-c4-anywhere]
   [fixture: common/detect-c4context-only-at-start]
 
 - **何が続いてもよい**: ほとんどのキーワードでは、検出器は次の文字を見ません。
   `flowchartLR` は `flowchart-v2` として検出され、
   その後 flowchart の文法が拒否します。
-  `graphTD` も同じです。
-  [fixture: common/detect-no-boundary-flowchart]
+  `graphTD` も同じです。 [fixture: common/detect-no-boundary-flowchart]
   [fixture: common/detect-no-boundary-graph]
 
 - **語の文字以外か、終わり**: 項目 6、16、30 では、
@@ -377,31 +362,25 @@ npm パッケージの既定の入口はそのようにビルドされている�
   `swimlane-betaX` は検出されず、他のどの検出器も一致しません。
   項目 30 の条件は `ishikawa` の直後に適用されるので、
   `ishikawa-beta` だけでなく `ishikawa-betaX` も検出され、
-  `ishikawaX` は検出されません。
-  [fixture: common/detect-boundary-swimlane]
+  `ishikawaX` は検出されません。 [fixture: common/detect-boundary-swimlane]
   [fixture: common/detect-ishikawa-beta-suffix]
   [fixture: common/detect-ishikawa-word-after]
 
-ASCII
-の外の文字は語の文字ではありません（[表記](./common.ja.md#表記) を参照）。
-`ishikawa` の後に U+017F や `é` が続くものは ishikawa
-として検出されて受理され、
+ASCII の外の文字は語の文字ではありません（[表記](./common.ja.md#表記) を参照）。
+`ishikawa` の後に U+017F や `é` が続くものは ishikawa として検出されて受理され、
 `swimlane-beta` の後に `é` が続くものは swimlane として検出され、
-その文法が拒否します。
-[fixture: common/detect-boundary-ishikawa-long-s]
+その文法が拒否します。 [fixture: common/detect-boundary-ishikawa-long-s]
 [fixture: common/detect-boundary-ishikawa-e-acute]
 [fixture: common/detect-boundary-swimlane-e-acute]
 
 [Ishikawa の文法](./diagrams/ishikawa.ja.md#単位と文脈)は、
 完全な beta の見出しと通常の見出しへの切り替えを区別します。
 `ishikawa-beta-x` は `-x` から節点のテキストを始め、
-`ishikawa-betaX` は `-betaX` から始めます。
-[fixture: ishikawa/header-beta-dash-suffix]
+`ishikawa-betaX` は `-betaX` から始めます。 [fixture: ishikawa/header-beta-dash-suffix]
 [fixture: ishikawa/header-beta-letter-suffix]
 
 - **キーワードの後の特定の文字**: 項目 38 は `cynefin-beta` の後の `:` を認め、
-  項目 39 は `usecase-beta` の後の `:` を認めません。
-  [fixture: common/detect-cynefin-colon]
+  項目 39 は `usecase-beta` の後の `:` を認めません。 [fixture: common/detect-cynefin-colon]
   [fixture: common/detect-usecase-colon]
 
 - **大文字小文字**: 項目 30、32〜35、37 は大文字小文字を区別しません。
@@ -412,8 +391,7 @@ ASCII
   それ以外の検出器は完全に一致するかで比べます。
   `sequencediagram` は検出されません。
   大文字のキーワードをその図の文法が受理するかどうかは、その文法によるので、
-  その図の文書で述べます。
-  [fixture: common/detect-case-insensitive-ishikawa]
+  その図の文書で述べます。 [fixture: common/detect-case-insensitive-ishikawa]
   [fixture: common/detect-case-mixed-ishikawa]
   [fixture: common/detect-case-kelvin-sign]
   [fixture: common/detect-case-long-s]
@@ -421,17 +399,17 @@ ASCII
 
 architecture の検出は C4 より前で、接頭辞 `architecture` を選びます。
 受理する見出しは `architecture-beta` だけです。
-構文は [architecture](./diagrams/architecture.ja.md) で定めます。
-[fixture: architecture/header-beta]
+構文は [architecture](./diagrams/architecture.ja.md) で定めます。 [fixture: architecture/header-beta]
 [fixture: architecture/header-bare-rejected]
 [fixture: architecture/header-letter-suffix]
 [fixture: architecture/c4-component-service]
 
 radar の検出器は小文字の接頭辞 `radar-beta` を選びます。
-[radar の構文](./diagrams/radar.ja.md#検出) は、受理する見出しの 3 形
-`radar-beta`・`radar-beta:`・`radar-beta :` と、それぞれの境界を定めます。
-検出する接頭辞に境界がなくても、文法の見出しには境界を要求します。
-[fixture: radar/header-colon-inline]
+[radar の構文](./diagrams/radar.ja.md#検出) は、
+受理する見出しの 3 形 `radar-beta`・`radar-beta:`・`radar-beta :` と、
+それぞれの境界を定めます。
+検出する接頭辞に境界がなくても、
+文法の見出しには境界を要求します。 [fixture: radar/header-colon-inline]
 [fixture: radar/header-separated-colon]
 [fixture: radar/header-letter-suffix]
 [fixture: radar/header-uppercase]

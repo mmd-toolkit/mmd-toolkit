@@ -156,13 +156,65 @@ function readColumn(column: number): FieldTables {
   return tables
 }
 
+/** The sentence that states the child fields of a node type that has some: followed by the names in code spans, separated by `, `, and ended by a period. */
+const CHILD_FIELDS_PREFIX = "Child fields: "
+
+/** The sentence that states that a node type has no child fields. */
+const NO_CHILD_FIELDS = "No child fields."
+
+/** Whether the text at `at` in `paragraph` starts a sentence: it is the start of the paragraph, or follows a period or a `]` and a space. */
+function startsSentence(paragraph: string, at: number): boolean {
+  return (
+    at === 0 ||
+    (paragraph[at - 1] === " " &&
+      (paragraph[at - 2] === "." || paragraph[at - 2] === "]"))
+  )
+}
+
+/**
+ * The child fields that the sentences of `paragraph` state, in order, one
+ * list for each sentence `Child fields: …` or `No child fields.` (ast.md,
+ * Nodes). The text of ast.md that shows the form inside a code span starts no
+ * sentence. Throws when a sentence `Child fields: ` is not followed by code
+ * spans separated by `, ` and ended by a period.
+ */
+function childFieldSentencesIn(paragraph: string, where: string): string[][] {
+  const lists: string[][] = []
+  for (let at = 0; at < paragraph.length; at += 1) {
+    if (!startsSentence(paragraph, at)) continue
+    if (paragraph.startsWith(NO_CHILD_FIELDS, at)) {
+      lists.push([])
+    } else if (paragraph.startsWith(CHILD_FIELDS_PREFIX, at)) {
+      const fields: string[] = []
+      let rest = paragraph.slice(at + CHILD_FIELDS_PREFIX.length)
+      for (;;) {
+        const close = rest.startsWith("`") ? rest.indexOf("`", 1) : -1
+        if (close < 0) {
+          throw new Error(`${where}: child fields are not code spans`)
+        }
+        fields.push(rest.slice(1, close))
+        rest = rest.slice(close + 1)
+        if (rest.startsWith(", ")) rest = rest.slice(", ".length)
+        else if (rest.startsWith(".")) break
+        else throw new Error(`${where}: child fields are not ended by a period`)
+      }
+      lists.push(fields)
+    }
+  }
+  return lists
+}
+
 /**
  * The child fields that the tree documents state for each node type, in the
- * order of the visit: the fields named in the sentence introduced by
- * `Child fields:`. A type with no such sentence is not in the result.
+ * order of the visit: the section of the type states them in the sentence
+ * `Child fields: …` or `No child fields.` (ast.md, Nodes). A section without
+ * the sentence is not in the result; a section with two sentences throws, and
+ * so does a type that the headings of two sections name.
  */
 export function readChildFields(): Map<string, string[]> {
   const result = new Map<string, string[]>()
+  /** The section (file and heading) that stated the child fields of each type. */
+  const sections = new Map<string, string>()
   const files = [
     path.join(SPEC_DOCS, "ast.md"),
     ...TREE_DOCUMENT_DIAGRAMS.map((diagram) =>
@@ -170,51 +222,50 @@ export function readChildFields(): Map<string, string[]> {
     ),
   ]
   for (const file of files) {
-    let names: string[] = []
+    let heading = ""
     let paragraph = ""
+    let lists: string[][] = []
 
-    /** Reads the paragraph collected so far, if it states child fields. */
-    function flush(): void {
-      const prefix = "Child fields:"
-      const at = paragraph.indexOf(prefix)
-      if (at !== -1) {
-        // The first sentence ends at a period, or at a colon after the list:
-        // `Child fields: `a`, `b`, in source order: …`. A semicolon starts
-        // an explanation after the list, as in ast/cynefin.md.
-        const rest = paragraph.slice(at + prefix.length)
-        const end = rest.search(/[.:;]/u)
-        const sentence = end < 0 ? rest : rest.slice(0, end)
-        const quoted = [...sentence.matchAll(/`(\w+)`/gu)].map(
-          (match) => match[1] ?? "",
-        )
-        // Child-field lists may also use unquoted field names.
-        const fields =
-          quoted.length > 0
-            ? quoted
-            : sentence
-                .split(",")
-                .map((field) => field.trim())
-                .filter((field) => field !== "")
-        for (const name of names)
-          result.set(
-            name,
-            fields.filter((field) => field !== "none"),
-          )
-      }
+    /** Collects the sentences of the paragraph read so far. */
+    function endParagraph(): void {
+      lists.push(...childFieldSentencesIn(paragraph, `${file}: ${heading}`))
       paragraph = ""
+    }
+
+    /** Takes the sentence of the section that the heading above began. */
+    function endSection(): void {
+      endParagraph()
+      if (lists.length > 1) {
+        throw new Error(`${file}: ${heading} states its child fields twice`)
+      }
+      const [fields] = lists
+      if (fields !== undefined) {
+        for (const name of typeNamesIn(heading)) {
+          const section = `${file}: ${heading}`
+          const earlier = sections.get(name)
+          if (earlier !== undefined) {
+            throw new Error(
+              `${name} is named by two sections: ${earlier} and ${section}`,
+            )
+          }
+          sections.set(name, section)
+          result.set(name, fields)
+        }
+      }
+      lists = []
     }
 
     for (const line of readFileSync(file, "utf8").split("\n")) {
       if (line.startsWith("#")) {
-        flush()
-        names = typeNamesIn(line.replace(/^#+\s*/u, ""))
+        endSection()
+        heading = line.replace(/^#+\s*/u, "")
       } else if (line.trim() === "") {
-        flush()
+        endParagraph()
       } else {
         paragraph += paragraph === "" ? line : ` ${line}`
       }
     }
-    flush()
+    endSection()
   }
   return result
 }

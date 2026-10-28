@@ -15,7 +15,7 @@ import {
 import { walk } from "./layout.ts"
 import { lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, isWhitespace } from "./source.ts"
+import { findFirstIndex, findStructuralToken, isWhitespace } from "./source.ts"
 import type { TreeviewLine, TreeviewPhysicalLine } from "./treeview-layout.ts"
 import {
   isTreeviewCommonStatement,
@@ -84,6 +84,18 @@ export function planTreeviewBox(
   protectedRows: boolean,
 ): TreeviewBoxPlan {
   const physical = treeviewPhysicalLines(source, headerEnd)
+  const physicalByPrefix = new Map<number, TreeviewPhysicalLine>()
+
+  for (const line of physical)
+    if (line.prefix !== null) physicalByPrefix.set(line.prefix[0], line)
+
+  /** Locate each form's line without walking all physical lines again. */
+  function physicalLineAt(offset: number): TreeviewPhysicalLine | undefined {
+    const after = findFirstIndex(physical, (line) => line.range[0] > offset)
+    const line = physical[after - 1]
+    return line !== undefined && offset <= line.range[1] ? line : undefined
+  }
+
   const rows = lines.filter((line) => line.item.type === "TreeviewNode")
   const byNode = new Map(rows.map((line) => [line.item, line]))
   const forest = rows.some(
@@ -130,9 +142,7 @@ export function planTreeviewBox(
     (form) => form.type === "TreeviewIgnoredText",
   )
   for (const prefix of prefixes) {
-    const physicalLine = physical.find(
-      (line) => line.prefix?.[0] === prefix.range[0],
-    )
+    const physicalLine = physicalByPrefix.get(prefix.range[0])
     const content =
       findStructuralToken(source, prefix.range[1])?.range[0] ?? prefix.range[1]
     const comment =
@@ -167,11 +177,7 @@ export function planTreeviewBox(
       reasons.add("arbitrary text in prefix")
   }
   for (const decoration of decorations) {
-    const line = physical.find(
-      (item) =>
-        item.range[0] <= decoration.range[0] &&
-        decoration.range[0] <= item.range[1],
-    )
+    const line = physicalLineAt(decoration.range[0])
     if (
       line !== undefined &&
       trivia.some((item) => overlaps(line.range, item.range))
@@ -216,9 +222,7 @@ export function planTreeviewBox(
           )
         )
           reasons.add("joining annotation exposes a branch inside its value")
-        const physicalLine = physical.find(
-          (line) => line.prefix?.[0] === annotation.prefix!.range[0],
-        )
+        const physicalLine = physicalByPrefix.get(annotation.prefix.range[0])
         if (
           heads.get(node) === "" &&
           annotation.type === "TreeviewDescriptionAnnotation" &&
@@ -271,11 +275,7 @@ export function planTreeviewBox(
   // authored value spans on that line, rather than reparsing printed text.
   for (const row of rows) {
     const node = row.item as TreeviewNode
-    const original = physical.find(
-      (line) =>
-        line.range[0] <= node.name.range[0] &&
-        node.name.range[0] <= line.range[1],
-    )
+    const original = physicalLineAt(node.name.range[0])
     if (
       heads.get(node) === "" &&
       original !== undefined &&
@@ -308,9 +308,7 @@ export function planTreeviewBox(
         : []),
     ].filter((form) => form?.type === "TreeviewBranchPrefix")
     for (const form of removed) {
-      const line = physical.find(
-        (candidate) => candidate.prefix?.[0] === form.range[0],
-      )
+      const line = physicalByPrefix.get(form.range[0])
       if (
         line !== undefined &&
         item.value !== null &&
@@ -330,15 +328,10 @@ export function planTreeviewBox(
           treeviewBoxCharacters.includes(character),
         ),
     )
-  const selectingDecorations = decorations.filter((decoration) =>
-    physical.some(
-      (line) =>
-        line.candidate &&
-        line.decoration &&
-        line.range[0] <= decoration.range[0] &&
-        decoration.range[0] <= line.range[1],
-    ),
-  )
+  const selectingDecorations = decorations.filter((decoration) => {
+    const line = physicalLineAt(decoration.range[0])
+    return line !== undefined && line.candidate && line.decoration
+  })
   const keptSelectors = new Set<Node>(
     remainingSelector ? [] : selectingDecorations,
   )
@@ -369,16 +362,24 @@ export function planTreeviewBox(
       drawings.set(decoration, source.text.slice(...decoration.range))
       continue
     }
-    const next = rows.find(
-      (row) =>
-        row.item.type === "TreeviewNode" &&
-        row.item.name.range[0] > decoration.range[1],
-    )
-    const previous = rows.findLast(
-      (row) =>
-        row.item.type === "TreeviewNode" &&
-        row.item.name.range[1] <= decoration.range[0],
-    )
+    const next =
+      rows[
+        findFirstIndex(
+          rows,
+          (row) =>
+            row.item.type === "TreeviewNode" &&
+            row.item.name.range[0] > decoration.range[1],
+        )
+      ]
+    const previous =
+      rows[
+        findFirstIndex(
+          rows,
+          (row) =>
+            row.item.type === "TreeviewNode" &&
+            row.item.name.range[1] > decoration.range[0],
+        ) - 1
+      ]
     const ancestors = next?.ancestors.slice(forest ? 0 : 1) ?? []
     drawings.set(
       decoration,
@@ -422,7 +423,8 @@ export function planTreeviewBox(
     trailingDecorations,
     omitted: forms
       .filter((form) => !keptSelectors.has(form))
-      .map((form) => form.range),
+      .map((form) => form.range)
+      .sort((a, b) => a[0] - b[0]),
     joinedAnnotations,
     keptOpenerGaps,
   }

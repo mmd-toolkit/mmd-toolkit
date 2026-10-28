@@ -21,15 +21,14 @@ class の行を 2 つ書くのは、たいてい 2 つのクラスのためで�
 ## 規則の詳細
 
 この規則は、ノードの最初の icon の行より後の icon の行と、
-最初の class の行より後の class の行を、
-前と違う値を設定するときに報告する。
+最初の class の行より後の class の行を、前と違う値を設定するときに報告する。
 対象の図種は `mindmap` である。
 
 `:::urgent` と `:::large` の後、ノードのクラスは `large` だけになり、
 `::icon(fa fa-book)` と `::icon(fa fa-pen)` の後、icon は `fa fa-pen` になる。
 2 つの種類は別々に数える。
-1 つのノードの icon の行と class の行は報告せず、
-`:::urgent`、`::icon(fa fa-book)`、`:::large` では `:::large` だけを報告する。
+1 つのノードの icon の行と class の行は報告せず、 `:::urgent`、
+`::icon(fa fa-book)`、`:::large` では `:::large` だけを報告する。
 行は、字下げにかかわらず、空行、コメント行、ディレクティブを越えても、
 その前に最後に書いたノードのものであり、`::icon(` は大文字小文字を問わず読む。
 ノードの icon の行とその子の icon の行は 2 つのノードのもので、報告しない。
@@ -98,8 +97,7 @@ mindmap
 ## 背景
 
 mermaid.js は、最後に加えたノードの icon や class を、
-それまでの値を置き換えて設定する
-（[`decorateNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L154-L167)）。
+それまでの値を置き換えて設定する（[`decorateNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L154-L167)）。
 
 <!-- begin auto-generated rule resources -->
 

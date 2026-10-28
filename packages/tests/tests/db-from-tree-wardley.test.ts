@@ -5,7 +5,7 @@ import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
-  loadFixtures,
+  loadFixture,
 } from "../src/index.ts"
 import type { Kit } from "./check-tree-built.ts"
 import { setField } from "./check-tree-recorded.ts"
@@ -358,10 +358,7 @@ describe("Wardley Db from hand-built trees", () => {
   it.each(CASES)(
     "matches the recorded reading of $name",
     async ({ name, make, prepare }) => {
-      const fixture = (await loadFixtures("wardley")).find(
-        (item) => item.name === name,
-      )
-      if (fixture === undefined) throw new Error(`missing fixture ${name}`)
+      const fixture = await loadFixture("wardley", name)
       const result = fixture.specified ?? fixture.expected
       expect(result.accepted).toBe(true)
       if (!result.accepted) throw new Error(`rejecting reading ${name}`)

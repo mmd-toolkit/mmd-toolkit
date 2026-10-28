@@ -121,8 +121,8 @@ try {
 
 ## 走査API
 
-`traverseNodes(node: Node, visitor: Visitor): void`で、
-開始ノードと、その下にあるノードを訪問します。
+`traverseNodes(node: Node, visitor: Visitor): void`で、開始ノードと、
+その下にあるノードを訪問します。
 `Visitor`には`enterNode`と`leaveNode`のコールバックが必要です。
 
 `visitorKeys`は`VisitorKeys`型の値です。

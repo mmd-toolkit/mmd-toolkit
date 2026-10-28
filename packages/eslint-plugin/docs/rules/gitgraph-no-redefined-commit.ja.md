@@ -40,8 +40,7 @@ id は大文字小文字を区別して比べ、その周りの引用符は数�
 id の中のすべての改行（LF、CRLF、CR）は LF として読む。
 id はそのほかは書いたとおりに比べる。
 mermaid.js は、`\q` のようなエスケープを解き、HTML の属性の引用符を、
-id を読む前にほかの文字に変えるので、
-それだけが違う 2 つの id は、
+id を読む前にほかの文字に変えるので、それだけが違う 2 つの id は、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
 コミットごとに自分の id を与える。
@@ -74,8 +73,8 @@ gitGraph
 
 ## 背景
 
-[`commit`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L134)
-は、ログに警告を書いた後、同じ id のコミットの上にそのコミットを保つ。
+[`commit`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/git/gitGraphAst.ts#L114-L134) は、
+ログに警告を書いた後、同じ id のコミットの上にそのコミットを保つ。
 
 <!-- begin auto-generated rule resources -->
 

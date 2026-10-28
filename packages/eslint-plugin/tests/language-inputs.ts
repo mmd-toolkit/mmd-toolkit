@@ -1,18 +1,17 @@
 /**
  * The inputs of the tests of the language (`language.test.ts`,
- * `token-store.test.ts`, `diagram-rules.test.ts`): fixtures of the conformance
- * corpus, each chosen for one case that the language, or a rule of a diagram
- * type, treats on its own. A case is a way that an input differs in what the
- * language does with it: the diagram that the parser reads, how it rejects
- * the text, the line terminators that the positions count, the parts of the
- * text that are not nodes. `holds` says, of the text of the fixture, that it is
- * a case of its kind; the tests check it, so that a fixture of the corpus that
- * is changed to another input is noticed.
+ * `token-store.test.ts`): fixtures of the conformance corpus, each chosen for
+ * one case that the language treats on its own. A case is a way that an input
+ * differs in what the language does with it: the diagram that the parser
+ * reads, how it rejects the text, the line terminators that the positions
+ * count, the parts of the text that are not nodes. `holds` says, of the text of
+ * the fixture, that it is a case of its kind; the tests check it, so that a
+ * fixture of the corpus that is changed to another input is noticed.
  */
 import type { DiagramType, Fixture } from "@mmd-toolkit/tests"
+import { loadFixture } from "@mmd-toolkit/tests"
 import { parse } from "@mmd-toolkit/parser"
 import type { Root } from "@mmd-toolkit/parser"
-import { loadCorpus } from "./helpers.ts"
 
 /** The tree of `text`, or null where the parser rejects it. */
 function treeOf(text: string): Root | null {
@@ -384,17 +383,10 @@ export interface LoadedLanguageInput extends LanguageInput {
 
 /** The inputs of the tests of the language, with their fixtures; throws for a fixture that the corpus lacks. */
 export async function loadLanguageInputs(): Promise<LoadedLanguageInput[]> {
-  const corpus = new Map(
-    (await loadCorpus()).map((fixture) => [
-      `${fixture.diagram}/${fixture.name}`,
-      fixture,
-    ]),
+  return Promise.all(
+    LANGUAGE_INPUTS.map(async (input) => ({
+      ...input,
+      fixture: await loadFixture(input.diagram, input.name),
+    })),
   )
-  return LANGUAGE_INPUTS.map((input) => {
-    const fixture = corpus.get(`${input.diagram}/${input.name}`)
-    if (fixture === undefined) {
-      throw new Error(`No fixture ${input.diagram}/${input.name}`)
-    }
-    return { ...input, fixture }
-  })
 }

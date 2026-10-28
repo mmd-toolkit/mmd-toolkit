@@ -43,11 +43,12 @@ wardley/lex-hidden-after-visible-eol] [fixture: wardley/tail-all-comments]
 | `textBeforeHeader` | list of WardleyIgnoredText | Retained forms before the header.              |
 | `body`             | list of WardleyBodyItem    | All authored statements and body hidden forms. |
 
-Child fields: textBeforeHeader, body. Range: the first retained pre-header form,
-or the header when none, through the last written header/body form. No separate
-header node or alias field is added; Root.diagramType is wardley. [fixture:
-wardley/header-only] [fixture: wardley/header-glued-statement] [fixture:
-wardley/detect-real-before-retained-secondscan] [fixture: wardley/db-all-fields]
+Child fields: `textBeforeHeader`, `body`. Range: the first retained pre-header
+form, or the header when none, through the last written header/body form. No
+separate header node or alias field is added; Root.diagramType is wardley.
+[fixture: wardley/header-only] [fixture: wardley/header-glued-statement]
+[fixture: wardley/detect-real-before-retained-secondscan] [fixture:
+wardley/db-all-fields]
 
 WardleyBodyItem is WardleyAnchorStatement, WardleyComponentStatement,
 WardleyLinkStatement, WardleyEvolveStatement, WardleyPipelineStatement,
@@ -86,8 +87,8 @@ wardley/lex-hidden-after-visible-eol]
 | `coordinates`           | WardleyCoordinates                 | Written visibility/evolution pair.  |
 | `textAfter`             | list of WardleyIgnoredText         | Forms before the first visible EOL. |
 
-Child fields: textBeforeName, name, textBeforeCoordinates, coordinates,
-textAfter. Range: anchor through the coordinate closing bracket, extended
+Child fields: `textBeforeName`, `name`, `textBeforeCoordinates`, `coordinates`,
+`textAfter`. Range: anchor through the coordinate closing bracket, extended
 through the last textAfter form. [fixture: wardley/spec-wardley-parser-04b27e33]
 [fixture: wardley/db-empty-texts] [fixture: wardley/hidden-all-unit-gaps]
 
@@ -110,8 +111,8 @@ wardley/tail-anchor-open-directive] [fixture: wardley/db-pipeline-anchor-parent]
 | `decorations`           | list of WardleyDecoration          | Written decorations in order.       |
 | `textAfter`             | list of WardleyIgnoredText         | Forms before the first visible EOL. |
 
-Child fields: textBeforeName, name, textBeforeCoordinates, coordinates,
-decorations, textAfter. Range: component through its last decoration, or the
+Child fields: `textBeforeName`, `name`, `textBeforeCoordinates`, `coordinates`,
+`decorations`, `textAfter`. Range: component through its last decoration, or the
 coordinate closing bracket without one, extended through textAfter. [fixture:
 wardley/db-all-fields] [fixture: wardley/db-inertia-forms] [fixture:
 wardley/hidden-yaml-component-gaps]
@@ -148,11 +149,12 @@ wardley/hidden-yaml-component-gaps] [fixture: wardley/db-node-duplicates]
 | `label`              | WardleyLiteral or null             | Authored text after semicolon.          |
 | `textAfter`          | list of WardleyIgnoredText         | Forms before the first visible EOL.     |
 
-Child fields: from, textBeforeFromPort, textBeforeArrow, arrow, textBeforeTo,
-to, textBeforeToPort, textBeforeLabel, label, textAfter. Range: from through the
-last written label, target port or to, extended through textAfter. [fixture:
-wardley/db-link-forms] [fixture: wardley/db-bare-link] [fixture:
-wardley/lex-link-target-port-no-arrow] [fixture: wardley/hidden-all-unit-gaps]
+Child fields: `from`, `textBeforeFromPort`, `textBeforeArrow`, `arrow`,
+`textBeforeTo`, `to`, `textBeforeToPort`, `textBeforeLabel`, `label`,
+`textAfter`. Range: from through the last written label, target port or to,
+extended through textAfter. [fixture: wardley/db-link-forms] [fixture:
+wardley/db-bare-link] [fixture: wardley/lex-link-target-port-no-arrow] [fixture:
+wardley/hidden-all-unit-gaps]
 
 fromPort/toPort are forward for +>, backward for +< and bidirectional for +<>,
 or null only without that port. They are written directions, not the final flow.
@@ -186,8 +188,8 @@ wardley/lex-hidden-directive-multiline-label] [fixture: wardley/db-link-forms]
 | `target`              | NumericLiteral                     | Written decimal target.             |
 | `textAfter`           | list of WardleyIgnoredText         | Forms before the first visible EOL. |
 
-Child fields: textBeforeComponent, component, textBeforeTarget, target,
-textAfter. Range: evolve through target, extended through textAfter. [fixture:
+Child fields: `textBeforeComponent`, `component`, `textBeforeTarget`, `target`,
+`textAfter`. Range: evolve through target, extended through textAfter. [fixture:
 wardley/db-trend-duplicates] [fixture: wardley/db-trend-missing] [fixture:
 wardley/hidden-all-unit-gaps]
 
@@ -210,8 +212,8 @@ wardley/gram-evolve-exact-child-invalid] [fixture: wardley/db-trend-duplicates]
 | `body`             | list of WardleyPipelineBodyItem    | Authored children and hidden forms.         |
 | `textAfter`        | list of WardleyIgnoredText         | Forms before the first visible EOL.         |
 
-Child fields: textBeforeParent, parent, textBeforeBody, textAfterOpen, body,
-textAfter. Range: pipeline through its closing brace, extended through
+Child fields: `textBeforeParent`, `parent`, `textBeforeBody`, `textAfterOpen`,
+`body`, `textAfter`. Range: pipeline through its closing brace, extended through
 textAfter. [fixture: wardley/db-all-fields] [fixture:
 wardley/hidden-all-unit-gaps] [fixture: wardley/lex-hidden-pipeline-open-spare]
 
@@ -248,10 +250,10 @@ wardley/db-empty-pipeline-names]
 | `labelOffset`         | WardleyLabelOffsetDecoration or null | Written label offset, if any.       |
 | `textAfter`           | list of WardleyIgnoredText           | Forms before the first visible EOL. |
 
-Child fields: textBeforeName, name, textBeforeOpen, textBeforeEvolution,
-evolution, textBeforeClose, labelOffset, textAfter. Range: component through the
-label offset’s closing bracket if written, otherwise its position closing
-bracket; extend through textAfter. [fixture:
+Child fields: `textBeforeName`, `name`, `textBeforeOpen`, `textBeforeEvolution`,
+`evolution`, `textBeforeClose`, `labelOffset`, `textAfter`. Range: component
+through the label offset’s closing bracket if written, otherwise its position
+closing bracket; extend through textAfter. [fixture:
 wardley/spec-wardley-parser-2c2c9064] [fixture: wardley/hidden-all-unit-gaps]
 [fixture: wardley/db-pipeline-label-inheritance]
 
@@ -274,10 +276,10 @@ wardley/db-pipeline-collision] [fixture: wardley/db-pipeline-label-inheritance]
 | `coordinates`           | WardleyCoordinates         | Written visibility/evolution pair.  |
 | `textAfter`             | list of WardleyIgnoredText | Forms before the first visible EOL. |
 
-Child fields: textBeforeText, text, textBeforeCoordinates, coordinates,
-textAfter. Range: note through the coordinate closing bracket, extended through
-textAfter. [fixture: wardley/db-all-fields] [fixture: wardley/db-empty-texts]
-[fixture: wardley/hidden-all-unit-gaps]
+Child fields: `textBeforeText`, `text`, `textBeforeCoordinates`, `coordinates`,
+`textAfter`. Range: note through the coordinate closing bracket, extended
+through textAfter. [fixture: wardley/db-all-fields] [fixture:
+wardley/db-empty-texts] [fixture: wardley/hidden-all-unit-gaps]
 
 text may be an empty or multiline string. coordinates remains the authored
 visibility/evolution pair; native-looking text inside the string is content, not
@@ -293,10 +295,10 @@ wardley/hidden-directive-string] [fixture: wardley/line-string-values]
 | `coordinates`           | WardleyCoordinates         | Written visibility/evolution pair.  |
 | `textAfter`             | list of WardleyIgnoredText | Forms before the first visible EOL. |
 
-Child fields: textBeforeCoordinates, coordinates, textAfter. Range: annotations
-through the coordinate closing bracket, extended through textAfter. [fixture:
-wardley/db-all-fields] [fixture: wardley/db-later-invalid-box] [fixture:
-wardley/hidden-all-unit-gaps]
+Child fields: `textBeforeCoordinates`, `coordinates`, `textAfter`. Range:
+annotations through the coordinate closing bracket, extended through textAfter.
+[fixture: wardley/db-all-fields] [fixture: wardley/db-later-invalid-box]
+[fixture: wardley/hidden-all-unit-gaps]
 
 This is a written annotations-box statement, including every later occurrence.
 coordinates accepts the integer-or-decimal form defined by syntax. Do not
@@ -318,11 +320,11 @@ wardley/db-later-invalid-box] [fixture: wardley/gram-box-first-invalid]
 | `text`                  | StringLiteral              | Required quoted annotation text.    |
 | `textAfter`             | list of WardleyIgnoredText | Forms before the first visible EOL. |
 
-Child fields: textBeforeNumber, number, textBeforeComma, textBeforeCoordinates,
-coordinates, textBeforeText, text, textAfter. Range: annotation through the
-text’s closing quote, extended through textAfter. [fixture:
-wardley/db-all-fields] [fixture: wardley/hidden-all-unit-gaps] [fixture:
-wardley/db-array-duplicates]
+Child fields: `textBeforeNumber`, `number`, `textBeforeComma`,
+`textBeforeCoordinates`, `coordinates`, `textBeforeText`, `text`, `textAfter`.
+Range: annotation through the text’s closing quote, extended through textAfter.
+[fixture: wardley/db-all-fields] [fixture: wardley/hidden-all-unit-gaps]
+[fixture: wardley/db-array-duplicates]
 
 textBeforeCoordinates lies after the first comma and before the bracket. number
 and text are required; zero numbers, empty strings and repeated annotation
@@ -341,8 +343,8 @@ wardley/db-coordinate-boundary] [fixture: wardley/db-number-int-precision]
 | `coordinates`           | WardleyCoordinates                 | Written visibility/evolution pair.  |
 | `textAfter`             | list of WardleyIgnoredText         | Forms before the first visible EOL. |
 
-Child fields: textBeforeName, name, textBeforeCoordinates, coordinates,
-textAfter. Range: accelerator through the coordinate closing bracket, extended
+Child fields: `textBeforeName`, `name`, `textBeforeCoordinates`, `coordinates`,
+`textAfter`. Range: accelerator through the coordinate closing bracket, extended
 through textAfter. [fixture: wardley/db-all-fields] [fixture:
 wardley/db-array-duplicates] [fixture: wardley/hidden-all-unit-gaps]
 
@@ -362,9 +364,9 @@ wardley/line-every-text]
 | `coordinates`           | WardleyCoordinates                 | Written visibility/evolution pair.  |
 | `textAfter`             | list of WardleyIgnoredText         | Forms before the first visible EOL. |
 
-Child fields: textBeforeName, name, textBeforeCoordinates, coordinates,
-textAfter. Range: deaccelerator through the coordinate closing bracket, extended
-through textAfter. [fixture: wardley/db-all-fields] [fixture:
+Child fields: `textBeforeName`, `name`, `textBeforeCoordinates`, `coordinates`,
+`textAfter`. Range: deaccelerator through the coordinate closing bracket,
+extended through textAfter. [fixture: wardley/db-all-fields] [fixture:
 wardley/db-array-duplicates] [fixture: wardley/hidden-all-unit-gaps]
 
 name and coordinates are required, including empty quoted names; coordinates
@@ -379,7 +381,7 @@ wardley/db-array-duplicates] [fixture: wardley/space-every-text]
 | -------- | ----------------------------- | ----------------------------- |
 | `stages` | list of WardleyEvolutionStage | Written stages; at least two. |
 
-Child fields: stages. Range: evolution through the last stage, including that
+Child fields: `stages`. Range: evolution through the last stage, including that
 member’s suffix. Stage separators remain -> punctuation, not link arrows.
 [fixture: wardley/db-stages-boundaries] [fixture: wardley/db-singletons-last]
 [fixture: wardley/lex-hidden-evolution-members]
@@ -405,12 +407,13 @@ wardley/db-stages-boundaries] [fixture: wardley/gram-stage-trailing-arrow]
 | `secondName`               | WardleyIdentifier or StringLiteral or null | Written secondary stage name.               |
 | `textAfter`                | list of WardleyIgnoredText                 | Forms before next separator or EOL.         |
 
-Child fields: textBefore, name, textBeforeBoundaryMark, textBeforeBoundary,
-boundary, textBeforeSecondNameMark, textBeforeSecondName, secondName, textAfter.
-Range: the first textBefore form, or name when none, through the second name,
-boundary or primary name, whichever is last written, extended through textAfter.
-[fixture: wardley/lex-hidden-evolution-members] [fixture:
-wardley/db-stages-boundaries] [fixture: wardley/db-stage-empty-second-name]
+Child fields: `textBefore`, `name`, `textBeforeBoundaryMark`,
+`textBeforeBoundary`, `boundary`, `textBeforeSecondNameMark`,
+`textBeforeSecondName`, `secondName`, `textAfter`. Range: the first textBefore
+form, or name when none, through the second name, boundary or primary name,
+whichever is last written, extended through textAfter. [fixture:
+wardley/lex-hidden-evolution-members] [fixture: wardley/db-stages-boundaries]
+[fixture: wardley/db-stage-empty-second-name]
 
 boundary is null only without the entire @ clause, and secondName is null only
 without the slash clause. An empty string in either name position is still a
@@ -435,9 +438,9 @@ wardley/db-stage-empty-second-name] [fixture: wardley/db-stages-boundaries]
 | `textBeforeClose`  | list of WardleyIgnoredText | Forms before the closing bracket.   |
 | `textAfter`        | list of WardleyIgnoredText | Forms before the first visible EOL. |
 
-Child fields: textBeforeOpen, textBeforeWidth, width, textBeforeComma,
-textBeforeHeight, height, textBeforeClose, textAfter. Range: size through its
-closing bracket, extended through textAfter. [fixture:
+Child fields: `textBeforeOpen`, `textBeforeWidth`, `width`, `textBeforeComma`,
+`textBeforeHeight`, `height`, `textBeforeClose`, `textAfter`. Range: size
+through its closing bracket, extended through textAfter. [fixture:
 wardley/hidden-all-unit-gaps] [fixture: wardley/db-singletons-last] [fixture:
 wardley/db-number-overflow]
 
@@ -459,10 +462,11 @@ wardley/db-number-int-precision] [fixture: wardley/lex-number-size-decimal]
 | `evolution`            | NumericLiteral             | Written second coordinate.              |
 | `textBeforeClose`      | list of WardleyIgnoredText | Forms before the closing bracket.       |
 
-Child fields: textBeforeVisibility, visibility, textBeforeComma,
-textBeforeEvolution, evolution, textBeforeClose. Range: the opening bracket
-through its matching closing bracket. [fixture: wardley/db-all-fields] [fixture:
-wardley/hidden-all-unit-gaps] [fixture: wardley/hidden-yaml-component-gaps]
+Child fields: `textBeforeVisibility`, `visibility`, `textBeforeComma`,
+`textBeforeEvolution`, `evolution`, `textBeforeClose`. Range: the opening
+bracket through its matching closing bracket. [fixture: wardley/db-all-fields]
+[fixture: wardley/hidden-all-unit-gaps] [fixture:
+wardley/hidden-yaml-component-gaps]
 
 This concrete pair is used by anchor, component, note, annotations, annotation,
 accelerator and deaccelerator statements. Keep visibility first and evolution
@@ -491,11 +495,11 @@ wardley/directive-coordinate-parts]
 | `offsetY`         | NumericLiteral             | Written unsigned second magnitude.          |
 | `textBeforeClose` | list of WardleyIgnoredText | Forms before the closing bracket.           |
 
-Child fields: textBefore, textBeforeOpen, textBeforeX, textAfterXSign, offsetX,
-textBeforeComma, textBeforeY, textAfterYSign, offsetY, textBeforeClose. Range:
-the first textBefore form, or label when none, through the closing bracket.
-[fixture: wardley/db-all-fields] [fixture: wardley/hidden-yaml-component-gaps]
-[fixture: wardley/hidden-all-unit-gaps]
+Child fields: `textBefore`, `textBeforeOpen`, `textBeforeX`, `textAfterXSign`,
+`offsetX`, `textBeforeComma`, `textBeforeY`, `textAfterYSign`, `offsetY`,
+`textBeforeClose`. Range: the first textBefore form, or label when none, through
+the closing bracket. [fixture: wardley/db-all-fields] [fixture:
+wardley/hidden-yaml-component-gaps] [fixture: wardley/hidden-all-unit-gaps]
 
 Both magnitude leaves are required unsigned integers. Each negative flag is true
 exactly for a written minus, including -0; minus punctuation is outside
@@ -518,8 +522,8 @@ wardley/lex-number-offset-decimal] [fixture: wardley/db-node-duplicates]
 | `value`           | string                     | Written fixed strategy.               |
 | `textBeforeClose` | list of WardleyIgnoredText | Forms before the closing parenthesis. |
 
-Child fields: textBefore, textBeforeValue, textBeforeClose. Range: the first
-textBefore form, or opening parenthesis when none, through the closing
+Child fields: `textBefore`, `textBeforeValue`, `textBeforeClose`. Range: the
+first textBefore form, or opening parenthesis when none, through the closing
 parenthesis. [fixture: wardley/hidden-yaml-component-gaps] [fixture:
 wardley/hidden-all-unit-gaps] [fixture: wardley/db-inertia-forms]
 
@@ -538,7 +542,7 @@ wardley/lex-selected-strategy-inside]
 | ------------ | -------------------------- | -------------------------- |
 | `textBefore` | list of WardleyIgnoredText | Forms before bare inertia. |
 
-Child fields: textBefore. Range: the first textBefore form, or inertia when
+Child fields: `textBefore`. Range: the first textBefore form, or inertia when
 none, through the end of the bare keyword. [fixture: wardley/db-all-fields]
 [fixture: wardley/db-inertia-forms] [fixture:
 wardley/lex-hidden-bare-inertia-suffix]
@@ -557,8 +561,8 @@ wardley/inertia-letter] [fixture: wardley/gram-component-inertia-duplicate]
 | `textBeforeInertia` | list of WardleyIgnoredText | Forms after the opening parenthesis.  |
 | `textBeforeClose`   | list of WardleyIgnoredText | Forms before the closing parenthesis. |
 
-Child fields: textBefore, textBeforeInertia, textBeforeClose. Range: the first
-textBefore form, or opening parenthesis when none, through its closing
+Child fields: `textBefore`, `textBeforeInertia`, `textBeforeClose`. Range: the
+first textBefore form, or opening parenthesis when none, through its closing
 parenthesis. [fixture: wardley/db-inertia-forms] [fixture:
 wardley/hidden-yaml-component-gaps] [fixture: wardley/hidden-all-unit-gaps]
 
@@ -582,7 +586,7 @@ wardley/lex-selected-parenthesized-inertia-parts]
 | `label`       | StringLiteral or null | Flow’s written quoted label.    |
 | `endMarker`   | string                | Written right marker presence.  |
 
-Child fields: label. Range: the first dependency-arrow/link-arrow glyph
+Child fields: `label`. Range: the first dependency-arrow/link-arrow glyph
 character through its last character, or plus through the final flow marker.
 [fixture: wardley/db-link-forms] [fixture: wardley/directive-flow-before-label]
 [fixture: wardley/directive-flow-after-label]
@@ -617,8 +621,8 @@ wardley/lex-selected-flow-after-label]
 | `value`     | WardleyLiteral or null     | Authored common value.              |
 | `textAfter` | list of WardleyIgnoredText | Forms before the first visible EOL. |
 
-Child fields: value, textAfter. Range: title through its last value character,
-or keyword when null, extended through textAfter. [fixture:
+Child fields: `value`, `textAfter`. Range: title through its last value
+character, or keyword when null, extended through textAfter. [fixture:
 wardley/common-title-eof] [fixture: wardley/common-title-two-spaces] [fixture:
 wardley/common-title-tabs] [fixture: wardley/hidden-directive-title]
 
@@ -638,7 +642,7 @@ wardley/hidden-directive-title] [fixture: wardley/lex-hidden-title-suffix]
 | `value`     | WardleyLiteral or null     | Authored common value.              |
 | `textAfter` | list of WardleyIgnoredText | Forms before the first visible EOL. |
 
-Child fields: value, textAfter. Range: accTitle through the last value
+Child fields: `value`, `textAfter`. Range: accTitle through the last value
 character, or colon when null, extended through textAfter. [fixture:
 wardley/common-acctitle-eof] [fixture: wardley/common-repeat-empty] [fixture:
 wardley/lex-hidden-common-prefix-eol]
@@ -658,7 +662,7 @@ wardley/lex-hidden-acctitle-after-visible-eol]
 | `value`     | WardleyLiteral or null     | Authored common value.              |
 | `textAfter` | list of WardleyIgnoredText | Forms before the first visible EOL. |
 
-Child fields: value, textAfter. Range: accDescr through its last line-value
+Child fields: `value`, `textAfter`. Range: accDescr through its last line-value
 character, or colon when null, extended through textAfter. [fixture:
 wardley/common-description-eof] [fixture: wardley/common-repeat] [fixture:
 wardley/hidden-yaml-description]
@@ -680,7 +684,7 @@ wardley/lex-hidden-description-suffix]
 | `value`     | WardleyLiteral or null     | Authored common value.              |
 | `textAfter` | list of WardleyIgnoredText | Forms before the first visible EOL. |
 
-Child fields: value, textAfter. Range: accDescr through its required first
+Child fields: `value`, `textAfter`. Range: accDescr through its required first
 closing brace, extended through textAfter. [fixture:
 wardley/common-empty-interleaved] [fixture: wardley/common-block-whitespace]
 [fixture: wardley/common-block-first-close] [fixture:
@@ -704,7 +708,7 @@ wardley/common-block-open] [fixture: wardley/line-block-values]
 | ------ | ------ | ------------------------ |
 | `name` | string | Authored bare name text. |
 
-Child fields: none. Range: the first through last written character read as the
+No child fields. Range: the first through last written character read as the
 name, including internal space/tab but excluding outside padding. [fixture:
 wardley/db-id-underscore] [fixture: wardley/db-unquoted-names] [fixture:
 wardley/lex-native-after-name-space] [fixture: wardley/lex-name-trailing-space]
@@ -725,8 +729,8 @@ wardley/lex-native-after-name-space]
 | ------- | ------ | -------------------------------------------- |
 | `value` | string | Nonempty authored common or link-label text. |
 
-Child fields: none. Range: the first through last authored value character
-defined by its owning statement, spanning internal common trivia. [fixture:
+No child fields. Range: the first through last authored value character defined
+by its owning statement, spanning internal common trivia. [fixture:
 wardley/common-title-tabs] [fixture: wardley/common-line-whitespace] [fixture:
 wardley/common-block-whitespace] [fixture: wardley/space-link-label]
 
@@ -748,7 +752,7 @@ wardley/common-empty-literals] [fixture: wardley/tail-link-spaced-label]
 | `kind`  | string | yaml-block or directive.             |
 | `value` | string | Nonempty whole authored hidden form. |
 
-Child fields: none. Range: the three-dash or percent-brace opener through the
+No child fields. Range: the three-dash or percent-brace opener through the
 qualifying closer, excluding preceding padding and any immediately consumed
 following line break. [fixture: wardley/lex-hidden-directive-cr] [fixture:
 wardley/lex-hidden-yaml-cr] [fixture: wardley/hidden-yaml-crlf] [fixture:

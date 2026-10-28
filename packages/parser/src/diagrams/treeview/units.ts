@@ -23,6 +23,7 @@ import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 import type { LineIndex } from "../../positions.ts"
 import {
+  isBefore,
   isCodePointAt,
   matchWord,
   samePosition,
@@ -79,6 +80,14 @@ export class TreeviewUnitLexer extends CommonFormUnitLexer<TreeviewUnitName> {
 
   private readonly passedTriviaEnd: number
 
+  /**
+   * The end of the last failed brace search, initially the text's start.
+   * Later bare node names must not rescan the same suffix. A failed search
+   * found no `}` from its `{` to the end of the text, so none follows the
+   * `{` of a later description block either.
+   */
+  private noDescriptionCloseBefore: DiagramPosition
+
   public constructor(
     reader: TreeviewText,
     source: DiagramText,
@@ -89,6 +98,7 @@ export class TreeviewUnitLexer extends CommonFormUnitLexer<TreeviewUnitName> {
     this.boxText = reader
     this.source = source
     this.passedTriviaEnd = passedTriviaEnd
+    this.noDescriptionCloseBefore = reader.first()
   }
 
   /** Box rules apply independently of lexical units; their authored forms remain units. */
@@ -156,6 +166,7 @@ export class TreeviewUnitLexer extends CommonFormUnitLexer<TreeviewUnitName> {
     if (word === null) return false
     const colon = skipWhile(this.reader, word.end, isHws)
     if (isCodePointAt(colon, COLON)) return super.readAccDescr(at)
+    if (isBefore(at, this.noDescriptionCloseBefore)) return false
     let brace = word.end
     const forms: BoxForm[] = []
     while (brace !== null) {
@@ -173,7 +184,10 @@ export class TreeviewUnitLexer extends CommonFormUnitLexer<TreeviewUnitName> {
       value,
       (c) => c.codePoint !== RIGHT_CURLY_BRACKET,
     )
-    if (close === null) return false
+    if (close === null) {
+      this.noDescriptionCloseBefore = close
+      return false
+    }
     this.addUnit("accDescr", start, word.end)
     for (const form of forms) this.addBoxForm(form)
     this.addUnit("{", brace, value)

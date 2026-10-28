@@ -27,9 +27,9 @@ element はその名前の最初の element と比べる。
 対象の図種は `requirement` である。
 
 `id: 1` を持つ `requirement r` の後、
-`id: 2` と `text: second` を持つ 2 つ目の `requirement r` は、
-`r` を id `1`、テキストなしのままにし、
-2 つ目の `functionalRequirement r` は、その種類を `requirement` のままにする。
+`id: 2` と `text: second` を持つ 2 つ目の `requirement r` は、 `r` を id `1`、
+テキストなしのままにし、 2 つ目の `functionalRequirement r` は、
+その種類を `requirement` のままにする。
 残る文が持つ値のフィールドは、何も失わない。
 `id: 1` と `risk: low` を持つ `requirement r` の後の、
 `id: 1` を持つ 2 つ目の `requirement r` は報告しない。
@@ -55,8 +55,8 @@ mermaid.js は両方を持つ。
 `id: 2` を持つ `requirement "r"` は報告する。
 名前は大文字小文字で区別する。
 `requirement r` と `requirement R` は 2 つの requirement である。
-報告する文はそれぞれ数え、id が `1`、`2`、`3` の `requirement r` が 3 つなら
-2 つ報告する。
+報告する文はそれぞれ数え、id が `1`、`2`、
+`3` の `requirement r` が 3 つなら 2 つ報告する。
 
 `requirement r:::c {` と `}` のように、
 フィールドを持たない同じ種類の後の文はクラスを与えるだけで、報告しない。
@@ -121,8 +121,8 @@ requirementDiagram
 ## 背景
 
 mermaid.js は、その名前のものがないときだけ requirement や element を加え、
-その後、そのために読んだフィールドを忘れる
-（[`addRequirement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L126-L141) と
+その後、
+そのために読んだフィールドを忘れる（[`addRequirement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L126-L141) と、
 [`addElement`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L172-L185)）。
 
 <!-- begin auto-generated rule resources -->

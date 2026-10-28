@@ -7,8 +7,8 @@ fixture の読み方は [README](../README.ja.md) にあります。
 
 ## 手で書くもの
 
-`expected.json` のうち手で書くのは、
-`source`、`config`、`knownDivergence` だけです。
+`expected.json` のうち手で書くのは、 `source`、`config`、
+`knownDivergence` だけです。
 生成器はこの 3 つの欄をそのまま保ち、残りを mermaid.js から書き直し、
 ファイルを正準形（欄の順序を固定、2 文字の字下げ、末尾の改行）に保ちます。
 既存の fixture の note と `knownDivergence` は、
@@ -35,15 +35,16 @@ fixture の読み方は [README](../README.ja.md) にあります。
   mermaid.js から取った入力には付けない。
 - `knownDivergence`: `KNOWN_DIVERGENCES` のいずれか。
   仕様が意図して mermaid.js と違う入力に付ける。
-  識別子は、それぞれ `@mmd-toolkit/spec` の
-  `docs/known-divergences.md` の表の行。
+  識別子は、
+  それぞれ `@mmd-toolkit/spec` の `docs/known-divergences.md` の表の行。
 
 `@mmd-toolkit/tests` が export する `DIVERGENCE_PROPERTIES` は、
 各識別子の `direction`（`"accept"`、`"reject"`、`"both"`）と、
 `requiresSpecifiedReading` を明記します。
 表のキーと `KNOWN_DIVERGENCES` を仕様に合わせます。
 読み込んだ後は `fixtureAccepts(fixture)` で必要な指定読みを検査し、
-受理を決めます。別の向きや指定読みの要否の一覧は持ちません。
+受理を決めます。
+別の向きや指定読みの要否の一覧は持ちません。
 必要な `specified.json` がなければ、
 識別子と `<diagram>/<name>` を含めて投げます。
 受理の向きだけでも、比較する読みに指定読みが要る差異を含みます。
@@ -61,8 +62,8 @@ fixture の読み方は [README](../README.ja.md) にあります。
 比較の参照入力では、Mermaid の設定導出で拒否されたブロックだけを除き、
 正しいテキスト内設定から、仕様が名指しする受理条件の鍵だけを除きます。
 ほかの導出値は保ちます。
-Mermaid の frontmatter タイトルや、`wrap` など Db に効く設定も保ちます。
-[fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
+Mermaid の frontmatter タイトルや、
+`wrap` など Db に効く設定も保ちます。 [fixture: gitgraph/div-frontmatter-main-branch-preserves-title]
 [fixture: sequence/div-invalid-frontmatter-preserves-wrap-directive]
 比較 Db がないことを明示し、Db を作り出したり、
 mermaid.js の拒否を仕様の拒否と扱ったりしません。
@@ -70,24 +71,27 @@ mermaid.js の拒否を仕様の拒否と扱ったりしません。
 ## 名前
 
 fixture の名前は、小文字のケバブケースで `<接頭辞>-<話題>` です。
-同じ話題に入力が多いときは、末尾に入力の SHA-256 の先頭 8 桁の 16 進数を付けます
-（収集の道具が、mermaid.js から取った入力に付けるのと同じ）。
+同じ話題に入力が多いときは、
+末尾に入力の SHA-256 の先頭 8 桁の 16 進数を付けます（収集の道具が、
+mermaid.js から取った入力に付けるのと同じ）。
 話題は、その入力が示すものの名前で、どの文の、どこに何があるかです。
 接頭辞は、その fixture で失敗したときに、何の失敗になるかを示します。
 
-- `lex-`: テキストを単位に分けるやり方。名前、文字列、コメント、
+- `lex-`: テキストを単位に分けるやり方。
+  名前、文字列、コメント、
   ディレクティブやコメントが始まれる場所（図種の字句の規則）。
 - `gram-`: 単位から作られる文とノード（文法と木）。
-- `db-`: Db の要約の値。何を持ち、値をどう作るか。
-- `tokens-`: 木のトークンとコメント。トークンやコメントの始まりと終わり、
-  範囲が除くもの。
+- `db-`: Db の要約の値。
+  何を持ち、値をどう作るか。
+- `tokens-`: 木のトークンとコメント。
+  トークンやコメントの始まりと終わり、範囲が除くもの。
 - `div-`: 既知の差異の印を持つ入力。
 - `config-`、`frontmatter-`、`directive-`、`comment-`、`entity-`、`detect-`、
   `header-`、`html-`、`error-`: 仕様の共通の規則（`common.md`）を、
   示す規則で分けたもの。
-- `spec-`、`docs-`、`demo-`: mermaid.js から取った入力（そのテスト、
-  文書、デモ）。収集の道具が名前を付ける
-  （下の「mermaid から取った入力」を参照）。
+- `spec-`、`docs-`、`demo-`: mermaid.js から取った入力（そのテスト、文書、
+  デモ）。
+  収集の道具が名前を付ける（下の「mermaid から取った入力」を参照）。
 
 1 つの入力が複数のものを示すときは、失敗が何についてのものになるかで、
 接頭辞を選びます。
@@ -119,15 +123,16 @@ parser のテストが走るまでどちらのファイルもありません。
 **記録した木は JSON です。**
 JSON が書けない数は、`JSON.stringify` が書くとおり、
 `ast.json` では `null` です。
-double に収まらない数（`Infinity` と `-Infinity`）を持つ
+double に収まらない数（`Infinity` と `-Infinity`）を持つ、
 NumericLiteral の `value` がそうで、ほかの欄はそのような数を持てないので、
 それ以外の欄にはありません。
 ノードの `raw` には書かれたとおりの数があります。
-`checkTree()` は、書かれたテキストがそのような数である NumericLiteral の
-`value` に、`null`、`Infinity`、`-Infinity` を認めます。
+`checkTree()` は、
+書かれたテキストがそのような数である NumericLiteral の `value` に、`null`、
+`Infinity`、`-Infinity` を認めます。
 ほかの `value` の `null` は認めません。
-`dbFromTree()` はノードのテキストから数を読むので、変換は要りません。
-[fixture: xychart/db-plot-values-overflow]
+`dbFromTree()` はノードのテキストから数を読むので、
+変換は要りません。 [fixture: xychart/db-plot-values-overflow]
 
 ## 道具のための export
 
@@ -135,8 +140,7 @@ NumericLiteral の `value` がそうで、ほかの欄はそのような数を�
 実装をテストするためのものではありません。
 
 - `@mmd-toolkit/tests`:
-  - `allowsUnsummarizedDb(diagram)`:
-    その区分で `db` が `null` でよいか（`common` だけ）。
+  - `allowsUnsummarizedDb(diagram)`: その区分で `db` が `null` でよいか（`common` だけ）。
   - `parseExpectedFile(json, label)`、`serializeExpectedFile(file)`、
     `fixtureSourceProblem(source)`: `expected.json` を正準形で読み、書き、
     検査する。
@@ -147,13 +151,11 @@ NumericLiteral の `value` がそうで、ほかの欄はそのような数を�
     テキストは解析しないので、mermaid.js が拒否するテキストの図種も分かる。
   - `mermaidVersion`: pin した mermaid.js の版。
   - `extractFrontmatterTitle(text)`:
-    mermaid.js と同じ方法で取り出したフロントマターの title
-    （[expected-results.ja.md](./expected-results.ja.md) を参照）。
+    mermaid.js と同じ方法で取り出したフロントマターの title （[expected-results.ja.md](./expected-results.ja.md) を参照）。
 
 ## コマンド
 
-`packages/tests` で実行します
-（または `pnpm --filter @mmd-toolkit/tests run ...`）。
+`packages/tests` で実行します（または `pnpm --filter @mmd-toolkit/tests run ...`）。
 
 ```sh
 # pin した mermaid から、全 expected.json、specified.json、
@@ -187,8 +189,8 @@ pnpm run fixtures:set-note notes.json --dry-run
   mermaid.js の結果を記録し、食い違いを一覧に出す。
   mermaid.js が拒否する項目も、エラーとともに一覧に出す。
 - `generate`（と `fixtures:check`）は、
-  `expected.json` が変わる fixture を 1 件ずつ、
-  どう変わったかと、fixture の `knownDivergence`（あるとき）とともに出す。
+  `expected.json` が変わる fixture を 1 件ずつ、どう変わったかと、
+  fixture の `knownDivergence`（あるとき）とともに出す。
   いくつも変わったときは、次のうち最初のものを出す。
   - `acceptance`:
     mermaid.js が受理していた入力を拒否するようになったか、その逆。
@@ -213,12 +215,12 @@ pnpm run fixtures:set-note notes.json --dry-run
   その図種に正規化関数がないときである。
   そのような fixture は、最後に理由とともに一覧に出し、ファイルはそのまま残し、
   実行を失敗させる。
-- `generate`、`add`、`add-many` は、
-  `Error`、`MermaidParseError`、`UnknownDiagramError`、`YAMLException`
-  以外のエラーで拒否された fixture を一覧に出す。
-  1 件ずつ、入力が原因であることを手で確かめる
-  （[expected-results.ja.md](./expected-results.ja.md)
-  の「拒否か、ブラウザの機能の欠如か」を参照）。
+- `generate`、`add`、`add-many` は、 `Error`、`MermaidParseError`、
+  `UnknownDiagramError`、
+  `YAMLException` 以外のエラーで拒否された fixture を一覧に出す。
+  1 件ずつ、
+  入力が原因であることを手で確かめる（[expected-results.ja.md](./expected-results.ja.md) の「拒否か、
+  ブラウザの機能の欠如か」を参照）。
 
 ワークフロー `NodeCI.yml` は `.github/workflows_bk/` にあり、
 今は有効なワークフローがありません。
@@ -279,26 +281,27 @@ mermaid.js が変わった後に集め直しても、新しい入力だけが足
 手で名前を付けます。
 
 チェックアウトの準備と収集の実行方法、
-mermaid.js が拒否する入力の確かめ方は
-[tools/README.ja.md](../../../tools/README.ja.md) にあります。
+mermaid.js が拒否する入力の確かめ方は [tools/README.ja.md](../../../tools/README.ja.md) にあります。
 
 ## 形で入力を選ぶ
 
-ほかの集まりが持つ入力（道具が失敗を見つけた入力で、千件を超えることもある）は
-多く、その多くは名前、文字列、ラベルのテキストだけが違います。
+ほかの集まりが持つ入力（道具が失敗を見つけた入力で、
+千件を超えることもある）は多く、その多くは名前、文字列、
+ラベルのテキストだけが違います。
 その中の 1 つが、ほかを代表します。
 どれが代表かは、
 `shapeOf(text, source)`（`src/fixture-shapes.ts`）の形が決めます。
 source は、記録した木（`ast.json`）か、parser が返す木から、
 `shapeSourceOf(tree)` で作ります。
-木のトークンと、フロントマターとデータブロックのノード
-（`DATA_BLOCK_NODE_TYPES`。spec の AST 文書の見出し）の範囲です。
+木のトークンと、
+フロントマターとデータブロックのノード（`DATA_BLOCK_NODE_TYPES`、
+spec の AST 文書の見出し）の範囲です。
 範囲はテキストから探し直さず、木から取ります。
 形は、トークンの列（それぞれ型とテキストを持つ）と、その間の文字の列です。
 
 - 作者が名前を付けたものを持つトークン、つまり `Identifier`、`RawText`、
-  `String`、`StringFragment` の語と数は、テキストに初めて出る順に番号を
-  付けます。
+  `String`、`StringFragment` の語と数は、
+  テキストに初めて出る順に番号を付けます。
   字、数字、下線の並びは `a1`、`a2`、…、数字だけの並びは `0_1`、`0_2`、…で、
   同じ綴りは同じ番号です。
   名前の綴りは読みを変えませんが、2 つの名前が同じかは変えます。
@@ -309,8 +312,9 @@ source は、記録した木（`ast.json`）か、parser が返す木から、
   空白は残ります。
   読みは、トークンがどこで始まりどこで終わるかにも左右されます。
   それはトークンの型とトークンの間の文字に現れます。
-  `subgraph a end`、改行、`;` では、名前のトークンが改行を取り
-  （`a end` と改行）、`subgraph a pend` では取りません。
+  `subgraph a end`、改行、`;` では、
+  名前のトークンが改行を取り（`a end` と改行）、
+  `subgraph a pend` では取りません。
   `classDef:#x;` は、テキストの並びの中にエンティティの `;` を持ち、
   `style:#f00;` は独立した `IgnoredSemicolon` を持ちます。
 - ほかのトークンは書かれたまま残ります。
@@ -321,29 +325,31 @@ source は、記録した木（`ast.json`）か、parser が返す木から、
   その字はすべて値で読まれます。
 - トークンの間の文字は、すべて書かれたまま残ります。
   空白の数、U+2028 と U+2029、コメント、改行の種類です。
-  フロントマターとデータブロック `@{ … }` の中のトークンも、書かれたまま
-  残ります。そこの語は値だからです
-  （`"wrap": true` と `"wrap": false`、`shape: rect` と `shape: foo`）。
+  フロントマターとデータブロック `@{ … }` の中のトークンも、
+  書かれたまま残ります。
+  そこの語は値だからです（`"wrap": true` と `"wrap": false`、
+  `shape: rect` と `shape: foo`）。
   範囲はノードのものなので、データブロックの中のディレクティブにある `}` や、
   フロントマターの前のバイトオーダーマークも、木の読みのとおりになります。
 - 木のないテキスト（parser が拒否するもの）は、語と数に番号を付けるだけです。
 
-例外は 3 つで、読みが語が集合に入るかで決まり、それがどのトークンにも
-現れない所です。そのトークンは、書かれたまま残ります。
+例外は 3 つで、読みが語が集合に入るかで決まり、
+それがどのトークンにも現れない所です。
+そのトークンは、書かれたまま残ります。
 いま知られている所で、それぞれ、それを示す入力で見つかりました。
 この類の所は、その入力とともに足します。
 語の一覧は、所を見つける方法ではありません。
 
-- `box` の直後のテキストの並び。CSS の色名なら色、ほかの語なら名前になります。
+- `box` の直後のテキストの並び。
+  CSS の色名なら色、ほかの語なら名前になります。
   `box red` は fill が `red`、`box team` は名前が `team` です。
 - `linkStyle` の文の中のテキストの並び（`;` か行の終わりまで）。
-  mermaid.js は、一覧のどの style も `fill` でないとき、辺の style に
-  `fill:none` を足します。
+  mermaid.js は、一覧のどの style も `fill` でないとき、
+  辺の style に `fill:none` を足します。
   `linkStyle 0 fill:red` は辺の style が `fill:red`、
   `linkStyle 0 color:red` は `color:red` と `fill:none` です。
-- テキスト全体が、ノードを作らない状態の id であるトークン
-  （`</choice>`、`</join></fork>`。`src/db-from-tree/state.ts` の
-  `IDS_WITHOUT_NODE` と、
+- テキスト全体が、ノードを作らない状態の id であるトークン（`</choice>`、
+  `</join></fork>`。 `src/db-from-tree/state.ts` の `IDS_WITHOUT_NODE` と、
   [db-from-tree/state.ja.md](./db-from-tree/state.ja.md) のとおり）。
   `state </join></fork> <<fork>>` には fork の状態がなく、
   `state </x></fork> <<fork>>` にはあります。
@@ -364,7 +370,8 @@ source は、記録した木（`ast.json`）か、parser が返す木から、
 それだけの fixture にします。
 
 parser の最初の集まりの入力は、テキストだけの形で選びました。
-字と数字の並びを 1 つの印にし、その入力とコーパスについて parser が
-`Keyword` トークンとして出した語は、小文字にして残しました。
+字と数字の並びを 1 つの印にし、
+その入力とコーパスについて parser が `Keyword` トークンとして出した語は、
+小文字にして残しました。
 この形は、語の大小を畳み、トークンを見ず、2 つの名前が同じかも残しませんでした。
 その fixture はそのままにし、この後の集まりは上の形を使います。

@@ -24,14 +24,15 @@ gitgraph/lex-string-escapes]
 | `textBeforeColon`     | list of GitgraphIgnoredText | Forms before a separated colon.      |
 | `body`                | list of GitgraphBodyItem    | Written statements and hidden forms. |
 
-Child fields: textBeforeHeader, textBeforeDirection, textBeforeColon, body.
-Range: the first retained pre-header form, or the header word if none, through
-the last written header/body component. Exclude unrelated outside padding. There
-is no header node, inferred direction, colon flag or effective-title field.
-[fixture: gitgraph/header-only] [fixture: gitgraph/header-tb] [fixture:
-gitgraph/header-colon] [fixture: gitgraph/header-spaced-colon] [fixture:
-gitgraph/lex-yaml-after-comment] [fixture: gitgraph/header-hidden-before-colon]
-[fixture: gitgraph/header-hidden-before-direction]
+Child fields: `textBeforeHeader`, `textBeforeDirection`, `textBeforeColon`,
+`body`. Range: the first retained pre-header form, or the header word if none,
+through the last written header/body component. Exclude unrelated outside
+padding. There is no header node, inferred direction, colon flag or
+effective-title field. [fixture: gitgraph/header-only] [fixture:
+gitgraph/header-tb] [fixture: gitgraph/header-colon] [fixture:
+gitgraph/header-spaced-colon] [fixture: gitgraph/lex-yaml-after-comment]
+[fixture: gitgraph/header-hidden-before-colon] [fixture:
+gitgraph/header-hidden-before-direction]
 
 textBeforeHeader contains only native hidden forms remaining from the detection
 point, including a retained YAML block and second-scan directives.
@@ -76,11 +77,11 @@ gitgraph/comment-before-header]
 | `textAfter` | list of GitgraphIgnoredText | Hidden suffix before EOL. |
 
 Options are GitgraphIdOption, GitgraphMessageOption, GitgraphTagOption or
-GitgraphTypeOption, in source order. Child fields: options, textAfter. Range:
-commit through its last option or hidden suffix, or the keyword alone; exclude
-EOL. An empty option list is valid. [fixture: gitgraph/header-commit-inline]
-[fixture: gitgraph/gram-commit-repeated-options] [fixture:
-gitgraph/lex-hidden-directive-commit-eof]
+GitgraphTypeOption, in source order. Child fields: `options`, `textAfter`.
+Range: commit through its last option or hidden suffix, or the keyword alone;
+exclude EOL. An empty option list is valid. [fixture:
+gitgraph/header-commit-inline] [fixture: gitgraph/gram-commit-repeated-options]
+[fixture: gitgraph/lex-hidden-directive-commit-eof]
 
 ### GitgraphBranchStatement
 
@@ -91,13 +92,14 @@ gitgraph/lex-hidden-directive-commit-eof]
 | `order`          | GitgraphOrderOption or null | Optional branch order.    |
 | `textAfter`      | list of GitgraphIgnoredText | Hidden suffix before EOL. |
 
-Child fields: textBeforeName, name, order, textAfter. Range: branch through the
-last name/order/suffix component, excluding EOL. order is null when absent. The
-name accepts either quote style, even an empty or whitespace-only quoted name;
-never replace its written form with the effective comparison name. [fixture:
-gitgraph/gram-branch-order] [fixture: gitgraph/gram-branch-empty] [fixture:
-gitgraph/gram-branch-whitespace] [fixture: gitgraph/gram-branch-single-quotes]
-[fixture: gitgraph/lex-hidden-directive-before-branch-name] [fixture:
+Child fields: `textBeforeName`, `name`, `order`, `textAfter`. Range: branch
+through the last name/order/suffix component, excluding EOL. order is null when
+absent. The name accepts either quote style, even an empty or whitespace-only
+quoted name; never replace its written form with the effective comparison name.
+[fixture: gitgraph/gram-branch-order] [fixture: gitgraph/gram-branch-empty]
+[fixture: gitgraph/gram-branch-whitespace] [fixture:
+gitgraph/gram-branch-single-quotes] [fixture:
+gitgraph/lex-hidden-directive-before-branch-name] [fixture:
 gitgraph/lex-branch-between-name-order-hidden]
 
 ### GitgraphCheckoutStatement
@@ -109,10 +111,10 @@ gitgraph/lex-branch-between-name-order-hidden]
 | `branch`           | Identifier or StringLiteral | Written branch reference. |
 | `textAfter`        | list of GitgraphIgnoredText | Hidden suffix before EOL. |
 
-Child fields: textBeforeBranch, branch, textAfter. Range: checkout or switch
-through the branch or last hidden suffix, excluding EOL. keyword preserves which
-alias was written and is not a child. [fixture: gitgraph/gram-checkout]
-[fixture: gitgraph/gram-switch] [fixture:
+Child fields: `textBeforeBranch`, `branch`, `textAfter`. Range: checkout or
+switch through the branch or last hidden suffix, excluding EOL. keyword
+preserves which alias was written and is not a child. [fixture:
+gitgraph/gram-checkout] [fixture: gitgraph/gram-switch] [fixture:
 gitgraph/lex-hidden-directive-before-checkout-name] [fixture:
 gitgraph/lex-hidden-directive-checkout-eof]
 
@@ -126,10 +128,10 @@ gitgraph/lex-hidden-directive-checkout-eof]
 | `textAfter`        | list of GitgraphIgnoredText | Hidden suffix before EOL.   |
 
 Options are GitgraphIdOption, GitgraphTagOption or GitgraphTypeOption. Child
-fields: textBeforeBranch, branch, options, textAfter. Range: merge through the
-last branch/option/suffix component, excluding EOL. Keep repeated id and type
-assignments separately. [fixture: gitgraph/gram-merge-options] [fixture:
-gitgraph/gram-merge-repeated-options] [fixture:
+fields: `textBeforeBranch`, `branch`, `options`, `textAfter`. Range: merge
+through the last branch/option/suffix component, excluding EOL. Keep repeated id
+and type assignments separately. [fixture: gitgraph/gram-merge-options]
+[fixture: gitgraph/gram-merge-repeated-options] [fixture:
 gitgraph/lex-hidden-directive-before-merge-name] [fixture:
 gitgraph/lex-hidden-directive-merge-eof]
 
@@ -141,9 +143,9 @@ gitgraph/lex-hidden-directive-merge-eof]
 | `textAfter` | list of GitgraphIgnoredText | Hidden suffix before EOL. |
 
 Options are GitgraphIdOption, GitgraphParentOption or GitgraphTagOption. Child
-fields: options, textAfter. Range: cherry-pick through the last option or hidden
-suffix, excluding EOL. The written grammar permits no options, but semantic
-acceptance still requires an effective source id. [fixture:
+fields: `options`, `textAfter`. Range: cherry-pick through the last option or
+hidden suffix, excluding EOL. The written grammar permits no options, but
+semantic acceptance still requires an effective source id. [fixture:
 gitgraph/gram-cherry-pick-repeated-options] [fixture:
 gitgraph/lex-hidden-directive-cherry-pick-eof] [fixture:
 gitgraph/db-cherry-pick-missing]
@@ -156,11 +158,11 @@ gitgraph/db-cherry-pick-missing]
 | `textBeforeValue` | list of GitgraphIgnoredText | Forms after introducer.   |
 | `value`           | StringLiteral               | Written id value.         |
 
-Child fields: textBefore, textBeforeValue, value. Range: the first textBefore
-form, or the `id` word if none, through the closing quote of its value.
-textBefore holds hidden forms between the preceding component and this option;
-textBeforeValue holds forms after the complete introducer. A missing gap is
-empty. [fixture: gitgraph/gram-commit-repeated-options] [fixture:
+Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
+textBefore form, or the `id` word if none, through the closing quote of its
+value. textBefore holds hidden forms between the preceding component and this
+option; textBeforeValue holds forms after the complete introducer. A missing gap
+is empty. [fixture: gitgraph/gram-commit-repeated-options] [fixture:
 gitgraph/lex-hidden-directive-between-option-value] [fixture:
 gitgraph/lex-option-between-options-hidden]
 
@@ -178,11 +180,11 @@ gitgraph/lex-string-escapes]
 | `textBeforeValue` | list of GitgraphIgnoredText | Forms after introducer.              |
 | `value`           | StringLiteral               | Written message value.               |
 
-Child fields: textBefore, textBeforeValue, value. Range: the first textBefore
-form, or the option word/opening quote if none, through the end of its value.
-textBefore holds hidden forms between the preceding component and this option;
-textBeforeValue holds forms after the complete introducer. A missing gap is
-empty. [fixture: gitgraph/gram-commit-repeated-options] [fixture:
+Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
+textBefore form, or the option word/opening quote if none, through the end of
+its value. textBefore holds hidden forms between the preceding component and
+this option; textBeforeValue holds forms after the complete introducer. A
+missing gap is empty. [fixture: gitgraph/gram-commit-repeated-options] [fixture:
 gitgraph/lex-option-before-message-hidden] [fixture:
 gitgraph/lex-hidden-between-id-message-global-control]
 
@@ -201,11 +203,11 @@ gitgraph/lex-hidden-between-id-message-global-control]
 | `textBeforeValue` | list of GitgraphIgnoredText | Forms after introducer.   |
 | `value`           | StringLiteral               | Written tag value.        |
 
-Child fields: textBefore, textBeforeValue, value. Range: the first textBefore
-form, or the `tag` word if none, through the closing quote of its value.
-textBefore holds hidden forms between the preceding component and this option;
-textBeforeValue holds forms after the complete introducer. A missing gap is
-empty. [fixture: gitgraph/gram-cherry-pick-tags] [fixture:
+Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
+textBefore form, or the `tag` word if none, through the closing quote of its
+value. textBefore holds hidden forms between the preceding component and this
+option; textBeforeValue holds forms after the complete introducer. A missing gap
+is empty. [fixture: gitgraph/gram-cherry-pick-tags] [fixture:
 gitgraph/gram-commit-empty-values] [fixture:
 gitgraph/lex-option-between-options-hidden]
 
@@ -222,8 +224,8 @@ gitgraph/lex-string-escapes]
 | `textBeforeValue` | list of GitgraphIgnoredText  | Forms after introducer.   |
 | `value`           | NORMAL, REVERSE or HIGHLIGHT | Written type value.       |
 
-Child fields: textBefore, textBeforeValue. Range: the first textBefore form, or
-the `type` word if none, through the end of the written NORMAL, REVERSE or
+Child fields: `textBefore`, `textBeforeValue`. Range: the first textBefore form,
+or the `type` word if none, through the end of the written NORMAL, REVERSE or
 HIGHLIGHT keyword. textBefore holds hidden forms between the preceding component
 and this option; textBeforeValue holds forms after the complete introducer. A
 missing gap is empty. [fixture: gitgraph/gram-merge-repeated-options] [fixture:
@@ -243,11 +245,11 @@ gitgraph/lex-type-longer-reference-control] [fixture: gitgraph/gram-all-fields]
 | `textBeforeValue` | list of GitgraphIgnoredText | Forms after introducer.   |
 | `value`           | StringLiteral               | Written parent value.     |
 
-Child fields: textBefore, textBeforeValue, value. Range: the first textBefore
-form, or the `parent` word if none, through the closing quote of its value.
-textBefore holds hidden forms between the preceding component and this option;
-textBeforeValue holds forms after the complete introducer. A missing gap is
-empty. [fixture: gitgraph/gram-cherry-pick-merge-parent] [fixture:
+Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
+textBefore form, or the `parent` word if none, through the closing quote of its
+value. textBefore holds hidden forms between the preceding component and this
+option; textBeforeValue holds forms after the complete introducer. A missing gap
+is empty. [fixture: gitgraph/gram-cherry-pick-merge-parent] [fixture:
 gitgraph/gram-cherry-pick-repeated-options] [fixture:
 gitgraph/lex-parent-global-before-colon]
 
@@ -264,11 +266,11 @@ gitgraph/gram-cherry-pick-merge-parent]
 | `textBeforeValue` | list of GitgraphIgnoredText | Forms after introducer.   |
 | `value`           | NumericLiteral              | Written order value.      |
 
-Child fields: textBefore, textBeforeValue, value. Range: the first textBefore
-form, or the `order` word if none, through the last digit of its value.
-textBefore holds hidden forms between the preceding component and this option;
-textBeforeValue holds forms after the complete introducer. A missing gap is
-empty. [fixture: gitgraph/gram-branch-order] [fixture:
+Child fields: `textBefore`, `textBeforeValue`, `value`. Range: the first
+textBefore form, or the `order` word if none, through the last digit of its
+value. textBefore holds hidden forms between the preceding component and this
+option; textBeforeValue holds forms after the complete introducer. A missing gap
+is empty. [fixture: gitgraph/gram-branch-order] [fixture:
 gitgraph/lex-branch-between-name-order-hidden] [fixture:
 gitgraph/lex-hidden-directive-before-order] [fixture: gitgraph/number-overflow]
 
@@ -306,15 +308,16 @@ gitgraph/lex-title-bare-hidden-tail] [fixture:
 gitgraph/lex-title-tab-hidden-tail] [fixture: gitgraph/title-tab] [fixture:
 gitgraph/title-conversion] [fixture: gitgraph/common-title-only-whitespace]
 
-Child fields: value, textAfter. Range: title through its last value character,
-or the keyword/colon/closing brace that completes its empty form, extended
-through the last textAfter form. Exclude EOL and unrelated outside padding.
-Hidden forms after a visible EOL are body items, not suffixes. Keep repeated and
-empty common statements. [fixture: gitgraph/lex-title-bare-hidden-tail]
-[fixture: gitgraph/lex-title-tab-hidden-tail] [fixture: gitgraph/title-tab]
-[fixture: gitgraph/title-conversion] [fixture:
-gitgraph/common-title-only-whitespace] [fixture: gitgraph/common-third-values]
-[fixture: gitgraph/lex-hidden-directive-title-eof]
+Child fields: `value`, `textAfter`. Range: title through its last value
+character, or the keyword/colon/closing brace that completes its empty form,
+extended through the last textAfter form. Exclude EOL and unrelated outside
+padding. Hidden forms after a visible EOL are body items, not suffixes. Keep
+repeated and empty common statements. [fixture:
+gitgraph/lex-title-bare-hidden-tail] [fixture:
+gitgraph/lex-title-tab-hidden-tail] [fixture: gitgraph/title-tab] [fixture:
+gitgraph/title-conversion] [fixture: gitgraph/common-title-only-whitespace]
+[fixture: gitgraph/common-third-values] [fixture:
+gitgraph/lex-hidden-directive-title-eof]
 
 ### GitgraphAccTitleStatement
 
@@ -330,7 +333,7 @@ gitgraph/lex-acctitle-empty-hidden-tail] [fixture:
 gitgraph/common-acctitle-only-whitespace] [fixture:
 gitgraph/acctitle-unicode-trim]
 
-Child fields: value, textAfter. Range: accTitle through its last value
+Child fields: `value`, `textAfter`. Range: accTitle through its last value
 character, or the keyword/colon/closing brace that completes its empty form,
 extended through the last textAfter form. Exclude EOL and unrelated outside
 padding. Hidden forms after a visible EOL are body items, not suffixes. Keep
@@ -354,7 +357,7 @@ gitgraph/lex-description-line-null] [fixture:
 gitgraph/common-accdescr-only-whitespace] [fixture:
 gitgraph/accdescr-unicode-trim]
 
-Child fields: value, textAfter. Range: accDescr through its last value
+Child fields: `value`, `textAfter`. Range: accDescr through its last value
 character, or the keyword/colon/closing brace that completes its empty form,
 extended through the last textAfter form. Exclude EOL and unrelated outside
 padding. Hidden forms after a visible EOL are body items, not suffixes. Keep
@@ -380,7 +383,7 @@ gitgraph/lex-description-empty-hidden-tail] [fixture: gitgraph/accdescr-block]
 gitgraph/lex-description-block-only-directive] [fixture:
 gitgraph/lex-description-block-only-comment]
 
-Child fields: value, textAfter. Range: accDescr through its last value
+Child fields: `value`, `textAfter`. Range: accDescr through its last value
 character, or the keyword/colon/closing brace that completes its empty form,
 extended through the last textAfter form. Exclude EOL and unrelated outside
 padding. Hidden forms after a visible EOL are body items, not suffixes. Keep

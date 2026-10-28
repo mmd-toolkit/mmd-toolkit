@@ -1,3 +1,4 @@
+import { ReferencedNames } from "./referenced-names.ts"
 import type { NumericLiteral, StringLiteral } from "../../ast.ts"
 import type {
   WardleyCoordinates,
@@ -43,6 +44,15 @@ export function checkWardleyAcceptance(
     return value
   }
 
+  const references = new ReferencedNames(
+    diagram.body.flatMap((statement) => {
+      if (statement.type === "WardleyPipelineStatement")
+        return [comparisonName(statement.parent)]
+      if (statement.type === "WardleyEvolveStatement")
+        return [comparisonName(statement.component)]
+      return []
+    }),
+  )
   const nodes = new Map<string, { visibility: number; evolution: number }>()
   let boxChecked = false
   for (const statement of diagram.body) {
@@ -84,12 +94,13 @@ export function checkWardleyAcceptance(
         statement.parent.range,
         statement.parent.loc,
       )
+    const children = references.childrenOf(parentName)
     for (const child of statement.body) {
       if (child.type !== "WardleyPipelineComponent") continue
-      nodes.set(`${parentName}_${comparisonName(child.name)}`, {
-        visibility: parent.visibility,
-        evolution: checkedCoordinate(child.evolution),
-      })
+      const id = children.nameOf(comparisonName(child.name))
+      const evolution = checkedCoordinate(child.evolution)
+      if (id !== undefined)
+        nodes.set(id, { visibility: parent.visibility, evolution })
     }
   }
   for (const statement of diagram.body)

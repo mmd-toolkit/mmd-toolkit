@@ -1,6 +1,7 @@
 import type { TreeRange } from "../db-from-tree/tree.ts"
 import { sourceCutsOf } from "../db-from-tree/converted-text.ts"
 import type { CheckedRoot } from "./types.ts"
+import { RangeIndex } from "../range-index.ts"
 
 /**
  * ast.md, Nodes: the written text of a range of the source: its text without
@@ -59,10 +60,13 @@ export class WrittenText {
 
   /** The written text of `range`, without the characters in `leftOut`, such as the delimiters of a string. */
   public of(range: TreeRange, leftOut: readonly TreeRange[] = []): string {
+    const excluded = new RangeIndex(
+      leftOut.map((excludedRange) => ({ range: excludedRange })),
+    )
     let written = ""
     for (let offset = range[0]; offset < range[1]; offset++) {
       if (this.leftOut[offset] === 1) continue
-      if (leftOut.some(([from, to]) => from <= offset && offset < to)) continue
+      if (excluded.hasContaining([offset, offset + 1])) continue
       written += this.text[offset]
     }
     return written

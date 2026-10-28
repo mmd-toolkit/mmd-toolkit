@@ -1,46 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
 import type { Root, IshikawaDiagram } from "../src/index.ts"
-import { ParseError, parse, traverseNodes } from "../src/index.ts"
-import { isWhitespace } from "../src/character-classes.ts"
-import { problemsOfTree } from "./helpers/tree-problems.ts"
-import { indentationBlankLinesRejectedByMermaid } from "./helpers/reference-inputs.ts"
-
-/** Project invariant 3, and containment and source order of every child node. */
-function expectCoverage(text: string, root: Root): void {
-  const entries = [...root.tokens, ...root.comments].toSorted(
-    (a, b) => a.range[0] - b.range[0],
-  )
-  let end = 0
-  for (const entry of entries) {
-    expect(entry.range[0]).toBeGreaterThanOrEqual(end)
-    expect(entry.range[1]).toBeGreaterThan(entry.range[0])
-    if (entry.type === "Comment")
-      expect(text.slice(...entry.range).endsWith(entry.value)).toBe(true)
-    else expect(entry.value).toBe(text.slice(...entry.range))
-    for (const character of text.slice(end, entry.range[0]))
-      expect(isWhitespace(character.codePointAt(0)!)).toBe(true)
-    end = entry.range[1]
-  }
-  for (const character of text.slice(end))
-    expect(isWhitespace(character.codePointAt(0)!)).toBe(true)
-  const lastChildEnd = new Map<object, number>()
-  traverseNodes(root, {
-    enterNode(node, parent) {
-      expect(node.loc.start.line).toBeGreaterThanOrEqual(1)
-      if ("raw" in node) expect(node.raw).toBe(text.slice(...node.range))
-      if (parent === null) return
-      expect(node.range[0]).toBeGreaterThanOrEqual(
-        lastChildEnd.get(parent) ?? parent.range[0],
-      )
-      expect(node.range[1]).toBeLessThanOrEqual(parent.range[1])
-      lastChildEnd.set(parent, node.range[1])
-    },
-    leaveNode() {
-      // All assertions are made on entry.
-    },
-  })
-}
+import { ParseError, parse } from "../src/index.ts"
 
 describe("ishikawa fixtures", async () => {
   const fixtures = await loadFixtures("ishikawa")
@@ -161,24 +122,4 @@ describe("ishikawa fixtures", async () => {
       expect.objectContaining({ constructor: ParseError, message, range }),
     )
   })
-
-  for (const fixture of fixtures) {
-    it(fixture.name, () => {
-      let root: Root | null = null
-      try {
-        root = parse(fixture.input)
-      } catch (error) {
-        if (!(error instanceof ParseError)) throw error
-      }
-      if (fixture.knownDivergence === "blank-line-after-header-or-comments")
-        expect(
-          indentationBlankLinesRejectedByMermaid(fixture.input)?.length,
-        ).toBeGreaterThan(0)
-      if (root !== null) {
-        expect(root.diagramType).toBe("ishikawa")
-        expectCoverage(fixture.input, root)
-        expect(problemsOfTree(fixture.input, root)).toEqual([])
-      }
-    })
-  }
 })

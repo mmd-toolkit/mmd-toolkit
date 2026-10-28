@@ -1,20 +1,11 @@
 import { describe, expect, it } from "vitest"
-import { loadFixtures } from "../src/index.ts"
+import { loadFixture } from "../src/index.ts"
 import { runMermaidWithEmbeddedData } from "../src/mermaid.ts"
 import { normalizeUsecase } from "../src/normalizers/usecase.ts"
 
-/** A corpus input and its recorded result, without inventing another text. */
-async function fixtureNamed(name: string) {
-  const fixture = (await loadFixtures("usecase")).find(
-    (candidate) => candidate.name === name,
-  )
-  if (fixture === undefined) throw new Error(`missing usecase/${name}`)
-  return fixture
-}
-
 describe("usecase summary", () => {
   it("keeps model fields and omits layout, AST and generated ids", async () => {
-    const fixture = await fixtureNamed("db-all-fields")
+    const fixture = await loadFixture("usecase", "db-all-fields")
     const { outcome, embedded } = await runMermaidWithEmbeddedData(
       fixture.input,
     )
@@ -169,8 +160,8 @@ describe("usecase summary", () => {
   })
 
   it("clears all records after another diagram was parsed", async () => {
-    const full = await fixtureNamed("db-all-fields")
-    const empty = await fixtureNamed("header-lf")
+    const full = await loadFixture("usecase", "db-all-fields")
+    const empty = await loadFixture("usecase", "header-lf")
     await runMermaidWithEmbeddedData(full.input)
     expect((await runMermaidWithEmbeddedData(empty.input)).outcome).toEqual(
       empty.expected,
@@ -182,7 +173,7 @@ describe("usecase summary", () => {
   })
 
   it("records JSON effects in authored order independently of Db map order", async () => {
-    const fixture = await fixtureNamed("db-json-source-map-order")
+    const fixture = await loadFixture("usecase", "db-json-source-map-order")
     const { outcome, embedded } = await runMermaidWithEmbeddedData(
       fixture.input,
     )

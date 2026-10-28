@@ -12,22 +12,19 @@
 
 treemap の図は、`title` が設定するタイトルと、
 `accTitle` が設定するアクセシブルなタイトルを 1 つずつ持つ。
-後の文は、前に設定したタイトルをエラーなしに置き換え、
-前のタイトルは失われる。
+後の文は、前に設定したタイトルをエラーなしに置き換え、前のタイトルは失われる。
 
 ## 規則の詳細
 
 この規則は、前の `title` が設定した空でないタイトルを変える `title` 文と、
-前の `accTitle` が設定した空でないアクセシブルなタイトルを変える
-`accTitle` 文を報告する。
+前の `accTitle` が設定した空でないアクセシブルなタイトルを変える `accTitle` 文を報告する。
 対象の図種は `treemap` である。
 
 `title first` と `title second` の後では、タイトルは `second` であり、
 `accTitle` も同じである。
-2 つのタイトルは別の値であり、`title first` と `accTitle: second` は
-両方を設定し、どちらも報告しない。
-文字のない `title` と `accTitle:`、または空白だけのものは、
-タイトルを空にする。
+2 つのタイトルは別の値であり、
+`title first` と `accTitle: second` は両方を設定し、どちらも報告しない。
+文字のない `title` と `accTitle:`、または空白だけのものは、タイトルを空にする。
 `title first` の後では `first` が失われるので報告する。
 次の行をタイトルとして取ることはない。
 空のタイトルの後の文は何も失わず、報告しない。
@@ -47,8 +44,7 @@ treemap の図は、`title` が設定するタイトルと、
 `b` を置き換えるので報告する。
 タイトルはそのほかは書いたとおりに比べる。
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-タイトルを読む前にほかの文字に変えるので、
-それだけが違う 2 つのタイトルは、
+タイトルを読む前にほかの文字に変えるので、それだけが違う 2 つのタイトルは、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
 `title` 文と `accTitle` 文はそれぞれ 1 つにする。
@@ -82,12 +78,11 @@ treemap
 
 ## 背景
 
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L60)
-は、タイトルの両端の空白を除き、
-2 つ以上の空白やタブの連なりを 1 つの空白にする。
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L60) は、
+タイトルの両端の空白を除き、 2 つ以上の空白やタブの連なりを 1 つの空白にする。
 パーサーは種類ごとに最後のタイトルを保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
-は、それが空でないときだけそれを設定する。
+[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14) は、
+それが空でないときだけそれを設定する。
 
 <!-- begin auto-generated rule resources -->
 

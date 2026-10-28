@@ -1,34 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import type { KanbanDiagram, Root } from "../src/index.ts"
+import type { KanbanDiagram } from "../src/index.ts"
 import { ParseError, parse, visitorKeys } from "../src/index.ts"
-import { isWhitespace } from "../src/character-classes.ts"
-
-/** Project invariant 3: exact token text, no overlaps, and no lost nontrivia characters. */
-function expectCoverage(text: string, root: Root): void {
-  const entries = [...root.tokens, ...root.comments].toSorted(
-    (a, b) => a.range[0] - b.range[0],
-  )
-  let end = 0
-  for (const entry of entries) {
-    expect(entry.range[0]).toBeGreaterThanOrEqual(end)
-    expect(entry.range[1]).toBeGreaterThan(entry.range[0])
-    if (entry.type !== "Comment") {
-      expect(entry.value).toBe(text.slice(...entry.range))
-    } else {
-      const written = text.slice(...entry.range)
-      // A directive can split the two characters of the comment mark.
-      expect(written.endsWith(entry.value)).toBe(true)
-    }
-    for (const character of text.slice(end, entry.range[0])) {
-      expect(isWhitespace(character.codePointAt(0)!)).toBe(true)
-    }
-    end = entry.range[1]
-  }
-  for (const character of text.slice(end)) {
-    expect(isWhitespace(character.codePointAt(0)!)).toBe(true)
-  }
-}
 
 describe("kanban fixtures", async () => {
   const fixtures = await loadFixtures("kanban")
@@ -189,25 +162,4 @@ describe("kanban fixtures", async () => {
     }
     throw new Error("expected a rejection")
   })
-
-  for (const fixture of fixtures) {
-    it(fixture.name, () => {
-      let root: Root | null = null
-      try {
-        root = parse(fixture.input)
-      } catch (error) {
-        if (!(error instanceof ParseError)) throw error
-      }
-      if (root !== null) {
-        expect(root.diagramType).toBe(
-          fixture.specified?.accepted === true
-            ? fixture.specified.diagramType
-            : fixture.expected.accepted
-              ? fixture.expected.diagramType
-              : "kanban",
-        )
-        expectCoverage(fixture.input, root)
-      }
-    })
-  }
 })

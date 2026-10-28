@@ -8,7 +8,7 @@ import type { EmbeddedValues } from "../src/mermaid.ts"
 import {
   cssSupportsColor,
   embeddedValuesOf,
-  loadFixtures,
+  loadFixture,
 } from "../src/index.ts"
 import type { Kit } from "./check-tree-built.ts"
 import {
@@ -480,10 +480,7 @@ describe("railroad Db from hand-built trees", () => {
     ])
   })
   it("uses numberOrText for non-finite ABNF bounds", async () => {
-    const fixture = (await loadFixtures("railroad")).find(
-      (f) => f.name === "abnf-db-repeat-overflow",
-    )
-    if (fixture === undefined) throw new Error("missing fixed overflow fixture")
+    const fixture = await loadFixture("railroad", "abnf-db-repeat-overflow")
     const raw = fixture.input.slice(
       fixture.input.indexOf("r = ") + 4,
       fixture.input.indexOf('"a"'),
@@ -869,11 +866,7 @@ describe("railroad Db from hand-built trees", () => {
   it.each(replacementCases)(
     "replaces the completed published expression: $name",
     async ({ name, dialect, ruleName, operator, definition }) => {
-      const fixture = (await loadFixtures("railroad")).find(
-        (entry) => entry.name === name,
-      )
-      expect(fixture).toBeDefined()
-      if (fixture === undefined) throw new Error(`missing fixture ${name}`)
+      const fixture = await loadFixture("railroad", name)
       expect(fixture.expected.accepted).toBe(true)
       if (!fixture.expected.accepted)
         throw new Error(`rejected fixture ${name}`)

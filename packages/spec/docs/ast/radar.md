@@ -31,13 +31,13 @@ radar/db-number-overflow] [fixture: radar/db-number-rounded]
 | `textBeforeColon`  | list of RadarIgnoredText | Forms before a separate header colon. |
 | `body`             | list of RadarBodyItem    | Written statements and hidden forms.  |
 
-Child fields: textBeforeHeader, textBeforeColon, body. Range: the first retained
-pre-header form, or the header if none, through the last written header/body
-form; exclude outside padding and line breaks. Root.diagramType is radar. The
-three header spellings stay in keyword/punctuation syntax, without a header
-node, alias field or colon flag. [fixture: radar/header-colon-inline] [fixture:
-radar/header-separated-colon] [fixture: radar/header-colon-hidden] [fixture:
-radar/detect-secondscan-native] [fixture:
+Child fields: `textBeforeHeader`, `textBeforeColon`, `body`. Range: the first
+retained pre-header form, or the header if none, through the last written
+header/body form; exclude outside padding and line breaks. Root.diagramType is
+radar. The three header spellings stay in keyword/punctuation syntax, without a
+header node, alias field or colon flag. [fixture: radar/header-colon-inline]
+[fixture: radar/header-separated-colon] [fixture: radar/header-colon-hidden]
+[fixture: radar/detect-secondscan-native] [fixture:
 radar/detect-yaml-before-secondscan-native] [fixture: radar/gram-written-tree]
 
 textBeforeHeader holds native hidden-yaml and second-scan hidden-directive forms
@@ -77,7 +77,7 @@ radar/lex-hidden-yaml-two-nonempty]
 | ------ | ----------------- | --------------------------------------- |
 | `axes` | list of RadarAxis | Written comma group; at least one axis. |
 
-Child fields: axes. Range: the axis keyword through the end of its last
+Child fields: `axes`. Range: the axis keyword through the end of its last
 RadarAxis, including that member's suffix but excluding EOL and outside padding.
 One axis keyword owns one nonempty comma-separated group. Separate axis keywords
 make separate statements, even on the same line. Commas remain punctuation, not
@@ -91,7 +91,7 @@ radar/lex-hidden-axis-comma] [fixture: radar/gram-axis-trailing-comma]
 | -------- | ------------------ | ---------------------------------------- |
 | `curves` | list of RadarCurve | Written comma group; at least one curve. |
 
-Child fields: curves. Range: the curve keyword through the end of its last
+Child fields: `curves`. Range: the curve keyword through the end of its last
 RadarCurve, including its suffix, excluding EOL and outside padding. Each
 written curve keyword starts a new group. Keep all curves, including duplicate
 names and curves with different entry forms within this group. Commas remain
@@ -105,9 +105,9 @@ radar/gram-curve-kind-per-curve] [fixture: radar/gram-curve-trailing-comma]
 | --------- | ------------------- | ----------------------------------------- |
 | `options` | list of RadarOption | Written comma group; at least one option. |
 
-Child fields: options. Range: the first option keyword through the last option,
-including its suffix but excluding EOL and outside padding. RadarOption is
-RadarShowLegendOption, RadarTicksOption, RadarMaxOption, RadarMinOption or
+Child fields: `options`. Range: the first option keyword through the last
+option, including its suffix but excluding EOL and outside padding. RadarOption
+is RadarShowLegendOption, RadarTicksOption, RadarMaxOption, RadarMinOption or
 RadarGraticuleOption. Keep every repeated assignment and comma. An adjacent
 option without a comma begins a different RadarOptionsStatement; no
 effective-options object replaces the list. [fixture: radar/gram-written-tree]
@@ -128,12 +128,12 @@ radar/gram-option-bool-adjacent] [fixture: radar/lex-hidden-option-comma]
 | `textBeforeLabelClose` | list of RadarIgnoredText | Forms before the closing bracket.       |
 | `textAfter`            | list of RadarIgnoredText | Suffix before comma/next statement/EOL. |
 
-Child fields: textBefore, name, textBeforeLabel, textBeforeLabelValue, label,
-textBeforeLabelClose, textAfter. Range: the first textBefore form, or name if
-none, through the closing label bracket if written, otherwise name; extend
-through textAfter. name keeps the id spelling. label is null only when the
-entire bracketed form is absent; an empty string is a StringLiteral. Without a
-label all three label-gap lists are empty, and following hidden forms go to
+Child fields: `textBefore`, `name`, `textBeforeLabel`, `textBeforeLabelValue`,
+`label`, `textBeforeLabelClose`, `textAfter`. Range: the first textBefore form,
+or name if none, through the closing label bracket if written, otherwise name;
+extend through textAfter. name keeps the id spelling. label is null only when
+the entire bracketed form is absent; an empty string is a StringLiteral. Without
+a label all three label-gap lists are empty, and following hidden forms go to
 textAfter. [fixture: radar/gram-written-tree] [fixture: radar/db-empty-labels]
 [fixture: radar/lex-id-underscore] [fixture: radar/hidden-native-axis] [fixture:
 radar/hidden-native-label-gap] [fixture: radar/lex-hidden-before-label-open]
@@ -154,13 +154,13 @@ radar/lex-hidden-axis-comma] [fixture: radar/hidden-yaml-after-axis]
 | `entries`              | list of RadarEntry       | All authored entries; at least one. |
 | `textAfter`            | list of RadarIgnoredText | Suffix after the closing brace.     |
 
-Child fields: textBefore, name, textBeforeLabel, textBeforeLabelValue, label,
-textBeforeLabelClose, textBeforeEntries, entries, textAfter. Range: the first
-textBefore form, or name if none, through the closing entry brace, extended
-through textAfter. label is null only without brackets. The label-gap lists are
-empty when no label is written. textBeforeEntries follows the name or closing
-label bracket and precedes the opening brace; forms there are not put in an
-absent label gap. [fixture: radar/gram-written-tree] [fixture:
+Child fields: `textBefore`, `name`, `textBeforeLabel`, `textBeforeLabelValue`,
+`label`, `textBeforeLabelClose`, `textBeforeEntries`, `entries`, `textAfter`.
+Range: the first textBefore form, or name if none, through the closing entry
+brace, extended through textAfter. label is null only without brackets. The
+label-gap lists are empty when no label is written. textBeforeEntries follows
+the name or closing label bracket and precedes the opening brace; forms there
+are not put in an absent label gap. [fixture: radar/gram-written-tree] [fixture:
 radar/db-empty-labels] [fixture: radar/hidden-native-curve] [fixture:
 radar/hidden-native-curve-gap] [fixture: radar/lex-hidden-curve-comma] [fixture:
 radar/hidden-yaml-after-curve] [fixture: radar/lex-curve-label-hidden-gaps]
@@ -185,9 +185,9 @@ radar/spec-radar-test-ts-59721355]
 | `value`      | NumericLiteral           | Written positional value.         |
 | `textAfter`  | list of RadarIgnoredText | Forms before comma/closing brace. |
 
-Child fields: textBefore, value, textAfter. Range: the first textBefore form, or
-number if none, through the number or last textAfter form. Before the first
-entry and after a comma, textBefore may follow permitted visible newlines.
+Child fields: `textBefore`, `value`, `textAfter`. Range: the first textBefore
+form, or number if none, through the number or last textAfter form. Before the
+first entry and after a comma, textBefore may follow permitted visible newlines.
 textAfter belongs before the following comma or, for the last entry, the closing
 brace; permitted trailing newlines do not move an interior form into diagram
 body. No axis or implicit index is added. [fixture: radar/gram-written-tree]
@@ -210,15 +210,16 @@ radar/lex-number-entry-hidden-across-lines]
 | `value`           | NumericLiteral           | Written named value.              |
 | `textAfter`       | list of RadarIgnoredText | Forms before comma/closing brace. |
 
-Child fields: textBefore, axis, textBeforeColon, textBeforeValue, value,
-textAfter. Range: the first textBefore form, or axis if none, through the number
-or last textAfter form. axis is the written id, not its resolved declaration or
-label. With a written colon, textBeforeColon lies between the name and colon,
-and textBeforeValue follows the colon. Without a colon, textBeforeColon is empty
-and textBeforeValue owns all native hidden forms between name and number. Colon
-presence remains punctuation without an AST flag. [fixture:
-radar/gram-written-tree] [fixture: radar/gram-detailed-colon-mixed-spelling]
-[fixture: radar/gram-detailed-entry-comment] [fixture:
+Child fields: `textBefore`, `axis`, `textBeforeColon`, `textBeforeValue`,
+`value`, `textAfter`. Range: the first textBefore form, or axis if none, through
+the number or last textAfter form. axis is the written id, not its resolved
+declaration or label. With a written colon, textBeforeColon lies between the
+name and colon, and textBeforeValue follows the colon. Without a colon,
+textBeforeColon is empty and textBeforeValue owns all native hidden forms
+between name and number. Colon presence remains punctuation without an AST flag.
+[fixture: radar/gram-written-tree] [fixture:
+radar/gram-detailed-colon-mixed-spelling] [fixture:
+radar/gram-detailed-entry-comment] [fixture:
 radar/lex-hidden-detailed-before-colon] [fixture:
 radar/lex-hidden-detailed-no-colon] [fixture: radar/hidden-native-entry-gap]
 [fixture: radar/error-reference-label] [fixture: radar/db-extra-detailed-entry]
@@ -242,7 +243,7 @@ radar/gram-written-tree] [fixture: radar/lex-named-entry-hidden-across-lines]
 | `value`           | string                   | Written true or false.                  |
 | `textAfter`       | list of RadarIgnoredText | Suffix before comma/next statement/EOL. |
 
-Child fields: textBefore, textBeforeValue, textAfter. Range: the first
+Child fields: `textBefore`, `textBeforeValue`, `textAfter`. Range: the first
 textBefore form, or showLegend if none, through its written value, extended
 through textAfter. textBefore is empty for the first option in its group;
 preceding hidden forms belong to the preceding statement's suffix or diagram
@@ -266,12 +267,12 @@ radar/div-directive-boolean-atom] [fixture: radar/div-semicolon-boolean-atom]
 | `value`           | NumericLiteral           | Written tick value before any cap.      |
 | `textAfter`       | list of RadarIgnoredText | Suffix before comma/next statement/EOL. |
 
-Child fields: textBefore, textBeforeValue, value, textAfter. Range: the first
-textBefore form, or ticks if none, through its written value, extended through
-textAfter. textBefore is empty for the first option in its group; preceding
-hidden forms belong to the preceding statement's suffix or diagram body.
-textBeforeValue follows the complete keyword. Keep every occurrence, including
-overwritten assignments. [fixture: radar/gram-written-tree] [fixture:
+Child fields: `textBefore`, `textBeforeValue`, `value`, `textAfter`. Range: the
+first textBefore form, or ticks if none, through its written value, extended
+through textAfter. textBefore is empty for the first option in its group;
+preceding hidden forms belong to the preceding statement's suffix or diagram
+body. textBeforeValue follows the complete keyword. Keep every occurrence,
+including overwritten assignments. [fixture: radar/gram-written-tree] [fixture:
 radar/db-options-repeat] [fixture: radar/lex-hidden-option-comma] [fixture:
 radar/hidden-native-option]
 
@@ -289,12 +290,12 @@ value. [fixture: radar/gram-written-tree] [fixture: radar/db-option-overflow]
 | `value`           | NumericLiteral           | Written maximum.                        |
 | `textAfter`       | list of RadarIgnoredText | Suffix before comma/next statement/EOL. |
 
-Child fields: textBefore, textBeforeValue, value, textAfter. Range: the first
-textBefore form, or max if none, through its written value, extended through
-textAfter. textBefore is empty for the first option in its group; preceding
-hidden forms belong to the preceding statement's suffix or diagram body.
-textBeforeValue follows the complete keyword. Keep every occurrence, including
-overwritten assignments. [fixture: radar/gram-written-tree] [fixture:
+Child fields: `textBefore`, `textBeforeValue`, `value`, `textAfter`. Range: the
+first textBefore form, or max if none, through its written value, extended
+through textAfter. textBefore is empty for the first option in its group;
+preceding hidden forms belong to the preceding statement's suffix or diagram
+body. textBeforeValue follows the complete keyword. Keep every occurrence,
+including overwritten assignments. [fixture: radar/gram-written-tree] [fixture:
 radar/db-options-repeat] [fixture: radar/lex-hidden-option-comma] [fixture:
 radar/hidden-native-option]
 
@@ -312,12 +313,12 @@ value. [fixture: radar/gram-written-tree] [fixture: radar/db-option-overflow]
 | `value`           | NumericLiteral           | Written minimum.                        |
 | `textAfter`       | list of RadarIgnoredText | Suffix before comma/next statement/EOL. |
 
-Child fields: textBefore, textBeforeValue, value, textAfter. Range: the first
-textBefore form, or min if none, through its written value, extended through
-textAfter. textBefore is empty for the first option in its group; preceding
-hidden forms belong to the preceding statement's suffix or diagram body.
-textBeforeValue follows the complete keyword. Keep every occurrence, including
-overwritten assignments. [fixture: radar/gram-written-tree] [fixture:
+Child fields: `textBefore`, `textBeforeValue`, `value`, `textAfter`. Range: the
+first textBefore form, or min if none, through its written value, extended
+through textAfter. textBefore is empty for the first option in its group;
+preceding hidden forms belong to the preceding statement's suffix or diagram
+body. textBeforeValue follows the complete keyword. Keep every occurrence,
+including overwritten assignments. [fixture: radar/gram-written-tree] [fixture:
 radar/db-options-repeat] [fixture: radar/lex-hidden-option-comma] [fixture:
 radar/hidden-native-option]
 
@@ -335,7 +336,7 @@ value. [fixture: radar/gram-written-tree] [fixture: radar/db-option-overflow]
 | `value`           | string                   | Written circle or polygon.              |
 | `textAfter`       | list of RadarIgnoredText | Suffix before comma/next statement/EOL. |
 
-Child fields: textBefore, textBeforeValue, textAfter. Range: the first
+Child fields: `textBefore`, `textBeforeValue`, `textAfter`. Range: the first
 textBefore form, or graticule if none, through its written value, extended
 through textAfter. textBefore is empty for the first option in its group;
 preceding hidden forms belong to the preceding statement's suffix or diagram
@@ -365,15 +366,16 @@ radar/lex-common-title-one-space] [fixture: radar/lex-common-title-two-spaces]
 [fixture: radar/lex-title-tab-null] [fixture: radar/lex-title-second-tab]
 [fixture: radar/common-title-next-statement]
 
-Child fields: value, textAfter. Range: title through its last value character,
-or title for null, extended through the last textAfter form; exclude EOL and
-unrelated outside padding. Keep repeated and empty occurrences separately.
-Native hidden forms before the first visible EOL belong to textAfter; after that
-EOL they belong to diagram body. Native comments are shared Comments, not suffix
-nodes. [fixture: radar/common-repeat-empty] [fixture:
-radar/lex-hidden-after-visible-eol] [fixture: radar/hidden-native-title-eof]
-[fixture: radar/hidden-native-acctitle-eof] [fixture:
-radar/hidden-native-description-eof] [fixture: radar/hidden-native-eof]
+Child fields: `value`, `textAfter`. Range: title through its last value
+character, or title for null, extended through the last textAfter form; exclude
+EOL and unrelated outside padding. Keep repeated and empty occurrences
+separately. Native hidden forms before the first visible EOL belong to
+textAfter; after that EOL they belong to diagram body. Native comments are
+shared Comments, not suffix nodes. [fixture: radar/common-repeat-empty]
+[fixture: radar/lex-hidden-after-visible-eol] [fixture:
+radar/hidden-native-title-eof] [fixture: radar/hidden-native-acctitle-eof]
+[fixture: radar/hidden-native-description-eof] [fixture:
+radar/hidden-native-eof]
 
 ### RadarAccTitleStatement
 
@@ -387,7 +389,7 @@ is null only when no content remains; whitespace-only content is a literal.
 [fixture: radar/lex-common-empty-values] [fixture: radar/common-acctitle-eof]
 [fixture: radar/common-acctitle-next-statement]
 
-Child fields: value, textAfter. Range: accTitle through its last value
+Child fields: `value`, `textAfter`. Range: accTitle through its last value
 character, or the colon for null, extended through the last textAfter form;
 exclude EOL and unrelated outside padding. Keep repeated and empty occurrences
 separately. Native hidden forms before the first visible EOL belong to
@@ -412,7 +414,7 @@ radar/lex-common-empty-values] [fixture: radar/lex-common-block-colon-first]
 [fixture: radar/common-description-eof] [fixture:
 radar/common-accdescr-next-statement]
 
-Child fields: value, textAfter. Range: accDescr through its last value
+Child fields: `value`, `textAfter`. Range: accDescr through its last value
 character, or the colon for null, extended through the last textAfter form;
 exclude EOL and unrelated outside padding. Keep repeated and empty occurrences
 separately. Native hidden forms before the first visible EOL belong to
@@ -443,15 +445,15 @@ radar/lex-common-description-only-comment] [fixture:
 radar/common-block-empty-interleaved] [fixture: radar/common-block-whitespace]
 [fixture: radar/common-block-open]
 
-Child fields: value, textAfter. Range: accDescr through the first closing brace,
-extended through the last textAfter form; exclude EOL and unrelated outside
-padding. Keep repeated and empty occurrences separately. Native hidden forms
-before the first visible EOL belong to textAfter; after that EOL they belong to
-diagram body. Native comments are shared Comments, not suffix nodes. [fixture:
-radar/common-repeat-empty] [fixture: radar/lex-hidden-after-visible-eol]
-[fixture: radar/hidden-native-title-eof] [fixture:
-radar/hidden-native-acctitle-eof] [fixture: radar/hidden-native-description-eof]
-[fixture: radar/hidden-native-eof]
+Child fields: `value`, `textAfter`. Range: accDescr through the first closing
+brace, extended through the last textAfter form; exclude EOL and unrelated
+outside padding. Keep repeated and empty occurrences separately. Native hidden
+forms before the first visible EOL belong to textAfter; after that EOL they
+belong to diagram body. Native comments are shared Comments, not suffix nodes.
+[fixture: radar/common-repeat-empty] [fixture:
+radar/lex-hidden-after-visible-eol] [fixture: radar/hidden-native-title-eof]
+[fixture: radar/hidden-native-acctitle-eof] [fixture:
+radar/hidden-native-description-eof] [fixture: radar/hidden-native-eof]
 
 ### RadarLiteral
 

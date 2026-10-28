@@ -16,6 +16,7 @@ import { nodesOf } from "../src/check-tree/walk.ts"
 import type { DiagramType } from "../src/index.ts"
 import {
   expectWhitespaceCases,
+  firstTreesWith,
   mayHaveRecordedTrees,
   recordedTree,
   recordedTreesOfCorpus,
@@ -146,29 +147,17 @@ describe("the rules of the values of the nodes", () => {
   })
 })
 
-/** The edits of a value that the check must report. */
-const VALUE_EDITS: readonly {
-  name: string
-  edit: (value: string | number) => string | number
-}[] = [
-  {
-    name: "a character added at the end",
-    edit: (value) => (typeof value === "number" ? value + 1 : `${value}Z`),
-  },
-  {
-    name: "a character added at the start",
-    edit: (value) => (typeof value === "number" ? value + 1 : `Z${value}`),
-  },
-  {
-    name: "the last character dropped",
-    edit: (value) =>
-      typeof value === "number" ? value + 1 : value.slice(0, -1),
-  },
-  {
-    name: "the first character dropped",
-    edit: (value) => (typeof value === "number" ? value + 1 : value.slice(1)),
-  },
-]
+/**
+ * The edit of a value that the check must report: the sentence that a value
+ * is its written text does not tell the edits that change a string apart (a
+ * character added or dropped, at the start or at the end), since each rule
+ * builds the text it expects and compares it with the whole value; the
+ * whitespace at the ends of a token is the case of the describe further down.
+ * A number is another case, since the check reads its digits.
+ */
+function editedValue(value: string | number): string | number {
+  return typeof value === "number" ? value + 1 : `${value}Z`
+}
 
 /** The message of a value that is not the written text of its node: the rule of the type whose value is its written text. */
 const NOT_WRITTEN_TEXT = "value is not its written text"
@@ -411,48 +400,47 @@ function instancesOfRow(tree: CheckedRoot, row: BrokenValueRow): CheckedNode[] {
 }
 
 describe("a broken value", () => {
-  it("is reported, at its node and by the rule of its type, for every node type with a value, whatever the edit", async () => {
+  it("is reported, at its node and by the rule of its type, for every node type with a value", async () => {
     // Any recorded tree that has such a node will do: the row names the
-    // message, which does not depend on the tree.
+    // message, which does not depend on the tree. The first tree of each row
+    // is found once, and a row names its fixture when the tree matters.
     const trees = await recordedTreesOfCorpus()
+    const firsts = firstTreesWith(
+      trees,
+      BROKEN_VALUE_ROWS,
+      (tree, row, recorded) =>
+        (row.fixture === undefined || recorded.name === row.fixture) &&
+        instancesOfRow(tree, row).length > 0,
+    )
     const unreported: string[] = []
     for (const row of BROKEN_VALUE_ROWS) {
       const rule = VALUE_RULES[row.type]
       if (rule === undefined) throw new Error(`${row.type} has no value rule`)
-      const candidates =
-        row.fixture === undefined
-          ? trees
-          : trees.filter((recorded) => recorded.name === row.fixture)
-      for (const { name, edit } of VALUE_EDITS) {
-        const failure = `${nameOfRow(row)}.${rule.field}: ${name}`
-        let found = false
-        for (const recorded of candidates) {
-          const tree = JSON.parse(recorded.json) as CheckedRoot
-          const instance = instancesOfRow(tree, row)[0]
-          if (instance === undefined) continue
-          found = true
-          const mutable = instance as Record<string, unknown>
-          const before = mutable[rule.field]
-          if (typeof before !== "string" && typeof before !== "number") {
-            throw new Error(`${row.type} has no value to break`)
-          }
-          mutable[rule.field] = edit(before)
-          const where = label(instance)
-          const atTheNode = checkTree(recorded.input, tree).filter(
-            (problem) => problem.where === where,
-          )
-          if (
-            !atTheNode.some((problem) =>
-              problem.message.startsWith(row.message),
-            )
-          ) {
-            unreported.push(
-              `${failure}: no problem at ${where} that starts with ${JSON.stringify(row.message)} in ${recorded.name}, but ${JSON.stringify(atTheNode.map((problem) => problem.message))}`,
-            )
-          }
-          break
-        }
-        if (!found) unreported.push(`${failure}: no recorded tree has it`)
+      const failure = `${nameOfRow(row)}.${rule.field}`
+      const recorded = firsts.get(row)
+      if (recorded === undefined) {
+        unreported.push(`${failure}: no recorded tree has it`)
+        continue
+      }
+      const tree = JSON.parse(recorded.json) as CheckedRoot
+      const instance = instancesOfRow(tree, row)[0]
+      if (instance === undefined) throw new Error(`${failure}: lost its node`)
+      const mutable = instance as Record<string, unknown>
+      const before = mutable[rule.field]
+      if (typeof before !== "string" && typeof before !== "number") {
+        throw new Error(`${row.type} has no value to break`)
+      }
+      mutable[rule.field] = editedValue(before)
+      const where = label(instance)
+      const atTheNode = checkTree(recorded.input, tree).filter(
+        (problem) => problem.where === where,
+      )
+      if (
+        !atTheNode.some((problem) => problem.message.startsWith(row.message))
+      ) {
+        unreported.push(
+          `${failure}: no problem at ${where} that starts with ${JSON.stringify(row.message)} in ${recorded.name}, but ${JSON.stringify(atTheNode.map((problem) => problem.message))}`,
+        )
       }
     }
     expect(unreported).toEqual([])

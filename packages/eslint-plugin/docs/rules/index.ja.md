@@ -15,18 +15,18 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 規則の id は、プラグインの名前空間 `@mmd-toolkit` で始まる。
 すべての図種に共通の規則の id は `@mmd-toolkit/<名前>`、
 1 つの図種の規則の id は `@mmd-toolkit/<図種>-<名前>` である。
-`flowchart` の規則の対象の図種は、
-`flowchart-v2`、`flowchart-elk`、`swimlane` である。
+`flowchart` の規則の対象の図種は、 `flowchart-v2`、`flowchart-elk`、
+`swimlane` である。
 
 <!-- begin auto-generated rules list -->
 
 ✅ は、`recommended` の設定が有効にする規則。
 
 💡 は、
-[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
-がある規則。
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions) がある規則。
 
-🚧 は、まだ実装していない規則。何も報告しない。
+🚧 は、まだ実装していない規則。
+何も報告しない。
 
 ## 共通の規則
 
@@ -147,16 +147,16 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 
 ## requirement
 
-| 規則                                                                                           | 説明                                                                                      | ✅  | 💡  | 🚧  |
-| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --- | --- | --- |
-| [requirement-no-duplicate-description](./requirement-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                                        | ✅  |     |     |
-| [requirement-no-duplicate-field](./requirement-no-duplicate-field.ja.md)                       | requirement や element の本体がすでに持つフィールドを禁止する。                           | ✅  |     |     |
-| [requirement-no-duplicate-name](./requirement-no-duplicate-name.ja.md)                         | 前のものの名前を使い回す requirement や element を禁止する。                              | ✅  |     |     |
-| [requirement-no-duplicate-title](./requirement-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                                    | ✅  |     |     |
-| [requirement-no-empty-description-block](./requirement-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                                          | ✅  |     |     |
-| [requirement-no-ignored-text](./requirement-no-ignored-text.ja.md)                             | mermaid.js が捨てるテキストを禁止する。                                                   | ✅  |     |     |
-| [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。                 |     |     |     |
-| [requirement-no-undef](./requirement-no-undef.ja.md)                                           | どの requirement も element も名指さない、`style`、`class`、`:::`、関係の名前を禁止する。 | ✅  |     |     |
+| 規則                                                                                           | 説明                                                                                       | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --- | --- | --- |
+| [requirement-no-duplicate-description](./requirement-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                                         | ✅  |     |     |
+| [requirement-no-duplicate-field](./requirement-no-duplicate-field.ja.md)                       | requirement や element の本体がすでに持つフィールドを禁止する。                            | ✅  |     |     |
+| [requirement-no-duplicate-name](./requirement-no-duplicate-name.ja.md)                         | 前のものの名前を使い回す requirement や element を禁止する。                               | ✅  |     |     |
+| [requirement-no-duplicate-title](./requirement-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                                     | ✅  |     |     |
+| [requirement-no-empty-description-block](./requirement-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                                           | ✅  |     |     |
+| [requirement-no-ignored-text](./requirement-no-ignored-text.ja.md)                             | mermaid.js が捨てるテキストを禁止する。                                                    | ✅  |     |     |
+| [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。                  |     |     |     |
+| [requirement-no-undef](./requirement-no-undef.ja.md)                                           | どの requirement も element も名指さない、 `style`、`class`、`:::`、関係の名前を禁止する。 | ✅  |     |     |
 
 ## usecase
 

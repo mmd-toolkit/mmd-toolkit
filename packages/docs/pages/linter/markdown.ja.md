@@ -33,8 +33,8 @@ Markdownファイルに対してESLintを実行します。
 npx eslint diagram.md
 ```
 
-`@mmd-toolkit/flowchart-no-undef`が、
-`diagram.md`の7行目、9列目の`C`を報告します。
+`@mmd-toolkit/flowchart-no-undef`が、 `diagram.md`の7行目、
+9列目の`C`を報告します。
 processorは、それぞれの図の診断を元のMarkdown上の位置に対応させます。
 シーケンス図の例には報告がありません。
 
@@ -78,8 +78,8 @@ const mermaidCodeBlocks = {
   他のルールや言語プラグインにチェックさせます。
 - `markdown.configs.recommended`は、Markdownのルールで本文をチェックします。
 
-現在のprocessorでは、1回のESLint実行で本文とコードブロックを
-両方チェックすることはできません。
+現在のprocessorでは、
+1回のESLint実行で本文とコードブロックを両方チェックすることはできません。
 両方の設定を1つの配列に追加しても、
 取り出したコードブロックだけが対象になります。
 これは、[ESLintのprocessorの制限][processor-docs]です。

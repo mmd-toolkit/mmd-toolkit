@@ -99,11 +99,11 @@ const WORDS: Record<
     rule: "規則",
     description: "説明",
     legend: "✅ は、`recommended` の設定が有効にする規則。",
-    suggestionsLegend: `💡 は、\n[エディターの修正候補](${SUGGESTIONS_URL})\nがある規則。`,
-    skeletonLegend: "🚧 は、まだ実装していない規則。何も報告しない。",
+    suggestionsLegend: `💡 は、\n[エディターの修正候補](${SUGGESTIONS_URL}) がある規則。`,
+    skeletonLegend: "🚧 は、まだ実装していない規則。\n何も報告しない。",
     enabled: "✅ `recommended` の設定は、この規則を有効にする。",
     notEnabled: "`recommended` の設定は、この規則を有効にしない。",
-    suggestions: `💡\n[エディターの修正候補](${SUGGESTIONS_URL})\nを選んで適用できる。`,
+    suggestions: `💡 [エディターの修正候補](${SUGGESTIONS_URL}) を選んで適用できる。`,
     resources: "リソース",
     ruleSource: "規則のソース",
     testsSource: "テストのソース",
@@ -230,8 +230,7 @@ function hasSuggestions(rule: RuleDefinition): boolean {
  * (`diagramOrder` in `packages/docs/.vitepress/documents.js`, which follows
  * the order of the documentation of mermaid.js). A diagram with rules is added
  * here at its place in that order. The names are the prefixes of the rule
- * names; where the site names the diagram otherwise, `SITE_DIAGRAM_IDS` says
- * how.
+ * names, and the names in `diagramOrder` of the site.
  */
 export const DIAGRAM_ORDER: readonly string[] = [
   "flowchart",
@@ -266,22 +265,8 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "railroad",
 ]
 
-/**
- * The diagrams whose name in `diagramOrder` of the documentation site is not
- * their prefix in the rule names.
- */
-const SITE_DIAGRAM_IDS: Readonly<Record<string, string>> = {
-  quadrant: "quadrantChart",
-  treeview: "treeView",
-}
-
-/** The name of `diagram` in `diagramOrder` of the documentation site. */
-export function siteDiagramId(diagram: string): string {
-  return SITE_DIAGRAM_IDS[diagram] ?? diagram
-}
-
 /** The diagram of a rule name (`flowchart-no-ignored-text`), or null for a common rule. */
-function diagramOf(name: string): string | null {
+export function diagramOf(name: string): string | null {
   return DIAGRAM_ORDER.find((diagram) => name.startsWith(`${diagram}-`)) ?? null
 }
 

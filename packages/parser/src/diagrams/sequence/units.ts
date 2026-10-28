@@ -1098,9 +1098,18 @@ export class SequenceUnitLexer extends UnitLexer<Context, UnitName, Unit> {
       ends.push(position)
       if (position === null || ID_EXCLUDED.includes(position.codePoint)) break
     }
-    const end = ends
-      .reverse()
-      .find((candidate) => this.lineEndFollows(candidate))
+    // Reuse the following suffix's result while walking backward: testing
+    // whitespace by scanning forward from every candidate is quadratic.
+    const last = ends.length - 1
+    let follows = this.lineEndFollows(ends[last])
+    let end: DiagramPosition | undefined = follows ? ends[last] : undefined
+    for (let index = last - 1; end === undefined && index >= 0; index -= 1) {
+      const candidate = ends[index]
+      follows =
+        this.isLineEndMarker(candidate) ||
+        (isWhitespaceAt(candidate) && follows)
+      if (follows) end = candidate
+    }
     if (end === undefined) return false
     this.addUnit(
       "id",
@@ -1121,14 +1130,20 @@ export class SequenceUnitLexer extends UnitLexer<Context, UnitName, Unit> {
       current !== null;
       current = this.reader.after(current)
     ) {
-      if (current.codePoint === LINE_FEED) return true
-      if (!isWhitespace(current.codePoint)) {
-        return (
-          current.codePoint === SEMICOLON || current.codePoint === NUMBER_SIGN
-        )
-      }
+      if (this.isLineEndMarker(current)) return true
+      if (!isWhitespace(current.codePoint)) return false
     }
     return false
+  }
+
+  /** The id context, rule 6: a line feed, semicolon, or hash ends the lookahead. */
+  private isLineEndMarker(position: DiagramPosition): boolean {
+    return (
+      position !== null &&
+      (position.codePoint === LINE_FEED ||
+        position.codePoint === SEMICOLON ||
+        position.codePoint === NUMBER_SIGN)
+    )
   }
 
   /**

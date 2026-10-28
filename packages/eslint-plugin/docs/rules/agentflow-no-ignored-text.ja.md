@@ -19,9 +19,10 @@ mermaid.js は、その行の残りを、そこに書いた文も含めてエラ
 対象の図種は `agentflow` である。
 
 同じ行の、方向の前か後に書いたリンクは、`;` で区切っても消える。
-flow の中では、`A-->B; direction TB` と `direction TB; A-->B` は
-flow に方向 `TB` を与え、頂点もリンクも作らないが、
-同じ 2 つの文を 2 行に書くと、`A` から `B` へのリンクを作る。
+flow の中では、
+`A-->B; direction TB` と `direction TB; A-->B` は flow に方向 `TB` を与え、
+頂点もリンクも作らないが、同じ 2 つの文を 2 行に書くと、
+`A` から `B` へのリンクを作る。
 最上位でも、`A-->B direction TB` は頂点もリンクも作らない。
 `direction LR trailing` のように方向の後にある文字も、同じように捨てられる。
 
@@ -72,8 +73,8 @@ agentflow-beta TB
 
 ## 背景
 
-[字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L165-L169)
-は、`direction` と方向の値を持つ行全体を 1 つの方向の文として読む。
+[字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L165-L169) は、
+`direction` と方向の値を持つ行全体を 1 つの方向の文として読む。
 
 <!-- begin auto-generated rule resources -->
 

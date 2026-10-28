@@ -19,11 +19,7 @@ import type {
   ExpectedFile,
   FixtureHead,
 } from "../src/index.ts"
-import {
-  getDefaultConfig,
-  getFixturesRoot,
-  loadFixtures,
-} from "../src/index.ts"
+import { getDefaultConfig, getFixturesRoot, loadFixture } from "../src/index.ts"
 import { runMermaid } from "../src/mermaid.ts"
 
 const AUTHORED: FixtureHead = { source: { kind: "authored", note: "a note" } }
@@ -439,9 +435,7 @@ describe("generateExpected", () => {
   it("records the treeView summary in common/ after its normalizer is added", async () => {
     const file = await generateExpected(
       "common",
-      (await loadFixtures("common")).find(
-        (fixture) => fixture.name === "detect-minimal-tree-view",
-      )!.input,
+      (await loadFixture("common", "detect-minimal-tree-view")).input,
       AUTHORED,
     )
     expect(acceptedOf(file)).toMatchObject({

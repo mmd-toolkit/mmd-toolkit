@@ -25,11 +25,10 @@ mermaid.js はそれをエラーなしに受理し、数でない score は顔�
 対象の図種は `journey` である。
 
 mermaid.js は score を、端の空白を除いて、JavaScript の `Number` で読む。
-`Make tea: 5 Me` では人の前のコロンが落ちており、
-score は数でない `5 Me` で、人はいない。
+`Make tea: 5 Me` では人の前のコロンが落ちており、 score は数でない `5 Me` で、
+人はいない。
 `Make tea: 5, Me` も同じで、
-`A: 5 B: 3` のように同じ行に 2 つ目のタスクを書くと、
-score は `5 B` になる。
+`A: 5 B: 3` のように同じ行に 2 つ目のタスクを書くと、 score は `5 B` になる。
 タスクの名前の中のコロンは、名前を終える。
 `Lunch at 12:30: 4: Me` は、
 フォーマッターが `Lunch at 12: 30: 4: Me` と印字するとおり、
@@ -90,19 +89,17 @@ journey
 
 ## 背景
 
-mermaid.js は score を `Number` で数にし
-（[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)）、
-ジャーニーを描くときに、それで顔を置く
-（[`drawTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/svgDraw.js#L216-L220)）。
-その文書
-（[syntax/userJourney.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/userJourney.md#L24)）
-は、score は 1 から 5 までの数だと言う。
-[#6262](https://github.com/mermaid-js/mermaid/issues/6262)
-（"Faces in Journey Diagram Out of Bound"）は、
-ラベル "Type: Bug / Error" と "Status: Approved" を持って開いており、
+mermaid.js は score を `Number` で数にし（[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)）、
+ジャーニーを描くときに、
+それで顔を置く（[`drawTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/svgDraw.js#L216-L220)）。
+その文書（[syntax/userJourney.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/userJourney.md#L24)）は、
+score は 1 から 5 までの数だと言う。
+[#6262](https://github.com/mermaid-js/mermaid/issues/6262) （"Faces in Journey
+Diagram Out of Bound"）は、ラベル "Type: Bug / Error" と "Status:
+Approved" を持って開いており、
 7 より大きい score で顔がジャーニーの線の上に描かれると報告する。
-[#4248](https://github.com/mermaid-js/mermaid/issues/4248)
-（"Add scale customization to User Journey"）は、enhancement として開いており、
+[#4248](https://github.com/mermaid-js/mermaid/issues/4248) （"Add scale
+customization to User Journey"）は、enhancement として開いており、
 書き手が選ぶ目盛りを提案する。
 
 <!-- begin auto-generated rule resources -->

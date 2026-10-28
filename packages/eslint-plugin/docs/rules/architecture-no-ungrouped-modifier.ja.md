@@ -11,17 +11,17 @@ group に属さない辺の端の `{group}` 修飾子を禁止する。
 
 <!-- end auto-generated rule notice -->
 
-辺の端の id の後の `{group}` は、辺がその service の group の境界で
-group を出入りするようにし、mermaid.js の文書は group の中の service にだけ
-それを認める。
+辺の端の id の後の `{group}` は、
+辺がその service の group の境界で group を出入りするようにし、
+mermaid.js の文書は group の中の service にだけそれを認める。
 group に属さない service や junction では、mermaid.js はエラーなしに受理し、
 辺の端を group の境界があるはずの場所へ動かす。
 辺は service に届かずに止まり、group は描かれない。
 
 ## 規則の詳細
 
-この規則は、`in` なしに宣言した service や junction の辺の端にある
-`{group}` を報告する。
+この規則は、
+`in` なしに宣言した service や junction の辺の端にある `{group}` を報告する。
 対象の図種は `architecture` である。
 そのような 2 つの端に `{group}` を持つ辺は 2 度報告する。
 
@@ -63,13 +63,12 @@ architecture-beta
 
 ## 背景
 
-[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L111-L126)
-は、group の中の service にだけ `{group}` を認める。
-[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L225-L236)
-は、1 つの group の 2 つの service の間の辺の `{group}` を受理しないが、
+[文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/architecture.md#L111-L126) は、
+group の中の service にだけ `{group}` を認める。
+[Db](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/architectureDb.ts#L225-L236) は、
+1 つの group の 2 つの service の間の辺の `{group}` を受理しないが、
 group に属さない端のものは受理し、
-[描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L54-L71)
-は `{group}` を持つすべての端を group の余白と 4 だけ動かす。
+[描画](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/architecture/svgDraw.ts#L54-L71) は `{group}` を持つすべての端を group の余白と 4 だけ動かす。
 
 <!-- begin auto-generated rule resources -->
 

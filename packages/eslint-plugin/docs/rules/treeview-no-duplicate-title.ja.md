@@ -17,8 +17,8 @@
 
 ## 規則の詳細
 
-この規則は、前の `accTitle` が設定した空でないアクセシブルなタイトルを変える
-`accTitle` 文を報告する。
+この規則は、
+前の `accTitle` が設定した空でないアクセシブルなタイトルを変える `accTitle` 文を報告する。
 対象の図種は `treeView` である。
 
 `accTitle: First` と `accTitle: Second` の後では、
@@ -39,8 +39,8 @@ mermaid.js はツリービューのタイトルを描かないので、`title` �
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
 タイトルを読む前にほかの文字に変え、
 罫線の文字で始まる行のタブを 4 つの空白として読むので、
-それだけが違う 2 つのタイトルは、
-mermaid.js には 1 つで、この規則には 2 つのことがある。
+それだけが違う 2 つのタイトルは、 mermaid.js には 1 つで、
+この規則には 2 つのことがある。
 
 `accTitle` 文は 1 つにする。
 
@@ -75,12 +75,11 @@ treeView-beta
 
 ## 背景
 
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L60)
-は、タイトルの両端の空白を除き、
-2 つ以上の空白やタブの連なりを 1 つの空白にする。
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L57-L60) は、
+タイトルの両端の空白を除き、 2 つ以上の空白やタブの連なりを 1 つの空白にする。
 パーサーは最後のタイトルを保ち、
-[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14)
-は、それが空でないときだけそれを設定する。
+[`populateCommonDb`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/populateCommonDb.ts#L4-L14) は、
+それが空でないときだけそれを設定する。
 
 <!-- begin auto-generated rule resources -->
 

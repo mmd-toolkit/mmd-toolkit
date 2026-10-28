@@ -21,10 +21,10 @@ architecture/lex-string-conversion]
 | `textBeforeHeader` | list of ArchitectureIgnoredText | Retained pre-header forms.           |
 | `body`             | list of ArchitectureBodyItem    | Written statements and hidden forms. |
 
-Child fields: textBeforeHeader, body. Range: the first retained pre-header form,
-or the header if none, through the last written header/body form, excluding
-outside padding and line breaks. Root.diagramType is architecture. The fixed
-header remains a keyword, without a separate header node or alias field.
+Child fields: `textBeforeHeader`, `body`. Range: the first retained pre-header
+form, or the header if none, through the last written header/body form,
+excluding outside padding and line breaks. Root.diagramType is architecture. The
+fixed header remains a keyword, without a separate header node or alias field.
 [fixture: architecture/header-beta] [fixture:
 architecture/detect-retained-before-second-scan] [fixture:
 architecture/detect-two-second-scan-forms] [fixture: architecture/db-mixed]
@@ -70,12 +70,12 @@ architecture/lex-hidden-after-visible-eol]
 | `in`               | Identifier or null              | Explicit parent reference.        |
 | `textAfter`        | list of ArchitectureIgnoredText | Suffix before visible EOL.        |
 
-Child fields: textBeforeId, id, textBeforeIcon, icon, textBeforeTitle, title,
-textBeforeIn, textBeforeParent, in, textAfter. Range: group through the written
-parent ID, otherwise the title closing bracket, icon closing parenthesis or
-declaration ID, in that order of availability; extend through the last textAfter
-form. Exclude outside padding and EOL. icon is null only without the
-parenthesized form; its Identifier range excludes both parentheses and name
+Child fields: `textBeforeId`, `id`, `textBeforeIcon`, `icon`, `textBeforeTitle`,
+`title`, `textBeforeIn`, `textBeforeParent`, `in`, `textAfter`. Range: group
+through the written parent ID, otherwise the title closing bracket, icon closing
+parenthesis or declaration ID, in that order of availability; extend through the
+last textAfter form. Exclude outside padding and EOL. icon is null only without
+the parenthesized form; its Identifier range excludes both parentheses and name
 keeps their interior spelling. It follows the icon-name character rule, not the
 declaration ID rule. title is null without brackets. in is null without the
 entire in clause; no implicit parent or hasIn field is added. [fixture:
@@ -100,18 +100,18 @@ architecture/hidden-directive-unit-gaps]
 | `in`               | Identifier or null                  | Explicit group reference.      |
 | `textAfter`        | list of ArchitectureIgnoredText     | Suffix before visible EOL.     |
 
-Child fields: textBeforeId, id, textBeforeIcon, icon, textBeforeTitle, title,
-textBeforeIn, textBeforeParent, in, textAfter. Range: service through the parent
-ID if present, otherwise the title closing bracket, named icon closing
-parenthesis, text icon closing quote or declaration ID; extend through the last
-textAfter form, excluding outside padding and EOL. icon is an Identifier whose
-range is the parenthesis interior for a named icon, a closed StringLiteral
-including its quotes for a text icon, and null without either form. An empty
-text icon is still a StringLiteral. title and in are null only when their
-complete optional forms are absent. [fixture: architecture/db-mixed] [fixture:
-architecture/header-inline-service] [fixture: architecture/db-empty-values]
-[fixture: architecture/lex-string-conversion] [fixture:
-architecture/directive-empty-text-icon] [fixture:
+Child fields: `textBeforeId`, `id`, `textBeforeIcon`, `icon`, `textBeforeTitle`,
+`title`, `textBeforeIn`, `textBeforeParent`, `in`, `textAfter`. Range: service
+through the parent ID if present, otherwise the title closing bracket, named
+icon closing parenthesis, text icon closing quote or declaration ID; extend
+through the last textAfter form, excluding outside padding and EOL. icon is an
+Identifier whose range is the parenthesis interior for a named icon, a closed
+StringLiteral including its quotes for a text icon, and null without either
+form. An empty text icon is still a StringLiteral. title and in are null only
+when their complete optional forms are absent. [fixture: architecture/db-mixed]
+[fixture: architecture/header-inline-service] [fixture:
+architecture/db-empty-values] [fixture: architecture/lex-string-conversion]
+[fixture: architecture/directive-empty-text-icon] [fixture:
 architecture/hidden-directive-unit-gaps] [fixture:
 architecture/hidden-yaml-parent-gap] [fixture:
 architecture/hidden-directive-eof]
@@ -127,12 +127,12 @@ architecture/hidden-directive-eof]
 | `in`               | Identifier or null              | Explicit group reference.      |
 | `textAfter`        | list of ArchitectureIgnoredText | Suffix before visible EOL.     |
 
-Child fields: textBeforeId, id, textBeforeIn, textBeforeParent, in, textAfter.
-Range: junction through its parent ID when present, otherwise its declaration
-ID, extended through the last textAfter form and excluding outside padding/EOL.
-in is null without the entire in clause. There is no icon, title or derived
-parent/child field. [fixture: architecture/header-inline-junction] [fixture:
-architecture/db-junction-forward-parent] [fixture:
+Child fields: `textBeforeId`, `id`, `textBeforeIn`, `textBeforeParent`, `in`,
+`textAfter`. Range: junction through its parent ID when present, otherwise its
+declaration ID, extended through the last textAfter form and excluding outside
+padding/EOL. in is null without the entire in clause. There is no icon, title or
+derived parent/child field. [fixture: architecture/header-inline-junction]
+[fixture: architecture/db-junction-forward-parent] [fixture:
 architecture/hidden-directive-unit-gaps] [fixture:
 architecture/hidden-yaml-junction-gap] [fixture:
 architecture/hidden-yaml-junction-eof] [fixture:
@@ -153,12 +153,12 @@ architecture/gram-junction-title]
 | `rhsGroup`           | boolean                         | Whether right {group} is written. |
 | `textAfter`          | list of ArchitectureIgnoredText | Suffix before visible EOL.        |
 
-Child fields: lhsId, textBeforeLhsGroup, textBeforeArrow, arrow,
-textBeforeRhsId, rhsId, textBeforeRhsGroup, textAfter. Range: lhsId through the
-right modifier closing brace if written, otherwise rhsId, extended through the
-last textAfter form; exclude outside padding and EOL. The booleans record
-authored modifiers even on ungrouped nodes. They are false exactly when that
-modifier is absent. No resolved group name replaces an endpoint. [fixture:
+Child fields: `lhsId`, `textBeforeLhsGroup`, `textBeforeArrow`, `arrow`,
+`textBeforeRhsId`, `rhsId`, `textBeforeRhsGroup`, `textAfter`. Range: lhsId
+through the right modifier closing brace if written, otherwise rhsId, extended
+through the last textAfter form; exclude outside padding and EOL. The booleans
+record authored modifiers even on ungrouped nodes. They are false exactly when
+that modifier is absent. No resolved group name replaces an endpoint. [fixture:
 architecture/db-mixed] [fixture: architecture/db-group-modifier-ungrouped]
 [fixture: architecture/db-group-modifier-one-group] [fixture:
 architecture/gram-hidden-modifier-gaps] [fixture:
@@ -184,16 +184,17 @@ architecture/hidden-yaml-edge-eof] [fixture: architecture/end-edge-eof]
 | `endDirection`             | string                          | Written L, R, T or B.                  |
 | `textBeforeEndColon`       | list of ArchitectureIgnoredText | Forms before right colon.              |
 
-Child fields: textBeforeStartDirection, textBeforeStartMarker, textBeforeLine,
-textBeforeTitle, title, textBeforeEndDash, textBeforeEndMarker,
-textBeforeEndDirection, textBeforeEndColon. Range: the left colon through the
-right colon. value keeps that whole written text, including internal padding,
-authored line endings, label syntax and native ignored forms; leave common
-directives, comment regions and selected semicolons out of value while the range
-spans them. Do not decode escapes or normalize marker spelling. [fixture:
-architecture/db-mixed] [fixture: architecture/hidden-directive-unit-gaps]
-[fixture: architecture/hidden-yaml-edge-gaps] [fixture:
-architecture/directive-fields] [fixture: architecture/style-fields] [fixture:
+Child fields: `textBeforeStartDirection`, `textBeforeStartMarker`,
+`textBeforeLine`, `textBeforeTitle`, `title`, `textBeforeEndDash`,
+`textBeforeEndMarker`, `textBeforeEndDirection`, `textBeforeEndColon`. Range:
+the left colon through the right colon. value keeps that whole written text,
+including internal padding, authored line endings, label syntax and native
+ignored forms; leave common directives, comment regions and selected semicolons
+out of value while the range spans them. Do not decode escapes or normalize
+marker spelling. [fixture: architecture/db-mixed] [fixture:
+architecture/hidden-directive-unit-gaps] [fixture:
+architecture/hidden-yaml-edge-gaps] [fixture: architecture/directive-fields]
+[fixture: architecture/style-fields] [fixture:
 architecture/gram-edge-reversed-labeled-markers]
 
 startDirection/endDirection are the fixed written port directions. Each marker
@@ -215,11 +216,11 @@ architecture/end-edge-eof]
 | `members`             | list of ArchitectureAlignmentMember | Members in authored order.         |
 | `textAfter`           | list of ArchitectureIgnoredText     | Suffix before visible EOL.         |
 
-Child fields: textBeforeDirection, members, textAfter. Range: align through the
-last member ID, extended through the last textAfter form, excluding outside
-padding and EOL. members has at least two entries. Keep every statement and
-member order, including repeated alignment statements; do not sort members or
-merge constraints. No layout result is a tree field. [fixture:
+Child fields: `textBeforeDirection`, `members`, `textAfter`. Range: align
+through the last member ID, extended through the last textAfter form, excluding
+outside padding and EOL. members has at least two entries. Keep every statement
+and member order, including repeated alignment statements; do not sort members
+or merge constraints. No layout result is a tree field. [fixture:
 architecture/db-align-forward-repeat] [fixture: architecture/db-mixed] [fixture:
 architecture/hidden-yaml-align-gap] [fixture:
 architecture/hidden-directive-align-eof] [fixture: architecture/error-align-one]
@@ -232,7 +233,7 @@ architecture/hidden-directive-align-eof] [fixture: architecture/error-align-one]
 | `textBeforeId` | list of ArchitectureIgnoredText | Forms before this member ID. |
 | `id`           | Identifier                      | Written member reference.    |
 
-Child fields: textBeforeId, id. Range: the first textBeforeId form, or id if
+Child fields: `textBeforeId`, `id`. Range: the first textBeforeId form, or id if
 none, through id. This member owns the entire native hidden gap immediately
 before its ID, also for the first member. Ordinary whitespace and shared trivia
 are not elements. No implicit members or null holes are added. [fixture:
@@ -258,10 +259,10 @@ architecture/lex-title-one-tab-null] [fixture:
 architecture/lex-title-two-spaces-literal] [fixture:
 architecture/common-repeat-empty]
 
-Child fields: value, textAfter. Keep repeated and empty occurrences separately.
-Forms before the first visible EOL belong to textAfter; after that EOL they
-belong to body. Native comments are shared Comments rather than suffix elements.
-[fixture: architecture/common-repeat-empty] [fixture:
+Child fields: `value`, `textAfter`. Keep repeated and empty occurrences
+separately. Forms before the first visible EOL belong to textAfter; after that
+EOL they belong to body. Native comments are shared Comments rather than suffix
+elements. [fixture: architecture/common-repeat-empty] [fixture:
 architecture/hidden-directive-title-eof] [fixture:
 architecture/lex-hidden-after-visible-eol] [fixture:
 architecture/end-statements-comments]
@@ -281,10 +282,10 @@ architecture/lex-acctitle-whitespace-only] [fixture:
 architecture/common-acctitle-next-statement] [fixture:
 architecture/common-repeat-empty]
 
-Child fields: value, textAfter. Keep repeated and empty occurrences separately.
-Forms before the first visible EOL belong to textAfter; after that EOL they
-belong to body. Native comments are shared Comments rather than suffix elements.
-[fixture: architecture/common-repeat-empty] [fixture:
+Child fields: `value`, `textAfter`. Keep repeated and empty occurrences
+separately. Forms before the first visible EOL belong to textAfter; after that
+EOL they belong to body. Native comments are shared Comments rather than suffix
+elements. [fixture: architecture/common-repeat-empty] [fixture:
 architecture/hidden-directive-acctitle-eof] [fixture:
 architecture/lex-hidden-after-visible-eol] [fixture:
 architecture/end-statements-comments]
@@ -304,10 +305,10 @@ architecture/lex-description-line-whitespace-only] [fixture:
 architecture/common-accdescr-next-statement] [fixture:
 architecture/common-repeat-empty]
 
-Child fields: value, textAfter. Keep repeated and empty occurrences separately.
-Forms before the first visible EOL belong to textAfter; after that EOL they
-belong to body. Native comments are shared Comments rather than suffix elements.
-[fixture: architecture/common-repeat-empty] [fixture:
+Child fields: `value`, `textAfter`. Keep repeated and empty occurrences
+separately. Forms before the first visible EOL belong to textAfter; after that
+EOL they belong to body. Native comments are shared Comments rather than suffix
+elements. [fixture: architecture/common-repeat-empty] [fixture:
 architecture/hidden-directive-accdescr-eof] [fixture:
 architecture/lex-hidden-after-visible-eol] [fixture:
 architecture/end-statements-comments]
@@ -331,10 +332,10 @@ architecture/common-description-block-comment] [fixture:
 architecture/common-description-block-directive] [fixture:
 architecture/common-block-whitespace] [fixture: architecture/common-block-open]
 
-Child fields: value, textAfter. Keep repeated and empty occurrences separately.
-Forms before the first visible EOL belong to textAfter; after that EOL they
-belong to body. Native comments are shared Comments rather than suffix elements.
-[fixture: architecture/common-repeat-empty] [fixture:
+Child fields: `value`, `textAfter`. Keep repeated and empty occurrences
+separately. Forms before the first visible EOL belong to textAfter; after that
+EOL they belong to body. Native comments are shared Comments rather than suffix
+elements. [fixture: architecture/common-repeat-empty] [fixture:
 architecture/hidden-directive-block-eof] [fixture:
 architecture/lex-hidden-after-visible-eol] [fixture:
 architecture/end-statements-comments]

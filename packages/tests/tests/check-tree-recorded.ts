@@ -10,7 +10,7 @@ import type {
 } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import type { DiagramType } from "../src/index.ts"
-import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import { fixtureNames, getFixturesRoot } from "../src/index.ts"
 import { withoutTokenWhitespace } from "./check-tree-token-edits.ts"
 import type { TokenSide } from "./check-tree-token-edits.ts"
 
@@ -94,6 +94,30 @@ export function mayHaveRecordedTrees(type: string): boolean {
   )
 }
 
+/**
+ * For each case of `cases`, the first recorded tree of `trees` that has it:
+ * every tree is parsed once, in order, for the cases that still have none, and
+ * the search stops when each has a tree. A case without a tree is not in the
+ * result. Any recorded tree that has the case will do for a test that breaks
+ * it, since the problem it requires does not depend on the tree.
+ */
+export function firstTreesWith<Case>(
+  trees: readonly CorpusTree[],
+  cases: readonly Case[],
+  has: (tree: CheckedRoot, theCase: Case, recorded: CorpusTree) => boolean,
+): Map<Case, CorpusTree> {
+  const found = new Map<Case, CorpusTree>()
+  for (const recorded of trees) {
+    const open = cases.filter((theCase) => !found.has(theCase))
+    if (open.length === 0) break
+    const tree = JSON.parse(recorded.json) as CheckedRoot
+    for (const theCase of open) {
+      if (has(tree, theCase, recorded)) found.set(theCase, recorded)
+    }
+  }
+  return found
+}
+
 let corpusTrees: Promise<readonly CorpusTree[]> | undefined
 
 /**
@@ -104,25 +128,25 @@ let corpusTrees: Promise<readonly CorpusTree[]> | undefined
  * which. A question whose answer depends on the tree names its fixture instead.
  */
 export function recordedTreesOfCorpus(): Promise<readonly CorpusTree[]> {
-  corpusTrees ??= readCorpusTrees()
+  corpusTrees ??= Promise.resolve(readCorpusTrees())
   return corpusTrees
 }
 
-/** Reads the `ast.json` of every fixture of the corpus that has one. */
-async function readCorpusTrees(): Promise<CorpusTree[]> {
+/**
+ * Reads the `input.mmd` and the `ast.json` of every fixture of the corpus that
+ * has an `ast.json`, and no other file: the fixtures are the ones that
+ * `loadFixtures()` loads, taken by `fixtureNames()`.
+ */
+function readCorpusTrees(): CorpusTree[] {
   const trees: CorpusTree[] = []
   for (const diagram of CORPUS_DIAGRAMS) {
-    for (const fixture of await loadFixtures(diagram)) {
-      const file = path.join(
-        getFixturesRoot(),
-        diagram,
-        fixture.name,
-        "ast.json",
-      )
+    for (const name of fixtureNames(diagram)) {
+      const directory = path.join(getFixturesRoot(), diagram, name)
+      const file = path.join(directory, "ast.json")
       if (!existsSync(file)) continue
       trees.push({
-        name: `${diagram}/${fixture.name}`,
-        input: fixture.input,
+        name: `${diagram}/${name}`,
+        input: readFileSync(path.join(directory, "input.mmd"), "utf8"),
         json: readFileSync(file, "utf8"),
       })
     }

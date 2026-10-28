@@ -271,10 +271,8 @@ class StateDbBuilder {
     statement: StateAliasDefinitionStatement,
     parent: string | null,
   ): void {
-    const id =
-      statement.id === null
-        ? ""
-        : this.namedStateId(this.valueOf(statement.id), parent)
+    const name = statement.id === null ? "" : this.valueOf(statement.id)
+    const id = this.namedStateId(name, parent)
     const text = this.stringTextOf(statement.description)
     if (statement.body !== null) {
       this.visitComposite(id, parent, [text], statement.body)
@@ -291,7 +289,7 @@ class StateDbBuilder {
     }
     this.visit(id, {
       parent,
-      firstShape: "rect",
+      firstShape: name === "[*]" ? "stateStart" : "rect",
       descriptions:
         descriptions.length === 1 && descriptions[0] === "" ? [] : descriptions,
       bodyDirection: null,
@@ -380,13 +378,9 @@ class StateDbBuilder {
    * token of that text).
    */
   private hasColonToken(statement: StateAliasDefinitionStatement): boolean {
-    return this.root.tokens.some(
-      (token) =>
-        token.type === "Punctuator" &&
-        token.value === ":" &&
-        statement.range[0] <= token.range[0] &&
-        token.range[1] <= statement.range[1],
-    )
+    return this.text
+      .tokensIn(statement.range, this.root.tokens)
+      .some((token) => token.type === "Punctuator" && token.value === ":")
   }
 
   /**
@@ -396,12 +390,9 @@ class StateDbBuilder {
    * StateNoteStatement), each in any case.
    */
   private notePositionOf(statement: StateNoteStatement): string {
-    const keywords = this.root.tokens.filter(
-      (token) =>
-        token.type === "Keyword" &&
-        statement.range[0] <= token.range[0] &&
-        token.range[1] <= statement.range[1],
-    )
+    const keywords = this.text
+      .tokensIn(statement.range, this.root.tokens)
+      .filter((token) => token.type === "Keyword")
     const side = keywords[1]
     const of = keywords[2]
     if (

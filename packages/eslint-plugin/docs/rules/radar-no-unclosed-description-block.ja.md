@@ -12,8 +12,9 @@
 <!-- end auto-generated rule notice -->
 
 `accDescr {` のブロックは、その `{` の後の最初の `}` まで続く。
-自分の `}` がなく、`curve sales{1, 2, 3}` のような曲線のように
-後の文が `}` を持つと、mermaid.js はエラーなしにそこでブロックを閉じ、
+自分の `}` がなく、
+`curve sales{1, 2, 3}` のような曲線のように後の文が `}` を持つと、
+mermaid.js はエラーなしにそこでブロックを閉じ、
 そこまでの文は説明になって消える。
 
 ## 規則の詳細
@@ -33,8 +34,8 @@
 ただし、ブロックを閉じる `}` がその行に単独であるものは除く。
 そうでなければブロックを閉じるのは、その `{` の後の最初の `}`、
 つまり曲線の `}` である。
-`accDescr { a { b }` のように `{` の行にある `}` と、
-行に単独である `}` は、書いたとおりにブロックを閉じ、報告しない。
+`accDescr { a { b }` のように `{` の行にある `}` と、行に単独である `}` は、
+書いたとおりにブロックを閉じ、報告しない。
 `}` は、その行で前に空白と指示子しかないとき、行に単独である。
 そのため、複数の行に書いた曲線の `}` が行に単独であり、
 それがブロックを閉じるものは報告しない。
@@ -86,8 +87,8 @@ radar-beta
 
 ## 背景
 
-[ブロックの終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L14-L14)
-は、その `{` の後の最初の `}` でブロックを終え、それのないブロックには合わない。
+[ブロックの終端記号](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L14-L14) は、
+その `{` の後の最初の `}` でブロックを終え、それのないブロックには合わない。
 
 <!-- begin auto-generated rule resources -->
 

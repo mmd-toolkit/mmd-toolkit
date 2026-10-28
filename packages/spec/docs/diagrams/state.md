@@ -428,6 +428,41 @@ state/lex-state-name-next-line]
    characters before the mark, without the whitespace at their ends, are a
    `pseudostate-name` unit when they are not empty, and the mark is a unit named
    by its text; leaves the state context. [fixture: state/lex-fork-spaced-id]
+   [fixture: state/lex-fork-mark-twice] [fixture: state/lex-join-mark-twice]
+   [fixture: state/lex-choice-mark-twice] [fixture:
+   state/lex-fork-square-mark-twice] [fixture: state/lex-join-square-mark-twice]
+   [fixture: state/lex-choice-square-mark-twice] [fixture:
+   state/lex-fork-marks-separate-lines] [fixture:
+   state/lex-join-marks-separate-lines] [fixture:
+   state/lex-choice-marks-separate-lines] [fixture:
+   state/lex-fork-square-marks-separate-lines] [fixture:
+   state/lex-join-square-marks-separate-lines] [fixture:
+   state/lex-choice-square-marks-separate-lines] [fixture:
+   state/lex-join-mark-after-u2028] [fixture: state/lex-choice-mark-after-u2028]
+   [fixture: state/lex-fork-square-mark-after-u2028] [fixture:
+   state/lex-join-square-mark-after-u2028] [fixture:
+   state/lex-choice-square-mark-after-u2028] [fixture:
+   state/lex-fork-mark-after-u2029] [fixture: state/lex-join-mark-after-u2029]
+   [fixture: state/lex-choice-mark-after-u2029] [fixture:
+   state/lex-fork-square-mark-after-u2029] [fixture:
+   state/lex-join-square-mark-after-u2029] [fixture:
+   state/lex-choice-square-mark-after-u2029] [fixture:
+   state/lex-fork-marks-across-u2028] [fixture:
+   state/lex-join-marks-across-u2028] [fixture:
+   state/lex-choice-marks-across-u2028] [fixture:
+   state/lex-fork-square-marks-across-u2028] [fixture:
+   state/lex-join-square-marks-across-u2028] [fixture:
+   state/lex-choice-square-marks-across-u2028] [fixture:
+   state/lex-fork-marks-across-u2029] [fixture:
+   state/lex-join-marks-across-u2029] [fixture:
+   state/lex-choice-marks-across-u2029] [fixture:
+   state/lex-fork-square-marks-across-u2029] [fixture:
+   state/lex-join-square-marks-across-u2029] [fixture:
+   state/lex-choice-square-marks-across-u2029] [fixture:
+   state/lex-choice-before-fork-u2028] [fixture:
+   state/lex-fork-before-choice-u2028] [fixture:
+   state/lex-choice-before-fork-u2029] [fixture:
+   state/lex-fork-before-choice-u2029]
 5. `"`: enters the state string context. [fixture:
    state/db-alias-blank-without-body]
 6. Zero or more whitespace, `as`, and one or more whitespace characters, line

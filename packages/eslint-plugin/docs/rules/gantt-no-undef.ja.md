@@ -36,20 +36,19 @@ id を書き間違えると、タスクは今日に動く。
 タスクのデータは、タグの後に 1 つから 3 つの項目を持つ。
 3 つのときは、`Design :des1, 2024-01-06, 3d` の `des1` のように、
 最初の項目が id である。
-1 つか 2 つのときは、mermaid.js がテキストの順に、
-`task1`、`task2` のような id をタスクに与える。
+1 つか 2 つのときは、mermaid.js がテキストの順に、 `task1`、
+`task2` のような id をタスクに与える。
 データが 4 つ以上の項目を持つタスクは、id を持たない。
-`a : 2024-01-01, 1d` の後の `click task1 href "…"` は、
-そのタスクをリンクにし、報告しない。
+`a : 2024-01-01, 1d` の後の `click task1 href "…"` は、そのタスクをリンクにし、
+報告しない。
 
 `after` はデータの開始、つまり 2 つの項目の最初か、3 つの項目の 2 つ目で読み、
 `until` は終わり、つまり 1 つから 3 つの項目の最後で読む。
 どちらも小文字で、後に空白が続くときである。
-mermaid.js は、ASCII の英字、数字、`_`、`-`、空白でない最初の文字の前までを
-id として読み、空白で分ける。
-そのため `after a.1` はタスク `a` を名指し、
-その id のタスクがなければ、`a.1` という id のタスクがあっても、
-規則は `a` を報告する。
+mermaid.js は、ASCII の英字、数字、`_`、`-`、
+空白でない最初の文字の前までを id として読み、空白で分ける。
+そのため `after a.1` はタスク `a` を名指し、その id のタスクがなければ、
+`a.1` という id のタスクがあっても、規則は `a` を報告する。
 `after a設計` も同じである。
 2 つの id の間がタブなら、mermaid.js は最初のものだけを読む。
 `after 設計` のように、空白の後にそうした文字がなければ、
@@ -119,19 +118,17 @@ gantt
 ## 背景
 
 mermaid.js は、`after` と `until` を、チャートを描くときに、
-式 `/^after\s+(?<ids>[\d\w- ]+)/` と `/^until\s+(?<ids>[\d\w- ]+)/` で読み、
-どの id もタスクの id でなければ、開始や終わりを今日の日付にする
-（[`getStartDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L304-L323)
-と
+式 `/^after\s+(?<ids>[\d\w- ]+)/` と、`/^until\s+(?<ids>[\d\w- ]+)/` で読み、
+どの id もタスクの id でなければ、
+開始や終わりを今日の日付にする（[`getStartDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L304-L323) と、
 [`getEndDate`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L388-L407)）。
 `click` は、テキストを読む間に id を探すので、
-その後に書いたタスクはまだ見つからない
-（[`setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L673-L688)）。
+その後に書いたタスクはまだ見つからない（[`setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L673-L688)）。
 `after` がいくつかのタスクを名指し、そのうちの 1 つが後に書かれているとき、
 mermaid.js はそれを待たずにタスクを始めることがある。
-[#4424](https://github.com/mermaid-js/mermaid/issues/4424)
-（"gantt: Depedencies ('after') not always taken into account"）は、
-ラベル "Type: Bug / Error" と "Status: Triage" を持って開いている。
+[#4424](https://github.com/mermaid-js/mermaid/issues/4424) （"gantt: Depedencies
+('after') not always taken into account"）は、ラベル "Type: Bug /
+Error" と "Status: Triage" を持って開いている。
 
 <!-- begin auto-generated rule resources -->
 

@@ -64,9 +64,7 @@ describe("cynefin escaped cases", () => {
 })
 
 describe("cynefin authored owners", async () => {
-  const fixtures = (await loadFormatFixtures()).filter((fixture) =>
-    fixture.id.startsWith("cynefin/"),
-  )
+  const fixtures = await loadFormatFixtures("cynefin")
   it.each(fixtures)("$id", (fixture) => {
     expect(hiddenOwners(fixture.output!)).toEqual(hiddenOwners(fixture.input))
     expect(treeProblemsOfText(fixture.output!)).toEqual([])

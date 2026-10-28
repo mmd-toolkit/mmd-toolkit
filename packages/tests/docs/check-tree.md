@@ -70,9 +70,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   range that is no offset pair, is reported, and the other checks are not run on
   it.
 - The children of a node are the fields that the table gives as a node, a node
-  or null, or a list of nodes; the one child field of `Root` is `body`. The
-  order of the fields of a node is not used, nor the order of the keys inside a
-  `loc`.
+  or null, or a list of nodes, except the fields that hold records (`record:` in
+  the table: `Root` has four, which the specification says are not child
+  fields); the one child field of `Root` is `body`. The order of the fields of a
+  node is not used, nor the order of the keys inside a `loc`.
 
 ## The checks
 

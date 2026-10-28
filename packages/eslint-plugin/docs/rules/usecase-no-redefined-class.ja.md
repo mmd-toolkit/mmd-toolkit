@@ -67,13 +67,12 @@ usecase-beta
 
 ## 背景
 
-[`applyClassDefinitions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L846-L852)
-は各クラスの最後の定義を丸ごと保ち、
-[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134)
-はその中のプロパティの最後の値を取る。
-[`styles2String`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L53-L104)
-は、書いた名前が `color`、`font-size` などの文字のプロパティであるスタイルを
-ラベルに、ほかのスタイルを図形に与える。
+[`applyClassDefinitions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L846-L852) は各クラスの最後の定義を丸ごと保ち、
+[`getCompiledStyles`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/usecaseDb.ts#L118-L134) はその中のプロパティの最後の値を取る。
+[`styles2String`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes/handDrawnShapeStyles.ts#L53-L104) は、
+書いた名前が `color`、
+`font-size` などの文字のプロパティであるスタイルをラベルに、
+ほかのスタイルを図形に与える。
 
 <!-- begin auto-generated rule resources -->
 

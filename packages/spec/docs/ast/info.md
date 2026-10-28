@@ -22,7 +22,7 @@ info/accdescr-block-repeat]
 | `textBeforeShowInfo` | list of InfoIgnoredText | Forms before a written flag.         |
 | `body`               | list of InfoBodyItem    | Written statements and hidden forms. |
 
-Child fields: textBeforeHeader, textBeforeShowInfo, body. Range: the first
+Child fields: `textBeforeHeader`, `textBeforeShowInfo`, `body`. Range: the first
 retained pre-header form, or info if none, through the last written
 header/flag/body form; exclude unrelated outside padding. The fixed header is a
 keyword, not a separate node. No effective-title or version field is
@@ -82,16 +82,16 @@ info/title-tabs] [fixture: info/lex-title-one-space] [fixture:
 info/lex-title-one-tab] [fixture: info/lex-title-two-spaces] [fixture:
 info/lex-title-directive-only]
 
-Child fields: value, textAfter. Range: title through its last value character,
-or the keyword for null, extended through the last textAfter form. Exclude EOL
-and unrelated outside padding. Hidden forms before the first visible EOL belong
-to textAfter; after that EOL they belong to body. Keep separate occurrences,
-including empty and repeated statements. A native comment is a shared Comment,
-not a hidden suffix. [fixture: info/title-empty] [fixture: info/title-tabs]
-[fixture: info/lex-title-one-space] [fixture: info/lex-title-one-tab] [fixture:
-info/lex-title-two-spaces] [fixture: info/lex-title-directive-only] [fixture:
-info/hidden-directive-title-eof] [fixture: info/lex-hidden-after-visible-eol]
-[fixture: info/comment-after-block]
+Child fields: `value`, `textAfter`. Range: title through its last value
+character, or the keyword for null, extended through the last textAfter form.
+Exclude EOL and unrelated outside padding. Hidden forms before the first visible
+EOL belong to textAfter; after that EOL they belong to body. Keep separate
+occurrences, including empty and repeated statements. A native comment is a
+shared Comment, not a hidden suffix. [fixture: info/title-empty] [fixture:
+info/title-tabs] [fixture: info/lex-title-one-space] [fixture:
+info/lex-title-one-tab] [fixture: info/lex-title-two-spaces] [fixture:
+info/lex-title-directive-only] [fixture: info/hidden-directive-title-eof]
+[fixture: info/lex-hidden-after-visible-eol] [fixture: info/comment-after-block]
 
 ### InfoAccTitleStatement
 
@@ -106,15 +106,15 @@ common trivia is left out; whitespace-only content is a literal. [fixture:
 info/acctitle-empty] [fixture: info/acctitle-gap] [fixture:
 info/acctitle-repeat-empty] [fixture: info/lex-acctitle-directive-only]
 
-Child fields: value, textAfter. Range: accTitle through its colon or last value
-character, extended through the last textAfter form. Exclude EOL and unrelated
-outside padding. Hidden forms before the first visible EOL belong to textAfter;
-after that EOL they belong to body. Keep separate occurrences, including empty
-and repeated statements. A native comment is a shared Comment, not a hidden
-suffix. [fixture: info/acctitle-empty] [fixture: info/acctitle-gap] [fixture:
-info/acctitle-repeat-empty] [fixture: info/lex-acctitle-directive-only]
-[fixture: info/hidden-directive-acctitle-eof] [fixture:
-info/lex-hidden-after-visible-eol] [fixture: info/comment-after-block]
+Child fields: `value`, `textAfter`. Range: accTitle through its colon or last
+value character, extended through the last textAfter form. Exclude EOL and
+unrelated outside padding. Hidden forms before the first visible EOL belong to
+textAfter; after that EOL they belong to body. Keep separate occurrences,
+including empty and repeated statements. A native comment is a shared Comment,
+not a hidden suffix. [fixture: info/acctitle-empty] [fixture: info/acctitle-gap]
+[fixture: info/acctitle-repeat-empty] [fixture:
+info/lex-acctitle-directive-only] [fixture: info/hidden-directive-acctitle-eof]
+[fixture: info/lex-hidden-after-visible-eol] [fixture: info/comment-after-block]
 
 ### InfoAccDescrStatement
 
@@ -131,13 +131,13 @@ info/accdescr-line-empty] [fixture: info/accdescr-line-repeat] [fixture:
 info/lex-accdescr-directive-only] [fixture: info/lex-accdescr-line-whitespace]
 [fixture: info/lex-block-colon-first]
 
-Child fields: value, textAfter. Range: accDescr through its colon or last value
-character, extended through the last textAfter form. Exclude EOL and unrelated
-outside padding. Hidden forms before the first visible EOL belong to textAfter;
-after that EOL they belong to body. Keep separate occurrences, including empty
-and repeated statements. A native comment is a shared Comment, not a hidden
-suffix. [fixture: info/accdescr-line-empty] [fixture: info/accdescr-line-repeat]
-[fixture: info/lex-accdescr-directive-only] [fixture:
+Child fields: `value`, `textAfter`. Range: accDescr through its colon or last
+value character, extended through the last textAfter form. Exclude EOL and
+unrelated outside padding. Hidden forms before the first visible EOL belong to
+textAfter; after that EOL they belong to body. Keep separate occurrences,
+including empty and repeated statements. A native comment is a shared Comment,
+not a hidden suffix. [fixture: info/accdescr-line-empty] [fixture:
+info/accdescr-line-repeat] [fixture: info/lex-accdescr-directive-only] [fixture:
 info/lex-accdescr-line-whitespace] [fixture: info/lex-block-colon-first]
 [fixture: info/hidden-directive-accdescr-eof] [fixture:
 info/lex-hidden-after-visible-eol] [fixture: info/comment-after-block]
@@ -159,17 +159,18 @@ info/accdescr-block-quoted] [fixture: info/comment-bare-block] [fixture:
 info/lex-block-directive-only] [fixture: info/lex-block-comment-only] [fixture:
 info/lex-block-whitespace-only] [fixture: info/accdescr-block-open]
 
-Child fields: value, textAfter. Range: accDescr through its first closing brace,
-extended through the last textAfter form. Exclude EOL and unrelated outside
-padding. Hidden forms before the first visible EOL belong to textAfter; after
-that EOL they belong to body. Keep separate occurrences, including empty and
-repeated statements. A native comment is a shared Comment, not a hidden suffix.
-[fixture: info/accdescr-block-empty] [fixture: info/space-block-interior]
-[fixture: info/accdescr-block-quoted] [fixture: info/comment-bare-block]
-[fixture: info/lex-block-directive-only] [fixture: info/lex-block-comment-only]
-[fixture: info/lex-block-whitespace-only] [fixture: info/accdescr-block-open]
-[fixture: info/hidden-directive-block-eof] [fixture: info/hidden-yaml-block-eof]
-[fixture: info/lex-hidden-after-visible-eol] [fixture: info/comment-after-block]
+Child fields: `value`, `textAfter`. Range: accDescr through its first closing
+brace, extended through the last textAfter form. Exclude EOL and unrelated
+outside padding. Hidden forms before the first visible EOL belong to textAfter;
+after that EOL they belong to body. Keep separate occurrences, including empty
+and repeated statements. A native comment is a shared Comment, not a hidden
+suffix. [fixture: info/accdescr-block-empty] [fixture:
+info/space-block-interior] [fixture: info/accdescr-block-quoted] [fixture:
+info/comment-bare-block] [fixture: info/lex-block-directive-only] [fixture:
+info/lex-block-comment-only] [fixture: info/lex-block-whitespace-only] [fixture:
+info/accdescr-block-open] [fixture: info/hidden-directive-block-eof] [fixture:
+info/hidden-yaml-block-eof] [fixture: info/lex-hidden-after-visible-eol]
+[fixture: info/comment-after-block]
 
 ### InfoLiteral
 

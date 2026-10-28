@@ -2,6 +2,7 @@
 import {
   mkdirSync,
   mkdtempSync,
+  readdirSync,
   readFileSync,
   rmSync,
   writeFileSync,
@@ -12,11 +13,11 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import { rules } from "../src/rules/index.ts"
 import {
   DIAGRAM_ORDER,
+  diagramOf,
   mismatches,
   mmdCodeBlocks,
   RULE_DOCS_DIR,
   ruleDocumentPath,
-  siteDiagramId,
 } from "../tools/rule-docs.ts"
 
 /**
@@ -45,17 +46,28 @@ describe("the order of the diagrams in the list of the rules", () => {
   it("is the order of the sidebar of the documentation site", () => {
     const site = siteDiagramOrder()
     expect(site.length).toBeGreaterThan(0)
-    const positions = DIAGRAM_ORDER.map((diagram) =>
-      site.indexOf(siteDiagramId(diagram)),
-    )
+    const positions = DIAGRAM_ORDER.map((diagram) => site.indexOf(diagram))
     expect(positions.every((position) => position >= 0)).toBe(true)
     expect(positions).toEqual([...positions].sort((a, b) => a - b))
   })
 
-  it("names the diagram of every rule", () => {
-    for (const name of Object.keys(rules)) {
-      const slash = name.indexOf("/")
-      if (slash !== -1) expect(DIAGRAM_ORDER).toContain(name.slice(0, slash))
+  it("names the diagram of every rule whose name starts with the name of a diagram", () => {
+    // The name of a diagram type rule starts with the name of its document in
+    // `packages/spec/docs/ast/`; a common rule has no such name.
+    const astDocuments = new Set(
+      readdirSync(new URL("../../spec/docs/ast/", import.meta.url))
+        .filter((file) => file.endsWith(".md") && !file.endsWith(".ja.md"))
+        .map((file) => file.slice(0, -".md".length)),
+    )
+    const diagramRules = Object.keys(rules).filter((name) =>
+      astDocuments.has(name.split("-")[0]),
+    )
+    expect(diagramRules.length).toBeGreaterThan(0)
+    for (const name of diagramRules) {
+      expect(diagramOf(name), name).not.toBeNull()
+    }
+    for (const diagram of DIAGRAM_ORDER) {
+      expect(astDocuments, diagram).toContain(diagram)
     }
   })
 })

@@ -7,7 +7,6 @@ import {
   SPACE,
 } from "../../code-points.ts"
 import { isHws } from "../../common-form-unit-lexer.ts"
-import type { PassedPart } from "../../detection.ts"
 import type {
   DiagramCharacter,
   DiagramPosition,
@@ -41,43 +40,6 @@ function isVertical(codePoint: number): boolean {
 /** Scope and mode: the complete set of box characters. */
 function isBox(codePoint: number): boolean {
   return isBranch(codePoint) || isDash(codePoint) || isVertical(codePoint)
-}
-
-/** Detection: passed bare lines and their accompanying trivia are not read again. */
-export class TreeviewSource implements DiagramText {
-  private readonly reader: DiagramText
-
-  private readonly bareLines: readonly Extract<
-    PassedPart,
-    { kind: "bare-percent-line" }
-  >[]
-
-  public constructor(reader: DiagramText, passed: readonly PassedPart[]) {
-    this.reader = reader
-    this.bareLines = passed.filter((part) => part.kind === "bare-percent-line")
-  }
-
-  public first(): DiagramCharacter {
-    return this.skipPassed(this.reader.first())!
-  }
-
-  public after(character: DiagramCharacter): DiagramPosition {
-    return this.skipPassed(this.reader.after(character))
-  }
-
-  /** Preserve retained forms, excluding only detection-passed intervals and padding. */
-  private skipPassed(at: DiagramPosition): DiagramPosition {
-    let next = at
-    for (;;) {
-      if (next === null) return null
-      const offset = next.start
-      const passed = this.bareLines.some(
-        (part) => offset >= part.start && offset < part.next,
-      )
-      if (!passed) return next
-      next = this.reader.after(next)
-    }
-  }
 }
 
 /** A logical source line, before the box rules; offsets always address the input. */

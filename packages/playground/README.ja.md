@@ -2,8 +2,8 @@
 
 English version: [README.md](./README.md)
 
-ブラウザーでMermaidのテキストを編集し、
-mmd-toolkitが生成する構文木と、Prettierによる整形結果を確認できます。
+ブラウザーでMermaidのテキストを編集し、 mmd-toolkitが生成する構文木と、
+Prettierによる整形結果を確認できます。
 
 公開予定URL:
 [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
@@ -14,8 +14,8 @@ mmd-toolkitが生成する構文木と、Prettierによる整形結果を確認�
 
 **Examples**で図種のサブメニューを開いてサンプルを選ぶか、
 **Source**にMermaidのテキストを貼り付けます。
-サンプルは[Mermaid Live Editor](https://mermaid.ai/live/edit)と同じデータから
-読み込み、パーサーが未対応の図種も含みます。
+サンプルは[Mermaid Live Editor](https://mermaid.ai/live/edit)と同じデータから読み込み、
+パーサーが未対応の図種も含みます。
 
 編集すると、パーサーの結果が自動で更新されます。
 **AST**と**Formatted**のタブを切り替えても、Sourceは編集できます。
@@ -24,13 +24,12 @@ mmd-toolkitが生成する構文木と、Prettierによる整形結果を確認�
 
 ## 構文木を調べる
 
-**AST**タブではTreeとJSONの表示に加えて、
-Tokens、Comments、Directives、Frontmatterを個別に確認できます。
+**AST**タブではTreeとJSONの表示に加えて、 Tokens、Comments、Directives、
+Frontmatterを個別に確認できます。
 
 - ツリーの行をクリックすると、その行を選択し、子の展開と縮小を切り替えます。
   矢印では選択を変えずに展開と縮小を切り替えられます。
-- ノードやレコードを選ぶと、Sourceの対応範囲が強調表示され、
-  詳細を確認できます。
+- ノードやレコードを選ぶと、Sourceの対応範囲が強調表示され、詳細を確認できます。
 - Sourceのカーソルを動かすと、対応するノードやレコードが選択されます。
   ツリーはその経路を展開し、選択行までスクロールします。
 - 長いリストの続きは、**Show more**で表示できます。
@@ -40,8 +39,10 @@ Tokens、Comments、Directives、Frontmatterを個別に確認できます。
 **Formatted**を選ぶと、Prettierによる整形結果を表示します。
 Sourceの編集や、**Indent**・**Use tabs**の変更に合わせて更新されます。
 
-**Apply to source**で、整形結果をSourceに適用します。改行はLFになります。
-エディターの通常のUndoで戻せます。サンプルの読み込みもUndoできます。
+**Apply to source**で、整形結果をSourceに適用します。
+改行はLFになります。
+エディターの通常のUndoで戻せます。
+サンプルの読み込みもUndoできます。
 
 ## 入力を共有する
 
@@ -57,5 +58,5 @@ Sourceの編集や、**Indent**・**Use tabs**の変更に合わせて更新さ�
 
 - [パーサー](../parser/README.ja.md): 対応構文、ASTのフィールド、互換性。
 - [フォーマッター](../prettier-plugin-mmd/README.ja.md): 整形の動作と設定。
-- [開発](./docs/development.ja.md): ローカルでの起動、実装の説明、
-  検証とGitHub Pagesへの公開。
+- [開発](./docs/development.ja.md): ローカルでの起動、実装の説明、検証とGitHub
+  Pagesへの公開。

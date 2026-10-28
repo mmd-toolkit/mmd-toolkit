@@ -24,8 +24,8 @@ agentflow は、`accTitle` が設定するアクセシブルなタイトルを 1
 文字のない `accTitle:` もタイトルを設定する。
 空の行と指示子を越えて、文字のある次の行をタイトルとして取り、
 そのような行が続かなければ、タイトルを空にする。
-そこではコメント行も文字であり、`accTitle:` の後の行 `%% next` は
-タイトル `%% next` になる。
+そこではコメント行も文字であり、
+`accTitle:` の後の行 `%% next` はタイトル `%% next` になる。
 どちらでも、その前に書いたタイトルは失われる。
 flow や `global` のブロックの中の文も図全体のタイトルを設定し、数える。
 mermaid.js は、flow の中のそのような文の値を、
@@ -39,8 +39,7 @@ id として flow のメンバーにも加えるので、その id の頂点は�
 `b` を置き換えるので報告する。
 タイトルはそのほかは書いたとおりに比べる。
 mermaid.js は、`#35;` のような文字参照と HTML の属性の引用符を、
-タイトルを読む前にほかの文字に変えるので、
-それだけが違う 2 つのタイトルは、
+タイトルを読む前にほかの文字に変えるので、それだけが違う 2 つのタイトルは、
 mermaid.js には 1 つで、この規則には 2 つのことがある。
 
 `accTitle` 文は 1 つにする。
@@ -99,8 +98,8 @@ agentflow-beta TB
 
 ## 背景
 
-[`accTitle` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L426-L426)
-は、前に設定したタイトルを置き換える共通の `setAccTitle` を呼び、
+[`accTitle` 文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/parser/agentflow.jison#L426-L426) は、
+前に設定したタイトルを置き換える共通の `setAccTitle` を呼び、
 flow がメンバーとして取る値を返す。
 
 <!-- begin auto-generated rule resources -->

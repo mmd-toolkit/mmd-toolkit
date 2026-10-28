@@ -48,8 +48,7 @@ hidden form、保持 prefix、保護行は共有の規則に従い、
 入力（escape 表示）:
 `"  eventmodeling tf 01 evt Alpha"`.
 
-出力
-([header/ordinary-frame-output.mmd](../tests/fixtures/eventmodeling/header/ordinary-frame-output.mmd)):
+出力 ([header/ordinary-frame-output.mmd](../tests/fixtures/eventmodeling/header/ordinary-frame-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -59,8 +58,7 @@ eventmodeling
 入力（escape 表示）:
 `"eventmodeling tf 01 evt A %%{{x}}%%\n"`.
 
-出力
-([header/ordinary-frame-with-native-directive-output.mmd](../tests/fixtures/eventmodeling/header/ordinary-frame-with-native-directive-output.mmd)):
+出力 ([header/ordinary-frame-with-native-directive-output.mmd](../tests/fixtures/eventmodeling/header/ordinary-frame-with-native-directive-output.mmd)):
 
 ```mmd
 eventmodeling tf 01 evt A %%{{x}}%%
@@ -87,8 +85,7 @@ eventmodeling tf 01 evt A %%{{x}}%%
 入力（escape 表示）:
 `"eventmodeling\ntf 01 evt Alpha\nrf 02 cmd Beta"`.
 
-出力
-([indentation/body-four-spaces-output.mmd](../tests/fixtures/eventmodeling/indentation/body-four-spaces-output.mmd)):
+出力 ([indentation/body-four-spaces-output.mmd](../tests/fixtures/eventmodeling/indentation/body-four-spaces-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -120,8 +117,7 @@ greedy な inline data の中の見かけの文は、その値の一部のまま
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha rf 02 cmd Beta entity Shop.Beta"`.
 
-出力
-([statements-one-per-line/adjacent-frame-reset-entity-output.mmd](../tests/fixtures/eventmodeling/statements-one-per-line/adjacent-frame-reset-entity-output.mmd)):
+出力 ([statements-one-per-line/adjacent-frame-reset-entity-output.mmd](../tests/fixtures/eventmodeling/statements-one-per-line/adjacent-frame-reset-entity-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -132,8 +128,8 @@ eventmodeling
 
 ### Frame components
 
-frame keyword、数字の名前、entity-type、qualified name の間は、
-元が native whitespace の改行でも普通の 1 space にします。
+frame keyword、数字の名前、entity-type、qualified name の間は、元が native
+whitespace の改行でも普通の 1 space にします。
 `01 evt` のように完全な部品を見分けるためです。
 required identifier がちょうど `title` のときは成立する境界を保ちます。
 普通の LF は継続行にし、hidden の消費 LF の後の空白は原文どおりです。
@@ -158,8 +154,7 @@ required identifier がちょうど `title` のときは成立する境界を保
 入力（escape 表示）:
 `"eventmodeling tf 01evt Alpha"`.
 
-出力
-([frame-components/time-parts-glued-number-type-output.mmd](../tests/fixtures/eventmodeling/frame-components/time-parts-glued-number-type-output.mmd)):
+出力 ([frame-components/time-parts-glued-number-type-output.mmd](../tests/fixtures/eventmodeling/frame-components/time-parts-glued-number-type-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -168,8 +163,8 @@ eventmodeling
 
 ### Source references
 
-完全な source arrow は `Name ->> 02 ->> 001` のように、
-矢印の左右を普通の 1 space にして見分けやすくします。
+完全な source arrow は `Name ->> 02 ->> 001` のように、矢印の左右を普通の 1
+space にして見分けやすくします。
 全参照とその順序、先頭の 0 を保ち、逆転や解決はしません。
 hidden の gap と global trivia は保護された境界を保ちます。
 
@@ -182,8 +177,7 @@ hidden の gap と global trivia は保護された境界を保ちます。
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha->>02->>001"`.
 
-出力
-([source-references/arrows-touching-output.mmd](../tests/fixtures/eventmodeling/source-references/arrows-touching-output.mmd)):
+出力 ([source-references/arrows-touching-output.mmd](../tests/fixtures/eventmodeling/source-references/arrows-touching-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -211,8 +205,7 @@ data reference の前は普通の 1 space、内側は `[[D]]` と詰め、
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha [[ \tD\t ]]"`.
 
-出力
-([data-references/reference-padded-output.mmd](../tests/fixtures/eventmodeling/data-references/reference-padded-output.mmd)):
+出力 ([data-references/reference-padded-output.mmd](../tests/fixtures/eventmodeling/data-references/reference-padded-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -242,8 +235,7 @@ hidden と global trivia の境界は保ちます。
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha \u0060 \tjson \t\u0060{ x }"`.
 
-出力
-([type-tags/inline-tag-parts-output.mmd](../tests/fixtures/eventmodeling/type-tags/inline-tag-parts-output.mmd)):
+出力 ([type-tags/inline-tag-parts-output.mmd](../tests/fixtures/eventmodeling/type-tags/inline-tag-parts-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -275,8 +267,7 @@ hidden の消費 LF の後の `title` segment に空白を足しません。
 入力（escape 表示）:
 `"eventmodeling rf 02 cmd Shop\n.\nBuy entity Root\n.\nChild"`.
 
-出力
-([qualified-names/qualified-lines-output.mmd](../tests/fixtures/eventmodeling/qualified-names/qualified-lines-output.mmd)):
+出力 ([qualified-names/qualified-lines-output.mmd](../tests/fixtures/eventmodeling/qualified-names/qualified-lines-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -286,8 +277,7 @@ eventmodeling
 
 ### Authored spellings
 
-短形・長形の frame keyword、全 9 種の entity-type、
-数字の名前の綴りを保ちます。
+短形・長形の frame keyword、全 9 種の entity-type、数字の名前の綴りを保ちます。
 frame keyword の別名変更は比較 Db が等しくても、選ばれた形を失います。
 entity-type の別名は Db に残り、`1`、`01`、`001` は別の frame 名なので、
 別名の変換も数値への正規化もしません。
@@ -305,8 +295,7 @@ entity-type の別名は Db に残り、`1`、`01`、`001` は別の frame 名�
 入力（escape 表示）:
 `"eventmodeling timeframe 001 event Alpha resetframe 02 command Beta"`.
 
-出力
-([authored-spellings/alias-retained-output.mmd](../tests/fixtures/eventmodeling/authored-spellings/alias-retained-output.mmd)):
+出力 ([authored-spellings/alias-retained-output.mmd](../tests/fixtures/eventmodeling/authored-spellings/alias-retained-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -316,8 +305,8 @@ eventmodeling
 
 ### Declarations and notes
 
-宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、
-普通の 1 space で分けます。
+宣言と note の部品は `entity Shop.Buy`、`data D`、`note 01` と、普通の 1
+space で分けます。
 block opener は見出し行の 1 space 後に置き、宣言の部品を見せます。
 値と閉じの境界は data の規則に従います。
 required name の `title` は frame と同じく安全な前方境界を保ちます。
@@ -333,8 +322,7 @@ required name の `title` は frame と同じく安全な前方境界を保ち�
 入力（escape 表示）:
 `"eventmodeling entity\tShop\n.\nBuy"`.
 
-出力
-([declarations-and-notes/entity-ordinary-output.mmd](../tests/fixtures/eventmodeling/declarations-and-notes/entity-ordinary-output.mmd)):
+出力 ([declarations-and-notes/entity-ordinary-output.mmd](../tests/fixtures/eventmodeling/declarations-and-notes/entity-ordinary-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -347,8 +335,8 @@ eventmodeling
 各 item はさらに 1 段深くします。
 架空の閉じ記号を足さず、書かれた clause と item の関係を見せます。
 必須の given・then、任意の when、item の順序・反復・型語を保ちます。
-普通の item 部品は 1 space で分け、required `title` の境界、
-hidden、trivia、保護された opening edge を優先します。
+普通の item 部品は 1 space で分け、required `title` の境界、 hidden、trivia、
+保護された opening edge を優先します。
 
 [fixture: eventmodeling/gwt-clauses-and-items/given-when-then-nested]
 
@@ -369,8 +357,7 @@ hidden、trivia、保護された opening edge を優先します。
 入力（escape 表示）:
 `"eventmodeling gwt 99 given evt Alpha cmd Beta when command Buy then ui Screen rmo View tf 01 evt End"`.
 
-出力
-([gwt-clauses-and-items/given-when-then-nested-output.mmd](../tests/fixtures/eventmodeling/gwt-clauses-and-items/given-when-then-nested-output.mmd)):
+出力 ([gwt-clauses-and-items/given-when-then-nested-output.mmd](../tests/fixtures/eventmodeling/gwt-clauses-and-items/given-when-then-nested-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -388,8 +375,8 @@ eventmodeling
 
 ### Inline data
 
-inline body は完全な source span から印字し、波括弧・引用符、
-backslash、空白、空の形、native 風の text を保ちます。
+inline body は完全な source span から印字し、波括弧・引用符、 backslash、空白、
+空の形、native 風の text を保ちます。
 `singleQuote` では terminal を書き直しません。
 lexer は同じ行の最後の対応する閉じまで読むため、
 その範囲の見かけの後続 frame は data であり、文ではありません。
@@ -412,8 +399,7 @@ trim、引用符の変更、分割は Db の raw terminal を変えます。
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha { \t x  }"`.
 
-出力
-([inline-data/inline-braces-unchanged-output.mmd](../tests/fixtures/eventmodeling/inline-data/inline-braces-unchanged-output.mmd)):
+出力 ([inline-data/inline-braces-unchanged-output.mmd](../tests/fixtures/eventmodeling/inline-data/inline-braces-unchanged-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -441,8 +427,7 @@ body を持つ形の規則が後の閉じまで読む場合は保ちます。
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}\n"`.
 
-出力
-([data-blocks/block-closer-indent-unsafe-output.mmd](../tests/fixtures/eventmodeling/data-blocks/block-closer-indent-unsafe-output.mmd)):
+出力 ([data-blocks/block-closer-indent-unsafe-output.mmd](../tests/fixtures/eventmodeling/data-blocks/block-closer-indent-unsafe-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -454,8 +439,8 @@ x
 
 ### Data boundaries
 
-block-data が閉じの LF を消費するか、whitespace の lookahead で止まるかを
-保ちます。
+block-data が閉じの LF を消費するか、
+whitespace の lookahead で止まるかを保ちます。
 普通の後続文を次の行へ移すときも、閉じ直後の水平空白は残します。
 LS・PS の lookahead は terminal の外のままで、LF へ変えません。
 次が共通文なら、最初の LF の有無、前置の連なり全体、
@@ -482,8 +467,7 @@ EOF の論理 LF は明示的な末尾 LF 1 個にできます。
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha [[D]] data D {\nx\n}"`.
 
-出力
-([data-boundaries/block-eof-logical-lf-kept-output.mmd](../tests/fixtures/eventmodeling/data-boundaries/block-eof-logical-lf-kept-output.mmd)):
+出力 ([data-boundaries/block-eof-logical-lf-kept-output.mmd](../tests/fixtures/eventmodeling/data-boundaries/block-eof-logical-lf-kept-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -525,8 +509,7 @@ accTitle の setter が一部の前置空白を落としても、
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha \t%%{init:{}}%%  accDescr: D"`.
 
-出力
-([common-boundaries/common-retained-exact-leading-directive-gaps-output.mmd](../tests/fixtures/eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps-output.mmd)):
+出力 ([common-boundaries/common-retained-exact-leading-directive-gaps-output.mmd](../tests/fixtures/eventmodeling/common-boundaries/common-retained-exact-leading-directive-gaps-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -538,8 +521,8 @@ eventmodeling
 title の前置空白、1 個の separator、payload、末尾 text を原文どおり保ちます。
 引用符、空の title、上書きされた出現も含みます。
 次の物理行から値を取りません。
-比較 summary は図の title を除くため、比較 Db が等しくても、
-公開される EM_TITLE terminal を書き換える理由にはなりません。
+比較 summary は図の title を除くため、比較 Db が等しくても、公開される EM_TITLE
+terminal を書き換える理由にはなりません。
 
 [fixture: eventmodeling/title/title-exact-padding-and-quotes]
 
@@ -552,8 +535,7 @@ title の前置空白、1 個の separator、payload、末尾 text を原文ど�
 入力（escape 表示）:
 `"eventmodeling title\ntf 01 evt Alpha"`.
 
-出力
-([title/title-empty-remains-output.mmd](../tests/fixtures/eventmodeling/title/title-empty-remains-output.mmd)):
+出力 ([title/title-empty-remains-output.mmd](../tests/fixtures/eventmodeling/title/title-empty-remains-output.mmd)):
 
 ```mmd
 eventmodeling title
@@ -562,8 +544,8 @@ eventmodeling title
 
 ### Accessibility lines
 
-accessibility の行形式は前置空白、keyword と colon の間、
-colon 後と末尾の空白、空 payload、引用符、波括弧風の text を保ちます。
+accessibility の行形式は前置空白、keyword と colon の間、 colon 後と末尾の空白、
+空 payload、引用符、波括弧風の text を保ちます。
 EM_ACC_TITLE と EM_ACC_DESCR はこれらも値に含むためです。
 空 payload でも terminal は空ではなく、colon 形式を block へ変えません。
 行の値の LS・PS は内容のままです。
@@ -583,8 +565,7 @@ EM_ACC_TITLE と EM_ACC_DESCR はこれらも値に含むためです。
 入力（escape 表示）:
 `"eventmodeling accTitle: First\ntf 01 evt Alpha accTitle:"`.
 
-出力
-([accessibility-lines/empty-accessibility-terminal-is-not-reset-to-empty-string-output.mmd](../tests/fixtures/eventmodeling/accessibility-lines/empty-accessibility-terminal-is-not-reset-to-empty-string-output.mmd)):
+出力 ([accessibility-lines/empty-accessibility-terminal-is-not-reset-to-empty-string-output.mmd](../tests/fixtures/eventmodeling/accessibility-lines/empty-accessibility-terminal-is-not-reset-to-empty-string-output.mmd)):
 
 ```mmd
 eventmodeling accTitle: First
@@ -615,8 +596,7 @@ description block 全体と前置の連なりを保ちます。
 入力（escape 表示）:
 `"eventmodeling accDescr\n\n{ Details }"`.
 
-出力
-([description-blocks/description-opener-newline-unchanged-output.mmd](../tests/fixtures/eventmodeling/description-blocks/description-opener-newline-unchanged-output.mmd)):
+出力 ([description-blocks/description-opener-newline-unchanged-output.mmd](../tests/fixtures/eventmodeling/description-blocks/description-opener-newline-unchanged-output.mmd)):
 
 ```mmd
 eventmodeling accDescr
@@ -627,8 +607,8 @@ eventmodeling accDescr
 ### Hidden forms
 
 IgnoredText は AST の owner ごとに source range から 1 回印字します。
-見出し前・本文、必須・任意の named gap、qualified name の tail、
-tag、GWT clause・item の gap を保ちます。
+見出し前・本文、必須・任意の named gap、qualified name の tail、 tag、GWT
+clause・item の gap を保ちます。
 保持 YAML と native DIRECTIVE を設定として解釈しません。
 共有 hidden 経路が内部の列、消費 LF、閉じの lookahead 空白を保ち、
 普通の本文 opener は本文の段に揃えます。
@@ -636,8 +616,8 @@ tag、GWT clause・item の gap を保ちます。
 fallback の percent comment は comment のままです。
 
 本文境界の form が保つ行は、GWT clause と item の開きでも保ちます。
-見出しと入れ子の本文で同じ判断を使い、item の移動によって
-次の整形で外側の開きの保護が失われないようにします。
+見出しと入れ子の本文で同じ判断を使い、
+item の移動によって次の整形で外側の開きの保護が失われないようにします。
 
 [fixture: eventmodeling/hidden-forms/header-inline-gwt-item-directive]
 
@@ -680,8 +660,7 @@ fallback の percent comment は comment のままです。
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha ---\nx\n---\ntf 02 evt Beta"`.
 
-出力
-([hidden-forms/body-hidden-yaml-no-visible-eol-needed-output.mmd](../tests/fixtures/eventmodeling/hidden-forms/body-hidden-yaml-no-visible-eol-needed-output.mmd)):
+出力 ([hidden-forms/body-hidden-yaml-no-visible-eol-needed-output.mmd](../tests/fixtures/eventmodeling/hidden-forms/body-hidden-yaml-no-visible-eol-needed-output.mmd)):
 
 ```mmd
 eventmodeling tf 01 evt Alpha ---
@@ -694,8 +673,8 @@ x
 
 普通の独立 comment は所属本文の段に揃え、GWT item 間では item の段にします。
 同じ印字行では接触を保ち、害のない分離を 1 space にします。
-単位を行に分けるとき、
-間の inline comment は directive と同じく次の単位へ付けます。
+単位を行に分けるとき、間の inline
+comment は directive と同じく次の単位へ付けます。
 同じ comment を図種の間で同じように扱うため、共有の置き方を使います。
 mark、内容、末尾空白、block comment の継続列を保ちます。
 native の `//` と `%%` は LS・PS を越えて物理 LF まで読みます。
@@ -728,8 +707,7 @@ metadata や required `title` の境界を優先します。
 入力（escape 表示）:
 `"eventmodeling\ntf 01 evt A /*c*/ tf 02 evt B\n"`.
 
-出力
-([comments/split-statements-block-output.mmd](../tests/fixtures/eventmodeling/comments/split-statements-block-output.mmd)):
+出力 ([comments/split-statements-block-output.mmd](../tests/fixtures/eventmodeling/comments/split-statements-block-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -767,8 +745,7 @@ eventmodeling
 入力（escape 表示）:
 `"eventmodeling tf%%{wrap}%% 01 evt Alpha%%{wrap}%%->>%%{wrap}%%02"`.
 
-出力
-([global-directives/directive-same-line-contacts-output.mmd](../tests/fixtures/eventmodeling/global-directives/directive-same-line-contacts-output.mmd)):
+出力 ([global-directives/directive-same-line-contacts-output.mmd](../tests/fixtures/eventmodeling/global-directives/directive-same-line-contacts-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -815,8 +792,7 @@ required identifier と共通値の空白は構造上の字下げより優先し
 入力（escape 表示）:
 `"eventmodeling tf 01 evt Alpha \"style:#x\" ;rf 02 cmd Beta"`.
 
-出力
-([semicolons/selected-external-semicolon-preserved-output.mmd](../tests/fixtures/eventmodeling/semicolons/selected-external-semicolon-preserved-output.mmd)):
+出力 ([semicolons/selected-external-semicolon-preserved-output.mmd](../tests/fixtures/eventmodeling/semicolons/selected-external-semicolon-preserved-output.mmd)):
 
 ```mmd
 eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
@@ -827,8 +803,8 @@ eventmodeling tf 01 evt Alpha "style:#x" ;rf 02 cmd Beta
 文・item 間の普通の ASCII 空行は最大 1 行、文書・本文の端は削除します。
 無制限に広げず区切りを残すためです。
 普通の空白だけの行は空にします。
-data、description、hidden、directive の内部、保持 prefix、
-comment-region join、共通文の消費 LF 境界は原文どおりです。
+data、description、hidden、directive の内部、保持 prefix、 comment-region join、
+共通文の消費 LF 境界は原文どおりです。
 
 [fixture: eventmodeling/blank-lines/ordinary-blanks-bounded]
 
@@ -843,8 +819,7 @@ comment-region join、共通文の消費 LF 境界は原文どおりです。
 入力（escape 表示）:
 `"\n\neventmodeling\n\n\ntf 01 evt Alpha\n\n \t\n\nrf 02 cmd Beta\n\n"`.
 
-出力
-([blank-lines/ordinary-blanks-bounded-output.mmd](../tests/fixtures/eventmodeling/blank-lines/ordinary-blanks-bounded-output.mmd)):
+出力 ([blank-lines/ordinary-blanks-bounded-output.mmd](../tests/fixtures/eventmodeling/blank-lines/ordinary-blanks-bounded-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -870,8 +845,7 @@ hidden・data の閉じの境界、保護区間は、
 入力（escape 表示）:
 `"eventmodeling \t\ntf 01 evt Alpha \t\nentity Shop.Buy \t"`.
 
-出力
-([trailing-whitespace/harmless-trailing-structure-output.mmd](../tests/fixtures/eventmodeling/trailing-whitespace/harmless-trailing-structure-output.mmd)):
+出力 ([trailing-whitespace/harmless-trailing-structure-output.mmd](../tests/fixtures/eventmodeling/trailing-whitespace/harmless-trailing-structure-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -897,8 +871,7 @@ trivia の継続行は構造上の段を保ちます。
 入力（escape 表示）:
 `"eventmodeling tf 001 evt VeryLongNamespace.VeryLongEventName ->> 002 ->> 003 ->> 004 [[LongDataName]] \u0060text\u0060 {a very long authored payload}"`.
 
-出力
-([long-lines/long-structural-line-no-wrap-output.mmd](../tests/fixtures/eventmodeling/long-lines/long-structural-line-no-wrap-output.mmd)):
+出力 ([long-lines/long-structural-line-no-wrap-output.mmd](../tests/fixtures/eventmodeling/long-lines/long-structural-line-no-wrap-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -932,8 +905,7 @@ native YAML や DIRECTIVE を本物の frontmatter・設定へ昇格させると
 入力（escape 表示）:
 `"---\ntitle: 'YamlTitle'\nconfig: {eventmodeling: {padding: 12}}\n---\neventmodeling tf 01 evt Alpha"`.
 
-出力
-([frontmatter-yaml/safe-real-yaml-output.mmd](../tests/fixtures/eventmodeling/frontmatter-yaml/safe-real-yaml-output.mmd)):
+出力 ([frontmatter-yaml/safe-real-yaml-output.mmd](../tests/fixtures/eventmodeling/frontmatter-yaml/safe-real-yaml-output.mmd)):
 
 ```mmd
 ---
@@ -980,9 +952,8 @@ Prettier の先頭 BOM の扱いは既存の制限に従います。
 
 ### Source order
 
-未使用の model entity・data、note、GWT、型タグ、重複 source、
-後続の同名 data、上書きされた共通文、参照と併記した inline data も含め、
-全出現を原順に保ちます。
+未使用の model entity・data、note、GWT、型タグ、重複 source、後続の同名 data、
+上書きされた共通文、参照と併記した inline data も含め、全出現を原順に保ちます。
 変えるのは決定済みの外側の配置だけです。
 重複削除で比較 Db が等しくても authored な出現を失い、
 data の並べ替えは最初の検索結果も変える場合があります。
@@ -1004,8 +975,7 @@ data の並べ替えは最初の検索結果も変える場合があります。
 入力（escape 表示）:
 `"eventmodeling entity Shop.Alpha entity Shop.Alpha note 99 {\nunused\n}\ngwt 99 given evt Alpha then cmd Beta tf 01 evt Alpha ->> 02 ->> 02 [[D]] {unused} data D {\nfirst\n}\ndata D {\nsecond\n}\ndata Unused {\nx\n}\n"`.
 
-出力
-([source-order/all-occurrences-retained-output.mmd](../tests/fixtures/eventmodeling/source-order/all-occurrences-retained-output.mmd)):
+出力 ([source-order/all-occurrences-retained-output.mmd](../tests/fixtures/eventmodeling/source-order/all-occurrences-retained-output.mmd)):
 
 ```mmd
 eventmodeling
@@ -1036,8 +1006,8 @@ x
 普通の受理入力は設定の改行 1 個で終え、末尾の普通の空行列を削除します。
 必要な hidden・data の閉じの空白、保護原文、
 EOF に達する未完 directive は字句上の終端を保ちます。
-共有の末尾方針に揃えつつ、directive 内容への LF 追加や、
-block terminal の lookahead の変更を避けます。
+共有の末尾方針に揃えつつ、directive 内容への LF 追加や、 block
+terminal の lookahead の変更を避けます。
 
 [fixture: eventmodeling/final-newline/final-common-line-newline]
 
@@ -1052,8 +1022,7 @@ block terminal の lookahead の変更を避けます。
 入力（escape 表示）:
 `"eventmodeling accDescr: D"`.
 
-出力
-([final-newline/final-common-line-newline-output.mmd](../tests/fixtures/eventmodeling/final-newline/final-common-line-newline-output.mmd)):
+出力 ([final-newline/final-common-line-newline-output.mmd](../tests/fixtures/eventmodeling/final-newline/final-common-line-newline-output.mmd)):
 
 ```mmd
 eventmodeling accDescr: D
@@ -1062,13 +1031,11 @@ eventmodeling accDescr: D
 ### Specified readings
 
 既存の 5 差異、directive-as-token-boundary、
-ignored-semicolon-as-token-boundary、
-html-tag-in-frontmatter、
-embedded-data-opaque、
-c4-keyword-anywhere に従います。
+ignored-semicolon-as-token-boundary、 html-tag-in-frontmatter、
+embedded-data-opaque、 c4-keyword-anywhere に従います。
 新しい差異を加えず、拒否入力の atomic cut を修復しません。
-raw 拒否には raw Db がないため、
-必要な比較は記録された specified reading を使います。
+raw 拒否には raw Db がないため、必要な比較は記録された specified
+reading を使います。
 ファイルの拒否入力は構文エラーとなって書き換えず、
 Markdown では host に任せます。
 

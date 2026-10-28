@@ -18,17 +18,16 @@ mermaid.js はエラーなしに前の宣言の位置、戦略、慣性を置き
 
 ## 規則の詳細
 
-この規則は、前の宣言と違う値を同じ id のノードに与える、
-anchor、component、pipeline の子の宣言を報告する。
+この規則は、前の宣言と違う値を同じ id のノードに与える、 anchor、component、
+pipeline の子の宣言を報告する。
 対象の図種は `wardley` である。
 
-`component API [0.6, 0.7] (build) inertia` と
-`component API [0.3, 0.8]` の後では、
+`component API [0.6, 0.7] (build) inertia` と `component API [0.3, 0.8]` の後では、
 マップは後の位置に、`build` の表示も慣性の印もない 1 つのノード `API` を持つ。
 
 mermaid.js は、テキストの中の順によらず、anchor、component、
-pipeline の子の順にノードを取るので、
-component は、anchor がその後に書かれていても、その名前の anchor を置き換え、
+pipeline の子の順にノードを取るので、 component は、
+anchor がその後に書かれていても、その名前の anchor を置き換え、
 この規則もその順に比べる。
 pipeline `P` の子 `X` は id `P_X` を持ち、
 `P_X` という名前の component を置き換える。
@@ -37,8 +36,8 @@ pipeline `P` の子 `X` は id `P_X` を持ち、
 pipeline の親の進化の向きの位置は比べない。
 mermaid.js は親をその子の上に描くからである。
 ノードがすでに持つ値を与える宣言は報告しない。
-名前は、規則 [wardley-no-undef](./wardley-no-undef.ja.md) が
-比べるとおりに比べる。
+名前は、
+規則 [wardley-no-undef](./wardley-no-undef.ja.md) が比べるとおりに比べる。
 
 ノードごとに自分の id を与えるか、1 度だけ宣言する。
 
@@ -70,10 +69,10 @@ wardley-beta
 
 ## 背景
 
-[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171)
-は anchor、component、pipeline の子をその順に足し、
-[`addNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L102)
-は同じ id のノードの上にノードを保ち、ラベルのずれだけを残す。
+[パーサー](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyParser.ts#L92-L171) は anchor、
+component、pipeline の子をその順に足し、
+[`addNode`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L92-L102) は同じ id のノードの上にノードを保ち、
+ラベルのずれだけを残す。
 
 <!-- begin auto-generated rule resources -->
 

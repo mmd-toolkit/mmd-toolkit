@@ -19,8 +19,7 @@ mermaid.js はその語を大文字小文字を問わず読むが、
 
 ## 規則の詳細
 
-この規則は、見出しの向きのうち、
-`Horizontal` や `HORIZONTAL` のように、
+この規則は、見出しの向きのうち、 `Horizontal` や `HORIZONTAL` のように、
 違う大文字小文字で書いた `horizontal` を報告する。
 対象の図種は `xychart` である。
 

@@ -6,8 +6,7 @@ lexer は仕様の[先勝ちの順序][ordered-units]に従います。
 語のキーワードだけが識別子を longer alternative に持ちます。
 ヘッダーには空白、percent pair、終端の境界も必要ですが、
 検出自体は接尾辞の境界を要求しません。
-共通文法も可視 EOL 単位もありません。
-[fixture: eventmodeling/lex-keyword-prefix-name]
+共通文法も可視 EOL 単位もありません。 [fixture: eventmodeling/lex-keyword-prefix-name]
 [fixture: eventmodeling/lex-name-custom-header-dot]
 [fixture: eventmodeling/header-slash-comment-glued]
 [fixture: eventmodeling/header-letter] [fixture: eventmodeling/header-inline]
@@ -25,17 +24,16 @@ lexer は仕様の[先勝ちの順序][ordered-units]に従います。
 書かれた各構成要素は別の item です。
 修飾名は各部分の Identifier と dot の Punctuator を持ち、
 一つに連結した Identifier トークンにはしません。
-frame 名は先頭のゼロを保ち、Numeric トークンを使いません。
-[fixture: eventmodeling/space-qualified-name]
+frame 名は先頭のゼロを保ち、
+Numeric トークンを使いません。 [fixture: eventmodeling/space-qualified-name]
 [fixture: eventmodeling/lex-qualified-hidden-components]
 [fixture: eventmodeling/db-source-leading-zero]
 
 inline/block の波括弧、tag、metadata 区切りは値のトークンの外です。
 引用された inline data は String のままで、
 波括弧や metadata 内の引用符は RawText です。
-inline data は同じ行の最後の閉じ記号を取り、
-block data は本文がある閉じ方を優先します。
-[fixture: eventmodeling/lex-inline-greedy]
+inline data は同じ行の最後の閉じ記号を取り、 block
+data は本文がある閉じ方を優先します。 [fixture: eventmodeling/lex-inline-greedy]
 [fixture: eventmodeling/lex-inline-quote-greedy]
 [fixture: eventmodeling/lex-block-adjacent-later-close]
 [fixture: eventmodeling/common-quoted-values]
@@ -44,8 +42,8 @@ block data は本文がある閉じ方を優先します。
 RawText の値は内部の空白と改行をすべて保ち、空白だけでも保ちます。
 空の内部はトークンを作りませんが、空の引用文字列は String を持ちます。
 title の値は ASCII 区切り一文字の後、accessibility 行は colon 直後です。
-metadata の先行字下げはトークンにせず、Db 導出時にソースから読めます。
-[fixture: eventmodeling/lex-common-title-two-spaces]
+metadata の先行字下げはトークンにせず、
+Db 導出時にソースから読めます。 [fixture: eventmodeling/lex-common-title-two-spaces]
 [fixture: eventmodeling/common-whitespace]
 [fixture: eventmodeling/lex-common-block-whitespace-only]
 [fixture: eventmodeling/gram-description-block-empty-after-removal]
@@ -53,12 +51,10 @@ metadata の先行字下げはトークンにせず、Db 導出時にソース�
 [fixture: eventmodeling/gram-common-leading-directive-both-sides]
 
 native YAML/directive は消費した閉じ LF を除く一つの RawText item です。
-共通 directive、コメント領域、選ばれた semicolon は
-RawText と String を切り、
+共通 directive、コメント領域、選ばれた semicolon は RawText と String を切り、
 String の断片は StringFragment になります。
 keyword、identifier、数字列、->>、[[、]] の内部で切れると拒否します。
-書かれた構成要素の間での分割は許可されます。
-[fixture: eventmodeling/hidden-yaml-after-frame]
+書かれた構成要素の間での分割は許可されます。 [fixture: eventmodeling/hidden-yaml-after-frame]
 [fixture: eventmodeling/lex-native-directive-object-eof]
 [fixture: eventmodeling/directive-string-middle]
 [fixture: eventmodeling/directive-block-middle]
@@ -75,8 +71,9 @@ LF/LS/PS を含む Notation 空白と論理的な末尾 LF はトークンにし
 percent/slash-line コメントは物理 LF の前で終わり、LS/PS は内容です。
 slash-block コメントは最初の閉じで終わり、
 範囲と値は[共有の Comment の定義](../tokens.ja.md#comment)に従います。
-通過した bare 行は共有 Comment となり、付随 trivia は読み直しません。
-[fixture: eventmodeling/space-lines] [fixture: eventmodeling/line-ls-gap]
+通過した bare 行は共有 Comment となり、
+付随 trivia は読み直しません。 [fixture: eventmodeling/space-lines]
+[fixture: eventmodeling/line-ls-gap]
 [fixture: eventmodeling/line-ps-gap] [fixture: eventmodeling/comment-eof]
 [fixture: eventmodeling/comment-native]
 [fixture: eventmodeling/comment-line-ls-body]

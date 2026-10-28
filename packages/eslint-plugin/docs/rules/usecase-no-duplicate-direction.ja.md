@@ -15,8 +15,8 @@
 
 ## 規則の詳細
 
-この規則は、前の `direction` 文が与えた方向と違う方向を与える
-`direction` 文を報告する。
+この規則は、
+前の `direction` 文が与えた方向と違う方向を与える `direction` 文を報告する。
 対象の図種は `usecase` である。
 
 `direction LR` と `direction BT` の後では、図は下から上へ描かれる。
@@ -56,10 +56,8 @@ usecase-beta
 
 ## 背景
 
-[`setDirection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L237-L239)
-は `TD` を `TB` として各方向を記録し、
-[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L350-L350)
-は最後のものを取る。
+[`setDirection`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L237-L239) は `TD` を `TB` として各方向を記録し、
+[モデル](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecaseModelBuilder.ts#L350-L350) は最後のものを取る。
 
 <!-- begin auto-generated rule resources -->
 

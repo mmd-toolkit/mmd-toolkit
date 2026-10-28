@@ -293,11 +293,12 @@ frontmatter. Dispatch and value-node rows include pie.
 The printer calls shared accessibility colon rules and `layoutDescriptionBlock`;
 pie line forms never join a next-line value. `AtomLayout.writtenGapsBefore`
 keeps the LF consumed outside a hidden node and its closing-boundary whitespace.
-`BlockRules.joiningRegionsInValues` lets complete value atoms own common joins
-while safe suffixes format; other printers retain their previous whole-line
-path. The existing `triviaLineBreak` also receives a preceding printed boundary
-when no trivia precedes it, retaining hidden LFs while standalone trivia still
-aligns. `formatsEmptyTrivia` lets the shared description layout align pie
-comment-only blocks. A diagram-selected `keepsPrefix` root option retains the
+`BlockRules.joiningRegionsPrintedAsWritten` lets the layout print common joins
+as written, in complete value atoms or in gaps it keeps, while safe suffixes
+format; other printers retain their previous whole-line path. The existing
+`triviaLineBreak` also receives a preceding printed boundary when no trivia
+precedes it, retaining hidden LFs while standalone trivia still aligns.
+`formatsEmptyTrivia` lets the shared description layout align pie comment-only
+blocks. A diagram-selected `keepsPrefix` root option retains the
 detection-skipped prefix before normal root cleanup, preventing ignored YAML
 from becoming real frontmatter. All options are absent for existing diagrams.

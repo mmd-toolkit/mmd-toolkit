@@ -6,7 +6,7 @@ import {
   withoutFrontmatterTagStarts,
   opaqueReferenceInput,
 } from "../../../tools/src/specified-reading.ts"
-import { KNOWN_DIVERGENCES, loadFixtures } from "../src/index.ts"
+import { KNOWN_DIVERGENCES, loadFixture } from "../src/index.ts"
 import type { MermaidRun } from "../src/mermaid.ts"
 import {
   extractFrontmatterTitle,
@@ -315,10 +315,7 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
       },
     ] as const
     for (const row of cases) {
-      const fixture = (await loadFixtures(row.diagram)).find(
-        (entry) => entry.name === row.name,
-      )
-      if (fixture === undefined) throw new Error(`missing fixture: ${row.name}`)
+      const fixture = await loadFixture(row.diagram, row.name)
       expect(await opaqueReferenceInput(fixture.input, fixture.config)).toBe(
         "reference" in row ? row.reference : fixture.input,
       )
@@ -326,10 +323,10 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
   }, 10_000)
 
   it("keeps Mermaid's title when removing an acceptance key", async () => {
-    const fixture = (await loadFixtures("gitgraph")).find(
-      (entry) => entry.name === "div-frontmatter-main-branch-preserves-title",
+    const fixture = await loadFixture(
+      "gitgraph",
+      "div-frontmatter-main-branch-preserves-title",
     )
-    if (fixture === undefined) throw new Error("missing title fixture")
     const run = await specifiedRunOf(fixture.input, OPAQUE_MARK, fixture.config)
     expect(dbOf(run)).toMatchObject({
       title: "T",
@@ -342,11 +339,10 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
   })
 
   it("keeps a valid wrap directive when omitting invalid frontmatter", async () => {
-    const fixture = (await loadFixtures("sequence")).find(
-      (entry) =>
-        entry.name === "div-invalid-frontmatter-preserves-wrap-directive",
+    const fixture = await loadFixture(
+      "sequence",
+      "div-invalid-frontmatter-preserves-wrap-directive",
     )
-    if (fixture === undefined) throw new Error("missing wrap fixture")
     expect(await opaqueReferenceInput(fixture.input, fixture.config)).toBe(
       '%%{init: {"wrap": true}}%%\nsequenceDiagram\nA->>B: x\n',
     )
@@ -362,10 +358,7 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
     "div-init-html-labels-default-comparison",
   ])
     it(`uses default escaping for ${name}`, async () => {
-      const fixture = (await loadFixtures("gitgraph")).find(
-        (entry) => entry.name === name,
-      )
-      if (fixture === undefined) throw new Error(`missing fixture: ${name}`)
+      const fixture = await loadFixture("gitgraph", name)
       const run = await specifiedRunOf(
         fixture.input,
         OPAQUE_MARK,
@@ -379,10 +372,7 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
       ["pie", "frontmatter-html"],
       ["common", "config-two-inits-merged"],
     ] as const) {
-      const fixture = (await loadFixtures(diagram)).find(
-        (entry) => entry.name === name,
-      )
-      if (fixture === undefined) throw new Error(`missing fixture: ${name}`)
+      const fixture = await loadFixture(diagram, name)
       expect(await opaqueReferenceInput(fixture.input, fixture.config)).toBe(
         fixture.input,
       )
@@ -390,10 +380,10 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
   })
 
   it("preserves other settings in the same configuration as an acceptance key", async () => {
-    const fixture = (await loadFixtures("gitgraph")).find(
-      (entry) => entry.name === "docs-syntax-gitgraph-2ea99686",
+    const fixture = await loadFixture(
+      "gitgraph",
+      "docs-syntax-gitgraph-2ea99686",
     )
-    if (fixture === undefined) throw new Error("missing gitgraph docs fixture")
     const text = await opaqueReferenceInput(fixture.input, fixture.config)
     const reading = await readMermaidConfiguration(text)
     expect(reading).toMatchObject({
@@ -409,10 +399,7 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
   })
 
   it("omits an init block rejected by configuration's second detection scan", async () => {
-    const fixture = (await loadFixtures("common")).find(
-      (entry) => entry.name === "config-init-detection-rejects",
-    )
-    if (fixture === undefined) throw new Error("missing detection fixture")
+    const fixture = await loadFixture("common", "config-init-detection-rejects")
     expect(await opaqueReferenceInput(fixture.input, fixture.config)).toBe(
       "\nerror\n%% x",
     )
@@ -424,10 +411,7 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
   })
 
   it("derives configuration without reading opaque statements and restores the parser", async () => {
-    const fixture = (await loadFixtures("flowchart")).find(
-      (entry) => entry.name === "div-data-unknown-shape",
-    )
-    if (fixture === undefined) throw new Error("missing shape fixture")
+    const fixture = await loadFixture("flowchart", "div-data-unknown-shape")
     expect(await readMermaidConfiguration(fixture.input)).toMatchObject({
       accepted: true,
       config: {},
@@ -451,10 +435,7 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
     { name: "div-init-main-branch-duplicate-default-accepted", accepted: true },
   ])
     it(`uses default acceptance for ${row.name}`, async () => {
-      const fixture = (await loadFixtures("gitgraph")).find(
-        (entry) => entry.name === row.name,
-      )
-      if (fixture === undefined) throw new Error(`missing fixture: ${row.name}`)
+      const fixture = await loadFixture("gitgraph", row.name)
       const run = await specifiedRunOf(
         fixture.input,
         OPAQUE_MARK,
@@ -495,10 +476,7 @@ describe("specifiedRunOf: embedded-data-opaque", () => {
     },
   ] as const)
     it(`records acceptance without a comparison Db for ${row.diagram}/${row.name}`, async () => {
-      const fixture = (await loadFixtures(row.diagram)).find(
-        (entry) => entry.name === row.name,
-      )
-      if (fixture === undefined) throw new Error(`missing fixture: ${row.name}`)
+      const fixture = await loadFixture(row.diagram, row.name)
       expect(
         await specifiedRunOf(fixture.input, OPAQUE_MARK, fixture.config),
       ).toEqual({
@@ -704,10 +682,7 @@ describe("specifiedRunOf: marks of lexer rules", () => {
 
 describe("specifiedRunOf: html-tag-in-frontmatter", () => {
   it("uses Mermaid's converted frontmatter title for pie as for the other diagram types", async () => {
-    const fixture = (await loadFixtures("pie")).find(
-      (entry) => entry.name === "frontmatter-html",
-    )
-    if (fixture === undefined) throw new Error("missing pie HTML title fixture")
+    const fixture = await loadFixture("pie", "frontmatter-html")
     expect(fixture.knownDivergence).toBeUndefined()
     const mermaid = await runMermaidWithEmbeddedData(fixture.input)
     const specified = await specifiedRunOf(
@@ -1026,13 +1001,11 @@ describe("withoutBarePercentLinesBeforeHeader", () => {
 
 describe("specifiedRunOf: bare-percent-line-before-header", () => {
   it("preserves rejection when bare lines precede a retained block", async () => {
-    const fixtures = await loadFixtures("radar")
     for (const name of [
       "retained-between-trivia",
       "retained-after-bare-with-directive",
     ]) {
-      const fixture = fixtures.find((entry) => entry.name === name)
-      if (fixture === undefined) throw new Error(`missing radar/${name}`)
+      const fixture = await loadFixture("radar", name)
       const written = await runMermaidWithEmbeddedData(fixture.input)
       const reference = await specifiedRunOf(
         fixture.input,
@@ -1241,7 +1214,6 @@ describe("blank-line references with multiline directives", () => {
 
 describe("packet opaque acceptance settings", () => {
   it("records both acceptance directions and retains the frontmatter title", async () => {
-    const fixtures = await loadFixtures("packet")
     for (const entry of [
       { name: "config-frontmatter-fraction", accepted: true, title: "Front" },
       { name: "config-directive-fraction", accepted: true, title: undefined },
@@ -1256,8 +1228,7 @@ describe("packet opaque acceptance settings", () => {
         title: undefined,
       },
     ]) {
-      const fixture = fixtures.find((value) => value.name === entry.name)
-      if (fixture === undefined) throw new Error(`missing ${entry.name}`)
+      const fixture = await loadFixture("packet", entry.name)
       const reference = await opaqueReferenceInput(
         fixture.input,
         fixture.config,
@@ -1297,10 +1268,10 @@ describe("packet opaque acceptance settings", () => {
   })
 
   it("keeps unrelated valid configuration when omitting malformed opaque data", async () => {
-    const fixture = (await loadFixtures("packet")).find(
-      (entry) => entry.name === "frontmatter-invalid-keeps-config",
+    const fixture = await loadFixture(
+      "packet",
+      "frontmatter-invalid-keeps-config",
     )
-    if (fixture === undefined) throw new Error("missing packet opaque fixture")
     const reference = await opaqueReferenceInput(fixture.input, fixture.config)
     expect(reference).toContain('%%{init:{"packet":{"showBits":false}}}%%')
     const result = await specifiedRunOf(

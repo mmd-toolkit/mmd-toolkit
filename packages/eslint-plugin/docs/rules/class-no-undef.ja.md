@@ -13,8 +13,7 @@
 `style`、`cssClass`、`click`、`link`、`callback`、`note for` は、
 クラスを名指しする。
 その名前が図のどのクラスの名前でもないと、
-mermaid.js は文を受理して何もしないか、
-何も指さないノートを描く。
+mermaid.js は文を受理して何もしないか、何も指さないノートを描く。
 名前を打ち間違えても、エラーは出ない。
 
 ## 規則の詳細
@@ -24,8 +23,8 @@ mermaid.js は文を受理して何もしないか、
 対象の図種は `classDiagram` である。
 
 図のクラスは、class の文、関係、
-または `A : +int x` のようなメンバーの文が宣言するもので、
-図のどこにあっても、どの namespace の中にあってもよい。
+または `A : +int x` のようなメンバーの文が宣言するもので、図のどこにあっても、
+どの namespace の中にあってもよい。
 `bar ()-- foo` の `bar` のように、関係の片方の端だけがロリポップのとき、
 関係はその端のクラスを宣言しない。
 mermaid.js はそれをインターフェースにし、`style bar fill:#f00` は何も変えない。
@@ -36,10 +35,7 @@ flowchart では `style` が名指しした頂点を作るのと違い、
 `callback C "f"` も、何も変えない。
 `note for Z "x"` はノートを残すが、
 mermaid.js は図を描くときにクラス `Z` を見つけられないので、
-クラスへの線のないノートを描く
-（
-[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L810-L829)
-）。
+クラスへの線のないノートを描く（ [`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L810-L829) ）。
 
 クラスを宣言する前に書いた文も、mermaid.js では何も変えない。
 `class A` より前の `style A fill:#f00`、`cssClass "A" c`、`click A href "…"`、
@@ -50,17 +46,16 @@ mermaid.js は図を描くときにクラス `Z` を見つけられないので�
 
 ほかに 2 つ、正しくクラスを名指していて何もしない文があり、
 規則はそれらも報告しない。
-`1A` のように ASCII の数字で始まる id のクラスには、
-`cssClass`、`link`、`click … href` は、どこにあっても何も付けない。
+`1A` のように ASCII の数字で始まる id のクラスには、 `cssClass`、`link`、
+`click … href` は、どこにあっても何も付けない。
 mermaid.js が、それを別の id で探すからである。
 `style` と `callback` は効く。
 また、`class A~T~` の後の `note for A~T~ "x"` はクラス `A` を指すが、
 mermaid.js は総称型を付けたままクラスを探し、線のないノートを描く。
 
 `cssClass` の一覧は、名前ごとに確かめる。
-`cssClass "A, B" c` のように `,` の後に空白があると、
-それは名前 ` B` の一部で、どのクラスも指さず、
-mermaid.js は `B` に CSS クラスを付けない。
+`cssClass "A, B" c` のように `,` の後に空白があると、それは名前 ` B` の一部で、
+どのクラスも指さず、 mermaid.js は `B` に CSS クラスを付けない。
 `click`、`link`、`callback` のバッククォートの名前も、同じように `,` で分け、
 それぞれを確かめる。
 ``click `A,B` href "…"`` は、`A` と `B` の両方をリンクにする。

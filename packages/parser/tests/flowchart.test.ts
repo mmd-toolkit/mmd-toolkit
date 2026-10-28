@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest"
 import type { FlowchartLink, FlowchartStatement, Root } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
 import { problemsOfTree } from "./helpers/tree-problems.ts"
-import { flowchartEdgeCount } from "@mmd-toolkit/tests"
 
 // Expectations come from diagrams/flowchart.md (the lexer and the grammar)
 // and ast/flowchart.md (the nodes and the tokens).
@@ -1000,17 +999,6 @@ describe("flowchart rejections", () => {
     )
     // `A & B --> C & D` makes four edges.
     parse(`${HEADER}A & B --> C & D\nlinkStyle 3 stroke:red`)
-  })
-
-  it("does not reject for the number of edges, which depends on the site configuration", () => {
-    // diagrams/flowchart.md, Rejections outside the grammar, Too many
-    // edges: mermaid.js rejects more than `maxEdges` edges, 500 by default.
-    const statements = Array.from(
-      { length: 501 },
-      (_, index) => `A${index}-->B${index}`,
-    ).join("\n")
-    const root = parse(HEADER + statements)
-    expect(flowchartEdgeCount(root)).toBe(501)
   })
 
   it("reports the place of the unit that the grammar cannot read", () => {

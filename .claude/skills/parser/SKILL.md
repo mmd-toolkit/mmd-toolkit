@@ -386,12 +386,15 @@ For `embedded-data-opaque`, follow the specified reading in either acceptance
 direction and retain the derived title and unaffected embedded values supplied
 for Db comparison.
 
-For Db comparisons, set `reading` to `fixture.specified ?? fixture.expected`.
-When that reading is accepted and has a non-null Db, compare the tree's Db with
-its recorded Db using `embeddedValuesOf(fixture, reading)` and the existing
-`dbOfTree`/`dbFromTree` helpers. Keep accepted opaque fixtures without a
-comparison Db explicit. Do not substitute written embedded settings for those
-derived values, including secure keys that the specification says are removed.
+A test of the parser compares a Db only for a reference input, whose tree no
+record holds: the token-cut reference readings that `expectDivergenceForm`
+checks, and the reference inputs under "marked fixtures differ only by their
+divergence" in `tests/fixtures.test.ts`. It compares the Db of the reference
+input's tree with the Db that mermaid.js gave for the fixture's input,
+`fixture.expected.db`, using `embeddedValuesOf(fixture, fixture.expected)` and
+`dbOfTree`. When mermaid.js gave the input no Db (`db` is null), nothing is
+compared. Do not substitute written embedded settings for those derived values,
+including secure keys that the specification says are removed.
 
 The common fixture loop calls `expectDivergenceForm` in
 `tests/helpers/divergence-form.ts` for every supported diagram to check declared
@@ -405,15 +408,16 @@ Steps:
 
 1. Only `tests/fixtures.test.ts` writes the corpus records. It compares each
    parse result with its record and checks acceptance with the shared helper
-   above (4.7). Diagram tests check source coverage, spelling, containment,
-   source order, node boundaries and comparable Db values without repeating
-   recording or acceptance checks. `checkTree` checks tree conditions only;
-   acceptance and Db equality are separate checks through `fixtureAccepts` and
-   `dbFromTree`. `@mmd-toolkit/tests` supplies the tree-condition and Db
-   builders, and `tests/helpers/tree-problems.ts` wraps the tree-condition check
-   for unit tests. Report missing information to the specification when neither
-   the specified tree nor its permitted embedded values can supply the
-   comparison Db, with the input and the recorded reading.
+   above (4.7). That the recorded trees keep the conditions of the tree and give
+   the Db of mermaid.js is a check of the corpus, which `@mmd-toolkit/tests`
+   makes on every recorded tree (`check-tree-corpus.test.ts` and
+   `db-from-tree.test.ts`); no test of the parser parses the fixtures again to
+   check them. A diagram test names the fixtures of the cases that it checks and
+   states what their trees hold; `tests/helpers/tree-problems.ts` wraps the
+   check of the tree conditions (`checkTree`) for such a test. When
+   `db-from-tree.test.ts` fails for a recorded tree because its accepted reading
+   has no embedded values to build the Db with, report it to the specification
+   with the input and the recorded reading.
 2. Find where text outside a node's range decides a reading. Example from the
    flowchart: the name text of a subgraph runs to its separator, and where empty
    description blocks follow the name, the whitespace between them lies outside

@@ -17,12 +17,13 @@
 
 ## 規則の詳細
 
-この規則は、図の前の同じオプションと違う値を、同じ文か別の文で与える
-オプションを報告する。
+この規則は、図の前の同じオプションと違う値を、
+同じ文か別の文で与えるオプションを報告する。
 対象の図種は `radar` である。
 
 `ticks 2, ticks 3, ticks 2` の後では、図は 2 つの輪を描き、
-2 つ目と 3 つ目を報告する。どちらもその前の値を置き換えるからである。
+2 つ目と 3 つ目を報告する。
+どちらもその前の値を置き換えるからである。
 
 図がすでに持つ値を与えるオプションは報告しない。
 数は数として比べ、`ticks 3` と `ticks 03.00` は 1 つの値である。
@@ -58,8 +59,8 @@ radar-beta
 
 ## 背景
 
-[`setOptions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117)
-は、オプションごとに最後の値を保ち、輪を 32 までしか描かない。
+[`setOptions`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L93-L117) は、
+オプションごとに最後の値を保ち、輪を 32 までしか描かない。
 
 <!-- begin auto-generated rule resources -->
 

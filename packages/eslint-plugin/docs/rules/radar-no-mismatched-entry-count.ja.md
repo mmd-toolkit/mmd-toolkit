@@ -20,12 +20,12 @@
 この規則は、値が軸の名前を持たず、その数が図の軸の数と違う曲線を報告する。
 対象の図種は `radar` である。
 
-`axis A, B, C` の後では、`curve sales{1, 2}` も `curve sales{1, 2, 3, 4}` も
-描画から除かれ、その一部も描かれない。
+`axis A, B, C` の後では、
+`curve sales{1, 2}` も `curve sales{1, 2, 3, 4}` も描画から除かれ、
+その一部も描かれない。
 軸のない図の値の曲線も報告する。
 
-図のすべての軸を数え、曲線の後に宣言した軸も、
-前に宣言した名前の軸も数える。
+図のすべての軸を数え、曲線の後に宣言した軸も、前に宣言した名前の軸も数える。
 いくつかの曲線を持つ `curve` 文の曲線は、それぞれ調べる。
 `curve sales{A: 1, B: 2, C: 3}` のように軸の名前を持つ曲線は報告しない。
 どの軸も名指さない値は [radar-no-undef](./radar-no-undef.ja.md) が報告し、
@@ -61,8 +61,8 @@ radar-beta
 
 ## 背景
 
-[`drawCurves`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173)
-は、値の数が軸の数でない曲線を飛ばす。
+[`drawCurves`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L135-L173) は、
+値の数が軸の数でない曲線を飛ばす。
 
 <!-- begin auto-generated rule resources -->
 

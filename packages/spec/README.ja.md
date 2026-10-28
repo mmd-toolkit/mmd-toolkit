@@ -14,9 +14,8 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 ## mermaid.js の版
 
 この仕様は、
-コミット
-[`98a0945`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b)
-の mermaid 12.0.0 に従います。
+コミット [`98a0945`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b) の mermaid
+12.0.0 に従います。
 仕様とその版が食い違う場合は mermaid.js が正しく、仕様に誤りがあります。
 ただし、
 [既知の差異](./docs/known-divergences.ja.md) に挙げた意図的な違いは除きます。
@@ -31,8 +30,7 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
    mermaid.js のすべての図種について
 4. [`docs/ast.ja.md`](./docs/ast.ja.md): 全図種に共通する構文木。
    入力を何も失わない
-5. [`docs/known-divergences.ja.md`](./docs/known-divergences.ja.md):
-   仕様が意図して mermaid.js と異なる入力
+5. [`docs/known-divergences.ja.md`](./docs/known-divergences.ja.md): 仕様が意図して mermaid.js と異なる入力
 6. 図種ごとの 2 つの文書。
    下の表を参照
 

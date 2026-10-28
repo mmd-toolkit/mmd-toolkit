@@ -13,6 +13,7 @@ import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 import type { LineIndex } from "../../positions.ts"
 import {
+  isBefore,
   isCodePointAt,
   matchWholeWordIgnoringCase,
   skipWhile,
@@ -44,11 +45,18 @@ function isIndentation(character: DiagramCharacter): boolean {
   return isWhitespace(character.codePoint) && character.codePoint !== LINE_FEED
 }
 
+/** The first non-whitespace position at or after the current unit's start. */
+interface CommentLookahead {
+  readonly afterWhitespace: DiagramPosition
+}
+
 /** diagrams/ishikawa.md, Lexical structure: first matching rule, in one context. */
 export class IshikawaUnitLexer extends UnitLexer<"ordinary", UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
 
   private headerEndsText = false
+
+  private commentLookahead: CommentLookahead | null = null
 
   public constructor(reader: DiagramText, lines: LineIndex) {
     super(reader, lines, "ordinary", END_OF_TEXT_MESSAGES)
@@ -87,7 +95,14 @@ export class IshikawaUnitLexer extends UnitLexer<"ordinary", UnitName, Unit> {
 
   /** Units and contexts, rules 1 through 5, in order. */
   protected override readInContext(at: DiagramCharacter): void {
-    if (this.readComment(at) || this.readHeader(at)) return
+    // Blank lines still produce their individual units, but share the
+    // whitespace endpoint instead of searching the same suffix on each line.
+    let lookahead = this.commentLookahead
+    if (lookahead === null || !isBefore(at, lookahead.afterWhitespace)) {
+      lookahead = { afterWhitespace: skipWhitespace(this.reader, at) }
+      this.commentLookahead = lookahead
+    }
+    if (this.readComment(lookahead) || this.readHeader(at)) return
     if (at.codePoint === LINE_FEED) {
       this.read("newline", at, this.reader.after(at))
       return
@@ -109,8 +124,8 @@ export class IshikawaUnitLexer extends UnitLexer<"ordinary", UnitName, Unit> {
   }
 
   /** Rule 1 and Comments: optional whitespace, then %% through the end of its segment. */
-  private readComment(at: DiagramCharacter): boolean {
-    const first = skipWhitespace(this.reader, at)
+  private readComment(lookahead: CommentLookahead): boolean {
+    const first = lookahead.afterWhitespace
     if (!isCodePointAt(first, PERCENT_SIGN)) return false
     const second = this.reader.after(first)
     if (!isCodePointAt(second, PERCENT_SIGN)) return false

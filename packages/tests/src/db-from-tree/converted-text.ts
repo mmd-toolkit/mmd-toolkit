@@ -1,4 +1,5 @@
 import { scanSource } from "../source-scan.ts"
+import { indexAtOrAfter, RangeIndex } from "../range-index.ts"
 import { isDigit, isWhitespace, isWordCharacter } from "./characters.ts"
 import type { TreeRange, TreeRoot, TreeToken } from "./tree.ts"
 
@@ -441,8 +442,41 @@ export function readWhitespaceAfterBraceAsLineFeed(
 export class ConvertedText {
   private readonly characters: readonly ConvertedCharacter[]
 
+  private readonly offsets: readonly number[]
+
+  private readonly tokenIndexes = new WeakMap<
+    readonly TreeToken[],
+    RangeIndex<TreeToken>
+  >()
+
   public constructor(characters: readonly ConvertedCharacter[]) {
     this.characters = characters
+    // Ranges are read in tree order, which can revisit earlier source offsets.
+    // Binary search avoids rescanning the prefix without a caller-owned cursor.
+    this.offsets = characters.map(({ start }) => start)
+  }
+
+  /** The index of the first converted character at or after `offset`. */
+  public indexAt(offset: number): number {
+    return indexAtOrAfter(this.offsets, offset)
+  }
+
+  /** Converted characters from `offset`, retaining duplicates at entity boundaries. */
+  public *from(offset: number): IterableIterator<ConvertedCharacter> {
+    for (let at = this.indexAt(offset); at < this.characters.length; at++) {
+      const character = this.characters[at]
+      if (character !== undefined) yield character
+    }
+  }
+
+  /** Tokens inside `range`, indexed once for this converted reading. */
+  public tokensIn(range: TreeRange, tokens: readonly TreeToken[]): TreeToken[] {
+    let index = this.tokenIndexes.get(tokens)
+    if (index === undefined) {
+      index = new RangeIndex(tokens)
+      this.tokenIndexes.set(tokens, index)
+    }
+    return index.in(range)
   }
 
   /**
@@ -450,11 +484,13 @@ export class ConvertedText {
    * `leftOut`, such as the delimiters of a string.
    */
   public of(range: TreeRange, leftOut: readonly TreeRange[] = []): string {
+    const excluded = new RangeIndex(
+      leftOut.map((excludedRange) => ({ range: excludedRange })),
+    )
     let text = ""
-    for (const { start, codePoint } of this.characters) {
-      if (start < range[0]) continue
+    for (const { start, codePoint } of this.from(range[0])) {
       if (start >= range[1]) break
-      if (leftOut.some(([from, to]) => from <= start && start < to)) continue
+      if (excluded.hasContaining([start, start + 1])) continue
       text += String.fromCodePoint(codePoint)
     }
     return text
@@ -467,10 +503,7 @@ export class ConvertedText {
    * directive or an ignored `;` has no converted form.
    */
   public ofTokensIn(range: TreeRange, tokens: readonly TreeToken[]): string {
-    return tokens
-      .filter(
-        (token) => range[0] <= token.range[0] && token.range[1] <= range[1],
-      )
+    return this.tokensIn(range, tokens)
       .map((token) => this.of(token.range))
       .join("")
   }

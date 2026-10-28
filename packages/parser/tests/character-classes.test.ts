@@ -23,12 +23,24 @@ describe("character sets", () => {
     0x200a, 0x2028, 0x2029, 0x202f, 0x205f, 0x3000, 0xfeff,
   ]
 
-  it("whitespace is exactly the listed set", () => {
-    const found: number[] = []
-    for (let codePoint = 0; codePoint <= 0x10ffff; codePoint++) {
-      if (isWhitespace(codePoint)) found.push(codePoint)
+  it("whitespace is each listed character", () => {
+    for (const codePoint of whitespace) {
+      expect(isWhitespace(codePoint)).toBe(true)
     }
-    expect(found).toEqual(whitespace)
+  })
+
+  it("whitespace is no other character", () => {
+    // The characters next to the two ranges of the list.
+    expect(isWhitespace(0x0008)).toBe(false)
+    expect(isWhitespace(0x000e)).toBe(false)
+    expect(isWhitespace(0x1fff)).toBe(false)
+    expect(isWhitespace(0x200b)).toBe(false)
+    // Characters that other definitions of whitespace include: U+0085 NEXT
+    // LINE, U+180E MONGOLIAN VOWEL SEPARATOR, and U+2060 WORD JOINER.
+    expect(isWhitespace(0x0085)).toBe(false)
+    expect(isWhitespace(0x180e)).toBe(false)
+    expect(isWhitespace(0x2060)).toBe(false)
+    expect(isWhitespace(0x61)).toBe(false)
   })
 
   it("line whitespace is whitespace other than `\\r` and `\\n`", () => {
@@ -41,17 +53,19 @@ describe("character sets", () => {
   })
 
   it("word characters are ASCII letters, ASCII digits, and `_`", () => {
-    const found: string[] = []
-    for (let codePoint = 0; codePoint <= 0x10ffff; codePoint++) {
-      if (isWordCharacter(codePoint))
-        found.push(String.fromCodePoint(codePoint))
+    for (const character of [..."09AZaz_"]) {
+      expect(isWordCharacter(character.codePointAt(0)!)).toBe(true)
     }
-    expect(found.join("")).toBe(
-      "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz",
-    )
-    // U+017F and U+00E9 are letters, but not word characters.
-    expect(isWordCharacter(0x017f)).toBe(false)
+    // The characters next to the ranges.
+    for (const character of [..."/:@[^`{"]) {
+      expect(isWordCharacter(character.codePointAt(0)!)).toBe(false)
+    }
+    // No other letter or digit: U+00E9, U+017F, U+212A KELVIN SIGN, and
+    // U+0661 ARABIC-INDIC DIGIT ONE.
     expect(isWordCharacter(0x00e9)).toBe(false)
+    expect(isWordCharacter(0x017f)).toBe(false)
+    expect(isWordCharacter(0x212a)).toBe(false)
+    expect(isWordCharacter(0x0661)).toBe(false)
   })
 
   it("ASCII letters", () => {

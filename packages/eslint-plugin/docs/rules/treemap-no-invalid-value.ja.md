@@ -26,10 +26,11 @@ mermaid.js は、葉の値のカンマを除き、その先頭から数を読む
 
 `1_000` は 1 と、`1.2.3` は 1.2 と読まれ、`.` は数でないと読まれて、
 葉は面積も値の文字も持たない。
-カンマはどこにあっても除かれるので、小数点のカンマは失われ、
-`0,5` は 5、`3,14` は 314、`1.234,5` は 1.2345 と読まれる。
+カンマはどこにあっても除かれるので、小数点のカンマは失われ、 `0,5` は 5、
+`3,14` は 314、`1.234,5` は 1.2345 と読まれる。
 
-mermaid.js が全体を読む値は報告しない。`1000`、`.5`、`5.`、0 がそうである。
+mermaid.js が全体を読む値は報告しない。
+`1000`、`.5`、`5.`、0 がそうである。
 `1,000`、`1,234.5`、`1,00,000` のような桁区切りのカンマは報告せず、
 `5,` や `1.5,` のように後に数字の続かないカンマも、
 何も区切らないので報告しない。
@@ -60,8 +61,8 @@ treemap
 
 ## 背景
 
-[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15)
-は、数のカンマを除き、残りを JavaScript の `parseFloat` で読む。
+[値の変換](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/treemap/valueConverter.ts#L13-L15) は、
+数のカンマを除き、残りを JavaScript の `parseFloat` で読む。
 `parseFloat` は、数を続けない最初の文字で止まる。
 
 <!-- begin auto-generated rule resources -->

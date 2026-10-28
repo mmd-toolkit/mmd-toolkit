@@ -3,11 +3,7 @@ import {
   findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
 } from "./kept-lines.ts"
-import {
-  countWhitespaceAfterLeadingDirective,
-  flattenMindmap,
-  mindmapOf,
-} from "./mindmap-layout.ts"
+import { findLeadingDirectiveRuns } from "./mindmap-layout.ts"
 import type { Source } from "./source.ts"
 import { lineStartOf } from "./kept-lines.ts"
 
@@ -33,7 +29,7 @@ export function findMindmapKeptLines(source: Source): KeptLines {
       ...findLinesEndedBySemicolon(source),
       ...directiveLines,
     ]),
-    writtenIndentation: directiveLines,
+    ownIndentation: directiveLines,
   }
   keptLinesBySource.set(source, kept)
   return kept
@@ -41,16 +37,14 @@ export function findMindmapKeptLines(source: Source): KeptLines {
 
 /**
  * The lines of the nodes that start with a directive, whose indentation
- * counts the whitespace after the directive (see
- * `countWhitespaceAfterLeadingDirective`): they are printed as written from
- * the directive, with the indentation before it decided by the printer.
+ * counts the whitespace after the directive (see `findLeadingDirectiveRuns`):
+ * they are printed as written from the directive, with the indentation before
+ * it decided by the printer.
  */
 function findLinesStartingWithDirective(source: Source): ReadonlySet<number> {
   return new Set(
-    flattenMindmap(mindmapOf(source))
-      .filter(
-        (line) => countWhitespaceAfterLeadingDirective(source, line) !== null,
-      )
-      .map((line) => lineStartOf(source, line.range[0])),
+    [...findLeadingDirectiveRuns(source).values()].map((run) =>
+      lineStartOf(source, run.start),
+    ),
   )
 }

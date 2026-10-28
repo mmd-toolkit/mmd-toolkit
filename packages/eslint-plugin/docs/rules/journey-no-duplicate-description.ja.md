@@ -12,8 +12,8 @@
 <!-- end auto-generated rule notice -->
 
 ユーザージャーニーの説明は 1 つである。
-mermaid.js は `accDescr` の文をすべて受理し、
-説明を設定する文のそれぞれが、前に設定した説明を黙って置き換える。
+mermaid.js は `accDescr` の文をすべて受理し、説明を設定する文のそれぞれが、
+前に設定した説明を黙って置き換える。
 2 つ目の説明は、たいてい、テキストを書き直した残りか、
 一部分を 2 回貼り付けたものである。
 
@@ -32,14 +32,12 @@ mermaid.js は `accDescr` の文をすべて受理し、
 
 説明を持たないブロックは数えない。
 `accDescr: a` の後のブロック `accDescr {}` は、説明を `a` のままにする。
-これは
-[journey-no-empty-description-block](./journey-no-empty-description-block.ja.md)
-が報告する。
+これは [journey-no-empty-description-block](./journey-no-empty-description-block.ja.md) が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。
-説明は、mermaid.js が持つとおりに、
-両端の空白と、各改行の後の空白を除いて比べる。
+説明は、mermaid.js が持つとおりに、両端の空白と、
+各改行の後の空白を除いて比べる。
 そのため、ブロックの行の字下げと、その中の空行は数えない。
 改行は、LF、CRLF、CR のどれも LF として読む。
 そのため、CRLF で書いたブロックは、LF で書いたブロックと同じ説明を設定する。

@@ -6,10 +6,11 @@ import type { BlockRules } from "./blocks.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
 import { findMindmapKeptLines } from "./mindmap-kept-lines.ts"
+import { findCommentEndInLine } from "./indentation-lines.ts"
 import type { MindmapLine } from "./mindmap-layout.ts"
 import {
-  countWhitespaceAfterLeadingDirective,
   findIndentationSteps,
+  findLeadingDirectiveRuns,
   findMindmapPrintedEnd,
   flattenMindmap,
   layoutMindmapLine,
@@ -59,7 +60,7 @@ export function printMindmap(
       end: source.text.length,
       isTopLevel: true,
     },
-    lineBlockRules(source, options, diagram, lines),
+    lineBlockRules(source, options, diagram),
   )
   const header = openingLine(
     printAtoms(source, layoutKeywordHeader(source, keyword), {
@@ -103,7 +104,6 @@ function lineBlockRules(
   source: Source,
   options: ParserOptions<MermaidAst>,
   diagram: MindmapDiagram,
-  lines: readonly MindmapLine[],
 ): BlockRules<MindmapLine> {
   const steps = findIndentationSteps(diagram)
   const character = options.useTabs ? "\t" : " "
@@ -117,14 +117,10 @@ function lineBlockRules(
     return steps.get(line) ?? 0
   }
 
-  const afterDirective = new Map<MindmapLine, number>()
-  for (const line of lines) {
-    const width = countWhitespaceAfterLeadingDirective(source, line)
-    if (width !== null) afterDirective.set(line, width)
-  }
+  const leadingRuns = findLeadingDirectiveRuns(source)
   let shift = 0
-  for (const [line, width] of afterDirective) {
-    shift = Math.max(shift, width - rootWidth - stepOf(line))
+  for (const [line, run] of leadingRuns) {
+    shift = Math.max(shift, run.whitespaceAfter - rootWidth - stepOf(line))
   }
   return {
     kept: findMindmapKeptLines(source),
@@ -137,7 +133,16 @@ function lineBlockRules(
       character.repeat(rootPadding + stepOf(line) + shift),
     keptIndentationOf: (line) =>
       character.repeat(
-        rootWidth + shift + stepOf(line) - (afterDirective.get(line) ?? 0),
+        rootWidth +
+          shift +
+          stepOf(line) -
+          (leadingRuns.get(line)?.whitespaceAfter ?? 0),
       ),
+    // A line that starts with a directive starts there, not at its text, so
+    // that the directive stays with the line.
+    printedStart: (line) => leadingRuns.get(line)?.start ?? line.range[0],
+    // Comment-ending separators start node lines even inside a kept LF line
+    // (docs/mindmap.md, Line separators).
+    diagramLineEnd: (offset) => findCommentEndInLine(source, offset),
   }
 }

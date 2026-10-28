@@ -475,13 +475,9 @@ class ClassDbBuilder {
    */
   private hasLabel(statement: ClassRelationStatement): boolean {
     if (statement.label !== null) return true
-    return this.root.tokens.some(
-      (token) =>
-        token.type === "Punctuator" &&
-        token.value === ":" &&
-        token.range[0] >= statement.to.range[1] &&
-        token.range[1] <= statement.range[1],
-    )
+    return this.text
+      .tokensIn([statement.to.range[1], statement.range[1]], this.root.tokens)
+      .some((token) => token.type === "Punctuator" && token.value === ":")
   }
 
   /** Namespaces: a namespace statement, inside the namespace `parent` when it is in one. */

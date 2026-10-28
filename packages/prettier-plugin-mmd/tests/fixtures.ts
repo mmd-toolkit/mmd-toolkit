@@ -49,13 +49,22 @@ export function readRuleNames(diagram: string): Promise<string[]> {
 }
 
 /**
- * Loads every fixture. Throws on a file that belongs to no fixture, and on
- * an `-output.mmd` or `-options.json` file without its `-input.mmd`, so
- * that a renamed input does not leave a stale expectation behind.
+ * Loads the fixtures of one diagram type, or of every diagram type when none
+ * is given: a test that needs the fixtures of one diagram type names it, so
+ * that it does not read the files of the others. Throws on a file that
+ * belongs to no fixture, and on an `-output.mmd` or `-options.json` file
+ * without its `-input.mmd`, so that a renamed input does not leave a stale
+ * expectation behind.
  */
-export async function loadFormatFixtures(): Promise<FormatFixture[]> {
+export async function loadFormatFixtures(
+  onlyDiagram?: string,
+): Promise<FormatFixture[]> {
+  const diagrams =
+    onlyDiagram === undefined
+      ? await readDirectories(fixturesRoot)
+      : [onlyDiagram]
   const fixtures: FormatFixture[] = []
-  for (const diagram of await readDirectories(fixturesRoot)) {
+  for (const diagram of diagrams) {
     for (const rule of await readRuleNames(diagram)) {
       const dir = path.join(fixturesRoot, diagram, rule)
       fixtures.push(...(await loadRuleFixtures(dir, `${diagram}/${rule}`)))

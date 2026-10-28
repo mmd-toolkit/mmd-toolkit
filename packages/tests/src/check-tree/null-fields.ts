@@ -2,6 +2,7 @@ import { isWhitespaceAt } from "../db-from-tree/characters.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import { ownTokensOf } from "./tokens.ts"
+import { tokenIndexOf } from "./token-index.ts"
 import type { CheckedNode, CheckedRoot, CheckedToken } from "./types.ts"
 import { isNode, nodesOf } from "./walk.ts"
 
@@ -85,11 +86,12 @@ function whitespaceBefore(
 ): number {
   /** The `Directive` or `IgnoredSemicolon` token that ends at `end`. */
   function cutEndingAt(end: number): CheckedToken | undefined {
-    return root.tokens.find(
-      (token) =>
-        (token.type === "Directive" || token.type === "IgnoredSemicolon") &&
-        token.range[1] === end,
-    )
+    return tokenIndexOf(root)
+      .endingAt(end)
+      .find(
+        (token) =>
+          token.type === "Directive" || token.type === "IgnoredSemicolon",
+      )
   }
 
   let count = 0

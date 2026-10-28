@@ -1,8 +1,8 @@
 import { appendItems } from "./collections.ts"
 import type { AstPath, Doc, ParserOptions } from "prettier"
-import type { Node } from "@mmd-toolkit/parser"
+import type { Node, Range } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
-import type { AtomLayout, GapRule } from "./atoms.ts"
+import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { printAtoms } from "./atoms.ts"
 import type { PrintedBlock } from "./blocks.ts"
 import {
@@ -18,7 +18,7 @@ import { lineStartOf } from "./kept-lines.ts"
 import { findLayoutEnd } from "./layout.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { isWhitespace } from "./source.ts"
+import { findFirstIndex, isWhitespace } from "./source.ts"
 
 /** A statement with its own authored body and opening/closing layouts. */
 export interface HiddenBlockLayout<Statement extends Node> {
@@ -179,6 +179,11 @@ export function createFlatHiddenDiagramPrinter<
         ...(item.type === layouts.ignoredType ? [item] : []),
       ])
       const statements = new Map<Node, AtomLayout>()
+      // Prefixes and suffixes can be as numerous as body statements. Resolve
+      // membership directly, rather than searching the body for each form.
+      const bodyStatements = new Map<Node, Statement>(
+        body.map((item) => [item, item]),
+      )
       const nested = new Map<Node, HiddenBodyLayout<Statement>>()
       for (const item of body) {
         let selected = layouts.statement(source, item)
@@ -190,10 +195,7 @@ export function createFlatHiddenDiagramPrinter<
         if (
           prefixEnd !== undefined &&
           prefixes.every((prefix) =>
-            ownedHeader.atoms.some(
-              (atom) =>
-                atom.start === prefix.range[0] && atom.end === prefix.range[1],
-            ),
+            hasExactAtom(ownedHeader.atoms, prefix.range),
           )
         ) {
           for (const prefix of prefixes)
@@ -231,14 +233,7 @@ export function createFlatHiddenDiagramPrinter<
         const firstSuffix = suffixes.at(0)
         if (
           firstSuffix === undefined ||
-          suffixes.some(
-            (suffix) =>
-              !layout.atoms.some(
-                (atom) =>
-                  atom.start === suffix.range[0] &&
-                  atom.end === suffix.range[1],
-              ),
-          )
+          suffixes.some((suffix) => !hasExactAtom(layout.atoms, suffix.range))
         ) {
           if (layout.atoms.length > 0) statements.set(item, layout)
           continue
@@ -335,7 +330,7 @@ export function createFlatHiddenDiagramPrinter<
             return layout.atoms[0].start
           },
           writtenGapBefore: (item) => {
-            const statement = body.find((candidate) => candidate === item)
+            const statement = bodyStatements.get(item)
             return (
               statement !== undefined &&
               (layouts.writtenGapBefore?.(source, statement) === true ||
@@ -354,4 +349,15 @@ export function createFlatHiddenDiagramPrinter<
   }
 
   return { print, keepsPrefix }
+}
+
+/** Whether an ordered atom list contains exactly this authored range. */
+function hasExactAtom(atoms: readonly Atom[], range: Range): boolean {
+  const first = findFirstIndex(atoms, (atom) => atom.start >= range[0])
+  for (let index = first; index < atoms.length; index++) {
+    const atom = atoms[index]
+    if (atom.start !== range[0]) break
+    if (atom.end === range[1]) return true
+  }
+  return false
 }

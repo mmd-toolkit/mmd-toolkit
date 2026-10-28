@@ -23,13 +23,13 @@
 テキストの `{` がある説明のブロックを報告する。
 対象の図種は `requirement` である。
 
-最初の `}` までの文字は、`{` も含めて、ブロックのテキストである（仕様の
-[アクセシビリティの値](../../../spec/docs/diagrams/requirement.ja.md#アクセシビリティの値)）。
-`accDescr { x` の後の行 `requirement r {`、`id: 1`、`}` では、
-説明は `x`、`requirement r {`、`id: 1` になり、requirement `r` はできない。
+最初の `}` までの文字は、`{` も含めて、
+ブロックのテキストである（仕様の [アクセシビリティの値](../../../spec/docs/diagrams/requirement.ja.md#アクセシビリティの値)）。
+`accDescr { x` の後の行 `requirement r {`、`id: 1`、`}` では、説明は `x`、
+`requirement r {`、`id: 1` になり、requirement `r` はできない。
 element の本体でも同じである。
-`accDescr {`、`uses { here`、`}` のように、
-`{` を持ち、後の行の自分の `}` で終わる説明も報告する。
+`accDescr {`、`uses { here`、`}` のように、 `{` を持ち、
+後の行の自分の `}` で終わる説明も報告する。
 規則はその `}` を本体の `}` と見分けず、そうした説明はまれだからである。
 `accDescr { a {b }` のように `{` の行にある `}` は、
 書いたとおりにブロックを閉じるので、報告しない。

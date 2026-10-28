@@ -5,10 +5,12 @@ import type {
   Range,
 } from "@mmd-toolkit/parser"
 import type { AtomLayout } from "./atoms.ts"
-import { maxOf } from "./collections.ts"
-import { findCommentEnds, findLeadingDirectives } from "./indentation-lines.ts"
+import {
+  findLeadingDirectives,
+  findNodeLineStart,
+  isCommentEnd,
+} from "./indentation-lines.ts"
 import type { LeadingDirectives } from "./indentation-lines.ts"
-import { lineStartOf } from "./kept-lines.ts"
 import { keptAsWritten } from "./layout.ts"
 import type { Source } from "./source.ts"
 import { isWhitespace } from "./source.ts"
@@ -39,16 +41,11 @@ export function ishikawaLines(
   headerEnd: number,
 ): IshikawaLine[] {
   const lines: IshikawaLine[] = []
-  const commentEnds = findCommentEnds(source)
 
   /** Adds a node's own literal before its children. */
   function add(node: IshikawaNode, depth: number): void {
     const textStart = node.text.range[0]
-    const start = Math.max(
-      headerEnd,
-      lineStartOf(source, textStart),
-      maxOf(commentEnds.filter((end) => end <= textStart)),
-    )
+    const start = Math.max(headerEnd, findNodeLineStart(source, textStart))
     let content = start
     while (content < textStart && isWhitespace(source.text[content])) content++
     let leading = findLeadingDirectives(source, content, textStart)
@@ -77,7 +74,7 @@ export function ishikawaLines(
     lines.push({
       range: [content, node.text.range[1]],
       depth,
-      separatorWidth: commentEnds.includes(start) ? 1 : 0,
+      separatorWidth: isCommentEnd(source, start) ? 1 : 0,
       leading: leading.directives.length === 0 ? null : leading,
       keepsHeaderGroup,
     })

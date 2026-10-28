@@ -6,8 +6,6 @@
 import type { Linter } from "eslint"
 import { Linter as LinterClass } from "eslint"
 import type { Node } from "@mmd-toolkit/parser"
-import type { DiagramType, Fixture } from "@mmd-toolkit/tests"
-import { loadFixtures } from "@mmd-toolkit/tests"
 import plugin from "../src/index.ts"
 import type { MermaidRuleDefinition, MermaidSourceCode } from "../src/index.ts"
 
@@ -80,53 +78,4 @@ export function observe(text: string): Observation {
     FILENAME,
   )
   return { messages, sourceCode, visits }
-}
-
-/**
- * Every directory of fixtures of the conformance corpus. The type makes a
- * diagram type added to `DiagramType` an error here until it is listed.
- */
-const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
-  common: true,
-  flowchart: true,
-  sequence: true,
-  class: true,
-  state: true,
-  er: true,
-  gantt: true,
-  journey: true,
-  requirement: true,
-  mindmap: true,
-  timeline: true,
-  sankey: true,
-  xychart: true,
-  quadrant: true,
-  block: true,
-  kanban: true,
-  c4: true,
-  venn: true,
-  ishikawa: true,
-  agentflow: true,
-  usecase: true,
-  pie: true,
-  gitgraph: true,
-  info: true,
-  packet: true,
-  architecture: true,
-  radar: true,
-  treemap: true,
-  railroad: true,
-  wardley: true,
-  cynefin: true,
-  eventmodeling: true,
-  treeview: true,
-}
-
-/** Every fixture of the conformance corpus, of every diagram type. */
-export async function loadCorpus(): Promise<Fixture[]> {
-  const diagrams = Object.keys(CORPUS_DIAGRAMS) as DiagramType[]
-  const fixtures = await Promise.all(
-    diagrams.map((diagram) => loadFixtures(diagram)),
-  )
-  return fixtures.flat()
 }

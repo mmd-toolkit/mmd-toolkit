@@ -45,18 +45,23 @@
 import { existsSync, readdirSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import type { EmbeddedValues, Expectation, Fixture } from "@mmd-toolkit/tests"
+import type {
+  DiagramType,
+  EmbeddedValues,
+  Expectation,
+  Fixture,
+} from "@mmd-toolkit/tests"
 import {
   fixtureAccepts,
   embeddedValuesOf,
   getFixturesRoot,
   loadFixtures,
 } from "@mmd-toolkit/tests"
-import type { Location, Range, Root, Token } from "../src/index.ts"
-import { ParseError, UnsupportedDiagramError, parse } from "../src/index.ts"
+import type { Location, Range, Token } from "../src/index.ts"
+import { parse } from "../src/index.ts"
 import { dbOfTree } from "./helpers/db-of-tree.ts"
-import type { Outcome } from "./helpers/known-divergences.ts"
-import { outcomeOf } from "./helpers/known-divergences.ts"
+import type { Outcome, Parsed } from "./helpers/known-divergences.ts"
+import { outcomeOf, parsedOf } from "./helpers/known-divergences.ts"
 import { expectDivergenceForm } from "./helpers/divergence-form.ts"
 import {
   clickIdsWithinLeafNodes,
@@ -92,29 +97,9 @@ interface ParseErrorRecord {
   readonly loc: Location
 }
 
-/** What `parse()` gives for an input, as the fixture records it. */
-type ParseResult =
-  | { readonly kind: "tree"; readonly root: Root }
-  | { readonly kind: "error"; readonly error: ParseErrorRecord }
-  | { readonly kind: "unsupported" }
-
-/** What `parse()` gives for `input`. */
-function resultOf(input: string): ParseResult {
-  try {
-    return { kind: "tree", root: parse(input) }
-  } catch (error) {
-    if (error instanceof ParseError) {
-      const { message, range, loc } = error
-      return { kind: "error", error: { message, range, loc } }
-    }
-    if (error instanceof UnsupportedDiagramError) return { kind: "unsupported" }
-    throw error
-  }
-}
-
 /** The file that records `result`, and its content; null for an unsupported diagram type. */
 function recordOf(
-  result: ParseResult,
+  result: Parsed,
 ): { readonly file: string; readonly content: string } | null {
   switch (result.kind) {
     case "tree":
@@ -122,11 +107,14 @@ function recordOf(
         file: AST_FILE,
         content: `${JSON.stringify(result.root, null, 2)}\n`,
       }
-    case "error":
+    case "error": {
+      const { message, range, loc } = result.error
+      const error: ParseErrorRecord = { message, range, loc }
       return {
         file: ERROR_FILE,
-        content: `${JSON.stringify(result.error, null, 2)}\n`,
+        content: `${JSON.stringify(error, null, 2)}\n`,
       }
+    }
     case "unsupported":
       return null
     default:
@@ -203,20 +191,74 @@ function expectSameAsMermaid(
 }
 
 /**
- * known-divergences/click-reserved-word.md: the tree of the reference input of
- * the input of `fixture`, where mermaid.js gives it the Db of the input; null
- * where the removal changes the units or puts a click id outside one leaf node,
- * or where the parser rejects the reference input.
+ * Whether the reference input of a marked fixture is compared with what
+ * mermaid.js gave for the input: `compared`, with its tree, or the case of
+ * the document of the divergence in which it is not.
  */
-function clickReferenceOutcomeOf(
-  fixture: Fixture,
-): Extract<Outcome, { kind: "tree" }> | null {
+type ReferenceReading =
+  | {
+      readonly kind: "compared"
+      readonly outcome: Extract<Outcome, { kind: "tree" }>
+    }
+  | {
+      readonly kind:
+        "units-change" | "click-id-outside-leaf" | "reference-rejected"
+    }
+
+/**
+ * known-divergences/click-reserved-word.md: the reading of the reference input
+ * of the input of `fixture`. It is not compared where the removal changes the
+ * units, where the parser rejects the reference input, or where a click id
+ * lies outside one leaf node of its tree.
+ */
+function clickReferenceReadingOf(fixture: Fixture): ReferenceReading {
   const reference = clickReferenceOf(fixture.input)
   if (reference === null) throw new Error("the input is no flowchart")
-  if (!reference.keepsUnits) return null
+  if (!reference.keepsUnits) return { kind: "units-change" }
   const outcome = outcomeOf(reference.text, fixture.config)
-  if (outcome.kind !== "tree") return null
-  return clickIdsWithinLeafNodes(reference, outcome.root) ? outcome : null
+  if (outcome.kind !== "tree") return { kind: "reference-rejected" }
+  return clickIdsWithinLeafNodes(reference, outcome.root)
+    ? { kind: "compared", outcome }
+    : { kind: "click-id-outside-leaf" }
+}
+
+/**
+ * known-divergences/tokenless-empty-forms.md: the reading of the reference
+ * input of the input of `fixture`. It is not compared where the removal
+ * changes the units. Where it keeps them, the parser must accept the
+ * reference input: mermaid.js accepts the input and reads it as if its
+ * empty forms were not there, so a rejection is an error, which is thrown
+ * with its reason.
+ */
+function emptyFormReferenceReadingOf(fixture: Fixture): ReferenceReading {
+  const reference = withoutEmptyForms(fixture.input)
+  if (reference === null) {
+    throw new Error("the input has no lexer for its empty forms here")
+  }
+  if (!keepsUnitsWithoutEmptyForms(fixture.input)) {
+    return { kind: "units-change" }
+  }
+  const outcome = outcomeOf(reference, fixture.config)
+  if (outcome.kind !== "tree") {
+    throw new Error(
+      `${fixture.diagram}/${fixture.name}: the parser rejects the reference input ${JSON.stringify(reference)}: ${rejectionOf(reference, outcome)}`,
+    )
+  }
+  return { kind: "compared", outcome }
+}
+
+/** Why `parse()`, with the site configuration, rejects `text`: its error, or the configuration. */
+function rejectionOf(
+  text: string,
+  outcome: Exclude<Outcome, { kind: "tree" }>,
+): string {
+  if (outcome.kind === "unsupported") {
+    return `the diagram type ${outcome.diagramType} is not supported`
+  }
+  const parsed = parsedOf(text)
+  return parsed.kind === "error"
+    ? `${parsed.error.message} at ${JSON.stringify(parsed.error.range)}`
+    : "the site configuration rejects it"
 }
 
 /**
@@ -244,9 +286,22 @@ function checkAcceptance(fixture: Fixture, outcome: Outcome): void {
   expectDivergenceForm(fixture, outcome)
 }
 
+/** The fixtures of each recorded diagram, read once for all the checks of this file. */
+const fixturesByDiagram = new Map<DiagramType, readonly Fixture[]>()
 for (const diagram of RECORDED_DIAGRAMS) {
-  describe(`${diagram} fixtures`, async () => {
-    const fixtures = await loadFixtures(diagram)
+  fixturesByDiagram.set(diagram, await loadFixtures(diagram))
+}
+
+/** The fixtures of `diagram`, one of the recorded diagrams. */
+function fixturesOf(diagram: DiagramType): readonly Fixture[] {
+  const fixtures = fixturesByDiagram.get(diagram)
+  if (fixtures === undefined) throw new Error(`${diagram} is not recorded`)
+  return fixtures
+}
+
+for (const diagram of RECORDED_DIAGRAMS) {
+  describe(`${diagram} fixtures`, () => {
+    const fixtures = fixturesOf(diagram)
     const directory = path.join(getFixturesRoot(), diagram)
     const recordedFiles = new Map<string, string>()
 
@@ -255,8 +310,8 @@ for (const diagram of RECORDED_DIAGRAMS) {
     })
 
     for (const fixture of fixtures) {
-      const result = resultOf(fixture.input)
-      const record = recordOf(result)
+      const parsed = parsedOf(fixture.input)
+      const record = recordOf(parsed)
       if (record !== null) recordedFiles.set(fixture.name, record.file)
       it(fixture.name, async () => {
         if (record !== null) {
@@ -264,7 +319,10 @@ for (const diagram of RECORDED_DIAGRAMS) {
             path.join(directory, fixture.name, record.file),
           )
         }
-        checkAcceptance(fixture, outcomeOf(fixture.input, fixture.config))
+        checkAcceptance(
+          fixture,
+          outcomeOf(fixture.input, fixture.config, parsed),
+        )
       })
     }
 
@@ -341,8 +399,8 @@ const errorDiagramTokens: Readonly<
   ],
 }
 
-describe("the tokens of the error pseudo-diagram", async () => {
-  const fixtures = await loadFixtures("common")
+describe("the tokens of the error pseudo-diagram", () => {
+  const fixtures = fixturesOf("common")
 
   for (const [name, tokens] of Object.entries(errorDiagramTokens)) {
     it(name, () => {
@@ -362,27 +420,22 @@ describe("the tokens of the error pseudo-diagram", async () => {
   }
 })
 
-describe("marked fixtures differ only by their divergence", async () => {
-  const fixtures: Fixture[] = [
-    ...(await loadFixtures("common")),
-    ...(await loadFixtures("flowchart")),
-    ...(await loadFixtures("sequence")),
-    ...(await loadFixtures("class")),
-    ...(await loadFixtures("state")),
-    ...(await loadFixtures("er")),
-    ...(await loadFixtures("gantt")),
-    ...(await loadFixtures("journey")),
-    ...(await loadFixtures("requirement")),
-    ...(await loadFixtures("mindmap")),
-    ...(await loadFixtures("timeline")),
-    ...(await loadFixtures("sankey")),
-    ...(await loadFixtures("xychart")),
-    ...(await loadFixtures("quadrant")),
-    ...(await loadFixtures("block")),
-    ...(await loadFixtures("kanban")),
-    ...(await loadFixtures("venn")),
-    ...(await loadFixtures("ishikawa")),
-  ]
+describe("marked fixtures differ only by their divergence", () => {
+  // Every fixture of every recorded diagram that carries a mark is checked
+  // below, so that a fixture whose form the helpers cannot find fails.
+  const fixtures: Fixture[] = RECORDED_DIAGRAMS.flatMap((diagram) =>
+    fixturesOf(diagram),
+  )
+
+  /** The flowchart fixture named `name` among `candidates`. */
+  function fixtureNamed(candidates: readonly Fixture[], name: string): Fixture {
+    const fixture = candidates.find(
+      (candidate) =>
+        candidate.diagram === "flowchart" && candidate.name === name,
+    )
+    if (fixture === undefined) throw new Error(`no fixture flowchart/${name}`)
+    return fixture
+  }
 
   /** The fixtures that carry the mark `knownDivergence`. */
   function marked(knownDivergence: string): Fixture[] {
@@ -414,22 +467,27 @@ describe("marked fixtures differ only by their divergence", async () => {
     for (const fixture of fixturesWithMark) {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         expect(reservedClicksIn(fixture.input)?.length).toBeGreaterThan(0)
-        const outcome = clickReferenceOutcomeOf(fixture)
-        if (outcome === null) return
+        const reading = clickReferenceReadingOf(fixture)
+        if (reading.kind !== "compared") return
         expectSameAsMermaid(
-          outcome,
+          reading.outcome,
           fixture.expected,
           embeddedValuesOf(fixture, fixture.expected),
         )
       })
     }
 
-    // Guards against the check passing vacuously.
-    it("compares the reference input of most of them", () => {
-      const compared = fixturesWithMark.filter(
-        (fixture) => clickReferenceOutcomeOf(fixture) !== null,
-      )
-      expect(compared.length * 2).toBeGreaterThan(fixturesWithMark.length)
+    // Each case of the document, with a fixture of it, so that the check
+    // above does not pass without comparing.
+    it.each([
+      ["db-edge-target-bare-click", "compared"],
+      ["gram-subgraph-name-click", "units-change"],
+      ["db-subgraph-id-click-comma-blank-line", "reference-rejected"],
+      ["gram-subgraph-name-click-semicolon-in-id", "click-id-outside-leaf"],
+    ] as const)("flowchart/%s: %s", (name, kind) => {
+      expect(
+        clickReferenceReadingOf(fixtureNamed(fixturesWithMark, name)).kind,
+      ).toBe(kind)
     })
   })
 
@@ -439,11 +497,11 @@ describe("marked fixtures differ only by their divergence", async () => {
   // empty generic type, and the specification rejects them. The
   // reference input is the fixture input without its comment regions and
   // without those forms. Where the parser's lexer reads it as the units of
-  // the input other than those of the forms, and the parser accepts it, it
-  // must give what mermaid.js gave for the input, so that the empty forms
-  // alone explain that the parser rejects the input itself. Elsewhere the
-  // removal joins the text around a form into other units, and mermaid.js
-  // may read the reference input otherwise.
+  // the input other than those of the forms, the parser must accept it and
+  // give what mermaid.js gave for the input, so that the empty forms alone
+  // explain that the parser rejects the input itself. Elsewhere the removal
+  // joins the text around a form into other units, and mermaid.js may read
+  // the reference input otherwise.
   describe("tokenless-empty-forms", () => {
     const fixturesWithMark = marked("tokenless-empty-forms")
 
@@ -454,32 +512,25 @@ describe("marked fixtures differ only by their divergence", async () => {
     for (const fixture of fixturesWithMark) {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         expect(removedEmptyFormsIn(fixture.input)?.length).toBeGreaterThan(0)
-        const reference = withoutEmptyForms(fixture.input)
-        if (reference === null) {
-          throw new Error("the input has no lexer for its empty forms here")
-        }
-        if (!keepsUnitsWithoutEmptyForms(fixture.input)) return
-        const outcome = outcomeOf(reference, fixture.config)
-        if (outcome.kind !== "tree") return
+        const reading = emptyFormReferenceReadingOf(fixture)
+        if (reading.kind !== "compared") return
         expectSameAsMermaid(
-          outcome,
+          reading.outcome,
           fixture.expected,
           embeddedValuesOf(fixture, fixture.expected),
         )
       })
     }
 
-    // Guards against the check passing vacuously.
-    it("compares the reference input of most of them", () => {
-      const accepted = fixturesWithMark.filter((fixture) => {
-        const reference = withoutEmptyForms(fixture.input)
-        return (
-          reference !== null &&
-          keepsUnitsWithoutEmptyForms(fixture.input) &&
-          outcomeOf(reference, fixture.config).kind === "tree"
-        )
-      })
-      expect(accepted.length * 2).toBeGreaterThan(fixturesWithMark.length)
+    // Each case of the document that the corpus has, with a fixture of it,
+    // so that the check above does not pass without comparing.
+    it.each([
+      ["db-subgraph-id-trailing-empty-string", "compared"],
+      ["db-style-empty-string-separator", "units-change"],
+    ] as const)("flowchart/%s: %s", (name, kind) => {
+      expect(
+        emptyFormReferenceReadingOf(fixtureNamed(fixturesWithMark, name)).kind,
+      ).toBe(kind)
     })
   })
 

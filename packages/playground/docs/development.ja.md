@@ -4,8 +4,7 @@ English version: [development.md](./development.md)
 
 ブラウザーアプリケーションの開発者向け文書です。
 使い方は[README](../README.ja.md)を、
-ワークスペースの準備は
-[リポジトリの開発ガイド](../../../CONTRIBUTING.ja.md)を参照してください。
+ワークスペースの準備は [リポジトリの開発ガイド](../../../CONTRIBUTING.ja.md)を参照してください。
 このパッケージはprivateで、npmリリースとは独立しています。
 
 ## ローカルでの開発
@@ -19,7 +18,8 @@ pnpm --filter @mmd-toolkit/playground dev
 
 Viteがブラウザーを自動で開きます。
 既定のアドレスは`http://localhost:5173/mmd-toolkit/playground/`です。
-ポートが使用中なら別のポートを選びます。hostの指定は不要です。
+ポートが使用中なら別のポートを選びます。
+hostの指定は不要です。
 Node.jsの要件は[package.json](../package.json)に記録しています。
 
 開発時も本番ビルド時も、パーサーとフォーマッターの参照先は、
@@ -32,16 +32,15 @@ Formattedの表示中なら再整形もします。
 ## ブラウザーでの実装
 
 Vue 3.6 RCのVaporコンポーネント、Monaco Editor、Shikiと、
-[shine-and-bright](https://github.com/ota-meshi/shine-and-bright)の
-テーマスイッチを使います。
+[shine-and-bright](https://github.com/ota-meshi/shine-and-bright)のテーマスイッチを使います。
 VueのRC版を含む依存バージョンはロックファイルに記録し、
 CIでは`--frozen-lockfile`でインストールします。
 すべてのVue SFCは`<script setup lang="ts" vapor>`を使い、
 ルートは`createVaporApp`でマウントします。
 
 編集から150 ms後に解析します。
-ASTの走査はパーサーの公開APIの`visitorKeys`を使い、
-tokens、comments、directives、frontmatterは補助レコードとして扱います。
+ASTの走査はパーサーの公開APIの`visitorKeys`を使い、 tokens、comments、
+directives、frontmatterは補助レコードとして扱います。
 ソース範囲はUTF-16オフセットの半開区間で、
 パーサーの行番号ではなくMonacoのモデルで変換します。
 配列は最初に100件を描画し、ソースから選択された項目の経路を含めて、
@@ -88,17 +87,16 @@ pnpm --filter @mmd-toolkit/playground test:e2e
 ```
 
 単体テストでURLの変換、大きな共有入力、AST範囲の選択を確認します。
-PlaywrightでPagesのサブパス上の本番ビルドを、
-Chromium、Firefox、WebKitで操作します。
+PlaywrightでPagesのサブパス上の本番ビルドを、 Chromium、Firefox、
+WebKitで操作します。
 HMRのテストはパーサーとフォーマッターの隔離したコピーを編集し、
 作業中のライブラリーファイルを変更しません。
 
 ## GitHub Pages
 
-公開先の予定は
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)です。
-Viteのbaseは`/mmd-toolkit/playground/`で、エディターワーカー、
-ShikiのWASM、遅延読み込みする整形資産もこのパスに従います。
+公開先の予定は [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)です。
+Viteのbaseは`/mmd-toolkit/playground/`で、エディターワーカー、 ShikiのWASM、
+遅延読み込みする整形資産もこのパスに従います。
 ビルドの出力先は`lib/`です。
 
 ```sh
@@ -110,8 +108,8 @@ Previewは、本番ビルドをブラウザーで自動表示します。
 
 [pages.yml](../../../.github/workflows_bk/pages.yml)は、
 開発中のためバックアップディレクトリーに置いています。
-`.github/workflows/`で有効にすると、
-PRを検証し、mainの変更と手動実行でビルドします。
+`.github/workflows/`で有効にすると、 PRを検証し、
+mainの変更と手動実行でビルドします。
 ドキュメントとPlaygroundのビルドジョブは独立して実行します。
 mainではドキュメントを成果物のルートに、
 このアプリケーションの`lib/`を`playground/`にまとめて配置し、

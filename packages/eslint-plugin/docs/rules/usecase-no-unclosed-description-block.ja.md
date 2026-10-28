@@ -12,8 +12,9 @@
 <!-- end auto-generated rule notice -->
 
 `accDescr {` のブロックは、その `{` の後の最初の `}` まで続く。
-自分の `}` がなく、`actor C@{ type: hollow }` のメタデータのように
-後の文が `}` を持つと、mermaid.js はエラーなしにそこでブロックを閉じ、
+自分の `}` がなく、
+`actor C@{ type: hollow }` のメタデータのように後の文が `}` を持つと、
+mermaid.js はエラーなしにそこでブロックを閉じ、
 そこまでの文は説明になって消える。
 
 ## 規則の詳細
@@ -25,16 +26,16 @@
 ブロックの `{` の後の最初の `}` までのすべての文字は、
 `{` も含めてその文字である。
 `accDescr { first` の後の行 `A --> B`、`actor C@{ type: hollow }`、`D` は、
-説明 `first`、`A --> B`、`actor C@{ type: hollow` と、ユースケース `D` だけを
-与え、関係とアクターは失われる。
+説明 `first`、`A --> B`、`actor C@{ type: hollow` と、
+ユースケース `D` だけを与え、関係とアクターは失われる。
 ブロックの中のコメント行は文字ではなく、その中の `}` は何も閉じない。
 
 この規則は、ブロックの `{` より後の行に `{` を持つブロックを報告する。
 ただし、ブロックを閉じる `}` がその行に単独であるものは除く。
 そうでなければブロックを閉じるのは、その `{` の後の最初の `}`、
 つまりメタデータか JSON のオブジェクトの `}` である。
-`accDescr { a { b }` のように `{` の行にある `}` と、
-行に単独である `}` は、書いたとおりにブロックを閉じ、報告しない。
+`accDescr { a { b }` のように `{` の行にある `}` と、行に単独である `}` は、
+書いたとおりにブロックを閉じ、報告しない。
 `}` は、その行で前に空白と指示子しかないとき、行に単独である。
 そのため、複数の行に書いたメタデータの `}` が行に単独であり、
 それがブロックを閉じるものは報告しない。
@@ -87,8 +88,8 @@ usecase-beta
 
 ## 背景
 
-[ブロックの字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.tokens.ts#L70-L80)
-は、その `{` の後の最初の `}` でブロックを終え、それのないブロックには合わない。
+[ブロックの字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/usecase/parser/usecase.tokens.ts#L70-L80) は、
+その `{` の後の最初の `}` でブロックを終え、それのないブロックには合わない。
 
 <!-- begin auto-generated rule resources -->
 

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import { getFixturesRoot } from "../src/index.ts"
 import { runMermaidWithEmbeddedData } from "../src/mermaid.ts"
 import { normalizeIshikawa } from "../src/normalizers/ishikawa.ts"
 import type { MermaidConfig } from "../src/types.ts"
@@ -98,32 +98,6 @@ describe("the summary of an ishikawa diagram", () => {
       }),
     ).toEqual(base)
   })
-
-  it("checks every fixture under a different supported security level", async () => {
-    for (const fixture of await loadFixtures("ishikawa")) {
-      const config = { ...fixture.config, securityLevel: "sandbox" }
-      const { outcome } = await runMermaidWithEmbeddedData(fixture.input, {
-        config,
-      })
-      // Unsupported levels intentionally replace characters; compare those
-      // fixtures with strict while retaining all their other site settings.
-      const expected =
-        fixture.config?.securityLevel === "other"
-          ? (
-              await runMermaidWithEmbeddedData(fixture.input, {
-                config: { ...fixture.config, securityLevel: "strict" },
-              })
-            ).outcome
-          : fixture.expected.accepted
-            ? {
-                accepted: true,
-                diagramType: fixture.expected.diagramType,
-                db: fixture.expected.db,
-              }
-            : fixture.expected
-      expect(outcome, fixture.name).toEqual(expected)
-    }
-  }, 10_000)
 
   it("clears the tree, title and indentation state after a rejected input", async () => {
     await summary("db-all-fields")

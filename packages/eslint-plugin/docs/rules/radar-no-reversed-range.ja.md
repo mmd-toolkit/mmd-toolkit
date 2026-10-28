@@ -13,8 +13,7 @@
 
 `min` と `max` は、中心と外側の輪の値を設定する。
 最小値が最大値より大きいと、mermaid.js はエラーなしに受理し、
-すべての曲線のすべての点を、値によらず外側の輪の上に描き、
-曲線の値は失われる。
+すべての曲線のすべての点を、値によらず外側の輪の上に描き、曲線の値は失われる。
 
 ## 規則の詳細
 
@@ -62,8 +61,8 @@ radar-beta
 
 ## 背景
 
-[`relativeRadius`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L175-L184)
-は、値をまず最小値で、次に最大値で抑えるので、
+[`relativeRadius`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/renderer.ts#L175-L184) は、
+値をまず最小値で、次に最大値で抑えるので、
 最小値が最大値より大きいとすべての値が最大値になり、外側の輪に来る。
 
 <!-- begin auto-generated rule resources -->

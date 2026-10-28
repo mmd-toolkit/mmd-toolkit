@@ -74,14 +74,24 @@ export function collectAtoms(
     }
   }
   const atoms = [...covered]
+  covered.sort((a, b) => a.start - b.start)
+  let nextCovered = 0
+  let coveredEnd = -Infinity
+  // Tokens and covered ranges advance in source order, so each value or kept
+  // stretch is visited once instead of being tested against every token.
   for (const token of findTokensBetween(source, start, end)) {
+    while (
+      nextCovered < covered.length &&
+      covered[nextCovered].start < token.range[1]
+    ) {
+      coveredEnd = Math.max(coveredEnd, covered[nextCovered].end)
+      nextCovered++
+    }
     if (
       isStructural(source, token) &&
       // A common literal can own exterior padding beyond its printed range.
       // Such a token already contributes its printed part through the value.
-      !covered.some(
-        (atom) => atom.start < token.range[1] && token.range[0] < atom.end,
-      )
+      token.range[0] >= coveredEnd
     ) {
       atoms.push(toAtom(token))
     }
@@ -502,10 +512,11 @@ export function protectSemicolonPrefixes(
   const kept: Atom[] = []
   for (let position = start; position < end;) {
     const stop = semicolonSegmentEnd(source, position)
-    let semicolon = source.text.lastIndexOf(";", stop - 1)
-    while (semicolon >= position && structuralSemicolons.has(semicolon))
-      semicolon =
-        semicolon === 0 ? -1 : source.text.lastIndexOf(";", semicolon - 1)
+    const segment = source.text.slice(position, stop)
+    let index = segment.lastIndexOf(";")
+    while (index !== -1 && structuralSemicolons.has(position + index))
+      index = index === 0 ? -1 : segment.lastIndexOf(";", index - 1)
+    const semicolon = index === -1 ? -1 : position + index
     if (semicolon < position) {
       position = stop + 1
       continue

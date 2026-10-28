@@ -3,7 +3,15 @@ import { defineConfig } from "vitest/config"
 
 const config: ViteUserConfig = defineConfig({
   test: {
-    projects: ["packages/*"],
+    projects: [
+      "packages/*",
+      {
+        test: {
+          name: "scripts",
+          include: ["scripts/**/*.test.mjs"],
+        },
+      },
+    ],
   },
 })
 

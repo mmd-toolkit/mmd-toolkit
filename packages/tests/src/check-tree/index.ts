@@ -41,6 +41,7 @@ import { checkQuadrantTree } from "./quadrant.ts"
 import { checkXychartTree } from "./xychart.ts"
 import type { StringDelimitersOf } from "./values.ts"
 import type { CheckedRoot, TreeProblem } from "./types.ts"
+import { withTokenIndex } from "./token-index.ts"
 
 export type { CheckedRoot, TreeProblem } from "./types.ts"
 
@@ -74,6 +75,15 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   const problems = new Problems()
   // The other checks read a tree of the form of the specification.
   if (!checkShape(root, problems)) return problems.list
+  return withTokenIndex(root, () => checkShapedTree(text, root, problems))
+}
+
+/** Check a well-shaped tree while its token index is available. */
+function checkShapedTree(
+  text: string,
+  root: CheckedRoot,
+  problems: Problems,
+): TreeProblem[] {
   checkInvariants(text, root, problems)
   checkSharedLeaves(text, root, problems)
   checkNullFields(text, root, problems)

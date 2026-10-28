@@ -41,7 +41,7 @@ export function findRequirementKeptLines(source: Source): KeptLines {
       ...findLinesEndedBySemicolon(source),
       ...findLinesOfContinuedStatements(source, body),
     ]),
-    writtenIndentation: new Set(findAccessibilityLines(source, body)),
+    ownIndentation: new Set(findAccessibilityLines(source, body)),
   }
   keptLinesBySource.set(source, kept)
   return kept

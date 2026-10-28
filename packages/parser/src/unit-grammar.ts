@@ -413,7 +413,7 @@ export abstract class UnitGrammar<
    * through all the comments for every node of unread text would take time
    * in the square of their number.
    */
-  private diagramCommentsInside(range: Range): Range[] {
+  protected diagramCommentsInside(range: Range): Range[] {
     const inside: Range[] = []
     for (
       let index = firstIndexWhere(

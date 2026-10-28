@@ -19,8 +19,9 @@
 この規則は、図のどの `axis` 文も宣言しない軸の名前を持つ曲線の値を報告する。
 対象の図種は `radar` である。
 
-`axis A, B, C` の後では、`curve sales{A: 1, B: 2, C: 3, D: 9}` の値 `D: 9` は
-点を与えず、曲線は `1`、`2`、`3` から描かれる。
+`axis A, B, C` の後では、
+`curve sales{A: 1, B: 2, C: 3, D: 9}` の値 `D: 9` は点を与えず、曲線は `1`、
+`2`、`3` から描かれる。
 
 名前は大文字小文字を区別して比べ、軸はラベルではなく id で名指す。
 `axis A["North"]` の後では、値 `North: 1` はどの軸も名指さない。
@@ -53,8 +54,8 @@ radar-beta
 
 ## 背景
 
-[`computeCurveEntries`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L75-L91)
-は、宣言した軸ごとにそれを名指す最初の値を取り、ほかの値を除く。
+[`computeCurveEntries`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/db.ts#L75-L91) は、
+宣言した軸ごとにそれを名指す最初の値を取り、ほかの値を除く。
 
 <!-- begin auto-generated rule resources -->
 

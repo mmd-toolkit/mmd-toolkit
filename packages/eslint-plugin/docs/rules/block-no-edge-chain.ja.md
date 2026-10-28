@@ -22,16 +22,14 @@ mermaid.js は `A --> B --> C` のようなリンクの連なりもエラーな�
 対象の図種は `block` である。
 
 ブロックを前に置いていても、連なりは前のリンクを失う。
-`A B C` の後の連なり `A --> B --> C` は、
-始点のない `C` への辺を 1 本描く。
+`A B C` の後の連なり `A --> B --> C` は、始点のない `C` への辺を 1 本描く。
 次の行に書いたリンクは文を続けるので、
 `A --> B` の後の行 `--> C` も連なりである。
 2 行に書いても、`A --> B B --> C` のように 1 行に書いても、
 2 つの辺の文は両方の辺を描く。
 
 複合ブロックの頭の連なりは、
-[block-no-edge-in-composite-head](./block-no-edge-in-composite-head.ja.md)
-が報告する。
+[block-no-edge-in-composite-head](./block-no-edge-in-composite-head.ja.md) が報告する。
 
 この規則に**反する**コードの例:
 

@@ -17,8 +17,8 @@ mermaid.js はエラーなしに後の行き先への矢印だけを描き、前
 
 ## 規則の詳細
 
-この規則は、前の同じノードの `evolve` と違う行き先をノードに与える
-`evolve` を報告する。
+この規則は、
+前の同じノードの `evolve` と違う行き先をノードに与える `evolve` を報告する。
 対象の図種は `wardley` である。
 
 `evolve API 0.6` と `evolve API 0.9` の後では、マップは 90 への矢印を 1 つ持つ。
@@ -61,8 +61,8 @@ wardley-beta
 
 ## 背景
 
-[`addTrend`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L108-L110)
-は、ノードの矢印を前に保ったものの上に保つ。
+[`addTrend`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/wardley/wardleyBuilder.ts#L108-L110) は、
+ノードの矢印を前に保ったものの上に保つ。
 
 <!-- begin auto-generated rule resources -->
 

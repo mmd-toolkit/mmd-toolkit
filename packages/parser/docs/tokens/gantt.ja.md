@@ -4,18 +4,16 @@
 
 この文書は、`@mmd-toolkit/parser` が作る木の、
 図種 `gantt` のトークンを定めます。
-ノードは仕様の
-[`ast/gantt.ja.md`](../../../spec/docs/ast/gantt.ja.md) が定めます。
+ノードは仕様の [`ast/gantt.ja.md`](../../../spec/docs/ast/gantt.ja.md) が定めます。
 すべての図種に共通のトークンは [tokens.ja.md](../tokens.ja.md) が定めます。
 
 ## トークン
 
 トークンは、
-[diagrams/gantt.ja.md](../../../spec/docs/diagrams/gantt.ja.md#字句構造)
-の単位から作ります。
+[diagrams/gantt.ja.md](../../../spec/docs/diagrams/gantt.ja.md#字句構造) の単位から作ります。
 すべて空白ではない単位は、
-[文法](../../../spec/docs/diagrams/gantt.ja.md#文法) の **項目** の
-1 つに属し、この表がその項目に与える種類を持ちます。
+[文法](../../../spec/docs/diagrams/gantt.ja.md#文法) の **項目** の 1 つに属し、
+この表がその項目に与える種類を持ちます。
 
 | 種類         | 項目とその単位                                                                                                                                                                                                                                                                                                                 |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -51,24 +49,23 @@
 単位が空白を保つ場合を除き、両端の空白を含みません。
 リンクの部分の文字列、つまり `"` 単位とその間の `url-text` は、
 開きの引用符から閉じの引用符までの 1 つの `String` トークンです。
-`href "u"` は、`Keyword` トークン `href` と `String` トークン `"u"` を持ちます。
-[fixture: gantt/gram-click-href]
+`href "u"` は、
+`Keyword` トークン `href` と `String` トークン `"u"` を持ちます。 [fixture: gantt/gram-click-href]
 ほかの項目はどれも 1 つの単位で、したがって 1 つのトークンです。
 
 トークンは両端に空白を持ちません。
-ただし mermaid.js が値の一部として読むところは別です
-（[トークン](../tokens.ja.md#トークン) を参照）。
+ただし mermaid.js が値の一部として読むところは別です（[トークン](../tokens.ja.md#トークン) を参照）。
 値が両端の空白を保つ単位は、トークンもそれを保ちます。
-`task-text` は、コロンの前の空白を含みます
-（`a  : 1d` は、`a` と 2 つの空白のトークンを持ちます）。
-`setting-text`、`marker-text`、`title-text`、`section-text` も保ちます
-（`dateFormat` と、2 つの空白の後の `X` は、空白 1 つと `X` のトークンを持ち、
-`title T` と 2 つの空白は、`T` と 2 つの空白のトークンを持ちます）。
-`callback-name` は、`(` の前の空白と改行を含みます
-（`call f ()` は、`f` と空白 1 つのトークンを持ちます）。
-`callback-arguments` 単位も保ちます
-（`call f( 1)` は、空白 1 つと `1` のトークンを持ちます）。
-[fixture: gantt/lex-task-text-trailing-spaces]
+`task-text` は、コロンの前の空白を含みます（`a  : 1d` は、
+`a` と 2 つの空白のトークンを持ちます）。
+`setting-text`、`marker-text`、`title-text`、
+`section-text` も保ちます（`dateFormat` と、2 つの空白の後の `X` は、
+空白 1 つと `X` のトークンを持ち、 `title T` と 2 つの空白は、
+`T` と 2 つの空白のトークンを持ちます）。
+`callback-name` は、`(` の前の空白と改行を含みます（`call f ()` は、
+`f` と空白 1 つのトークンを持ちます）。
+`callback-arguments` 単位も保ちます（`call f( 1)` は、
+空白 1 つと `1` のトークンを持ちます）。 [fixture: gantt/lex-task-text-trailing-spaces]
 [fixture: gantt/lex-dateformat-two-spaces]
 [fixture: gantt/lex-title-trailing-spaces]
 [fixture: gantt/gram-click-call-name-space-before-parenthesis]
@@ -76,8 +73,8 @@
 [fixture: gantt/gram-click-call-arguments-leading-space]
 mermaid.js が値をトリムするアクセシビリティのテキストと、
 単位が両端に空白を持たないタスクのデータの項目は、それを含みません。
-`accTitle: T` と 2 つの空白は、トークン `T` を持ちます。
-[fixture: gantt/gram-acc-title-trailing-spaces]
+`accTitle: T` と 2 つの空白は、
+トークン `T` を持ちます。 [fixture: gantt/gram-acc-title-trailing-spaces]
 [fixture: gantt/lex-task-items-nbsp-trimmed]
 
 タイトルのテキストやセクションのテキストの終わりでは、
@@ -85,8 +82,7 @@ mermaid.js が値をトリムするアクセシビリティのテキストと、
 CR や CRLF は、改行と同じくテキストを終わらせます。
 `title T %%{init: {}}%%` は `T` と空白 1 つのトークンを持ち、
 `title T%%{init: {}}%%` はトークン `T` を持ち、
-`title T` と CRLF はトークン `T` を持ちます。
-[fixture: gantt/lex-directive-at-end-of-title-line]
+`title T` と CRLF はトークン `T` を持ちます。 [fixture: gantt/lex-directive-at-end-of-title-line]
 [fixture: gantt/lex-directive-glued-at-end-of-title]
 [fixture: gantt/lex-directive-at-end-of-section-line]
 [fixture: gantt/lex-directive-glued-at-end-of-section]
@@ -96,17 +92,15 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 
 `RawText` か `String` のトークンの中のディレクティブ、コメント領域、
 行の規則が無視する `;` は、
-[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
-のとおり、トークンを断片に切ります。
+[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン) のとおり、
+トークンを断片に切ります。
 切られた `String` トークンは `StringFragment` トークンになります。
 ほかの種類のトークンの中では、
-ディレクティブや無視される `;` は入力を拒否させます
-（[単位の中のディレクティブ](../../../spec/docs/diagrams/gantt.ja.md#単位の中のディレクティブ)
-を参照）。
+ディレクティブや無視される `;` は入力を拒否させます（[単位の中のディレクティブ](../../../spec/docs/diagrams/gantt.ja.md#単位の中のディレクティブ) を参照）。
 `a : 1%%{init: {}}%%d` は、`RawText` トークン `1` と `d` と、
 その間の `Directive` トークンを持ちます。
-一方、`click id%%{init: {}}%%1 href "u"` は拒否されます。
-[fixture: gantt/lex-directive-in-task-data]
+一方、
+`click id%%{init: {}}%%1 href "u"` は拒否されます。 [fixture: gantt/lex-directive-in-task-data]
 [fixture: gantt/lex-directive-in-task-text]
 [fixture: gantt/lex-directive-in-href-string]
 [fixture: gantt/tokens-ignored-semicolon-in-href-string]
@@ -114,20 +108,17 @@ CR や CRLF は、改行と同じくテキストを終わらせます。
 [fixture: gantt/div-ignored-semicolon-in-click-id]
 
 - タグは `data-item` 単位で、テキストの単位です。
-  そのため、ノードは Identifier ですが、トークンは項目と同じく
-  `RawText` トークンです。
+  そのため、ノードは Identifier ですが、
+  トークンは項目と同じく `RawText` トークンです。
   `a : done, 1d` は、`RawText` トークン `done` と `1d` を持ちます。
   タグの中のディレクティブは、ほかのテキストの単位と同じくトークンを切り、
   タグの名前は、ディレクティブを除いたテキストです。
   `a : do%%{init: {}}%%ne, t1, 2024-01-01, 1d` はタグ `done` を持ち、
-  `RawText` トークン `do` と `ne` を持ちます。
-  [fixture: gantt/gram-task-tag-then-item]
+  `RawText` トークン `do` と `ne` を持ちます。 [fixture: gantt/gram-task-tag-then-item]
   [fixture: gantt/gram-task-tag-cut-by-directive]
 - 文である空の説明ブロックは、`Keyword` トークン `accDescr` と、
-  `Punctuator` トークン `{` と `}` を持ちます。
-  [fixture: gantt/gram-acc-descr-block-empty]
+  `Punctuator` トークン `{` と `}` を持ちます。 [fixture: gantt/gram-acc-descr-block-empty]
 - 行の規則が無視する `;` は `IgnoredSemicolon` トークンです。
   `title a;b style:#x;` では、最初の `;` はその行の最後ではないので、
   `RawText` トークン `a;b style:#x` の文字です。
-  最後の `;` は `IgnoredSemicolon` トークンです。
-  [fixture: gantt/tokens-ignored-semicolon-in-title-text]
+  最後の `;` は `IgnoredSemicolon` トークンです。 [fixture: gantt/tokens-ignored-semicolon-in-title-text]

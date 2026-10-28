@@ -13,11 +13,8 @@ the sentence of the specification or of the parser's documents that defines it.
 
 ## Fixtures
 
-`tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
-`sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
-`mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, `block/`,
-`kanban/`, `c4/`, `venn/`, `ishikawa/`, `agentflow/`, `usecase/`, `gitgraph/`,
-and `pie/`, and checks:
+`tests/fixtures.test.ts` parses every fixture of the diagram directories that
+`tests/helpers/recorded-diagrams.ts` lists, once each, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -30,40 +27,37 @@ recorded tree (`check-tree-corpus.test.ts`; see
 [The tree check](#the-tree-check)) and builds its Db and compares it with the Db
 that the fixture records (`db-from-tree.test.ts`).
 
-Kanban fixtures are checked by `tests/kanban.test.ts`: all 2,870 inputs are
-compared with their recorded acceptance, applying the declared divergences and
-`specified.json` where present. Accepted trees also check token/comment coverage
-and exact token text. The parse records, including the common kanban detection
+`tests/kanban.test.ts` checks, on named fixtures, cards under columns with their
+indentation and ranges, adjacent data blocks, quoted labels with CRLF,
+mismatched shape delimiters, ignored semicolons, and the places of rejections.
+The parse records and the acceptance, including the common kanban detection
 fixture, are compared by `tests/fixtures.test.ts`.
 
-C4 fixtures are checked by `tests/c4.test.ts`: every corpus input is compared
-with its recorded acceptance, applying the declared divergences and
-`specified.json` where present. Accepted trees also check token/comment
-coverage, exact token text, and child-node containment and source order.
-`tests/fixtures.test.ts` compares their recorded parse results, including the C4
-detection fixtures outside `c4/`. `tests/ast-c4-examples.test.ts` checks the
-ranges and tree invariants in the type comment examples.
+`tests/c4.test.ts` checks, on named fixtures, empty blocks in the header gap and
+the boundary gap, bare and quoted arguments, named keys, null entries,
+directives in values, title whitespace, and the places of rejections.
+`tests/fixtures.test.ts` compares their recorded parse results and acceptance,
+including the C4 detection fixtures outside `c4/`.
+`tests/ast-c4-examples.test.ts` checks the ranges and tree invariants in the
+type comment examples.
 
-Venn fixtures are checked by `tests/venn.test.ts`: every corpus input is
-compared with its specified acceptance, applying declared divergences and
-`specified.json` where present. Accepted trees check token/comment coverage,
-exact token text, raw literal text, and child-node containment and source order.
-`tests/fixtures.test.ts` compares their recorded parse results, including the
-common venn detection fixture. `tests/ast-venn-examples.test.ts` checks the
-ranges in the type comment examples.
+`tests/venn.test.ts` checks, on named fixtures, subsets, explicit and implicit
+text, style atoms and their token kinds, labels emptied by trivia, line
+terminators and numbers, and the places of rejections. `tests/fixtures.test.ts`
+compares their recorded parse results and acceptance, including the common venn
+detection fixture. `tests/ast-venn-examples.test.ts` checks the ranges in the
+type comment examples.
 
-Ishikawa fixtures are checked and recorded by `tests/ishikawa.test.ts`: every
-input is compared with its specified acceptance and declared divergence.
-Accepted trees check token/comment coverage, exact token text, child-node
-containment, and source order. `tests/fixtures.test.ts` also compares their
-records, including the common Ishikawa detection fixture.
+`tests/ishikawa.test.ts` checks, on named fixtures, the indentation of causes,
+rootless diagrams, literal text, RawText fragments around directives and ignored
+semicolons, diagram comments before a line separator, and the places of
+rejections. `tests/fixtures.test.ts` compares their records and acceptance,
+including the common Ishikawa detection fixture.
 `tests/ast-ishikawa-examples.test.ts` checks the type comment example ranges.
-The tests package's `checkTree` and `dbFromTree` validate the recorded trees and
-their Db content.
 
-`tests/architecture.test.ts` checks corpus-backed structure, token spelling and
-ranges, gap ownership and comparable Db values. Acceptance and records,
-including applicable common fixtures, are checked by `tests/fixtures.test.ts`.
+`tests/architecture.test.ts` checks, on named fixtures, structure, token
+spelling and ranges, and gap ownership. Acceptance and records, including
+applicable common fixtures, are checked by `tests/fixtures.test.ts`.
 `tests/ast-architecture-examples.test.ts` checks the ranges of node type comment
 examples.
 
@@ -97,16 +91,17 @@ usecase/div-comment-preheader-bare] [fixture: venn/div-c4-bare-identifier]
 - `ignored-semicolon-as-token-boundary`: the parser reads the same reference
   input, and must give what mermaid.js gave for the input, as above. Which `;`
   the line rule ignores is found from the parser's line rule.
-- `click-reserved-word`: the parser rejects the input, and, where the three
-  conditions of its reference input hold (see
-  [Reference inputs](#reference-inputs)), must give the reference input what
+- `click-reserved-word`: the parser rejects the input, and, where the
+  specification gives its reference input the Db of the input
+  ([The difference](../../spec/docs/known-divergences/click-reserved-word.md#the-difference);
+  see [Reference inputs](#reference-inputs)), must give the reference input what
   mermaid.js gave for the input, as above. Which `click` units start a click
   statement is found from the parser's units.
-- `tokenless-empty-forms`: the parser rejects the input, and, where the parser's
-  lexer reads its reference input as the units of the input but those of the
-  empty forms and the parser accepts it (see
-  [Reference inputs](#reference-inputs)), must give the reference input what
-  mermaid.js gave for the input, as above.
+- `tokenless-empty-forms`: the parser rejects the input, and, where the
+  specification gives its reference input the Db of the input
+  ([The difference](../../spec/docs/known-divergences/tokenless-empty-forms.md#the-difference);
+  see [Reference inputs](#reference-inputs)), must accept the reference input
+  and give it what mermaid.js gave for the input, as above.
 - `headerless-empty-ending`: the parser rejects the class diagram for its
   missing header, which the parser's lexer decides.
 - `comment-takes-character`: the input has a `%%`, outside directives, right
@@ -162,36 +157,27 @@ made and compared, and the paragraphs below say it for the others; where the
 parser and mermaid.js agree across the input and its reference input, the form
 explains the difference on the input itself. For `click-reserved-word` and
 `tokenless-empty-forms`, a removal can also change what lies around the removed
-text, so the reference input is compared only where the conditions below hold,
-and the test requires the reference input of more than half of the marked
-fixtures to be compared, so that the check does not pass vacuously.
+text, so the reference input is compared only where the specification gives it
+the Db of the input, in the section The difference of the document of each
+divergence; the paragraphs below say how the test decides it. For each case that
+the corpus has, the test checks that a fixture it names falls in that case, so
+that the check does not pass without comparing.
 
 The reference input of `click-reserved-word` is the input without its comment
 regions, without its empty forms (see `tokenless-empty-forms` below), and
 without, for each `click` unit that does not start a click statement, the word
 `click`, the whitespace after it, and the one whitespace character with which
-the lexer leaves the click context that it entered, if there is one. It is
-compared where three conditions hold: the parser accepts it; the parser's lexer
-reads it as the units of the input other than the removed ones, except the click
-ids and `click-comma` units that the click contexts of those `click` units read,
-whose text it may read as other units that start and end where each of them
-does; and the text of each of those click ids lies within the range of one leaf
-node of its tree. `A:click "" b-->C` becomes `A:b-->C`, with the vertex `A:b`
-and its edge to C in both, and `subgraph click me` followed by an empty line
-becomes `subgraph me`, with the id `me` in both. [fixture:
-flowchart/db-vertex-id-bare-click] [fixture:
-flowchart/db-subgraph-id-click-blank-line] Otherwise the removal joins what lies
-on both sides, or puts the text of a click id where the statement context reads
-it otherwise, and mermaid.js may read the reference input otherwise. Some joins
-give the same Db: `subgraph click me`, a line break, and `A` becomes
-`subgraph meA`, with the id `meA` in both, because mermaid.js joins the click id
-and the next line in the same way. Others do not: in `subgraph click m;e`, the
-`;` of the click id becomes a separator in the reference input `subgraph m;e`,
-which has the id `m` instead of `m;e`, and in `subgraph click a,b` the `,`
-becomes a `,` unit, which a name does not take, so mermaid.js rejects
-`subgraph a,b`. [fixture: flowchart/gram-subgraph-name-click] [fixture:
-flowchart/gram-subgraph-name-click-semicolon-in-id] [fixture:
-flowchart/gram-subgraph-name-click-comma]
+the lexer leaves the click context that it entered, if there is one. The test
+compares it where the specification gives it the Db of the input
+([The difference](../../spec/docs/known-divergences/click-reserved-word.md#the-difference)),
+and decides that with the parser: its lexer reads the reference input as the
+units of the input other than the removed ones, with the click ids and
+`click-comma` units of those `click` units read as units that start and end
+where each of them does; the parser accepts it; and the text of each of those
+click ids lies within the range of one leaf node of its tree. Where the parser
+rejects it, a click id stands where the statement context reads it otherwise, as
+the `,` of `subgraph a,b`, and nothing is compared. [fixture:
+flowchart/db-subgraph-id-click-comma-blank-line]
 
 The reference input of `tokenless-empty-forms` is the input without its comment
 regions and without its empty forms: each empty string, each empty call from its
@@ -253,29 +239,15 @@ after another, with only whitespace between them, are decided together, by what
 follows the last of them: in `""accDescr {}` followed by a line break and `A`,
 the block starts a statement once the empty string is left out, so it stays in
 the reference input. [fixture:
-flowchart/lex-empty-string-before-empty-description-block] For one or more
-blocks between `direction` and its value on one line in a class diagram, the
-reference input also leaves out the whitespace around the blocks, so that
-`direction` and the value form one word, as mermaid.js joins the two name parts:
-`direction accDescr {} LR` has the reference input `directionLR`, and so has
-`direction accDescr {}accDescr {}LR`. [fixture:
-class/div-empty-description-block-between-direction-and-value] [fixture:
-class/div-empty-description-blocks-between-direction-and-value]
+flowchart/lex-empty-string-before-empty-description-block]
 
-It is compared where the parser's lexer reads it as the units of the input other
-than those of the empty forms, and the parser accepts it: `A[""x]` becomes
-`A[x]`, and `click A call ()cb` becomes `click A cb`. [fixture:
-flowchart/tokens-empty-string-in-label] [fixture:
-flowchart/gram-click-empty-call-before-callback] Otherwise the removal joins
-what lies on both sides of a form into other units, and mermaid.js may read the
-reference input otherwise. In `style A "" fill:red`, the spaces before and after
-the empty string become one `space` unit, so the style of the reference input is
-`fill:red` instead of a space and `fill:red`. In `A:""::c`, `:` and `::` become
-`:::`, so the reference input has the vertex `A` with the class `c` instead of
-the vertex `A:::c`. `flowchart""TD` becomes `flowchartTD`, which mermaid.js
-rejects. [fixture: flowchart/gram-style-empty-string-before-first-style]
-[fixture: flowchart/lex-empty-string-splits-triple-colon] [fixture:
-flowchart/header-empty-string-no-space]
+The test compares it where the specification gives it the Db of the input
+([The difference](../../spec/docs/known-divergences/tokenless-empty-forms.md#the-difference)),
+and decides that with the parser's lexer: it reads the reference input as the
+units of the input other than those of the empty forms. There the parser must
+accept the reference input: mermaid.js accepts the input and reads it as if its
+empty forms were not there, so a reference input that the parser rejects is an
+error, which the test reports with the fixture and the reason.
 
 The two divergences share one reference input, so that an input with both forms,
 such as `A[style:#x];cl%%{init: {}}%%ick B;b call cb()` in a flowchart, is
@@ -297,14 +269,18 @@ recorded tree of the corpus, and the tests of the parser use it on the trees of
 their own inputs (`tests/helpers/tree-problems.ts`), which expect it to list
 nothing.
 
-The order of the child fields is the parser's own: a tool that walks the child
-fields in the order of `visitorKeys` meets the child nodes in source order, but
-in a FlowchartLink with an opening arrow and a label, whose label is written
-before its arrow and visited after it, and in a GanttClickStatement whose link
-is written before its call and visited after it. [fixture:
-gantt/gram-click-href-then-call] `tests/traverse.test.ts` checks this on the
-tree of every fixture that the parser accepts, and that a tree whose child nodes
-are out of order fails.
+The order of the child fields is the one that the section of each node type
+states ([ast.md, Nodes](../../spec/docs/ast.md#nodes)): a tool that walks the
+child fields in the order of `visitorKeys` meets the child nodes in source
+order, but in a FlowchartLink with an opening arrow and a label, whose label is
+written before its arrow and visited after it, in an AgentflowLink whose label
+is written before its closing arrow, and in a GanttClickStatement whose link is
+written before its call and visited after it. [fixture:
+agentflow/gram-split-edge-id] [fixture: gantt/gram-click-href-then-call]
+`tests/traverse.test.ts` reads the sentence of the child fields in the section
+of each node type and checks that `visitorKeys` lists the same fields in the
+same order for every node type. That the child nodes meet in source order in
+that order is checked on every recorded tree by `@mmd-toolkit/tests`.
 
 ## Recorded parse results
 
@@ -364,57 +340,44 @@ looks for files left behind names any that remain.
   class tree, and the state tree, their tokens, and the rejections outside their
   grammars.
 
-Agentflow fixtures are checked and recorded by `tests/agentflow.test.ts`, with
-acceptance taken from expected.json or the declared divergence's specified.json
-reading. The test checks character coverage, token boundaries, raw spelling,
-child containment and source order, and the Name, comment, heading, arrow,
-metadata, and click-prefix structures. Site maxEdges acceptance is checked apart
-from parse(), as for flowchart. `tests/ast-agentflow-examples.test.ts` checks
-all node comment examples, and `tests/fixtures.test.ts` compares the same
-records.
+`tests/agentflow.test.ts` checks, on named fixtures, the Name, comment, heading,
+arrow, metadata, and click-prefix structures. Site maxEdges acceptance is
+checked apart from parse(), as for flowchart.
+`tests/ast-agentflow-examples.test.ts` checks all node comment examples, and
+`tests/fixtures.test.ts` compares the records and the acceptance.
 
-Usecase fixtures are checked and recorded by `tests/usecase.test.ts`, with
-specified.json taking precedence, unqualified divergence fixtures rejected, and
-embedded-data-opaque fixtures accepted. It checks acceptance, character
-coverage, exact token and raw text, node boundaries, child containment and
-source order, and calls the corpus tree checker on every accepted tree.
-Structure assertions cover native metadata, single quotes, CSS padding, arrow
-halves and opaque JSON. `tests/ast-usecase-examples.test.ts` checks all 26 node
-comment examples. The tests package supplies the tree checker and Db builder for
-the separate corpus comparisons.
+`tests/usecase.test.ts` checks, on named fixtures, declarations, native
+metadata, arrow halves, single quotes, CSS padding and opaque JSON.
+`tests/ast-usecase-examples.test.ts` checks all 26 node comment examples, and
+`tests/fixtures.test.ts` compares the records and the acceptance.
 
-Pie fixtures are checked and recorded by `tests/pie.test.ts`: specified.json
-takes precedence, opaque-data divergences accept, and other unqualified
-divergence fixtures reject. Accepted trees check source coverage, token and raw
-spelling, node boundaries, child containment and source order. The recorded Db
-is compared directly with `dbFromTree`; atomic-boundary references are also
-compared with the original expected Db. Structure checks cover hidden-form
-ownership, common-value padding/nulls, both quote kinds and double conversion.
+`tests/pie.test.ts` checks, on named fixtures, hidden-form ownership,
+common-value padding and nulls, duplicates, both quote kinds and double
+conversion. The common fixture loop compares the atomic-boundary references with
+the original expected Db (see [Known divergences](#known-divergences)).
 `tests/ast-pie-examples.test.ts` checks all eight node comment examples.
 
-Info fixtures and common info detection fixtures are checked and recorded by
-`tests/info.test.ts`, using `fixtureAccepts` and the specified reading when
-present. Accepted trees check source coverage, exact token spelling, node
-boundaries, child containment and source order; comparable Db values are checked
-with `dbFromTree` and `embeddedValuesOf`, with opaque cases explicit. The common
-fixture loop independently locates declared atomic cuts in reference tokens and
-compares reference inputs with the original expected Db. [fixture:
-info/div-directive-flag-middle] Structure checks cover all hidden-form owners,
-visible EOL, padding, nulls, repeats and authored quoted text.
-`tests/ast-info-examples.test.ts` checks all seven node comment examples.
-[fixture: info/lex-flag-hidden-two] [fixture: info/lex-hidden-without-flag]
-[fixture: info/lex-hidden-tail-two] [fixture: info/lex-hidden-after-visible-eol]
-[fixture: info/title-tabs] [fixture: info/lex-title-one-tab] [fixture:
-info/accdescr-line-repeat] [fixture: info/title-open-quote] [fixture:
-info/div-frontmatter-invalid-yaml] [fixture: info/div-selected-showinfo]
+`tests/info.test.ts` checks, on named info fixtures and common info detection
+fixtures, all hidden-form owners, visible EOL, padding, nulls, repeats and
+authored quoted text, and that the tree keeps the frontmatter of the fixtures
+whose embedded data mermaid.js rejects and the specification keeps opaque. The
+common fixture loop independently locates declared atomic cuts in reference
+tokens and compares reference inputs with the original expected Db. [fixture:
+info/div-directive-flag-middle] `tests/ast-info-examples.test.ts` checks all
+seven node comment examples. [fixture: info/lex-flag-hidden-two] [fixture:
+info/lex-hidden-without-flag] [fixture: info/lex-hidden-tail-two] [fixture:
+info/lex-hidden-after-visible-eol] [fixture: info/title-tabs] [fixture:
+info/lex-title-one-tab] [fixture: info/accdescr-line-repeat] [fixture:
+info/title-open-quote] [fixture: info/div-frontmatter-invalid-yaml] [fixture:
+info/div-frontmatter-html-invalid-yaml] [fixture: info/div-selected-showinfo]
 [fixture: common/detect-minimal-info]
 
-Gitgraph fixtures and their common detection fixture are checked and recorded by
-`tests/gitgraph.test.ts`. Acceptance uses fixtureAccepts, with comparison Db
-values supplied by dbFromTree and embeddedValuesOf; accepted opaque readings
-remain explicit. Coverage, token/raw spelling, containment, source order and
-node boundaries are checked on accepted trees. The common fixture loop checks
-atomic divergences independently with reference tokens and readings. [fixture:
+`tests/gitgraph.test.ts` checks, on named fixtures, hidden forms in the header,
+option and trailing gaps, repeated options, written escapes, raw line padding,
+nullable blocks, and passed bare lines kept as comments.
+`tests/fixtures.test.ts` compares the records and the acceptance, including the
+common detection fixture, and its common fixture loop checks atomic divergences
+independently with reference tokens and readings. [fixture:
 gitgraph/gram-all-fields] [fixture: gitgraph/div-directive-in-commit] [fixture:
 gitgraph/div-frontmatter-invalid-yaml] [fixture:
 common/detect-minimal-git-graph]
@@ -443,67 +406,62 @@ tests/fixtures.test.ts, using fixtureAccepts and external site configuration in
 outcomeOf. The default records keep parse(text)'s result even when site width
 rejects that tree. [fixture: packet/config-fraction-reject] [fixture:
 packet/config-frontmatter-overrides-site] Unit tests in tests/packet.test.ts
-check source coverage, token/raw spelling, node boundaries, containment, source
-order, authored block forms, hidden ownership and common values. Comparable Db
-readings use dbFromTree and embeddedValuesOf; accepted default trees with a
-site-rejected reading have no comparison Db. [fixture: packet/gram-mixed]
-[fixture: packet/gram-hidden-range-gap-spaced] [fixture:
-packet/lex-hidden-two-suffixes] [fixture: packet/title-repeat-empty] [fixture:
+check, on named fixtures, authored block forms, hidden ownership and common
+values. [fixture: packet/gram-mixed] [fixture:
+packet/gram-hidden-range-gap-spaced] [fixture: packet/lex-hidden-two-suffixes]
+[fixture: packet/title-repeat-empty] [fixture:
 packet/error-single-rounded-end-wide] The ten node-comment examples are checked
 by tests/ast-packet-examples.test.ts.
 
 Radar records and acceptance are checked only by tests/fixtures.test.ts using
-fixtureAccepts. The unit checks in tests/radar.test.ts cover source coverage,
-spelling, ranges, containment, source order and comparable Db readings using
-dbFromTree and embeddedValuesOf. They check authored comma groups, hidden-form
-ownership, both entry forms, repeated/empty common values and double spelling.
-The nineteen node-comment examples are checked by
-tests/ast-radar-examples.test.ts. [fixture: radar/gram-written-tree] [fixture:
-radar/lex-hidden-axis-comma] [fixture:
+fixtureAccepts. The unit checks in tests/radar.test.ts check, on named fixtures,
+authored comma groups, hidden-form ownership, both entry forms, token kinds,
+repeated/empty common values and double spelling. The nineteen node-comment
+examples are checked by tests/ast-radar-examples.test.ts. [fixture:
+radar/gram-written-tree] [fixture: radar/lex-hidden-axis-comma] [fixture:
 radar/lex-named-entry-hidden-across-lines] [fixture: radar/common-repeat-empty]
 [fixture: radar/db-number-rounded] [fixture: common/detect-minimal-radar]
 
 Treemap acceptance and records are checked only by tests/fixtures.test.ts, using
-fixtureAccepts. Unit checks in tests/treemap.test.ts cover source coverage,
-spelling, ranges, containment, source order, flat row indentation, composite
-boundaries, empty/repeated common values and authored numeric/string readings.
-Comparable Db values use dbFromTree and embeddedValuesOf. All nine node-comment
-examples are checked by tests/ast-treemap-examples.test.ts. [fixture:
-treemap/gram-written-tree] [fixture: treemap/db-leaf-tail-space] [fixture:
+fixtureAccepts. Unit checks in tests/treemap.test.ts check, on named fixtures,
+flat row indentation, composite boundaries, empty/repeated common values and
+authored numeric/string readings. All nine node-comment examples are checked by
+tests/ast-treemap-examples.test.ts. [fixture: treemap/gram-written-tree]
+[fixture: treemap/db-leaf-tail-space] [fixture:
 treemap/gram-indent-around-global-directive] [fixture:
 treemap/common-repeat-empty] [fixture: treemap/db-number-multiple-dots]
 [fixture: treemap/lex-string-conversion] [fixture:
 common/detect-minimal-treemap]
 
-`tests/wardley.test.ts` checks corpus-backed authored structure, component
-tokens, named hidden-form ownership, source coverage and comparable Db values.
-`tests/fixtures.test.ts` checks acceptance and records, including common Wardley
-detection cases. `tests/ast-wardley-examples.test.ts` checks the 28 node type
-comment examples. [fixture: wardley/db-all-fields] [fixture:
-wardley/hidden-all-unit-gaps] [fixture: common/detect-minimal-wardley]
+`tests/wardley.test.ts` checks, on named fixtures, authored structure, component
+tokens and named hidden-form ownership. `tests/fixtures.test.ts` checks
+acceptance and records, including common Wardley detection cases.
+`tests/ast-wardley-examples.test.ts` checks the 28 node type comment examples.
+[fixture: wardley/db-all-fields] [fixture: wardley/hidden-all-unit-gaps]
+[fixture: common/detect-minimal-wardley]
 
-`tests/cynefin.test.ts` checks corpus-backed fields, hidden-form ownership,
-component boundaries, source coverage and Db values. Acceptance and records,
-including common detection cases, belong to `tests/fixtures.test.ts`.
-`tests/ast-cynefin-examples.test.ts` checks the eleven node-comment examples.
-[fixture: cynefin/db-all-fields] [fixture: cynefin/hidden-domain-item-members]
-[fixture: cynefin/hidden-all-unit-gaps] [fixture: common/detect-minimal-cynefin]
+`tests/cynefin.test.ts` checks, on named fixtures, fields, hidden-form ownership
+and component boundaries. Acceptance and records, including common detection
+cases, belong to `tests/fixtures.test.ts`. `tests/ast-cynefin-examples.test.ts`
+checks the eleven node-comment examples. [fixture: cynefin/db-all-fields]
+[fixture: cynefin/hidden-domain-item-members] [fixture:
+cynefin/hidden-all-unit-gaps] [fixture: common/detect-minimal-cynefin]
 
-`tests/eventmodeling.test.ts` checks corpus-backed structure, source coverage,
-token spelling, ranges, hidden-form ownership and comparable Db values.
-Acceptance and records belong to `tests/fixtures.test.ts`, including the common
-detection fixture. `tests/ast-eventmodeling-examples.test.ts` checks all 22 node
-comment examples. [fixture: eventmodeling/gram-written-tree] [fixture:
+`tests/eventmodeling.test.ts` checks, on named fixtures, structure, token
+spelling, ranges and hidden-form ownership. Acceptance and records belong to
+`tests/fixtures.test.ts`, including the common detection fixture.
+`tests/ast-eventmodeling-examples.test.ts` checks all 22 node comment examples.
+[fixture: eventmodeling/gram-written-tree] [fixture:
 eventmodeling/lex-hidden-frame-optional-gaps] [fixture:
 eventmodeling/lex-hidden-gwt-required-gaps] [fixture:
 common/detect-minimal-eventmodeling]
 
-`tests/treeview.test.ts` checks corpus-backed authored fields, assigned
-indentation, box-form ownership, token/comment coverage, spelling, node ranges,
-child containment, source order and comparable Db values. Acceptance and
-records, including the common detection fixture, belong to
-`tests/fixtures.test.ts`. `tests/ast-treeview-examples.test.ts` checks all
-thirteen node-comment examples; ASCII display escapes are decoded before
-checking their marked source ranges. [fixture: treeview/gram-written-tree]
-[fixture: treeview/box-written-tree] [fixture: treeview/ast-annotation-prefixes]
-[fixture: common/detect-minimal-tree-view]
+`tests/treeview.test.ts` checks, on named fixtures, authored fields, assigned
+indentation, box-form ownership, block payloads, node ranges and the positions
+of errors after decorations. Acceptance and records, including the common
+detection fixture, belong to `tests/fixtures.test.ts`.
+`tests/ast-treeview-examples.test.ts` checks all thirteen node-comment examples;
+ASCII display escapes are decoded before checking their marked source ranges.
+[fixture: treeview/gram-written-tree] [fixture: treeview/box-written-tree]
+[fixture: treeview/ast-annotation-prefixes] [fixture:
+common/detect-minimal-tree-view]

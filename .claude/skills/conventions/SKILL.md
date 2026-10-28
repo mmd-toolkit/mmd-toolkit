@@ -94,7 +94,10 @@ The procedures of a package are in the skill of that package.
   (`proseWrap: "preserve"` for `*.ja.md`), and their author writes the line
   breaks: one sentence on a line, and a long sentence broken after a `、` where
   the meaning pauses, so that no line of prose is longer than 80 columns,
-  counting a full-width character as two.
+  counting a full-width character as two. A line that is longer only because of
+  one link, code span, or bracketed reference, which cannot be broken, is left
+  as it is. The Japanese line breaks are checked by `pnpm run lint:ja` and fixed
+  with `--fix`.
 - A code block that holds Mermaid text has the info string `mmd`, not `mermaid`
   and not `text`. GitHub highlights it and does not try to render it as a
   diagram, which matters because many examples are rejected or are edge cases on

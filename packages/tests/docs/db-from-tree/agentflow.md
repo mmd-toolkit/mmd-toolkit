@@ -138,8 +138,8 @@ Complete a flow after its body, including nested containers. An unnamed id is
 `subGraph` followed by the number of earlier completed declarations, including
 repeated ids. A named flow without a title has empty title and labelType text;
 an unnamed flow has empty title and labelType markdown. An explicit title uses
-its trimmed sanitized text and written kind. Repeated ids merge new members into
-the first record and replace a nonempty title and a supplied direction,
+its trimmed sanitized text and written kind. Repeated ids append each new member
+once to the first record and replace a nonempty title and a supplied direction,
 retaining the first labelType and map position. [fixture:
 agentflow/gram-flow-all-forms] [fixture: agentflow/gram-nested-unnamed-flow]
 [fixture: agentflow/db-flow-three-definitions] [fixture:
@@ -149,16 +149,35 @@ agentflow/db-flow-repeat-before-unnamed]
 A vertex statement contributes ids from its groups last to first, each group in
 written order. Nested flows and connectors contribute their read ids, nonempty
 accessibility texts their trimmed text, and EmptyStatement its semicolon. Other
-statements contribute nothing. Remove blank and duplicate members, the flow's
-own id, global ids, and ids claimed by earlier completed flows; `__proto__`
-retains repeated occurrences. Keep original endpoints and membership rather than
-layout's collapsed or cycle-adjusted records. [fixture:
+statements contribute nothing. Build each declaration's candidate list by
+removing blank and duplicate members, the flow's own id, global ids, and ids
+claimed by earlier completed flows, but retain every `__proto__` occurrence in
+that list. An initial declaration keeps that list. A repeated id keeps its
+existing members, including repeated `__proto__` occurrences, and appends a
+candidate only when it is not already present. Thus a repeated declaration adds
+at most one new `__proto__`, including on a third declaration; it does not
+collapse repetitions from the initial declaration. Keep original endpoints and
+membership rather than layout's collapsed or cycle-adjusted records. [fixture:
 agentflow/gram-group-spaces] [fixture: agentflow/lex-accessibility-scope]
 [fixture: agentflow/gram-flow-hasownproperty-before-empty-statement] [fixture:
 agentflow/lex-flow-prototype-members] [fixture:
 agentflow/db-flow-self-reference] [fixture: agentflow/gram-flow-nested]
 [fixture: agentflow/db-flow-collapse] [fixture:
 agentflow/db-diagnostics-containment-cycle]
+
+[`addSubGraph`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1187-L1265)
+uses ordinary object keys to remove candidate duplicates, but `includes()` to
+merge into an existing member list. Assigning a boolean to the object's
+`__proto__` creates no own key, so every occurrence survives the first step; the
+merge checks the members already appended as well. [fixture:
+agentflow/db-flow-proto-initial-repeated] [fixture:
+agentflow/db-flow-proto-redefinition] [fixture:
+agentflow/db-flow-ordinary-redefinition] [fixture:
+agentflow/db-flow-proto-initial-then-redefinition] [fixture:
+agentflow/db-flow-proto-third-definition] [fixture:
+agentflow/db-flow-proto-second-then-third] [fixture:
+agentflow/db-flow-proto-claimed-by-other] [fixture:
+agentflow/db-flow-proto-merge-order]
 
 A flow's last direct direction statement supplies `dir`; nested directions do
 not. Otherwise inherit the diagram direction when effective

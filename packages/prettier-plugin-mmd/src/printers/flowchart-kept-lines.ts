@@ -12,6 +12,7 @@ import {
   lineStartOf,
 } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
+import { findFirstIndex, findTokenStartingAt } from "./source.ts"
 
 import {
   findStyleLinesWithLineSeparators,
@@ -72,7 +73,7 @@ export function findFlowchartKeptLines(source: Source): KeptLines {
       ...findLinesEndedBySemicolon(source),
       ...findLinesOfPercentStatements(source, statements),
     ]),
-    writtenIndentation: directionText,
+    ownIndentation: directionText,
   }
   keptLinesBySource.set(source, kept)
   return kept
@@ -97,9 +98,10 @@ export function findSemicolonOnLaterLine(
   const text = textUpToLastWord(source, range)
   if (!endsWithWordReadWithLineBreaks(text, wordsReadWithLineBreaks))
     return undefined
-  const separator = source.root.tokens.find(
-    (token) => token.range[0] >= range[1] && token.type !== "Directive",
-  )
+  const { tokens } = source.root
+  let after = findFirstIndex(tokens, (token) => token.range[0] >= range[1])
+  while (tokens[after]?.type === "Directive") after++
+  const separator = tokens[after]
   if (separator?.value !== ";" || separator.range[0] >= subgraph.range[1]) {
     return undefined
   }
@@ -193,9 +195,7 @@ function findLinesOfPercentStatements(
         lines.add(line)
       }
     }
-    const first = source.root.tokens.find(
-      (token) => token.range[0] === statement.range[0],
-    )
+    const first = findTokenStartingAt(source, statement.range[0])
     if (first?.type !== "Directive" && first?.value.startsWith("%%") === true) {
       lines.add(lineStartOf(source, statement.range[0]))
     }

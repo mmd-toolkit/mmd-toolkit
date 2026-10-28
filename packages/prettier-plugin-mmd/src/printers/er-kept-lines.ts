@@ -57,7 +57,7 @@ export function findErKeptLines(source: Source): KeptLines {
       ...findLinesEndedBySemicolon(source),
       ...findLinesReadByTheirPlace(source, diagramOf(source).body),
     ]),
-    writtenIndentation: new Set(
+    ownIndentation: new Set(
       findAccessibilityLines(source, diagramOf(source).body),
     ),
   }

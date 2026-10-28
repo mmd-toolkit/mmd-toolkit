@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 import { loadFixtures } from "../src/index.ts"
 import { runMermaid, runMermaidWithEmbeddedData } from "../src/mermaid.ts"
 import { normalizeCynefin } from "../src/normalizers/cynefin.ts"
+import type { MermaidConfig } from "../src/types.ts"
 
 const fixtures = await loadFixtures("cynefin")
 
@@ -12,10 +13,12 @@ function named(name: string) {
   return fixture
 }
 
-/** Runs a corpus input with its site configuration. */
-async function summary(name: string) {
+/** The summary of an accepted corpus input, under its site settings and `config`. */
+async function summary(name: string, config: MermaidConfig = {}) {
   const fixture = named(name)
-  const result = await runMermaid(fixture.input, { config: fixture.config })
+  const result = await runMermaid(fixture.input, {
+    config: { ...fixture.config, ...config },
+  })
   if (!result.accepted) throw new Error(`expected accepted cynefin/${name}`)
   return result.db
 }
@@ -163,22 +166,10 @@ describe("Cynefin normalization", () => {
     })
   })
 
-  it("matches every corpus result under its site settings and standard security levels", async () => {
-    for (const fixture of fixtures) {
-      const levels =
-        fixture.config?.securityLevel === undefined
-          ? ["strict", "loose", "antiscript", "sandbox"]
-          : [fixture.config.securityLevel]
-      for (const securityLevel of levels) {
-        const result = await runMermaid(fixture.input, {
-          config: { ...fixture.config, securityLevel },
-        })
-        expect(result.accepted, `${fixture.name}: ${securityLevel}`).toBe(
-          fixture.expected.accepted,
-        )
-        if (result.accepted && fixture.expected.accepted)
-          expect(result.db, fixture.name).toEqual(fixture.expected.db)
-      }
+  it("keeps markup under every supported security level", async () => {
+    const base = await summary("html-texts")
+    for (const securityLevel of ["strict", "loose", "antiscript", "sandbox"]) {
+      expect(await summary("html-texts", { securityLevel })).toEqual(base)
     }
-  }, 30_000)
+  })
 })

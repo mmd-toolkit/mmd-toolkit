@@ -54,7 +54,7 @@ export function findVennKeptLines(source: Source): KeptLines {
   return {
     joined,
     verbatim,
-    writtenIndentation: new Set([...joined, ...verbatim]),
+    ownIndentation: new Set([...joined, ...verbatim]),
   }
 }
 

@@ -1,14 +1,9 @@
+import { DiagramTextWithoutPassedLines } from "../../passed-bare-lines.ts"
 import type { Root } from "../../ast.ts"
 import type { CommonFormLexing } from "../../common-form-unit-lexer.ts"
-import type { PassedPart } from "../../detection.ts"
 import type { DiagramComment, DiagramInput } from "../../diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"
-import type {
-  DiagramCharacter,
-  DiagramPosition,
-  DiagramText,
-  DiagramTextReader,
-} from "../../diagram-text.ts"
+import type { DiagramTextReader } from "../../diagram-text.ts"
 import { AbnfGrammar, AbnfUnitLexer } from "./abnf.ts"
 import { EbnfGrammar, EbnfUnitLexer } from "./ebnf.ts"
 import { IrGrammar, IrUnitLexer } from "./ir.ts"
@@ -20,41 +15,10 @@ export interface RailroadUnits extends CommonFormLexing<UnitName> {
   readonly text: DiagramTextReader
 }
 
-/** Detection-passed bare lines and accompanying trivia must not reenter native matching. */
-class RailroadText implements DiagramText {
-  private readonly reader: DiagramTextReader
-
-  private readonly bareLines: readonly Extract<
-    PassedPart,
-    { kind: "bare-percent-line" }
-  >[]
-
-  public constructor(reader: DiagramTextReader, passed: readonly PassedPart[]) {
-    this.reader = reader
-    this.bareLines = passed.filter((part) => part.kind === "bare-percent-line")
-  }
-
-  public first(): DiagramCharacter {
-    return this.reader.first()
-  }
-
-  public after(character: DiagramCharacter): DiagramPosition {
-    let next = this.reader.after(character)
-    for (const part of this.bareLines)
-      while (
-        next !== null &&
-        next.start >= part.start &&
-        next.start < part.next
-      )
-        next = this.reader.after(next)
-    return next
-  }
-}
-
 /** Select only the dialect's lexical rules; each scan consumes the whole text before grammar. */
 export function lexRailroad(input: DiagramInput): RailroadUnits {
   const text = openDiagramText(input)
-  const reader = new RailroadText(text, input.passed)
+  const reader = new DiagramTextWithoutPassedLines(text, input.passed)
   const lines = input.lexer.lines
   const lexer =
     input.diagramType === "railroad"

@@ -492,6 +492,9 @@ Use the diagram names and node prefixes defined by
    short cells, long explanations below the table), the child fields (in the
    order a tool visits them), and the range. Write each node's range in its own
    authored shape, with only the starting and ending forms that node permits.
+   State the child fields in one of the two sentences of Nodes in `ast.md`:
+   ``Child fields: `a`, `b`.`` or `No child fields.`, and in the Japanese
+   document ``子の欄: `a`、`b`。`` or `子の欄はありません。`.
 2. The token kind of each unit is defined by the parser, in
    `packages/parser/docs/tokens/<diagram>.md`, and the documents of the
    specification do not refer to it; the specification lists the units of the

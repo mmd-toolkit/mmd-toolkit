@@ -11,8 +11,8 @@ mermaid.js が捨てるテキストを禁止する。
 <!-- end auto-generated rule notice -->
 
 `direction` の文は、それだけで 1 行に書く。
-その行にほかのテキストもあると、
-mermaid.js は行全体を方向の文として読み、残りをエラーなしに捨てる。
+その行にほかのテキストもあると、 mermaid.js は行全体を方向の文として読み、
+残りをエラーなしに捨てる。
 state 図には、同じようにテキストを捨てる所がほかにもいくつかある。
 
 ## 規則の詳細
@@ -35,8 +35,8 @@ mermaid.js も書き手の意図どおりにそれを捨てる。
   `state "d" as A : x : y` は、A に、両端に空白のある 2 つ目の説明 `x` を与え、
   `: y` は捨てられる。
 - 本体の `{` の前の `%%`。
-  `state "d" as %% c {` では、別名は id を持たず、
-  その本体の状態は、どの合成状態にも入らない。
+  `state "d" as %% c {` では、別名は id を持たず、その本体の状態は、
+  どの合成状態にも入らない。
 - 1 行に書いたノートの `:` の直後の 1 文字。
   `note left of A:hi` は、ノートのテキストを `i` にする。
   [mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L263)は、

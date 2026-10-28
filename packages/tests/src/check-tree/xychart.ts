@@ -20,7 +20,7 @@ import {
   textOf,
 } from "./statement-checks.ts"
 import type { Reading } from "./statement-checks.ts"
-import { checkTokensInValueNodes } from "./tokens.ts"
+import { checkTokensInValueNodes, tokensIn } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
 import { walkNodes } from "./walk.ts"
 
@@ -561,11 +561,8 @@ function checkLiteralTokens(
 ): void {
   checkTokenKinds(reading, node, ["RawText"], "an XychartLiteral")
   if (!isWords) return
-  const tokens = reading.root.tokens.filter(
-    (token) =>
-      token.type === "RawText" &&
-      node.range[0] <= token.range[0] &&
-      token.range[1] <= node.range[1],
+  const tokens = tokensIn(reading.root, node.range).filter(
+    (token) => token.type === "RawText",
   )
   for (const [index, token] of tokens.entries()) {
     const next = tokens[index + 1]

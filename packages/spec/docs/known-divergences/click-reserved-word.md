@@ -90,6 +90,39 @@ goes one way only: mermaid.js accepts and this specification rejects. The
 flowchart document lists the places in its
 [Known divergences](../diagrams/flowchart.md#known-divergences).
 
+Where the input without its comment regions
+([Reading a source](../common.md#reading-a-source)), without its empty forms
+(see [tokenless-empty-forms](./tokenless-empty-forms.md)), and without each such
+`click`, the whitespace after it, and the one whitespace character with which
+mermaid.js leaves the click context is read as the units of the input other than
+those, its click ids and the `click-comma` units between them being read as
+units that start and end where each of them does, and the text of each click id
+lies within one leaf node of its tree, this specification gives that input the
+Db that mermaid.js gives the input. `A:click "" b-->C` reads as `A:b-->C`, with
+the vertex `A:b` and its edge to C. `subgraph click me` reads as `subgraph me`,
+with the id `me`, where an empty line follows, also after a comment line, where
+a U+2028 or a U+2029 and a line break follow, and where a directive follows
+`me`. `classDef a:click "" b fill:#f00;`, whose last `;` the line rule ignores,
+reads as `classDef a:b fill:#f00;`. [fixture: flowchart/db-vertex-id-bare-click]
+[fixture: flowchart/db-subgraph-id-click-blank-line] [fixture:
+flowchart/db-subgraph-id-click-comment-line] [fixture:
+flowchart/db-subgraph-id-click-line-separator] [fixture:
+flowchart/db-subgraph-id-click-paragraph-separator] [fixture:
+flowchart/db-subgraph-id-click-space-directive] [fixture:
+flowchart/db-classdef-name-bare-click-ignored-semicolon] Elsewhere the removal
+joins what lies on its two sides, or puts the text of a click id where the
+statement context reads it otherwise, and nothing follows for the input without
+the `click`: `subgraph click me`, a line break, and `A` become `subgraph meA`;
+`subgraph click me accDescr {}` followed by an empty line becomes
+`subgraph meaccDescr {}`, which mermaid.js rejects; in `subgraph click m;e`, the
+`;` becomes a separator of `subgraph m;e`; and in `subgraph click a,b` followed
+by an empty line, the `,` becomes a `,` unit, which a name does not take, so
+`subgraph a,b` is rejected, by mermaid.js too. [fixture:
+flowchart/gram-subgraph-name-click] [fixture:
+flowchart/gram-subgraph-name-click-empty-description-block] [fixture:
+flowchart/gram-subgraph-name-click-semicolon-in-id] [fixture:
+flowchart/db-subgraph-id-click-comma-blank-line]
+
 ## What it means for an author
 
 The word `click` is easy to write in the name of a subgraph or in other text

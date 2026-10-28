@@ -41,8 +41,8 @@ export default [mmd.configs.recommended]
 ## Markdown の中の Mermaid のコードブロック
 
 [`@eslint/markdown`](https://github.com/eslint/markdown) のプロセッサーは、
-コードブロックごとに、
-`0.mermaid` のような、その言語で終わるファイル名を付けます。
+コードブロックごとに、 `0.mermaid` のような、
+その言語で終わるファイル名を付けます。
 上の設定は `mermaid` と `mmd` のブロックに当たり、
 ESLint は Markdown のファイルの位置で報告します。
 
@@ -59,8 +59,8 @@ export default [...markdown.configs.processor, mmd.configs.recommended]
 
 次の図種を読みます。
 
-- flowchart: `flowchart-v2`（`flowchart` と `graph`）、
-  `flowchart-elk`、`swimlane`（`swimlane-beta`）。
+- flowchart: `flowchart-v2`（`flowchart` と `graph`）、 `flowchart-elk`、
+  `swimlane`（`swimlane-beta`）。
 - シーケンス図: `sequence`（`sequenceDiagram`）。
 - クラス図: `classDiagram`（`classDiagram` と `classDiagram-v2`）。
 - 状態図: `stateDiagram`（`stateDiagram` と `stateDiagram-v2`）。

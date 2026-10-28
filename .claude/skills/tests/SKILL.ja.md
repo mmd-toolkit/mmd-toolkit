@@ -27,8 +27,8 @@ pin した mermaid.js の更新を扱う。
   Node（DOM なし）で mermaid の Db を取り出す。
 - fixture の形式を定め、ローダーと README をそれに合わせて保つ。
 - fixture 生成器を提供する。
-  mermaid を import する部分（Db 取り出し、正規化関数）は
-  `@mmd-toolkit/tests` のサブパスに、CLI は `tools/` に置く。
+  mermaid を import する部分（Db 取り出し、
+  正規化関数）は `@mmd-toolkit/tests` のサブパスに、CLI は `tools/` に置く。
 - fixture を再生成し、
   mermaid の挙動が変わっていたら失敗する CI ジョブを提供する。
 - 図種ごとに、正解の取り出し（正規化関数）と fixture の収集を行う。
@@ -47,9 +47,8 @@ pin した mermaid.js の更新を扱う。
 
 - この SKILL の手順が書くのは、`packages/tests`、`tools/`、
   この SKILL の文書だけ。
-  ほかのパッケージ
-  （`packages/spec`、`packages/parser`、`packages/prettier-plugin-mmd`）
-  を直す必要が出たら、
+  ほかのパッケージ（`packages/spec`、`packages/parser`、
+  `packages/prettier-plugin-mmd`）を直す必要が出たら、
   そのパッケージの SKILL の手順で直す。
   ほかのパッケージのテストから入力を取るときは、読むだけにする。
 - コミットと push は、求められたときだけ行う（AGENTS.md の「行動原則」）。
@@ -58,12 +57,12 @@ pin した mermaid.js の更新を扱う。
   `git mv` はステージも変える。
 - ルートの共有ファイルは、すべてのパッケージに効く。
   共有ファイルは、`package.json`、`pnpm-lock.yaml`、`eslint.config.mjs`、
-  `prettier.config.js`、`tsconfig.json`、`.github/workflows/`、`scripts/`
-  である。
+  `prettier.config.js`、`tsconfig.json`、`.github/workflows/`、
+  `scripts/` である。
   必要なときだけ変え、
   変えたらリポジトリ全体の検査（`pnpm run lint` と全体のテスト）を通す。
-- 確かめのためのスクリプトや一時ファイルは、
-  作業ツリーではなく、リポジトリの外の作業用のディレクトリに置く。
+- 確かめのためのスクリプトや一時ファイルは、作業ツリーではなく、
+  リポジトリの外の作業用のディレクトリに置く。
 - fixture のディレクトリを消すと、
   権限の判定で止められることがある（取り消せない削除）。
   消す必要があるときは、消すものの一覧とコマンドを示して決定を求める。
@@ -78,8 +77,8 @@ pin した mermaid.js の更新を扱う。
 - ほかの作業が編集中のファイルに触らない。
 - 追跡されているファイルを一時的に書き換えて試さない。
   途中でステージされることがある。
-- git のステージと、チェックアウトされたファイルを変えない
-  （`git add`、`git mv`、`stash`、`checkout`、`reset`）。
+- git のステージと、チェックアウトされたファイルを変えない（`git add`、
+  `git mv`、`stash`、`checkout`、`reset`）。
   プロセスを名前で止めない（`pkill -f vitest` は、ほかの作業のテストも止める）。
 
 ## 4. 確かめ方（すべての作業で）
@@ -149,23 +148,22 @@ pin した mermaid.js の更新を扱う。
   モジュールごとに 1 つの `tests/tools-*.test.ts` でテストする。
   記録器は Node.js 自身の `import()` を必要とするので、
   そのテストでは別のプロセスで動かす。
-  コマンドラインのファイル（`tools/fixtures.ts`、`tools/collect.ts`）には
-  テストのファイルがなく、それぞれのコマンドを動かして確かめる。
+  コマンドラインのファイル（`tools/fixtures.ts`、
+  `tools/collect.ts`）にはテストのファイルがなく、
+  それぞれのコマンドを動かして確かめる。
   `add-many`、`set-divergence`、`set-note` は `--dry-run` を付け、
   変える予定のものを読む。
   `generate` は `fixtures:check` で確かめる。
   `tools/collect.ts` は、`--out` をリポジトリの外に向けて動かし、
   書いたファイルを読む。
 
-  1 つのファイルは
-  `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。
+  1 つのファイルは `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。
   `fixtures.test.ts` は 2 つの README を読む（既知の差異ごとに項目がある）ので、
   README を変えたときにも回す。
   このパッケージには大きくする量がない。
   完了を報告する前の実行は、全体（`pnpm --filter @mmd-toolkit/tests test`）。
-  `fixtures:check` は、結果の作り方か記録の仕方
-  （`src/mermaid.ts`、正規化関数、形式、生成器）を変えた後と、
-  その変更の完了を報告する前に回す。
+  `fixtures:check` は、結果の作り方か記録の仕方（`src/mermaid.ts`、正規化関数、
+  形式、生成器）を変えた後と、その変更の完了を報告する前に回す。
   `src/` を変えたら `lib/` を作り直す（下）。
   ほかのパッケージは、使うものについての自分のテストを回す。
   全件を 1 つのテストで読むテストには、
@@ -178,8 +176,8 @@ pin した mermaid.js の更新を扱う。
   ただし、貯蔵庫のテストの 1 つは、リポジトリの貯蔵庫にテキストを 1 つ通す。
   確かめのスクリプトは、`MMD_TOOLKIT_MERMAID_CACHE=disabled` を付けない限り、
   貯蔵庫を使う。
-  鍵に入るのは `RESULT_FILES` にある `src/` のファイルだけで、
-  それを変えると、貯めた結果がすべて使われなくなる。
+  鍵に入るのは `RESULT_FILES` にある `src/` のファイルだけで、それを変えると、
+  貯めた結果がすべて使われなくなる。
   その一覧を正しく保つ（テストが確かめる）。
   それらのファイルの変更は、入れる前に、テストを回す人に知らせる。
   そして、長い実行が動いていないときに入れる。
@@ -214,16 +212,16 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
 後の作業は前の作業の結果を使う。
 仕様と parser は要約の欄の一覧（`docs/db-summaries.ja.md`）を参照し、
 仕様の主張と parser のテストは fixture を使う。
-木から要約を作る手順は、仕様の木の文書の後に、ここに書く
-（`docs/db-from-tree/<図種>.ja.md` と `src/db-from-tree/<図種>.ts`）。
+木から要約を作る手順は、仕様の木の文書の後に、
+ここに書く（`docs/db-from-tree/<図種>.ja.md` と `src/db-from-tree/<図種>.ts`）。
 
 Chevrotain の図種にも同じ手順を適用し、トークン定義を字句規則として読む。
 単位を決めるのはトークンの順序、有効な mode、明示的な `longer_alt` であり、
-一般的な最長一致ではない。パーサーが木を回復しても、
-字句エラーは構文エラーより先に入力を拒否する。
+一般的な最長一致ではない。
+パーサーが木を回復しても、字句エラーは構文エラーより先に入力を拒否する。
 パーサーの rule メソッドを文法規則、model builder の検証を受理条件として読む。
-それぞれを区別する場合を集め、トークン数だけでは確かめられない
-mode の切替と優先順位の組合せも含める。
+それぞれを区別する場合を集め、
+トークン数だけでは確かめられない mode の切替と優先順位の組合せも含める。
 
 Langium の図種では、その図種自身の文法と service から次の事項を導く。
 terminal の順序、境界、変換、公開を図種ごとに導き直す。
@@ -235,13 +233,13 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    hidden を含め、到達可能な terminal だけを結果の順序で列挙する。
    import 先に宣言があるだけでは到達しない。
    terminal の構成規則も、独立した字句単位になるとは限らない。
-   clone に生成ファイルがなければ、インストールされた pin の bundle の
-   source map を読み、生成 module・文法と書かれた service の配線を照合する。
+   clone に生成ファイルがなければ、インストールされた pin の bundle の source
+   map を読み、生成 module・文法と書かれた service の配線を照合する。
 2. keyword のパターンも読む。
    独自の境界を持つもの、既定の順序を使うもの、
    明示的な `longer_alt` の選択肢を持つものを列挙する。
-   [共有の token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31)
-   は指定された keyword だけに、空白・EOF・percent ペアの先読み境界を加える。
+   [共有の token builder](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/tokenBuilder.ts#L7-L31) は指定された keyword だけに、
+   空白・EOF・percent ペアの先読み境界を加える。
    一般的な最長一致ではなく、最初に合う規則を取る。
    keyword 境界と明示的な選択肢も単位を決める。
    接着した接尾辞、keyword の接頭辞、keyword に接した記号、
@@ -249,32 +247,28 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    検出には、それ自身の境界がある。
 3. hidden terminal が字句規則として消費するテキストを調べる。
    全体の除去とは区別する。
-   import した
-   [YAML・DIRECTIVE terminal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34)
-   は直後の LF を消費し、ほかの空白境界は先読みだけする。
+   import した [YAML・DIRECTIVE terminal](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/common.langium#L25-L34) は直後の LF を消費し、
+   ほかの空白境界は先読みだけする。
    各単位の隙間と各文の EOL・EOF を probe する。
-   唯一の LF が消えると次の文は拒否されるが、共通の付加 LF が消えた場合は
-   EOF で EOL を満たせる。先頭の frontmatter、共通の directive 除去、
-   本文の hidden terminal を分ける。
+   唯一の LF が消えると次の文は拒否されるが、
+   共通の付加 LF が消えた場合は EOF で EOL を満たせる。
+   先頭の frontmatter、共通の directive 除去、本文の hidden terminal を分ける。
    閉じを選ぶ前に、選択肢の優先順位を導く。
    本文のある選択肢が、隣接する空の閉じより先に選ばれる場合がある。
    保持する接頭部と、通過した裸行の trivia について、
    検出から parser への受渡しを、その図種で独立に probe する。
 4. 実際の terminal 規則名から、注入された converter と fallback をたどる。
    恒等・文字列・整数・double の変換は、到達するものだけを調べる。
-   [共通の converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70)
-   は、行とブロックの共通の値で空白の読みが異なる。
-   たとえば pie の
-   [独自分岐](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16)
-   は PIE_SECTION_LABEL を名指すが、
-   [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20)
-   は STRING を呼び、既定の escape 変換に進む。
-   到達する単位について、両方の引用符、未知の escape、精度、
-   overflow、underflow を集める。
+   [共通の converter](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/common/valueConverter.ts#L26-L70) は、
+   行とブロックの共通の値で空白の読みが異なる。
+   たとえば pie の [独自分岐](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/valueConverter.ts#L6-L16) は PIE_SECTION_LABEL を名指すが、
+   [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/language/pie/pie.langium#L1-L20) は STRING を呼び、
+   既定の escape 変換に進む。
+   到達する単位について、両方の引用符、未知の escape、精度、 overflow、
+   underflow を集める。
    前の図種の単位に到達しない所は、拒否の対照を置き、理由を記す。
 5. 回復した AST だけでなく公開の受理の門を読む。
-   [公開 parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150)
-   は字句・構文エラーが 1 つでもあれば拒否する。
+   [公開 parse wrapper](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/parser/src/parse.ts#L134-L150) は字句・構文エラーが 1 つでもあれば拒否する。
    次に、その図種の AST から Db への公開をたどる。
    保存する値、条件付き・省略する代入、値を代入しない文法の literal、
    adapter が捨てる文を区別する。
@@ -282,12 +276,12 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    何も公開せず、要約が空になる図種もある。
    先頭・回復した文の内部・正しい接頭辞の後のエラーを、
    到達可能な Db の拒否それぞれとは別に調べる。
-6. parse を await する spec を記録できるよう、
-   collector の parse stub は非同期にする。
+6. parse を await する spec を記録できるよう、 collector の parse
+   stub は非同期にする。
    `Promise.resolve(record(text))` で呼出しを記録する。
    Langium を実行せず、受理を模倣しない。
-   共有の recorder で spec を実行し、各記録位置が実際の parse 呼出しであることを
-   確かめる。
+   共有の recorder で spec を実行し、
+   各記録位置が実際の parse 呼出しであることを確かめる。
    stub のために最後の入力の後でだけ本体が失敗するテストは、
    入力の欠落がないと証明してから、§5.3.3 の既存の明示的な許可を使える。
    normalizer、固定 fixture、安定した生成は §5.2〜5.3 に従う。
@@ -308,37 +302,36 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 
 ### 5.2 正規化関数
 
-1. clone の中で、文法、AST から Db への adapter があればそれ、
-   Db の実装、renderer を開く。
-   private・closure 内の状態と、公開の呼出しを全部挙げる
-   （Jison の `yy.` 呼出しか、上で導いた adapter の呼出し）。
-   Db がブラウザのグローバル（`window`、`document`、`Option`、`CSS`）を
-   読む箇所をすべて探し、
-   それが mermaid の解析中に動くのか、描画の後にだけ動くのかを確かめる。
+1. clone の中で、文法、AST から Db への adapter があればそれ、 Db の実装、
+   renderer を開く。
+   private・closure 内の状態と、
+   公開の呼出しを全部挙げる（Jison の `yy.` 呼出しか、
+   上で導いた adapter の呼出し）。
+   Db がブラウザのグローバル（`window`、`document`、`Option`、
+   `CSS`）を読む箇所をすべて探し、それが mermaid の解析中に動くのか、
+   描画の後にだけ動くのかを確かめる。
    class の click のコールバックと tooltip は描画の後に動くので、何も要らない。
-2. 要約に含める欄の案を、欄ごとに、renderer が読む所、
-   構文が決めるか、含める理由、落とすものと理由の表にする。
+2. 要約に含める欄の案を、欄ごとに、renderer が読む所、構文が決めるか、
+   含める理由、落とすものと理由の表にする。
    ほかの Db メソッドが読むというだけで、解析・検証用の状態を残さず、
    値を代入しない keyword、捨てる AST の値、build 定数から欄を作らない。
    空の要約も正しい結果である。
    次のものは落とす候補として必ず問う。
    括弧に、flowchart と sequence での例を書く。
-   - 描画から導く値、描画が埋める値
-     （`domId`、sequence の `actorCnt` と `rectData`）。
-   - ほかの欄から一意に導ける値
-     （`textStyles`、sequence のメッセージの `id` とノートの一覧）。
-   - サイト設定でだけ変わる値
-     （`securityLevel: loose` のときだけ付く `haveCallback`）。
+   - 描画から導く値、描画が埋める値（`domId`、
+     sequence の `actorCnt` と `rectData`）。
+   - ほかの欄から一意に導ける値（`textStyles`、
+     sequence のメッセージの `id` とノートの一覧）。
+   - サイト設定でだけ変わる値（`securityLevel: loose` のときだけ付く `haveCallback`）。
      構文が決める欄で、サイト設定でも変わるものは含め、
-     Db のパッチがほかの設定のときの値を記録する
-     class のリンクの target は、
+     Db のパッチがほかの設定のときの値を記録する class のリンクの target は、
      `securityLevel: sandbox` のときに `_top` になる。
      `securityLevel` を変えて全件を流し、要約が変わらないことを確かめる。
    - 整形が変える空白が値に残る場所（style の値の末尾の空白）。
-     その図種の整形の方針と照らす
-     （`packages/prettier-plugin-mmd/docs/<図種>.md`）。
-     落とす前に、mermaid.js がその空白を読まないことを確かめる
-     （sequence の空白だけの題は、描画が題として場所を取るので落とさない）。
+     その図種の整形の方針と照らす（`packages/prettier-plugin-mmd/docs/<図種>.md`）。
+     落とす前に、
+     mermaid.js がその空白を読まないことを確かめる（sequence の空白だけの題は、
+     描画が題として場所を取るので落とさない）。
    - `@{ ... }` のデータブロックだけが設定する欄。
      これは要約に含め、
      `dataBlockEffects` で実装に渡す（`docs/embedded-data.md`）。
@@ -353,8 +346,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    - Db が読んだものを 2 つ以上の形で持つときの、要約の元。
      各要素を 1 度ずつ、それに当たるものとともに持つ形を取る。
      たいていは描画が読むもの。
-     ほかの形を取らない理由を書き残す
-     （state: 文の木は何も変えない文を持ち、状態の表は最上位だけを持つので、
+     ほかの形を取らない理由を書き残す（state: 文の木は何も変えない文を持ち、
+     状態の表は最上位だけを持つので、
      要約はレイアウトのデータ `getData()` から取る）。
      collection の走査順、置換の位置、生成の順序を区別し、
      renderer がそれぞれを必要とする場合だけ残す。
@@ -363,11 +356,11 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      生成された同一性・参照と証明できる位置だけを、定めた生成順で置き換え、
      後の文に書かれたものも含め、著者の placeholder 名を予約する。
      著者のテキストから id に見える部分文字列を探さない。
-     記録が変換より前で、公開が変換後に由来を決めるなら、
-     converter を写さず、記録が依る同値性を明記してテストする。
+     記録が変換より前で、公開が変換後に由来を決めるなら、 converter を写さず、
+     記録が依る同値性を明記してテストする。
      拒否後の reset と、生成の 2 回の安定を確かめる。
-   - テキストではなく、実行の時刻や偶然に依る値
-     （gantt は日付を、プロセスのタイムゾーンで計算し、
+   - テキストではなく、実行の時刻や偶然に依る値（gantt は日付を、
+     プロセスのタイムゾーンで計算し、
      タスクでない id の後ろの開始では今日の日付を読む）。
      これまでの結果の貯蔵庫（`docs/expected-results.md`）は、
      別の日に作った結果を返す。
@@ -386,18 +379,18 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    リポジトリの外の作業用のディレクトリで試作して確かめてから決める。
 4. `packages/tests/src/normalizers/<図種>.ts` に正規化関数を書き、
    `src/normalizers/index.ts` に、同じ Db を使う図種 ID をすべて登録する。
-   Db のパッチが要るか
-   （リンクを `utils.formatUrl()` で保存する、データブロックを持つ）を確かめ、
+   Db のパッチが要るか（リンクを `utils.formatUrl()` で保存する、
+   データブロックを持つ）を確かめ、
    要るなら同じファイルに書いて `dbPatches` に登録する。
-   登録には、mermaid が受理し、その図種 ID として検出するテキストを添える
-   （`classDiagram` だけでは拒否されるので、class の見本は class を 1 つ持つ）。
+   登録には、mermaid が受理し、
+   その図種 ID として検出するテキストを添える（`classDiagram` だけでは拒否されるので、
+   class の見本は class を 1 つ持つ）。
    `runMermaid()` は、どの入力を解析するよりも前に、
    すべての Db クラスにパッチを当てる。
-   Db のメソッドが、Node にないブラウザの関数
-   （`window`、`document`、`Option`）を呼ぶと、
-   `MermaidEnvironmentError` になる。
-   そのときは、パッチがその呼び出しの間だけ、その関数の代役を与える
-   （`src/normalizers/browser-stand-ins.ts`）。
+   Db のメソッドが、Node にないブラウザの関数（`window`、`document`、
+   `Option`）を呼ぶと、 `MermaidEnvironmentError` になる。
+   そのときは、パッチがその呼び出しの間だけ、
+   その関数の代役を与える（`src/normalizers/browser-stand-ins.ts`）。
    mermaid の処理は書き写さない。
    代役が何を答えるかは、実装が比べる相手を決める。
    そのため、選択肢と推奨を示して決定を求め、
@@ -422,33 +415,31 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    normalizer のファイルを、
    `packages/tests/src/mermaid-run-store.ts` の `RESULT_FILES` に足す。
    `codeIdentityOf` はこの一覧を使って結果の識別を作る。
-   他パッケージの利用側の一覧の担当へ図種を伝え、
-   担当範囲の外を編集しない。
+   他パッケージの利用側の一覧の担当へ図種を伝え、担当範囲の外を編集しない。
 6. `tests/` にテストを足す。
    確かめるのは、落とした欄が出ないこと、パッチが要約を変えないこと、
    データブロックの効果。
    corpus に基づくテストでは入力文字列を写さず、fixture を名前で読み、
    足りない入力は probe 後に CLI で足す。
-   新しい図種を要約のない見本として使うテストを探し、
-   その assertion を、確かめた別の要約のない fixture に移す。
+   新しい図種を要約のない見本として使うテストを探し、その assertion を、
+   確かめた別の要約のない fixture に移す。
 7. `pnpm --filter @mmd-toolkit/tests run fixtures:generate` を実行する。
    変わるのは、`common/` の fixture のうち、
    その図種を載せたもの（`db: null` が要約になる）だけのはず。
    それ以外が変われば、理由を調べる。
    それらの fixture は要約を持ち、木を持たない。
-   `tests/db-from-tree.test.ts` の `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES` に
-   その図種を足し、parser が木を記録したら外して、
-   builder を記録した木で走らせるよう、同じファイルの `DIAGRAMS` に足す。
-   その図種のノードの型の接頭辞（`Requirement`）も
-   `tests/check-tree-recorded.ts` の
-   `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` に足す。
+   `tests/db-from-tree.test.ts` の `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES` にその図種を足し、
+   parser が木を記録したら外して、 builder を記録した木で走らせるよう、
+   同じファイルの `DIAGRAMS` に足す。
+   その図種のノードの型の接頭辞（`Requirement`）も、
+   `tests/check-tree-recorded.ts` の `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` に足す。
    ノードの型ごとに記録した木を求めるテストはこの接頭辞の型を除く。
    これも同じときに外す。
    外すときは、その図種の値の欄の行（`VALUE_FIELD_REPORTS` ほか、
    欄と値のテストの表）を書いておく。
    この一覧は図種の間は空のままにする。
-8. `docs/db-summaries.md` と `.ja.md` に、
-   その図種の節（何を落とし、なぜか）を書く。
+8. `docs/db-summaries.md` と `.ja.md` に、その図種の節（何を落とし、
+   なぜか）を書く。
 9. 結果として、要約の欄の一覧と、落とした欄とその理由を示す。
    仕様と parser は、この一覧を参照する（`docs/db-summaries.ja.md`）。
 
@@ -456,8 +447,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 
 1. 入力は、その図種の構文に図のテキストを渡す mermaid のテストと、
    docs の mermaid のブロック、demos から集める。
-   Langium の図種では、そのテストに mermaid の parser パッケージの
-   その図種のテストも含める。
+   Langium の図種では、
+   そのテストに mermaid の parser パッケージのその図種のテストも含める。
    図種ごとに集めるテストファイルの一覧と除外の理由は、
    `tools/collect.ts` の `SPEC_FILES` だけが持つ。
    無関係なテストや e2e は集めない。
@@ -468,17 +459,16 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    `collect.ts` の `SPEC_FILES` に、その図種の spec ファイルのうち、
    図のテキストを mermaid に渡すものを足す。
    除くファイルには理由を書く。
-   spec ファイルが import するモジュールと、テキストを受け取る関数
-   （図種のパーサーの `parse`、`Diagram.fromText` など）のスタブは、
-   `spec-recorder.ts` の一覧に足す。
+   spec ファイルが import するモジュールと、
+   テキストを受け取る関数（図種のパーサーの `parse`、
+   `Diagram.fromText` など）のスタブは、 `spec-recorder.ts` の一覧に足す。
    この一覧は全図種で共有する。
 3. spec ファイルの記録器について、flowchart と sequence でつまずいたこと:
    - spec ファイルは、ループやテンプレートリテラルで入力を作るので、
      文字列リテラルを静的に読むと取りこぼす。
      ファイルをスタブに対して実行して、parse に渡された文字列を記録する。
-   - import をスタブに向けるのに
-     Node の module hooks（`registerHooks`、`register`）を使うと、
-     lint が実験的な機能として止める。
+   - import をスタブに向けるのに Node の module hooks（`registerHooks`、
+     `register`）を使うと、 lint が実験的な機能として止める。
      TypeScript で transpile すると行番号がずれる。
      テストファイルを一時ディレクトリに写し、
      import のパスの引用符の中だけを書き換えて、そのまま import する。
@@ -491,13 +481,12 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    - 入力を隠し得る例外を黙って捨てない。
      スタブが文字列にされたら例外にし、本体の例外があれば収集を止める。
      収集を続けられるのは、ファイル・テスト名・エラーの本文が、
-     `collect.ts` の
-     `ERRORS_AFTER_THEIR_INPUT` に載っていて、
+     `collect.ts` の `ERRORS_AFTER_THEIR_INPUT` に載っていて、
      最後の parse 呼出しの後でだけ失敗し、全入力を記録したと証明できる場合だけ。
    - 描画の配置を確かめるテストは、スタブで算術をする。
      スタブの算術は `NaN` にし、`NaN` を含むテキストを記録したら止める。
-   - 実際の DOM で描画して図を確かめるテストは、スタブでは動かない
-     （sequence の `actorBandModel.spec.ts`）。
+   - 実際の DOM で描画して図を確かめるテストは、
+     スタブでは動かない（sequence の `actorBandModel.spec.ts`）。
      その入力が docs や demos にもあることを確かめて、理由を書いて除く。
    - 記録した各入力の行に、実際にテキストを渡す呼び出しがあることを確かめる。
 4. docs と demos のブロックは、
@@ -505,11 +494,10 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    demos のテキストは `mermaid.run()` が読むものにそろえる。
    `<pre>` の直後の改行を落とし、文字参照を解決し、
    mermaid が使う `ts-dedent` をかけ、trim する。
-   ブラウザで実際のページと照らすと確かめられる
-   （flowchart では demos を localhost で配って照合した）。
+   ブラウザで実際のページと照らすと、
+   確かめられる（flowchart では demos を localhost で配って照合した）。
 5. 収集した入力には `config` を付けない。
-   名前は `<出どころ>-<ファイル>-<入力の SHA-256 の先頭 8 桁>`
-   （`docs/maintaining-fixtures.md`）。
+   名前は `<出どころ>-<ファイル>-<入力の SHA-256 の先頭 8 桁>` （`docs/maintaining-fixtures.md`）。
 6. `fixtures:add-many <図種> <ファイル> --dry-run` で試し、
    出力を読んでから本番を実行する。
 7. `add-many` が出す「rejected by mermaid」の一覧を 1 件ずつ見る。
@@ -534,12 +522,11 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    書く前に、これまでの図種の review が足りないと見つけた場合の種類を、
    新しい図種の文と fixture に先に当てる。
    一覧にして当て、当てはまらない種類は、省かずに理由を書く。
-   どの種類でも、構文のテキストを持つ場所すべて
-   （欄、名前、文字列、ブロック。引用符の内外、最初の行とあとの行）
-   を mermaid.js で確かめる。
+   どの種類でも、構文のテキストを持つ場所すべて（欄、名前、文字列、
+   ブロック。引用符の内外、最初の行とあとの行）を mermaid.js で確かめる。
    入力は、一覧の文言からでなく、これまでの図種の fixture の名前から取る。
-   近い 2 つの図種の手書きの fixture の名前を `ls` で一覧にし、
-   名前ごとに、新しい図種での対応か、対応しない理由を書く。
+   近い 2 つの図種の手書きの fixture の名前を `ls` で一覧にし、名前ごとに、
+   新しい図種での対応か、対応しない理由を書く。
    一覧は、これまでの review が見つけた種類をすべて持ち、
    見つけた review を添える。
    - `style` 行と `classDef` 行の行の規則が届く値。
@@ -549,54 +536,56 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      `;` が別の行にある場合は `;` が残り、
      `;` が 2 つあれば最初の `;` が文字参照を終える。
      引用符の中の行は、それだけで 1 つの行（441）。
-   - キーワードと値の間のコメント行、ディレクティブの行、空行
-     （timeline の review 435 の軽 1）。
-     また、行にテキストのないキーワードが後の行を値に取る場合
-     （アクセシビリティのテキスト）は、取られる行そのもの。
-     図の文の行であっても、そのまま値になる
-     （xychart の review 448。`accTitle:` の次に `line [1]`）。
-   - キーワードの別の大文字小文字と、その後ろにくっついた文字、
-     語の文字、`-`、ASCII の外の文字。
+   - キーワードと値の間のコメント行、ディレクティブの行、
+     空行（timeline の review 435 の軽 1）。
+     また、行にテキストのないキーワードが、
+     後の行を値に取る場合（アクセシビリティのテキスト）は、取られる行そのもの。
+     図の文の行であっても、そのまま値になる（xychart の review
+     448。 `accTitle:` の次に `line [1]`）。
+   - キーワードの別の大文字小文字と、その後ろにくっついた文字、語の文字、`-`、
+     ASCII の外の文字。
      ヘッダーにも、各文のキーワードにも。
    - `Object.prototype` の名前（`__proto__`、`constructor`）を名前や id にする。
    - 同じ名前の 2 つ目、3 つ目の定義。
      どれが残るか、文法のアクションのほかの呼び出しが働くか。
-     3 つ目は、相手が最初の定義でない組み合わせにする
-     （review 419・420）。
-   - 空の説明ブロック（またはテキストのない文）が、前の値を保つこと
-     （timeline の review 436。er と requirement にも）。
+     3 つ目は、相手が最初の定義でない組み合わせにする（review 419・420）。
+   - 空の説明ブロック（またはテキストのない文）が、
+     前の値を保つこと（timeline の review 436。 er と requirement にも）。
    - CRLF、単独の CR、U+2028、U+2029。
      行末として、値や引用符の中で、テキストの末尾で。
    - 空白の種類のタブと U+FEFF。
-     行の先頭、値の中、行とテキストの末尾で
-     （timeline の review 436 の軽 2、437 の軽 5）。
-   - 文字参照。すべてのテキストと引用符の中で、
+     行の先頭、値の中、行とテキストの末尾で（timeline の review 436 の軽 2、
+     437 の軽 5）。
+   - 文字参照。
+     すべてのテキストと引用符の中で、
      また文字参照の `#` はコメントを始めないこと。
    - ディレクティブで切れる値。
      値の中、その先頭と末尾、引用符の中、ヘッダーの行、キーワードに続けて、
-     閉じないもの（次の行の先頭の語か、テキストの残りを取る）
-     （sankey の review 441）。
+     閉じないもの（次の行の先頭の語か、テキストの残りを取る）（sankey の review
+     441）。
    - 閉じない文脈の中でテキストが終わる場合。
      `accTitle:` で終わる、終わりのないブロック、閉じない引用符。
    - 各文の形の後ろの行末。
      ` ;`、`;`、`;;`、コメント、閉じたディレクティブ、閉じないディレクティブ。
-   - 値、行、テキストの末尾の空白。ノーブレークスペースと U+3000 を含む。
+   - 値、行、テキストの末尾の空白。
+     ノーブレークスペースと U+3000 を含む。
      空白だけの行。
    - 複数の行にまたがる値の途中にあるコメント行とディレクティブの行。
-   - Db がテキストから読む数。符号、`-0`（Db は -0 で、JSON は 0 と書く）、
-     `NaN`、`Infinity`、倍精度に収まらない大きな数、数の後ろのテキスト
-     （journey と sankey の review 441）。
+   - Db がテキストから読む数。
+     符号、`-0`（Db は -0 で、JSON は 0 と書く）、 `NaN`、`Infinity`、
+     倍精度に収まらない大きな数、数の後ろのテキスト（journey と sankey の review
+     441）。
    - Db が読む埋め込み設定の値（packet の review pk12-1）。
-   - `html-tag-in-frontmatter` の受理の両方向と値だけの違い
-     （review ra3-1、tm3-1、rr12-3）。
+   - `html-tag-in-frontmatter` の受理の両方向と値だけの違い（review ra3-1、
+     tm3-1、rr12-3）。
    - 文の直後の hidden の形（本文の `---` ブロック、`%%{...}%%`）。
      消費した LF の後に文が続く場合、空行が余分の LF を与える場合、
      閉じの後の空白が LF を残す場合、EOF を確かめる。
      開きをテキストとして取り込む行の値も含める（pie12-1）。
    - hidden ブロックの隣接する fence。
      本文のある選択肢を空の fallback より先に試し、
-     後に適合する閉じがある場合とない場合、EOF と閉じの空白も含める
-     （pie-yaml-1）。
+     後に適合する閉じがある場合とない場合、
+     EOF と閉じの空白も含める（pie-yaml-1）。
    - 省略可能なヘッダーのフラグの後に、同じ行で文が続く場合（pie12-2）。
    - 重複した定義の 2 度目に、`-0` のような意味上の境目の値を置く場合。
      両方の順で、どの値が残るか、
@@ -607,25 +596,24 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      文の後とヘッダーの行で、EOF で終わるコメントにも置く。
      LF で終わる対照も含める（pie3-4）。
    - 通過した裸の `%%` 行とヘッダーの間の空白。
-     VT、FF、NBSP、BOM、U+1680、U+2000〜U+200A、U+202F、U+205F、
-     U+3000、LS、PS をそれぞれ空白だけの行とヘッダーの直前に置く。
+     VT、FF、NBSP、BOM、U+1680、U+2000〜U+200A、U+202F、U+205F、 U+3000、LS、
+     PS をそれぞれ空白だけの行とヘッダーの直前に置く。
      ASCII の空白・タブの対照も含める（pie3-3）。
    - 検出がブロックを 1 つ飛ばす場合の 6 通り。
      2 つ目のブロック、裸の `%%{` 行の後、本物の frontmatter の後、
-     二度目の directive 読みの前と後を別々に、開きと閉じが同じ字下げの形を
-     調べる（pie3-6）。
+     二度目の directive 読みの前と後を別々に、
+     開きと閉じが同じ字下げの形を調べる（pie3-6）。
    - keyword の直後に global な directive が接着し、
      その後に次の keyword や値が接着する場合。
-     境界は global な directive と選ばれたセミコロンを除いた文で判定する
-     （pie3-7）。
+     境界は、
+     global な directive と選ばれたセミコロンを除いた文で判定する（pie3-7）。
    - 各図種の atom（固定語、ヘッダーの keyword、矢印、共通の keyword、
      空白を含められない class 名や icon の値）の中と、
      作者が書いた部品の間にある global な directive と選ばれたセミコロン。
      atom の中を割り、mermaid.js が受理する場合は、
-     `directive-as-token-boundary` または
-     `ignored-semicolon-as-token-boundary` の印を付ける。
-     pie3-7 のように末尾に接する場合と、atom 自体を割る場合を区別する
-     （review cy12-1、tv12-2。railroad の工程 1・2 と、
+     `directive-as-token-boundary` または `ignored-semicolon-as-token-boundary` の印を付ける。
+     pie3-7 のように末尾に接する場合と、 atom 自体を割る場合を区別する（review
+     cy12-1、tv12-2。 railroad の工程 1・2 と、
      wardley の工程 1・2 および 3 の review でも確認）。
 
    review がこの一覧にない種類を見つけたら、review の番号とともにここに足す。
@@ -639,8 +627,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 
 §5 に従い、その図種の挙動を抽出して固定 fixture を集める。
 保持する形や不透明な埋め込みデータの指定読みを生成する前に、§7.1 に従う。
-構文と AST の定義後は、その契約から、
-次の手順で Db builder と checker を実装する。
+構文と AST の定義後は、その契約から、次の手順で Db
+builder と checker を実装する。
 以下のパスは `packages/tests` からの相対パスである。
 
 `checkTree` が見るのは、木の欄、範囲、token、字句の不変条件だけである。
@@ -695,12 +683,13 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    検出の例外は、検出が通した区間だけに適用する。
 7. `tests/check-tree-<図種>.test.ts` に、明示的な受理木と不正木を書く。
    hidden の形式を落とす・複製する・移すことで、所有先を壊す。
-   選んだ選択肢の中で後の閉じを選ぶ、本文に適合する一致があるのに隣接する空の
-   閉じを選ぶ、消費した LF を範囲に含める、残る EOL を消す、
-   書かれた構成要素を変える、先行 terminal を Comment に偽装する場合も含める。
+   選んだ選択肢の中で後の閉じを選ぶ、
+   本文に適合する一致があるのに隣接する空の閉じを選ぶ、
+   消費した LF を範囲に含める、残る EOL を消す、書かれた構成要素を変える、
+   先行 terminal を Comment に偽装する場合も含める。
    包む値の内側の hidden に見えるテキスト、余分の LF、EOF の受理対照も書く。
-   保持する各接頭部の後に、
-   検出が通した裸行と Unicode trivia がある固定例を書く。
+   保持する各接頭部の後に、検出が通した裸行と Unicode
+   trivia がある固定例を書く。
    保持した形式同士の間に、通過した trivia がある場合も書く。
    通過した行がない対照も含める。
    本文の通常の隙間が厳密なままであることも確かめる。
@@ -720,8 +709,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
 
 ## 7. ほかのパッケージのための fixture の道具と一覧
 
-仕様の主張を支える fixture は、tests の生成器（`fixtures:add-many` など）で足す
-（方針と手順は spec の SKILL）。
+仕様の主張を支える fixture は、
+tests の生成器（`fixtures:add-many` など）で足す（方針と手順は spec の SKILL）。
 この SKILL が行うのは次のこと。
 
 1. 道具と形式を保つ。
@@ -729,17 +718,17 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    収集の道具が、`docs/maintaining-fixtures.md` に書いたとおりに動くようにする。
    道具の使い方は、その文書にある。
    使い方を変えたら、その文書（英日）を同じ変更で直す。
-2. 仕様の Known divergences
-   （`packages/spec/docs/known-divergences.md`）が変わったら、
-   識別子の一覧
-   （`src/index.ts` の `KNOWN_DIVERGENCES`、README の一覧）を合わせる。
+2. 仕様の Known
+   divergences （`packages/spec/docs/known-divergences.md`）が変わったら、
+   識別子の一覧（`src/index.ts` の `KNOWN_DIVERGENCES`、
+   README の一覧）を合わせる。
    `src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES` には、
    識別子ごとの向きと指定読みの要否を明記する。
    利用側は fixture の受理に `fixtureAccepts()` を使う。
    印の形の検査は [parser のスキル](../parser/SKILL.ja.md) の §6 に従う。
    読み込みは一覧にない識別子を拒否するので、識別子を改名するときは、
-   (1) 新しい識別子を一覧に足す（古いものは残す）、
-   (2) `fixtures:set-divergence` で fixture を新しい識別子に付け替える、
+   (1) 新しい識別子を一覧に足す（古いものは残す）、 (2)
+   `fixtures:set-divergence` で fixture を新しい識別子に付け替える、
    (3) 古い識別子を一覧から外す、の順にする。
    識別子を取りやめるときは、印を外してから一覧から外す。
    README の一覧は、
@@ -750,31 +739,28 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    ディレクトリごと通常の `mv` で動かし、`fixtures:check` を通す。
    tests と tools の中に旧名の参照がないことを grep で確かめる。
    仕様の本文の参照は、spec の SKILL の手順で直す。
-4. parser が失敗した入力（review、生成した入力、差分テストが見つけたもの）を
-   残すときは、コーパスの fixture にする。
-   parser のファイルに残した失敗の入力は、
-   ほかの実装のためには残らず、
+4. parser が失敗した入力（review、生成した入力、
+   差分テストが見つけたもの）を残すときは、コーパスの fixture にする。
+   parser のファイルに残した失敗の入力は、ほかの実装のためには残らず、
    fixture は、すべての実装が確かめるためである。
    フォーマッターと規則の入力は、それぞれのパッケージに残す。
    期待（受理・拒否、Db の値）を足す前に mermaid.js で確かめる。
    合わなければ足さずに、そのことを示す。
    失敗の原因が、仕様にその形の文がないことなら、先に仕様に文を足す。
    形ごとに 1 件だけ残す。
-   入力の形は、入力のうち、字と数字の並びをそれぞれ 1 つの印にしたものである
-   （キーワードは、書かれた大文字小文字のまま残すので、
-   `State` と `state` は別の形である）。
+   入力の形は、入力のうち、
+   字と数字の並びをそれぞれ 1 つの印にしたものである（キーワードは、
+   書かれた大文字小文字のまま残すので、 `State` と `state` は別の形である）。
    ほかの文字は、すべて残す。
    空白、U+2028、U+2029、記号、ディレクティブとコメントの中身である。
    比べるのは、失敗の入力の同じファイルの中だけにする。
    別の種類の失敗で見つかった同じ形は、別の理由で残してあるので、落とさない。
    入力をほかのパッケージのファイルから取るときは、読むだけにし、
    文字列は構文木で取り出してバイト単位で一致させる。
-   名前は既存の付け方に合わせる
-   （`gram-`、`lex-`、`db-`、`tokens-`、`config-` などの接頭辞と、
-   示すものの名前。同じ話題の入力が多いときは、
+   名前は既存の付け方に合わせる（`gram-`、`lex-`、`db-`、`tokens-`、
+   `config-` などの接頭辞と、示すものの名前。同じ話題の入力が多いときは、
    入力の SHA-256 の先頭 8 桁の 16 進数を付ける）。
-   note には、何を示す入力かを書く
-   （見つけた review や実行の呼び名は書かない）。
+   note には、何を示す入力かを書く（見つけた review や実行の呼び名は書かない）。
    `fixtures:add-many` で足す（`fixtures:add` には印の指定がない）。
    実装のテストは、新しい fixture をほかの fixture と同じに読む。
    そのあと、失敗の入力のファイルは、それを持っていたパッケージから消す。
@@ -786,21 +772,19 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    新しい接頭部ごとに、
    関係する差異の除去それぞれと接する固定の marked 入力を書く。
    通過した裸行と trivia の前・間に接頭部がある場合も含める。
-   既存の `tools/src/specified-reading.ts` の `specifiedRunOf` と、
-   fixture CLI の dry-run の経路で実行する。
+   既存の `tools/src/specified-reading.ts` の `specifiedRunOf` と、 fixture
+   CLI の dry-run の経路で実行する。
    参照テキスト、受理、Db、埋め込みの title・設定・data block effects を調べる。
    仕様が意図する読みと照合する。
    保持する原文と、共有の frontmatter・設定の読みを保つ。
 2. `embedded-data-opaque` の向きと指定読みの要否は、
-   `packages/tests/src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES` の
-   その識別子の行を参照し、
-   [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db)
-   の読みを実装する。
-   `tools/src/specified-reading.ts` の `opaqueReferenceInput` と
-   `specifiedRunOf` を既存の CLI の経路で実行する。
+   `packages/tests/src/fixture-acceptance.ts` の `DIVERGENCE_PROPERTIES` のその識別子の行を参照し、
+   [比較する Db](../../../packages/spec/docs/known-divergences/embedded-data-opaque.ja.md#比較する-db) の読みを実装する。
+   `tools/src/specified-reading.ts` の `opaqueReferenceInput` と `specifiedRunOf` を、
+   既存の CLI の経路で実行する。
    固定の frontmatter・directive の場合で、その行の向きを確かめる。
-   参照テキスト、`packages/tests/src/mermaid.ts` の
-   `readMermaidConfiguration` が返す設定とタイトル、
+   参照テキスト、
+   `packages/tests/src/mermaid.ts` の `readMermaidConfiguration` が返す設定とタイトル、
    生成した受理・Db・埋め込み値を調べ、その定義と照合する。
    `OPAQUE_ACCEPTANCE_KEYS` を仕様が名指す鍵と照合する。
    受理条件の鍵と共存する保持タイトル、
@@ -833,8 +817,7 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    `fixtures/`、`lib/`、`node_modules/` は除く。
    - `tests/mermaid.test.ts` の版の検査、`tools/README.md` の clone のタグ、
      `README.md` が名指す版。
-   - `docs/` と `tools/collect.ts` の、
-     mermaid.js のソースへのパーマリンク。
+   - `docs/` と `tools/collect.ts` の、 mermaid.js のソースへのパーマリンク。
      コミットを替え、行番号を新しい版の同じコードへ移す。
      同じ行の並びが新しいファイルに 1 か所だけあれば、その位置にする。
      コードが変わっていれば、関数を探して範囲を選び直す。
@@ -863,8 +846,8 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      `getDiagramFromText()` が拒否するテキストで、
      `MermaidEnvironmentError` を投げる。
      データブロックの記録は、ブロックが想定外のことをすると例外を投げる。
-   - 既知の差異を除いて動かすときの字句解析器の規則
-     （`src/divergence-removals.ts`、選択肢 `withoutDivergences`）:
+   - 既知の差異を除いて動かすときの字句解析器の規則（`src/divergence-removals.ts`、
+     選択肢 `withoutDivergences`）:
      `runMermaid()` はコンパイルされた形で規則を探す。
      試す順を変える規則は、その開始状態だけが試す規則の中から探す。
      規則が見つからないか 2 つ以上見つかるとき、
@@ -887,26 +870,27 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
      ただし、キーが著者の書いたものなら、そうではない。
      正規化関数を直すか、落とす欄にするかを、5.2 の表と同じ形で決める。
    - `detection`、図種が増えたか、なくなったもの:
-     `diagramIds` と、仕様の `packages/spec/docs/detection.md` に関わる
-     （detection.md は spec の SKILL の手順で直す）。
-   - `error name`: 新しい名前も入力が原因であることを確かめる
-     （生成器は、標準の拒否のほかの名前を一覧に出す）。
+     `diagramIds` と、
+     仕様の `packages/spec/docs/detection.md` に関わる（detection.md は spec の SKILL の手順で直す）。
+   - `error name`: 新しい名前も入力が原因であることを確かめる（生成器は、
+     標準の拒否のほかの名前を一覧に出す）。
    - `error message only`: 何もしない。
      実装は message を比べないため。
    - `embedded values`: 入力が与えるタイトル、データブロックの効果、設定の変更。
      実装が、それらから Db を組み続けられるかを確かめる。
      mermaid.js の既定値の変更は、`default-config.json` の変更として現れる。
-   - `specified.json added`、`removed`、変更: 読み方を変える印のある fixture
-     への、仕様どおりの読み。`acceptance` や `Db values` と同じに扱う。
+   - `specified.json added`、`removed`、
+     変更: 読み方を変える印のある fixture への、仕様どおりの読み。
+     `acceptance` や `Db values` と同じに扱う。
    - `MermaidEnvironmentError` で作れない fixture:
      `mermaid.parse()` と `getDiagramFromText()` が食い違うか、
      Node にない機能を mermaid.js が使っている。
      `runMermaid()` の手順が成り立たない。
-     そのような入力をどう記録するかは、
-     `docs/expected-results.md` の定義と、実装が比べる相手を変える。
+     そのような入力をどう記録するかは、 `docs/expected-results.md` の定義と、
+     実装が比べる相手を変える。
      そのため、選択肢と fixture と推奨を示して決定を求め、決まってから進む。
-   - `knownDivergence` の印が付いた行:
-     印がまだ当てはまるかは、spec の SKILL の手順で確かめる。
+   - `knownDivergence` の印が付いた行: 印がまだ当てはまるかは、
+     spec の SKILL の手順で確かめる。
 
    その後、`fixtures:generate` でファイルを書く。
 
@@ -914,15 +898,14 @@ terminal の順序、境界、変換、公開を図種ごとに導き直す。
    名前は入力で決まるので、既存の名前は変わらず、新しい入力だけが足される。
    mermaid.js から消えた入力は fixture に残る。
    テストファイルがスタブのないモジュールを import して収集器が止まったら、
-   `tools/src/spec-recorder.ts` にスタブを足して、収集し直す
-   （`tools/README.md`）。
-6. CI の fixtures ジョブが通る状態にする
-   （`fixtures:generate` の後で差分があれば失敗する）。
+   `tools/src/spec-recorder.ts` にスタブを足して、
+   収集し直す（`tools/README.md`）。
+6. CI の fixtures ジョブが通る状態にする（`fixtures:generate` の後で差分があれば失敗する）。
    `MermaidEnvironmentError` が残っている間は通らない。
 7. 結果として、分類した差分の一覧（fixture の名前と、何が変わったか）を、
    関わるパッケージごとにまとめて示す。
 
 この節の手順は、まだ実際の更新で通していない。
-最初の本物の更新のときに、
-spec、parser、prettier-plugin の SKILL の更新の手順と合わせて、
-手順に沿って進めながら確かめ、誤りや足りないところはその場で直す。
+最初の本物の更新のときに、 spec、parser、
+prettier-plugin の SKILL の更新の手順と合わせて、手順に沿って進めながら確かめ、
+誤りや足りないところはその場で直す。

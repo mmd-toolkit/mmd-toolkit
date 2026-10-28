@@ -90,8 +90,8 @@ console.log(visitorKeys.Identifier) // []
 ```
 
 フィールドの順は、ソースの記述順と異なる場合があります。
-たとえば、`FlowchartLink`では、
-ソース中でラベルが矢印より前に書かれていても、`arrow`の後に`label`を訪問します。
+たとえば、`FlowchartLink`では、ソース中でラベルが矢印より前に書かれていても、
+`arrow`の後に`label`を訪問します。
 
 ## 走査しないレコード
 

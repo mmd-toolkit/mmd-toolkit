@@ -7,10 +7,11 @@ import type { FieldSpec } from "./field-spec.ts"
  * frontmatter tokens). The specification defines the form of a tree; this
  * table is its copy for the check of a tree, and
  * `tests/check-tree-node-fields.test.ts` requires it to agree with the tables.
- * The fields that are nodes are in the order of the child fields that the
- * document states for the type (the order of the visit), which the test
- * requires as well. The fields `type`, `range`, and `loc`, which every node and
- * record has, are not listed. A type that its document describes with no field table has none
+ * The child fields of a type (`childFieldsOf()`) are its fields that are nodes
+ * and are no record, in the order of the child fields that the document states
+ * for the type (the order of the visit), which the test requires as well. The
+ * fields `type`, `range`, and `loc`, which every node and record has, are not
+ * listed. A type that its document describes with no field table has none
  * (`ErrorDiagram`, `FlowchartEmptyStatement`, `GanttInclusiveEndDatesStatement`,
  * `StateDividerStatement`, `StateHideEmptyDescriptionStatement`,
  * `StateTerminal`).
@@ -2207,4 +2208,25 @@ export const NODE_FIELDS: Readonly<
     title: { shape: "nodeOrNull" },
     data: { shape: "nodeOrNull" },
   },
+}
+
+/** The child fields of each type of `NODE_FIELDS`, in the order of the visit. */
+const CHILD_FIELDS: ReadonlyMap<string, readonly string[]> = new Map(
+  Object.entries(NODE_FIELDS).map(([type, fields]) => [
+    type,
+    Object.entries(fields)
+      .filter(([, spec]) => spec.shape !== "value" && spec.record === undefined)
+      .map(([field]) => field),
+  ]),
+)
+
+/**
+ * The child fields of the node type `type`, in the order of the visit: the
+ * fields that hold nodes or lists of nodes. The fields that hold records
+ * (`record:`) are placed in the source as nodes are but are no child nodes
+ * (ast.md, Nodes; Root), and neither are the value fields. A type with no
+ * entry in the table has none.
+ */
+export function childFieldsOf(type: string): readonly string[] {
+  return CHILD_FIELDS.get(type) ?? []
 }

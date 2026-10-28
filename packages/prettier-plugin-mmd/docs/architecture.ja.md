@@ -41,8 +41,7 @@ hidden の境界と保護された見出し・本文の区間を優先し、
 入力 (escaped):
 `"architecture-beta accTitle: Topic\n"`.
 
-出力
-([header/header-inline-accessibility-output.mmd](../tests/fixtures/architecture/header/header-inline-accessibility-output.mmd)):
+出力 ([header/header-inline-accessibility-output.mmd](../tests/fixtures/architecture/header/header-inline-accessibility-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -53,8 +52,8 @@ architecture-beta
 
 通常の宣言・辺・alignment・共通文・独立した trivia は設定の1段だけ字下げします。
 本文は平坦で、`in` は参照なので入れ子の段を増やしません。
-architecture の列には文法上の意味がないため、
-`tabWidth: 0` は空白0個、`useTabs` は幅0でもタブ1個です。
+architecture の列には文法上の意味がないため、 `tabWidth: 0` は空白0個、
+`useTabs` は幅0でもタブ1個です。
 値の継続列、hidden の閉じ、保持する prefix は原形を保ちます。
 
 [fixture: architecture/indentation/indent-four]
@@ -72,8 +71,7 @@ architecture の列には文法上の意味がないため、
 
 Options: `{"tabWidth": 4}`.
 
-出力
-([indentation/indent-four-output.mmd](../tests/fixtures/architecture/indentation/indent-four-output.mmd)):
+出力 ([indentation/indent-four-output.mmd](../tests/fixtures/architecture/indentation/indent-four-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -100,8 +98,7 @@ architecture-beta
 入力 (escaped):
 `"architecture-beta title t service a; junction j\n"`.
 
-出力
-([statements-one-per-line/line-value-owns-keywords-output.mmd](../tests/fixtures/architecture/statements-one-per-line/line-value-owns-keywords-output.mmd)):
+出力 ([statements-one-per-line/line-value-owns-keywords-output.mmd](../tests/fixtures/architecture/statements-one-per-line/line-value-owns-keywords-output.mmd)):
 
 ```mmd
 architecture-beta title t service a; junction j
@@ -136,8 +133,7 @@ keyword と ID の間は空白1個です。
 入力 (escaped):
 `"architecture-beta\ngroup  g (cloud) [Group]\n"`.
 
-出力
-([declaration-spacing/named-group-output.mmd](../tests/fixtures/architecture/declaration-spacing/named-group-output.mmd)):
+出力 ([declaration-spacing/named-group-output.mmd](../tests/fixtures/architecture/declaration-spacing/named-group-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -165,8 +161,7 @@ architecture-beta
 入力 (escaped):
 `"architecture-beta\ngroup p\ngroup g(cloud)[G]in\tp\n"`.
 
-出力
-([parent-references/group-parent-output.mmd](../tests/fixtures/architecture/parent-references/group-parent-output.mmd)):
+出力 ([parent-references/group-parent-output.mmd](../tests/fixtures/architecture/parent-references/group-parent-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -197,8 +192,7 @@ architecture-beta
 入力 (escaped):
 `"architecture-beta\ngroup symbols (-:A_)\n"`.
 
-出力
-([named-icons/leading-symbols-output.mmd](../tests/fixtures/architecture/named-icons/leading-symbols-output.mmd)):
+出力 ([named-icons/leading-symbols-output.mmd](../tests/fixtures/architecture/named-icons/leading-symbols-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -231,8 +225,7 @@ StringLiteral の範囲全体を保ちます。
 
 Options: `{"singleQuote": true}`.
 
-出力
-([text-icons/double-quote-output.mmd](../tests/fixtures/architecture/text-icons/double-quote-output.mmd)):
+出力 ([text-icons/double-quote-output.mmd](../tests/fixtures/architecture/text-icons/double-quote-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -292,8 +285,7 @@ Db が等しい引用符変更でも、選ばれた kind と原形を失うた�
 
 Options: `{"singleQuote": true}`.
 
-出力
-([label-forms/padded-quotes-output.mmd](../tests/fixtures/architecture/label-forms/padded-quotes-output.mmd)):
+出力 ([label-forms/padded-quotes-output.mmd](../tests/fixtures/architecture/label-forms/padded-quotes-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -302,8 +294,8 @@ architecture-beta
 
 ### Label content
 
-角括弧の内側は、端の空白、連続空白、タブ、空白だけの値、quoted の空値、
-escape、HTML、entity、hidden に見える文字もそのまま保ちます。
+角括弧の内側は、端の空白、連続空白、タブ、空白だけの値、quoted の空値、 escape、
+HTML、entity、hidden に見える文字もそのまま保ちます。
 Db がこれらを区別するため、外側の空白のようには正規化しません。
 物理 CR・CRLF だけは共有の host 方針に従います。
 
@@ -334,8 +326,7 @@ Db がこれらを区別するため、外側の空白のようには正規化�
 入力 (escaped):
 `"architecture-beta\ngroup labels [  A  B\t C  ]\n"`.
 
-出力
-([label-content/bare-padding-output.mmd](../tests/fixtures/architecture/label-content/bare-padding-output.mmd)):
+出力 ([label-content/bare-padding-output.mmd](../tests/fixtures/architecture/label-content/bare-padding-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -353,8 +344,7 @@ trivia と hidden の境界は詰めずに保ちます。
 入力 (escaped):
 `"architecture-beta\nservice a\nservice b\na {group} : R -- L : b {group}\n"`.
 
-出力
-([port-colons/port-colons-tight-output.mmd](../tests/fixtures/architecture/port-colons/port-colons-tight-output.mmd)):
+出力 ([port-colons/port-colons-tight-output.mmd](../tests/fixtures/architecture/port-colons/port-colons-tight-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -388,8 +378,7 @@ marker のない線も同じ空白にします。
 入力 (escaped):
 `"architecture-beta\nservice a\nservice b\na:R < -- > L:b\n"`.
 
-出力
-([arrow-lines/arrow-both-markers-output.mmd](../tests/fixtures/architecture/arrow-lines/arrow-both-markers-output.mmd)):
+出力 ([arrow-lines/arrow-both-markers-output.mmd](../tests/fixtures/architecture/arrow-lines/arrow-both-markers-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -418,8 +407,7 @@ architecture-beta
 入力 (escaped):
 `"architecture-beta\nservice a\nservice b\na:R - [ \"x\" ] - L:b\n"`.
 
-出力
-([arrow-labels/edge-label-padded-quote-output.mmd](../tests/fixtures/architecture/arrow-labels/edge-label-padded-quote-output.mmd)):
+出力 ([arrow-labels/edge-label-padded-quote-output.mmd](../tests/fixtures/architecture/arrow-labels/edge-label-padded-quote-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -448,8 +436,7 @@ ID と一緒に読める形にします。
 入力 (escaped):
 `"architecture-beta\nservice a\nservice b\na  {group}:R -- L:b\t{group}\n"`.
 
-出力
-([group-modifiers/modifier-touch-output.mmd](../tests/fixtures/architecture/group-modifiers/modifier-touch-output.mmd)):
+出力 ([group-modifiers/modifier-touch-output.mmd](../tests/fixtures/architecture/group-modifiers/modifier-touch-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -473,8 +460,7 @@ architecture-beta
 入力 (escaped):
 `"architecture-beta\nservice a\nservice b\njunction j\nalign\t row\t a   b\tj\nalign  column j\t b\n"`.
 
-出力
-([alignment/alignment-row-and-column-output.mmd](../tests/fixtures/architecture/alignment/alignment-row-and-column-output.mmd)):
+出力 ([alignment/alignment-row-and-column-output.mmd](../tests/fixtures/architecture/alignment/alignment-row-and-column-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -487,8 +473,8 @@ architecture-beta
 
 ### Title
 
-共有の共通行処理を使い、
-`title value` は common whitespace の端だけを trim します。
+共有の共通行処理を使い、 `title value` は common
+whitespace の端だけを trim します。
 null と空白だけの値は `title` とし、同じ意味の外側の空白を詰めます。
 trivia を挟んでも次の物理行を値にしません。
 architecture の summary が title を公開しなくても、文と内容を保ちます。
@@ -515,8 +501,7 @@ trivia のある値と保護された hidden の境界は source の隙間を保
 入力 (escaped):
 `"architecture-beta\ntitle\n%% next\nservice next_title\ntitle \"unclosed\n"`.
 
-出力
-([title/empty-next-statement-output.mmd](../tests/fixtures/architecture/title/empty-next-statement-output.mmd)):
+出力 ([title/empty-next-statement-output.mmd](../tests/fixtures/architecture/title/empty-next-statement-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -551,8 +536,7 @@ colon を keyword に付け、trim した非空値の前は空白1個、空な�
 入力 (escaped):
 `"architecture-beta\naccTitle: %% note\n\naccDescr: %% note\nservice a\n"`.
 
-出力
-([accessibility-lines/a11y-empty-comment-gap-output.mmd](../tests/fixtures/architecture/accessibility-lines/a11y-empty-comment-gap-output.mmd)):
+出力 ([accessibility-lines/a11y-empty-comment-gap-output.mmd](../tests/fixtures/architecture/accessibility-lines/a11y-empty-comment-gap-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -606,8 +590,7 @@ comment・directive だけの内側、非空値の継続列と内部空行を保
 入力 (escaped):
 `"architecture-beta\naccDescr{A }\naccDescr{ B}\naccDescr {C}\naccDescr\n\n{ D }\n"`.
 
-出力
-([description-blocks/asymmetric-output.mmd](../tests/fixtures/architecture/description-blocks/asymmetric-output.mmd)):
+出力 ([description-blocks/asymmetric-output.mmd](../tests/fixtures/architecture/description-blocks/asymmetric-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -636,8 +619,7 @@ printWidth で折り返しません。
 入力 (escaped):
 `"architecture-beta\nservice multi \"A\n   B\n\nC\" [\"D\n E\"]\naccDescr {\n  F\n\n G\n}\n"`.
 
-出力
-([multiline-values/continuation-columns-output.mmd](../tests/fixtures/architecture/multiline-values/continuation-columns-output.mmd)):
+出力 ([multiline-values/continuation-columns-output.mmd](../tests/fixtures/architecture/multiline-values/continuation-columns-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -681,8 +663,7 @@ common が除く領域は全 source と継続列を保ちます。
 入力 (escaped):
 `"architecture-beta\nservice percent \"A%%B\" [C%%D]\naccDescr {E%%F}\ntitle Topic%% inline\n"`.
 
-出力
-([comments/value-ownership-output.mmd](../tests/fixtures/architecture/comments/value-ownership-output.mmd)):
+出力 ([comments/value-ownership-output.mmd](../tests/fixtures/architecture/comments/value-ownership-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -738,8 +719,7 @@ common の除去は両側を結合するため、
 入力 (escaped):
 `"architecture-beta\nservice composite(%%{wrap}%%cloud%%{wrap}%%)\nservice target\ncomposite{%%{wrap}%%group%%{wrap}%%} : R < %%{wrap}%% -- > L :target\n"`.
 
-出力
-([global-directives/composite-boundaries-output.mmd](../tests/fixtures/architecture/global-directives/composite-boundaries-output.mmd)):
+出力 ([global-directives/composite-boundaries-output.mmd](../tests/fixtures/architecture/global-directives/composite-boundaries-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -750,14 +730,15 @@ architecture-beta
 
 ### Hidden forms
 
-ArchitectureIgnoredText は名前付き gap、textBeforeHeader、body、textAfter の
-owner ごとに1回だけ保ち、trivia を除いた value でなく全 source 範囲を使います。
-native YAML と DIRECTIVE は不透明で、
-frontmatter や Root directive ではありません。
+ArchitectureIgnoredText は名前付き gap、textBeforeHeader、body、
+textAfter の owner ごとに1回だけ保ち、
+trivia を除いた value でなく全 source 範囲を使います。
+native YAML と DIRECTIVE は不透明で、 frontmatter や Root
+directive ではありません。
 本文の開始は字下げできますが、内部列と閉じの列を保ちます。
 三重 fence、別々の form、後の有効な閉じ、内部の global な切れ目を保ちます。
-先行する値は hidden 風の文字を所有し、
-icon・modifier 内に native gap を作りません。
+先行する値は hidden 風の文字を所有し、 icon・modifier 内に native
+gap を作りません。
 
 [fixture: architecture/hidden-forms/body-directive]
 
@@ -814,8 +795,7 @@ icon・modifier 内に native gap を作りません。
 入力 (escaped):
 `"architecture-beta\n%%{!opaque\nbody}%%\nservice body_directive\n"`.
 
-出力
-([hidden-forms/body-directive-output.mmd](../tests/fixtures/architecture/hidden-forms/body-directive-output.mmd)):
+出力 ([hidden-forms/body-directive-output.mmd](../tests/fixtures/architecture/hidden-forms/body-directive-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -900,8 +880,7 @@ EOF も文を終えます。
 入力 (escaped):
 `"architecture-beta%%{}%% group a%%{}%%\n\nservice b"`.
 
-出力
-([hidden-boundaries/header-and-statement-output.mmd](../tests/fixtures/architecture/hidden-boundaries/header-and-statement-output.mmd)):
+出力 ([hidden-boundaries/header-and-statement-output.mmd](../tests/fixtures/architecture/hidden-boundaries/header-and-statement-output.mmd)):
 
 ```mmd
 architecture-beta%%{}%% group a%%{}%%
@@ -922,8 +901,7 @@ architecture-beta%%{}%% group a%%{}%%
 入力 (escaped):
 `"\n\narchitecture-beta\n\n\nservice a\n\n \t\n\n%% note\n\n\nservice b\n\n\n"`.
 
-出力
-([blank-lines/blank-collapse-output.mmd](../tests/fixtures/architecture/blank-lines/blank-collapse-output.mmd)):
+出力 ([blank-lines/blank-collapse-output.mmd](../tests/fixtures/architecture/blank-lines/blank-collapse-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -936,12 +914,9 @@ architecture-beta
 
 ### Trailing whitespace
 
-見出し、
-完結した宣言・辺・alignment・説明の閉じの後の無害な ASCII padding を除きます。
-値と継続行、
-コメント末尾、
-directive・hidden 内部、
-保持する prefix、
+見出し、完結した宣言・辺・alignment・説明の閉じの後の無害な ASCII
+padding を除きます。
+値と継続行、コメント末尾、 directive・hidden 内部、保持する prefix、
 保護区間は保ちます。
 hidden の閉じの padding は EOF でも保持します。
 trim すると可視 EOL が消え得るためです。
@@ -953,8 +928,7 @@ trim すると可視 EOL が消え得るためです。
 入力 (escaped):
 `"architecture-beta \t\nservice a(cloud)[A] \t\njunction j\t\na:R -- L:j\t\nalign row a j \t\naccDescr {D}\t\n"`.
 
-出力
-([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/architecture/trailing-whitespace/trailing-exterior-output.mmd)):
+出力 ([trailing-whitespace/trailing-exterior-output.mmd](../tests/fixtures/architecture/trailing-whitespace/trailing-exterior-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -971,8 +945,8 @@ architecture-beta
 不正な YAML、字下げした fence、区切りの padding、HTML の危険、
 整形で fence ができる本文は保ちます。
 YAML は tabWidth 0 でも共有の正の最小字下げ幅を使います。
-textBeforeHeader があれば、先頭 LF、コメント、通過した bare trivia、
-second-scan form、real・hidden の順番を含む prefix 全体を保ちます。
+textBeforeHeader があれば、先頭 LF、コメント、通過した bare trivia、 second-scan
+form、real・hidden の順番を含む prefix 全体を保ちます。
 整理すると無視された YAML が有効な data に変わり得るためです。
 
 [fixture: architecture/frontmatter-yaml/frontmatter-delimiter-padding-kept]
@@ -1018,8 +992,7 @@ second-scan form、real・hidden の順番を含む prefix 全体を保ちます
 入力 (escaped):
 `"---\ntitle: \"<a b=\\\"c\\\">\"\n---\narchitecture-beta\nservice a\n"`.
 
-出力
-([frontmatter-yaml/frontmatter-html-guard-output.mmd](../tests/fixtures/architecture/frontmatter-yaml/frontmatter-html-guard-output.mmd)):
+出力 ([frontmatter-yaml/frontmatter-html-guard-output.mmd](../tests/fixtures/architecture/frontmatter-yaml/frontmatter-html-guard-output.mmd)):
 
 ```mmd
 ---
@@ -1036,12 +1009,8 @@ architecture-beta
 安全な後ろの隙間だけを整えます。
 保護された見出し・最初の文は一緒に保ちます。
 選択された1個の削除や style・classDef の trigger 移動は、
-別のセミコロンを選んで Db を変え得るため、
-両 pass、
-非 trigger、
-entity、
-値の物理行、
-global 除去で結合する trigger を保ちます。
+別のセミコロンを選んで Db を変え得るため、両 pass、非 trigger、 entity、
+値の物理行、 global 除去で結合する trigger を保ちます。
 
 [fixture: architecture/semicolons/native-service-value]
 
@@ -1076,8 +1045,7 @@ global 除去で結合する trigger を保ちます。
 入力 (escaped):
 `"architecture-beta\naccDescr {\nstyle A fill:#red\n%% owned;\ntext\n}\n"`.
 
-出力
-([semicolons/crossing-comment-output.mmd](../tests/fixtures/architecture/semicolons/crossing-comment-output.mmd)):
+出力 ([semicolons/crossing-comment-output.mmd](../tests/fixtures/architecture/semicolons/crossing-comment-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -1092,8 +1060,8 @@ text
 
 共有の host 方針で物理 CR・CRLF を LF にし、設定の endOfLine を出します。
 値と hidden form の内部も同じです。
-内容の LS・PS・NBSP・BOM は保ち、
-共通の行値の端だけ common whitespace を trim します。
+内容の LS・PS・NBSP・BOM は保ち、共通の行値の端だけ common
+whitespace を trim します。
 構造の非 ASCII 区切りは拒否のままです。
 先頭 BOM は byte 同一性でなく Prettier host の処理に従います。
 
@@ -1184,8 +1152,7 @@ EOF までの global directive と hidden の閉じの padding は、
 入力 (escaped):
 `"architecture-beta\nservice a"`.
 
-出力
-([final-newline/ending-service-output.mmd](../tests/fixtures/architecture/final-newline/ending-service-output.mmd)):
+出力 ([final-newline/ending-service-output.mmd](../tests/fixtures/architecture/final-newline/ending-service-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -1194,10 +1161,7 @@ architecture-beta
 
 ### Source order
 
-すべての文、
-参照、
-alignment member、
-繰り返す辺・制約、
+すべての文、参照、 alignment member、繰り返す辺・制約、
 空の代入を source 順に保ちます。
 Db から木を再構成したり、公開順に宣言を並べたりすると作者の構造が失われます。
 空の代入の削除は最終値を変え得ます。
@@ -1224,8 +1188,7 @@ Db から木を再構成したり、公開順に宣言を並べたりすると�
 入力 (escaped):
 `"architecture-beta\nalign row later cross\njunction cross in parent\nservice later in parent\ngroup parent\nlater:R -- L:cross\nlater:R -- L:cross\nalign column cross later\nalign row later cross\ntitle First\ntitle\naccTitle: First\naccTitle:\naccDescr {First}\naccDescr {}\n"`.
 
-出力
-([source-order/authored-order-output.mmd](../tests/fixtures/architecture/source-order/authored-order-output.mmd)):
+出力 ([source-order/authored-order-output.mmd](../tests/fixtures/architecture/source-order/authored-order-output.mmd)):
 
 ```mmd
 architecture-beta
@@ -1252,8 +1215,7 @@ html-tag-in-frontmatter、embedded-data-opaque、
 bare-percent-line-before-header の仕様の読みを使います。
 architecture に受理を決める設定キーはなく、検出は C4 より前です。
 生の拒否から生の Db を作りません。
-拒否構文を修復せず、
-単独整形は出力のない構文エラー、
+拒否構文を修復せず、単独整形は出力のない構文エラー、
 Markdown は埋め込みを辞退します。
 空の quoted icon・ラベル、空の説明、native hidden form に新しい差分は不要です。
 

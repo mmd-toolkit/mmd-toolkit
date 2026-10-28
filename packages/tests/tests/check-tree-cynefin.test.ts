@@ -4,7 +4,7 @@ import {
   CYNEFIN_CHILD_TYPES,
   CYNEFIN_FIELD_WORDS,
 } from "../src/check-tree/cynefin.ts"
-import { NODE_FIELDS } from "../src/check-tree/node-fields.ts"
+import { NODE_FIELDS, childFieldsOf } from "../src/check-tree/node-fields.ts"
 import type { CheckedNode } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import { buildCynefin, domain, item, transition } from "./cynefin-built.ts"
@@ -353,11 +353,10 @@ describe("cynefin tree conditions", () => {
       name.startsWith("Cynefin"),
     )
     expect(fields).toHaveLength(11)
-    for (const [name, value] of fields) {
-      const children = Object.entries(value)
-        .filter(([, spec]) => spec.shape !== "value")
-        .map(([field]) => field)
-      expect(Object.keys(CYNEFIN_CHILD_TYPES[name] ?? {})).toEqual(children)
+    for (const [name] of fields) {
+      expect(Object.keys(CYNEFIN_CHILD_TYPES[name] ?? {})).toEqual(
+        childFieldsOf(name),
+      )
     }
     expect(CYNEFIN_FIELD_WORDS.CynefinArrow).toEqual({
       startMarker: ["none"],

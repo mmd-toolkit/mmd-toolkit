@@ -26,8 +26,7 @@ export function eventmodelingDbOf(
 
   /** The entire EM_* terminal includes the surviving horizontal prefix. */
   function common(node: TreeNode): string {
-    let before = characters.findIndex(({ start }) => start >= node.range[0])
-    if (before === -1) before = characters.length
+    const before = text.indexAt(node.range[0])
     let prefix = ""
     for (let at = before - 1; at >= 0; at--) {
       const code = characters[at]?.codePoint
@@ -52,13 +51,9 @@ export function eventmodelingDbOf(
   /** Retain body delimiters and the block terminal's immediately consumed LF. */
   function data(node: EventmodelingData): JsonObject {
     const quoted = node.value?.type === "StringLiteral"
-    const open = root.tokens.find(
-      (token) =>
-        token.type === "Punctuator" &&
-        token.value === "{" &&
-        node.range[0] <= token.range[0] &&
-        token.range[1] <= node.range[1],
-    )
+    const open = text
+      .tokensIn(node.range, root.tokens)
+      .find((token) => token.type === "Punctuator" && token.value === "{")
     let value = quoted
       ? text.of(node.value.range)
       : text.of([open!.range[0], node.range[1]])

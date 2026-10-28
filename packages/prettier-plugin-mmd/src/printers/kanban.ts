@@ -11,9 +11,11 @@ import {
   layoutKanbanLine,
 } from "./kanban-layout.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
-import { lineEndOf } from "./kept-lines.ts"
 import { significantIndentationOf } from "./lines.ts"
-import { findCommentEnds, placeLeadingDirectives } from "./indentation-lines.ts"
+import {
+  findCommentEndInLine,
+  placeLeadingDirectives,
+} from "./indentation-lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
 
@@ -43,7 +45,7 @@ export function printKanban(
     findTokenStartingAt(source, diagram.range[0]),
     "the header keyword",
   )
-  const lines = kanbanLines(source, diagram, keyword.range[1])
+  const lines = kanbanLines(source)
   const placements = new Map(
     lines.map((line) => [line, placeLine(source, options, line)]),
   )
@@ -124,7 +126,6 @@ function lineBlockRules(
   placements: ReadonlyMap<KanbanLine, Placement>,
 ): BlockRules<KanbanLine> {
   const kept = findKanbanKeptLines(source)
-  const commentEnds = findCommentEnds(source)
 
   /** Where a line stands. */
   function placementOf(line: KanbanLine): Placement {
@@ -137,6 +138,11 @@ function lineBlockRules(
 
   return {
     kept,
+    // A comment region that follows a separator lies in a gap that
+    // `keptGapEnd` keeps as written; the line after it is placed by
+    // `placeLine`, also when its inline directives need their gaps shortened
+    // (docs/kanban.md, Directives and Whitespace characters).
+    joiningRegionsPrintedAsWritten: true,
     printedEnd: (line) => line.range[1],
     holdsStatements: () => false,
     isDroppedAtTopLevel: () => false,
@@ -146,10 +152,9 @@ function lineBlockRules(
     writtenIndentationOf: (line) =>
       line.leading === null ? undefined : placementOf(line).indentation,
     keptIndentationOf: (line) => placementOf(line).indentation,
-    diagramLineEnd: (offset) =>
-      commentEnds.find(
-        (end) => end >= offset && end < lineEndOf(source, offset),
-      ),
+    diagramLineEnd: (offset) => findCommentEndInLine(source, offset),
+    keptInlineGapEnd: (offset) =>
+      findCommentEndInLine(source, offset) ?? offset,
     keptGapEnd: (start, end, beforeStatement) =>
       findKeptGapEnd(source, start, end, beforeStatement),
   }

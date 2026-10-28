@@ -9,6 +9,7 @@
  */
 import { describe, expect, it } from "vitest"
 import * as prettier from "prettier"
+import type { Options } from "prettier"
 import plugin from "../src/index.ts"
 import {
   dbOfText,
@@ -18,8 +19,12 @@ import {
 } from "./db-reading.ts"
 
 /** Formats a text of a diagram. */
-function format(text: string): Promise<string> {
-  return prettier.format(text, { filepath: "diagram.mmd", plugins: [plugin] })
+function format(text: string, options: Options = {}): Promise<string> {
+  return prettier.format(text, {
+    ...options,
+    filepath: "diagram.mmd",
+    plugins: [plugin],
+  })
 }
 
 /**
@@ -875,6 +880,7 @@ const mindmapLineSeparatorExamples: readonly (readonly [
   string,
   string,
   string,
+  Options?,
 ])[] = [
   [
     "U+2028 after a comment on the header line",
@@ -915,6 +921,135 @@ const mindmapLineSeparatorExamples: readonly (readonly [
     "U+2028 after the header",
     "mindmap\u2028root\n  a\n  b\n  c\n",
     "mindmap\n  root\n   a\n   b\n   c\n",
+  ],
+  [
+    "mindmap: selected-comment-ls-kept",
+    "mindmap\nRoot[x]%% style:#fill;\u2028 Child\n",
+    "mindmap\n  Root[x]%% style:#fill;\n    Child\n",
+  ],
+  [
+    "mindmap: comment-ps-semicolon-after",
+    "mindmap\nRoot[x]%% c\u2029 Child;y\n",
+    "mindmap\n  Root[x]%% c\n    Child;y\n",
+  ],
+  [
+    "mindmap: comment-ls-semicolon-both",
+    "mindmap\nRoot[x;y]%% c;\u2028 Child;y\n",
+    "mindmap\n  Root[x;y]%% c;\n    Child;y\n",
+  ],
+  [
+    "mindmap: icon-comment-ps-kept",
+    "mindmap\nRoot\n::icon(i;j)%% c\u2029 Child;y\n",
+    "mindmap\n  Root\n  ::icon(i;j)%% c\n    Child;y\n",
+  ],
+  [
+    "mindmap: selected-comment-ps-wide",
+    "mindmap\n     Root[x]%% style:#fill;\u2029        Child;y\n",
+    "mindmap\n  Root[x]%% style:#fill;\n      Child;y\n",
+  ],
+  [
+    "mindmap: selected-comment-ls-zero",
+    "mindmap\nRoot[x]%% style:#fill;\u2028Child;y\n",
+    "mindmap\n Root[x]%% style:#fill;\n  Child;y\n",
+    { tabWidth: 0 },
+  ],
+  [
+    "mindmap: icon-comment-ls-tabs",
+    "mindmap\nRoot\n::icon(i)%% style:#fill;\u2028Child;y\n",
+    "mindmap\n\tRoot\n\t::icon(i)%% style:#fill;\n\t\tChild;y\n",
+    { useTabs: true },
+  ],
+  [
+    "U+2028 before a directive that starts the line",
+    "mindmap\nR[x]%% c\u2028%%{init: {}}%% C\n",
+    "mindmap\n  R[x]%% c\n   %%{init: {}}%% C\n",
+  ],
+  [
+    "U+2029 before a directive that touches the text",
+    "mindmap\nR[x]%% c\u2029%%{init: {}}%%C\n",
+    "mindmap\n  R[x]%% c\n   %%{init: {}}%%C\n",
+  ],
+  [
+    "U+2028 and whitespace before and after a directive",
+    "mindmap\nR[x]%% c\u2028   %%{init: {}}%%   C\n",
+    "mindmap\n  R[x]%% c\n      %%{init: {}}%%   C\n",
+  ],
+  [
+    "U+2028 before two directives",
+    "mindmap\nR[x]%% c\u2028%%{a}%% %%{b}%%  C\n",
+    "mindmap\n  R[x]%% c\n   %%{a}%% %%{b}%%  C\n",
+  ],
+  [
+    "U+2028 before a directive and an icon",
+    "mindmap\nR[x]%% c\u2028%%{x}%% ::icon(y)\n",
+    "mindmap\n  R[x]%% c\n %%{x}%% ::icon(y)\n",
+  ],
+  [
+    "U+2028 before a directive and a class",
+    "mindmap\nR[x]%% c\u2028%%{x}%% :::cls\n",
+    "mindmap\n  R[x]%% c\n %%{x}%% :::cls\n",
+  ],
+  [
+    "U+2028 before a directive in a deeper line",
+    "mindmap\n  R\n    A[x]%% c\u2028%%{x}%%     B\n",
+    "mindmap\n  R\n    A[x]%% c\n %%{x}%%     B\n",
+  ],
+  [
+    "U+2028 after a selected semicolon before a directive",
+    "mindmap\nR[x]%% style:#x;\u2028%%{x}%% C\n",
+    "mindmap\n  R[x]%% style:#x;\n   %%{x}%% C\n",
+  ],
+  [
+    "U+2028 before a directive with a tab width of 0",
+    "mindmap\nR[x]%% c\u2028%%{init: {}}%% C\n",
+    "mindmap\n R[x]%% c\n  %%{init: {}}%% C\n",
+    { tabWidth: 0 },
+  ],
+  [
+    "U+2028 before a directive with tabs",
+    "mindmap\nR[x]%% c\u2028%%{init: {}}%% C\n",
+    "mindmap\n\tR[x]%% c\n\t\t%%{init: {}}%% C\n",
+    { useTabs: true },
+  ],
+  [
+    "U+2028 before a comment line and a directive",
+    "mindmap\nR[x]%% c\u2028%% d\n%%{x}%% C\n",
+    "mindmap\n  R[x]%% c\n    %% d\n   %%{x}%% C\n",
+  ],
+  [
+    "U+2028 before a comment line and an indented directive",
+    "mindmap\nR[x]%% c\u2028%% d\n  %%{x}%% C\n",
+    "mindmap\n  R[x]%% c\n      %% d\n     %%{x}%% C\n",
+  ],
+  [
+    "U+2028 before a directive, a comment line, and a directive",
+    "mindmap\nR[x]%% c\u2028%%{a}%% %% d\n%%{x}%% C\n",
+    "mindmap\n  R[x]%% c\n    %%{a}%% %% d\n   %%{x}%% C\n",
+  ],
+  [
+    "U+2028 before two comment lines and a directive",
+    "mindmap\nR[x]%% c\u2028%% d\n%% e\n%%{x}%% C\n",
+    "mindmap\n  R[x]%% c\n    %% d\n    %% e\n   %%{x}%% C\n",
+  ],
+  [
+    "U+2028 and U+2029 before two directives in two lines",
+    "mindmap\nR[x]%% c\u2028%%{x}%% C[z]%% e\u2029%%{y}%% D\n",
+    "mindmap\n  R[x]%% c\n   %%{x}%% C[z]%% e\n   %%{y}%% D\n",
+  ],
+  [
+    "U+2028 before a directive and a sibling",
+    "mindmap\nR[x]%% c\u2028%%{x}%% C\n  D\n",
+    "mindmap\n  R[x]%% c\n   %%{x}%% C\n    D\n",
+  ],
+  [
+    "U+2028 before a directive line of its own",
+    "mindmap\nR[x]%% c\u2028%%{init: {}}%%\n  C\n",
+    "mindmap\n  R[x]%% c\n    %%{init: {}}%%\n    C\n",
+  ],
+  [
+    "U+2028 before an empty line",
+    "mindmap\nR[x]%% c\u2028\n  C\n",
+    "mindmap\n  R[x]%% c\n\n    C\n",
   ],
 ]
 
@@ -978,9 +1113,13 @@ const mindmapWhitespaceExamples: readonly (readonly [
  * formatting again changes nothing, and that the Db that the tree denotes is
  * the same for both texts.
  */
-async function expectKept(input: string, output: string): Promise<void> {
-  expect(await format(input)).toBe(output)
-  expect(await format(output)).toBe(output)
+async function expectKept(
+  input: string,
+  output: string,
+  options: Options = {},
+): Promise<void> {
+  expect(await format(input, options)).toBe(output)
+  expect(await format(output, options)).toBe(output)
   expect(dbOfText(output, defaultEmbedded())).toEqual(
     dbOfText(input, defaultEmbedded()),
   )
@@ -1602,6 +1741,21 @@ const blockLineSeparatorExamples: readonly (readonly [
     "block-beta\nblock:G\u2028a\u2028end\n",
     "block-beta\n  block:G\n    a\n  end\n",
   ],
+  [
+    "block: comment-ls-semicolon-before",
+    'block-beta\nblock:r\n A["x"]%% c;\u2028 B["y"]\nend\n',
+    'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["y"]\n  end\n',
+  ],
+  [
+    "block: comment-ps-semicolon-after",
+    'block-beta\nblock:r\n A["x"]%% c\u2029 B["x;y"]\nend\n',
+    'block-beta\n  block:r\n    A["x"] %% c\u2029 B["x;y"]\n  end\n',
+  ],
+  [
+    "block: comment-ls-semicolon-both",
+    'block-beta\nblock:r\n A["x"]%% c;\u2028 B["x;y"]\nend\n',
+    'block-beta\n  block:r\n    A["x"] %% c;\u2028 B["x;y"]\n  end\n',
+  ],
 ]
 
 /**
@@ -1762,12 +1916,16 @@ describe("a requirement diagram with a whitespace character that no fixture file
 })
 
 describe("a mindmap with a line separator", () => {
-  it.each(mindmapLineSeparatorExamples)(
-    "keeps %s",
-    async (_name, input, output) => {
-      await expectKept(input, output)
-    },
-  )
+  it.each(
+    mindmapLineSeparatorExamples.map(([name, input, output, options]) => ({
+      name,
+      input,
+      output,
+      options,
+    })),
+  )("keeps $name", async ({ input, output, options }) => {
+    await expectKept(input, output, options)
+  })
 })
 
 describe("a mindmap with a whitespace character that no fixture file holds", () => {
@@ -1858,299 +2016,450 @@ describe("a block diagram with a whitespace character that no fixture file holds
 })
 
 /** Fixed kanban cases of Unicode whitespace, comment boundaries, and CR/LF. */
-const kanbanExamples: readonly (readonly [string, string, string])[] = [
-  ["kanban: tab-one-space", "kanban\n\tS\n\t\tA\n", "kanban\n  S\n    A\n"],
+const kanbanExamples: readonly (readonly [string, string, string, Options?])[] =
   [
-    "kanban: blank-whitespace",
-    "kanban\n S\n \t\n   A\n",
-    "kanban\n  S\n\n    A\n",
-  ],
-  [
-    "kanban: bare-trailing-trim",
-    "kanban\n S   \n   A\t \n",
-    "kanban\n  S   \n    A\t \n",
-  ],
-  [
-    "kanban: closed-trailing-trim",
-    "kanban\n S[x]   \n   A[y]@{ticket: X}\t \n ::icon(z)  \n",
-    "kanban\n  S[x]\n    A[y]@{ticket: X}\n    ::icon(z)\n",
-  ],
-  [
-    "kanban: crlf-to-lf",
-    'kanban\r\n S["x\r\n y"]\r\n',
-    'kanban\n  S["x\n y"]\n',
-  ],
-  ["kanban: cr-to-lf", 'kanban\r S["x\r y"]\r', 'kanban\n  S["x\n y"]\n'],
-  ["kanban: ls-is-value", "kanban\n S[x\u2028y]\n", "kanban\n  S[x\u2028y]\n"],
-  [
-    "kanban: ps-is-value",
-    'kanban\n S["x\u2029y"]\n',
-    'kanban\n  S["x\u2029y"]\n',
-  ],
-  [
-    "kanban: comment-ls-split-count",
-    "kanban\n S[x]%% c\u2028   A\n",
-    "kanban\n  S[x]%% c\u2028   A\n",
-  ],
-  [
-    "kanban: comment-line-ls-taken",
-    "kanban\n S[x]\n%%\n%%\u2028   A\n",
-    "kanban\n  S[x]\n%%\n%%\u2028   A\n",
-  ],
-  [
-    "kanban: indent-whitespace-kind",
-    "kanban\n\u00a0\ufeffS\n\t\u3000\u000b\fA\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: whitespace-values",
-    "kanban\n S\n   A\u00a0B[x\ufeff\t\u3000y]\n",
-    "kanban\n  S\n    A\u00a0B[x\ufeff\t\u3000y]\n",
-  ],
-  [
-    "kanban: closed-whitespace-trim",
-    "kanban\n S[x]\u00a0\ufeff\t\n",
-    "kanban\n  S[x]\n",
-  ],
-  [
-    "kanban: nel-is-text",
-    "kanban\n S\n   A\u0085B\n",
-    "kanban\n  S\n    A\u0085B\n",
-  ],
-  [
-    "kanban: ls-indent-one-space",
-    "kanban\n S\n\u2028  A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: ps-icon-value",
-    "kanban\n S\n   A\n ::icon(x\u2029y)\n",
-    "kanban\n  S\n    A\n    ::icon(x\u2029y)\n",
-  ],
-  ["kanban: header-tab-inline", "kanban\tS[x]\n", "kanban\n  S[x]\n"],
-  ["kanban: leading-bom", "\ufeffkanban\n S\n", "\ufeffkanban\n  S\n"],
-  [
-    "kanban: multiline-data-crlf",
-    "kanban\r\n S\r\n   A@{\r\n ticket: X\r\n}\r\n",
-    "kanban\n  S\n    A@{\n ticket: X\n}\n",
-  ],
-  [
-    "kanban: multiline-data-cr",
-    "kanban\r S\r   A@{\r ticket: X\r}\r",
-    "kanban\n  S\n    A@{\n ticket: X\n}\n",
-  ],
-  [
-    "kanban: class-separator-empty-tail",
-    "kanban\n S\n :::c\u2028\n",
-    "kanban\n  S\n  :::c\n",
-  ],
-  [
-    "kanban: ls-bare-value",
-    "kanban\n S\n   A\u2028B\n",
-    "kanban\n  S\n    A\u2028B\n",
-  ],
-  [
-    "kanban: ls-data-value",
-    'kanban\n S\n   A@{label: "x\u2028y"}\n',
-    'kanban\n  S\n    A@{label: "x\u2028y"}\n',
-  ],
-  [
-    "kanban: line-rule-ls-segment",
-    'kanban\n S["style:#x\u2028;y"]\n',
-    'kanban\n  S["style:#x\u2028;y"]\n',
-  ],
-  ["kanban: header-nbsp-count", "kanban\u00a0S[x]\n", "kanban\n  S[x]\n"],
-  ["kanban: header-bom-count", "kanban\ufeffS[x]\n", "kanban\n  S[x]\n"],
-  [
-    "kanban: ps-indent-count",
-    "kanban\n S\n\u2029  A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  ["kanban: header-tab-trailing", "kanban\t\n S\n", "kanban\n  S\n"],
-  [
-    "kanban: div-between-real-comments-ls-node",
-    "kanban\n S[x]%% c\n%%{ }%%\u2028   A\n",
-    "kanban\n  S[x]%% c\n%%{ }%%\u2028   A\n",
-  ],
-  [
-    "kanban: div-between-real-comments-ps-node",
-    "kanban\n S[x]%% c\n%%{ }%%\u2029   A\n",
-    "kanban\n  S[x]%% c\n%%{ }%%\u2029   A\n",
-  ],
-  [
-    "kanban: div-header-comment-ls-node",
-    "kanban %% c\u2028 S\n",
-    "kanban %% c\u2028 S\n",
-  ],
-  [
-    "kanban: div-header-comment-ps-node",
-    "kanban %% c\u2029 S\n",
-    "kanban %% c\u2029 S\n",
-  ],
-  ["kanban: header-bom-trailing", "kanban\ufeff\n S\n", "kanban\n  S\n"],
-  ["kanban: header-crlf-trailing", "kanban\r\n\n S\n", "kanban\n  S\n"],
-  ["kanban: header-ff-trailing", "kanban\f\n S\n", "kanban\n  S\n"],
-  [
-    "kanban: header-ideographic-trailing",
-    "kanban\u3000\n S\n",
-    "kanban\n  S\n",
-  ],
-  ["kanban: header-ls-trailing", "kanban\u2028\n S\n", "kanban\n  S\n"],
-  ["kanban: header-nbsp-trailing", "kanban\u00a0\n S\n", "kanban\n  S\n"],
-  ["kanban: header-ps-trailing", "kanban\u2029\n S\n", "kanban\n  S\n"],
-  ["kanban: header-vt-trailing", "kanban\u000b\n S\n", "kanban\n  S\n"],
-  [
-    "kanban: lex-tab-whitespace-first",
-    "kanban\n\t\n S\n   A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: lex-bom-whitespace-first",
-    "kanban\n\ufeff\n S\n   A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: lex-cr-whitespace-first",
-    "kanban\n\r\n S\n   A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: lex-crlf-whitespace-first",
-    "kanban\n\r\n\n S\n   A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: lex-ideographic-whitespace-first",
-    "kanban\n\u3000\n S\n   A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: lex-ls-whitespace-first",
-    "kanban\n\u2028\n S\n   A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: lex-nbsp-whitespace-first",
-    "kanban\n\u00a0\n S\n   A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: lex-ps-whitespace-first",
-    "kanban\n\u2029\n S\n   A\n",
-    "kanban\n  S\n    A\n",
-  ],
-  [
-    "kanban: closing-delimiter-whitespace-kept",
-    "---  \ntitle:   x\n---\t \nkanban\n S\n",
-    "---  \ntitle: x\n---\t \nkanban\n  S\n",
-  ],
-  [
-    "kanban: crlf-in-multiline-values",
-    'kanban\r\n S\r\n   A["x\r\ny"]\r\n ::icon(a\r\nb)\r\n%%{init:\r\n{}}%%\r\n',
-    'kanban\n  S\n    A["x\ny"]\n    ::icon(a\nb)\n    %%{init:\n{}}%%\n',
-  ],
-  [
-    "kanban: lex-icon-comment-ls",
-    "kanban\n S\n ::icon(x)%% c\u2028   A\n",
-    "kanban\n  S\n  ::icon(x)%% c\u2028   A\n",
-  ],
-  [
-    "kanban: db-metadata-comment-ls",
-    "kanban\n S@{}%% c\u2028   A\n",
-    "kanban\n  S@{}%% c\u2028   A\n",
-  ],
-  [
-    "kanban: shape-comment-ps",
-    "kanban\n S[x]%% c\u2029   A\n",
-    "kanban\n  S[x]%% c\u2029   A\n",
-  ],
-  [
-    "kanban: common-comment-ps-swallows-suffix",
-    "kanban\n S\n%% c\u2029   A\n",
-    "kanban\n  S\n  %% c\u2029   A\n",
-  ],
-  [
-    "kanban: unicode-inline-directive-indentation",
-    "kanban\n S\n\u00a0%%{init: {}}%%\t\u3000A\n",
-    "kanban\n  S\n  %%{init: {}}%%  A\n",
-  ],
-  [
-    "kanban: directive-before-unicode-comment",
-    "kanban\n S[x]%%{init: {}}%%%% c\u2028   A\n",
-    "kanban\n  S[x]%%{init: {}}%%%% c\u2028   A\n",
-  ],
-  [
-    "kanban: directive-after-unicode-comment",
-    "kanban\n S[x]%% c\u2029 %%{init: {}}%%  A\n",
-    "kanban\n  S[x]%% c\u2029 %%{init: {}}%%  A\n",
-  ],
-  [
-    "kanban: comment-ls-then-item-on-semicolon-line",
-    "kanban\n S[x]%% c;\u2028 T\n",
-    "kanban\n  S[x]%% c;\u2028   T\n",
-  ],
-  [
-    "kanban: comment-ps-then-section-on-semicolon-line",
-    "kanban\n S[x]%% c; \u2029T;x\n   A;b\n",
-    "kanban\n  S[x]%% c; \u2029 T;x\n    A;b\n",
-  ],
-  [
-    "kanban: semicolon-in-a-comment-with-text-after-it",
-    "kanban\n S\n   A[x]%% c;\u2028    B\n",
-    "kanban\n  S\n    A[x]%% c;\u2028   B\n",
-  ],
-  [
-    "kanban: semicolon-line-comment-ps-then-directive-line",
-    "kanban\n S[x]%% c;\u2029 %%{init: {}}%%  T\n",
-    "kanban\n  S[x]%% c;\u2029   %%{init: {}}%%  T\n",
-  ],
-  [
-    "kanban: semicolon-line-comment-ls-then-empty-line",
-    "kanban\n S[x]%% c;\u2028\n\n T\n",
-    "kanban\n  S[x]%% c;\u2028\n\n  T\n",
-  ],
-  [
-    "kanban: semicolon-line-two-comments-then-item",
-    "kanban\n S[x]%% a;\u2028%% b\u2028 T\n",
-    "kanban\n  S[x]%% a;\u2028%% b\u2028 T\n",
-  ],
-  [
-    "kanban: semicolon-line-comment-ls-then-semicolon-node",
-    "kanban\n S[x]%% c;\u2028 T;x\n   A\n",
-    "kanban\n  S[x]%% c;\u2028   T;x\n    A\n",
-  ],
-  [
-    "kanban: semicolon-line-empty-data-then-comment-ls",
-    "kanban\n S@{}%% c;\u2028 T\n",
-    "kanban\n  S@{}%% c;\u2028   T\n",
-  ],
-  [
-    "kanban: semicolon-line-icon-comment-ls-then-item",
-    "kanban\n S\n   A\n ::icon(a;b)%% c\u2028 T\n",
-    "kanban\n  S\n    A\n    ::icon(a;b)%% c\u2028   T\n",
-  ],
-  [
-    "kanban: semicolon-line-comment-ls-between-items",
-    "kanban\n S\n   A[x]%% c;\u2028   B\n   C\n",
-    "kanban\n  S\n    A[x]%% c;\u2028   B\n    C\n",
-  ],
-  [
-    "kanban: semicolon-line-crlf-trailing-whitespace",
-    "kanban\r\n S\r\n  A[x;y]   \r\n",
-    "kanban\n  S\n    A[x;y]\n",
-  ],
-]
+    ["kanban: tab-one-space", "kanban\n\tS\n\t\tA\n", "kanban\n  S\n    A\n"],
+    [
+      "kanban: blank-whitespace",
+      "kanban\n S\n \t\n   A\n",
+      "kanban\n  S\n\n    A\n",
+    ],
+    [
+      "kanban: bare-trailing-trim",
+      "kanban\n S   \n   A\t \n",
+      "kanban\n  S   \n    A\t \n",
+    ],
+    [
+      "kanban: closed-trailing-trim",
+      "kanban\n S[x]   \n   A[y]@{ticket: X}\t \n ::icon(z)  \n",
+      "kanban\n  S[x]\n    A[y]@{ticket: X}\n    ::icon(z)\n",
+    ],
+    [
+      "kanban: crlf-to-lf",
+      'kanban\r\n S["x\r\n y"]\r\n',
+      'kanban\n  S["x\n y"]\n',
+    ],
+    ["kanban: cr-to-lf", 'kanban\r S["x\r y"]\r', 'kanban\n  S["x\n y"]\n'],
+    [
+      "kanban: ls-is-value",
+      "kanban\n S[x\u2028y]\n",
+      "kanban\n  S[x\u2028y]\n",
+    ],
+    [
+      "kanban: ps-is-value",
+      'kanban\n S["x\u2029y"]\n',
+      'kanban\n  S["x\u2029y"]\n',
+    ],
+    [
+      "kanban: comment-ls-split-count",
+      "kanban\n S[x]%% c\u2028   A\n",
+      "kanban\n  S[x]%% c\u2028   A\n",
+    ],
+    [
+      "kanban: comment-line-ls-taken",
+      "kanban\n S[x]\n%%\n%%\u2028   A\n",
+      "kanban\n  S[x]\n%%\n%%\u2028   A\n",
+    ],
+    [
+      "kanban: indent-whitespace-kind",
+      "kanban\n\u00a0\ufeffS\n\t\u3000\u000b\fA\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: whitespace-values",
+      "kanban\n S\n   A\u00a0B[x\ufeff\t\u3000y]\n",
+      "kanban\n  S\n    A\u00a0B[x\ufeff\t\u3000y]\n",
+    ],
+    [
+      "kanban: closed-whitespace-trim",
+      "kanban\n S[x]\u00a0\ufeff\t\n",
+      "kanban\n  S[x]\n",
+    ],
+    [
+      "kanban: nel-is-text",
+      "kanban\n S\n   A\u0085B\n",
+      "kanban\n  S\n    A\u0085B\n",
+    ],
+    [
+      "kanban: ls-indent-one-space",
+      "kanban\n S\n\u2028  A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: ps-icon-value",
+      "kanban\n S\n   A\n ::icon(x\u2029y)\n",
+      "kanban\n  S\n    A\n    ::icon(x\u2029y)\n",
+    ],
+    ["kanban: header-tab-inline", "kanban\tS[x]\n", "kanban\n  S[x]\n"],
+    ["kanban: leading-bom", "\ufeffkanban\n S\n", "\ufeffkanban\n  S\n"],
+    [
+      "kanban: multiline-data-crlf",
+      "kanban\r\n S\r\n   A@{\r\n ticket: X\r\n}\r\n",
+      "kanban\n  S\n    A@{\n ticket: X\n}\n",
+    ],
+    [
+      "kanban: multiline-data-cr",
+      "kanban\r S\r   A@{\r ticket: X\r}\r",
+      "kanban\n  S\n    A@{\n ticket: X\n}\n",
+    ],
+    [
+      "kanban: class-separator-empty-tail",
+      "kanban\n S\n :::c\u2028\n",
+      "kanban\n  S\n  :::c\n",
+    ],
+    [
+      "kanban: ls-bare-value",
+      "kanban\n S\n   A\u2028B\n",
+      "kanban\n  S\n    A\u2028B\n",
+    ],
+    [
+      "kanban: ls-data-value",
+      'kanban\n S\n   A@{label: "x\u2028y"}\n',
+      'kanban\n  S\n    A@{label: "x\u2028y"}\n',
+    ],
+    [
+      "kanban: line-rule-ls-segment",
+      'kanban\n S["style:#x\u2028;y"]\n',
+      'kanban\n  S["style:#x\u2028;y"]\n',
+    ],
+    ["kanban: header-nbsp-count", "kanban\u00a0S[x]\n", "kanban\n  S[x]\n"],
+    ["kanban: header-bom-count", "kanban\ufeffS[x]\n", "kanban\n  S[x]\n"],
+    [
+      "kanban: ps-indent-count",
+      "kanban\n S\n\u2029  A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    ["kanban: header-tab-trailing", "kanban\t\n S\n", "kanban\n  S\n"],
+    [
+      "kanban: div-between-real-comments-ls-node",
+      "kanban\n S[x]%% c\n%%{ }%%\u2028   A\n",
+      "kanban\n  S[x]%% c\n%%{ }%%\u2028   A\n",
+    ],
+    [
+      "kanban: div-between-real-comments-ps-node",
+      "kanban\n S[x]%% c\n%%{ }%%\u2029   A\n",
+      "kanban\n  S[x]%% c\n%%{ }%%\u2029   A\n",
+    ],
+    [
+      "kanban: div-header-comment-ls-node",
+      "kanban %% c\u2028 S\n",
+      "kanban %% c\u2028 S\n",
+    ],
+    [
+      "kanban: div-header-comment-ps-node",
+      "kanban %% c\u2029 S\n",
+      "kanban %% c\u2029 S\n",
+    ],
+    ["kanban: header-bom-trailing", "kanban\ufeff\n S\n", "kanban\n  S\n"],
+    ["kanban: header-crlf-trailing", "kanban\r\n\n S\n", "kanban\n  S\n"],
+    ["kanban: header-ff-trailing", "kanban\f\n S\n", "kanban\n  S\n"],
+    [
+      "kanban: header-ideographic-trailing",
+      "kanban\u3000\n S\n",
+      "kanban\n  S\n",
+    ],
+    ["kanban: header-ls-trailing", "kanban\u2028\n S\n", "kanban\n  S\n"],
+    ["kanban: header-nbsp-trailing", "kanban\u00a0\n S\n", "kanban\n  S\n"],
+    ["kanban: header-ps-trailing", "kanban\u2029\n S\n", "kanban\n  S\n"],
+    ["kanban: header-vt-trailing", "kanban\u000b\n S\n", "kanban\n  S\n"],
+    [
+      "kanban: lex-tab-whitespace-first",
+      "kanban\n\t\n S\n   A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: lex-bom-whitespace-first",
+      "kanban\n\ufeff\n S\n   A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: lex-cr-whitespace-first",
+      "kanban\n\r\n S\n   A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: lex-crlf-whitespace-first",
+      "kanban\n\r\n\n S\n   A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: lex-ideographic-whitespace-first",
+      "kanban\n\u3000\n S\n   A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: lex-ls-whitespace-first",
+      "kanban\n\u2028\n S\n   A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: lex-nbsp-whitespace-first",
+      "kanban\n\u00a0\n S\n   A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: lex-ps-whitespace-first",
+      "kanban\n\u2029\n S\n   A\n",
+      "kanban\n  S\n    A\n",
+    ],
+    [
+      "kanban: closing-delimiter-whitespace-kept",
+      "---  \ntitle:   x\n---\t \nkanban\n S\n",
+      "---  \ntitle: x\n---\t \nkanban\n  S\n",
+    ],
+    [
+      "kanban: crlf-in-multiline-values",
+      'kanban\r\n S\r\n   A["x\r\ny"]\r\n ::icon(a\r\nb)\r\n%%{init:\r\n{}}%%\r\n',
+      'kanban\n  S\n    A["x\ny"]\n    ::icon(a\nb)\n    %%{init:\n{}}%%\n',
+    ],
+    [
+      "kanban: lex-icon-comment-ls",
+      "kanban\n S\n ::icon(x)%% c\u2028   A\n",
+      "kanban\n  S\n  ::icon(x)%% c\u2028   A\n",
+    ],
+    [
+      "kanban: db-metadata-comment-ls",
+      "kanban\n S@{}%% c\u2028   A\n",
+      "kanban\n  S@{}%% c\u2028   A\n",
+    ],
+    [
+      "kanban: shape-comment-ps",
+      "kanban\n S[x]%% c\u2029   A\n",
+      "kanban\n  S[x]%% c\u2029   A\n",
+    ],
+    [
+      "kanban: common-comment-ps-swallows-suffix",
+      "kanban\n S\n%% c\u2029   A\n",
+      "kanban\n  S\n  %% c\u2029   A\n",
+    ],
+    [
+      "kanban: unicode-inline-directive-indentation",
+      "kanban\n S\n\u00a0%%{init: {}}%%\t\u3000A\n",
+      "kanban\n  S\n  %%{init: {}}%%  A\n",
+    ],
+    [
+      "kanban: directive-before-unicode-comment",
+      "kanban\n S[x]%%{init: {}}%%%% c\u2028   A\n",
+      "kanban\n  S[x]%%{init: {}}%%%% c\u2028   A\n",
+    ],
+    [
+      "kanban: directive-after-unicode-comment",
+      "kanban\n S[x]%% c\u2029 %%{init: {}}%%  A\n",
+      "kanban\n  S[x]%% c\u2029 %%{init: {}}%%  A\n",
+    ],
+    [
+      "kanban: comment-ls-then-item-on-semicolon-line",
+      "kanban\n S[x]%% c;\u2028 T\n",
+      "kanban\n  S[x]%% c;\u2028   T\n",
+    ],
+    [
+      "kanban: comment-ps-then-section-on-semicolon-line",
+      "kanban\n S[x]%% c; \u2029T;x\n   A;b\n",
+      "kanban\n  S[x]%% c; \u2029 T;x\n    A;b\n",
+    ],
+    [
+      "kanban: semicolon-in-a-comment-with-text-after-it",
+      "kanban\n S\n   A[x]%% c;\u2028    B\n",
+      "kanban\n  S\n    A[x]%% c;\u2028   B\n",
+    ],
+    [
+      "kanban: semicolon-line-comment-ps-then-directive-line",
+      "kanban\n S[x]%% c;\u2029 %%{init: {}}%%  T\n",
+      "kanban\n  S[x]%% c;\u2029 %%{init: {}}%%  T\n",
+    ],
+    [
+      "kanban: semicolon-line-comment-ls-then-empty-line",
+      "kanban\n S[x]%% c;\u2028\n\n T\n",
+      "kanban\n  S[x]%% c;\u2028\n\n  T\n",
+    ],
+    [
+      "kanban: semicolon-line-two-comments-then-item",
+      "kanban\n S[x]%% a;\u2028%% b\u2028 T\n",
+      "kanban\n  S[x]%% a;\u2028%% b\u2028 T\n",
+    ],
+    [
+      "kanban: semicolon-line-comment-ls-then-semicolon-node",
+      "kanban\n S[x]%% c;\u2028 T;x\n   A\n",
+      "kanban\n  S[x]%% c;\u2028   T;x\n    A\n",
+    ],
+    [
+      "kanban: semicolon-line-empty-data-then-comment-ls",
+      "kanban\n S@{}%% c;\u2028 T\n",
+      "kanban\n  S@{}%% c;\u2028   T\n",
+    ],
+    [
+      "kanban: semicolon-line-icon-comment-ls-then-item",
+      "kanban\n S\n   A\n ::icon(a;b)%% c\u2028 T\n",
+      "kanban\n  S\n    A\n    ::icon(a;b)%% c\u2028   T\n",
+    ],
+    [
+      "kanban: semicolon-line-comment-ls-between-items",
+      "kanban\n S\n   A[x]%% c;\u2028   B\n   C\n",
+      "kanban\n  S\n    A[x]%% c;\u2028   B\n    C\n",
+    ],
+    [
+      "kanban: semicolon-line-crlf-trailing-whitespace",
+      "kanban\r\n S\r\n  A[x;y]   \r\n",
+      "kanban\n  S\n    A[x;y]\n",
+    ],
+    [
+      "kanban: selected-ls-column-short",
+      "kanban\n R[root]%% style:#fill;\u2028C;y\n   D\n",
+      "kanban\n  R[root]%% style:#fill;\u2028 C;y\n    D\n",
+    ],
+    [
+      "kanban: selected-ps-column-wide",
+      "kanban\n     R[x]%% classDef:#fill;\u2029    C;y\n       D\n",
+      "kanban\n  R[x]%% classDef:#fill;\u2029 C;y\n    D\n",
+    ],
+    [
+      "kanban: selected-ls-card-short",
+      "kanban\nR[x]%% style:#fill;\u2028C\n D;y\n",
+      "kanban\n  R[x]%% style:#fill;\u2028   C\n    D;y\n",
+    ],
+    [
+      "kanban: selected-ps-card-wide",
+      "kanban\n R\n     A[x]%% style:#fill;\u2029        C;y\n   D\n",
+      "kanban\n  R\n    A[x]%% style:#fill;\u2029   C;y\n    D\n",
+    ],
+    [
+      "kanban: selected-icon-ls-column",
+      "kanban\n R\n       ::icon(i)%% style:#fill;\u2028C;y\n   D\n",
+      "kanban\n  R\n  ::icon(i)%% style:#fill;\u2028 C;y\n    D\n",
+    ],
+    [
+      "kanban: selected-icon-ps-card",
+      "kanban\nR\n::icon(i;j)%% style:#fill;\u2029  C\n D\n",
+      "kanban\n  R\n  ::icon(i;j)%% style:#fill;\u2029   C\n    D\n",
+    ],
+    [
+      "kanban: selected-data-ls-column",
+      "kanban\n R@{ticket: Q}%% style:#fill;\u2028C;y\n   D\n",
+      "kanban\n  R@{ticket: Q}%% style:#fill;\u2028 C;y\n    D\n",
+    ],
+    [
+      "kanban: selected-data-ps-card",
+      "kanban\n   R\n      A[x]@{ticket: Q}%% style:#fill;\u2029       C;y\n     D\n",
+      "kanban\n  R\n    A[x]@{ticket: Q}%% style:#fill;\u2029   C;y\n    D\n",
+    ],
+    [
+      "kanban: after-shape-ls-column",
+      "kanban\n   R[x]%% c\u2028  C;y\n     D\n",
+      "kanban\n  R[x]%% c\u2028 C;y\n    D\n",
+    ],
+    [
+      "kanban: after-icon-ps-card",
+      "kanban\nR\n ::icon(i)%% c\u2029 C;y\n D\n",
+      "kanban\n  R\n  ::icon(i)%% c\u2029   C;y\n    D\n",
+    ],
+    [
+      "kanban: after-data-ls-card",
+      "kanban\n R@{}%% c\u2028       C;y\n   D\n",
+      "kanban\n  R@{}%% c\u2028   C;y\n    D\n",
+    ],
+    [
+      "kanban: before-shape-ps-column",
+      "kanban\n     R[x;y]%% c\u2029    C\n       D\n",
+      "kanban\n  R[x;y]%% c\u2029 C\n    D\n",
+    ],
+    [
+      "kanban: before-data-ls-column",
+      "kanban\n R@{ticket: Q}%% style:#fill;\u2028C\n   D\n",
+      "kanban\n  R@{ticket: Q}%% style:#fill;\u2028 C\n    D\n",
+    ],
+    [
+      "kanban: both-data-ps-column",
+      "kanban\n R@{ticket: 'Q;R'}%% c;\u2029C;y\n   D\n",
+      "kanban\n  R@{ticket: 'Q;R'}%% c;\u2029 C;y\n    D\n",
+    ],
+    [
+      "kanban: selected-column-zero",
+      "kanban\n   R[x]%% style:#fill;\u2028  C;y\n     D\n",
+      "kanban\n R[x]%% style:#fill;\u2028C;y\n  D\n",
+      { tabWidth: 0 },
+    ],
+    [
+      "kanban: selected-card-tabs",
+      "kanban\nR[x]%% style:#fill;\u2029    C;y\n D\n",
+      "kanban\n\tR[x]%% style:#fill;\u2029\tC;y\n\t\tD\n",
+      { useTabs: true },
+    ],
+    [
+      "kanban: selected-column-directive",
+      "kanban\n     R[x]%% style:#fill;\u2029%%{init: {}}%%    C;y\n       D\n",
+      "kanban\n  R[x]%% style:#fill;\u2029%%{init: {}}%% C;y\n    D\n",
+    ],
+    [
+      "kanban: selected-before-blank-line",
+      "kanban\n R[x]%% style:#fill;\u2028\n\n   C;y\n",
+      "kanban\n  R[x]%% style:#fill;\u2028\n\n    C;y\n",
+    ],
+    [
+      "kanban: selected-terminal-separator",
+      "kanban\n R[x]%% style:#fill;\u2029",
+      "kanban\n  R[x]%% style:#fill;\u2029\n",
+    ],
+    [
+      "kanban: comment-line-then-directive-item",
+      "kanban\nS[x]%% c\u2028%% d\n%%{x}%% C\n  D\n",
+      "kanban\n  S[x]%% c\u2028%% d\n  %%{x}%% C\n    D\n",
+    ],
+    [
+      "kanban: comment-line-then-indented-directive-item",
+      "kanban\nS[x]%% c\u2028%% d\n  %%{x}%% C\n  D\n",
+      "kanban\n  S[x]%% c\u2028%% d\n  %%{x}%% C\n    D\n",
+    ],
+    [
+      "kanban: directive-and-comment-line-then-item",
+      "kanban\nS[x]%% c\u2028%%{init: {}}%% %% d\n  C\n  D\n",
+      "kanban\n  S[x]%% c\u2028%%{init: {}}%% %% d\n   C\n    D\n",
+    ],
+    [
+      "kanban: directive-comment-line-directive-item",
+      "kanban\nS[x]%% c\u2028%%{a}%% %% d\n%%{x}%% C\n  D\n",
+      "kanban\n  S[x]%% c\u2028%%{a}%% %% d\n  %%{x}%% C\n    D\n",
+    ],
+    [
+      "kanban: selected-comment-line-then-directive-item",
+      "kanban\nS[x]%% style:#x;\u2028%% d\n%%{x}%% C\n  D\n",
+      "kanban\n  S[x]%% style:#x;\u2028%% d\n  %%{x}%% C\n    D\n",
+    ],
+    [
+      "kanban: comment-line-then-directive-section",
+      "kanban\n  S[x]%% c\u2028%% d\n%%{x}%% C\n",
+      "kanban\n  S[x]%% c\u2028%% d\n%%{x}%% C\n",
+    ],
+    [
+      "kanban: comment-line-then-directive-section-tabs",
+      "kanban\n  S[x]%% c\u2028%% d\n%%{x}%% C\n",
+      "kanban\n\tS[x]%% c\u2028%% d\n%%{x}%%C\n",
+      { useTabs: true },
+    ],
+    [
+      "kanban: comment-line-then-directive-section-zero",
+      "kanban\n  S[x]%% c\u2028%% d\n%%{x}%% C\n",
+      "kanban\n S[x]%% c\u2028%% d\n%%{x}%%C\n",
+      { tabWidth: 0 },
+    ],
+  ]
 
 describe("kanban whitespace and line boundaries", () => {
-  it.each(kanbanExamples)("%s", async (_title, input, expected) => {
-    const output = await format(input)
+  it.each(
+    kanbanExamples.map(([title, input, expected, options]) => ({
+      title,
+      input,
+      expected,
+      options,
+    })),
+  )("$title", async ({ input, expected, options }) => {
+    const output = await format(input, options)
     expect(output).toBe(expected)
-    expect(await format(output)).toBe(output)
+    expect(await format(output, options)).toBe(output)
     expect(dbOfText(output, defaultEmbedded())).toEqual(
       dbOfText(input, defaultEmbedded()),
     )
     expect(writtenEmbeddedTexts(output)).toEqual(writtenEmbeddedTexts(input))
-    expect(await describeFrontmatterChange(input, output)).toBeNull()
+    expect(await describeFrontmatterChange(input, output, options)).toBeNull()
   })
 })
 

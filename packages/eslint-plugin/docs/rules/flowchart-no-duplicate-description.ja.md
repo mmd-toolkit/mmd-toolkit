@@ -9,18 +9,16 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
-💡
-[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
-を選んで適用できる。
+💡 [エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions) を選んで適用できる。
 
 <!-- end auto-generated rule notice -->
 
 図の説明は 1 つである。
-mermaid.js はどの `accDescr` の文も受理し、
-説明を設定する文は、それより前に設定した説明を黙って置き換える。
+mermaid.js はどの `accDescr` の文も受理し、説明を設定する文は、
+それより前に設定した説明を黙って置き換える。
 2 つ目の説明は、たいてい、テキストを書き直した残りか、
-同じ部分を 2 回貼り付けたものであり、
-整形したテキストを見ても、どちらが効くかは分からない。
+同じ部分を 2 回貼り付けたものであり、整形したテキストを見ても、
+どちらが効くかは分からない。
 
 ## 規則の詳細
 
@@ -30,8 +28,7 @@ mermaid.js はどの `accDescr` の文も受理し、
 
 `accDescr:` は説明を設定する。
 テキストがなくても説明を設定する。
-空行、コメント行、ディレクティブを飛ばして、
-テキストを持つ次の行を説明にし、
+空行、コメント行、ディレクティブを飛ばして、テキストを持つ次の行を説明にし、
 そうした行が後になければ、説明を空にする。
 説明を持つ閉じたブロックも説明を設定する。
 1 行の形とブロックの形を混ぜても、どちらが先でも、
@@ -42,15 +39,13 @@ mermaid.js は、その文の値を id としてその subgraph のメンバー�
 
 説明を持たないブロックと、説明を空にする閉じていないブロックは、数えない。
 それらは、
-[flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md)
-と
-[flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md)
-が報告する。
+[flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md) と、
+[flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md) が報告する。
 
 図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
 `accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。
-説明は、mermaid.js が持つとおりに、
-両端の空白と、各改行の後の空白を除いて比べる。
+説明は、mermaid.js が持つとおりに、両端の空白と、
+各改行の後の空白を除いて比べる。
 そのため、ブロックの行の字下げと、その中の空行は数えない。
 改行は、LF、CRLF、CR のどれも LF として読む。
 そのため、CRLF で書いたブロックは、LF で書いたブロックと同じ説明を設定する。
@@ -63,9 +58,9 @@ mermaid.js は、最後に残った説明を使う。
 subgraph の中の文を消すと、そのメンバーも消える。
 ただし、subgraph のほかの文が同じ id をメンバーにしていれば残る。
 文の後の `;` は、文を区切るものなら残す。
-`accDescr: style:#b;` や `accDescr { style:#b };` のように、仕様の
-[`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行)
-の決まりで mermaid.js が無視する `;` は、文と一緒に消す。
+`accDescr: style:#b;` や `accDescr { style:#b };` のように、
+仕様の [`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行) の決まりで mermaid.js が無視する `;` は、
+文と一緒に消す。
 
 この規則に**反する**コードの例:
 

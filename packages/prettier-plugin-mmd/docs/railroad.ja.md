@@ -3,13 +3,11 @@
 英語版: [railroad.md](./railroad.md)
 
 IR、EBNF、ABNF、PEG の決定32項目に従い、
-一つの[railroad の木](../../spec/docs/ast/railroad.ja.md)と
-共有の平坦な本文 printer を使います。
-parser が Root.diagramType で方言を選び、printer は方言を再判定せず
-その node と token を使います。
+一つの[railroad の木](../../spec/docs/ast/railroad.ja.md)と共有の平坦な本文 printer を使います。
+parser が Root.diagramType で方言を選び、
+printer は方言を再判定せずその node と token を使います。
 各規則で選択の理由を説明し、
-[互換性](./compatibility.ja.md#railroad-の方言と書かれた値)に
-保持する文字と mermaid.js との差をまとめます。
+[互換性](./compatibility.ja.md#railroad-の方言と書かれた値)に保持する文字と mermaid.js との差をまとめます。
 
 ## 規則
 
@@ -58,8 +56,7 @@ hidden form、共有 trivia、保護された semicolon 区間は共有の境界
 入力（escape 表記）:
 `"railroad-beta%% heading\nr=terminal(\"x\");"`。
 
-出力
-([header/ir-comment-output.mmd](../tests/fixtures/railroad/header/ir-comment-output.mmd)):
+出力 ([header/ir-comment-output.mmd](../tests/fixtures/railroad/header/ir-comment-output.mmd)):
 
 ```mmd
 railroad-beta%% heading
@@ -69,8 +66,7 @@ railroad-beta%% heading
 入力（escape 表記）:
 `"railroad-ebnf-beta%%{wrap}%% r=\"x\";"`。
 
-出力
-([header/ebnf-global-output.mmd](../tests/fixtures/railroad/header/ebnf-global-output.mmd)):
+出力 ([header/ebnf-global-output.mmd](../tests/fixtures/railroad/header/ebnf-global-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -80,8 +76,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta%%{!heading}%%\nr=\"x\";"`。
 
-出力
-([header/abnf-hidden-output.mmd](../tests/fixtures/railroad/header/abnf-hidden-output.mmd)):
+出力 ([header/abnf-hidden-output.mmd](../tests/fixtures/railroad/header/abnf-hidden-output.mmd)):
 
 ```mmd
 railroad-abnf-beta%%{!heading}%%
@@ -91,8 +86,7 @@ railroad-abnf-beta%%{!heading}%%
 入力（escape 表記）:
 `"railroad-peg-beta%%{!heading}%%\n\nr<-\"x\";"`。
 
-出力
-([header/peg-hidden-spare-output.mmd](../tests/fixtures/railroad/header/peg-hidden-spare-output.mmd)):
+出力 ([header/peg-hidden-spare-output.mmd](../tests/fixtures/railroad/header/peg-hidden-spare-output.mmd)):
 
 ```mmd
 railroad-peg-beta%%{!heading}%%
@@ -101,8 +95,8 @@ railroad-peg-beta%%{!heading}%%
 
 ### 字下げ
 
-共有の平坦な本文 printer を使い、通常の規則、metadata、
-独立したコメントと Root directive を設定の1段で字下げします。
+共有の平坦な本文 printer を使い、通常の規則、metadata、独立したコメントと Root
+directive を設定の1段で字下げします。
 既定は2 spaces、tabWidth 4 は4 spaces、0 は0 spaces です。
 列に文法上の意味がないためです。
 useTabs は幅0でも1 tab です。
@@ -155,8 +149,7 @@ semicolon の保護区間の最初の行は、他の平坦な図種と同じく�
 入力（escape 表記）:
 `"railroad-beta\n r=terminal(\"indent\");"`。
 
-出力
-([indentation/ir-default-output.mmd](../tests/fixtures/railroad/indentation/ir-default-output.mmd)):
+出力 ([indentation/ir-default-output.mmd](../tests/fixtures/railroad/indentation/ir-default-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -166,8 +159,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\n r=\"indent\";"`。
 
-出力
-([indentation/ebnf-default-output.mmd](../tests/fixtures/railroad/indentation/ebnf-default-output.mmd)):
+出力 ([indentation/ebnf-default-output.mmd](../tests/fixtures/railroad/indentation/ebnf-default-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -177,8 +169,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\n r=\"indent\";"`。
 
-出力
-([indentation/abnf-default-output.mmd](../tests/fixtures/railroad/indentation/abnf-default-output.mmd)):
+出力 ([indentation/abnf-default-output.mmd](../tests/fixtures/railroad/indentation/abnf-default-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -188,8 +179,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\n r<-\"indent\";"`。
 
-出力
-([indentation/peg-default-output.mmd](../tests/fixtures/railroad/indentation/peg-default-output.mmd)):
+出力 ([indentation/peg-default-output.mmd](../tests/fixtures/railroad/indentation/peg-default-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -225,8 +215,7 @@ ABNF の終端の直後は LF または EOF にします。
 入力（escape 表記）:
 `"railroad-beta a=terminal(\"first\");b=nonterminal(\"a\");"`。
 
-出力
-([statements-one-per-line/ir-rules-output.mmd](../tests/fixtures/railroad/statements-one-per-line/ir-rules-output.mmd)):
+出力 ([statements-one-per-line/ir-rules-output.mmd](../tests/fixtures/railroad/statements-one-per-line/ir-rules-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -237,8 +226,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta a=\"first\";b::=a;"`。
 
-出力
-([statements-one-per-line/ebnf-rules-output.mmd](../tests/fixtures/railroad/statements-one-per-line/ebnf-rules-output.mmd)):
+出力 ([statements-one-per-line/ebnf-rules-output.mmd](../tests/fixtures/railroad/statements-one-per-line/ebnf-rules-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -249,8 +237,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=\"terminator\" \t;"`。
 
-出力
-([statements-one-per-line/abnf-terminator-output.mmd](../tests/fixtures/railroad/statements-one-per-line/abnf-terminator-output.mmd)):
+出力 ([statements-one-per-line/abnf-terminator-output.mmd](../tests/fixtures/railroad/statements-one-per-line/abnf-terminator-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -260,8 +247,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta a<-\"first\";b<-a;"`。
 
-出力
-([statements-one-per-line/peg-rules-output.mmd](../tests/fixtures/railroad/statements-one-per-line/peg-rules-output.mmd)):
+出力 ([statements-one-per-line/peg-rules-output.mmd](../tests/fixtures/railroad/statements-one-per-line/peg-rules-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -287,8 +273,7 @@ EBNF の2形は同じ Db ですが、原文の記号を置き換える必要は�
 入力（escape 表記）:
 `"railroad-beta\nlongName\t=\tterminal(\"assignment\");s=terminal(\"short\");"`。
 
-出力
-([assignment/ir-spaces-output.mmd](../tests/fixtures/railroad/assignment/ir-spaces-output.mmd)):
+出力 ([assignment/ir-spaces-output.mmd](../tests/fixtures/railroad/assignment/ir-spaces-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -299,8 +284,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\nlongName::=\"assignment\";s =\"short\";"`。
 
-出力
-([assignment/ebnf-spellings-output.mmd](../tests/fixtures/railroad/assignment/ebnf-spellings-output.mmd)):
+出力 ([assignment/ebnf-spellings-output.mmd](../tests/fixtures/railroad/assignment/ebnf-spellings-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -311,8 +295,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\nlongName\t=\t\"assignment\";\ns=\"short\";"`。
 
-出力
-([assignment/abnf-spaces-output.mmd](../tests/fixtures/railroad/assignment/abnf-spaces-output.mmd)):
+出力 ([assignment/abnf-spaces-output.mmd](../tests/fixtures/railroad/assignment/abnf-spaces-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -323,8 +306,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nlongName\t<-\t\"assignment\";s<-\"short\";"`。
 
-出力
-([assignment/peg-spaces-output.mmd](../tests/fixtures/railroad/assignment/peg-spaces-output.mmd)):
+出力 ([assignment/peg-spaces-output.mmd](../tests/fixtures/railroad/assignment/peg-spaces-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -347,8 +329,7 @@ EBNF の選択は `a | b`、ABNF と PEG は `a / b` にします。
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=\"red\"|\"green\"\t|\t\"violet\";"`。
 
-出力
-([choices/ebnf-bars-output.mmd](../tests/fixtures/railroad/choices/ebnf-bars-output.mmd)):
+出力 ([choices/ebnf-bars-output.mmd](../tests/fixtures/railroad/choices/ebnf-bars-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -358,8 +339,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=\"red\"/\"green\"\t/\t\"violet\";"`。
 
-出力
-([choices/abnf-slashes-output.mmd](../tests/fixtures/railroad/choices/abnf-slashes-output.mmd)):
+出力 ([choices/abnf-slashes-output.mmd](../tests/fixtures/railroad/choices/abnf-slashes-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -369,8 +349,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nr<-\"red\"/\"green\"\t/\t\"violet\";"`。
 
-出力
-([choices/peg-slashes-output.mmd](../tests/fixtures/railroad/choices/peg-slashes-output.mmd)):
+出力 ([choices/peg-slashes-output.mmd](../tests/fixtures/railroad/choices/peg-slashes-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -393,8 +372,7 @@ comma の追加や削除で Db が同じでも、書かれた句読点を失う�
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=first\tsecond;"`。
 
-出力
-([ebnf-sequences/adjacency-output.mmd](../tests/fixtures/railroad/ebnf-sequences/adjacency-output.mmd)):
+出力 ([ebnf-sequences/adjacency-output.mmd](../tests/fixtures/railroad/ebnf-sequences/adjacency-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -419,8 +397,7 @@ comma は加えません。
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=\"a\"\"b\"(ref)[\"last\"]%x44;"`。
 
-出力
-([sequences/abnf-members-output.mmd](../tests/fixtures/railroad/sequences/abnf-members-output.mmd)):
+出力 ([sequences/abnf-members-output.mmd](../tests/fixtures/railroad/sequences/abnf-members-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -430,8 +407,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nr<-\"a\"\"b\"(ref).;"`。
 
-出力
-([sequences/peg-members-output.mmd](../tests/fixtures/railroad/sequences/peg-members-output.mmd)):
+出力 ([sequences/peg-members-output.mmd](../tests/fixtures/railroad/sequences/peg-members-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -454,8 +430,7 @@ PEG の `(expr)` の内側の通常の空白を詰めます。
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=( ( \"group\" ) ) [ \"optional\" ] { \"repeat\" };"`。
 
-出力
-([groups/ebnf-delimiters-output.mmd](../tests/fixtures/railroad/groups/ebnf-delimiters-output.mmd)):
+出力 ([groups/ebnf-delimiters-output.mmd](../tests/fixtures/railroad/groups/ebnf-delimiters-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -465,8 +440,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=( ( \"group\" ) ) [ \"optional\" ];"`。
 
-出力
-([groups/abnf-delimiters-output.mmd](../tests/fixtures/railroad/groups/abnf-delimiters-output.mmd)):
+出力 ([groups/abnf-delimiters-output.mmd](../tests/fixtures/railroad/groups/abnf-delimiters-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -476,8 +450,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nr<-( ( \"group\" ) );"`。
 
-出力
-([groups/peg-delimiters-output.mmd](../tests/fixtures/railroad/groups/peg-delimiters-output.mmd)):
+出力 ([groups/peg-delimiters-output.mmd](../tests/fixtures/railroad/groups/peg-delimiters-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -488,8 +461,8 @@ railroad-peg-beta
 
 EBNF と PEG の AST 上の後置演算子 `?`、`*`、`+` を operand に付けます。
 EBNF の連鎖順と PEG の一つの suffix を保ちます。
-EBNF の special sequence の優先は AST に表れているため、
-raw leaf 内の疑問符を後置演算子に読み替えません。
+EBNF の special sequence の優先は AST に表れているため、 raw
+leaf 内の疑問符を後置演算子に読み替えません。
 call や group に置き換えず、適用先を見やすくするためです。
 
 [fixture: railroad/postfixes/ebnf-chain]
@@ -503,8 +476,7 @@ call や group に置き換えず、適用先を見やすくするためです�
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=\"chain\" * + [\"optional\"] ?;"`。
 
-出力
-([postfixes/ebnf-chain-output.mmd](../tests/fixtures/railroad/postfixes/ebnf-chain-output.mmd)):
+出力 ([postfixes/ebnf-chain-output.mmd](../tests/fixtures/railroad/postfixes/ebnf-chain-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -514,8 +486,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nr<-\"optional\" ? \"repeat\" * (ref) +;"`。
 
-出力
-([postfixes/peg-suffixes-output.mmd](../tests/fixtures/railroad/postfixes/peg-suffixes-output.mmd)):
+出力 ([postfixes/peg-suffixes-output.mmd](../tests/fixtures/railroad/postfixes/peg-suffixes-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -535,8 +506,7 @@ group、postfix、group 内の入れ子の predicate も残します。
 入力（escape 表記）:
 `"railroad-peg-beta\nr<- & ( ! \"inner\" ) \"tail\";"`。
 
-出力
-([predicates/peg-nested-output.mmd](../tests/fixtures/railroad/predicates/peg-nested-output.mmd)):
+出力 ([predicates/peg-nested-output.mmd](../tests/fixtures/railroad/predicates/peg-nested-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -560,8 +530,7 @@ Db が同じでも表記を失い、丸めた数を再印字する理由には�
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=9007199254740993 \"large\";"`。
 
-出力
-([repeats/abnf-large-output.mmd](../tests/fixtures/railroad/repeats/abnf-large-output.mmd)):
+出力 ([repeats/abnf-large-output.mmd](../tests/fixtures/railroad/repeats/abnf-large-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -583,8 +552,7 @@ span 外の後続 reference は `%x42 Z` のように別 member にします。
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=%X041.4A-4f %DFF %b2 %B001;"`。
 
-出力
-([numeric-values/abnf-spellings-output.mmd](../tests/fixtures/railroad/numeric-values/abnf-spellings-output.mmd)):
+出力 ([numeric-values/abnf-spellings-output.mmd](../tests/fixtures/railroad/numeric-values/abnf-spellings-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -594,10 +562,10 @@ railroad-abnf-beta
 ### 呼出し
 
 IR の8 constructor を `name(...)` にします。
-sequence、choice、optional、oneOrMore、zeroOrMore、terminal、
-nonterminal、special が対象です。
-`(` の前と括弧の内端の通常の空白を詰め、
-引数 comma の前を0、後を1 space にします。
+sequence、choice、optional、oneOrMore、zeroOrMore、terminal、 nonterminal、
+special が対象です。
+`(` の前と括弧の内端の通常の空白を詰め、引数 comma の前を0、後を1
+space にします。
 空の引用引数、入れ子、singleton の sequence と choice も保ちます。
 singleton の削除で Db が同じでも原文の call を失うためです。
 末尾 comma は加えません。
@@ -615,8 +583,7 @@ singleton の削除で Db が同じでも原文の call を失うためです。
 入力（escape 表記）:
 `"railroad-beta\nr=sequence ( terminal ( \"first\" ) , choice ( special ( \"note\" ),nonterminal ( \"r\" ) ) , optional ( terminal ( \"\" ) ) , oneOrMore (terminal(\"many\")),zeroOrMore (terminal(\"any\")) );"`。
 
-出力
-([calls/ir-all-output.mmd](../tests/fixtures/railroad/calls/ir-all-output.mmd)):
+出力 ([calls/ir-all-output.mmd](../tests/fixtures/railroad/calls/ir-all-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -637,8 +604,7 @@ EBNF の例外 `-` は両側を通常の1 space にします。
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=left-right;\n"`。
 
-出力
-([exceptions/ebnf-hyphenated-name-output.mmd](../tests/fixtures/railroad/exceptions/ebnf-hyphenated-name-output.mmd)):
+出力 ([exceptions/ebnf-hyphenated-name-output.mmd](../tests/fixtures/railroad/exceptions/ebnf-hyphenated-name-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -659,8 +625,7 @@ EBNF の special sequence は source span 全体を保ちます。
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=?  first  second\t ?;"`。
 
-出力
-([special-sequences/ebnf-content-output.mmd](../tests/fixtures/railroad/special-sequences/ebnf-content-output.mmd)):
+出力 ([special-sequences/ebnf-content-output.mmd](../tests/fixtures/railroad/special-sequences/ebnf-content-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -697,8 +662,7 @@ ABNF は二重引用符だけを認め、backslash を普通の文字として�
 入力（escape 表記）:
 `"railroad-beta\nr=sequence ( terminal ( \"\" ),terminal ( \" \t \" ), nonterminal ( '' ),special(\"%%literal --- <b> plain\"));"`。
 
-出力
-([quotes/ir-empty-and-text-output.mmd](../tests/fixtures/railroad/quotes/ir-empty-and-text-output.mmd)):
+出力 ([quotes/ir-empty-and-text-output.mmd](../tests/fixtures/railroad/quotes/ir-empty-and-text-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -708,8 +672,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=\"\" , '' \" \t \" \"%%literal --- <b> plain\";"`。
 
-出力
-([quotes/ebnf-empty-and-text-output.mmd](../tests/fixtures/railroad/quotes/ebnf-empty-and-text-output.mmd)):
+出力 ([quotes/ebnf-empty-and-text-output.mmd](../tests/fixtures/railroad/quotes/ebnf-empty-and-text-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -721,8 +684,7 @@ railroad-ebnf-beta
 
 設定: `{"singleQuote":true}`。
 
-出力
-([quotes/abnf-backslash-output.mmd](../tests/fixtures/railroad/quotes/abnf-backslash-output.mmd)):
+出力 ([quotes/abnf-backslash-output.mmd](../tests/fixtures/railroad/quotes/abnf-backslash-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -732,8 +694,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nr<-\"\" '' \" \t \" \"%%literal --- <b> plain\";"`。
 
-出力
-([quotes/peg-empty-and-text-output.mmd](../tests/fixtures/railroad/quotes/peg-empty-and-text-output.mmd)):
+出力 ([quotes/peg-empty-and-text-output.mmd](../tests/fixtures/railroad/quotes/peg-empty-and-text-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -743,9 +704,8 @@ railroad-peg-beta
 ### 長い行
 
 printWidth による規則の折返しはしません。
-構造に沿う折返しでも4方言の Db は同じになり得ますが、
-他の平坦な図種と揃え、値、hidden form、trivia、保護区間をまたぐ
-追加の折返し方針を作らない選択です。
+構造に沿う折返しでも4方言の Db は同じになり得ますが、他の平坦な図種と揃え、値、
+hidden form、trivia、保護区間をまたぐ追加の折返し方針を作らない選択です。
 
 [fixture: railroad/long-lines/abnf-width]
 
@@ -760,8 +720,7 @@ printWidth による規則の折返しはしません。
 
 設定: `{"printWidth":20}`。
 
-出力
-([long-lines/ir-width-output.mmd](../tests/fixtures/railroad/long-lines/ir-width-output.mmd)):
+出力 ([long-lines/ir-width-output.mmd](../tests/fixtures/railroad/long-lines/ir-width-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -773,8 +732,7 @@ railroad-beta
 
 設定: `{"printWidth":20}`。
 
-出力
-([long-lines/ebnf-width-output.mmd](../tests/fixtures/railroad/long-lines/ebnf-width-output.mmd)):
+出力 ([long-lines/ebnf-width-output.mmd](../tests/fixtures/railroad/long-lines/ebnf-width-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -786,8 +744,7 @@ railroad-ebnf-beta
 
 設定: `{"printWidth":20}`。
 
-出力
-([long-lines/abnf-width-output.mmd](../tests/fixtures/railroad/long-lines/abnf-width-output.mmd)):
+出力 ([long-lines/abnf-width-output.mmd](../tests/fixtures/railroad/long-lines/abnf-width-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -799,8 +756,7 @@ railroad-abnf-beta
 
 設定: `{"printWidth":20}`。
 
-出力
-([long-lines/peg-width-output.mmd](../tests/fixtures/railroad/long-lines/peg-width-output.mmd)):
+出力 ([long-lines/peg-width-output.mmd](../tests/fixtures/railroad/long-lines/peg-width-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -810,10 +766,10 @@ railroad-peg-beta
 ### 構造上の改行
 
 文法上 padding である通常の CR/LF gap を各位置の空白規則へ揃えます。
-IR は constructor、括弧、引数、comma、EBNF は代入、選択、並び、
-group、例外、postfix が対象です。
-ABNF は代入、選択、並び、完全な repeat と primary、group、
-PEG は代入、選択、並び、prefix、suffix、group が対象です。
+IR は constructor、括弧、引数、comma、EBNF は代入、選択、並び、 group、例外、
+postfix が対象です。
+ABNF は代入、選択、並び、完全な repeat と primary、group、 PEG は代入、選択、
+並び、prefix、suffix、group が対象です。
 名前、複合代入記号、repeat の内部、numeric value は分割しません。
 コメント、directive、hidden の境界、保護された semicolon の改行は保ちます。
 それらの join で受理や Db が変わるためです。
@@ -829,8 +785,7 @@ PEG は代入、選択、並び、prefix、suffix、group が対象です。
 入力（escape 表記）:
 `"railroad-beta\nr\n=\nsequence\n(terminal\n(\n\"joined\"\n)\n,\nterminal(\"tail\")\n)\n;"`。
 
-出力
-([component-newlines/ir-components-output.mmd](../tests/fixtures/railroad/component-newlines/ir-components-output.mmd)):
+出力 ([component-newlines/ir-components-output.mmd](../tests/fixtures/railroad/component-newlines/ir-components-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -840,8 +795,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr\n::=\n(\n\"joined\"\n,\nother\n)\n-\n\"except\"\n+\n|\n[\n\"tail\"\n]\n;"`。
 
-出力
-([component-newlines/ebnf-components-output.mmd](../tests/fixtures/railroad/component-newlines/ebnf-components-output.mmd)):
+出力 ([component-newlines/ebnf-components-output.mmd](../tests/fixtures/railroad/component-newlines/ebnf-components-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -851,8 +805,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\nr\n=\n2*4\n(\n\"joined\"\n/\nother\n)\n[\n\"tail\"\n]\n;"`。
 
-出力
-([component-newlines/abnf-components-output.mmd](../tests/fixtures/railroad/component-newlines/abnf-components-output.mmd)):
+出力 ([component-newlines/abnf-components-output.mmd](../tests/fixtures/railroad/component-newlines/abnf-components-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -862,8 +815,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nr\n<-\n&\n(\n\"joined\"\n/\nother\n)\n+\n!\n.\n;"`。
 
-出力
-([component-newlines/peg-components-output.mmd](../tests/fixtures/railroad/component-newlines/peg-components-output.mmd)):
+出力 ([component-newlines/peg-components-output.mmd](../tests/fixtures/railroad/component-newlines/peg-components-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -872,8 +824,8 @@ railroad-peg-beta
 
 ### 複数行の値
 
-文字列、EBNF special sequence、metadata block の物理改行、
-内部空行、継続列を保ちます。
+文字列、EBNF special sequence、metadata block の物理改行、内部空行、
+継続列を保ちます。
 値を一つの atom とし、後続行に構造の字下げを足しません。
 内容の reflow や字下げ変更は PEG predicate の label を含め Db を変えるためです。
 説明ブロックの外端と別行の閉じ括弧は共有の説明規則に従います。
@@ -889,8 +841,7 @@ railroad-peg-beta
 入力（escape 表記）:
 `"railroad-beta\nr=terminal(\"first\n   continuation\n\nlast\");"`。
 
-出力
-([multiline-values/ir-columns-output.mmd](../tests/fixtures/railroad/multiline-values/ir-columns-output.mmd)):
+出力 ([multiline-values/ir-columns-output.mmd](../tests/fixtures/railroad/multiline-values/ir-columns-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -903,8 +854,7 @@ last");
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=\"first\n   continuation\n\nlast\";"`。
 
-出力
-([multiline-values/ebnf-columns-output.mmd](../tests/fixtures/railroad/multiline-values/ebnf-columns-output.mmd)):
+出力 ([multiline-values/ebnf-columns-output.mmd](../tests/fixtures/railroad/multiline-values/ebnf-columns-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -917,8 +867,7 @@ last";
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=\"first\n   continuation\n\nlast\";"`。
 
-出力
-([multiline-values/abnf-columns-output.mmd](../tests/fixtures/railroad/multiline-values/abnf-columns-output.mmd)):
+出力 ([multiline-values/abnf-columns-output.mmd](../tests/fixtures/railroad/multiline-values/abnf-columns-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -931,8 +880,7 @@ last";
 入力（escape 表記）:
 `"railroad-peg-beta\nr<-&\"first\n   continuation\n\nlast\";"`。
 
-出力
-([multiline-values/peg-columns-output.mmd](../tests/fixtures/railroad/multiline-values/peg-columns-output.mmd)):
+出力 ([multiline-values/peg-columns-output.mmd](../tests/fixtures/railroad/multiline-values/peg-columns-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -996,8 +944,7 @@ null と空白だけの値は裸の `title` にします。
 入力（escape 表記）:
 `"railroad-beta\ntitle\n%% next title\nr=terminal(\"bare title\");"`。
 
-出力
-([title/ir-next-line-output.mmd](../tests/fixtures/railroad/title/ir-next-line-output.mmd)):
+出力 ([title/ir-next-line-output.mmd](../tests/fixtures/railroad/title/ir-next-line-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -1009,8 +956,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\ntitle\n%% next title\nr=\"bare title\";"`。
 
-出力
-([title/ebnf-next-line-output.mmd](../tests/fixtures/railroad/title/ebnf-next-line-output.mmd)):
+出力 ([title/ebnf-next-line-output.mmd](../tests/fixtures/railroad/title/ebnf-next-line-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -1022,8 +968,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\ntitle\n%% next\nr=\"bare title\";"`。
 
-出力
-([title/abnf-next-line-output.mmd](../tests/fixtures/railroad/title/abnf-next-line-output.mmd)):
+出力 ([title/abnf-next-line-output.mmd](../tests/fixtures/railroad/title/abnf-next-line-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -1035,8 +980,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\ntitle\n%% next title\nr<-\"bare title\";"`。
 
-出力
-([title/peg-next-line-output.mmd](../tests/fixtures/railroad/title/peg-next-line-output.mmd)):
+出力 ([title/peg-next-line-output.mmd](../tests/fixtures/railroad/title/peg-next-line-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -1073,8 +1017,7 @@ colon を keyword に付け、非空値の前を通常の1 space にします。
 入力（escape 表記）:
 `"railroad-beta\naccTitle:\naccDescr:\nr=terminal(\"empty access\");"`。
 
-出力
-([accessibility-lines/ir-empty-output.mmd](../tests/fixtures/railroad/accessibility-lines/ir-empty-output.mmd)):
+出力 ([accessibility-lines/ir-empty-output.mmd](../tests/fixtures/railroad/accessibility-lines/ir-empty-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -1086,8 +1029,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\naccTitle: \naccDescr: {literal}\nr=\"empty access\";"`。
 
-出力
-([accessibility-lines/ebnf-empty-output.mmd](../tests/fixtures/railroad/accessibility-lines/ebnf-empty-output.mmd)):
+出力 ([accessibility-lines/ebnf-empty-output.mmd](../tests/fixtures/railroad/accessibility-lines/ebnf-empty-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -1099,8 +1041,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\naccTitle: \n%% next\naccDescr:\nr=\"empty access\";"`。
 
-出力
-([accessibility-lines/abnf-empty-output.mmd](../tests/fixtures/railroad/accessibility-lines/abnf-empty-output.mmd)):
+出力 ([accessibility-lines/abnf-empty-output.mmd](../tests/fixtures/railroad/accessibility-lines/abnf-empty-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -1113,8 +1054,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\naccTitle:\naccDescr: \n%% next\nr<-\"empty access\";"`。
 
-出力
-([accessibility-lines/peg-empty-output.mmd](../tests/fixtures/railroad/accessibility-lines/peg-empty-output.mmd)):
+出力 ([accessibility-lines/peg-empty-output.mmd](../tests/fixtures/railroad/accessibility-lines/peg-empty-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -1128,8 +1068,8 @@ railroad-peg-beta
 
 共有の common-description 配置から layoutDescriptionBlock を使います。
 空白だけの内部は、囲む内容がないため `{}` にします。
-`accDescr{` の接触と `{Text}` を保ち、
-外端に書かれた空白は存在する側に1 space 残します。
+`accDescr{` の接触と `{Text}` を保ち、外端に書かれた空白は存在する側に1
+space 残します。
 keyword と opener の間の通常の改行は join します。
 非空の継続列と内部空行を保ち、別行の閉じ括弧を文の位置へ揃えます。
 コメントや directive だけの block は共有 fallback で内容を残します。
@@ -1161,8 +1101,7 @@ keyword と opener の間の通常の改行は join します。
 入力（escape 表記）:
 `"railroad-beta\naccDescr{Text}\naccDescr { Text }\naccDescr { \n\t }\nr=terminal(\"block\");"`。
 
-出力
-([description-blocks/ir-edges-output.mmd](../tests/fixtures/railroad/description-blocks/ir-edges-output.mmd)):
+出力 ([description-blocks/ir-edges-output.mmd](../tests/fixtures/railroad/description-blocks/ir-edges-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -1175,8 +1114,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\naccDescr{Text}\naccDescr { Text }\naccDescr { \n\t }\nr=\"block\";"`。
 
-出力
-([description-blocks/ebnf-edges-output.mmd](../tests/fixtures/railroad/description-blocks/ebnf-edges-output.mmd)):
+出力 ([description-blocks/ebnf-edges-output.mmd](../tests/fixtures/railroad/description-blocks/ebnf-edges-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -1189,8 +1127,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\naccDescr{Text}\naccDescr { Text }\naccDescr { \n\t }\nr=\"block\";"`。
 
-出力
-([description-blocks/abnf-edges-output.mmd](../tests/fixtures/railroad/description-blocks/abnf-edges-output.mmd)):
+出力 ([description-blocks/abnf-edges-output.mmd](../tests/fixtures/railroad/description-blocks/abnf-edges-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -1203,8 +1140,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\naccDescr{Text}\naccDescr { Text }\naccDescr { \n\t }\nr<-\"block\";"`。
 
-出力
-([description-blocks/peg-edges-output.mmd](../tests/fixtures/railroad/description-blocks/peg-edges-output.mmd)):
+出力 ([description-blocks/peg-edges-output.mmd](../tests/fixtures/railroad/description-blocks/peg-edges-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -1275,8 +1211,7 @@ ABNF に `;` の行コメント、PEG に `#` の行コメントがあります�
 入力（escape 表記）:
 `"railroad-beta\nr=/*first\n second*/terminal(\"comment\");"`。
 
-出力
-([comments/ir-block-columns-output.mmd](../tests/fixtures/railroad/comments/ir-block-columns-output.mmd)):
+出力 ([comments/ir-block-columns-output.mmd](../tests/fixtures/railroad/comments/ir-block-columns-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -1287,8 +1222,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=(*first\n second*)\"comment\";"`。
 
-出力
-([comments/ebnf-block-columns-output.mmd](../tests/fixtures/railroad/comments/ebnf-block-columns-output.mmd)):
+出力 ([comments/ebnf-block-columns-output.mmd](../tests/fixtures/railroad/comments/ebnf-block-columns-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -1299,8 +1233,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=\"comment\"; note\n;"`。
 
-出力
-([comments/abnf-before-terminator-output.mmd](../tests/fixtures/railroad/comments/abnf-before-terminator-output.mmd)):
+出力 ([comments/abnf-before-terminator-output.mmd](../tests/fixtures/railroad/comments/abnf-before-terminator-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -1311,8 +1244,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\n#\nr<-\"bare comment\";#"`。
 
-出力
-([comments/peg-bare-output.mmd](../tests/fixtures/railroad/comments/peg-bare-output.mmd)):
+出力 ([comments/peg-bare-output.mmd](../tests/fixtures/railroad/comments/peg-bare-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -1353,8 +1285,7 @@ predicate の operand を変えるためです。
 入力（escape 表記）:
 `"railroad-beta\nr%%{wrap}%% = %%{wrap}%%terminal(\"a%%{wrap}%%last\");"`。
 
-出力
-([global-directives/ir-contact-output.mmd](../tests/fixtures/railroad/global-directives/ir-contact-output.mmd)):
+出力 ([global-directives/ir-contact-output.mmd](../tests/fixtures/railroad/global-directives/ir-contact-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -1364,8 +1295,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr = %%{wrap}%% \"global\";"`。
 
-出力
-([global-directives/ebnf-contact-output.mmd](../tests/fixtures/railroad/global-directives/ebnf-contact-output.mmd)):
+出力 ([global-directives/ebnf-contact-output.mmd](../tests/fixtures/railroad/global-directives/ebnf-contact-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -1375,8 +1305,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\nr=2%%{wrap}%%*%%{wrap}%%4 %%{wrap}%% \"global\" %x4%%{wrap}%%1;"`。
 
-出力
-([global-directives/abnf-components-output.mmd](../tests/fixtures/railroad/global-directives/abnf-components-output.mmd)):
+出力 ([global-directives/abnf-components-output.mmd](../tests/fixtures/railroad/global-directives/abnf-components-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -1386,8 +1315,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nr <- &%%{wrap}%% \"global\";"`。
 
-出力
-([global-directives/peg-contact-output.mmd](../tests/fixtures/railroad/global-directives/peg-contact-output.mmd)):
+出力 ([global-directives/peg-contact-output.mmd](../tests/fixtures/railroad/global-directives/peg-contact-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -1401,8 +1329,8 @@ RailroadIgnoredText を AST の各 owner で range 全体から1回印字しま�
 predicate と operand の gap を保ちます。
 本文の opener は字下げできますが、内部と closer は元の列を保ちます。
 native form の YAML や JSON を整形せず、trivia を除いた value も使いません。
-三つの fence が一つの form になる場合と、
-失敗した directive opener が percent comment になる場合も保ちます。
+三つの fence が一つの form になる場合と、失敗した directive opener が percent
+comment になる場合も保ちます。
 受理や opaque な文字の位置を変えないためです。
 
 [fixture: railroad/hidden-forms/abnf-fallback]
@@ -1442,8 +1370,7 @@ native form の YAML や JSON を整形せず、trivia を除いた value も使
 入力（escape 表記）:
 `"railroad-beta\n%%{!unclosed note\nr=terminal(\"fallback\");"`。
 
-出力
-([hidden-forms/ir-fallback-output.mmd](../tests/fixtures/railroad/hidden-forms/ir-fallback-output.mmd)):
+出力 ([hidden-forms/ir-fallback-output.mmd](../tests/fixtures/railroad/hidden-forms/ir-fallback-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -1454,8 +1381,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\n%%{!unclosed note\nr=\"fallback\";"`。
 
-出力
-([hidden-forms/ebnf-fallback-output.mmd](../tests/fixtures/railroad/hidden-forms/ebnf-fallback-output.mmd)):
+出力 ([hidden-forms/ebnf-fallback-output.mmd](../tests/fixtures/railroad/hidden-forms/ebnf-fallback-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -1466,8 +1392,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\n%%{!unclosed note\nr=\"fallback\";"`。
 
-出力
-([hidden-forms/abnf-fallback-output.mmd](../tests/fixtures/railroad/hidden-forms/abnf-fallback-output.mmd)):
+出力 ([hidden-forms/abnf-fallback-output.mmd](../tests/fixtures/railroad/hidden-forms/abnf-fallback-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -1478,8 +1403,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\n%%{!unclosed note\nr<-\"fallback\";"`。
 
-出力
-([hidden-forms/peg-fallback-output.mmd](../tests/fixtures/railroad/hidden-forms/peg-fallback-output.mmd)):
+出力 ([hidden-forms/peg-fallback-output.mmd](../tests/fixtures/railroad/hidden-forms/peg-fallback-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -1548,8 +1472,7 @@ inline の接触を共有の hidden-gap 保護で残します。
 入力（escape 表記）:
 `"railroad-beta accDescr{moved}\n%%{!after metadata}%%\n\nr=terminal(\"after moved\");"`。
 
-出力
-([hidden-boundaries/ir-moved-before-hidden-output.mmd](../tests/fixtures/railroad/hidden-boundaries/ir-moved-before-hidden-output.mmd)):
+出力 ([hidden-boundaries/ir-moved-before-hidden-output.mmd](../tests/fixtures/railroad/hidden-boundaries/ir-moved-before-hidden-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -1562,8 +1485,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta accDescr{moved}\n%%{!after metadata}%%\n\nr=\"after moved\";"`。
 
-出力
-([hidden-boundaries/ebnf-moved-before-hidden-output.mmd](../tests/fixtures/railroad/hidden-boundaries/ebnf-moved-before-hidden-output.mmd)):
+出力 ([hidden-boundaries/ebnf-moved-before-hidden-output.mmd](../tests/fixtures/railroad/hidden-boundaries/ebnf-moved-before-hidden-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -1576,8 +1498,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta accDescr{moved}\n%%{!after metadata}%%\n\nr=\"after moved\";"`。
 
-出力
-([hidden-boundaries/abnf-moved-before-hidden-output.mmd](../tests/fixtures/railroad/hidden-boundaries/abnf-moved-before-hidden-output.mmd)):
+出力 ([hidden-boundaries/abnf-moved-before-hidden-output.mmd](../tests/fixtures/railroad/hidden-boundaries/abnf-moved-before-hidden-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -1590,8 +1511,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta accDescr{moved}\n%%{!after metadata}%%\n\nr<-\"after moved\";"`。
 
-出力
-([hidden-boundaries/peg-moved-before-hidden-output.mmd](../tests/fixtures/railroad/hidden-boundaries/peg-moved-before-hidden-output.mmd)):
+出力 ([hidden-boundaries/peg-moved-before-hidden-output.mmd](../tests/fixtures/railroad/hidden-boundaries/peg-moved-before-hidden-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -1606,8 +1526,8 @@ railroad-peg-beta
 textBeforeHeader があれば、見出し keyword までの prefix 全体を保ちます。
 先頭 LF、passed bare trivia、保持 YAML、second-scan form、
 real と hidden の順序も対象です。
-共有の keepsPrefix により、無効だった YAML が frontmatter になって
-埋込み title や設定を変えるのを防ぎます。
+共有の keepsPrefix により、
+無効だった YAML が frontmatter になって埋込み title や設定を変えるのを防ぎます。
 コメントだけの通常の prefix は root の整形に従います。
 
 [fixture: railroad/retained-prefix/abnf-leading]
@@ -1639,8 +1559,7 @@ real と hidden の順序も対象です。
 入力（escape 表記）:
 `"\n---\nconfig: {railroad: {fontSize: 19}}\n---\nrailroad-beta\nr=terminal(\"prefix\");"`。
 
-出力
-([retained-prefix/ir-leading-output.mmd](../tests/fixtures/railroad/retained-prefix/ir-leading-output.mmd)):
+出力 ([retained-prefix/ir-leading-output.mmd](../tests/fixtures/railroad/retained-prefix/ir-leading-output.mmd)):
 
 ```mmd
 
@@ -1654,8 +1573,7 @@ railroad-beta
 入力（escape 表記）:
 `"\n---\nconfig: {railroad: {fontSize: 19}}\n---\nrailroad-ebnf-beta\nr=\"prefix\";"`。
 
-出力
-([retained-prefix/ebnf-leading-output.mmd](../tests/fixtures/railroad/retained-prefix/ebnf-leading-output.mmd)):
+出力 ([retained-prefix/ebnf-leading-output.mmd](../tests/fixtures/railroad/retained-prefix/ebnf-leading-output.mmd)):
 
 ```mmd
 
@@ -1669,8 +1587,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"\n---\nconfig: {railroad: {fontSize: 19}}\n---\nrailroad-abnf-beta\nr=\"prefix\";"`。
 
-出力
-([retained-prefix/abnf-leading-output.mmd](../tests/fixtures/railroad/retained-prefix/abnf-leading-output.mmd)):
+出力 ([retained-prefix/abnf-leading-output.mmd](../tests/fixtures/railroad/retained-prefix/abnf-leading-output.mmd)):
 
 ```mmd
 
@@ -1684,8 +1601,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"\n---\nconfig: {railroad: {fontSize: 19}}\n---\nrailroad-peg-beta\nr<-\"prefix\";"`。
 
-出力
-([retained-prefix/peg-leading-output.mmd](../tests/fixtures/railroad/retained-prefix/peg-leading-output.mmd)):
+出力 ([retained-prefix/peg-leading-output.mmd](../tests/fixtures/railroad/retained-prefix/peg-leading-output.mmd)):
 
 ```mmd
 
@@ -1711,17 +1627,15 @@ railroad では、global directive を除いた後の原文の行に、
 行の中のすべての文、コメント、native hidden form と、その間の空白を含みます。
 前後の行とは結合しません。
 directive の除去で、これらの文字列が複数の物理行をまたいでできる場合は、
-またがる行をすべて保ちます。
-[fixture: railroad/semicolons/native-terminal-value]
+またがる行をすべて保ちます。 [fixture: railroad/semicolons/native-terminal-value]
 
 [fixture: railroad/semicolons/ir-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/ebnf-word-unclosed-directive-lines]
 [fixture: railroad/semicolons/abnf-word-unclosed-directive-lines]
-[fixture: railroad/semicolons/peg-word-unclosed-directive-lines]
-ここでいう行は、mermaid.js が1行として読む範囲全体です。
-U+2028 や U+2029 の後の comment line が、
-語を含む行の前、後、両方のテキストをつなぐ場合も、
-つながる原文の行をすべて保ちます。
+[fixture: railroad/semicolons/peg-word-unclosed-directive-lines] ここでいう行は、
+mermaid.js が1行として読む範囲全体です。
+U+2028 や U+2029 の後の comment line が、語を含む行の前、後、
+両方のテキストをつなぐ場合も、つながる原文の行をすべて保ちます。
 最初の行の字下げは本文の1段に揃え、中身と2行目以降の列は書かれたままです。
 
 [test: railroad/semicolons/ir-style-comment-before-ls]
@@ -2064,8 +1978,7 @@ directive の除去で接する文字は対象にします。
 入力（escape 表記）:
 `"railroad-beta\n accDescr { style:#x } r = sequence(terminal(\"a;b\"),terminal(\"tail\"));;"`。
 
-出力
-([semicolons/ir-protected-output.mmd](../tests/fixtures/railroad/semicolons/ir-protected-output.mmd)):
+出力 ([semicolons/ir-protected-output.mmd](../tests/fixtures/railroad/semicolons/ir-protected-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2075,8 +1988,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\n accDescr { style:#x } r = \"a;b\", \"tail\";;"`。
 
-出力
-([semicolons/ebnf-protected-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-protected-output.mmd)):
+出力 ([semicolons/ebnf-protected-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-protected-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2086,8 +1998,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\n r=\"first\" ; content; protected\n \"last\";\n"`。
 
-出力
-([semicolons/abnf-comment-content-output.mmd](../tests/fixtures/railroad/semicolons/abnf-comment-content-output.mmd)):
+出力 ([semicolons/abnf-comment-content-output.mmd](../tests/fixtures/railroad/semicolons/abnf-comment-content-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2098,8 +2009,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\n accDescr { style:#x } r <- \"a;b\" \"tail\";;"`。
 
-出力
-([semicolons/peg-protected-output.mmd](../tests/fixtures/railroad/semicolons/peg-protected-output.mmd)):
+出力 ([semicolons/peg-protected-output.mmd](../tests/fixtures/railroad/semicolons/peg-protected-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2109,8 +2019,7 @@ railroad-peg-beta
 入力（escape 表記）:
 `"railroad-beta\nstyle=terminal(\":\" )/*#*/;"`。
 
-出力
-([semicolons/ir-style-call-close-output.mmd](../tests/fixtures/railroad/semicolons/ir-style-call-close-output.mmd)):
+出力 ([semicolons/ir-style-call-close-output.mmd](../tests/fixtures/railroad/semicolons/ir-style-call-close-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2120,8 +2029,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\nstyle=(\":\"\n)%%{!#}%% ;"`。
 
-出力
-([semicolons/abnf-style-group-newline-output.mmd](../tests/fixtures/railroad/semicolons/abnf-style-group-newline-output.mmd)):
+出力 ([semicolons/abnf-style-group-newline-output.mmd](../tests/fixtures/railroad/semicolons/abnf-style-group-newline-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2132,8 +2040,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-beta\n   r=terminal(\"a;b\");"`。
 
-出力
-([semicolons/ir-protected-rule-indent-output.mmd](../tests/fixtures/railroad/semicolons/ir-protected-rule-indent-output.mmd)):
+出力 ([semicolons/ir-protected-rule-indent-output.mmd](../tests/fixtures/railroad/semicolons/ir-protected-rule-indent-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2143,8 +2050,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-beta\n   r=terminal(\n \"a;b\"\n);"`。
 
-出力
-([semicolons/ir-protected-multiline-indent-output.mmd](../tests/fixtures/railroad/semicolons/ir-protected-multiline-indent-output.mmd)):
+出力 ([semicolons/ir-protected-multiline-indent-output.mmd](../tests/fixtures/railroad/semicolons/ir-protected-multiline-indent-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2156,8 +2062,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-beta\n/*style*/r=terminal(\":\"\n)/*#*/;"`。
 
-出力
-([semicolons/ir-leading-c-output.mmd](../tests/fixtures/railroad/semicolons/ir-leading-c-output.mmd)):
+出力 ([semicolons/ir-leading-c-output.mmd](../tests/fixtures/railroad/semicolons/ir-leading-c-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2168,8 +2073,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\n(*style*)r=(\":\"\n)(*#*);"`。
 
-出力
-([semicolons/ebnf-leading-iso-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-leading-iso-output.mmd)):
+出力 ([semicolons/ebnf-leading-iso-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-leading-iso-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2180,8 +2084,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\n%%{!style}%% r=(\":\"\n)%%{!#}%% ;"`。
 
-出力
-([semicolons/abnf-leading-hidden-output.mmd](../tests/fixtures/railroad/semicolons/abnf-leading-hidden-output.mmd)):
+出力 ([semicolons/abnf-leading-hidden-output.mmd](../tests/fixtures/railroad/semicolons/abnf-leading-hidden-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2192,8 +2095,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\n%%{!style}%% r<-(\":\"\n)%%{!#}%% ;"`。
 
-出力
-([semicolons/peg-leading-hidden-output.mmd](../tests/fixtures/railroad/semicolons/peg-leading-hidden-output.mmd)):
+出力 ([semicolons/peg-leading-hidden-output.mmd](../tests/fixtures/railroad/semicolons/peg-leading-hidden-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2204,8 +2106,7 @@ railroad-peg-beta
 入力（escape 表記）:
 `"railroad-beta\n/*x\nstyle*/r=terminal(\":\"\n)/*#*/;"`。
 
-出力
-([semicolons/ir-leading-multiline-c-output.mmd](../tests/fixtures/railroad/semicolons/ir-leading-multiline-c-output.mmd)):
+出力 ([semicolons/ir-leading-multiline-c-output.mmd](../tests/fixtures/railroad/semicolons/ir-leading-multiline-c-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2217,8 +2118,7 @@ style*/r=terminal(":"
 入力（escape 表記）:
 `"railroad-beta /*style*/r=terminal(\":\"\n)/*#*/;"`。
 
-出力
-([semicolons/ir-header-leading-c-output.mmd](../tests/fixtures/railroad/semicolons/ir-header-leading-c-output.mmd)):
+出力 ([semicolons/ir-header-leading-c-output.mmd](../tests/fixtures/railroad/semicolons/ir-header-leading-c-output.mmd)):
 
 ```mmd
 railroad-beta /*style*/r=terminal(":"
@@ -2228,8 +2128,7 @@ railroad-beta /*style*/r=terminal(":"
 入力（escape 表記）:
 `"railroad-beta\na=terminal(\"style\");b=terminal(\":\"\n)/*#*/;"`。
 
-出力
-([semicolons/ir-after-rule-output.mmd](../tests/fixtures/railroad/semicolons/ir-after-rule-output.mmd)):
+出力 ([semicolons/ir-after-rule-output.mmd](../tests/fixtures/railroad/semicolons/ir-after-rule-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2240,8 +2139,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\naccDescr{style} b=(\":\"\n)/*#*/;"`。
 
-出力
-([semicolons/ebnf-after-description-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-after-description-output.mmd)):
+出力 ([semicolons/ebnf-after-description-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-after-description-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2252,8 +2150,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\naccDescr{style} b=(\":\"\n)%%{!#}%% ;"`。
 
-出力
-([semicolons/abnf-after-description-output.mmd](../tests/fixtures/railroad/semicolons/abnf-after-description-output.mmd)):
+出力 ([semicolons/abnf-after-description-output.mmd](../tests/fixtures/railroad/semicolons/abnf-after-description-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2264,8 +2161,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nstyle<-\"a\";b<-(\":\"\n)%%{!#}%% ;"`。
 
-出力
-([semicolons/peg-after-rule-name-output.mmd](../tests/fixtures/railroad/semicolons/peg-after-rule-name-output.mmd)):
+出力 ([semicolons/peg-after-rule-name-output.mmd](../tests/fixtures/railroad/semicolons/peg-after-rule-name-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2276,8 +2172,7 @@ railroad-peg-beta
 入力（escape 表記）:
 `"railroad-beta\naccDescr{style} %%{!keep}%% b=terminal(\":\"\n)/*#*/;"`。
 
-出力
-([semicolons/ir-kept-description-hidden-output.mmd](../tests/fixtures/railroad/semicolons/ir-kept-description-hidden-output.mmd)):
+出力 ([semicolons/ir-kept-description-hidden-output.mmd](../tests/fixtures/railroad/semicolons/ir-kept-description-hidden-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2288,8 +2183,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\na=\"x\";(*classDef*) b=(\":\"\n)(*#*);"`。
 
-出力
-([semicolons/ebnf-comment-after-moved-rule-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-comment-after-moved-rule-output.mmd)):
+出力 ([semicolons/ebnf-comment-after-moved-rule-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-comment-after-moved-rule-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2300,8 +2194,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\n%%{style}%% b=(\":\"\n)%%{!#}%% ;"`。
 
-出力
-([semicolons/abnf-removed-directive-word-output.mmd](../tests/fixtures/railroad/semicolons/abnf-removed-directive-word-output.mmd)):
+出力 ([semicolons/abnf-removed-directive-word-output.mmd](../tests/fixtures/railroad/semicolons/abnf-removed-directive-word-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2311,8 +2204,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\nr<-(\"sty%%{wrap}%%le:\"\n)%%{!#}%% ;"`。
 
-出力
-([semicolons/peg-directive-split-style-output.mmd](../tests/fixtures/railroad/semicolons/peg-directive-split-style-output.mmd)):
+出力 ([semicolons/peg-directive-split-style-output.mmd](../tests/fixtures/railroad/semicolons/peg-directive-split-style-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2323,8 +2215,7 @@ railroad-peg-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=?style:#?\n;"`。
 
-出力
-([semicolons/ebnf-terminator-after-hash-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-terminator-after-hash-output.mmd)):
+出力 ([semicolons/ebnf-terminator-after-hash-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-terminator-after-hash-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2335,8 +2226,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-beta\nstyle\n=terminal(\":#\");"`。
 
-出力
-([semicolons/ir-assignment-after-word-output.mmd](../tests/fixtures/railroad/semicolons/ir-assignment-after-word-output.mmd)):
+出力 ([semicolons/ir-assignment-after-word-output.mmd](../tests/fixtures/railroad/semicolons/ir-assignment-after-word-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2346,8 +2236,7 @@ railroad-beta
 
 入力（escape 表記）: `"railroad-abnf-beta\nstyle=(\":\" )%%{!#}%% ; c\n;"`。
 
-出力
-([semicolons/abnf-comment-marker-spaced-output.mmd](../tests/fixtures/railroad/semicolons/abnf-comment-marker-spaced-output.mmd)):
+出力 ([semicolons/abnf-comment-marker-spaced-output.mmd](../tests/fixtures/railroad/semicolons/abnf-comment-marker-spaced-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2357,8 +2246,7 @@ railroad-abnf-beta
 
 入力（escape 表記）: `"railroad-abnf-beta\nstyle=(\":\"\n)%%{!#}%% ; c\n;"`。
 
-出力
-([semicolons/abnf-comment-marker-multiline-output.mmd](../tests/fixtures/railroad/semicolons/abnf-comment-marker-multiline-output.mmd)):
+出力 ([semicolons/abnf-comment-marker-multiline-output.mmd](../tests/fixtures/railroad/semicolons/abnf-comment-marker-multiline-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2370,8 +2258,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-beta\n  a=terminal( \"x\" );style=terminal( \"y\" );b=terminal( \"z\" );"`。
 
-出力
-([semicolons/ir-word-multiple-statements-output.mmd](../tests/fixtures/railroad/semicolons/ir-word-multiple-statements-output.mmd)):
+出力 ([semicolons/ir-word-multiple-statements-output.mmd](../tests/fixtures/railroad/semicolons/ir-word-multiple-statements-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2380,8 +2267,7 @@ railroad-beta
 
 入力（escape 表記）: `"railroad-abnf-beta\n  accDescr{note} style=( \"x\" );"`。
 
-出力
-([semicolons/abnf-word-multiple-statements-output.mmd](../tests/fixtures/railroad/semicolons/abnf-word-multiple-statements-output.mmd)):
+出力 ([semicolons/abnf-word-multiple-statements-output.mmd](../tests/fixtures/railroad/semicolons/abnf-word-multiple-statements-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2390,8 +2276,7 @@ railroad-abnf-beta
 
 入力（escape 表記）: `"railroad-peg-beta\n r<-( \"style\" );"`。
 
-出力
-([semicolons/peg-word-quoted-output.mmd](../tests/fixtures/railroad/semicolons/peg-word-quoted-output.mmd)):
+出力 ([semicolons/peg-word-quoted-output.mmd](../tests/fixtures/railroad/semicolons/peg-word-quoted-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2400,8 +2285,7 @@ railroad-peg-beta
 
 入力（escape 表記）: `"railroad-ebnf-beta\n myclassDef=( \"x\" );"`。
 
-出力
-([semicolons/ebnf-word-rule-name-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-word-rule-name-output.mmd)):
+出力 ([semicolons/ebnf-word-rule-name-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-word-rule-name-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2411,8 +2295,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-beta\n   /*style*/  /*kept*/\nr=terminal( \"x\" );"`。
 
-出力
-([semicolons/ir-word-comment-line-output.mmd](../tests/fixtures/railroad/semicolons/ir-word-comment-line-output.mmd)):
+出力 ([semicolons/ir-word-comment-line-output.mmd](../tests/fixtures/railroad/semicolons/ir-word-comment-line-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2423,8 +2306,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\nr=( \"class%%{init:\n{}}%%Def\" );"`。
 
-出力
-([semicolons/ebnf-word-directive-lines-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-word-directive-lines-output.mmd)):
+出力 ([semicolons/ebnf-word-directive-lines-output.mmd](../tests/fixtures/railroad/semicolons/ebnf-word-directive-lines-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2435,8 +2317,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\na=(\n\"x\"\n);\nstyle=( \"y\" );\nb=(\n\"z\"\n);"`。
 
-出力
-([semicolons/abnf-word-neighbor-boundaries-output.mmd](../tests/fixtures/railroad/semicolons/abnf-word-neighbor-boundaries-output.mmd)):
+出力 ([semicolons/abnf-word-neighbor-boundaries-output.mmd](../tests/fixtures/railroad/semicolons/abnf-word-neighbor-boundaries-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2447,8 +2328,7 @@ railroad-abnf-beta
 
 入力（escape 表記）: `"railroad-peg-beta\nr<-(\n\"classDef\"\n\"x\"\n);"`。
 
-出力
-([semicolons/peg-word-middle-line-output.mmd](../tests/fixtures/railroad/semicolons/peg-word-middle-line-output.mmd)):
+出力 ([semicolons/peg-word-middle-line-output.mmd](../tests/fixtures/railroad/semicolons/peg-word-middle-line-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2461,11 +2341,11 @@ railroad-peg-beta
 ### 空行
 
 通常の連続空行を最大1行にし、文書と本文の端の空行を除きます。
-通常の空白だけの行を空にし、
-見出しと完結した構造の無害な ASCII padding を除きます。
+通常の空白だけの行を空にし、見出しと完結した構造の無害な ASCII
+padding を除きます。
 他の平坦な図種と同じ見通しにするためです。
-値、コメント末尾、directive と hidden の内部、必要な closer padding、
-prefix、保護区間は各規則に従います。
+値、コメント末尾、directive と hidden の内部、必要な closer padding、 prefix、
+保護区間は各規則に従います。
 ABNF の見かけの終端後の space は無害と推測せず、
 AST がコメントとして読んだ結果に従います。
 
@@ -2480,8 +2360,7 @@ AST がコメントとして読んだ結果に従います。
 入力（escape 表記）:
 `"\nrailroad-beta \t\n\n\nr=terminal(\"blank\"); \t\n\n \t\ns=terminal(\"tail\");\n\n"`。
 
-出力
-([blank-lines/ir-collapse-output.mmd](../tests/fixtures/railroad/blank-lines/ir-collapse-output.mmd)):
+出力 ([blank-lines/ir-collapse-output.mmd](../tests/fixtures/railroad/blank-lines/ir-collapse-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2493,8 +2372,7 @@ railroad-beta
 入力（escape 表記）:
 `"\nrailroad-ebnf-beta \t\n\n\nr=\"blank\"; \t\n\n\ns=\"tail\";\n\n"`。
 
-出力
-([blank-lines/ebnf-collapse-output.mmd](../tests/fixtures/railroad/blank-lines/ebnf-collapse-output.mmd)):
+出力 ([blank-lines/ebnf-collapse-output.mmd](../tests/fixtures/railroad/blank-lines/ebnf-collapse-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2506,8 +2384,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"\nrailroad-abnf-beta \t\n\n\nr=\"blank\";\n\n \t\ns=\"tail\";\n\n"`。
 
-出力
-([blank-lines/abnf-collapse-output.mmd](../tests/fixtures/railroad/blank-lines/abnf-collapse-output.mmd)):
+出力 ([blank-lines/abnf-collapse-output.mmd](../tests/fixtures/railroad/blank-lines/abnf-collapse-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2519,8 +2396,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"\nrailroad-peg-beta \t\n\n\nr<-\"blank\"; \t\n\n\ns<-\"tail\";\n\n"`。
 
-出力
-([blank-lines/peg-collapse-output.mmd](../tests/fixtures/railroad/blank-lines/peg-collapse-output.mmd)):
+出力 ([blank-lines/peg-collapse-output.mmd](../tests/fixtures/railroad/blank-lines/peg-collapse-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2531,8 +2407,8 @@ railroad-peg-beta
 
 ### frontmatter の YAML
 
-安全な実際の先頭 frontmatter だけを、
-共有の guard 付き YAML formatter へ渡します。
+安全な実際の先頭 frontmatter だけを、共有の guard 付き YAML
+formatter へ渡します。
 埋込みの効果を保ちながら YAML を読みやすくするためです。
 不正な YAML、字下げした fence、closer padding、HTML quote の危険がある形、
 本文の整形で fence が現れる形、保持 prefix の YAML は書かれたままにします。
@@ -2576,8 +2452,7 @@ native hidden YAML は opaque なので、この経路へ渡しません。
 入力（escape 表記）:
 `"---\nconfig: {railroad: {fontSize: 19, compactMode: true}}\n---\nrailroad-beta\nr=terminal(\"yaml config\");"`。
 
-出力
-([frontmatter-yaml/ir-safe-output.mmd](../tests/fixtures/railroad/frontmatter-yaml/ir-safe-output.mmd)):
+出力 ([frontmatter-yaml/ir-safe-output.mmd](../tests/fixtures/railroad/frontmatter-yaml/ir-safe-output.mmd)):
 
 ```mmd
 ---
@@ -2590,8 +2465,7 @@ railroad-beta
 入力（escape 表記）:
 `"---\nconfig: {railroad: {fontSize: 19}}\n---\nrailroad-ebnf-beta\nr=\"yaml config\";"`。
 
-出力
-([frontmatter-yaml/ebnf-safe-output.mmd](../tests/fixtures/railroad/frontmatter-yaml/ebnf-safe-output.mmd)):
+出力 ([frontmatter-yaml/ebnf-safe-output.mmd](../tests/fixtures/railroad/frontmatter-yaml/ebnf-safe-output.mmd)):
 
 ```mmd
 ---
@@ -2604,8 +2478,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"---\ntitle: |\n  First\n  Second\nconfig: {railroad: {fontSize: 19}}\n---\nrailroad-abnf-beta\nr=\"yaml config\";"`。
 
-出力
-([frontmatter-yaml/abnf-safe-output.mmd](../tests/fixtures/railroad/frontmatter-yaml/abnf-safe-output.mmd)):
+出力 ([frontmatter-yaml/abnf-safe-output.mmd](../tests/fixtures/railroad/frontmatter-yaml/abnf-safe-output.mmd)):
 
 ```mmd
 ---
@@ -2621,8 +2494,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"---\nconfig: {railroad: {fontSize: 19}}\n---\nrailroad-peg-beta\nr<-\"yaml config\";"`。
 
-出力
-([frontmatter-yaml/peg-safe-output.mmd](../tests/fixtures/railroad/frontmatter-yaml/peg-safe-output.mmd)):
+出力 ([frontmatter-yaml/peg-safe-output.mmd](../tests/fixtures/railroad/frontmatter-yaml/peg-safe-output.mmd)):
 
 ```mmd
 ---
@@ -2634,8 +2506,8 @@ railroad-peg-beta
 
 ### 改行と Unicode
 
-共有の host 方針に従い、物理 CR と CRLF を LF として読み、
-設定した LF、CRLF、CR で出力します。
+共有の host 方針に従い、物理 CR と CRLF を LF として読み、設定した LF、CRLF、
+CR で出力します。
 値、hidden、frontmatter の内部も同じです。
 先頭 BOM は host の除去と復元の制限に従います。
 LS、PS、NBSP、BOM は通常の native gap の空白にはしません。
@@ -2691,11 +2563,10 @@ Unicode separator を構造上の改行へ変えず、native の所有関係に�
 
 ### 出現順
 
-規則、選択肢、重複名、前方や未定義の reference、metadata の繰返しと
-空の reset を含め、すべての出現と順序を保ちます。
+規則、選択肢、重複名、前方や未定義の reference、
+metadata の繰返しと空の reset を含め、すべての出現と順序を保ちます。
 call、group、repeat、predicate の operand 全体を AST から残します。
-sort や空の metadata の削除で Db が変わり、
-正規化された singleton が同じでも、
+sort や空の metadata の削除で Db が変わり、正規化された singleton が同じでも、
 Db から原文を再構築する理由にはならないためです。
 
 [fixture: railroad/source-order/abnf-duplicates]
@@ -2709,8 +2580,7 @@ Db から原文を再構築する理由にはならないためです。
 入力（escape 表記）:
 `"railroad-beta\naccTitle: old\naccTitle:\nz=nonterminal(\"later\");a=terminal(\"first\");a=terminal(\"second\");later=terminal(\"end\");"`。
 
-出力
-([source-order/ir-duplicates-output.mmd](../tests/fixtures/railroad/source-order/ir-duplicates-output.mmd)):
+出力 ([source-order/ir-duplicates-output.mmd](../tests/fixtures/railroad/source-order/ir-duplicates-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2725,8 +2595,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta\naccDescr {old}\naccDescr {}\nz=later;a=\"first\";a=\"second\";later=\"end\";"`。
 
-出力
-([source-order/ebnf-duplicates-output.mmd](../tests/fixtures/railroad/source-order/ebnf-duplicates-output.mmd)):
+出力 ([source-order/ebnf-duplicates-output.mmd](../tests/fixtures/railroad/source-order/ebnf-duplicates-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2741,8 +2610,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta\naccTitle: old\naccTitle:\nz=later;\na=\"first\";\na=\"second\";\nlater=\"end\";"`。
 
-出力
-([source-order/abnf-duplicates-output.mmd](../tests/fixtures/railroad/source-order/abnf-duplicates-output.mmd)):
+出力 ([source-order/abnf-duplicates-output.mmd](../tests/fixtures/railroad/source-order/abnf-duplicates-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2757,8 +2625,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta\naccDescr {old}\naccDescr {}\nz<-later;a<-\"first\";a<-\"second\";later<-\"end\";"`。
 
-出力
-([source-order/peg-duplicates-output.mmd](../tests/fixtures/railroad/source-order/peg-duplicates-output.mmd)):
+出力 ([source-order/peg-duplicates-output.mmd](../tests/fixtures/railroad/source-order/peg-duplicates-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2824,8 +2691,7 @@ ABNF の終端後に space は加えません。
 入力（escape 表記）:
 `"railroad-beta \t"`。
 
-出力
-([final-newline/ir-empty-output.mmd](../tests/fixtures/railroad/final-newline/ir-empty-output.mmd)):
+出力 ([final-newline/ir-empty-output.mmd](../tests/fixtures/railroad/final-newline/ir-empty-output.mmd)):
 
 ```mmd
 railroad-beta
@@ -2834,8 +2700,7 @@ railroad-beta
 入力（escape 表記）:
 `"railroad-ebnf-beta \t"`。
 
-出力
-([final-newline/ebnf-empty-output.mmd](../tests/fixtures/railroad/final-newline/ebnf-empty-output.mmd)):
+出力 ([final-newline/ebnf-empty-output.mmd](../tests/fixtures/railroad/final-newline/ebnf-empty-output.mmd)):
 
 ```mmd
 railroad-ebnf-beta
@@ -2844,8 +2709,7 @@ railroad-ebnf-beta
 入力（escape 表記）:
 `"railroad-abnf-beta \t"`。
 
-出力
-([final-newline/abnf-empty-output.mmd](../tests/fixtures/railroad/final-newline/abnf-empty-output.mmd)):
+出力 ([final-newline/abnf-empty-output.mmd](../tests/fixtures/railroad/final-newline/abnf-empty-output.mmd)):
 
 ```mmd
 railroad-abnf-beta
@@ -2854,8 +2718,7 @@ railroad-abnf-beta
 入力（escape 表記）:
 `"railroad-peg-beta \t"`。
 
-出力
-([final-newline/peg-empty-output.mmd](../tests/fixtures/railroad/final-newline/peg-empty-output.mmd)):
+出力 ([final-newline/peg-empty-output.mmd](../tests/fixtures/railroad/final-newline/peg-empty-output.mmd)):
 
 ```mmd
 railroad-peg-beta
@@ -2869,8 +2732,8 @@ html-tag-in-frontmatter、embedded-data-opaque、
 bare-percent-line-before-header、c4-keyword-anywhere です。
 railroad には opaque 比較から除く受理設定 key がありません。
 空文字列は値で、空 call は拒否します。
-raw の拒否に raw Db はないため、仕様で受理する入力は記録された読み、
-原文の保持、冪等性を別に検査します。
+raw の拒否に raw Db はないため、仕様で受理する入力は記録された読み、原文の保持、
+冪等性を別に検査します。
 単体の解析失敗は修復出力なしで構文エラーを返し、
 Markdown は埋込み整形を辞退します。
 

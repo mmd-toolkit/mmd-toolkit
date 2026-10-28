@@ -3,7 +3,7 @@ import { dbFromTree } from "../src/db-from-tree/index.ts"
 import type { DbTreeRoot } from "../src/db-from-tree/index.ts"
 import {
   embeddedValuesOf,
-  loadFixtures,
+  loadFixture,
   cssSupportsColor,
 } from "../src/index.ts"
 import type { CheckedNode } from "../src/check-tree/types.ts"
@@ -313,10 +313,7 @@ const CASES: readonly {
 describe("gitgraph Db from hand-built corpus trees", () => {
   for (const row of CASES)
     it(row.name, async () => {
-      const fixture = (await loadFixtures("gitgraph")).find(
-        (entry) => entry.name === row.name,
-      )
-      if (fixture === undefined) throw new Error(`missing gitgraph/${row.name}`)
+      const fixture = await loadFixture("gitgraph", row.name)
       const { tree } = buildGitgraph(fixture.input, row.make, row.direction)
       if (row.frontmatter)
         setField(tree, "frontmatter", {
